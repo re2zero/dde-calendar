@@ -589,6 +589,8 @@ void CMonthDayRect::setRect(qreal x, qreal y, qreal w, qreal h)
 
 void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
 {
+    if (m_date.year()<1900)
+        return;
     const bool isCurrentDay = m_date == QDate::currentDate() && m_isCurrentMonth;
     bool isSelectedCell  = false;
     if (isCurrentDay) {

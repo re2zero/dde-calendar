@@ -30,7 +30,6 @@
 #include <DTitlebar>
 #include <DLabel>
 #include <QStackedWidget>
-#include <DSegmentedControl>
 #include <DButtonBox>
 #include <QStackedLayout>
 #include <QPropertyAnimation>

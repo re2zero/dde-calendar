@@ -751,7 +751,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     if (index != 0) {
         m_priindex = index;
     }
-    if (m_currentdate.year() <= 1900)
+    if (m_currentdate.year() < 1900)
         return;
     switch (index) {
     case 0: {

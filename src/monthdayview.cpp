@@ -233,6 +233,8 @@ void CMonthRect::setRect(qreal x, qreal y, qreal w, qreal h)
 
 void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
 {
+    if (m_Date.year()<1900)
+        return;
     const bool isCurrentDay = (m_Date.month() == QDate::currentDate().month()
                                && m_Date.year() == QDate::currentDate().year());
 
