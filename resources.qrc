@@ -10,10 +10,10 @@
         <file>resources/icon/today_normal.png</file>
         <file>resources/icon/today_hover.png</file>
         <file>resources/icon/today_press.png</file>
-        <file>resources/icon/deepin-calendar.svg</file>
-        <file>resources/icon/deepin-calendar_48.png</file>
-        <file>resources/icon/deepin-calendar_96.png</file>
         <file>resources/icon/previous_disabled.png</file>
         <file>resources/icon/next_disabled.png</file>
+        <file>resources/icon/dde-calendar.svg</file>
+        <file>resources/icon/dde-calendar_96.png</file>
+        <file>resources/icon/dde-calendar_48.png</file>
     </qresource>
 </RCC>

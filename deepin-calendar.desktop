@@ -1,12 +1,2 @@
 [Desktop Entry]
-Categories=Application;Utility;Calendar;
-Comment=Calendar is a date tool.
-Encoding=UTF-8
-Exec=/usr/bin/dde-calendar
-Icon=deepin-calendar
-Name=Deepin Calendar
-StartupNotify=false
-Terminal=false
-Type=Application
-X-MultipleArgs=false
 

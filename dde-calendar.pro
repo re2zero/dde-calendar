@@ -42,10 +42,10 @@ CONFIG(release, debug|release) {
 
 target.path = /usr/bin/
 
-desktop_files.files = deepin-calendar.desktop
+desktop_files.files = dde-calendar.desktop
 desktop_files.path = /usr/share/applications/
 
-icon_files.files = resources/icon/deepin-calendar.svg
+icon_files.files = resources/icon/dde-calendar.svg
 icon_files.path = /usr/share/icons/hicolor/scalable/apps/
 
 qm_files.path = /usr/share/dde-calendar/translations/

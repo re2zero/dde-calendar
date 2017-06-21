@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     // meta information that necessary to create the about dialog.
     a.setProductName(QApplication::translate("CalendarWindow", "Deepin Calendar"));
-    a.setProductIcon(QPixmap(":/resources/icon/deepin-calendar_96.png"));
+    a.setProductIcon(QPixmap(":/resources/icon/dde-calendar_96.png"));
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
 
     if (!a.setSingleInstance("dde-calendar")) {

@@ -101,7 +101,7 @@ void CalendarWindow::initUI()
 
     m_icon = new QLabel(this);
     m_icon->setFixedSize(24, 24);
-    m_icon->setPixmap(QPixmap(":/resources/icon/deepin-calendar_48.png").scaled(m_icon->size()));
+    m_icon->setPixmap(QPixmap(":/resources/icon/dde-calendar_48.png").scaled(m_icon->size()));
     m_icon->move(12, 8);
 
     m_infoView = new InfoView;
