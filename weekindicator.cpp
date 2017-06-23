@@ -6,10 +6,9 @@
 
 WeekIndicator::WeekIndicator(QWidget *parent) : QWidget(parent)
 {
-    setFixedHeight(30);
-
     m_mainLayout = new QHBoxLayout;
     m_mainLayout->setMargin(0);
+    m_mainLayout->setSpacing(0);
     setLayout(m_mainLayout);
 }
 
@@ -37,7 +36,7 @@ void WeekIndicator::setList(int weekday)
         }
 
         label->setAlignment(Qt::AlignCenter);
-        label->setFixedSize(DDECalendar::HeaderItemWidth, DDECalendar::HeaderItemHeight);
+        label->setFixedSize(DDECalendar::CellWidth, DDECalendar::HeaderItemHeight);
         m_mainLayout->addWidget(label, 0, Qt::AlignCenter);
     }
 }

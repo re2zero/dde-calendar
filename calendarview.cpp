@@ -71,11 +71,13 @@ CalendarView::CalendarView(QWidget *parent) : QWidget(parent)
         }
     }
 
+    QWidget *gridWidget = new QWidget;
+    gridWidget->setLayout(gridLayout);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(separatorLineLayout);
-    mainLayout->addWidget(m_weekIndicator);
-    mainLayout->addLayout(gridLayout);
+    mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
+    mainLayout->addWidget(gridWidget, 0,  Qt::AlignHCenter);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
@@ -357,6 +359,7 @@ void CalendarView::paintCell(QWidget *cell)
             painter.setPen(m_defaultTextColor);
     }
 
+//    painter.drawRect(rect);
     QRect test;
     painter.setFont(m_dayNumFont);
     if (m_showState & ShowLunar) {
