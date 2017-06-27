@@ -1,15 +1,15 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sr" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ug" version="2.1">
     <context>
         <name>desktop</name>
         <message>
             <location filename="Desktop Entry]Comment" line="0"/>
             <source>Calendar is a date tool.</source>
-            <translation>Календар је алат за датуме.</translation>
+            <translation>كالىندار ئۇ ۋاقىت قۇرالى</translation>
         </message>
         <message>
             <location filename="Desktop Entry]Name" line="0"/>
             <source>Deepin Calendar</source>
-            <translation>Дипин календар</translation>
+            <translation>Deepin كالىندارى</translation>
         </message>
     </context>
 </TS>

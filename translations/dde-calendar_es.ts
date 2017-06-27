@@ -4,7 +4,7 @@
     <message>
         <location filename="../calendarwindow.cpp" line="203"/>
         <source>First Day of Week</source>
-        <translation type="unfinished"/>
+        <translation>Primer día de la semana</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="40"/>

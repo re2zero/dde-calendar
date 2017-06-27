@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_TW" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ug" version="2.1">
 <context>
     <name>CalendarWindow</name>
     <message>
         <location filename="../calendarwindow.cpp" line="203"/>
         <source>First Day of Week</source>
-        <translation>一週起始日</translation>
+        <translation>ھەپتىنىڭ بىرىنچى كۈنى</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation>Deepin 日曆</translation>
+        <translation>Deepin كالىندارى</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation>Deepin 日曆是個顯示日期的工具。</translation>
+        <translation>كالىندار ئۇ ۋاقىت قۇرالى</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../infoview.cpp" line="24"/>
         <source>Today</source>
-        <translation>今天</translation>
+        <translation>بۈگۈن</translation>
     </message>
 </context>
 </TS>
