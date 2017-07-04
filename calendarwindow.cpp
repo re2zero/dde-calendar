@@ -96,8 +96,11 @@ void CalendarWindow::initUI()
     m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
                                       InfoViewHeight + CalendarHeight);
 
+    DTitlebar *titleBar = this->titlebar();
+    const int titlebarHeight = titleBar ? titleBar->height() : 0;
+
     setFixedSize(m_contentBackground->width(),
-                 m_contentBackground->height() + this->titleBar()->height());
+                 m_contentBackground->height() + titlebarHeight);
 
     m_icon = new QLabel(this);
     m_icon->setFixedSize(24, 24);
@@ -194,7 +197,7 @@ void CalendarWindow::initDateChangeMonitor()
 
 void CalendarWindow::setupMenu()
 {
-    DTitlebar *titlebar = this->titleBar();
+    DTitlebar *titlebar = this->titlebar();
 
     if (titlebar) {
         titlebar->setWindowFlags(titlebar->windowFlags() & ~Qt::WindowMaximizeButtonHint);
@@ -309,6 +312,7 @@ void CalendarWindow::updateDate() const
 {
     QDate currentDate = QDate::currentDate();
     m_calendarView->setCurrentDate(currentDate);
+
     DTitlebar *titlebar = this->titleBar();
     if (titlebar) {
         titlebar->setTitle(currentDate.toString(Qt::SystemLocaleLongDate));
