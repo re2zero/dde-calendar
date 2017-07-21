@@ -2,7 +2,7 @@
 Categories=Application;Utility;Calendar;
 Comment=Calendar is a date tool.
 Encoding=UTF-8
-Exec=/usr/bin/dde-calendar
+Exec=dde-calendar
 Icon=dde-calendar
 Name=Deepin Calendar
 StartupNotify=false
