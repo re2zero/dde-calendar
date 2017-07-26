@@ -9,7 +9,7 @@
 #include <DLog>
 
 DWIDGET_USE_NAMESPACE
-DUTIL_USE_NAMESPACE
+DCORE_USE_NAMESPACE
 
 QString GetStyleSheetContent() {
     QFile file(":/resources/dde-calendar.qss");

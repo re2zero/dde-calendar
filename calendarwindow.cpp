@@ -96,8 +96,8 @@ void CalendarWindow::initUI()
     m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
                                       InfoViewHeight + CalendarHeight);
 
-    DTitlebar *titleBar = this->titlebar();
-    const int titlebarHeight = titleBar ? titleBar->height() : 0;
+    DTitlebar *titlebar = this->titlebar();
+    const int titlebarHeight = titlebar ? titlebar->height() : 0;
 
     setFixedSize(m_contentBackground->width(),
                  m_contentBackground->height() + titlebarHeight);
@@ -313,7 +313,7 @@ void CalendarWindow::updateDate() const
     QDate currentDate = QDate::currentDate();
     m_calendarView->setCurrentDate(currentDate);
 
-    DTitlebar *titlebar = this->titleBar();
+    DTitlebar *titlebar = this->titlebar();
     if (titlebar) {
         titlebar->setTitle(currentDate.toString(Qt::SystemLocaleLongDate));
     }
