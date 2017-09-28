@@ -54,7 +54,10 @@ int main(int argc, char *argv[])
     a.setOrganizationName("deepin");
     a.setApplicationName("dde-calendar");
     a.setApplicationVersion("1.0");
-    a.loadTranslator();
+
+    QTranslator translator;
+    translator.load("/usr/share/dde-calendar/translations/dde-calendar_" + QLocale::system().name());
+    a.installTranslator(&translator);
 
     // meta information that necessary to create the about dialog.
     a.setProductName(QApplication::translate("CalendarWindow", "Deepin Calendar"));
