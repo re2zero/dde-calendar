@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
 
     if (!a.setSingleInstance("dde-calendar")) {
         qDebug() << "there's an dde-calendar instance running.";
-        QProcess::execute("dbus-send --print-reply --dest=com.deepin.dde.Calendar "
-                          "/com/deepin/dde/Calendar com.deepin.dde.Calendar.RaiseWindow");
+        QProcess::execute("dbus-send --print-reply --dest=com.deepin.Calendar "
+                          "/com/deepin/Calendar com.deepin.Calendar.RaiseWindow");
 
         return 0;
     }
@@ -81,8 +81,8 @@ int main(int argc, char *argv[])
     cw.show();
 
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    if (dbus.registerService("com.deepin.dde.Calendar")) {
-        dbus.registerObject("/com/deepin/dde/Calendar", &cw);
+    if (dbus.registerService("com.deepin.Calendar")) {
+        dbus.registerObject("/com/deepin/Calendar", &cw);
     }
 
     return a.exec();

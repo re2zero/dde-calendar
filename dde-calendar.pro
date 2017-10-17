@@ -51,6 +51,9 @@ icon_files.path = /usr/share/icons/hicolor/scalable/apps/
 qm_files.path = /usr/share/dde-calendar/translations/
 qm_files.files = translations/*.qm
 
+service.path = $${PREFIX}/share/dbus-1/services/
+service.files = $$PWD/com.deepin.Calendar.service
+
 TRANSLATIONS = translations/dde-calendar.ts
 
-INSTALLS += target desktop_files icon_files qm_files
+INSTALLS += target desktop_files icon_files qm_files service
