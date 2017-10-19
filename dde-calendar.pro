@@ -35,25 +35,27 @@ RESOURCES += \
     resources.qrc
 
 # Automating generation .qm files from .ts files
-CONFIG(release, debug|release) {
-    !system($$PWD/translate_generation.sh): error("Failed to generate translation")
-    !system($$PWD/translate_desktop.sh): error("Failed to generate translation")
+!system($$PWD/translate_generation.sh): error("Failed to generate translation")
+!system($$PWD/translate_desktop.sh): error("Failed to generate translation")
+
+isEmpty(PREFIX){
+    PREFIX = /usr
 }
 
-target.path = /usr/bin/
+target.path = $$PREFIX/bin/
 
-desktop_files.files = dde-calendar.desktop
-desktop_files.path = /usr/share/applications/
+desktop_files.path = $$PREFIX/share/applications/
+desktop_files.files = $$PWD/dde-calendar.desktop
 
-icon_files.files = resources/icon/dde-calendar.svg
-icon_files.path = /usr/share/icons/hicolor/scalable/apps/
+icon_files.path = $$PREFIX/share/icons/hicolor/scalable/apps/
+icon_files.files = $$PWD/resources/icon/dde-calendar.svg
 
-qm_files.path = /usr/share/dde-calendar/translations/
-qm_files.files = translations/*.qm
+qm_files.path = $$PREFIX/share/dde-calendar/translations/
+qm_files.files = $$PWD/translations/*.qm
 
-service.path = $${PREFIX}/share/dbus-1/services/
+service.path = $$PREFIX/share/dbus-1/services/
 service.files = $$PWD/com.deepin.Calendar.service
 
-TRANSLATIONS = translations/dde-calendar.ts
+TRANSLATIONS = $$PWD/translations/dde-calendar.ts
 
 INSTALLS += target desktop_files icon_files qm_files service
