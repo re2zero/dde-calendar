@@ -26,6 +26,7 @@
 
 #include <DApplication>
 #include <DLog>
+#include <DHiDPIHelper>
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
 
     // meta information that necessary to create the about dialog.
     a.setProductName(QApplication::translate("CalendarWindow", "Deepin Calendar"));
-    a.setProductIcon(QPixmap(":/resources/icon/dde-calendar_96.png"));
+    a.setProductIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-calendar.svg"));
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
 
     if (!a.setSingleInstance("dde-calendar")) {

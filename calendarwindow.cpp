@@ -32,6 +32,9 @@
 #include <QMenu>
 #include <DTitlebar>
 #include <DAboutDialog>
+#include <DHiDPIHelper>
+
+DWIDGET_USE_NAMESPACE
 
 static const int CalendarHeaderHeight = 60;
 
@@ -123,7 +126,8 @@ void CalendarWindow::initUI()
 
     m_icon = new QLabel(this);
     m_icon->setFixedSize(24, 24);
-    m_icon->setPixmap(QPixmap(":/resources/icon/dde-calendar_48.png").scaled(m_icon->size()));
+    m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-calendar.svg")
+                      .scaled(m_icon->size() * devicePixelRatioF()));
     m_icon->move(12, 8);
 
     m_infoView = new InfoView;

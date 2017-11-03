@@ -81,13 +81,13 @@ void Spinner::setPrevButtonDisabled(bool disabled) const
 {
     m_prevButton->setDisabled(disabled);
     if (disabled) {
-        m_prevButton->setHoverPic(":/resources/icon/previous_disabled.png");
-        m_prevButton->setNormalPic(":/resources/icon/previous_disabled.png");
-        m_prevButton->setPressPic(":/resources/icon/previous_disabled.png");
+        m_prevButton->setHoverPic(":/resources/icon/previous_disabled.svg");
+        m_prevButton->setNormalPic(":/resources/icon/previous_disabled.svg");
+        m_prevButton->setPressPic(":/resources/icon/previous_disabled.svg");
     } else {
-        m_prevButton->setHoverPic(":/resources/icon/previous_hover.png");
-        m_prevButton->setNormalPic(":/resources/icon/previous_normal.png");
-        m_prevButton->setPressPic(":/resources/icon/previous_press.png");
+        m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
+        m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
+        m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
     }
 }
 
@@ -95,12 +95,12 @@ void Spinner::setNextButtonDisabled(bool disabled) const
 {
     m_nextButton->setDisabled(disabled);
     if (disabled) {
-        m_nextButton->setHoverPic(":/resources/icon/next_disabled.png");
-        m_nextButton->setNormalPic(":/resources/icon/next_disabled.png");
-        m_nextButton->setPressPic(":/resources/icon/next_disabled.png");
+        m_nextButton->setHoverPic(":/resources/icon/next_disabled.svg");
+        m_nextButton->setNormalPic(":/resources/icon/next_disabled.svg");
+        m_nextButton->setPressPic(":/resources/icon/next_disabled.svg");
     } else {
-        m_nextButton->setHoverPic(":/resources/icon/next_hover.png");
-        m_nextButton->setNormalPic(":/resources/icon/next_normal.png");
-        m_nextButton->setPressPic(":/resources/icon/next_press.png");
+        m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
+        m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
+        m_nextButton->setPressPic(":/resources/icon/next_press.svg");
     }
 }
