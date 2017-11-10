@@ -4,7 +4,7 @@
         <message>
             <location filename="Desktop Entry]Comment" line="0"/>
             <source>Calendar is a date tool.</source>
-            <translation>顯示日期的工具</translation>
+            <translation>簡易日期顯示工具</translation>
         </message>
         <message>
             <location filename="Desktop Entry]Name" line="0"/>

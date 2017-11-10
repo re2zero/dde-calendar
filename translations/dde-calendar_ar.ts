@@ -14,7 +14,7 @@
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation>برنانج التقويم هو أداة التاريخ .</translation>
+        <translation>برنانج التقويم هو أداة عرض التاريخ .</translation>
     </message>
 </context>
 <context>

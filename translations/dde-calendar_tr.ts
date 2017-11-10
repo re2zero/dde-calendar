@@ -14,7 +14,7 @@
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation>Takvim bir tarih aracı.</translation>
+        <translation>Takvim, bir tarih aracıdır.</translation>
     </message>
 </context>
 <context>
