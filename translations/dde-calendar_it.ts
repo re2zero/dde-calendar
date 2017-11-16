@@ -14,7 +14,7 @@
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation>Calendar è un tool calendario. 
+        <translation>Calendar è un&apos;app per il calendario. 
 Localizzazione italiana a cura di Carofano Massimo Antonio.</translation>
     </message>
 </context>

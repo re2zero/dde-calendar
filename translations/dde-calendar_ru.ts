@@ -4,7 +4,7 @@
     <message>
         <location filename="../calendarwindow.cpp" line="203"/>
         <source>First Day of Week</source>
-        <translation>Первый день недели</translation>
+        <translation>Первый День Недели</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="40"/>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation>Календарь, является приложением для планирования Вашего времени.</translation>
+        <translation>Календарь является приложением для планирования Вашего времени.</translation>
     </message>
 </context>
 <context>

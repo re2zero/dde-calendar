@@ -4,17 +4,17 @@
     <message>
         <location filename="../calendarwindow.cpp" line="203"/>
         <source>First Day of Week</source>
-        <translation type="unfinished"/>
+        <translation>Første dag av uken</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation type="unfinished"/>
+        <translation>Deepin Kalender</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation type="unfinished"/>
+        <translation>Kalanderen er et redskap for å organisere hendelser etter dato og klokkeslett.</translation>
     </message>
 </context>
 <context>

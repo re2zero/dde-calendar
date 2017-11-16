@@ -9,12 +9,12 @@
     <message>
         <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation>Deepin календар</translation>
+        <translation>Deepin Календар</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation>Календарът е програма за срещи.</translation>
+        <translation>Календарът е приложение за показване на датата.</translation>
     </message>
 </context>
 <context>

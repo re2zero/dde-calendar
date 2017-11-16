@@ -2,39 +2,19 @@
 <context>
     <name>CalendarWindow</name>
     <message>
-        <location filename="../calendarwindow.cpp" line="214"/>
-        <source>About</source>
-        <translation>درباره</translation>
-    </message>
-    <message>
         <location filename="../calendarwindow.cpp" line="203"/>
         <source>First Day of Week</source>
-        <translation type="unfinished"/>
+        <translation>اولین روز هفته</translation>
     </message>
     <message>
-        <location filename="../calendarwindow.cpp" line="215"/>
-        <source>Exit</source>
-        <translation>خروج</translation>
-    </message>
-    <message>
-        <location filename="../calendarwindow.cpp" line="270"/>
+        <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation type="unfinished"/>
+        <translation>تقویم Deepin</translation>
     </message>
     <message>
-        <location filename="../calendarwindow.cpp" line="272"/>
-        <source>Version: %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendarwindow.cpp" line="273"/>
+        <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendarwindow.cpp" line="274"/>
-        <source>Deepin Calendar is released under GPL v3</source>
-        <translation type="unfinished"/>
+        <translation>تقویم یک ابزار تاریخ است.</translation>
     </message>
 </context>
 <context>
@@ -42,7 +22,7 @@
     <message>
         <location filename="../infoview.cpp" line="24"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>امروز</translation>
     </message>
 </context>
 </TS>

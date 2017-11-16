@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ca" version="2.1">
 <context>
     <name>CalendarWindow</name>
     <message>
         <location filename="../calendarwindow.cpp" line="203"/>
         <source>First Day of Week</source>
-        <translation>Viikon ensimmäinen päivä</translation>
+        <translation>Primer dia de la setmana</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation>Deepin-kalenteri</translation>
+        <translation>Calendari del Deepin</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation>Kalenteri on päivämäärätyökalu. </translation>
+        <translation>El calendari és una eina de cites.</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../infoview.cpp" line="24"/>
         <source>Today</source>
-        <translation>Tänään</translation>
+        <translation>Avui</translation>
     </message>
 </context>
 </TS>

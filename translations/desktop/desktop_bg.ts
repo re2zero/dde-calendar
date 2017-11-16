@@ -4,12 +4,12 @@
         <message>
             <location filename="Desktop Entry]Comment" line="0"/>
             <source>Calendar is a date tool.</source>
-            <translation>Календарът е програма за срещи.</translation>
+            <translation>Календарът е приложение за показване на датата.</translation>
         </message>
         <message>
             <location filename="Desktop Entry]Name" line="0"/>
             <source>Deepin Calendar</source>
-            <translation>Deepin календар</translation>
+            <translation>Deepin Календар</translation>
         </message>
     </context>
 </TS>
