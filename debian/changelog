@@ -6,6 +6,6 @@ dde-calendar (1.0.0-1) stable; urgency=low
 
 dde-calendar (1.0-1) unstable; urgency=medium
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release
 
  -- Deepin Packages Builder <packages@linuxdeepin.com>  Fri, 18 Mar 2016 17:01:43 +0800
