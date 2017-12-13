@@ -9,6 +9,8 @@ Vcs-Git: https://github.com/linuxdeepin/dde-calendar
 
 Package: dde-calendar
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends},
+ ${misc:Depends},
+ dde-api
 Description: Calendar software for Deepin OS
  Calendar for Deepin Desktop Environment.
