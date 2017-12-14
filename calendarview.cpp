@@ -221,7 +221,7 @@ bool CalendarView::eventFilter(QObject *o, QEvent *e)
     if (cell && m_cellList.contains(cell)) {
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
-        } else if (e->type() == QEvent::MouseButtonRelease) {
+        } else if (e->type() == QEvent::MouseButtonPress) {
             cellClicked(cell);
         }
     }
