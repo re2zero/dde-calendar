@@ -2,8 +2,12 @@
 # See debhelper(7) (uncomment to enable)
 # output every command that modifies files on the build system.
 #export DH_VERBOSE = 1
+VERSION ?= $(shell dpkg-parsechangelog -ldebian/changelog -SVersion | awk -F'-' '{print $$1}')
 
 export QT_SELECT=5
 
 %:
 	dh $@  --parallel
+
+override_dh_auto_configure:
+	dh_auto_configure -- DEFINES+="VERSION=$(VERSION)"

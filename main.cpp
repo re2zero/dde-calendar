@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     DApplication a(argc, argv);
     a.setOrganizationName("deepin");
     a.setApplicationName("dde-calendar");
-    a.setApplicationVersion("1.0");
+    a.setApplicationVersion(DApplication::buildVersion("1.1"));
     a.loadTranslator();
 
     // meta information that necessary to create the about dialog.
