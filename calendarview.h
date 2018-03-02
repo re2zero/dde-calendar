@@ -89,6 +89,7 @@ private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);
     void updateDate();
+    void updateCurrentLunar();
 
 private slots:
     void cellClicked(QWidget *cell);

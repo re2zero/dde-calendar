@@ -102,6 +102,8 @@ void CalendarView::handleCurrentDateChanged(const QDate date, const CaLunarDayIn
     if (date != m_currentDate) {
         setCurrentDate(date);
     }
+
+    updateCurrentLunar();
 }
 
 void CalendarView::setFirstWeekday(int weekday)
@@ -144,28 +146,6 @@ void CalendarView::setCurrentDate(const QDate date)
 
     m_currentDate = date;
     emit currentDateChanged(date.year(), date.month());
-
-    int tmpcurrentIndex = getDateIndex(m_currentDate);
-    const CaLunarDayInfo info = getCaLunarDayInfo(tmpcurrentIndex);
-
-
-    if (!info.mLunarFestival.isEmpty()) {
-        emit currentFestivalChanged(info.mLunarFestival);
-    } else if (!info.mTerm.isEmpty()) {
-        emit currentFestivalChanged(info.mTerm);
-    } else if (!info.mSolarFestival.isEmpty()) {
-        QStringList tmpFestival = info.mSolarFestival.split(" ");
-
-        if (tmpFestival.length()>=3) {
-            emit currentFestivalChanged(QString("%1 %2").arg(tmpFestival[0]).arg(tmpFestival[1]));
-        } else {
-            emit currentFestivalChanged(info.mSolarFestival);
-        }
-    } else {
-        emit currentFestivalChanged("");
-    }
-
-    updateDate();
 }
 
 void CalendarView::setLunarVisible(bool visible)
@@ -241,6 +221,30 @@ void CalendarView::updateDate()
 
     setSelectedCell(currentIndex);
     update();
+}
+
+void CalendarView::updateCurrentLunar()
+{
+    int tmpcurrentIndex = getDateIndex(m_currentDate);
+    const CaLunarDayInfo info = getCaLunarDayInfo(tmpcurrentIndex);
+
+    if (!info.mLunarFestival.isEmpty()) {
+        emit currentFestivalChanged(info.mLunarFestival);
+    } else if (!info.mTerm.isEmpty()) {
+        emit currentFestivalChanged(info.mTerm);
+    } else if (!info.mSolarFestival.isEmpty()) {
+        QStringList tmpFestival = info.mSolarFestival.split(" ");
+
+        if (tmpFestival.length()>=3) {
+            emit currentFestivalChanged(QString("%1 %2").arg(tmpFestival[0]).arg(tmpFestival[1]));
+        } else {
+            emit currentFestivalChanged(info.mSolarFestival);
+        }
+    } else {
+        emit currentFestivalChanged("");
+    }
+
+    updateDate();
 }
 
 const QString CalendarView::getCellDayNum(int pos)
