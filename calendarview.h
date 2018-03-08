@@ -64,7 +64,7 @@ public:
 public:
     explicit CalendarView(QWidget *parent = 0);
     void setFirstWeekday(int weekday);
-    int getDateType(const QDate &date) const;
+    int getDateType(const QDate &date);
     inline bool cellSelectable() const {return m_cellSelectable;}
 
 signals:
@@ -85,16 +85,16 @@ private:
     const QString getCellDayNum(int pos);
     const QDate getCellDate(int pos);
     const QString getLunar(int pos);
-    const CaLunarDayInfo getCaLunarDayInfo(int pos) const;
+    const CaLunarDayInfo getCaLunarDayInfo(int pos);
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);
     void updateDate();
-    void updateCurrentLunar();
+    void updateCurrentLunar(const CaLunarDayInfo &info);
 
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
-    void getDbusData() const;
+    void getDbusData();
 
 private:
     QList<QWidget *> m_cellList;

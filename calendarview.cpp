@@ -102,8 +102,6 @@ void CalendarView::handleCurrentDateChanged(const QDate date, const CaLunarDayIn
     if (date != m_currentDate) {
         setCurrentDate(date);
     }
-
-    updateCurrentLunar();
 }
 
 void CalendarView::setFirstWeekday(int weekday)
@@ -115,7 +113,7 @@ void CalendarView::setFirstWeekday(int weekday)
     updateDate();
 }
 
-int CalendarView::getDateType(const QDate &date) const
+int CalendarView::getDateType(const QDate &date)
 {
     const int currentIndex = getDateIndex(date);
     const CaLunarDayInfo info = getCaLunarDayInfo(currentIndex);
@@ -145,6 +143,10 @@ void CalendarView::setCurrentDate(const QDate date)
     }
 
     m_currentDate = date;
+
+    // to refresh lunar calendar
+    updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
+
     emit currentDateChanged(date.year(), date.month());
 }
 
@@ -223,11 +225,8 @@ void CalendarView::updateDate()
     update();
 }
 
-void CalendarView::updateCurrentLunar()
+void CalendarView::updateCurrentLunar(const CaLunarDayInfo &info)
 {
-    int tmpcurrentIndex = getDateIndex(m_currentDate);
-    const CaLunarDayInfo info = getCaLunarDayInfo(tmpcurrentIndex);
-
     if (!info.mLunarFestival.isEmpty()) {
         emit currentFestivalChanged(info.mLunarFestival);
     } else if (!info.mTerm.isEmpty()) {
@@ -271,24 +270,26 @@ const QString CalendarView::getLunar(int pos)
     return info.mTerm;
 }
 
-const CaLunarDayInfo CalendarView::getCaLunarDayInfo(int pos) const
+const CaLunarDayInfo CalendarView::getCaLunarDayInfo(int pos)
 {
     const QDate date = m_days[pos];
 
-    if (lunarCache->contains(date))
+    if (lunarCache->contains(date)) {
         return lunarCache->value(date);
+    }
 
     if (lunarCache->size() > 300)
         lunarCache->clear();
 
 //    QTimer::singleShot(500, [this, pos] {getDbusData(pos);});
     queue->push_back(pos);
+
     QTimer::singleShot(300, this, SLOT(getDbusData()));
 
     return *emptyCaLunarDayInfo;
 }
 
-void CalendarView::getDbusData() const
+void CalendarView::getDbusData()
 {
     if (queue->isEmpty())
         return;
@@ -320,9 +321,9 @@ void CalendarView::getDbusData() const
 
     m_cellList.at(pos)->update();
 
-    // refersh lunar info
+    // refresh   lunar info
     if (date == m_currentDate) {
-        emit dateSelected(date, currentDayInfo);
+        updateCurrentLunar(currentDayInfo);
     }
 }
 
