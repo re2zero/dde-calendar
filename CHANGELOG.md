@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+### 1.2.1 (2018-03-09)
+
+
+#### Bug Fixes
+
+*   calendar not update current Lunar ([bab3f2a5](https://github.com/linuxdeepin/dde-calendar/commit/bab3f2a59918dff3c5898f749cb1f096a74f2997))
+
+
+
 <a name=""></a>
 ##  1.2.0 (2018-03-07)
 
