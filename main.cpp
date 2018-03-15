@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     a.setProductName(QApplication::translate("CalendarWindow", "Deepin Calendar"));
     a.setProductIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-calendar.svg"));
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
+    a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
 
     if (!a.setSingleInstance("dde-calendar")) {
         qDebug() << "there's an dde-calendar instance running.";
