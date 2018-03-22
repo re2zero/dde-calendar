@@ -1,3 +1,13 @@
+<a name="1.2.2"></a>
+### 1.2.2 (2018-03-22)
+
+
+#### Features
+
+*   Add acknowledgement link ([f491e7db](https://github.com/linuxdeepin/dde-calendar/commit/f491e7dbd7a007f5df339ca15fe024c5da455ea9))
+
+
+
 <a name="1.2.1"></a>
 ### 1.2.1 (2018-03-09)
 
