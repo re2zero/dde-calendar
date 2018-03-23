@@ -50,6 +50,10 @@ protected:
 protected slots:
     void menuItemInvoked(QAction *action);
 
+
+private:
+    void initLunar();
+
 private:
     InfoView * m_infoView = nullptr;
     CalendarView * m_calendarView = nullptr;

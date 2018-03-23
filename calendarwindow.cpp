@@ -59,6 +59,7 @@ CalendarWindow::CalendarWindow() :
     initUI();
     initAnimation();
     initDateChangeMonitor();
+    initLunar();
 
 
     new CalendarAdaptor(this);
@@ -139,7 +140,6 @@ void CalendarWindow::initUI()
     m_calendarView = new CalendarView;
     m_calendarView->setFixedSize(CalendarWidth, CalendarHeight);
     m_calendarView->setCurrentDate(QDate::currentDate());
-    m_calendarView->setLunarVisible(QLocale::system().name().contains("zh"));
 
     m_calendarView->setFirstWeekday(m_settings->value("weekday").toInt());
 
@@ -285,6 +285,12 @@ void CalendarWindow::menuItemInvoked(QAction *action)
         m_settings->setValue("weekday", Sunday);
         return;
     }
+}
+
+void CalendarWindow::initLunar()
+{
+    const bool enable_Lunar = m_settings->value("EnableLunar", false).toBool();
+    m_calendarView->setLunarVisible(enable_Lunar ? true : QLocale::system().name().contains("zh"));
 }
 
 void CalendarWindow::slideMonth(bool next)
