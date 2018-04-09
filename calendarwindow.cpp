@@ -82,9 +82,7 @@ void CalendarWindow::handleCurrentYearMonthChanged(int year, int month)
         changedDate = changedDate.addDays(currentDay - 1);
     }
 
-    m_calendarView->blockSignals(true);
     m_calendarView->setCurrentDate(changedDate);
-    m_calendarView->blockSignals(false);
 }
 
 void CalendarWindow::previousMonth()
