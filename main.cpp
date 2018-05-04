@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
     a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
 
-    if (!a.setSingleInstance("dde-calendar")) {
+    if (!a.setSingleInstance("dde-calendar", DApplication::UserScope)) {
         qDebug() << "there's an dde-calendar instance running.";
         QProcess::execute("dbus-send --print-reply --dest=com.deepin.Calendar "
                           "/com/deepin/Calendar com.deepin.Calendar.RaiseWindow");
