@@ -1,3 +1,14 @@
+<a name="1.2.3"></a>
+### 1.2.3 (2018-05-25)
+
+
+#### Bug Fixes
+
+*   register user scope single instance ([87664c8e](https://github.com/linuxdeepin/dde-calendar/commit/87664c8ef7efce224601bdfa3ca58728b41552a3))
+*   not refresh day when direct switch month ([20d35339](https://github.com/linuxdeepin/dde-calendar/commit/20d3533960c4818c5123958c619cb656a2b219b5))
+
+
+
 <a name="1.2.2"></a>
 ### 1.2.2 (2018-03-22)
 
