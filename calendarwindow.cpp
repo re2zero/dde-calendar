@@ -61,6 +61,7 @@ CalendarWindow::CalendarWindow() :
     initDateChangeMonitor();
     initLunar();
 
+    setWindowTitle(tr("Deepin Calendar"));
 
     new CalendarAdaptor(this);
 }
