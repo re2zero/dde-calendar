@@ -1,3 +1,13 @@
+<a name="1.2.4"></a>
+### 1.2.4 (2018-07-31)
+
+
+#### Features
+
+*   set window title ([e1e7efad](https://github.com/linuxdeepin/dde-calendar/commit/e1e7efadb1b5c0ec9e5ca068236fee43492c260f))
+
+
+
 <a name="1.2.3"></a>
 ### 1.2.3 (2018-05-25)
 
