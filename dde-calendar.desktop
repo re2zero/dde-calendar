@@ -1,7 +1,6 @@
 [Desktop Entry]
 Categories=Application;Utility;Calendar;
 Comment=Calendar is a date tool.
-Encoding=UTF-8
 Exec=dde-calendar
 Icon=dde-calendar
 Name=Deepin Calendar
