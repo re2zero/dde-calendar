@@ -4,17 +4,17 @@
     <message>
         <location filename="../calendarwindow.cpp" line="203"/>
         <source>First Day of Week</source>
-        <translation type="unfinished"/>
+        <translation>सप्ताह का पहला दिन</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation type="unfinished"/>
+        <translation>डीपिन कैलेंडर</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation type="unfinished"/>
+        <translation>कैलेंडर दिनांक हेतु एक साधन है।</translation>
     </message>
 </context>
 <context>

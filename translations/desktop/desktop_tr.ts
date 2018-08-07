@@ -4,7 +4,7 @@
         <message>
             <location filename="Desktop Entry]Comment" line="0"/>
             <source>Calendar is a date tool.</source>
-            <translation>Takvim, bir tarih aracıdır.</translation>
+            <translation>Takvim, tarihi görüntüleyen bir araçtır.</translation>
         </message>
         <message>
             <location filename="Desktop Entry]Name" line="0"/>

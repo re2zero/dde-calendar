@@ -1,15 +1,15 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ast" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="hi_IN" version="2.1">
     <context>
         <name>desktop</name>
         <message>
             <location filename="Desktop Entry]Comment" line="0"/>
             <source>Calendar is a date tool.</source>
-            <translation>Calendariu ye una ferramienta de dates.</translation>
+            <translation>कैलेंडर दिनांक हेतु एक साधन है।</translation>
         </message>
         <message>
             <location filename="Desktop Entry]Name" line="0"/>
             <source>Deepin Calendar</source>
-            <translation>Deepin Calendar</translation>
+            <translation>डीपिन कैलेंडर</translation>
         </message>
     </context>
 </TS>
