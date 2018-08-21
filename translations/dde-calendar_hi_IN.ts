@@ -9,12 +9,12 @@
     <message>
         <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation>डीपिन कैलेंडर</translation>
+        <translation>डीपिन दिनदर्शिका</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation>कैलेंडर दिनांक हेतु एक साधन है।</translation>
+        <translation>दिनदर्शिका दिनांक हेतु एक साधन है।</translation>
     </message>
 </context>
 <context>

@@ -9,7 +9,7 @@
     <message>
         <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation>Дипин календар</translation>
+        <translation>Дипин Календар</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="42"/>
