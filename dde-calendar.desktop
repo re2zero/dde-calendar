@@ -8,6 +8,8 @@ StartupNotify=false
 Terminal=false
 Type=Application
 X-MultipleArgs=false
+GenericName=Calendar
+X-Deepin-Vendor=deepin
 
 # Translations:
 # Do not manually modify!
