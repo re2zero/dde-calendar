@@ -1,3 +1,13 @@
+<a name="1.2.6"></a>
+### 1.2.6 (2018-11-23)
+
+
+#### Features
+
+*   add genericName ([3ca6204e](https://github.com/linuxdeepin/dde-calendar/commit/3ca6204e03af1d5e402ec31d3bad8785288bdf3d))
+
+
+
 <a name="1.2.5"></a>
 ### 1.2.5 (2018-08-07)
 
