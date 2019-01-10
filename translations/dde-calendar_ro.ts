@@ -4,17 +4,17 @@
     <message>
         <location filename="../calendarwindow.cpp" line="203"/>
         <source>First Day of Week</source>
-        <translation type="unfinished"/>
+        <translation>Prima zi a săptămânii</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="40"/>
         <source>Deepin Calendar</source>
-        <translation type="unfinished"/>
+        <translation>Calendarul Deepin</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="42"/>
         <source>Calendar is a date tool.</source>
-        <translation type="unfinished"/>
+        <translation>Calendarul este un instrument pentru date</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../infoview.cpp" line="24"/>
         <source>Today</source>
-        <translation>Azi</translation>
+        <translation>Astăzi</translation>
     </message>
 </context>
 </TS>
