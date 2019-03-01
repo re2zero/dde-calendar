@@ -18,6 +18,7 @@
  */
 
 #include "calendarwindow.h"
+#include "environments.h"
 
 #include <QFile>
 #include <QDebug>
