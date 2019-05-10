@@ -1,3 +1,13 @@
+<a name="1.2.7"></a>
+### 1.2.7 (2019-05-10)
+
+
+#### Others
+
+*   switch qmake to cmake ([9795b85f](https://github.com/linuxdeepin/dde-calendar/commit/9795b85f246d86e81c4ffba67c700a5446c1d0f5))
+*   use internal variables replace get version in debian/rules ([8b94c105](https://github.com/linuxdeepin/dde-calendar/commit/8b94c105c9fc3e6c9e88d77f6fa9a7601aeefa13))
+
+
 <a name="1.2.6"></a>
 ### 1.2.6 (2018-11-23)
 
