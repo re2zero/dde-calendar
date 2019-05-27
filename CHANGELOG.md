@@ -1,3 +1,13 @@
+<a name="1.2.8"></a>
+### 1.2.8 (2019-05-27)
+
+
+#### Bug Fixes
+
+*   version have quotes ([00fc3468](https://github.com/linuxdeepin/dde-calendar/commit/00fc34684245f1dab0aa922aa132b2edf756b257))
+
+
+
 <a name="1.2.7"></a>
 ### 1.2.7 (2019-05-10)
 
