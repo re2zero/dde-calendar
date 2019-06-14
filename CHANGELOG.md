@@ -1,3 +1,13 @@
+<a name="1.2.9"></a>
+### 1.2.9 (2019-06-14)
+
+
+#### Bug Fixes
+
+*   first weekday not have default value ([cabefea7](https://github.com/linuxdeepin/dde-calendar/commit/cabefea7f26eddf26b41de99df43674d3baf2668))
+
+
+
 <a name="1.2.8"></a>
 ### 1.2.8 (2019-05-27)
 
