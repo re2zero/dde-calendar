@@ -142,7 +142,7 @@ void CalendarWindow::initUI()
     m_calendarView->setFixedSize(CalendarWidth, CalendarHeight);
     m_calendarView->setCurrentDate(QDate::currentDate());
 
-    m_calendarView->setFirstWeekday(m_settings->value("weekday").toInt());
+    m_calendarView->setFirstWeekday(m_settings->value("weekday", Sunday).toInt());
 
     m_animationContainer = new QFrame(m_contentBackground);
     m_animationContainer->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
