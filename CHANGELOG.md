@@ -1,3 +1,13 @@
+<a name="1.2.10"></a>
+### 1.2.10 (2019-06-17)
+
+
+#### Bug Fixes
+
+*   Crash because m_firstWeekDay is a random value ([86885747](https://github.com/linuxdeepin/dde-calendar/commit/868857477b1c2738aedb3ef6c277568bca5740ef))
+
+
+
 <a name="1.2.9"></a>
 ### 1.2.9 (2019-06-14)
 
