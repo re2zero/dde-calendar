@@ -217,6 +217,10 @@ void CalendarView::updateDate()
     const int day = (firstDay.dayOfWeek() + m_firstWeekDay) % 7;
     const int currentIndex = day + m_currentDate.day() - 1;
 
+    if (currentIndex < 0) {
+        return;
+    }
+
     for (int i(0); i != 42; ++i) {
         m_days[i] = firstDay.addDays(i - day);
     }
