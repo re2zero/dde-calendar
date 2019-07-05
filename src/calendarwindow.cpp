@@ -155,12 +155,13 @@ void CalendarWindow::initUI()
     m_fakeContent->setFixedSize(m_animationContainer->width(),
                                 m_animationContainer->height() * 2);
 
-    QVBoxLayout * contentLayout = new QVBoxLayout(m_contentBackground);
+    QVBoxLayout * contentLayout = new QVBoxLayout;
     contentLayout->setMargin(0);
     contentLayout->setSpacing(0);
     contentLayout->addWidget(m_infoView, 0, Qt::AlignHCenter);
     contentLayout->addWidget(m_calendarView, 0, Qt::AlignHCenter);
-    contentLayout->addWidget(m_contentBackground);
+
+    m_contentBackground->setLayout(contentLayout);
 
     setCentralWidget(m_contentBackground);
 
