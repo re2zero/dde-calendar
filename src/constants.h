@@ -30,7 +30,49 @@ namespace DDECalendar {
     static const int CellHighlightWidth = 80;
     static const int CellHighlightHeight = 70;
 }
+namespace DDEYearCalendar {
+    static const int YHeaderItemWidth = 20;
+    static const int YHeaderItemHeight = 16;
 
+    static const int YCellWidth = 26;
+    static const int YCellHeight = 20;
+
+    static const int YCellHighlightWidth = 26;
+    static const int YCellHighlightHeight = 20;
+    static const int Y_MLableHeight = 24;
+    static const int Y_YLableHeight = 45;
+    static const int Y_MWindowWidth = 202;
+    static const int Y_MWindowHeight = 162;
+}
+namespace DDEMonthCalendar {
+    static const int MHeaderItemWidth = 60;
+    static const int MHeaderItemHeight = 33;
+    static const int MEventsItemHeight = 36;
+
+    static const int MCellWidth = 120;
+    static const int MCellHeight = 74;
+
+    static const int MCellHighlightWidth = 120;
+    static const int MCellHighlightHeight = 74;
+
+    static const int MWeekCellWidth = 120;
+    static const int MWeekCellHeight = 54;
+
+    static const int MDayCellWidth = 36;
+    static const int MDayCellHeight = 36;
+
+    static const int M_YLableHeight = 36;
+    static const int M_YLunatLabelWindth = 66;
+    static const int M_YLunatLabelHeight = 20;
+
+    static const int MTodayWindth = 100;
+    static const int MTodayHeight = 36;
+
+    static const int M_MWindowWidth = 202;
+    static const int M_MWindowHeight = 162;
+
+
+}
 enum Week {
     Monday    = 6,
     Tuesday   = 5,

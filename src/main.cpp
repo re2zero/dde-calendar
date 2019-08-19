@@ -28,11 +28,14 @@
 #include <DApplication>
 #include <DLog>
 #include <DHiDPIHelper>
-
+#include "yearwindow.h"
+#include "calendarmainwindow.h"
+//#include "monthwindow.h"
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
-QString GetStyleSheetContent() {
+QString GetStyleSheetContent()
+{
     QFile file(":/resources/dde-calendar.qss");
     bool result = file.open(QFile::ReadOnly);
     if (result) {
@@ -44,7 +47,8 @@ QString GetStyleSheetContent() {
     }
 }
 
-QRect PrimaryRect() {
+QRect PrimaryRect()
+{
     QDesktopWidget *w = QApplication::desktop();
     return w->screenGeometry(w->primaryScreen());
 }
@@ -79,13 +83,26 @@ int main(int argc, char *argv[])
     a.setStyleSheet(GetStyleSheetContent());
     a.loadTranslator();
 
-    CalendarWindow cw;
-    cw.move(PrimaryRect().center() - cw.geometry().center());
-    cw.show();
+    Calendarmainwindow ww;
+    // ww.setDate(QDate::currentDate());
+    ww.move(PrimaryRect().center() - ww.geometry().center());
+    ww.show();
+    //test
+    // CMonthWindow ww;
+    //ww.setFirstWeekday(0);
+    //ww.setDate(QDate::currentDate());
+    //ww.move(PrimaryRect().center() - ww.geometry().center());
+    //ww.show();
+
+
+
+    //CalendarWindow cw;
+    //cw.move(PrimaryRect().center() - cw.geometry().center());
+    //cw.show();
 
     QDBusConnection dbus = QDBusConnection::sessionBus();
     if (dbus.registerService("com.deepin.Calendar")) {
-        dbus.registerObject("/com/deepin/Calendar", &cw);
+        dbus.registerObject("/com/deepin/Calendar", &ww);
     }
 
     return a.exec();

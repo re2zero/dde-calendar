@@ -15,5 +15,12 @@
         <file>resources/icon/today_hover.svg</file>
         <file>resources/icon/today_normal.svg</file>
         <file>resources/icon/today_press.svg</file>
+        <file>resources/icon/dde-ji.svg</file>
+        <file>resources/icon/dde-ban.svg</file>
+        <file>resources/icon/dde-logo.svg</file>
+        <file>resources/icon/dde-xiu.svg</file>
+        <file>resources/icon/dde-yi.svg</file>
+        <file>resources/icon/dde-choose24.svg</file>
+        <file>resources/icon/dde-choose30.svg</file>
     </qresource>
 </RCC>
