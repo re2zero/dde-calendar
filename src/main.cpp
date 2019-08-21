@@ -68,6 +68,11 @@ int main(int argc, char *argv[])
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
     a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
 
+    static const QDate buildDate = QLocale( QLocale::English ).toDate( QString(__DATE__).replace("  ", " 0"), "MMM dd yyyy");
+    QString t_date = buildDate.toString("MMdd");
+    // Version Time
+    a.setApplicationVersion(DApplication::buildVersion(t_date));
+
     if (!a.setSingleInstance("dde-calendar", DApplication::UserScope)) {
         qDebug() << "there's an dde-calendar instance running.";
         QProcess::execute("dbus-send --print-reply --dest=com.deepin.Calendar "
