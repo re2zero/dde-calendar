@@ -27,12 +27,10 @@
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
+#include "calendardbus.h"
 
-class CalendarDBus;
-class CaLunarDayInfo;
 
-enum CalendarMonthDayType
-{
+enum CalendarMonthDayType {
     SO_MFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_MWeekends = QStyleOption::SO_CustomBase + 0x02,
     SO_MWeekendsAndFestival = SO_MFestival | SO_MWeekends,
@@ -65,11 +63,15 @@ public:
     explicit CMonthView(QWidget *parent = 0);
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
-    inline bool cellSelectable() const {return m_cellSelectable;}
+    inline bool cellSelectable() const
+    {
+        return m_cellSelectable;
+    }
 
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
-    void datecurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) const;
+    void signalcurrentLunarDateChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
+    void signalcurrentDateChanged(QDate date);
     void currentDateChanged(const int year, const int month);
     void currentFestivalChanged(const QString &festival);
     void cellSelectableChanged(bool cellSelectable) const;

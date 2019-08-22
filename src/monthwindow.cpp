@@ -33,8 +33,6 @@ CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
 CMonthWindow::~CMonthWindow()
 {
     disconnect(m_today, &DBaseButton::clicked, this, &CMonthWindow::slottoday);
-    disconnect(m_monthView, &CMonthView::dateSelected, this, &CMonthWindow::slotdateSelected);
-    disconnect(m_monthView, &CMonthView::datecurrentDateChanged, this, &CMonthWindow::slotdatecurrentDateChanged);
     delete  m_monthDayView;
     m_monthDayView = nullptr;
     delete  m_monthView;
@@ -137,9 +135,10 @@ void CMonthWindow::initUI()
 void CMonthWindow::initConnection()
 {
     connect(m_today, &DBaseButton::clicked, this, &CMonthWindow::slottoday);
-    connect(m_monthView, &CMonthView::dateSelected, this, &CMonthWindow::slotdateSelected);
-    connect(m_monthView, &CMonthView::datecurrentDateChanged, this, &CMonthWindow::slotdatecurrentDateChanged);
+    connect(m_monthView, &CMonthView::signalcurrentLunarDateChanged, this, &CMonthWindow::slotcurrentDateLunarChanged);
+    connect(m_monthView, &CMonthView::signalcurrentDateChanged, this, &CMonthWindow::slotcurrentDateChanged);
     connect(m_monthDayView, &CMonthDayView::signalsSelectDate, this, &CMonthWindow::slotSelectedMonth);
+    connect(m_monthDayView, &CMonthDayView::signalsCurrentDate, this, &CMonthWindow::slotSelectedMonth);
 }
 
 void CMonthWindow::initLunar()
@@ -169,33 +168,29 @@ void CMonthWindow::slottoday()
     setDate(QDate::currentDate());
 }
 
-void CMonthWindow::slotdateSelected(const QDate date, const CaLunarDayInfo &detail) const
+void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail, int type)
 {
-    /*if (date != QDate::currentDate()) {
+    m_currentdate = date;
+    if (type == 1) {
+        m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
+        m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
+        m_animationContainer->hide();
+        if (date.month() != m_currentdate.month()
+                && date.year() == m_currentdate.year()) {
+            m_monthDayView->setCurrentDate(date);
+        }
+    }
+}
+
+void CMonthWindow::slotcurrentDateChanged(QDate date)
+{
+    m_currentdate = date;
+    if (date != QDate::currentDate()) {
         m_today->setVisible(true);
     } else {
         m_today->setVisible(false);
-    }*/
-    m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
-    m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
-    m_animationContainer->hide();
-    if (date.month() != m_currentdate.month()
-            && date.year() == m_currentdate.year()) {
-        m_monthDayView->setCurrentDate(date);
     }
 }
-
-void CMonthWindow::slotdatecurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) const
-{
-    m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
-    m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
-    m_animationContainer->hide();
-    if (date.month() != m_currentdate.month()
-            && date.year() == m_currentdate.year()) {
-        m_monthDayView->setCurrentDate(date);
-    }
-}
-
 void CMonthWindow::slotSelectedMonth(QDate date)
 {
     m_currentdate = date;

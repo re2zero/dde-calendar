@@ -82,7 +82,8 @@ CMonthView::CMonthView(QWidget *parent) : QWidget(parent)
     connect(this, &CMonthView::dateSelected, this, &CMonthView::handleCurrentDateChanged);
 }
 
-void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) {
+void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
+{
     Q_UNUSED(detail);
 
     if (date != m_currentDate) {
@@ -134,7 +135,7 @@ void CMonthView::setCurrentDate(const QDate date)
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
 
     emit currentDateChanged(date.year(), date.month());
-    emit datecurrentDateChanged(date,getCaLunarDayInfo(getDateIndex(m_currentDate)));
+    emit signalcurrentDateChanged(m_currentDate);
 }
 
 void CMonthView::setLunarVisible(bool visible)
@@ -225,7 +226,7 @@ void CMonthView::updateCurrentLunar(const CaLunarDayInfo &info)
     } else if (!info.mSolarFestival.isEmpty()) {
         QStringList tmpFestival = info.mSolarFestival.split(" ");
 
-        if (tmpFestival.length()>=3) {
+        if (tmpFestival.length() >= 3) {
             emit currentFestivalChanged(QString("%1 %2").arg(tmpFestival[0]).arg(tmpFestival[1]));
         } else {
             emit currentFestivalChanged(info.mSolarFestival);
@@ -233,14 +234,14 @@ void CMonthView::updateCurrentLunar(const CaLunarDayInfo &info)
     } else {
         emit currentFestivalChanged("");
     }
-
+    emit signalcurrentLunarDateChanged(m_currentDate, getCaLunarDayInfo(getDateIndex(m_currentDate)), 1);
     updateDate();
 }
 
 const QString CMonthView::getCellDayNum(int pos)
 {
     if (m_days[pos].day() ==  1) {
-        return QString::number(m_days[pos].month()) + "/"+QString::number(m_days[pos].day());
+        return QString::number(m_days[pos].month()) + "/" + QString::number(m_days[pos].day());
     }
     return QString::number(m_days[pos].day());
 }
@@ -255,7 +256,7 @@ const QString CMonthView::getLunar(int pos)
     CaLunarDayInfo info = getCaLunarDayInfo(pos);
 
     if (info.mLunarDayName == "初一") {
-        info.mLunarDayName = info.mLunarMonthName+info.mLunarDayName;
+        info.mLunarDayName = info.mLunarMonthName + info.mLunarDayName;
     }
 
     if (info.mTerm.isEmpty())
@@ -302,7 +303,7 @@ void CMonthView::getDbusData()
 
         QDate cacheDate;
         cacheDate.setDate(date.year(), date.month(), 1);
-        foreach(const CaLunarDayInfo & dayInfo, reply.value().mCaLunarDayInfo) {
+        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
             lunarCache->insert(cacheDate, dayInfo);
             if (date == m_currentDate) {
                 currentDayInfo = dayInfo;
@@ -318,14 +319,13 @@ void CMonthView::getDbusData()
     // refresh   lunar info
     if (date == m_currentDate) {
         updateCurrentLunar(currentDayInfo);
-        emit datecurrentDateChanged(date,getCaLunarDayInfo(getDateIndex(m_currentDate)));
-    } 
+    }
 }
 
 void CMonthView::paintCell(QWidget *cell)
 {
-    const QRect rect((cell->width() - DDEMonthCalendar::MCellHighlightWidth) /2,
-                     (cell->height() - DDEMonthCalendar::MCellHighlightHeight) /2,
+    const QRect rect((cell->width() - DDEMonthCalendar::MCellHighlightWidth) / 2,
+                     (cell->height() - DDEMonthCalendar::MCellHighlightHeight) / 2,
                      DDEMonthCalendar::MCellHighlightWidth,
                      DDEMonthCalendar::MCellHighlightHeight);
 
@@ -343,9 +343,8 @@ void CMonthView::paintCell(QWidget *cell)
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
 
     // draw selected cell background circle
-    if (isSelectedCell)
-    {
-        QRect fillRect = QRect(2,2,DDEMonthCalendar::MCellHighlightWidth-6,DDEMonthCalendar::MCellHighlightHeight-7);
+    if (isSelectedCell) {
+        QRect fillRect = QRect(2, 2, DDEMonthCalendar::MCellHighlightWidth - 6, DDEMonthCalendar::MCellHighlightHeight - 7);
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_backgroundCircleColor));
@@ -377,14 +376,13 @@ void CMonthView::paintCell(QWidget *cell)
     QRect test;
     painter.setFont(m_dayNumFont);
     if (m_showState & ShowLunar) {
-        painter.drawText(QRect(3,0,cell->width()/2,cell->height()/2), Qt::AlignLeft, dayNum);
+        painter.drawText(QRect(3, 0, cell->width() / 2, cell->height() / 2), Qt::AlignLeft, dayNum);
     } else {
         painter.drawText(rect.adjusted(0, 0, 120, 33), Qt::AlignCenter, dayNum, &test);
     }
 
     // draw text of day type
-    if (m_showState & ShowLunar)
-    {
+    if (m_showState & ShowLunar) {
         if (isSelectedCell) {
             painter.setPen(m_selectedLunarColor);
         } else if (isCurrentDay) {
@@ -401,10 +399,10 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.setPen(m_defaultLunarColor);
         }
         painter.setFont(m_dayLunarFont);
-        painter.drawText(QRect(cell->width()/2+10,8,cell->width()/2-10,cell->height()/2-6), Qt::AlignLeft, dayLunar);
+        painter.drawText(QRect(cell->width() / 2 + 10, 8, cell->width() / 2 - 10, cell->height() / 2 - 6), Qt::AlignLeft, dayLunar);
         CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
         if (!dayInfo.mSolarFestival.isEmpty()) {
-            QRect fillRect = QRect(6,34,108,22);
+            QRect fillRect = QRect(6, 34, 108, 22);
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_solofestivalLunarColor));
             painter.setPen(Qt::NoPen);
@@ -418,11 +416,11 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.setFont(solofont);
                 fm = painter.fontMetrics();
             }
-            painter.drawText(QRect(6 +(fillRect.width() - fm.width(dayInfo.mSolarFestival))/2,
-                                   34+(fillRect.height() - fm.height())/2,
+            painter.drawText(QRect(6 + (fillRect.width() - fm.width(dayInfo.mSolarFestival)) / 2,
+                                   34 + (fillRect.height() - fm.height()) / 2,
                                    fm.width(dayInfo.mSolarFestival),
                                    fm.height()),
-                                   Qt::AlignLeft, dayInfo.mSolarFestival);
+                             Qt::AlignLeft, dayInfo.mSolarFestival);
         }
 
     }
@@ -459,4 +457,5 @@ void CMonthView::setSelectedCell(int index)
     m_cellList.at(index)->update();
 
     emit dateSelected(m_days[index], getCaLunarDayInfo(index));
+    emit signalcurrentLunarDateChanged(m_days[index], getCaLunarDayInfo(index), 0);
 }

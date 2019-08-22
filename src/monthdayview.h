@@ -33,6 +33,7 @@ public slots:
     void cellClicked(QWidget *cell);
 signals:
     void signalsSelectDate(QDate date);
+    void signalsCurrentDate(QDate date);
 private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);

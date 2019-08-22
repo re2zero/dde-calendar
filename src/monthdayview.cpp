@@ -63,6 +63,7 @@ void CMonthDayView::setCurrentDate(const QDate date)
     }
     setSelectedCell(m_selectDate.month() - 1);
     update();
+    emit signalsCurrentDate(date);
 }
 
 void CMonthDayView::paintCell(QWidget *cell)

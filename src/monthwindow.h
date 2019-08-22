@@ -25,11 +25,11 @@
 #include <QLabel>
 #include <dbasebutton.h>
 #include <dlabel.h>
+#include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
 class CMonthView;
 class CMonthDayView;
-class CaLunarDayInfo;
 class QPropertyAnimation;
 class CMonthWindow: public QMainWindow
 {
@@ -54,8 +54,8 @@ signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
 private slots:
     void slottoday();
-    void slotdateSelected(const QDate date, const CaLunarDayInfo &detail) const;
-    void slotdatecurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) const;
+    void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
+    void slotcurrentDateChanged(QDate date);
     void slotSelectedMonth(QDate date);
 private:
     QFrame *m_animationContainer = nullptr;
