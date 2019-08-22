@@ -101,10 +101,10 @@ void CYearWindow::initUI()
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     QFont t_labelF;
-    t_labelF.setFamily("Helvetica");
+    t_labelF.setFamily("SourceHanSansSC-Medium");
     t_labelF.setPixelSize(30);
     m_YearLabel->setFont(t_labelF);
-    m_YearLabel->setStyleSheet("color:#CF0059;");
+    m_YearLabel->setStyleSheet("color:#3B3B3B;");
 
     m_YearLunarLabel = new DLabel(m_contentBackground);
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
