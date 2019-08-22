@@ -10,8 +10,7 @@
 class CalendarDBus;
 class CaLunarDayInfo;
 class QLabel;
-enum CalendarYearDayType
-{
+enum CalendarYearDayType {
     SO_YFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_YWeekends = QStyleOption::SO_CustomBase + 0x02,
     SO_YWeekendsAndFestival = SO_YFestival | SO_YWeekends,
@@ -25,7 +24,7 @@ class CYearView: public QWidget
 
     Q_PROPERTY(QColor backgroundCircleColor MEMBER m_backgroundCircleColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor defaultTextColor MEMBER m_defaultTextColor DESIGNABLE true SCRIPTABLE true)
-   // Q_PROPERTY(QColor defaultLunarColor MEMBER m_defaultLunarColor DESIGNABLE true SCRIPTABLE true)
+    // Q_PROPERTY(QColor defaultLunarColor MEMBER m_defaultLunarColor DESIGNABLE true SCRIPTABLE true)
     //Q_PROPERTY(QColor festivalLunarColor MEMBER m_festivalLunarColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor weekendsTextColor MEMBER m_weekendsTextColor DESIGNABLE true SCRIPTABLE true)
     ///Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
@@ -35,7 +34,10 @@ public:
     explicit CYearView(QWidget *parent = 0);
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
-    inline bool cellSelectable() const {return m_cellSelectable;}
+    inline bool cellSelectable() const
+    {
+        return m_cellSelectable;
+    }
     void updateSelectState();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
@@ -43,7 +45,7 @@ signals:
     void cellSelectableChanged(bool cellSelectable) const;
     void singanleActiveW(CYearView *w);
 public slots:
-    void setCurrentDate(const QDate date);
+    void setCurrentDate(const QDate date, int type = 0);
     void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
 
@@ -63,7 +65,7 @@ private slots:
     void getDbusData();
 
 private:
-    QLabel* m_currentMouth;
+    QLabel *m_currentMouth;
     QList<QWidget *> m_cellList;
     CalendarDBus *m_DBusInter;
     QDate m_days[42];

@@ -41,7 +41,12 @@ void CYearWindow::setDate(QDate date)
 {
     m_currentdate = date;
     for (int i = 0; i < 12; i++) {
-        m_monthViewList.at(i)->setCurrentDate(QDate(m_currentdate.year(), i + 1, 1));
+        QDate tdate(m_currentdate.year(), i + 1, 1);
+        if (date.year() == tdate.year() && date.month() == tdate.month())
+            m_monthViewList.at(i)->setCurrentDate(date, 1);
+        else {
+            m_monthViewList.at(i)->setCurrentDate(tdate, 0);
+        }
     }
 }
 
@@ -55,8 +60,17 @@ void CYearWindow::initUI()
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
 
-    m_today = new DBaseButton;
+    m_today = new DBaseButton(this);
+    QFont todayfont("SourceHanSansSC-Medium");
+    todayfont.setPixelSize(14);
+    m_today->setFont(todayfont);
+    // QPalette pal = m_today->palette();
+    //pal.setColor(QPalette::Button, QColor("#FFFFFF"));
+    //pal.setColor(QPalette::ButtonText, QColor("#1D81EC"));
+    //m_today->setPalette(pal);
+    //m_today->setAutoFillBackground(true);
     m_today->setText(tr("Return today"));
+    m_today->setFixedWidth(100);
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     m_prevButton = new DArrowButton;
     m_prevButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);

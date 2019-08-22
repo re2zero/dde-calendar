@@ -27,6 +27,7 @@
 #include <darrowbutton.h>
 #include <dbasebutton.h>
 #include <dlabel.h>
+#include <QPushButton>
 DWIDGET_USE_NAMESPACE
 
 class CYearView;
@@ -43,7 +44,7 @@ public:
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
 private slots:
-    void slotActiveW(CYearView * w);
+    void slotActiveW(CYearView *w);
     void slotprev();
     void slotnext();
     void slottoday();
@@ -51,14 +52,14 @@ private slots:
     void slotdatecurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) const;
 private:
     QList<CYearView *> m_monthViewList;
-    QFrame * m_contentBackground = nullptr;
-    DArrowButton*      m_prevButton = nullptr;
-    DArrowButton*      m_nextButton = nullptr;
-    DBaseButton *      m_today = nullptr;
+    QFrame *m_contentBackground = nullptr;
+    DArrowButton      *m_prevButton = nullptr;
+    DArrowButton      *m_nextButton = nullptr;
+    DBaseButton       *m_today = nullptr;
     QDate              m_currentdate;
-    DLabel*            m_YearLabel;
-    DLabel*            m_YearLunarLabel;
-    CYearView *        m_activeview = nullptr;
+    DLabel            *m_YearLabel;
+    DLabel            *m_YearLunarLabel;
+    CYearView         *m_activeview = nullptr;
 };
 
 #endif // YEARWINDOW_H

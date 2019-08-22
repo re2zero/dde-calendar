@@ -61,15 +61,15 @@ CYearView::CYearView(QWidget *parent) : QWidget(parent)
     t_labelF.setFamily("Helvetica");
     t_labelF.setPixelSize(16);
     QPalette t_pa;
-    t_pa.setColor(QPalette::WindowText,QColor("#CF0059 "));
+    t_pa.setColor(QPalette::WindowText, QColor("#CF0059 "));
     m_currentMouth->setFont(t_labelF);
     m_currentMouth->setStyleSheet("color:#CF0059;");
-    QHBoxLayout* separatorLineLayout = new QHBoxLayout;
+    QHBoxLayout *separatorLineLayout = new QHBoxLayout;
     separatorLineLayout->setMargin(0);
     separatorLineLayout->setSpacing(0);
     separatorLineLayout->setContentsMargins(10, 0, 0, 0);
     separatorLineLayout->addWidget(m_currentMouth);
-    QSpacerItem *t_spaceitem = new QSpacerItem(30,DDEYearCalendar::Y_MLableHeight,QSizePolicy::Expanding,QSizePolicy::Fixed);
+    QSpacerItem *t_spaceitem = new QSpacerItem(30, DDEYearCalendar::Y_MLableHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     separatorLineLayout->addSpacerItem(t_spaceitem);
 
     // cells grid
@@ -92,7 +92,7 @@ CYearView::CYearView(QWidget *parent) : QWidget(parent)
     QWidget *gridWidget = new QWidget;
     gridWidget->setLayout(hhLayout);
     QVBoxLayout *mainLayout = new QVBoxLayout;
-   // mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
+    // mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
     mainLayout->addWidget(gridWidget, 0,  Qt::AlignHCenter);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
@@ -100,9 +100,10 @@ CYearView::CYearView(QWidget *parent) : QWidget(parent)
     setLayout(mainLayout);
 
     connect(this, &CYearView::dateSelected, this, &CYearView::handleCurrentDateChanged);
-    setFixedSize(DDEYearCalendar::Y_MWindowWidth,DDEYearCalendar::Y_MWindowHeight);
+    setFixedSize(DDEYearCalendar::Y_MWindowWidth, DDEYearCalendar::Y_MWindowHeight);
 }
-void CYearView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) {
+void CYearView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
+{
     return;
     Q_UNUSED(detail);
 
@@ -145,7 +146,7 @@ void CYearView::updateSelectState()
     update();
 }
 
-void CYearView::setCurrentDate(const QDate date)
+void CYearView::setCurrentDate(const QDate date, int type)
 {
     qDebug() << "set current date " << date;
 
@@ -157,6 +158,8 @@ void CYearView::setCurrentDate(const QDate date)
     m_currentMouth->setText(QString::number(date.month()) + tr("Mon"));
     getDateType(m_currentDate);
     updateDate();
+    if (type == 1)
+        setSelectedCell(getDateIndex(date));
 }
 
 void CYearView::setCellSelectable(bool selectable)
@@ -269,7 +272,7 @@ void CYearView::getDbusData()
 
         QDate cacheDate;
         cacheDate.setDate(date.year(), date.month(), 1);
-        foreach(const CaLunarDayInfo & dayInfo, reply.value().mCaLunarDayInfo) {
+        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
             lunarCache->insert(cacheDate, dayInfo);
             if (date == m_currentDate) {
                 currentDayInfo = dayInfo;
@@ -282,14 +285,14 @@ void CYearView::getDbusData()
     m_cellList.at(pos)->update();
     // refresh   lunar info
     if (date == m_currentDate) {
-        emit datecurrentDateChanged(date,getCaLunarDayInfo(getDateIndex(m_currentDate)));
+        emit datecurrentDateChanged(date, getCaLunarDayInfo(getDateIndex(m_currentDate)));
     }
 }
 
 void CYearView::paintCell(QWidget *cell)
 {
-    const QRect rect((cell->width() - DDEYearCalendar::YHeaderItemWidth) /2,
-                     (cell->height() - DDEYearCalendar::YHeaderItemHeight) /2,
+    const QRect rect((cell->width() - DDEYearCalendar::YHeaderItemWidth) / 2,
+                     (cell->height() - DDEYearCalendar::YHeaderItemHeight) / 2,
                      DDEYearCalendar::YCellHighlightWidth,
                      DDEYearCalendar::YCellHighlightHeight);
 
@@ -303,8 +306,7 @@ void CYearView::paintCell(QWidget *cell)
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
 
     // draw selected cell background circle
-    if (isSelectedCell)
-    {
+    if (isSelectedCell) {
         QRect fillRect = rect;
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
