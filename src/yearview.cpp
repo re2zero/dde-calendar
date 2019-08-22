@@ -221,7 +221,10 @@ void CYearView::paintCell(QWidget *cell)
     } else if (isCurrentDay) {
         painter.setPen(m_currentDayTextColor);
     } else {
-        painter.setPen(m_defaultTextColor);
+        if (m_currentDate.month() == getCellDate(pos).month())
+            painter.setPen(m_defaultTextColor);
+        else
+            painter.setPen(m_notCurrentTextColor);
     }
 
 //    painter.drawRect(rect);

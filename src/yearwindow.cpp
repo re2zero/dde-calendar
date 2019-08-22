@@ -69,10 +69,10 @@ void CYearWindow::setDate(QDate date)
 void CYearWindow::initUI()
 {
     m_contentBackground = new QFrame;
-    m_contentBackground->setObjectName("CalendarBackground");
-    m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
-                                       "background:white;"
-                                       "}");
+    //m_contentBackground->setObjectName("CalendarBackground");
+    // m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
+    //"background:white;"
+    //"}");
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
 
@@ -89,10 +89,12 @@ void CYearWindow::initUI()
     m_today->setFixedWidth(100);
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     m_prevButton = new DArrowButton;
-    m_prevButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
+    m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
+    //m_prevButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
     m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
     m_nextButton = new DArrowButton;
-    m_nextButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
+    m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
+    //m_nextButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
     m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
     m_YearLabel = new DLabel();
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
