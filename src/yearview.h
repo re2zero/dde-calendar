@@ -7,6 +7,7 @@
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
+#include "calendardbus.h"
 class CalendarDBus;
 class CaLunarDayInfo;
 class QLabel;
@@ -41,7 +42,7 @@ public:
     void updateSelectState();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
-    void datecurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) const;
+    void signalcurrentDateChanged(QDate date);
     void cellSelectableChanged(bool cellSelectable) const;
     void singanleActiveW(CYearView *w);
 public slots:
@@ -53,8 +54,6 @@ private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
     const QDate getCellDate(int pos);
-    const QString getLunar(int pos);
-    const CaLunarDayInfo getCaLunarDayInfo(int pos);
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);
     void updateDate();
@@ -62,12 +61,9 @@ private:
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
-    void getDbusData();
-
 private:
     QLabel *m_currentMouth;
     QList<QWidget *> m_cellList;
-    CalendarDBus *m_DBusInter;
     QDate m_days[42];
     QDate m_currentDate;
 
@@ -85,10 +81,6 @@ private:
     QColor m_selectedTextColor = Qt::white;
     QColor m_festivalTextColor = Qt::black;
     QColor m_notCurrentTextColor = "#b2b2b2";
-
-    QQueue<int> *queue;
-    QMap<QDate, CaLunarDayInfo> *lunarCache;
-    CaLunarDayInfo *emptyCaLunarDayInfo;
     int m_firstWeekDay;
 };
 

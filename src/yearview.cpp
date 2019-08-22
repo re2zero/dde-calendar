@@ -32,20 +32,6 @@
 #include <QSpacerItem>
 CYearView::CYearView(QWidget *parent) : QWidget(parent)
 {
-    m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
-                                   "/com/deepin/api/LunarCalendar",
-                                   QDBusConnection::sessionBus(), this);
-    queue = nullptr;
-    lunarCache = nullptr;
-    emptyCaLunarDayInfo = nullptr;
-
-    if (!queue)
-        queue = new QQueue<int>;
-    if (!lunarCache)
-        lunarCache = new QMap<QDate, CaLunarDayInfo>;
-    if (!emptyCaLunarDayInfo)
-        emptyCaLunarDayInfo = new CaLunarDayInfo;
-
     m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
     m_dayNumFont.setWeight(QFont::Light);
@@ -119,26 +105,6 @@ void CYearView::setFirstWeekday(int weekday)
     updateDate();
 }
 
-int CYearView::getDateType(const QDate &date)
-{
-    const int currentIndex = getDateIndex(date);
-    const CaLunarDayInfo info = getCaLunarDayInfo(currentIndex);
-
-    const int dayOfWeek = date.dayOfWeek();
-    bool weekends = dayOfWeek == 6 || dayOfWeek == 7;
-    bool isCurrentMonth = m_currentDate.month() == date.month();
-    bool isFestival = !info.mSolarFestival.isEmpty() || !info.mLunarFestival.isEmpty();
-
-    int resultFlag = 0;
-    if (!isCurrentMonth)
-        resultFlag |= SO_YNotCurrentMonth;
-    if (isFestival)
-        resultFlag |= SO_YFestival;
-    if (weekends)
-        resultFlag |= SO_YWeekends;
-
-    return resultFlag;
-}
 
 void CYearView::updateSelectState()
 {
@@ -150,16 +116,16 @@ void CYearView::setCurrentDate(const QDate date, int type)
 {
     qDebug() << "set current date " << date;
 
-    if (date == m_currentDate) {
-        return;
-    }
+    //if (date == m_currentDate) {
+    //   return;
+    // }
 
     m_currentDate = date;
     m_currentMouth->setText(QString::number(date.month()) + tr("Mon"));
-    getDateType(m_currentDate);
     updateDate();
     if (type == 1)
         setSelectedCell(getDateIndex(date));
+    emit signalcurrentDateChanged(date);
 }
 
 void CYearView::setCellSelectable(bool selectable)
@@ -219,76 +185,6 @@ const QDate CYearView::getCellDate(int pos)
 {
     return m_days[pos];
 }
-
-const QString CYearView::getLunar(int pos)
-{
-    CaLunarDayInfo info = getCaLunarDayInfo(pos);
-
-    if (info.mLunarDayName == "初一") {
-        info.mLunarDayName = info.mLunarMonthName;
-    }
-
-    if (info.mTerm.isEmpty())
-        return info.mLunarDayName;
-
-    return info.mTerm;
-}
-
-const CaLunarDayInfo CYearView::getCaLunarDayInfo(int pos)
-{
-    const QDate date = m_days[pos];
-
-    if (lunarCache->contains(date)) {
-        return lunarCache->value(date);
-    }
-
-    if (lunarCache->size() > 300)
-        lunarCache->clear();
-
-//    QTimer::singleShot(500, [this, pos] {getDbusData(pos);});
-    queue->push_back(pos);
-
-    QTimer::singleShot(300, this, SLOT(getDbusData()));
-
-    return *emptyCaLunarDayInfo;
-}
-
-void CYearView::getDbusData()
-{
-    if (queue->isEmpty())
-        return;
-
-    const int pos = queue->head();
-    queue->pop_front();
-    const QDate date = m_days[pos];
-    if (!date.isValid()) {
-        return;
-    }
-
-    CaLunarDayInfo currentDayInfo;
-    if (!lunarCache->contains(date)) {
-        bool o1 = true;
-        QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(date.year(), date.month(), false, o1);
-
-        QDate cacheDate;
-        cacheDate.setDate(date.year(), date.month(), 1);
-        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
-            lunarCache->insert(cacheDate, dayInfo);
-            if (date == m_currentDate) {
-                currentDayInfo = dayInfo;
-            }
-            cacheDate = cacheDate.addDays(1);
-        }
-    } else {
-        currentDayInfo = lunarCache->value(date);
-    }
-    m_cellList.at(pos)->update();
-    // refresh   lunar info
-    if (date == m_currentDate) {
-        emit datecurrentDateChanged(date, getCaLunarDayInfo(getDateIndex(m_currentDate)));
-    }
-}
-
 void CYearView::paintCell(QWidget *cell)
 {
     const QRect rect((cell->width() - DDEYearCalendar::YHeaderItemWidth) / 2,
@@ -297,7 +193,6 @@ void CYearView::paintCell(QWidget *cell)
                      DDEYearCalendar::YCellHighlightHeight);
 
     const int pos = m_cellList.indexOf(cell);
-    const int type = getDateType(m_days[pos]);
     const bool isSelectedCell = pos == m_selectedCell;
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
 
@@ -307,18 +202,18 @@ void CYearView::paintCell(QWidget *cell)
 
     // draw selected cell background circle
     if (isSelectedCell) {
-        QRect fillRect = rect;
-
+        QRect fillRect((cell->width() - DDEYearCalendar::YHeaderItemWidth) / 2 + 4,
+                       (cell->height() - DDEYearCalendar::YHeaderItemHeight) / 2 + 1,
+                       18, 18);
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_backgroundCircleColor));
         painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 4, 4);
+        painter.drawEllipse(fillRect);
     }
 
     painter.setPen(Qt::SolidLine);
 
     const QString dayNum = getCellDayNum(pos);
-    const QString dayLunar = getLunar(pos);
 
     // draw text of day
     if (isSelectedCell) {
@@ -326,13 +221,7 @@ void CYearView::paintCell(QWidget *cell)
     } else if (isCurrentDay) {
         painter.setPen(m_currentDayTextColor);
     } else {
-        const int tType = type & 0xff;
-        if (tType & SO_YNotCurrentMonth)
-            painter.setPen(m_notCurrentTextColor);
-        else if (type == SO_YWeekends)
-            painter.setPen(m_weekendsTextColor);
-        else
-            painter.setPen(m_defaultTextColor);
+        painter.setPen(m_defaultTextColor);
     }
 
 //    painter.drawRect(rect);
@@ -374,5 +263,5 @@ void CYearView::setSelectedCell(int index)
     //m_cellList.at(prevPos)->update();
     //m_cellList.at(index)->update();
     emit singanleActiveW(this);
-    emit dateSelected(m_days[index], getCaLunarDayInfo(index));
+    emit signalcurrentDateChanged(m_days[index]);
 }

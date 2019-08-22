@@ -25,6 +25,7 @@
 #include "yearwindow.h"
 #include "monthwindow.h"
 #include "dbuscalendar_adaptor.h"
+#include <QSizePolicy>
 static const int CalendarMTitleHeight = 50;
 
 static const int CalendarMWidth = 860;
@@ -62,7 +63,7 @@ void Calendarmainwindow::initUI()
     m_dbutton = createButon(tr("D"));
     m_bttongroup->addButton(m_dbutton, 3);
 
-
+    m_bttongroup->button(0)->setChecked(true);
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
     titleLayout->setSpacing(0);
@@ -75,6 +76,7 @@ void Calendarmainwindow::initUI()
     titleLayout->addSpacerItem(lspaceitem);
     m_searchEdit = new DSearchEdit;
     m_searchEdit->setFixedHeight(30);
+    m_searchEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     titleLayout->addWidget(m_searchEdit);
     //m_searchEdit->setSizePolicy(QSizePolicy::Expanding);
     QSpacerItem *rspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -99,7 +101,7 @@ void Calendarmainwindow::initConnection()
 
 void Calendarmainwindow::initLunar()
 {
-
+    m_yearwindow->setLunarVisible(QLocale::system().name().contains("zh"));
 }
 
 void Calendarmainwindow::createview()

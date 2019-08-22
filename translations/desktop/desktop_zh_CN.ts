@@ -4,14 +4,13 @@
 <context>
     <name>CMonthWindow</name>
     <message>
-        <location filename="../../src/monthwindow.cpp" line="52"/>
-        <location filename="../../src/monthwindow.cpp" line="179"/>
-        <location filename="../../src/monthwindow.cpp" line="190"/>
+        <location filename="../../src/monthwindow.cpp" line="50"/>
+        <location filename="../../src/monthwindow.cpp" line="175"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/monthwindow.cpp" line="86"/>
+        <location filename="../../src/monthwindow.cpp" line="84"/>
         <source>Return today</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19,7 +18,7 @@
 <context>
     <name>CYearView</name>
     <message>
-        <location filename="../../src/yearview.cpp" line="157"/>
+        <location filename="../../src/yearview.cpp" line="124"/>
         <source>Mon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -27,24 +26,29 @@
 <context>
     <name>CYearWindow</name>
     <message>
-        <location filename="../../src/yearwindow.cpp" line="59"/>
+        <location filename="../../src/yearwindow.cpp" line="88"/>
         <source>Return today</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/yearwindow.cpp" line="156"/>
+        <location filename="../../src/yearwindow.cpp" line="199"/>
         <source>infomation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/yearwindow.cpp" line="156"/>
+        <location filename="../../src/yearwindow.cpp" line="199"/>
         <source>Year less than 1900!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/yearwindow.cpp" line="178"/>
-        <location filename="../../src/yearwindow.cpp" line="189"/>
+        <location filename="../../src/yearwindow.cpp" line="218"/>
         <source>Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/yearwindow.cpp" line="220"/>
+        <location filename="../../src/yearwindow.cpp" line="288"/>
+        <source>Lunar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -70,27 +74,27 @@
 <context>
     <name>Calendarmainwindow</name>
     <message>
-        <location filename="../../src/calendarmainwindow.cpp" line="42"/>
+        <location filename="../../src/calendarmainwindow.cpp" line="43"/>
         <source>Deepin Calendar</source>
         <translation type="unfinished">深度日历</translation>
     </message>
     <message>
-        <location filename="../../src/calendarmainwindow.cpp" line="56"/>
+        <location filename="../../src/calendarmainwindow.cpp" line="57"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/calendarmainwindow.cpp" line="58"/>
+        <location filename="../../src/calendarmainwindow.cpp" line="59"/>
         <source>M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/calendarmainwindow.cpp" line="60"/>
+        <location filename="../../src/calendarmainwindow.cpp" line="61"/>
         <source>W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/calendarmainwindow.cpp" line="62"/>
+        <location filename="../../src/calendarmainwindow.cpp" line="63"/>
         <source>D</source>
         <translation type="unfinished"></translation>
     </message>

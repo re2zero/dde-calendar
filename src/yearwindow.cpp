@@ -23,6 +23,19 @@
 #include <QMessageBox>
 CYearWindow::CYearWindow(QWidget *parent): QMainWindow (parent)
 {
+    m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
+                                   "/com/deepin/api/LunarCalendar",
+                                   QDBusConnection::sessionBus(), this);
+    queue = nullptr;
+    lunarCache = nullptr;
+    emptyCaLunarDayInfo = nullptr;
+
+    if (!queue)
+        queue = new QQueue<QDate>;
+    if (!lunarCache)
+        lunarCache = new QMap<QDate, CaLunarDayInfo>;
+    if (!emptyCaLunarDayInfo)
+        emptyCaLunarDayInfo = new CaLunarDayInfo;
     initUI();
     initConnection();
 }
@@ -31,7 +44,7 @@ CYearWindow::~CYearWindow()
 {
     for (int i = 0; i < 12; i++) {
         disconnect(m_monthViewList.at(i), &CYearView::singanleActiveW, this, &CYearWindow::slotActiveW);
-        disconnect(m_monthViewList.at(i), &CYearView::dateSelected, this, &CYearWindow::dateSelected);
+        disconnect(m_monthViewList.at(i), &CYearView::signalcurrentDateChanged, this, &CYearWindow::slotcurrentDateChanged);
         delete  m_monthViewList.at(i);
     }
     m_monthViewList.clear();
@@ -42,10 +55,13 @@ void CYearWindow::setDate(QDate date)
     m_currentdate = date;
     for (int i = 0; i < 12; i++) {
         QDate tdate(m_currentdate.year(), i + 1, 1);
-        if (date.year() == tdate.year() && date.month() == tdate.month())
+        m_monthViewList.at(i)->setCurrentDate(tdate, 0);
+    }
+    for (int i = 0; i < 12; i++) {
+        QDate tdate(m_currentdate.year(), i + 1, 1);
+        if (date.year() == tdate.year() && date.month() == tdate.month()) {
             m_monthViewList.at(i)->setCurrentDate(date, 1);
-        else {
-            m_monthViewList.at(i)->setCurrentDate(tdate, 0);
+            break;
         }
     }
 }
@@ -97,6 +113,14 @@ void CYearWindow::initUI()
     m_YearLunarLabel->setFont(ylabelF);
     m_YearLunarLabel->setStyleSheet("color:#8A8A8A;");
     m_YearLunarLabel->move(116, 27);
+
+    m_YearLunarDayLabel = new DLabel(m_contentBackground);
+    m_YearLunarDayLabel->setFixedSize(96, DDEMonthCalendar::M_YLunatLabelHeight);
+
+    m_YearLunarDayLabel->setFont(ylabelF);
+    m_YearLunarDayLabel->setStyleSheet("color:#8A8A8A;");
+
+
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
@@ -105,6 +129,7 @@ void CYearWindow::initUI()
     yeartitleLayout->addWidget(m_YearLunarLabel);
     QSpacerItem *t_spaceitem = new QSpacerItem(30, DDEYearCalendar::Y_MLableHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     yeartitleLayout->addSpacerItem(t_spaceitem);
+    yeartitleLayout->addWidget(m_YearLunarDayLabel);
     yeartitleLayout->addWidget(m_prevButton);
     yeartitleLayout->addWidget(m_today);
     yeartitleLayout->addWidget(m_nextButton);
@@ -117,7 +142,8 @@ void CYearWindow::initUI()
             CYearView *view = new CYearView();
             //view->setCurrentDate(QDate(date.year(),i*j + j+1,1));
             connect(view, &CYearView::singanleActiveW, this, &CYearWindow::slotActiveW);
-            connect(view, &CYearView::dateSelected, this, &CYearWindow::dateSelected);
+
+            connect(view, &CYearView::signalcurrentDateChanged, this, &CYearWindow::slotcurrentDateChanged);
             gridLayout->addWidget(view, i, j);
             m_monthViewList.append(view);
         }
@@ -139,9 +165,12 @@ void CYearWindow::initConnection()
     connect(m_prevButton, &DArrowButton::mousePress, this, &CYearWindow::slotprev);
     connect(m_today, &DBaseButton::clicked, this, &CYearWindow::slottoday);
     connect(m_nextButton, &DArrowButton::mousePress, this, &CYearWindow::slotnext);
-    connect(m_monthViewList.at(0), &CYearView::dateSelected, this, &CYearWindow::slotdateSelected);
-    connect(m_monthViewList.at(0), &CYearView::datecurrentDateChanged, this, &CYearWindow::slotdatecurrentDateChanged);
+}
 
+void CYearWindow::setLunarVisible(bool state)
+{
+    m_YearLunarLabel->setVisible(state);
+    m_YearLunarDayLabel->setVisible(state);
 }
 
 void CYearWindow::slotActiveW(CYearView *w)
@@ -182,24 +211,80 @@ void CYearWindow::slottoday()
     setDate(QDate::currentDate());
 }
 
-void CYearWindow::slotdateSelected(const QDate date, const CaLunarDayInfo &detail) const
+void CYearWindow::slotcurrentDateChanged(QDate date)
 {
-    if (date != QDate::currentDate()) {
-        m_today->setVisible(true);
-    } else {
-        m_today->setVisible(false);
-    }
+    m_currentdate = date;
+    CaLunarDayInfo info = getCaLunarDayInfo(m_currentdate);
     m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
-    m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年");
+    m_YearLunarLabel->setText("-" + info.mGanZhiYear + info.mZodiac + "年-");
+    m_YearLunarDayLabel->setText("-" + tr("Lunar") + info.mLunarMonthName + info.mLunarDayName + "-");
 }
 
-void CYearWindow::slotdatecurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) const
+const QString CYearWindow::getLunar(QDate date)
 {
-    if (date != QDate::currentDate()) {
-        m_today->setVisible(true);
-    } else {
-        m_today->setVisible(false);
+    CaLunarDayInfo info = getCaLunarDayInfo(date);
+
+    if (info.mLunarDayName == "初一") {
+        info.mLunarDayName = info.mLunarMonthName;
     }
-    m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
-    m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
+
+    if (info.mTerm.isEmpty())
+        return info.mLunarDayName;
+
+    return info.mTerm;
+}
+
+const CaLunarDayInfo CYearWindow::getCaLunarDayInfo(QDate date)
+{
+    const QDate tdate = date;
+
+    if (lunarCache->contains(tdate)) {
+        return lunarCache->value(tdate);
+    }
+
+    if (lunarCache->size() > 300)
+        lunarCache->clear();
+
+//    QTimer::singleShot(500, [this, pos] {getDbusData(pos);});
+    queue->push_back(tdate);
+
+    QTimer::singleShot(300, this, SLOT(getDbusData()));
+
+    return *emptyCaLunarDayInfo;
+}
+void CYearWindow::getDbusData()
+{
+    if (queue->isEmpty())
+        return;
+
+    const QDate tdate = queue->head();
+    queue->pop_front();
+    const QDate date = tdate;
+    if (!date.isValid()) {
+        return;
+    }
+
+    CaLunarDayInfo currentDayInfo;
+    if (!lunarCache->contains(date)) {
+        bool o1 = true;
+        QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(date.year(), date.month(), false, o1);
+
+        QDate cacheDate;
+        cacheDate.setDate(date.year(), date.month(), 1);
+        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
+            lunarCache->insert(cacheDate, dayInfo);
+            if (date == m_currentdate) {
+                currentDayInfo = dayInfo;
+            }
+            cacheDate = cacheDate.addDays(1);
+        }
+    } else {
+        currentDayInfo = lunarCache->value(date);
+    }
+    // refresh   lunar info
+    if (date == m_currentdate) {
+        //更新
+        m_YearLunarLabel->setText("-" + currentDayInfo.mGanZhiYear + currentDayInfo.mZodiac + "年-");
+        m_YearLunarDayLabel->setText("-" + tr("Lunar") + currentDayInfo.mLunarMonthName + currentDayInfo.mLunarDayName + "-");
+    }
 }
