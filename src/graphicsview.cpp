@@ -507,7 +507,7 @@ void CGraphicsView::scrollBarValueChangedSlot()
     }
     int beginpos = ((int)leftToprealPos.y() / m_timeInterval) * m_timeInterval;
     if (beginpos < leftToprealPos.y()) {
-        beginpos = (leftToprealPos.y() / m_timeInterval + 1) * m_timeInterval;
+        beginpos = (beginpos / m_timeInterval + 1) * m_timeInterval;
     }
     QVector<int> vHours;
     for (int i = beginpos; i < leftBttomrealPos.y(); i = i + m_timeInterval) {
