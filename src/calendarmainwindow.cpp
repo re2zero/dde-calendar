@@ -132,9 +132,9 @@ DPushButton *Calendarmainwindow::createButon(QString name)
 {
     DPushButton *button = new DPushButton();
     button->setText(name);
-    button->setFixedSize(50, 30);
-    button->setPressIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-choose30.svg")
-                         .scaled(button->size() * devicePixelRatioF()));
+    button->setFixedSize(50, 40);
+    //button->setPressIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-choose30.svg")
+    //.scaled(50, 40));
     return  button;
 }
 

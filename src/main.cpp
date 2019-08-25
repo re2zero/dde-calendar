@@ -61,12 +61,13 @@ int main(int argc, char *argv[])
     a.setApplicationName("dde-calendar");
     a.setApplicationVersion(DApplication::buildVersion("1.1"));
     a.loadTranslator();
-
+    //QList<QLocale> localeFallback = QList<QLocale>() << QLocale::system();
     // meta information that necessary to create the about dialog.
     a.setProductName(QApplication::translate("CalendarWindow", "Deepin Calendar"));
     a.setProductIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-calendar.svg"));
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
     a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
+    a.setTheme("light");
     a.setStyle("chameleon");
     static const QDate buildDate = QLocale( QLocale::English ).toDate( QString(__DATE__).replace("  ", " 0"), "MMM dd yyyy");
     QString t_date = buildDate.toString("MMdd");
@@ -84,9 +85,9 @@ int main(int argc, char *argv[])
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
-    a.setTheme("light");
-    a.setStyleSheet(GetStyleSheetContent());
-    a.loadTranslator();
+
+    //a.setStyleSheet(GetStyleSheetContent());
+    //a.loadTranslator();
 
     Calendarmainwindow ww;
     // ww.setDate(QDate::currentDate());

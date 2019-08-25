@@ -97,7 +97,7 @@ void CalendarWindow::nextMonth()
     slideMonth(true);
 }
 
-void CalendarWindow::wheelEvent(QWheelEvent * e)
+void CalendarWindow::wheelEvent(QWheelEvent *e)
 {
     if (e->delta() < 0) {
         nextMonth();
@@ -112,9 +112,9 @@ void CalendarWindow::initUI()
 {
     m_contentBackground = new QFrame;
     m_contentBackground->setObjectName("CalendarBackground");
-    m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
-                             "background:white;"
-                             "}");
+    //m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
+    //"background:white;"
+    // "}");
     m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
                                       InfoViewHeight + CalendarHeight);
 
@@ -155,7 +155,7 @@ void CalendarWindow::initUI()
     m_fakeContent->setFixedSize(m_animationContainer->width(),
                                 m_animationContainer->height() * 2);
 
-    QVBoxLayout * contentLayout = new QVBoxLayout;
+    QVBoxLayout *contentLayout = new QVBoxLayout;
     contentLayout->setMargin(0);
     contentLayout->setSpacing(0);
     contentLayout->addWidget(m_infoView, 0, Qt::AlignHCenter);
@@ -165,7 +165,7 @@ void CalendarWindow::initUI()
 
     setCentralWidget(m_contentBackground);
 
-    connect(m_calendarView, &CalendarView::currentDateChanged, [this](int year, int month){
+    connect(m_calendarView, &CalendarView::currentDateChanged, [this](int year, int month) {
         qDebug() << "current date changed" << year << month;
         m_infoView->blockSignals(true);
         m_infoView->setYear(year);
@@ -193,7 +193,7 @@ void CalendarWindow::initAnimation()
     m_scrollAnimation = new QPropertyAnimation(m_fakeContent, "pos");
     m_scrollAnimation->setDuration(300);
 
-    connect(m_scrollAnimation, &QPropertyAnimation::finished, [this]{
+    connect(m_scrollAnimation, &QPropertyAnimation::finished, [this] {
         m_animationContainer->hide();
     });
 }
@@ -204,11 +204,12 @@ void CalendarWindow::initDateChangeMonitor()
     updateDate();
     updateTime();
 
-    QTimer * timer = new QTimer(this);
+    QTimer *timer = new QTimer(this);
     timer->setInterval(1000);
     connect(timer, &QTimer::timeout, [this] {
         QDate currentDate = QDate::currentDate();
-        if (LastCurrentDate != currentDate) {
+        if (LastCurrentDate != currentDate)
+        {
             LastCurrentDate = currentDate;
             updateDate();
         }
