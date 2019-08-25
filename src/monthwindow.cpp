@@ -113,7 +113,7 @@ void CMonthWindow::initUI()
     yeartitleLayout->addSpacerItem(t_spaceitemr);
     yeartitleLayout->addWidget(m_today);
 
-    m_monthView = new CMonthView();
+    m_monthView = new CMonthView(this);
     QVBoxLayout *mhLayout = new QVBoxLayout;
     mhLayout->setContentsMargins(10, 0, 10, 10);
     mhLayout->addWidget(m_monthView);
@@ -138,6 +138,7 @@ void CMonthWindow::initConnection()
     connect(m_monthView, &CMonthView::signalcurrentLunarDateChanged, this, &CMonthWindow::slotcurrentDateLunarChanged);
     connect(m_monthView, &CMonthView::signalcurrentDateChanged, this, &CMonthWindow::slotcurrentDateChanged);
     connect(m_monthDayView, &CMonthDayView::signalsSelectDate, this, &CMonthWindow::slotSelectedMonth);
+    connect(m_monthView, &CMonthView::signalsSchceduleUpdate, this, &CMonthWindow::slotTransitSchedule);
     connect(m_monthDayView, &CMonthDayView::signalsCurrentDate, this, &CMonthWindow::slotSelectedMonth);
 }
 
@@ -161,6 +162,16 @@ void CMonthWindow::slideMonth(bool next)
         }
     }
     setDate(m_currentdate);
+}
+
+void CMonthWindow::slotupdateSchedule(int id)
+{
+    m_monthView->slotSchceduleUpdate(id);
+}
+
+void CMonthWindow::slotTransitSchedule(int id)
+{
+    emit signalsWUpdateShcedule(this, id);
 }
 
 void CMonthWindow::slottoday()
@@ -191,14 +202,9 @@ void CMonthWindow::slotcurrentDateChanged(QDate date)
         m_today->setVisible(false);
     }
 }
+
 void CMonthWindow::slotSelectedMonth(QDate date)
 {
     m_currentdate = date;
-    if (date.month() != QDate::currentDate().month()
-            && date.year() == QDate::currentDate().year()) {
-        m_today->setVisible(true);
-    } else {
-        m_today->setVisible(false);
-    }
     m_monthView->setCurrentDate(date);
 }

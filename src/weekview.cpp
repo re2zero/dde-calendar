@@ -17,13 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "monthdayview.h"
+#include "weekview.h"
 #include <QHBoxLayout>
 #include "constants.h"
 #include <QPainter>
 #include <QBrush>
 #include <QEvent>
-CMonthDayView::CMonthDayView(QWidget *parent) : QWidget(parent)
+CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
 {
     m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);
@@ -34,10 +34,10 @@ CMonthDayView::CMonthDayView(QWidget *parent) : QWidget(parent)
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
-    hboxLayout->setContentsMargins(4, 0, 4, 0);
-    for (int c = 0; c != 12; ++c) {
+    //hboxLayout->setContentsMargins(4, 0, 4, 0);
+    for (int c = 0; c != 10; ++c) {
         QWidget *cell = new QWidget;
-        cell->setFixedSize(DDEMonthCalendar::MDayCellWidth, DDEMonthCalendar::MDayCellHeight);
+        cell->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
         cell->installEventFilter(this);
         cell->setFocusPolicy(Qt::ClickFocus);
         hboxLayout->addWidget(cell);
@@ -46,40 +46,44 @@ CMonthDayView::CMonthDayView(QWidget *parent) : QWidget(parent)
     setLayout(hboxLayout);
 }
 
-CMonthDayView::~CMonthDayView()
+CWeekView::~CWeekView()
 {
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 10; i++) {
         m_cellList.at(i)->removeEventFilter(this);
         delete m_cellList.at(i);
     }
     m_cellList.clear();
 }
 
-void CMonthDayView::setCurrentDate(const QDate date)
+void CWeekView::setFirstWeekDay(int weekday)
 {
-    m_selectDate = date;
-    for (int i = 0; i < 12; i++) {
-        m_days[i] = QDate(date.year(), i + 1, date.day());
-    }
-    setSelectedCell(m_selectDate.month() - 1);
-    update();
-    emit signalsCurrentDate(date);
+    m_firstWeekDay = weekday;
+    updateDate();
 }
 
-void CMonthDayView::paintCell(QWidget *cell)
+void CWeekView::setCurrentDate(const QDate date)
 {
-    const QRect rect(0, 0, DDEMonthCalendar::MDayCellWidth, DDEMonthCalendar::MDayCellHeight);
+    m_selectDate = date;
+    m_selectedCell = 0;
+    updateDate();
+    //setSelectedCell(m_selectDate.month() - 1);
+    update();
+}
+
+void CWeekView::paintCell(QWidget *cell)
+{
+    const QRect rect(0, 0, DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
 
     const int pos = m_cellList.indexOf(cell);
-    const bool isCurrentDay = m_days[pos].month() == QDate::currentDate().month();
+    const bool isCurrentDay = m_days[pos].addDays(m_weekAddDay).weekNumber() == QDate::currentDate().weekNumber();
 
-    const bool isSelectDay = m_days[pos].month() == m_selectDate.month();
+    const bool isSelectDay = m_days[pos].weekNumber() == m_selectDate.weekNumber();
 
 
     QPainter painter(cell);
     painter.setPen(Qt::SolidLine);
 
-    const QString dayNum = QString::number(m_days[pos].month());
+    const QString dayNum = QString::number(m_days[pos].weekNumber());
 
     if (isSelectDay) {
         QRect fillRect(3, 3, 30, 30);
@@ -101,7 +105,7 @@ void CMonthDayView::paintCell(QWidget *cell)
     painter.end();
 }
 
-bool CMonthDayView::eventFilter(QObject *o, QEvent *e)
+bool CWeekView::eventFilter(QObject *o, QEvent *e)
 {
     QWidget *cell = qobject_cast<QWidget *>(o);
 
@@ -115,7 +119,7 @@ bool CMonthDayView::eventFilter(QObject *o, QEvent *e)
 
     return false;
 }
-void CMonthDayView::cellClicked(QWidget *cell)
+void CWeekView::cellClicked(QWidget *cell)
 {
     if (!m_cellSelectable)
         return;
@@ -128,7 +132,7 @@ void CMonthDayView::cellClicked(QWidget *cell)
     update();
 }
 
-void CMonthDayView::setSelectedCell(int index)
+void CWeekView::setSelectedCell(int index)
 {
     if (m_selectedCell == index)
         return;
@@ -139,6 +143,23 @@ void CMonthDayView::setSelectedCell(int index)
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
     m_selectDate = m_days[index];
-    emit signalsSelectDate(m_days[index]);
+    emit signalsSelectDate(m_days[index], m_days[index].addDays(m_weekAddDay));
+}
+
+void CWeekView::updateDate()
+{
+    int  weekNum = m_selectDate.weekNumber();
+    m_weekAddDay = (m_selectDate.dayOfWeek() + m_firstWeekDay) % 7;
+    QDate weekfirstDay = m_selectDate.addDays(-m_weekAddDay);
+    m_days[4] = weekfirstDay;
+    for (int i(0); i < 4; ++i) {
+        m_days[i] = weekfirstDay.addDays(-(4 - i) * 7);
+    }
+    for (int i(5); i != 10; ++i) {
+        m_days[i] = weekfirstDay.addDays((i - 4) * 7);
+    }
+
+    setSelectedCell(4);
+    update();
 }
 

@@ -33,9 +33,9 @@ CMonthWeekView::CMonthWeekView(QWidget *parent) : QWidget(parent)
 
 void CMonthWeekView::setList(int weekday)
 {
-    QLayoutItem* child;
-    while((child = m_mainLayout->takeAt(0)) != 0) {
-        if(child->widget() != 0) {
+    QLayoutItem *child;
+    while ((child = m_mainLayout->takeAt(0)) != 0) {
+        if (child->widget() != 0) {
             delete child->widget();
         }
         delete child;
@@ -48,32 +48,20 @@ void CMonthWeekView::setList(int weekday)
 
         QLabel *label = new QLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
 
-        QFont weekfont;
-        weekfont.setFamily("SourceHanSansSC-Medium");
-        weekfont.setPixelSize(16);
-        label->setFont(weekfont);
-        if (d == 7 || d == 6) {
-            label->setStyleSheet("color:#0887FF;background: rgba(0,66,154,0.05);");
-        }else {
-            label->setStyleSheet("color:black;background: rgba(0,66,154,0.05);");
-        }
         if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
-            label->setObjectName("MonthHeaderWeekend");
+            label->setObjectName("CalendarHeaderWeekend");
         } else {
-            label->setObjectName("MonthHeaderWeekday");
+            label->setObjectName("CalendarHeaderWeekday");
         }
 
         label->setAlignment(Qt::AlignCenter);
-        if (i == 0 || i == 6) {
-            label->setFixedSize(DDEMonthCalendar::MWeekCellWidth-1, DDEMonthCalendar::MWeekCellHeight);
-        }else {
-            label->setFixedSize(DDEMonthCalendar::MWeekCellWidth-3, DDEMonthCalendar::MWeekCellHeight);
-        }
+        label->setFixedSize(DDECalendar::CellWidth, DDECalendar::HeaderItemHeight);
         m_mainLayout->addWidget(label, 0, Qt::AlignCenter);
     }
 }
 
-int CMonthWeekView::checkDay(int weekday) {
+int CMonthWeekView::checkDay(int weekday)
+{
 
     // check the week, calculate the correct order in the custom.
 

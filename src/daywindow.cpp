@@ -1,0 +1,161 @@
+﻿/*
+ * Copyright (C) 2015 ~ 2018 Deepin Technology Co., Ltd.
+ *
+ * Author:     kirigaya <kirigaya@mkacg.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "daywindow.h"
+#include "daymonthview.h"
+#include "constants.h"
+#include "scheduleview.h"
+#include "schcedulesearchview.h"
+#include <QMessageBox>
+CDayWindow::CDayWindow(QWidget *parent): QMainWindow (parent)
+{
+    initUI();
+    initConnection();
+}
+
+CDayWindow::~CDayWindow()
+{
+
+}
+
+void CDayWindow::setDate(QDate date)
+{
+    m_currentdate = date;
+    m_daymonthView->setFirstWeekday(0);
+    m_daymonthView->setCurrentDate(date);
+    int w = m_scheduleView->width() - 72;
+    m_scheduleView->setRange(w, 1032, m_currentdate, m_currentdate);
+}
+
+void CDayWindow::initUI()
+{
+    m_contentBackground = new QFrame;
+    m_contentBackground->setObjectName("CalendarBackground");
+    m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
+                                       "background:white;"
+                                       "}");
+    //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
+    //   InfoViewHeight + CalendarHeight);
+
+    QHBoxLayout *titleLayout = new QHBoxLayout;
+    titleLayout->setMargin(0);
+    titleLayout->setSpacing(0);
+    titleLayout->setContentsMargins(0, 0, 0, 3);
+
+    m_YearLabel = new DLabel();
+    m_YearLabel->setFixedSize(168, DDEDayCalendar::D_YLableHeight);
+    QFont labelF;
+    labelF.setFamily("SourceHanSansSC-Medium");
+    labelF.setPixelSize(24);
+    m_YearLabel->setFont(labelF);
+    QPalette ypa;
+    ypa.setColor(QPalette::WindowText, QColor("#3B3B3B"));
+    m_YearLabel->setPalette(ypa);
+    titleLayout->addWidget(m_YearLabel);
+    //titleLayout->addStretch(1);
+    m_LunarLabel = new DLabel();
+    m_LunarLabel->setFixedHeight(DDEDayCalendar::D_YLableHeight);
+    labelF.setPixelSize(14);
+    m_LunarLabel->setFont(labelF);
+    m_LunarLabel->setAlignment(Qt::AlignCenter);
+    QPalette lpa;
+    lpa.setColor(QPalette::WindowText, QColor("#8A8A8A"));
+    m_LunarLabel->setPalette(lpa);
+    titleLayout->addWidget(m_LunarLabel);
+    //titleLayout->addStretch(1);
+    m_SolarDay = new DLabel();
+    labelF.setPixelSize(10);
+    m_SolarDay->setFixedHeight(DDEDayCalendar::D_YLableHeight);
+    m_SolarDay->setFont(labelF);
+    m_SolarDay->setAlignment(Qt::AlignCenter);
+    QPalette spa;
+    spa.setColor(QPalette::WindowText, Qt::red);
+    m_SolarDay->setPalette(spa);
+    titleLayout->addWidget(m_SolarDay);
+
+    QVBoxLayout *leftLayout = new QVBoxLayout;
+    leftLayout->setMargin(0);
+    leftLayout->setSpacing(0);
+    m_scheduleView = new CScheduleView(this);
+    //leftLayout->setContentsMargins(12, 0, 10, 12);
+    m_scheduleView->setviewMagin(72, 57, 0, 0);
+    m_scheduleView->setRange(423, 1032, QDate(2019, 8, 12), QDate(2019, 8, 12));
+    //m_scheduleView->setFixedSize(513, 450);
+    leftLayout->addLayout(titleLayout);
+    leftLayout->addWidget(m_scheduleView);
+
+    m_daymonthView = new CDayMonthView(this);
+
+    QHBoxLayout *mainLayout = new QHBoxLayout;
+    mainLayout->setMargin(0);
+    mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+    mainLayout->addLayout(leftLayout);
+    mainLayout->addWidget(m_daymonthView);
+    //mainLayout->addStretch(1);
+    m_schceduleSearchView = new CSchceduleSearchView(this);
+    m_schceduleSearchView->setFixedWidth(200);
+    mainLayout->addWidget(m_schceduleSearchView);
+    //m_schceduleSearchView->setVisible(false);
+
+
+    m_contentBackground->setLayout(mainLayout);
+
+
+    setCentralWidget(m_contentBackground);
+}
+
+void CDayWindow::initConnection()
+{
+    connect(m_daymonthView, &CDayMonthView::signalcurrentLunarDateChanged, this, &CDayWindow::slotcurrentDateLunarChanged);
+    connect(m_daymonthView, &CDayMonthView::signalcurrentDateChanged, this, &CDayWindow::slotcurrentDateChanged);
+    connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSchedule);
+}
+
+
+void CDayWindow::slotupdateSchedule(int id)
+{
+    m_scheduleView->setDate(m_currentdate);
+}
+
+void CDayWindow::slotTransitSchedule(int id)
+{
+    emit signalsWUpdateShcedule(this, id);
+}
+
+void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail, int type)
+{
+    m_currentdate = date;
+    if (type == 1) {
+        m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
+        m_LunarLabel->setText(detail.mLunarDayName);
+        m_SolarDay->setText(detail.mSolarFestival);
+    }
+    m_scheduleView->setRange(m_currentdate, m_currentdate);
+    m_scheduleView->setDate(m_currentdate);
+}
+
+void CDayWindow::slotcurrentDateChanged(QDate date)
+{
+    m_currentdate = date;
+    m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("Y") + QString::number(date.day()) + tr("D"));
+    m_scheduleView->setRange(m_currentdate, m_currentdate);
+    m_scheduleView->setDate(m_currentdate);
+}
+
+

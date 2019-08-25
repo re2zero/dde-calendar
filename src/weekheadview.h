@@ -17,20 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MONTHVIEW_H
-#define MONTHVIEW_H
+#ifndef WEEKHEADVIEW_H
+#define WEEKHEADVIEW_H
 
-#include "monthweekview.h"
 #include "constants.h"
 #include <QWidget>
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
-#include <QAction>
+#include <dlabel.h>
 #include "calendardbus.h"
-class CSchceduleDayView;
-enum CalendarMonthDayType {
+DWIDGET_USE_NAMESPACE
+
+enum CalendarWeekDayType {
     SO_MFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_MWeekends = QStyleOption::SO_CustomBase + 0x02,
     SO_MWeekendsAndFestival = SO_MFestival | SO_MWeekends,
@@ -39,19 +39,9 @@ enum CalendarMonthDayType {
     SO_MDefault,
 };
 
-class CMonthView: public QWidget
+class CWeekHeadView: public QWidget
 {
     Q_OBJECT
-
-    Q_PROPERTY(QColor backgroundCircleColor MEMBER m_backgroundCircleColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor defaultTextColor MEMBER m_defaultTextColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor defaultLunarColor MEMBER m_defaultLunarColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor festivalLunarColor MEMBER m_festivalLunarColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor weekendsTextColor MEMBER m_weekendsTextColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor topBorderColor MEMBER m_topBorderColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(bool cellSelectable READ cellSelectable WRITE setCellSelectable NOTIFY cellSelectableChanged)
-
 public:
     enum ShowState {
         ShowLunar = 0x01,
@@ -60,14 +50,14 @@ public:
     };
 
 public:
-    explicit CMonthView(QWidget *parent = 0);
+    explicit CWeekHeadView(QWidget *parent = 0);
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
     inline bool cellSelectable() const
     {
         return m_cellSelectable;
     }
-
+    void setWeekDay(QVector<QDate> vDays);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalcurrentLunarDateChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
@@ -75,14 +65,12 @@ signals:
     void currentDateChanged(const int year, const int month);
     void currentFestivalChanged(const QString &festival);
     void cellSelectableChanged(bool cellSelectable) const;
-    void signalsSchceduleUpdate(int id = 0);
 public slots:
     void setCurrentDate(const QDate date);
     void setLunarVisible(bool visible);
     void setLunarFestivalHighlight(bool highlight);
     void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
-    void slotSchceduleUpdate(int id = 0);
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
@@ -94,17 +82,16 @@ private:
     void updateDate();
     void updateCurrentLunar(const CaLunarDayInfo &info);
 
+    int checkDay(int weekday);
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
     void getDbusData();
-
-    void slotCreate();
 private:
     QList<QWidget *> m_cellList;
-    QList<CSchceduleDayView *> m_cellScheduleList;
+    DLabel        *m_monthLabel;
     CalendarDBus *m_DBusInter;
-    QDate m_days[42];
+    QDate m_days[7];
     QDate m_currentDate;
 
     ShowState m_showState = Normal;
@@ -112,33 +99,23 @@ private:
     bool m_cellSelectable = true;
 
     QFont m_dayNumFont;
-    QFont m_dayLunarFont;
+    QFont m_monthFont;
 
-    QColor m_topBorderColor = Qt::red;
+
     QColor m_backgroundCircleColor = "#2ca7f8";
 
-    QColor m_defaultTextColor = Qt::black;
-    QColor m_currentDayTextColor = "#2ca7f8";
-    QColor m_weekendsTextColor = Qt::black;
-    QColor m_selectedTextColor = Qt::white;
-    QColor m_festivalTextColor = Qt::black;
-    QColor m_notCurrentTextColor = "#b2b2b2";
-
-    QColor m_defaultLunarColor = "#5E5E5E";
-    QColor m_currentDayLunarColor = m_currentDayTextColor;
-    QColor m_weekendsLunarColor = m_defaultLunarColor;
-    QColor m_selectedLunarColor = Qt::white;
-    QColor m_festivalLunarColor = m_defaultLunarColor;
-    QColor m_notCurrentLunarColor = "#dfdfdf";
+    QColor m_defaultTextColor = "#6F6F6F";
+    QColor m_currentDayTextColor = "#FFFFFF";
+    QColor m_defaultLunarColor = "#898989";
+    QColor m_weekendsTextColor = "#0887FF";
+    QColor m_currentMonthColor = "#000000";
+    QColor m_backgroudColor = "#E6EEF2";
     QColor m_solofestivalLunarColor = "#4DFF7272";
-
     QQueue<int> *queue = nullptr;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
-
-    CMonthWeekView *m_weekIndicator;
     int m_firstWeekDay;
-    QAction          *m_createAction;     // 创建日程
+
 };
 
 #endif // MYCALENDARWIDGET_H

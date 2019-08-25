@@ -28,7 +28,7 @@
 #include <DApplication>
 #include <DLog>
 #include <DHiDPIHelper>
-#include "yearwindow.h"
+#include "dbmanager.h"
 #include "calendarmainwindow.h"
 //#include "monthwindow.h"
 DWIDGET_USE_NAMESPACE
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 
     //a.setStyleSheet(GetStyleSheetContent());
     //a.loadTranslator();
-
+    ScheduleDbManager::initDataBase();
     Calendarmainwindow ww;
     // ww.setDate(QDate::currentDate());
     ww.move(PrimaryRect().center() - ww.geometry().center());

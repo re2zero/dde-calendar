@@ -28,8 +28,10 @@
 #include <QMessageBox>
 #include <QTime>
 #include <QQueue>
-
-
+#include "schceduledayview.h"
+#include "dbmanager.h"
+#include "schceduledlg.h"
+#include <QMenu>
 CMonthView::CMonthView(QWidget *parent) : QWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
@@ -59,12 +61,19 @@ CMonthView::CMonthView(QWidget *parent) : QWidget(parent)
     gridLayout->setSpacing(0);
     for (int r = 0; r != 6; ++r) {
         for (int c = 0; c != 7; ++c) {
-            QWidget *cell = new QWidget;
+            QWidget *cell = new QWidget(this);
             cell->setFixedSize(DDEMonthCalendar::MCellWidth, DDEMonthCalendar::MCellHeight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
+            CSchceduleDayView *shceduledayview = new CSchceduleDayView(cell);
+            shceduledayview->setFixedSize(108, 38);
+            //shceduledayview->setALLDayData(scheduleInfolist);
+            shceduledayview->move(6, 31);
+            connect(shceduledayview, &CSchceduleDayView::signalsUpdateShcedule, this, &CMonthView::signalsSchceduleUpdate);
+            connect(shceduledayview, &CSchceduleDayView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
             gridLayout->addWidget(cell, r, c);
             m_cellList.append(cell);
+            m_cellScheduleList.append(shceduledayview);
         }
     }
 
@@ -80,6 +89,8 @@ CMonthView::CMonthView(QWidget *parent) : QWidget(parent)
     setLayout(mainLayout);
 
     connect(this, &CMonthView::dateSelected, this, &CMonthView::handleCurrentDateChanged);
+    m_createAction = new QAction(tr("Create"), this);
+    connect(m_createAction, &QAction::triggered, this, &CMonthView::slotCreate);
 }
 
 void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
@@ -88,6 +99,15 @@ void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo
 
     if (date != m_currentDate) {
         setCurrentDate(date);
+    }
+}
+
+void CMonthView::slotSchceduleUpdate(int id)
+{
+    for (int i(0); i != 42; ++i) {
+        if (m_days[i].month() != m_currentDate.month()) continue;
+        //更新日程
+        m_cellScheduleList[i]->setDate(m_days[i]);
     }
 }
 
@@ -193,12 +213,28 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
             cellClicked(cell);
+        } else if (e->type() == QEvent::ContextMenu) {
+            QMenu Context(this);
+            Context.addAction(m_createAction);
+            Context.exec(QCursor::pos());
         }
     }
 
     return false;
 }
-
+void CMonthView::slotCreate()
+{
+    CSchceduleDlg dlg(1, this);
+    QDateTime tDatatime;
+    tDatatime.setDate(m_currentDate);
+    dlg.setDate(tDatatime);
+    if (dlg.exec() == DDialog::Accepted) {
+        ScheduleInfo info = dlg.getData();
+        info.id = ScheduleDbManager::addSchedule(info);
+        emit signalsSchceduleUpdate(info.id);
+        slotSchceduleUpdate();
+    }
+}
 void CMonthView::updateDate()
 {
     const QDate firstDay(m_currentDate.year(), m_currentDate.month(), 1);
@@ -211,6 +247,9 @@ void CMonthView::updateDate()
 
     for (int i(0); i != 42; ++i) {
         m_days[i] = firstDay.addDays(i - day);
+        if (m_days[i].month() != m_currentDate.month()) continue;
+        //更新日程
+        m_cellScheduleList[i]->setDate(m_days[i]);
     }
 
     setSelectedCell(currentIndex);
@@ -300,6 +339,7 @@ void CMonthView::getDbusData()
     if (!lunarCache->contains(date)) {
         bool o1 = true;
         QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(date.year(), date.month(), false, o1);
+        QDBusReply<CaLunarDayInfo> replydd = m_DBusInter->GetLunarInfoBySolar(date.year(), date.month(), date.day(), o1);
 
         QDate cacheDate;
         cacheDate.setDate(date.year(), date.month(), 1);
@@ -457,5 +497,5 @@ void CMonthView::setSelectedCell(int index)
     m_cellList.at(index)->update();
 
     emit dateSelected(m_days[index], getCaLunarDayInfo(index));
-    emit signalcurrentLunarDateChanged(m_days[index], getCaLunarDayInfo(index), 0);
+    emit signalcurrentLunarDateChanged(m_days[index], getCaLunarDayInfo(getDateIndex(m_days[index])), 0);
 }

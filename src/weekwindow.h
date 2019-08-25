@@ -16,40 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MONTHWINDOW_H
-#define MONTHWINDOW_H
+#ifndef WEEKWINDOW_H
+#define WEEKWINDOW_H
 
 #include <QWidget>
 #include <DMainWindow>
 #include <QDate>
 #include <QLabel>
+#include <dimagebutton.h>
+#include <darrowbutton.h>
 #include <dbasebutton.h>
 #include <dlabel.h>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
-class CMonthView;
-class CMonthDayView;
-class QPropertyAnimation;
-class CMonthWindow: public QMainWindow
+class CWeekHeadView;
+class CaLunarDayInfo;
+class CWeekView;
+class CScheduleView;
+class CWeekWindow: public QMainWindow
 {
     Q_OBJECT
 public:
-    CMonthWindow(QWidget *parent = 0);
-    ~CMonthWindow();
-    void setFirstWeekday(int weekday);
+    CWeekWindow(QWidget *parent = 0);
+    ~CWeekWindow();
     void setDate(QDate date);
-public slots:
-    void previousMonth();
-    void nextMonth();
-
-protected:
-    void wheelEvent(QWheelEvent *);
-private:
+    void setFirstWeekday(int weekday);
     void initUI();
     void initConnection();
-    void initLunar();
-    void slideMonth(bool next);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
@@ -57,21 +51,24 @@ public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
 private slots:
+    void slotprev();
+    void slotnext();
     void slottoday();
+    void slotCurrentWeek(QDate date, QDate currentDate);
     void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
     void slotcurrentDateChanged(QDate date);
-    void slotSelectedMonth(QDate date);
 private:
-    QFrame *m_animationContainer = nullptr;
-    QLabel *m_icon;
-
-    CMonthView        *m_monthView;
-    CMonthDayView      *m_monthDayView;
+    CWeekHeadView     *m_weekHeadView; //周视图头
     QFrame *m_contentBackground = nullptr;
+    DArrowButton      *m_prevButton = nullptr;
+    DArrowButton      *m_nextButton = nullptr;
     DBaseButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_YearLunarLabel;
+    DLabel            *m_weekLabel;
+    CWeekView         *m_weekview = nullptr;
+    CScheduleView     *m_scheduleView;
 };
 
 #endif // YEARWINDOW_H

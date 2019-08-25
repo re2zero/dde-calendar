@@ -73,6 +73,43 @@ static const int M_MWindowHeight = 162;
 
 
 }
+namespace DDEWeekCalendar {
+static const int WCellHeaderItemWidth = 109;
+static const int WCellHeaderItemHeight = 54;
+static const int WMCellHeadrWidth = 80;
+
+static const int MCellHighlightWidth = 120;
+static const int MCellHighlightHeight = 74;
+
+static const int WWeekCellWidth = 36;
+static const int WWeekCellHeight = 36;
+
+static const int W_YLableHeight = 36;
+static const int W_YLunatLabelWindth = 66;
+static const int W_YLunatLabelHeight = 20;
+
+static const int WTodayWindth = 100;
+static const int WTodayHeight = 36;
+
+static const int W_MWindowWidth = 202;
+static const int W_MWindowHeight = 162;
+}
+namespace DDEDayCalendar {
+static const int DCellWidth = 35;
+static const int DCellHeight = 28;
+
+static const int DCellHighlightWidth = 33;
+static const int DCellHighlightHeight = 26;
+static const int D_MLableHeight = 36;
+static const int D_YLableHeight = 36;
+static const int DDLableHeight = 117;
+static const int DWLableHeight = 22;
+static const int DHualiInfoLableHeight = 17;
+static const int DHualiDtailLableHeight = 56;
+static const int DHualiDtailLableWidth = 330;
+static const int D_MWindowWidth = 350;
+static const int D_MWindowHeight = 564;
+}
 enum Week {
     Monday    = 6,
     Tuesday   = 5,

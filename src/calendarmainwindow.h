@@ -33,6 +33,8 @@
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
 class CMonthWindow;
+class CWeekWindow;
+class CDayWindow;
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
@@ -43,20 +45,23 @@ private:
     void initConnection();
     void initLunar();
     void createview();
-    DPushButton* createButon(QString name);
+    DPushButton *createButon(QString name);
 private slots:
     void slotstackWClicked(int index);
+    void slotWUpdateShcedule(QMainWindow *w, int id = 0);
 private:
-    QLabel *                   m_icon;
-    QStackedWidget*              m_stackWidget;
-    QButtonGroup*              m_bttongroup;
-    DPushButton*               m_ybutton;
-    DPushButton*               m_mbutton;
-    DPushButton*               m_wbutton;
-    DPushButton*               m_dbutton;
-    DSearchEdit*               m_searchEdit;
-    CYearWindow*               m_yearwindow;
-    CMonthWindow*              m_monthWindow;
+    QLabel                    *m_icon;
+    QStackedWidget              *m_stackWidget;
+    QButtonGroup              *m_bttongroup;
+    DPushButton               *m_ybutton;
+    DPushButton               *m_mbutton;
+    DPushButton               *m_wbutton;
+    DPushButton               *m_dbutton;
+    DSearchEdit               *m_searchEdit;
+    CYearWindow               *m_yearwindow;
+    CMonthWindow              *m_monthWindow;
+    CWeekWindow               *m_weekWindow;
+    CDayWindow                *m_DayWindow;
 };
 
 #endif // CALENDARMAINWINDOW_H

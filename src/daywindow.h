@@ -16,40 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MONTHWINDOW_H
-#define MONTHWINDOW_H
+#ifndef DAYWINDOW_H
+#define DAYWINDOW_H
 
 #include <QWidget>
 #include <DMainWindow>
 #include <QDate>
 #include <QLabel>
-#include <dbasebutton.h>
 #include <dlabel.h>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
-class CMonthView;
-class CMonthDayView;
-class QPropertyAnimation;
-class CMonthWindow: public QMainWindow
+class CDayMonthView;
+class CScheduleView;
+class CSchceduleSearchView;
+class CDayWindow: public QMainWindow
 {
     Q_OBJECT
 public:
-    CMonthWindow(QWidget *parent = 0);
-    ~CMonthWindow();
-    void setFirstWeekday(int weekday);
+    CDayWindow(QWidget *parent = 0);
+    ~CDayWindow();
     void setDate(QDate date);
-public slots:
-    void previousMonth();
-    void nextMonth();
-
-protected:
-    void wheelEvent(QWheelEvent *);
-private:
     void initUI();
     void initConnection();
-    void initLunar();
-    void slideMonth(bool next);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
@@ -57,21 +46,17 @@ public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
 private slots:
-    void slottoday();
-    void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
+    void slotcurrentDateLunarChanged(QDate date,  CaHuangLiDayInfo detail, int type = 0);
     void slotcurrentDateChanged(QDate date);
-    void slotSelectedMonth(QDate date);
 private:
-    QFrame *m_animationContainer = nullptr;
-    QLabel *m_icon;
-
-    CMonthView        *m_monthView;
-    CMonthDayView      *m_monthDayView;
+    CDayMonthView     *m_daymonthView;
     QFrame *m_contentBackground = nullptr;
-    DBaseButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
-    DLabel            *m_YearLunarLabel;
+    DLabel            *m_LunarLabel;
+    DLabel            *m_SolarDay;
+    CScheduleView     *m_scheduleView;
+    CSchceduleSearchView *m_schceduleSearchView;
 };
 
 #endif // YEARWINDOW_H

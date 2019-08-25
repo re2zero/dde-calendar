@@ -26,6 +26,8 @@
 #include "monthwindow.h"
 #include "dbuscalendar_adaptor.h"
 #include <QSizePolicy>
+#include "weekwindow.h"
+#include "daywindow.h"
 static const int CalendarMTitleHeight = 50;
 
 static const int CalendarMWidth = 860;
@@ -63,7 +65,6 @@ void Calendarmainwindow::initUI()
     m_dbutton = createButon(tr("D"));
     m_bttongroup->addButton(m_dbutton, 3);
 
-    m_bttongroup->button(0)->setChecked(true);
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
     titleLayout->setSpacing(0);
@@ -92,11 +93,16 @@ void Calendarmainwindow::initUI()
     m_stackWidget->setFixedSize(WorkViewWidth, WorkViewHeight);
     createview();
     setCentralWidget(m_stackWidget);
+    m_bttongroup->button(0)->setChecked(true);
+
 }
 
 void Calendarmainwindow::initConnection()
 {
     connect(m_bttongroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &Calendarmainwindow::slotstackWClicked);
+    connect(m_weekWindow, &CWeekWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
+    connect(m_monthWindow, &CMonthWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
+    connect(m_DayWindow, &CDayWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
 }
 
 void Calendarmainwindow::initLunar()
@@ -114,11 +120,18 @@ void Calendarmainwindow::createview()
     m_monthWindow->setDate(QDate::currentDate());
     m_monthWindow->setFirstWeekday(0);
     m_stackWidget->addWidget(m_monthWindow);
+    m_weekWindow  = new CWeekWindow(this);
+    m_weekWindow->setFirstWeekday(0);
+    m_weekWindow->setDate(QDate::currentDate());
+    m_stackWidget->addWidget(m_weekWindow);
+
+    m_DayWindow = new CDayWindow;
+    m_DayWindow->setDate(QDate::currentDate());
+    m_stackWidget->addWidget(m_DayWindow);
 #else
     CYearWindow *yearwindow1 = new CYearWindow;
     yearwindow1->setDate(QDate(2014, 2, 1));
     m_stackWidget->addWidget(yearwindow1);
-#endif
     CYearWindow *yearwindow2 = new CYearWindow;
     yearwindow2->setDate(QDate(2014, 2, 1));
     m_stackWidget->addWidget(yearwindow2);
@@ -126,6 +139,8 @@ void Calendarmainwindow::createview()
     CYearWindow *yearwindow3 = new CYearWindow;
     yearwindow3->setDate(QDate(2018, 2, 1));
     m_stackWidget->addWidget(yearwindow3);
+#endif
+
 }
 
 DPushButton *Calendarmainwindow::createButon(QString name)
@@ -145,4 +160,14 @@ void Calendarmainwindow::slotstackWClicked(int index)
         return;
     }
     m_stackWidget->setCurrentIndex(index);
+}
+
+void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
+{
+    if (w != m_weekWindow)
+        m_weekWindow->slotupdateSchedule(id);
+    if (w != m_monthWindow)
+        m_monthWindow->slotupdateSchedule(id);
+    if (w != m_DayWindow)
+        m_DayWindow->slotupdateSchedule(id);
 }

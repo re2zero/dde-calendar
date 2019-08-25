@@ -16,32 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MONTHDAYVIEW_H
-#define MONTHDAYVIEW_H
+#ifndef WEEKVIEW_H
+#define WEEKVIEW_H
 
 #include <QObject>
 #include <QWidget>
 #include <QDate>
-class CMonthDayView : public QWidget
+class CWeekView : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CMonthDayView(QWidget *parent = nullptr);
-    ~CMonthDayView();
+    explicit CWeekView(QWidget *parent = nullptr);
+    ~CWeekView();
+    void setFirstWeekDay(int weekday);
     void setCurrentDate(const QDate date);
 public slots:
     void cellClicked(QWidget *cell);
 signals:
-    void signalsSelectDate(QDate date);
-    void signalsCurrentDate(QDate date);
+    void signalsSelectDate(QDate date, QDate currentDate);
 private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);
     void setSelectedCell(int index);
+    void updateDate();
 private:
     QList<QWidget *> m_cellList;
     QDate m_selectDate;
-    QDate m_days[12];
+    QDate m_days[10];
     bool m_cellSelectable = true;
     int m_selectedCell = 0;
     QFont m_dayNumFont;
@@ -50,7 +51,8 @@ private:
     QColor m_backgrounddefaultColor = Qt::white;
     QColor m_currentDayTextColor = Qt::white;
     QColor m_backgroundcurrentDayColor = "#0081FF";
-
+    int m_firstWeekDay;
+    int m_weekAddDay = 0;
 };
 
 #endif // MONTDAYVIEW_H

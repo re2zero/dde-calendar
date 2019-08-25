@@ -39,7 +39,10 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
-
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QJsonArray>
 class CaYearInfo
 {
 public:
@@ -47,9 +50,9 @@ public:
 
     inline static void registerMetaType();
 
-    friend QDebug operator<<(QDebug argument, const CaYearInfo & what);
-    friend QDBusArgument &operator<<(QDBusArgument & argument, const CaYearInfo & what);
-    friend const QDBusArgument &operator>>(const QDBusArgument & argument, CaYearInfo & what);
+    friend QDebug operator<<(QDebug argument, const CaYearInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaYearInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaYearInfo &what);
 
 public:
     qint32 mYear;
@@ -64,9 +67,9 @@ public:
 
     inline static void registerMetaType();
 
-    friend QDebug operator<<(QDebug argument, const CaLunarDayInfo & what);
-    friend QDBusArgument &operator<<(QDBusArgument & argument, const CaLunarDayInfo & what);
-    friend const QDBusArgument &operator>>(const QDBusArgument & argument, CaLunarDayInfo & what);
+    friend QDebug operator<<(QDebug argument, const CaLunarDayInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaLunarDayInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaLunarDayInfo &what);
 
 public:
     QString mGanZhiYear;
@@ -89,9 +92,9 @@ public:
 
     inline static void registerMetaType();
 
-    friend QDebug operator<<(QDebug argument, const CaLunarMonthInfo & what);
-    friend QDBusArgument &operator<<(QDBusArgument & argument, const CaLunarMonthInfo & what);
-    friend const QDBusArgument &operator>>(const QDBusArgument & argument, CaLunarMonthInfo & what);
+    friend QDebug operator<<(QDebug argument, const CaLunarMonthInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaLunarMonthInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaLunarMonthInfo &what);
 
 public:
     qint32 mFirstDayWeek;
@@ -106,9 +109,9 @@ public:
 
     inline static void registerMetaType();
 
-    friend QDebug operator<<(QDebug argument, const CaSolarMonthInfo & what);
-    friend QDBusArgument &operator<<(QDBusArgument & argument, const CaSolarMonthInfo & what);
-    friend const QDBusArgument &operator>>(const QDBusArgument & argument, CaSolarMonthInfo & what);
+    friend QDebug operator<<(QDebug argument, const CaSolarMonthInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaSolarMonthInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaSolarMonthInfo &what);
 
 
 public:
@@ -117,6 +120,46 @@ public:
     QList<CaYearInfo> mCaYearInfo;
 };
 
+class CaHuangLiDayInfo
+{
+public:
+    CaHuangLiDayInfo() {}
+    inline static void registerMetaType();
+    friend QDebug operator<<(QDebug argument, const CaHuangLiDayInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiDayInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiDayInfo &what);
+public:
+    QString mGanZhiYear;
+    QString mGanZhiMonth;
+    QString mGanZhiDay;
+    QString mLunarMonthName;
+    QString mLunarDayName;
+    qint32 mLunarLeapMonth;
+    QString mZodiac;
+    QString mTerm;
+    QString mSolarFestival;
+    QString mLunarFestival;
+    qint32 mWorktime;
+    QString mSuit;
+    QString mAvoid;
+};
+
+class CaHuangLiMonthInfo
+{
+public:
+    CaHuangLiMonthInfo() {}
+    inline static void registerMetaType();
+
+    friend QDebug operator<<(QDebug argument, const CaHuangLiMonthInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiMonthInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiMonthInfo &what);
+public:
+    qint32 mFirstDayWeek;
+    qint32 mDays;
+    QList<CaHuangLiDayInfo> mCaLunarDayInfo;
+};
+
+
 /*
  * Proxy class for interface com.deepin.api.LunarCalendar
  */
@@ -124,28 +167,30 @@ class CalendarDBus: public QDBusAbstractInterface
 {
     Q_OBJECT
 
-    Q_SLOT void __propertyChanged__(const QDBusMessage& msg)
+    Q_SLOT void __propertyChanged__(const QDBusMessage &msg)
     {
         QList<QVariant> arguments = msg.arguments();
         if (3 != arguments.count())
             return;
         QString interfaceName = msg.arguments().at(0).toString();
-        if (interfaceName !="com.deepin.api.LunarCalendar")
+        if (interfaceName != "com.deepin.api.LunarCalendar")
             return;
         QVariantMap changedProps = qdbus_cast<QVariantMap>(arguments.at(1).value<QDBusArgument>());
-        foreach(const QString &prop, changedProps.keys()) {
-        const QMetaObject* self = metaObject();
-            for (int i=self->propertyOffset(); i < self->propertyCount(); ++i) {
+        foreach (const QString &prop, changedProps.keys()) {
+            const QMetaObject *self = metaObject();
+            for (int i = self->propertyOffset(); i < self->propertyCount(); ++i) {
                 QMetaProperty p = self->property(i);
                 if (p.name() == prop) {
- 	            Q_EMIT p.notifySignal().invoke(this);
+                    Q_EMIT p.notifySignal().invoke(this);
                 }
             }
         }
-   }
+    }
 public:
     static inline const char *staticInterfaceName()
-    { return "com.deepin.api.LunarCalendar"; }
+    {
+        return "com.deepin.api.LunarCalendar";
+    }
 
 public:
     CalendarDBus(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
@@ -238,21 +283,166 @@ public Q_SLOTS: // METHODS
         }
         return reply;
     }
+    inline bool GetHuangLiMonthCalendar(int in0, int in1, bool in2, CaHuangLiMonthInfo &out)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
+        QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetHuangLiMonth"), argumentList);
+        if (reply.type() != QDBusMessage::ReplyMessage ) {
+            return false;
+        }
+        QDBusReply<QString> huanglimonth =  reply;
+        if (!huanglimonth.isValid()) return false;
+        QJsonParseError json_error;
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(huanglimonth.value().toLocal8Bit(), &json_error));
+
+        if (json_error.error != QJsonParseError::NoError) {
+            return false;
+        }
+
+        QJsonObject rootObj = jsonDoc.object();
+
+        //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+        if (rootObj.contains("Days")) {
+            out.mDays = rootObj.value("Days").toInt();
+        }
+        if (rootObj.contains("FirstDayWeek")) {
+            out.mFirstDayWeek = rootObj.value("FirstDayWeek").toInt();
+        }
+        if (rootObj.contains("Datas")) {
+            QJsonArray subArray = rootObj.value("Datas").toArray();
+            for (int i = 0; i < subArray.size(); i++) {
+
+                QJsonObject subObj = subArray.at(i).toObject();
+
+                CaHuangLiDayInfo huangliday;
+
+                //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+                if (subObj.contains("Suit")) {
+                    huangliday.mSuit = subObj.value("Suit").toString();
+                }
+                if (subObj.contains("Avoid")) {
+                    huangliday.mAvoid = subObj.value("Avoid").toString();
+                }
+                if (subObj.contains("Worktime")) {
+                    huangliday.mWorktime = subObj.value("Worktime").toInt();
+                }
+                if (subObj.contains("LunarFestival")) {
+                    huangliday.mLunarFestival = subObj.value("LunarFestival").toString();
+                }
+                if (subObj.contains("SolarFestival")) {
+                    huangliday.mSolarFestival = subObj.value("SolarFestival").toString();
+                }
+                if (subObj.contains("Term")) {
+                    huangliday.mTerm = subObj.value("Term").toString();
+                }
+                if (subObj.contains("Zodiac")) {
+                    huangliday.mZodiac = subObj.value("Zodiac").toString();
+                }
+                if (subObj.contains("LunarLeapMonth")) {
+                    huangliday.mLunarLeapMonth = subObj.value("LunarLeapMonth").toInt();
+                }
+                if (subObj.contains("LunarDayName")) {
+                    huangliday.mLunarDayName = subObj.value("LunarDayName").toString();
+                }
+                if (subObj.contains("LunarMonthName")) {
+                    huangliday.mLunarMonthName = subObj.value("LunarMonthName").toString();
+                }
+                if (subObj.contains("GanZhiDay")) {
+                    huangliday.mGanZhiDay = subObj.value("GanZhiDay").toString();
+                }
+                if (subObj.contains("GanZhiMonth")) {
+                    huangliday.mGanZhiMonth = subObj.value("GanZhiMonth").toString();
+                }
+                if (subObj.contains("GanZhiYear")) {
+                    huangliday.mGanZhiYear = subObj.value("GanZhiYear").toString();
+                }
+                out.mCaLunarDayInfo.append(huangliday);
+            }
+        }
+
+        return true;
+    }
+
+    inline bool GetHuangLiDayCalendar(qint32 in0, qint32 in1, qint32 in2, CaHuangLiDayInfo &out)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
+        QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetHuangLiDay"), argumentList);
+        if (reply.type() != QDBusMessage::ReplyMessage ) {
+            return  false;
+        }
+        QDBusReply<QString> huangliday =  reply;
+        if (!huangliday.isValid()) return false;
+        QJsonParseError json_error;
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(huangliday.value().toLocal8Bit(), &json_error));
+
+        if (json_error.error != QJsonParseError::NoError) {
+            return false;
+        }
+
+        QJsonObject rootObj = jsonDoc.object();
+
+        //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+        if (rootObj.contains("Suit")) {
+            out.mSuit = rootObj.value("Suit").toString();
+        }
+        if (rootObj.contains("Avoid")) {
+            out.mAvoid = rootObj.value("Avoid").toString();
+        }
+        if (rootObj.contains("Worktime")) {
+            out.mWorktime = rootObj.value("Worktime").toInt();
+        }
+        if (rootObj.contains("LunarFestival")) {
+            out.mLunarFestival = rootObj.value("LunarFestival").toString();
+        }
+        if (rootObj.contains("SolarFestival")) {
+            out.mSolarFestival = rootObj.value("SolarFestival").toString();
+        }
+        if (rootObj.contains("Term")) {
+            out.mTerm = rootObj.value("Term").toString();
+        }
+        if (rootObj.contains("Zodiac")) {
+            out.mZodiac = rootObj.value("Zodiac").toString();
+        }
+        if (rootObj.contains("LunarLeapMonth")) {
+            out.mLunarLeapMonth = rootObj.value("LunarLeapMonth").toInt();
+        }
+        if (rootObj.contains("LunarDayName")) {
+            out.mLunarDayName = rootObj.value("LunarDayName").toString();
+        }
+        if (rootObj.contains("LunarMonthName")) {
+            out.mLunarMonthName = rootObj.value("LunarMonthName").toString();
+        }
+        if (rootObj.contains("GanZhiDay")) {
+            out.mGanZhiDay = rootObj.value("GanZhiDay").toString();
+        }
+        if (rootObj.contains("GanZhiMonth")) {
+            out.mGanZhiMonth = rootObj.value("GanZhiMonth").toString();
+        }
+        if (rootObj.contains("GanZhiYear")) {
+            out.mGanZhiYear = rootObj.value("GanZhiYear").toString();
+        }
+        return true;
+    }
+
 
 Q_SIGNALS: // SIGNALS
 // begin property changed signals
 };
 
 namespace com {
-  namespace deepin {
-    namespace api {
-      typedef ::CalendarDBus LunarCalendar;
-    }
-  }
+namespace deepin {
+namespace api {
+typedef ::CalendarDBus LunarCalendar;
+}
+}
 }
 
 Q_DECLARE_METATYPE(CaYearInfo)
 Q_DECLARE_METATYPE(CaLunarDayInfo)
 Q_DECLARE_METATYPE(CaLunarMonthInfo)
 Q_DECLARE_METATYPE(CaSolarMonthInfo)
+Q_DECLARE_METATYPE(CaHuangLiDayInfo)
+Q_DECLARE_METATYPE(CaHuangLiMonthInfo)
 #endif
