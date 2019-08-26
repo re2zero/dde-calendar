@@ -51,8 +51,20 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
     hboxLayout->setSpacing(0);
 
     m_monthLabel = new DLabel(this);
-    m_monthLabel->setFixedSize(DDEWeekCalendar::WMCellHeadrWidth, DDEWeekCalendar::WCellHeaderItemHeight);
-    m_monthLabel->setStyleSheet("color:#000000;background: rgb(230,238,242);");
+    m_monthLabel->setFixedSize(DDEWeekCalendar::WMCellHeadrWidth - 5, DDEWeekCalendar::WCellHeaderItemHeight);
+    m_monthLabel->setAlignment(Qt::AlignCenter);
+    QPalette monthpa = m_monthLabel->palette();
+    QColor textC = monthpa.color(QPalette::Text);
+    QColor textbC(230, 238, 242);
+    monthpa.setColor(QPalette::WindowText, textC);
+    monthpa.setColor(QPalette::Background, textbC);
+    m_monthLabel->setAutoFillBackground(true);
+    m_monthLabel->setPalette(monthpa);
+    QFont mlabelF;
+    mlabelF.setFamily("SourceHanSansSC-Medium");
+    mlabelF.setPixelSize(20);
+    m_monthLabel->setFont(mlabelF);
+    // m_monthLabel->setStyleSheet("color:#000000;background: rgb(230,238,242);");
     hboxLayout->addWidget(m_monthLabel);
     for (int c = 0; c != 7; ++c) {
         QWidget *cell = new QWidget(this);

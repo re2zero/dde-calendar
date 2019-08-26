@@ -81,7 +81,7 @@ private:
     QColor m_selectedTextColor = Qt::white;
     QColor m_festivalTextColor = Qt::black;
     QColor m_notCurrentTextColor = "#b2b2b2";
-    int m_firstWeekDay;
+    int m_firstWeekDay = 0;
 };
 
 #endif // YEARVIEW_H
