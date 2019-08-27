@@ -42,6 +42,17 @@ void CDayWindow::setDate(QDate date)
     m_scheduleView->setRange(w, 1032, m_currentdate, m_currentdate);
 }
 
+void CDayWindow::setSearchWFlag(bool flag)
+{
+    m_schceduleSearchView->setVisible(flag);
+}
+
+void CDayWindow::setSearchText(QString str)
+{
+    m_searchText = str;
+    m_schceduleSearchView->slotsetSearch(str);
+}
+
 void CDayWindow::initUI()
 {
     m_contentBackground = new QFrame;
@@ -111,7 +122,7 @@ void CDayWindow::initUI()
     m_schceduleSearchView = new CSchceduleSearchView(this);
     m_schceduleSearchView->setFixedWidth(200);
     mainLayout->addWidget(m_schceduleSearchView);
-    //m_schceduleSearchView->setVisible(false);
+    m_schceduleSearchView->setVisible(false);
 
 
     m_contentBackground->setLayout(mainLayout);
@@ -125,6 +136,7 @@ void CDayWindow::initConnection()
     connect(m_daymonthView, &CDayMonthView::signalcurrentLunarDateChanged, this, &CDayWindow::slotcurrentDateLunarChanged);
     connect(m_daymonthView, &CDayMonthView::signalcurrentDateChanged, this, &CDayWindow::slotcurrentDateChanged);
     connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSchedule);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSearchSchedule);
 }
 
 
@@ -135,6 +147,14 @@ void CDayWindow::slotupdateSchedule(int id)
 
 void CDayWindow::slotTransitSchedule(int id)
 {
+    m_schceduleSearchView->slotsetSearch(m_searchText);
+    emit signalsWUpdateShcedule(this, id);
+}
+
+void CDayWindow::slotTransitSearchSchedule(int id)
+{
+    m_scheduleView->slotupdateSchedule();
+    m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
 }
 

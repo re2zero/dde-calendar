@@ -27,13 +27,15 @@
 #include <QRect>
 #include "dbmanager.h"
 #include "schceduledlg.h"
-CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent /*= nullptr*/ ): QPushButton(parent)
+CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent /*= nullptr*/ ): DLabel(parent)
 {
     //setMargin(0);
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
+    //setFlat(true);
+
 }
 
 void CSchceduleSearchItem::setBackgroundColor(QColor color1)
@@ -59,6 +61,7 @@ void CSchceduleSearchItem::slotEdit()
     dlg.setData(m_ScheduleInfo);
     if (dlg.exec() == DDialog::Accepted) {
         ScheduleInfo info = dlg.getData();
+        info.id = m_ScheduleInfo.id;
         ScheduleDbManager::updateScheduleInfo(info);
         emit signalsEdit(this);
     }
@@ -89,15 +92,29 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     QDate enddate = m_ScheduleInfo.endDateTime.date();
     QString datestr;
     if (begindate  == enddate) {
-        datestr = begindate.toString("yyyy-MM-d") + m_ScheduleInfo.beginDateTime.toString("hh:mm")
+        datestr = begindate.toString("yyyy-MM-d") + " " + m_ScheduleInfo.beginDateTime.toString("hh:mm")
                   + "-" + m_ScheduleInfo.endDateTime.toString("hh:mm");
     } else {
-        datestr = begindate.toString("yyyy-MM-d") + m_ScheduleInfo.beginDateTime.toString("hh:mm")
-                  + "-" + enddate.toString("yyyy-MM-d") + m_ScheduleInfo.endDateTime.toString("hh:mm");
+        datestr = begindate.toString("yyyy-MM-d") + " " + m_ScheduleInfo.beginDateTime.toString("hh:mm")
+                  + "-" + enddate.toString("yyyy-MM-d") + " " + m_ScheduleInfo.endDateTime.toString("hh:mm");
     }
 
     painter.drawText(QRect(2, 2, labelwidth, labelheight / 2), Qt::AlignLeft, datestr);
-    painter.drawText(QRect(2, 2 + labelheight / 2, labelwidth, labelheight / 2), Qt::AlignLeft, m_ScheduleInfo.titleName);
+
+    QFontMetrics fm = painter.fontMetrics();
+    QString str =  m_ScheduleInfo.titleName;
+    if (fm.width(str) > width()) {
+        int widthT = fm.width(str);
+        int singlecharw = widthT * 1.0 / str.count();
+        int rcharcount = width() * 1.0 / singlecharw;
+        QString tstr;
+        for (int i = 0; i < rcharcount - 8; i++) {
+            tstr.append(str.at(i));
+        }
+        str = tstr + "...";
+    }
+
+    painter.drawText(QRect(2, 2 + labelheight / 2, labelwidth, labelheight / 2), Qt::AlignLeft, str);
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -109,7 +126,8 @@ void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout;
-
+    layout->setMargin(0);
+    layout->setSpacing(0);
     m_gradientItemList = new QListWidget(parent);
     m_gradientItemList->setAlternatingRowColors(true);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -138,10 +156,31 @@ void CSchceduleSearchView::updateDateShow()
     for (int i = 0; i < m_vlistData.size(); ++i) {
         CSchceduleSearchItem *gwi = createItemWidget(i, true);
         QListWidgetItem *listItem = new QListWidgetItem;
+        listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 30)); //每次改变Item的高度
+        //listItem->setBackgroundColor(Qt::white);
+        listItem->setFlags(Qt::ItemIsTristate );
         m_gradientItemList->addItem(listItem);
         m_gradientItemList->setItemWidget(listItem, gwi);
     }
-
+    if (m_gradientItemList->count() == 0) {
+        QListWidgetItem *listItem = new QListWidgetItem;
+        DLabel *gwi = new DLabel();
+        QFont font("PingFangSC-Light");
+        font.setPixelSize(10);
+        gwi->setAlignment(Qt::AlignCenter);
+        QPalette daypa;
+        daypa.setColor(QPalette::WindowText,  Qt::black);
+        daypa.setColor(QPalette::Window, Qt::white);
+        gwi->setPalette(daypa);
+        gwi->setFont(font);
+        gwi->setText(tr("No search results"));
+        gwi->setFixedSize(m_gradientItemList->width() - 5, 80);
+        listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 80)); //每次改变Item的高度
+        //listItem->setBackgroundColor(Qt::white);
+        listItem->setFlags(Qt::ItemIsTristate );
+        m_gradientItemList->addItem(listItem);
+        m_gradientItemList->setItemWidget(listItem, gwi);
+    }
 }
 
 CSchceduleSearchItem *CSchceduleSearchView::createItemWidget(int index, bool average)
@@ -150,10 +189,10 @@ CSchceduleSearchItem *CSchceduleSearchView::createItemWidget(int index, bool ave
     CSchceduleSearchItem *gwi = new CSchceduleSearchItem();
     QFont font("PingFangSC-Light");
     font.setPixelSize(10);
-    gwi->setBackgroundColor(Qt::white);
+    gwi->setBackgroundColor(ScheduleDbManager::getTypeColor(gd.infotype));
 
     gwi->setText(QColor("#000000"), font);
-    gwi->setFixedSize(width(), height());
+    gwi->setFixedSize(m_gradientItemList->width() - 5, 30);
     gwi->setData(gd);
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
     connect(gwi, &CSchceduleSearchItem::signalsEdit, this, &CSchceduleSearchView::slotedititem);

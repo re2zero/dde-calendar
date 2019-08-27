@@ -37,6 +37,9 @@ public:
     CDayWindow(QWidget *parent = 0);
     ~CDayWindow();
     void setDate(QDate date);
+    void setSearchWFlag(bool flag);
+    void setSearchText(QString str);
+private:
     void initUI();
     void initConnection();
 signals:
@@ -45,6 +48,7 @@ signals:
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
+    void slotTransitSearchSchedule(int id = 0);
 private slots:
     void slotcurrentDateLunarChanged(QDate date,  CaHuangLiDayInfo detail, int type = 0);
     void slotcurrentDateChanged(QDate date);
@@ -57,6 +61,7 @@ private:
     DLabel            *m_SolarDay;
     CScheduleView     *m_scheduleView;
     CSchceduleSearchView *m_schceduleSearchView;
+    QString           m_searchText;
 };
 
 #endif // YEARWINDOW_H

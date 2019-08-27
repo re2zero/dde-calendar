@@ -49,6 +49,8 @@ private:
 private slots:
     void slotstackWClicked(int index);
     void slotWUpdateShcedule(QMainWindow *w, int id = 0);
+    void slotSreturnPressed();
+    void slotStextChanged();
 private:
     QLabel                    *m_icon;
     QStackedWidget              *m_stackWidget;

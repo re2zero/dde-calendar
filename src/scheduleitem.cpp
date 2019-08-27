@@ -66,7 +66,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     QRect rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime);
     painter->drawRect(rect);
     painter->save();
-    QPen pen(QColor((251, 37, 37, 127)));
+    QPen pen(QColor("#B54A4B"));
     pen.setWidth(2);
     painter->setPen(pen);
     painter->drawLine(rect.topLeft(), rect.bottomLeft());

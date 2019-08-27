@@ -103,6 +103,8 @@ void Calendarmainwindow::initConnection()
     connect(m_weekWindow, &CWeekWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     connect(m_monthWindow, &CMonthWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     connect(m_DayWindow, &CDayWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
+    connect(m_searchEdit, &DSearchEdit::returnPressed, this, &Calendarmainwindow::slotSreturnPressed);
+    connect(m_searchEdit, &DSearchEdit::textChanged, this, &Calendarmainwindow::slotStextChanged);
 }
 
 void Calendarmainwindow::initLunar()
@@ -170,4 +172,15 @@ void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
         m_monthWindow->slotupdateSchedule(id);
     if (w != m_DayWindow)
         m_DayWindow->slotupdateSchedule(id);
+}
+
+void Calendarmainwindow::slotSreturnPressed()
+{
+    m_DayWindow->setSearchText(m_searchEdit->text());
+}
+
+void Calendarmainwindow::slotStextChanged()
+{
+    m_stackWidget->setCurrentIndex(3);
+    m_DayWindow->setSearchWFlag(!m_searchEdit->text().isEmpty());
 }

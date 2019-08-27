@@ -19,10 +19,11 @@
 #ifndef SCHCEDULESEARCHVIEW_H
 #define SCHCEDULESEARCHVIEW_H
 
-#include <QLabel>
+#include <DLabel>
 #include <QPushButton>
 #include "schedulestructs.h"
 #include <QListWidget>
+DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CSchceduleSearchItem;
 class CSchceduleSearchView : public QWidget
@@ -49,7 +50,7 @@ private:
     QDate                                        m_currentDate;
 };
 
-class CSchceduleSearchItem : public QPushButton
+class CSchceduleSearchItem : public DLabel
 {
     Q_OBJECT
 

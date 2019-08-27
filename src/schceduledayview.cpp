@@ -119,7 +119,7 @@ void CSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             int singlecharw = widthT * 1.0 / str.count();
             int rcharcount = width() * 1.0 / singlecharw;
             QString tstr;
-            for (int i = 0; i < rcharcount - 3; i++) {
+            for (int i = 0; i < rcharcount - 8; i++) {
                 tstr.append(str.at(i));
             }
             str = tstr + "...";
@@ -142,7 +142,7 @@ void CSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             int singlecharw = widthT * 1.0 / str.count();
             int rcharcount = width() * 1.0 / singlecharw;
             QString tstr;
-            for (int i = 0; i < rcharcount - 3; i++) {
+            for (int i = 0; i < rcharcount - 8; i++) {
                 tstr.append(str.at(i));
             }
             str = tstr + "...";
