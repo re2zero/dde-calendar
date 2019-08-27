@@ -31,9 +31,11 @@
 #include <dpushbutton.h>
 #include <dtextbutton.h>
 #include <QButtonGroup>
+#include <DArrowButton>
 //#include <DDateEdit>
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
+class CCalendarTimeEidt;
 class CSchceduleDlg : public DDialog
 {
 public:
@@ -45,6 +47,14 @@ public slots:
     void slotCancelBt();
     void slotOkBt();
     void slotTextChange();
+    void slotBeginTimeBt();
+    void slotEndTimeBt();
+    void slotBCalendarTimeEidtInfo();
+    void slotECalendarTimeEidtInfo();
+    void slotBTimeEidtInfo(const QTime &time);
+    void slotETimeEidtInfo(const QTime &time);
+protected:
+    void focusInEvent(QFocusEvent *event);
 private:
     void initUI();
     void initConnection();
@@ -74,6 +84,13 @@ private:
     QRadioButton                     *m_everyyearBt = nullptr;
     DTextButton                      *m_cancelBt = nullptr;
     DTextButton                      *m_OkBt = nullptr;
+    DArrowButton                     *m_beginTimeEidtBt;
+    DArrowButton                     *m_endTimeEidtBt;
+
+    bool                             m_btimeeditflag = false;
+    bool                             m_etimeeditflag = false;
+    CCalendarTimeEidt                *m_bCalendarTimeEidt;
+    CCalendarTimeEidt                *m_eCalendarTimeEidt;
 private:
     ScheduleInfo                     m_scheduleInfo;//日程
     int                              m_type; //0新建 1 编辑日程

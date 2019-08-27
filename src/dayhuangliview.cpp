@@ -54,6 +54,8 @@ void CDayHuangLiLabel::setHuangLiText(QStringList vhuangli, int type)
             str += "." + vhuangli.at(i);
         }
         setToolTip(str);
+    } else {
+        setToolTip(QString());
     }
     update();
 }

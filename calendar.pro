@@ -50,7 +50,10 @@ HEADERS += src/calendardbus.h \
     src/daymonthview.h \
     src/schcedulesearchview.h \
     src/dayhuangliview.h \
-    src/daywindow.h
+    src/daywindow.h \
+    src/verticalscroll.h \
+    src/calendartimeeidt.h \
+    src/verticalscrolltext.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \
            src/calendarwindow.cpp \
@@ -79,7 +82,10 @@ SOURCES += src/calendardbus.cpp \
     src/daymonthview.cpp \
     src/schcedulesearchview.cpp \
     src/dayhuangliview.cpp \
-    src/daywindow.cpp
+    src/daywindow.cpp \
+    src/verticalscrolltext.cpp \
+    src/calendartimeeidt.cpp \
+    src/verticalscroll.cpp
 RESOURCES += src/resources.qrc
 TRANSLATIONS += translations/dde-calendar.ts \
                 translations/desktop/desktop_zh_CN.ts

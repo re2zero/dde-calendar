@@ -20,6 +20,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include "calendartimeeidt.h"
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
     initUI();
@@ -36,6 +37,7 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
     } else {
         setTitle(tr("Edit Schcedule"));
     }
+    setFocusPolicy(Qt::WheelFocus);
 }
 
 void CSchceduleDlg::setData(const ScheduleInfo &info)
@@ -123,6 +125,69 @@ void CSchceduleDlg::slotTextChange()
     }
 }
 
+void CSchceduleDlg::slotBeginTimeBt()
+{
+    m_btimeeditflag = !m_btimeeditflag;
+
+    if (m_btimeeditflag) {
+        int px = m_beginTimeEdit->x();
+        int py = m_beginTimeEdit->y();
+        QPoint pos = mapToGlobal(QPoint(px, py));
+        m_bCalendarTimeEidt->setTime(m_beginTimeEdit->time());
+        m_bCalendarTimeEidt->move(pos.x() + 20, pos.y() + 2 * m_beginTimeEdit->height() + 15);
+        m_bCalendarTimeEidt->show();
+    } else {
+        m_bCalendarTimeEidt->hide();
+    }
+}
+
+void CSchceduleDlg::slotEndTimeBt()
+{
+    m_etimeeditflag = !m_etimeeditflag;
+
+    if (m_etimeeditflag) {
+        int px = m_endTimeEdit->x();
+        int py = m_endTimeEdit->y();
+        QPoint pos = mapToGlobal(QPoint(px, py));
+        m_eCalendarTimeEidt->setTime(m_endTimeEdit->time());
+        m_eCalendarTimeEidt->move(pos.x() + 20, pos.y() + 2 * m_endTimeEdit->height() + 15);
+        m_eCalendarTimeEidt->show();
+    } else {
+        m_eCalendarTimeEidt->hide();
+    }
+}
+
+void CSchceduleDlg::slotBCalendarTimeEidtInfo()
+{
+    if (m_bCalendarTimeEidt->getCrrentAMorPm() == tr("AM")) {
+        QTime time(m_bCalendarTimeEidt->getHour(), m_bCalendarTimeEidt->getMin());
+        m_beginTimeEdit->setTime(time);
+    } else {
+        QTime time(m_bCalendarTimeEidt->getHour() + 12, m_bCalendarTimeEidt->getMin());
+
+        m_beginTimeEdit->setTime(time);
+    }
+}
+
+void CSchceduleDlg::slotECalendarTimeEidtInfo()
+{
+    if (m_eCalendarTimeEidt->getCrrentAMorPm() == tr("AM")) {
+        m_endTimeEdit->setTime(QTime(m_eCalendarTimeEidt->getHour(), m_eCalendarTimeEidt->getMin()));
+    } else {
+        m_endTimeEdit->setTime(QTime(m_eCalendarTimeEidt->getHour() + 12, m_eCalendarTimeEidt->getMin()));
+    }
+}
+
+void CSchceduleDlg::slotBTimeEidtInfo(const QTime &time)
+{
+    m_bCalendarTimeEidt->setTime(time);
+}
+
+void CSchceduleDlg::slotETimeEidtInfo(const QTime &time)
+{
+    m_eCalendarTimeEidt->setTime(time);
+}
+
 void CSchceduleDlg::initUI()
 {
 
@@ -151,10 +216,18 @@ void CSchceduleDlg::initUI()
     m_beginTimeEdit = new QTimeEdit(this);
     m_beginDateEdit->setCalendarPopup(true);
     //m_beginTimeEdit->setCalendarPopup(true);
-    m_beginDateEdit->setDisplayFormat("yyyy/MM/dd");
-    m_beginTimeEdit->setDisplayFormat("HH:mm:ss");
+    m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
+    m_beginTimeEdit->setDisplayFormat("HH:mm");
+    m_beginTimeEdit->setButtonSymbols(QAbstractSpinBox::NoButtons);
     begintimelayout->addWidget(m_beginDateEdit, 1);
-    begintimelayout->addWidget(m_beginTimeEdit, 1);
+    QHBoxLayout *begintimeelayout  = new QHBoxLayout;
+    begintimeelayout->addWidget(m_beginTimeEdit);
+    m_beginTimeEidtBt = new DArrowButton;
+    m_beginTimeEidtBt->setFixedWidth(20);
+    m_beginTimeEidtBt->setArrowDirection(DArrowButton::ArrowDown);
+    begintimeelayout->addWidget(m_beginTimeEidtBt);
+    begintimelayout->addLayout(begintimeelayout, 1);
+
     rightlayout->addLayout(begintimelayout);
 
     m_endTimeLabel = new DLabel (tr("End Time:"));
@@ -164,10 +237,19 @@ void CSchceduleDlg::initUI()
     m_endTimeEdit = new QTimeEdit(this);
     m_endDateEdit->setCalendarPopup(true);
     // m_endTimeEdit->setCalendarPopup(true);
-    m_endDateEdit->setDisplayFormat("yyyy/MM/dd");
-    m_endTimeEdit->setDisplayFormat("HH:mm:ss");
+    m_endDateEdit->setDisplayFormat("yyyy-MM-dd");
+    m_endTimeEdit->setDisplayFormat("HH:mm");
+    m_endTimeEdit->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    m_endTimeEidtBt = new DArrowButton;
+    m_endTimeEidtBt->setFixedWidth(20);
+    m_endTimeEidtBt->setArrowDirection(DArrowButton::ArrowDown);
+    QHBoxLayout *endtimeelayout  = new QHBoxLayout;
+
     endtimelayout->addWidget(m_endDateEdit, 1);
-    endtimelayout->addWidget(m_endTimeEdit, 1);
+    endtimeelayout->addWidget(m_endTimeEdit);
+    endtimeelayout->addWidget(m_endTimeEidtBt);
+    endtimelayout->addLayout(endtimeelayout, 1);
+
     rightlayout->addLayout(endtimelayout);
 
     m_remindSetLabel = new DLabel (tr("Remind Set:"));
@@ -222,6 +304,16 @@ void CSchceduleDlg::initUI()
     maintlayout->addLayout(downlayout);
     gwi->setLayout(maintlayout);
     addContent(gwi);
+    m_bCalendarTimeEidt = new CCalendarTimeEidt(m_beginTimeEdit);
+    m_eCalendarTimeEidt = new CCalendarTimeEidt(m_endTimeEdit);
+    m_bCalendarTimeEidt->setFixedSize(268, 300);
+    m_eCalendarTimeEidt->setFixedSize(268, 300);
+    m_bCalendarTimeEidt->hide();
+    m_eCalendarTimeEidt->hide();
+    m_bCalendarTimeEidt->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    //m_bCalendarTimeEidt->setAttribute(Qt::WA_TranslucentBackground);
+    m_eCalendarTimeEidt->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    //m_bCalendarTimeEidt->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 void CSchceduleDlg::initConnection()
@@ -229,4 +321,24 @@ void CSchceduleDlg::initConnection()
     connect(m_cancelBt, &DTextButton::clicked, this, &CSchceduleDlg::slotCancelBt);
     connect(m_OkBt, &DTextButton::clicked, this, &CSchceduleDlg::slotOkBt);
     connect(m_textEdit, &DTextEdit::textChanged, this, &CSchceduleDlg::slotTextChange);
+    connect(m_beginTimeEidtBt, &DArrowButton::mousePress, this, &CSchceduleDlg::slotBeginTimeBt);
+    connect(m_endTimeEidtBt, &DArrowButton::mousePress, this, &CSchceduleDlg::slotEndTimeBt);
+    connect(m_bCalendarTimeEidt, &CCalendarTimeEidt::currentTValueChanged, this, &CSchceduleDlg::slotBCalendarTimeEidtInfo);
+    connect(m_bCalendarTimeEidt, &CCalendarTimeEidt::currentHValueChanged, this, &CSchceduleDlg::slotBCalendarTimeEidtInfo);
+    connect(m_bCalendarTimeEidt, &CCalendarTimeEidt::currentMValueChanged, this, &CSchceduleDlg::slotBCalendarTimeEidtInfo);
+
+    connect(m_eCalendarTimeEidt, &CCalendarTimeEidt::currentTValueChanged, this, &CSchceduleDlg::slotECalendarTimeEidtInfo);
+    connect(m_eCalendarTimeEidt, &CCalendarTimeEidt::currentHValueChanged, this, &CSchceduleDlg::slotECalendarTimeEidtInfo);
+    connect(m_eCalendarTimeEidt, &CCalendarTimeEidt::currentMValueChanged, this, &CSchceduleDlg::slotECalendarTimeEidtInfo);
+
+    //connect(m_beginTimeEdit, &QTimeEdit::userTimeChanged, this, &CSchceduleDlg::slotBTimeEidtInfo);
+    //connect(m_endTimeEdit, &QTimeEdit::userTimeChanged, this, &CSchceduleDlg::slotETimeEidtInfo);
+
+}
+void CSchceduleDlg::focusInEvent(QFocusEvent *event)
+{
+    m_eCalendarTimeEidt->hide();
+    m_bCalendarTimeEidt->hide();
+    m_btimeeditflag = false;
+    m_etimeeditflag = false;
 }
