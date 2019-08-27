@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
     DApplication a(argc, argv);
     a.setOrganizationName("deepin");
     a.setApplicationName("dde-calendar");
-    a.setApplicationVersion(DApplication::buildVersion("1.1"));
     a.loadTranslator();
+    a.setApplicationVersion(DApplication::buildVersion("1.1"));
     //QList<QLocale> localeFallback = QList<QLocale>() << QLocale::system();
     // meta information that necessary to create the about dialog.
     a.setProductName(QApplication::translate("CalendarWindow", "Deepin Calendar"));

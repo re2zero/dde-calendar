@@ -42,7 +42,6 @@ HEADERS += src/calendardbus.h \
     src/scheduleitem.h \
     src/graphicsview.h \
     src/scheduleview.h \
-    src/schceduledlg.h \
     src/schceduledayview.h \
     src/weekheadview.h \
     src/weekview.h \
@@ -53,7 +52,8 @@ HEADERS += src/calendardbus.h \
     src/daywindow.h \
     src/verticalscroll.h \
     src/calendartimeeidt.h \
-    src/verticalscrolltext.h
+    src/verticalscrolltext.h \
+    src/schceduledlg.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \
            src/calendarwindow.cpp \

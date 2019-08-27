@@ -38,6 +38,7 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
         setTitle(tr("Edit Schcedule"));
     }
     setFocusPolicy(Qt::WheelFocus);
+    setFixedSize(550, 460);
 }
 
 void CSchceduleDlg::setData(const ScheduleInfo &info)
@@ -306,8 +307,8 @@ void CSchceduleDlg::initUI()
     addContent(gwi);
     m_bCalendarTimeEidt = new CCalendarTimeEidt(m_beginTimeEdit);
     m_eCalendarTimeEidt = new CCalendarTimeEidt(m_endTimeEdit);
-    m_bCalendarTimeEidt->setFixedSize(268, 300);
-    m_eCalendarTimeEidt->setFixedSize(268, 300);
+    m_bCalendarTimeEidt->setFixedSize(200, 300);
+    m_eCalendarTimeEidt->setFixedSize(200, 300);
     m_bCalendarTimeEidt->hide();
     m_eCalendarTimeEidt->hide();
     m_bCalendarTimeEidt->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);

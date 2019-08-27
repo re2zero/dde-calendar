@@ -26,7 +26,7 @@ CCalendarTimeEidt::CCalendarTimeEidt(QWidget *parent)
 {
     initUI();
     initConnection();
-    resize(300, 300);
+    resize(200, 300);
     //setFocus(Qt::PopupFocusReason);
     //setFocusPolicy(Qt::WheelFocus);
 }
@@ -79,7 +79,7 @@ void CCalendarTimeEidt::initUI()
     vboxlayout->setMargin(0);
     vboxlayout->addStretch(1);
     m_AmorPmW = new VerticalScrollText(NULL);
-    m_AmorPmW->setFixedSize(158, 150);
+    m_AmorPmW->setFixedSize(90, 150);
     QVector<QString> AMPM;
     AMPM.append(tr("AM"));
     AMPM.append(tr("PM"));

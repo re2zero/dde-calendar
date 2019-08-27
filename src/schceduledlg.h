@@ -38,6 +38,7 @@ DWIDGET_USE_NAMESPACE
 class CCalendarTimeEidt;
 class CSchceduleDlg : public DDialog
 {
+    Q_OBJECT
 public:
     CSchceduleDlg(int type, QWidget *parent = 0);
     void setData(const ScheduleInfo &info);
