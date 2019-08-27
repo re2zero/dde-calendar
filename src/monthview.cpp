@@ -495,7 +495,6 @@ void CMonthView::setSelectedCell(int index)
 
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
-
-    emit dateSelected(m_days[index], getCaLunarDayInfo(index));
     emit signalcurrentLunarDateChanged(m_days[index], getCaLunarDayInfo(getDateIndex(m_days[index])), 0);
+    emit dateSelected(m_days[index], getCaLunarDayInfo(index));
 }

@@ -39,6 +39,7 @@ public:
     ~CMonthWindow();
     void setFirstWeekday(int weekday);
     void setDate(QDate date);
+    void setLunarVisible(bool state);
 public slots:
     void previousMonth();
     void nextMonth();
@@ -53,6 +54,9 @@ private:
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
+    void signalsReturnTodayUpdate(QMainWindow *w);
+public slots:
+    void slotReturnTodayUpdate();
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);

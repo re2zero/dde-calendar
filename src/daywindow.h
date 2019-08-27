@@ -39,16 +39,20 @@ public:
     void setDate(QDate date);
     void setSearchWFlag(bool flag);
     void setSearchText(QString str);
+    void setLunarVisible(bool state);
 private:
     void initUI();
     void initConnection();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
+    void signalsReturnTodayUpdate(QMainWindow *w);
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
     void slotTransitSearchSchedule(int id = 0);
+    void slotReturnTodayUpdate();
+    void slotCurrentReturnDay();
 private slots:
     void slotcurrentDateLunarChanged(QDate date,  CaHuangLiDayInfo detail, int type = 0);
     void slotcurrentDateChanged(QDate date);

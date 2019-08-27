@@ -51,10 +51,12 @@ signals:
     void signalcurrentDateChanged(QDate date);
     void signalcurrentLunarDateChanged(QDate date,  CaHuangLiDayInfo detail, int type = 0);
     void cellSelectableChanged(bool cellSelectable) const;
+    void signalsReturnDay();
 public slots:
     void setCurrentDate(const QDate date, int type = 0);
     void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaHuangLiDayInfo &detail);
+    void slottoday();
 
 private:
     int getDateIndex(const QDate &date) const;
@@ -78,7 +80,6 @@ private slots:
     void setSelectedCell(int index);
     void slotprev();
     void slotnext();
-    void slottoday();
     void getDbusData();
 private:
     DArrowButton      *m_prevButton = nullptr;

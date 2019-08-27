@@ -48,6 +48,11 @@ void CWeekWindow::setFirstWeekday(int weekday)
     m_scheduleView->setFirstWeekday(weekday);
 }
 
+void CWeekWindow::setLunarVisible(bool state)
+{
+    m_weekHeadView->setLunarVisible(state);
+}
+
 void CWeekWindow::initUI()
 {
     m_contentBackground = new QFrame;
@@ -148,6 +153,11 @@ void CWeekWindow::initConnection()
     connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CWeekWindow::slotTransitSchedule);
 }
 
+void CWeekWindow::slotReturnTodayUpdate()
+{
+    setDate(QDate::currentDate());
+}
+
 void CWeekWindow::slotupdateSchedule(int id)
 {
     m_scheduleView->slotupdateSchedule(id);
@@ -176,6 +186,7 @@ void CWeekWindow::slotnext()
 
 void CWeekWindow::slottoday()
 {
+    emit signalsReturnTodayUpdate(this);
     setDate(QDate::currentDate());
 }
 

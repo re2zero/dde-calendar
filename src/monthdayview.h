@@ -29,6 +29,8 @@ public:
     explicit CMonthDayView(QWidget *parent = nullptr);
     ~CMonthDayView();
     void setCurrentDate(const QDate date);
+    void setRCurrentDate(const QDate date);
+
 public slots:
     void cellClicked(QWidget *cell);
 signals:
@@ -37,7 +39,7 @@ signals:
 private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);
-    void setSelectedCell(int index);
+    void setSelectedCell(int index, int type = 0);
 private:
     QList<QWidget *> m_cellList;
     QDate m_selectDate;

@@ -105,6 +105,10 @@ void Calendarmainwindow::initConnection()
     connect(m_DayWindow, &CDayWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &Calendarmainwindow::slotSreturnPressed);
     connect(m_searchEdit, &DSearchEdit::textChanged, this, &Calendarmainwindow::slotStextChanged);
+    connect(m_weekWindow, &CWeekWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
+    connect(m_monthWindow, &CMonthWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
+    connect(m_DayWindow, &CDayWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
+    connect(m_yearwindow, &CYearWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
 }
 
 void Calendarmainwindow::initLunar()
@@ -172,6 +176,18 @@ void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
         m_monthWindow->slotupdateSchedule(id);
     if (w != m_DayWindow)
         m_DayWindow->slotupdateSchedule(id);
+}
+
+void Calendarmainwindow::slotReturnTodyUpdate(QMainWindow *w)
+{
+    if (w != m_weekWindow)
+        m_weekWindow->slotReturnTodayUpdate();
+    if (w != m_monthWindow)
+        m_monthWindow->slotReturnTodayUpdate();
+    if (w != m_DayWindow)
+        m_DayWindow->slotReturnTodayUpdate();
+    if (w != m_yearwindow)
+        m_yearwindow->slotReturnTodayUpdate();
 }
 
 void Calendarmainwindow::slotSreturnPressed()

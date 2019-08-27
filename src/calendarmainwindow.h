@@ -49,6 +49,7 @@ private:
 private slots:
     void slotstackWClicked(int index);
     void slotWUpdateShcedule(QMainWindow *w, int id = 0);
+    void slotReturnTodyUpdate(QMainWindow *w);
     void slotSreturnPressed();
     void slotStextChanged();
 private:

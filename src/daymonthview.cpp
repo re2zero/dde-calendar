@@ -514,5 +514,6 @@ void CDayMonthView::slotnext()
 
 void CDayMonthView::slottoday()
 {
+    emit signalsReturnDay();
     setCurrentDate(QDate::currentDate());
 }

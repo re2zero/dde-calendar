@@ -66,6 +66,17 @@ void CMonthDayView::setCurrentDate(const QDate date)
     emit signalsCurrentDate(date);
 }
 
+void CMonthDayView::setRCurrentDate(const QDate date)
+{
+    if (m_selectDate == date) return;
+    m_selectDate = date;
+    for (int i = 0; i < 12; i++) {
+        m_days[i] = QDate(date.year(), i + 1, date.day());
+    }
+    setSelectedCell(m_selectDate.month() - 1, 1);
+    update();
+}
+
 void CMonthDayView::paintCell(QWidget *cell)
 {
     const QRect rect(0, 0, DDEMonthCalendar::MDayCellWidth, DDEMonthCalendar::MDayCellHeight);
@@ -128,7 +139,7 @@ void CMonthDayView::cellClicked(QWidget *cell)
     update();
 }
 
-void CMonthDayView::setSelectedCell(int index)
+void CMonthDayView::setSelectedCell(int index, int type)
 {
     if (m_selectedCell == index)
         return;
@@ -139,6 +150,7 @@ void CMonthDayView::setSelectedCell(int index)
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
     m_selectDate = m_days[index];
-    emit signalsSelectDate(m_days[index]);
+    if (type == 0)
+        emit signalsSelectDate(m_days[index]);
 }
 

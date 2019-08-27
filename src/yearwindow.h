@@ -45,6 +45,9 @@ public:
     void setLunarVisible(bool state);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
+    void signalsReturnTodayUpdate(QMainWindow *w);
+public slots:
+    void slotReturnTodayUpdate();
 private slots:
     void slotActiveW(CYearView *w);
     void slotprev();

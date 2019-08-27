@@ -175,6 +175,11 @@ void CYearWindow::setLunarVisible(bool state)
     m_YearLunarDayLabel->setVisible(state);
 }
 
+void CYearWindow::slotReturnTodayUpdate()
+{
+    setDate(QDate::currentDate());
+}
+
 void CYearWindow::slotActiveW(CYearView *w)
 {
     if (m_activeview == nullptr) {
@@ -210,6 +215,7 @@ void CYearWindow::slotnext()
 
 void CYearWindow::slottoday()
 {
+    emit signalsReturnTodayUpdate(this);
     setDate(QDate::currentDate());
 }
 

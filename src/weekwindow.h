@@ -42,11 +42,15 @@ public:
     ~CWeekWindow();
     void setDate(QDate date);
     void setFirstWeekday(int weekday);
+    void setLunarVisible(bool state);
     void initUI();
     void initConnection();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
+    void signalsReturnTodayUpdate(QMainWindow *w);
+public slots:
+    void slotReturnTodayUpdate();
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);

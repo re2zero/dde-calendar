@@ -51,6 +51,11 @@ void CMonthWindow::setDate(QDate date)
     m_monthDayView->setCurrentDate(date);
 }
 
+void CMonthWindow::setLunarVisible(bool state)
+{
+    m_monthView->setLunarVisible(state);
+}
+
 void CMonthWindow::previousMonth()
 {
     slideMonth(false);
@@ -164,6 +169,11 @@ void CMonthWindow::slideMonth(bool next)
     setDate(m_currentdate);
 }
 
+void CMonthWindow::slotReturnTodayUpdate()
+{
+    setDate(QDate::currentDate());
+}
+
 void CMonthWindow::slotupdateSchedule(int id)
 {
     m_monthView->slotSchceduleUpdate(id);
@@ -176,21 +186,26 @@ void CMonthWindow::slotTransitSchedule(int id)
 
 void CMonthWindow::slottoday()
 {
+    emit signalsReturnTodayUpdate(this);
     setDate(QDate::currentDate());
 }
 
 void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail, int type)
 {
+    QDate currentdate = m_currentdate;
     m_currentdate = date;
     if (type == 1) {
         m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
         m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
         m_animationContainer->hide();
-        if (date.month() != m_currentdate.month()
-                && date.year() == m_currentdate.year()) {
-            m_monthDayView->setCurrentDate(date);
+
+    } else if (type == 0) {
+        if (date.month() != currentdate.month()
+                && date.year() == currentdate.year()) {
+            m_monthDayView->setRCurrentDate(date);
         }
     }
+    //m_monthDayView->setRCurrentDate(date);
 }
 
 void CMonthWindow::slotcurrentDateChanged(QDate date)
