@@ -53,7 +53,8 @@ HEADERS += src/calendardbus.h \
     src/verticalscroll.h \
     src/calendartimeeidt.h \
     src/verticalscrolltext.h \
-    src/schceduledlg.h
+    src/schceduledlg.h \
+    src/myschceduleview.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \
            src/calendarwindow.cpp \
@@ -85,7 +86,8 @@ SOURCES += src/calendardbus.cpp \
     src/daywindow.cpp \
     src/verticalscrolltext.cpp \
     src/calendartimeeidt.cpp \
-    src/verticalscroll.cpp
+    src/verticalscroll.cpp \
+    src/myschceduleview.cpp
 RESOURCES += src/resources.qrc
 TRANSLATIONS += translations/dde-calendar.ts \
                 translations/desktop/desktop_zh_CN.ts

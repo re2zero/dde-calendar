@@ -33,16 +33,17 @@ class CSchceduleDayView : public QWidget
     Q_OBJECT
 
 public:
-    CSchceduleDayView(QWidget *parent = nullptr);
+    CSchceduleDayView(QWidget *parent = nullptr, int edittype = 0);
     ~CSchceduleDayView();
     void setALLDayData(QVector<ScheduleInfo> &vlistData);
     void setDayData(QVector<ScheduleInfo> &vlistData);
     void setDate(QDate date, int type = 1);
 signals:
     void signalsUpdateShcedule(int id = 0);
+    void signalsCotrlUpdateShcedule(QDate date, int type = 0);
 public slots:
     void slotdeleteitem(CSchceduleWidgetItem *item);
-    void slotedititem(CSchceduleWidgetItem *item);
+    void slotedititem(CSchceduleWidgetItem *item, int type = 0);
 private slots:
     void slothidelistw();
     void slotCreate();
@@ -62,6 +63,7 @@ private:
     QVector<CSchceduleWidgetItem *>              m_baseShowItem;
     int                                          m_type;
     QDate                                        m_currentDate;
+    int                                          m_editType = 0;
 };
 
 class CSchceduleNumButton : public QPushButton
@@ -94,7 +96,7 @@ class CSchceduleWidgetItem : public QPushButton
     Q_OBJECT
 
 public:
-    explicit CSchceduleWidgetItem(QWidget *parent = nullptr);
+    explicit CSchceduleWidgetItem(QWidget *parent = nullptr, int edittype = 0);
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos, bool avgeflag = false);
     void getColor(QColor &color1, QColor &color2, bool &GradientFlag);
@@ -116,13 +118,15 @@ public:
     }
 signals:
     void signalsDelete(CSchceduleWidgetItem *item);
-    void signalsEdit(CSchceduleWidgetItem *item);
+    void signalsEdit(CSchceduleWidgetItem *item, int type = 0);
 public slots:
     void slotEdit();
     void slotDelete();
+    void slotDoubleEvent(int type = 0);
 protected:
     void paintEvent ( QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 private:
     ScheduleInfo          m_ScheduleInfo;
     QAction              *m_editAction;
@@ -135,6 +139,7 @@ private:
     QPoint                m_pos;
     QListWidgetItem      *m_item;
     bool                  m_avgeflag;
+    int                   m_editType = 0;
 };
 
 #endif // CSHCEDULEDAYVIEW_H

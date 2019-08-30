@@ -82,6 +82,7 @@ public slots:
     void setLunarFestivalHighlight(bool highlight);
     void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
+    void slotCtrlSchceduleUpdate(QDate date, int type = 0);
     void slotSchceduleUpdate(int id = 0);
 private:
     int getDateIndex(const QDate &date) const;

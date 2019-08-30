@@ -27,8 +27,10 @@
 #include <QRect>
 #include "dbmanager.h"
 #include "schceduledlg.h"
-CSchceduleWidgetItem::CSchceduleWidgetItem( QWidget *parent /*= nullptr*/ ): QPushButton(parent)
+#include "myschceduleview.h"
+CSchceduleWidgetItem::CSchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): QPushButton(parent)
 {
+    m_editType = edittype;
     //setMargin(0);
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
@@ -80,14 +82,30 @@ void CSchceduleWidgetItem::slotEdit()
         ScheduleInfo info = dlg.getData();
         info.id = m_ScheduleInfo.id;
         ScheduleDbManager::updateScheduleInfo(info);
-        emit signalsEdit(this);
+        if (m_ScheduleInfo.beginDateTime.date() == info.beginDateTime.date()) {
+            m_ScheduleInfo = info;
+            emit signalsEdit(this, 0);
+        } else {
+            emit signalsEdit(this, 1);
+        }
     }
 }
 
 void CSchceduleWidgetItem::slotDelete()
 {
-    emit signalsDelete(this);
     ScheduleDbManager::deleteScheduleInfoById(m_ScheduleInfo.id);
+    emit signalsDelete(this);
+}
+
+void CSchceduleWidgetItem::slotDoubleEvent(int type)
+{
+    if (type == 0) {
+        m_ScheduleInfo = ScheduleDbManager::getScheduleInfoById(m_ScheduleInfo.id);
+        update();
+        emit signalsEdit(this, 0);
+    } else {
+        emit signalsEdit(this, 1);
+    }
 }
 
 void CSchceduleWidgetItem::paintEvent( QPaintEvent *e )
@@ -156,6 +174,16 @@ void CSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
     Context.addAction(m_editAction);
     Context.addAction(m_deleteAction);
     Context.exec(QCursor::pos());
+}
+
+void CSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (m_editType == 0) return;
+    CMySchceduleView dlg(this);
+    dlg.setSchedules(m_ScheduleInfo);
+    connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleWidgetItem::slotDoubleEvent);
+    dlg.exec();
+    disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleWidgetItem::slotDoubleEvent);
 }
 CSchceduleNumButton::CSchceduleNumButton(QWidget *parent /*= nullptr*/): QPushButton(parent)
 {
@@ -252,8 +280,9 @@ void CSchceduleDayView::setDate(QDate date, int type)
     updateDateShow();
 }
 
-CSchceduleDayView::CSchceduleDayView(QWidget *parent) : QWidget(parent)
+CSchceduleDayView::CSchceduleDayView(QWidget *parent, int edittype) : QWidget(parent)
 {
+    m_editType = edittype;
     m_widt = new QWidget(parent);
 
     m_widt->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
@@ -397,7 +426,7 @@ void CSchceduleDayView::updateDateShow()
 CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool average)
 {
     const ScheduleInfo &gd = m_vlistData.at(index);
-    CSchceduleWidgetItem *gwi = new CSchceduleWidgetItem();
+    CSchceduleWidgetItem *gwi = new CSchceduleWidgetItem(nullptr, m_editType);
     if (m_type == 0) {
         gwi->setColor(QColor("#DFB3FF"), QColor("#FBE9B7"), true);
         QFont font("PingFangSC-Light");
@@ -438,9 +467,10 @@ CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool averag
     return gwi;
 }
 
-void CSchceduleDayView::slotdeleteitem( CSchceduleWidgetItem *item )
+void CSchceduleDayView::slotdeleteitem( CSchceduleWidgetItem *item)
 {
     emit signalsUpdateShcedule(item->getData().id);
+    emit signalsCotrlUpdateShcedule(m_currentDate, 1);
     for (int i = 0; i < m_vlistData.count(); i++) {
         if (m_vlistData.at(i).id == item->getData().id) {
             m_vlistData.removeAt(i);
@@ -456,8 +486,24 @@ void CSchceduleDayView::slotdeleteitem( CSchceduleWidgetItem *item )
     update();
 }
 
-void CSchceduleDayView::slotedititem(CSchceduleWidgetItem *item)
+void CSchceduleDayView::slotedititem(CSchceduleWidgetItem *item, int type)
 {
+
     emit signalsUpdateShcedule(item->getData().id);
+    emit signalsCotrlUpdateShcedule(m_currentDate, type);
+    if (type == 0) return;
+    for (int i = 0; i < m_vlistData.count(); i++) {
+        if (m_vlistData.at(i).id == item->getData().id) {
+            m_vlistData.removeAt(i);
+            break;
+        }
+    }
+    if (item != NULL) {
+        int row = m_gradientItemList->row(item->getItem());
+        QListWidgetItem *item11 = m_gradientItemList->takeItem(row);
+        m_gradientItemList->removeItemWidget(item11);
+    }
+    updateDateShow();
+    update();
 }
 

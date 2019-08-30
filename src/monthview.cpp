@@ -65,12 +65,12 @@ CMonthView::CMonthView(QWidget *parent) : QWidget(parent)
             cell->setFixedSize(DDEMonthCalendar::MCellWidth, DDEMonthCalendar::MCellHeight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
-            CSchceduleDayView *shceduledayview = new CSchceduleDayView(cell);
+            CSchceduleDayView *shceduledayview = new CSchceduleDayView(cell, 1);
             shceduledayview->setFixedSize(108, 38);
             //shceduledayview->setALLDayData(scheduleInfolist);
             shceduledayview->move(6, 31);
             connect(shceduledayview, &CSchceduleDayView::signalsUpdateShcedule, this, &CMonthView::signalsSchceduleUpdate);
-            connect(shceduledayview, &CSchceduleDayView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
+            connect(shceduledayview, &CSchceduleDayView::signalsCotrlUpdateShcedule, this, &CMonthView::slotCtrlSchceduleUpdate);
             gridLayout->addWidget(cell, r, c);
             m_cellList.append(cell);
             m_cellScheduleList.append(shceduledayview);
@@ -99,6 +99,16 @@ void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo
 
     if (date != m_currentDate) {
         setCurrentDate(date);
+    }
+}
+
+void CMonthView::slotCtrlSchceduleUpdate(QDate date, int type)
+{
+    for (int i(0); i != 42; ++i) {
+        if (m_days[i].month() != m_currentDate.month()) continue;
+        if (type == 0 && m_days[i] == date) continue;
+        //更新日程
+        m_cellScheduleList[i]->setDate(m_days[i]);
     }
 }
 

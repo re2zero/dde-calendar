@@ -158,9 +158,27 @@
     </message>
 </context>
 <context>
+    <name>CMySchceduleView</name>
+    <message>
+        <location filename="../src/myschceduleview.cpp" line="27"/>
+        <source>My Schcedule</source>
+        <translation>我的日程</translation>
+    </message>
+    <message>
+        <location filename="../src/myschceduleview.cpp" line="110"/>
+        <source>Edit</source>
+        <translation>编辑</translation>
+    </message>
+    <message>
+        <location filename="../src/myschceduleview.cpp" line="111"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+</context>
+<context>
     <name>CSchceduleDayView</name>
     <message>
-        <location filename="../src/schceduledayview.cpp" line="287"/>
+        <location filename="../src/schceduledayview.cpp" line="316"/>
         <source>Create</source>
         <translation>创建</translation>
     </message>
@@ -178,134 +196,134 @@
         <translation>编辑日程</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="84"/>
-        <location filename="../src/schceduledlg.cpp" line="88"/>
+        <location filename="../src/schceduledlg.cpp" line="85"/>
+        <location filename="../src/schceduledlg.cpp" line="89"/>
         <source>error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="84"/>
+        <location filename="../src/schceduledlg.cpp" line="85"/>
         <source>Schcedule is empty!</source>
         <translation>日程不存在！</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="88"/>
+        <location filename="../src/schceduledlg.cpp" line="89"/>
         <source>The end time less than begin time!</source>
         <translation>终止时间小于起始时间！</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="124"/>
+        <location filename="../src/schceduledlg.cpp" line="125"/>
         <source>infomation</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="124"/>
+        <location filename="../src/schceduledlg.cpp" line="125"/>
         <source>Max length is 256!</source>
         <translation>日程最大长度256字符！</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="162"/>
-        <location filename="../src/schceduledlg.cpp" line="174"/>
+        <location filename="../src/schceduledlg.cpp" line="163"/>
+        <location filename="../src/schceduledlg.cpp" line="175"/>
         <source>AM</source>
         <translation>上午</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="196"/>
+        <location filename="../src/schceduledlg.cpp" line="197"/>
         <source>Type:</source>
         <translation>类型：</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="198"/>
+        <location filename="../src/schceduledlg.cpp" line="199"/>
         <source>Work</source>
         <translation>工作</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="199"/>
+        <location filename="../src/schceduledlg.cpp" line="200"/>
         <source>Life</source>
         <translation>生活</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="200"/>
+        <location filename="../src/schceduledlg.cpp" line="201"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="204"/>
+        <location filename="../src/schceduledlg.cpp" line="205"/>
         <source>Content:</source>
         <translation>内容：</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="212"/>
+        <location filename="../src/schceduledlg.cpp" line="213"/>
         <source>Begin Time:</source>
         <translation>开始时间：</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="233"/>
+        <location filename="../src/schceduledlg.cpp" line="234"/>
         <source>End Time:</source>
         <translation>终止时间：</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="255"/>
+        <location filename="../src/schceduledlg.cpp" line="256"/>
         <source>Remind Set:</source>
         <translation>提醒设置：</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="259"/>
+        <location filename="../src/schceduledlg.cpp" line="260"/>
         <source>Current Day</source>
         <translation>当天</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="262"/>
+        <location filename="../src/schceduledlg.cpp" line="263"/>
         <source>Earlier Day</source>
         <translation>1天前</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="265"/>
+        <location filename="../src/schceduledlg.cpp" line="266"/>
         <source>Three Days Ago</source>
         <translation>3天前</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="268"/>
+        <location filename="../src/schceduledlg.cpp" line="269"/>
         <source>Week Day ago</source>
         <translation>1周前</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="273"/>
+        <location filename="../src/schceduledlg.cpp" line="274"/>
         <source>Repeat Set:</source>
         <translation>重复：</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="277"/>
+        <location filename="../src/schceduledlg.cpp" line="278"/>
         <source>Once Time</source>
         <translation>仅一次</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="280"/>
+        <location filename="../src/schceduledlg.cpp" line="281"/>
         <source>Every Day</source>
         <translation>每天</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="283"/>
+        <location filename="../src/schceduledlg.cpp" line="284"/>
         <source>Every Week</source>
         <translation>每周</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="286"/>
+        <location filename="../src/schceduledlg.cpp" line="287"/>
         <source>Every Month</source>
         <translation>每月</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="289"/>
+        <location filename="../src/schceduledlg.cpp" line="290"/>
         <source>Every Year</source>
         <translation>每年</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="297"/>
+        <location filename="../src/schceduledlg.cpp" line="298"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="298"/>
+        <location filename="../src/schceduledlg.cpp" line="299"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -334,12 +352,12 @@
 <context>
     <name>CSchceduleWidgetItem</name>
     <message>
-        <location filename="../src/schceduledayview.cpp" line="33"/>
+        <location filename="../src/schceduledayview.cpp" line="35"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../src/schceduledayview.cpp" line="34"/>
+        <location filename="../src/schceduledayview.cpp" line="36"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
