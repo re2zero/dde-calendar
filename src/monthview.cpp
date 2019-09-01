@@ -593,15 +593,26 @@ void CMonthView::paintCell(QWidget *cell)
     painter.setFont(m_dayNumFont);
     if (isCurrentDay) {
         QFont tfont = m_dayNumFont;
-        tfont.setPixelSize(20);
+        if (m_days[pos].day() == 1) {
+            tfont.setPixelSize(12);
+        } else {
+            tfont.setPixelSize(20);
+        }
         painter.setFont(tfont);
+        if (m_showState & ShowLunar) {
+            painter.drawText(QRect(4, 2, 30, 30), Qt::AlignCenter, dayNum, &test);
+        } else {
+            painter.drawText(QRect(0, 0, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
+        }
+
+    } else {
+        if (m_showState & ShowLunar) {
+            painter.drawText(QRect(8, 0, cell->width() / 2, 33), Qt::AlignLeft, dayNum);
+        } else {
+            painter.drawText(QRect(0, 0, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
+        }
     }
 
-    if (m_showState & ShowLunar) {
-        painter.drawText(QRect(8, 0, cell->width() / 2, cell->height() / 2), Qt::AlignLeft, dayNum);
-    } else {
-        painter.drawText(QRect(0, 0, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
-    }
 
     // draw text of day type
     if (m_showState & ShowLunar) {
