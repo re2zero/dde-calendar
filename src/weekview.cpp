@@ -77,7 +77,7 @@ void CWeekView::paintCell(QWidget *cell)
     const int pos = m_cellList.indexOf(cell);
     const bool isCurrentDay = m_days[pos].addDays(m_weekAddDay).weekNumber() == QDate::currentDate().weekNumber();
 
-    const bool isSelectDay = m_days[pos].weekNumber() == m_selectDate.weekNumber();
+    const bool isSelectDay = m_days[pos].addDays(m_weekAddDay).weekNumber() == m_selectDate.addDays(m_weekAddDay).weekNumber();
 
 
     QPainter painter(cell);

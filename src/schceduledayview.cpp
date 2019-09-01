@@ -350,7 +350,8 @@ void CSchceduleDayView::slotCreate()
         ScheduleInfo info = dlg.getData();
         info.id = ScheduleDbManager::addSchedule(info);
         m_vlistData.append(info);
-        emit signalsUpdateShcedule(info.id);
+        emit signalsCotrlUpdateShcedule(m_currentDate, 1);
+        //emit signalsUpdateShcedule(info.id);
         //updateDateShow();
     }
 }
