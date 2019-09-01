@@ -118,8 +118,8 @@ void CCustomCalendarWidget::paintCell(QPainter *painter, const QRect &rect, cons
         painter->drawText(rect, Qt::AlignCenter, QString::number(date.day()));
         painter->restore();
     } else  {
-        QCalendarWidget::paintCell(painter, rect, date);
-        return;
+        //QCalendarWidget::paintCell(painter, rect, date);
+        //return;
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing);
         painter->setPen(Qt::NoPen);
