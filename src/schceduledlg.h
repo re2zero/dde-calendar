@@ -36,6 +36,8 @@
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
 class CCalendarTimeEidt;
+class CTimeEdit;
+class CCustomCalendarWidget;
 class CSchceduleDlg : public DDialog
 {
     Q_OBJECT
@@ -48,17 +50,15 @@ public slots:
     void slotCancelBt();
     void slotOkBt();
     void slotTextChange();
-    void slotBeginTimeBt();
-    void slotEndTimeBt();
-    void slotBCalendarTimeEidtInfo();
-    void slotECalendarTimeEidtInfo();
-    void slotBTimeEidtInfo(const QTime &time);
-    void slotETimeEidtInfo(const QTime &time);
+    void slotBDateEidtInfo(const QDate &date);
+    void slotEDateEidtInfo(const QDate &date);
+
 protected:
-    void focusInEvent(QFocusEvent *event);
+    // void focusInEvent(QFocusEvent *event);
 private:
     void initUI();
     void initConnection();
+    void initDateEdit();
 private:
     DLabel                           *m_typeLabel = nullptr;
     QComboBox                        *m_typeComBox = nullptr;
@@ -66,10 +66,10 @@ private:
     DTextEdit                        *m_textEdit = nullptr;
     DLabel                           *m_beginTimeLabel = nullptr;
     QDateEdit                        *m_beginDateEdit = nullptr;
-    QTimeEdit                        *m_beginTimeEdit = nullptr;
+    CTimeEdit                        *m_beginTimeEdit = nullptr;
     DLabel                           *m_endTimeLabel = nullptr;
     QDateEdit                        *m_endDateEdit = nullptr;
-    QTimeEdit                        *m_endTimeEdit = nullptr;
+    CTimeEdit                        *m_endTimeEdit = nullptr;
     DLabel                           *m_remindSetLabel = nullptr;
     QButtonGroup                     *m_remindbtGroup = nullptr;
     QRadioButton                     *m_currentDayBt = nullptr;
@@ -85,13 +85,10 @@ private:
     QRadioButton                     *m_everyyearBt = nullptr;
     DTextButton                      *m_cancelBt = nullptr;
     DTextButton                      *m_OkBt = nullptr;
-    DArrowButton                     *m_beginTimeEidtBt;
-    DArrowButton                     *m_endTimeEidtBt;
-
-    bool                             m_btimeeditflag = false;
-    bool                             m_etimeeditflag = false;
-    CCalendarTimeEidt                *m_bCalendarTimeEidt;
-    CCalendarTimeEidt                *m_eCalendarTimeEidt;
+    //CCalendarTimeEidt                *m_bCalendarTimeEidt;
+    //CCalendarTimeEidt                *m_eCalendarTimeEidt;
+    CCustomCalendarWidget            *m_bCustomDateW;
+    CCustomCalendarWidget            *m_eCustomDateW;
 private:
     ScheduleInfo                     m_scheduleInfo;//日程
     int                              m_type; //0新建 1 编辑日程

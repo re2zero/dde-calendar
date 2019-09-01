@@ -21,6 +21,8 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include "calendartimeeidt.h"
+#include "timeedit.h"
+#include "customcalendarwidget.h"
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
     initUI();
@@ -78,9 +80,9 @@ void CSchceduleDlg::slotOkBt()
 {
     QDateTime beginDateTime, endDateTime;
     beginDateTime.setDate(m_beginDateEdit->date());
-    beginDateTime.setTime(m_beginTimeEdit->time());
+    beginDateTime.setTime(m_beginTimeEdit->getTime());
     endDateTime.setDate(m_endDateEdit->date());
-    endDateTime.setTime(m_endTimeEdit->time());
+    endDateTime.setTime(m_endTimeEdit->getTime());
     if (m_textEdit->toPlainText().isEmpty()) {
         QMessageBox::warning(this, tr("error"), tr("Schcedule is empty!"));
         return;
@@ -126,67 +128,14 @@ void CSchceduleDlg::slotTextChange()
     }
 }
 
-void CSchceduleDlg::slotBeginTimeBt()
+void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)
 {
-    m_btimeeditflag = !m_btimeeditflag;
-
-    if (m_btimeeditflag) {
-        int px = m_beginTimeEdit->x();
-        int py = m_beginTimeEdit->y();
-        QPoint pos = mapToGlobal(QPoint(px, py));
-        m_bCalendarTimeEidt->setTime(m_beginTimeEdit->time());
-        m_bCalendarTimeEidt->move(pos.x() + 20, pos.y() + 2 * m_beginTimeEdit->height() + 15);
-        m_bCalendarTimeEidt->show();
-    } else {
-        m_bCalendarTimeEidt->hide();
-    }
+    m_beginDateEdit->setDate(date);
 }
 
-void CSchceduleDlg::slotEndTimeBt()
+void CSchceduleDlg::slotEDateEidtInfo(const QDate &date)
 {
-    m_etimeeditflag = !m_etimeeditflag;
-
-    if (m_etimeeditflag) {
-        int px = m_endTimeEdit->x();
-        int py = m_endTimeEdit->y();
-        QPoint pos = mapToGlobal(QPoint(px, py));
-        m_eCalendarTimeEidt->setTime(m_endTimeEdit->time());
-        m_eCalendarTimeEidt->move(pos.x() + 20, pos.y() + 2 * m_endTimeEdit->height() + 15);
-        m_eCalendarTimeEidt->show();
-    } else {
-        m_eCalendarTimeEidt->hide();
-    }
-}
-
-void CSchceduleDlg::slotBCalendarTimeEidtInfo()
-{
-    if (m_bCalendarTimeEidt->getCrrentAMorPm() == tr("AM")) {
-        QTime time(m_bCalendarTimeEidt->getHour(), m_bCalendarTimeEidt->getMin());
-        m_beginTimeEdit->setTime(time);
-    } else {
-        QTime time(m_bCalendarTimeEidt->getHour() + 12, m_bCalendarTimeEidt->getMin());
-
-        m_beginTimeEdit->setTime(time);
-    }
-}
-
-void CSchceduleDlg::slotECalendarTimeEidtInfo()
-{
-    if (m_eCalendarTimeEidt->getCrrentAMorPm() == tr("AM")) {
-        m_endTimeEdit->setTime(QTime(m_eCalendarTimeEidt->getHour(), m_eCalendarTimeEidt->getMin()));
-    } else {
-        m_endTimeEdit->setTime(QTime(m_eCalendarTimeEidt->getHour() + 12, m_eCalendarTimeEidt->getMin()));
-    }
-}
-
-void CSchceduleDlg::slotBTimeEidtInfo(const QTime &time)
-{
-    m_bCalendarTimeEidt->setTime(time);
-}
-
-void CSchceduleDlg::slotETimeEidtInfo(const QTime &time)
-{
-    m_eCalendarTimeEidt->setTime(time);
+    m_endDateEdit->setDate(date);
 }
 
 void CSchceduleDlg::initUI()
@@ -214,19 +163,16 @@ void CSchceduleDlg::initUI()
     leftlayout->addWidget(m_beginTimeLabel, 1);
     QHBoxLayout *begintimelayout  = new QHBoxLayout;
     m_beginDateEdit = new QDateEdit(this);
-    m_beginTimeEdit = new QTimeEdit(this);
+    m_beginTimeEdit = new CTimeEdit(this);
     m_beginDateEdit->setCalendarPopup(true);
     //m_beginTimeEdit->setCalendarPopup(true);
     m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
-    m_beginTimeEdit->setDisplayFormat("HH:mm");
-    m_beginTimeEdit->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    //m_beginTimeEdit->setDisplayFormat("HH:mm");
+    //m_beginTimeEdit->setButtonSymbols(QAbstractSpinBox::NoButtons);
     begintimelayout->addWidget(m_beginDateEdit, 1);
     QHBoxLayout *begintimeelayout  = new QHBoxLayout;
     begintimeelayout->addWidget(m_beginTimeEdit);
-    m_beginTimeEidtBt = new DArrowButton;
-    m_beginTimeEidtBt->setFixedWidth(20);
-    m_beginTimeEidtBt->setArrowDirection(DArrowButton::ArrowDown);
-    begintimeelayout->addWidget(m_beginTimeEidtBt);
+
     begintimelayout->addLayout(begintimeelayout, 1);
 
     rightlayout->addLayout(begintimelayout);
@@ -235,20 +181,17 @@ void CSchceduleDlg::initUI()
     leftlayout->addWidget(m_endTimeLabel, 1);
     QHBoxLayout *endtimelayout  = new QHBoxLayout;
     m_endDateEdit = new QDateEdit(this);
-    m_endTimeEdit = new QTimeEdit(this);
+    m_endTimeEdit = new CTimeEdit(this);
     m_endDateEdit->setCalendarPopup(true);
     // m_endTimeEdit->setCalendarPopup(true);
     m_endDateEdit->setDisplayFormat("yyyy-MM-dd");
-    m_endTimeEdit->setDisplayFormat("HH:mm");
-    m_endTimeEdit->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    m_endTimeEidtBt = new DArrowButton;
-    m_endTimeEidtBt->setFixedWidth(20);
-    m_endTimeEidtBt->setArrowDirection(DArrowButton::ArrowDown);
+    //m_endTimeEdit->setDisplayFormat("HH:mm");
+    // m_endTimeEdit->setButtonSymbols(QAbstractSpinBox::NoButtons);
+
     QHBoxLayout *endtimeelayout  = new QHBoxLayout;
 
     endtimelayout->addWidget(m_endDateEdit, 1);
     endtimeelayout->addWidget(m_endTimeEdit);
-    endtimeelayout->addWidget(m_endTimeEidtBt);
     endtimelayout->addLayout(endtimeelayout, 1);
 
     rightlayout->addLayout(endtimelayout);
@@ -305,16 +248,7 @@ void CSchceduleDlg::initUI()
     maintlayout->addLayout(downlayout);
     gwi->setLayout(maintlayout);
     addContent(gwi);
-    m_bCalendarTimeEidt = new CCalendarTimeEidt(m_beginTimeEdit);
-    m_eCalendarTimeEidt = new CCalendarTimeEidt(m_endTimeEdit);
-    m_bCalendarTimeEidt->setFixedSize(200, 300);
-    m_eCalendarTimeEidt->setFixedSize(200, 300);
-    m_bCalendarTimeEidt->hide();
-    m_eCalendarTimeEidt->hide();
-    m_bCalendarTimeEidt->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    //m_bCalendarTimeEidt->setAttribute(Qt::WA_TranslucentBackground);
-    m_eCalendarTimeEidt->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    //m_bCalendarTimeEidt->setAttribute(Qt::WA_TranslucentBackground);
+    initDateEdit();
 }
 
 void CSchceduleDlg::initConnection()
@@ -322,24 +256,29 @@ void CSchceduleDlg::initConnection()
     connect(m_cancelBt, &DTextButton::clicked, this, &CSchceduleDlg::slotCancelBt);
     connect(m_OkBt, &DTextButton::clicked, this, &CSchceduleDlg::slotOkBt);
     connect(m_textEdit, &DTextEdit::textChanged, this, &CSchceduleDlg::slotTextChange);
-    connect(m_beginTimeEidtBt, &DArrowButton::mousePress, this, &CSchceduleDlg::slotBeginTimeBt);
-    connect(m_endTimeEidtBt, &DArrowButton::mousePress, this, &CSchceduleDlg::slotEndTimeBt);
-    connect(m_bCalendarTimeEidt, &CCalendarTimeEidt::currentTValueChanged, this, &CSchceduleDlg::slotBCalendarTimeEidtInfo);
-    connect(m_bCalendarTimeEidt, &CCalendarTimeEidt::currentHValueChanged, this, &CSchceduleDlg::slotBCalendarTimeEidtInfo);
-    connect(m_bCalendarTimeEidt, &CCalendarTimeEidt::currentMValueChanged, this, &CSchceduleDlg::slotBCalendarTimeEidtInfo);
 
-    connect(m_eCalendarTimeEidt, &CCalendarTimeEidt::currentTValueChanged, this, &CSchceduleDlg::slotECalendarTimeEidtInfo);
-    connect(m_eCalendarTimeEidt, &CCalendarTimeEidt::currentHValueChanged, this, &CSchceduleDlg::slotECalendarTimeEidtInfo);
-    connect(m_eCalendarTimeEidt, &CCalendarTimeEidt::currentMValueChanged, this, &CSchceduleDlg::slotECalendarTimeEidtInfo);
+    connect(m_bCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotBDateEidtInfo);
 
-    //connect(m_beginTimeEdit, &QTimeEdit::userTimeChanged, this, &CSchceduleDlg::slotBTimeEidtInfo);
-    //connect(m_endTimeEdit, &QTimeEdit::userTimeChanged, this, &CSchceduleDlg::slotETimeEidtInfo);
-
+    connect(m_eCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotEDateEidtInfo);
 }
-void CSchceduleDlg::focusInEvent(QFocusEvent *event)
+
+void CSchceduleDlg::initDateEdit()
 {
-    m_eCalendarTimeEidt->hide();
-    m_bCalendarTimeEidt->hide();
-    m_btimeeditflag = false;
-    m_etimeeditflag = false;
+    m_bCustomDateW = new CCustomCalendarWidget(0);
+    m_beginDateEdit->setCalendarWidget(m_bCustomDateW);
+    m_beginDateEdit->setMinimumDate(QDate(1900, 1, 1)); // 0天
+    m_beginDateEdit->setMaximumDate(QDate(3000, 1, 1)); //
+    //m_beginDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
+    m_bCustomDateW->disconnect(SIGNAL(selectionChanged()));
+    m_bCustomDateW->disconnect(SIGNAL(clicked(QDate)));
+
+    m_eCustomDateW = new CCustomCalendarWidget(0);
+    m_endDateEdit->setCalendarWidget(m_eCustomDateW);
+    m_endDateEdit->setMinimumDate(QDate(1900, 1, 1)); // 0天
+    m_endDateEdit->setMaximumDate(QDate(3000, 1, 1)); //
+    m_endDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
+    m_eCustomDateW->disconnect(SIGNAL(selectionChanged()));
+    m_eCustomDateW->disconnect(SIGNAL(clicked(QDate)));
+
 }
+

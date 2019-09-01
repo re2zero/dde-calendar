@@ -15,6 +15,19 @@
     </message>
 </context>
 <context>
+    <name>CCustomCalendarWidget</name>
+    <message>
+        <location filename="../../src/customcalendarwidget.cpp" line="168"/>
+        <source>M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/customcalendarwidget.cpp" line="169"/>
+        <source>Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CDayMonthView</name>
     <message>
         <location filename="../../src/daymonthview.cpp" line="46"/>
@@ -186,144 +199,138 @@
 <context>
     <name>CSchceduleDlg</name>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="30"/>
+        <location filename="../../src/schceduledlg.cpp" line="32"/>
         <source>Create Schcedule</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="38"/>
+        <location filename="../../src/schceduledlg.cpp" line="40"/>
         <source>Edit Schcedule</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="85"/>
-        <location filename="../../src/schceduledlg.cpp" line="89"/>
+        <location filename="../../src/schceduledlg.cpp" line="87"/>
+        <location filename="../../src/schceduledlg.cpp" line="91"/>
         <source>error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="85"/>
+        <location filename="../../src/schceduledlg.cpp" line="87"/>
         <source>Schcedule is empty!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="89"/>
+        <location filename="../../src/schceduledlg.cpp" line="91"/>
         <source>The end time less than begin time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="125"/>
+        <location filename="../../src/schceduledlg.cpp" line="127"/>
         <source>infomation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="125"/>
+        <location filename="../../src/schceduledlg.cpp" line="127"/>
         <source>Max length is 256!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="163"/>
-        <location filename="../../src/schceduledlg.cpp" line="175"/>
-        <source>AM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/schceduledlg.cpp" line="197"/>
+        <location filename="../../src/schceduledlg.cpp" line="146"/>
         <source>Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="199"/>
+        <location filename="../../src/schceduledlg.cpp" line="148"/>
         <source>Work</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="200"/>
+        <location filename="../../src/schceduledlg.cpp" line="149"/>
         <source>Life</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="201"/>
+        <location filename="../../src/schceduledlg.cpp" line="150"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="205"/>
+        <location filename="../../src/schceduledlg.cpp" line="154"/>
         <source>Content:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="213"/>
+        <location filename="../../src/schceduledlg.cpp" line="162"/>
         <source>Begin Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="234"/>
+        <location filename="../../src/schceduledlg.cpp" line="180"/>
         <source>End Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="256"/>
+        <location filename="../../src/schceduledlg.cpp" line="199"/>
         <source>Remind Set:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="260"/>
+        <location filename="../../src/schceduledlg.cpp" line="203"/>
         <source>Current Day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="263"/>
+        <location filename="../../src/schceduledlg.cpp" line="206"/>
         <source>Earlier Day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="266"/>
+        <location filename="../../src/schceduledlg.cpp" line="209"/>
         <source>Three Days Ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="269"/>
+        <location filename="../../src/schceduledlg.cpp" line="212"/>
         <source>Week Day ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="274"/>
+        <location filename="../../src/schceduledlg.cpp" line="217"/>
         <source>Repeat Set:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="278"/>
+        <location filename="../../src/schceduledlg.cpp" line="221"/>
         <source>Once Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="281"/>
+        <location filename="../../src/schceduledlg.cpp" line="224"/>
         <source>Every Day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="284"/>
+        <location filename="../../src/schceduledlg.cpp" line="227"/>
         <source>Every Week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="287"/>
+        <location filename="../../src/schceduledlg.cpp" line="230"/>
         <source>Every Month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="290"/>
+        <location filename="../../src/schceduledlg.cpp" line="233"/>
         <source>Every Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="298"/>
+        <location filename="../../src/schceduledlg.cpp" line="241"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/schceduledlg.cpp" line="299"/>
+        <location filename="../../src/schceduledlg.cpp" line="242"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
