@@ -345,13 +345,14 @@ void CSchceduleDayView::slotCreate()
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_currentDate);
+    tDatatime.setTime(QTime::currentTime());
     dlg.setDate(tDatatime);
     if (dlg.exec() == DDialog::Accepted) {
         ScheduleInfo info = dlg.getData();
         info.id = ScheduleDbManager::addSchedule(info);
         m_vlistData.append(info);
         emit signalsCotrlUpdateShcedule(m_currentDate, 1);
-        //emit signalsUpdateShcedule(info.id);
+        emit signalsUpdateShcedule(info.id);
         //updateDateShow();
     }
 }

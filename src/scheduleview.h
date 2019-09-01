@@ -40,6 +40,7 @@ public slots:
     void slotPosHours(QVector<int> vPos, QVector<int> vHours);
     void setDate(QDate date);
     void slotupdateSchedule(int id = 0);
+    void slotCtrlSchceduleUpdate(QDate date, int type = 0);
 protected:
     void paintEvent( QPaintEvent *event );
     void resizeEvent(QResizeEvent *event);

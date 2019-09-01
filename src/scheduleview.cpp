@@ -180,8 +180,13 @@ void CScheduleView::initConnection()
     connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
     connect(m_alldaylist, &CSchceduleDayView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     connect(m_alldaylist, &CSchceduleDayView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
+    connect(m_alldaylist, &CSchceduleDayView::signalsCotrlUpdateShcedule, this, &CScheduleView::slotCtrlSchceduleUpdate);
 }
-
+void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
+{
+    updateSchedule(0);
+    updateAllday(0);
+}
 void CScheduleView::updateSchedule(int id)
 {
     m_graphicsView->clearSchdule();

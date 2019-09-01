@@ -237,6 +237,7 @@ void CMonthView::slotCreate()
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_currentDate);
+    tDatatime.setTime(QTime::currentTime());
     dlg.setDate(tDatatime);
     if (dlg.exec() == DDialog::Accepted) {
         ScheduleInfo info = dlg.getData();
