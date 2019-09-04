@@ -32,7 +32,7 @@ CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
 
 CMonthWindow::~CMonthWindow()
 {
-    disconnect(m_today, &DBaseButton::clicked, this, &CMonthWindow::slottoday);
+    disconnect(m_today, &DPushButton::clicked, this, &CMonthWindow::slottoday);
     delete  m_monthDayView;
     m_monthDayView = nullptr;
     delete  m_monthView;
@@ -85,7 +85,7 @@ void CMonthWindow::initUI()
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
 
-    m_today = new DBaseButton;
+    m_today = new DPushButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(DDEMonthCalendar::MTodayWindth, DDEMonthCalendar::MTodayHeight);
     m_YearLabel = new DLabel();
@@ -139,7 +139,7 @@ void CMonthWindow::initUI()
 
 void CMonthWindow::initConnection()
 {
-    connect(m_today, &DBaseButton::clicked, this, &CMonthWindow::slottoday);
+    connect(m_today, &DPushButton::clicked, this, &CMonthWindow::slottoday);
     connect(m_monthView, &CMonthView::signalcurrentLunarDateChanged, this, &CMonthWindow::slotcurrentDateLunarChanged);
     connect(m_monthView, &CMonthView::signalcurrentDateChanged, this, &CMonthWindow::slotcurrentDateChanged);
     connect(m_monthDayView, &CMonthDayView::signalsSelectDate, this, &CMonthWindow::slotSelectedMonth);

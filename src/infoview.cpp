@@ -29,7 +29,7 @@ InfoView::InfoView(QFrame *parent) :
     QFrame(parent),
     m_timeLabel(new QLabel),
     m_festivalLabel(new QLabel),
-    m_todayButton(new DLinkButton),
+    m_todayButton(new DPushButton),
     m_yearSpinner(new Spinner),
     m_monthSpinner(new Spinner)
 {
@@ -55,24 +55,24 @@ InfoView::InfoView(QFrame *parent) :
                                  "color:#0060b9;"
                                  "}");
 
-    QHBoxLayout * mainLayout = new QHBoxLayout(this);
+    QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
-    QHBoxLayout * spinnerLayout = new QHBoxLayout;
+    QHBoxLayout *spinnerLayout = new QHBoxLayout;
     spinnerLayout->setMargin(0);
     spinnerLayout->setSpacing(0);
     spinnerLayout->addWidget(m_yearSpinner);
     spinnerLayout->addWidget(m_monthSpinner);
 
-    QVBoxLayout * leftLayout = new QVBoxLayout;
+    QVBoxLayout *leftLayout = new QVBoxLayout;
     leftLayout->setMargin(0);
     leftLayout->setSpacing(0);
     leftLayout->addStretch();
     leftLayout->addWidget(m_timeLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
     leftLayout->addWidget(m_festivalLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
     leftLayout->addSpacing(6);
-    QVBoxLayout * rightLayout = new QVBoxLayout;
+    QVBoxLayout *rightLayout = new QVBoxLayout;
     rightLayout->setMargin(0);
     rightLayout->setSpacing(0);
     rightLayout->addStretch();
@@ -85,10 +85,10 @@ InfoView::InfoView(QFrame *parent) :
     mainLayout->addStretch();
     mainLayout->addLayout(rightLayout);
 
-    connect(m_yearSpinner, &Spinner::valueChanged, [this](int value){
+    connect(m_yearSpinner, &Spinner::valueChanged, [this](int value) {
         emit yearChanged(value);
     });
-    connect(m_monthSpinner, &Spinner::valueChanged, [this](int value){
+    connect(m_monthSpinner, &Spinner::valueChanged, [this](int value) {
         if (1 <= value && value <= 12) {
             emit monthChanged(value);
         } else {
@@ -114,7 +114,7 @@ InfoView::InfoView(QFrame *parent) :
             emit monthChanged(month);
         }
     });
-    connect(m_todayButton, &DLinkButton::clicked, this, &InfoView::todayButtonClicked);
+    connect(m_todayButton, &DPushButton::clicked, this, &InfoView::todayButtonClicked);
 }
 
 void InfoView::setTime(const QString &time) const

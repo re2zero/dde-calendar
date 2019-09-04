@@ -107,8 +107,8 @@ void CMySchceduleView::initUI()
     hBtLayout->setSpacing(0);
     hBtLayout->setContentsMargins(0, 0, 0, 3);
     hBtLayout->addStretch();
-    m_editBt = new DTextButton(tr("Edit"));
-    m_deleteBt = new DTextButton(tr("Delete"));
+    m_editBt = new DPushButton(tr("Edit"));
+    m_deleteBt = new DPushButton(tr("Delete"));
     hBtLayout->addWidget(m_deleteBt);
 
     QFrame *vlineframe = new QFrame(this);
@@ -131,6 +131,6 @@ void CMySchceduleView::initUI()
 
 void CMySchceduleView::initConnection()
 {
-    connect(m_editBt, &DTextButton::clicked, this, &CMySchceduleView::slotEditBt);
-    connect(m_deleteBt, &DTextButton::clicked, this, &CMySchceduleView::slotDeleteBt);
+    connect(m_editBt, &DPushButton::clicked, this, &CMySchceduleView::slotEditBt);
+    connect(m_deleteBt, &DPushButton::clicked, this, &CMySchceduleView::slotDeleteBt);
 }

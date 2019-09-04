@@ -22,6 +22,7 @@
 #include "scheduleview.h"
 #include "schcedulesearchview.h"
 #include <QMessageBox>
+#include <QHBoxLayout>
 CDayWindow::CDayWindow(QWidget *parent): QMainWindow (parent)
 {
     initUI();

@@ -24,6 +24,7 @@
 #include "weekview.h"
 #include <QMessageBox>
 #include <QDate>
+#include <QHBoxLayout>
 CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
 {
     initUI();
@@ -62,7 +63,7 @@ void CWeekWindow::initUI()
                                        "}");
 
 
-    m_today = new DBaseButton;
+    m_today = new DPushButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(DDEWeekCalendar::WTodayWindth, DDEWeekCalendar::WTodayHeight);
     m_prevButton = new DArrowButton(this);
@@ -145,7 +146,7 @@ void CWeekWindow::initUI()
 void CWeekWindow::initConnection()
 {
     connect(m_prevButton, &DArrowButton::mousePress, this, &CWeekWindow::slotprev);
-    connect(m_today, &DBaseButton::clicked, this, &CWeekWindow::slottoday);
+    connect(m_today, &DPushButton::clicked, this, &CWeekWindow::slottoday);
     connect(m_nextButton, &DArrowButton::mousePress, this, &CWeekWindow::slotnext);
     connect(m_weekview, &CWeekView::signalsSelectDate, this, &CWeekWindow::slotCurrentWeek);
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentLunarDateChanged, this, &CWeekWindow::slotcurrentDateLunarChanged);

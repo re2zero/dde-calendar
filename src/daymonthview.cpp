@@ -143,7 +143,7 @@ void CDayMonthView::initUI()
     m_dayNumFont.setPixelSize(12);
     m_dayNumFont.setWeight(QFont::Light);
 
-    m_today = new DBaseButton;
+    m_today = new DPushButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
     m_prevButton = new DArrowButton;
@@ -298,7 +298,7 @@ void CDayMonthView::initUI()
 void CDayMonthView::initConnection()
 {
     connect(m_prevButton, &DArrowButton::mousePress, this, &CDayMonthView::slotprev);
-    connect(m_today, &DBaseButton::clicked, this, &CDayMonthView::slottoday);
+    connect(m_today, &DPushButton::clicked, this, &CDayMonthView::slottoday);
     connect(m_nextButton, &DArrowButton::mousePress, this, &CDayMonthView::slotnext);
     connect(this, &CDayMonthView::dateSelected, this, &CDayMonthView::handleCurrentDateChanged);
 }

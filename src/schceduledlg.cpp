@@ -238,8 +238,8 @@ void CSchceduleDlg::initUI()
     uplayout->addLayout(leftlayout);
     uplayout->addLayout(rightlayout);
     QHBoxLayout *downlayout  = new QHBoxLayout;
-    m_cancelBt = new DTextButton(tr("Cancel"));
-    m_OkBt = new DTextButton(tr("OK"));
+    m_cancelBt = new DPushButton(tr("Cancel"));
+    m_OkBt = new DPushButton(tr("OK"));
     downlayout->addWidget(m_cancelBt);
     downlayout->addWidget(m_OkBt);
     QWidget *gwi = new QWidget;
@@ -253,8 +253,8 @@ void CSchceduleDlg::initUI()
 
 void CSchceduleDlg::initConnection()
 {
-    connect(m_cancelBt, &DTextButton::clicked, this, &CSchceduleDlg::slotCancelBt);
-    connect(m_OkBt, &DTextButton::clicked, this, &CSchceduleDlg::slotOkBt);
+    connect(m_cancelBt, &DPushButton::clicked, this, &CSchceduleDlg::slotCancelBt);
+    connect(m_OkBt, &DPushButton::clicked, this, &CSchceduleDlg::slotOkBt);
     connect(m_textEdit, &DTextEdit::textChanged, this, &CSchceduleDlg::slotTextChange);
 
     connect(m_bCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotBDateEidtInfo);

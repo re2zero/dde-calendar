@@ -76,7 +76,7 @@ void CYearWindow::initUI()
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
 
-    m_today = new DBaseButton(this);
+    m_today = new DPushButton(this);
     QFont todayfont("SourceHanSansSC-Medium");
     todayfont.setPixelSize(14);
     m_today->setFont(todayfont);
@@ -165,7 +165,7 @@ void CYearWindow::initUI()
 void CYearWindow::initConnection()
 {
     connect(m_prevButton, &DArrowButton::mousePress, this, &CYearWindow::slotprev);
-    connect(m_today, &DBaseButton::clicked, this, &CYearWindow::slottoday);
+    connect(m_today, &DPushButton::clicked, this, &CYearWindow::slottoday);
     connect(m_nextButton, &DArrowButton::mousePress, this, &CYearWindow::slotnext);
 }
 

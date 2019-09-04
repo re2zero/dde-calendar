@@ -23,7 +23,7 @@
 #include <DMainWindow>
 #include <QDate>
 #include <QLabel>
-#include <dlabel.h>
+#include <DLabel>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 

@@ -26,7 +26,7 @@
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
-#include <dlabel.h>
+#include <DLabel>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 

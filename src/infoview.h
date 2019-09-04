@@ -22,7 +22,7 @@
 
 #include <QFrame>
 
-#include <dlinkbutton.h>
+#include <DPushButton>
 
 DWIDGET_USE_NAMESPACE
 
@@ -55,11 +55,11 @@ public slots:
     void setTodayButtonVisible(bool visible) const;
 
 private:
-    QLabel * m_timeLabel;
-    QLabel * m_festivalLabel;
-    DLinkButton * m_todayButton;
-    Spinner * m_yearSpinner;
-    Spinner * m_monthSpinner;
+    QLabel *m_timeLabel;
+    QLabel *m_festivalLabel;
+    DPushButton *m_todayButton;
+    Spinner *m_yearSpinner;
+    Spinner *m_monthSpinner;
 };
 
 #endif // INFOVIEW_H

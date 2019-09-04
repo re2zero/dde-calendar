@@ -24,7 +24,7 @@
 #include <QObject>
 #include <DMainWindow>
 #include <dstackwidget.h>
-#include <dpushbutton.h>
+#include <DPushButton>
 #include <dsearchedit.h>
 #include <QButtonGroup>
 #include <DTitlebar>

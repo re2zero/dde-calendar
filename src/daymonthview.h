@@ -25,7 +25,7 @@
 #include <QStyleOption>
 #include <QSignalMapper>
 #include <DArrowButton>
-#include <dbasebutton.h>
+#include <DPushButton>
 #include <DLabel>
 #include "calendardbus.h"
 #include <DFrame>
@@ -84,7 +84,7 @@ private slots:
 private:
     DArrowButton      *m_prevButton = nullptr;
     DArrowButton      *m_nextButton = nullptr;
-    DBaseButton       *m_today = nullptr;
+    DPushButton       *m_today = nullptr;
     DLabel *m_currentMouth;
     DLabel *m_currentDay;
     DLabel *m_currentYear;

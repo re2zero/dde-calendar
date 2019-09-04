@@ -25,8 +25,8 @@
 #include <QLabel>
 #include <dimagebutton.h>
 #include <darrowbutton.h>
-#include <dbasebutton.h>
-#include <dlabel.h>
+#include <DPushButton>
+#include <DLabel>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
@@ -66,7 +66,7 @@ private:
     QFrame *m_contentBackground = nullptr;
     DArrowButton      *m_prevButton = nullptr;
     DArrowButton      *m_nextButton = nullptr;
-    DBaseButton       *m_today = nullptr;
+    DPushButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_YearLunarLabel;

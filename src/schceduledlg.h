@@ -21,15 +21,14 @@
 
 #include <QObject>
 #include <QWidget>
-#include <ddialog.h>
-#include <dlabel.h>
+#include <DDialog>
+#include <DLabel>
 #include <QComboBox>
-#include <dtextedit.h>
+#include <DTextEdit>
 #include <QDateEdit>
 #include <QTimeEdit>
 #include <QRadioButton>
-#include <dpushbutton.h>
-#include <dtextbutton.h>
+#include <DPushButton>
 #include <QButtonGroup>
 #include <DArrowButton>
 //#include <DDateEdit>
@@ -83,8 +82,8 @@ private:
     QRadioButton                     *m_everyweekBt = nullptr;
     QRadioButton                     *m_everymonthBt = nullptr;
     QRadioButton                     *m_everyyearBt = nullptr;
-    DTextButton                      *m_cancelBt = nullptr;
-    DTextButton                      *m_OkBt = nullptr;
+    DPushButton                      *m_cancelBt = nullptr;
+    DPushButton                      *m_OkBt = nullptr;
     //CCalendarTimeEidt                *m_bCalendarTimeEidt;
     //CCalendarTimeEidt                *m_eCalendarTimeEidt;
     CCustomCalendarWidget            *m_bCustomDateW;

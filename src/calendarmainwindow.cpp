@@ -68,7 +68,7 @@ void Calendarmainwindow::initUI()
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
     titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(46, 0, 0, 0);
+    titleLayout->setContentsMargins(0, 0, 0, 0);
     titleLayout->addWidget(m_ybutton);
     titleLayout->addWidget(m_mbutton);
     titleLayout->addWidget(m_wbutton);

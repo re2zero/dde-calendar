@@ -21,10 +21,9 @@
 
 #include <QObject>
 #include <QWidget>
-#include <dlabel.h>
-#include <ddialog.h>
-#include <dpushbutton.h>
-#include <dtextbutton.h>
+#include <DLabel>
+#include <DDialog>
+#include <DPushButton>
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
 
@@ -49,8 +48,8 @@ private:
 private:
     DLabel                           *m_schceduleLabel = nullptr;
     DLabel                           *m_timeLabel = nullptr;
-    DTextButton                      *m_editBt = nullptr;
-    DTextButton                      *m_deleteBt = nullptr;
+    DPushButton                      *m_editBt = nullptr;
+    DPushButton                      *m_deleteBt = nullptr;
     ScheduleInfo                     m_scheduleInfo;//日程
 };
 
