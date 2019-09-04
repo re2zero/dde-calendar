@@ -10,7 +10,7 @@ Build-Depends:
  libdtkwidget-dev,
  qttools5-dev-tools,
  deepin-gettext-tools,
- cmake
+ qmake
 Standards-Version: 3.9.6
 Homepage: http://www.deepin.org
 Vcs-Git: https://github.com/linuxdeepin/dde-calendar
