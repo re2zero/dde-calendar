@@ -20,7 +20,7 @@
 #define SCHEDULEDBMANAGER_H
 #include "schedulestructs.h"
 #include <QString>
-#include <QtSql/QSqlDatabase>
+#include <QSqlDatabase>
 
 class ScheduleDbManager
 {

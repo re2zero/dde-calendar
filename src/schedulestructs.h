@@ -22,7 +22,7 @@
 #include <QList>
 #include <QDateTime>
 #include <QColor>
-
+#include <QVector>
 typedef struct _tagScheduleInfo {
     int               id;
     QDateTime         beginDateTime;
@@ -43,5 +43,37 @@ typedef struct _tagScheduleRemindInfo {
         times = 1;
     }
 } ScheduleRemindInfo;
-
+typedef struct _tagScheduleRemindData {
+    int               n; //全天代表天数 非全天代表分钟
+    QTime             time; //全天该变量才有效
+} ScheduleRemindData;
+typedef struct _tagScheduleEndRepeatData {
+    int               type; //0 永不 1  多少次结束  2 结束日期
+    QDate             date; //为2时才有效
+    int               tcount;//1时有效
+} ScheduleEndRepeatData;
+typedef struct _tagScheduleType {
+    QString           typeName; //work life other
+    QColor            color; //颜色
+    int               ID;
+} ScheduleType;
+typedef struct _tagScheduleDtailInfo {
+    int               id;
+    QDateTime         beginDateTime;
+    QDateTime         endDateTime;
+    QVector<QDateTime>  ignore;
+    QString           titleName;
+    QString           description;
+    bool              allday;  //1全天
+    ScheduleType      type;    //0工作 1 生活 2其他
+    int               RecurID;  //0 代表原始  大于0 代表克隆
+    bool              remind;  //0无 1 提醒
+    ScheduleRemindData remindData;
+    int               rpeat; //0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
+    ScheduleEndRepeatData enddata;
+} ScheduleDtailInfo;
+typedef struct _tagScheduleDateRangeInfo {
+    QDate date;
+    QVector<ScheduleDtailInfo> vData;
+} ScheduleDateRangeInfo;
 #endif

@@ -52,7 +52,7 @@ QRect PrimaryRect()
     QDesktopWidget *w = QApplication::desktop();
     return w->screenGeometry(w->primaryScreen());
 }
-
+#include "schedulesdbus.h"
 int main(int argc, char *argv[])
 {
     DApplication::loadDXcbPlugin();
@@ -84,7 +84,6 @@ int main(int argc, char *argv[])
 
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
-
 
     //a.setStyleSheet(GetStyleSheetContent());
     //a.loadTranslator();
