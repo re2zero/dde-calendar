@@ -58,10 +58,10 @@ QString CSchedulesDBus::createScheduleDtailInfojson(const ScheduleDtailInfo &inf
     json.insert("Title", info.titleName);
     json.insert("Description", info.description);
     json.insert("Type", info.type.ID);
-    //json.insert("Start", toconvertData(info.beginDateTime));
-    //json.insert("End", toconvertData(info.endDateTime));
-    json.insert("Start", "2006-01-02T15:04:05Z07:00");
-    json.insert("End", "2006-01-02T17:04:05Z07:00");
+    json.insert("Start", toconvertData(info.beginDateTime));
+    json.insert("End", toconvertData(info.endDateTime));
+    //json.insert("Start", "2006-01-02T15:04:05+07:00");
+    //json.insert("End", "2006-01-02T17:04:05+07:00");
     json.insert("RecurID", info.RecurID);
     QJsonArray jsonarry;
     for (int i = 0; i < info.ignore.count(); i++) {
@@ -73,15 +73,6 @@ QString CSchedulesDBus::createScheduleDtailInfojson(const ScheduleDtailInfo &inf
     document.setObject(json);
     QByteArray byteArray = document.toJson(QJsonDocument::Compact);
     QString strJson(byteArray);
-
-    QString tttt = QDir::currentPath() + "/1.json";
-    QFile file(tttt);
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate)) {
-        qDebug() << "file error";
-    }
-    QTextStream in(&file);
-    in << strJson;
-    file.close();
     return strJson;
 }
 
@@ -150,6 +141,12 @@ ScheduleDtailInfo CSchedulesDBus::parsingScheduleDtailInfojsonID(QJsonObject &ob
     if (rootObj.contains("End")) {
         info.endDateTime = fromconvertData(rootObj.value("End").toString());
     }
+    if (rootObj.contains("RecurID")) {
+        info.RecurID = rootObj.value("RecurID").toInt();
+    }
+    if (rootObj.contains("RRule")) {
+        parsingScheduleRRule(rootObj.value("RRule").toString(), info);
+    }
     if (rootObj.contains("Ignore")) {
         QJsonArray subArray = rootObj.value("Ignore").toArray();
         for (int i = 0; i < subArray.size(); i++) {
@@ -209,7 +206,7 @@ void CSchedulesDBus::parsingScheduleRRule(QString str, ScheduleDtailInfo &info)
         info.rpeat = 0;
         return;
     }
-    QString rrulestrs = str.mid(1, str.count() - 2);
+    QString rrulestrs = str;
     QStringList rruleslist = rrulestrs.split(";", QString::SkipEmptyParts);
     if (rruleslist.count() > 0) {
         if (rruleslist.contains("FREQ=DAILY") && rruleslist.contains("BYDAY=MO,TU,WE,TH,FR")) info.rpeat = 2;
@@ -269,15 +266,16 @@ void CSchedulesDBus::parsingScheduleRemind(QString str, ScheduleDtailInfo &info)
 
 QString CSchedulesDBus::toconvertData(QDateTime date)
 {
+    // QString strss = date.toString(Qt::RFC2822Date);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
-    //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z" + datetimeutc.toString("hh:mm");
-    QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
+    QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "+" + datetimeutc.toString("hh:mm");
+    //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
     return  str;
 }
 
 QDateTime CSchedulesDBus::fromconvertData(QString str)
 {
-    QStringList liststr = str.split("Z", QString::SkipEmptyParts);
+    QStringList liststr = str.split("+", QString::SkipEmptyParts);
     return QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
 }
 qint64 CSchedulesDBus::CreateJob(const ScheduleDtailInfo &info)
@@ -355,19 +353,9 @@ bool CSchedulesDBus::GetJob(qint64 jobId, ScheduleDtailInfo &out)
         return false;
     }
 
-    QJsonArray rootarry = jsonDoc.array();
-    for (int i = 0; i < rootarry.size(); i++) {
+    QJsonObject ssubObj = jsonDoc.object();
+    out = parsingScheduleDtailInfojsonID(ssubObj);
 
-        QJsonObject subObj = rootarry.at(i).toObject();
-        if (subObj.contains("Jobs")) {
-            QJsonArray subarry = subObj.value("Jobs").toArray();
-            for (int j = 0; j < subarry.size(); j++) {
-                QJsonObject ssubObj = subarry.at(j).toObject();
-                out = parsingScheduleDtailInfojsonID(ssubObj);
-                break;
-            }
-        }
-    }
     return true;
 }
 
