@@ -46,10 +46,10 @@ CYearView::CYearView(QWidget *parent) : QWidget(parent)
     QFont t_labelF;
     t_labelF.setFamily("Helvetica");
     t_labelF.setPixelSize(16);
-    QPalette t_pa;
-    t_pa.setColor(QPalette::WindowText, QColor("#CF0059 "));
     m_currentMouth->setFont(t_labelF);
-    m_currentMouth->setStyleSheet("color:#CF0059;");
+    QPalette Lunadpa;
+    Lunadpa.setColor(QPalette::WindowText, QColor("#CF0059"));
+    m_currentMouth->setPalette(Lunadpa);
     QHBoxLayout *separatorLineLayout = new QHBoxLayout;
     separatorLineLayout->setMargin(0);
     separatorLineLayout->setSpacing(0);

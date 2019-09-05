@@ -84,7 +84,10 @@ void CWeekWindow::initUI()
     t_labelF.setFamily("SourceHanSansSC-Medium");
     t_labelF.setPixelSize(24);
     m_YearLabel->setFont(t_labelF);
-    m_YearLabel->setStyleSheet("color:#3B3B3B;");
+    QPalette Lunadpa;
+    Lunadpa.setColor(QPalette::WindowText, QColor("#3B3B3B"));
+    m_YearLabel->setPalette(Lunadpa);
+    //m_YearLabel->setStyleSheet("color:#3B3B3B;");
 
     m_YearLunarLabel = new DLabel(m_contentBackground);
     m_YearLunarLabel->setFixedSize(DDEWeekCalendar::W_YLunatLabelWindth, DDEWeekCalendar::W_YLunatLabelHeight);
@@ -98,14 +101,19 @@ void CWeekWindow::initUI()
     weeklabelF.setFamily("PingFangSC-Medium");
     weeklabelF.setPixelSize(14);
     m_weekLabel->setFont(weeklabelF);
-    m_weekLabel->setStyleSheet("color:#717171;");
+    QPalette wpa;
+    wpa.setColor(QPalette::WindowText, QColor("#717171"));
+    m_weekLabel->setPalette(wpa);
     m_weekLabel->setText(tr("Week"));
 
     QFont ylabelF;
     ylabelF.setFamily("SourceHanSansSC-Medium");
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
-    m_YearLunarLabel->setStyleSheet("color:#8A8A8A;");
+    QPalette YearLpa;
+    YearLpa.setColor(QPalette::WindowText, QColor("#8A8A8A"));
+
+    m_YearLunarLabel->setPalette(YearLpa);
     m_YearLunarLabel->move(116, 27);
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);

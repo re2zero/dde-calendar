@@ -97,11 +97,16 @@ void CMonthWindow::initUI()
     ylabelF.setFamily("SourceHanSansSC-Medium");
     ylabelF.setPixelSize(24);
     m_YearLabel->setFont(ylabelF);
-    m_YearLabel->setStyleSheet("color:#3B3B3B;");
+    QPalette pa;
+    pa.setColor(QPalette::WindowText, QColor("#3B3B3B"));
+    m_YearLabel->setPalette(pa);
+    //m_YearLabel->setStyleSheet("color:#3B3B3B;");
 
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
-    m_YearLunarLabel->setStyleSheet("color:#8A8A8A;");
+    QPalette Lunarpa;
+    Lunarpa.setColor(QPalette::WindowText, QColor("#8A8A8A"));
+    m_YearLunarLabel->setPalette(Lunarpa);
 
     m_monthDayView = new CMonthDayView();
 

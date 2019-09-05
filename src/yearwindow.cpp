@@ -104,7 +104,9 @@ void CYearWindow::initUI()
     t_labelF.setFamily("SourceHanSansSC-Medium");
     t_labelF.setPixelSize(30);
     m_YearLabel->setFont(t_labelF);
-    m_YearLabel->setStyleSheet("color:#3B3B3B;");
+    QPalette pa;
+    pa.setColor(QPalette::WindowText, QColor("#3B3B3B"));
+    m_YearLabel->setPalette(pa);
 
     m_YearLunarLabel = new DLabel(m_contentBackground);
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
@@ -113,14 +115,17 @@ void CYearWindow::initUI()
     ylabelF.setFamily("SourceHanSansSC-Medium");
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
-    m_YearLunarLabel->setStyleSheet("color:#8A8A8A;");
+    QPalette Lunapa;
+    Lunapa.setColor(QPalette::WindowText, QColor("#8A8A8A"));
+    m_YearLunarLabel->setPalette(Lunapa);
     m_YearLunarLabel->move(116, 27);
 
     m_YearLunarDayLabel = new DLabel(m_contentBackground);
     m_YearLunarDayLabel->setFixedSize(96, DDEMonthCalendar::M_YLunatLabelHeight);
 
     m_YearLunarDayLabel->setFont(ylabelF);
-    m_YearLunarDayLabel->setStyleSheet("color:#8A8A8A;");
+
+    m_YearLunarDayLabel->setPalette(Lunapa);
 
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
