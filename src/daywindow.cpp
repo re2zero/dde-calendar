@@ -65,9 +65,11 @@ void CDayWindow::initUI()
 {
     m_contentBackground = new QFrame;
     m_contentBackground->setObjectName("CalendarBackground");
-    m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
-                                       "background:white;"
-                                       "}");
+    QPalette anipa;
+    anipa.setColor(QPalette::Background, Qt::white);
+    m_contentBackground->setAutoFillBackground(true);
+    m_contentBackground->setPalette(anipa);
+
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
 

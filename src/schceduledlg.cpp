@@ -155,7 +155,11 @@ void CSchceduleDlg::initUI()
     leftlayout->addWidget(m_contentLabel, 7);
     m_textEdit = new DTextEdit(this);
     m_textEdit->setTextBackgroundColor(Qt::white);
-    m_textEdit->setStyleSheet("QTextEdit { background: white }");
+    QPalette pa;
+    pa.setColor(QPalette::Background, Qt::white);
+    m_textEdit->setPalette(pa);
+
+    //m_textEdit->setStyleSheet("QTextEdit { background: white }");
     m_textEdit->setTextColor(Qt::black);
     rightlayout->addWidget(m_textEdit);
 

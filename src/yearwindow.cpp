@@ -75,7 +75,10 @@ void CYearWindow::initUI()
     //"}");
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
-
+    QPalette anipa;
+    anipa.setColor(QPalette::Background, Qt::white);
+    m_contentBackground->setAutoFillBackground(true);
+    m_contentBackground->setPalette(anipa);
     m_today = new DPushButton(this);
     QFont todayfont("SourceHanSansSC-Medium");
     todayfont.setPixelSize(14);
@@ -88,14 +91,21 @@ void CYearWindow::initUI()
     m_today->setText(tr("Return today"));
     m_today->setFixedWidth(100);
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-    m_prevButton = new DArrowButton;
+    m_prevButton = new DImageButton(this);
     m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
+    m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
+    m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
+    m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
+
     //m_prevButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
-    m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
-    m_nextButton = new DArrowButton;
+    //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
+    m_nextButton = new DImageButton(this);
     m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
+    m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
+    m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
+    m_nextButton->setPressPic(":/resources/icon/next_press.svg");
     //m_nextButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
-    m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
+    //m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
     m_YearLabel = new DLabel();
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
@@ -169,9 +179,9 @@ void CYearWindow::initUI()
 
 void CYearWindow::initConnection()
 {
-    connect(m_prevButton, &DArrowButton::mousePress, this, &CYearWindow::slotprev);
+    connect(m_prevButton, &DImageButton::clicked, this, &CYearWindow::slotprev);
     connect(m_today, &DPushButton::clicked, this, &CYearWindow::slottoday);
-    connect(m_nextButton, &DArrowButton::mousePress, this, &CYearWindow::slotnext);
+    connect(m_nextButton, &DImageButton::clicked, this, &CYearWindow::slotnext);
 }
 
 void CYearWindow::setLunarVisible(bool state)

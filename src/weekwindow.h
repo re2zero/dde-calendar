@@ -23,8 +23,7 @@
 #include <DMainWindow>
 #include <QDate>
 #include <QLabel>
-#include <dimagebutton.h>
-#include <darrowbutton.h>
+#include <DImageButton>
 #include <DPushButton>
 #include <DLabel>
 #include "calendardbus.h"
@@ -64,8 +63,8 @@ private slots:
 private:
     CWeekHeadView     *m_weekHeadView; //周视图头
     QFrame *m_contentBackground = nullptr;
-    DArrowButton      *m_prevButton = nullptr;
-    DArrowButton      *m_nextButton = nullptr;
+    DImageButton      *m_prevButton = nullptr;
+    DImageButton      *m_nextButton = nullptr;
     DPushButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;

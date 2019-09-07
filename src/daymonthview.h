@@ -24,7 +24,7 @@
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
-#include <DArrowButton>
+#include <DImageButton>
 #include <DPushButton>
 #include <DLabel>
 #include "calendardbus.h"
@@ -82,8 +82,8 @@ private slots:
     void slotnext();
     void getDbusData();
 private:
-    DArrowButton      *m_prevButton = nullptr;
-    DArrowButton      *m_nextButton = nullptr;
+    DImageButton      *m_prevButton = nullptr;
+    DImageButton      *m_nextButton = nullptr;
     DPushButton       *m_today = nullptr;
     DLabel *m_currentMouth;
     DLabel *m_currentDay;

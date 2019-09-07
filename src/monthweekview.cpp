@@ -33,9 +33,9 @@ CMonthWeekView::CMonthWeekView(QWidget *parent) : QWidget(parent)
 
 void CMonthWeekView::setList(int weekday)
 {
-    QLayoutItem* child;
-    while((child = m_mainLayout->takeAt(0)) != 0) {
-        if(child->widget() != 0) {
+    QLayoutItem *child;
+    while ((child = m_mainLayout->takeAt(0)) != 0) {
+        if (child->widget() != 0) {
             delete child->widget();
         }
         delete child;
@@ -53,9 +53,25 @@ void CMonthWeekView::setList(int weekday)
         weekfont.setPixelSize(16);
         label->setFont(weekfont);
         if (d == 7 || d == 6) {
-            label->setStyleSheet("color:#0887FF;background: rgba(0,66,154,0.05);");
-        }else {
-            label->setStyleSheet("color:black;background: rgba(0,66,154,0.05);");
+            QPalette monthpa = label->palette();
+            QColor textC = "#0887FF";
+            QColor textbC(0, 66, 154);
+            textbC.setAlphaF(0.05);
+            monthpa.setColor(QPalette::WindowText, textC);
+            monthpa.setColor(QPalette::Background, textbC);
+            label->setAutoFillBackground(true);
+            label->setPalette(monthpa);
+            //label->setStyleSheet("color:#0887FF;background: rgba(0,66,154,0.05);");
+        } else {
+            QPalette monthpa = label->palette();
+            QColor textC = Qt::black;
+            QColor textbC(0, 66, 154);
+            textbC.setAlphaF(0.05);
+            monthpa.setColor(QPalette::WindowText, textC);
+            monthpa.setColor(QPalette::Background, textbC);
+            label->setAutoFillBackground(true);
+            label->setPalette(monthpa);
+            //label->setStyleSheet("color:black;background: rgba(0,66,154,0.05);");
         }
         if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
             label->setObjectName("MonthHeaderWeekend");
@@ -65,15 +81,16 @@ void CMonthWeekView::setList(int weekday)
 
         label->setAlignment(Qt::AlignCenter);
         if (i == 0 || i == 6) {
-            label->setFixedSize(DDEMonthCalendar::MWeekCellWidth-1, DDEMonthCalendar::MWeekCellHeight);
-        }else {
-            label->setFixedSize(DDEMonthCalendar::MWeekCellWidth-3, DDEMonthCalendar::MWeekCellHeight);
+            label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, DDEMonthCalendar::MWeekCellHeight);
+        } else {
+            label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 3, DDEMonthCalendar::MWeekCellHeight);
         }
         m_mainLayout->addWidget(label, 0, Qt::AlignCenter);
     }
 }
 
-int CMonthWeekView::checkDay(int weekday) {
+int CMonthWeekView::checkDay(int weekday)
+{
 
     // check the week, calculate the correct order in the custom.
 

@@ -146,14 +146,20 @@ void CDayMonthView::initUI()
     m_today = new DPushButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
-    m_prevButton = new DArrowButton;
+    m_prevButton = new DImageButton(this);
     m_prevButton->setFixedWidth(DDEDayCalendar::D_MLableHeight);
+    m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
+    m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
+    m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
     //m_prevButton->setFixedSize(DDEDayCalendar::D_MLableHeight, DDEDayCalendar::D_MLableHeight);
-    m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
-    m_nextButton = new DArrowButton;
+    //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
+    m_nextButton = new DImageButton(this);
     //m_nextButton->setFixedSize(DDEDayCalendar::D_MLableHeight, DDEDayCalendar::D_MLableHeight);
     m_nextButton->setFixedWidth(DDEDayCalendar::D_MLableHeight);
-    m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
+    m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
+    m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
+    m_nextButton->setPressPic(":/resources/icon/next_press.svg");
+    //m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
@@ -297,9 +303,9 @@ void CDayMonthView::initUI()
 
 void CDayMonthView::initConnection()
 {
-    connect(m_prevButton, &DArrowButton::mousePress, this, &CDayMonthView::slotprev);
+    connect(m_prevButton, &DImageButton::clicked, this, &CDayMonthView::slotprev);
     connect(m_today, &DPushButton::clicked, this, &CDayMonthView::slottoday);
-    connect(m_nextButton, &DArrowButton::mousePress, this, &CDayMonthView::slotnext);
+    connect(m_nextButton, &DImageButton::clicked, this, &CDayMonthView::slotnext);
     connect(this, &CDayMonthView::dateSelected, this, &CDayMonthView::handleCurrentDateChanged);
 }
 

@@ -78,10 +78,11 @@ void CMonthWindow::wheelEvent(QWheelEvent *e)
 void CMonthWindow::initUI()
 {
     m_contentBackground = new QFrame;
-    m_contentBackground->setObjectName("CalendarBackground");
-    m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
-                                       "background:white;"
-                                       "}");
+    QPalette anipa;
+    anipa.setColor(QPalette::Background, Qt::white);
+    m_contentBackground->setAutoFillBackground(true);
+    m_contentBackground->setPalette(anipa);
+
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
 
@@ -133,7 +134,8 @@ void CMonthWindow::initUI()
     m_contentBackground->setLayout(hhLayout);
 
     m_animationContainer = new QFrame(m_contentBackground);
-    m_animationContainer->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
+    m_animationContainer->setPalette(anipa);
+    //m_animationContainer->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
     m_animationContainer->setFixedSize(m_monthView->width(),
                                        m_monthView->height() - DDEMonthCalendar::MDayCellHeight);
     m_animationContainer->move(10, 130);

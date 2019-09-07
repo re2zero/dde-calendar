@@ -58,21 +58,32 @@ void CWeekWindow::initUI()
 {
     m_contentBackground = new QFrame;
     m_contentBackground->setObjectName("CalendarBackground");
-    m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
-                                       "background:white;"
-                                       "}");
+    QPalette pa;
+    pa.setColor(QPalette::Background, Qt::white);
+    m_contentBackground->setAutoFillBackground(true);
+    m_contentBackground->setPalette(pa);
 
+    // m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
+    //                                   "background:white;"
+    //                                    "}");
+//
 
     m_today = new DPushButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(DDEWeekCalendar::WTodayWindth, DDEWeekCalendar::WTodayHeight);
-    m_prevButton = new DArrowButton(this);
-    m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
+    m_prevButton = new DImageButton(this);
+    //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
+    m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
+    m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
+    m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
     m_prevButton->setFixedWidth(DDEWeekCalendar::WWeekCellWidth);
     //m_prevButton->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
 
-    m_nextButton = new DArrowButton(this);
-    m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
+    m_nextButton = new DImageButton(this);
+    //m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
+    m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
+    m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
+    m_nextButton->setPressPic(":/resources/icon/next_press.svg");
     m_nextButton->setFixedWidth(DDEWeekCalendar::WWeekCellWidth);
     //m_nextButton->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
 
@@ -153,9 +164,9 @@ void CWeekWindow::initUI()
 
 void CWeekWindow::initConnection()
 {
-    connect(m_prevButton, &DArrowButton::mousePress, this, &CWeekWindow::slotprev);
+    connect(m_prevButton, &DImageButton::clicked, this, &CWeekWindow::slotprev);
     connect(m_today, &DPushButton::clicked, this, &CWeekWindow::slottoday);
-    connect(m_nextButton, &DArrowButton::mousePress, this, &CWeekWindow::slotnext);
+    connect(m_nextButton, &DImageButton::clicked, this, &CWeekWindow::slotnext);
     connect(m_weekview, &CWeekView::signalsSelectDate, this, &CWeekWindow::slotCurrentWeek);
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentLunarDateChanged, this, &CWeekWindow::slotcurrentDateLunarChanged);
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentDateChanged, this, &CWeekWindow::slotcurrentDateChanged);

@@ -266,7 +266,11 @@ void CSchedulesDBus::parsingScheduleRemind(QString str, ScheduleDtailInfo &info)
 
 QString CSchedulesDBus::toconvertData(QDateTime date)
 {
-    // QString strss = date.toString(Qt::RFC2822Date);
+    QDateTime datetimeutc11 = date;
+    datetimeutc11.setTimeSpec(Qt::UTC);
+    QString strss = datetimeutc11.toString(Qt::ISODate);
+    datetimeutc11.setTimeSpec(Qt::OffsetFromUTC);
+    strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "+" + datetimeutc.toString("hh:mm");
     //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";

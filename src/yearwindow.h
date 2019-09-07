@@ -23,12 +23,11 @@
 #include <DMainWindow>
 #include <QDate>
 #include <QLabel>
-#include <dimagebutton.h>
-#include <darrowbutton.h>
+#include <DImageButton>
 #include <DPushButton>
 #include <DLabel>
-#include <QPushButton>
 #include "calendardbus.h"
+#include <DIconButton>
 DWIDGET_USE_NAMESPACE
 
 class CYearView;
@@ -61,8 +60,8 @@ private:
 private:
     QList<CYearView *> m_monthViewList;
     QFrame *m_contentBackground = nullptr;
-    DArrowButton      *m_prevButton = nullptr;
-    DArrowButton      *m_nextButton = nullptr;
+    DImageButton      *m_prevButton = nullptr;
+    DImageButton      *m_nextButton = nullptr;
     DPushButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
