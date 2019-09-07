@@ -20,13 +20,13 @@
 #define SCHCEDULESEARCHVIEW_H
 
 #include <DLabel>
-#include <QPushButton>
+#include <DPushButton>
 #include "schedulestructs.h"
-#include <QListWidget>
+#include <DListWidget>
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CSchceduleSearchItem;
-class CSchceduleSearchView : public QWidget
+class CSchceduleSearchView : public DWidget
 {
     Q_OBJECT
 
@@ -43,7 +43,7 @@ private:
     void updateDateShow();
     CSchceduleSearchItem *createItemWidget(int index, bool average = false);
 private:
-    QListWidget                                 *m_gradientItemList; //下拉列表窗
+    DListWidget                                 *m_gradientItemList; //下拉列表窗
     bool                                         m_widgetFlag;
     QVector<ScheduleInfo>                        m_vlistData;
     int                                          m_type;

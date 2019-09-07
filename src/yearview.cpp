@@ -30,7 +30,7 @@
 #include <QQueue>
 #include "yearview.h"
 #include <QSpacerItem>
-CYearView::CYearView(QWidget *parent) : QWidget(parent)
+CYearView::CYearView(QWidget *parent) : DWidget(parent)
 {
     m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
@@ -39,7 +39,7 @@ CYearView::CYearView(QWidget *parent) : QWidget(parent)
     //setStyleSheet("QWidget { background: rgba(0, 0, 0, 0) }");
 
     //add separator line
-    m_currentMouth = new QLabel();
+    m_currentMouth = new DLabel();
     m_currentMouth->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 

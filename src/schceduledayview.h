@@ -19,16 +19,17 @@
 #ifndef SCHCEDULEDAYVIEW_H
 #define SCHCEDULEDAYVIEW_H
 
-#include <QComboBox>
-#include <QLabel>
+#include <DComboBox>
+#include <DLabel>
 #include <QMouseEvent>
-#include <QPushButton>
+#include <DPushButton>
 #include "schedulestructs.h"
-#include <QListWidget>
+#include <DListWidget>
+DWIDGET_USE_NAMESPACE
 class CSchceduleWidgetItem;
 class QVBoxLayout;
 class CSchceduleNumButton;
-class CSchceduleDayView : public QWidget
+class CSchceduleDayView : public DWidget
 {
     Q_OBJECT
 
@@ -54,8 +55,8 @@ private:
     CSchceduleWidgetItem *createItemWidget(int index, bool average = false);
 private:
     QAction                                     *m_createAction;     // 创建日程
-    QListWidget                                 *m_gradientItemList; //下拉列表窗口
-    QWidget                                     *m_widt;             //主窗口
+    DListWidget                                 *m_gradientItemList; //下拉列表窗口
+    DWidget                                     *m_widt;             //主窗口
     CSchceduleNumButton                         *m_numButton;
     QVBoxLayout                                 *m_layout;
     bool                                         m_widgetFlag;
@@ -66,7 +67,7 @@ private:
     int                                          m_editType = 0;
 };
 
-class CSchceduleNumButton : public QPushButton
+class CSchceduleNumButton : public DPushButton
 {
     Q_OBJECT
 
@@ -91,7 +92,7 @@ private:
     int                   m_num;
 };
 
-class CSchceduleWidgetItem : public QPushButton
+class CSchceduleWidgetItem : public DPushButton
 {
     Q_OBJECT
 

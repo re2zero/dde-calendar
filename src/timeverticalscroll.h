@@ -19,12 +19,13 @@
 #ifndef TIMEVERTICALSCROLL_H
 #define TIMEVERTICALSCROLL_H
 
-#include <QWidget>
+#include <DWidget>
 #include <QPropertyAnimation>
 #include <QPainter>
 
+DWIDGET_USE_NAMESPACE
 //滚动控件
-class CTimeVerticalScroll : public QWidget
+class CTimeVerticalScroll : public DWidget
 {
     Q_OBJECT
 public:
@@ -37,8 +38,8 @@ public:
     int readValue();
     //设置当前值
     void setCurrValue(int value);
-	void setmZeropadd(bool flag);
-	void setPadingStr(QString str);
+    void setmZeropadd(bool flag);
+    void setPadingStr(QString str);
 protected:
     void mousePressEvent(QMouseEvent *);
 
@@ -57,11 +58,11 @@ protected:
     int readDeviation();
     //设置偏移量
     void setDeviation(int n);
-	void resizeEvent(QResizeEvent * e);
+    void resizeEvent(QResizeEvent *e);
 signals:
 
     void currentValueChanged(int value);
-	void currentValueChangedClose(int value);
+    void currentValueChangedClose(int value);
 
 private:
     int m_minRange;      //最小值
@@ -76,8 +77,8 @@ private:
     int devide;       //分隔数量
     int m_currentY;   //当前选中值的中点值
     int m_Devideheight; //间隔高
-	int m_Zeropadd = true;
-	QString m_PadingStr;
+    int m_Zeropadd = true;
+    QString m_PadingStr;
 
     bool m_bClicked; //点选
 };

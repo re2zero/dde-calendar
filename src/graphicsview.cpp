@@ -29,7 +29,7 @@
 //m_graphicsScene->setSceneRect(0,0,763,1032);
 
 CGraphicsView::CGraphicsView(QWidget *parent)
-    : QGraphicsView(parent)
+    : DGraphicsView(parent)
 {
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     setAlignment(Qt::AlignLeft | Qt::AlignTop);

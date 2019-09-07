@@ -21,10 +21,11 @@
 #define WEEKINDICATOR_H
 
 #include "constants.h"
-#include <QWidget>
+#include <DWidget>
 #include <QHBoxLayout>
-
-class WeekIndicator : public QWidget
+#include <DLabel>
+DWIDGET_USE_NAMESPACE
+class WeekIndicator : public DWidget
 {
     Q_OBJECT
 public:

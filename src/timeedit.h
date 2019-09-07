@@ -18,36 +18,37 @@
 */
 #pragma once
 
-#include <QComboBox> 
+#include <DComboBox>
 #include <QTimeEdit>
-#include <QListWidget>
-#include <QLineEdit>
+#include <DListWidget>
+#include <DLineEdit>
 #include <QTime>
+DWIDGET_USE_NAMESPACE
 class CTimeVerticalScroll;
-class CTimeEdit : public QComboBox
+class CTimeEdit : public DComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CTimeEdit(QWidget *parent = nullptr);
-	~CTimeEdit();
-	void setTime(QTime time);
-	QTime getTime();
+    CTimeEdit(QWidget *parent = nullptr);
+    ~CTimeEdit();
+    void setTime(QTime time);
+    QTime getTime();
 private:
-	void initUI();
-	void initConnection();
-	void showPopup();
-	void hidePopup();
+    void initUI();
+    void initConnection();
+    void showPopup();
+    void hidePopup();
 
 public slots:
-   void slotcurrentValueChanged(int value);
-   void slotcurrentValueChangedClose(int value);
-   void slotEidtChange();
+    void slotcurrentValueChanged(int value);
+    void slotcurrentValueChangedClose(int value);
+    void slotEidtChange();
 private:
-	QLineEdit                 *m_timeEdit;
-	CTimeVerticalScroll       *m_verticalScroll;
-   	QListWidget               *m_pListWidget;
-	int                       m_type = 0; // 0 h,1 m
-	int                       m_pos = 0;
-	QTime                     m_time;
+    QLineEdit                 *m_timeEdit;
+    CTimeVerticalScroll       *m_verticalScroll;
+    DListWidget               *m_pListWidget;
+    int                       m_type = 0; // 0 h,1 m
+    int                       m_pos = 0;
+    QTime                     m_time;
 };

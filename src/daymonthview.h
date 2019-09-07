@@ -19,7 +19,7 @@
 #ifndef DAYMONTHVIEW_H
 #define DAYMONTHVIEW_H
 #include "constants.h"
-#include <QWidget>
+#include <DWidget>
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
@@ -32,7 +32,7 @@
 DWIDGET_USE_NAMESPACE
 class QLabel;
 class CDayHuangLiLabel;
-class CDayMonthView: public QWidget
+class CDayMonthView: public DWidget
 {
     Q_OBJECT
 

@@ -23,7 +23,7 @@
 #include <QPainter>
 #include <QBrush>
 #include <QEvent>
-CMonthDayView::CMonthDayView(QWidget *parent) : QWidget(parent)
+CMonthDayView::CMonthDayView(QWidget *parent) : DWidget(parent)
 {
     m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);

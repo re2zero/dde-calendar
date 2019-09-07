@@ -18,39 +18,40 @@
 */
 #pragma once
 
-#include <QComboBox> 
+#include <DComboBox>
 #include <QTimeEdit>
-#include <QListWidget>
-#include <QLineEdit>
+#include <DListWidget>
+#include <DLineEdit>
 #include <QTime>
+DWIDGET_USE_NAMESPACE
 class CTimeVerticalScroll;
-class CCaYearMonthEdit : public QComboBox
+class CCaYearMonthEdit : public DComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CCaYearMonthEdit(QWidget *parent = nullptr);
-	~CCaYearMonthEdit();
-	void  setRange(int minv, int maxv);
-	void  setPadStr(QString vstr);
-	int getNum();
+    CCaYearMonthEdit(QWidget *parent = nullptr);
+    ~CCaYearMonthEdit();
+    void  setRange(int minv, int maxv);
+    void  setPadStr(QString vstr);
+    int getNum();
 private:
-	void initUI();
-	void initConnection();
-	void showPopup();
-	void hidePopup();
+    void initUI();
+    void initConnection();
+    void showPopup();
+    void hidePopup();
 signals:
-	void signalsCurrentValueChange(int value);
+    void signalsCurrentValueChange(int value);
 public slots:
-   void setCurrentNum(int num);
-   void slotcurrentValueChanged(int value);
-   void slotcurrentValueChangedClose(int value);
+    void setCurrentNum(int num);
+    void slotcurrentValueChanged(int value);
+    void slotcurrentValueChangedClose(int value);
 private:
-	QLineEdit                 *m_timeEdit;
-	CTimeVerticalScroll       *m_verticalScroll;
-   	QListWidget               *m_pListWidget;
-	int                       m_num;
-	int                       m_min;
-	int                       m_max;
-	QString                   m_paddingStr;
+    QLineEdit                 *m_timeEdit;
+    CTimeVerticalScroll       *m_verticalScroll;
+    DListWidget               *m_pListWidget;
+    int                       m_num;
+    int                       m_min;
+    int                       m_max;
+    QString                   m_paddingStr;
 };

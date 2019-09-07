@@ -31,7 +31,7 @@
 #include <QSpacerItem>
 #include "constants.h"
 #include "dayhuangliview.h"
-CDayMonthView::CDayMonthView(QWidget *parent) : QWidget(parent)
+CDayMonthView::CDayMonthView(QWidget *parent) : DWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
                                    "/com/deepin/api/LunarCalendar",

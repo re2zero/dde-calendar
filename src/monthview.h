@@ -22,13 +22,14 @@
 
 #include "monthweekview.h"
 #include "constants.h"
-#include <QWidget>
+#include <DWidget>
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
 #include <QAction>
 #include "calendardbus.h"
+DWIDGET_USE_NAMESPACE
 class CSchceduleDayView;
 enum CalendarMonthDayType {
     SO_MFestival = QStyleOption::SO_CustomBase + 0x01,
@@ -39,7 +40,7 @@ enum CalendarMonthDayType {
     SO_MDefault,
 };
 
-class CMonthView: public QWidget
+class CMonthView: public DWidget
 {
     Q_OBJECT
 

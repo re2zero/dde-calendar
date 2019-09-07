@@ -32,7 +32,7 @@
 #include "dbmanager.h"
 #include "schceduledlg.h"
 #include <QMenu>
-CMonthView::CMonthView(QWidget *parent) : QWidget(parent)
+CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
                                    "/com/deepin/api/LunarCalendar",

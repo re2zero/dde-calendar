@@ -28,7 +28,7 @@
 #include "dbmanager.h"
 #include "schceduledlg.h"
 #include "myschceduleview.h"
-CSchceduleWidgetItem::CSchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): QPushButton(parent)
+CSchceduleWidgetItem::CSchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
 {
     m_editType = edittype;
     //setMargin(0);
@@ -185,7 +185,7 @@ void CSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
     dlg.exec();
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleWidgetItem::slotDoubleEvent);
 }
-CSchceduleNumButton::CSchceduleNumButton(QWidget *parent /*= nullptr*/): QPushButton(parent)
+CSchceduleNumButton::CSchceduleNumButton(QWidget *parent /*= nullptr*/): DPushButton(parent)
 {
 
 }
@@ -280,10 +280,10 @@ void CSchceduleDayView::setDate(QDate date, int type)
     updateDateShow();
 }
 
-CSchceduleDayView::CSchceduleDayView(QWidget *parent, int edittype) : QWidget(parent)
+CSchceduleDayView::CSchceduleDayView(QWidget *parent, int edittype) : DWidget(parent)
 {
     m_editType = edittype;
-    m_widt = new QWidget(parent);
+    m_widt = new DWidget(parent);
 
     m_widt->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     m_widt->setAttribute(Qt::WA_TranslucentBackground);
@@ -294,7 +294,7 @@ CSchceduleDayView::CSchceduleDayView(QWidget *parent, int edittype) : QWidget(pa
     m_layout = new QVBoxLayout;
     m_layout->setContentsMargins(0, 0, 0, 0);
 
-    m_gradientItemList = new QListWidget(parent);
+    m_gradientItemList = new DListWidget(parent);
     m_gradientItemList->setAlternatingRowColors(true);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(m_gradientItemList);

@@ -18,13 +18,13 @@
 */
 #pragma once
 
-#include <QCalendarWidget>
-#include <DArrowButton>
+#include <DCalendarWidget>
+#include <DImageButton>
 DWIDGET_USE_NAMESPACE
 class QPushButton;
 class QLabel;
 class CCaYearMonthEdit;
-class CCustomCalendarWidget : public QCalendarWidget
+class CCustomCalendarWidget : public DCalendarWidget
 {
     Q_OBJECT
 
@@ -52,8 +52,8 @@ protected:
     void paintCell(QPainter *painter, const QRect &rect, const QDate &date) const;
     void resizeEvent(QResizeEvent *e);
 private:
-    DArrowButton *m_leftMonthBtn;
-    DArrowButton *m_rightMonthBtn;
+    DImageButton *m_leftMonthBtn;
+    DImageButton *m_rightMonthBtn;
     CCaYearMonthEdit *m_monthLabel;
     CCaYearMonthEdit *m_yearLabel;
     QColor m_backgroundCircleColor = "#2ca7f8";

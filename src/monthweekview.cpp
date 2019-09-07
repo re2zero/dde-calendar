@@ -23,7 +23,7 @@
 #include <QDebug>
 #include <QDate>
 
-CMonthWeekView::CMonthWeekView(QWidget *parent) : QWidget(parent)
+CMonthWeekView::CMonthWeekView(QWidget *parent) : DWidget(parent)
 {
     m_mainLayout = new QHBoxLayout;
     m_mainLayout->setMargin(0);

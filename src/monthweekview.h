@@ -21,10 +21,10 @@
 #define MONTHWEEKVIEW_H
 
 #include "constants.h"
-#include <QWidget>
+#include <DWidget>
 #include <QHBoxLayout>
-
-class CMonthWeekView : public QWidget
+DWIDGET_USE_NAMESPACE
+class CMonthWeekView : public DWidget
 {
     Q_OBJECT
 public:

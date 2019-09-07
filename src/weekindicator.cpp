@@ -19,11 +19,11 @@
 
 #include "weekindicator.h"
 
-#include <QLabel>
+
 #include <QDebug>
 #include <QDate>
 
-WeekIndicator::WeekIndicator(QWidget *parent) : QWidget(parent)
+WeekIndicator::WeekIndicator(QWidget *parent) : DWidget(parent)
 {
     m_mainLayout = new QHBoxLayout;
     m_mainLayout->setMargin(0);
@@ -33,9 +33,9 @@ WeekIndicator::WeekIndicator(QWidget *parent) : QWidget(parent)
 
 void WeekIndicator::setList(int weekday)
 {
-    QLayoutItem* child;
-    while((child = m_mainLayout->takeAt(0)) != 0) {
-        if(child->widget() != 0) {
+    QLayoutItem *child;
+    while ((child = m_mainLayout->takeAt(0)) != 0) {
+        if (child->widget() != 0) {
             delete child->widget();
         }
         delete child;
@@ -46,7 +46,7 @@ void WeekIndicator::setList(int weekday)
 
         int d = checkDay(i - weekday);
 
-        QLabel *label = new QLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
+        DLabel *label = new DLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
 
         if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
             label->setObjectName("CalendarHeaderWeekend");
@@ -60,7 +60,8 @@ void WeekIndicator::setList(int weekday)
     }
 }
 
-int WeekIndicator::checkDay(int weekday) {
+int WeekIndicator::checkDay(int weekday)
+{
 
     // check the week, calculate the correct order in the custom.
 

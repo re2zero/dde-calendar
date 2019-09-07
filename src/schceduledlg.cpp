@@ -144,7 +144,7 @@ void CSchceduleDlg::initUI()
     QVBoxLayout *rightlayout = new QVBoxLayout;
     QVBoxLayout *leftlayout = new QVBoxLayout;
     m_typeLabel = new DLabel(tr("Type:"));
-    m_typeComBox = new QComboBox ();
+    m_typeComBox = new DComboBox ();
     m_typeComBox->addItem(tr("Work"));
     m_typeComBox->addItem(tr("Life"));
     m_typeComBox->addItem(tr("Other"));
@@ -152,7 +152,7 @@ void CSchceduleDlg::initUI()
     rightlayout->addWidget(m_typeComBox);
 
     m_contentLabel = new DLabel (tr("Content:"));
-    leftlayout->addWidget(m_contentLabel, 7);
+    leftlayout->addWidget(m_contentLabel, 5);
     m_textEdit = new DTextEdit(this);
     m_textEdit->setTextBackgroundColor(Qt::white);
     QPalette pa;
@@ -167,7 +167,9 @@ void CSchceduleDlg::initUI()
     leftlayout->addWidget(m_beginTimeLabel, 1);
     QHBoxLayout *begintimelayout  = new QHBoxLayout;
     m_beginDateEdit = new QDateEdit(this);
+    m_beginDateEdit->setFixedHeight(36);
     m_beginTimeEdit = new CTimeEdit(this);
+    m_beginTimeEdit->setFixedHeight(36);
     m_beginDateEdit->setCalendarPopup(true);
     //m_beginTimeEdit->setCalendarPopup(true);
     m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
@@ -185,7 +187,9 @@ void CSchceduleDlg::initUI()
     leftlayout->addWidget(m_endTimeLabel, 1);
     QHBoxLayout *endtimelayout  = new QHBoxLayout;
     m_endDateEdit = new QDateEdit(this);
+    m_endDateEdit->setFixedHeight(36);
     m_endTimeEdit = new CTimeEdit(this);
+    m_endTimeEdit->setFixedHeight(36);
     m_endDateEdit->setCalendarPopup(true);
     // m_endTimeEdit->setCalendarPopup(true);
     m_endDateEdit->setDisplayFormat("yyyy-MM-dd");

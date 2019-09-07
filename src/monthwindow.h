@@ -67,7 +67,6 @@ private slots:
     void slotSelectedMonth(QDate date);
 private:
     QFrame *m_animationContainer = nullptr;
-    QLabel *m_icon;
 
     CMonthView        *m_monthView;
     CMonthDayView      *m_monthDayView;

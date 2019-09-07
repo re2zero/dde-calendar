@@ -21,7 +21,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 
-CTimeVerticalScroll::CTimeVerticalScroll(QWidget *parent): QWidget(parent)
+CTimeVerticalScroll::CTimeVerticalScroll(QWidget *parent): DWidget(parent)
 {
     QPalette palette(this->palette());
 

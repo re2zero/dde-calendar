@@ -19,13 +19,14 @@
 #ifndef GRAPHICSVIEW_H
 #define GRAPHICSVIEW_H
 
-#include <QGraphicsView>
+#include <DGraphicsView>
 #include <QGraphicsScene>
 #include "schedulestructs.h"
 #include <QAction>
+DWIDGET_USE_NAMESPACE
 class CScheduleCoorManage;
 class CScheduleItem;
-class CGraphicsView : public QGraphicsView
+class CGraphicsView : public DGraphicsView
 {
     Q_OBJECT
 

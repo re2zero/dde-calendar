@@ -2,12 +2,14 @@
 #define YEARVIEW_H
 #include "weekindicator.h"
 #include "constants.h"
-#include <QWidget>
+#include <DWidget>
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
+#include <DLabel>
 #include <QSignalMapper>
 #include "calendardbus.h"
+DWIDGET_USE_NAMESPACE
 class CalendarDBus;
 class CaLunarDayInfo;
 class QLabel;
@@ -62,7 +64,7 @@ private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
 private:
-    QLabel *m_currentMouth;
+    DLabel *m_currentMouth;
     QList<QWidget *> m_cellList;
     QDate m_days[42];
     QDate m_currentDate;

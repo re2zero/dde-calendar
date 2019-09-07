@@ -123,12 +123,12 @@ void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
     Context.addAction(m_deleteAction);
     Context.exec(QCursor::pos());
 }
-CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : QWidget(parent)
+CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(0);
     layout->setSpacing(0);
-    m_gradientItemList = new QListWidget(parent);
+    m_gradientItemList = new DListWidget(parent);
     m_gradientItemList->setAlternatingRowColors(true);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(m_gradientItemList);

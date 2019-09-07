@@ -31,6 +31,8 @@
 #include <DPushButton>
 #include <QButtonGroup>
 #include <DArrowButton>
+#include <DDateEdit>
+#include <DTimeEdit>
 //#include <DDateEdit>
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
@@ -60,14 +62,14 @@ private:
     void initDateEdit();
 private:
     DLabel                           *m_typeLabel = nullptr;
-    QComboBox                        *m_typeComBox = nullptr;
+    DComboBox                        *m_typeComBox = nullptr;
     DLabel                           *m_contentLabel = nullptr;
     DTextEdit                        *m_textEdit = nullptr;
     DLabel                           *m_beginTimeLabel = nullptr;
-    QDateEdit                        *m_beginDateEdit = nullptr;
+    DDateEdit                        *m_beginDateEdit = nullptr;
     CTimeEdit                        *m_beginTimeEdit = nullptr;
     DLabel                           *m_endTimeLabel = nullptr;
-    QDateEdit                        *m_endDateEdit = nullptr;
+    DDateEdit                        *m_endDateEdit = nullptr;
     CTimeEdit                        *m_endTimeEdit = nullptr;
     DLabel                           *m_remindSetLabel = nullptr;
     QButtonGroup                     *m_remindbtGroup = nullptr;

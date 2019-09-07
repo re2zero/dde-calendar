@@ -46,7 +46,7 @@ private:
 };
 
 CCustomCalendarWidget::CCustomCalendarWidget(QWidget *parent)
-    : QCalendarWidget(parent)
+    : DCalendarWidget(parent)
 {
     initControl();
     //setFixedSize(300, 300);
@@ -89,7 +89,7 @@ void CCustomCalendarWidget::initControl()
     });
     QTableView *view = findChild<QTableView *>("qt_calendar_calendarview");
     if (view) {
-        view->setFixedSize(350, 300);
+        view->setFixedSize(370, 300);
     }
 }
 
@@ -153,21 +153,28 @@ void CCustomCalendarWidget::initTopWidget()
     hboxLayout->setContentsMargins(12, 0, 12, 0);
     hboxLayout->setSpacing(4);
 
-    m_leftMonthBtn = new DArrowButton(this);
-    m_leftMonthBtn->setArrowDirection(DArrowButton::ArrowLeft);
+    m_leftMonthBtn = new DImageButton(this);
     m_leftMonthBtn->setFixedWidth(36);
-    m_rightMonthBtn = new DArrowButton(this);
-    m_rightMonthBtn->setArrowDirection(DArrowButton::ArrowRight);
+    m_leftMonthBtn->setHoverPic(":/resources/icon/previous_hover.svg");
+    m_leftMonthBtn->setNormalPic(":/resources/icon/previous_normal.svg");
+    m_leftMonthBtn->setPressPic(":/resources/icon/previous_press.svg");
+
+
+    m_rightMonthBtn = new DImageButton(this);
     m_rightMonthBtn->setFixedWidth(36);
+    m_rightMonthBtn->setHoverPic(":/resources/icon/next_hover.svg");
+    m_rightMonthBtn->setNormalPic(":/resources/icon/next_normal.svg");
+    m_rightMonthBtn->setPressPic(":/resources/icon/next_press.svg");
+
     //m_dataLabel = new QLabel(this);
     m_monthLabel = new CCaYearMonthEdit(this);
     m_yearLabel = new CCaYearMonthEdit(this);
     m_monthLabel->setRange(1, 12);
     m_yearLabel->setRange(1900, 3000);
-    m_monthLabel->setMinimumWidth(60);
+    m_monthLabel->setMinimumWidth(80);
     m_monthLabel->setPadStr(tr("M"));
     m_yearLabel->setPadStr(tr("Y"));
-    m_yearLabel->setMinimumWidth(80);
+    m_yearLabel->setMinimumWidth(100);
 
     m_leftMonthBtn->setObjectName("CalendarLeftMonthBtn");
     m_rightMonthBtn->setObjectName("CalendarRightMonthBtn");
@@ -186,8 +193,8 @@ void CCustomCalendarWidget::initTopWidget()
     //vBodyLayout->setSizeConstraint(QLayout::SetMinimumSize);
     //connect(m_leftMonthBtn, SIGNAL(clicked()), this, SLOT(onbtnClicked()));
     //connect(m_rightMonthBtn, SIGNAL(clicked()), this, SLOT(onbtnClicked()));
-    connect(m_leftMonthBtn, &DArrowButton::mousePress, this, &CCustomCalendarWidget::slotABtPrivMonth);
-    connect(m_rightMonthBtn, &DArrowButton::mousePress, this, &CCustomCalendarWidget::slotABtNextMonth);
+    connect(m_leftMonthBtn, &DImageButton::clicked, this, &CCustomCalendarWidget::slotABtPrivMonth);
+    connect(m_rightMonthBtn, &DImageButton::clicked, this, &CCustomCalendarWidget::slotABtNextMonth);
 
     connect(m_monthLabel, &CCaYearMonthEdit::signalsCurrentValueChange, this, &CCustomCalendarWidget::slotmonthChange);
     connect(m_yearLabel, &CCaYearMonthEdit::signalsCurrentValueChange, this, &CCustomCalendarWidget::slotyearChange);
