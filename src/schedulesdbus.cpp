@@ -186,13 +186,14 @@ QString CSchedulesDBus::createScheduleRRule(const ScheduleDtailInfo &info)
     }
     switch (info.enddata.type) {
     case 1: {
-        str += QString(";COUNT=%1").arg(info.enddata.tcount);
+        str += QString(";COUNT=%1").arg(info.enddata.tcount + 1);
     }
     break;
     case 2: {
-        QDateTime datetime = info.beginDateTime;
-        datetime.setDate(info.enddata.date.addDays(-1));
+        QDateTime datetime = info.enddata.date.addDays(-1);
+        //datetime.setDate(datetime);
         str += ";UNTIL=" + datetime.toString("yyyyMMddThhmmss") + "Z";
+        // str += ";UNTIL=" + toconvertData(datetime);
     }
     break;
     }
@@ -224,13 +225,15 @@ void CSchedulesDBus::parsingScheduleRRule(QString str, ScheduleDtailInfo &info)
             if (rruleslist.at(i).contains("COUNT=")) {
                 QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
                 info.enddata.type = 1;
-                info.enddata.tcount = liststr.at(1).toInt();
+                info.enddata.tcount = liststr.at(1).toInt() - 1;
             }
 
             if (rruleslist.at(i).contains("UNTIL=")) {
                 QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
                 info.enddata.type = 2;
-                info.enddata.date = QDateTime::fromString(liststr.at(1).left(liststr.at(1).count() - 1), "yyyyMMddThhmmss").date();
+                info.enddata.date = QDateTime::fromString(liststr.at(1).left(liststr.at(1).count() - 1), "yyyyMMddThhmmss");
+                //info.enddata.date = fromconvertData(liststr.at(1));
+                info.enddata.date = info.enddata.date.addDays(1);
             }
         }
     }
@@ -282,6 +285,26 @@ QDateTime CSchedulesDBus::fromconvertData(QString str)
     QStringList liststr = str.split("+", QString::SkipEmptyParts);
     return QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
 }
+
+QString CSchedulesDBus::toconvertIGData(QDateTime date)
+{
+    QDateTime datetimeutc11 = date;
+    datetimeutc11.setTimeSpec(Qt::UTC);
+    QString strss = datetimeutc11.toString(Qt::ISODate);
+    datetimeutc11.setTimeSpec(Qt::OffsetFromUTC);
+    strss = datetimeutc11.toString(Qt::ISODateWithMs);
+    QDateTime datetimeutc = QDateTime::fromTime_t(0);
+    QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z" + datetimeutc.toString("hh:mm");
+    //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
+    return  str;
+}
+
+QDateTime CSchedulesDBus::fromconvertiIGData(QString str)
+{
+    QStringList liststr = str.split("Z", QString::SkipEmptyParts);
+    return QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
+}
+
 qint64 CSchedulesDBus::CreateJob(const ScheduleDtailInfo &info)
 {
     QList<QVariant> argumentList;

@@ -22,5 +22,24 @@
         <file>resources/icon/dde-yi.svg</file>
         <file>resources/icon/dde-choose24.svg</file>
         <file>resources/icon/dde-choose30.svg</file>
+        <file>resources/icon/choose20X20_checked .svg</file>
+        <file>resources/icon/icon_ji.svg</file>
+        <file>resources/icon/icon_type_life.svg</file>
+        <file>resources/icon/type_xiu.svg</file>
+        <file>resources/icon/search_type_work.svg</file>
+        <file>resources/icon/icon_type_other.svg</file>
+        <file>resources/icon/choose30X30_checked .svg</file>
+        <file>resources/icon/icon_yi.svg</file>
+        <file>resources/icon/search_type_life.svg</file>
+        <file>resources/icon/search_type_other.svg</file>
+        <file>resources/icon/type_ban_bg.svg</file>
+        <file>resources/icon/type_ban.svg</file>
+        <file>resources/icon/deepin_calendar.svg</file>
+        <file>resources/icon/icon_type_work.svg</file>
+        <file>resources/icon/data_line_checked.svg</file>
+        <file>resources/icon/type_xiu_bg.svg</file>
+        <file>resources/icon/data_day_line.svg</file>
+        <file>resources/icon/checkbox_checked .svg</file>
+        <file>resources/icon/checkbox_unchecked .svg</file>
     </qresource>
 </RCC>

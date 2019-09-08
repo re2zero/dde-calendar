@@ -21,6 +21,7 @@
 
 #include <QFrame>
 #include <QDate>
+#include "schedulestructs.h"
 class CGraphicsView;
 class CSchceduleDayView;
 class CScheduleView : public QFrame
@@ -34,6 +35,10 @@ public:
     void setRange(int w, int h, QDate begin, QDate end);
     void setRange(QDate begin, QDate end);
     void setFirstWeekday(int weekday);
+public slots:
+    void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
+signals:
+    void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 signals:
     void signalsUpdateShcedule(int id = 0);
 public slots:

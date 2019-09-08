@@ -29,6 +29,7 @@
 #include <QSignalMapper>
 #include <QAction>
 #include "calendardbus.h"
+#include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
 class CSchceduleDayView;
 enum CalendarMonthDayType {
@@ -85,6 +86,10 @@ public slots:
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
     void slotSchceduleUpdate(int id = 0);
+public slots:
+    void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
+signals:
+    void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
@@ -141,6 +146,7 @@ private:
     CMonthWeekView *m_weekIndicator;
     int m_firstWeekDay;
     QAction          *m_createAction;     // 创建日程
+    bool             m_updateflag = true;
 };
 
 #endif // MYCALENDARWIDGET_H

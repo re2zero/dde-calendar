@@ -33,6 +33,9 @@
 #include <DArrowButton>
 #include <DDateEdit>
 #include <DTimeEdit>
+#include <DLineEdit>
+#include <DCheckBox>
+
 //#include <DDateEdit>
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
@@ -45,21 +48,26 @@ class CSchceduleDlg : public DDialog
 public:
     CSchceduleDlg(int type, QWidget *parent = 0);
     void setData(const ScheduleInfo &info);
+    void setData(const ScheduleDtailInfo &info);
     void setDate(const QDateTime &date);
     ScheduleInfo getData();
+    ScheduleDtailInfo getScheduleData();
 public slots:
     void slotCancelBt();
     void slotOkBt();
     void slotTextChange();
     void slotBDateEidtInfo(const QDate &date);
     void slotEDateEidtInfo(const QDate &date);
-
+    void slotallDayStateChanged(int state);
+    void slotbRpeatactivated(int index);
+    void sloteRpeatactivated(int index);
 protected:
     // void focusInEvent(QFocusEvent *event);
 private:
     void initUI();
     void initConnection();
     void initDateEdit();
+    void initRmindRpeatUI();
 private:
     DLabel                           *m_typeLabel = nullptr;
     DComboBox                        *m_typeComBox = nullptr;
@@ -71,19 +79,20 @@ private:
     DLabel                           *m_endTimeLabel = nullptr;
     DDateEdit                        *m_endDateEdit = nullptr;
     CTimeEdit                        *m_endTimeEdit = nullptr;
+
+    DLabel                           *m_adllDayLabel = nullptr;
+    DCheckBox                        *m_allDayCheckbox = nullptr;
     DLabel                           *m_remindSetLabel = nullptr;
-    QButtonGroup                     *m_remindbtGroup = nullptr;
-    QRadioButton                     *m_currentDayBt = nullptr;
-    QRadioButton                     *m_earlierDayBt = nullptr;
-    QRadioButton                     *m_threedaysagoBt = nullptr;
-    QRadioButton                     *m_weekDayagoBt = nullptr;
-    QButtonGroup                     *m_repeatbtGroup = nullptr;
-    DLabel                           *m_repeatLabel = nullptr;
-    QRadioButton                     *m_onceTimeBt = nullptr;
-    QRadioButton                     *m_everyDayBt = nullptr;
-    QRadioButton                     *m_everyweekBt = nullptr;
-    QRadioButton                     *m_everymonthBt = nullptr;
-    QRadioButton                     *m_everyyearBt = nullptr;
+    DComboBox                        *m_rmindCombox = nullptr;
+    DLabel                           *m_beginrepeatLabel = nullptr;
+    DComboBox                        *m_beginrepeatCombox = nullptr;
+    DLabel                           *m_endrepeatLabel = nullptr;
+    DComboBox                        *m_endrepeatCombox = nullptr;
+    DLineEdit                        *m_endrepeattimes;
+    DLabel                           *m_endrepeattimesLabel = nullptr;
+    DWidget                          *m_endrepeattimesWidget;
+    DDateEdit                        *m_endRepeatDate = nullptr;
+    DWidget                          *m_endrepeatWidget;
     DPushButton                      *m_cancelBt = nullptr;
     DPushButton                      *m_OkBt = nullptr;
     //CCalendarTimeEidt                *m_bCalendarTimeEidt;
@@ -92,7 +101,9 @@ private:
     CCustomCalendarWidget            *m_eCustomDateW;
 private:
     ScheduleInfo                     m_scheduleInfo;//日程
+    ScheduleDtailInfo                m_scheduleDtailInfo;
     int                              m_type; //0新建 1 编辑日程
+    QDateTime                        m_currentDate;
 };
 
 #endif // SHCEDULEDLG_H

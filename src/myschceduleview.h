@@ -32,8 +32,8 @@ class CMySchceduleView : public DDialog
     Q_OBJECT
 public:
     explicit CMySchceduleView(QWidget *parent = nullptr);
-    void setSchedules(ScheduleInfo info);
-    ScheduleInfo getSchedules()
+    void setSchedules(ScheduleDtailInfo info);
+    ScheduleDtailInfo getSchedules()
     {
         return  m_scheduleInfo;
     }
@@ -50,7 +50,7 @@ private:
     DLabel                           *m_timeLabel = nullptr;
     DPushButton                      *m_editBt = nullptr;
     DPushButton                      *m_deleteBt = nullptr;
-    ScheduleInfo                     m_scheduleInfo;//日程
+    ScheduleDtailInfo                     m_scheduleInfo;//日程
 };
 
 #endif // MYSCHCEDULEVIEW_H

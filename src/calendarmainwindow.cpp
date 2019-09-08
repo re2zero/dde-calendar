@@ -100,9 +100,9 @@ void Calendarmainwindow::initUI()
 void Calendarmainwindow::initConnection()
 {
     connect(m_bttongroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &Calendarmainwindow::slotstackWClicked);
-    connect(m_weekWindow, &CWeekWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
-    connect(m_monthWindow, &CMonthWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
-    connect(m_DayWindow, &CDayWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
+    //connect(m_weekWindow, &CWeekWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
+    //connect(m_monthWindow, &CMonthWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
+    // connect(m_DayWindow, &CDayWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &Calendarmainwindow::slotSreturnPressed);
     connect(m_searchEdit, &DSearchEdit::textChanged, this, &Calendarmainwindow::slotStextChanged);
     connect(m_weekWindow, &CWeekWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
@@ -166,6 +166,20 @@ void Calendarmainwindow::slotstackWClicked(int index)
         return;
     }
     m_stackWidget->setCurrentIndex(index);
+    switch (index) {
+    case 1: {
+        m_monthWindow->slotupdateSchedule(0);
+    }
+    break;
+    case 2: {
+        m_weekWindow->slotupdateSchedule(0);
+    }
+    break;
+    case 3: {
+        m_DayWindow->slotupdateSchedule(0);
+    }
+    break;
+    }
 }
 
 void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)

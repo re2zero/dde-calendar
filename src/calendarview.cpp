@@ -49,17 +49,17 @@ CalendarView::CalendarView(QWidget *parent) : QWidget(parent)
     m_dayNumFont.setWeight(QFont::Light);
     m_dayLunarFont.setPixelSize(12);
 
-    setStyleSheet("QWidget { background: rgba(0, 0, 0, 0) }");
+    //setStyleSheet("QWidget { background: rgba(0, 0, 0, 0) }");
 
     m_weekIndicator = new WeekIndicator;
 
     //add separator line
-    QLabel* separatorLine = new QLabel(this);
+    QLabel *separatorLine = new QLabel(this);
     separatorLine->setFixedHeight(1);
     separatorLine->setFixedWidth(720);
-    separatorLine->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
+    //separatorLine->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
-    QHBoxLayout* separatorLineLayout = new QHBoxLayout;
+    QHBoxLayout *separatorLineLayout = new QHBoxLayout;
     separatorLineLayout->setMargin(0);
     separatorLineLayout->setSpacing(0);
     separatorLineLayout->addStretch(1);
@@ -96,7 +96,8 @@ CalendarView::CalendarView(QWidget *parent) : QWidget(parent)
     connect(this, &CalendarView::dateSelected, this, &CalendarView::handleCurrentDateChanged);
 }
 
-void CalendarView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail) {
+void CalendarView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
+{
     Q_UNUSED(detail);
 
     if (date != m_currentDate) {
@@ -238,7 +239,7 @@ void CalendarView::updateCurrentLunar(const CaLunarDayInfo &info)
     } else if (!info.mSolarFestival.isEmpty()) {
         QStringList tmpFestival = info.mSolarFestival.split(" ");
 
-        if (tmpFestival.length()>=3) {
+        if (tmpFestival.length() >= 3) {
             emit currentFestivalChanged(QString("%1 %2").arg(tmpFestival[0]).arg(tmpFestival[1]));
         } else {
             emit currentFestivalChanged(info.mSolarFestival);
@@ -312,7 +313,7 @@ void CalendarView::getDbusData()
 
         QDate cacheDate;
         cacheDate.setDate(date.year(), date.month(), 1);
-        foreach(const CaLunarDayInfo & dayInfo, reply.value().mCaLunarDayInfo) {
+        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
             lunarCache->insert(cacheDate, dayInfo);
             if (date == m_currentDate) {
                 currentDayInfo = dayInfo;
@@ -333,8 +334,8 @@ void CalendarView::getDbusData()
 
 void CalendarView::paintCell(QWidget *cell)
 {
-    const QRect rect((cell->width() - DDECalendar::CellHighlightWidth) /2,
-                     (cell->height() - DDECalendar::CellHighlightHeight) /2,
+    const QRect rect((cell->width() - DDECalendar::CellHighlightWidth) / 2,
+                     (cell->height() - DDECalendar::CellHighlightHeight) / 2,
                      DDECalendar::CellHighlightWidth,
                      DDECalendar::CellHighlightHeight);
 
@@ -348,8 +349,7 @@ void CalendarView::paintCell(QWidget *cell)
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
 
     // draw selected cell background circle
-    if (isSelectedCell)
-    {
+    if (isSelectedCell) {
         QRect fillRect = rect;
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
@@ -388,8 +388,7 @@ void CalendarView::paintCell(QWidget *cell)
     }
 
     // draw text of day type
-    if (m_showState & ShowLunar)
-    {
+    if (m_showState & ShowLunar) {
         if (isSelectedCell) {
             painter.setPen(m_selectedLunarColor);
         } else if (isCurrentDay) {

@@ -36,10 +36,10 @@ CScheduleItem::~CScheduleItem()
 
 }
 
-void CScheduleItem::setData( const ScheduleInfo &info )
+void CScheduleItem::setData( const ScheduleDtailInfo &info )
 {
     m_scheduleInfo = info;
-    m_color = ScheduleDbManager::getTypeColor(info.infotype);
+    m_color = info.type.color;
     update();
 }
 

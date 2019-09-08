@@ -32,6 +32,7 @@
 #include "dbmanager.h"
 #include "schceduledlg.h"
 #include <QMenu>
+#include "scheduledatamanage.h"
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
@@ -87,10 +88,12 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     mainLayout->setSpacing(0);
 
     setLayout(mainLayout);
-
+    CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(this, &CMonthView::dateSelected, this, &CMonthView::handleCurrentDateChanged);
     m_createAction = new QAction(tr("Create"), this);
     connect(m_createAction, &QAction::triggered, this, &CMonthView::slotCreate);
+    connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CMonthView::slotsupdatescheduleD);
+    connect(this, &CMonthView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
 }
 
 void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
@@ -104,6 +107,9 @@ void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo
 
 void CMonthView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
+    setEnabled(false);
+    emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
+    return;
     for (int i(0); i != 42; ++i) {
         if (m_days[i].month() != m_currentDate.month()) continue;
         if (type == 0 && m_days[i] == date) continue;
@@ -114,10 +120,35 @@ void CMonthView::slotCtrlSchceduleUpdate(QDate date, int type)
 
 void CMonthView::slotSchceduleUpdate(int id)
 {
+    setEnabled(false);
+    emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
+    return;
     for (int i(0); i != 42; ++i) {
         if (m_days[i].month() != m_currentDate.month()) continue;
         //更新日程
         m_cellScheduleList[i]->setDate(m_days[i]);
+    }
+}
+
+void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
+{
+    if (w != this) return;
+    setEnabled(true);
+    for (int i(0); i != 42; ++i) {
+        QVector<ScheduleDtailInfo> vData;
+        //更新日程
+        m_cellScheduleList[i]->setDayData(m_days[i], vData, 1);
+    }
+    for (int i(0); i != 42; ++i) {
+        if (m_days[i].month() != m_currentDate.month()) continue;
+
+        for (int j = 0; j < data.size(); j++) {
+            if (data.at(j).date == m_days[i]) {
+                //更新日程
+                m_cellScheduleList[i]->setDayData(m_days[i], data.at(j).vData, 1);
+                break;
+            }
+        }
     }
 }
 
@@ -163,7 +194,6 @@ void CMonthView::setCurrentDate(const QDate date)
 
     // to refresh lunar calendar
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
-
     emit currentDateChanged(date.year(), date.month());
     emit signalcurrentDateChanged(m_currentDate);
 }
@@ -222,11 +252,16 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
+            QMouseEvent *rightevent = dynamic_cast<QMouseEvent *>(e);
+            if (rightevent->button() == Qt::RightButton)
+                m_updateflag = false;
             cellClicked(cell);
         } else if (e->type() == QEvent::ContextMenu) {
             QMenu Context(this);
             Context.addAction(m_createAction);
             Context.exec(QCursor::pos());
+        } else if (e->type() == QEvent::MouseButtonRelease) {
+            m_updateflag = true;
         }
     }
 
@@ -240,9 +275,6 @@ void CMonthView::slotCreate()
     tDatatime.setTime(QTime::currentTime());
     dlg.setDate(tDatatime);
     if (dlg.exec() == DDialog::Accepted) {
-        ScheduleInfo info = dlg.getData();
-        info.id = ScheduleDbManager::addSchedule(info);
-        emit signalsSchceduleUpdate(info.id);
         slotSchceduleUpdate();
     }
 }
@@ -260,9 +292,12 @@ void CMonthView::updateDate()
         m_days[i] = firstDay.addDays(i - day);
         if (m_days[i].month() != m_currentDate.month()) continue;
         //更新日程
-        m_cellScheduleList[i]->setDate(m_days[i]);
+        //m_cellScheduleList[i]->setDate(m_days[i]);
     }
-
+    if (m_updateflag) {
+        setEnabled(false);
+        emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
+    }
     setSelectedCell(currentIndex);
     update();
 }

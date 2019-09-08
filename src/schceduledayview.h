@@ -36,8 +36,7 @@ class CSchceduleDayView : public DWidget
 public:
     CSchceduleDayView(QWidget *parent = nullptr, int edittype = 0);
     ~CSchceduleDayView();
-    void setALLDayData(QVector<ScheduleInfo> &vlistData);
-    void setDayData(QVector<ScheduleInfo> &vlistData);
+    void setDayData(QDate date, const QVector<ScheduleDtailInfo> &vlistData, int type = 1);
     void setDate(QDate date, int type = 1);
 signals:
     void signalsUpdateShcedule(int id = 0);
@@ -60,7 +59,7 @@ private:
     CSchceduleNumButton                         *m_numButton;
     QVBoxLayout                                 *m_layout;
     bool                                         m_widgetFlag;
-    QVector<ScheduleInfo>                          m_vlistData;
+    QVector<ScheduleDtailInfo>                          m_vlistData;
     QVector<CSchceduleWidgetItem *>              m_baseShowItem;
     int                                          m_type;
     QDate                                        m_currentDate;
@@ -112,8 +111,8 @@ public:
         return m_item;
     }
 
-    void setData(ScheduleInfo  vScheduleInfo);
-    const ScheduleInfo &getData() const
+    void setData(ScheduleDtailInfo  vScheduleInfo);
+    const ScheduleDtailInfo &getData() const
     {
         return m_ScheduleInfo;
     }
@@ -129,7 +128,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
 private:
-    ScheduleInfo          m_ScheduleInfo;
+    ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;
     QAction              *m_deleteAction;
     bool                  m_GradientFlag;

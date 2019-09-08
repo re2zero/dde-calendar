@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
     a.setProductIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-calendar.svg"));
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
     a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
-    a.setTheme("light");
-    a.setStyle("chameleon");
+    //a.setTheme("light");
+    //a.setStyle("chameleon");
     static const QDate buildDate = QLocale( QLocale::English ).toDate( QString(__DATE__).replace("  ", " 0"), "MMM dd yyyy");
     QString t_date = buildDate.toString("MMdd");
     // Version Time
@@ -85,8 +85,6 @@ int main(int argc, char *argv[])
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
-    //a.setStyleSheet(GetStyleSheetContent());
-    //a.loadTranslator();
     ScheduleDbManager::initDataBase();
     Calendarmainwindow ww;
     // ww.setDate(QDate::currentDate());

@@ -45,7 +45,7 @@ private:
 private:
     DListWidget                                 *m_gradientItemList; //下拉列表窗
     bool                                         m_widgetFlag;
-    QVector<ScheduleInfo>                        m_vlistData;
+    QVector<ScheduleDtailInfo>                        m_vlistData;
     int                                          m_type;
     QDate                                        m_currentDate;
 };
@@ -59,8 +59,8 @@ public:
     void setBackgroundColor(QColor color1);
     void setText(QColor tcolor, QFont font);
 
-    void setData(ScheduleInfo  vScheduleInfo);
-    const ScheduleInfo &getData() const
+    void setData(ScheduleDtailInfo  vScheduleInfo);
+    const ScheduleDtailInfo &getData() const
     {
         return m_ScheduleInfo;
     }
@@ -74,7 +74,7 @@ protected:
     void paintEvent ( QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *event);
 private:
-    ScheduleInfo          m_ScheduleInfo;
+    ScheduleDtailInfo          m_ScheduleInfo;
     QAction              *m_editAction;
     QAction              *m_deleteAction;
     QColor                m_Backgroundcolor;

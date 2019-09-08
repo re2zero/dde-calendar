@@ -22,6 +22,7 @@
 #include "schedulecoormanage.h"
 #include "dbmanager.h"
 #include "schceduledayview.h"
+#include "scheduledatamanage.h"
 static int hourTextLMagin = 16;
 static int hourTextTMagin = 48;
 
@@ -68,6 +69,26 @@ void CScheduleView::setFirstWeekday(int weekday)
 {
     m_firstWeekDay = weekday;
     m_graphicsView->setFirstWeekday(weekday);
+}
+
+void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
+{
+    if (w != this) return;
+    for (int i = 0; i < m_TotalDay; i++) {
+        for (int j = 0; j < data.size(); j++) {
+            if (data.at(j).date == m_beginDate.addDays(i)) {
+                QVector<ScheduleDtailInfo> scheduleInfolist = data.at(j).vData;
+                for (int  k = 0; k < scheduleInfolist.count(); k++) {
+                    if (scheduleInfolist.at(k).allday) {
+                        continue;
+                    }
+                    m_graphicsView->addSchduleItem(scheduleInfolist.at(k));
+                }
+                break;
+            }
+        }
+    }
+    setEnabled(true);
 }
 
 void CScheduleView::setDate( QDate date )
@@ -177,10 +198,14 @@ void CScheduleView::initUI()
 void CScheduleView::initConnection()
 {
     connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
-    connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
+    //connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
     connect(m_alldaylist, &CSchceduleDayView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
-    connect(m_alldaylist, &CSchceduleDayView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
+    //connect(m_alldaylist, &CSchceduleDayView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
     connect(m_alldaylist, &CSchceduleDayView::signalsCotrlUpdateShcedule, this, &CScheduleView::slotCtrlSchceduleUpdate);
+
+    CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
+    connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);
+    connect(this, &CScheduleView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
 }
 void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
@@ -190,20 +215,22 @@ void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
 void CScheduleView::updateSchedule(int id)
 {
     m_graphicsView->clearSchdule();
-    for (int i = 0; i < m_TotalDay; i++) {
-        QVector<ScheduleInfo> scheduleInfolist = ScheduleDbManager::getScheduleInfo(m_beginDate.addDays(i), 0);
-        for (int  j = 0; j < scheduleInfolist.count(); j++) {
-            if (scheduleInfolist.at(j).allday == 1) {
-                continue;
-            }
-            m_graphicsView->addSchduleItem(scheduleInfolist.at(j));
-        }
-    }
+    setEnabled(false);
+    emit signalsupdatescheduleD(this, m_beginDate, m_endDate);
 }
 
 void CScheduleView::updateAllday(int id)
 {
-    m_alldaylist->setDate(m_currteDate, 0);
+    QVector<ScheduleDateRangeInfo> out;
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfo(m_currteDate, m_currteDate, out);
+    QVector<ScheduleDtailInfo> vData;
+    if (!out.isEmpty())  {
+        for (int i = 0; i < out[0].vData.size(); i++) {
+            if (out[0].vData[i].allday)
+                vData.append(out[0].vData[i]);
+        }
+    }
+    m_alldaylist->setDayData(m_currteDate, vData, 0);
 }
 
 int CScheduleView::checkDay(int weekday)

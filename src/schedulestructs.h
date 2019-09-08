@@ -49,7 +49,7 @@ typedef struct _tagScheduleRemindData {
 } ScheduleRemindData;
 typedef struct _tagScheduleEndRepeatData {
     int               type; //0 永不 1  多少次结束  2 结束日期
-    QDate             date; //为2时才有效
+    QDateTime         date; //为2时才有效
     int               tcount;//1时有效
 } ScheduleEndRepeatData;
 typedef struct _tagScheduleType {

@@ -32,8 +32,8 @@ class CScheduleItem : public QObject, public QGraphicsItem
 public:
     CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
     ~CScheduleItem();
-    void setData(const ScheduleInfo &info);
-    ScheduleInfo getData()
+    void setData(const ScheduleDtailInfo &info);
+    ScheduleDtailInfo getData()
     {
         return m_scheduleInfo;
     }
@@ -59,7 +59,7 @@ private:
     void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0 );
     void splitText(QFont font, int w, QString str, QStringList &liststr);
 private:
-    ScheduleInfo                     m_scheduleInfo;
+    ScheduleDtailInfo                     m_scheduleInfo;
     CScheduleCoorManage             *m_coorManage;
     QColor                           m_color;
 };

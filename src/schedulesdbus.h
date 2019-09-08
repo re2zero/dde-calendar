@@ -81,6 +81,8 @@ public:
     CSchedulesDBus(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 
     ~CSchedulesDBus();
+    QString toconvertIGData(QDateTime date);
+    QDateTime fromconvertiIGData(QString str);
 private:
     QString createScheduleDtailInfojson(const ScheduleDtailInfo &info);
     QString createScheduleTypejson(const ScheduleType &info);

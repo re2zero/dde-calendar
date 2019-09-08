@@ -27,6 +27,10 @@
 #include <QRect>
 #include "dbmanager.h"
 #include "schceduledlg.h"
+#include "scheduledatamanage.h"
+#include <DMessageBox>
+#include <DPushButton>
+#include <DHiDPIHelper>
 CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent /*= nullptr*/ ): DLabel(parent)
 {
     //setMargin(0);
@@ -49,7 +53,7 @@ void CSchceduleSearchItem::setText( QColor tcolor, QFont font)
     m_font = font;
 }
 
-void CSchceduleSearchItem::setData( ScheduleInfo vScheduleInfo )
+void CSchceduleSearchItem::setData( ScheduleDtailInfo vScheduleInfo )
 {
     m_ScheduleInfo = vScheduleInfo;
     setToolTip(m_ScheduleInfo.titleName);
@@ -60,17 +64,92 @@ void CSchceduleSearchItem::slotEdit()
     CSchceduleDlg dlg(0, this);
     dlg.setData(m_ScheduleInfo);
     if (dlg.exec() == DDialog::Accepted) {
-        ScheduleInfo info = dlg.getData();
-        info.id = m_ScheduleInfo.id;
-        ScheduleDbManager::updateScheduleInfo(info);
         emit signalsEdit(this);
     }
 }
 
 void CSchceduleSearchItem::slotDelete()
 {
+    if (m_ScheduleInfo.rpeat == 0) {
+        DMessageBox msgBox;
+        msgBox.setWindowFlags(Qt::FramelessWindowHint);
+        msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+        QPalette pa;
+        pa.setColor(QPalette::WindowText, Qt::red);
+        msgBox.setText(tr("You are deleted schedule."));
+        msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
+        DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
+        DPushButton *yesButton = msgBox.addButton(tr("Delete Schedule"), DMessageBox::YesRole);
+        yesButton->setPalette(pa);
+        msgBox.exec();
+
+        if (msgBox.clickedButton() == noButton) {
+            return;
+        } else if (msgBox.clickedButton() == yesButton) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_ScheduleInfo.id);
+        }
+    } else {
+        if (m_ScheduleInfo.RecurID == 0) {
+            DMessageBox msgBox;
+            msgBox.setWindowFlags(Qt::FramelessWindowHint);
+            msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+            QPalette pa;
+            pa.setColor(QPalette::WindowText, Qt::white);
+            pa.setColor(QPalette::Window, QColor("#0098FF"));
+            msgBox.setText(tr("You are deleted schedule."));
+            msgBox.setInformativeText(tr("You want to delete all repeat of the schedule, or just delete the selected repeat?"));
+            DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
+            DPushButton *yesallbutton = msgBox.addButton(tr("All Deleted"), DMessageBox::YesRole);
+            DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
+            yesButton->setPalette(pa);
+            msgBox.exec();
+
+            if (msgBox.clickedButton() == noButton) {
+                return;
+            } else if (msgBox.clickedButton() == yesallbutton) {
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_ScheduleInfo.id);
+            } else if (msgBox.clickedButton() == yesButton) {
+
+                ScheduleDtailInfo newschedule;
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_ScheduleInfo.id, newschedule);
+                newschedule.ignore.append(m_ScheduleInfo.beginDateTime);
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+            }
+        } else {
+            DMessageBox msgBox;
+            msgBox.setWindowFlags(Qt::FramelessWindowHint);
+            msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+            QPalette pa;
+            pa.setColor(QPalette::WindowText, Qt::white);
+            pa.setColor(QPalette::Window, QColor("#0098FF"));
+            msgBox.setText(tr("You are deleted schedule."));
+            msgBox.setInformativeText(tr("You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?"));
+            DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
+            DPushButton *yesallbutton = msgBox.addButton(tr("Delete all schedule in the future"), DMessageBox::YesRole);
+            DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
+            yesButton->setPalette(pa);
+            msgBox.exec();
+
+            if (msgBox.clickedButton() == noButton) {
+                return;
+            } else if (msgBox.clickedButton() == yesallbutton) {
+                ScheduleDtailInfo newschedule;
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_ScheduleInfo.id, newschedule);
+                newschedule.enddata.type = 2;
+                newschedule.enddata.date = m_ScheduleInfo.beginDateTime;
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+
+            } else if (msgBox.clickedButton() == yesButton) {
+
+                ScheduleDtailInfo newschedule;
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_ScheduleInfo.id, newschedule);
+                newschedule.ignore.append(m_ScheduleInfo.beginDateTime);
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+            }
+        }
+    }
     emit signalsDelete(this);
-    ScheduleDbManager::deleteScheduleInfoById(m_ScheduleInfo.id);
+    //ScheduleDbManager::deleteScheduleInfoById(m_ScheduleInfo.id);
 }
 
 void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
@@ -185,11 +264,11 @@ void CSchceduleSearchView::updateDateShow()
 
 CSchceduleSearchItem *CSchceduleSearchView::createItemWidget(int index, bool average)
 {
-    const ScheduleInfo &gd = m_vlistData.at(index);
+    const ScheduleDtailInfo &gd = m_vlistData.at(index);
     CSchceduleSearchItem *gwi = new CSchceduleSearchItem();
     QFont font("PingFangSC-Light");
     font.setPixelSize(10);
-    gwi->setBackgroundColor(ScheduleDbManager::getTypeColor(gd.infotype));
+    gwi->setBackgroundColor(gd.type.color);
 
     gwi->setText(QColor("#000000"), font);
     gwi->setFixedSize(m_gradientItemList->width() - 5, 30);
@@ -219,11 +298,18 @@ void CSchceduleSearchView::slotedititem(CSchceduleSearchItem *item)
 
 void CSchceduleSearchView::slotsetSearch(QString str)
 {
-    QVector<ScheduleInfo> vScheduleInfo = ScheduleDbManager::getAllScheduleInfo();
+    QDate date = QDate::currentDate();
+
+    QDate bdate = date.addMonths(-6);
+    QDate edate = date.addMonths(6);
+    QVector<ScheduleDateRangeInfo> vScheduleInfo;
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfo(bdate, edate, vScheduleInfo);
     m_vlistData.clear();
     for (int i = 0; i < vScheduleInfo.count(); i++) {
-        if (vScheduleInfo.at(i).titleName.contains(str))
-            m_vlistData.append(vScheduleInfo.at(i));
+        for (int j = 0; j < vScheduleInfo.at(i).vData.count(); j++) {
+            if (vScheduleInfo.at(i).vData.at(j).titleName.contains(str))
+                m_vlistData.append(vScheduleInfo.at(i).vData.at(j));
+        }
     }
     updateDateShow();
 }

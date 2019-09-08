@@ -38,22 +38,9 @@ InfoView::InfoView(QFrame *parent) :
     font.setPixelSize(30);
     m_timeLabel->setFont(font);
 
-    m_festivalLabel->setStyleSheet("font-size: 14px; color: #303030");
+    //m_festivalLabel->setStyleSheet("font-size: 14px; color: #303030");
 
     m_todayButton->setText(tr("Today"));
-    m_todayButton->setStyleSheet("Dtk--Widget--DLinkButton {"
-                                 "background-color:transparent;"
-                                 "border:none;"
-                                 "color:#0082fa;"
-                                 "}"
-
-                                 "Dtk--Widget--DLinkButton:hover {"
-                                 "color:#16b8ff;"
-                                 "}"
-
-                                 "Dtk--Widget--DLinkButton:pressed {"
-                                 "color:#0060b9;"
-                                 "}");
 
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->setMargin(0);

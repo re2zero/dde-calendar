@@ -131,7 +131,7 @@ void CalendarWindow::initUI()
     m_icon->move(12, 8);
 
     m_infoView = new InfoView;
-    m_infoView->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
+    //m_infoView->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
     m_infoView->setFixedSize(InfoViewWidth, InfoViewHeight);
     m_infoView->setYearRange(MinYearValue, INT_MAX);
 
@@ -144,14 +144,14 @@ void CalendarWindow::initUI()
     m_calendarView->setCurrentDate(QDate::currentDate());
 
     m_animationContainer = new QFrame(m_contentBackground);
-    m_animationContainer->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
+    //m_animationContainer->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
     m_animationContainer->setFixedSize(m_calendarView->width(),
                                        m_calendarView->height() - CalendarHeaderHeight);
     m_animationContainer->move(ContentLeftRightPadding, CalendarHeaderHeight + InfoViewHeight);
     m_animationContainer->hide();
 
     m_fakeContent = new QLabel(m_animationContainer);
-    m_fakeContent->setStyleSheet("QLabel { background: rgba(0, 0, 0, 0) }");
+    //m_fakeContent->setStyleSheet("QLabel { background: rgba(0, 0, 0, 0) }");
     m_fakeContent->setFixedSize(m_animationContainer->width(),
                                 m_animationContainer->height() * 2);
 
