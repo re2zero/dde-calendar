@@ -24,6 +24,8 @@
 #include <DMessageBox>
 #include <DPushButton>
 #include <DHiDPIHelper>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CMySchceduleView::CMySchceduleView(QWidget *parent) : DDialog(parent)
 {
     initUI();
@@ -55,12 +57,12 @@ void CMySchceduleView::slotDeleteBt()
         DMessageBox msgBox;
         msgBox.setWindowFlags(Qt::FramelessWindowHint);
         msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-        QPalette pa;
-        pa.setColor(QPalette::WindowText, Qt::red);
         msgBox.setText(tr("You are deleted schedule."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
         DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
         DPushButton *yesButton = msgBox.addButton(tr("Delete Schedule"), DMessageBox::YesRole);
+        DPalette pa = yesButton->palette();
+        pa.setColor(DPalette::ButtonText, Qt::red);
         yesButton->setPalette(pa);
         msgBox.exec();
 
@@ -74,14 +76,16 @@ void CMySchceduleView::slotDeleteBt()
             DMessageBox msgBox;
             msgBox.setWindowFlags(Qt::FramelessWindowHint);
             msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-            QPalette pa;
-            pa.setColor(QPalette::WindowText, Qt::white);
-            pa.setColor(QPalette::Window, QColor("#0098FF"));
+
             msgBox.setText(tr("You are deleted schedule."));
             msgBox.setInformativeText(tr("You want to delete all repeat of the schedule, or just delete the selected repeat?"));
             DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
             DPushButton *yesallbutton = msgBox.addButton(tr("All Deleted"), DMessageBox::YesRole);
             DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
+            DPalette pa = yesButton->palette();
+            pa.setColor(DPalette::ButtonText, Qt::white);
+            pa.setColor(DPalette::Dark, QColor("#0098FF"));
+            pa.setColor(DPalette::Light, QColor("#0098FF"));
             yesButton->setPalette(pa);
             msgBox.exec();
 
@@ -100,14 +104,15 @@ void CMySchceduleView::slotDeleteBt()
             DMessageBox msgBox;
             msgBox.setWindowFlags(Qt::FramelessWindowHint);
             msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-            QPalette pa;
-            pa.setColor(QPalette::WindowText, Qt::white);
-            pa.setColor(QPalette::Window, QColor("#0098FF"));
             msgBox.setText(tr("You are deleted schedule."));
             msgBox.setInformativeText(tr("You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?"));
             DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
             DPushButton *yesallbutton = msgBox.addButton(tr("Delete all schedule in the future"), DMessageBox::YesRole);
             DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
+            DPalette pa = yesButton->palette();
+            pa.setColor(DPalette::ButtonText, Qt::white);
+            pa.setColor(DPalette::Dark, QColor("#0098FF"));
+            pa.setColor(DPalette::Light, QColor("#0098FF"));
             yesButton->setPalette(pa);
             msgBox.exec();
 
@@ -148,8 +153,8 @@ void CMySchceduleView::initUI()
     QFont labelF;
     labelF.setFamily("PingFangSC-Semibold");
     labelF.setPixelSize(16);
-    QPalette wpa;
-    wpa.setColor(QPalette::WindowText, QColor("#414D68"));
+    DPalette wpa;
+    wpa.setColor(DPalette::WindowText, QColor("#414D68"));
     m_schceduleLabel->setPalette(wpa);
     m_schceduleLabel->setFont(labelF);
     mainLayout->addWidget(m_schceduleLabel, 2);

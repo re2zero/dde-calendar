@@ -30,6 +30,8 @@
 #include <QQueue>
 #include "yearview.h"
 #include <QSpacerItem>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CYearView::CYearView(QWidget *parent) : DWidget(parent)
 {
     m_dayNumFont.setFamily("Helvetica");
@@ -47,8 +49,8 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
     t_labelF.setFamily("Helvetica");
     t_labelF.setPixelSize(16);
     m_currentMouth->setFont(t_labelF);
-    QPalette Lunadpa;
-    Lunadpa.setColor(QPalette::WindowText, QColor("#CF0059"));
+    DPalette Lunadpa = m_currentMouth->palette();
+    Lunadpa.setColor(DPalette::WindowText, QColor("#CF0059"));
     m_currentMouth->setPalette(Lunadpa);
     QHBoxLayout *separatorLineLayout = new QHBoxLayout;
     separatorLineLayout->setMargin(0);

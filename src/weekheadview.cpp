@@ -28,6 +28,8 @@
 #include <QTime>
 #include <QQueue>
 #include <QMenu>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
@@ -53,11 +55,11 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
     m_monthLabel = new DLabel(this);
     m_monthLabel->setFixedSize(DDEWeekCalendar::WMCellHeadrWidth - 5, DDEWeekCalendar::WCellHeaderItemHeight);
     m_monthLabel->setAlignment(Qt::AlignCenter);
-    QPalette monthpa = m_monthLabel->palette();
-    QColor textC = monthpa.color(QPalette::Text);
+    DPalette monthpa = m_monthLabel->palette();
+    QColor textC = monthpa.color(DPalette::Text);
     QColor textbC(230, 238, 242);
-    monthpa.setColor(QPalette::WindowText, textC);
-    monthpa.setColor(QPalette::Background, textbC);
+    monthpa.setColor(DPalette::WindowText, textC);
+    monthpa.setColor(DPalette::Background, textbC);
     m_monthLabel->setAutoFillBackground(true);
     m_monthLabel->setPalette(monthpa);
     QFont mlabelF;

@@ -25,6 +25,8 @@
 #include <QMessageBox>
 #include <QDate>
 #include <QHBoxLayout>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
 {
     initUI();
@@ -58,8 +60,8 @@ void CWeekWindow::initUI()
 {
     m_contentBackground = new QFrame;
     m_contentBackground->setObjectName("CalendarBackground");
-    QPalette pa;
-    pa.setColor(QPalette::Background, Qt::white);
+    DPalette pa = m_contentBackground->palette();
+    pa.setColor(DPalette::Background, Qt::white);
     m_contentBackground->setAutoFillBackground(true);
     m_contentBackground->setPalette(pa);
 
@@ -71,6 +73,11 @@ void CWeekWindow::initUI()
     m_today = new DPushButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(DDEWeekCalendar::WTodayWindth, DDEWeekCalendar::WTodayHeight);
+    DPalette todaypa = m_today->palette();
+    todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+    todaypa.setColor(DPalette::Dark, Qt::white);
+    todaypa.setColor(DPalette::Light, Qt::white);
+    m_today->setPalette(todaypa);
     m_prevButton = new DImageButton(this);
     //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
     m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
@@ -95,8 +102,8 @@ void CWeekWindow::initUI()
     t_labelF.setFamily("SourceHanSansSC-Medium");
     t_labelF.setPixelSize(24);
     m_YearLabel->setFont(t_labelF);
-    QPalette Lunadpa;
-    Lunadpa.setColor(QPalette::WindowText, QColor("#3B3B3B"));
+    DPalette Lunadpa = m_YearLabel->palette();
+    Lunadpa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_YearLabel->setPalette(Lunadpa);
     //m_YearLabel->setStyleSheet("color:#3B3B3B;");
 
@@ -112,8 +119,8 @@ void CWeekWindow::initUI()
     weeklabelF.setFamily("PingFangSC-Medium");
     weeklabelF.setPixelSize(14);
     m_weekLabel->setFont(weeklabelF);
-    QPalette wpa;
-    wpa.setColor(QPalette::WindowText, QColor("#717171"));
+    DPalette wpa = m_weekLabel->palette();
+    wpa.setColor(DPalette::WindowText, QColor("#717171"));
     m_weekLabel->setPalette(wpa);
     m_weekLabel->setText(tr("Week"));
 
@@ -121,8 +128,8 @@ void CWeekWindow::initUI()
     ylabelF.setFamily("SourceHanSansSC-Medium");
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
-    QPalette YearLpa;
-    YearLpa.setColor(QPalette::WindowText, QColor("#8A8A8A"));
+    DPalette YearLpa = m_YearLunarLabel->palette();
+    YearLpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
 
     m_YearLunarLabel->setPalette(YearLpa);
     m_YearLunarLabel->move(116, 27);

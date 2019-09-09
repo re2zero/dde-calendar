@@ -31,6 +31,8 @@
 #include <QSpacerItem>
 #include "constants.h"
 #include "dayhuangliview.h"
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CDayMonthView::CDayMonthView(QWidget *parent) : DWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
@@ -146,6 +148,11 @@ void CDayMonthView::initUI()
     m_today = new DPushButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
+    DPalette todaypa = m_today->palette();
+    todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+    todaypa.setColor(DPalette::Dark, Qt::white);
+    todaypa.setColor(DPalette::Light, Qt::white);
+    m_today->setPalette(todaypa);
     m_prevButton = new DImageButton(this);
     m_prevButton->setFixedWidth(DDEDayCalendar::D_MLableHeight);
     m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
@@ -171,8 +178,8 @@ void CDayMonthView::initUI()
     QFont mlabelF;
     mlabelF.setFamily("SourceHanSansSC-Medium");
     mlabelF.setPixelSize(24);
-    QPalette pa;
-    pa.setColor(QPalette::WindowText, QColor("#3B3B3B"));
+    DPalette pa = m_currentMouth->palette();
+    pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_currentMouth->setPalette(pa);
     m_currentMouth->setFont(mlabelF);
     m_currentMouth->setAlignment(Qt::AlignCenter);
@@ -215,8 +222,8 @@ void CDayMonthView::initUI()
     QFont daylabelF;
     daylabelF.setFamily("DINAlternate-Bold");
     daylabelF.setPixelSize(100);
-    QPalette daypa;
-    daypa.setColor(QPalette::WindowText, QColor("#2CA7F8"));
+    DPalette daypa = m_currentDay->palette();
+    daypa.setColor(DPalette::WindowText, QColor("#2CA7F8"));
     m_currentDay->setPalette(daypa);
     m_currentDay->setFont(daylabelF);
     midLayout->addWidget(m_currentDay);
@@ -228,8 +235,8 @@ void CDayMonthView::initUI()
     QFont wlabelF;
     wlabelF.setFamily("PingFangSC-Semibold");
     wlabelF.setPixelSize(16);
-    QPalette wpa;
-    wpa.setColor(QPalette::WindowText, QColor("#414D68"));
+    DPalette wpa = m_currentWeek->palette();
+    wpa.setColor(DPalette::WindowText, QColor("#414D68"));
     m_currentWeek->setPalette(wpa);
     m_currentWeek->setFont(wlabelF);
     midLayout->addWidget(m_currentWeek);
@@ -247,8 +254,8 @@ void CDayMonthView::initUI()
     QFont hlabelF;
     hlabelF.setFamily("PingFangSC-Semibold");
     hlabelF.setPixelSize(12);
-    QPalette hpa;
-    hpa.setColor(QPalette::WindowText, QColor("#414D68"));
+    DPalette hpa = m_currentLuna->palette();
+    hpa.setColor(DPalette::WindowText, QColor("#414D68"));
     m_currentLuna->setPalette(hpa);
     m_currentLuna->setFont(hlabelF);
     midLayout->addWidget(m_currentLuna);

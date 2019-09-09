@@ -22,7 +22,10 @@
 #include <QLabel>
 #include <QDebug>
 #include <QDate>
-
+#include <DPalette>
+#include <DApplicationHelper>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CMonthWeekView::CMonthWeekView(QWidget *parent) : DWidget(parent)
 {
     m_mainLayout = new QHBoxLayout;
@@ -53,22 +56,22 @@ void CMonthWeekView::setList(int weekday)
         weekfont.setPixelSize(16);
         label->setFont(weekfont);
         if (d == 7 || d == 6) {
-            QPalette monthpa = label->palette();
+            DPalette monthpa = label->palette();
             QColor textC = "#0887FF";
             QColor textbC(0, 66, 154);
             textbC.setAlphaF(0.05);
-            monthpa.setColor(QPalette::WindowText, textC);
-            monthpa.setColor(QPalette::Background, textbC);
+            monthpa.setColor(DPalette::WindowText, textC);
+            monthpa.setColor(DPalette::Background, textbC);
             label->setAutoFillBackground(true);
             label->setPalette(monthpa);
             //label->setStyleSheet("color:#0887FF;background: rgba(0,66,154,0.05);");
         } else {
-            QPalette monthpa = label->palette();
+            DPalette monthpa = label->palette();
             QColor textC = Qt::black;
             QColor textbC(0, 66, 154);
             textbC.setAlphaF(0.05);
-            monthpa.setColor(QPalette::WindowText, textC);
-            monthpa.setColor(QPalette::Background, textbC);
+            monthpa.setColor(DPalette::WindowText, textC);
+            monthpa.setColor(DPalette::Background, textbC);
             label->setAutoFillBackground(true);
             label->setPalette(monthpa);
             //label->setStyleSheet("color:black;background: rgba(0,66,154,0.05);");

@@ -21,6 +21,8 @@
 #include "constants.h"
 #include "calendardbus.h"
 #include <QMessageBox>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CYearWindow::CYearWindow(QWidget *parent): QMainWindow (parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
@@ -75,17 +77,23 @@ void CYearWindow::initUI()
     //"}");
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
-    QPalette anipa;
-    anipa.setColor(QPalette::Background, Qt::white);
+    DPalette anipa = m_contentBackground->palette();
+    anipa.setColor(DPalette::Background, Qt::white);
     m_contentBackground->setAutoFillBackground(true);
     m_contentBackground->setPalette(anipa);
     m_today = new DPushButton(this);
+    DPalette todaypa = m_today->palette();
+    todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+    todaypa.setColor(DPalette::Dark, Qt::white);
+    todaypa.setColor(DPalette::Light, Qt::white);
+    m_today->setPalette(todaypa);
+
     QFont todayfont("SourceHanSansSC-Medium");
     todayfont.setPixelSize(14);
     m_today->setFont(todayfont);
-    // QPalette pal = m_today->palette();
-    //pal.setColor(QPalette::Button, QColor("#FFFFFF"));
-    //pal.setColor(QPalette::ButtonText, QColor("#1D81EC"));
+    // DPalette pal = m_today->palette();
+    //pal.setColor(DPalette::Button, QColor("#FFFFFF"));
+    //pal.setColor(DPalette::ButtonText, QColor("#1D81EC"));
     //m_today->setPalette(pal);
     //m_today->setAutoFillBackground(true);
     m_today->setText(tr("Return today"));
@@ -114,8 +122,8 @@ void CYearWindow::initUI()
     t_labelF.setFamily("SourceHanSansSC-Medium");
     t_labelF.setPixelSize(30);
     m_YearLabel->setFont(t_labelF);
-    QPalette pa;
-    pa.setColor(QPalette::WindowText, QColor("#3B3B3B"));
+    DPalette pa = m_YearLabel->palette();
+    pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_YearLabel->setPalette(pa);
 
     m_YearLunarLabel = new DLabel(m_contentBackground);
@@ -125,8 +133,8 @@ void CYearWindow::initUI()
     ylabelF.setFamily("SourceHanSansSC-Medium");
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
-    QPalette Lunapa;
-    Lunapa.setColor(QPalette::WindowText, QColor("#8A8A8A"));
+    DPalette Lunapa = m_YearLunarLabel->palette();
+    Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_YearLunarLabel->setPalette(Lunapa);
     m_YearLunarLabel->move(116, 27);
 

@@ -23,6 +23,8 @@
 #include "schcedulesearchview.h"
 #include <QMessageBox>
 #include <QHBoxLayout>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CDayWindow::CDayWindow(QWidget *parent): QMainWindow (parent)
 {
     initUI();
@@ -65,8 +67,8 @@ void CDayWindow::initUI()
 {
     m_contentBackground = new QFrame;
     m_contentBackground->setObjectName("CalendarBackground");
-    QPalette anipa;
-    anipa.setColor(QPalette::Background, Qt::white);
+    DPalette anipa = m_contentBackground->palette();
+    anipa.setColor(DPalette::Background, Qt::white);
     m_contentBackground->setAutoFillBackground(true);
     m_contentBackground->setPalette(anipa);
 
@@ -84,8 +86,8 @@ void CDayWindow::initUI()
     labelF.setFamily("SourceHanSansSC-Medium");
     labelF.setPixelSize(24);
     m_YearLabel->setFont(labelF);
-    QPalette ypa;
-    ypa.setColor(QPalette::WindowText, QColor("#3B3B3B"));
+    DPalette ypa = m_YearLabel->palette();
+    ypa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_YearLabel->setPalette(ypa);
     titleLayout->addWidget(m_YearLabel);
     //titleLayout->addStretch(1);
@@ -94,8 +96,8 @@ void CDayWindow::initUI()
     labelF.setPixelSize(14);
     m_LunarLabel->setFont(labelF);
     m_LunarLabel->setAlignment(Qt::AlignCenter);
-    QPalette lpa;
-    lpa.setColor(QPalette::WindowText, QColor("#8A8A8A"));
+    DPalette lpa = m_LunarLabel->palette();
+    lpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_LunarLabel->setPalette(lpa);
     titleLayout->addWidget(m_LunarLabel);
     //titleLayout->addStretch(1);
@@ -104,8 +106,8 @@ void CDayWindow::initUI()
     m_SolarDay->setFixedHeight(DDEDayCalendar::D_YLableHeight);
     m_SolarDay->setFont(labelF);
     m_SolarDay->setAlignment(Qt::AlignCenter);
-    QPalette spa;
-    spa.setColor(QPalette::WindowText, Qt::red);
+    DPalette spa = m_SolarDay->palette();
+    spa.setColor(DPalette::WindowText, Qt::red);
     m_SolarDay->setPalette(spa);
     titleLayout->addWidget(m_SolarDay);
 

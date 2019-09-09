@@ -28,6 +28,8 @@
 #include <QIntValidator>
 #include "scheduledatamanage.h"
 #include <DMessageBox>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
     m_type = type;
@@ -190,11 +192,11 @@ void CSchceduleDlg::slotOkBt()
                 } else {
                     msgBox.setText(tr("Repetitive schedule of all must have the same not throughout the state."));
                 }
-                QPalette pa;
-                pa.setColor(QPalette::WindowText, Qt::red);
                 msgBox.setInformativeText(tr("Would you like to change all repeat?"));
                 DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
                 DPushButton *yesButton = msgBox.addButton(tr("All Changes"), DMessageBox::YesRole);
+                DPalette pa = yesButton->palette();
+                pa.setColor(DPalette::ButtonText, Qt::red);
                 yesButton->setPalette(pa);
                 msgBox.exec();
 
@@ -208,12 +210,12 @@ void CSchceduleDlg::slotOkBt()
                 DMessageBox msgBox;
                 msgBox.setWindowFlags(Qt::FramelessWindowHint);
                 msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                QPalette pa;
-                pa.setColor(QPalette::WindowText, Qt::red);
                 msgBox.setText(tr("Repetitive schedule of all must have the same throughout the state."));
                 msgBox.setInformativeText(tr("Would you like to change all repeat?"));
                 DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
                 DPushButton *yesButton = msgBox.addButton(tr("All Changes"), DMessageBox::YesRole);
+                DPalette pa = yesButton->palette();
+                pa.setColor(DPalette::ButtonText, Qt::red);
                 yesButton->setPalette(pa);
                 msgBox.exec();
 
@@ -227,14 +229,15 @@ void CSchceduleDlg::slotOkBt()
                     DMessageBox msgBox;
                     msgBox.setWindowFlags(Qt::FramelessWindowHint);
                     msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                    QPalette pa;
-                    pa.setColor(QPalette::WindowText, Qt::white);
-                    pa.setColor(QPalette::Window, QColor("#0098FF"));
                     msgBox.setText(tr("You are changing the schedule again."));
                     msgBox.setInformativeText(tr("You are to change the schedule only the repeat, to repeat or change it all?"));
                     DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
                     DPushButton *yesallbutton = msgBox.addButton(tr("ALL"), DMessageBox::YesRole);
                     DPushButton *yesButton = msgBox.addButton(tr("Only Schedule"), DMessageBox::YesRole);
+                    DPalette pa = yesButton->palette();
+                    pa.setColor(DPalette::ButtonText, Qt::white);
+                    pa.setColor(DPalette::Dark, QColor("#0098FF"));
+                    pa.setColor(DPalette::Light, QColor("#0098FF"));
                     yesButton->setPalette(pa);
                     msgBox.exec();
 
@@ -259,15 +262,16 @@ void CSchceduleDlg::slotOkBt()
                     DMessageBox msgBox;
                     msgBox.setWindowFlags(Qt::FramelessWindowHint);
                     msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                    QPalette pa;
-                    pa.setColor(QPalette::WindowText, Qt::white);
-                    pa.setColor(QPalette::Window, QColor("#0098FF"));
+
                     msgBox.setText(tr("You are changing the schedule again."));
                     msgBox.setInformativeText(tr("Do you want to change the schedule only is this a repeat, besides it also changes the schedule all repeat in the future?"));
                     DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
                     DPushButton *yesallbutton = msgBox.addButton(tr("All future Schedule"), DMessageBox::YesRole);
                     DPushButton *yesButton = msgBox.addButton(tr("Only Schedule"), DMessageBox::YesRole);
-                    yesButton->setAutoFillBackground(true);
+                    DPalette pa = yesButton->palette();
+                    pa.setColor(DPalette::ButtonText, Qt::white);
+                    pa.setColor(DPalette::Dark, QColor("#0098FF"));
+                    pa.setColor(DPalette::Light, QColor("#0098FF"));
                     yesButton->setPalette(pa);
                     msgBox.exec();
 
@@ -408,8 +412,8 @@ void CSchceduleDlg::initUI()
     QFont mlabelF;
     mlabelF.setFamily("SourceHanSansSC-Medium");
     mlabelF.setPixelSize(14);
-    QPalette pa;
-    pa.setColor(QPalette::WindowText, QColor("#414D68"));
+    DPalette pa;
+    pa.setColor(DPalette::WindowText, QColor("#414D68"));
 
     QVBoxLayout *maintlayout = new QVBoxLayout;
     QHBoxLayout *typelayout  = new QHBoxLayout;
@@ -444,8 +448,8 @@ void CSchceduleDlg::initUI()
     conttelabellayout->addStretch();
     m_textEdit = new DTextEdit(this);
     m_textEdit->setTextBackgroundColor(Qt::white);
-    QPalette tpa;
-    tpa.setColor(QPalette::Background, Qt::white);
+    DPalette tpa;
+    tpa.setColor(DPalette::Background, Qt::white);
     m_textEdit->setPalette(tpa);
     contentLabellayout->addLayout(conttelabellayout);
     contentLabellayout->addWidget(m_textEdit);
@@ -568,6 +572,7 @@ void CSchceduleDlg::initUI()
     m_endrepeattimes = new DLineEdit;
     m_endrepeattimes->setFixedHeight(36);
     m_endrepeattimes->setText(QString::number(10));
+    m_endrepeattimes->setClearButtonEnabled(false);
     QValidator *validator = new QIntValidator(1, 9999, this);
     m_endrepeattimes->setValidator(validator);
     m_endrepeattimesLabel = new DLabel(tr("After time"));
@@ -594,6 +599,11 @@ void CSchceduleDlg::initUI()
     QHBoxLayout *downlayout  = new QHBoxLayout;
     m_cancelBt = new DPushButton(tr("Cancel"));
     m_OkBt = new DPushButton(tr("OK"));
+    DPalette okpa = m_OkBt->palette();
+    okpa.setColor(DPalette::ButtonText, Qt::white);
+    okpa.setColor(DPalette::Dark, QColor("#0098FF"));
+    okpa.setColor(DPalette::Light, QColor("#0098FF"));
+    m_OkBt->setPalette(okpa);
     downlayout->addWidget(m_cancelBt);
     downlayout->addWidget(m_OkBt);
     QWidget *gwi = new QWidget;

@@ -20,12 +20,13 @@
 //#include "ui_CTimeVerticalScroll.h"
 #include <QMouseEvent>
 #include <QDebug>
-
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CTimeVerticalScroll::CTimeVerticalScroll(QWidget *parent): DWidget(parent)
 {
-    QPalette palette(this->palette());
+    DPalette palette(this->palette());
 
-    palette.setColor(QPalette::Background, Qt::white);
+    palette.setColor(DPalette::Window, Qt::white);
 
     this->setPalette(palette);
 //     ui->setupUi(this);

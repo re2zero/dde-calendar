@@ -23,6 +23,8 @@
 #include "dbmanager.h"
 #include "schceduledayview.h"
 #include "scheduledatamanage.h"
+#include <DPalette>
+DGUI_USE_NAMESPACE
 static int hourTextLMagin = 16;
 static int hourTextTMagin = 48;
 
@@ -31,8 +33,8 @@ static int hourTextHeight = 20;
 CScheduleView::CScheduleView(QWidget *parent)
     : QFrame(parent)
 {
-    QPalette palette(this->palette());
-    palette.setColor(QPalette::Background, Qt::white);
+    DPalette palette(this->palette());
+    palette.setColor(DPalette::Background, Qt::white);
     this->setPalette(palette);
     initUI();
     initConnection();
