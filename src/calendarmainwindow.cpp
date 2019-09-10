@@ -101,6 +101,9 @@ void Calendarmainwindow::initUI()
     titleframe->setLayout(titleLayout);
 
     DTitlebar *titlebar = this->titlebar();
+    //用于切换主题
+    titlebar->setMenu(new DMenu);
+
     titlebar->setTitle("");
     titlebar->setFixedHeight(50);
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
