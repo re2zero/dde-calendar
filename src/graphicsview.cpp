@@ -275,6 +275,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                 ScheduleDtailInfo info = item->getData();
                 if (info.rpeat == 0) {
                     DMessageBox msgBox;
+                    msgBox.setWindowFlags(Qt::FramelessWindowHint);
                     msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
                     msgBox.setText(tr("You are deleted schedule."));
                     msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
@@ -293,6 +294,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                 } else {
                     if (info.RecurID == 0) {
                         DMessageBox msgBox;
+                        msgBox.setWindowFlags(Qt::FramelessWindowHint);
                         msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
                         msgBox.setText(tr("You are deleted schedule."));
                         msgBox.setInformativeText(tr("You want to delete all repeat of the schedule, or just delete the selected repeat?"));
@@ -319,6 +321,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                         }
                     } else {
                         DMessageBox msgBox;
+                        msgBox.setWindowFlags(Qt::FramelessWindowHint);
                         msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
                         msgBox.setText(tr("You are deleted schedule."));
                         msgBox.setInformativeText(tr("You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?"));

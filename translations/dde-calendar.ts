@@ -148,52 +148,52 @@
         <translation>创建日程</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="279"/>
-        <location filename="../src/graphicsview.cpp" line="297"/>
-        <location filename="../src/graphicsview.cpp" line="323"/>
+        <location filename="../src/graphicsview.cpp" line="280"/>
+        <location filename="../src/graphicsview.cpp" line="299"/>
+        <location filename="../src/graphicsview.cpp" line="326"/>
         <source>You are deleted schedule.</source>
         <translation>您正在删除日程。</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="280"/>
+        <location filename="../src/graphicsview.cpp" line="281"/>
         <source>Are you sure you want to delete this schedule?</source>
         <translation>您确定要删除此日程吗？</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="281"/>
-        <location filename="../src/graphicsview.cpp" line="299"/>
-        <location filename="../src/graphicsview.cpp" line="325"/>
+        <location filename="../src/graphicsview.cpp" line="282"/>
+        <location filename="../src/graphicsview.cpp" line="301"/>
+        <location filename="../src/graphicsview.cpp" line="328"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="282"/>
+        <location filename="../src/graphicsview.cpp" line="283"/>
         <source>Delete Schedule</source>
         <translation>删除日程</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="298"/>
+        <location filename="../src/graphicsview.cpp" line="300"/>
         <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
         <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="300"/>
+        <location filename="../src/graphicsview.cpp" line="302"/>
         <source>All Deleted</source>
         <translation>全部删除</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="301"/>
-        <location filename="../src/graphicsview.cpp" line="327"/>
+        <location filename="../src/graphicsview.cpp" line="303"/>
+        <location filename="../src/graphicsview.cpp" line="330"/>
         <source>Just Delete Schedule</source>
         <translation>仅删除该日程</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="324"/>
+        <location filename="../src/graphicsview.cpp" line="327"/>
         <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
         <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
     </message>
     <message>
-        <location filename="../src/graphicsview.cpp" line="326"/>
+        <location filename="../src/graphicsview.cpp" line="329"/>
         <source>Delete all schedule in the future</source>
         <translation>删除所有将来日程</translation>
     </message>
@@ -223,67 +223,67 @@
 <context>
     <name>CMySchceduleView</name>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="33"/>
+        <location filename="../src/myschceduleview.cpp" line="174"/>
         <source>My Schcedule</source>
         <translation>我的日程</translation>
-    </message>
-    <message>
-        <location filename="../src/myschceduleview.cpp" line="60"/>
-        <location filename="../src/myschceduleview.cpp" line="80"/>
-        <location filename="../src/myschceduleview.cpp" line="107"/>
-        <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
-    </message>
-    <message>
-        <location filename="../src/myschceduleview.cpp" line="61"/>
-        <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
     </message>
     <message>
         <location filename="../src/myschceduleview.cpp" line="62"/>
         <location filename="../src/myschceduleview.cpp" line="82"/>
         <location filename="../src/myschceduleview.cpp" line="109"/>
+        <source>You are deleted schedule.</source>
+        <translation>您正在删除日程。</translation>
+    </message>
+    <message>
+        <location filename="../src/myschceduleview.cpp" line="63"/>
+        <source>Are you sure you want to delete this schedule?</source>
+        <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <location filename="../src/myschceduleview.cpp" line="64"/>
+        <location filename="../src/myschceduleview.cpp" line="84"/>
+        <location filename="../src/myschceduleview.cpp" line="111"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="63"/>
+        <location filename="../src/myschceduleview.cpp" line="65"/>
         <source>Delete Schedule</source>
         <translation>删除日程</translation>
     </message>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="81"/>
+        <location filename="../src/myschceduleview.cpp" line="83"/>
         <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
         <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
     </message>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="83"/>
+        <location filename="../src/myschceduleview.cpp" line="85"/>
         <source>All Deleted</source>
         <translation>全部删除</translation>
     </message>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="84"/>
-        <location filename="../src/myschceduleview.cpp" line="111"/>
+        <location filename="../src/myschceduleview.cpp" line="86"/>
+        <location filename="../src/myschceduleview.cpp" line="113"/>
         <source>Just Delete Schedule</source>
         <translation>仅删除该日程</translation>
     </message>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="108"/>
+        <location filename="../src/myschceduleview.cpp" line="110"/>
         <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
         <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
     </message>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="110"/>
+        <location filename="../src/myschceduleview.cpp" line="112"/>
         <source>Delete all schedule in the future</source>
         <translation>删除所有将来日程</translation>
     </message>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="189"/>
+        <location filename="../src/myschceduleview.cpp" line="230"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../src/myschceduleview.cpp" line="190"/>
+        <location filename="../src/myschceduleview.cpp" line="236"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -490,7 +490,7 @@
         <location filename="../src/schceduledlg.cpp" line="215"/>
         <location filename="../src/schceduledlg.cpp" line="234"/>
         <location filename="../src/schceduledlg.cpp" line="268"/>
-        <location filename="../src/schceduledlg.cpp" line="599"/>
+        <location filename="../src/schceduledlg.cpp" line="600"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -607,12 +607,12 @@
         <translation>于日期</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="577"/>
+        <location filename="../src/schceduledlg.cpp" line="578"/>
         <source>After time</source>
         <translation>次后</translation>
     </message>
     <message>
-        <location filename="../src/schceduledlg.cpp" line="600"/>
+        <location filename="../src/schceduledlg.cpp" line="601"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -864,22 +864,22 @@
 <context>
     <name>Calendarmainwindow</name>
     <message>
-        <location filename="../src/calendarmainwindow.cpp" line="45"/>
+        <location filename="../src/calendarmainwindow.cpp" line="47"/>
         <source>Deepin Calendar</source>
         <translation>深度日历</translation>
     </message>
     <message>
-        <location filename="../src/calendarmainwindow.cpp" line="59"/>
+        <location filename="../src/calendarmainwindow.cpp" line="65"/>
         <source>Y</source>
         <translation>年</translation>
     </message>
     <message>
-        <location filename="../src/calendarmainwindow.cpp" line="61"/>
+        <location filename="../src/calendarmainwindow.cpp" line="65"/>
         <source>M</source>
         <translation>月</translation>
     </message>
     <message>
-        <location filename="../src/calendarmainwindow.cpp" line="63"/>
+        <location filename="../src/calendarmainwindow.cpp" line="65"/>
         <source>W</source>
         <translation>周</translation>
     </message>

@@ -50,6 +50,8 @@ private:
     DLabel                           *m_timeLabel = nullptr;
     DPushButton                      *m_editBt = nullptr;
     DPushButton                      *m_deleteBt = nullptr;
+    DLabel                           *m_icon;
+    DLabel                           *m_Title;
     ScheduleDtailInfo                     m_scheduleInfo;//日程
 };
 

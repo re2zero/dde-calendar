@@ -28,6 +28,8 @@
 #include <QSizePolicy>
 #include "weekwindow.h"
 #include "daywindow.h"
+#include <DPalette>
+DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
 static const int CalendarMWidth = 860;
@@ -49,57 +51,73 @@ Calendarmainwindow::Calendarmainwindow()
 
 void Calendarmainwindow::initUI()
 {
-    m_icon = new QLabel(this);
+    QFrame *titleframe = new QFrame(this);
+    titleframe->setObjectName("TitleBar");
+    titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_icon = new DLabel(this);
     m_icon->setFixedSize(34, 34);
     m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
                       .scaled(m_icon->size() * devicePixelRatioF()));
-    m_icon->move(12, 8);
+    //m_icon->move(12, 8);
 
-    m_bttongroup = new QButtonGroup();
-    m_ybutton = createButon(tr("Y"));
-    m_bttongroup->addButton(m_ybutton, 0);
-    m_mbutton = createButon(tr("M"));
-    m_bttongroup->addButton(m_mbutton, 1);
-    m_wbutton = createButon(tr("W"));
-    m_bttongroup->addButton(m_wbutton, 2);
-    m_dbutton = createButon(tr("D"));
-    m_bttongroup->addButton(m_dbutton, 3);
+
+    QStringList titlelist;
+    titlelist << tr("Y") << tr("M") << tr("W") << tr("D");
+    m_segmentedControl = new DSegmentedControl(this);
+    DPalette wpa = m_segmentedControl->palette();
+    //wpa.setColor(DPalette::ButtonText, QColor("#FFFFFF"));
+    //wpa.setColor(DPalette::Button, QColor("#0081FF "));
+    /// wpa.setColor(DPalette::Dark, QColor("#0081FF"));
+    //wpa.setColor(DPalette::Light, QColor("#0081FF"));
+    // wpa.setColor(DPalette::Window, QColor("#0081FF"));
+    // wpa.setColor(DPalette::WindowText, QColor("#414D68"));
+    m_segmentedControl->setPalette(wpa);
+    m_segmentedControl->addSegmented(titlelist);
+    m_segmentedControl->setFixedSize(200, 36);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
     titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(0, 0, 0, 0);
-    titleLayout->addWidget(m_ybutton);
-    titleLayout->addWidget(m_mbutton);
-    titleLayout->addWidget(m_wbutton);
-    titleLayout->addWidget(m_dbutton);
-    QSpacerItem *lspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    titleLayout->addSpacerItem(lspaceitem);
+    //titleLayout->setContentsMargins(0, 0, 0, 0);
+    //titleLayout->addWidget(m_ybutton);
+    // titleLayout->addWidget(m_mbutton);
+    //titleLayout->addWidget(m_wbutton);
+    titleLayout->addSpacing(10);
+    titleLayout->addWidget(m_icon);
+    titleLayout->addSpacing(18);
+    titleLayout->addWidget(m_segmentedControl);
+    // QSpacerItem *lspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
+    //titleLayout->addSpacerItem(lspaceitem);
     m_searchEdit = new DSearchEdit;
-    m_searchEdit->setFixedHeight(30);
+    m_searchEdit->setFixedHeight(36);
+    m_searchEdit->setMinimumWidth(240);
     m_searchEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    titleLayout->addSpacing(52);
     titleLayout->addWidget(m_searchEdit);
     //m_searchEdit->setSizePolicy(QSizePolicy::Expanding);
-    QSpacerItem *rspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    titleLayout->addSpacerItem(rspaceitem);
-    QWidget *buttonW = new QWidget;
-    buttonW->setLayout(titleLayout);
+    //QSpacerItem *rspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
+    titleLayout->addStretch(10);
+    //QWidget *buttonW = new QWidget;
+    titleframe->setLayout(titleLayout);
 
     DTitlebar *titlebar = this->titlebar();
+    titlebar->setTitle("");
     titlebar->setFixedHeight(50);
-    titlebar->setCustomWidget(buttonW, Qt::AlignLeft);
+    titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
+    // titlebar->move(36, 3);
 
     m_stackWidget = new QStackedWidget;
     m_stackWidget->setFixedSize(WorkViewWidth, WorkViewHeight);
     createview();
     setCentralWidget(m_stackWidget);
-    m_bttongroup->button(0)->setChecked(true);
-
+    //m_bttongroup->button(0)->setChecked(true);
+    m_segmentedControl->setCurrentIndex(0);
 }
 
 void Calendarmainwindow::initConnection()
 {
-    connect(m_bttongroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &Calendarmainwindow::slotstackWClicked);
+    connect(m_segmentedControl, &DSegmentedControl::currentChanged, this, &Calendarmainwindow::slotstackWClicked);
+    //connect(m_bttongroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &Calendarmainwindow::slotstackWClicked);
     //connect(m_weekWindow, &CWeekWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     //connect(m_monthWindow, &CMonthWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     // connect(m_DayWindow, &CDayWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);

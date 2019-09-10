@@ -28,8 +28,9 @@
 #include <dsearchedit.h>
 #include <QButtonGroup>
 #include <DTitlebar>
-#include <QLabel>
+#include <DLabel>
 #include <QStackedWidget>
+#include <DSegmentedControl>
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
 class CMonthWindow;
@@ -53,13 +54,9 @@ private slots:
     void slotSreturnPressed();
     void slotStextChanged();
 private:
-    QLabel                    *m_icon;
+    DLabel                    *m_icon;
     QStackedWidget              *m_stackWidget;
-    QButtonGroup              *m_bttongroup;
-    DPushButton               *m_ybutton;
-    DPushButton               *m_mbutton;
-    DPushButton               *m_wbutton;
-    DPushButton               *m_dbutton;
+    DSegmentedControl         *m_segmentedControl;
     DSearchEdit               *m_searchEdit;
     CYearWindow               *m_yearwindow;
     CMonthWindow              *m_monthWindow;

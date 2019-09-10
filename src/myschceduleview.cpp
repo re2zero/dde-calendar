@@ -30,8 +30,10 @@ CMySchceduleView::CMySchceduleView(QWidget *parent) : DDialog(parent)
 {
     initUI();
     initConnection();
-    setTitle(tr("My Schcedule"));
-    setFixedSize(400, 180);
+    //setTitle(tr("My Schcedule"));
+    setFixedSize(380, 160);
+
+    //setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 }
 
 void CMySchceduleView::setSchedules(ScheduleDtailInfo info)
@@ -142,6 +144,39 @@ void CMySchceduleView::slotDeleteBt()
 
 void CMySchceduleView::initUI()
 {
+    QFrame *titleframe = new QFrame(this);
+    titleframe->setObjectName("TitleBar");
+    titleframe->setMinimumWidth(220);
+    titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    QHBoxLayout *titleLayout = new QHBoxLayout;
+    titleLayout->setMargin(0);
+    titleLayout->setSpacing(0);
+    titleLayout->addSpacing(10);
+    m_icon = new DLabel(this);
+    m_icon->setFixedSize(32, 32);
+    m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
+                      .scaled(m_icon->size() * devicePixelRatioF()));
+    titleLayout->addWidget(m_icon);
+    titleLayout->addSpacing(114);
+    m_Title = new DLabel(this);
+    m_Title->setFixedSize(70, 25);
+    m_Title->setAlignment(Qt::AlignCenter);
+    titleLayout->addWidget(m_Title);
+    titleLayout->addStretch();
+    QFont labelTitle;
+    labelTitle.setFamily("SourceHanSansSC-Bold");
+    labelTitle.setPixelSize(17);
+    DPalette titlepa = m_Title->palette();
+    titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
+
+    m_Title->setPalette(titlepa);
+    m_Title->setFont(labelTitle);
+    m_Title->setText(tr("My Schcedule"));
+    titleframe->setLayout(titleLayout);
+    titleframe->move(10, 9);
+
+
+
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
@@ -149,12 +184,12 @@ void CMySchceduleView::initUI()
 
     m_schceduleLabel = new DLabel(this);
     m_schceduleLabel->setFixedHeight(22);
-    m_schceduleLabel->setAlignment(Qt::AlignLeft);
+    m_schceduleLabel->setAlignment(Qt::AlignCenter);
     QFont labelF;
-    labelF.setFamily("PingFangSC-Semibold");
-    labelF.setPixelSize(16);
-    DPalette wpa;
-    wpa.setColor(DPalette::WindowText, QColor("#414D68"));
+    labelF.setFamily("SourceHanSansSC-Medium");
+    labelF.setPixelSize(14);
+    DPalette wpa = m_schceduleLabel->palette();
+    wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
     m_schceduleLabel->setPalette(wpa);
     m_schceduleLabel->setFont(labelF);
     mainLayout->addWidget(m_schceduleLabel, 2);
@@ -175,9 +210,15 @@ void CMySchceduleView::initUI()
 
     m_timeLabel = new DLabel(this);
     m_timeLabel->setFixedHeight(22);
-    m_timeLabel->setAlignment(Qt::AlignLeft);
-    m_timeLabel->setPalette(wpa);
-    m_timeLabel->setFont(labelF);
+    m_timeLabel->setAlignment(Qt::AlignCenter);
+    QFont labelT;
+    labelT.setFamily("SourceHanSansSC-Bold");
+    labelT.setPixelSize(14);
+    DPalette tpa = m_timeLabel->palette();
+    tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
+
+    m_timeLabel->setPalette(tpa);
+    m_timeLabel->setFont(labelT);
     mainLayout->addWidget(m_timeLabel, 2);
 
     QFrame *btframe = new QFrame(this);
@@ -185,8 +226,13 @@ void CMySchceduleView::initUI()
     hBtLayout->setMargin(0);
     hBtLayout->setSpacing(0);
     hBtLayout->setContentsMargins(0, 0, 0, 3);
-    hBtLayout->addStretch();
+    // hBtLayout->addStretch();
     m_editBt = new DPushButton(tr("Edit"));
+    DPalette pa = m_editBt->palette();
+    pa.setColor(DPalette::ButtonText, Qt::white);
+    pa.setColor(DPalette::Dark, QColor("#0098FF"));
+    pa.setColor(DPalette::Light, QColor("#0098FF"));
+    m_editBt->setPalette(pa);
     m_deleteBt = new DPushButton(tr("Delete"));
     hBtLayout->addWidget(m_deleteBt);
 

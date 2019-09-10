@@ -429,7 +429,7 @@ void CSchceduleDlg::initUI()
     m_typeComBox->insertItem(0, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Work"));
     m_typeComBox->insertItem(1, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Life"));
     m_typeComBox->insertItem(2, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Other"));
-    typelayout->addWidget(m_typeLabel);
+    typelayout->addWidget(m_typeLabel, 0, Qt::AlignVCenter);
     typelayout->addWidget(m_typeComBox);
     maintlayout->addLayout(typelayout);
 
@@ -444,7 +444,7 @@ void CSchceduleDlg::initUI()
     m_contentLabel->setPalette(pa);
     m_contentLabel->setAlignment(Qt::AlignLeft);
     m_contentLabel->setFixedWidth(78);
-    conttelabellayout->addWidget(m_contentLabel);
+    conttelabellayout->addWidget(m_contentLabel, 0, Qt::AlignVCenter);
     conttelabellayout->addStretch();
     m_textEdit = new DTextEdit(this);
     m_textEdit->setTextBackgroundColor(Qt::white);
@@ -464,7 +464,7 @@ void CSchceduleDlg::initUI()
     m_adllDayLabel->setAlignment(Qt::AlignLeft);
     m_adllDayLabel->setFixedWidth(78);
     m_allDayCheckbox = new DCheckBox(this);
-    alldayLabellayout->addWidget(m_adllDayLabel);
+    alldayLabellayout->addWidget(m_adllDayLabel, 0, Qt::AlignVCenter);
     alldayLabellayout->addWidget(m_allDayCheckbox);
     maintlayout->addLayout(alldayLabellayout);
 
@@ -488,7 +488,7 @@ void CSchceduleDlg::initUI()
     //begintimeelayout->setMargin(0);
     //begintimeelayout->setSpacing(0);
     //begintimeelayout->addStretch();
-    beginLabellayout->addWidget(m_beginTimeLabel, 1);
+    beginLabellayout->addWidget(m_beginTimeLabel, 1, Qt::AlignVCenter);
     beginLabellayout->addWidget(m_beginDateEdit, 2);
     beginLabellayout->addWidget(m_beginTimeEdit, 2);
     // beginLabellayout->addLayout(begintimeelayout);
@@ -515,7 +515,7 @@ void CSchceduleDlg::initUI()
     endtimeelayout->addWidget(m_endDateEdit, 1);
     endtimeelayout->addWidget(m_endTimeEdit, 1);
     endtimeelayout->addStretch();
-    endLabellayout->addWidget(m_endTimeLabel);
+    endLabellayout->addWidget(m_endTimeLabel, 0, Qt::AlignVCenter);
     endLabellayout->addLayout(endtimeelayout);
     maintlayout->addLayout(endLabellayout);
 
@@ -528,7 +528,7 @@ void CSchceduleDlg::initUI()
     m_remindSetLabel->setAlignment(Qt::AlignLeft);
     m_remindSetLabel->setFixedWidth(78);
     m_rmindCombox = new DComboBox();
-    rmindLabellayout->addWidget(m_remindSetLabel);
+    rmindLabellayout->addWidget(m_remindSetLabel, 0, Qt::AlignVCenter);
     rmindLabellayout->addWidget(m_rmindCombox);
     rmindLabellayout->addStretch();
     maintlayout->addLayout(rmindLabellayout);
@@ -548,7 +548,7 @@ void CSchceduleDlg::initUI()
     m_beginrepeatCombox->addItem(tr("Once a week"));
     m_beginrepeatCombox->addItem(tr("A month"));
     m_beginrepeatCombox->addItem(tr("Every year"));
-    repeatLabellayout->addWidget(m_beginrepeatLabel);
+    repeatLabellayout->addWidget(m_beginrepeatLabel, 0, Qt::AlignVCenter);
     repeatLabellayout->addWidget(m_beginrepeatCombox);
     repeatLabellayout->addStretch();
     maintlayout->addLayout(repeatLabellayout);
@@ -565,12 +565,12 @@ void CSchceduleDlg::initUI()
     m_endrepeatCombox->addItem(tr("never"));
     m_endrepeatCombox->addItem(tr("in"));
     m_endrepeatCombox->addItem(tr("On the date"));
-    endrepeatLabellayout->addWidget(m_endrepeatLabel);
+    endrepeatLabellayout->addWidget(m_endrepeatLabel, 0, Qt::AlignVCenter);
     endrepeatLabellayout->addWidget(m_endrepeatCombox);
 
     QHBoxLayout *endrepeattimeslayout  = new QHBoxLayout;
     m_endrepeattimes = new DLineEdit;
-    m_endrepeattimes->setFixedHeight(36);
+    m_endrepeattimes->setFixedHeight(34);
     m_endrepeattimes->setText(QString::number(10));
     m_endrepeattimes->setClearButtonEnabled(false);
     QValidator *validator = new QIntValidator(1, 9999, this);
