@@ -78,7 +78,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->setFont(font);
     painter->setPen(QColor("#B54A4B"));
     QTime stime = m_scheduleInfo.beginDateTime.time();
-    QString str = stime.toString("ap hh:mm");
+    QString str = stime.toString("ap HH:mm");
     painter->drawText(QRect(rect.topLeft().x() + 2, rect.topLeft().y(), rect.width() - 2, 20), Qt::AlignLeft, str);
     painter->restore();
 
@@ -99,7 +99,7 @@ void CScheduleItem::splitText( QFont font, int w, QString str, QStringList &list
     if (str.isEmpty()) return;
     QFontMetrics fontmetris(font);
     int widthT = fontmetris.width(str);
-    int singlecharw = widthT * 1.0 / str.count();
+    int singlecharw = widthT * 1.0 / str.count() + 0.5;
     int rcharcount = w * 1.0 / singlecharw;
     QString tstr;
     int tcount = 0;

@@ -618,6 +618,15 @@
     </message>
 </context>
 <context>
+    <name>CSchceduleNumButton</name>
+    <message>
+        <location filename="../../src/schceduledayview.cpp" line="305"/>
+        <location filename="../../src/schceduledayview.cpp" line="316"/>
+        <source>There is %1 schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CSchceduleSearchItem</name>
     <message>
         <location filename="../../src/schcedulesearchview.cpp" line="39"/>
@@ -759,6 +768,12 @@
         <translation>下午</translation>
     </message>
     <message>
+        <location filename="../../src/scheduleview.cpp" line="129"/>
+        <location filename="../../src/scheduleview.cpp" line="131"/>
+        <source> h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../src/scheduleview.cpp" line="131"/>
         <source>AM </source>
         <translation>上午</translation>
@@ -837,9 +852,19 @@
     </message>
     <message>
         <location filename="../../src/yearwindow.cpp" line="251"/>
-        <location filename="../../src/yearwindow.cpp" line="319"/>
+        <location filename="../../src/yearwindow.cpp" line="324"/>
         <source>Lunar</source>
         <translation>农历</translation>
+    </message>
+    <message>
+        <location filename="../../src/yearwindow.cpp" line="318"/>
+        <source>Today</source>
+        <translation type="unfinished">今天</translation>
+    </message>
+    <message>
+        <location filename="../../src/yearwindow.cpp" line="320"/>
+        <source>Return Today</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -851,12 +876,12 @@
     </message>
     <message>
         <location filename="../../src/calendarwindow.cpp" line="64"/>
-        <location filename="../../src/main.cpp" line="66"/>
+        <location filename="../../src/main.cpp" line="120"/>
         <source>Deepin Calendar</source>
         <translation>深度日历</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="68"/>
+        <location filename="../../src/main.cpp" line="122"/>
         <source>Calendar is a date tool.</source>
         <translation>日历是一个时间工具.</translation>
     </message>

@@ -216,7 +216,7 @@ void CSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             }
             str = tstr + "...";
         }
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), m_pos.y() + 2 * avge), Qt::AlignLeft, str);
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 2 * avge), Qt::AlignLeft, str);
     } else {
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -239,7 +239,7 @@ void CSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             }
             str = tstr + "...";
         }
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), m_pos.y() + 4 * avge), Qt::AlignLeft, str);
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 4 * avge), Qt::AlignLeft, str);
     }
 }
 void CSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
@@ -302,7 +302,7 @@ void CSchceduleNumButton::paintEvent(QPaintEvent *e)
 
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), m_pos.y() + 3), Qt::AlignLeft, "-" + QString("There is %1 schedule").arg(m_num));
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), m_pos.y() + 3), Qt::AlignLeft, "-" + QString(tr("There is %1 schedule")).arg(m_num));
     } else {
         QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -313,7 +313,7 @@ void CSchceduleNumButton::paintEvent(QPaintEvent *e)
 
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), m_pos.y() + 3), Qt::AlignLeft, QString("There is %1 schedule").arg(m_num));
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), m_pos.y() + 3), Qt::AlignLeft, QString(tr("There is %1 schedule")).arg(m_num));
     }
 }
 

@@ -126,9 +126,9 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     for (int i = 0; i < m_vPos.size(); i++) {
         if (m_vHours[i] == 0) continue;
         if (m_vHours[i] > 12) {
-            painter.drawText(QRect(hourTextLMagin, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignCenter, tr("PM ") + QString::number(m_vHours[i] - 12) + " h");
+            painter.drawText(QRect(hourTextLMagin, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignCenter, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
         } else {
-            painter.drawText(QRect(hourTextLMagin, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignCenter, tr("AM ") + QString::number(m_vHours[i]) + " h");
+            painter.drawText(QRect(hourTextLMagin, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignCenter, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
         }
     }
     painter.restore();
