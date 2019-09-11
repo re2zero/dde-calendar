@@ -145,7 +145,7 @@
     <message>
         <location filename="../src/graphicsview.cpp" line="73"/>
         <source>Create</source>
-        <translation>创建日程</translation>
+        <translation>新建日程</translation>
     </message>
     <message>
         <location filename="../src/graphicsview.cpp" line="280"/>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/schceduledayview.cpp" line="375"/>
         <source>Create</source>
-        <translation>创建</translation>
+        <translation>新建日程</translation>
     </message>
 </context>
 <context>
