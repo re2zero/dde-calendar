@@ -105,7 +105,7 @@ TRANSLATIONS += translations/dde-calendar.ts \
                 translations/desktop/desktop_zh_CN.ts
 isEmpty(BINDIR):BINDIR=/usr/bin
 isEmpty(APPDIR):APPDIR=/usr/share/applications
-isEmpty(DSRDIR):DSRDIR=/usr/share/deepin-calendar
+isEmpty(DSRDIR):DSRDIR=/usr/share/dde-calendar
 
 # Automating generation .qm files from .ts files
 !system($$PWD/translate_generation.sh): error("Failed to generate translation")
@@ -115,12 +115,12 @@ icon_files.path = $$PREFIX/share/icons/hicolor/scalable/apps/
 icon_files.files = $$PWD/images/deepin-calendar.svg
 
 desktop.path = $$INSTROOT$$APPDIR
-desktop.files = deepin-calendar.desktop
+desktop.files = dde-calendar.desktop
 
 manual.path = /usr/share/dman/
 manual.files = $$PWD/dman/*
 
-translations.path = /usr/share/deepin-calendar/translations/
+translations.path = /usr/share/dde-calendar/translations/
 translations.files = translations/*.qm
 
 INSTALLS += target desktop icon_files translations manual
