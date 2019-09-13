@@ -49,10 +49,21 @@ void CSchceduleSearchItem::setBackgroundColor(QColor color1)
     m_Backgroundcolor = color1;
 }
 
+void CSchceduleSearchItem::setSplitLineColor(QColor color1)
+{
+    m_splitlinecolor = color1;
+}
+
 void CSchceduleSearchItem::setText( QColor tcolor, QFont font)
 {
-    m_textcolor = tcolor;
-    m_font = font;
+    m_ttextcolor = tcolor;
+    m_tfont = font;
+}
+
+void CSchceduleSearchItem::setTimeC(QColor tcolor, QFont font)
+{
+    m_timecolor = tcolor;
+    m_timefont = font;
 }
 
 void CSchceduleSearchItem::setData( ScheduleDtailInfo vScheduleInfo )
@@ -170,25 +181,34 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painter.setPen(Qt::NoPen);
     painter.drawRoundedRect(fillRect, 3, 3);
 
-    painter.setFont(m_font);
-    painter.setPen(m_textcolor);
+    painter.setFont(m_timefont);
+    painter.setPen(m_timecolor);
 
     QDate begindate  = m_ScheduleInfo.beginDateTime.date();
     QDate enddate = m_ScheduleInfo.endDateTime.date();
     QString datestr;
     if (begindate  == enddate) {
-        datestr = begindate.toString("yyyy-MM-d") + " " + m_ScheduleInfo.beginDateTime.toString("hh:mm")
+        datestr = m_ScheduleInfo.beginDateTime.toString("hh:mm")
                   + "-" + m_ScheduleInfo.endDateTime.toString("hh:mm");
     } else {
-        datestr = begindate.toString("yyyy-MM-d") + " " + m_ScheduleInfo.beginDateTime.toString("hh:mm")
-                  + "-" + enddate.toString("yyyy-MM-d") + " " + m_ScheduleInfo.endDateTime.toString("hh:mm");
+        datestr = m_ScheduleInfo.beginDateTime.toString("hh:mm")
+                  + "-" + m_ScheduleInfo.endDateTime.toString("hh:mm");
     }
 
-    painter.drawText(QRect(2, 2, labelwidth, labelheight / 2), Qt::AlignLeft, datestr);
+    painter.drawText(QRect(12, 8, labelwidth * 0.455, labelheight - 16), Qt::AlignLeft, datestr);
+    painter.save();
+    QPen pen(m_splitlinecolor);
+    pen.setWidth(2);
+    painter.setPen(pen);
+    painter.drawLine(labelwidth * 0.455, 0, labelwidth * 0.455, labelheight);
+    painter.restore();
 
+    painter.setFont(m_tfont);
+    painter.setPen(m_ttextcolor);
+    int tilenameW = labelwidth * 0.533;
     QFontMetrics fm = painter.fontMetrics();
     QString str =  m_ScheduleInfo.titleName;
-    if (fm.width(str) > width()) {
+    if (fm.width(str) > tilenameW) {
         int widthT = fm.width(str);
         int singlecharw = widthT * 1.0 / str.count();
         int rcharcount = width() * 1.0 / singlecharw;
@@ -199,7 +219,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
         str = tstr + "...";
     }
 
-    painter.drawText(QRect(2, 2 + labelheight / 2, labelwidth, labelheight / 2), Qt::AlignLeft, str);
+    painter.drawText(QRect(labelwidth * 0.455 + 9, 6, tilenameW, labelheight - 16), Qt::AlignLeft, str);
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -239,28 +259,25 @@ void CSchceduleSearchView::updateDateShow()
     }
     m_gradientItemList->clear();
     for (int i = 0; i < m_vlistData.size(); ++i) {
-        CSchceduleSearchItem *gwi = createItemWidget(i, true);
-        QListWidgetItem *listItem = new QListWidgetItem;
-        listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 30)); //每次改变Item的高度
-        //listItem->setBackgroundColor(Qt::white);
-        listItem->setFlags(Qt::ItemIsTristate );
-        m_gradientItemList->addItem(listItem);
-        m_gradientItemList->setItemWidget(listItem, gwi);
+        createItemWidget(m_vlistData[i].date);
+        for (int j = 0; j < m_vlistData.at(i).vData.count(); j++) {
+            createItemWidget(m_vlistData.at(i).vData.at(j));
+        }
     }
     if (m_gradientItemList->count() == 0) {
         QListWidgetItem *listItem = new QListWidgetItem;
         DLabel *gwi = new DLabel();
-        QFont font("PingFangSC-Light");
-        font.setPixelSize(10);
-        gwi->setAlignment(Qt::AlignCenter);
+        QFont font("SourceHanSansSC-Normal");
+        font.setPixelSize(20);
+        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
         DPalette daypa;
-        daypa.setColor(DPalette::WindowText,  Qt::black);
+        daypa.setColor(DPalette::WindowText,  QColor("#303030"));
         daypa.setColor(DPalette::Window, Qt::white);
         gwi->setPalette(daypa);
         gwi->setFont(font);
         gwi->setText(tr("No search results"));
-        gwi->setFixedSize(m_gradientItemList->width() - 5, 80);
-        listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 80)); //每次改变Item的高度
+        gwi->setFixedSize(m_gradientItemList->width(), 450);
+        listItem->setSizeHint(QSize(m_gradientItemList->width(), 450)); //每次改变Item的高度
         //listItem->setBackgroundColor(Qt::white);
         listItem->setFlags(Qt::ItemIsTristate );
         m_gradientItemList->addItem(listItem);
@@ -268,31 +285,54 @@ void CSchceduleSearchView::updateDateShow()
     }
 }
 
-CSchceduleSearchItem *CSchceduleSearchView::createItemWidget(int index, bool average)
+void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info)
 {
-    const ScheduleDtailInfo &gd = m_vlistData.at(index);
+    ScheduleDtailInfo &gd = info;
     CSchceduleSearchItem *gwi = new CSchceduleSearchItem();
-    QFont font("PingFangSC-Light");
-    font.setPixelSize(10);
+    QFont font("SourceHanSansSC-Normal");
+    font.setPixelSize(14);
     gwi->setBackgroundColor(gd.type.color);
-
-    gwi->setText(QColor("#000000"), font);
-    gwi->setFixedSize(m_gradientItemList->width() - 5, 30);
+    //gwi->setBackgroundColor(Qt::white);
+    gwi->setSplitLineColor(QColor("#FB2525"));
+    gwi->setText(QColor("#414D68"), font);
+    font.setPixelSize(12);
+    gwi->setTimeC(QColor("#526A7F"), font);
+    gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
     gwi->setData(gd);
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
     connect(gwi, &CSchceduleSearchItem::signalsEdit, this, &CSchceduleSearchView::slotedititem);
-    return gwi;
+
+
+    QListWidgetItem *listItem = new QListWidgetItem;
+    listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
+    //listItem->setBackgroundColor(Qt::white);
+    listItem->setFlags(Qt::ItemIsTristate );
+    m_gradientItemList->addItem(listItem);
+    m_gradientItemList->setItemWidget(listItem, gwi);
+
+}
+
+void CSchceduleSearchView::createItemWidget(QDate date)
+{
+    CSchceduleSearchDateItem *gwi = new CSchceduleSearchDateItem();
+    QFont font("SourceHanSansSC-Medium");
+    font.setPixelSize(16);
+    gwi->setBackgroundColor(Qt::white);
+
+    gwi->setText(QColor("#001A2E"), font);
+    gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
+    gwi->setDate(date);
+    QListWidgetItem *listItem = new QListWidgetItem;
+    listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
+    //listItem->setBackgroundColor(Qt::white);
+    listItem->setFlags(Qt::ItemIsTristate );
+    m_gradientItemList->addItem(listItem);
+    m_gradientItemList->setItemWidget(listItem, gwi);
 }
 
 void CSchceduleSearchView::slotdeleteitem( CSchceduleSearchItem *item )
 {
     emit signalsUpdateShcedule(item->getData().id);
-    for (int i = 0; i < m_vlistData.count(); i++) {
-        if (m_vlistData.at(i).id == item->getData().id) {
-            m_vlistData.removeAt(i);
-            break;
-        }
-    }
     updateDateShow();
     update();
 }
@@ -312,11 +352,59 @@ void CSchceduleSearchView::slotsetSearch(QString str)
     CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfo(bdate, edate, vScheduleInfo);
     m_vlistData.clear();
     for (int i = 0; i < vScheduleInfo.count(); i++) {
+        QVector<ScheduleDtailInfo> vData;
         for (int j = 0; j < vScheduleInfo.at(i).vData.count(); j++) {
             if (vScheduleInfo.at(i).vData.at(j).titleName.contains(str))
-                m_vlistData.append(vScheduleInfo.at(i).vData.at(j));
+                vData.append(vScheduleInfo.at(i).vData.at(j));
+        }
+        if (!vData.isEmpty()) {
+            ScheduleDateRangeInfo sinfo;
+            sinfo.date = vScheduleInfo.at(i).date;
+            sinfo.vData = vData;
+            m_vlistData.append(sinfo);
         }
     }
     updateDateShow();
 }
 
+
+CSchceduleSearchDateItem::CSchceduleSearchDateItem(QWidget *parent)
+{
+
+}
+
+void CSchceduleSearchDateItem::setBackgroundColor(QColor color1)
+{
+    m_Backgroundcolor = color1;
+}
+
+void CSchceduleSearchDateItem::setText(QColor tcolor, QFont font)
+{
+    m_textcolor = tcolor;
+    m_font = font;
+}
+
+void CSchceduleSearchDateItem::setDate(QDate date)
+{
+    m_date = date;
+}
+
+void CSchceduleSearchDateItem::paintEvent(QPaintEvent *e)
+{
+    int labelwidth = width();
+    int labelheight = height();
+
+    QPainter painter(this);
+    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
+    painter.setRenderHints(QPainter::HighQualityAntialiasing);
+    painter.setBrush(QBrush(m_Backgroundcolor));
+    painter.setPen(Qt::NoPen);
+    painter.drawRoundedRect(fillRect, 3, 3);
+
+    painter.setFont(m_font);
+    painter.setPen(m_textcolor);
+
+    QString datestr = QString::number(m_date.year()) + tr("Y") + QString::number(m_date.month()) + tr("M") + QString::number(m_date.day()) + tr("D");
+
+    painter.drawText(QRect(12, 8, labelwidth, labelheight - 8), Qt::AlignLeft, datestr);
+}

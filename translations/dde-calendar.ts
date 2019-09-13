@@ -126,6 +126,7 @@
     </message>
     <message>
         <location filename="../src/daywindow.cpp" line="189"/>
+        <location filename="../src/daywindow.cpp" line="200"/>
         <source>M</source>
         <translation>月</translation>
     </message>
@@ -627,6 +628,24 @@
     </message>
 </context>
 <context>
+    <name>CSchceduleSearchDateItem</name>
+    <message>
+        <location filename="../src/schcedulesearchview.cpp" line="397"/>
+        <source>Y</source>
+        <translation>年</translation>
+    </message>
+    <message>
+        <location filename="../src/schcedulesearchview.cpp" line="397"/>
+        <source>M</source>
+        <translation>月</translation>
+    </message>
+    <message>
+        <location filename="../src/schcedulesearchview.cpp" line="397"/>
+        <source>D</source>
+        <translation>日</translation>
+    </message>
+</context>
+<context>
     <name>CSchceduleSearchItem</name>
     <message>
         <location filename="../src/schcedulesearchview.cpp" line="39"/>
@@ -639,52 +658,52 @@
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="80"/>
-        <location filename="../src/schcedulesearchview.cpp" line="100"/>
-        <location filename="../src/schcedulesearchview.cpp" line="127"/>
+        <location filename="../src/schcedulesearchview.cpp" line="85"/>
+        <location filename="../src/schcedulesearchview.cpp" line="105"/>
+        <location filename="../src/schcedulesearchview.cpp" line="132"/>
         <source>You are deleted schedule.</source>
         <translation>您正在删除日程。</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="81"/>
+        <location filename="../src/schcedulesearchview.cpp" line="86"/>
         <source>Are you sure you want to delete this schedule?</source>
         <translation>您确定要删除此日程吗？</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="82"/>
-        <location filename="../src/schcedulesearchview.cpp" line="102"/>
-        <location filename="../src/schcedulesearchview.cpp" line="129"/>
+        <location filename="../src/schcedulesearchview.cpp" line="87"/>
+        <location filename="../src/schcedulesearchview.cpp" line="107"/>
+        <location filename="../src/schcedulesearchview.cpp" line="134"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="83"/>
+        <location filename="../src/schcedulesearchview.cpp" line="88"/>
         <source>Delete Schedule</source>
         <translation>删除日程</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="101"/>
+        <location filename="../src/schcedulesearchview.cpp" line="106"/>
         <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
         <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="103"/>
+        <location filename="../src/schcedulesearchview.cpp" line="108"/>
         <source>All Deleted</source>
         <translation>全部删除</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="104"/>
-        <location filename="../src/schcedulesearchview.cpp" line="131"/>
+        <location filename="../src/schcedulesearchview.cpp" line="109"/>
+        <location filename="../src/schcedulesearchview.cpp" line="136"/>
         <source>Just Delete Schedule</source>
         <translation>仅删除该日程</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="128"/>
+        <location filename="../src/schcedulesearchview.cpp" line="133"/>
         <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
         <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
     </message>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="130"/>
+        <location filename="../src/schcedulesearchview.cpp" line="135"/>
         <source>Delete all schedule in the future</source>
         <translation>删除所有将来日程</translation>
     </message>
@@ -692,7 +711,7 @@
 <context>
     <name>CSchceduleSearchView</name>
     <message>
-        <location filename="../src/schcedulesearchview.cpp" line="261"/>
+        <location filename="../src/schcedulesearchview.cpp" line="270"/>
         <source>No search results</source>
         <translation>无搜索结果</translation>
     </message>

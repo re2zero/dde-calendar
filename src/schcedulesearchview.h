@@ -26,6 +26,7 @@
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CSchceduleSearchItem;
+class CSchceduleSearchDateItem;
 class CSchceduleSearchView : public DWidget
 {
     Q_OBJECT
@@ -41,11 +42,12 @@ public slots:
     void slotsetSearch(QString str);
 private:
     void updateDateShow();
-    CSchceduleSearchItem *createItemWidget(int index, bool average = false);
+    void createItemWidget(ScheduleDtailInfo info);
+    void createItemWidget(QDate date);
 private:
     DListWidget                                 *m_gradientItemList; //下拉列表窗
     bool                                         m_widgetFlag;
-    QVector<ScheduleDtailInfo>                        m_vlistData;
+    QVector<ScheduleDateRangeInfo>               m_vlistData;
     int                                          m_type;
     QDate                                        m_currentDate;
 };
@@ -57,8 +59,9 @@ class CSchceduleSearchItem : public DLabel
 public:
     explicit CSchceduleSearchItem(QWidget *parent = nullptr);
     void setBackgroundColor(QColor color1);
+    void setSplitLineColor(QColor color1);
     void setText(QColor tcolor, QFont font);
-
+    void setTimeC(QColor tcolor, QFont font);
     void setData(ScheduleDtailInfo  vScheduleInfo);
     const ScheduleDtailInfo &getData() const
     {
@@ -78,8 +81,27 @@ private:
     QAction              *m_editAction;
     QAction              *m_deleteAction;
     QColor                m_Backgroundcolor;
+    QColor                m_timecolor;
+    QColor                m_splitlinecolor;
+    QFont                 m_timefont;
+    QColor                m_ttextcolor;
+    QFont                 m_tfont;
+};
+class CSchceduleSearchDateItem : public DLabel
+{
+    Q_OBJECT
+
+public:
+    explicit CSchceduleSearchDateItem(QWidget *parent = nullptr);
+    void setBackgroundColor(QColor color1);
+    void setText(QColor tcolor, QFont font);
+    void setDate(QDate  date);
+protected:
+    void paintEvent ( QPaintEvent *e);
+private:
+    QColor                m_Backgroundcolor;
     QColor                m_textcolor;
     QFont                 m_font;
+    QDate                 m_date;
 };
-
 #endif // CSHCEDULEDAYVIEW_H

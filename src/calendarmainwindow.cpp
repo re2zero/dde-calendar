@@ -227,11 +227,14 @@ void Calendarmainwindow::slotReturnTodyUpdate(QMainWindow *w)
 
 void Calendarmainwindow::slotSreturnPressed()
 {
+    m_segmentedControl->setCurrentIndex(3);
+    m_stackWidget->setCurrentIndex(3);
     m_DayWindow->setSearchText(m_searchEdit->text());
 }
 
 void Calendarmainwindow::slotStextChanged()
 {
+    m_segmentedControl->setCurrentIndex(3);
     m_stackWidget->setCurrentIndex(3);
     m_DayWindow->setSearchWFlag(!m_searchEdit->text().isEmpty());
 }

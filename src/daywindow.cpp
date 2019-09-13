@@ -197,7 +197,7 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
 void CDayWindow::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
-    m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("Y") + QString::number(date.day()) + tr("D"));
+    m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
     m_scheduleView->setRange(m_currentdate, m_currentdate);
     m_scheduleView->setDate(m_currentdate);
 }
