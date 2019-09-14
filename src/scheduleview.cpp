@@ -21,7 +21,7 @@
 #include "graphicsview.h"
 #include "schedulecoormanage.h"
 #include "dbmanager.h"
-#include "schceduledayview.h"
+#include "schcedulealldayview.h"
 #include "scheduledatamanage.h"
 #include <DPalette>
 DGUI_USE_NAMESPACE
@@ -72,7 +72,6 @@ void CScheduleView::setFirstWeekday(int weekday)
     m_firstWeekDay = weekday;
     m_graphicsView->setFirstWeekday(weekday);
 }
-
 void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
 {
     if (w != this) return;
@@ -96,6 +95,14 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
 void CScheduleView::setDate( QDate date )
 {
     m_currteDate = date;
+    m_alldaylist->setsolarDayData(QString());
+    updateAllday();
+}
+
+void CScheduleView::setDate(QDate date, QString solarDay)
+{
+    m_currteDate = date;
+    m_alldaylist->setsolarDayData(solarDay);
     updateAllday();
 }
 
@@ -151,7 +158,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     if (m_TotalDay > 1) {
         painter.save();
         for (int i = 0; i < m_TotalDay; i++) {
-            painter.drawLine(QPoint(m_leftMagin + i * intenval + 1, 1), QPoint(m_leftMagin  + i * intenval + 1, m_topMagin));
+            painter.drawLine(QPoint(m_leftMagin + i * intenval, 1), QPoint(m_leftMagin  + i * intenval, m_topMagin));
         }
         painter.restore();
         painter.save();
@@ -163,7 +170,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.setBrush(color);
             painter.setPen(Qt::NoPen);
             if (d == 6 || d == 7) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, intenval, m_topMagin));
+                painter.drawRect(QRect(m_leftMagin + i * intenval, 0, intenval, m_topMagin));
             }
         }
         painter.restore();
@@ -175,9 +182,9 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
 {
     m_graphicsView->setRange(width() - 74, 24 * 43, m_beginDate, m_endDate);
     if (width() > 600)
-        m_alldaylist->setFixedSize(635, 38);
+        m_alldaylist->setFixedSize(635, 50);
     else {
-        m_alldaylist->setFixedSize(width() - 90, 38);
+        m_alldaylist->setFixedSize(width() - 90, 50);
     }
     QFrame::resizeEvent(event);
 }
@@ -192,18 +199,18 @@ void CScheduleView::initUI()
     layout->addWidget(m_graphicsView);
     setLayout(layout);
     m_graphicsView->scrollBarValueChangedSlot();
-    m_alldaylist = new CSchceduleDayView(this);
+    m_alldaylist = new CSchceduleAllDayView(this);
     m_alldaylist->setFixedSize(635, 38);
-    m_alldaylist->move(90, 10);
+    m_alldaylist->move(90, 5);
 }
 
 void CScheduleView::initConnection()
 {
     connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     //connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
-    connect(m_alldaylist, &CSchceduleDayView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
-    //connect(m_alldaylist, &CSchceduleDayView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
-    connect(m_alldaylist, &CSchceduleDayView::signalsCotrlUpdateShcedule, this, &CScheduleView::slotCtrlSchceduleUpdate);
+    connect(m_alldaylist, &CSchceduleAllDayView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
+    //connect(m_alldaylist, &CSchceduleAllDayView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
+    connect(m_alldaylist, &CSchceduleAllDayView::signalsCotrlUpdateShcedule, this, &CScheduleView::slotCtrlSchceduleUpdate);
 
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);

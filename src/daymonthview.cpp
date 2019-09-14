@@ -86,8 +86,8 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     m_currentDate = date;
     // to refresh lunar calendar
     //updateDate();
-    updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
     emit signalcurrentDateChanged(date);
+    updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
 }
 
 void CDayMonthView::setCellSelectable(bool selectable)
@@ -429,10 +429,10 @@ void CDayMonthView::setSelectedCell(int index)
 }
 void CDayMonthView::updateCurrentLunar(const CaHuangLiDayInfo &info)
 {
-    emit signalcurrentLunarDateChanged(m_currentDate, getCaHuangLiDayInfo(getDateIndex(m_currentDate)), 1);
     updateDate();
     updateDateShow();
     updateDateLunarDay();
+    emit signalcurrentLunarDateChanged(m_currentDate, getCaHuangLiDayInfo(getDateIndex(m_currentDate)), 1);
 }
 const QString CDayMonthView::getLunar(int pos)
 {

@@ -156,7 +156,8 @@ void CDayWindow::initConnection()
 
 void CDayWindow::slotupdateSchedule(int id)
 {
-    m_scheduleView->setDate(m_currentdate);
+    m_daymonthView->setCurrentDate(m_currentdate);
+    // m_scheduleView->setDate(m_currentdate);
 }
 
 void CDayWindow::slotTransitSchedule(int id)
@@ -191,7 +192,11 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
         m_SolarDay->setText(detail.mSolarFestival);
     }
     m_scheduleView->setRange(m_currentdate, m_currentdate);
-    m_scheduleView->setDate(m_currentdate);
+    if (detail.mLunarFestival.isEmpty()) {
+        m_scheduleView->setDate(m_currentdate, detail.mSolarFestival);
+    } else {
+        m_scheduleView->setDate(m_currentdate, detail.mLunarFestival + "    " + detail.mSolarFestival);
+    }
 }
 
 void CDayWindow::slotcurrentDateChanged(QDate date)

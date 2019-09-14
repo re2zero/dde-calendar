@@ -236,7 +236,11 @@ void CWeekWindow::slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail
     } else {
         m_today->setVisible(false);
     }
-    m_scheduleView->setDate(date);
+    if (detail.mLunarFestival.isEmpty()) {
+        m_scheduleView->setDate(m_currentdate, detail.mSolarFestival);
+    } else {
+        m_scheduleView->setDate(m_currentdate, detail.mLunarFestival + "    " + detail.mSolarFestival);
+    }
     m_currentdate = date;
     if (type == 1) {
         m_YearLabel->setText(QString::number(date.year()) + tr("Y"));

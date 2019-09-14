@@ -22,8 +22,9 @@
 #include <QFrame>
 #include <QDate>
 #include "schedulestructs.h"
+
 class CGraphicsView;
-class CSchceduleDayView;
+class CSchceduleAllDayView;
 class CScheduleView : public QFrame
 {
     Q_OBJECT
@@ -44,6 +45,7 @@ signals:
 public slots:
     void slotPosHours(QVector<int> vPos, QVector<int> vHours);
     void setDate(QDate date);
+    void setDate(QDate date,  QString solarDay);
     void slotupdateSchedule(int id = 0);
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
 protected:
@@ -59,7 +61,7 @@ private:
     CGraphicsView            *m_graphicsView;
     QVector<int>              m_vPos;
     QVector<int>              m_vHours;
-    CSchceduleDayView         *m_alldaylist;
+    CSchceduleAllDayView     *m_alldaylist;
     int                       m_leftMagin;
     int                       m_topMagin;
     int                       m_TotalDay;

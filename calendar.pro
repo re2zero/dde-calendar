@@ -60,7 +60,8 @@ HEADERS += src/calendardbus.h \
     src/timeverticalscroll.h \
     src/customcalendarwidget.h \
     src/schedulesdbus.h \
-    src/scheduledatamanage.h
+    src/scheduledatamanage.h \
+    src/schcedulealldayview.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \
            src/calendarwindow.cpp \
@@ -99,7 +100,8 @@ SOURCES += src/calendardbus.cpp \
     src/customcalendarwidget.cpp \
     src/timeedit.cpp \
     src/schedulesdbus.cpp \
-    src/scheduledatamanage.cpp
+    src/scheduledatamanage.cpp \
+    src/schcedulealldayview.cpp
 RESOURCES += src/resources.qrc
 TRANSLATIONS += translations/dde-calendar.ts \
                 translations/desktop/desktop_zh_CN.ts
