@@ -63,17 +63,34 @@ void Calendarmainwindow::initUI()
 
     QStringList titlelist;
     titlelist << tr("Y") << tr("M") << tr("W") << tr("D");
-    m_segmentedControl = new DSegmentedControl(this);
-    DPalette wpa = m_segmentedControl->palette();
+    m_buttonBox = new DButtonBox(this);
+    //DPalette wpa = m_segmentedControl->palette();
     //wpa.setColor(DPalette::ButtonText, QColor("#FFFFFF"));
     //wpa.setColor(DPalette::Button, QColor("#0081FF "));
     /// wpa.setColor(DPalette::Dark, QColor("#0081FF"));
     //wpa.setColor(DPalette::Light, QColor("#0081FF"));
     // wpa.setColor(DPalette::Window, QColor("#0081FF"));
     // wpa.setColor(DPalette::WindowText, QColor("#414D68"));
-    m_segmentedControl->setPalette(wpa);
-    m_segmentedControl->addSegmented(titlelist);
-    m_segmentedControl->setFixedSize(200, 36);
+    //m_segmentedControl->setPalette(wpa);
+    //m_segmentedControl->addSegmented(titlelist);
+    // m_segmentedControl->setFixedSize(200, 36);
+    m_yearButton = new DButtonBoxButton(tr("Y"), this);
+    m_monthButton = new DButtonBoxButton(tr("M"), this);
+    m_weekButton = new DButtonBoxButton(tr("W"), this);
+    m_dayButton = new DButtonBoxButton(tr("D"), this);
+
+    QList<DButtonBoxButton *> btlist;
+    btlist.append(m_yearButton);
+    btlist.append(m_monthButton);
+    btlist.append(m_weekButton);
+    btlist.append(m_dayButton);
+    m_buttonBox->setButtonList(btlist, true);
+
+    m_buttonBox->setId(m_yearButton, 0);
+    m_buttonBox->setId(m_monthButton, 1);
+    m_buttonBox->setId(m_weekButton, 2);
+    m_buttonBox->setId(m_dayButton, 3);
+    m_buttonBox->setFixedSize(200, 36);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
@@ -85,7 +102,7 @@ void Calendarmainwindow::initUI()
     titleLayout->addSpacing(10);
     titleLayout->addWidget(m_icon);
     titleLayout->addSpacing(18);
-    titleLayout->addWidget(m_segmentedControl);
+    titleLayout->addWidget(m_buttonBox);
     // QSpacerItem *lspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //titleLayout->addSpacerItem(lspaceitem);
     m_searchEdit = new DSearchEdit;
@@ -114,12 +131,13 @@ void Calendarmainwindow::initUI()
     createview();
     setCentralWidget(m_stackWidget);
     //m_bttongroup->button(0)->setChecked(true);
-    m_segmentedControl->setCurrentIndex(0);
+    m_yearButton->setFocus();
+    m_yearButton->setChecked(true);
 }
 
 void Calendarmainwindow::initConnection()
 {
-    connect(m_segmentedControl, &DSegmentedControl::currentChanged, this, &Calendarmainwindow::slotstackWClicked);
+    connect(m_buttonBox, &DButtonBox::buttonClicked, this, &Calendarmainwindow::slotstackWClicked);
     //connect(m_bttongroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &Calendarmainwindow::slotstackWClicked);
     //connect(m_weekWindow, &CWeekWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     //connect(m_monthWindow, &CMonthWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
@@ -180,8 +198,9 @@ DPushButton *Calendarmainwindow::createButon(QString name)
     return  button;
 }
 
-void Calendarmainwindow::slotstackWClicked(int index)
+void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
 {
+    int index = m_buttonBox->id(bt);
     if (index < 0 || index > m_stackWidget->depth() - 1) {
 
         return;
@@ -227,14 +246,16 @@ void Calendarmainwindow::slotReturnTodyUpdate(QMainWindow *w)
 
 void Calendarmainwindow::slotSreturnPressed()
 {
-    m_segmentedControl->setCurrentIndex(3);
-    m_stackWidget->setCurrentIndex(3);
+    m_dayButton->click();
+    //m_segmentedControl->setCurrentIndex(3);
+    //m_stackWidget->setCurrentIndex(3);
     m_DayWindow->setSearchText(m_searchEdit->text());
 }
 
 void Calendarmainwindow::slotStextChanged()
 {
-    m_segmentedControl->setCurrentIndex(3);
-    m_stackWidget->setCurrentIndex(3);
+    m_dayButton->click();
+    //m_segmentedControl->setCurrentIndex(3);
+    //m_stackWidget->setCurrentIndex(3);
     m_DayWindow->setSearchWFlag(!m_searchEdit->text().isEmpty());
 }

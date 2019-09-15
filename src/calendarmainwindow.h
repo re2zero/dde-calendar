@@ -31,6 +31,7 @@
 #include <DLabel>
 #include <QStackedWidget>
 #include <DSegmentedControl>
+#include <DButtonBox>
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
 class CMonthWindow;
@@ -48,7 +49,7 @@ private:
     void createview();
     DPushButton *createButon(QString name);
 private slots:
-    void slotstackWClicked(int index);
+    void slotstackWClicked(QAbstractButton *bt);
     void slotWUpdateShcedule(QMainWindow *w, int id = 0);
     void slotReturnTodyUpdate(QMainWindow *w);
     void slotSreturnPressed();
@@ -56,7 +57,12 @@ private slots:
 private:
     DLabel                    *m_icon;
     QStackedWidget              *m_stackWidget;
-    DSegmentedControl         *m_segmentedControl;
+    //DSegmentedControl         *m_segmentedControl;
+    DButtonBox                *m_buttonBox;
+    DButtonBoxButton          *m_yearButton;
+    DButtonBoxButton          *m_monthButton;
+    DButtonBoxButton          *m_weekButton;
+    DButtonBoxButton          *m_dayButton;
     DSearchEdit               *m_searchEdit;
     CYearWindow               *m_yearwindow;
     CMonthWindow              *m_monthWindow;
