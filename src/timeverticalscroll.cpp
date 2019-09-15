@@ -24,11 +24,11 @@
 DGUI_USE_NAMESPACE
 CTimeVerticalScroll::CTimeVerticalScroll(QWidget *parent): DWidget(parent)
 {
-    DPalette palette(this->palette());
+    //DPalette palette(this->palette());
 
-    palette.setColor(DPalette::Window, Qt::white);
+    // palette.setColor(DPalette::Window, Qt::white);
 
-    this->setPalette(palette);
+    // this->setPalette(palette);
 //     ui->setupUi(this);
 //    this->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint/* | Qt::WindowStaysOnTopHint*/);
 

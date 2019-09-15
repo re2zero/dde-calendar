@@ -45,7 +45,7 @@ public slots:
     void slotcurrentValueChangedClose(int value);
     void slotEidtChange();
 private:
-    QLineEdit                 *m_timeEdit;
+    DLineEdit                 *m_timeEdit;
     CTimeVerticalScroll       *m_verticalScroll;
     DListWidget               *m_pListWidget;
     int                       m_type = 0; // 0 h,1 m

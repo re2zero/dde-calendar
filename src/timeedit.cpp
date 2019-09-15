@@ -24,6 +24,7 @@ CTimeEdit::CTimeEdit(QWidget *parent)
 {
     initUI();
     initConnection();
+    setFocus(Qt::MouseFocusReason);
 }
 
 CTimeEdit::~CTimeEdit()
@@ -46,9 +47,9 @@ void CTimeEdit::initUI()
 {
     m_pListWidget = new DListWidget(this);
 
-    m_timeEdit = new QLineEdit(m_pListWidget);
+    m_timeEdit = new DLineEdit(this);
     m_timeEdit->setInputMask("00:00;#");
-
+    m_timeEdit->setClearButtonEnabled(false);
     QRegExpValidator *validator = nullptr;
     QRegExp rx("0[0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]");
     validator = new QRegExpValidator(rx, this);
@@ -60,13 +61,19 @@ void CTimeEdit::initUI()
     //[2] 年月日选择控件
     QListWidgetItem *pitem = new QListWidgetItem(m_pListWidget);
     pitem->setSizeHint(QSize(m_pListWidget->width(), 300));
-    m_pListWidget->addItem(pitem);
 
-
+    m_pListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //pitem->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
+    //listItem->setBackgroundColor(Qt::white);
+    pitem->setFlags(Qt::ItemIsTristate );
     m_verticalScroll = new CTimeVerticalScroll(m_pListWidget);
+    m_verticalScroll->setMinimumWidth(m_pListWidget->width());
     m_pListWidget->setItemWidget(pitem, m_verticalScroll);
     m_verticalScroll->setRange(0, 23);
     m_timeEdit->setCursorPosition(1);
+    m_pListWidget->addItem(pitem);
+    m_pListWidget->setFixedWidth(width());
+    m_verticalScroll->setFixedWidth(width());
 
 }
 
@@ -74,13 +81,31 @@ void CTimeEdit::initConnection()
 {
     connect(m_verticalScroll, &CTimeVerticalScroll::currentValueChanged, this, &CTimeEdit::slotcurrentValueChanged);
     connect(m_verticalScroll, &CTimeVerticalScroll::currentValueChangedClose, this, &CTimeEdit::slotcurrentValueChangedClose);
-    connect(m_timeEdit, &QLineEdit::editingFinished, this, &CTimeEdit::slotEidtChange);
-    connect(m_timeEdit, &QLineEdit::returnPressed, this, &CTimeEdit::slotEidtChange);
+    //connect(m_timeEdit, &DLineEdit::editingFinished, this, &CTimeEdit::slotEidtChange);
+    //connect(m_timeEdit, &DLineEdit::returnPressed, this, &CTimeEdit::slotEidtChange);
+    m_timeEdit->disconnect(SIGNAL(returnPressed()));
+    m_timeEdit->disconnect(SIGNAL(editingFinished()));
+    m_timeEdit->disconnect(SIGNAL(selectionChanged()));
+    m_timeEdit->disconnect(SIGNAL(textChanged(const QString &)));
+    m_timeEdit->disconnect(SIGNAL(textEdited(const QString &)));
+    m_timeEdit->disconnect(SIGNAL(cursorPositionChanged(int, int)));
+
+    disconnect(SIGNAL(activated(int)));
+    disconnect(SIGNAL(activated(const QString &)));
+    disconnect(SIGNAL(currentIndexChanged(int)));
+    disconnect(SIGNAL(currentIndexChanged(const QString &)));
+    disconnect(SIGNAL(currentTextChanged(const QString &)));
+    disconnect(SIGNAL(editTextChanged(const QString &)));
+    disconnect(SIGNAL(highlighted(int)));
+    disconnect(SIGNAL(highlighted(const QString &)));
 }
 
 void CTimeEdit::showPopup()
 {
+    // QComboBox::showPopup();
+    m_pListWidget->setFixedWidth(width());
     m_pos = m_timeEdit->cursorPosition();
+    m_verticalScroll->setFixedWidth(width());
     QString timetext = m_timeEdit->text();
     /*
         if (timetext.count() == 1)
@@ -113,7 +138,10 @@ void CTimeEdit::showPopup()
 }
 void CTimeEdit::hidePopup()
 {
+    QString timetext = m_time.toString("hh:mm");
+    m_timeEdit->setText(timetext);
     QComboBox::hidePopup();
+    return;
     // 移除旧item
     QListWidgetItem *item = NULL;
     int iCount = m_pListWidget->count();
