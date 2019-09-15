@@ -42,7 +42,7 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
 
     //add separator line
     m_currentMouth = new DLabel();
-    m_currentMouth->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_currentMouth->setFixedHeight(32);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     QFont t_labelF;
@@ -55,10 +55,12 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
     QHBoxLayout *separatorLineLayout = new QHBoxLayout;
     separatorLineLayout->setMargin(0);
     separatorLineLayout->setSpacing(0);
-    separatorLineLayout->setContentsMargins(10, 0, 0, 0);
+    separatorLineLayout->setContentsMargins(0, 0, 0, 0);
+    separatorLineLayout->addSpacing(13);
     separatorLineLayout->addWidget(m_currentMouth);
-    QSpacerItem *t_spaceitem = new QSpacerItem(30, DDEYearCalendar::Y_MLableHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    separatorLineLayout->addSpacerItem(t_spaceitem);
+    separatorLineLayout->addStretch();
+    // QSpacerItem *t_spaceitem = new QSpacerItem(30, 32, QSizePolicy::Expanding, QSizePolicy::Fixed);
+    //separatorLineLayout->addSpacerItem(t_spaceitem);
 
     // cells grid
     QGridLayout *gridLayout = new QGridLayout;
@@ -77,8 +79,12 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->addLayout(separatorLineLayout);
     hhLayout->addLayout(gridLayout);
-    QWidget *gridWidget = new QWidget;
+    DFrame *gridWidget = new DFrame;
     gridWidget->setLayout(hhLayout);
+    DPalette anipa = gridWidget->palette();
+    anipa.setColor(DPalette::Background, Qt::white);
+    gridWidget->setAutoFillBackground(true);
+    gridWidget->setPalette(anipa);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     // mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
     mainLayout->addWidget(gridWidget, 0,  Qt::AlignHCenter);
@@ -88,7 +94,7 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
     setLayout(mainLayout);
 
     connect(this, &CYearView::dateSelected, this, &CYearView::handleCurrentDateChanged);
-    setFixedSize(DDEYearCalendar::Y_MWindowWidth, DDEYearCalendar::Y_MWindowHeight);
+    //setFixedSize(DDEYearCalendar::Y_MWindowWidth, DDEYearCalendar::Y_MWindowHeight);
 }
 void CYearView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
 {

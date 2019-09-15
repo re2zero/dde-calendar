@@ -26,6 +26,7 @@
 #include <DImageButton>
 #include <DPushButton>
 #include <DLabel>
+#include <DFrame>
 #include "calendardbus.h"
 #include <DIconButton>
 DWIDGET_USE_NAMESPACE
@@ -59,7 +60,7 @@ private:
     const CaLunarDayInfo getCaLunarDayInfo(QDate date);
 private:
     QList<CYearView *> m_monthViewList;
-    QFrame *m_contentBackground = nullptr;
+    DFrame *m_contentBackground = nullptr;
     DImageButton      *m_prevButton = nullptr;
     DImageButton      *m_nextButton = nullptr;
     DPushButton       *m_today = nullptr;

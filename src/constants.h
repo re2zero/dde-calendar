@@ -42,7 +42,7 @@ static const int YCellHighlightHeight = 20;
 static const int Y_MLableHeight = 36;
 static const int Y_YLableHeight = 45;
 static const int Y_MWindowWidth = 202;
-static const int Y_MWindowHeight = 162;
+static const int Y_MWindowHeight = 159;
 }
 namespace DDEMonthCalendar {
 static const int MHeaderItemWidth = 60;

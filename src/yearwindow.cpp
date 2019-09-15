@@ -70,17 +70,17 @@ void CYearWindow::setDate(QDate date)
 
 void CYearWindow::initUI()
 {
-    m_contentBackground = new QFrame;
+    m_contentBackground = new DFrame;
     //m_contentBackground->setObjectName("CalendarBackground");
     // m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
     //"background:white;"
     //"}");
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
-    DPalette anipa = m_contentBackground->palette();
-    anipa.setColor(DPalette::Background, Qt::white);
-    m_contentBackground->setAutoFillBackground(true);
-    m_contentBackground->setPalette(anipa);
+    //DPalette anipa = m_contentBackground->palette();
+    //anipa.setColor(DPalette::Background, Qt::white);
+    //m_contentBackground->setAutoFillBackground(true);
+    //m_contentBackground->setPalette(anipa);
     m_today = new DPushButton(this);
     DPalette todaypa = m_today->palette();
     todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
@@ -101,6 +101,7 @@ void CYearWindow::initUI()
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     m_prevButton = new DImageButton(this);
     m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
+    m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
     m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
     m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
@@ -109,6 +110,7 @@ void CYearWindow::initUI()
     //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
     m_nextButton = new DImageButton(this);
     m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
+    m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
     m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
     m_nextButton->setPressPic(":/resources/icon/next_press.svg");
@@ -149,7 +151,7 @@ void CYearWindow::initUI()
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(12, 0, 10, 12);
+    yeartitleLayout->setContentsMargins(12, 0, 10, 4);
     yeartitleLayout->addWidget(m_YearLabel);
     yeartitleLayout->addWidget(m_YearLunarLabel);
     QSpacerItem *t_spaceitem = new QSpacerItem(30, DDEYearCalendar::Y_MLableHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -169,6 +171,7 @@ void CYearWindow::initUI()
             connect(view, &CYearView::singanleActiveW, this, &CYearWindow::slotActiveW);
 
             connect(view, &CYearView::signalcurrentDateChanged, this, &CYearWindow::slotcurrentDateChanged);
+            view->setFixedSize(202, 159);
             gridLayout->addWidget(view, i, j);
             m_monthViewList.append(view);
         }
