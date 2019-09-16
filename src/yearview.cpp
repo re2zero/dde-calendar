@@ -122,14 +122,45 @@ void CYearView::updateSelectState()
 
 void CYearView::setTheMe(int type)
 {
-    if (type == 0) {
+    if (type == 0 || type == 1) {
         DPalette anipa = m_gridWidget->palette();
         anipa.setColor(DPalette::Background, Qt::white);
         m_gridWidget->setPalette(anipa);
+
+        DPalette Lunadpa = m_currentMouth->palette();
+        Lunadpa.setColor(DPalette::WindowText, QColor("#CF0059"));
+        m_currentMouth->setPalette(Lunadpa);
+
+        m_topBorderColor = Qt::red;
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = Qt::black;
+        m_currentDayTextColor = "#2ca7f8";
+        m_weekendsTextColor = Qt::black;
+        m_selectedTextColor = Qt::white;
+        m_festivalTextColor = Qt::black;
+        m_notCurrentTextColor = "#b2b2b2";
+
     } else if (type == 2) {
         DPalette anipa = m_gridWidget->palette();
-        anipa.setColor(DPalette::Background, Qt::black);
+        QColor framecolor("#FFFFFF");
+        framecolor.setAlphaF(0.05);
+        anipa.setColor(DPalette::Background, framecolor);
         m_gridWidget->setPalette(anipa);
+
+        DPalette Lunadpa = m_currentMouth->palette();
+        Lunadpa.setColor(DPalette::WindowText, QColor("#BF1D63"));
+        m_currentMouth->setPalette(Lunadpa);
+
+        m_topBorderColor = Qt::red;
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = "#C0C6D4";
+        m_currentDayTextColor = "#2ca7f8";
+        m_weekendsTextColor = Qt::black;
+        m_selectedTextColor = Qt::white;
+        m_festivalTextColor = Qt::black;
+        m_notCurrentTextColor = "#b2b2b2";
     }
 }
 

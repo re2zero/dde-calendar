@@ -70,7 +70,7 @@ private:
     DLabel            *m_YearLunarLabel;
     DLabel            *m_YearLunarDayLabel;
     CYearView         *m_activeview = nullptr;
-
+    DFrame            *m_gridWidget;
     CalendarDBus *m_DBusInter;
     QQueue<QDate> *queue;
     QMap<QDate, CaLunarDayInfo> *lunarCache;

@@ -105,6 +105,10 @@ void CYearWindow::initUI()
     m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
     m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
     m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
+    DPalette prevpa = m_prevButton->palette();
+    prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+    prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+    m_prevButton->setPalette(prevpa);
 
     //m_prevButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
     //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
@@ -114,6 +118,10 @@ void CYearWindow::initUI()
     m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
     m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
     m_nextButton->setPressPic(":/resources/icon/next_press.svg");
+    DPalette nextvpa = m_nextButton->palette();
+    nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+    nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+    m_nextButton->setPalette(nextvpa);
     //m_nextButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
     //m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
     m_YearLabel = new DLabel();
@@ -176,12 +184,12 @@ void CYearWindow::initUI()
             m_monthViewList.append(view);
         }
     }
-    QWidget *gridWidget = new QWidget;
-    gridWidget->setLayout(gridLayout);
+    m_gridWidget = new DFrame;
+    m_gridWidget->setLayout(gridLayout);
 
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->addLayout(yeartitleLayout);
-    hhLayout->addWidget(gridWidget);
+    hhLayout->addWidget(m_gridWidget);
     m_contentBackground->setLayout(hhLayout);
 
 
@@ -203,14 +211,64 @@ void CYearWindow::setLunarVisible(bool state)
 
 void CYearWindow::setTheMe(int type)
 {
-    if (type == 0) {
-        for (int i = 0; i < 12; i++) {
-            m_monthViewList.at(i)->setTheMe(type);
-        }
+    if (type == 0 || type == 1) {
+        DPalette todaypa = m_today->palette();
+        todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+        todaypa.setColor(DPalette::Dark, Qt::white);
+        todaypa.setColor(DPalette::Light, Qt::white);
+        m_today->setPalette(todaypa);
+
+        DPalette prevpa = m_prevButton->palette();
+        prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        m_prevButton->setPalette(prevpa);
+
+        DPalette nextvpa = m_nextButton->palette();
+        nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        m_nextButton->setPalette(nextvpa);
+
+        DPalette pa = m_YearLabel->palette();
+        pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
+        m_YearLabel->setPalette(pa);
+
+        DPalette Lunapa = m_YearLunarLabel->palette();
+        Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+        m_YearLunarLabel->setPalette(Lunapa);
+
+        m_YearLunarDayLabel->setPalette(Lunapa);
+
     } else if (type == 2) {
-        for (int i = 0; i < 12; i++) {
-            m_monthViewList.at(i)->setTheMe(type);
-        }
+        DPalette todaypa = m_today->palette();
+        todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
+        todaypa.setColor(DPalette::Dark, Qt::black);
+        todaypa.setColor(DPalette::Light, Qt::black);
+        m_today->setPalette(todaypa);
+
+        DPalette prevpa = m_prevButton->palette();
+        //prevpa.setColor(DPalette::Dark, QColor("#484848"));
+        // prevpa.setColor(DPalette::Light, QColor("#414141"));
+        //prevpa.setColor(DPalette::Dark, Qt::black);
+        //prevpa.setColor(DPalette::Light, Qt::black);
+        //m_prevButton->setPalette(prevpa);
+
+        DPalette nextvpa = m_nextButton->palette();
+        //nextvpa.setColor(DPalette::Dark, QColor("#484848"));
+        //nextvpa.setColor(DPalette::Light, QColor("#414141"));
+        //m_nextButton->setPalette(nextvpa);
+
+        DPalette pa = m_YearLabel->palette();
+        pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        m_YearLabel->setPalette(pa);
+
+        DPalette Lunapa = m_YearLunarLabel->palette();
+        Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
+        m_YearLunarLabel->setPalette(Lunapa);
+
+        m_YearLunarDayLabel->setPalette(Lunapa);
+    }
+    for (int i = 0; i < 12; i++) {
+        m_monthViewList.at(i)->setTheMe(type);
     }
 }
 

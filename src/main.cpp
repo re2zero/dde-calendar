@@ -144,6 +144,7 @@ int main(int argc, char *argv[])
     Calendarmainwindow ww;
     // ww.setDate(QDate::currentDate());
     ww.move(PrimaryRect().center() - ww.geometry().center());
+    ww.slotTheme(getThemeTypeSetting());
     ww.show();
     //test
     // CMonthWindow ww;
