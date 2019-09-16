@@ -49,6 +49,11 @@ Calendarmainwindow::Calendarmainwindow()
     new CalendarAdaptor(this);
 }
 
+void Calendarmainwindow::slotTheme(int type)
+{
+    m_yearwindow->setTheMe(type);
+}
+
 void Calendarmainwindow::initUI()
 {
     QFrame *titleframe = new QFrame(this);
@@ -148,6 +153,8 @@ void Calendarmainwindow::initConnection()
     connect(m_monthWindow, &CMonthWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
     connect(m_DayWindow, &CDayWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
     connect(m_yearwindow, &CYearWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
+    //监听当前应用主题切换事件
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged, this, &Calendarmainwindow::slotTheme);
 }
 
 void Calendarmainwindow::initLunar()

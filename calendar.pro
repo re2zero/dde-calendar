@@ -103,8 +103,9 @@ SOURCES += src/calendardbus.cpp \
     src/scheduledatamanage.cpp \
     src/schcedulealldayview.cpp
 RESOURCES += src/resources.qrc
-TRANSLATIONS += translations/dde-calendar.ts \
-                translations/desktop/desktop_zh_CN.ts
+#TRANSLATIONS += translations/dde-calendar.ts \
+#                translations/desktop/desktop_zh_CN.ts\
+#                translations/dde-calendar_zh_CN.ts
 isEmpty(BINDIR):BINDIR=/usr/bin
 isEmpty(APPDIR):APPDIR=/usr/share/applications
 isEmpty(DSRDIR):DSRDIR=/usr/share/dde-calendar
@@ -122,7 +123,36 @@ desktop.files = dde-calendar.desktop
 manual.path = /usr/share/dman/
 manual.files = $$PWD/dman/*
 
-translations.path = /usr/share/dde-calendar/translations/
+translations.path = $$INSTROOT$$DSRDIR/translations
 translations.files = translations/*.qm
 
-INSTALLS += target desktop icon_files translations manual
+INSTALLS += target desktop icon_files translations manual dbus_service
+
+isEmpty(TRANSLATIONS) {
+     include(translations.pri)
+}
+
+TRANSLATIONS_COMPILED = $$TRANSLATIONS
+TRANSLATIONS_COMPILED ~= s/\.ts/.qm/g
+
+translations.files = $$TRANSLATIONS_COMPILED
+INSTALLS += translations
+CONFIG *= update_translations release_translations
+
+CONFIG(update_translations) {
+    isEmpty(lupdate):lupdate=lupdate
+    system($$lupdate -no-obsolete -locations none $$_PRO_FILE_)
+}
+CONFIG(release_translations) {
+    isEmpty(lrelease):lrelease=lrelease
+    system($$lrelease $$_PRO_FILE_)
+}
+
+DSR_LANG_PATH += $$DSRDIR/translations
+DEFINES += "DSR_LANG_PATH=\\\"$$DSR_LANG_PATH\\\""
+
+#DISTFILES += \
+#    image/newUI/focus/close-focus.svg
+
+DISTFILES += \
+    translations.pri

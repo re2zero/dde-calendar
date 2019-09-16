@@ -43,6 +43,7 @@ public:
     void initUI();
     void initConnection();
     void setLunarVisible(bool state);
+    void setTheMe(int type = 0);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsReturnTodayUpdate(QMainWindow *w);

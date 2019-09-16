@@ -201,6 +201,19 @@ void CYearWindow::setLunarVisible(bool state)
     m_YearLunarDayLabel->setVisible(state);
 }
 
+void CYearWindow::setTheMe(int type)
+{
+    if (type == 0) {
+        for (int i = 0; i < 12; i++) {
+            m_monthViewList.at(i)->setTheMe(type);
+        }
+    } else if (type == 2) {
+        for (int i = 0; i < 12; i++) {
+            m_monthViewList.at(i)->setTheMe(type);
+        }
+    }
+}
+
 void CYearWindow::slotReturnTodayUpdate()
 {
     setDate(QDate::currentDate());

@@ -30,7 +30,7 @@ class CYearView: public QWidget
     // Q_PROPERTY(QColor defaultLunarColor MEMBER m_defaultLunarColor DESIGNABLE true SCRIPTABLE true)
     //Q_PROPERTY(QColor festivalLunarColor MEMBER m_festivalLunarColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor weekendsTextColor MEMBER m_weekendsTextColor DESIGNABLE true SCRIPTABLE true)
-    ///Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
+    //Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor topBorderColor MEMBER m_topBorderColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(bool cellSelectable READ cellSelectable WRITE setCellSelectable NOTIFY cellSelectableChanged)
 public:
@@ -42,6 +42,8 @@ public:
         return m_cellSelectable;
     }
     void updateSelectState();
+    void setTheMe(int type = 0);
+
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalcurrentDateChanged(QDate date);
@@ -84,6 +86,7 @@ private:
     QColor m_festivalTextColor = Qt::black;
     QColor m_notCurrentTextColor = "#b2b2b2";
     int m_firstWeekDay = 0;
+    DFrame *m_gridWidget;
 };
 
 #endif // YEARVIEW_H

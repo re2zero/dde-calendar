@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     DLogManager::registerFileAppender();
     // 应用已保存的主题设置
     DGuiApplicationHelper::instance()->setPaletteType(getThemeTypeSetting());
-    ScheduleDbManager::initDataBase();
+    //ScheduleDbManager::initDataBase();
     Calendarmainwindow ww;
     // ww.setDate(QDate::currentDate());
     ww.move(PrimaryRect().center() - ww.geometry().center());
@@ -162,6 +162,12 @@ int main(int argc, char *argv[])
     if (dbus.registerService("com.deepin.Calendar")) {
         dbus.registerObject("/com/deepin/Calendar", &ww);
     }
-
+    //监听当前应用主题切换事件
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
+    [] (DGuiApplicationHelper::ColorType type) {
+        qDebug() << type;
+        // 保存程序的主题设置  type : 0,系统主题， 1,浅色主题， 2,深色主题
+        saveThemeTypeSetting(type);
+    });
     return a.exec();
 }

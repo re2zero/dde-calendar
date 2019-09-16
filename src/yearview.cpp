@@ -79,15 +79,15 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->addLayout(separatorLineLayout);
     hhLayout->addLayout(gridLayout);
-    DFrame *gridWidget = new DFrame;
-    gridWidget->setLayout(hhLayout);
-    DPalette anipa = gridWidget->palette();
+    m_gridWidget = new DFrame;
+    m_gridWidget->setLayout(hhLayout);
+    DPalette anipa = m_gridWidget->palette();
     anipa.setColor(DPalette::Background, Qt::white);
-    gridWidget->setAutoFillBackground(true);
-    gridWidget->setPalette(anipa);
+    m_gridWidget->setAutoFillBackground(true);
+    m_gridWidget->setPalette(anipa);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     // mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
-    mainLayout->addWidget(gridWidget, 0,  Qt::AlignHCenter);
+    mainLayout->addWidget(m_gridWidget, 0,  Qt::AlignHCenter);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
@@ -118,6 +118,19 @@ void CYearView::updateSelectState()
 {
     m_selectedCell = -1;
     update();
+}
+
+void CYearView::setTheMe(int type)
+{
+    if (type == 0) {
+        DPalette anipa = m_gridWidget->palette();
+        anipa.setColor(DPalette::Background, Qt::white);
+        m_gridWidget->setPalette(anipa);
+    } else if (type == 2) {
+        DPalette anipa = m_gridWidget->palette();
+        anipa.setColor(DPalette::Background, Qt::black);
+        m_gridWidget->setPalette(anipa);
+    }
 }
 
 void CYearView::setCurrentDate(const QDate date, int type)

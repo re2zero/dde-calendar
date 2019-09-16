@@ -42,6 +42,8 @@ class Calendarmainwindow : public DMainWindow
     Q_OBJECT
 public:
     Calendarmainwindow();
+public slots:
+    void slotTheme(int type);
 private:
     void initUI();
     void initConnection();
