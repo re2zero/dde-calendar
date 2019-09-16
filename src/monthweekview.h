@@ -23,6 +23,7 @@
 #include "constants.h"
 #include <DWidget>
 #include <QHBoxLayout>
+#include <DLabel>
 DWIDGET_USE_NAMESPACE
 class CMonthWeekView : public DWidget
 {
@@ -30,12 +31,13 @@ class CMonthWeekView : public DWidget
 public:
     explicit CMonthWeekView(QWidget *parent = 0);
     void setList(int weekday);
-
+    void setTheMe(int type = 0);
 private:
     int checkDay(int weekday);
 
 private:
     QHBoxLayout *m_mainLayout;
+    QVector<QPair<DLabel *, int> >        m_weekData;
 };
 
 #endif // WEEKINDICATOR_H

@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <DPushButton>
 #include <DLabel>
+#include <DFrame>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
@@ -40,6 +41,7 @@ public:
     void setFirstWeekday(int weekday);
     void setDate(QDate date);
     void setLunarVisible(bool state);
+    void setTheMe(int type = 0);
 public slots:
     void previousMonth();
     void nextMonth();
@@ -70,7 +72,7 @@ private:
 
     CMonthView        *m_monthView;
     CMonthDayView      *m_monthDayView;
-    QFrame *m_contentBackground = nullptr;
+    DFrame *m_contentBackground = nullptr;
     DPushButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;

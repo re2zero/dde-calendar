@@ -43,13 +43,13 @@ void CMonthWeekView::setList(int weekday)
         }
         delete child;
     }
-
+    m_weekData.clear();
     QLocale locale;
     for (int i = 0; i != 7; ++i) {
 
         int d = checkDay(i - weekday);
 
-        QLabel *label = new QLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
+        DLabel *label = new DLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
 
         QFont weekfont;
         weekfont.setFamily("SourceHanSansSC-Medium");
@@ -64,6 +64,7 @@ void CMonthWeekView::setList(int weekday)
             monthpa.setColor(DPalette::Background, textbC);
             label->setAutoFillBackground(true);
             label->setPalette(monthpa);
+            m_weekData.append(qMakePair(label, 1));
             //label->setStyleSheet("color:#0887FF;background: rgba(0,66,154,0.05);");
         } else {
             DPalette monthpa = label->palette();
@@ -74,6 +75,7 @@ void CMonthWeekView::setList(int weekday)
             monthpa.setColor(DPalette::Background, textbC);
             label->setAutoFillBackground(true);
             label->setPalette(monthpa);
+            m_weekData.append(qMakePair(label, 0));
             //label->setStyleSheet("color:black;background: rgba(0,66,154,0.05);");
         }
         if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
@@ -89,6 +91,52 @@ void CMonthWeekView::setList(int weekday)
             label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 3, DDEMonthCalendar::MWeekCellHeight);
         }
         m_mainLayout->addWidget(label, 0, Qt::AlignCenter);
+    }
+}
+
+void CMonthWeekView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        for (int i = 0; i < m_weekData.count(); i++) {
+            if (m_weekData.at(i).second == 1) {
+                DPalette monthpa = m_weekData.at(i).first->palette();
+                QColor textC = "#0887FF";
+                QColor textbC(0, 66, 154);
+                textbC.setAlphaF(0.05);
+                monthpa.setColor(DPalette::WindowText, textC);
+                monthpa.setColor(DPalette::Background, textbC);
+                m_weekData.at(i).first->setPalette(monthpa);
+            } else {
+                DPalette monthpa = m_weekData.at(i).first->palette();
+                QColor textC = "#6F6F6F";
+                QColor textbC(0, 66, 154);
+                textbC.setAlphaF(0.05);
+                monthpa.setColor(DPalette::WindowText, textC);
+                monthpa.setColor(DPalette::Background, textbC);
+                m_weekData.at(i).first->setPalette(monthpa);
+            }
+        }
+
+    } else if (type == 2) {
+        for (int i = 0; i < m_weekData.count(); i++) {
+            if (m_weekData.at(i).second == 1) {
+                DPalette monthpa = m_weekData.at(i).first->palette();
+                QColor textC = "#0887FF";
+                QColor textbC = "#82AEC1";
+                textbC.setAlphaF(0.00);
+                monthpa.setColor(DPalette::WindowText, textC);
+                monthpa.setColor(DPalette::Background, textbC);
+                m_weekData.at(i).first->setPalette(monthpa);
+            } else {
+                DPalette monthpa = m_weekData.at(i).first->palette();
+                QColor textC = "#C0C6D4";
+                QColor textbC = "#82AEC1";
+                textbC.setAlphaF(0.00);
+                monthpa.setColor(DPalette::WindowText, textC);
+                monthpa.setColor(DPalette::Background, textbC);
+                m_weekData.at(i).first->setPalette(monthpa);
+            }
+        }
     }
 }
 

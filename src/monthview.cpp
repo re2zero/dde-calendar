@@ -33,6 +33,57 @@
 #include "schceduledlg.h"
 #include <QMenu>
 #include "scheduledatamanage.h"
+void CMonthView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        m_topBorderColor = Qt::red;
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = Qt::black;
+        m_currentDayTextColor = "#2ca7f8";
+        m_weekendsTextColor = Qt::black;
+        m_selectedTextColor = Qt::white;
+        m_festivalTextColor = Qt::black;
+        m_notCurrentTextColor = "#b2b2b2";
+
+        m_defaultLunarColor = "#5E5E5E";
+        m_currentDayLunarColor = m_currentDayTextColor;
+        m_weekendsLunarColor = m_defaultLunarColor;
+        m_selectedLunarColor = Qt::white;
+        m_festivalLunarColor = m_defaultLunarColor;
+        m_notCurrentLunarColor = "#dfdfdf";
+        m_solofestivalLunarColor = "#4DFF7272";
+        m_wrectColor = Qt::lightGray;
+
+    } else if (type == 2) {
+
+        m_topBorderColor = Qt::red;
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = "#C0C6D4";
+        m_currentDayTextColor = "#2ca7f8";
+        m_weekendsTextColor = m_defaultTextColor;
+        m_selectedTextColor = "#B8D3FF";
+        m_festivalTextColor = "#C0C6D4";
+        m_notCurrentTextColor = "#b2b2b2";
+
+        m_defaultLunarColor = "#ABDAFF";
+        m_currentDayLunarColor = m_currentDayTextColor;
+        m_weekendsLunarColor = m_defaultLunarColor;
+        m_selectedLunarColor = Qt::white;
+        m_festivalLunarColor = m_defaultLunarColor;
+        m_notCurrentLunarColor = "#dfdfdf";
+        m_solofestivalLunarColor = "#4DFF7272";
+        QColor wcolor = Qt::black;
+        wcolor.setAlphaF(0.5);
+        m_wrectColor = wcolor;
+    }
+    m_weekIndicator->setTheMe(type);
+    for (int i(0); i != 42; ++i) {
+        m_cellList.at(i)->update();
+    }
+}
+
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
@@ -78,7 +129,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
         }
     }
 
-    QWidget *gridWidget = new QWidget;
+    DFrame *gridWidget = new DFrame;
     gridWidget->setLayout(gridLayout);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -422,7 +473,7 @@ void CMonthView::paintCell(QWidget *cell)
 
     QPainter painter(cell);
     painter.setPen(Qt::SolidLine);
-    painter.setPen(Qt::lightGray);
+    painter.setPen(m_wrectColor);
     //painter.setPen(Qt::SolidLine);
     painter.drawRect(rect);//画矩形
 

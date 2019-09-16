@@ -77,6 +77,25 @@ void CMonthDayView::setRCurrentDate(const QDate date)
     update();
 }
 
+void CMonthDayView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+
+        m_defaultTextColor = Qt::black;
+        m_backgrounddefaultColor = Qt::white;
+        m_currentDayTextColor = Qt::white;
+        m_backgroundcurrentDayColor = "#0081FF";
+
+    } else if (type == 2) {
+        m_defaultTextColor = "#C0C6D4";
+        QColor framecolor = Qt::black;
+        framecolor.setAlphaF(0.5);
+        m_backgrounddefaultColor = framecolor;
+        m_currentDayTextColor = "#C0C6D4";
+        m_backgroundcurrentDayColor = "#0081FF";
+    }
+}
+
 void CMonthDayView::paintCell(QWidget *cell)
 {
     const QRect rect(0, 0, DDEMonthCalendar::MDayCellWidth, DDEMonthCalendar::MDayCellHeight);

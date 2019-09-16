@@ -60,7 +60,7 @@ public:
         ShowLunarFestivalHighlight = 0x02,
         Normal = ShowLunar | ShowLunarFestivalHighlight,
     };
-
+    void setTheMe(int type = 0);
 public:
     explicit CMonthView(QWidget *parent = 0);
     void setFirstWeekday(int weekday);
@@ -138,7 +138,7 @@ private:
     QColor m_festivalLunarColor = m_defaultLunarColor;
     QColor m_notCurrentLunarColor = "#dfdfdf";
     QColor m_solofestivalLunarColor = "#4DFF7272";
-
+    QColor m_wrectColor = Qt::lightGray;
     QQueue<int> *queue = nullptr;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;

@@ -31,7 +31,7 @@ public:
     ~CMonthDayView();
     void setCurrentDate(const QDate date);
     void setRCurrentDate(const QDate date);
-
+    void setTheMe(int type = 0);
 public slots:
     void cellClicked(QWidget *cell);
 signals:

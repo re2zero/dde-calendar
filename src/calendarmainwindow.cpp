@@ -52,6 +52,7 @@ Calendarmainwindow::Calendarmainwindow()
 void Calendarmainwindow::slotTheme(int type)
 {
     m_yearwindow->setTheMe(type);
+    m_monthWindow->setTheMe(type);
 }
 
 void Calendarmainwindow::initUI()

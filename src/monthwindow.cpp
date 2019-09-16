@@ -58,6 +58,43 @@ void CMonthWindow::setLunarVisible(bool state)
     m_monthView->setLunarVisible(state);
 }
 
+void CMonthWindow::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        DPalette todaypa = m_today->palette();
+        todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+        todaypa.setColor(DPalette::Dark, Qt::white);
+        todaypa.setColor(DPalette::Light, Qt::white);
+        m_today->setPalette(todaypa);
+
+        DPalette pa = m_YearLabel->palette();
+        pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
+        m_YearLabel->setPalette(pa);
+
+        DPalette Lunapa = m_YearLunarLabel->palette();
+        Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+        m_YearLunarLabel->setPalette(Lunapa);
+
+
+    } else if (type == 2) {
+        DPalette todaypa = m_today->palette();
+        todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
+        todaypa.setColor(DPalette::Dark, "#484848");
+        todaypa.setColor(DPalette::Light, "#414141 ");
+        m_today->setPalette(todaypa);
+
+        DPalette pa = m_YearLabel->palette();
+        pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        m_YearLabel->setPalette(pa);
+
+        DPalette Lunapa = m_YearLunarLabel->palette();
+        Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
+        m_YearLunarLabel->setPalette(Lunapa);
+    }
+    m_monthDayView->setTheMe(type);
+    m_monthView->setTheMe(type);
+}
+
 void CMonthWindow::previousMonth()
 {
     slideMonth(false);
@@ -79,11 +116,11 @@ void CMonthWindow::wheelEvent(QWheelEvent *e)
 
 void CMonthWindow::initUI()
 {
-    m_contentBackground = new QFrame;
-    DPalette anipa = m_contentBackground->palette();
-    anipa.setColor(DPalette::Background, Qt::white);
-    m_contentBackground->setAutoFillBackground(true);
-    m_contentBackground->setPalette(anipa);
+    m_contentBackground = new DFrame;
+    //DPalette anipa = m_contentBackground->palette();
+    //anipa.setColor(DPalette::Background, Qt::white);
+    // m_contentBackground->setAutoFillBackground(true);
+    //m_contentBackground->setPalette(anipa);
 
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
@@ -140,8 +177,11 @@ void CMonthWindow::initUI()
     hhLayout->addLayout(mhLayout);
     m_contentBackground->setLayout(hhLayout);
 
-    m_animationContainer = new QFrame(m_contentBackground);
-    m_animationContainer->setPalette(anipa);
+    m_animationContainer = new DFrame(m_contentBackground);
+    // DPalette anipa = m_animationContainer->palette();
+    // anipa.setColor(DPalette::Background, Qt::white);
+    //m_animationContainer->setAutoFillBackground(true);
+    //m_animationContainer->setPalette(anipa);
     //m_animationContainer->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
     m_animationContainer->setFixedSize(m_monthView->width(),
                                        m_monthView->height() - DDEMonthCalendar::MDayCellHeight);
