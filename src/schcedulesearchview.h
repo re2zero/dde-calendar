@@ -34,6 +34,7 @@ class CSchceduleSearchView : public DWidget
 public:
     CSchceduleSearchView(QWidget *parent = nullptr);
     ~CSchceduleSearchView();
+    void setTheMe(int type = 0);
 signals:
     void signalsUpdateShcedule(int id = 0);
 public slots:
@@ -50,6 +51,11 @@ private:
     QVector<ScheduleDateRangeInfo>               m_vlistData;
     int                                          m_type;
     QDate                                        m_currentDate;
+    QColor                m_bBackgroundcolor = "#000000";
+    QColor                m_btimecolor = "#526A7F";
+    QColor                m_bttextcolor = "#414D68";
+    QColor                m_lBackgroundcolor = Qt::white;
+    QColor                m_ltextcolor = "#001A2E";
 };
 
 class CSchceduleSearchItem : public DLabel

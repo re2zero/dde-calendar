@@ -243,11 +243,31 @@ CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
     setLayout(layout);
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
+    m_bBackgroundcolor.setAlphaF(0.03);
 }
 
 CSchceduleSearchView::~CSchceduleSearchView()
 {
 
+}
+
+void CSchceduleSearchView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        m_bBackgroundcolor = "#000000";
+        m_bBackgroundcolor.setAlphaF(0.03);
+        m_btimecolor = "#526A7F";
+        m_bttextcolor = "#414D68";
+        m_lBackgroundcolor = Qt::white;
+        m_ltextcolor = "#001A2E";
+    } else if (type == 2) {
+        m_bBackgroundcolor = "#FFFFFF";
+        m_bBackgroundcolor.setAlphaF(0.05);
+        m_btimecolor = "#6D7C88";
+        m_bttextcolor = "#C0C6D4";
+        m_lBackgroundcolor = Qt::white;
+        m_ltextcolor = "#C0C6D4";
+    }
 }
 
 void CSchceduleSearchView::updateDateShow()
@@ -271,8 +291,8 @@ void CSchceduleSearchView::updateDateShow()
         font.setPixelSize(20);
         gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
         DPalette daypa;
-        daypa.setColor(DPalette::WindowText,  QColor("#303030"));
-        daypa.setColor(DPalette::Window, Qt::white);
+        daypa.setColor(DPalette::WindowText, m_ltextcolor);
+        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
         gwi->setPalette(daypa);
         gwi->setFont(font);
         gwi->setText(tr("No search results"));
@@ -288,15 +308,17 @@ void CSchceduleSearchView::updateDateShow()
 void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info)
 {
     ScheduleDtailInfo &gd = info;
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
+
     CSchceduleSearchItem *gwi = new CSchceduleSearchItem();
     QFont font("SourceHanSansSC-Normal");
     font.setPixelSize(14);
-    gwi->setBackgroundColor(gd.type.color);
+    gwi->setBackgroundColor(m_bBackgroundcolor);
     //gwi->setBackgroundColor(Qt::white);
-    gwi->setSplitLineColor(QColor("#FB2525"));
-    gwi->setText(QColor("#414D68"), font);
+    gwi->setSplitLineColor(gdcolor.Purecolor);
+    gwi->setText(m_bttextcolor, font);
     font.setPixelSize(12);
-    gwi->setTimeC(QColor("#526A7F"), font);
+    gwi->setTimeC(m_btimecolor, font);
     gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
     gwi->setData(gd);
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
@@ -317,9 +339,9 @@ void CSchceduleSearchView::createItemWidget(QDate date)
     CSchceduleSearchDateItem *gwi = new CSchceduleSearchDateItem();
     QFont font("SourceHanSansSC-Medium");
     font.setPixelSize(16);
-    gwi->setBackgroundColor(Qt::white);
+    gwi->setBackgroundColor(m_lBackgroundcolor);
 
-    gwi->setText(QColor("#001A2E"), font);
+    gwi->setText(m_ltextcolor, font);
     gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
     gwi->setDate(date);
     QListWidgetItem *listItem = new QListWidgetItem;
