@@ -47,6 +47,10 @@ public:
     }
     void updateSelectState();
     void setLunarVisible(bool visible);
+    QDate getCurrDate()
+    {
+        return m_currentDate;
+    }
 signals:
     void dateSelected(const QDate date, const CaHuangLiDayInfo &detail) const;
     void signalcurrentDateChanged(QDate date);

@@ -157,7 +157,10 @@ void CDayWindow::initConnection()
 void CDayWindow::slotupdateSchedule(int id)
 {
     m_daymonthView->setCurrentDate(m_currentdate);
-    // m_scheduleView->setDate(m_currentdate);
+    if (m_daymonthView->getCurrDate() == m_currentdate) {
+        m_scheduleView->setRange(m_currentdate, m_currentdate);
+        m_scheduleView->setDate(m_currentdate);
+    }
 }
 
 void CDayWindow::slotTransitSchedule(int id)

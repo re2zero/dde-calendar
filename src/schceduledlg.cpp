@@ -113,7 +113,7 @@ void CSchceduleDlg::slotOkBt()
         QMessageBox::warning(this, tr("error"), tr("The end time less than begin time!"));
         return;
     }
-    if (m_type == 0) m_scheduleInfo.id = -1;
+    if (m_type == 1) scheduleDtailInfo.id = 0;
     scheduleDtailInfo.allday = m_allDayCheckbox->isChecked();
     if (m_rmindCombox->currentIndex() == 0) scheduleDtailInfo.remind = false;
     else {
@@ -380,8 +380,11 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
             m_endDateEdit->setDate(m_currentDate.date());
             m_beginTimeEdit->setTime(QTime(0, 0));
             m_endTimeEdit->setTime(QTime(23, 59));
+            m_rmindCombox->setCurrentIndex(2);
         }
     }
+
+    //m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
 void CSchceduleDlg::slotbRpeatactivated(int index)
@@ -528,6 +531,7 @@ void CSchceduleDlg::initUI()
     m_remindSetLabel->setAlignment(Qt::AlignLeft);
     m_remindSetLabel->setFixedWidth(78);
     m_rmindCombox = new DComboBox();
+    m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     rmindLabellayout->addWidget(m_remindSetLabel, 0, Qt::AlignVCenter);
     rmindLabellayout->addWidget(m_rmindCombox);
     rmindLabellayout->addStretch();
@@ -569,11 +573,12 @@ void CSchceduleDlg::initUI()
     endrepeatLabellayout->addWidget(m_endrepeatCombox);
 
     QHBoxLayout *endrepeattimeslayout  = new QHBoxLayout;
-    m_endrepeattimes = new DLineEdit;
+    m_endrepeattimes = new DLineEdit(this);
     m_endrepeattimes->setFixedHeight(34);
     m_endrepeattimes->setText(QString::number(10));
     m_endrepeattimes->setClearButtonEnabled(false);
-    QValidator *validator = new QIntValidator(1, 9999, this);
+    QRegExp rx("^[1-9]\\d{0,2}$");
+    QValidator *validator = new QRegExpValidator(rx, this);
     m_endrepeattimes->setValidator(validator);
     m_endrepeattimesLabel = new DLabel(tr("After time"));
     m_endrepeattimesLabel->setFont(mlabelF);
@@ -589,6 +594,9 @@ void CSchceduleDlg::initUI()
     m_endRepeatDate->setCalendarPopup(true);
     m_endRepeatDate->setFixedHeight(36);
     m_endRepeatDate->setDate(QDate::currentDate());
+    m_endRepeatDate->setDisplayFormat("yyyy-MM-dd");
+    m_endRepeatDate->setMinimumWidth(150);
+    //m_endRepeatDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     endrepeatLabellayout->addWidget(m_endRepeatDate);
     endrepeatLabellayout->addStretch();
     m_endRepeatDate->setVisible(false);
