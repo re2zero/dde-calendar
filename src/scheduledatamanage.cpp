@@ -26,6 +26,96 @@ CScheduleDataCtrl *CScheduleDataManage::getscheduleDataCtrl()
     return m_scheduleDataCtrl;
 }
 
+CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
+{
+    CSchedulesColor color;
+    color.type = -1;
+    for (int i = 0; i < m_vScheduleColor.count(); i++) {
+        if (m_vScheduleColor.at(i).type == type) {
+            color = m_vScheduleColor.at(i);
+            break;
+        }
+    }
+    return color;
+}
+
+void CScheduleDataManage::setTheMe(int type)
+{
+    m_vScheduleColor.clear();
+    if (type == 0 || type == 1) {
+        CSchedulesColor workC;
+        workC.type = 1;
+        workC.gradientFromC = "#FA9D9A";
+        workC.gradientToC = "#FBCEB7";
+        workC.Purecolor = "#F85566";
+        workC.Purecolor.setAlphaF(0.2);
+        workC.shadowcolor = "#FB2525";
+        workC.shadowcolor.setAlphaF(0.5);
+        workC.textColor = "#000000";
+        workC.timeColor = "#B54A4B";
+        m_vScheduleColor.append(workC);
+
+        CSchedulesColor lifeC;
+        lifeC.type = 2;
+        lifeC.gradientFromC = "#D4FFB3";
+        lifeC.gradientToC = "#B7E6FB";
+        lifeC.Purecolor = "#6FFF00";
+        lifeC.Purecolor.setAlphaF(0.2);
+        lifeC.shadowcolor = "#82D245";
+        lifeC.textColor = "#000000";
+        lifeC.timeColor = "#53A316";
+        m_vScheduleColor.append(lifeC);
+
+        CSchedulesColor otherC;
+        otherC.type = 3;
+        otherC.gradientFromC = "#DFB3FF";
+        otherC.gradientToC = "#FBE9B7";
+        otherC.Purecolor = "#D191FF";
+        otherC.Purecolor.setAlphaF(0.2);
+        otherC.shadowcolor = "#BA60FA";
+        workC.textColor = "#000000";
+        workC.timeColor = "#8548B1";
+        m_vScheduleColor.append(otherC);
+    } else if (type == 2) {
+        CSchedulesColor workC;
+        workC.type = 1;
+        workC.gradientFromC = "#8B2521";
+        workC.gradientToC = "#965A26";
+        workC.gradientToC.setAlphaF(0.9);
+        workC.Purecolor = "#F85566";
+        workC.Purecolor.setAlphaF(0.2);
+        workC.shadowcolor = "#FB2525";
+        workC.shadowcolor.setAlphaF(0.5);
+        workC.textColor = "#C0C6D4";
+        workC.timeColor = "#B54A4B";
+        m_vScheduleColor.append(workC);
+
+        CSchedulesColor lifeC;
+        lifeC.type = 2;
+        lifeC.gradientFromC = "#5D7D44";
+        lifeC.gradientToC = "#2D6883";
+        lifeC.Purecolor = "#59F88D";
+        lifeC.Purecolor.setAlphaF(0.2);
+        lifeC.shadowcolor = "#25FA6B";
+        lifeC.shadowcolor.setAlphaF(0.5);
+        workC.textColor = "#C0C6D4";
+        workC.timeColor = "#38A35B";
+        m_vScheduleColor.append(lifeC);
+
+        CSchedulesColor otherC;
+        otherC.type = 3;
+        otherC.gradientFromC = "#7D37AF";
+        otherC.gradientToC = "#8C4E2C";
+        otherC.Purecolor = "#C155F8";
+        otherC.Purecolor.setAlphaF(0.2);
+        otherC.shadowcolor = "#BE3DFF";
+        otherC.shadowcolor.setAlphaF(0.5);
+        workC.textColor = "#C0C6D4";
+        workC.timeColor = "#9857C8";
+        m_vScheduleColor.append(otherC);
+    }
+}
+
 CScheduleDataManage *CScheduleDataManage::getScheduleDataManage()
 {
     return m_vscheduleDataManage;
@@ -39,6 +129,39 @@ void CScheduleDataManage::clear()
 CScheduleDataManage::CScheduleDataManage ()
 {
     m_scheduleDataCtrl = new CScheduleDataCtrl;
+    CSchedulesColor workC;
+    workC.type = 1;
+    workC.gradientFromC = "#FA9D9A";
+    workC.gradientToC = "#FBCEB7";
+    workC.Purecolor = "#F85566";
+    workC.Purecolor.setAlphaF(0.2);
+    workC.shadowcolor = "#FB2525";
+    workC.shadowcolor.setAlphaF(0.5);
+    workC.textColor = "#000000";
+    workC.timeColor = "#B54A4B";
+    m_vScheduleColor.append(workC);
+
+    CSchedulesColor lifeC;
+    lifeC.type = 2;
+    lifeC.gradientFromC = "#D4FFB3";
+    lifeC.gradientToC = "#B7E6FB";
+    lifeC.Purecolor = "#6FFF00";
+    lifeC.Purecolor.setAlphaF(0.2);
+    lifeC.shadowcolor = "#82D245";
+    lifeC.textColor = "#000000";
+    lifeC.timeColor = "#53A316";
+    m_vScheduleColor.append(lifeC);
+
+    CSchedulesColor otherC;
+    otherC.type = 3;
+    otherC.gradientFromC = "#DFB3FF";
+    otherC.gradientToC = "#FBE9B7";
+    otherC.Purecolor = "#D191FF";
+    otherC.Purecolor.setAlphaF(0.2);
+    otherC.shadowcolor = "#BA60FA";
+    workC.textColor = "#000000";
+    workC.timeColor = "#8548B1";
+    m_vScheduleColor.append(otherC);
 }
 
 CScheduleDataManage::~CScheduleDataManage()

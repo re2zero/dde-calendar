@@ -38,6 +38,7 @@ public:
     ~CSchceduleDayView();
     void setDayData(QDate date, const QVector<ScheduleDtailInfo> &vlistData, int type = 1);
     void setDate(QDate date, int type = 1);
+    void setTheMe(int type = 0);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCotrlUpdateShcedule(QDate date, int type = 0);

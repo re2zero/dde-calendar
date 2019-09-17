@@ -81,6 +81,7 @@ void CMonthView::setTheMe(int type)
     m_weekIndicator->setTheMe(type);
     for (int i(0); i != 42; ++i) {
         m_cellList.at(i)->update();
+        m_cellScheduleList[i]->setTheMe(type);
     }
 }
 

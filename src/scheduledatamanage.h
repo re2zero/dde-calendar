@@ -23,6 +23,17 @@
 #include <QDate>
 #include <QMutex>
 #include "schedulestructs.h"
+
+struct CSchedulesColor {
+    int type;
+    QColor gradientFromC;
+    QColor gradientToC;
+    QColor Purecolor;
+    QColor shadowcolor;
+    QColor textColor;
+    QColor timeColor;
+};
+
 class CSchedulesDBus;
 class CScheduleDataCtrl;
 class CScheduleDataManage
@@ -30,12 +41,16 @@ class CScheduleDataManage
 public:
     static CScheduleDataManage *getScheduleDataManage();
     CScheduleDataCtrl *getscheduleDataCtrl();
+
+    CSchedulesColor getScheduleColorByType(int type);
+    void setTheMe(int type = 0);
     void clear();
 private:
     CScheduleDataManage();
     ~CScheduleDataManage();
 private:
     CScheduleDataCtrl           *m_scheduleDataCtrl;
+    QVector<CSchedulesColor>    m_vScheduleColor;
     static CScheduleDataManage  *m_vscheduleDataManage;
 };
 class CDataProcessThread : public QThread

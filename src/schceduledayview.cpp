@@ -339,6 +339,11 @@ void CSchceduleDayView::setDate(QDate date, int type)
     updateDateShow();
 }
 
+void CSchceduleDayView::setTheMe(int type)
+{
+    updateDateShow();
+}
+
 CSchceduleDayView::CSchceduleDayView(QWidget *parent, int edittype) : DWidget(parent)
 {
     m_editType = edittype;
@@ -472,7 +477,7 @@ void CSchceduleDayView::updateDateShow()
         QPoint pos;
         firstgwi->getColor(color1, color2, GradientFlag);
         firstgwi->getText(tcolor, font, pos);
-        //m_numButton->setColor(color1, color2, GradientFlag);
+        m_numButton->setColor(color1, color2, GradientFlag);
         m_numButton->setText(tcolor, font, pos);
         m_numButton->setData(m_vlistData.count() - 1);
         m_numButton->update();
@@ -482,9 +487,10 @@ void CSchceduleDayView::updateDateShow()
 CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool average)
 {
     const ScheduleDtailInfo &gd = m_vlistData.at(index);
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
     CSchceduleWidgetItem *gwi = new CSchceduleWidgetItem(nullptr, m_editType);
     if (m_type == 0) {
-        gwi->setColor(QColor("#DFB3FF"), QColor("#FBE9B7"), true);
+        gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
         QFont font("PingFangSC-Light");
         if (average) {
             font.setPixelSize(6);
@@ -494,14 +500,14 @@ CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool averag
         gwi->setData(gd);
         if (average) {
             gwi->setFixedSize(width(), height() / 2);
-            gwi->setText(QColor("#000000"), font, QPoint(23, 6), average);
+            gwi->setText(gdcolor.textColor, font, QPoint(23, 6), average);
         } else {
             gwi->setFixedSize(width(), height());
-            gwi->setText(QColor("#000000"), font, QPoint(23, 13), average);
+            gwi->setText(gdcolor.textColor, font, QPoint(23, 13), average);
         }
         gwi->setItem(NULL);
     } else {
-        gwi->setColor(gd.type.color, QColor("#FBE9B7"), false);
+        gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
         QFont font("PingFangSC-Light");
         if (average) {
             font.setPixelSize(6);
@@ -510,10 +516,10 @@ CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool averag
         }
         if (average) {
             gwi->setFixedSize(width(), height() / 2);
-            gwi->setText(QColor("#000000"), font, QPoint(8, 5), average);
+            gwi->setText(gdcolor.textColor, font, QPoint(8, 5), average);
         } else {
             gwi->setFixedSize(width(), height());
-            gwi->setText(QColor("#000000"), font, QPoint(8, 10), average);
+            gwi->setText(gdcolor.textColor, font, QPoint(8, 10), average);
         }
         gwi->setData(gd);
         gwi->setItem(NULL);

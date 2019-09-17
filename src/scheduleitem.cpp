@@ -19,7 +19,7 @@
 #include "scheduleitem.h"
 #include <QPainter>
 #include "schedulecoormanage.h"
-#include "dbmanager.h"
+#include "scheduledatamanage.h"
 #include <QFontMetricsF>
 #include <QGraphicsScene>
 CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent, QGraphicsScene *scene)
@@ -61,12 +61,14 @@ QPainterPath CScheduleItem::shape() const
 
 void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /*= 0 */)
 {
-    painter->setBrush(QColor(248, 85, 102, 40));
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_scheduleInfo.type.ID);
+
+    painter->setBrush(gdcolor.Purecolor);
     painter->setPen(Qt::NoPen);
     QRect rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime);
     painter->drawRect(rect);
     painter->save();
-    QPen pen(QColor("#B54A4B"));
+    QPen pen(gdcolor.shadowcolor);
     pen.setWidth(2);
     painter->setPen(pen);
     painter->drawLine(rect.topLeft(), rect.bottomLeft());
@@ -76,7 +78,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     QFont font("SourceHanSansSC-Normal");
     font.setPixelSize(12);
     painter->setFont(font);
-    painter->setPen(QColor("#B54A4B"));
+    painter->setPen(gdcolor.timeColor);
     QTime stime = m_scheduleInfo.beginDateTime.time();
     QString str = stime.toString("ap HH:mm");
     painter->drawText(QRect(rect.topLeft().x() + 2, rect.topLeft().y(), rect.width() - 2, 20), Qt::AlignLeft, str);
@@ -85,7 +87,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->save();
     font.setPixelSize(14);
     painter->setFont(font);
-    painter->setPen(QColor("#292929"));
+    painter->setPen(gdcolor.textColor);
     QStringList liststr;
     splitText(font, rect.width(), m_scheduleInfo.titleName, liststr);
     for (int i = 0; i < liststr.count(); i++) {

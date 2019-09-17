@@ -48,6 +48,7 @@ public:
     {
         return  m_solarDay;
     }
+    void setTheMe(int type = 0);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCotrlUpdateShcedule(QDate date, int type = 0);
@@ -77,6 +78,7 @@ private:
     QDate                                        m_currentDate;
     QString                                      m_solarDay;
     int                                          m_editType = 0;
+    QColor                                       m_soloColor = "#FF7272";
 };
 
 class CSchceduleAllNumButton : public DPushButton

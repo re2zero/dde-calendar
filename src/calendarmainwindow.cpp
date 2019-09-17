@@ -29,6 +29,7 @@
 #include "weekwindow.h"
 #include "daywindow.h"
 #include <DPalette>
+#include "scheduledatamanage.h"
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -51,6 +52,7 @@ Calendarmainwindow::Calendarmainwindow()
 
 void Calendarmainwindow::slotTheme(int type)
 {
+    CScheduleDataManage::getScheduleDataManage()->setTheMe(type);
     m_yearwindow->setTheMe(type);
     m_monthWindow->setTheMe(type);
 }
