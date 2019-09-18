@@ -22,8 +22,8 @@
 #include "scheduledatamanage.h"
 #include <QFontMetricsF>
 #include <QGraphicsScene>
-CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent, QGraphicsScene *scene)
-    : QGraphicsItem(parent), m_coorManage(coor)
+CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent, QGraphicsScene *scene, int type)
+    : QGraphicsItem(parent), m_coorManage(coor), m_type(type)
 {
     scene->addItem(this);
     setZValue(1);
@@ -36,10 +36,13 @@ CScheduleItem::~CScheduleItem()
 
 }
 
-void CScheduleItem::setData( const ScheduleDtailInfo &info )
+void CScheduleItem::setData( const ScheduleDtailInfo &info, int index, int totalNum)
 {
+    if (m_type == 0) setToolTip(info.titleName);
     m_scheduleInfo = info;
     m_color = info.type.color;
+    m_index = index;
+    m_totalNum = totalNum;
     update();
 }
 
@@ -47,7 +50,7 @@ QRectF CScheduleItem::boundingRect() const
 {
     QRectF t_rect;
 
-    t_rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime);
+    t_rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum);
 
     return t_rect;
 }
@@ -65,7 +68,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     painter->setBrush(gdcolor.Purecolor);
     painter->setPen(Qt::NoPen);
-    QRect rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime);
+    QRect rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum);
     painter->drawRect(rect);
     painter->save();
     QPen pen(gdcolor.shadowcolor);
@@ -73,41 +76,57 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->setPen(pen);
     painter->drawLine(rect.topLeft(), rect.bottomLeft());
     painter->restore();
+    if (m_type == 0) {
+        painter->save();
+        QFont font("SourceHanSansSC-Normal");
+        if (m_totalNum > 1) {
+            font.setPixelSize(6);
+        } else {
+            font.setPixelSize(12);
+        }
 
-    painter->save();
-    QFont font("SourceHanSansSC-Normal");
-    font.setPixelSize(12);
-    painter->setFont(font);
-    painter->setPen(gdcolor.timeColor);
-    QTime stime = m_scheduleInfo.beginDateTime.time();
-    QString str = stime.toString("ap HH:mm");
-    painter->drawText(QRect(rect.topLeft().x() + 2, rect.topLeft().y(), rect.width() - 2, 20), Qt::AlignLeft, str);
-    painter->restore();
+        painter->setFont(font);
+        painter->setPen(gdcolor.timeColor);
+        QTime stime = m_scheduleInfo.beginDateTime.time();
+        QString str = stime.toString("ap HH:mm");
+        painter->drawText(QRect(rect.topLeft().x() + 2, rect.topLeft().y(), rect.width() - 2, 20), Qt::AlignLeft, str);
+        painter->restore();
 
-    painter->save();
-    font.setPixelSize(14);
-    painter->setFont(font);
-    painter->setPen(gdcolor.textColor);
-    QStringList liststr;
-    splitText(font, rect.width(), m_scheduleInfo.titleName, liststr);
-    for (int i = 0; i < liststr.count(); i++) {
-        painter->drawText(QRect(rect.topLeft().x() + 2, rect.topLeft().y() + 20 + i * 20, rect.width() - 2, 20), Qt::AlignLeft, liststr.at(i));
+        painter->save();
+        font.setPixelSize(14);
+        painter->setFont(font);
+        painter->setPen(gdcolor.textColor);
+        QStringList liststr;
+        splitText(font, rect.width(), rect.height() - 20, m_scheduleInfo.titleName, liststr);
+        for (int i = 0; i < liststr.count(); i++) {
+            painter->drawText(QRect(rect.topLeft().x() + 2, rect.topLeft().y() + 20 + i * 20, rect.width() - 2, 20), Qt::AlignLeft, liststr.at(i));
+        }
+        painter->restore();
+    } else {
+        painter->save();
+        QFont font("SourceHanSansSC-Normal");
+        font.setPixelSize(12);
+        painter->setFont(font);
+        painter->setPen(gdcolor.textColor);
+        painter->drawText(rect, Qt::AlignCenter | Qt::AlignVCenter, "...");
+        painter->restore();
     }
-    painter->restore();
 }
 
-void CScheduleItem::splitText( QFont font, int w, QString str, QStringList &liststr )
+void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringList &liststr )
 {
     if (str.isEmpty()) return;
     QFontMetrics fontmetris(font);
     int widthT = fontmetris.width(str);
+    int heightT = fontmetris.height();
     int singlecharw = widthT * 1.0 / str.count() + 0.5;
     int rcharcount = w * 1.0 / singlecharw;
     QString tstr;
+    QStringList tliststr;
     int tcount = 0;
     for (int i = 0; i < str.count(); i++) {
         if (tcount == rcharcount) {
-            liststr.append(tstr);
+            tliststr.append(tstr);
             tstr.clear();
             tstr.append(str.at(i));
             tcount = 1;
@@ -115,5 +134,20 @@ void CScheduleItem::splitText( QFont font, int w, QString str, QStringList &list
         tstr.append(str.at(i));
         tcount++;
     }
-    liststr.append(tstr);
+    tliststr.append(tstr);
+
+    for (int i = 0; i < tliststr.count(); i++) {
+        if ((i + 1)*heightT <= h) {
+            liststr.append(tliststr.at(i));
+        } else {
+            if (i == 0) {
+                liststr.append("...");
+            } else {
+                tstr = liststr.at(i - 1);
+                tstr.remove(tstr.count() - 3, 3);
+                liststr[i - 1] = tstr + "...";
+            }
+            break;
+        }
+    }
 }

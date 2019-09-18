@@ -30,9 +30,13 @@ class CScheduleItem : public QObject, public QGraphicsItem
     Q_OBJECT
 
 public:
-    CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0, int type = 0);
     ~CScheduleItem();
-    void setData(const ScheduleDtailInfo &info);
+    void setData(const ScheduleDtailInfo &info, int index, int totalNum);
+    int getType()
+    {
+        return  m_type;
+    }
     ScheduleDtailInfo getData()
     {
         return m_scheduleInfo;
@@ -57,11 +61,14 @@ private:
     Others:             无
     *******************************************************************************/
     void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0 );
-    void splitText(QFont font, int w, QString str, QStringList &liststr);
+    void splitText(QFont font, int w, int h, QString str, QStringList &liststr);
 private:
     ScheduleDtailInfo                     m_scheduleInfo;
     CScheduleCoorManage             *m_coorManage;
     QColor                           m_color;
+    int                              m_type = 0;
+    int                              m_index;
+    int                              m_totalNum;
 };
 
 #endif // SCHEDULEITEM_H

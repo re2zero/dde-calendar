@@ -30,8 +30,8 @@ static int hourTextTMagin = 48;
 
 static int hourTextWidth = 50;
 static int hourTextHeight = 20;
-CScheduleView::CScheduleView(QWidget *parent)
-    : QFrame(parent)
+CScheduleView::CScheduleView(QWidget *parent, int viewType)
+    : QFrame(parent), m_viewType(viewType)
 {
     DPalette palette(this->palette());
     palette.setColor(DPalette::Background, Qt::white);
@@ -72,6 +72,47 @@ void CScheduleView::setFirstWeekday(int weekday)
     m_firstWeekDay = weekday;
     m_graphicsView->setFirstWeekday(weekday);
 }
+
+void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info)
+{
+    QVector<ScheduleDtailInfo> schedulelist;
+    for (int  k = 0; k < scheduleInfolist.count(); k++) {
+        if (scheduleInfolist.at(k).allday) {
+            continue;
+        }
+        schedulelist.append(scheduleInfolist.at(k));
+    }
+    if (schedulelist.isEmpty()) return;
+
+    info.clear();
+
+    for (int  k = 0; k < schedulelist.count(); k++) {
+        int i = 0;
+        for (; i < info.count(); i++) {
+            if ((schedulelist.at(k).beginDateTime > info.at(i).begindate && schedulelist.at(k).beginDateTime < info.at(i).enddate)
+                    || (schedulelist.at(k).endDateTime > info.at(i).begindate && schedulelist.at(k).endDateTime < info.at(i).enddate)) {
+
+                break;
+            }
+        }
+        if (i == info.count()) {
+            ScheduleclassificationInfo firstschedule;
+            firstschedule.begindate  = schedulelist.at(k).beginDateTime;
+            firstschedule.enddate  = schedulelist.at(k).endDateTime;
+            firstschedule.vData.append(schedulelist.at(k));
+            info.append(firstschedule);
+        } else {
+            if (schedulelist.at(k).beginDateTime < info.at(i).begindate) {
+                info[i].begindate = schedulelist.at(k).beginDateTime;
+            }
+            if (schedulelist.at(k).endDateTime > info.at(i).enddate) {
+                info[i].enddate = schedulelist.at(k).endDateTime;
+            }
+            info[i].vData.append(schedulelist.at(k));
+        }
+    }
+
+}
 void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
 {
     if (w != this) return;
@@ -79,11 +120,33 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
         for (int j = 0; j < data.size(); j++) {
             if (data.at(j).date == m_beginDate.addDays(i)) {
                 QVector<ScheduleDtailInfo> scheduleInfolist = data.at(j).vData;
-                for (int  k = 0; k < scheduleInfolist.count(); k++) {
-                    if (scheduleInfolist.at(k).allday) {
-                        continue;
+
+                QVector<ScheduleclassificationInfo> info;
+                scheduleClassificationType(scheduleInfolist, info);
+
+                for (int m = 0; m  < info.count(); m++) {
+                    int tnum = info.at(m).vData.count();
+                    if (m_viewType == 0) {
+                        if (tnum > 3) {
+                            tnum = 3;
+                            for (int n = 0; n  < tnum - 1; n++) {
+                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), n + 1, tnum, 0);
+                            }
+                            ScheduleDtailInfo tdetaliinfo = info.at(m).vData.at(1);
+                            tdetaliinfo.titleName = "...";
+                            tdetaliinfo.type.ID = 3;
+                            m_graphicsView->addSchduleItem(tdetaliinfo, 3, tnum, 1);
+                        } else {
+                            for (int n = 0; n  < tnum; n++) {
+                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), n + 1, tnum, 0);
+                            }
+                        }
+
+                    } else {
+                        for (int n = 0; n  < tnum; n++) {
+                            m_graphicsView->addSchduleItem(info.at(m).vData.at(n), n + 1, tnum, 0);
+                        }
                     }
-                    m_graphicsView->addSchduleItem(scheduleInfolist.at(k));
                 }
                 break;
             }

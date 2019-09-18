@@ -30,6 +30,7 @@ public:
     void setSenceRange(int w, int h);
     void setDateRange(QDate begindate, QDate enddate);
     QRect getDrawRegion(QDateTime begintime, QDateTime endtime);
+    QRect getDrawRegion(QDateTime begintime, QDateTime endtime, int index, int coount);
     QRectF getDrawRegionF(QDateTime begintime, QDateTime endtime);
     QDateTime getDate(QPointF pos);
 private:

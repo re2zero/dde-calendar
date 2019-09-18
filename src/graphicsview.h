@@ -49,7 +49,7 @@ public:
     {
         return m_coorManage;
     }
-    void  addSchduleItem(const ScheduleDtailInfo &info);
+    void  addSchduleItem(const ScheduleDtailInfo &info, int index, int totalNum, int type);
     void  deleteSchduleItem(CScheduleItem *item);
     void  clearSchdule();
     /************************************************************************

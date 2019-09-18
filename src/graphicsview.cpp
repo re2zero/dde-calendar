@@ -104,22 +104,22 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate )
     scrollBarValueChangedSlot();
 }
 
-void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info )
+void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, int index, int totalNum, int type)
 {
     if (info.beginDateTime.date().day() != info.endDateTime.date().day()) {
         ScheduleDtailInfo sinfo = info;
         sinfo.endDateTime = QDateTime(info.beginDateTime.date(), QTime(24, 0, 0));
-        CScheduleItem *bitem = new CScheduleItem(m_coorManage, 0, m_graphicsScene);
-        bitem->setData(sinfo);
+        CScheduleItem *bitem = new CScheduleItem(m_coorManage, 0, m_graphicsScene, type);
+        bitem->setData(sinfo, index, totalNum);
         m_vScheduleItem.append(bitem);
         sinfo = info;
         sinfo.beginDateTime = QDateTime(info.endDateTime.date(), QTime(0, 0, 0));
-        CScheduleItem *enditem = new CScheduleItem(m_coorManage, 0, m_graphicsScene);
-        enditem->setData(sinfo);
+        CScheduleItem *enditem = new CScheduleItem(m_coorManage, 0, m_graphicsScene, type);
+        enditem->setData(sinfo, index, totalNum);
         m_vScheduleItem.append(enditem);
     } else {
-        CScheduleItem *item = new CScheduleItem(m_coorManage, 0, m_graphicsScene);
-        item->setData(info);
+        CScheduleItem *item = new CScheduleItem(m_coorManage, 0, m_graphicsScene, type);
+        item->setData(info, index, totalNum);
         m_vScheduleItem.append(item);
     }
 }
@@ -261,6 +261,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                 }
             }
         } else {
+            if (item->getType() == 1) return;
             QMenu menu(this);
             menu.addAction(m_editAction);
             menu.addAction(m_deleteAction);

@@ -23,6 +23,12 @@
 #include <QDate>
 #include "schedulestructs.h"
 
+typedef struct _tagScheduleclassificationInfo {
+    QDateTime begindate;
+    QDateTime enddate;
+    QVector<ScheduleDtailInfo> vData;
+} ScheduleclassificationInfo;
+
 class CGraphicsView;
 class CSchceduleAllDayView;
 class CScheduleView : public QFrame
@@ -30,12 +36,13 @@ class CScheduleView : public QFrame
     Q_OBJECT
 
 public:
-    CScheduleView(QWidget *parent = 0);
+    CScheduleView(QWidget *parent = 0, int viewType = 0);
     ~CScheduleView();
     void setviewMagin(int left, int top, int right, int bttom);
     void setRange(int w, int h, QDate begin, QDate end);
     void setRange(QDate begin, QDate end);
     void setFirstWeekday(int weekday);
+    void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
 signals:
@@ -69,6 +76,7 @@ private:
     int                       m_firstWeekDay;
     QDate                     m_beginDate;
     QDate                     m_endDate;
+    int                       m_viewType = 0;
 };
 
 #endif // SCHEDULEVIEW_H
