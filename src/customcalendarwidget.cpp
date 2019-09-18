@@ -171,10 +171,10 @@ void CCustomCalendarWidget::initTopWidget()
     m_yearLabel = new CCaYearMonthEdit(this);
     m_monthLabel->setRange(1, 12);
     m_yearLabel->setRange(1900, 3000);
-    m_monthLabel->setMinimumWidth(80);
+    m_monthLabel->setMinimumWidth(100);
     m_monthLabel->setPadStr(tr("M"));
     m_yearLabel->setPadStr(tr("Y"));
-    m_yearLabel->setMinimumWidth(100);
+    m_yearLabel->setMinimumWidth(120);
 
     m_leftMonthBtn->setObjectName("CalendarLeftMonthBtn");
     m_rightMonthBtn->setObjectName("CalendarRightMonthBtn");

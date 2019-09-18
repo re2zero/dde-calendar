@@ -62,6 +62,7 @@ void CCaYearMonthEdit::initUI()
     //[2] 年月日选择控件
     QListWidgetItem *pitem = new QListWidgetItem(m_pListWidget);
     pitem->setSizeHint(QSize(m_pListWidget->width(), 300));
+    pitem->setFlags(Qt::ItemIsTristate );
     m_pListWidget->addItem(pitem);
 
 
@@ -80,6 +81,9 @@ void CCaYearMonthEdit::initConnection()
 
 void CCaYearMonthEdit::showPopup()
 {
+    m_pListWidget->setFixedWidth(width());
+    m_verticalScroll->setFixedWidth(width());
+
     QString timetext = m_timeEdit->text();
     timetext.remove(m_paddingStr);
     m_num = timetext.toInt();
