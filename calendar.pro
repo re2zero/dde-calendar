@@ -126,7 +126,7 @@ manual.files = $$PWD/dman/*
 translations.path = $$INSTROOT$$DSRDIR/translations
 translations.files = translations/*.qm
 
-INSTALLS += target desktop icon_files translations manual dbus_service
+INSTALLS += target desktop icon_files manual dbus_service
 
 isEmpty(TRANSLATIONS) {
      include(translations.pri)
