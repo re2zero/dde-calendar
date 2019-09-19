@@ -21,6 +21,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <DPalette>
+#include "scheduledatamanage.h"
 DGUI_USE_NAMESPACE
 CTimeVerticalScroll::CTimeVerticalScroll(QWidget *parent): DWidget(parent)
 {
@@ -231,7 +232,14 @@ void CTimeVerticalScroll::paintNum(QPainter &painter, int num, int deviation)
     else
         font.setBold(false);
     painter.setFont(font);
-    painter.setPen(QColor(0, 0, 0, transparency));
+    int type = CScheduleDataManage::getScheduleDataManage()->getTheme();
+    if (type == 0 || type == 1) {
+        painter.setPen(QColor(0, 0, 0, transparency));
+
+    } else {
+        painter.setPen(QColor("#C0C6D4"));
+
+    }
 
     if ( y >= 0 && y + height < Height) {
         if (deviation == 0) {
