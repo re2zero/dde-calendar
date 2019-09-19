@@ -44,6 +44,10 @@ public:
 
     CSchedulesColor getScheduleColorByType(int type);
     void setTheMe(int type = 0);
+    int getTheme()
+    {
+        return m_theme;
+    }
     void clear();
 private:
     CScheduleDataManage();
@@ -51,6 +55,7 @@ private:
 private:
     CScheduleDataCtrl           *m_scheduleDataCtrl;
     QVector<CSchedulesColor>    m_vScheduleColor;
+    int                         m_theme = 0;
     static CScheduleDataManage  *m_vscheduleDataManage;
 };
 class CDataProcessThread : public QThread

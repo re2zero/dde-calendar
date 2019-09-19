@@ -41,6 +41,7 @@ CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
 
 void CScheduleDataManage::setTheMe(int type)
 {
+    m_theme = type;
     m_vScheduleColor.clear();
     if (type == 0 || type == 1) {
         CSchedulesColor workC;
