@@ -117,22 +117,22 @@ void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringLis
 {
     if (str.isEmpty()) return;
     QFontMetrics fontmetris(font);
-    int widthT = fontmetris.width(str);
+    //int widthT = fontmetris.width(str);
     int heightT = fontmetris.height();
-    int singlecharw = widthT * 1.0 / str.count() + 0.5;
-    int rcharcount = w * 1.0 / singlecharw;
+    //int singlecharw = widthT * 1.0 / str.count() + 1;
+    //int rcharcount = w * 1.0 / singlecharw;
     QString tstr;
     QStringList tliststr;
     int tcount = 0;
     for (int i = 0; i < str.count(); i++) {
-        if (tcount == rcharcount) {
+        tstr.append(str.at(i));
+        int widthT = fontmetris.width(tstr) + 5;
+        if (widthT >= w) {
+            tstr.chop(1);
             tliststr.append(tstr);
             tstr.clear();
-            tstr.append(str.at(i));
-            tcount = 1;
+            i--;
         }
-        tstr.append(str.at(i));
-        tcount++;
     }
     tliststr.append(tstr);
 
@@ -144,7 +144,7 @@ void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringLis
                 liststr.append("...");
             } else {
                 tstr = liststr.at(i - 1);
-                tstr.remove(tstr.count() - 3, 3);
+                tstr.chop(3);
                 liststr[i - 1] = tstr + "...";
             }
             break;

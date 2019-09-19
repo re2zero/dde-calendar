@@ -30,6 +30,7 @@
 #include "daywindow.h"
 #include <DPalette>
 #include "scheduledatamanage.h"
+#include "myschceduleview.h"
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -57,6 +58,16 @@ void Calendarmainwindow::slotTheme(int type)
     m_monthWindow->setTheMe(type);
 }
 
+void Calendarmainwindow::openScheduleId(int id)
+{
+    ScheduleDtailInfo out;
+    if (CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(id, out)) {
+        CMySchceduleView dlg(this);
+        dlg.setSchedules(out);
+        dlg.exec();
+
+    }
+}
 void Calendarmainwindow::initUI()
 {
     QFrame *titleframe = new QFrame(this);
@@ -217,15 +228,22 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     }
     m_stackWidget->setCurrentIndex(index);
     switch (index) {
+    case 0: {
+        m_yearwindow->slotReturnTodayUpdate();
+    }
+    break;
     case 1: {
+        m_monthWindow->slotReturnTodayUpdate();
         m_monthWindow->slotupdateSchedule(0);
     }
     break;
     case 2: {
+        m_weekWindow->slotReturnTodayUpdate();
         m_weekWindow->slotupdateSchedule(0);
     }
     break;
     case 3: {
+        m_DayWindow->slotReturnTodayUpdate();
         m_DayWindow->slotupdateSchedule(0);
     }
     break;

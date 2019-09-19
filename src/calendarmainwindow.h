@@ -44,6 +44,7 @@ public:
     Calendarmainwindow();
 public slots:
     void slotTheme(int type);
+    void openScheduleId(int id);
 private:
     void initUI();
     void initConnection();

@@ -319,6 +319,11 @@ void CYearWindow::slottoday()
 void CYearWindow::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
+    if (m_currentdate == QDate::currentDate()) {
+        m_today->setText(tr("Today"));
+    } else {
+        m_today->setText(tr("Return Today"));
+    }
     CaLunarDayInfo info = getCaLunarDayInfo(m_currentdate);
     m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
     m_YearLunarLabel->setText("-" + info.mGanZhiYear + info.mZodiac + "年-");
@@ -388,11 +393,6 @@ void CYearWindow::getDbusData()
     }
     // refresh   lunar info
     if (date == m_currentdate) {
-        if (m_currentdate == QDate::currentDate()) {
-            m_today->setText(tr("Today"));
-        } else {
-            m_today->setText(tr("Return Today"));
-        }
         //更新
         m_YearLunarLabel->setText("-" + currentDayInfo.mGanZhiYear + currentDayInfo.mZodiac + "年-");
         m_YearLunarDayLabel->setText("-" + tr("Lunar") + currentDayInfo.mLunarMonthName + currentDayInfo.mLunarDayName + "-");

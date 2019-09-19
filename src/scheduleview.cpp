@@ -90,7 +90,9 @@ void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
         int i = 0;
         for (; i < info.count(); i++) {
             if ((schedulelist.at(k).beginDateTime > info.at(i).begindate && schedulelist.at(k).beginDateTime < info.at(i).enddate)
-                    || (schedulelist.at(k).endDateTime > info.at(i).begindate && schedulelist.at(k).endDateTime < info.at(i).enddate)) {
+                    || (schedulelist.at(k).endDateTime > info.at(i).begindate && schedulelist.at(k).endDateTime < info.at(i).enddate)
+                    || (schedulelist.at(k).beginDateTime > info.at(i).begindate && schedulelist.at(k).endDateTime < info.at(i).enddate)
+                    || (schedulelist.at(k).beginDateTime < info.at(i).begindate && schedulelist.at(k).endDateTime > info.at(i).enddate) ) {
 
                 break;
             }

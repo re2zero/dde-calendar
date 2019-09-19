@@ -31,10 +31,14 @@ class CalendarAdaptor: public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "com.deepin.Calendar")
     Q_CLASSINFO("D-Bus Introspection", ""
-"  <interface name=\"com.deepin.Calendar\">\n"
-"    <method name=\"RaiseWindow\"/>\n"
-"  </interface>\n"
-        "")
+                "  <interface name=\"com.deepin.Calendar\">\n"
+                "    <method name=\"RaiseWindow\">\n"
+                "    </method>\n"
+                "    <method name=\"openScheduleId\">\n"
+                "      <arg direction=\"in\" type=\"i\" name=\"id\"/>\n"
+                "    </method>\n"
+                "  </interface>\n"
+                "")
 public:
     CalendarAdaptor(QObject *parent);
     virtual ~CalendarAdaptor();
@@ -42,6 +46,7 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void RaiseWindow();
+    void openScheduleId(int id);
 Q_SIGNALS: // SIGNALS
 };
 

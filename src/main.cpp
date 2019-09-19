@@ -161,7 +161,9 @@ int main(int argc, char *argv[])
 
     QDBusConnection dbus = QDBusConnection::sessionBus();
     if (dbus.registerService("com.deepin.Calendar")) {
-        dbus.registerObject("/com/deepin/Calendar", &ww);
+        QDBusConnection::RegisterOptions options = QDBusConnection::ExportAllSlots \
+                                                   | QDBusConnection::ExportAllSignals;
+        dbus.registerObject("/com/deepin/Calendar", &ww, QDBusConnection::ExportAdaptors);
     }
     //监听当前应用主题切换事件
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,

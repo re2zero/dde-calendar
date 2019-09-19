@@ -117,7 +117,9 @@ void CYearView::setFirstWeekday(int weekday)
 void CYearView::updateSelectState()
 {
     m_selectedCell = -1;
-    update();
+    for (int i(0); i != 42; ++i) {
+        m_cellList.at(i)->update();
+    }
 }
 
 void CYearView::setTheMe(int type)
@@ -223,6 +225,7 @@ void CYearView::updateDate()
 
     for (int i(0); i != 42; ++i) {
         m_days[i] = firstDay.addDays(i - day);
+        m_cellList.at(i)->update();
     }
 
     //setSelectedCell(currentIndex);

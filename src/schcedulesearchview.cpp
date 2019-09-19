@@ -219,7 +219,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
         str = tstr + "...";
     }
 
-    painter.drawText(QRect(labelwidth * 0.455 + 9, 6, tilenameW, labelheight - 16), Qt::AlignLeft, str);
+    painter.drawText(QRect(labelwidth * 0.455 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, str);
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
