@@ -56,6 +56,8 @@ void Calendarmainwindow::slotTheme(int type)
     CScheduleDataManage::getScheduleDataManage()->setTheMe(type);
     m_yearwindow->setTheMe(type);
     m_monthWindow->setTheMe(type);
+    m_weekWindow->setTheMe(type);
+    m_DayWindow->setTheMe(type);
 }
 
 void Calendarmainwindow::openScheduleId(int id)

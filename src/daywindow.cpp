@@ -35,7 +35,48 @@ CDayWindow::~CDayWindow()
 {
 
 }
+void CDayWindow::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        DPalette anipa = m_contentBackground->palette();
+        anipa.setColor(DPalette::Background, Qt::white);
+        m_contentBackground->setPalette(anipa);
 
+        DPalette ypa = m_YearLabel->palette();
+        ypa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
+        m_YearLabel->setPalette(ypa);
+
+        DPalette lpa = m_LunarLabel->palette();
+        lpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+        m_LunarLabel->setPalette(lpa);
+
+        DPalette spa = m_SolarDay->palette();
+        spa.setColor(DPalette::WindowText, Qt::red);
+        m_SolarDay->setPalette(spa);
+
+    } else if (type == 2) {
+        DPalette anipa = m_contentBackground->palette();
+        QColor bcolor  = "#FFFFFF";
+        bcolor.setAlphaF(0.05);
+        anipa.setColor(DPalette::Background, bcolor);
+        m_contentBackground->setPalette(anipa);
+
+        DPalette ypa = m_YearLabel->palette();
+        ypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        m_YearLabel->setPalette(ypa);
+
+        DPalette lpa = m_LunarLabel->palette();
+        lpa.setColor(DPalette::WindowText, QColor("#798BA8"));
+        m_LunarLabel->setPalette(lpa);
+
+        DPalette spa = m_SolarDay->palette();
+        spa.setColor(DPalette::WindowText, Qt::red);
+        m_SolarDay->setPalette(spa);
+    }
+    m_daymonthView->setTheMe(type);
+    m_schceduleSearchView->setTheMe(type);
+    m_scheduleView->setTheMe(type);
+}
 void CDayWindow::setDate(QDate date)
 {
     m_currentdate = date;
@@ -65,8 +106,8 @@ void CDayWindow::setLunarVisible(bool state)
 
 void CDayWindow::initUI()
 {
-    m_contentBackground = new QFrame;
-    m_contentBackground->setObjectName("CalendarBackground");
+    m_contentBackground = new DFrame;
+    //m_contentBackground->setObjectName("CalendarBackground");
     DPalette anipa = m_contentBackground->palette();
     anipa.setColor(DPalette::Background, Qt::white);
     m_contentBackground->setAutoFillBackground(true);

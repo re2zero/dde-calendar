@@ -41,9 +41,9 @@ CGraphicsView::CGraphicsView(QWidget *parent)
     m_coorManage = new CScheduleCoorManage;
 
     m_LRPen.setColor(QColor(255, 255, 255));
-    m_LRPen.setStyle(Qt::DotLine);
+    m_LRPen.setStyle(Qt::SolidLine);
     m_TBPen.setColor(QColor(255, 255, 255));
-    m_TBPen.setStyle(Qt::DotLine);
+    m_TBPen.setStyle(Qt::SolidLine);
     m_LRFlag = true;
     m_TBFlag = true;
     m_margins = QMargins(0, 0, 0, 0);
@@ -82,6 +82,30 @@ void CGraphicsView::setMargins(int left, int top, int right, int bottom)
 {
     m_margins = QMargins(left, top, right, bottom);
     setViewportMargins(m_margins);
+}
+
+void CGraphicsView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        m_weekcolor = "#00429A";
+        m_weekcolor.setAlphaF(0.05);
+        QColor linecolor = "#000000";
+        linecolor.setAlphaF(0.1);
+        m_LRPen.setColor(linecolor);
+        m_TBPen.setColor(linecolor);
+        m_LRPen.setStyle(Qt::SolidLine);
+        m_TBPen.setStyle(Qt::SolidLine);
+
+    } else if (type == 2) {
+        m_weekcolor = "#4F9BFF";
+        m_weekcolor.setAlphaF(0.1);
+        QColor linecolor = "#000000";
+        linecolor.setAlphaF(0.1);
+        m_LRPen.setColor(linecolor);
+        m_TBPen.setColor(linecolor);
+    }
+    scene()->update();
+    update();
 }
 
 void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate )
@@ -535,14 +559,14 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     QGraphicsView::paintEvent(event);
 
     QPainter t_painter(viewport());
-    t_painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
+    //t_painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
     int t_width = viewport()->width();
     int t_height = viewport()->height();
     //绘制垂直线
     if (m_TBFlag) {
         t_painter.save();
         t_painter.setPen(m_TBPen);
-        for (int i = 0; i < m_vTBLarge.size(); ++i)
+        for (int i = 0; i < m_vTBLarge.size() - 1; ++i)
             t_painter.drawLine(QPoint(m_vTBLarge[i] - 1, 0), QPoint(m_vTBLarge[i] - 1, t_height));
         t_painter.restore();
         if (m_totalDay == 7) {
@@ -550,9 +574,8 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
             for (int i = 0; i != 7; ++i) {
 
                 int d = checkDay(i - m_firstWeekDay);
-                QColor color("#E6EEF2");
-                color.setAlphaF(0.05);
-                t_painter.setBrush(QBrush(color));
+
+                t_painter.setBrush(QBrush(m_weekcolor));
                 t_painter.setPen(Qt::NoPen);
                 if (d == 6 || d == 7) {
                     t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval, t_height));

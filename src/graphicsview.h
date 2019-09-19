@@ -42,7 +42,7 @@ public:
     {
         return m_graphicsScene;
     }
-
+    void setTheMe(int type = 0);
     void setRange(int w, int h, QDate begindate, QDate enddate);
 
     CScheduleCoorManage *getCoorManage()
@@ -263,6 +263,7 @@ private:
     QAction                       *m_editAction;
     QAction                       *m_deleteAction;
     QAction                       *m_createAction;
+    QColor                        m_weekcolor = "#4F9BFF";
 };
 
 #endif // GRAPHICSVIEW_H

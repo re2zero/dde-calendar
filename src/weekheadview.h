@@ -57,6 +57,7 @@ public:
     {
         return m_cellSelectable;
     }
+    void setTheMe(int type = 0);
     void setWeekDay(QVector<QDate> vDays);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;

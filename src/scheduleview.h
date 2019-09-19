@@ -19,10 +19,12 @@
 #ifndef SCHEDULEVIEW_H
 #define SCHEDULEVIEW_H
 
-#include <QFrame>
+
 #include <QDate>
 #include "schedulestructs.h"
+#include <DFrame>
 
+DWIDGET_USE_NAMESPACE
 typedef struct _tagScheduleclassificationInfo {
     QDateTime begindate;
     QDateTime enddate;
@@ -31,7 +33,7 @@ typedef struct _tagScheduleclassificationInfo {
 
 class CGraphicsView;
 class CSchceduleAllDayView;
-class CScheduleView : public QFrame
+class CScheduleView : public DFrame
 {
     Q_OBJECT
 
@@ -42,6 +44,7 @@ public:
     void setRange(int w, int h, QDate begin, QDate end);
     void setRange(QDate begin, QDate end);
     void setFirstWeekday(int weekday);
+    void setTheMe(int type = 0);
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
@@ -77,6 +80,10 @@ private:
     QDate                     m_beginDate;
     QDate                     m_endDate;
     int                       m_viewType = 0;
+    QColor                    m_linecolor = Qt::lightGray;
+    QColor                    m_weekColor = "#E6EEF2";
+    QColor                    m_ALLDayColor = "#303030";
+    QColor                    m_timeColor = "#7D7D7D";
 };
 
 #endif // SCHEDULEVIEW_H

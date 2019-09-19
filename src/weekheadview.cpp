@@ -53,7 +53,7 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
     hboxLayout->setSpacing(0);
 
     m_monthLabel = new DLabel(this);
-    m_monthLabel->setFixedSize(DDEWeekCalendar::WMCellHeadrWidth - 5, DDEWeekCalendar::WCellHeaderItemHeight);
+    m_monthLabel->setFixedSize(DDEWeekCalendar::WMCellHeadrWidth - 6, DDEWeekCalendar::WCellHeaderItemHeight);
     m_monthLabel->setAlignment(Qt::AlignCenter);
     DPalette monthpa = m_monthLabel->palette();
     QColor textC = monthpa.color(DPalette::Text);
@@ -116,6 +116,52 @@ int CWeekHeadView::getDateType(const QDate &date)
         resultFlag |= SO_MWeekends;
 
     return resultFlag;
+}
+
+void CWeekHeadView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+
+        DPalette monthpa = m_monthLabel->palette();
+        QColor textC = monthpa.color(DPalette::Text);
+        QColor textbC(230, 238, 242);
+        monthpa.setColor(DPalette::WindowText, textC);
+        monthpa.setColor(DPalette::Background, textbC);
+        m_monthLabel->setPalette(monthpa);
+
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = "#6F6F6F";
+        m_currentDayTextColor = "#FFFFFF";
+        m_defaultLunarColor = "#898989";
+        m_weekendsTextColor = "#0887FF";
+        m_currentMonthColor = "#000000";
+        m_backgroudColor = "#E6EEF2";
+        m_solofestivalLunarColor = "#4DFF7272";
+
+
+    } else if (type == 2) {
+
+        DPalette monthpa = m_monthLabel->palette();
+        QColor textbC = "#82AEC1";
+        textbC.setAlphaF(0.1);
+        monthpa.setColor(DPalette::WindowText, "#BF1D63");
+        monthpa.setColor(DPalette::Background, textbC);
+        m_monthLabel->setPalette(monthpa);
+
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = "#C0C6D4";
+        m_currentDayTextColor = "#C0C6D4";
+        m_defaultLunarColor = "#6886BA";
+        m_weekendsTextColor = "#0887FF";
+        m_currentMonthColor = "#000000";
+        m_backgroudColor = "#82AEC1";
+        m_backgroudColor.setAlphaF(0.1);
+        m_solofestivalLunarColor = "#4DFF7272";
+    }
+    for (int i = 0; i != 7; ++i)
+        m_cellList.at(i)->update();
 }
 
 void CWeekHeadView::setWeekDay(QVector<QDate> vDays)

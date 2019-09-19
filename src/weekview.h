@@ -30,6 +30,7 @@ public:
     ~CWeekView();
     void setFirstWeekDay(int weekday);
     void setCurrentDate(const QDate date);
+    void setTheMe(int type = 0);
 public slots:
     void cellClicked(QWidget *cell);
 signals:

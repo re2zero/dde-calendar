@@ -58,12 +58,12 @@ void CWeekWindow::setLunarVisible(bool state)
 
 void CWeekWindow::initUI()
 {
-    m_contentBackground = new QFrame;
-    m_contentBackground->setObjectName("CalendarBackground");
-    DPalette pa = m_contentBackground->palette();
-    pa.setColor(DPalette::Background, Qt::white);
-    m_contentBackground->setAutoFillBackground(true);
-    m_contentBackground->setPalette(pa);
+    m_contentBackground = new DFrame;
+    //m_contentBackground->setObjectName("CalendarBackground");
+    //DPalette pa = m_contentBackground->palette();
+    //pa.setColor(DPalette::Background, Qt::white);
+    //m_contentBackground->setAutoFillBackground(true);
+    //m_contentBackground->setPalette(pa);
 
     // m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
     //                                   "background:white;"
@@ -152,7 +152,7 @@ void CWeekWindow::initUI()
     m_weekHeadView = new CWeekHeadView(this);
     m_scheduleView = new CScheduleView(this);
     m_weekHeadView->setFixedWidth(840);
-    m_scheduleView->setviewMagin(72, 57, 0, 0);
+    m_scheduleView->setviewMagin(73, 57, 0, 0);
     m_scheduleView->setRange(763, 1032, QDate(2019, 8, 12), QDate(2019, 8, 18));
     m_scheduleView->setFixedSize(838, 450);
 
@@ -178,6 +178,73 @@ void CWeekWindow::initConnection()
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentLunarDateChanged, this, &CWeekWindow::slotcurrentDateLunarChanged);
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentDateChanged, this, &CWeekWindow::slotcurrentDateChanged);
     connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CWeekWindow::slotTransitSchedule);
+}
+
+void CWeekWindow::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        DPalette todaypa = m_today->palette();
+        todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+        todaypa.setColor(DPalette::Dark, Qt::white);
+        todaypa.setColor(DPalette::Light, Qt::white);
+        m_today->setPalette(todaypa);
+
+        DPalette prevpa = m_prevButton->palette();
+        prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        m_prevButton->setPalette(prevpa);
+
+        DPalette nextvpa = m_nextButton->palette();
+        nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        m_nextButton->setPalette(nextvpa);
+
+        DPalette pa = m_YearLabel->palette();
+        pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
+        m_YearLabel->setPalette(pa);
+
+        DPalette Lunapa = m_YearLunarLabel->palette();
+        Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+        m_YearLunarLabel->setPalette(Lunapa);
+
+
+        DPalette wpa = m_weekLabel->palette();
+        wpa.setColor(DPalette::WindowText, QColor("#717171"));
+        m_weekLabel->setPalette(wpa);
+    } else if (type == 2) {
+        DPalette todaypa = m_today->palette();
+        todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
+        todaypa.setColor(DPalette::Dark, Qt::black);
+        todaypa.setColor(DPalette::Light, Qt::black);
+        m_today->setPalette(todaypa);
+
+        DPalette prevpa = m_prevButton->palette();
+        //prevpa.setColor(DPalette::Dark, QColor("#484848"));
+        // prevpa.setColor(DPalette::Light, QColor("#414141"));
+        //prevpa.setColor(DPalette::Dark, Qt::black);
+        //prevpa.setColor(DPalette::Light, Qt::black);
+        //m_prevButton->setPalette(prevpa);
+
+        DPalette nextvpa = m_nextButton->palette();
+        //nextvpa.setColor(DPalette::Dark, QColor("#484848"));
+        //nextvpa.setColor(DPalette::Light, QColor("#414141"));
+        //m_nextButton->setPalette(nextvpa);
+
+        DPalette pa = m_YearLabel->palette();
+        pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        m_YearLabel->setPalette(pa);
+
+        DPalette Lunapa = m_YearLunarLabel->palette();
+        Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
+        m_YearLunarLabel->setPalette(Lunapa);
+
+        DPalette wpa = m_weekLabel->palette();
+        wpa.setColor(DPalette::WindowText, QColor("#717171"));
+        m_weekLabel->setPalette(wpa);
+    }
+    m_weekview->setTheMe(type);
+    m_weekHeadView->setTheMe(type);
+    m_scheduleView->setTheMe(type);
 }
 
 void CWeekWindow::slotReturnTodayUpdate()

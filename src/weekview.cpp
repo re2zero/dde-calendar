@@ -70,6 +70,22 @@ void CWeekView::setCurrentDate(const QDate date)
     update();
 }
 
+void CWeekView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        m_defaultTextColor = Qt::black;
+        m_backgrounddefaultColor = Qt::white;
+        m_currentDayTextColor = Qt::white;
+        m_backgroundcurrentDayColor = "#0081FF";
+    } else if (type == 2) {
+        m_defaultTextColor = "#C0C6D4";
+        m_backgrounddefaultColor = "#FFFFFF";
+        m_backgrounddefaultColor.setAlphaF(0.05);
+        m_currentDayTextColor = "#B8D3FF";
+        m_backgroundcurrentDayColor = "#0081FF";
+    }
+}
+
 void CWeekView::paintCell(QWidget *cell)
 {
     const QRect rect(0, 0, DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);

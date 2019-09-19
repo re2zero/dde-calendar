@@ -32,6 +32,7 @@
 #include "constants.h"
 #include "dayhuangliview.h"
 #include <DPalette>
+#include <DHorizontalLine>
 DGUI_USE_NAMESPACE
 CDayMonthView::CDayMonthView(QWidget *parent) : DWidget(parent)
 {
@@ -74,6 +75,111 @@ void CDayMonthView::setLunarVisible(bool visible)
 {
     m_huanglistate = visible;
     update();
+}
+
+void CDayMonthView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        DPalette todaypa = m_today->palette();
+        todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+        todaypa.setColor(DPalette::Dark, Qt::white);
+        todaypa.setColor(DPalette::Light, Qt::white);
+        m_today->setPalette(todaypa);
+
+        DPalette pa = m_currentMouth->palette();
+        pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
+        m_currentMouth->setPalette(pa);
+
+        DPalette daypa = m_currentDay->palette();
+        daypa.setColor(DPalette::WindowText, QColor("#2CA7F8"));
+        m_currentDay->setPalette(daypa);
+
+
+        DPalette wpa = m_currentWeek->palette();
+        wpa.setColor(DPalette::WindowText, QColor("#414D68"));
+        m_currentWeek->setPalette(wpa);
+
+        m_currentYear->setPalette(wpa);
+
+        DPalette hpa = m_currentLuna->palette();
+        hpa.setColor(DPalette::WindowText, QColor("#414D68"));
+        m_currentLuna->setPalette(hpa);
+
+        QFont hlabelF;
+        hlabelF.setFamily("PingFangSC-Semibold");
+        hlabelF.setPixelSize(12);
+
+        m_yiLabel->setbackgroundColor(QColor("#75C18E"));
+        m_yiLabel->setTextInfo(QColor("#7B7B7B"), hlabelF);
+        m_yiLabel->update();
+
+        m_jiLabel->setbackgroundColor(QColor("#C17575"));
+        m_jiLabel->setTextInfo(QColor("#7B7B7B"), hlabelF);
+        m_jiLabel->update();
+
+        m_topBorderColor = Qt::red;
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = Qt::black;
+        m_currentDayTextColor = "#2ca7f8";
+        m_weekendsTextColor = Qt::black;
+        m_selectedTextColor = Qt::white;
+        m_festivalTextColor = Qt::black;
+        m_notCurrentTextColor = "#b2b2b2";
+
+
+    } else if (type == 2) {
+        DPalette todaypa = m_today->palette();
+        todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
+        todaypa.setColor(DPalette::Dark, "#484848");
+        todaypa.setColor(DPalette::Light, "#414141");
+        m_today->setPalette(todaypa);
+
+        DPalette pa = m_currentMouth->palette();
+        pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        m_currentMouth->setPalette(pa);
+
+        DPalette daypa = m_currentDay->palette();
+        daypa.setColor(DPalette::WindowText, QColor("#0081FF"));
+        m_currentDay->setPalette(daypa);
+
+
+        DPalette wpa = m_currentWeek->palette();
+        wpa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        m_currentWeek->setPalette(wpa);
+
+        m_currentYear->setPalette(wpa);
+
+        DPalette hpa = m_currentLuna->palette();
+        hpa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        m_currentLuna->setPalette(hpa);
+
+        QFont hlabelF;
+        hlabelF.setFamily("PingFangSC-Semibold");
+        hlabelF.setPixelSize(12);
+
+        m_yiLabel->setbackgroundColor(QColor("#2F8C4D"));
+        m_yiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
+        m_yiLabel->update();
+
+        m_jiLabel->setbackgroundColor(QColor("#A43B3B"));
+        m_jiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
+        m_jiLabel->update();
+
+        m_topBorderColor = Qt::red;
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = "#C0C6D4";
+        m_currentDayTextColor = "#0081FF";
+        m_weekendsTextColor = Qt::black;
+        m_selectedTextColor = "#B8D3FF";
+        m_festivalTextColor = Qt::black;
+        m_notCurrentTextColor = "#C0C6D4";
+    }
+
+    for (int i(0); i != 42; ++i) {
+        m_cellList.at(i)->update();
+    }
 }
 void CDayMonthView::setCurrentDate(const QDate date, int type)
 {
@@ -289,17 +395,21 @@ void CDayMonthView::initUI()
     mainLayout->setSpacing(0);
     mainLayout->addLayout(upLayout);
     mainLayout->addLayout(midLayout);
-    QFrame *frame = new QFrame(this);
-    frame->setFrameShape(QFrame::HLine);
-    frame->setFrameShadow(QFrame::Plain);
-    frame->setLineWidth(2);
-    frame->setFixedSize(241, 2);
+
+    DHorizontalLine *t_line = new DHorizontalLine;
+
+    //QFrame *frame = new QFrame(this);
+    //frame->setFrameShape(QFrame::HLine);
+    //frame->setFrameShadow(QFrame::Plain);
+    //frame->setLineWidth(2);
+    //frame->setFixedSize(241, 2);
+    t_line->setFixedSize(241, 2);
     QHBoxLayout *hlineLayout = new QHBoxLayout;
     hlineLayout->setMargin(0);
     hlineLayout->setSpacing(0);
     hlineLayout->setContentsMargins(0, 0, 0, 3);
     hlineLayout->addStretch(1);
-    hlineLayout->addWidget(frame);
+    hlineLayout->addWidget(t_line);
     hlineLayout->addStretch(1);
     mainLayout->addLayout(hlineLayout);
     mainLayout->addLayout(yidownLayout);

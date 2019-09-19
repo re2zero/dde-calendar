@@ -26,6 +26,7 @@
 #include <DImageButton>
 #include <DPushButton>
 #include <DLabel>
+#include <DFrame>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
@@ -44,6 +45,7 @@ public:
     void setLunarVisible(bool state);
     void initUI();
     void initConnection();
+    void setTheMe(int type = 0);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
@@ -62,7 +64,7 @@ private slots:
     void slotcurrentDateChanged(QDate date);
 private:
     CWeekHeadView     *m_weekHeadView; //周视图头
-    QFrame *m_contentBackground = nullptr;
+    DFrame *m_contentBackground = nullptr;
     DImageButton      *m_prevButton = nullptr;
     DImageButton      *m_nextButton = nullptr;
     DPushButton       *m_today = nullptr;

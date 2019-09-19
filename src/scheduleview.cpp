@@ -31,11 +31,9 @@ static int hourTextTMagin = 48;
 static int hourTextWidth = 50;
 static int hourTextHeight = 20;
 CScheduleView::CScheduleView(QWidget *parent, int viewType)
-    : QFrame(parent), m_viewType(viewType)
+    : DFrame(parent), m_viewType(viewType)
 {
-    DPalette palette(this->palette());
-    palette.setColor(DPalette::Background, Qt::white);
-    this->setPalette(palette);
+
     initUI();
     initConnection();
 }
@@ -71,6 +69,37 @@ void CScheduleView::setFirstWeekday(int weekday)
 {
     m_firstWeekDay = weekday;
     m_graphicsView->setFirstWeekday(weekday);
+}
+
+void CScheduleView::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        DPalette palette(this->palette());
+        palette.setColor(DPalette::Background, "#FFFFFF");
+        this->setPalette(palette);
+        m_linecolor = "#000000";
+        m_linecolor.setAlphaF(0.1);
+        m_weekColor = "#00429A";
+        m_weekColor.setAlphaF(0.05);
+        m_ALLDayColor = "#303030";
+        m_timeColor = "#7D7D7D";
+
+    } else if (type == 2) {
+        DPalette palette(this->palette());
+        QColor tbcolor = "#FFFFFF";
+        tbcolor.setAlphaF(0.05);
+        palette.setColor(DPalette::Background, tbcolor);
+        this->setPalette(palette);
+        m_linecolor = "#000000";
+        m_linecolor.setAlphaF(0.1);
+        m_weekColor = "#4F9BFF";
+        m_weekColor.setAlphaF(0.1);
+        m_ALLDayColor = "#7D7D7D";
+        m_timeColor = "#7D7D7D";
+    }
+    m_graphicsView->setTheMe(type);
+    m_alldaylist->setTheMe(type);
+    update();
 }
 
 void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info)
@@ -194,7 +223,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.setFont(font);
 
     painter.setPen(Qt::SolidLine);
-    painter.setPen(Qt::lightGray);
+    painter.setPen(m_timeColor);
     for (int i = 0; i < m_vPos.size(); i++) {
         if (m_vHours[i] == 0) continue;
         if (m_vHours[i] > 12) {
@@ -207,35 +236,38 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.save();
 
     font.setPixelSize(14);
-    painter.setPen(QColor("#303030"));
+    painter.setPen(m_ALLDayColor);
     painter.drawText(QRect(0, 0, m_leftMagin - 2, m_topMagin - 2), Qt::AlignCenter, tr("ALL DAY"));
     painter.restore();
 
-    painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
+    //painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
     int t_width = width();
     int t_height = height();
     painter.save();
     painter.setPen(Qt::SolidLine);
-    painter.setPen(Qt::lightGray);
+    painter.setPen(m_linecolor);
     painter.drawLine(QPoint(0, m_topMagin), QPoint(t_width, m_topMagin));
     painter.restore();
     int intenval = (t_width - m_leftMagin) / m_TotalDay;
     if (m_TotalDay > 1) {
         painter.save();
-        for (int i = 0; i < m_TotalDay; i++) {
-            painter.drawLine(QPoint(m_leftMagin + i * intenval, 1), QPoint(m_leftMagin  + i * intenval, m_topMagin));
+        painter.setPen(Qt::SolidLine);
+        painter.setPen(m_linecolor);
+        for (int i = 1; i < m_TotalDay; i++) {
+            painter.drawLine(QPoint(m_leftMagin + i * intenval + 1, 1), QPoint(m_leftMagin  + i * intenval, m_topMagin));
         }
         painter.restore();
         painter.save();
         for (int i = 0; i != 7; ++i) {
 
             int d = checkDay(i - m_firstWeekDay);
-            QColor color("#E6EEF2");
-            color.setAlphaF(0.05);
-            painter.setBrush(color);
+            painter.setBrush(m_weekColor);
             painter.setPen(Qt::NoPen);
-            if (d == 6 || d == 7) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval, 0, intenval, m_topMagin));
+            if (d == 6 ) {
+                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, intenval, m_topMagin));
+            }
+            if (d == 7) {
+                painter.drawRect(QRect(m_leftMagin + i * intenval, 0, intenval + 1, m_topMagin));
             }
         }
         painter.restore();

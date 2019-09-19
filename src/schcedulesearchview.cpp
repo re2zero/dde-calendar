@@ -265,9 +265,10 @@ void CSchceduleSearchView::setTheMe(int type)
         m_bBackgroundcolor.setAlphaF(0.05);
         m_btimecolor = "#6D7C88";
         m_bttextcolor = "#C0C6D4";
-        m_lBackgroundcolor = Qt::white;
+        m_lBackgroundcolor = m_bBackgroundcolor;
         m_ltextcolor = "#C0C6D4";
     }
+    updateDateShow();
 }
 
 void CSchceduleSearchView::updateDateShow()

@@ -51,6 +51,7 @@ public:
     {
         return m_currentDate;
     }
+    void setTheMe(int type = 0);
 signals:
     void dateSelected(const QDate date, const CaHuangLiDayInfo &detail) const;
     void signalcurrentDateChanged(QDate date);

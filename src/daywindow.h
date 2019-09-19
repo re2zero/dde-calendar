@@ -22,8 +22,8 @@
 #include <QWidget>
 #include <DMainWindow>
 #include <QDate>
-#include <QLabel>
 #include <DLabel>
+#include <DFrame>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
@@ -40,6 +40,7 @@ public:
     void setSearchWFlag(bool flag);
     void setSearchText(QString str);
     void setLunarVisible(bool state);
+    void setTheMe(int type = 0);
 private:
     void initUI();
     void initConnection();
@@ -58,7 +59,7 @@ private slots:
     void slotcurrentDateChanged(QDate date);
 private:
     CDayMonthView     *m_daymonthView;
-    QFrame *m_contentBackground = nullptr;
+    DFrame *m_contentBackground = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_LunarLabel;
