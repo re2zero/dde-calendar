@@ -55,6 +55,8 @@ void CMySchceduleView::slotEditBt()
 
 void CMySchceduleView::slotDeleteBt()
 {
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
     if (m_scheduleInfo.rpeat == 0) {
         DMessageBox msgBox;
         msgBox.setWindowFlags(Qt::FramelessWindowHint);
@@ -64,7 +66,14 @@ void CMySchceduleView::slotDeleteBt()
         DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
         DPushButton *yesButton = msgBox.addButton(tr("Delete Schedule"), DMessageBox::YesRole);
         DPalette pa = yesButton->palette();
-        pa.setColor(DPalette::ButtonText, Qt::red);
+
+        if (themetype == 0 || themetype == 1) {
+            pa.setColor(DPalette::ButtonText, Qt::red);
+
+        } else {
+            pa.setColor(DPalette::ButtonText, "#FF5736");
+
+        }
         yesButton->setPalette(pa);
         msgBox.exec();
 
@@ -85,9 +94,15 @@ void CMySchceduleView::slotDeleteBt()
             DPushButton *yesallbutton = msgBox.addButton(tr("All Deleted"), DMessageBox::YesRole);
             DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
             DPalette pa = yesButton->palette();
-            pa.setColor(DPalette::ButtonText, Qt::white);
-            pa.setColor(DPalette::Dark, QColor("#0098FF"));
-            pa.setColor(DPalette::Light, QColor("#0098FF"));
+            if (themetype == 0 || themetype == 1) {
+                pa.setColor(DPalette::ButtonText, Qt::white);
+                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                pa.setColor(DPalette::Light, QColor("#0098FF"));
+            } else {
+                pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                pa.setColor(DPalette::Light, QColor("#004C9C"));
+            }
             yesButton->setPalette(pa);
             msgBox.exec();
 
@@ -112,9 +127,15 @@ void CMySchceduleView::slotDeleteBt()
             DPushButton *yesallbutton = msgBox.addButton(tr("Delete all schedule in the future"), DMessageBox::YesRole);
             DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
             DPalette pa = yesButton->palette();
-            pa.setColor(DPalette::ButtonText, Qt::white);
-            pa.setColor(DPalette::Dark, QColor("#0098FF"));
-            pa.setColor(DPalette::Light, QColor("#0098FF"));
+            if (themetype == 0 || themetype == 1) {
+                pa.setColor(DPalette::ButtonText, Qt::white);
+                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                pa.setColor(DPalette::Light, QColor("#0098FF"));
+            } else {
+                pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                pa.setColor(DPalette::Light, QColor("#004C9C"));
+            }
             yesButton->setPalette(pa);
             msgBox.exec();
 
@@ -144,84 +165,81 @@ void CMySchceduleView::slotDeleteBt()
 
 void CMySchceduleView::initUI()
 {
-    QFrame *titleframe = new QFrame(this);
-    titleframe->setObjectName("TitleBar");
-    titleframe->setMinimumWidth(220);
-    titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QHBoxLayout *titleLayout = new QHBoxLayout;
-    titleLayout->setMargin(0);
-    titleLayout->setSpacing(0);
-    titleLayout->addSpacing(10);
     m_icon = new DLabel(this);
-    m_icon->setFixedSize(32, 32);
+    m_icon->setFixedSize(30, 30);
     m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
                       .scaled(m_icon->size() * devicePixelRatioF()));
-    titleLayout->addWidget(m_icon);
-    titleLayout->addSpacing(114);
+    m_icon->move(11, 10);
     m_Title = new DLabel(this);
-    m_Title->setFixedSize(70, 25);
-    m_Title->setAlignment(Qt::AlignCenter);
-    titleLayout->addWidget(m_Title);
-    titleLayout->addStretch();
+    m_Title->setFixedSize(108, 51);
+    m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+
     QFont labelTitle;
     labelTitle.setFamily("SourceHanSansSC-Bold");
     labelTitle.setPixelSize(17);
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
     DPalette titlepa = m_Title->palette();
-    titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
+    if (themetype == 0 || themetype == 1) {
+        titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
+
+    } else {
+        titlepa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+    }
 
     m_Title->setPalette(titlepa);
     m_Title->setFont(labelTitle);
     m_Title->setText(tr("My Schcedule"));
-    titleframe->setLayout(titleLayout);
-    titleframe->move(10, 9);
+    m_Title->move(136, 0);
 
 
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(20, 10, 10, 0);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
 
     m_schceduleLabel = new DLabel(this);
-    m_schceduleLabel->setFixedHeight(22);
+    m_schceduleLabel->setFixedHeight(26);
     m_schceduleLabel->setAlignment(Qt::AlignCenter);
     QFont labelF;
     labelF.setFamily("SourceHanSansSC-Medium");
     labelF.setPixelSize(14);
     DPalette wpa = m_schceduleLabel->palette();
-    wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
+    if (themetype == 0 || themetype == 1) {
+        wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
+
+    } else {
+        wpa.setColor(DPalette::WindowText, QColor("#A8B7D1"));
+    }
     m_schceduleLabel->setPalette(wpa);
     m_schceduleLabel->setFont(labelF);
-    mainLayout->addWidget(m_schceduleLabel, 2);
+    mainLayout->addWidget(m_schceduleLabel);
 
-    QFrame *lineframe = new QFrame(this);
-    lineframe->setFrameShape(QFrame::HLine);
-    lineframe->setFrameShadow(QFrame::Plain);
-    lineframe->setLineWidth(2);
-    lineframe->setFixedSize(360, 2);
-    QHBoxLayout *hlineLayout = new QHBoxLayout;
-    hlineLayout->setMargin(0);
-    hlineLayout->setSpacing(0);
-    hlineLayout->setContentsMargins(0, 0, 0, 3);
-    hlineLayout->addStretch(1);
-    hlineLayout->addWidget(lineframe);
-    hlineLayout->addStretch(1);
-    mainLayout->addLayout(hlineLayout);
 
     m_timeLabel = new DLabel(this);
-    m_timeLabel->setFixedHeight(22);
+    m_timeLabel->setFixedHeight(26);
     m_timeLabel->setAlignment(Qt::AlignCenter);
     QFont labelT;
     labelT.setFamily("SourceHanSansSC-Bold");
     labelT.setPixelSize(14);
     DPalette tpa = m_timeLabel->palette();
-    tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
+
+
+    if (themetype == 0 || themetype == 1) {
+        tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
+    } else {
+        tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
+    }
+
+
 
     m_timeLabel->setPalette(tpa);
     m_timeLabel->setFont(labelT);
-    mainLayout->addWidget(m_timeLabel, 2);
+    mainLayout->addWidget(m_timeLabel);
 
-    QFrame *btframe = new QFrame(this);
+    DVerticalLine *btframe = new DVerticalLine(this);
+    btframe->setFixedSize(3, 28);
     QHBoxLayout *hBtLayout = new QHBoxLayout;
     hBtLayout->setMargin(0);
     hBtLayout->setSpacing(0);
@@ -229,29 +247,26 @@ void CMySchceduleView::initUI()
     // hBtLayout->addStretch();
     m_editBt = new DPushButton(tr("Edit"));
     DPalette pa = m_editBt->palette();
-    pa.setColor(DPalette::ButtonText, Qt::white);
-    pa.setColor(DPalette::Dark, QColor("#0098FF"));
-    pa.setColor(DPalette::Light, QColor("#0098FF"));
+    if (themetype == 0 || themetype == 1) {
+        pa.setColor(DPalette::ButtonText, Qt::white);
+        pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+        pa.setColor(DPalette::Light, QColor("#0098FF"));
+    } else {
+        pa.setColor(DPalette::ButtonText, "#B8D3FF");
+        pa.setColor(DPalette::Dark, QColor("#0056C1"));
+        pa.setColor(DPalette::Light, QColor("#004C9C"));
+    }
     m_editBt->setPalette(pa);
+    m_editBt->setFixedSize(170, 36);
     m_deleteBt = new DPushButton(tr("Delete"));
+    m_deleteBt->setFixedSize(170, 36);
     hBtLayout->addWidget(m_deleteBt);
-
-    QFrame *vlineframe = new QFrame(this);
-    vlineframe->setFrameShape(QFrame::VLine);
-    vlineframe->setFrameShadow(QFrame::Plain);
-    vlineframe->setLineWidth(2);
-    //vlineframe->setFixedSize(300, 2);
-    hBtLayout->addWidget(vlineframe);
+    hBtLayout->addWidget(btframe);
     hBtLayout->addWidget(m_editBt);
-    btframe->setLayout(hBtLayout);
-    mainLayout->addWidget(btframe, 1);
-    QWidget *gwi = new QWidget;
-    QVBoxLayout *tlayout = new QVBoxLayout;
-    tlayout->setMargin(0);
-    tlayout->setSpacing(0);
-    tlayout->addLayout(mainLayout);
-    gwi->setLayout(tlayout);
-    addContent(gwi);
+    mainLayout->addLayout(hBtLayout);
+    DFrame *gwi = new DFrame(this);
+    gwi->setLayout(mainLayout);
+    gwi->setGeometry(0, 51, 380, 110);
 }
 
 void CMySchceduleView::initConnection()

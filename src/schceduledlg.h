@@ -99,6 +99,8 @@ private:
     //CCalendarTimeEidt                *m_eCalendarTimeEidt;
     CCustomCalendarWidget            *m_bCustomDateW;
     CCustomCalendarWidget            *m_eCustomDateW;
+    DFrame                           *m_gwi;
+    DLabel                           *m_titleLabel;
 private:
     ScheduleInfo                     m_scheduleInfo;//日程
     ScheduleDtailInfo                m_scheduleDtailInfo;

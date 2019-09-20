@@ -36,16 +36,16 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
     initUI();
     initConnection();
     if (type == 1) {
-        setTitle(tr("Create Schcedule"));
+        m_titleLabel->setText(tr("Create Schcedule"));
         m_beginDateEdit->setDate(QDate::currentDate());
         m_beginTimeEdit->setTime(QTime::currentTime());
         m_endDateEdit->setDate(QDate::currentDate());
         m_endTimeEdit->setTime(QTime::currentTime().addSecs(3600));
     } else {
-        setTitle(tr("Edit Schcedule"));
+        m_titleLabel->setText(tr("Edit Schcedule"));
     }
     setFocusPolicy(Qt::WheelFocus);
-    setFixedSize(438, 526);
+    setFixedSize(438, 480);
 }
 
 void CSchceduleDlg::setData(const ScheduleInfo &info)
@@ -99,6 +99,8 @@ void CSchceduleDlg::slotCancelBt()
 
 void CSchceduleDlg::slotOkBt()
 {
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
     ScheduleDtailInfo scheduleDtailInfo = m_scheduleDtailInfo;
     QDateTime beginDateTime, endDateTime;
     beginDateTime.setDate(m_beginDateEdit->date());
@@ -196,7 +198,13 @@ void CSchceduleDlg::slotOkBt()
                 DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
                 DPushButton *yesButton = msgBox.addButton(tr("All Changes"), DMessageBox::YesRole);
                 DPalette pa = yesButton->palette();
-                pa.setColor(DPalette::ButtonText, Qt::red);
+                if (themetype == 0 || themetype == 1) {
+                    pa.setColor(DPalette::ButtonText, Qt::red);
+
+                } else {
+                    pa.setColor(DPalette::ButtonText, "#FF5736");
+
+                }
                 yesButton->setPalette(pa);
                 msgBox.exec();
 
@@ -215,7 +223,13 @@ void CSchceduleDlg::slotOkBt()
                 DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
                 DPushButton *yesButton = msgBox.addButton(tr("All Changes"), DMessageBox::YesRole);
                 DPalette pa = yesButton->palette();
-                pa.setColor(DPalette::ButtonText, Qt::red);
+                if (themetype == 0 || themetype == 1) {
+                    pa.setColor(DPalette::ButtonText, Qt::red);
+
+                } else {
+                    pa.setColor(DPalette::ButtonText, "#FF5736");
+
+                }
                 yesButton->setPalette(pa);
                 msgBox.exec();
 
@@ -235,9 +249,15 @@ void CSchceduleDlg::slotOkBt()
                     DPushButton *yesallbutton = msgBox.addButton(tr("ALL"), DMessageBox::YesRole);
                     DPushButton *yesButton = msgBox.addButton(tr("Only Schedule"), DMessageBox::YesRole);
                     DPalette pa = yesButton->palette();
-                    pa.setColor(DPalette::ButtonText, Qt::white);
-                    pa.setColor(DPalette::Dark, QColor("#0098FF"));
-                    pa.setColor(DPalette::Light, QColor("#0098FF"));
+                    if (themetype == 0 || themetype == 1) {
+                        pa.setColor(DPalette::ButtonText, Qt::white);
+                        pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                        pa.setColor(DPalette::Light, QColor("#0098FF"));
+                    } else {
+                        pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                        pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                        pa.setColor(DPalette::Light, QColor("#004C9C"));
+                    }
                     yesButton->setPalette(pa);
                     msgBox.exec();
 
@@ -269,9 +289,15 @@ void CSchceduleDlg::slotOkBt()
                     DPushButton *yesallbutton = msgBox.addButton(tr("All future Schedule"), DMessageBox::YesRole);
                     DPushButton *yesButton = msgBox.addButton(tr("Only Schedule"), DMessageBox::YesRole);
                     DPalette pa = yesButton->palette();
-                    pa.setColor(DPalette::ButtonText, Qt::white);
-                    pa.setColor(DPalette::Dark, QColor("#0098FF"));
-                    pa.setColor(DPalette::Light, QColor("#0098FF"));
+                    if (themetype == 0 || themetype == 1) {
+                        pa.setColor(DPalette::ButtonText, Qt::white);
+                        pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                        pa.setColor(DPalette::Light, QColor("#0098FF"));
+                    } else {
+                        pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                        pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                        pa.setColor(DPalette::Light, QColor("#004C9C"));
+                    }
                     yesButton->setPalette(pa);
                     msgBox.exec();
 
@@ -389,10 +415,14 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
 
 void CSchceduleDlg::slotbRpeatactivated(int index)
 {
-    if (index > 0)
+    if (index > 0) {
         m_endrepeatWidget->setVisible(true);
-    else {
+        setFixedSize(438, 526);
+        m_gwi->setGeometry(0, 68, 438, 458);
+    } else {
         m_endrepeatWidget->setVisible(false);
+        setFixedSize(438, 480);
+        m_gwi->setGeometry(0, 68, 438, 412);
     }
 }
 
@@ -412,27 +442,56 @@ void CSchceduleDlg::sloteRpeatactivated(int index)
 
 void CSchceduleDlg::initUI()
 {
+    m_titleLabel = new DLabel(this);
+    QFont titlelabelF;
+    titlelabelF.setFamily("SourceHanSansSC-Medium");
+    titlelabelF.setPixelSize(14);
+    QColor btitleColor = "#000000";
+    btitleColor.setAlphaF(0.01);
+    DPalette titlepa = m_titleLabel->palette();
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+    if (themetype == 0 || themetype == 1) {
+        titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
+        titlepa.setColor(DPalette::Window, btitleColor);
+    } else {
+        titlepa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        titlepa.setColor(DPalette::Window, btitleColor);
+    }
+    m_titleLabel->setPalette(titlepa);
+    m_titleLabel->setFixedSize(108, 51);
+    m_titleLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+    //m_titleLabel->setGeometry(165, 0, 108, 51);
+    m_titleLabel->move(165, 0);
+
+
+    setSpacing(0);
     QFont mlabelF;
     mlabelF.setFamily("SourceHanSansSC-Medium");
     mlabelF.setPixelSize(14);
-    DPalette pa;
-    pa.setColor(DPalette::WindowText, QColor("#414D68"));
+    DPalette pa =  m_titleLabel->palette();
+    if (themetype == 0 || themetype == 1) {
+        pa.setColor(DPalette::WindowText, QColor("#414D68"));
+    } else {
+        pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+    }
+    // pa.setColor(DPalette::WindowText, QColor("#414D68"));
 
     QVBoxLayout *maintlayout = new QVBoxLayout;
     QHBoxLayout *typelayout  = new QHBoxLayout;
     typelayout->setSpacing(0);
     typelayout->setMargin(0);
-    maintlayout->setContentsMargins(20, 10, 20, 0);
+    maintlayout->setContentsMargins(20, 0, 20, 10);
     m_typeLabel = new DLabel(tr("Type:"));
     m_typeLabel->setFont(mlabelF);
     m_typeLabel->setPalette(pa);
-    m_typeLabel->setAlignment(Qt::AlignLeft);
-    m_typeLabel->setFixedWidth(78);
+    m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_typeLabel->setFixedSize(78, 36);
     m_typeComBox = new DComboBox ();
+    m_typeComBox->setFixedSize(319, 36);
     m_typeComBox->insertItem(0, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Work"));
     m_typeComBox->insertItem(1, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Life"));
     m_typeComBox->insertItem(2, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Other"));
-    typelayout->addWidget(m_typeLabel, 0, Qt::AlignVCenter);
+    typelayout->addWidget(m_typeLabel);
     typelayout->addWidget(m_typeComBox);
     maintlayout->addLayout(typelayout);
 
@@ -445,14 +504,24 @@ void CSchceduleDlg::initUI()
     m_contentLabel = new DLabel(tr("Content:"));
     m_contentLabel->setFont(mlabelF);
     m_contentLabel->setPalette(pa);
-    m_contentLabel->setAlignment(Qt::AlignLeft);
+    m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_contentLabel->setFixedWidth(78);
-    conttelabellayout->addWidget(m_contentLabel, 0, Qt::AlignVCenter);
+    conttelabellayout->addWidget(m_contentLabel);
     conttelabellayout->addStretch();
     m_textEdit = new DTextEdit(this);
+    m_textEdit->setFixedSize(319, 86);
     m_textEdit->setTextBackgroundColor(Qt::white);
-    DPalette tpa;
-    tpa.setColor(DPalette::Background, Qt::white);
+    DPalette tpa = m_textEdit->palette();
+    if (themetype == 0 || themetype == 1) {
+        QColor conttelc("#000000");
+        conttelc.setAlphaF(0.08);
+        tpa.setColor(DPalette::Background, conttelc);
+    } else {
+        QColor conttelc("#FFFFFF");
+        conttelc.setAlphaF(0.15);
+        tpa.setColor(DPalette::Background, conttelc);
+    }
+
     m_textEdit->setPalette(tpa);
     contentLabellayout->addLayout(conttelabellayout);
     contentLabellayout->addWidget(m_textEdit);
@@ -464,10 +533,10 @@ void CSchceduleDlg::initUI()
     m_adllDayLabel = new DLabel(tr("All Day:"));
     m_adllDayLabel->setFont(mlabelF);
     m_adllDayLabel->setPalette(pa);
-    m_adllDayLabel->setAlignment(Qt::AlignLeft);
+    m_adllDayLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_adllDayLabel->setFixedWidth(78);
     m_allDayCheckbox = new DCheckBox(this);
-    alldayLabellayout->addWidget(m_adllDayLabel, 0, Qt::AlignVCenter);
+    alldayLabellayout->addWidget(m_adllDayLabel);
     alldayLabellayout->addWidget(m_allDayCheckbox);
     maintlayout->addLayout(alldayLabellayout);
 
@@ -477,12 +546,13 @@ void CSchceduleDlg::initUI()
     m_beginTimeLabel = new DLabel (tr("Begin Time:"));
     m_beginTimeLabel->setFont(mlabelF);
     m_beginTimeLabel->setPalette(pa);
-    m_beginTimeLabel->setAlignment(Qt::AlignLeft);
-    m_beginTimeLabel->setFixedWidth(78);
+    m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_beginTimeLabel->setFixedSize(78, 36);
     m_beginDateEdit = new QDateEdit(this);
-    m_beginDateEdit->setFixedHeight(36);
+    m_beginDateEdit->setFixedSize(200, 36);
+
     m_beginTimeEdit = new CTimeEdit(this);
-    m_beginTimeEdit->setFixedHeight(36);
+    m_beginTimeEdit->setFixedSize(109, 36);
     m_beginDateEdit->setCalendarPopup(true);
     m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
     //QHBoxLayout *begintimeelayout  = new QHBoxLayout;
@@ -491,9 +561,11 @@ void CSchceduleDlg::initUI()
     //begintimeelayout->setMargin(0);
     //begintimeelayout->setSpacing(0);
     //begintimeelayout->addStretch();
-    beginLabellayout->addWidget(m_beginTimeLabel, 1, Qt::AlignVCenter);
-    beginLabellayout->addWidget(m_beginDateEdit, 2);
-    beginLabellayout->addWidget(m_beginTimeEdit, 2);
+    beginLabellayout->addWidget(m_beginTimeLabel);
+    beginLabellayout->addWidget(m_beginDateEdit);
+    beginLabellayout->addSpacing(10);
+    beginLabellayout->addWidget(m_beginTimeEdit);
+    beginLabellayout->addStretch();
     // beginLabellayout->addLayout(begintimeelayout);
     maintlayout->addLayout(beginLabellayout);
 
@@ -504,22 +576,22 @@ void CSchceduleDlg::initUI()
     m_endTimeLabel = new DLabel (tr("End Time:"));
     m_endTimeLabel->setFont(mlabelF);
     m_endTimeLabel->setPalette(pa);
-    m_endTimeLabel->setAlignment(Qt::AlignLeft);
-    m_endTimeLabel->setFixedWidth(78);
+    m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_endTimeLabel->setFixedSize(78, 36);
     m_endDateEdit = new QDateEdit(this);
-    m_endDateEdit->setFixedHeight(36);
+    m_endDateEdit->setFixedSize(200, 36);
     m_endTimeEdit = new CTimeEdit(this);
-    m_endTimeEdit->setFixedHeight(36);
+    m_endTimeEdit->setFixedSize(109, 36);
     m_endDateEdit->setCalendarPopup(true);
     m_endDateEdit->setDisplayFormat("yyyy-MM-dd");
-    QHBoxLayout *endtimeelayout  = new QHBoxLayout;
-    endtimeelayout->setMargin(0);
-    endtimeelayout->setSpacing(0);
-    endtimeelayout->addWidget(m_endDateEdit, 1);
-    endtimeelayout->addWidget(m_endTimeEdit, 1);
-    endtimeelayout->addStretch();
-    endLabellayout->addWidget(m_endTimeLabel, 0, Qt::AlignVCenter);
-    endLabellayout->addLayout(endtimeelayout);
+
+    endLabellayout->addWidget(m_endTimeLabel);
+    endLabellayout->addWidget(m_endDateEdit);
+    endLabellayout->addSpacing(10);
+
+    endLabellayout->addWidget(m_endTimeEdit);
+    endLabellayout->addStretch();
+    //endLabellayout->addLayout(endtimeelayout);
     maintlayout->addLayout(endLabellayout);
 
     QHBoxLayout *rmindLabellayout  = new QHBoxLayout;
@@ -528,11 +600,13 @@ void CSchceduleDlg::initUI()
     m_remindSetLabel = new DLabel (tr("Remind Set:"));
     m_remindSetLabel->setFont(mlabelF);
     m_remindSetLabel->setPalette(pa);
-    m_remindSetLabel->setAlignment(Qt::AlignLeft);
+    m_remindSetLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_remindSetLabel->setFixedWidth(78);
+
     m_rmindCombox = new DComboBox();
+    m_rmindCombox->setFixedSize(200, 36);
     m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    rmindLabellayout->addWidget(m_remindSetLabel, 0, Qt::AlignVCenter);
+    rmindLabellayout->addWidget(m_remindSetLabel);
     rmindLabellayout->addWidget(m_rmindCombox);
     rmindLabellayout->addStretch();
     maintlayout->addLayout(rmindLabellayout);
@@ -543,16 +617,17 @@ void CSchceduleDlg::initUI()
     m_beginrepeatLabel = new DLabel (tr("Repeat:"));
     m_beginrepeatLabel->setFont(mlabelF);
     m_beginrepeatLabel->setPalette(pa);
-    m_beginrepeatLabel->setAlignment(Qt::AlignLeft);
+    m_beginrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_beginrepeatLabel->setFixedWidth(78);
     m_beginrepeatCombox = new DComboBox();
+    m_beginrepeatCombox->setFixedSize(200, 36);
     m_beginrepeatCombox->addItem(tr("None"));
     m_beginrepeatCombox->addItem(tr("Every day"));
     m_beginrepeatCombox->addItem(tr("Every working day"));
     m_beginrepeatCombox->addItem(tr("Once a week"));
     m_beginrepeatCombox->addItem(tr("A month"));
     m_beginrepeatCombox->addItem(tr("Every year"));
-    repeatLabellayout->addWidget(m_beginrepeatLabel, 0, Qt::AlignVCenter);
+    repeatLabellayout->addWidget(m_beginrepeatLabel);
     repeatLabellayout->addWidget(m_beginrepeatCombox);
     repeatLabellayout->addStretch();
     maintlayout->addLayout(repeatLabellayout);
@@ -563,18 +638,19 @@ void CSchceduleDlg::initUI()
     m_endrepeatLabel = new DLabel (tr("End Repeat:"));
     m_endrepeatLabel->setFont(mlabelF);
     m_endrepeatLabel->setPalette(pa);
-    m_endrepeatLabel->setAlignment(Qt::AlignLeft);
+    m_endrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_endrepeatLabel->setFixedWidth(78);
     m_endrepeatCombox = new DComboBox();
+    m_endrepeatCombox->setFixedSize(200, 36);
     m_endrepeatCombox->addItem(tr("never"));
     m_endrepeatCombox->addItem(tr("in"));
     m_endrepeatCombox->addItem(tr("On the date"));
-    endrepeatLabellayout->addWidget(m_endrepeatLabel, 0, Qt::AlignVCenter);
+    endrepeatLabellayout->addWidget(m_endrepeatLabel);
     endrepeatLabellayout->addWidget(m_endrepeatCombox);
 
     QHBoxLayout *endrepeattimeslayout  = new QHBoxLayout;
     m_endrepeattimes = new DLineEdit(this);
-    m_endrepeattimes->setFixedHeight(34);
+    m_endrepeattimes->setFixedSize(71, 36);
     m_endrepeattimes->setText(QString::number(10));
     m_endrepeattimes->setClearButtonEnabled(false);
     QRegExp rx("^[1-9]\\d{0,2}$");
@@ -592,10 +668,14 @@ void CSchceduleDlg::initUI()
 
     m_endRepeatDate = new DDateEdit;
     m_endRepeatDate->setCalendarPopup(true);
-    m_endRepeatDate->setFixedHeight(36);
+    m_endRepeatDate->setFixedSize(130, 36);
     m_endRepeatDate->setDate(QDate::currentDate());
     m_endRepeatDate->setDisplayFormat("yyyy-MM-dd");
-    m_endRepeatDate->setMinimumWidth(150);
+    QFont enddatefont;
+    enddatefont.setFamily("SourceHanSansSC-Medium");
+    enddatefont.setPixelSize(14);
+    m_endRepeatDate->setFont(enddatefont);
+    //m_endRepeatDate->setMinimumWidth(150);
     //m_endRepeatDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     endrepeatLabellayout->addWidget(m_endRepeatDate);
     endrepeatLabellayout->addStretch();
@@ -605,20 +685,35 @@ void CSchceduleDlg::initUI()
     maintlayout->addWidget(m_endrepeatWidget);
     m_endrepeatWidget->setVisible(false);
     QHBoxLayout *downlayout  = new QHBoxLayout;
+    downlayout->setContentsMargins(0, 20, 0, 0);
     m_cancelBt = new DPushButton(tr("Cancel"));
+    m_cancelBt->setFixedSize(189, 36);
     m_OkBt = new DPushButton(tr("OK"));
+    m_OkBt->setFixedSize(189, 36);
     DPalette okpa = m_OkBt->palette();
-    okpa.setColor(DPalette::ButtonText, Qt::white);
-    okpa.setColor(DPalette::Dark, QColor("#0098FF"));
-    okpa.setColor(DPalette::Light, QColor("#0098FF"));
+    if (themetype == 0 || themetype == 1) {
+        okpa.setColor(DPalette::ButtonText, Qt::white);
+        okpa.setColor(DPalette::Dark, QColor("#25B7FF"));
+        okpa.setColor(DPalette::Light, QColor("#0098FF"));
+    } else {
+        okpa.setColor(DPalette::ButtonText, "#B8D3FF");
+        okpa.setColor(DPalette::Dark, QColor("#0056C1"));
+        okpa.setColor(DPalette::Light, QColor("#004C9C"));
+    }
+
     m_OkBt->setPalette(okpa);
     downlayout->addWidget(m_cancelBt);
+    DVerticalLine *verline = new DVerticalLine(this);
+    verline->setFixedSize(3, 28);
+    downlayout->addWidget(verline);
     downlayout->addWidget(m_OkBt);
-    QWidget *gwi = new QWidget;
-    maintlayout->addStretch();
+    m_gwi = new DFrame(this);
     maintlayout->addLayout(downlayout);
-    gwi->setLayout(maintlayout);
-    addContent(gwi);
+    maintlayout->addStretch();
+    m_gwi->setLayout(maintlayout);
+    m_gwi->setGeometry(0, 68, 438, 412);
+    //addContent(gwi);
+    //setLayout(maintlayout);
     initDateEdit();
     if (m_type == 1)
         slotallDayStateChanged(0);
@@ -694,6 +789,7 @@ void CSchceduleDlg::initRmindRpeatUI()
             m_rmindCombox->setCurrentIndex(0);
         }
     }
+    slotbRpeatactivated(m_scheduleDtailInfo.rpeat);
     m_beginrepeatCombox->setCurrentIndex(m_scheduleDtailInfo.rpeat);
     if (m_scheduleDtailInfo.rpeat != 0) {
         if (m_scheduleDtailInfo.enddata.type == 0) {
@@ -710,5 +806,6 @@ void CSchceduleDlg::initRmindRpeatUI()
     } else {
         m_endrepeatWidget->hide();
     }
+
 }
 

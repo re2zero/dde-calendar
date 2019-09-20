@@ -92,6 +92,8 @@ void CSchceduleAllWidgetItem::slotEdit()
 
 void CSchceduleAllWidgetItem::slotDelete()
 {
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
     if (m_ScheduleInfo.rpeat == 0) {
         DMessageBox msgBox;
         msgBox.setWindowFlags(Qt::FramelessWindowHint);
@@ -102,7 +104,13 @@ void CSchceduleAllWidgetItem::slotDelete()
         DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
         DPushButton *yesButton = msgBox.addButton(tr("Delete Schedule"), DMessageBox::YesRole);
         DPalette pa = yesButton->palette();
-        pa.setColor(DPalette::ButtonText, Qt::red);
+        if (themetype == 0 || themetype == 1) {
+            pa.setColor(DPalette::ButtonText, Qt::red);
+
+        } else {
+            pa.setColor(DPalette::ButtonText, "#FF5736");
+
+        }
         yesButton->setPalette(pa);
         msgBox.exec();
 
@@ -123,9 +131,15 @@ void CSchceduleAllWidgetItem::slotDelete()
             DPushButton *yesallbutton = msgBox.addButton(tr("All Deleted"), DMessageBox::YesRole);
             DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
             DPalette pa = yesButton->palette();
-            pa.setColor(DPalette::ButtonText, Qt::white);
-            pa.setColor(DPalette::Dark, QColor("#0098FF"));
-            pa.setColor(DPalette::Light, QColor("#0098FF"));
+            if (themetype == 0 || themetype == 1) {
+                pa.setColor(DPalette::ButtonText, Qt::white);
+                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                pa.setColor(DPalette::Light, QColor("#0098FF"));
+            } else {
+                pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                pa.setColor(DPalette::Light, QColor("#004C9C"));
+            }
             yesButton->setPalette(pa);
             msgBox.exec();
 
@@ -150,9 +164,15 @@ void CSchceduleAllWidgetItem::slotDelete()
             DPushButton *yesallbutton = msgBox.addButton(tr("Delete all schedule in the future"), DMessageBox::YesRole);
             DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
             DPalette pa = yesButton->palette();
-            pa.setColor(DPalette::ButtonText, Qt::white);
-            pa.setColor(DPalette::Dark, QColor("#0098FF"));
-            pa.setColor(DPalette::Light, QColor("#0098FF"));
+            if (themetype == 0 || themetype == 1) {
+                pa.setColor(DPalette::ButtonText, Qt::white);
+                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                pa.setColor(DPalette::Light, QColor("#0098FF"));
+            } else {
+                pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                pa.setColor(DPalette::Light, QColor("#004C9C"));
+            }
             yesButton->setPalette(pa);
             msgBox.exec();
 
