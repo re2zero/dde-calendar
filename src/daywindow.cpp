@@ -91,6 +91,11 @@ void CDayWindow::setSearchWFlag(bool flag)
     m_schceduleSearchView->setVisible(flag);
 }
 
+void CDayWindow::clearSearch()
+{
+    m_schceduleSearchView->clearSearch();
+}
+
 void CDayWindow::setSearchText(QString str)
 {
     m_searchText = str;

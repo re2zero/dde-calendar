@@ -285,6 +285,7 @@ void Calendarmainwindow::slotSreturnPressed()
 void Calendarmainwindow::slotStextChanged()
 {
     m_dayButton->click();
+    m_DayWindow->clearSearch();
     //m_segmentedControl->setCurrentIndex(3);
     //m_stackWidget->setCurrentIndex(3);
     m_DayWindow->setSearchWFlag(!m_searchEdit->text().isEmpty());

@@ -271,6 +271,17 @@ void CSchceduleSearchView::setTheMe(int type)
     updateDateShow();
 }
 
+void CSchceduleSearchView::clearSearch()
+{
+    m_vlistData.clear();
+    //remove
+    for (int i = 0; i < m_gradientItemList->count(); i++) {
+        QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
+        m_gradientItemList->removeItemWidget(item11);
+    }
+    m_gradientItemList->clear();
+}
+
 void CSchceduleSearchView::updateDateShow()
 {
     //remove

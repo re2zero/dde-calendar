@@ -35,6 +35,7 @@ public:
     CSchceduleSearchView(QWidget *parent = nullptr);
     ~CSchceduleSearchView();
     void setTheMe(int type = 0);
+    void clearSearch();
 signals:
     void signalsUpdateShcedule(int id = 0);
 public slots:
