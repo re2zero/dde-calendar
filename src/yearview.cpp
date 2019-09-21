@@ -31,6 +31,7 @@
 #include "yearview.h"
 #include <QSpacerItem>
 #include <DPalette>
+#include <QLocale>
 DGUI_USE_NAMESPACE
 CYearView::CYearView(QWidget *parent) : DWidget(parent)
 {
@@ -175,7 +176,10 @@ void CYearView::setCurrentDate(const QDate date, int type)
     // }
 
     m_currentDate = date;
-    m_currentMouth->setText(QString::number(date.month()) + tr("Mon"));
+    QLocale locale;
+    //QString monthName(int month, QLocale::FormatType type = LongFormat)
+    m_currentMouth->setText(locale.monthName(date.month(), QLocale::ShortFormat));
+    //m_currentMouth->setText(QString::number(date.month()) + tr("Mon"));
     updateDate();
     if (type == 1)
         setSelectedCell(getDateIndex(date));

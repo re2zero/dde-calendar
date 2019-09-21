@@ -516,7 +516,7 @@ void CMonthView::paintCell(QWidget *cell)
     if (m_showState & ShowLunar) {
         painter.drawText(QRect(3, 0, cell->width() / 2, cell->height() / 2), Qt::AlignLeft, dayNum);
     } else {
-        painter.drawText(rect.adjusted(0, 0, 120, 33), Qt::AlignCenter, dayNum, &test);
+        painter.drawText(QRect(0, 0, 120, 33), Qt::AlignCenter, dayNum, &test);
     }
 
     // draw text of day type

@@ -54,6 +54,7 @@ void CWeekWindow::setFirstWeekday(int weekday)
 void CWeekWindow::setLunarVisible(bool state)
 {
     m_weekHeadView->setLunarVisible(state);
+    m_YearLunarLabel->setVisible(state);
 }
 
 void CWeekWindow::initUI()

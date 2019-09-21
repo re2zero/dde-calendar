@@ -56,6 +56,7 @@ void CMonthWindow::setDate(QDate date)
 void CMonthWindow::setLunarVisible(bool state)
 {
     m_monthView->setLunarVisible(state);
+    m_YearLunarLabel->setVisible(state);
 }
 
 void CMonthWindow::setTheMe(int type)

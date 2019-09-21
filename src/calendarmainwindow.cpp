@@ -187,7 +187,19 @@ void Calendarmainwindow::initConnection()
 
 void Calendarmainwindow::initLunar()
 {
-    m_yearwindow->setLunarVisible(QLocale::system().name().contains("zh"));
+    QLocale locale;
+    bool flag = false;
+    if (locale.language() == QLocale::Chinese) {
+        flag = true;
+    }
+    m_yearwindow->setLunarVisible(flag);
+    m_monthWindow->setLunarVisible(flag);
+    m_weekWindow->setLunarVisible(flag);
+    m_DayWindow->setLunarVisible(flag);
+    //m_yearwindow->setLunarVisible(QLocale::system().name().contains("zh"));
+    //m_monthWindow->setLunarVisible(QLocale::system().name().contains("zh"));
+    //m_weekWindow->setLunarVisible(QLocale::system().name().contains("zh"));
+    //m_DayWindow->setLunarVisible(QLocale::system().name().contains("zh"));
 }
 
 void Calendarmainwindow::createview()

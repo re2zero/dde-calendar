@@ -114,6 +114,7 @@ int main(int argc, char *argv[])
     a.setOrganizationName("deepin");
     a.setApplicationName("dde-calendar");
     a.loadTranslator();
+    //QLocale::setDefault(QLocale(QLocale::C, QLocale::UnitedStates));
     a.setApplicationVersion(DApplication::buildVersion("1.1"));
     //QList<QLocale> localeFallback = QList<QLocale>() << QLocale::system();
     // meta information that necessary to create the about dialog.

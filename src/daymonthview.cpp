@@ -74,6 +74,9 @@ void CDayMonthView::setFirstWeekday(int weekday)
 void CDayMonthView::setLunarVisible(bool visible)
 {
     m_huanglistate = visible;
+    m_yiLabel->setVisible(visible);
+    m_jiLabel->setVisible(visible);
+    m_currentLuna->setVisible(visible);
     update();
 }
 
@@ -428,7 +431,10 @@ void CDayMonthView::initConnection()
 
 void CDayMonthView::updateDateShow()
 {
-    m_currentMouth->setText(QString::number(m_currentDate.month()) + tr("mon"));
+    QLocale locale;
+    //QString monthName(int month, QLocale::FormatType type = LongFormat)
+    m_currentMouth->setText(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
+    // m_currentMouth->setText(QString::number(m_currentDate.month()) + tr("mon"));
     m_currentDay->setText(QString::number(m_currentDate.day()));
     if (m_currentDate.dayOfWeek() > 0)
         m_currentWeek->setText(m_weeklist.at(m_currentDate.dayOfWeek() - 1));

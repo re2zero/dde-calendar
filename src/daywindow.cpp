@@ -106,7 +106,7 @@ void CDayWindow::setLunarVisible(bool state)
 {
     m_LunarLabel->setVisible(state);
     m_SolarDay->setVisible(state);
-    m_daymonthView->setVisible(state);
+    m_daymonthView->setLunarVisible(state);
 }
 
 void CDayWindow::initUI()
@@ -127,7 +127,7 @@ void CDayWindow::initUI()
     titleLayout->setContentsMargins(0, 0, 0, 3);
 
     m_YearLabel = new DLabel();
-    m_YearLabel->setFixedSize(175, DDEDayCalendar::D_YLableHeight);
+    m_YearLabel->setMinimumSize(175, DDEDayCalendar::D_YLableHeight);
     QFont labelF;
     labelF.setFamily("SourceHanSansSC-Medium");
     labelF.setPixelSize(24);
@@ -156,6 +156,7 @@ void CDayWindow::initUI()
     spa.setColor(DPalette::WindowText, Qt::red);
     m_SolarDay->setPalette(spa);
     titleLayout->addWidget(m_SolarDay);
+    titleLayout->addStretch();
 
     QVBoxLayout *leftLayout = new QVBoxLayout;
     leftLayout->setMargin(0);
@@ -236,7 +237,12 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
 {
     m_currentdate = date;
     if (type == 1) {
-        m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
+        QLocale locale;
+        if (locale.language() == QLocale::Chinese) {
+            m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
+        } else {
+            m_YearLabel->setText(QLocale().toString(date));
+        }
         m_LunarLabel->setText(detail.mLunarDayName);
         m_SolarDay->setText(detail.mSolarFestival);
     }
@@ -251,7 +257,13 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
 void CDayWindow::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
-    m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
+    QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
+    } else {
+        m_YearLabel->setText(QLocale().toString(date));
+    }
+    //m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
     m_scheduleView->setRange(m_currentdate, m_currentdate);
     m_scheduleView->setDate(m_currentdate);
 }

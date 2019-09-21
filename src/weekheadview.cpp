@@ -184,7 +184,10 @@ void CWeekHeadView::setCurrentDate(const QDate date)
 
     // to refresh lunar calendar
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
-    m_monthLabel->setText(QString::number(date.month()) + tr("Mon"));
+    QLocale locale;
+    //QString monthName(int month, QLocale::FormatType type = LongFormat)
+    m_monthLabel->setText(locale.monthName(date.month(), QLocale::ShortFormat));
+    //m_monthLabel->setText(QString::number(date.month()) + tr("Mon"));
 
     emit signalcurrentDateChanged(m_currentDate);
 }
@@ -381,11 +384,20 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
 
     if (isSelectedCell) {
-        QRect fillRect(1, 12, 26, 26);
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(QBrush(m_weekendsTextColor));
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(fillRect);
+        if (ShowLunar) {
+            QRect fillRect(13, 0, 26, 26);
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            painter.setBrush(QBrush(m_weekendsTextColor));
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
+        } else {
+            QRect fillRect(1, 12, 26, 26);
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            painter.setBrush(QBrush(m_weekendsTextColor));
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
+        }
+
     }
 
     QLocale locale;

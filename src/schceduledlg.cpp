@@ -458,10 +458,10 @@ void CSchceduleDlg::initUI()
         titlepa.setColor(DPalette::Window, btitleColor);
     }
     m_titleLabel->setPalette(titlepa);
-    m_titleLabel->setFixedSize(108, 51);
+    m_titleLabel->setFixedSize(148, 51);
     m_titleLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
     //m_titleLabel->setGeometry(165, 0, 108, 51);
-    m_titleLabel->move(165, 0);
+    m_titleLabel->move(145, 0);
 
 
     setSpacing(0);
