@@ -63,4 +63,5 @@ private:
     QColor m_weekendsTextColor = Qt::black;
     QColor m_selectedTextColor = Qt::white;
     QColor m_notCurrentTextColor = "#b2b2b2";
+    QColor m_defaultBColor = Qt::white;
 };

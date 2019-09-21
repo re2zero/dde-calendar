@@ -26,6 +26,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include "cayearmonthedit.h"
+#include "scheduledatamanage.h"
 class QCustomStyle : public QProxyStyle
 {
 public:
@@ -65,13 +66,36 @@ void CCustomCalendarWidget::initControl()
     setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
     setHorizontalHeaderFormat(QCalendarWidget::SingleLetterDayNames);
     setStyle(new QCustomStyle(this));
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+    if (themetype == 0 || themetype == 1) {
+        m_backgroundCircleColor = "#2ca7f8";
+
+        m_defaultTextColor = Qt::black;
+        m_currentDayTextColor = "#2ca7f8";
+        m_weekendsTextColor = Qt::black;
+        m_selectedTextColor = Qt::white;
+        m_notCurrentTextColor = "#b2b2b2";
+        m_defaultBColor = Qt::white;
+    } else {
+        m_backgroundCircleColor = "#0081FF";
+
+        m_defaultTextColor = "#C0C6D4";
+        m_currentDayTextColor = "#0081FF";
+        m_weekendsTextColor = Qt::black;
+        m_selectedTextColor = "#C0C6D4";
+        m_notCurrentTextColor = "#919191";
+        m_defaultBColor = "#191919";
+        m_defaultBColor.setAlphaF(0.8);
+    }
+
+
 
     QTextCharFormat format;
     format.setForeground(m_defaultTextColor);
-    format.setBackground(QColor(255, 255, 255));
+    format.setBackground(m_defaultBColor);
     QTextCharFormat sformat;
     sformat.setForeground(m_backgroundCircleColor);
-    sformat.setBackground(QColor(255, 255, 255));
+    sformat.setBackground(m_defaultBColor);
     setHeaderTextFormat(format);
     setWeekdayTextFormat(Qt::Saturday, sformat);
     setWeekdayTextFormat(Qt::Sunday, sformat);
@@ -112,7 +136,7 @@ void CCustomCalendarWidget::paintCell(QPainter *painter, const QRect &rect, cons
         painter->setPen(Qt::NoPen);
         painter->setBrush(m_backgroundCircleColor);
         painter->drawRoundedRect(rect.x(), rect.y() + 3, rect.width(), rect.height() - 6, 3, 3);
-        painter->setBrush(QColor(255, 255, 255));
+        painter->setBrush(m_defaultBColor);
         painter->drawRoundedRect(rect.x() + 1, rect.y() + 4, rect.width() - 2, rect.height() - 8, 2, 2);
         painter->setPen(m_currentDayTextColor);
         painter->drawText(rect, Qt::AlignCenter, QString::number(date.day()));
@@ -123,7 +147,7 @@ void CCustomCalendarWidget::paintCell(QPainter *painter, const QRect &rect, cons
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing);
         painter->setPen(Qt::NoPen);
-        painter->setBrush(QColor(255, 255, 255));
+        painter->setBrush(m_defaultBColor);
         painter->drawRect(rect.x(), rect.y() + 3, rect.width(), rect.height() - 6);
         if (date.month() == m_monthLabel->getNum()) {
             painter->setPen(m_defaultTextColor);
