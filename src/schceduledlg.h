@@ -104,7 +104,7 @@ private:
 private:
     ScheduleInfo                     m_scheduleInfo;//日程
     ScheduleDtailInfo                m_scheduleDtailInfo;
-    int                              m_type; //0新建 1 编辑日程
+    int                              m_type; //1新建 0 编辑日程
     QDateTime                        m_currentDate;
 };
 

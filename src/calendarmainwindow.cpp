@@ -31,6 +31,7 @@
 #include <DPalette>
 #include "scheduledatamanage.h"
 #include "myschceduleview.h"
+#include "creatorparschedule.h"
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -60,15 +61,26 @@ void Calendarmainwindow::slotTheme(int type)
     m_DayWindow->setTheMe(type);
 }
 
-void Calendarmainwindow::openScheduleId(int id)
+void Calendarmainwindow::openSchedule(QString job)
 {
+    if (job.isEmpty()) return;
     ScheduleDtailInfo out;
-    if (CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(id, out)) {
+    if (CreatOrParSchedule::GetJob(job, out)) {
+        m_dayButton->setFocus();
+        m_dayButton->setChecked(true);
+        m_stackWidget->setCurrentIndex(3);
+        m_DayWindow->setDate(out.beginDateTime.date());
+        m_DayWindow->slotupdateSchedule(0);
         CMySchceduleView dlg(this);
         dlg.setSchedules(out);
         dlg.exec();
-
+        m_DayWindow->slotupdateSchedule(0);
     }
+}
+
+void Calendarmainwindow::ActiveWindow()
+{
+    raise();
 }
 void Calendarmainwindow::initUI()
 {

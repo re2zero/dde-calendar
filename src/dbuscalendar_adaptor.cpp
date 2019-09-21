@@ -18,6 +18,7 @@
 #include <QtCore/QVariant>
 #include <QWidget>
 #include "calendarmainwindow.h"
+#include "scheduledatamanage.h"
 /*
  * Implementation of adaptor class CalendarAdaptor
  */
@@ -34,23 +35,19 @@ CalendarAdaptor::~CalendarAdaptor()
     // destructor
 }
 
-void CalendarAdaptor::RaiseWindow()
+void CalendarAdaptor::ActiveWindow()
 {
     // handle method call com.deepin.Calendar.RaiseWindow
-    QWidget *pp = qobject_cast<QWidget *>(parent());
-    pp->activateWindow();
-    pp->raise();
+    //QWidget *pp = qobject_cast<QWidget *>(parent());
+    // pp->activateWindow();
+    //pp->raise();
+    QMetaObject::invokeMethod(parent(), "ActiveWindow");
 }
 
-void CalendarAdaptor::openScheduleId(int id)
+void CalendarAdaptor::openSchedule(QString job)
 {
-    RaiseWindow();
-    QMetaObject::invokeMethod(parent(), "openScheduleId", Q_ARG(int, id));
-    QWidget *pp = qobject_cast<QWidget *>(parent());
-    pp->activateWindow();
-    pp->raise();
-    Calendarmainwindow *tt = qobject_cast<Calendarmainwindow *>(parent());
-    tt->openScheduleId(id);
+    QMetaObject::invokeMethod(parent(), "openSchedule", Q_ARG(QString, job));
 }
+
 
 

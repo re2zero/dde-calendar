@@ -44,7 +44,8 @@ public:
     Calendarmainwindow();
 public slots:
     void slotTheme(int type);
-    void openScheduleId(int id);
+    void openSchedule(QString job);
+    void ActiveWindow();
 private:
     void initUI();
     void initConnection();

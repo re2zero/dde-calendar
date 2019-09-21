@@ -61,7 +61,8 @@ HEADERS += src/calendardbus.h \
     src/customcalendarwidget.h \
     src/schedulesdbus.h \
     src/scheduledatamanage.h \
-    src/schcedulealldayview.h
+    src/schcedulealldayview.h \
+    src/creatorparschedule.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \
            src/calendarwindow.cpp \
@@ -101,7 +102,8 @@ SOURCES += src/calendardbus.cpp \
     src/timeedit.cpp \
     src/schedulesdbus.cpp \
     src/scheduledatamanage.cpp \
-    src/schcedulealldayview.cpp
+    src/schcedulealldayview.cpp \
+    src/creatorparschedule.cpp
 RESOURCES += src/resources.qrc
 #TRANSLATIONS += translations/dde-calendar.ts \
 #                translations/desktop/desktop_zh_CN.ts\
@@ -125,6 +127,9 @@ manual.files = $$PWD/dman/*
 
 translations.path = $$INSTROOT$$DSRDIR/translations
 translations.files = translations/*.qm
+
+dbus_service.files = $$PWD/com.deepin.Calendar.service
+dbus_service.path = $$PREFIX/share/dbus-1/services
 
 INSTALLS += target desktop icon_files manual dbus_service
 
