@@ -85,7 +85,7 @@ void CDayMonthView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+        todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
@@ -287,6 +287,10 @@ void CDayMonthView::initUI()
     QColor sbcolor("#002A57");
     sbcolor.setAlphaF(0.05);
     todaypa.setColor(DPalette::Shadow, sbcolor);
+    QFont todayfont;
+    todayfont.setFamily("SourceHanSansSC-Medium");
+    todayfont.setPixelSize(14);
+    m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
     m_prevButton = new DIconButton(this);
     m_prevButton->setFixedSize(36, 36);
@@ -657,8 +661,8 @@ void CDayMonthView::slotprev()
 {
     if (m_currentDate.year() > 1900) {
         m_currentDate = m_currentDate.addMonths(-1);
-        updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
         emit signalcurrentDateChanged(m_currentDate);
+        updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
     } else {
         QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
@@ -667,8 +671,8 @@ void CDayMonthView::slotprev()
 void CDayMonthView::slotnext()
 {
     m_currentDate = m_currentDate.addMonths(1);
-    updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
     emit signalcurrentDateChanged(m_currentDate);
+    updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
 }
 
 void CDayMonthView::slottoday()

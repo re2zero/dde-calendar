@@ -607,6 +607,7 @@ CSolarDayAllWidgetItem *CSchceduleAllDayView::createItemWidget(QString solarDay,
             font.setPixelSize(12);
         }
         gwi->setData(solarDay);
+        int w = width();
         if (average) {
             gwi->setFixedSize(width(), 22);
             gwi->setText(Qt::black, font, QPoint(13, 2), average);

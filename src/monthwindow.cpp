@@ -67,7 +67,7 @@ void CMonthWindow::setTheMe(int type)
         m_contentBackground->setPalette(anipa);
 
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+        todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
@@ -136,13 +136,17 @@ void CMonthWindow::initUI()
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(DDEMonthCalendar::MTodayWindth, DDEMonthCalendar::MTodayHeight);
     DPalette todaypa = m_today->palette();
-    todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+    todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
     todaypa.setColor(DPalette::Dark, Qt::white);
     todaypa.setColor(DPalette::Light, Qt::white);
 
     QColor sbcolor("#002A57");
     sbcolor.setAlphaF(0.05);
     todaypa.setColor(DPalette::Shadow, sbcolor);
+    QFont todayfont;
+    todayfont.setFamily("SourceHanSansSC-Medium");
+    todayfont.setPixelSize(14);
+    m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
     m_YearLabel = new DLabel();
     m_YearLabel->setFixedHeight(DDEMonthCalendar::M_YLableHeight);

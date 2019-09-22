@@ -39,8 +39,12 @@ void CDayWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
         DPalette anipa = m_contentBackground->palette();
-        anipa.setColor(DPalette::Background, Qt::white);
+        anipa.setColor(DPalette::Background, "#F8F8F8");
         m_contentBackground->setPalette(anipa);
+
+        DPalette leftpa = m_leftground->palette();
+        leftpa.setColor(DPalette::Background, "#FFFFFF");
+        m_leftground->setPalette(leftpa);
 
         DPalette ypa = m_YearLabel->palette();
         ypa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -60,6 +64,10 @@ void CDayWindow::setTheMe(int type)
         bcolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, bcolor);
         m_contentBackground->setPalette(anipa);
+
+        DPalette leftpa = m_leftground->palette();
+        leftpa.setColor(DPalette::Background, bcolor);
+        m_leftground->setPalette(leftpa);
 
         DPalette ypa = m_YearLabel->palette();
         ypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
@@ -112,19 +120,15 @@ void CDayWindow::setLunarVisible(bool state)
 void CDayWindow::initUI()
 {
     m_contentBackground = new DFrame;
-    //m_contentBackground->setObjectName("CalendarBackground");
-    DPalette anipa = m_contentBackground->palette();
-    anipa.setColor(DPalette::Background, Qt::white);
     m_contentBackground->setAutoFillBackground(true);
+    DPalette anipa = m_contentBackground->palette();
+    anipa.setColor(DPalette::Background, "#F8F8F8");
     m_contentBackground->setPalette(anipa);
-
-    //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
-    //   InfoViewHeight + CalendarHeight);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
     titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(0, 0, 0, 3);
+    titleLayout->setContentsMargins(11, 8, 0, 3);
 
     m_YearLabel = new DLabel();
     m_YearLabel->setMinimumSize(175, DDEDayCalendar::D_YLableHeight);
@@ -138,10 +142,11 @@ void CDayWindow::initUI()
     titleLayout->addWidget(m_YearLabel);
     //titleLayout->addStretch(1);
     m_LunarLabel = new DLabel();
+    titleLayout->addSpacing(15);
     m_LunarLabel->setFixedHeight(DDEDayCalendar::D_YLableHeight);
     labelF.setPixelSize(14);
     m_LunarLabel->setFont(labelF);
-    m_LunarLabel->setAlignment(Qt::AlignCenter);
+    m_LunarLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
     DPalette lpa = m_LunarLabel->palette();
     lpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_LunarLabel->setPalette(lpa);
@@ -169,15 +174,32 @@ void CDayWindow::initUI()
     leftLayout->addLayout(titleLayout);
     leftLayout->addWidget(m_scheduleView);
 
+
+
+
     m_daymonthView = new CDayMonthView(this);
+
+    QHBoxLayout *lfetmainLayout = new QHBoxLayout;
+    lfetmainLayout->setMargin(0);
+    lfetmainLayout->setSpacing(0);
+    lfetmainLayout->setContentsMargins(0, 0, 0, 0);
+    lfetmainLayout->addLayout(leftLayout);
+    lfetmainLayout->addWidget(m_daymonthView);
+    m_leftground = new DFrame();
+    m_leftground->setContentsMargins(0, 0, 0, 0);
+    m_leftground->setLayout(lfetmainLayout);
+    m_leftground->setAutoFillBackground(true);
+    DPalette leftpa = m_leftground->palette();
+    leftpa.setColor(DPalette::Background, "#FFFFFF");
+    m_leftground->setPalette(leftpa);
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(10, 10, 10, 10);
-    mainLayout->addLayout(leftLayout);
-    mainLayout->addWidget(m_daymonthView);
+    mainLayout->addWidget(m_leftground);
     //mainLayout->addStretch(1);
+
     m_schceduleSearchView = new CSchceduleSearchView(this);
     m_schceduleSearchView->setFixedWidth(200);
     mainLayout->addWidget(m_schceduleSearchView);
@@ -244,7 +266,7 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
             m_YearLabel->setText(QLocale().toString(date));
         }
         m_LunarLabel->setText(detail.mLunarDayName);
-        m_SolarDay->setText(detail.mSolarFestival);
+        //m_SolarDay->setText(detail.mSolarFestival);
     }
     m_scheduleView->setRange(m_currentdate, m_currentdate);
     if (detail.mLunarFestival.isEmpty()) {

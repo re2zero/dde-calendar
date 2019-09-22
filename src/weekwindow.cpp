@@ -61,16 +61,10 @@ void CWeekWindow::setLunarVisible(bool state)
 void CWeekWindow::initUI()
 {
     m_contentBackground = new DFrame;
-    //m_contentBackground->setObjectName("CalendarBackground");
-    //DPalette pa = m_contentBackground->palette();
-    //pa.setColor(DPalette::Background, Qt::white);
-    //m_contentBackground->setAutoFillBackground(true);
-    //m_contentBackground->setPalette(pa);
-
-    // m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
-    //                                   "background:white;"
-    //                                    "}");
-//
+    m_contentBackground->setAutoFillBackground(true);
+    DPalette anipa = m_contentBackground->palette();
+    anipa.setColor(DPalette::Background, "#F8F8F8");
+    m_contentBackground->setPalette(anipa);
 
     m_today = new DPushButton;
     m_today->setText(tr("Return today"));
@@ -82,6 +76,10 @@ void CWeekWindow::initUI()
     QColor sbcolor("#002A57");
     sbcolor.setAlphaF(0.05);
     todaypa.setColor(DPalette::Shadow, sbcolor);
+    QFont todayfont;
+    todayfont.setFamily("SourceHanSansSC-Medium");
+    todayfont.setPixelSize(14);
+    m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
     m_prevButton = new DIconButton(this);
     m_prevButton->setIconSize(QSize(36, 36));
@@ -141,21 +139,20 @@ void CWeekWindow::initUI()
     YearLpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
 
     m_YearLunarLabel->setPalette(YearLpa);
-    m_YearLunarLabel->move(116, 27);
+    //m_YearLunarLabel->move(116, 27);
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(12, 12, 10, 12);
+    yeartitleLayout->setContentsMargins(21, 10, 20, 20);
     yeartitleLayout->addWidget(m_YearLabel);
+    yeartitleLayout->addSpacing(14);
     yeartitleLayout->addWidget(m_YearLunarLabel);
-    QSpacerItem *spaceitem = new QSpacerItem(30, DDEWeekCalendar::WTodayHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    yeartitleLayout->addSpacerItem(spaceitem);
+    yeartitleLayout->addSpacing(30);
     yeartitleLayout->addWidget(m_prevButton);
     yeartitleLayout->addWidget(m_weekview);
     yeartitleLayout->addWidget(m_nextButton);
     yeartitleLayout->addWidget(m_weekLabel);
-    QSpacerItem *spaceitem1 = new QSpacerItem(30, DDEWeekCalendar::WTodayHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    yeartitleLayout->addSpacerItem(spaceitem1);
+    yeartitleLayout->addStretch();
     yeartitleLayout->addWidget(m_today);
 
     m_weekHeadView = new CWeekHeadView(this);
@@ -192,8 +189,12 @@ void CWeekWindow::initConnection()
 void CWeekWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
+        DPalette anipa = m_contentBackground->palette();
+        anipa.setColor(DPalette::Background, "#F8F8F8");
+        m_contentBackground->setPalette(anipa);
+
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+        todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
@@ -221,6 +222,10 @@ void CWeekWindow::setTheMe(int type)
         wpa.setColor(DPalette::WindowText, QColor("#717171"));
         m_weekLabel->setPalette(wpa);
     } else if (type == 2) {
+        DPalette anipa = m_contentBackground->palette();
+        anipa.setColor(DPalette::Background, "#252525");
+        m_contentBackground->setPalette(anipa);
+
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
         todaypa.setColor(DPalette::Dark, Qt::black);

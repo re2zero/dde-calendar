@@ -182,6 +182,8 @@ void CWeekHeadView::setCurrentDate(const QDate date)
     //m_selectedCell = 0;
     m_currentDate = date;
 
+
+    emit signalcurrentDateChanged(m_currentDate);
     // to refresh lunar calendar
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
     QLocale locale;
@@ -189,7 +191,6 @@ void CWeekHeadView::setCurrentDate(const QDate date)
     m_monthLabel->setText(locale.monthName(date.month(), QLocale::ShortFormat));
     //m_monthLabel->setText(QString::number(date.month()) + tr("Mon"));
 
-    emit signalcurrentDateChanged(m_currentDate);
 }
 
 void CWeekHeadView::setLunarVisible(bool visible)
@@ -447,7 +448,8 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
         painter.drawText(QRect(cell->width() / 2 + 10, 14, 50, 25), Qt::AlignLeft, dayLunar);
         CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
-        if (!dayInfo.mSolarFestival.isEmpty()) {
+        //if (!dayInfo.mSolarFestival.isEmpty()) {
+        if (false) {
             QRect fillRect = QRect(2, 39, 106, 15);
             painter.setPen(Qt::red);
             QFont solofont = m_dayNumFont;

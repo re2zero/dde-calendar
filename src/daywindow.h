@@ -61,6 +61,7 @@ private slots:
 private:
     CDayMonthView     *m_daymonthView;
     DFrame *m_contentBackground = nullptr;
+    DFrame *m_leftground = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_LunarLabel;

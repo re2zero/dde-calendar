@@ -34,6 +34,7 @@ CScheduleView::CScheduleView(QWidget *parent, int viewType)
     : DFrame(parent), m_viewType(viewType)
 {
 
+    setAutoFillBackground(true);
     initUI();
     initConnection();
 }
@@ -337,6 +338,7 @@ void CScheduleView::updateAllday(int id)
         }
     }
     m_alldaylist->setDayData(m_currteDate, vData, 0);
+    // m_alldaylist->update();
 }
 
 int CScheduleView::checkDay(int weekday)
