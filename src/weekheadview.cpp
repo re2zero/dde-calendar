@@ -384,14 +384,14 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
 
     if (isSelectedCell) {
-        if (ShowLunar) {
-            QRect fillRect(13, 0, 26, 26);
+        if (m_showState & ShowLunar) {
+            QRect fillRect(1, 12, 26, 26);
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_weekendsTextColor));
             painter.setPen(Qt::NoPen);
             painter.drawEllipse(fillRect);
         } else {
-            QRect fillRect(1, 12, 26, 26);
+            QRect fillRect(13, 0, 26, 26);
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_weekendsTextColor));
             painter.setPen(Qt::NoPen);

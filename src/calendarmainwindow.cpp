@@ -54,6 +54,31 @@ Calendarmainwindow::Calendarmainwindow()
 
 void Calendarmainwindow::slotTheme(int type)
 {
+    if (type == 0 || type == 1) {
+        DPalette pl = m_yearButton->palette();
+        pl.setColor(DPalette::ButtonText, QColor("#414D68"));
+        pl.setColor(DPalette::Light, QColor("#E6E6E6"));
+        pl.setColor(DPalette::Dark, QColor("#E3E3E3"));
+        QColor sbcolor("#000000");
+        sbcolor.setAlphaF(0.08);
+        pl.setColor(DPalette::Shadow, sbcolor);
+        m_yearButton->setPalette(pl);
+        m_monthButton->setPalette(pl);
+        m_weekButton->setPalette(pl);
+        m_dayButton->setPalette(pl);
+    } else {
+        DPalette pl = m_yearButton->palette();
+        pl.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
+        pl.setColor(DPalette::Light, QColor("#484848"));
+        pl.setColor(DPalette::Dark, QColor("#414141"));
+        QColor sbcolor("#000000");
+        sbcolor.setAlphaF(0.08);
+        pl.setColor(DPalette::Shadow, sbcolor);
+        m_yearButton->setPalette(pl);
+        m_monthButton->setPalette(pl);
+        m_weekButton->setPalette(pl);
+        m_dayButton->setPalette(pl);
+    }
     CScheduleDataManage::getScheduleDataManage()->setTheMe(type);
     m_yearwindow->setTheMe(type);
     m_monthWindow->setTheMe(type);
@@ -88,10 +113,10 @@ void Calendarmainwindow::initUI()
     titleframe->setObjectName("TitleBar");
     titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_icon = new DLabel(this);
-    m_icon->setFixedSize(34, 34);
+    m_icon->setFixedSize(32, 32);
     m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
                       .scaled(m_icon->size() * devicePixelRatioF()));
-    //m_icon->move(12, 8);
+    m_icon->move(10, 9);
 
 
     QStringList titlelist;
@@ -107,10 +132,28 @@ void Calendarmainwindow::initUI()
     //m_segmentedControl->setPalette(wpa);
     //m_segmentedControl->addSegmented(titlelist);
     // m_segmentedControl->setFixedSize(200, 36);
+
     m_yearButton = new DButtonBoxButton(tr("Y"), this);
+    DPalette pl = m_yearButton->palette();
+    pl.setColor(DPalette::ButtonText, QColor("#414D68"));
+    pl.setColor(DPalette::Light, QColor("#E6E6E6"));
+    pl.setColor(DPalette::Dark, QColor("#E3E3E3"));
+    QColor sbcolor("#000000");
+    sbcolor.setAlphaF(0.08);
+    pl.setColor(DPalette::Shadow, sbcolor);
+
+    m_yearButton->setFixedSize(50, 36);
     m_monthButton = new DButtonBoxButton(tr("M"), this);
+    m_monthButton->setFixedSize(50, 36);
     m_weekButton = new DButtonBoxButton(tr("W"), this);
+    m_weekButton->setFixedSize(50, 36);
     m_dayButton = new DButtonBoxButton(tr("D"), this);
+    m_dayButton->setFixedSize(50, 36);
+    m_yearButton->setPalette(pl);
+    m_monthButton->setPalette(pl);
+    m_weekButton->setPalette(pl);
+    m_dayButton->setPalette(pl);
+
 
     QList<DButtonBoxButton *> btlist;
     btlist.append(m_yearButton);
@@ -132,21 +175,21 @@ void Calendarmainwindow::initUI()
     //titleLayout->addWidget(m_ybutton);
     // titleLayout->addWidget(m_mbutton);
     //titleLayout->addWidget(m_wbutton);
-    titleLayout->addSpacing(10);
-    titleLayout->addWidget(m_icon);
-    titleLayout->addSpacing(18);
+    titleLayout->addSpacing(60);
+    //titleLayout->addWidget(m_icon);
+    //titleLayout->addSpacing(18);
     titleLayout->addWidget(m_buttonBox);
     // QSpacerItem *lspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //titleLayout->addSpacerItem(lspaceitem);
     m_searchEdit = new DSearchEdit;
     m_searchEdit->setFixedHeight(36);
-    m_searchEdit->setMinimumWidth(240);
-    m_searchEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_searchEdit->setFixedWidth(240);
+    //m_searchEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     titleLayout->addSpacing(52);
     titleLayout->addWidget(m_searchEdit);
     //m_searchEdit->setSizePolicy(QSizePolicy::Expanding);
     //QSpacerItem *rspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    titleLayout->addStretch(10);
+    titleLayout->addStretch();
     //QWidget *buttonW = new QWidget;
     titleframe->setLayout(titleLayout);
 
