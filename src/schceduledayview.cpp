@@ -321,7 +321,7 @@ void CSchceduleNumButton::paintEvent(QPaintEvent *e)
 
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), m_pos.y() + 3), Qt::AlignLeft, "-" + QString(tr("There is %1 schedule")).arg(m_num));
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignLeft, "-" + QString(tr("There is %1 schedule")).arg(m_num));
     } else {
         QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -332,7 +332,7 @@ void CSchceduleNumButton::paintEvent(QPaintEvent *e)
 
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), m_pos.y() + 3), Qt::AlignLeft, QString(tr("There is %1 schedule")).arg(m_num));
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignLeft, QString(tr("There is %1 schedule")).arg(m_num));
     }
 }
 
@@ -387,9 +387,10 @@ CSchceduleDayView::CSchceduleDayView(QWidget *parent, int edittype) : DWidget(pa
 
     m_numButton = new CSchceduleNumButton(this);
     m_numButton->setColor(Qt::white, Qt::white, false);
-
+    m_numButton->setFixedHeight(22);
     m_numButton->hide();
     m_layout->addWidget(m_numButton);
+    m_layout->addStretch();
     connect(m_numButton, SIGNAL(clicked()), this, SLOT(slothidelistw()));
     // set default row
     m_gradientItemList->setCurrentRow(0);
@@ -438,7 +439,7 @@ void CSchceduleDayView::slotCreate()
 void CSchceduleDayView::contextMenuEvent(QContextMenuEvent *event)
 {
     if (m_vlistData.isEmpty()) {
-        QMenu Context(this);
+        DMenu Context(this);
         Context.addAction(m_createAction);
         Context.exec(QCursor::pos());
     }
@@ -468,20 +469,20 @@ void CSchceduleDayView::updateDateShow()
     } else if (m_vlistData.count() == 2) {
         m_numButton->hide();
         m_widt->hide();
-        CSchceduleWidgetItem *gwiup = createItemWidget(0, true);
-        CSchceduleWidgetItem *gwidown = createItemWidget(1, true);
+        CSchceduleWidgetItem *gwiup = createItemWidget(0, false);
+        CSchceduleWidgetItem *gwidown = createItemWidget(1, false);
         m_layout->insertWidget(0, gwiup);
         m_baseShowItem.append(gwiup);
         m_layout->insertWidget(0, gwidown);
         m_baseShowItem.append(gwidown);
     } else if (m_vlistData.count() >= 3) {
-        CSchceduleWidgetItem *gwiup = createItemWidget(0, true);
+        CSchceduleWidgetItem *gwiup = createItemWidget(0, false);
         m_layout->insertWidget(0, gwiup);
         m_baseShowItem.append(gwiup);
         m_numButton->show();
         CSchceduleWidgetItem *firstgwi = NULL;
         for (int i = 1; i < m_vlistData.size(); ++i) {
-            CSchceduleWidgetItem *gwi = createItemWidget(i, true);
+            CSchceduleWidgetItem *gwi = createItemWidget(i, false);
             QListWidgetItem *listItem = new QListWidgetItem;
             m_gradientItemList->addItem(listItem);
             m_gradientItemList->setItemWidget(listItem, gwi);
@@ -521,8 +522,8 @@ CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool averag
             gwi->setFixedSize(width(), height() / 2);
             gwi->setText(gdcolor.textColor, font, QPoint(23, 6), average);
         } else {
-            gwi->setFixedSize(width(), height());
-            gwi->setText(gdcolor.textColor, font, QPoint(23, 13), average);
+            gwi->setFixedSize(width(), 22);
+            gwi->setText(gdcolor.textColor, font, QPoint(13, 3), average);
         }
         gwi->setItem(NULL);
     } else {
@@ -537,8 +538,8 @@ CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool averag
             gwi->setFixedSize(width(), height() / 2);
             gwi->setText(gdcolor.textColor, font, QPoint(8, 5), average);
         } else {
-            gwi->setFixedSize(width(), height());
-            gwi->setText(gdcolor.textColor, font, QPoint(8, 10), average);
+            gwi->setFixedSize(width(), 22);
+            gwi->setText(gdcolor.textColor, font, QPoint(13, 3), average);
         }
         gwi->setData(gd);
         gwi->setItem(NULL);

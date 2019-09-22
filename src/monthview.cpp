@@ -40,7 +40,7 @@ void CMonthView::setTheMe(int type)
         m_backgroundCircleColor = "#2ca7f8";
 
         m_defaultTextColor = Qt::black;
-        m_currentDayTextColor = "#2ca7f8";
+        m_currentDayTextColor = "#FFFFFF";
         m_weekendsTextColor = Qt::black;
         m_selectedTextColor = Qt::white;
         m_festivalTextColor = Qt::black;
@@ -52,7 +52,8 @@ void CMonthView::setTheMe(int type)
         m_selectedLunarColor = Qt::white;
         m_festivalLunarColor = m_defaultLunarColor;
         m_notCurrentLunarColor = "#dfdfdf";
-        m_solofestivalLunarColor = "#4DFF7272";
+        m_solofestivalLunarColor = "#FF7272";
+        m_solofestivalLunarColor.setAlphaF(0.3);
         m_wrectColor = Qt::lightGray;
 
     } else if (type == 2) {
@@ -119,9 +120,9 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
             CSchceduleDayView *shceduledayview = new CSchceduleDayView(cell, 1);
-            shceduledayview->setFixedSize(108, 38);
+            shceduledayview->setFixedSize(108, 46);
             //shceduledayview->setALLDayData(scheduleInfolist);
-            shceduledayview->move(6, 31);
+            shceduledayview->move(5, 27);
             connect(shceduledayview, &CSchceduleDayView::signalsUpdateShcedule, this, &CMonthView::signalsSchceduleUpdate);
             connect(shceduledayview, &CSchceduleDayView::signalsCotrlUpdateShcedule, this, &CMonthView::slotCtrlSchceduleUpdate);
             gridLayout->addWidget(cell, r, c);
@@ -485,8 +486,11 @@ void CMonthView::paintCell(QWidget *cell)
         QRect fillRect = QRect(2, 2, DDEMonthCalendar::MCellHighlightWidth - 6, DDEMonthCalendar::MCellHighlightHeight - 7);
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(QBrush(m_backgroundCircleColor));
-        painter.setPen(Qt::NoPen);
+        //painter.setBrush(QBrush(m_backgroundCircleColor));
+        QPen pen;
+        pen.setColor(m_backgroundCircleColor);
+        pen.setWidth(2);
+        painter.setPen(pen);
         painter.drawRoundedRect(fillRect, 3, 3);
     }
 
@@ -494,11 +498,25 @@ void CMonthView::paintCell(QWidget *cell)
 
     const QString dayNum = getCellDayNum(pos);
     const QString dayLunar = getLunar(pos);
-
+    if (isCurrentDay) {
+        if (m_showState & ShowLunar) {
+            QRect fillRect(6, 3, 30, 30);
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            painter.setBrush(QBrush(m_backgroundCircleColor));
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
+        } else {
+            QRect fillRect(45, 0, 30, 30);
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            painter.setBrush(QBrush(m_backgroundCircleColor));
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
+        }
+    }
     // draw text of day
-    if (isSelectedCell) {
-        painter.setPen(m_selectedTextColor);
-    } else if (isCurrentDay) {
+    //if (isSelectedCell) {
+    //   painter.setPen(m_selectedTextColor);
+    if (isCurrentDay) {
         painter.setPen(m_currentDayTextColor);
     } else {
         const int tType = type & 0xff;
@@ -510,22 +528,21 @@ void CMonthView::paintCell(QWidget *cell)
             painter.setPen(m_defaultTextColor);
     }
 
+
 //    painter.drawRect(rect);
     QRect test;
     painter.setFont(m_dayNumFont);
     if (m_showState & ShowLunar) {
-        painter.drawText(QRect(3, 0, cell->width() / 2, cell->height() / 2), Qt::AlignLeft, dayNum);
+        painter.drawText(QRect(8, 0, cell->width() / 2, cell->height() / 2), Qt::AlignLeft, dayNum);
     } else {
         painter.drawText(QRect(0, 0, 120, 33), Qt::AlignCenter, dayNum, &test);
     }
 
     // draw text of day type
     if (m_showState & ShowLunar) {
-        if (isSelectedCell) {
-            painter.setPen(m_selectedLunarColor);
-        } else if (isCurrentDay) {
-            painter.setPen(m_currentDayLunarColor);
-        } else if (m_showState & ShowLunarFestivalHighlight) {
+        //if (isCurrentDay) {
+        // painter.setPen(m_currentDayLunarColor);
+        if (m_showState & ShowLunarFestivalHighlight) {
             const int tType = type & 0xff;
             if (tType & SO_MNotCurrentMonth)
                 painter.setPen(m_notCurrentLunarColor);

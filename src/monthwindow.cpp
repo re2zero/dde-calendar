@@ -185,7 +185,7 @@ void CMonthWindow::initUI()
 
     m_monthView = new CMonthView();
     QVBoxLayout *mhLayout = new QVBoxLayout;
-    mhLayout->setContentsMargins(10, 0, 10, 10);
+    mhLayout->setContentsMargins(10, 2, 10, 10);
     mhLayout->addWidget(m_monthView);
 
     QVBoxLayout *hhLayout = new QVBoxLayout;
