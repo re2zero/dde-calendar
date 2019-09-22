@@ -32,6 +32,7 @@
 #include <QStackedWidget>
 #include <DSegmentedControl>
 #include <DButtonBox>
+#include <QStackedLayout>
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
 class CMonthWindow;
@@ -41,7 +42,7 @@ class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
 public:
-    Calendarmainwindow();
+    Calendarmainwindow(QWidget *w = NULL);
 public slots:
     void slotTheme(int type);
     void openSchedule(QString job);
@@ -60,7 +61,7 @@ private slots:
     void slotStextChanged();
 private:
     DLabel                    *m_icon;
-    QStackedWidget              *m_stackWidget;
+    QStackedLayout              *m_stackWidget;
     //DSegmentedControl         *m_segmentedControl;
     DButtonBox                *m_buttonBox;
     DButtonBoxButton          *m_yearButton;

@@ -32,6 +32,7 @@
 #include "scheduledatamanage.h"
 #include "myschceduleview.h"
 #include "creatorparschedule.h"
+#include <QMenuBar>
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -40,7 +41,7 @@ static const int CalendarMHeight = 634;
 
 static const int WorkViewWidth = 860;
 static const int WorkViewHeight = 584;
-Calendarmainwindow::Calendarmainwindow()
+Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
 {
     setContentsMargins(QMargins(0, 0, 0, 0));
     initUI();
@@ -66,6 +67,10 @@ void Calendarmainwindow::slotTheme(int type)
         m_monthButton->setPalette(pl);
         m_weekButton->setPalette(pl);
         m_dayButton->setPalette(pl);
+        DPalette maintpl = palette();
+        maintpl.setColor(DPalette::Window, "#FFFFFF");
+        setPalette(maintpl);
+
     } else {
         DPalette pl = m_yearButton->palette();
         pl.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
@@ -78,6 +83,9 @@ void Calendarmainwindow::slotTheme(int type)
         m_monthButton->setPalette(pl);
         m_weekButton->setPalette(pl);
         m_dayButton->setPalette(pl);
+        DPalette maintpl = palette();
+        maintpl.setColor(DPalette::Window, Qt::black);
+        setPalette(maintpl);
     }
     CScheduleDataManage::getScheduleDataManage()->setTheMe(type);
     m_yearwindow->setTheMe(type);
@@ -125,7 +133,7 @@ void Calendarmainwindow::initUI()
     //DPalette wpa = m_segmentedControl->palette();
     //wpa.setColor(DPalette::ButtonText, QColor("#FFFFFF"));
     //wpa.setColor(DPalette::Button, QColor("#0081FF "));
-    /// wpa.setColor(DPalette::Dark, QColor("#0081FF"));
+    // wpa.setColor(DPalette::Dark, QColor("#0081FF"));
     //wpa.setColor(DPalette::Light, QColor("#0081FF"));
     // wpa.setColor(DPalette::Window, QColor("#0081FF"));
     // wpa.setColor(DPalette::WindowText, QColor("#414D68"));
@@ -202,10 +210,16 @@ void Calendarmainwindow::initUI()
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
     // titlebar->move(36, 3);
 
-    m_stackWidget = new QStackedWidget;
-    m_stackWidget->setFixedSize(WorkViewWidth, WorkViewHeight);
+    DWidget *centralWidget = new DWidget(this);
+
+    m_stackWidget = new QStackedLayout(centralWidget);
+    m_stackWidget->setContentsMargins(0, 0, 0, 0);
+    m_stackWidget->setMargin(0);
+    m_stackWidget->setSpacing(0);
+    //m_stackWidget->setFixedSize(WorkViewWidth, WorkViewHeight);
     createview();
-    setCentralWidget(m_stackWidget);
+    setCentralWidget(centralWidget);
+    //m_stackWidget->setGeometry(0, 50, 860, 584);
     //m_bttongroup->button(0)->setChecked(true);
     m_yearButton->setFocus();
     m_yearButton->setChecked(true);
@@ -291,7 +305,7 @@ DPushButton *Calendarmainwindow::createButon(QString name)
 void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
 {
     int index = m_buttonBox->id(bt);
-    if (index < 0 || index > m_stackWidget->depth() - 1) {
+    if (index < 0 || index > m_stackWidget->count() - 1) {
 
         return;
     }

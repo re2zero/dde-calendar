@@ -31,6 +31,7 @@
 #include "dbmanager.h"
 #include "calendarmainwindow.h"
 //#include "monthwindow.h"
+#include "yearwindow.h"
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 /**********************复制部分**************************/
@@ -146,6 +147,7 @@ int main(int argc, char *argv[])
     if (dbus.registerService("com.deepin.Calendar"), QDBusConnectionInterface::ReplaceExistingService, QDBusConnectionInterface::AllowReplacement) {
         Calendarmainwindow ww;
         ww.move(PrimaryRect().center() - ww.geometry().center());
+        //ww.setDate(QDate::currentDate());
         ww.slotTheme(getThemeTypeSetting());
         ww.show();
         dbus.registerObject("/com/deepin/Calendar", &ww);

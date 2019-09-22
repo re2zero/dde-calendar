@@ -62,8 +62,8 @@ private:
 private:
     QList<CYearView *> m_monthViewList;
     DFrame *m_contentBackground = nullptr;
-    DImageButton      *m_prevButton = nullptr;
-    DImageButton      *m_nextButton = nullptr;
+    DIconButton      *m_prevButton = nullptr;
+    DIconButton      *m_nextButton = nullptr;
     DPushButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;

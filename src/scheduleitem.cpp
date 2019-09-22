@@ -129,6 +129,7 @@ void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringLis
         int widthT = fontmetris.width(tstr) + 5;
         if (widthT >= w) {
             tstr.chop(1);
+            if (tstr.isEmpty()) break;
             tliststr.append(tstr);
             tstr.clear();
             i--;

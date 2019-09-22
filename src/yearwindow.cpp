@@ -22,6 +22,8 @@
 #include "calendardbus.h"
 #include <QMessageBox>
 #include <DPalette>
+#include <DHiDPIHelper>
+#include <QMenuBar>
 DGUI_USE_NAMESPACE
 CYearWindow::CYearWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -40,6 +42,8 @@ CYearWindow::CYearWindow(QWidget *parent): QMainWindow (parent)
         emptyCaLunarDayInfo = new CaLunarDayInfo;
     initUI();
     initConnection();
+    setWindowFlags(Qt::FramelessWindowHint);//去掉标题
+    setContentsMargins(0, 0, 0, 0);
 }
 
 CYearWindow::~CYearWindow()
@@ -70,26 +74,28 @@ void CYearWindow::setDate(QDate date)
 
 void CYearWindow::initUI()
 {
-    m_contentBackground = new DFrame;
+    m_contentBackground = new DFrame();
     //m_contentBackground->setObjectName("CalendarBackground");
     // m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
     //"background:white;"
     //"}");
     //m_contentBackground->setFixedSize(CalendarWidth + ContentLeftRightPadding * 2,
     //   InfoViewHeight + CalendarHeight);
-    //DPalette anipa = m_contentBackground->palette();
-    //anipa.setColor(DPalette::Background, Qt::white);
-    //m_contentBackground->setAutoFillBackground(true);
-    //m_contentBackground->setPalette(anipa);
+    DPalette anipa = m_contentBackground->palette();
+    anipa.setColor(DPalette::Background, "#F8F8F8");
+    m_contentBackground->setAutoFillBackground(true);
+    m_contentBackground->setPalette(anipa);
     m_today = new DPushButton(this);
     DPalette todaypa = m_today->palette();
-    todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+    todaypa.setColor(DPalette::ButtonText, QColor("#000000"));
     todaypa.setColor(DPalette::Dark, Qt::white);
     todaypa.setColor(DPalette::Light, Qt::white);
-    m_today->setPalette(todaypa);
 
-    QFont todayfont("SourceHanSansSC-Medium");
-    todayfont.setPixelSize(14);
+    m_today->setPalette(todaypa);
+    m_today->setFlat(true);
+
+    QFont todayfont("SourceHanSansSC-Normal");
+    todayfont.setPixelSize(16);
     m_today->setFont(todayfont);
     // DPalette pal = m_today->palette();
     //pal.setColor(DPalette::Button, QColor("#FFFFFF"));
@@ -97,27 +103,37 @@ void CYearWindow::initUI()
     //m_today->setPalette(pal);
     //m_today->setAutoFillBackground(true);
     m_today->setText(tr("Return today"));
-    m_today->setFixedWidth(100);
+    m_today->setFixedWidth(88);
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-    m_prevButton = new DImageButton(this);
+    m_prevButton = new DIconButton(this);
     m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-    m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
-    m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
-    m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
-    DPalette prevpa = m_prevButton->palette();
-    prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
-    prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
-    m_prevButton->setPalette(prevpa);
+    m_prevButton->setIconSize(QSize(36, 36));
+    m_prevButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
+    //m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
+    //m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
+    //m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
+    //m_prevButton->setFrameStyle(QFrame::StyledPanel);
+
+
+
+
+    //DPalette prevpa = m_prevButton->palette();
+    //prevpa.setColor(DPalette::Shadow, QColor("#E6E6E6"));
+    //prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+    //m_prevButton->setPalette(prevpa);
 
     //m_prevButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
     //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
-    m_nextButton = new DImageButton(this);
+    m_nextButton = new DIconButton(this);
     m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-    m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
-    m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
-    m_nextButton->setPressPic(":/resources/icon/next_press.svg");
+    m_nextButton->setIconSize(QSize(36, 36));
+    m_nextButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
+
+    //m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
+    //m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
+    //m_nextButton->setPressPic(":/resources/icon/next_press.svg");
     DPalette nextvpa = m_nextButton->palette();
     nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
     nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
@@ -146,7 +162,7 @@ void CYearWindow::initUI()
     DPalette Lunapa = m_YearLunarLabel->palette();
     Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_YearLunarLabel->setPalette(Lunapa);
-    m_YearLunarLabel->move(116, 27);
+    //m_YearLunarLabel->move(116, 27);
 
     m_YearLunarDayLabel = new DLabel(m_contentBackground);
     m_YearLunarDayLabel->setFixedSize(96, DDEMonthCalendar::M_YLunatLabelHeight);
@@ -159,19 +175,27 @@ void CYearWindow::initUI()
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(12, 0, 10, 4);
+    yeartitleLayout->setContentsMargins(12, 10, 12, 0);
+
     yeartitleLayout->addWidget(m_YearLabel);
-    yeartitleLayout->addWidget(m_YearLunarLabel);
-    QSpacerItem *t_spaceitem = new QSpacerItem(30, DDEYearCalendar::Y_MLableHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    yeartitleLayout->addSpacerItem(t_spaceitem);
-    yeartitleLayout->addWidget(m_YearLunarDayLabel);
-    yeartitleLayout->addWidget(m_prevButton);
-    yeartitleLayout->addWidget(m_today);
-    yeartitleLayout->addWidget(m_nextButton);
+
+    QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
+    yeartitleLayout1->setMargin(0);
+    yeartitleLayout1->setSpacing(0);
+    yeartitleLayout1->setContentsMargins(0, 10, 8, 0);
+    yeartitleLayout1->addWidget(m_YearLunarLabel);
+    yeartitleLayout1->addSpacing(390);
+    yeartitleLayout1->addStretch();
+    yeartitleLayout1->addWidget(m_YearLunarDayLabel);
+    yeartitleLayout1->addWidget(m_prevButton);
+    yeartitleLayout1->addWidget(m_today);
+    yeartitleLayout1->addWidget(m_nextButton);
+    yeartitleLayout->addLayout(yeartitleLayout1);
 
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setMargin(0);
     gridLayout->setSpacing(0);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 4; j++) {
             CYearView *view = new CYearView();
@@ -187,20 +211,25 @@ void CYearWindow::initUI()
     m_gridWidget = new DFrame;
     m_gridWidget->setLayout(gridLayout);
 
+    m_gridWidget->setContentsMargins(0, 0, 0, 0);
     QVBoxLayout *hhLayout = new QVBoxLayout;
+    hhLayout->setMargin(0);
+    hhLayout->setSpacing(0);
+    hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addLayout(yeartitleLayout);
     hhLayout->addWidget(m_gridWidget);
+    m_contentBackground->setContentsMargins(0, 0, 0, 0);
     m_contentBackground->setLayout(hhLayout);
 
-
+    //menuBar()->hide();
     setCentralWidget(m_contentBackground);
 }
 
 void CYearWindow::initConnection()
 {
-    connect(m_prevButton, &DImageButton::clicked, this, &CYearWindow::slotprev);
+    connect(m_prevButton, &DIconButton::clicked, this, &CYearWindow::slotprev);
     connect(m_today, &DPushButton::clicked, this, &CYearWindow::slottoday);
-    connect(m_nextButton, &DImageButton::clicked, this, &CYearWindow::slotnext);
+    connect(m_nextButton, &DIconButton::clicked, this, &CYearWindow::slotnext);
 }
 
 void CYearWindow::setLunarVisible(bool state)
@@ -212,8 +241,12 @@ void CYearWindow::setLunarVisible(bool state)
 void CYearWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
+        DPalette anipa = m_contentBackground->palette();
+        anipa.setColor(DPalette::Background, "#F8F8F8");
+        m_contentBackground->setPalette(anipa);
+
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+        todaypa.setColor(DPalette::ButtonText, QColor("#000000"));
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
@@ -239,6 +272,10 @@ void CYearWindow::setTheMe(int type)
         m_YearLunarDayLabel->setPalette(Lunapa);
 
     } else if (type == 2) {
+        DPalette anipa = m_contentBackground->palette();
+        anipa.setColor(DPalette::Background, "#252525");
+        m_contentBackground->setPalette(anipa);
+
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
         todaypa.setColor(DPalette::Dark, Qt::black);
@@ -246,16 +283,16 @@ void CYearWindow::setTheMe(int type)
         m_today->setPalette(todaypa);
 
         DPalette prevpa = m_prevButton->palette();
-        //prevpa.setColor(DPalette::Dark, QColor("#484848"));
-        // prevpa.setColor(DPalette::Light, QColor("#414141"));
+        prevpa.setColor(DPalette::Dark, QColor("#484848"));
+        prevpa.setColor(DPalette::Light, QColor("#414141"));
         //prevpa.setColor(DPalette::Dark, Qt::black);
         //prevpa.setColor(DPalette::Light, Qt::black);
-        //m_prevButton->setPalette(prevpa);
+        m_prevButton->setPalette(prevpa);
 
         DPalette nextvpa = m_nextButton->palette();
-        //nextvpa.setColor(DPalette::Dark, QColor("#484848"));
-        //nextvpa.setColor(DPalette::Light, QColor("#414141"));
-        //m_nextButton->setPalette(nextvpa);
+        nextvpa.setColor(DPalette::Dark, QColor("#484848"));
+        nextvpa.setColor(DPalette::Light, QColor("#414141"));
+        m_nextButton->setPalette(nextvpa);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));

@@ -81,7 +81,9 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
     hhLayout->addLayout(separatorLineLayout);
     hhLayout->addLayout(gridLayout);
     m_gridWidget = new DFrame;
+    m_gridWidget->setContentsMargins(0, 0, 0, 0);
     m_gridWidget->setLayout(hhLayout);
+    //m_gridWidget->setFixedSize(176, 113);
     DPalette anipa = m_gridWidget->palette();
     anipa.setColor(DPalette::Background, Qt::white);
     m_gridWidget->setAutoFillBackground(true);
