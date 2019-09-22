@@ -29,6 +29,7 @@
 #include <DLabel>
 #include "calendardbus.h"
 #include <DFrame>
+#include <DIconButton>
 
 DWIDGET_USE_NAMESPACE
 class QLabel;
@@ -88,8 +89,8 @@ private slots:
     void slotnext();
     void getDbusData();
 private:
-    DImageButton      *m_prevButton = nullptr;
-    DImageButton      *m_nextButton = nullptr;
+    DIconButton      *m_prevButton = nullptr;
+    DIconButton      *m_nextButton = nullptr;
     DPushButton       *m_today = nullptr;
     DLabel *m_currentMouth;
     DLabel *m_currentDay;

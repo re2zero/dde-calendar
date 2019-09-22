@@ -33,6 +33,7 @@
 #include "dayhuangliview.h"
 #include <DPalette>
 #include <DHorizontalLine>
+#include <DHiDPIHelper>
 DGUI_USE_NAMESPACE
 CDayMonthView::CDayMonthView(QWidget *parent) : DWidget(parent)
 {
@@ -89,6 +90,16 @@ void CDayMonthView::setTheMe(int type)
         todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
 
+        DPalette prevpa = m_prevButton->palette();
+        prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        m_prevButton->setPalette(prevpa);
+
+        DPalette nextvpa = m_nextButton->palette();
+        nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        m_nextButton->setPalette(nextvpa);
+
         DPalette pa = m_currentMouth->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_currentMouth->setPalette(pa);
@@ -137,6 +148,18 @@ void CDayMonthView::setTheMe(int type)
         todaypa.setColor(DPalette::Dark, "#484848");
         todaypa.setColor(DPalette::Light, "#414141");
         m_today->setPalette(todaypa);
+
+        DPalette prevpa = m_prevButton->palette();
+        prevpa.setColor(DPalette::Dark, QColor("#484848"));
+        prevpa.setColor(DPalette::Light, QColor("#414141"));
+        //prevpa.setColor(DPalette::Dark, Qt::black);
+        //prevpa.setColor(DPalette::Light, Qt::black);
+        m_prevButton->setPalette(prevpa);
+
+        DPalette nextvpa = m_nextButton->palette();
+        nextvpa.setColor(DPalette::Dark, QColor("#484848"));
+        nextvpa.setColor(DPalette::Light, QColor("#414141"));
+        m_nextButton->setPalette(nextvpa);
 
         DPalette pa = m_currentMouth->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
@@ -261,20 +284,27 @@ void CDayMonthView::initUI()
     todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
     todaypa.setColor(DPalette::Dark, Qt::white);
     todaypa.setColor(DPalette::Light, Qt::white);
+    QColor sbcolor("#002A57");
+    sbcolor.setAlphaF(0.05);
+    todaypa.setColor(DPalette::Shadow, sbcolor);
     m_today->setPalette(todaypa);
-    m_prevButton = new DImageButton(this);
-    m_prevButton->setFixedWidth(DDEDayCalendar::D_MLableHeight);
-    m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
-    m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
-    m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
+    m_prevButton = new DIconButton(this);
+    m_prevButton->setFixedSize(36, 36);
+    m_prevButton->setIconSize(QSize(36, 36));
+    m_prevButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
+    //m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
+    // m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
+    //m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
     //m_prevButton->setFixedSize(DDEDayCalendar::D_MLableHeight, DDEDayCalendar::D_MLableHeight);
     //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
-    m_nextButton = new DImageButton(this);
+    m_nextButton = new DIconButton(this);
     //m_nextButton->setFixedSize(DDEDayCalendar::D_MLableHeight, DDEDayCalendar::D_MLableHeight);
-    m_nextButton->setFixedWidth(DDEDayCalendar::D_MLableHeight);
-    m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
-    m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
-    m_nextButton->setPressPic(":/resources/icon/next_press.svg");
+    m_nextButton->setFixedSize(36, 36);
+    m_nextButton->setIconSize(QSize(36, 36));
+    m_nextButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
+    //m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
+    //m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
+    //m_nextButton->setPressPic(":/resources/icon/next_press.svg");
     //m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
@@ -423,9 +453,9 @@ void CDayMonthView::initUI()
 
 void CDayMonthView::initConnection()
 {
-    connect(m_prevButton, &DImageButton::clicked, this, &CDayMonthView::slotprev);
+    connect(m_prevButton, &DIconButton::clicked, this, &CDayMonthView::slotprev);
     connect(m_today, &DPushButton::clicked, this, &CDayMonthView::slottoday);
-    connect(m_nextButton, &DImageButton::clicked, this, &CDayMonthView::slotnext);
+    connect(m_nextButton, &DIconButton::clicked, this, &CDayMonthView::slotnext);
     connect(this, &CDayMonthView::dateSelected, this, &CDayMonthView::handleCurrentDateChanged);
 }
 

@@ -20,6 +20,7 @@
 
 #include <DCalendarWidget>
 #include <DImageButton>
+#include <DIconButton>
 DWIDGET_USE_NAMESPACE
 class QPushButton;
 class QLabel;
@@ -52,8 +53,8 @@ protected:
     void paintCell(QPainter *painter, const QRect &rect, const QDate &date) const;
     void resizeEvent(QResizeEvent *e);
 private:
-    DImageButton *m_leftMonthBtn;
-    DImageButton *m_rightMonthBtn;
+    DIconButton *m_leftMonthBtn;
+    DIconButton *m_rightMonthBtn;
     CCaYearMonthEdit *m_monthLabel;
     CCaYearMonthEdit *m_yearLabel;
     QColor m_backgroundCircleColor = "#2ca7f8";

@@ -26,6 +26,7 @@
 #include <QDate>
 #include <QHBoxLayout>
 #include <DPalette>
+#include <DHiDPIHelper>
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -78,21 +79,28 @@ void CWeekWindow::initUI()
     todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
     todaypa.setColor(DPalette::Dark, Qt::white);
     todaypa.setColor(DPalette::Light, Qt::white);
+    QColor sbcolor("#002A57");
+    sbcolor.setAlphaF(0.05);
+    todaypa.setColor(DPalette::Shadow, sbcolor);
     m_today->setPalette(todaypa);
-    m_prevButton = new DImageButton(this);
+    m_prevButton = new DIconButton(this);
+    m_prevButton->setIconSize(QSize(36, 36));
+    m_prevButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
     //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
-    m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
-    m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
-    m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
-    m_prevButton->setFixedWidth(DDEWeekCalendar::WWeekCellWidth);
+    //m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
+    //m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
+    //m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
+    m_prevButton->setFixedSize(36, 36);
     //m_prevButton->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
 
-    m_nextButton = new DImageButton(this);
+    m_nextButton = new DIconButton(this);
+    m_nextButton->setIconSize(QSize(36, 36));
+    m_nextButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
     //m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
-    m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
-    m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
-    m_nextButton->setPressPic(":/resources/icon/next_press.svg");
-    m_nextButton->setFixedWidth(DDEWeekCalendar::WWeekCellWidth);
+    //m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
+    //m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
+    //m_nextButton->setPressPic(":/resources/icon/next_press.svg");
+    m_nextButton->setFixedSize(36, 36);
     //m_nextButton->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
 
     m_YearLabel = new DLabel();
@@ -172,9 +180,9 @@ void CWeekWindow::initUI()
 
 void CWeekWindow::initConnection()
 {
-    connect(m_prevButton, &DImageButton::clicked, this, &CWeekWindow::slotprev);
+    connect(m_prevButton, &DIconButton::clicked, this, &CWeekWindow::slotprev);
     connect(m_today, &DPushButton::clicked, this, &CWeekWindow::slottoday);
-    connect(m_nextButton, &DImageButton::clicked, this, &CWeekWindow::slotnext);
+    connect(m_nextButton, &DIconButton::clicked, this, &CWeekWindow::slotnext);
     connect(m_weekview, &CWeekView::signalsSelectDate, this, &CWeekWindow::slotCurrentWeek);
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentLunarDateChanged, this, &CWeekWindow::slotcurrentDateLunarChanged);
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentDateChanged, this, &CWeekWindow::slotcurrentDateChanged);
@@ -220,16 +228,16 @@ void CWeekWindow::setTheMe(int type)
         m_today->setPalette(todaypa);
 
         DPalette prevpa = m_prevButton->palette();
-        //prevpa.setColor(DPalette::Dark, QColor("#484848"));
-        // prevpa.setColor(DPalette::Light, QColor("#414141"));
+        prevpa.setColor(DPalette::Dark, QColor("#484848"));
+        prevpa.setColor(DPalette::Light, QColor("#414141"));
         //prevpa.setColor(DPalette::Dark, Qt::black);
         //prevpa.setColor(DPalette::Light, Qt::black);
-        //m_prevButton->setPalette(prevpa);
+        m_prevButton->setPalette(prevpa);
 
         DPalette nextvpa = m_nextButton->palette();
-        //nextvpa.setColor(DPalette::Dark, QColor("#484848"));
-        //nextvpa.setColor(DPalette::Light, QColor("#414141"));
-        //m_nextButton->setPalette(nextvpa);
+        nextvpa.setColor(DPalette::Dark, QColor("#484848"));
+        nextvpa.setColor(DPalette::Light, QColor("#414141"));
+        m_nextButton->setPalette(nextvpa);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));

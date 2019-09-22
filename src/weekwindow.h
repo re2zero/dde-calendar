@@ -28,6 +28,7 @@
 #include <DLabel>
 #include <DFrame>
 #include "calendardbus.h"
+#include <DIconButton>
 DWIDGET_USE_NAMESPACE
 
 class CWeekHeadView;
@@ -65,8 +66,8 @@ private slots:
 private:
     CWeekHeadView     *m_weekHeadView; //周视图头
     DFrame *m_contentBackground = nullptr;
-    DImageButton      *m_prevButton = nullptr;
-    DImageButton      *m_nextButton = nullptr;
+    DIconButton      *m_prevButton = nullptr;
+    DIconButton      *m_nextButton = nullptr;
     DPushButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
