@@ -47,10 +47,12 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     initUI();
     initConnection();
     initLunar();
-    setFixedSize(CalendarMWidth, CalendarMHeight);
+    //setFixedSize(CalendarMWidth, CalendarMHeight);
+    setMinimumSize(CalendarMWidth, CalendarMHeight);
     setWindowTitle(tr("Deepin Calendar"));
 
     new CalendarAdaptor(this);
+    resize(CalendarMWidth, CalendarMHeight);
 }
 
 void Calendarmainwindow::slotTheme(int type)

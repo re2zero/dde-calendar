@@ -62,7 +62,7 @@ void CMonthView::setTheMe(int type)
         m_backgroundCircleColor = "#2ca7f8";
 
         m_defaultTextColor = "#C0C6D4";
-        m_currentDayTextColor = "#2ca7f8";
+        m_currentDayTextColor = "#C0C6D4";
         m_weekendsTextColor = m_defaultTextColor;
         m_selectedTextColor = "#B8D3FF";
         m_festivalTextColor = "#C0C6D4";

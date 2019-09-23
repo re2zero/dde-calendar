@@ -376,6 +376,8 @@ CSchceduleDayView::CSchceduleDayView(QWidget *parent, int edittype) : DWidget(pa
 
     m_layout = new QVBoxLayout;
     m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->setSpacing(0);
+    m_layout->setMargin(0);
 
     m_gradientItemList = new DListWidget(parent);
     m_gradientItemList->setAlternatingRowColors(true);
@@ -387,7 +389,7 @@ CSchceduleDayView::CSchceduleDayView(QWidget *parent, int edittype) : DWidget(pa
 
     m_numButton = new CSchceduleNumButton(this);
     m_numButton->setColor(Qt::white, Qt::white, false);
-    m_numButton->setFixedHeight(22);
+    m_numButton->setFixedHeight(21);
     m_numButton->hide();
     m_layout->addWidget(m_numButton);
     m_layout->addStretch();
@@ -522,7 +524,7 @@ CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool averag
             gwi->setFixedSize(width(), height() / 2);
             gwi->setText(gdcolor.textColor, font, QPoint(23, 6), average);
         } else {
-            gwi->setFixedSize(width(), 22);
+            gwi->setFixedSize(width(), 21);
             gwi->setText(gdcolor.textColor, font, QPoint(13, 3), average);
         }
         gwi->setItem(NULL);
@@ -538,7 +540,7 @@ CSchceduleWidgetItem *CSchceduleDayView::createItemWidget(int index, bool averag
             gwi->setFixedSize(width(), height() / 2);
             gwi->setText(gdcolor.textColor, font, QPoint(8, 5), average);
         } else {
-            gwi->setFixedSize(width(), 22);
+            gwi->setFixedSize(width(), 21);
             gwi->setText(gdcolor.textColor, font, QPoint(13, 3), average);
         }
         gwi->setData(gd);

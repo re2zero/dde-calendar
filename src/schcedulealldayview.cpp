@@ -385,7 +385,8 @@ CSchceduleAllDayView::CSchceduleAllDayView(QWidget *parent, int edittype) : DWid
 
     m_layout = new QVBoxLayout;
     m_layout->setContentsMargins(0, 0, 0, 0);
-
+    m_layout->setSpacing(0);
+    m_layout->setMargin(0);
     m_gradientItemList = new DListWidget(parent);
     m_gradientItemList->setAlternatingRowColors(true);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -396,7 +397,7 @@ CSchceduleAllDayView::CSchceduleAllDayView(QWidget *parent, int edittype) : DWid
 
     m_numButton = new CSchceduleAllNumButton(this);
     m_numButton->setColor(Qt::white, Qt::white, false);
-
+    m_numButton->setFixedHeight(22);
     m_numButton->hide();
     m_layout->addWidget(m_numButton);
     connect(m_numButton, SIGNAL(clicked()), this, SLOT(slothidelistw()));
