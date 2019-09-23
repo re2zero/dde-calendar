@@ -293,7 +293,7 @@
     <name>CSchceduleDlg</name>
     <message>
         <source>Create Schcedule</source>
-        <translation>创建日程</translation>
+        <translation>新建日程</translation>
     </message>
     <message>
         <source>Edit Schcedule</source>
@@ -573,7 +573,7 @@
     <name>CSchceduleSearchView</name>
     <message>
         <source>No search results</source>
-        <translation>无搜索结果</translation>
+        <translation>无结果</translation>
     </message>
 </context>
 <context>
