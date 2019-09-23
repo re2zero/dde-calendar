@@ -81,23 +81,16 @@ void CWeekWindow::initUI()
     todayfont.setPixelSize(14);
     m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
-    m_prevButton = new DIconButton(this);
-    m_prevButton->setIconSize(QSize(36, 36));
-    m_prevButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
+    m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
+    //m_prevButton->setIconSize(QSize(36, 36));
+    //m_prevButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
     //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
-    //m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
-    //m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
-    //m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
-    m_prevButton->setFixedSize(36, 36);
-    //m_prevButton->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
 
-    m_nextButton = new DIconButton(this);
-    m_nextButton->setIconSize(QSize(36, 36));
-    m_nextButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
-    //m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
-    //m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
-    //m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
-    //m_nextButton->setPressPic(":/resources/icon/next_press.svg");
+    m_prevButton->setFixedSize(36, 36);
+
+    m_nextButton = new DIconButton(DStyle::SP_ArrowRight, this);
+    //m_nextButton->setIconSize(QSize(36, 36));
+    //m_nextButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
     m_nextButton->setFixedSize(36, 36);
     //m_nextButton->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
 
@@ -202,12 +195,12 @@ void CWeekWindow::setTheMe(int type)
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
         prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
-        m_prevButton->setPalette(prevpa);
+        // m_prevButton->setPalette(prevpa);
 
         DPalette nextvpa = m_nextButton->palette();
         nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
         nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
-        m_nextButton->setPalette(nextvpa);
+        //m_nextButton->setPalette(nextvpa);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -237,12 +230,12 @@ void CWeekWindow::setTheMe(int type)
         prevpa.setColor(DPalette::Light, QColor("#414141"));
         //prevpa.setColor(DPalette::Dark, Qt::black);
         //prevpa.setColor(DPalette::Light, Qt::black);
-        m_prevButton->setPalette(prevpa);
+        //m_prevButton->setPalette(prevpa);
 
         DPalette nextvpa = m_nextButton->palette();
         nextvpa.setColor(DPalette::Dark, QColor("#484848"));
         nextvpa.setColor(DPalette::Light, QColor("#414141"));
-        m_nextButton->setPalette(nextvpa);
+        //m_nextButton->setPalette(nextvpa);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));

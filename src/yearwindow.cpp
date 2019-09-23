@@ -105,11 +105,11 @@ void CYearWindow::initUI()
     m_today->setText(tr("Return today"));
     m_today->setFixedWidth(88);
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-    m_prevButton = new DIconButton(this);
+    m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-    m_prevButton->setIconSize(QSize(36, 36));
-    m_prevButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
+    //m_prevButton->setIconSize(QSize(36, 36));
+    //m_prevButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
     //m_prevButton->setHoverPic(":/resources/icon/previous_hover.svg");
     //m_prevButton->setNormalPic(":/resources/icon/previous_normal.svg");
     //m_prevButton->setPressPic(":/resources/icon/previous_press.svg");
@@ -125,21 +125,17 @@ void CYearWindow::initUI()
 
     //m_prevButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
     //m_prevButton->setArrowDirection(DArrowButton::ArrowLeft);
-    m_nextButton = new DIconButton(this);
+    m_nextButton = new DIconButton(DStyle::SP_ArrowRight, this);
     m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-    m_nextButton->setIconSize(QSize(36, 36));
-    m_nextButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
+    // m_nextButton->setIconSize(QSize(36, 36));
+    //m_nextButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
 
-    //m_nextButton->setHoverPic(":/resources/icon/next_hover.svg");
-    //m_nextButton->setNormalPic(":/resources/icon/next_normal.svg");
-    //m_nextButton->setPressPic(":/resources/icon/next_press.svg");
-    DPalette nextvpa = m_nextButton->palette();
-    nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
-    nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
-    m_nextButton->setPalette(nextvpa);
-    //m_nextButton->setFixedSize(DDEYearCalendar::Y_MLableHeight, DDEYearCalendar::Y_MLableHeight);
-    //m_nextButton->setArrowDirection(DArrowButton::ArrowRight);
+    //DPalette nextvpa = m_nextButton->palette();
+    //nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+    //nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+    //m_nextButton->setPalette(nextvpa);
+
     m_YearLabel = new DLabel();
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
@@ -251,15 +247,15 @@ void CYearWindow::setTheMe(int type)
         todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
 
-        DPalette prevpa = m_prevButton->palette();
-        prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
-        prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
-        m_prevButton->setPalette(prevpa);
+        //DPalette prevpa = m_prevButton->palette();
+        //prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        //prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        //m_prevButton->setPalette(prevpa);
 
-        DPalette nextvpa = m_nextButton->palette();
-        nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
-        nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
-        m_nextButton->setPalette(nextvpa);
+        //DPalette nextvpa = m_nextButton->palette();
+        //nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        //nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        //m_nextButton->setPalette(nextvpa);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -282,17 +278,17 @@ void CYearWindow::setTheMe(int type)
         todaypa.setColor(DPalette::Light, Qt::black);
         m_today->setPalette(todaypa);
 
-        DPalette prevpa = m_prevButton->palette();
-        prevpa.setColor(DPalette::Dark, QColor("#484848"));
-        prevpa.setColor(DPalette::Light, QColor("#414141"));
+        //DPalette prevpa = m_prevButton->palette();
+        //prevpa.setColor(DPalette::Dark, QColor("#484848"));
+        //prevpa.setColor(DPalette::Light, QColor("#414141"));
         //prevpa.setColor(DPalette::Dark, Qt::black);
         //prevpa.setColor(DPalette::Light, Qt::black);
-        m_prevButton->setPalette(prevpa);
+        // m_prevButton->setPalette(prevpa);
 
-        DPalette nextvpa = m_nextButton->palette();
-        nextvpa.setColor(DPalette::Dark, QColor("#484848"));
-        nextvpa.setColor(DPalette::Light, QColor("#414141"));
-        m_nextButton->setPalette(nextvpa);
+        //DPalette nextvpa = m_nextButton->palette();
+        //nextvpa.setColor(DPalette::Dark, QColor("#484848"));
+        //nextvpa.setColor(DPalette::Light, QColor("#414141"));
+        //m_nextButton->setPalette(nextvpa);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));

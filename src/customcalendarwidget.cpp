@@ -178,23 +178,19 @@ void CCustomCalendarWidget::initTopWidget()
     hboxLayout->setContentsMargins(12, 0, 12, 0);
     hboxLayout->setSpacing(4);
 
-    m_leftMonthBtn = new DIconButton(this);
+    m_leftMonthBtn = new DIconButton(DStyle::SP_ArrowLeft, this);
     m_leftMonthBtn->setFixedSize(36, 36);
-    m_leftMonthBtn->setIconSize(QSize(36, 36));
-    m_leftMonthBtn->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
-
-    //m_leftMonthBtn->setHoverPic(":/resources/icon/previous_hover.svg");
-    //m_leftMonthBtn->setNormalPic(":/resources/icon/previous_normal.svg");
-    // m_leftMonthBtn->setPressPic(":/resources/icon/previous_press.svg");
+    // m_leftMonthBtn->setIconSize(QSize(36, 36));
+    //m_leftMonthBtn->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
 
 
-    m_rightMonthBtn = new DIconButton(this);
+
+
+    m_rightMonthBtn = new DIconButton(DStyle::SP_ArrowRight, this);
     m_rightMonthBtn->setFixedSize(36, 36);
-    m_rightMonthBtn->setIconSize(QSize(36, 36));
-    m_rightMonthBtn->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
-    //m_rightMonthBtn->setHoverPic(":/resources/icon/next_hover.svg");
-    // m_rightMonthBtn->setNormalPic(":/resources/icon/next_normal.svg");
-    //m_rightMonthBtn->setPressPic(":/resources/icon/next_press.svg");
+    //m_rightMonthBtn->setIconSize(QSize(36, 36));
+    //m_rightMonthBtn->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
+
 
     //m_dataLabel = new QLabel(this);
     m_monthLabel = new CCaYearMonthEdit(this);
