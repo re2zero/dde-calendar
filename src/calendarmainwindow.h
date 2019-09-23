@@ -45,7 +45,7 @@ public:
     Calendarmainwindow(QWidget *w = NULL);
 public slots:
     void slotTheme(int type);
-    void openSchedule(QString job);
+    void OpenSchedule(QString job);
     void ActiveWindow();
 private:
     void initUI();

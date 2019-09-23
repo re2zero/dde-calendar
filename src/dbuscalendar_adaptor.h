@@ -47,7 +47,7 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void ActiveWindow();
-    void openSchedule(QString job);
+    void OpenSchedule(QString job);
 Q_SIGNALS: // SIGNALS
 };
 

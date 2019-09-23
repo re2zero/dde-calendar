@@ -44,9 +44,9 @@ void CalendarAdaptor::ActiveWindow()
     QMetaObject::invokeMethod(parent(), "ActiveWindow");
 }
 
-void CalendarAdaptor::openSchedule(QString job)
+void CalendarAdaptor::OpenSchedule(QString job)
 {
-    QMetaObject::invokeMethod(parent(), "openSchedule", Q_ARG(QString, job));
+    QMetaObject::invokeMethod(parent(), "OpenSchedule", Q_ARG(QString, job));
 }
 
 

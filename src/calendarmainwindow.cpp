@@ -94,7 +94,7 @@ void Calendarmainwindow::slotTheme(int type)
     m_DayWindow->setTheMe(type);
 }
 
-void Calendarmainwindow::openSchedule(QString job)
+void Calendarmainwindow::OpenSchedule(QString job)
 {
     if (job.isEmpty()) return;
     ScheduleDtailInfo out;
