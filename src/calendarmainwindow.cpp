@@ -50,7 +50,7 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     //setFixedSize(CalendarMWidth, CalendarMHeight);
     setMinimumSize(CalendarMWidth, CalendarMHeight);
     setWindowTitle(tr("Deepin Calendar"));
-
+    setWindowFlag(Qt::WindowMaximizeButtonHint, false);
     new CalendarAdaptor(this);
     resize(CalendarMWidth, CalendarMHeight);
 }
