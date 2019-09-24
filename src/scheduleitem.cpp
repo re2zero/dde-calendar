@@ -79,17 +79,36 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     if (m_type == 0) {
         painter->save();
         QFont font("SourceHanSansSC-Normal");
-        if (m_totalNum > 1) {
-            font.setPixelSize(6);
-        } else {
-            font.setPixelSize(12);
-        }
+        //if (m_totalNum > 1) {
+        //font.setPixelSize(6);
+        //} else {
+        font.setPixelSize(12);
+        //}
 
         painter->setFont(font);
+
         painter->setPen(gdcolor.timeColor);
         QTime stime = m_scheduleInfo.beginDateTime.time();
         QString str = stime.toString("ap HH:mm");
-        painter->drawText(QRect(rect.topLeft().x() + 2, rect.topLeft().y(), rect.width() - 2, 20), Qt::AlignLeft, str);
+        QFontMetrics fontmetris(font);
+        int amwidth = fontmetris.width(str);
+        if (fontmetris.width(str) > rect.width() - 2) {
+            QString tstr;
+            for (int i = 0; i < str.count(); i++) {
+                tstr.append(str.at(i));
+                int widthT = fontmetris.width(tstr) + 5;
+                if (widthT >= rect.width()) {
+                    tstr.chop(3);
+                    tstr = tstr + "...";
+                    break;
+                }
+            }
+            painter->drawText(QRect(rect.topLeft().x() + 10, rect.topLeft().y(), rect.width() - 12, 20), Qt::AlignLeft, tstr);
+
+        } else {
+            painter->drawText(QRect(rect.topLeft().x() + 10, rect.topLeft().y(), rect.width() - 12, 20), Qt::AlignLeft, str);
+
+        }
         painter->restore();
 
         painter->save();
@@ -97,9 +116,9 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
-        splitText(font, rect.width(), rect.height() - 20, m_scheduleInfo.titleName, liststr);
+        splitText(font, rect.width() - 15, rect.height() - 20, m_scheduleInfo.titleName, liststr);
         for (int i = 0; i < liststr.count(); i++) {
-            painter->drawText(QRect(rect.topLeft().x() + 2, rect.topLeft().y() + 20 + i * 20, rect.width() - 2, 20), Qt::AlignLeft, liststr.at(i));
+            painter->drawText(QRect(rect.topLeft().x() + 10, rect.topLeft().y() + 20 + i * 20, rect.width() - 2, 20), Qt::AlignLeft, liststr.at(i));
         }
         painter->restore();
     } else {
@@ -142,7 +161,8 @@ void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringLis
             liststr.append(tliststr.at(i));
         } else {
             if (i == 0) {
-                liststr.append("...");
+                break;
+                //liststr.append("...");
             } else {
                 tstr = liststr.at(i - 1);
                 tstr.chop(3);

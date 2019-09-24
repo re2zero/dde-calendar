@@ -21,7 +21,7 @@
 #include "graphicsview.h"
 #include "schedulecoormanage.h"
 #include "dbmanager.h"
-#include "schcedulealldayview.h"
+#include "alldayschceduleview.h"
 #include "scheduledatamanage.h"
 #include <DPalette>
 DGUI_USE_NAMESPACE
@@ -55,12 +55,14 @@ void CScheduleView::setRange( int w, int h, QDate begin, QDate end )
 {
     m_TotalDay = begin.daysTo(end) + 1;
     m_graphicsView->setRange(w, h, begin, end);
+    m_alldaylist->setRange(w, 22, m_beginDate, m_endDate);
 }
 
 void CScheduleView::setRange( QDate begin, QDate end )
 {
     m_TotalDay = begin.daysTo(end) + 1;
     m_graphicsView->getCoorManage()->setDateRange(begin, end);
+    m_alldaylist->getCoorManage()->setDateRange(begin, end);
     m_beginDate = begin;
     m_endDate = end;
     updateSchedule();
@@ -160,14 +162,14 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
                     int tnum = info.at(m).vData.count();
                     if (m_viewType == 0) {
                         if (tnum > 3) {
-                            tnum = 3;
+                            tnum = 4;
                             for (int n = 0; n  < tnum - 1; n++) {
                                 m_graphicsView->addSchduleItem(info.at(m).vData.at(n), n + 1, tnum, 0);
                             }
                             ScheduleDtailInfo tdetaliinfo = info.at(m).vData.at(1);
                             tdetaliinfo.titleName = "...";
                             tdetaliinfo.type.ID = 3;
-                            m_graphicsView->addSchduleItem(tdetaliinfo, 3, tnum, 1);
+                            m_graphicsView->addSchduleItem(tdetaliinfo, 4, tnum, 1);
                         } else {
                             for (int n = 0; n  < tnum; n++) {
                                 m_graphicsView->addSchduleItem(info.at(m).vData.at(n), n + 1, tnum, 0);
@@ -279,10 +281,12 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 void CScheduleView::resizeEvent(QResizeEvent *event)
 {
     m_graphicsView->setRange(width() - 74, 24 * 43, m_beginDate, m_endDate);
-    if (width() > 600)
-        m_alldaylist->setFixedSize(635, 50);
-    else {
-        m_alldaylist->setFixedSize(width() - 90, 50);
+    if (width() > 600) {
+        m_alldaylist->setFixedSize(width() - 74, 99);
+        m_alldaylist->setRange(width() - 74, 22, m_beginDate, m_endDate);
+    } else {
+        m_alldaylist->setFixedSize(width() - 74, 99);
+        m_alldaylist->setRange(width() - 74, 22, m_beginDate, m_endDate);
     }
     QFrame::resizeEvent(event);
 }
@@ -297,18 +301,18 @@ void CScheduleView::initUI()
     layout->addWidget(m_graphicsView);
     setLayout(layout);
     m_graphicsView->scrollBarValueChangedSlot();
-    m_alldaylist = new CSchceduleAllDayView(this);
-    m_alldaylist->setFixedSize(635, 38);
-    m_alldaylist->move(90, 5);
+    m_alldaylist = new CAllDaySchceduleView(this);
+    //m_alldaylist->setFixedSize(635, 99);
+    m_alldaylist->move(72, 5);
 }
 
 void CScheduleView::initConnection()
 {
     connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     //connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
-    connect(m_alldaylist, &CSchceduleAllDayView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
+    connect(m_alldaylist, &CAllDaySchceduleView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     //connect(m_alldaylist, &CSchceduleAllDayView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
-    connect(m_alldaylist, &CSchceduleAllDayView::signalsCotrlUpdateShcedule, this, &CScheduleView::slotCtrlSchceduleUpdate);
+    connect(m_alldaylist, &CAllDaySchceduleView::signalsCotrlUpdateShcedule, this, &CScheduleView::slotCtrlSchceduleUpdate);
 
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);

@@ -133,6 +133,28 @@ QRectF CScheduleCoorManage::getDrawRegionF( QDateTime begintime, QDateTime endti
     return rectf;
 }
 
+QRect CScheduleCoorManage::getAllDayDrawRegion(QDate begin, QDate end)
+{
+    QRect rect;
+    if (begin > end) return rect;
+
+    QDate begindate = begin;
+    QDate enddate = end;
+
+    if (begindate < m_begindate || enddate > m_enddate) return rect;
+    int beginday = m_begindate.daysTo(begindate) + 1;
+
+    int day = begindate.daysTo(enddate) + 1;
+
+
+    float rWidth = m_width * (1.0 * day / m_totalDay) - 12;
+    float rHeight = m_height;
+    float posX = m_width * (1.0 * (beginday - 1) / m_totalDay);
+    float posY = 0;
+    rect = QRect(posX, posY, rWidth, rHeight);
+    return rect;
+}
+
 QDateTime CScheduleCoorManage::getDate(QPointF pos)
 {
     QDateTime begintime;

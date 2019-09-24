@@ -168,7 +168,7 @@ void CDayWindow::initUI()
     leftLayout->setSpacing(0);
     m_scheduleView = new CScheduleView(this, 1);
     //leftLayout->setContentsMargins(12, 0, 10, 12);
-    m_scheduleView->setviewMagin(72, 57, 0, 0);
+    m_scheduleView->setviewMagin(72, 109, 0, 0);
     m_scheduleView->setRange(423, 1032, QDate(2019, 8, 12), QDate(2019, 8, 12));
     //m_scheduleView->setFixedSize(513, 450);
     leftLayout->addLayout(titleLayout);

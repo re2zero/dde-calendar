@@ -62,7 +62,8 @@ HEADERS += src/calendardbus.h \
     src/schedulesdbus.h \
     src/scheduledatamanage.h \
     src/schcedulealldayview.h \
-    src/creatorparschedule.h
+    src/creatorparschedule.h \
+    src/alldayschceduleview.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \
            src/calendarwindow.cpp \
@@ -103,7 +104,8 @@ SOURCES += src/calendardbus.cpp \
     src/schedulesdbus.cpp \
     src/scheduledatamanage.cpp \
     src/schcedulealldayview.cpp \
-    src/creatorparschedule.cpp
+    src/creatorparschedule.cpp \
+    src/alldayschceduleview.cpp
 RESOURCES += src/resources.qrc
 #TRANSLATIONS += translations/dde-calendar.ts \
 #                translations/desktop/desktop_zh_CN.ts\

@@ -32,7 +32,7 @@ typedef struct _tagScheduleclassificationInfo {
 } ScheduleclassificationInfo;
 
 class CGraphicsView;
-class CSchceduleAllDayView;
+class CAllDaySchceduleView;
 class CScheduleView : public DFrame
 {
     Q_OBJECT
@@ -71,7 +71,7 @@ private:
     CGraphicsView            *m_graphicsView;
     QVector<int>              m_vPos;
     QVector<int>              m_vHours;
-    CSchceduleAllDayView     *m_alldaylist;
+    CAllDaySchceduleView     *m_alldaylist;
     int                       m_leftMagin;
     int                       m_topMagin;
     int                       m_TotalDay;
