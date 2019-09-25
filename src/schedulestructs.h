@@ -76,4 +76,10 @@ typedef struct _tagScheduleDateRangeInfo {
     QDate date;
     QVector<ScheduleDtailInfo> vData;
 } ScheduleDateRangeInfo;
+typedef struct _tagMScheduleDateRangeInfo {
+    QDate bdate;
+    QDate edate;
+    bool state;
+    ScheduleDtailInfo tData;
+} MScheduleDateRangeInfo;
 #endif
