@@ -448,7 +448,7 @@ void CSchceduleAllDayView::slotCreate()
 void CSchceduleAllDayView::contextMenuEvent(QContextMenuEvent *event)
 {
     if (m_vlistData.isEmpty()) {
-        QMenu Context(this);
+        DMenu Context(this);
         Context.addAction(m_createAction);
         Context.exec(QCursor::pos());
     }

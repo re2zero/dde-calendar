@@ -243,7 +243,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
-    QMenu Context(this);
+    DMenu Context(this);
     Context.addAction(m_editAction);
     Context.addAction(m_deleteAction);
     Context.exec(QCursor::pos());

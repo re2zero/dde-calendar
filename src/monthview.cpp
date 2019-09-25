@@ -310,7 +310,7 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
                 m_updateflag = false;
             cellClicked(cell);
         } else if (e->type() == QEvent::ContextMenu) {
-            QMenu Context(this);
+            DMenu Context(this);
             Context.addAction(m_createAction);
             Context.exec(QCursor::pos());
         } else if (e->type() == QEvent::MouseButtonRelease) {

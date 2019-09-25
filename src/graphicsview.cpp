@@ -263,7 +263,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
     if (event->button() == Qt::RightButton) {
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
         if (item == NULL) {
-            QMenu menu(this);
+            DMenu menu(this);
             menu.addAction(m_createAction);
             QAction *action_t = menu.exec(QCursor::pos());
             if (action_t == m_createAction) {
@@ -277,7 +277,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             }
         } else {
             if (item->getType() == 1) return;
-            QMenu menu(this);
+            DMenu menu(this);
             menu.addAction(m_editAction);
             menu.addAction(m_deleteAction);
             QAction *action_t = menu.exec(QCursor::pos());
