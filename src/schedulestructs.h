@@ -80,6 +80,7 @@ typedef struct _tagMScheduleDateRangeInfo {
     QDate bdate;
     QDate edate;
     bool state;
+    int  num;
     ScheduleDtailInfo tData;
 } MScheduleDateRangeInfo;
 #endif
