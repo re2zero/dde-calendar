@@ -36,13 +36,15 @@ CScheduleItem::~CScheduleItem()
 
 }
 
-void CScheduleItem::setData( const ScheduleDtailInfo &info, int index, int totalNum)
+void CScheduleItem::setData( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype)
 {
     if (m_type == 0) setToolTip(info.titleName);
     m_scheduleInfo = info;
     m_color = info.type.color;
     m_index = index;
     m_totalNum = totalNum;
+    m_date = date;
+    m_viewtype = viewtype;
     update();
 }
 
@@ -50,7 +52,9 @@ QRectF CScheduleItem::boundingRect() const
 {
     QRectF t_rect;
 
-    t_rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum);
+    t_rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_viewtype);
+
+    //t_rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum);
 
     return t_rect;
 }
@@ -68,7 +72,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     painter->setBrush(gdcolor.Purecolor);
     painter->setPen(Qt::NoPen);
-    QRect rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum);
+    QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_viewtype);
     painter->drawRect(rect);
     painter->save();
     QPen pen(gdcolor.shadowcolor);
@@ -76,6 +80,8 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->setPen(pen);
     painter->drawLine(rect.topLeft(), rect.bottomLeft());
     painter->restore();
+    int tmagin = 10;
+    if (m_totalNum > 1) tmagin = 5;
     if (m_type == 0) {
         painter->save();
         QFont font("SourceHanSansSC-Normal");
@@ -98,15 +104,15 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
                 tstr.append(str.at(i));
                 int widthT = fontmetris.width(tstr) + 5;
                 if (widthT >= rect.width()) {
-                    tstr.chop(3);
+                    tstr.chop(2);
                     tstr = tstr + "...";
                     break;
                 }
             }
-            painter->drawText(QRect(rect.topLeft().x() + 10, rect.topLeft().y(), rect.width() - 12, 20), Qt::AlignLeft, tstr);
+            painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 12, 20), Qt::AlignLeft, tstr);
 
         } else {
-            painter->drawText(QRect(rect.topLeft().x() + 10, rect.topLeft().y(), rect.width() - 12, 20), Qt::AlignLeft, str);
+            painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 12, 20), Qt::AlignLeft, str);
 
         }
         painter->restore();
@@ -116,9 +122,9 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
-        splitText(font, rect.width() - 15, rect.height() - 20, m_scheduleInfo.titleName, liststr);
+        splitText(font, rect.width() - tmagin - 5, rect.height() - 20, m_scheduleInfo.titleName, liststr);
         for (int i = 0; i < liststr.count(); i++) {
-            painter->drawText(QRect(rect.topLeft().x() + 10, rect.topLeft().y() + 20 + i * 20, rect.width() - 2, 20), Qt::AlignLeft, liststr.at(i));
+            painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 20 + i * 20, rect.width() - 2, 20), Qt::AlignLeft, liststr.at(i));
         }
         painter->restore();
     } else {

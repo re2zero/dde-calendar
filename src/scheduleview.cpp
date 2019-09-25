@@ -150,6 +150,7 @@ void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
 void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
 {
     if (w != this) return;
+    m_graphicsView->clearSchdule();
     for (int i = 0; i < m_TotalDay; i++) {
         for (int j = 0; j < data.size(); j++) {
             if (data.at(j).date == m_beginDate.addDays(i)) {
@@ -158,27 +159,28 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
                 QVector<ScheduleclassificationInfo> info;
                 scheduleClassificationType(scheduleInfolist, info);
 
+                QDate tdate = m_beginDate.addDays(i);
                 for (int m = 0; m  < info.count(); m++) {
                     int tnum = info.at(m).vData.count();
                     if (m_viewType == 0) {
                         if (tnum > 3) {
                             tnum = 4;
                             for (int n = 0; n  < tnum - 1; n++) {
-                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), n + 1, tnum, 0);
+                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType);
                             }
                             ScheduleDtailInfo tdetaliinfo = info.at(m).vData.at(1);
                             tdetaliinfo.titleName = "...";
                             tdetaliinfo.type.ID = 3;
-                            m_graphicsView->addSchduleItem(tdetaliinfo, 4, tnum, 1);
+                            m_graphicsView->addSchduleItem(tdetaliinfo, tdate, 4, tnum, 1, m_viewType);
                         } else {
                             for (int n = 0; n  < tnum; n++) {
-                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), n + 1, tnum, 0);
+                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType);
                             }
                         }
 
                     } else {
                         for (int n = 0; n  < tnum; n++) {
-                            m_graphicsView->addSchduleItem(info.at(m).vData.at(n), n + 1, tnum, 0);
+                            m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType);
                         }
                     }
                 }

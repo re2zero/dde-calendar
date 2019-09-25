@@ -327,16 +327,18 @@ CAllDaySchceduleView::CAllDaySchceduleView(QWidget *parent, int edittype) : DLis
 {
 
 
-    setWindowFlags(Qt::FramelessWindowHint);
+    //setWindowFlags(Qt::FramelessWindowHint);
     //setAttribute(Qt::WA_TranslucentBackground, true);
     m_editType = edittype;
     m_widgetFlag = false;
     setContentsMargins(0, 0, 0, 0);
     //DPalette mainpa = this->palette();
-    this->setAutoFillBackground(true);
+    // this->setAutoFillBackground(true);
     QPalette pal = palette();
-    //pal.setColor(QPalette::Background, QColor(0x00, 0xff, 0x00, 0x00));
-    pal.setBrush(backgroundRole(), QColor(0, 0, 0, 0));
+    pal.setColor(QPalette::Light, QColor(0, 0, 0, 0));
+    pal.setColor(QPalette::Dark, QColor(0, 0, 0, 0));
+    pal.setColor(QPalette::Base, QColor(0, 0, 0, 0));
+    //pal.setBrush(backgroundRole(), QColor(0, 0, 0, 0));
     setPalette(pal);
 
     //setWindowFlags(Qt::FramelessWindowHint);

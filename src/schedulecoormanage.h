@@ -31,6 +31,7 @@ public:
     void setDateRange(QDate begindate, QDate enddate);
     QRect getDrawRegion(QDateTime begintime, QDateTime endtime);
     QRect getDrawRegion(QDateTime begintime, QDateTime endtime, int index, int coount);
+    QRect getDrawRegion(QDate date, QDateTime begintime, QDateTime endtime, int index, int coount, int type = 0);
     QRectF getDrawRegionF(QDateTime begintime, QDateTime endtime);
     QRect getAllDayDrawRegion(QDate begin, QDate end);
     QDateTime getDate(QPointF pos);
