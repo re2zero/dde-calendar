@@ -353,6 +353,7 @@ CAllDaySchceduleView::CAllDaySchceduleView(QWidget *parent, int edittype) : DLis
     m_createAction = new QAction(tr("Create"), this);
     connect(m_createAction, &QAction::triggered, this, &CAllDaySchceduleView::slotCreate);
     //setStyleSheet("background-color:transparent");
+    setSelectionMode(QAbstractItemView::NoSelection);
 }
 
 CAllDaySchceduleView::~CAllDaySchceduleView()
