@@ -29,6 +29,7 @@
 #include "scheduledatamanage.h"
 #include <DMessageBox>
 #include <DPalette>
+#include "schcedulectrldlg.h"
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
@@ -185,9 +186,9 @@ void CSchceduleDlg::slotOkBt()
         } else {
             if (m_scheduleDtailInfo.allday != scheduleDtailInfo.allday) {
 
-                DMessageBox msgBox;
-                msgBox.setWindowFlags(Qt::FramelessWindowHint);
-                msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+                CSchceduleCtrlDlg msgBox(this);
+                //msgBox.setWindowFlags(Qt::FramelessWindowHint);
+                //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
                 if (scheduleDtailInfo.allday) {
                     msgBox.setText(tr("Repetitive schedule of all must have the same throughout the state."));
 
@@ -195,8 +196,9 @@ void CSchceduleDlg::slotOkBt()
                     msgBox.setText(tr("Repetitive schedule of all must have the same not throughout the state."));
                 }
                 msgBox.setInformativeText(tr("Would you like to change all repeat?"));
-                DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
-                DPushButton *yesButton = msgBox.addButton(tr("All Changes"), DMessageBox::YesRole);
+                DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+                DPushButton *yesButton = msgBox.addPushButton(tr("All Changes"));
+                msgBox.updatesize();
                 DPalette pa = yesButton->palette();
                 if (themetype == 0 || themetype == 1) {
                     pa.setColor(DPalette::ButtonText, Qt::red);
@@ -208,20 +210,21 @@ void CSchceduleDlg::slotOkBt()
                 yesButton->setPalette(pa);
                 msgBox.exec();
 
-                if (msgBox.clickedButton() == noButton) {
+                if (msgBox.clickButton() == noButton) {
                     return;
-                } else if (msgBox.clickedButton() == yesButton) {
+                } else if (msgBox.clickButton() == yesButton) {
                     CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(scheduleDtailInfo);
                 }
 
             } else if (m_scheduleDtailInfo.rpeat != scheduleDtailInfo.rpeat) {
-                DMessageBox msgBox;
-                msgBox.setWindowFlags(Qt::FramelessWindowHint);
-                msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+                CSchceduleCtrlDlg msgBox(this);
+                //msgBox.setWindowFlags(Qt::FramelessWindowHint);
+                //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
                 msgBox.setText(tr("Repetitive schedule of all must have the same throughout the state."));
                 msgBox.setInformativeText(tr("Would you like to change all repeat?"));
-                DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
-                DPushButton *yesButton = msgBox.addButton(tr("All Changes"), DMessageBox::YesRole);
+                DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+                DPushButton *yesButton = msgBox.addPushButton(tr("All Changes"));
+                msgBox.updatesize();
                 DPalette pa = yesButton->palette();
                 if (themetype == 0 || themetype == 1) {
                     pa.setColor(DPalette::ButtonText, Qt::red);
@@ -233,21 +236,22 @@ void CSchceduleDlg::slotOkBt()
                 yesButton->setPalette(pa);
                 msgBox.exec();
 
-                if (msgBox.clickedButton() == noButton) {
+                if (msgBox.clickButton() == noButton) {
                     return;
-                } else if (msgBox.clickedButton() == yesButton) {
+                } else if (msgBox.clickButton() == yesButton) {
                     CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(scheduleDtailInfo);
                 }
             } else {
                 if (m_scheduleDtailInfo.RecurID == 0) {
-                    DMessageBox msgBox;
-                    msgBox.setWindowFlags(Qt::FramelessWindowHint);
-                    msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+                    CSchceduleCtrlDlg msgBox(this);
+                    //msgBox.setWindowFlags(Qt::FramelessWindowHint);
+                    //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
                     msgBox.setText(tr("You are changing the schedule again."));
                     msgBox.setInformativeText(tr("You are to change the schedule only the repeat, to repeat or change it all?"));
-                    DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
-                    DPushButton *yesallbutton = msgBox.addButton(tr("ALL"), DMessageBox::YesRole);
-                    DPushButton *yesButton = msgBox.addButton(tr("Only Schedule"), DMessageBox::YesRole);
+                    DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+                    DPushButton *yesallbutton = msgBox.addPushButton(tr("ALL"));
+                    DPushButton *yesButton = msgBox.addPushButton(tr("Only Schedule"));
+                    msgBox.updatesize();
                     DPalette pa = yesButton->palette();
                     if (themetype == 0 || themetype == 1) {
                         pa.setColor(DPalette::ButtonText, Qt::white);
@@ -261,11 +265,11 @@ void CSchceduleDlg::slotOkBt()
                     yesButton->setPalette(pa);
                     msgBox.exec();
 
-                    if (msgBox.clickedButton() == noButton) {
+                    if (msgBox.clickButton() == noButton) {
                         return;
-                    } else if (msgBox.clickedButton() == yesallbutton) {
+                    } else if (msgBox.clickButton() == yesallbutton) {
                         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(scheduleDtailInfo);
-                    } else if (msgBox.clickedButton() == yesButton) {
+                    } else if (msgBox.clickButton() == yesButton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
                         newschedule.rpeat = 0;
                         newschedule.RecurID = 0;
@@ -279,15 +283,16 @@ void CSchceduleDlg::slotOkBt()
                         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(updatescheduleData);
                     }
                 } else {
-                    DMessageBox msgBox;
-                    msgBox.setWindowFlags(Qt::FramelessWindowHint);
-                    msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+                    CSchceduleCtrlDlg msgBox(this);
+                    //msgBox.setWindowFlags(Qt::FramelessWindowHint);
+                    // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
                     msgBox.setText(tr("You are changing the schedule again."));
                     msgBox.setInformativeText(tr("Do you want to change the schedule only is this a repeat, besides it also changes the schedule all repeat in the future?"));
-                    DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
-                    DPushButton *yesallbutton = msgBox.addButton(tr("All future Schedule"), DMessageBox::YesRole);
-                    DPushButton *yesButton = msgBox.addButton(tr("Only Schedule"), DMessageBox::YesRole);
+                    DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+                    DPushButton *yesallbutton = msgBox.addPushButton(tr("All future Schedule"));
+                    DPushButton *yesButton = msgBox.addPushButton(tr("Only Schedule"));
+                    msgBox.updatesize();
                     DPalette pa = yesButton->palette();
                     if (themetype == 0 || themetype == 1) {
                         pa.setColor(DPalette::ButtonText, Qt::white);
@@ -301,9 +306,9 @@ void CSchceduleDlg::slotOkBt()
                     yesButton->setPalette(pa);
                     msgBox.exec();
 
-                    if (msgBox.clickedButton() == noButton) {
+                    if (msgBox.clickButton() == noButton) {
                         return;
-                    } else if (msgBox.clickedButton() == yesallbutton) {
+                    } else if (msgBox.clickButton() == yesallbutton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
                         newschedule.RecurID = 0;
                         newschedule.id = 0;
@@ -313,7 +318,7 @@ void CSchceduleDlg::slotOkBt()
                         updatescheduleData.enddata.type = 2;
                         updatescheduleData.enddata.date = m_scheduleDtailInfo.beginDateTime;
                         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(updatescheduleData);
-                    } else if (msgBox.clickedButton() == yesButton) {
+                    } else if (msgBox.clickButton() == yesButton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
                         newschedule.rpeat = 0;
                         newschedule.RecurID = 0;

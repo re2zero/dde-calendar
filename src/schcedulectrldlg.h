@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MYSCHCEDULEVIEW_H
-#define MYSCHCEDULEVIEW_H
+#ifndef CSCHCEDULECTRLDLG_H
+#define CSCHCEDULECTRLDLG_H
 
 #include <QObject>
 #include <DLabel>
@@ -37,15 +37,22 @@ public:
     void setTitleName(QString tileName);
     void setText(QString str);
     void setInformativeText(QString str);
+    DPushButton *clickButton();
+    void updatesize();
 private:
     void initUI();
     void initConnection();
+
+private slots:
+    void buttonJudge(int id);
 private:
     DLabel                           *m_firstLabel = nullptr;
     DLabel                           *m_seconLabel = nullptr;
     DLabel                           *m_icon;
     DLabel                           *m_Title;
+    int                              m_id = -1;
     QButtonGroup                     *m_Buttongroup;
+    QVector<DPushButton *>            m_buttonlist;
     QVBoxLayout                      *m_mainBoxLayout;
     QHBoxLayout                      *m_btBoxLayout;
 };

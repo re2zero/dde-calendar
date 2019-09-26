@@ -28,10 +28,11 @@
 DGUI_USE_NAMESPACE
 CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
 {
+    setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
     //setTitle(tr("My Schcedule"));
-    setFixedSize(380, 160);
+    resize(380, 160);
 
 }
 
@@ -66,10 +67,12 @@ void CSchceduleCtrlDlg::initUI()
     m_mainBoxLayout = new QVBoxLayout(this);
     m_mainBoxLayout->setMargin(0);
     m_mainBoxLayout->setSpacing(0);
-    m_mainBoxLayout->setContentsMargins(10, 10, 10, 10);
+    m_mainBoxLayout->setContentsMargins(10, 28, 10, 10);
 
     m_firstLabel = new DLabel(this);
     m_firstLabel->setAlignment(Qt::AlignCenter);
+    m_firstLabel->adjustSize();
+    m_firstLabel->setWordWrap(true);
     QFont labelF;
     labelF.setFamily("SourceHanSansSC-Medium");
     labelF.setPixelSize(14);
@@ -92,40 +95,110 @@ void CSchceduleCtrlDlg::initUI()
     labelT.setFamily("SourceHanSansSC-Bold");
     labelT.setPixelSize(14);
     DPalette tpa = m_seconLabel->palette();
-
-
     if (themetype == 0 || themetype == 1) {
         tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
     } else {
         tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
     }
-
-
-
     m_seconLabel->setPalette(tpa);
     m_seconLabel->setFont(labelT);
+    m_seconLabel->setAlignment(Qt::AlignCenter);
+    m_seconLabel->setWordWrap(true);
+    m_seconLabel->adjustSize();
+    m_mainBoxLayout->addSpacing(3);
     m_mainBoxLayout->addWidget(m_seconLabel);
-
-
     m_btBoxLayout = new QHBoxLayout;
     m_btBoxLayout->setMargin(0);
     m_btBoxLayout->setSpacing(0);
     m_btBoxLayout->setContentsMargins(0, 0, 0, 0);
-
+    m_Buttongroup = new QButtonGroup(this);
     m_mainBoxLayout->addLayout(m_btBoxLayout);
     DFrame *gwi = new DFrame(this);
     gwi->setLayout(m_mainBoxLayout);
-    gwi->setGeometry(0, 51, 380, 110);
+    //gwi->setGeometry(0, 51, 380, 110);
+    addContent(gwi, Qt::AlignCenter);
 }
 
 void CSchceduleCtrlDlg::initConnection()
 {
+    connect( m_Buttongroup, SIGNAL(buttonClicked (int)), this, SLOT(buttonJudge(int)) );//连接信号和槽
+}
 
+void CSchceduleCtrlDlg::updatesize()
+{
+    if (m_buttonlist.count() == 2) {
+
+        int w = 0;
+        for (int i = 0; i < m_buttonlist.count(); i++) {
+            if (m_buttonlist.at(i)->width() > w) {
+                w = m_buttonlist.at(i)->width();
+            }
+        }
+        if (w < 170) w = 170;
+        for (int i = 0; i < m_buttonlist.count(); i++) {
+            m_buttonlist.at(i)->setFixedWidth(w);
+        }
+        int rw = w * m_buttonlist.count() + (m_buttonlist.count()) * 23 + 20;
+        setFixedWidth(rw);
+
+    } else {
+        int w = 0;
+        for (int i = 0; i < m_buttonlist.count(); i++) {
+            if (m_buttonlist.at(i)->width() > w) {
+                w = m_buttonlist.at(i)->width();
+            }
+        }
+        for (int i = 0; i < m_buttonlist.count(); i++) {
+            m_buttonlist.at(i)->setFixedWidth(w);
+        }
+        int rw = w * m_buttonlist.count() + (m_buttonlist.count() - 1) * 23 + 20;
+        setFixedWidth(rw);
+    }
+
+
+    QRect rect = m_firstLabel->geometry();
+    //rect.setHeight(rect.height());
+    //m_firstLabel->setGeometry(rect); //
+    m_firstLabel->adjustSize();
+    //rect = m_seconLabel->geometry();
+    //rect.setHeight(rect.height() * 2);
+    // m_seconLabel->setGeometry(rect); //
+    m_seconLabel->adjustSize();
+}
+
+void CSchceduleCtrlDlg::buttonJudge(int id)
+{
+    m_id = id;
+    accept();
 }
 
 DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName)
 {
-    return NULL;
+    QFont labelTitle;
+    labelTitle.setFamily("SourceHanSansSC-Medium");
+    labelTitle.setPixelSize(14);
+    QFontMetrics fm(labelTitle);
+    int w = fm.width(btName);
+    if (w > 107) w = w + 18;
+    else {
+        w = 107;
+    }
+    DPushButton *button  = new DPushButton(btName);
+    button->setFixedWidth(w);
+    button->setFixedHeight(36);
+    button->setFont(labelTitle);
+    m_Buttongroup->addButton(button, m_Buttongroup->buttons().count());
+    if (m_Buttongroup->buttons().count() > 1) {
+        DVerticalLine *btframe = new DVerticalLine(this);
+        btframe->setFixedSize(3, 28);
+        m_btBoxLayout->addWidget(btframe);
+    }
+
+
+    m_btBoxLayout->addWidget(button);
+    m_buttonlist.append(button);
+
+    return button;
 }
 
 void CSchceduleCtrlDlg::setText(QString str)
@@ -137,3 +210,10 @@ void CSchceduleCtrlDlg::setInformativeText(QString str)
 {
     m_seconLabel->setText(str);
 }
+
+DPushButton *CSchceduleCtrlDlg::clickButton()
+{
+    if (m_id < 0 || m_id > m_buttonlist.count() - 1) return  NULL;
+    return m_buttonlist[m_id];
+}
+

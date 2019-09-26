@@ -33,6 +33,7 @@
 #include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
+#include "schcedulectrldlg.h"
 DGUI_USE_NAMESPACE
 CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
 {
@@ -98,14 +99,15 @@ void CMonthSchceduleWidgetItem::slotDelete()
 {
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     if (m_ScheduleInfo.rpeat == 0) {
-        DMessageBox msgBox;
-        msgBox.setWindowFlags(Qt::FramelessWindowHint);
-        msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+        CSchceduleCtrlDlg msgBox;
+        //msgBox.setWindowFlags(Qt::FramelessWindowHint);
+        //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
         msgBox.setText(tr("You are deleted schedule."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
-        DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
-        DPushButton *yesButton = msgBox.addButton(tr("Delete Schedule"), DMessageBox::YesRole);
+        DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+        DPushButton *yesButton = msgBox.addPushButton(tr("Delete Schedule"));
+        msgBox.updatesize();
         DPalette pa = yesButton->palette();
         if (themetype == 0 || themetype == 1) {
             pa.setColor(DPalette::ButtonText, Qt::red);
@@ -117,22 +119,23 @@ void CMonthSchceduleWidgetItem::slotDelete()
         yesButton->setPalette(pa);
         msgBox.exec();
 
-        if (msgBox.clickedButton() == noButton) {
+        if (msgBox.clickButton() == noButton) {
             return;
-        } else if (msgBox.clickedButton() == yesButton) {
+        } else if (msgBox.clickButton() == yesButton) {
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_ScheduleInfo.id);
         }
     } else {
         if (m_ScheduleInfo.RecurID == 0) {
-            DMessageBox msgBox;
-            msgBox.setWindowFlags(Qt::FramelessWindowHint);
-            msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+            CSchceduleCtrlDlg msgBox;
+            //msgBox.setWindowFlags(Qt::FramelessWindowHint);
+            //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
             msgBox.setText(tr("You are deleted schedule."));
             msgBox.setInformativeText(tr("You want to delete all repeat of the schedule, or just delete the selected repeat?"));
-            DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
-            DPushButton *yesallbutton = msgBox.addButton(tr("All Deleted"), DMessageBox::YesRole);
-            DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
+            DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("All Deleted"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Just Delete Schedule"));
+            msgBox.updatesize();
             DPalette pa = yesButton->palette();
             if (themetype == 0 || themetype == 1) {
                 pa.setColor(DPalette::ButtonText, Qt::white);
@@ -146,11 +149,11 @@ void CMonthSchceduleWidgetItem::slotDelete()
             yesButton->setPalette(pa);
             msgBox.exec();
 
-            if (msgBox.clickedButton() == noButton) {
+            if (msgBox.clickButton() == noButton) {
                 return;
-            } else if (msgBox.clickedButton() == yesallbutton) {
+            } else if (msgBox.clickButton() == yesallbutton) {
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_ScheduleInfo.id);
-            } else if (msgBox.clickedButton() == yesButton) {
+            } else if (msgBox.clickButton() == yesButton) {
 
                 ScheduleDtailInfo newschedule;
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_ScheduleInfo.id, newschedule);
@@ -158,14 +161,15 @@ void CMonthSchceduleWidgetItem::slotDelete()
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
             }
         } else {
-            DMessageBox msgBox;
-            msgBox.setWindowFlags(Qt::FramelessWindowHint);
-            msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+            CSchceduleCtrlDlg msgBox(this);
+            //msgBox.setWindowFlags(Qt::FramelessWindowHint);
+            //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
             msgBox.setText(tr("You are deleted schedule."));
             msgBox.setInformativeText(tr("You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?"));
-            DPushButton *noButton = msgBox.addButton(tr("Cancel"), DMessageBox::NoRole);
-            DPushButton *yesallbutton = msgBox.addButton(tr("Delete all schedule in the future"), DMessageBox::YesRole);
-            DPushButton *yesButton = msgBox.addButton(tr("Just Delete Schedule"), DMessageBox::YesRole);
+            DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete all schedule in the future"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Just Delete Schedule"));
+            msgBox.updatesize();
             DPalette pa = yesButton->palette();
             if (themetype == 0 || themetype == 1) {
                 pa.setColor(DPalette::ButtonText, Qt::white);
@@ -179,16 +183,16 @@ void CMonthSchceduleWidgetItem::slotDelete()
             yesButton->setPalette(pa);
             msgBox.exec();
 
-            if (msgBox.clickedButton() == noButton) {
+            if (msgBox.clickButton() == noButton) {
                 return;
-            } else if (msgBox.clickedButton() == yesallbutton) {
+            } else if (msgBox.clickButton() == yesallbutton) {
                 ScheduleDtailInfo newschedule;
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_ScheduleInfo.id, newschedule);
                 newschedule.enddata.type = 2;
                 newschedule.enddata.date = m_ScheduleInfo.beginDateTime;
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
 
-            } else if (msgBox.clickedButton() == yesButton) {
+            } else if (msgBox.clickButton() == yesButton) {
 
                 ScheduleDtailInfo newschedule;
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_ScheduleInfo.id, newschedule);
