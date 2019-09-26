@@ -578,8 +578,16 @@ void CAllSolarDayWidgetItem::paintEvent(QPaintEvent *e)
         painter.drawRoundedRect(drawrect2, 3, 2);
 
         painter.setFont(m_font);
+        painter.setFont(m_font);
+        QFont solofont = m_font;
+        QFontMetrics fm = painter.fontMetrics();
+        while (fm.width(m_SolarDayInfo) > drawrect.width() - 6) {
+            solofont.setPixelSize(solofont.pixelSize() - 1);
+            painter.setFont(solofont);
+            fm = painter.fontMetrics();
+        }
         painter.setPen(m_textcolor);
-        painter.drawText(drawrect2, Qt::AlignLeft, m_SolarDayInfo);
+        painter.drawText(QRect(drawrect.topLeft().x() + 2, drawrect.topLeft().y() + (drawrect.height() - fm.height()) / 2, drawrect.width(), drawrect.height()), Qt::AlignLeft, m_SolarDayInfo);
     } else {
         QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -589,6 +597,13 @@ void CAllSolarDayWidgetItem::paintEvent(QPaintEvent *e)
         painter.drawRoundedRect(fillRect, 3, 2);
 
         painter.setFont(m_font);
+        QFont solofont = m_font;
+        QFontMetrics fm = painter.fontMetrics();
+        while (fm.width(m_SolarDayInfo) > labelwidth - m_pos.x() - 3) {
+            solofont.setPixelSize(solofont.pixelSize() - 1);
+            painter.setFont(solofont);
+            fm = painter.fontMetrics();
+        }
         painter.setPen(m_textcolor);
         painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignLeft, m_SolarDayInfo);
     }
