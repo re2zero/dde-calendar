@@ -33,6 +33,7 @@
 #include "schceduledlg.h"
 #include <QMenu>
 #include "scheduledatamanage.h"
+#include "monthschceduleview.h"
 void CMonthView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
@@ -80,10 +81,7 @@ void CMonthView::setTheMe(int type)
         m_wrectColor = wcolor;
     }
     m_weekIndicator->setTheMe(type);
-    for (int i(0); i != 42; ++i) {
-        m_cellList.at(i)->update();
-        m_cellScheduleList[i]->setTheMe(type);
-    }
+    m_MonthSchceduleView->setTheMe(type);
 }
 
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
@@ -109,6 +107,8 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     //setStyleSheet("QWidget { background: rgba(0, 0, 0, 0) }");
 
     m_weekIndicator = new CMonthWeekView;
+    m_MonthSchceduleView = new CMonthSchceduleView(this);
+
     // cells grid
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setMargin(0);
@@ -119,17 +119,13 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
             cell->setFixedSize(DDEMonthCalendar::MCellWidth, DDEMonthCalendar::MCellHeight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
-            CSchceduleDayView *shceduledayview = new CSchceduleDayView(cell, 1);
-            shceduledayview->setFixedSize(108, 46);
-            //shceduledayview->setALLDayData(scheduleInfolist);
-            shceduledayview->move(5, 27);
-            connect(shceduledayview, &CSchceduleDayView::signalsUpdateShcedule, this, &CMonthView::signalsSchceduleUpdate);
-            connect(shceduledayview, &CSchceduleDayView::signalsCotrlUpdateShcedule, this, &CMonthView::slotCtrlSchceduleUpdate);
+
             gridLayout->addWidget(cell, r, c);
             m_cellList.append(cell);
-            m_cellScheduleList.append(shceduledayview);
+
         }
     }
+    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
 
     DFrame *gridWidget = new DFrame;
     gridWidget->setLayout(gridLayout);
@@ -162,47 +158,21 @@ void CMonthView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
     setEnabled(false);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
-    return;
-    for (int i(0); i != 42; ++i) {
-        if (m_days[i].month() != m_currentDate.month()) continue;
-        if (type == 0 && m_days[i] == date) continue;
-        //更新日程
-        m_cellScheduleList[i]->setDate(m_days[i]);
-    }
 }
 
 void CMonthView::slotSchceduleUpdate(int id)
 {
     setEnabled(false);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
-    return;
-    for (int i(0); i != 42; ++i) {
-        if (m_days[i].month() != m_currentDate.month()) continue;
-        //更新日程
-        m_cellScheduleList[i]->setDate(m_days[i]);
-    }
 }
 
 void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
 {
     if (w != this) return;
     setEnabled(true);
-    for (int i(0); i != 42; ++i) {
-        QVector<ScheduleDtailInfo> vData;
-        //更新日程
-        m_cellScheduleList[i]->setDayData(m_days[i], vData, 1);
-    }
-    for (int i(0); i != 42; ++i) {
-        if (m_days[i].month() != m_currentDate.month()) continue;
+    m_MonthSchceduleView->setallsize(width(), height(), 0, m_weekIndicator->height());
+    m_MonthSchceduleView->setData(data, m_currentDate.month());
 
-        for (int j = 0; j < data.size(); j++) {
-            if (data.at(j).date == m_days[i]) {
-                //更新日程
-                m_cellScheduleList[i]->setDayData(m_days[i], data.at(j).vData, 1);
-                break;
-            }
-        }
-    }
 }
 
 void CMonthView::setFirstWeekday(int weekday)

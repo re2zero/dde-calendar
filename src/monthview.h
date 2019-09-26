@@ -32,6 +32,7 @@
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
 class CSchceduleDayView;
+class CMonthSchceduleView;
 enum CalendarMonthDayType {
     SO_MFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_MWeekends = QStyleOption::SO_CustomBase + 0x02,
@@ -109,7 +110,10 @@ private slots:
     void slotCreate();
 private:
     QList<QWidget *> m_cellList;
-    QList<CSchceduleDayView *> m_cellScheduleList;
+
+
+    CMonthSchceduleView *m_MonthSchceduleView;
+
     CalendarDBus *m_DBusInter;
     QDate m_days[42];
     QDate m_currentDate;

@@ -35,7 +35,8 @@ class CMonthSchceduleView : public QObject
 public:
     CMonthSchceduleView(QWidget *parent);
     ~CMonthSchceduleView();
-    void setData(QVector<ScheduleDateRangeInfo> &data);
+    void setallsize(int w, int h, int left, int top);
+    void setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth);
     void setTheMe(int type = 0);
 signals:
     void signalsUpdateShcedule(int id = 0);
@@ -44,14 +45,23 @@ public slots:
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
 private:
     void updateData();
-    void updateDateShow();
-    CMonthSchceduleWidgetItem *createItemWidget(int index, bool average = false);
+    void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule);
+    void splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData);
+    void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum);
+    void createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum);
+    void computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh);
 private:
-    QVector<CMonthSchceduleWidgetItem *>         m_scheduleShowItem;
-    QVector<CMonthSchceduleNumButton *>          m_DayShowItem;
+    QVector<DPushButton *>         m_scheduleShowItem;
     QVector<ScheduleDateRangeInfo>               m_data;
     int                                          m_cNum = 2;//日程层数
     QWidget                                     *m_parernt;
+    int                                          m_currentMonth;
+    QDate                                        m_beginDate;
+    QDate                                        m_endDate;
+    int                                          m_width;
+    int                                          m_height;
+    int                                          m_leftMagin;
+    int                                          m_topMagin;
 };
 
 class CMonthSchceduleNumButton : public DPushButton
@@ -63,6 +73,7 @@ public:
     ~CMonthSchceduleNumButton();
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos);
+    void setTransparentB(bool t, QColor tcolor);
     void setData(int  num)
     {
         m_num = num;
@@ -77,6 +88,8 @@ private:
     QFont                 m_font;
     QPoint                m_pos;
     int                   m_num;
+    QColor                m_transparentcolor;
+    bool                  m_transparentf = false;
 };
 
 class CMonthSchceduleWidgetItem : public DPushButton
@@ -86,19 +99,10 @@ class CMonthSchceduleWidgetItem : public DPushButton
 public:
     explicit CMonthSchceduleWidgetItem(QWidget *parent = nullptr, int edittype = 0);
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
-    void setText(QColor tcolor, QFont font, QPoint pos, bool avgeflag = false);
+    void setText(QColor tcolor, QFont font, QPoint pos);
     void getColor(QColor &color1, QColor &color2, bool &GradientFlag);
     void getText(QColor &tcolor, QFont &font, QPoint &pos);
-
-    void setItem(QListWidgetItem *_item)
-    {
-        m_item = _item;
-    }
-    QListWidgetItem *getItem()
-    {
-        return m_item;
-    }
-
+    void setTransparentB(bool t, QColor tcolor);
     void setData(ScheduleDtailInfo  vScheduleInfo);
     const ScheduleDtailInfo &getData() const
     {
@@ -125,8 +129,8 @@ private:
     QColor                m_textcolor;
     QFont                 m_font;
     QPoint                m_pos;
-    QListWidgetItem      *m_item;
-    bool                  m_avgeflag;
+    QColor                m_transparentcolor;
+    bool                  m_transparentf = false;
     int                   m_editType = 0;
 };
 
