@@ -518,6 +518,15 @@ void CMonthSchceduleView::updateData()
                 }
             }
         }
+        if (tsid != -1) {
+            MScheduleDateRangeInfo info;
+            info.bdate = m_data[tbindex].date;
+            info.edate = info.bdate.addDays(tnum);
+            info.tData = vMDaySchedule[tsid].tData;
+            info.state = false;
+            vCMDaySchedule[c].append(info);
+            if (c < m_cNum - 1) vId.append(info.tData.id);
+        }
     }
 
     QVector<ScheduleDateRangeInfo> listdata = m_data;
