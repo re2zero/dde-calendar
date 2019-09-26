@@ -143,21 +143,24 @@ int main(int argc, char *argv[])
     // 应用已保存的主题设置
     DGuiApplicationHelper::instance()->setPaletteType(getThemeTypeSetting());
 
+    Calendarmainwindow ww;
+    ww.move(PrimaryRect().center() - ww.geometry().center());
+    //ww.setDate(QDate::currentDate());
+    ww.slotTheme(getThemeTypeSetting());
+    ww.show();
+
     QDBusConnection dbus = QDBusConnection::sessionBus();
+    dbus.registerObject("/com/deepin/Calendar", &ww);
+    //监听当前应用主题切换事件
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
+    [] (DGuiApplicationHelper::ColorType type) {
+        qDebug() << type;
+        // 保存程序的主题设置  type : 0,系统主题， 1,浅色主题， 2,深色主题
+        saveThemeTypeSetting(type);
+    });
     if (dbus.registerService("com.deepin.Calendar"), QDBusConnectionInterface::ReplaceExistingService, QDBusConnectionInterface::AllowReplacement) {
-        Calendarmainwindow ww;
-        ww.move(PrimaryRect().center() - ww.geometry().center());
-        //ww.setDate(QDate::currentDate());
-        ww.slotTheme(getThemeTypeSetting());
-        ww.show();
-        dbus.registerObject("/com/deepin/Calendar", &ww);
-        //监听当前应用主题切换事件
-        QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
-        [] (DGuiApplicationHelper::ColorType type) {
-            qDebug() << type;
-            // 保存程序的主题设置  type : 0,系统主题， 1,浅色主题， 2,深色主题
-            saveThemeTypeSetting(type);
-        });
+
+
         return a.exec();
     }
     return 0;
