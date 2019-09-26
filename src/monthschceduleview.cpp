@@ -280,7 +280,7 @@ void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 
 void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if (m_editType == 0) return;
+    //if (m_editType == 0) return;
     CMySchceduleView dlg(this);
     dlg.setSchedules(m_ScheduleInfo);
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
