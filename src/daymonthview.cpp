@@ -599,7 +599,7 @@ const CaHuangLiDayInfo CDayMonthView::getCaHuangLiDayInfo(int pos)
         return lunarCache->value(date);
     }
 
-    if (lunarCache->size() > 300)
+    if (lunarCache->size() > 40)
         lunarCache->clear();
 
 //    QTimer::singleShot(500, [this, pos] {getDbusData(pos);});
@@ -625,7 +625,7 @@ void CDayMonthView::getDbusData()
     CaHuangLiDayInfo currentDayInfo;
     if (!lunarCache->contains(date)) {
         bool o1 = true;
-
+#if 0
         CaHuangLiMonthInfo currentMonth;
         if (m_DBusInter->GetHuangLiMonthCalendar(date.year(), date.month(), o1, currentMonth)) {
             QDate cacheDate;
@@ -638,6 +638,14 @@ void CDayMonthView::getDbusData()
                 cacheDate = cacheDate.addDays(1);
             }
         }
+#else
+        CaHuangLiDayInfo scurrentDayinfo;
+        if (m_DBusInter->GetHuangLiDayCalendar(date.year(), date.month(), date.day(), scurrentDayinfo)) {
+            lunarCache->insert(date, scurrentDayinfo);
+            currentDayInfo = scurrentDayinfo;
+        }
+#endif
+
 
     } else {
         currentDayInfo = lunarCache->value(date);
