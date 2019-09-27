@@ -431,3 +431,13 @@ void CYearWindow::getDbusData()
         m_YearLunarDayLabel->setText("-" + tr("Lunar") + currentDayInfo.mLunarMonthName + currentDayInfo.mLunarDayName + "-");
     }
 }
+
+void CYearWindow::resizeEvent(QResizeEvent *event)
+{
+    int tw = width() * 0.237 + 0.5;
+    int th = height() * 0.272 + 0.5;
+    for (int i = 0; i < m_monthViewList.count(); i++) {
+        m_monthViewList.at(i)->setFixedSize(tw, th);
+    }
+    QMainWindow::resizeEvent(event);
+}

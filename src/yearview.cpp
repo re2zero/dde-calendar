@@ -43,13 +43,12 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
 
     //add separator line
     m_currentMouth = new DLabel();
-    m_currentMouth->setFixedHeight(32);
+    m_currentMouth->setFixedHeight(24);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
-    QFont t_labelF;
-    t_labelF.setFamily("Helvetica");
-    t_labelF.setPixelSize(16);
-    m_currentMouth->setFont(t_labelF);
+    m_momthFont.setFamily("Helvetica");
+    m_momthFont.setPixelSize(16);
+    m_currentMouth->setFont(m_momthFont);
     DPalette Lunadpa = m_currentMouth->palette();
     Lunadpa.setColor(DPalette::WindowText, QColor("#CF0059"));
     m_currentMouth->setPalette(Lunadpa);
@@ -57,32 +56,37 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
     separatorLineLayout->setMargin(0);
     separatorLineLayout->setSpacing(0);
     separatorLineLayout->setContentsMargins(0, 0, 0, 0);
-    separatorLineLayout->addSpacing(13);
+    //separatorLineLayout->addSpacing(13);
     separatorLineLayout->addWidget(m_currentMouth);
     separatorLineLayout->addStretch();
     // QSpacerItem *t_spaceitem = new QSpacerItem(30, 32, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //separatorLineLayout->addSpacerItem(t_spaceitem);
 
     // cells grid
-    QGridLayout *gridLayout = new QGridLayout;
-    gridLayout->setMargin(0);
-    gridLayout->setSpacing(0);
+    m_gridLayout = new QGridLayout;
+    m_gridLayout->setMargin(0);
+    m_gridLayout->setSpacing(0);
+    m_gridLayout->setHorizontalSpacing(6);
+    m_gridLayout->setVerticalSpacing(3);
     for (int r = 0; r != 6; ++r) {
         for (int c = 0; c != 7; ++c) {
             QWidget *cell = new QWidget;
-            cell->setFixedSize(DDEYearCalendar::YCellWidth, DDEYearCalendar::YCellHeight);
+            cell->setFixedSize(cellwidth, cellheight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
-            gridLayout->addWidget(cell, r, c);
+            m_gridLayout->addWidget(cell, r, c);
             m_cellList.append(cell);
         }
     }
-    QVBoxLayout *hhLayout = new QVBoxLayout;
-    hhLayout->addLayout(separatorLineLayout);
-    hhLayout->addLayout(gridLayout);
-    m_gridWidget = new DFrame;
+    m_hhLayout = new QVBoxLayout;
+    m_hhLayout->addLayout(separatorLineLayout);
+    m_hhLayout->addLayout(m_gridLayout);
+    m_hhLayout->setMargin(0);
+    m_hhLayout->setSpacing(0);
+    m_hhLayout->setContentsMargins(13, 5, 10, 10);
+    m_gridWidget = new DFrame(this);
     m_gridWidget->setContentsMargins(0, 0, 0, 0);
-    m_gridWidget->setLayout(hhLayout);
+    m_gridWidget->setLayout(m_hhLayout);
     //m_gridWidget->setFixedSize(176, 113);
     DPalette anipa = m_gridWidget->palette();
     anipa.setColor(DPalette::Background, Qt::white);
@@ -248,10 +252,7 @@ const QDate CYearView::getCellDate(int pos)
 }
 void CYearView::paintCell(QWidget *cell)
 {
-    const QRect rect((cell->width() - DDEYearCalendar::YHeaderItemWidth) / 2,
-                     (cell->height() - DDEYearCalendar::YHeaderItemHeight) / 2,
-                     DDEYearCalendar::YCellHighlightWidth,
-                     DDEYearCalendar::YCellHighlightHeight);
+    const QRect rect(0, 0, cell->width(), cell->height());
 
     const int pos = m_cellList.indexOf(cell);
     const bool isSelectedCell = pos == m_selectedCell;
@@ -263,9 +264,16 @@ void CYearView::paintCell(QWidget *cell)
 
     // draw selected cell background circle
     if (isSelectedCell) {
-        QRect fillRect((cell->width() - DDEYearCalendar::YHeaderItemWidth) / 2 + 4,
-                       (cell->height() - DDEYearCalendar::YHeaderItemHeight) / 2 + 1,
-                       18, 18);
+        int hh = 0;
+        QRect fillRect;
+        if (cell->width() > cell->height()) {
+            hh = cell->height();
+            fillRect = QRect((cell->width() - hh) / 2.0, 0, hh, hh);
+        } else {
+            hh = cell->width();
+            fillRect = QRect(0, (cell->height() - hh) / 2, hh, hh);
+        }
+
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_backgroundCircleColor));
         painter.setPen(Qt::NoPen);
@@ -328,4 +336,24 @@ void CYearView::setSelectedCell(int index)
     //m_cellList.at(index)->update();
     emit singanleActiveW(this);
     emit signalcurrentDateChanged(m_days[index]);
+}
+
+void CYearView::resizeEvent(QResizeEvent *event)
+{
+    cellwidth = width() * 0.099 + 0.5;
+    cellheight = height() * 0.1257 + 0.5;
+    m_gridLayout->setHorizontalSpacing(width() * 0.0297 + 0.5);
+    m_gridLayout->setVerticalSpacing(height() * 0.0034 + 0.5);
+    int leftmagin = width() * 0.06435 + 0.5;
+    int rightmagin = leftmagin;
+    int topmagin = height() * 0.02955 + 0.5;
+    int buttonmagin = height() * 0.044 + 0.5;
+    m_hhLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
+    m_dayNumFont.setPixelSize(12 + (height() - 159) / 22.33);
+    m_momthFont.setPixelSize(16 + (height() - 159) / 16.75);
+    m_currentMouth->setFixedHeight(24 + (height() - 159) / 12);
+    for (int i(0); i != 42; ++i) {
+        m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
+    }
+    QWidget::resizeEvent(event);
 }

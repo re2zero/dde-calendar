@@ -56,6 +56,8 @@ private slots:
     void slottoday();
     void slotcurrentDateChanged(QDate date);
     void getDbusData();
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     const QString getLunar(QDate date);
     const CaLunarDayInfo getCaLunarDayInfo(QDate date);

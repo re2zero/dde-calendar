@@ -65,6 +65,8 @@ private:
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     DLabel *m_currentMouth;
     QList<QWidget *> m_cellList;
@@ -74,7 +76,7 @@ private:
     int m_selectedCell = -1;
     bool m_cellSelectable = true;
 
-    QFont m_dayNumFont;
+    QFont m_dayNumFont, m_momthFont;
 
     QColor m_topBorderColor = Qt::red;
     QColor m_backgroundCircleColor = "#2ca7f8";
@@ -87,6 +89,10 @@ private:
     QColor m_notCurrentTextColor = "#b2b2b2";
     int m_firstWeekDay = 0;
     DFrame *m_gridWidget;
+    QGridLayout *m_gridLayout;
+    int cellwidth = 20;
+    int cellheight = 20;
+    QVBoxLayout *m_hhLayout;
 };
 
 #endif // YEARVIEW_H
