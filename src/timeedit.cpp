@@ -48,15 +48,15 @@ void CTimeEdit::initUI()
     m_pListWidget = new DListWidget(this);
 
     m_timeEdit = new DLineEdit(this);
-    m_timeEdit->setInputMask("00:00;#");
+    m_timeEdit->lineEdit()->setInputMask("00:00;#");
     m_timeEdit->setClearButtonEnabled(false);
     QRegExpValidator *validator = nullptr;
     QRegExp rx("0[0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]");
     validator = new QRegExpValidator(rx, this);
-    m_timeEdit->setValidator(validator);
+    m_timeEdit->lineEdit()->setValidator(validator);
     setModel(m_pListWidget->model());
     setView(m_pListWidget);
-    setLineEdit(m_timeEdit);
+    setLineEdit(m_timeEdit->lineEdit());
     //disconnect(m_timeEdit, &QLineEdit::editingFinished, m_pListWidget, &QListWidget::update);
     //[2] 年月日选择控件
     QListWidgetItem *pitem = new QListWidgetItem(m_pListWidget);
@@ -70,7 +70,7 @@ void CTimeEdit::initUI()
     m_verticalScroll->setMinimumWidth(m_pListWidget->width());
     m_pListWidget->setItemWidget(pitem, m_verticalScroll);
     m_verticalScroll->setRange(0, 23);
-    m_timeEdit->setCursorPosition(1);
+    m_timeEdit->lineEdit()->setCursorPosition(1);
     m_pListWidget->addItem(pitem);
     m_pListWidget->setFixedWidth(width());
     m_verticalScroll->setFixedWidth(width());
@@ -104,7 +104,7 @@ void CTimeEdit::showPopup()
 {
     // QComboBox::showPopup();
     m_pListWidget->setFixedWidth(width());
-    m_pos = m_timeEdit->cursorPosition();
+    m_pos = m_timeEdit->lineEdit()->cursorPosition();
     m_verticalScroll->setFixedWidth(width());
     QString timetext = m_timeEdit->text();
     /*
@@ -165,7 +165,7 @@ void CTimeEdit::slotcurrentValueChanged(int value)
         m_time = time;
         m_timeEdit->setText(m_time.toString("hh:mm"));
     }
-    m_timeEdit->setCursorPosition(m_pos);
+    m_timeEdit->lineEdit()->setCursorPosition(m_pos);
 }
 
 void CTimeEdit::slotcurrentValueChangedClose(int value)

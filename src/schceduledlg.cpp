@@ -660,7 +660,7 @@ void CSchceduleDlg::initUI()
     m_endrepeattimes->setClearButtonEnabled(false);
     QRegExp rx("^[1-9]\\d{0,2}$");
     QValidator *validator = new QRegExpValidator(rx, this);
-    m_endrepeattimes->setValidator(validator);
+    m_endrepeattimes->lineEdit()->setValidator(validator);
     m_endrepeattimesLabel = new DLabel(tr("After time"));
     m_endrepeattimesLabel->setFont(mlabelF);
     m_endrepeattimesLabel->setPalette(pa);
