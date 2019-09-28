@@ -231,18 +231,21 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
         QFontMetrics fm = painter.fontMetrics();
-        QString str = "-" + m_ScheduleInfo.titleName;
-        if (fm.width(str) > width()) {
-            int widthT = fm.width(str);
-            int singlecharw = widthT * 1.0 / str.count();
-            int rcharcount = width() * 1.0 / singlecharw;
-            QString tstr;
-            for (int i = 0; i < rcharcount - 8; i++) {
-                tstr.append(str.at(i));
+
+        QString str =  "-" + m_ScheduleInfo.titleName;
+        QString tstr;
+        for (int i = 0; i < str.count(); i++) {
+            tstr.append(str.at(i));
+            int widthT = fm.width(tstr) + 5;
+            if (widthT >= labelwidth - m_pos.x()) {
+                tstr.chop(2);
+                break;
             }
-            str = tstr + "...";
         }
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 2 * avge), Qt::AlignLeft, str);
+        if (tstr != str) {
+            tstr = tstr + "...";
+        }
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 2 * avge), Qt::AlignLeft, tstr);
 
         if (m_transparentf) {
             painter.setBrush(m_transparentcolor);

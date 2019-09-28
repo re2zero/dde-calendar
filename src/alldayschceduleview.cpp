@@ -234,17 +234,20 @@ void CAllDaySchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.setPen(m_textcolor);
         QFontMetrics fm = painter.fontMetrics();
         QString str = "-" + m_ScheduleInfo.titleName;
-        if (fm.width(str) > fillRect.width() - 13) {
-            int widthT = fm.width(str);
-            int singlecharw = widthT * 1.0 / str.count();
-            int rcharcount = fillRect.width() * 1.0 / singlecharw;
-            QString tstr;
-            for (int i = 0; i < rcharcount - 8; i++) {
-                tstr.append(str.at(i));
+        QString tstr;
+        for (int i = 0; i < str.count(); i++) {
+            tstr.append(str.at(i));
+            int widthT = fm.width(tstr) + 5;
+            if (widthT >= fillRect.width() - 13) {
+                tstr.chop(2);
+                break;
             }
-            str = tstr + "...";
         }
-        painter.drawText(QRect(fillRect.topLeft().x() + 13, 0, fillRect.width(), fillRect.height()), Qt::AlignLeft, str);
+        if (tstr != str) {
+            tstr = tstr + "...";
+        }
+
+        painter.drawText(QRect(fillRect.topLeft().x() + 13, 0, fillRect.width(), fillRect.height()), Qt::AlignLeft, tstr);
     } else {
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
