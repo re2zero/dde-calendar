@@ -375,12 +375,14 @@ CMonthSchceduleView::~CMonthSchceduleView()
 
 }
 
-void CMonthSchceduleView::setallsize(int w, int h, int left, int top)
+void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom)
 {
     m_width = w;
     m_height = h;
+    m_buttommagin = buttom;
     m_leftMagin = left;
     m_topMagin = top;
+    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0  - 27) / 23;
 }
 
 void CMonthSchceduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
@@ -420,10 +422,10 @@ void CMonthSchceduleView::updateData()
         for (int j = 0; j < vData.size(); j++) {
             QDate tbegindate = vData.at(j).beginDateTime.date();
             QDate tenddate = vData.at(j).endDateTime.date();
-            if (tbegindate == tenddate) continue;
+            //if (tbegindate == tenddate) continue;
             if (tbegindate <  begindate) tbegindate = begindate;
             if (tenddate > enddate) tenddate = enddate;
-            if (tbegindate == tenddate) continue;
+            //if (tbegindate == tenddate) continue;
 
             MScheduleDateRangeInfo info;
             info.bdate = tbegindate;
@@ -432,7 +434,7 @@ void CMonthSchceduleView::updateData()
             info.state = false;
             int k = 0;
             for (; k < vMDaySchedule.count(); k++) {
-                if (vData.at(j).id == vMDaySchedule.at(k).tData.id) {
+                if (vData.at(j).id == vMDaySchedule.at(k).tData.id && vData.at(j).RecurID == vMDaySchedule.at(k).tData.RecurID) {
                     break;
                 }
             }
@@ -469,7 +471,7 @@ void CMonthSchceduleView::updateData()
         }
     }
 
-    QVector<int> vId;//用于删除日程显示项目保证正确
+    QVector<int> vId, vRid; //用于删除日程显示项目保证正确
     //重新组装数据
     for (int c = 0; c < m_cNum; c++) {
         int tnum = -1;
@@ -484,7 +486,10 @@ void CMonthSchceduleView::updateData()
                     info.tData = vMDaySchedule[tsid].tData;
                     info.state = false;
                     vCMDaySchedule[c].append(info);
-                    if (c < m_cNum - 1) vId.append(info.tData.id);
+                    if (c < m_cNum - 1) {
+                        vId.append(info.tData.id);
+                        vRid.append(info.tData.RecurID);
+                    }
                     tsid = -1;
                     tbindex = 0;
                     tnum = -1;
@@ -498,6 +503,7 @@ void CMonthSchceduleView::updateData()
                 info.state = false;
                 vCMDaySchedule[c].append(info);
                 vId.append(info.tData.id);
+                vRid.append(info.tData.RecurID);
 
             } else {
                 if (tsid  == -1) {
@@ -514,7 +520,10 @@ void CMonthSchceduleView::updateData()
                         info.tData = vMDaySchedule[tsid].tData;
                         info.state = false;
                         vCMDaySchedule[c].append(info);
-                        if (c < m_cNum - 1) vId.append(info.tData.id);
+                        if (c < m_cNum - 1) {
+                            vId.append(info.tData.id);
+                            vRid.append(info.tData.RecurID);
+                        }
                         tsid = vCfillSchedule[c][sd];
                         tbindex = sd;
                         tnum = 0;
@@ -529,7 +538,10 @@ void CMonthSchceduleView::updateData()
             info.tData = vMDaySchedule[tsid].tData;
             info.state = false;
             vCMDaySchedule[c].append(info);
-            if (c < m_cNum - 1) vId.append(info.tData.id);
+            if (c < m_cNum - 1) {
+                vId.append(info.tData.id);
+                vRid.append(info.tData.RecurID);
+            }
         }
     }
 
@@ -537,13 +549,14 @@ void CMonthSchceduleView::updateData()
     for (int did  = 0; did < vId.count(); did++) {
         for (int  i = 0; i < listdata.count(); i++) {
             for (int j = 0; j < listdata.at(i).vData.count(); j++) {
-                if (listdata.at(i).vData.at(j).id == vId[did] && listdata.at(i).vData.at(j).RecurID == 0) {
+                if (listdata.at(i).vData.at(j).id == vId[did] && listdata.at(i).vData.at(j).RecurID == vRid[did]) {
                     listdata[i].vData.remove(j);
                 }
             }
         }
     }
     vId.clear();
+    vRid.clear();
     //先判断是否有多余日程
     for (int i = 0; i < vCMDaySchedule[m_cNum - 1].count(); i++) {
         int bindex = begindate.daysTo(vCMDaySchedule[m_cNum - 1][i].bdate);
@@ -557,13 +570,14 @@ void CMonthSchceduleView::updateData()
             i--;
         } else {
             vId.append(vCMDaySchedule[m_cNum - 1][i].tData.id);
+            vRid.append(vCMDaySchedule[m_cNum - 1][i].tData.RecurID);
         }
     }
     //再次删除多与数据
     for (int did  = 0; did < vId.count(); did++) {
         for (int  i = 0; i < listdata.count(); i++) {
             for (int j = 0; j < listdata.at(i).vData.count(); j++) {
-                if (listdata.at(i).vData.at(j).id == vId[did] && listdata.at(i).vData.at(j).RecurID == 0) {
+                if (listdata.at(i).vData.at(j).id == vId[did] && listdata.at(i).vData.at(j).RecurID == vRid[did]) {
                     listdata[i].vData.remove(j);
                 }
             }
@@ -751,10 +765,10 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
     int bcol = (m_beginDate.daysTo(bgeindate) ) % 7;
     int ecol = (m_beginDate.daysTo(enddate) ) % 7;
 
-    fw = (ecol - bcol + 1) * (m_width / 7.0) - 11;
+    fw = (ecol - bcol + 1) * ((m_width - m_leftMagin * 2) / 7.0) - 11;
     fh = 22;
-    int x = m_leftMagin + bcol * (m_width / 7.0) + 5;
-    int y = m_topMagin + (m_height - m_topMagin) / 6.0 * brow + 27 + (cnum - 1) * fh;
+    int x = m_leftMagin + bcol * ((m_width - m_leftMagin * 2)  / 7.0) + 5;
+    int y = m_topMagin + (m_height - m_topMagin - m_buttommagin) / 6.0 * brow + 27 + (cnum - 1) * fh;
     pos = QPoint(x, y);
 }
 

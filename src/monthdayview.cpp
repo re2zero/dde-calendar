@@ -23,6 +23,8 @@
 #include <QPainter>
 #include <QBrush>
 #include <QEvent>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 CMonthDayView::CMonthDayView(QWidget *parent) : DWidget(parent)
 {
     m_dayNumFont.setFamily("Avenir-Light");
@@ -34,7 +36,7 @@ CMonthDayView::CMonthDayView(QWidget *parent) : DWidget(parent)
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
-    hboxLayout->setContentsMargins(4, 0, 4, 0);
+    hboxLayout->setContentsMargins(0, 0, 0, 0);
     for (int c = 0; c != 12; ++c) {
         QWidget *cell = new QWidget;
         cell->setFixedSize(DDEMonthCalendar::MDayCellWidth, DDEMonthCalendar::MDayCellHeight);
@@ -44,6 +46,7 @@ CMonthDayView::CMonthDayView(QWidget *parent) : DWidget(parent)
         m_cellList.append(cell);
     }
     setLayout(hboxLayout);
+
 }
 
 CMonthDayView::~CMonthDayView()
@@ -85,6 +88,7 @@ void CMonthDayView::setTheMe(int type)
         m_backgrounddefaultColor = Qt::white;
         m_currentDayTextColor = Qt::white;
         m_backgroundcurrentDayColor = "#0081FF";
+        m_fillColor = "#FFFFFF";
 
     } else if (type == 2) {
         m_defaultTextColor = "#C0C6D4";
@@ -93,12 +97,14 @@ void CMonthDayView::setTheMe(int type)
         m_backgrounddefaultColor = framecolor;
         m_currentDayTextColor = "#C0C6D4";
         m_backgroundcurrentDayColor = "#0081FF";
+        m_fillColor = "#000000";
+        m_fillColor.setAlphaF(0.05);
     }
 }
 
 void CMonthDayView::paintCell(QWidget *cell)
 {
-    const QRect rect(0, 0, DDEMonthCalendar::MDayCellWidth, DDEMonthCalendar::MDayCellHeight);
+    const QRect rect(0, 0, cell->width(), cell->height());
 
     const int pos = m_cellList.indexOf(cell);
     const bool isCurrentDay = m_days[pos].month() == QDate::currentDate().month();
@@ -107,12 +113,19 @@ void CMonthDayView::paintCell(QWidget *cell)
 
 
     QPainter painter(cell);
+    painter.save();
+
+    painter.setRenderHints(QPainter::HighQualityAntialiasing);
+    painter.setBrush(QBrush(m_fillColor));
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(rect);//画矩形
+    painter.restore();
     painter.setPen(Qt::SolidLine);
 
     const QString dayNum = QString::number(m_days[pos].month());
 
     if (isSelectDay) {
-        QRect fillRect(3, 3, 30, 30);
+        QRect fillRect((cell->width() - 30) / 2, 3, 30, 30);
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_backgroundcurrentDayColor));
@@ -171,5 +184,15 @@ void CMonthDayView::setSelectedCell(int index, int type)
     m_selectDate = m_days[index];
     if (type == 0)
         emit signalsSelectDate(m_days[index]);
+}
+
+void CMonthDayView::resizeEvent(QResizeEvent *event)
+{
+    int w = width() * 0.08333 + 0.5;
+    int h = height();
+    for (int c = 0; c != 12; ++c) {
+        m_cellList[c]->setFixedSize(w, h);
+        m_cellList[c]->update();
+    }
 }
 

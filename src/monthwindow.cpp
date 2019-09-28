@@ -27,6 +27,7 @@
 DGUI_USE_NAMESPACE
 CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
 {
+    setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
     initLunar();
@@ -168,12 +169,12 @@ void CMonthWindow::initUI()
     Lunarpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_YearLunarLabel->setPalette(Lunarpa);
 
-    m_monthDayView = new CMonthDayView();
+    m_monthDayView = new CMonthDayView(this);
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(21, 18, 18, 20);
+    yeartitleLayout->setContentsMargins(21, 18, 18, 0);
     yeartitleLayout->addWidget(m_YearLabel);
 
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
@@ -182,19 +183,25 @@ void CMonthWindow::initUI()
     yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
     yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout->addLayout(yeartitleLayout1);
-    yeartitleLayout->addSpacing(30);
-    yeartitleLayout->addWidget(m_monthDayView);
+    //yeartitleLayout->addSpacing(30);
+    yeartitleLayout->addStretch();
+    yeartitleLayout->addWidget(m_monthDayView, 0, Qt::AlignCenter);
     yeartitleLayout->addStretch();
     yeartitleLayout->addWidget(m_today);
 
     m_monthView = new CMonthView();
     QVBoxLayout *mhLayout = new QVBoxLayout;
-    mhLayout->setContentsMargins(10, 2, 10, 10);
+    mhLayout->setMargin(0);
+    mhLayout->setSpacing(0);
+    // mhLayout->setContentsMargins(10, 2, 10, 10);
     mhLayout->addWidget(m_monthView);
 
     QVBoxLayout *hhLayout = new QVBoxLayout;
+    hhLayout->setSpacing(0);
+    hhLayout->setMargin(0);
+
     hhLayout->addLayout(yeartitleLayout);
-    DFrame *frame = new DFrame(this);
+    DFrame *frame = new DFrame();
     frame->setLayout(mhLayout);
 
     hhLayout->addWidget(frame);
@@ -259,6 +266,22 @@ void CMonthWindow::slotupdateSchedule(int id)
 void CMonthWindow::slotTransitSchedule(int id)
 {
     emit signalsWUpdateShcedule(this, id);
+}
+
+void CMonthWindow::resizeEvent(QResizeEvent *event)
+{
+    int tw = width() ;
+    int th = height() - 66;
+    int dw = width() * 0.5023 + 0.5;
+    int dh = 36;
+    m_monthDayView->setFixedSize(dw, dh);
+    m_monthView->setFixedSize(tw, th);
+    m_animationContainer->setFixedSize(m_monthView->width(),
+                                       m_monthView->height() -  th * 0.1042 + 0.5);
+    // for (int i = 0; i < m_monthViewList.count(); i++) {
+    //   m_monthViewList.at(i)->setFixedSize(tw, th);
+    //}
+    QMainWindow::resizeEvent(event);
 }
 
 void CMonthWindow::slottoday()

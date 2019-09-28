@@ -55,7 +55,9 @@ void CMonthView::setTheMe(int type)
         m_notCurrentLunarColor = "#dfdfdf";
         m_solofestivalLunarColor = "#FF7272";
         m_solofestivalLunarColor.setAlphaF(0.3);
-        m_wrectColor = Qt::lightGray;
+        m_wrectColor = "#000000";
+        m_wrectColor.setAlphaF(0.05);
+        m_fillColor = Qt::white;
 
     } else if (type == 2) {
 
@@ -79,6 +81,8 @@ void CMonthView::setTheMe(int type)
         QColor wcolor = Qt::black;
         wcolor.setAlphaF(0.5);
         m_wrectColor = wcolor;
+        m_fillColor = "#000000";
+        m_fillColor.setAlphaF(0.05);
     }
     m_weekIndicator->setTheMe(type);
     m_MonthSchceduleView->setTheMe(type);
@@ -116,7 +120,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     for (int r = 0; r != 6; ++r) {
         for (int c = 0; c != 7; ++c) {
             QWidget *cell = new QWidget(this);
-            cell->setFixedSize(DDEMonthCalendar::MCellWidth, DDEMonthCalendar::MCellHeight);
+            cell->setFixedSize(cellwidth, cellheight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
 
@@ -130,13 +134,15 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     DFrame *gridWidget = new DFrame;
     gridWidget->setLayout(gridLayout);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
-    mainLayout->addWidget(gridWidget, 0,  Qt::AlignHCenter);
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
+    m_mainLayout = new QVBoxLayout;
+    m_mainLayout->setMargin(0);
+    m_mainLayout->setSpacing(0);
+    m_mainLayout->setContentsMargins(10, 0, 10, 10);
+    m_mainLayout->addWidget(m_weekIndicator);
+    m_mainLayout->addWidget(gridWidget);
 
-    setLayout(mainLayout);
+
+    setLayout(m_mainLayout);
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(this, &CMonthView::dateSelected, this, &CMonthView::handleCurrentDateChanged);
     m_createAction = new QAction(tr("Create"), this);
@@ -170,9 +176,32 @@ void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo>
 {
     if (w != this) return;
     setEnabled(true);
-    m_MonthSchceduleView->setallsize(width(), height(), 0, m_weekIndicator->height());
+    m_MonthSchceduleView->setallsize(width(), height(), m_leftmaagin, m_weekIndicator->height() + m_topmagin, m_topmagin);
     m_MonthSchceduleView->setData(data, m_currentDate.month());
 
+}
+
+void CMonthView::resizeEvent(QResizeEvent *event)
+{
+    cellwidth = width() * 0.1395 + 0.5;
+    cellheight = height() * 0.1428 + 0.5;
+
+
+    int leftmagin = width() * 0.0116 + 0.5;
+    int rightmagin = leftmagin;
+    int topmagin = height() * 0.0193 + 0.5;
+    int buttonmagin = topmagin;
+    m_leftmaagin = leftmagin;
+    m_topmagin = topmagin;
+    m_mainLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
+    m_weekIndicator->setFixedSize(width() - leftmagin * 2, height() * 0.1042 + 0.5);
+    for (int i(0); i != 42; ++i) {
+        m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
+        m_cellList.at(i)->update();
+    }
+    m_MonthSchceduleView->setallsize(width(), height(), leftmagin, m_weekIndicator->height() + topmagin, topmagin);
+    m_MonthSchceduleView->updateData();
+    DWidget::resizeEvent(event);
 }
 
 void CMonthView::setFirstWeekday(int weekday)
@@ -433,10 +462,7 @@ void CMonthView::getDbusData()
 
 void CMonthView::paintCell(QWidget *cell)
 {
-    const QRect rect((cell->width() - DDEMonthCalendar::MCellHighlightWidth) / 2,
-                     (cell->height() - DDEMonthCalendar::MCellHighlightHeight) / 2,
-                     DDEMonthCalendar::MCellHighlightWidth,
-                     DDEMonthCalendar::MCellHighlightHeight);
+    const QRect rect(0, 0, cellwidth, cellheight);
 
     const int pos = m_cellList.indexOf(cell);
     const int type = getDateType(m_days[pos]);
@@ -444,16 +470,32 @@ void CMonthView::paintCell(QWidget *cell)
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
 
     QPainter painter(cell);
+    painter.save();
+
+    painter.setRenderHints(QPainter::HighQualityAntialiasing);
+    painter.setBrush(QBrush(m_fillColor));
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(rect);//画矩形
+    painter.restore();
+
+
     painter.setPen(Qt::SolidLine);
     painter.setPen(m_wrectColor);
     //painter.setPen(Qt::SolidLine);
-    painter.drawRect(rect);//画矩形
+    int rectindex = pos % 7;
+    if (rectindex == 0) {
+        painter.drawLine(0, 0, cellwidth, 0); //画矩形
+        painter.drawLine(0, cellheight, cellwidth, cellheight); //画矩形
+    } else {
+        painter.drawRect(rect);//画矩形
+    }
+
 
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
 
     // draw selected cell background circle
     if (isSelectedCell) {
-        QRect fillRect = QRect(2, 2, DDEMonthCalendar::MCellHighlightWidth - 6, DDEMonthCalendar::MCellHighlightHeight - 7);
+        QRect fillRect = QRect(2, 2, cellwidth - 3, cellheight - 3);
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         //painter.setBrush(QBrush(m_backgroundCircleColor));
@@ -476,7 +518,7 @@ void CMonthView::paintCell(QWidget *cell)
             painter.setPen(Qt::NoPen);
             painter.drawEllipse(fillRect);
         } else {
-            QRect fillRect(45, 0, 30, 30);
+            QRect fillRect((cellwidth - 30) / 2, 0, 30, 30);
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_backgroundCircleColor));
             painter.setPen(Qt::NoPen);
@@ -505,7 +547,7 @@ void CMonthView::paintCell(QWidget *cell)
     if (m_showState & ShowLunar) {
         painter.drawText(QRect(8, 0, cell->width() / 2, cell->height() / 2), Qt::AlignLeft, dayNum);
     } else {
-        painter.drawText(QRect(0, 0, 120, 33), Qt::AlignCenter, dayNum, &test);
+        painter.drawText(QRect(0, 0, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
     }
 
     // draw text of day type
@@ -524,10 +566,10 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.setPen(m_defaultLunarColor);
         }
         painter.setFont(m_dayLunarFont);
-        painter.drawText(QRect(cell->width() / 2 + 10, 8, cell->width() / 2 - 10, cell->height() / 2 - 6), Qt::AlignLeft, dayLunar);
+        painter.drawText(QRect(cell->width() - 50, 6, 50, 18), Qt::AlignCenter, dayLunar);
         CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
         if (!dayInfo.mSolarFestival.isEmpty()) {
-            QRect fillRect = QRect(6, 34, 108, 22);
+            QRect fillRect = QRect(6, 34, cell->width() - 12, 22);
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_solofestivalLunarColor));
             painter.setPen(Qt::NoPen);
@@ -536,7 +578,7 @@ void CMonthView::paintCell(QWidget *cell)
             QFont solofont = m_dayLunarFont;
             painter.setFont(solofont);
             QFontMetrics fm = painter.fontMetrics();
-            while (fm.width(dayInfo.mSolarFestival) > 108) {
+            while (fm.width(dayInfo.mSolarFestival) > cell->width() - 12) {
                 solofont.setPixelSize(solofont.pixelSize() - 1);
                 painter.setFont(solofont);
                 fm = painter.fontMetrics();

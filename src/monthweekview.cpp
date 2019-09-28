@@ -50,7 +50,7 @@ void CMonthWeekView::setList(int weekday)
         int d = checkDay(i - weekday);
 
         DLabel *label = new DLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
-
+        label->setContentsMargins(0, 0, 0, 0);
         QFont weekfont;
         weekfont.setFamily("SourceHanSansSC-Medium");
         weekfont.setPixelSize(16);
@@ -152,4 +152,19 @@ int CMonthWeekView::checkDay(int weekday)
         return weekday -= 7;
 
     return weekday;
+}
+
+void CMonthWeekView::resizeEvent(QResizeEvent *event)
+{
+    int tw = width() / 7.0 + 0.5;
+    int th = height();
+    for (int i = 0; i < m_weekData.count(); i++) {
+        if (m_weekData.at(i).second == 1) {
+
+            m_weekData.at(i).first->setFixedSize(tw, th);
+        } else {
+            m_weekData.at(i).first->setFixedSize(tw, th);
+        }
+    }
+    DWidget::resizeEvent(event);
 }

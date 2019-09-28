@@ -34,7 +34,8 @@ public:
     void setTheMe(int type = 0);
 private:
     int checkDay(int weekday);
-
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     QHBoxLayout *m_mainLayout;
     QVector<QPair<DLabel *, int> >        m_weekData;

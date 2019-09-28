@@ -35,16 +35,17 @@ class CMonthSchceduleView : public QObject
 public:
     CMonthSchceduleView(QWidget *parent);
     ~CMonthSchceduleView();
-    void setallsize(int w, int h, int left, int top);
+    void setallsize(int w, int h, int left, int top, int buttom);
     void setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth);
     void setTheMe(int type = 0);
+    void updateData();
 signals:
     void signalsUpdateShcedule(int id = 0);
 public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
 private:
-    void updateData();
+
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule);
     void splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData);
     void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum);
@@ -62,6 +63,7 @@ private:
     int                                          m_height;
     int                                          m_leftMagin;
     int                                          m_topMagin;
+    int                                          m_buttommagin;
 };
 
 class CMonthSchceduleNumButton : public DPushButton

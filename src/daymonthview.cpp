@@ -624,7 +624,7 @@ void CDayMonthView::getDbusData()
 
     CaHuangLiDayInfo currentDayInfo;
     if (!lunarCache->contains(date)) {
-        bool o1 = true;
+        bool o1 = false;
 #if 0
         CaHuangLiMonthInfo currentMonth;
         if (m_DBusInter->GetHuangLiMonthCalendar(date.year(), date.month(), o1, currentMonth)) {

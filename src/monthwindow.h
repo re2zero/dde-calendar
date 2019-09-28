@@ -62,6 +62,8 @@ public slots:
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private slots:
     void slottoday();
     void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);

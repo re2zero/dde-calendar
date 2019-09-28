@@ -41,6 +41,8 @@ private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);
     void setSelectedCell(int index, int type = 0);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     QList<QWidget *> m_cellList;
     QDate m_selectDate;
@@ -53,6 +55,7 @@ private:
     QColor m_backgrounddefaultColor = Qt::white;
     QColor m_currentDayTextColor = Qt::white;
     QColor m_backgroundcurrentDayColor = "#0081FF";
+    QColor m_fillColor = Qt::white;
 
 };
 

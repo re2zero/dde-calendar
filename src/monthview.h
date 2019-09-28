@@ -91,6 +91,8 @@ public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
@@ -143,14 +145,21 @@ private:
     QColor m_notCurrentLunarColor = "#dfdfdf";
     QColor m_solofestivalLunarColor = "#4DFF7272";
     QColor m_wrectColor = Qt::lightGray;
+    QColor m_fillColor = Qt::white;
     QQueue<int> *queue = nullptr;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
+
 
     CMonthWeekView *m_weekIndicator;
     int m_firstWeekDay;
     QAction          *m_createAction;     // 创建日程
     bool             m_updateflag = true;
+    int cellwidth = 120;
+    int cellheight = 74;
+    QVBoxLayout *m_mainLayout;
+    int  m_leftmaagin = 0;
+    int  m_topmagin = 0;
 };
 
 #endif // MYCALENDARWIDGET_H
