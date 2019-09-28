@@ -76,11 +76,11 @@ void CDayHuangLiLabel::paintEvent( QPaintEvent *e )
     else {
         pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ji.svg").scaled(20, 20);
     }
-    painter.drawPixmap(14, 18, pixmap);
+    painter.drawPixmap(m_leftMagin, m_topMagin, pixmap);
     painter.setFont(m_font);
     painter.setPen(m_textcolor);
-    int bw = 44;
-    int bh = 18;
+    int bw = m_leftMagin + 34;
+    int bh = m_topMagin;
     int ss = 14;
     for (int i = 0; i < m_vHuangli.count(); i++) {
         int currentsw = m_vHuangli.at(i).count() * ss;
@@ -92,6 +92,13 @@ void CDayHuangLiLabel::paintEvent( QPaintEvent *e )
             bw += currentsw + 10;
         }
     }
+}
+
+void CDayHuangLiLabel::resizeEvent(QResizeEvent *event)
+{
+    m_leftMagin = 0.0424 * width() + 0.5;
+    m_topMagin = (height() - 20) / 2;
+    DLabel::resizeEvent(event);
 }
 
 

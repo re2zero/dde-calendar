@@ -194,11 +194,6 @@ void Calendarmainwindow::initUI()
     m_searchEdit = new DSearchEdit;
     m_searchEdit->setFixedHeight(36);
     m_searchEdit->setFixedWidth(240);
-    //m_searchEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    titleLayout->addSpacing(52);
-    titleLayout->addWidget(m_searchEdit);
-    //m_searchEdit->setSizePolicy(QSizePolicy::Expanding);
-    //QSpacerItem *rspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     titleLayout->addStretch();
     //QWidget *buttonW = new QWidget;
     titleframe->setLayout(titleLayout);
@@ -210,6 +205,7 @@ void Calendarmainwindow::initUI()
     titlebar->setTitle("");
     titlebar->setFixedHeight(50);
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
+    titlebar->setCustomWidget(m_searchEdit, true);
     // titlebar->move(36, 3);
 
     DWidget *centralWidget = new DWidget(this);
@@ -373,3 +369,4 @@ void Calendarmainwindow::slotStextChanged()
     //m_stackWidget->setCurrentIndex(3);
     m_DayWindow->setSearchWFlag(!m_searchEdit->text().isEmpty());
 }
+

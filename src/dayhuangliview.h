@@ -33,12 +33,15 @@ public:
     void setHuangLiText(QStringList vhuangli, int type = 0);
 protected:
     void paintEvent ( QPaintEvent *e);
+    void resizeEvent(QResizeEvent *event);
 private:
     QStringList           m_vHuangli;
     QColor                m_backgroundColor;
     QColor                m_textcolor;
     QFont                 m_font;
     int                   m_type  = 0;
+    int                   m_leftMagin = 14;
+    int                   m_topMagin = 18;
 };
 
 #endif // DAYHUANGLILABEL_H

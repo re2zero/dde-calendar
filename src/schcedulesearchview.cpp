@@ -215,31 +215,33 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
                   + "-" + m_ScheduleInfo.endDateTime.toString("hh:mm");
     }
 
-    painter.drawText(QRect(12, 8, labelwidth * 0.455, labelheight - 16), Qt::AlignLeft, datestr);
+    painter.drawText(QRect(12, 8, 65, labelheight - 16), Qt::AlignLeft, datestr);
     painter.save();
     QPen pen(m_splitlinecolor);
     pen.setWidth(2);
     painter.setPen(pen);
-    painter.drawLine(labelwidth * 0.455, 0, labelwidth * 0.455, labelheight);
+    painter.drawLine(82, 0, 82, labelheight);
     painter.restore();
 
     painter.setFont(m_tfont);
     painter.setPen(m_ttextcolor);
-    int tilenameW = labelwidth * 0.533;
+    int tilenameW = labelwidth - 91;
     QFontMetrics fm = painter.fontMetrics();
     QString str =  m_ScheduleInfo.titleName;
-    if (fm.width(str) > tilenameW) {
-        int widthT = fm.width(str);
-        int singlecharw = widthT * 1.0 / str.count();
-        int rcharcount = width() * 1.0 / singlecharw;
-        QString tstr;
-        for (int i = 0; i < rcharcount - 8; i++) {
-            tstr.append(str.at(i));
+    QString tstr;
+    for (int i = 0; i < str.count(); i++) {
+        tstr.append(str.at(i));
+        int widthT = fm.width(tstr) + 5;
+        if (widthT >= tilenameW) {
+            tstr.chop(1);
+            break;
         }
-        str = tstr + "...";
+    }
+    if (tstr != str) {
+        tstr = tstr + "...";
     }
 
-    painter.drawText(QRect(labelwidth * 0.455 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, str);
+    painter.drawText(QRect(91, 6, tilenameW, labelheight), Qt::AlignLeft, tstr);
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -310,6 +312,7 @@ void CSchceduleSearchView::updateDateShow()
         m_gradientItemList->removeItemWidget(item11);
     }
     m_gradientItemList->clear();
+    m_labellist.clear();
     for (int i = 0; i < m_vlistData.size(); ++i) {
         createItemWidget(m_vlistData[i].date);
         for (int j = 0; j < m_vlistData.at(i).vData.count(); j++) {
@@ -363,7 +366,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info)
     listItem->setFlags(Qt::ItemIsTristate );
     m_gradientItemList->addItem(listItem);
     m_gradientItemList->setItemWidget(listItem, gwi);
-
+    m_labellist.append(gwi);
 }
 
 void CSchceduleSearchView::createItemWidget(QDate date)
@@ -382,6 +385,7 @@ void CSchceduleSearchView::createItemWidget(QDate date)
     listItem->setFlags(Qt::ItemIsTristate );
     m_gradientItemList->addItem(listItem);
     m_gradientItemList->setItemWidget(listItem, gwi);
+    m_labellist.append(gwi);
 }
 
 void CSchceduleSearchView::slotdeleteitem( CSchceduleSearchItem *item )
@@ -419,6 +423,20 @@ void CSchceduleSearchView::slotsetSearch(QString str)
         }
     }
     updateDateShow();
+}
+
+void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
+{
+    for (int i = 0; i < m_gradientItemList->count(); i++) {
+        QListWidgetItem *item11 = m_gradientItemList->item(i);
+        item11->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
+    }
+    //remove
+    for (int i = 0; i < m_labellist.count(); i++) {
+        m_labellist.at(i)->setFixedSize(m_gradientItemList->width() - 20, 35);
+        m_labellist.at(i)->update();
+    }
+    DWidget::resizeEvent(event);
 }
 
 

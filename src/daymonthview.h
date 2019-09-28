@@ -30,7 +30,8 @@
 #include "calendardbus.h"
 #include <DFrame>
 #include <DIconButton>
-
+#include <QGridLayout>
+#include <QVBoxLayout>
 DWIDGET_USE_NAMESPACE
 class QLabel;
 class CDayHuangLiLabel;
@@ -88,6 +89,8 @@ private slots:
     void slotprev();
     void slotnext();
     void getDbusData();
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
@@ -120,6 +123,14 @@ private:
     QColor m_notCurrentTextColor = "#b2b2b2";
     int m_firstWeekDay;
     bool m_huanglistate = true;
+    QGridLayout *m_gridLayout;
+    int cellwidth = 20;
+    int cellheight = 20;
+    QVBoxLayout *m_hhLayout;
+    QVBoxLayout *m_upLayout;
+    DHorizontalLine *m_splitline;
+    QVBoxLayout *m_yidownLayout;
+    QVBoxLayout *m_jidownLayout;
 
     QStringList     m_weeklist;
     QQueue<int> *queue = nullptr;

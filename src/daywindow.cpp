@@ -255,6 +255,20 @@ void CDayWindow::slotCurrentReturnDay()
     emit signalsReturnTodayUpdate(this);
 }
 
+void CDayWindow::resizeEvent(QResizeEvent *event)
+{
+    int dw = 0.4046 * width();
+    int dh = height() - 20;
+
+    int sleftMagin = 0.1046 * width() + 0.5;
+    int stopMagin = 0.17123 * height() + 0.5;
+    int sh = height() - 54;
+    m_daymonthView->setFixedSize(dw, dh);
+    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
+    m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
+    //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
+}
+
 void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail, int type)
 {
     m_currentdate = date;

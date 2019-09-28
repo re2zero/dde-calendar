@@ -55,6 +55,8 @@ public slots:
     void slotTransitSearchSchedule(int id = 0);
     void slotReturnTodayUpdate();
     void slotCurrentReturnDay();
+protected:
+    void resizeEvent(QResizeEvent *event);
 private slots:
     void slotcurrentDateLunarChanged(QDate date,  CaHuangLiDayInfo detail, int type = 0);
     void slotcurrentDateChanged(QDate date);

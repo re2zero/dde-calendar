@@ -286,12 +286,12 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
         m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
         m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
-        m_alldaylist->move(width() * 0.0959 + 0.5 - 2, 5);
+        m_alldaylist->move(m_leftMagin - 2, 5);
     } else {
         m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
         m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
-        m_alldaylist->move(width() * 0.0959 + 0.5 - 2, 5);
+        m_alldaylist->move(m_leftMagin - 2, 5);
     }
     QFrame::resizeEvent(event);
 }

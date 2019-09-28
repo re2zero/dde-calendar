@@ -42,6 +42,8 @@ public slots:
     void slotdeleteitem(CSchceduleSearchItem *item);
     void slotedititem(CSchceduleSearchItem *item);
     void slotsetSearch(QString str);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info);
@@ -50,6 +52,7 @@ private:
     DListWidget                                 *m_gradientItemList; //下拉列表窗
     bool                                         m_widgetFlag;
     QVector<ScheduleDateRangeInfo>               m_vlistData;
+    QVector<DLabel *>                             m_labellist;
     int                                          m_type;
     QDate                                        m_currentDate;
     QColor                m_bBackgroundcolor = "#000000";

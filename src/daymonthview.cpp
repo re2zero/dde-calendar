@@ -57,7 +57,7 @@ CDayMonthView::CDayMonthView(QWidget *parent) : DWidget(parent)
     initUI();
     initConnection();
 
-    setFixedSize(DDEDayCalendar::D_MWindowWidth, DDEDayCalendar::D_MWindowHeight);
+    //setFixedSize(DDEDayCalendar::D_MWindowWidth, DDEDayCalendar::D_MWindowHeight);
 }
 void CDayMonthView::handleCurrentDateChanged(const QDate date, const CaHuangLiDayInfo &detail)
 {
@@ -325,26 +325,26 @@ void CDayMonthView::initUI()
     titleLayout->addStretch(1);
     titleLayout->addWidget(m_today);
     // cells grid
-    QGridLayout *gridLayout = new QGridLayout;
-    gridLayout->setMargin(0);
-    gridLayout->setSpacing(0);
+    m_gridLayout = new QGridLayout;
+    m_gridLayout->setMargin(0);
+    m_gridLayout->setSpacing(0);
     for (int r = 0; r != 6; ++r) {
         for (int c = 0; c != 7; ++c) {
             QWidget *cell = new QWidget;
             cell->setFixedSize(DDEDayCalendar::DCellWidth, DDEDayCalendar::DCellHeight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
-            gridLayout->addWidget(cell, r, c);
+            m_gridLayout->addWidget(cell, r, c);
             m_cellList.append(cell);
         }
     }
     //上半部分
-    QVBoxLayout *upLayout = new QVBoxLayout;
-    upLayout->setMargin(0);
-    upLayout->setSpacing(0);
-    upLayout->setContentsMargins(22, 9, 9, 7);
-    upLayout->addLayout(titleLayout);
-    upLayout->addLayout(gridLayout);
+    m_upLayout = new QVBoxLayout;
+    m_upLayout->setMargin(0);
+    m_upLayout->setSpacing(0);
+    m_upLayout->setContentsMargins(22, 9, 9, 7);
+    m_upLayout->addLayout(titleLayout);
+    m_upLayout->addLayout(m_gridLayout);
 
 
     //中间部分
@@ -397,55 +397,56 @@ void CDayMonthView::initUI()
     midLayout->addWidget(m_currentLuna);
 
 
-    QVBoxLayout *yidownLayout = new QVBoxLayout;
-    yidownLayout->setMargin(0);
-    yidownLayout->setSpacing(0);
-    yidownLayout->setContentsMargins(10, 5, 10, 5);
+    m_yidownLayout = new QVBoxLayout;
+    m_yidownLayout->setMargin(0);
+    m_yidownLayout->setSpacing(0);
+    m_yidownLayout->setContentsMargins(10, 5, 10, 0);
     hlabelF.setPixelSize(14);
     m_yiLabel = new CDayHuangLiLabel(this);
     m_yiLabel->setbackgroundColor(QColor("#75C18E"));
     m_yiLabel->setTextInfo(QColor("#7B7B7B "), hlabelF);
     m_yiLabel->setFixedSize(DDEDayCalendar::DHualiDtailLableWidth, DDEDayCalendar::DHualiDtailLableHeight);
-    yidownLayout->addWidget(m_yiLabel);
+    m_yidownLayout->addWidget(m_yiLabel);
 
-    QVBoxLayout *jidownLayout = new QVBoxLayout;
-    jidownLayout->setMargin(0);
-    jidownLayout->setSpacing(0);
-    jidownLayout->setContentsMargins(10, 5, 10, 10);
+    m_jidownLayout = new QVBoxLayout;
+    m_jidownLayout->setMargin(0);
+    m_jidownLayout->setSpacing(0);
+    m_jidownLayout->setContentsMargins(10, 10, 10, 10);
 
     m_jiLabel = new CDayHuangLiLabel(this);
     m_jiLabel->setbackgroundColor(QColor("#C17575"));
     m_jiLabel->setTextInfo(QColor("#7B7B7B "), hlabelF);
     m_jiLabel->setFixedSize(DDEDayCalendar::DHualiDtailLableWidth, DDEDayCalendar::DHualiDtailLableHeight);
-    jidownLayout->addWidget(m_jiLabel);
+    m_jidownLayout->addWidget(m_jiLabel);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    m_hhLayout = new QVBoxLayout;
     // mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
-    mainLayout->addLayout(upLayout);
-    mainLayout->addLayout(midLayout);
+    m_hhLayout->setMargin(0);
+    m_hhLayout->setSpacing(0);
+    m_hhLayout->addLayout(m_upLayout);
+    m_hhLayout->addLayout(midLayout);
 
-    DHorizontalLine *t_line = new DHorizontalLine;
+    m_splitline = new DHorizontalLine;
 
     //QFrame *frame = new QFrame(this);
     //frame->setFrameShape(QFrame::HLine);
     //frame->setFrameShadow(QFrame::Plain);
     //frame->setLineWidth(2);
     //frame->setFixedSize(241, 2);
-    t_line->setFixedSize(241, 2);
+    m_splitline->setFixedSize(241, 2);
     QHBoxLayout *hlineLayout = new QHBoxLayout;
     hlineLayout->setMargin(0);
     hlineLayout->setSpacing(0);
     hlineLayout->setContentsMargins(0, 0, 0, 3);
     hlineLayout->addStretch(1);
-    hlineLayout->addWidget(t_line);
+    hlineLayout->addWidget(m_splitline);
     hlineLayout->addStretch(1);
-    mainLayout->addLayout(hlineLayout);
-    mainLayout->addLayout(yidownLayout);
-    mainLayout->addLayout(jidownLayout);
+    m_hhLayout->addLayout(hlineLayout);
+    m_hhLayout->addLayout(m_yidownLayout);
+    m_hhLayout->addLayout(m_jidownLayout);
+    m_hhLayout->addStretch();
 
-    setLayout(mainLayout);
+    setLayout(m_hhLayout);
 }
 
 void CDayMonthView::initConnection()
@@ -489,10 +490,7 @@ const QDate CDayMonthView::getCellDate(int pos)
 }
 void CDayMonthView::paintCell(QWidget *cell)
 {
-    const QRect rect((cell->width() - DDEYearCalendar::YHeaderItemWidth) / 2,
-                     (cell->height() - DDEYearCalendar::YHeaderItemHeight) / 2,
-                     DDEYearCalendar::YCellHighlightWidth,
-                     DDEYearCalendar::YCellHighlightHeight);
+    const QRect rect(0, 0, cellwidth, cellheight);
 
     const int pos = m_cellList.indexOf(cell);
     const bool isSelectedCell = pos == m_selectedCell;
@@ -504,9 +502,15 @@ void CDayMonthView::paintCell(QWidget *cell)
 
     // draw selected cell background circle
     if (isSelectedCell) {
-        QRect fillRect((cell->width() - DDEYearCalendar::YHeaderItemWidth) / 2 + 4,
-                       (cell->height() - DDEYearCalendar::YHeaderItemHeight) / 2 + 1,
-                       18, 18);
+        int hh = 0;
+        QRect fillRect;
+        if (cell->width() > cell->height()) {
+            hh = cell->height();
+            fillRect = QRect((cell->width() - hh) / 2.0, 0, hh, hh);
+        } else {
+            hh = cell->width();
+            fillRect = QRect(0, (cell->height() - hh) / 2, hh, hh);
+        }
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_backgroundCircleColor));
         painter.setPen(Qt::NoPen);
@@ -657,6 +661,36 @@ void CDayMonthView::getDbusData()
     if (date == m_currentDate) {
         updateCurrentLunar(currentDayInfo);
     }
+}
+
+void CDayMonthView::resizeEvent(QResizeEvent *event)
+{
+    cellwidth = width() * 0.1005 + 0.5;
+    cellheight = height() * 0.0496 + 0.5;
+    m_gridLayout->setHorizontalSpacing(width() * 0.0287 + 0.5);
+    m_gridLayout->setVerticalSpacing(0);
+    int leftmagin = width() * 0.0632 + 0.5;
+    int rightmagin = leftmagin;
+    int topmagin = height() * 0.0164 + 0.5;
+    int buttonmagin = topmagin;
+    m_upLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
+    m_dayNumFont.setPixelSize(12 + (width() - 348) / 71.66);
+    for (int i(0); i != 42; ++i) {
+        m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
+        m_cellList.at(i)->update();
+    }
+    m_splitline->setFixedWidth(0.6925 * width() + 0.5);
+
+    int hleftmagin = width() * 0.026 + 0.5;
+    int hrightmagin = hleftmagin;
+    int htopmagin = height() * 0.01773 + 0.5;
+    int hbuttonmagin = htopmagin;
+    int lw = width() - hleftmagin * 2;
+    int lh = height() * 0.0992;
+    m_yiLabel->setFixedSize(lw, lh);
+    m_yidownLayout->setContentsMargins(hleftmagin, htopmagin * 0.5, hrightmagin, 0);
+    m_jiLabel->setFixedSize(lw, lh);
+    m_jidownLayout->setContentsMargins(hleftmagin, htopmagin, hrightmagin, hbuttonmagin);
 }
 void CDayMonthView::slotprev()
 {
