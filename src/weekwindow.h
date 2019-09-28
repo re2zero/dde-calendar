@@ -29,6 +29,7 @@
 #include <DFrame>
 #include "calendardbus.h"
 #include <DIconButton>
+#include <QHBoxLayout>
 DWIDGET_USE_NAMESPACE
 
 class CWeekHeadView;
@@ -63,6 +64,8 @@ private slots:
     void slotCurrentWeek(QDate date, QDate currentDate);
     void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
     void slotcurrentDateChanged(QDate date);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     CWeekHeadView     *m_weekHeadView; //周视图头
     DFrame *m_contentBackground = nullptr;
@@ -75,6 +78,7 @@ private:
     DLabel            *m_weekLabel;
     CWeekView         *m_weekview = nullptr;
     CScheduleView     *m_scheduleView;
+    QSpacerItem       *m_spaceitem;
 };
 
 #endif // YEARWINDOW_H

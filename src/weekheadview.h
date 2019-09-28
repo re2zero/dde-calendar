@@ -84,6 +84,8 @@ private:
     void updateCurrentLunar(const CaLunarDayInfo &info);
 
     int checkDay(int weekday);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);

@@ -184,7 +184,9 @@ void CMonthWindow::initUI()
     yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout->addLayout(yeartitleLayout1);
     //yeartitleLayout->addSpacing(30);
-    yeartitleLayout->addStretch();
+    m_spaceitem = new QSpacerItem(30, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    yeartitleLayout->addItem(m_spaceitem);
     yeartitleLayout->addWidget(m_monthDayView, 0, Qt::AlignCenter);
     yeartitleLayout->addStretch();
     yeartitleLayout->addWidget(m_today);
@@ -274,6 +276,8 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
     int th = height() - 66;
     int dw = width() * 0.5023 + 0.5;
     int dh = 36;
+    int space = (width() - dw) / 2 - 184;
+    m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_monthDayView->setFixedSize(dw, dh);
     m_monthView->setFixedSize(tw, th);
     m_animationContainer->setFixedSize(m_monthView->width(),

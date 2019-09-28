@@ -77,18 +77,21 @@ void CWeekView::setTheMe(int type)
         m_backgrounddefaultColor = Qt::white;
         m_currentDayTextColor = Qt::white;
         m_backgroundcurrentDayColor = "#0081FF";
+        m_fillColor = "#FFFFFF";
     } else if (type == 2) {
         m_defaultTextColor = "#C0C6D4";
         m_backgrounddefaultColor = "#FFFFFF";
         m_backgrounddefaultColor.setAlphaF(0.05);
         m_currentDayTextColor = "#B8D3FF";
         m_backgroundcurrentDayColor = "#0081FF";
+        m_fillColor = "#000000";
+        m_fillColor.setAlphaF(0.05);
     }
 }
 
 void CWeekView::paintCell(QWidget *cell)
 {
-    const QRect rect(0, 0, DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
+    const QRect rect(0, 0, cell->width(), cell->height());
 
     const int pos = m_cellList.indexOf(cell);
     const bool isCurrentDay = m_days[pos].addDays(m_weekAddDay).weekNumber() == QDate::currentDate().weekNumber();
@@ -97,12 +100,19 @@ void CWeekView::paintCell(QWidget *cell)
 
 
     QPainter painter(cell);
+    painter.save();
+
+    painter.setRenderHints(QPainter::HighQualityAntialiasing);
+    painter.setBrush(QBrush(m_fillColor));
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(rect);//画矩形
+    painter.restore();
     painter.setPen(Qt::SolidLine);
 
     const QString dayNum = QString::number(m_days[pos].weekNumber());
 
     if (isSelectDay) {
-        QRect fillRect(3, 3, 30, 30);
+        QRect fillRect((cell->width() - 30) / 2, 3, 30, 30);
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_backgroundcurrentDayColor));
@@ -178,4 +188,12 @@ void CWeekView::updateDate()
     setSelectedCell(4);
     update();
 }
-
+void CWeekView::resizeEvent(QResizeEvent *event)
+{
+    int w = width() * 0.1 + 0.5;
+    int h = height();
+    for (int c = 0; c != 10; ++c) {
+        m_cellList[c]->setFixedSize(w, h);
+        m_cellList[c]->update();
+    }
+}

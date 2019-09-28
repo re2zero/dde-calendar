@@ -35,6 +35,8 @@ public slots:
     void cellClicked(QWidget *cell);
 signals:
     void signalsSelectDate(QDate date, QDate currentDate);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);
@@ -52,6 +54,7 @@ private:
     QColor m_backgrounddefaultColor = Qt::white;
     QColor m_currentDayTextColor = Qt::white;
     QColor m_backgroundcurrentDayColor = "#0081FF";
+    QColor m_fillColor = Qt::white;
     int m_firstWeekDay;
     int m_weekAddDay = 0;
 };

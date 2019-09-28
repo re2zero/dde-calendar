@@ -383,16 +383,18 @@ void CWeekHeadView::paintCell(QWidget *cell)
     painter.drawRect(rect);//画矩形
     if (d == 6 || d == 7)  painter.drawRect(rect); //画矩形
 
+    int bw = (cell->width() - 104) / 2;
+    int bh = (cell->height() - 26) / 2;
 
     if (isSelectedCell) {
         if (m_showState & ShowLunar) {
-            QRect fillRect(1, 12, 26, 26);
+            QRect fillRect(bw + 1, bh, 24, 24);
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_weekendsTextColor));
             painter.setPen(Qt::NoPen);
             painter.drawEllipse(fillRect);
         } else {
-            QRect fillRect(13, 0, 26, 26);
+            QRect fillRect(bw + 13, bh, 24, 24);
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_weekendsTextColor));
             painter.setPen(Qt::NoPen);
@@ -423,20 +425,20 @@ void CWeekHeadView::paintCell(QWidget *cell)
 //    painter.drawRect(rect);
     painter.setFont(m_dayNumFont);
     if (m_showState & ShowLunar) {
-        painter.drawText(QRect(5, 14, 27, 25), Qt::AlignLeft, dayNum);
+        painter.drawText(QRect(bw + 3, bh, 27, 25), Qt::AlignLeft, dayNum);
         if (d == 6 || d == 7)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
-        painter.drawText(QRect(28, 14, 30, 25), Qt::AlignCenter, dayWeek);
+        painter.drawText(QRect(bw + 24, bh, 30, 25), Qt::AlignCenter, dayWeek);
 
     } else {
-        painter.drawText(QRect(0, 0, cell->width() / 2, cell->height() / 2), Qt::AlignCenter, dayNum);
+        painter.drawText(QRect(bw, bh, 52, 26), Qt::AlignCenter, dayNum);
         if (d == 6 || d == 7)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
-        painter.drawText(QRect(cell->width() / 2, 0, cell->width() / 2, cell->height() / 2), Qt::AlignCenter, dayWeek);
+        painter.drawText(QRect(bw + 52, bh, 52, 26), Qt::AlignCenter, dayWeek);
     }
 
     // draw text of day type
@@ -446,7 +448,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
         else
             painter.setPen(m_defaultLunarColor);
 
-        painter.drawText(QRect(cell->width() / 2 + 10, 14, 50, 25), Qt::AlignLeft, dayLunar);
+        painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
         CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
         //if (!dayInfo.mSolarFestival.isEmpty()) {
         if (false) {
@@ -512,4 +514,18 @@ int CWeekHeadView::checkDay(int weekday)
         return weekday -= 7;
 
     return weekday;
+}
+
+void CWeekHeadView::resizeEvent(QResizeEvent *event)
+{
+    int mw = 0.0959 * width() + 0.5;
+    int mh = height();
+    m_monthLabel->setFixedSize(mw, mh);
+
+    int w = 0.1293 * width() + 0.5;
+    int h = height();
+    for (int i(0); i != 7; ++i) {
+        m_cellList.at(i)->setFixedSize(w, h);
+    }
+    DWidget::resizeEvent(event);
 }

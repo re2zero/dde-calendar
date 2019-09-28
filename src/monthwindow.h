@@ -26,6 +26,7 @@
 #include <DPushButton>
 #include <DLabel>
 #include <DFrame>
+#include <QSpacerItem>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
@@ -79,6 +80,7 @@ private:
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_YearLunarLabel;
+    QSpacerItem       *m_spaceitem;
 };
 
 #endif // YEARWINDOW_H

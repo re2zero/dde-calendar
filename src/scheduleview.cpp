@@ -232,9 +232,9 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     for (int i = 0; i < m_vPos.size(); i++) {
         if (m_vHours[i] == 0) continue;
         if (m_vHours[i] > 12) {
-            painter.drawText(QRect(hourTextLMagin, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignCenter, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
+            painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
         } else {
-            painter.drawText(QRect(hourTextLMagin, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignCenter, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
+            painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
         }
     }
     painter.restore();
@@ -253,13 +253,13 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.setPen(m_linecolor);
     painter.drawLine(QPoint(0, m_topMagin), QPoint(t_width, m_topMagin));
     painter.restore();
-    int intenval = (t_width - m_leftMagin) / m_TotalDay;
+    int intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay + 0.5;
     if (m_TotalDay > 1) {
         painter.save();
         painter.setPen(Qt::SolidLine);
         painter.setPen(m_linecolor);
         for (int i = 1; i < m_TotalDay; i++) {
-            painter.drawLine(QPoint(m_leftMagin + i * intenval + 1, 1), QPoint(m_leftMagin  + i * intenval, m_topMagin));
+            painter.drawLine(QPoint(m_leftMagin + i * intenval, 1), QPoint(m_leftMagin  + i * intenval, m_topMagin));
         }
         painter.restore();
         painter.save();
@@ -269,10 +269,10 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.setBrush(m_weekColor);
             painter.setPen(Qt::NoPen);
             if (d == 6 ) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, intenval, m_topMagin));
+                painter.drawRect(QRect(m_leftMagin + i * intenval, 0, intenval, m_topMagin));
             }
             if (d == 7) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval, 0, intenval + 1, m_topMagin));
+                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, intenval, m_topMagin));
             }
         }
         painter.restore();
@@ -282,13 +282,16 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
 void CScheduleView::resizeEvent(QResizeEvent *event)
 {
-    m_graphicsView->setRange(width() - 74, 24 * 43, m_beginDate, m_endDate);
-    if (width() > 600) {
-        m_alldaylist->setFixedSize(width() - 74, 99);
-        m_alldaylist->setRange(width() - 74, 22, m_beginDate, m_endDate);
+    if (m_viewType == 0) {
+        m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
+        m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
+        m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
+        m_alldaylist->move(width() * 0.0959 + 0.5 - 2, 5);
     } else {
-        m_alldaylist->setFixedSize(width() - 74, 99);
-        m_alldaylist->setRange(width() - 74, 22, m_beginDate, m_endDate);
+        m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
+        m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
+        m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
+        m_alldaylist->move(width() * 0.0959 + 0.5 - 2, 5);
     }
     QFrame::resizeEvent(event);
 }

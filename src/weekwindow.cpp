@@ -140,7 +140,10 @@ void CWeekWindow::initUI()
     yeartitleLayout->addWidget(m_YearLabel);
     yeartitleLayout->addSpacing(14);
     yeartitleLayout->addWidget(m_YearLunarLabel);
-    yeartitleLayout->addSpacing(30);
+    //yeartitleLayout->addSpacing(30);
+    m_spaceitem = new QSpacerItem(30, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    yeartitleLayout->addItem(m_spaceitem);
     yeartitleLayout->addWidget(m_prevButton);
     yeartitleLayout->addWidget(m_weekview);
     yeartitleLayout->addWidget(m_nextButton);
@@ -159,8 +162,8 @@ void CWeekWindow::initUI()
     mhLayout->setMargin(0);
     mhLayout->setSpacing(0);
     mhLayout->setContentsMargins(8, 0, 10, 8);
-    mhLayout->addWidget(m_weekHeadView);
-    mhLayout->addWidget(m_scheduleView);
+    mhLayout->addWidget(m_weekHeadView, 0, Qt::AlignCenter);
+    mhLayout->addWidget(m_scheduleView, 0, Qt::AlignCenter);
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->addLayout(yeartitleLayout);
     hhLayout->addLayout(mhLayout);
@@ -331,4 +334,32 @@ void CWeekWindow::slotcurrentDateChanged(QDate date)
     }
     m_currentdate = date;
     m_scheduleView->setDate(date);
+}
+
+void CWeekWindow::resizeEvent(QResizeEvent *event)
+{
+    int sleftMagin = 0.093 * width() + 0.5;
+    int stopMagin = 0.1797 * height() + 0.5;
+
+    int headh = height() * 0.0924 + 0.5;
+    int sh = height() - headh - 78;
+    int topmagin = height() * 0.0193 + 0.5;
+    int buttonmagin = topmagin;
+
+    int dw = width() * 0.4186 + 0.5;
+    int dh = 36;
+    int space = (width() - dw) / 2 - 220;
+
+
+    m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+
+    m_weekview->setFixedSize(dw, dh);
+
+    m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
+
+    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
+
+    m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
+    QMainWindow::resizeEvent(event);
 }
