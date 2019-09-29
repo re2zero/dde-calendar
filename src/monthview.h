@@ -103,7 +103,7 @@ private:
     bool eventFilter(QObject *o, QEvent *e);
     void updateDate();
     void updateCurrentLunar(const CaLunarDayInfo &info);
-
+    char getFestivalInfoByDate(const QDate &date);
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
@@ -146,10 +146,14 @@ private:
     QColor m_solofestivalLunarColor = "#4DFF7272";
     QColor m_wrectColor = Qt::lightGray;
     QColor m_fillColor = Qt::white;
+
+    QColor m_banColor = "#FBE9B7";
+    QColor m_xiuColor = "#D4FFB3";
+
     QQueue<int> *queue = nullptr;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
-
+    QVector<FestivalInfo>  m_festivallist;
 
     CMonthWeekView *m_weekIndicator;
     int m_firstWeekDay;

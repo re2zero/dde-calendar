@@ -158,6 +158,21 @@ public:
     qint32 mDays;
     QList<CaHuangLiDayInfo> mCaLunarDayInfo;
 };
+typedef struct _tagHolidayInfo {
+
+    QDate  date;
+    char   status;
+} HolidayInfo;
+
+typedef struct _tagFestivalInfo {
+    QString ID;
+    QString FestivalName;
+    QString description;
+    QString Rest;
+    int   month;
+    int   year;
+    QVector<HolidayInfo> listHoliday;
+} FestivalInfo;
 
 
 /*
@@ -423,6 +438,68 @@ public Q_SLOTS: // METHODS
         if (rootObj.contains("GanZhiYear")) {
             out.mGanZhiYear = rootObj.value("GanZhiYear").toString();
         }
+        return true;
+    }
+    inline bool GetFestivalMonth(int in0, int in1, QVector<FestivalInfo> &out)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1);
+        QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetFestivalMonth"), argumentList);
+        if (reply.type() != QDBusMessage::ReplyMessage ) {
+            return false;
+        }
+        QDBusReply<QString> festivalMonthinfo =  reply;
+        if (!festivalMonthinfo.isValid()) return false;
+        QJsonParseError json_error;
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(festivalMonthinfo.value().toLocal8Bit(), &json_error));
+
+        if (json_error.error != QJsonParseError::NoError) {
+            return false;
+        }
+        QJsonArray rootarry = jsonDoc.array();
+
+        for (int i = 0; i < rootarry.size(); i++) {
+
+            QJsonObject subObj = rootarry.at(i).toObject();
+
+            FestivalInfo festivalInfoday;
+
+            //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+            if (subObj.contains("id")) {
+                festivalInfoday.ID = subObj.value("id").toString();
+            }
+            if (subObj.contains("name")) {
+                festivalInfoday.FestivalName = subObj.value("name").toString();
+            }
+            if (subObj.contains("description")) {
+                festivalInfoday.description = subObj.value("description").toString();
+            }
+            if (subObj.contains("rest")) {
+                festivalInfoday.Rest = subObj.value("rest").toString();
+            }
+            if (subObj.contains("month")) {
+                festivalInfoday.month = subObj.value("month").toInt();
+            }
+            if (subObj.contains("list")) {
+                QJsonArray sublistArray = subObj.value("list").toArray();
+
+                for (int j = 0; j < sublistArray.size(); j++) {
+
+                    QJsonObject hsubObj = sublistArray.at(j).toObject();
+                    HolidayInfo dayinfo;
+                    if (hsubObj.contains("status")) {
+                        dayinfo.status = hsubObj.value("status").toInt();
+                    }
+                    if (hsubObj.contains("date")) {
+                        dayinfo.date = QDate::fromString(hsubObj.value("date").toString(), "yyyy-MM-dd");
+                    }
+                    festivalInfoday.listHoliday.append(dayinfo);
+                }
+            }
+            festivalInfoday.year = in0;
+            out.append(festivalInfoday);
+        }
+
         return true;
     }
 

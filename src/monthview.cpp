@@ -34,6 +34,7 @@
 #include <QMenu>
 #include "scheduledatamanage.h"
 #include "monthschceduleview.h"
+#include <DHiDPIHelper>
 void CMonthView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
@@ -58,6 +59,8 @@ void CMonthView::setTheMe(int type)
         m_wrectColor = "#000000";
         m_wrectColor.setAlphaF(0.05);
         m_fillColor = Qt::white;
+        m_banColor = "#FBE9B7";
+        m_xiuColor = "#D4FFB3";
 
     } else if (type == 2) {
 
@@ -83,6 +86,8 @@ void CMonthView::setTheMe(int type)
         m_wrectColor = wcolor;
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
+        m_banColor = "#965A26";
+        m_xiuColor = "#5D7D44";
     }
     m_weekIndicator->setTheMe(type);
     m_MonthSchceduleView->setTheMe(type);
@@ -242,6 +247,10 @@ void CMonthView::setCurrentDate(const QDate date)
         return;
     }
 
+    if (date.month() != m_currentDate.month()) {
+        m_festivallist.clear();
+        m_DBusInter->GetFestivalMonth(date.year(), date.month(), m_festivallist);
+    }
     m_currentDate = date;
 
     // to refresh lunar calendar
@@ -375,6 +384,20 @@ void CMonthView::updateCurrentLunar(const CaLunarDayInfo &info)
     updateDate();
 }
 
+char CMonthView::getFestivalInfoByDate(const QDate &date)
+{
+    for (int i = 0; i < m_festivallist.count(); i++) {
+        if (date.year() == m_festivallist[i].year && date.month() == m_festivallist[i].year) {
+            for (int j = 0; j < m_festivallist[i].listHoliday.count(); j++) {
+                if (m_festivallist[i].listHoliday[j].date == date) {
+                    return m_festivallist[i].listHoliday[j].status;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 const QString CMonthView::getCellDayNum(int pos)
 {
     if (m_days[pos].day() ==  1) {
@@ -472,10 +495,34 @@ void CMonthView::paintCell(QWidget *cell)
     QPainter painter(cell);
     painter.save();
 
-    painter.setRenderHints(QPainter::HighQualityAntialiasing);
-    painter.setBrush(QBrush(m_fillColor));
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(rect);//画矩形
+
+
+    if (m_showState & ShowLunar) {
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        int ftype = getFestivalInfoByDate(m_days[pos]);
+        if (ftype == 1) {
+            painter.setBrush(QBrush(m_banColor));
+        } else if (ftype == 2) {
+            painter.setBrush(QBrush(m_xiuColor));
+        } else {
+            painter.setBrush(QBrush(m_fillColor));
+        }
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(rect);//画矩形
+
+        if (ftype == 1) {
+            QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ban.svg").scaled(20, 20);
+            painter.drawPixmap(10, cell->height() - 30, pixmap);
+        } else if (ftype == 2) {
+            QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-xiu.svg").scaled(20, 20);
+            painter.drawPixmap(10, cell->height() - 30, pixmap);
+        }
+    } else {
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        painter.setBrush(QBrush(m_fillColor));
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(rect);//画矩形
+    }
     painter.restore();
 
 
@@ -512,7 +559,7 @@ void CMonthView::paintCell(QWidget *cell)
     const QString dayLunar = getLunar(pos);
     if (isCurrentDay) {
         if (m_showState & ShowLunar) {
-            QRect fillRect(6, 3, 30, 30);
+            QRect fillRect(4, 2, 30, 30);
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_backgroundCircleColor));
             painter.setPen(Qt::NoPen);
@@ -544,6 +591,12 @@ void CMonthView::paintCell(QWidget *cell)
 //    painter.drawRect(rect);
     QRect test;
     painter.setFont(m_dayNumFont);
+    if (isCurrentDay) {
+        QFont tfont = m_dayNumFont;
+        tfont.setPixelSize(20);
+        painter.setFont(tfont);
+    }
+
     if (m_showState & ShowLunar) {
         painter.drawText(QRect(8, 0, cell->width() / 2, cell->height() / 2), Qt::AlignLeft, dayNum);
     } else {
