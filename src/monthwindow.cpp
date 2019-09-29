@@ -118,9 +118,9 @@ void CMonthWindow::nextMonth()
 void CMonthWindow::wheelEvent(QWheelEvent *e)
 {
     if (e->delta() < 0) {
-        nextMonth();
-    } else {
         previousMonth();
+    } else {
+        nextMonth();
     }
 }
 
