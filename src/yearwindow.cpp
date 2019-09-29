@@ -178,7 +178,7 @@ void CYearWindow::initUI()
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
     yeartitleLayout1->setMargin(0);
     yeartitleLayout1->setSpacing(0);
-    yeartitleLayout1->setContentsMargins(0, 10, 8, 0);
+    yeartitleLayout1->setContentsMargins(0, 10, 8, 5);
     yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout1->addSpacing(390);
     yeartitleLayout1->addStretch();
@@ -207,7 +207,7 @@ void CYearWindow::initUI()
     m_gridWidget = new DFrame;
     m_gridWidget->setLayout(gridLayout);
 
-    m_gridWidget->setContentsMargins(0, 0, 0, 0);
+    m_gridWidget->setContentsMargins(5, 0, 0, 10);
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->setMargin(0);
     hhLayout->setSpacing(0);
