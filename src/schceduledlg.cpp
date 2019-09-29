@@ -79,8 +79,9 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     m_currentDate = date;
     m_beginDateEdit->setDate(date.date());
     m_beginTimeEdit->setTime(date.time());
-    m_endDateEdit->setDate(date.date());
-    m_endTimeEdit->setTime(date.time().addSecs(3600));
+    QDateTime datetime = date.addSecs(3600);
+    m_endDateEdit->setDate(datetime.date());
+    m_endTimeEdit->setTime(datetime.time());
 }
 
 ScheduleInfo CSchceduleDlg::getData()
