@@ -45,6 +45,7 @@ public slots:
 private:
     void initUI();
     void initConnection();
+    void AutoFeed(QString text);
 private:
     DLabel                           *m_schceduleLabel = nullptr;
     DLabel                           *m_timeLabel = nullptr;
@@ -53,6 +54,7 @@ private:
     DLabel                           *m_icon;
     DLabel                           *m_Title;
     ScheduleDtailInfo                     m_scheduleInfo;//日程
+
 };
 
 #endif // MYSCHCEDULEVIEW_H

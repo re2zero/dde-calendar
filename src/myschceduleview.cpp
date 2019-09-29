@@ -29,18 +29,46 @@
 DGUI_USE_NAMESPACE
 CMySchceduleView::CMySchceduleView(QWidget *parent) : DDialog(parent)
 {
+    setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
     //setTitle(tr("My Schcedule"));
-    setFixedSize(380, 160);
+    setFixedSize(403, 160);
 
     //setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 }
+void CMySchceduleView::AutoFeed(QString text)
+{
+    QString strText = text;
+    QFont labelF;
+    labelF.setFamily("SourceHanSansSC-Medium");
+    labelF.setPixelSize(14);
+    QFontMetrics fm(labelF);
+    int row = 0;
 
+    QString str;
+    if (!strText.isEmpty()) {
+        for (int i = 0; i < strText.count(); i++) {
+            str.append(strText.at(i));
+            int widthT = fm.width(str) + 5;
+            if (widthT >= 340) {
+                strText.insert(i - 1, "\n");
+                i--;
+                str.clear();
+                row++;
+            }
+        }
+    }
+    m_schceduleLabel->setFixedHeight((row + 1) * 24);
+    setFixedHeight(row * 24 + 160);
+    m_schceduleLabel->setText(strText);
+    m_schceduleLabel->adjustSize();
+}
 void CMySchceduleView::setSchedules(ScheduleDtailInfo info)
 {
     m_scheduleInfo = info;
-    m_schceduleLabel->setText(info.titleName);
+    AutoFeed(info.titleName);
+    //m_schceduleLabel->setText(info.titleName);
     m_timeLabel->setText(info.beginDateTime.toString("yyyy-MM-dd hh:mm") + " ~ " + info.endDateTime.toString("yyyy-MM-dd hh:mm"));
 }
 
@@ -247,7 +275,7 @@ void CMySchceduleView::initUI()
     QHBoxLayout *hBtLayout = new QHBoxLayout;
     hBtLayout->setMargin(0);
     hBtLayout->setSpacing(0);
-    hBtLayout->setContentsMargins(0, 0, 0, 3);
+    hBtLayout->setContentsMargins(0, 0, 0, 0);
     // hBtLayout->addStretch();
     m_editBt = new DPushButton(tr("Edit"));
     DPalette pa = m_editBt->palette();
@@ -269,8 +297,10 @@ void CMySchceduleView::initUI()
     hBtLayout->addWidget(m_editBt);
     mainLayout->addLayout(hBtLayout);
     DFrame *gwi = new DFrame(this);
+    gwi->setContentsMargins(0, 0, 0, 0);
     gwi->setLayout(mainLayout);
-    gwi->setGeometry(0, 51, 380, 110);
+    // gwi->setGeometry(0, 51, 380, 110);
+    addContent(gwi, Qt::AlignCenter);
 }
 
 void CMySchceduleView::initConnection()

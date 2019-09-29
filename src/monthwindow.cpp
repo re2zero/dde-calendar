@@ -304,8 +304,7 @@ void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail
         m_animationContainer->hide();
 
     } else if (type == 0) {
-        if (date.month() != currentdate.month()
-                && date.year() == currentdate.year()) {
+        if (date.month() != currentdate.month()) {
             m_monthDayView->setRCurrentDate(date);
         }
     }

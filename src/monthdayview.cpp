@@ -62,7 +62,11 @@ void CMonthDayView::setCurrentDate(const QDate date)
 {
     m_selectDate = date;
     for (int i = 0; i < 12; i++) {
-        m_days[i] = QDate(date.year(), i + 1, date.day());
+        if (QDate(date.year(), i + 1, date.day()).isValid()) {
+            m_days[i] = QDate(date.year(), i + 1, date.day());
+        } else {
+            m_days[i] = QDate(date.year(), i + 1, 1);
+        }
     }
     setSelectedCell(m_selectDate.month() - 1);
     update();
@@ -74,7 +78,11 @@ void CMonthDayView::setRCurrentDate(const QDate date)
     if (m_selectDate == date) return;
     m_selectDate = date;
     for (int i = 0; i < 12; i++) {
-        m_days[i] = QDate(date.year(), i + 1, date.day());
+        if (QDate(date.year(), i + 1, date.day()).isValid()) {
+            m_days[i] = QDate(date.year(), i + 1, date.day());
+        } else {
+            m_days[i] = QDate(date.year(), i + 1, 1);
+        }
     }
     setSelectedCell(m_selectDate.month() - 1, 1);
     update();
@@ -107,7 +115,7 @@ void CMonthDayView::paintCell(QWidget *cell)
     const QRect rect(0, 0, cell->width(), cell->height());
 
     const int pos = m_cellList.indexOf(cell);
-    const bool isCurrentDay = m_days[pos].month() == QDate::currentDate().month();
+    const bool isCurrentDay = (m_days[pos].month() == QDate::currentDate().month() && m_days[pos].year() == QDate::currentDate().year());
 
     const bool isSelectDay = m_days[pos].month() == m_selectDate.month();
 
