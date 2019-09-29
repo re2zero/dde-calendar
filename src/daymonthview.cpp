@@ -215,6 +215,11 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
         return;
     }
 
+    if (date == QDate::currentDate()) {
+        m_today->hide();
+    } else {
+        m_today->show();
+    }
     m_currentDate = date;
     // to refresh lunar calendar
     //updateDate();

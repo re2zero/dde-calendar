@@ -425,7 +425,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
 //    painter.drawRect(rect);
     painter.setFont(m_dayNumFont);
     if (m_showState & ShowLunar) {
-        painter.drawText(QRect(bw + 3, bh, 27, 25), Qt::AlignLeft, dayNum);
+        painter.drawText(QRect(bw + 1, bh, 24, 24), Qt::AlignCenter, dayNum);
         if (d == 6 || d == 7)
             painter.setPen(m_weekendsTextColor);
         else
