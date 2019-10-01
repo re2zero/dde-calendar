@@ -744,7 +744,7 @@ void CSchceduleDlg::initDateEdit()
     m_bCustomDateW = new CCustomCalendarWidget(0);
     m_beginDateEdit->setCalendarWidget(m_bCustomDateW);
     m_beginDateEdit->setMinimumDate(QDate(1900, 1, 1)); // 0天
-    m_beginDateEdit->setMaximumDate(QDate(3000, 1, 1)); //
+    m_beginDateEdit->setMaximumDate(QDate(9999, 12, 31)); //
     //m_beginDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
     m_bCustomDateW->disconnect(SIGNAL(selectionChanged()));
     m_bCustomDateW->disconnect(SIGNAL(clicked(QDate)));
@@ -752,7 +752,7 @@ void CSchceduleDlg::initDateEdit()
     m_eCustomDateW = new CCustomCalendarWidget(0);
     m_endDateEdit->setCalendarWidget(m_eCustomDateW);
     m_endDateEdit->setMinimumDate(QDate(1900, 1, 1)); // 0天
-    m_endDateEdit->setMaximumDate(QDate(3000, 1, 1)); //
+    m_endDateEdit->setMaximumDate(QDate(9999, 12, 31)); //
     m_endDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
     m_eCustomDateW->disconnect(SIGNAL(selectionChanged()));
     m_eCustomDateW->disconnect(SIGNAL(clicked(QDate)));

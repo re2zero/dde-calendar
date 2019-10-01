@@ -196,7 +196,7 @@ void CCustomCalendarWidget::initTopWidget()
     m_monthLabel = new CCaYearMonthEdit(this);
     m_yearLabel = new CCaYearMonthEdit(this);
     m_monthLabel->setRange(1, 12);
-    m_yearLabel->setRange(1900, 3000);
+    m_yearLabel->setRange(1900, 9999);
     m_monthLabel->setMinimumWidth(100);
     m_monthLabel->setPadStr(tr("M"));
     m_yearLabel->setPadStr(tr("Y"));
