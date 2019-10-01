@@ -641,24 +641,42 @@ void CMonthView::paintCell(QWidget *cell)
 
     const QString dayNum = getCellDayNum(pos);
     const QString dayLunar = getLunar(pos);
-    if (isCurrentDay) {
-        if (m_showState & ShowLunar) {
-            QRect fillRect(4, 2, 30, 30);
-            painter.setRenderHints(QPainter::HighQualityAntialiasing);
-            painter.setBrush(QBrush(m_backgroundCircleColor));
-            painter.setPen(Qt::NoPen);
-            painter.drawEllipse(fillRect);
-        } else {
-            QRect fillRect((cellwidth - 30) / 2, 0, 30, 30);
-            painter.setRenderHints(QPainter::HighQualityAntialiasing);
-            painter.setBrush(QBrush(m_backgroundCircleColor));
-            painter.setPen(Qt::NoPen);
-            painter.drawEllipse(fillRect);
+    if (!isSelectedCell) {
+        if (isCurrentDay) {
+            if (m_showState & ShowLunar) {
+                QRect fillRect(4, 2, 30, 30);
+                painter.setRenderHints(QPainter::HighQualityAntialiasing);
+                painter.setBrush(QBrush(m_backgroundCircleColor));
+                painter.setPen(Qt::NoPen);
+                painter.drawEllipse(fillRect);
+            } else {
+                QRect fillRect((cellwidth - 30) / 2, 0, 30, 30);
+                painter.setRenderHints(QPainter::HighQualityAntialiasing);
+                painter.setBrush(QBrush(m_backgroundCircleColor));
+                painter.setPen(Qt::NoPen);
+                painter.drawEllipse(fillRect);
+            }
+        }
+    } else {
+        if (isCurrentDay) {
+            if (m_showState & ShowLunar) {
+                QRect fillRect(4, 3, 28, 28);
+                painter.setRenderHints(QPainter::HighQualityAntialiasing);
+                painter.setBrush(QBrush(m_backgroundCircleColor));
+                painter.setPen(Qt::NoPen);
+                painter.drawEllipse(fillRect);
+            } else {
+                QRect fillRect((cellwidth - 28) / 2, 2, 28, 28);
+                painter.setRenderHints(QPainter::HighQualityAntialiasing);
+                painter.setBrush(QBrush(m_backgroundCircleColor));
+                painter.setPen(Qt::NoPen);
+                painter.drawEllipse(fillRect);
+            }
         }
     }
-    // draw text of day
-    //if (isSelectedCell) {
-    //   painter.setPen(m_selectedTextColor);
+// draw text of day
+//if (isSelectedCell) {
+//   painter.setPen(m_selectedTextColor);
     if (isCurrentDay) {
         painter.setPen(m_currentDayTextColor);
     } else {
@@ -675,20 +693,35 @@ void CMonthView::paintCell(QWidget *cell)
 //    painter.drawRect(rect);
     QRect test;
     painter.setFont(m_dayNumFont);
-    if (isCurrentDay) {
-        QFont tfont = m_dayNumFont;
-        if (m_days[pos].day() == 1) {
-            tfont.setPixelSize(12);
-        } else {
-            tfont.setPixelSize(20);
-        }
-        painter.setFont(tfont);
-        if (m_showState & ShowLunar) {
-            painter.drawText(QRect(4, 2, 30, 30), Qt::AlignCenter, dayNum, &test);
-        } else {
-            painter.drawText(QRect(0, 0, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
-        }
 
+    if (isCurrentDay) {
+        if (isSelectedCell) {
+            QFont tfont = m_dayNumFont;
+            if (m_days[pos].day() == 1) {
+                tfont.setPixelSize(11);
+            } else {
+                tfont.setPixelSize(19);
+            }
+            painter.setFont(tfont);
+            if (m_showState & ShowLunar) {
+                painter.drawText(QRect(4, 3, 28, 28), Qt::AlignCenter, dayNum, &test);
+            } else {
+                painter.drawText(QRect(0, 2, cell->width(), 31), Qt::AlignCenter, dayNum, &test);
+            }
+        } else {
+            QFont tfont = m_dayNumFont;
+            if (m_days[pos].day() == 1) {
+                tfont.setPixelSize(12);
+            } else {
+                tfont.setPixelSize(20);
+            }
+            painter.setFont(tfont);
+            if (m_showState & ShowLunar) {
+                painter.drawText(QRect(4, 2, 30, 30), Qt::AlignCenter, dayNum, &test);
+            } else {
+                painter.drawText(QRect(0, 0, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
+            }
+        }
     } else {
         if (m_showState & ShowLunar) {
             painter.drawText(QRect(8, 0, cell->width() / 2, 33), Qt::AlignLeft, dayNum);
@@ -697,8 +730,7 @@ void CMonthView::paintCell(QWidget *cell)
         }
     }
 
-
-    // draw text of day type
+// draw text of day type
     if (m_showState & ShowLunar) {
         //if (isCurrentDay) {
         // painter.setPen(m_currentDayLunarColor);
