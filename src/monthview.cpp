@@ -181,9 +181,12 @@ void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo>
 {
     if (w != this) return;
     setEnabled(true);
+    m_shceludelistdata = data;
     m_MonthSchceduleView->setallsize(width(), height(), m_leftmaagin, m_weekIndicator->height() + m_topmagin, m_topmagin);
     m_MonthSchceduleView->setData(data, m_currentDate.month());
-
+    for (int i(0); i != 42; ++i) {
+        m_cellList.at(i)->update();
+    }
 }
 
 void CMonthView::resizeEvent(QResizeEvent *event)
@@ -396,6 +399,18 @@ char CMonthView::getFestivalInfoByDate(const QDate &date)
         }
     }
     return 0;
+}
+
+bool CMonthView::getShowSolarDayByDate(const QDate &date)
+{
+    bool tflag = true;
+    for (int i = 0; i < m_shceludelistdata.count(); i++) {
+        if (date == m_shceludelistdata.at(i).date) {
+            tflag = m_shceludelistdata.at(i).vData.isEmpty();
+            break;
+        }
+    }
+    return tflag;
 }
 
 const QString CMonthView::getCellDayNum(int pos)
@@ -631,29 +646,30 @@ void CMonthView::paintCell(QWidget *cell)
         }
         painter.setFont(m_dayLunarFont);
         painter.drawText(QRect(cell->width() - 50, 6, 50, 18), Qt::AlignCenter, dayLunar);
-        CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
-        if (!dayInfo.mSolarFestival.isEmpty()) {
-            QRect fillRect = QRect(6, 34, cell->width() - 12, 22);
-            painter.setRenderHints(QPainter::HighQualityAntialiasing);
-            painter.setBrush(QBrush(m_solofestivalLunarColor));
-            painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(fillRect, 2, 2);
-            painter.setPen(m_defaultTextColor);
-            QFont solofont = m_dayLunarFont;
-            painter.setFont(solofont);
-            QFontMetrics fm = painter.fontMetrics();
-            while (fm.width(dayInfo.mSolarFestival) > cell->width() - 12) {
-                solofont.setPixelSize(solofont.pixelSize() - 1);
+        if (getShowSolarDayByDate(m_days[pos])) {
+            CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
+            if (!dayInfo.mSolarFestival.isEmpty()) {
+                QRect fillRect = QRect(6, 34, cell->width() - 12, 22);
+                painter.setRenderHints(QPainter::HighQualityAntialiasing);
+                painter.setBrush(QBrush(m_solofestivalLunarColor));
+                painter.setPen(Qt::NoPen);
+                painter.drawRoundedRect(fillRect, 2, 2);
+                painter.setPen(m_defaultTextColor);
+                QFont solofont = m_dayLunarFont;
                 painter.setFont(solofont);
-                fm = painter.fontMetrics();
+                QFontMetrics fm = painter.fontMetrics();
+                while (fm.width(dayInfo.mSolarFestival) > cell->width() - 12) {
+                    solofont.setPixelSize(solofont.pixelSize() - 1);
+                    painter.setFont(solofont);
+                    fm = painter.fontMetrics();
+                }
+                painter.drawText(QRect(6 + (fillRect.width() - fm.width(dayInfo.mSolarFestival)) / 2,
+                                       34 + (fillRect.height() - fm.height()) / 2,
+                                       fm.width(dayInfo.mSolarFestival),
+                                       fm.height()),
+                                 Qt::AlignLeft, dayInfo.mSolarFestival);
             }
-            painter.drawText(QRect(6 + (fillRect.width() - fm.width(dayInfo.mSolarFestival)) / 2,
-                                   34 + (fillRect.height() - fm.height()) / 2,
-                                   fm.width(dayInfo.mSolarFestival),
-                                   fm.height()),
-                             Qt::AlignLeft, dayInfo.mSolarFestival);
         }
-
     }
     painter.end();
 }

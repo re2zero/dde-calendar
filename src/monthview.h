@@ -104,6 +104,7 @@ private:
     void updateDate();
     void updateCurrentLunar(const CaLunarDayInfo &info);
     char getFestivalInfoByDate(const QDate &date);
+    bool getShowSolarDayByDate(const QDate &date);
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
@@ -154,6 +155,7 @@ private:
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
     QVector<FestivalInfo>  m_festivallist;
+    QVector<ScheduleDateRangeInfo> m_shceludelistdata;
 
     CMonthWeekView *m_weekIndicator;
     int m_firstWeekDay;
