@@ -414,7 +414,7 @@ bool MScheduleDaysThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRang
 }
 void CMonthSchceduleView::updateData()
 {
-    if (m_data.count() != 42 ) return;
+    if (m_data.count() != 42 || m_cNum < 1) return;
     QDate begindate = m_data.begin()->date;
     QDate enddate = m_data[m_data.count() - 1].date;
     m_beginDate = begindate;
