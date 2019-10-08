@@ -145,8 +145,8 @@ void CDayMonthView::setTheMe(int type)
     } else if (type == 2) {
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
-        todaypa.setColor(DPalette::Dark, "#484848");
-        todaypa.setColor(DPalette::Light, "#414141");
+        todaypa.setColor(DPalette::Light, "#484848");
+        todaypa.setColor(DPalette::Dark, "#414141");
         m_today->setPalette(todaypa);
 
         DPalette prevpa = m_prevButton->palette();

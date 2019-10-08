@@ -353,7 +353,7 @@ CAllDaySchceduleView::CAllDaySchceduleView(QWidget *parent, int edittype) : DLis
     setFrameShape(QListWidget::NoFrame);
     //setWindowOpacity(0);
     setMouseTracking(true);
-    setFocusPolicy(Qt::StrongFocus);
+    setFocusPolicy(Qt::NoFocus);
 
     m_coorManage = new CScheduleCoorManage;
 
@@ -361,6 +361,7 @@ CAllDaySchceduleView::CAllDaySchceduleView(QWidget *parent, int edittype) : DLis
     connect(m_createAction, &QAction::triggered, this, &CAllDaySchceduleView::slotCreate);
     //setStyleSheet("background-color:transparent");
     setSelectionMode(QAbstractItemView::NoSelection);
+    //setSelectionModel(nullptr);
 }
 
 CAllDaySchceduleView::~CAllDaySchceduleView()

@@ -71,6 +71,9 @@ void CMonthWindow::setTheMe(int type)
         todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
+        QColor sbcolor("#002A57");
+        sbcolor.setAlphaF(0.05);
+        todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
 
         DPalette pa = m_YearLabel->palette();
@@ -84,9 +87,12 @@ void CMonthWindow::setTheMe(int type)
 
     } else if (type == 2) {
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
-        todaypa.setColor(DPalette::Dark, "#484848");
-        todaypa.setColor(DPalette::Light, "#414141 ");
+        todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
+        todaypa.setColor(DPalette::Light, "#484848");
+        todaypa.setColor(DPalette::Dark, "#414141");
+        QColor sbcolor("#000000");
+        sbcolor.setAlphaF(0.08);
+        todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
 
         DPalette pa = m_YearLabel->palette();
