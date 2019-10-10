@@ -256,7 +256,7 @@ void CYearView::paintCell(QWidget *cell)
 
     const int pos = m_cellList.indexOf(cell);
     const bool isSelectedCell = pos == m_selectedCell;
-    const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
+    const bool isCurrentDay = getCellDate(pos) == QDate::currentDate() && getCellDate(pos).month() == m_currentDate.month();
 
     QPainter painter(cell);
 
