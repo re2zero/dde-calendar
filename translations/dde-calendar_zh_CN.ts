@@ -54,6 +54,10 @@
         <source>Delete all schedule in the future</source>
         <translation>删除所有将来日程</translation>
     </message>
+    <message>
+        <source>Create</source>
+        <translation>新建日程</translation>
+    </message>
 </context>
 <context>
     <name>CCalendarTimeEidt</name>

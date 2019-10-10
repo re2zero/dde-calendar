@@ -118,6 +118,7 @@ public slots:
     void slotEdit();
     void slotDelete();
     void slotDoubleEvent(int type = 0);
+    void slotCreate();
 protected:
     void paintEvent ( QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *event);
@@ -126,6 +127,7 @@ private:
     ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;
     QAction              *m_deleteAction;
+    QAction              *m_createAction;     // 创建日程
     bool                  m_GradientFlag;
     QColor                m_color1;
     QColor                m_color2;

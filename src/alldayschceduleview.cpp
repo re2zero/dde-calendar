@@ -45,6 +45,8 @@ CAllDaySchceduleWidgetItem::CAllDaySchceduleWidgetItem( QWidget *parent /*= null
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
+    m_createAction = new QAction(tr("Create"), this);
+    connect(m_createAction, &QAction::triggered, this, &CAllDaySchceduleWidgetItem::slotCreate);
     m_item = NULL;
 }
 
@@ -83,6 +85,18 @@ void CAllDaySchceduleWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
     setToolTip(m_ScheduleInfo.titleName);
     update();
 }
+void CAllDaySchceduleWidgetItem::slotCreate()
+{
+    CSchceduleDlg dlg(1, this);
+    QDateTime tDatatime;
+    tDatatime.setDate(m_ScheduleInfo.beginDateTime.date());
+    tDatatime.setTime(QTime::currentTime());
+    dlg.setDate(tDatatime);
+    if (dlg.exec() == DDialog::Accepted) {
+        emit signalsEdit(this, 1);
+    }
+}
+
 void CAllDaySchceduleWidgetItem::slotEdit()
 {
     CSchceduleDlg dlg(0, this);
@@ -275,10 +289,17 @@ void CAllDaySchceduleWidgetItem::paintEvent( QPaintEvent *e )
 }
 void CAllDaySchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {
-    DMenu Context(this);
-    Context.addAction(m_editAction);
-    Context.addAction(m_deleteAction);
-    Context.exec(QCursor::pos());
+    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_ScheduleInfo.beginDateTime.date(), m_ScheduleInfo.endDateTime.date());
+    if (drawrect.contains(event->pos())) {
+        DMenu Context(this);
+        Context.addAction(m_editAction);
+        Context.addAction(m_deleteAction);
+        Context.exec(QCursor::pos());
+    } else {
+        DMenu Context(this);
+        Context.addAction(m_createAction);
+        Context.exec(QCursor::pos());
+    }
 }
 
 void CAllDaySchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
