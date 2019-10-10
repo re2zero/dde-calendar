@@ -30,6 +30,7 @@
 #include <DMessageBox>
 #include <DPalette>
 #include "schcedulectrldlg.h"
+#include "timeeditctrl.h"
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
@@ -221,7 +222,7 @@ void CSchceduleDlg::slotOkBt()
                 CSchceduleCtrlDlg msgBox(this);
                 //msgBox.setWindowFlags(Qt::FramelessWindowHint);
                 //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                msgBox.setText(tr("Repetitive schedule of all must have the same throughout the state."));
+                msgBox.setText(tr("Are you sure you want to change the schedule of repeat rules?"));
                 msgBox.setInformativeText(tr("Would you like to change all repeat?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
                 DPushButton *yesButton = msgBox.addPushButton(tr("All Changes"));

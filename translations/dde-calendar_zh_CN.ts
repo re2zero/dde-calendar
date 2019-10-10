@@ -607,6 +607,10 @@
         <source>OK</source>
         <translation>确定</translation>
     </message>
+    <message>
+        <source>Are you sure you want to change the schedule of repeat rules?</source>
+        <translation>您确定要更改此日程的重复规则吗？</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleNumButton</name>

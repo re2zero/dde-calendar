@@ -42,6 +42,7 @@ DWIDGET_USE_NAMESPACE
 class CCalendarTimeEidt;
 class CTimeEdit;
 class CCustomCalendarWidget;
+class CTimeEditCtrl;
 class CSchceduleDlg : public DDialog
 {
     Q_OBJECT
