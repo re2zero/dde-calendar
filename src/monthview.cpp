@@ -390,8 +390,9 @@ void CMonthView::updateCurrentLunar(const CaLunarDayInfo &info)
 char CMonthView::getFestivalInfoByDate(const QDate &date)
 {
     for (int i = 0; i < m_festivallist.count(); i++) {
-        if (date.year() == m_festivallist[i].year && date.month() == m_festivallist[i].year) {
+        if (date.year() == m_festivallist[i].year && date.month() == m_festivallist[i].month) {
             for (int j = 0; j < m_festivallist[i].listHoliday.count(); j++) {
+
                 if (m_festivallist[i].listHoliday[j].date == date) {
                     return m_festivallist[i].listHoliday[j].status;
                 }
@@ -515,9 +516,9 @@ void CMonthView::paintCell(QWidget *cell)
     if (m_showState & ShowLunar) {
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         int ftype = getFestivalInfoByDate(m_days[pos]);
-        if (ftype == 1) {
+        if (ftype == 2) {
             painter.setBrush(QBrush(m_banColor));
-        } else if (ftype == 2) {
+        } else if (ftype == 1) {
             painter.setBrush(QBrush(m_xiuColor));
         } else {
             painter.setBrush(QBrush(m_fillColor));
@@ -525,12 +526,12 @@ void CMonthView::paintCell(QWidget *cell)
         painter.setPen(Qt::NoPen);
         painter.drawRect(rect);//画矩形
 
-        if (ftype == 1) {
+        if (ftype == 2) {
             QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ban.svg").scaled(20, 20);
-            painter.drawPixmap(10, cell->height() - 30, pixmap);
-        } else if (ftype == 2) {
+            painter.drawPixmap(0, cell->height() - 20, pixmap);
+        } else if (ftype == 1) {
             QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-xiu.svg").scaled(20, 20);
-            painter.drawPixmap(10, cell->height() - 30, pixmap);
+            painter.drawPixmap(0, cell->height() - 20, pixmap);
         }
     } else {
         painter.setRenderHints(QPainter::HighQualityAntialiasing);

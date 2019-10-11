@@ -491,7 +491,7 @@ public Q_SLOTS: // METHODS
                         dayinfo.status = hsubObj.value("status").toInt();
                     }
                     if (hsubObj.contains("date")) {
-                        dayinfo.date = QDate::fromString(hsubObj.value("date").toString(), "yyyy-MM-dd");
+                        dayinfo.date = QDate::fromString(hsubObj.value("date").toString(), "yyyy-M-d");
                     }
                     festivalInfoday.listHoliday.append(dayinfo);
                 }
