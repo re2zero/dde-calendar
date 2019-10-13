@@ -403,11 +403,11 @@ void CAllDaySchceduleView::slotCreate()
 
 void CAllDaySchceduleView::contextMenuEvent(QContextMenuEvent *event)
 {
-    if (m_vlistData.isEmpty()) {
-        QMenu Context(this);
-        Context.addAction(m_createAction);
-        Context.exec(QCursor::pos());
-    }
+    //if (m_vlistData.isEmpty()) {
+    QMenu Context(this);
+    Context.addAction(m_createAction);
+    Context.exec(QCursor::pos());
+    //}
 }
 
 void CAllDaySchceduleView::updateDateShow()

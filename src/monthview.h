@@ -151,6 +151,7 @@ private:
     QColor m_banColor = "#FBE9B7";
     QColor m_xiuColor = "#D4FFB3";
 
+    QDate  m_createDate;
     QQueue<int> *queue = nullptr;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;

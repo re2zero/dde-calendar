@@ -319,10 +319,13 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             QMouseEvent *rightevent = dynamic_cast<QMouseEvent *>(e);
             if (rightevent->button() == Qt::RightButton)
                 m_updateflag = false;
-            cellClicked(cell);
+            if (rightevent->button() == Qt::LeftButton)
+                cellClicked(cell);
         } else if (e->type() == QEvent::ContextMenu) {
             DMenu Context(this);
             Context.addAction(m_createAction);
+            const int pos = m_cellList.indexOf(cell);
+            m_createDate = m_days[pos];
             Context.exec(QCursor::pos());
         } else if (e->type() == QEvent::MouseButtonRelease) {
             m_updateflag = true;
@@ -335,7 +338,7 @@ void CMonthView::slotCreate()
 {
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
-    tDatatime.setDate(m_currentDate);
+    tDatatime.setDate(m_createDate);
     tDatatime.setTime(QTime::currentTime());
     dlg.setDate(tDatatime);
     if (dlg.exec() == DDialog::Accepted) {
