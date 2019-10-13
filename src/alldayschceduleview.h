@@ -54,6 +54,7 @@ public:
     {
         return m_coorManage;
     }
+    void setLunarVisible(bool state);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCotrlUpdateShcedule(QDate date, int type = 0);
@@ -80,6 +81,7 @@ private:
     int                                          m_editType = 0;
     QColor                                       m_soloColor = "#FF7272";
     CScheduleCoorManage                         *m_coorManage;
+    bool                                        m_LunarVisible;
 };
 
 class CAllDaySchceduleWidgetItem : public DPushButton

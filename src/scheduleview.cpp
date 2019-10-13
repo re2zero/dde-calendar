@@ -105,6 +105,11 @@ void CScheduleView::setTheMe(int type)
     update();
 }
 
+void CScheduleView::setLunarVisible(bool state)
+{
+    m_alldaylist->setLunarVisible(state);
+}
+
 void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info)
 {
     QVector<ScheduleDtailInfo> schedulelist;

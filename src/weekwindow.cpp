@@ -58,6 +58,7 @@ void CWeekWindow::setLunarVisible(bool state)
 {
     m_weekHeadView->setLunarVisible(state);
     m_YearLunarLabel->setVisible(state);
+    m_scheduleView->setLunarVisible(state);
 }
 
 void CWeekWindow::initUI()

@@ -114,6 +114,7 @@ void CDayWindow::setLunarVisible(bool state)
 {
     m_LunarLabel->setVisible(state);
     m_SolarDay->setVisible(state);
+    m_scheduleView->setLunarVisible(state);
     m_daymonthView->setLunarVisible(state);
 }
 

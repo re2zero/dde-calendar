@@ -351,6 +351,11 @@ void CAllDaySchceduleView::setRange(int w, int h, QDate begindate, QDate enddate
     updateDateShow();
 }
 
+void CAllDaySchceduleView::setLunarVisible(bool state)
+{
+    m_LunarVisible = state;
+}
+
 CAllDaySchceduleView::CAllDaySchceduleView(QWidget *parent, int edittype) : DListWidget (parent)
 {
 
@@ -422,7 +427,7 @@ void CAllDaySchceduleView::updateDateShow()
         m_baseShowItem[i]->deleteLater();
     }
     m_baseShowItem.clear();
-    if (m_solarDay.isEmpty()) {
+    if (m_solarDay.isEmpty() || !m_LunarVisible) {
         for (int i = 0; i < m_vlistData.size(); ++i) {
             CAllDaySchceduleWidgetItem *gwi = createItemWidget(i);
             QListWidgetItem *listItem = new QListWidgetItem;

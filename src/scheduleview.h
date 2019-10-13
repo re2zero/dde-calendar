@@ -45,6 +45,7 @@ public:
     void setRange(QDate begin, QDate end);
     void setFirstWeekday(int weekday);
     void setTheMe(int type = 0);
+    void setLunarVisible(bool state);
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
