@@ -109,7 +109,10 @@ void CScheduleView::setLunarVisible(bool state)
 {
     m_alldaylist->setLunarVisible(state);
 }
-
+bool MScheduleTimeThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
+{
+    return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime) ;
+}
 void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info)
 {
     QVector<ScheduleDtailInfo> schedulelist;
@@ -122,7 +125,7 @@ void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
     if (schedulelist.isEmpty()) return;
 
     info.clear();
-
+    qSort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
     for (int  k = 0; k < schedulelist.count(); k++) {
         int i = 0;
         for (; i < info.count(); i++) {
