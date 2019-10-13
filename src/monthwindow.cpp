@@ -180,7 +180,7 @@ void CMonthWindow::initUI()
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(21, 18, 18, 0);
+    yeartitleLayout->setContentsMargins(21, 20, 18, 10);
     yeartitleLayout->addWidget(m_YearLabel);
 
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
