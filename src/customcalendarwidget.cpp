@@ -114,7 +114,7 @@ void CCustomCalendarWidget::initControl()
     });
     QTableView *view = findChild<QTableView *>("qt_calendar_calendarview");
     if (view) {
-        view->setFixedSize(370, 300);
+        view->setFixedSize(400, 300);
     }
 }
 

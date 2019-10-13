@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
     //QList<QLocale> localeFallback = QList<QLocale>() << QLocale::system();
     // meta information that necessary to create the about dialog.
     a.setProductName(QApplication::translate("CalendarWindow", "Deepin Calendar"));
-    QIcon t_icon = QIcon::fromTheme("dde-calendar"); 
+    QIcon t_icon = QIcon::fromTheme("dde-calendar");
     //a.setProductIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg"));
     a.setProductIcon(t_icon);
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
