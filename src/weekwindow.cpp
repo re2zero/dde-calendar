@@ -30,8 +30,10 @@
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
 {
+    setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
+
 }
 
 CWeekWindow::~CWeekWindow()
@@ -65,6 +67,7 @@ void CWeekWindow::initUI()
     DPalette anipa = m_contentBackground->palette();
     anipa.setColor(DPalette::Background, "#F8F8F8");
     m_contentBackground->setPalette(anipa);
+    m_contentBackground->setContentsMargins(0, 0, 0, 0);
 
     m_today = new DPushButton;
     m_today->setText(tr("Return today"));
@@ -133,13 +136,29 @@ void CWeekWindow::initUI()
 
     m_YearLunarLabel->setPalette(YearLpa);
     //m_YearLunarLabel->move(116, 27);
+
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(21, 10, 20, 20);
+    yeartitleLayout->setContentsMargins(21, 20, 18, 0);
     yeartitleLayout->addWidget(m_YearLabel);
-    yeartitleLayout->addSpacing(14);
-    yeartitleLayout->addWidget(m_YearLunarLabel);
+
+    QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
+    yeartitleLayout1->setMargin(0);
+    yeartitleLayout1->setSpacing(0);
+    yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
+    yeartitleLayout1->addWidget(m_YearLunarLabel);
+    yeartitleLayout->addLayout(yeartitleLayout1);
+
+
+
+    //QHBoxLayout *yeartitleLayout = new QHBoxLayout;
+    //yeartitleLayout->setMargin(0);
+    //yeartitleLayout->setSpacing(0);
+    //yeartitleLayout->setContentsMargins(21, 10, 20, 20);
+    // yeartitleLayout->addWidget(m_YearLabel);
+    //yeartitleLayout->addSpacing(14);
+    //yeartitleLayout->addWidget(m_YearLunarLabel);
     //yeartitleLayout->addSpacing(30);
     m_spaceitem = new QSpacerItem(30, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
 
@@ -151,22 +170,25 @@ void CWeekWindow::initUI()
     yeartitleLayout->addStretch();
     yeartitleLayout->addWidget(m_today);
 
-    m_weekHeadView = new CWeekHeadView(this);
-    m_scheduleView = new CScheduleView(this);
+    m_weekHeadView = new CWeekHeadView();
+    m_scheduleView = new CScheduleView();
     m_weekHeadView->setFixedWidth(840);
     m_scheduleView->setviewMagin(73, 109, 0, 0);
     m_scheduleView->setRange(763, 1032, QDate(2019, 8, 12), QDate(2019, 8, 18));
     m_scheduleView->setFixedSize(838, 450);
 
-    QVBoxLayout *mhLayout = new QVBoxLayout;
-    mhLayout->setMargin(0);
-    mhLayout->setSpacing(0);
-    mhLayout->setContentsMargins(8, 0, 10, 8);
-    mhLayout->addWidget(m_weekHeadView, 0, Qt::AlignCenter);
-    mhLayout->addWidget(m_scheduleView, 0, Qt::AlignCenter);
+    m_mainhLayout = new QVBoxLayout;
+    m_mainhLayout->setMargin(0);
+    m_mainhLayout->setSpacing(0);
+    m_mainhLayout->setContentsMargins(8, 20, 10, 9);
+    m_mainhLayout->addWidget(m_weekHeadView);
+    m_mainhLayout->addWidget(m_scheduleView);
     QVBoxLayout *hhLayout = new QVBoxLayout;
+    hhLayout->setMargin(0);
+    hhLayout->setSpacing(0);
+    hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addLayout(yeartitleLayout);
-    hhLayout->addLayout(mhLayout);
+    hhLayout->addLayout(m_mainhLayout);
     m_contentBackground->setLayout(hhLayout);
     setCentralWidget(m_contentBackground);
 }
@@ -350,6 +372,9 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
     int dh = 36;
     int space = (width() - dw) / 2 - 220;
 
+    int sw = (width() -  width() * 0.9802 + 0.5) / 2;
+
+    m_mainhLayout->setContentsMargins(sw, 20, width() -  width() * 0.9802 + 0.5 - sw, 10);
 
     m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
 

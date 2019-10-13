@@ -79,6 +79,7 @@ private:
     CWeekView         *m_weekview = nullptr;
     CScheduleView     *m_scheduleView;
     QSpacerItem       *m_spaceitem;
+    QVBoxLayout       *m_mainhLayout;
 };
 
 #endif // YEARWINDOW_H

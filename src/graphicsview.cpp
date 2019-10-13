@@ -611,18 +611,18 @@ void CGraphicsView::scrollBarValueChangedSlot()
     QPointF leftBttomrealPos = mapToScene(QPoint(0, viewHeight));
     QPointF rightToprealPos = mapToScene(QPoint(viewWidth, 0));
 
-    for (int i = m_dayInterval; i < scene()->width(); i = i + m_dayInterval) {
+    for (float i = m_dayInterval; i < scene()->width(); i = i + m_dayInterval) {
         m_vTBLarge.append(i);
     }
-    int beginpos = ((int)leftToprealPos.y() / m_timeInterval) * m_timeInterval;
+    float beginpos = (int)(leftToprealPos.y() / m_timeInterval) * m_timeInterval;
     if (beginpos < leftToprealPos.y()) {
-        beginpos = (beginpos / m_timeInterval + 1) * m_timeInterval;
+        beginpos = (beginpos / m_timeInterval + 1) * m_timeInterval ;
     }
     QVector<int> vHours;
-    for (int i = beginpos; i < leftBttomrealPos.y(); i = i + m_timeInterval) {
+    for (float i = beginpos; i < leftBttomrealPos.y(); i = i + m_timeInterval) {
         QPoint point = mapFromScene(leftBttomrealPos.x(), i);
         m_vLRLarge.append(point.y());
-        vHours.append(i / m_timeInterval);
+        vHours.append(i / m_timeInterval + 0.5);
     }
     emit signalsPosHours(m_vLRLarge, vHours);
     scene()->update();

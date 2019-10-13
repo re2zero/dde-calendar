@@ -253,7 +253,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.setPen(m_linecolor);
     painter.drawLine(QPoint(0, m_topMagin), QPoint(t_width, m_topMagin));
     painter.restore();
-    int intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay + 0.5;
+    float intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
     if (m_TotalDay > 1) {
         painter.save();
         painter.setPen(Qt::SolidLine);
@@ -282,6 +282,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
 void CScheduleView::resizeEvent(QResizeEvent *event)
 {
+    m_graphicsView->resize(width(), height());
     if (m_viewType == 0) {
         m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
         m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
@@ -293,6 +294,9 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
         m_alldaylist->move(m_leftMagin - 2, 5);
     }
+    update();
+    m_graphicsView->update();
+    m_alldaylist->update();
     QFrame::resizeEvent(event);
 }
 

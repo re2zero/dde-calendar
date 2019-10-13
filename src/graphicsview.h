@@ -256,8 +256,8 @@ private:
     QPen                           m_TBPen;           //垂直线画笔
     QVector<int>                   m_vLRLarge;        //大刻度像素位置
     QVector<int>                   m_vTBLarge;        //大刻度像素位置
-    int                            m_dayInterval;
-    int                            m_timeInterval;
+    float                            m_dayInterval;
+    float                          m_timeInterval;
     int                            m_firstWeekDay;
     int                            m_totalDay;
     QAction                       *m_editAction;
