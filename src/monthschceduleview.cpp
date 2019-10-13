@@ -103,7 +103,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
         //msgBox.setWindowFlags(Qt::FramelessWindowHint);
         //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
-        msgBox.setText(tr("You are deleted schedule."));
+        msgBox.setText(tr("You are deleted schedule"));
         msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
         DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
         DPushButton *yesButton = msgBox.addPushButton(tr("Delete Schedule"));
@@ -130,7 +130,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
             //msgBox.setWindowFlags(Qt::FramelessWindowHint);
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
-            msgBox.setText(tr("You are deleted schedule."));
+            msgBox.setText(tr("You are deleted schedule"));
             msgBox.setInformativeText(tr("You want to delete all repeat of the schedule, or just delete the selected repeat?"));
             DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
             DPushButton *yesallbutton = msgBox.addPushButton(tr("All Deleted"));
@@ -164,7 +164,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
             CSchceduleCtrlDlg msgBox(this);
             //msgBox.setWindowFlags(Qt::FramelessWindowHint);
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-            msgBox.setText(tr("You are deleted schedule."));
+            msgBox.setText(tr("You are deleted schedule"));
             msgBox.setInformativeText(tr("You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?"));
             DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
             DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete all schedule in the future"));

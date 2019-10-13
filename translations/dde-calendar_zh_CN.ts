@@ -20,7 +20,7 @@
     </message>
     <message>
         <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
+        <translation type="vanished">您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -57,6 +57,10 @@
     <message>
         <source>Create</source>
         <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>You are deleted schedule</source>
+        <translation>您正在删除日程</translation>
     </message>
 </context>
 <context>
@@ -175,7 +179,7 @@
     </message>
     <message>
         <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
+        <translation type="vanished">您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -208,6 +212,10 @@
     <message>
         <source>Delete all schedule in the future</source>
         <translation>删除所有将来日程</translation>
+    </message>
+    <message>
+        <source>You are deleted schedule</source>
+        <translation>您正在删除日程</translation>
     </message>
 </context>
 <context>
@@ -229,7 +237,7 @@
     </message>
     <message>
         <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
+        <translation type="vanished">您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -262,6 +270,10 @@
     <message>
         <source>Delete all schedule in the future</source>
         <translation>删除所有将来日程</translation>
+    </message>
+    <message>
+        <source>You are deleted schedule</source>
+        <translation>您正在删除日程</translation>
     </message>
 </context>
 <context>
@@ -290,7 +302,7 @@
     </message>
     <message>
         <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
+        <translation type="vanished">您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -331,6 +343,10 @@
     <message>
         <source>Delete</source>
         <translation>删除</translation>
+    </message>
+    <message>
+        <source>You are deleted schedule</source>
+        <translation>您正在删除日程</translation>
     </message>
 </context>
 <context>
@@ -449,7 +465,7 @@
     </message>
     <message>
         <source>You are changing the schedule again.</source>
-        <translation>您正在更改重复日程。</translation>
+        <translation type="vanished">您正在更改重复日程。</translation>
     </message>
     <message>
         <source>You are to change the schedule only the repeat, to repeat or change it all?</source>
@@ -623,6 +639,10 @@
         <source>In</source>
         <translation>于</translation>
     </message>
+    <message>
+        <source>You are changing the schedule again</source>
+        <translation>您正在更改重复日程</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleNumButton</name>
@@ -658,7 +678,7 @@
     </message>
     <message>
         <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
+        <translation type="vanished">您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -691,6 +711,10 @@
     <message>
         <source>Delete all schedule in the future</source>
         <translation>删除所有将来日程</translation>
+    </message>
+    <message>
+        <source>You are deleted schedule</source>
+        <translation>您正在删除日程</translation>
     </message>
 </context>
 <context>

@@ -248,7 +248,7 @@ void CSchceduleDlg::slotOkBt()
                     CSchceduleCtrlDlg msgBox(this);
                     //msgBox.setWindowFlags(Qt::FramelessWindowHint);
                     //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                    msgBox.setText(tr("You are changing the schedule again."));
+                    msgBox.setText(tr("You are changing the schedule again"));
                     msgBox.setInformativeText(tr("You are to change the schedule only the repeat, to repeat or change it all?"));
                     DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
                     DPushButton *yesallbutton = msgBox.addPushButton(tr("ALL"));
@@ -289,7 +289,7 @@ void CSchceduleDlg::slotOkBt()
                     //msgBox.setWindowFlags(Qt::FramelessWindowHint);
                     // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
-                    msgBox.setText(tr("You are changing the schedule again."));
+                    msgBox.setText(tr("You are changing the schedule again"));
                     msgBox.setInformativeText(tr("Do you want to change the schedule only is this a repeat, besides it also changes the schedule all repeat in the future?"));
                     DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
                     DPushButton *yesallbutton = msgBox.addPushButton(tr("All future Schedule"));
