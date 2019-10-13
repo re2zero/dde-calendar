@@ -519,20 +519,6 @@ void CMonthView::paintCell(QWidget *cell)
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
 
     QPainter painter(cell);
-
-
-
-    painter.setPen(Qt::SolidLine);
-    painter.setPen(m_wrectColor);
-    //painter.setPen(Qt::SolidLine);
-    int rectindex = pos % 7;
-    if (rectindex == 0) {
-        painter.drawLine(0, 0, cellwidth, 0); //画矩形
-        painter.drawLine(0, cellheight, cellwidth, cellheight); //画矩形
-    } else {
-        painter.drawRect(rect);//画矩形
-    }
-
     painter.save();
     if (m_showState & ShowLunar) {
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
@@ -581,6 +567,20 @@ void CMonthView::paintCell(QWidget *cell)
         painter.drawRect(rect);//画矩形
     }
     painter.restore();
+
+
+    painter.setPen(Qt::SolidLine);
+    painter.setPen(m_wrectColor);
+    //painter.setPen(Qt::SolidLine);
+    int rectindex = pos % 7;
+    if (rectindex == 0) {
+        painter.drawLine(0, 0, cellwidth, 0); //画矩形
+        painter.drawLine(0, cellheight, cellwidth, cellheight); //画矩形
+    } else {
+        painter.drawRect(rect);//画矩形
+    }
+
+
 
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
 
