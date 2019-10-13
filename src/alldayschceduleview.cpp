@@ -592,6 +592,7 @@ void CAllSolarDayWidgetItem::paintEvent(QPaintEvent *e)
     int labelheight = height();
 
     QRect drawrect = m_coorManage->getAllDayDrawRegion(m_date, m_date);
+    if (drawrect.width() < 0) return;
     QPainter painter(this);
     if (m_GradientFlag) {
         QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);

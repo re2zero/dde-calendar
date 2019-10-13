@@ -19,10 +19,6 @@
         <translation>删除</translation>
     </message>
     <message>
-        <source>You are deleted schedule.</source>
-        <translation type="vanished">您正在删除日程。</translation>
-    </message>
-    <message>
         <source>Are you sure you want to delete this schedule?</source>
         <translation>您确定要删除此日程吗？</translation>
     </message>
@@ -178,10 +174,6 @@
         <translation>新建日程</translation>
     </message>
     <message>
-        <source>You are deleted schedule.</source>
-        <translation type="vanished">您正在删除日程。</translation>
-    </message>
-    <message>
         <source>Are you sure you want to delete this schedule?</source>
         <translation>您确定要删除此日程吗？</translation>
     </message>
@@ -234,10 +226,6 @@
     <message>
         <source>Delete</source>
         <translation>删除</translation>
-    </message>
-    <message>
-        <source>You are deleted schedule.</source>
-        <translation type="vanished">您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -299,10 +287,6 @@
     <message>
         <source>My Schcedule</source>
         <translation>我的日程</translation>
-    </message>
-    <message>
-        <source>You are deleted schedule.</source>
-        <translation type="vanished">您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -464,10 +448,6 @@
         <translation>全部更改</translation>
     </message>
     <message>
-        <source>You are changing the schedule again.</source>
-        <translation type="vanished">您正在更改重复日程。</translation>
-    </message>
-    <message>
         <source>You are to change the schedule only the repeat, to repeat or change it all?</source>
         <translation>您是要更改该日程的仅这一个重复，还是更改它的所有重复？</translation>
     </message>
@@ -608,14 +588,6 @@
         <translation>结束重复：</translation>
     </message>
     <message>
-        <source>never</source>
-        <translation type="vanished">永不</translation>
-    </message>
-    <message>
-        <source>in</source>
-        <translation type="vanished">于</translation>
-    </message>
-    <message>
         <source>On the date</source>
         <translation>于日期</translation>
     </message>
@@ -675,10 +647,6 @@
     <message>
         <source>Delete</source>
         <translation>删除</translation>
-    </message>
-    <message>
-        <source>You are deleted schedule.</source>
-        <translation type="vanished">您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
