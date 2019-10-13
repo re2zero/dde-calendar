@@ -229,6 +229,8 @@ void CDayWindow::slotupdateSchedule(int id)
     if (m_daymonthView->getCurrDate() != m_currentdate) {
         m_scheduleView->setRange(m_currentdate, m_currentdate);
         m_scheduleView->setDate(m_currentdate);
+    } else {
+        m_scheduleView->slotupdateSchedule(id);
     }
 }
 

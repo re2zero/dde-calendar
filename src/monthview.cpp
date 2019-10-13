@@ -59,8 +59,10 @@ void CMonthView::setTheMe(int type)
         m_wrectColor = "#000000";
         m_wrectColor.setAlphaF(0.05);
         m_fillColor = Qt::white;
-        m_banColor = "#FBE9B7";
-        m_xiuColor = "#D4FFB3";
+        m_banColor = "#F85566";
+        m_banColor.setAlphaF(0.2);
+        m_xiuColor = "#6FFF00";
+        m_xiuColor.setAlphaF(0.2);
 
     } else if (type == 2) {
 
@@ -86,8 +88,10 @@ void CMonthView::setTheMe(int type)
         m_wrectColor = wcolor;
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
-        m_banColor = "#965A26";
-        m_xiuColor = "#5D7D44";
+        m_banColor = "#F85566";
+        m_banColor.setAlphaF(0.1);
+        m_xiuColor = "#59F88D";
+        m_xiuColor.setAlphaF(0.1);
     }
     m_weekIndicator->setTheMe(type);
     m_MonthSchceduleView->setTheMe(type);
@@ -146,7 +150,10 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_mainLayout->addWidget(m_weekIndicator);
     m_mainLayout->addWidget(gridWidget);
 
-
+    m_banColor = "#F85566";
+    m_banColor.setAlphaF(0.2);
+    m_xiuColor = "#6FFF00";
+    m_xiuColor.setAlphaF(0.2);
     setLayout(m_mainLayout);
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(this, &CMonthView::dateSelected, this, &CMonthView::handleCurrentDateChanged);
