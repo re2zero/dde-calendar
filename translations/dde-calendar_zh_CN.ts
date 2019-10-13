@@ -593,11 +593,11 @@
     </message>
     <message>
         <source>never</source>
-        <translation>永不</translation>
+        <translation type="vanished">永不</translation>
     </message>
     <message>
         <source>in</source>
-        <translation>于</translation>
+        <translation type="vanished">于</translation>
     </message>
     <message>
         <source>On the date</source>
@@ -614,6 +614,14 @@
     <message>
         <source>Are you sure you want to change the schedule of repeat rules?</source>
         <translation>您确定要更改此日程的重复规则吗？</translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation>永不</translation>
+    </message>
+    <message>
+        <source>In</source>
+        <translation>于</translation>
     </message>
 </context>
 <context>

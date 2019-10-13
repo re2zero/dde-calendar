@@ -519,37 +519,7 @@ void CMonthView::paintCell(QWidget *cell)
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
 
     QPainter painter(cell);
-    painter.save();
 
-
-
-    if (m_showState & ShowLunar) {
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        int ftype = getFestivalInfoByDate(m_days[pos]);
-        if (ftype == 2) {
-            painter.setBrush(QBrush(m_banColor));
-        } else if (ftype == 1) {
-            painter.setBrush(QBrush(m_xiuColor));
-        } else {
-            painter.setBrush(QBrush(m_fillColor));
-        }
-        painter.setPen(Qt::NoPen);
-        painter.drawRect(rect);//画矩形
-
-        if (ftype == 2) {
-            QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ban.svg").scaled(20, 20);
-            painter.drawPixmap(0, cell->height() - 20, pixmap);
-        } else if (ftype == 1) {
-            QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-xiu.svg").scaled(20, 20);
-            painter.drawPixmap(0, cell->height() - 20, pixmap);
-        }
-    } else {
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(QBrush(m_fillColor));
-        painter.setPen(Qt::NoPen);
-        painter.drawRect(rect);//画矩形
-    }
-    painter.restore();
 
 
     painter.setPen(Qt::SolidLine);
@@ -563,6 +533,54 @@ void CMonthView::paintCell(QWidget *cell)
         painter.drawRect(rect);//画矩形
     }
 
+    painter.save();
+    if (m_showState & ShowLunar) {
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        int ftype = getFestivalInfoByDate(m_days[pos]);
+        if (ftype == 2) {
+            painter.setBrush(QBrush(m_banColor));
+        } else if (ftype == 1) {
+            painter.setBrush(QBrush(m_xiuColor));
+        } else {
+            painter.setBrush(QBrush(m_fillColor));
+        }
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(rect);//画矩形
+
+        QRect fillRect(8, cell->height() - 23, 15, 15);
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        if (ftype == 2) {
+            QColor banc = m_banColor;
+            banc.setAlphaF(1.0);
+            painter.setBrush(QBrush(banc));
+            //QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ban.svg").scaled(30, 30);
+            //painter.drawPixmap(0, cell->height() - 30, pixmap);
+        } else if (ftype == 1) {
+            QColor banc = m_xiuColor;
+            banc.setAlphaF(1.0);
+            painter.setBrush(QBrush(banc));
+            //QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-xiu.svg").scaled(30, 30);
+            //painter.drawPixmap(0, cell->height() - 30, pixmap);
+        }
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(fillRect);
+        QFont tbxfont;
+        tbxfont.setFamily("Avenir-Light");
+        tbxfont.setPixelSize(11);
+        painter.setFont(tbxfont);
+        painter.setPen(m_currentDayTextColor);
+        if (ftype == 2) {
+            painter.drawText(fillRect, Qt::AlignCenter, "班");
+        } else if (ftype == 1) {
+            painter.drawText(fillRect, Qt::AlignCenter, "休");
+        }
+    } else {
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        painter.setBrush(QBrush(m_fillColor));
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(rect);//画矩形
+    }
+    painter.restore();
 
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
 

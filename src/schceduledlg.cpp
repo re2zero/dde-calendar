@@ -649,8 +649,8 @@ void CSchceduleDlg::initUI()
     m_endrepeatLabel->setFixedWidth(78);
     m_endrepeatCombox = new DComboBox();
     m_endrepeatCombox->setFixedSize(200, 36);
-    m_endrepeatCombox->addItem(tr("never"));
-    m_endrepeatCombox->addItem(tr("in"));
+    m_endrepeatCombox->addItem(tr("Never"));
+    m_endrepeatCombox->addItem(tr("In"));
     m_endrepeatCombox->addItem(tr("On the date"));
     endrepeatLabellayout->addWidget(m_endrepeatLabel);
     endrepeatLabellayout->addWidget(m_endrepeatCombox);
