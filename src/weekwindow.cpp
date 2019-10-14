@@ -167,6 +167,7 @@ void CWeekWindow::initUI()
     yeartitleLayout->addWidget(m_prevButton);
     yeartitleLayout->addWidget(m_weekview);
     yeartitleLayout->addWidget(m_nextButton);
+    yeartitleLayout->addSpacing(10);
     yeartitleLayout->addWidget(m_weekLabel);
     yeartitleLayout->addStretch();
     yeartitleLayout->addWidget(m_today);

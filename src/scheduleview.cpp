@@ -247,7 +247,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     }
     painter.restore();
     painter.save();
-
+    font.setFamily("SourceHanSansSC-Medium");
     font.setPixelSize(14);
     painter.setPen(m_ALLDayColor);
     painter.drawText(QRect(0, 0, m_leftMagin - 2, m_topMagin - 2), Qt::AlignCenter, tr("ALL DAY"));
