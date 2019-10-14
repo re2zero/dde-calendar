@@ -160,6 +160,7 @@ int main(int argc, char *argv[])
         qDebug() << type;
         // 保存程序的主题设置  type : 0,系统主题， 1,浅色主题， 2,深色主题
         saveThemeTypeSetting(type);
+        DGuiApplicationHelper::instance()->setPaletteType(type);
     });
     if (dbus.registerService("com.deepin.Calendar"), QDBusConnectionInterface::ReplaceExistingService, QDBusConnectionInterface::AllowReplacement) {
 

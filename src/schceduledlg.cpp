@@ -397,7 +397,7 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
         }
     } else {
         m_rmindCombox->addItem(tr("None"));
-        m_rmindCombox->addItem(tr(" schedule of the day(At 9 am)"));
+        m_rmindCombox->addItem(tr("schedule day(At 9 am)"));
         m_rmindCombox->addItem(tr("1 day ago(At 9 am)"));
         m_rmindCombox->addItem(tr("2 day ago(At 9 am)"));
         m_rmindCombox->addItem(tr("A week ago"));
@@ -663,7 +663,7 @@ void CSchceduleDlg::initUI()
     QRegExp rx("^[1-9]\\d{0,2}$");
     QValidator *validator = new QRegExpValidator(rx, this);
     m_endrepeattimes->lineEdit()->setValidator(validator);
-    m_endrepeattimesLabel = new DLabel(tr("After time"));
+    m_endrepeattimesLabel = new DLabel(tr("s"));
     m_endrepeattimesLabel->setFont(mlabelF);
     m_endrepeattimesLabel->setPalette(pa);
     endrepeattimeslayout->addWidget(m_endrepeattimes);

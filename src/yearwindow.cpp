@@ -92,7 +92,8 @@ void CYearWindow::initUI()
     todaypa.setColor(DPalette::Light, Qt::white);
 
     m_today->setPalette(todaypa);
-    m_today->setFlat(true);
+    // m_today->setFocusPolicy(Qt::NoFocus);
+    // m_today->setFlat(true);
 
     QFont todayfont("SourceHanSansSC-Normal");
     todayfont.setPixelSize(16);
@@ -355,7 +356,7 @@ void CYearWindow::slotcurrentDateChanged(QDate date)
     if (m_currentdate == QDate::currentDate()) {
         m_today->setText(tr("Today"));
     } else {
-        m_today->setText(tr("Return Today"));
+        m_today->setText(tr("Return"));
     }
     CaLunarDayInfo info = getCaLunarDayInfo(m_currentdate);
     m_YearLabel->setText(QString::number(date.year()) + tr("Y"));

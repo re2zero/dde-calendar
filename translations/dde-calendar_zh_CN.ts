@@ -216,6 +216,10 @@
         <source>There is %1 schedule</source>
         <translation>还有 %1 项</translation>
     </message>
+    <message>
+        <source>There&apos;s %1 schedule</source>
+        <translation>还有 %1 项</translation>
+    </message>
 </context>
 <context>
     <name>CMonthSchceduleWidgetItem</name>
@@ -541,7 +545,7 @@
     </message>
     <message>
         <source> schedule of the day(At 9 am)</source>
-        <translation>日程发生当天（上午9时）</translation>
+        <translation type="vanished">日程发生当天（上午9时）</translation>
     </message>
     <message>
         <source>1 day ago(At 9 am)</source>
@@ -593,7 +597,7 @@
     </message>
     <message>
         <source>After time</source>
-        <translation>次后</translation>
+        <translation type="vanished">次后</translation>
     </message>
     <message>
         <source>OK</source>
@@ -614,6 +618,14 @@
     <message>
         <source>You are changing the schedule again</source>
         <translation>您正在更改重复日程</translation>
+    </message>
+    <message>
+        <source>schedule day(At 9 am)</source>
+        <translation>日程发生当天（上午9时）</translation>
+    </message>
+    <message>
+        <source>s</source>
+        <translation>次后</translation>
     </message>
 </context>
 <context>
@@ -809,6 +821,10 @@
     </message>
     <message>
         <source>Return Today</source>
+        <translation type="vanished">返回今天</translation>
+    </message>
+    <message>
+        <source>Return</source>
         <translation>返回今天</translation>
     </message>
 </context>
