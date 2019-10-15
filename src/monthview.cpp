@@ -49,6 +49,7 @@ void CMonthView::setTheMe(int type)
         m_notCurrentTextColor = "#b2b2b2";
 
         m_defaultLunarColor = "#5E5E5E";
+        m_defaultLunarColor.setAlphaF(0.5);
         m_currentDayLunarColor = m_currentDayTextColor;
         m_weekendsLunarColor = m_defaultLunarColor;
         m_selectedLunarColor = Qt::white;
