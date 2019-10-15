@@ -76,7 +76,7 @@ void CDayHuangLiLabel::paintEvent( QPaintEvent *e )
     else {
         pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ji.svg").scaled(20, 20);
     }
-    painter.drawPixmap(m_leftMagin, m_topMagin, pixmap);
+    painter.drawPixmap(m_leftMagin, m_topMagin + 2, pixmap);
     painter.setFont(m_font);
     painter.setPen(m_textcolor);
     int bw = m_leftMagin + 34;

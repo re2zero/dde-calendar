@@ -544,10 +544,6 @@
         <translation>2天前</translation>
     </message>
     <message>
-        <source> schedule of the day(At 9 am)</source>
-        <translation type="vanished">日程发生当天（上午9时）</translation>
-    </message>
-    <message>
         <source>1 day ago(At 9 am)</source>
         <translation>1天前（上午9时）</translation>
     </message>
@@ -594,10 +590,6 @@
     <message>
         <source>On the date</source>
         <translation>于日期</translation>
-    </message>
-    <message>
-        <source>After time</source>
-        <translation type="vanished">次后</translation>
     </message>
     <message>
         <source>OK</source>
@@ -818,10 +810,6 @@
     <message>
         <source>Today</source>
         <translation>今天</translation>
-    </message>
-    <message>
-        <source>Return Today</source>
-        <translation type="vanished">返回今天</translation>
     </message>
     <message>
         <source>Return</source>

@@ -121,13 +121,17 @@ void CDayMonthView::setTheMe(int type)
 
         QFont hlabelF;
         hlabelF.setFamily("PingFangSC-Semibold");
-        hlabelF.setPixelSize(12);
+        hlabelF.setPixelSize(14);
 
-        m_yiLabel->setbackgroundColor(QColor("#75C18E"));
+        QColor yicolor = QColor("#75C18E");
+        yicolor.setAlphaF(0.1);
+        m_yiLabel->setbackgroundColor(yicolor);
         m_yiLabel->setTextInfo(QColor("#7B7B7B"), hlabelF);
         m_yiLabel->update();
 
-        m_jiLabel->setbackgroundColor(QColor("#C17575"));
+        QColor jicolor = QColor("#C17575");
+        jicolor.setAlphaF(0.1);
+        m_jiLabel->setbackgroundColor(jicolor);
         m_jiLabel->setTextInfo(QColor("#7B7B7B"), hlabelF);
         m_jiLabel->update();
 
@@ -182,7 +186,7 @@ void CDayMonthView::setTheMe(int type)
 
         QFont hlabelF;
         hlabelF.setFamily("PingFangSC-Semibold");
-        hlabelF.setPixelSize(12);
+        hlabelF.setPixelSize(14);
 
         m_yiLabel->setbackgroundColor(QColor("#2F8C4D"));
         m_yiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
