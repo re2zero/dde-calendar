@@ -57,7 +57,10 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
 
 void Calendarmainwindow::slotTheme(int type)
 {
-    if (type == 0 || type == 1) {
+    if (type == 0) {
+        type = DGuiApplicationHelper::instance()->themeType();
+    }
+    if (type == 1) {
         DPalette pl = m_yearButton->palette();
         pl.setColor(DPalette::ButtonText, QColor("#414D68"));
         pl.setColor(DPalette::Light, QColor("#E6E6E6"));
