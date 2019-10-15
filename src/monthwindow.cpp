@@ -326,9 +326,9 @@ void CMonthWindow::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
     if (date != QDate::currentDate()) {
-        m_today->setVisible(true);
+        m_today->setEnabled(true);
     } else {
-        m_today->setVisible(false);
+        m_today->setEnabled(false);
     }
 }
 

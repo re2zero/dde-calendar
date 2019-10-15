@@ -333,9 +333,9 @@ void CWeekWindow::slotCurrentWeek(QDate date, QDate currentDate)
 void CWeekWindow::slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type)
 {
     if (date != QDate::currentDate()) {
-        m_today->setVisible(true);
+        m_today->setEnabled(true);
     } else {
-        m_today->setVisible(false);
+        m_today->setEnabled(false);
     }
     if (detail.mLunarFestival.isEmpty()) {
         m_scheduleView->setDate(m_currentdate, detail.mSolarFestival);
@@ -352,9 +352,9 @@ void CWeekWindow::slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail
 void CWeekWindow::slotcurrentDateChanged(QDate date)
 {
     if (date != QDate::currentDate()) {
-        m_today->setVisible(true);
+        m_today->setEnabled(true);
     } else {
-        m_today->setVisible(false);
+        m_today->setEnabled(false);
     }
     m_currentdate = date;
     m_scheduleView->setDate(date);

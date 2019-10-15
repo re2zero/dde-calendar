@@ -220,9 +220,9 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     }
 
     if (date == QDate::currentDate()) {
-        m_today->hide();
+        m_today->setEnabled(false);
     } else {
-        m_today->show();
+        m_today->setEnabled(true);
     }
     m_currentDate = date;
     // to refresh lunar calendar
