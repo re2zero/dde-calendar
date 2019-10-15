@@ -136,10 +136,10 @@ void CDayMonthView::setTheMe(int type)
         m_jiLabel->update();
 
         m_topBorderColor = Qt::red;
-        m_backgroundCircleColor = "#2ca7f8";
+        m_backgroundCircleColor = "#0081FF";
 
         m_defaultTextColor = Qt::black;
-        m_currentDayTextColor = "#2ca7f8";
+        m_currentDayTextColor = "#0081FF";
         m_weekendsTextColor = Qt::black;
         m_selectedTextColor = Qt::white;
         m_festivalTextColor = Qt::black;
@@ -284,7 +284,7 @@ void CDayMonthView::initUI()
 {
     m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
-    m_dayNumFont.setWeight(QFont::Light);
+    //m_dayNumFont.setWeight(QFont::Light);
 
     m_today = new DPushButton;
     m_today->setText(tr("Return today"));
@@ -683,7 +683,8 @@ void CDayMonthView::resizeEvent(QResizeEvent *event)
     int topmagin = height() * 0.0164 + 0.5;
     int buttonmagin = topmagin;
     m_upLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
-    m_dayNumFont.setPixelSize(12 + (width() - 348) / 71.66);
+    int tt = 12 + (width() - 347) / 71.66;
+    m_dayNumFont.setPixelSize(12 + (width() - 347) / 71.66);
     for (int i(0); i != 42; ++i) {
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
         m_cellList.at(i)->update();

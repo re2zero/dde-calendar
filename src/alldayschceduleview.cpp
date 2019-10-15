@@ -518,10 +518,10 @@ CAllSolarDayWidgetItem *CAllDaySchceduleView::createItemWidget(QString solarDay,
         int w = width();
         if (average) {
             gwi->setFixedSize(width(), 22);
-            gwi->setText(Qt::black, font, QPoint(13, 2), average);
+            gwi->setText("#000000", font, QPoint(13, 2), average);
         } else {
             gwi->setFixedSize(width(), 22);
-            gwi->setText(Qt::black, font, QPoint(13, 2), average);
+            gwi->setText("#000000", font, QPoint(13, 2), average);
         }
     } else {
         gwi->setColor(color1, color1, true);
@@ -534,10 +534,10 @@ CAllSolarDayWidgetItem *CAllDaySchceduleView::createItemWidget(QString solarDay,
         gwi->setData(solarDay, m_currentDate);
         if (average) {
             gwi->setFixedSize(width(), 22);
-            gwi->setText(Qt::black, font, QPoint(13, 2), average);
+            gwi->setText("#000000", font, QPoint(13, 2), average);
         } else {
             gwi->setFixedSize(width(), 22);
-            gwi->setText(Qt::black, font, QPoint(13, 2), average);
+            gwi->setText("#000000", font, QPoint(13, 2), average);
         }
     }
     return gwi;
@@ -612,7 +612,6 @@ void CAllSolarDayWidgetItem::paintEvent(QPaintEvent *e)
         painter.setPen(Qt::NoPen);
         painter.drawRoundedRect(drawrect2, 3, 2);
 
-        painter.setFont(m_font);
         painter.setFont(m_font);
         QFont solofont = m_font;
         QFontMetrics fm = painter.fontMetrics();

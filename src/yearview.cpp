@@ -37,7 +37,7 @@ CYearView::CYearView(QWidget *parent) : DWidget(parent)
 {
     m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
-    m_dayNumFont.setWeight(QFont::Light);
+    //m_dayNumFont.setWeight(QFont::Light);
 
     //setStyleSheet("QWidget { background: rgba(0, 0, 0, 0) }");
 
@@ -141,10 +141,10 @@ void CYearView::setTheMe(int type)
         m_currentMouth->setPalette(Lunadpa);
 
         m_topBorderColor = Qt::red;
-        m_backgroundCircleColor = "#2ca7f8";
+        m_backgroundCircleColor = "#0081FF";
 
         m_defaultTextColor = Qt::black;
-        m_currentDayTextColor = "#2ca7f8";
+        m_currentDayTextColor = "#0081FF";
         m_weekendsTextColor = Qt::black;
         m_selectedTextColor = Qt::white;
         m_festivalTextColor = Qt::black;
