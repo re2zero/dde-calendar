@@ -597,11 +597,13 @@ void CAllSolarDayWidgetItem::paintEvent(QPaintEvent *e)
     if (m_GradientFlag) {
         QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
+        painter.save();
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QColor(0, 0, 0, 0));
         painter.setPen(Qt::NoPen);
         painter.drawRoundedRect(fillRect, 3, 2);
-
+        painter.restore();
+        painter.save();
         QLinearGradient linearGradient(0, 0, labelwidth, 0);
         linearGradient.setColorAt(0, m_color1);
         linearGradient.setColorAt(1, m_color2);
@@ -611,7 +613,7 @@ void CAllSolarDayWidgetItem::paintEvent(QPaintEvent *e)
         painter.setBrush(linearGradient);
         painter.setPen(Qt::NoPen);
         painter.drawRoundedRect(drawrect2, 3, 2);
-
+        painter.restore();
         painter.setFont(m_font);
         QFont solofont = m_font;
         QFontMetrics fm = painter.fontMetrics();
