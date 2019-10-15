@@ -61,7 +61,7 @@ void CTimeEditCtrl::initUI()
     m_pListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_timeEdit->lineEdit()->setCursorPosition(1);
     m_pListWidget->setFixedWidth(width());
-    m_pListWidget->setFixedHeight(311);
+    //m_pListWidget->setFixedHeight(311);
     for (int i = 0; i < 10; i++) {
         m_hourslist.append("0" + QString::number(i));
         m_minlist.append("0" + QString::number(i));
@@ -73,8 +73,8 @@ void CTimeEditCtrl::initUI()
         m_minlist.append(QString::number(i));
     }
     //setIconSize(QSize(width(), 311));
-    setEditable(true);
-    setMaxVisibleItems(8);
+    //setEditable(true);
+    //setMaxVisibleItems(8);
 }
 
 void CTimeEditCtrl::initConnection()
