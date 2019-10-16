@@ -537,7 +537,7 @@ void CMonthView::paintCell(QWidget *cell)
         painter.setPen(Qt::NoPen);
         painter.drawRect(rect);//画矩形
 
-        QRect fillRect(8, cell->height() - 23, 15, 15);
+        QRect fillRect(8, cell->height() - 17, 15, 15);
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         if (ftype == 2) {
             QColor banc = m_banColor;
