@@ -235,7 +235,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.save();
     painter.setFont(font);
 
-    painter.setPen(Qt::SolidLine);
+    //painter.setPen(Qt::SolidLine);
     painter.setPen(m_timeColor);
     for (int i = 0; i < m_vPos.size(); i++) {
         if (m_vHours[i] == 0) continue;
@@ -293,13 +293,14 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 void CScheduleView::resizeEvent(QResizeEvent *event)
 {
     m_graphicsView->resize(width(), height());
+    int tt = 0.0968 * height() + 0.5;
     if (m_viewType == 0) {
         m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
         m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
         m_alldaylist->move(m_leftMagin - 2, 5);
     } else {
-        m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
+        m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.083 * height() + 0.5), m_beginDate, m_endDate);
         m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
         m_alldaylist->move(m_leftMagin - 2, 5);
