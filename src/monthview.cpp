@@ -60,10 +60,16 @@ void CMonthView::setTheMe(int type)
         m_wrectColor = "#000000";
         m_wrectColor.setAlphaF(0.05);
         m_fillColor = Qt::white;
-        m_banColor = "#F85566";
-        m_banColor.setAlphaF(0.2);
-        m_xiuColor = "#6FFF00";
-        m_xiuColor.setAlphaF(0.2);
+        m_banColor = "#FF7171";
+        m_banColor.setAlphaF(0.1);
+        m_xiuColor = "#ADFF71";
+        m_xiuColor.setAlphaF(0.1);
+
+        m_pressColor = "#000000";
+        m_pressColor.setAlphaF(0.2);
+
+        m_hoverColor = "#000000";
+        m_hoverColor.setAlphaF(0.1);
 
     } else if (type == 2) {
 
@@ -89,10 +95,16 @@ void CMonthView::setTheMe(int type)
         m_wrectColor = wcolor;
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
-        m_banColor = "#F85566";
+        m_banColor = "#FF7171";
         m_banColor.setAlphaF(0.1);
-        m_xiuColor = "#59F88D";
+        m_xiuColor = "#ADFF71";
         m_xiuColor.setAlphaF(0.1);
+
+        m_pressColor = "#FFFFFF";
+        m_pressColor.setAlphaF(0.2);
+
+        m_hoverColor = "#FFFFFF";
+        m_hoverColor.setAlphaF(0.1);
     }
     m_weekIndicator->setTheMe(type);
     m_MonthSchceduleView->setTheMe(type);
@@ -150,7 +162,9 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_mainLayout->setContentsMargins(10, 0, 10, 10);
     m_mainLayout->addWidget(m_weekIndicator);
     m_mainLayout->addWidget(gridWidget);
-
+    for (int i = 0; i < 42; i++) {
+        m_cellhoverflag[i] = false;
+    }
     m_banColor = "#F85566";
     m_banColor.setAlphaF(0.2);
     m_xiuColor = "#6FFF00";
@@ -162,6 +176,8 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     connect(m_createAction, &QAction::triggered, this, &CMonthView::slotCreate);
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CMonthView::slotsupdatescheduleD);
     connect(this, &CMonthView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
+    setMouseTracking(true);
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
@@ -218,6 +234,18 @@ void CMonthView::resizeEvent(QResizeEvent *event)
     m_MonthSchceduleView->setallsize(width(), height(), leftmagin, m_weekIndicator->height() + topmagin, topmagin);
     m_MonthSchceduleView->updateData();
     DWidget::resizeEvent(event);
+}
+
+void CMonthView::focusOutEvent(QFocusEvent *event)
+{
+    m_fouceFlag = false;
+    DWidget::focusOutEvent(event);
+}
+
+void CMonthView::focusInEvent(QFocusEvent *event)
+{
+    m_fouceFlag = true;
+    DWidget::focusInEvent(event);
 }
 
 void CMonthView::setFirstWeekday(int weekday)
@@ -340,6 +368,14 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             Context.exec(QCursor::pos());
         } else if (e->type() == QEvent::MouseButtonRelease) {
             m_updateflag = true;
+        } else if (e->type() == QEvent::Leave) {
+            const int pos = m_cellList.indexOf(cell);
+            m_cellhoverflag[pos] = false;
+            m_cellList[pos]->update();
+        } else if (e->type() == QEvent::Enter) {
+            const int pos = m_cellList.indexOf(cell);
+            m_cellhoverflag[pos] = true;
+            m_cellList[pos]->update();
         }
     }
 
@@ -589,7 +625,7 @@ void CMonthView::paintCell(QWidget *cell)
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
 
     // draw selected cell background circle
-    if (isSelectedCell) {
+    if (isSelectedCell && m_fouceFlag) {
         QRect fillRect = QRect(2, 2, cellwidth - 3, cellheight - 3);
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
@@ -717,6 +753,18 @@ void CMonthView::paintCell(QWidget *cell)
                                  Qt::AlignLeft, tstr);
             }
         }
+    }
+    if (isSelectedCell) {
+        QRect fillRect = QRect(0, 0, cellwidth, cellheight);
+        painter.setBrush(m_pressColor);
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(fillRect);
+    }
+    if (m_cellhoverflag[pos]) {
+        QRect fillRect = QRect(0, 0, cellwidth, cellheight);
+        painter.setBrush(m_hoverColor);
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(fillRect);
     }
     painter.end();
 }

@@ -93,6 +93,8 @@ signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 protected:
     void resizeEvent(QResizeEvent *event);
+    void focusOutEvent (QFocusEvent *event );
+    void focusInEvent (QFocusEvent *event );
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
@@ -114,6 +116,7 @@ private slots:
 private:
     QList<QWidget *> m_cellList;
 
+    bool m_cellhoverflag[42];
 
     CMonthSchceduleView *m_MonthSchceduleView;
 
@@ -151,6 +154,9 @@ private:
     QColor m_banColor = "#FBE9B7";
     QColor m_xiuColor = "#D4FFB3";
 
+    QColor m_pressColor;
+    QColor m_hoverColor;
+
     QDate  m_createDate;
     QQueue<int> *queue = nullptr;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
@@ -162,6 +168,7 @@ private:
     int m_firstWeekDay;
     QAction          *m_createAction;     // 创建日程
     bool             m_updateflag = true;
+    bool             m_fouceFlag = true;
     int cellwidth = 120;
     int cellheight = 74;
     QVBoxLayout *m_mainLayout;

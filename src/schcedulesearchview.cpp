@@ -277,7 +277,7 @@ void CSchceduleSearchView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
         m_bBackgroundcolor = "#000000";
-        m_bBackgroundcolor.setAlphaF(0.03);
+        m_bBackgroundcolor.setAlphaF(0.2);
         m_btimecolor = "#526A7F";
         m_bttextcolor = "#414D68";
         m_lBackgroundcolor = Qt::white;
