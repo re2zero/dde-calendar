@@ -43,6 +43,7 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
+    connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
 }
 
 void CMonthSchceduleWidgetItem::setColor( QColor color1, QColor color2, bool GradientFlag /*= false*/ )
@@ -77,6 +78,12 @@ void CMonthSchceduleWidgetItem::setTransparentB(bool t, QColor tcolor)
 {
     m_transparentcolor = tcolor;
     m_transparentf = t;
+}
+
+void CMonthSchceduleWidgetItem::setTransparentB(bool t)
+{
+    m_transparentf = t;
+    update();
 }
 
 void CMonthSchceduleWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
@@ -209,6 +216,12 @@ void CMonthSchceduleWidgetItem::slotDoubleEvent(int type)
     emit signalsEdit(this, 1);
 }
 
+void CMonthSchceduleWidgetItem::slotPress()
+{
+    m_transparentf = true;
+    emit signalsPress(this);
+}
+
 void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 {
     int labelwidth = width();
@@ -250,7 +263,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         if (m_transparentf) {
             painter.setBrush(m_transparentcolor);
             painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(fillRect, 3, 3 * avge);
+            painter.drawRoundedRect(fillRect, 8, 8);
         }
     } else {
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
@@ -413,6 +426,17 @@ void CMonthSchceduleView::slotdeleteitem( CMonthSchceduleWidgetItem *item)
 void CMonthSchceduleView::slotedititem(CMonthSchceduleWidgetItem *item, int type)
 {
     emit signalsUpdateShcedule(item->getData().id);
+}
+
+void CMonthSchceduleView::slotupdateItem(CMonthSchceduleWidgetItem *item)
+{
+    for (int i = 0; i < m_scheduleShowItem.count(); i++) {
+        if (m_scheduleShowItem.at(i) == item) continue;
+        CMonthSchceduleWidgetItem *titem = dynamic_cast<CMonthSchceduleWidgetItem *>(m_scheduleShowItem.at(i));
+        if (titem != NULL) {
+            titem->setTransparentB(false);
+        }
+    }
 }
 bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
 {
@@ -726,15 +750,19 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     gwi->setFixedSize(fw, fh);
     gwi->setText(gdcolor.textColor, font, QPoint(13, 3));
     gwi->move(pos);
-    if (m_currentMonth != info.bdate.month() && m_currentMonth != info.edate.month()) {
-        QColor TransparentC = "#000000";
-        TransparentC.setAlphaF(0.05);
-        gwi->setTransparentB(true, TransparentC);
-    }
+    //if (m_currentMonth != info.bdate.month() && m_currentMonth != info.edate.month()) {
+    // QColor TransparentC = "#000000";
+    //TransparentC.setAlphaF(0.05);
+    //gwi->setTransparentB(true, TransparentC);
+    //}
+    QColor TransparentC = "#000000";
+    TransparentC.setAlphaF(0.05);
+    gwi->setTransparentB(false, TransparentC);
     gwi->setWindowFlags(gwi->windowFlags() | Qt::WindowStaysOnTopHint);
     gwi->show();
     connect(gwi, &CMonthSchceduleWidgetItem::signalsDelete, this, &CMonthSchceduleView::slotdeleteitem);
     connect(gwi, &CMonthSchceduleWidgetItem::signalsEdit, this, &CMonthSchceduleView::slotedititem);
+    connect(gwi, &CMonthSchceduleWidgetItem::signalsPress, this, &CMonthSchceduleView::slotupdateItem);
 
     m_scheduleShowItem.append(gwi);
 }

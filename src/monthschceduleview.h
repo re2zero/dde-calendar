@@ -44,6 +44,7 @@ signals:
 public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
+    void slotupdateItem(CMonthSchceduleWidgetItem *item);
 private:
 
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule);
@@ -105,6 +106,7 @@ public:
     void getColor(QColor &color1, QColor &color2, bool &GradientFlag);
     void getText(QColor &tcolor, QFont &font, QPoint &pos);
     void setTransparentB(bool t, QColor tcolor);
+    void setTransparentB(bool t);
     void setData(ScheduleDtailInfo  vScheduleInfo);
     const ScheduleDtailInfo &getData() const
     {
@@ -113,10 +115,12 @@ public:
 signals:
     void signalsDelete(CMonthSchceduleWidgetItem *item);
     void signalsEdit(CMonthSchceduleWidgetItem *item, int type = 0);
+    void signalsPress(CMonthSchceduleWidgetItem *item);
 public slots:
     void slotEdit();
     void slotDelete();
     void slotDoubleEvent(int type = 0);
+    void slotPress();
 protected:
     void paintEvent ( QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *event);
