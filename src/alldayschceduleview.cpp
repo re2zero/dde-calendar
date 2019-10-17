@@ -242,7 +242,7 @@ void CAllDaySchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(linearGradient);
         painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 3, 3 * avge);
+        painter.drawRoundedRect(fillRect, 8, 8);
 
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
@@ -601,7 +601,7 @@ void CAllSolarDayWidgetItem::paintEvent(QPaintEvent *e)
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QColor(0, 0, 0, 0));
         painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 3, 2);
+        painter.drawRoundedRect(fillRect, 8, 8);
         painter.restore();
         painter.save();
         QLinearGradient linearGradient(0, 0, labelwidth, 0);
@@ -612,7 +612,7 @@ void CAllSolarDayWidgetItem::paintEvent(QPaintEvent *e)
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(linearGradient);
         painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(drawrect2, 3, 2);
+        painter.drawRoundedRect(drawrect2, 8, 8);
         painter.restore();
         painter.setFont(m_font);
         QFont solofont = m_font;

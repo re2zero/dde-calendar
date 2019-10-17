@@ -686,7 +686,7 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.setRenderHints(QPainter::HighQualityAntialiasing);
                 painter.setBrush(QBrush(m_solofestivalLunarColor));
                 painter.setPen(Qt::NoPen);
-                painter.drawRoundedRect(fillRect, 2, 2);
+                painter.drawRoundedRect(fillRect, 8, 8);
                 painter.setPen(m_defaultTextColor);
                 QFont solofont = m_dayLunarFont;
                 painter.setFont(solofont);

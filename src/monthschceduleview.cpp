@@ -226,7 +226,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(linearGradient);
         painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 3, 3 * avge);
+        painter.drawRoundedRect(fillRect, 8, 8);
         painter.restore();
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
