@@ -9,6 +9,7 @@
 #include <DLabel>
 #include <QSignalMapper>
 #include "calendardbus.h"
+#include <DFrame>
 DWIDGET_USE_NAMESPACE
 class CalendarDBus;
 class CaLunarDayInfo;

@@ -35,7 +35,7 @@
 #include <DTimeEdit>
 #include <DLineEdit>
 #include <DCheckBox>
-
+#include <DFrame>
 //#include <DDateEdit>
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
