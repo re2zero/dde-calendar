@@ -38,6 +38,7 @@ class CYearWindow;
 class CMonthWindow;
 class CWeekWindow;
 class CDayWindow;
+class __Scheduler;
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
@@ -59,6 +60,7 @@ private slots:
     void slotReturnTodyUpdate(QMainWindow *w);
     void slotSreturnPressed();
     void slotStextChanged();
+    void slotJobsUpdated(const QList<qlonglong> &Ids);
 private:
     DLabel                    *m_icon;
     QStackedLayout              *m_stackWidget;
@@ -73,6 +75,7 @@ private:
     CMonthWindow              *m_monthWindow;
     CWeekWindow               *m_weekWindow;
     CDayWindow                *m_DayWindow;
+    __Scheduler               *m_dbus;
 };
 
 #endif // CALENDARMAINWINDOW_H
