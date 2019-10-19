@@ -706,6 +706,11 @@ void CDayMonthView::slotprev()
 {
     if (m_currentDate.year() > 1900) {
         m_currentDate = m_currentDate.addMonths(-1);
+        if (m_currentDate == QDate::currentDate()) {
+            m_today->setEnabled(false);
+        } else {
+            m_today->setEnabled(true);
+        }
         emit signalcurrentDateChanged(m_currentDate);
         updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
     } else {
@@ -716,6 +721,11 @@ void CDayMonthView::slotprev()
 void CDayMonthView::slotnext()
 {
     m_currentDate = m_currentDate.addMonths(1);
+    if (m_currentDate == QDate::currentDate()) {
+        m_today->setEnabled(false);
+    } else {
+        m_today->setEnabled(true);
+    }
     emit signalcurrentDateChanged(m_currentDate);
     updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
 }

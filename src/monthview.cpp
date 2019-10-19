@@ -572,34 +572,36 @@ void CMonthView::paintCell(QWidget *cell)
         }
         painter.setPen(Qt::NoPen);
         painter.drawRect(rect);//画矩形
+        if (getShowSolarDayByDate(m_days[pos])) {
+            QRect fillRect(8, cell->height() - 17, 15, 15);
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            if (ftype == 2) {
+                QColor banc = m_banColor;
+                banc.setAlphaF(1.0);
+                painter.setBrush(QBrush(banc));
+                //QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ban.svg").scaled(30, 30);
+                //painter.drawPixmap(0, cell->height() - 30, pixmap);
+            } else if (ftype == 1) {
+                QColor banc = m_xiuColor;
+                banc.setAlphaF(1.0);
+                painter.setBrush(QBrush(banc));
+                //QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-xiu.svg").scaled(30, 30);
+                //painter.drawPixmap(0, cell->height() - 30, pixmap);
+            }
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
+            QFont tbxfont;
+            tbxfont.setFamily("Avenir-Light");
+            tbxfont.setPixelSize(11);
+            painter.setFont(tbxfont);
+            painter.setPen(m_currentDayTextColor);
+            if (ftype == 2) {
+                painter.drawText(fillRect, Qt::AlignCenter, "班");
+            } else if (ftype == 1) {
+                painter.drawText(fillRect, Qt::AlignCenter, "休");
+            }
+        }
 
-        QRect fillRect(8, cell->height() - 17, 15, 15);
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        if (ftype == 2) {
-            QColor banc = m_banColor;
-            banc.setAlphaF(1.0);
-            painter.setBrush(QBrush(banc));
-            //QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ban.svg").scaled(30, 30);
-            //painter.drawPixmap(0, cell->height() - 30, pixmap);
-        } else if (ftype == 1) {
-            QColor banc = m_xiuColor;
-            banc.setAlphaF(1.0);
-            painter.setBrush(QBrush(banc));
-            //QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-xiu.svg").scaled(30, 30);
-            //painter.drawPixmap(0, cell->height() - 30, pixmap);
-        }
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(fillRect);
-        QFont tbxfont;
-        tbxfont.setFamily("Avenir-Light");
-        tbxfont.setPixelSize(11);
-        painter.setFont(tbxfont);
-        painter.setPen(m_currentDayTextColor);
-        if (ftype == 2) {
-            painter.drawText(fillRect, Qt::AlignCenter, "班");
-        } else if (ftype == 1) {
-            painter.drawText(fillRect, Qt::AlignCenter, "休");
-        }
     } else {
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_fillColor));
