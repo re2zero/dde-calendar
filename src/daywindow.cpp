@@ -282,7 +282,10 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
         } else {
             m_YearLabel->setText(QLocale().toString(date));
         }
-        m_LunarLabel->setText(detail.mLunarDayName);
+
+        m_LunarLabel->setText(detail.mLunarMonthName + detail.mLunarDayName);
+
+
         //m_SolarDay->setText(detail.mSolarFestival);
     }
     m_scheduleView->setRange(m_currentdate, m_currentdate);
