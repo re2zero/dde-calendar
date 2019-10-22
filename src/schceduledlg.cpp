@@ -110,7 +110,16 @@ void CSchceduleDlg::slotOkBt()
     beginDateTime.setTime(m_beginTimeEdit->getTime());
     endDateTime.setDate(m_endDateEdit->date());
     endDateTime.setTime(m_endTimeEdit->getTime());
-    if (m_textEdit->toPlainText().isEmpty()) {
+    if (m_type == 1) {
+        if (m_textEdit->toPlainText().isEmpty()) {
+            scheduleDtailInfo.titleName = m_textEdit->placeholderText();
+        } else {
+            scheduleDtailInfo.titleName = m_textEdit->toPlainText();
+        }
+    } else {
+        scheduleDtailInfo.titleName = m_textEdit->toPlainText();
+    }
+    if (scheduleDtailInfo.titleName.isEmpty()) {
         QMessageBox::warning(this, tr("error"), tr("Schcedule is empty!"));
         return;
     }
@@ -173,7 +182,7 @@ void CSchceduleDlg::slotOkBt()
             scheduleDtailInfo.enddata.date = endrpeattime;
         }
     }
-    scheduleDtailInfo.titleName = m_textEdit->toPlainText();
+
     CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(m_typeComBox->currentIndex() + 1, scheduleDtailInfo.type);
     scheduleDtailInfo.beginDateTime = beginDateTime;
     scheduleDtailInfo.endDateTime = endDateTime;
@@ -452,6 +461,20 @@ void CSchceduleDlg::sloteRpeatactivated(int index)
     }
 }
 
+bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
+{
+    if (obj == m_textEdit) {
+        if (pEvent->type() == QEvent::FocusIn) {
+            //清空编辑框默认占位符
+            m_textEdit->setPlaceholderText("");
+        } else if (pEvent->type() == QEvent::FocusOut) {
+            //设置编辑框默认占位符
+            m_textEdit->setPlaceholderText(tr("New Schedule"));
+        }
+    }
+    return QDialog::eventFilter(obj, pEvent);
+}
+
 void CSchceduleDlg::initUI()
 {
     m_titleLabel = new DLabel(this);
@@ -535,6 +558,15 @@ void CSchceduleDlg::initUI()
     }
 
     m_textEdit->setPalette(tpa);
+    if (m_type == 1) {
+        m_textEdit->setPlaceholderText(tr("New Schedule"));
+        //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
+        QWidget *mpContentWidget = m_textEdit->viewport();
+        //设置事件过滤器
+        m_textEdit->installEventFilter(this);
+        mpContentWidget->installEventFilter(this);
+    }
+
     contentLabellayout->addLayout(conttelabellayout);
     contentLabellayout->addWidget(m_textEdit);
     maintlayout->addLayout(contentLabellayout);
