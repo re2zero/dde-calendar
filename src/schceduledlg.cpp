@@ -712,12 +712,12 @@ void CSchceduleDlg::initUI()
 
     m_endRepeatDate = new DDateEdit;
     m_endRepeatDate->setCalendarPopup(true);
-    m_endRepeatDate->setFixedSize(130, 36);
+    m_endRepeatDate->setFixedSize(120, 36);
     m_endRepeatDate->setDate(QDate::currentDate());
     m_endRepeatDate->setDisplayFormat("yyyy-MM-dd");
     QFont enddatefont;
     enddatefont.setFamily("SourceHanSansSC-Medium");
-    enddatefont.setPixelSize(14);
+    enddatefont.setPixelSize(11);
     m_endRepeatDate->setFont(enddatefont);
     //m_endRepeatDate->setMinimumWidth(150);
     //m_endRepeatDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
