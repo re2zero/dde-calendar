@@ -553,7 +553,7 @@
     </message>
     <message>
         <source>A week ago</source>
-        <translation>1周前</translation>
+        <translation type="vanished">1周前</translation>
     </message>
     <message>
         <source>All Day:</source>
@@ -622,6 +622,10 @@
     <message>
         <source>New Schedule</source>
         <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>A week ago(At 9 am)</source>
+        <translation>1周前（上午9时）</translation>
     </message>
 </context>
 <context>

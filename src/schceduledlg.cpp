@@ -414,7 +414,7 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
         m_rmindCombox->addItem(tr("schedule day(At 9 am)"));
         m_rmindCombox->addItem(tr("1 day ago(At 9 am)"));
         m_rmindCombox->addItem(tr("2 day ago(At 9 am)"));
-        m_rmindCombox->addItem(tr("A week ago"));
+        m_rmindCombox->addItem(tr("A week ago(At 9 am)"));
         m_beginTimeEdit->setVisible(false);
         m_endTimeEdit->setVisible(false);
         if (m_type == 0) {
