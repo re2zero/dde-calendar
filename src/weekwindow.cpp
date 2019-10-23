@@ -390,3 +390,5 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
     m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
     QMainWindow::resizeEvent(event);
 }
+
+

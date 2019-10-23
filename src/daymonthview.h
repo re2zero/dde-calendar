@@ -91,6 +91,7 @@ private slots:
     void getDbusData();
 protected:
     void resizeEvent(QResizeEvent *event);
+    void wheelEvent(QWheelEvent *event);
 private:
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;

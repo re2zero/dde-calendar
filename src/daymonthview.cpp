@@ -702,6 +702,33 @@ void CDayMonthView::resizeEvent(QResizeEvent *event)
     m_jiLabel->setFixedSize(lw, lh);
     m_jidownLayout->setContentsMargins(hleftmagin, htopmagin, hrightmagin, hbuttonmagin);
 }
+
+void CDayMonthView::wheelEvent(QWheelEvent *event)
+{
+    if (event->delta() < 0) {
+        m_currentDate = m_currentDate.addDays(1);
+        if (m_currentDate == QDate::currentDate()) {
+            m_today->setEnabled(false);
+        } else {
+            m_today->setEnabled(true);
+        }
+        emit signalcurrentDateChanged(m_currentDate);
+        updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
+    } else {
+        if (m_currentDate.year() > 1900) {
+            m_currentDate = m_currentDate.addDays(-1);
+            if (m_currentDate == QDate::currentDate()) {
+                m_today->setEnabled(false);
+            } else {
+                m_today->setEnabled(true);
+            }
+            emit signalcurrentDateChanged(m_currentDate);
+            updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
+        } else {
+            QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
+        }
+    }
+}
 void CDayMonthView::slotprev()
 {
     if (m_currentDate.year() > 1900) {

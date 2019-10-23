@@ -442,3 +442,12 @@ void CYearWindow::resizeEvent(QResizeEvent *event)
     }
     QMainWindow::resizeEvent(event);
 }
+
+void CYearWindow::wheelEvent(QWheelEvent *event)
+{
+    if (event->delta() < 0) {
+        slotnext();
+    } else {
+        slotprev();
+    }
+}

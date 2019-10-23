@@ -33,10 +33,13 @@ public:
     void setTheMe(int type = 0);
 public slots:
     void cellClicked(QWidget *cell);
+    void slotprev();
+    void slotnext();
 signals:
     void signalsSelectDate(QDate date, QDate currentDate);
 protected:
     void resizeEvent(QResizeEvent *event);
+    void wheelEvent(QWheelEvent *event);
 private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);

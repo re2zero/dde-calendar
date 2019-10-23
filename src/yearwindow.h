@@ -58,6 +58,7 @@ private slots:
     void getDbusData();
 protected:
     void resizeEvent(QResizeEvent *event);
+    void wheelEvent(QWheelEvent *event);
 private:
     const QString getLunar(QDate date);
     const CaLunarDayInfo getCaLunarDayInfo(QDate date);

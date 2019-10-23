@@ -248,6 +248,7 @@ void CMonthWindow::slideMonth(bool next)
 {
     m_animationContainer->show();
     m_animationContainer->raise();
+#if 0
     if (next) {
         if (m_currentdate.month() != 1) {
             m_currentdate = m_currentdate.addMonths(-1);
@@ -263,6 +264,13 @@ void CMonthWindow::slideMonth(bool next)
             return;
         }
     }
+#else
+    if (next) {
+        m_currentdate = m_currentdate.addMonths(-1);
+    } else {
+        m_currentdate = m_currentdate.addMonths(1);
+    }
+#endif
     setDate(m_currentdate);
 }
 

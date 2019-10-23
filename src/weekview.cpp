@@ -23,6 +23,8 @@
 #include <QPainter>
 #include <QBrush>
 #include <QEvent>
+#include <QMessageBox>
+#include <QWheelEvent>
 CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
 {
     m_dayNumFont.setFamily("Avenir-Light");
@@ -88,7 +90,21 @@ void CWeekView::setTheMe(int type)
         m_fillColor.setAlphaF(0.05);
     }
 }
+void CWeekView::slotprev()
+{
+    if (m_selectDate.year() > 1900) {
+        QDate date = m_selectDate.addDays(-7);
+        setCurrentDate(date);
+    } else {
+        QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
+    }
+}
 
+void CWeekView::slotnext()
+{
+    QDate date  = m_selectDate.addDays(7);;
+    setCurrentDate(date);
+}
 void CWeekView::paintCell(QWidget *cell)
 {
     const QRect rect(0, 0, cell->width(), cell->height());
@@ -195,5 +211,13 @@ void CWeekView::resizeEvent(QResizeEvent *event)
     for (int c = 0; c != 10; ++c) {
         m_cellList[c]->setFixedSize(w, h);
         m_cellList[c]->update();
+    }
+}
+void CWeekView::wheelEvent(QWheelEvent *event)
+{
+    if (event->delta() < 0) {
+        slotnext();
+    } else {
+        slotprev();
     }
 }
