@@ -110,7 +110,12 @@ void CWeekView::paintCell(QWidget *cell)
     const QRect rect(0, 0, cell->width(), cell->height());
 
     const int pos = m_cellList.indexOf(cell);
-    const bool isCurrentDay = m_days[pos].addDays(m_weekAddDay).weekNumber() == QDate::currentDate().weekNumber();
+    //计算当前日期周数
+    int weekNumber = QDate::currentDate().weekNumber();
+    if (m_weekAddDay == 0) {
+        weekNumber++;
+    }
+    const bool isCurrentDay = m_days[pos].addDays(3).weekNumber() == weekNumber;
 
     const bool isSelectDay = m_days[pos].addDays(m_weekAddDay).weekNumber() == m_selectDate.addDays(m_weekAddDay).weekNumber();
 
@@ -125,7 +130,7 @@ void CWeekView::paintCell(QWidget *cell)
     painter.restore();
     painter.setPen(Qt::SolidLine);
 
-    const QString dayNum = QString::number(m_days[pos].weekNumber());
+    const QString dayNum = QString::number(m_days[pos].addDays(3).weekNumber());
 
     if (isSelectDay) {
         QRect fillRect((cell->width() - 30) / 2, 3, 30, 30);

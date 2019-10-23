@@ -552,10 +552,6 @@
         <translation>2天前（上午9时）</translation>
     </message>
     <message>
-        <source>A week ago</source>
-        <translation type="vanished">1周前</translation>
-    </message>
-    <message>
         <source>All Day:</source>
         <translation>全天:</translation>
     </message>
