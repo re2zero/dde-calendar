@@ -93,7 +93,7 @@ void CWeekView::setTheMe(int type)
 void CWeekView::slotprev()
 {
     if (m_selectDate.year() > 1900) {
-        QDate date = m_selectDate.addDays(-7);
+        QDate date = m_selectDate.addDays(-6);
         setCurrentDate(date);
     } else {
         QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
@@ -102,7 +102,7 @@ void CWeekView::slotprev()
 
 void CWeekView::slotnext()
 {
-    QDate date  = m_selectDate.addDays(7);;
+    QDate date  = m_selectDate.addDays(8);;
     setCurrentDate(date);
 }
 void CWeekView::paintCell(QWidget *cell)
