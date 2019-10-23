@@ -239,6 +239,7 @@ protected:
     void paintEvent( QPaintEvent *event );
 public slots:
     void scrollBarValueChangedSlot();
+    void slotDoubleEvent(int type);
 signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours);
     void signalsUpdateShcedule(int id = 0);

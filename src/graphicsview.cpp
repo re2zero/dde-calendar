@@ -33,6 +33,7 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 #include "schcedulectrldlg.h"
+#include "myschceduleview.h"
 DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent)
     : DGraphicsView(parent)
@@ -399,9 +400,20 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 
 void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
 {
-
+    CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
+    if (item == NULL) {
+        return;
+    }
+    CMySchceduleView dlg(this);
+    dlg.setSchedules(item->getData());
+    connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
+    dlg.exec();
+    disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
 }
-
+void CGraphicsView::slotDoubleEvent(int type)
+{
+    emit signalsUpdateShcedule(0);
+}
 void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
 {
 

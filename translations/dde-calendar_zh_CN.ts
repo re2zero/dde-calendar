@@ -620,10 +620,6 @@
         <translation>次后</translation>
     </message>
     <message>
-        <source>New Schcedule</source>
-        <translation type="vanished">新建日程</translation>
-    </message>
-    <message>
         <source>New Schedule</source>
         <translation>新建日程</translation>
     </message>

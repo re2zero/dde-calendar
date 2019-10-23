@@ -33,6 +33,7 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 #include "schcedulectrldlg.h"
+#include "myschceduleview.h"
 DGUI_USE_NAMESPACE
 CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent /*= nullptr*/ ): DLabel(parent)
 {
@@ -189,6 +190,11 @@ void CSchceduleSearchItem::slotDelete()
     //ScheduleDbManager::deleteScheduleInfoById(m_ScheduleInfo.id);
 }
 
+void CSchceduleSearchItem::slotDoubleEvent(int type)
+{
+    emit signalsDelete(this);
+}
+
 void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 {
     int labelwidth = width();
@@ -249,6 +255,16 @@ void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
     Context.addAction(m_editAction);
     Context.addAction(m_deleteAction);
     Context.exec(QCursor::pos());
+}
+
+void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    CMySchceduleView dlg(this);
+    dlg.setSchedules(m_ScheduleInfo);
+    connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
+    dlg.exec();
+    disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
+
 }
 CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
 {

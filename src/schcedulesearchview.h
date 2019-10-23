@@ -83,9 +83,11 @@ signals:
 public slots:
     void slotEdit();
     void slotDelete();
+    void slotDoubleEvent(int type = 0);
 protected:
     void paintEvent ( QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 private:
     ScheduleDtailInfo          m_ScheduleInfo;
     QAction              *m_editAction;

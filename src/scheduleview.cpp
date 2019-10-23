@@ -321,7 +321,7 @@ void CScheduleView::initUI()
     layout->addWidget(m_graphicsView);
     setLayout(layout);
     m_graphicsView->scrollBarValueChangedSlot();
-    m_alldaylist = new CAllDaySchceduleView(this);
+    m_alldaylist = new CAllDaySchceduleView(this, 1);
     //m_alldaylist->setFixedSize(635, 99);
     m_alldaylist->move(72, 5);
 }
