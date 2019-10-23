@@ -767,6 +767,17 @@
     </message>
 </context>
 <context>
+    <name>CWeekView</name>
+    <message>
+        <source>infomation</source>
+        <translation>提示</translation>
+    </message>
+    <message>
+        <source>Year less than 1900!</source>
+        <translation>年少于1900年！</translation>
+    </message>
+</context>
+<context>
     <name>CWeekWindow</name>
     <message>
         <source>Return today</source>

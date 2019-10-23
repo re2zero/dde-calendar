@@ -440,7 +440,15 @@ void CMonthSchceduleView::slotupdateItem(CMonthSchceduleWidgetItem *item)
 }
 bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
 {
-    return s1.bdate < s2.bdate;
+    if (s1.bdate != s1.edate && s2.bdate == s2.edate) {
+        return true;
+    } else if (s1.bdate == s1.edate && s2.bdate != s2.edate) {
+        return false;
+    } else if (s1.bdate != s1.edate && s2.bdate != s2.edate) {
+        return s1.bdate < s2.bdate;
+    } else {
+        return s1.tData.beginDateTime < s2.tData.beginDateTime;
+    }
 }
 bool MScheduleDaysThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
 {
@@ -479,6 +487,7 @@ void CMonthSchceduleView::updateData()
                 vMDaySchedule.append(info);
         }
     }
+
     qSort(vMDaySchedule.begin(), vMDaySchedule.end(), MScheduleDaysThan);
     qSort(vMDaySchedule.begin(), vMDaySchedule.end(), MScheduleDateThan);
 
