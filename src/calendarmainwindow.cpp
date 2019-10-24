@@ -34,6 +34,10 @@
 #include "creatorparschedule.h"
 #include <QMenuBar>
 #include <com_deepin_daemon_calendar_scheduler.h>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QMessageBox>
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -54,6 +58,68 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     //setWindowFlag(Qt::WindowMaximizeButtonHint, false);
     new CalendarAdaptor(this);
     resize(CalendarMWidth, CalendarMHeight);
+}
+
+void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
+{
+    if (mothodName == "CREATE") {
+        ScheduleDtailInfo info;
+        if (!analysisCreate(content, info)) {
+            QMessageBox::information(this, tr("information"), tr("Failed to parse and create schedule!"));
+            return;
+        }
+        if (CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(info) < 0) {
+            QMessageBox::information(this, tr("information"), tr("Failed to create schedule!"));
+            return;
+        }
+        m_dayButton->setFocus();
+        m_dayButton->setChecked(true);
+        m_stackWidget->setCurrentIndex(3);
+        m_DayWindow->setDate(info.beginDateTime.date());
+        m_DayWindow->slotupdateSchedule(0);
+    }
+}
+
+bool Calendarmainwindow::analysisCreate(const QString &content, ScheduleDtailInfo &info)
+{
+    if (content.isEmpty()) return false;
+    QJsonParseError json_error;
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(content.toLocal8Bit(), &json_error));
+
+    if (json_error.error != QJsonParseError::NoError) {
+        return false;
+    }
+
+    QJsonArray rootarry = jsonDoc.array();
+
+    for (int i = 0; i < rootarry.size(); i++) {
+
+        QJsonObject subObj = rootarry.at(i).toObject();
+        if (subObj.value("name").toString() == "content") {
+            info.titleName = subObj.value("value").toString();
+        }
+        if (subObj.value("name").toString() == "datetime") {
+            QString ssubObj = subObj.value("normValue").toString();
+            QJsonParseError sjson_error;
+            QJsonDocument sjsonDoc(QJsonDocument::fromJson(ssubObj.toLocal8Bit(), &sjson_error));
+
+            if (sjson_error.error != QJsonParseError::NoError) {
+                return false;
+            }
+            QJsonObject ssobject = sjsonDoc.object();
+            info.beginDateTime = QDateTime::fromString(ssobject.value("datetime").toString(), "yyyy-MM-ddThh:mm:ss");
+        }
+        if (subObj.value("value").toString() == "reminder") {
+            info.id = 0;
+            info.rpeat = 0;
+            info.remind = true;
+            info.remindData.n = 0;
+            info.endDateTime = info.beginDateTime.addSecs(3600);
+            info.allday = false;
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(1, info.type);
+        }
+    }
+    return true;
 }
 
 void Calendarmainwindow::slotTheme(int type)

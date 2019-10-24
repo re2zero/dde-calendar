@@ -33,6 +33,7 @@
 #include <DSegmentedControl>
 #include <DButtonBox>
 #include <QStackedLayout>
+#include "scheduledatamanage.h"
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
 class CMonthWindow;
@@ -44,6 +45,8 @@ class Calendarmainwindow : public DMainWindow
     Q_OBJECT
 public:
     Calendarmainwindow(QWidget *w = NULL);
+    void Invoke(const QString &mothodName, const QString &content);
+    bool analysisCreate(const QString &content, ScheduleDtailInfo &info);
 public slots:
     void slotTheme(int type);
     void OpenSchedule(QString job);

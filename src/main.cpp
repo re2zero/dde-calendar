@@ -147,6 +147,13 @@ int main(int argc, char *argv[])
     DGuiApplicationHelper::instance()->setPaletteType(getThemeTypeSetting());
 
     Calendarmainwindow ww;
+    QFile file(QApplication::applicationDirPath() + "/json.txt");;
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString str = in.readAll();
+        file.close();
+        ww.Invoke("CREATE", str);
+    }
     ww.move(PrimaryRect().center() - ww.geometry().center());
     //ww.setDate(QDate::currentDate());
     ww.slotTheme(getThemeTypeSetting());
