@@ -188,11 +188,15 @@ void CDayMonthView::setTheMe(int type)
         hlabelF.setFamily("PingFangSC-Semibold");
         hlabelF.setPixelSize(14);
 
-        m_yiLabel->setbackgroundColor(QColor("#2F8C4D"));
+        QColor yicolor = QColor("#2F8C4D");
+        yicolor.setAlphaF(0.2);
+        m_yiLabel->setbackgroundColor(yicolor);
         m_yiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
         m_yiLabel->update();
 
-        m_jiLabel->setbackgroundColor(QColor("#A43B3B"));
+        QColor jicolor = QColor("#A43B3B");
+        jicolor.setAlphaF(0.2);
+        m_jiLabel->setbackgroundColor(jicolor);
         m_jiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
         m_jiLabel->update();
 
