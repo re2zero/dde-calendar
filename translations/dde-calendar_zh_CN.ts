@@ -868,6 +868,18 @@
         <source>D</source>
         <translation>日</translation>
     </message>
+    <message>
+        <source>information</source>
+        <translation>提示</translation>
+    </message>
+    <message>
+        <source>Failed to parse and create schedule!</source>
+        <translation>创建日程解析失败！</translation>
+    </message>
+    <message>
+        <source>Failed to create schedule!</source>
+        <translation>创建日程失败！</translation>
+    </message>
 </context>
 <context>
     <name>InfoView</name>

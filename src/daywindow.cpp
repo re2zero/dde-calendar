@@ -221,6 +221,7 @@ void CDayWindow::initConnection()
 
     connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSchedule);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSearchSchedule);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CDayWindow::slotsearchDateSelect);
 }
 
 
@@ -308,6 +309,12 @@ void CDayWindow::slotcurrentDateChanged(QDate date)
     //m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
     m_scheduleView->setRange(m_currentdate, m_currentdate);
     m_scheduleView->setDate(m_currentdate);
+}
+
+void CDayWindow::slotsearchDateSelect(QDate date)
+{
+    setDate(date);
+    slotupdateSchedule();
 }
 
 

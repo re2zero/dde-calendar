@@ -68,9 +68,10 @@ void CSchceduleSearchItem::setTimeC(QColor tcolor, QFont font)
     m_timefont = font;
 }
 
-void CSchceduleSearchItem::setData( ScheduleDtailInfo vScheduleInfo )
+void CSchceduleSearchItem::setData( ScheduleDtailInfo vScheduleInfo, QDate date)
 {
     m_ScheduleInfo = vScheduleInfo;
+    m_date = date;
     setToolTip(m_ScheduleInfo.titleName);
     update();
 }
@@ -266,6 +267,13 @@ void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
 
 }
+
+void CSchceduleSearchItem::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        emit signalSelectDate(m_date);
+    }
+}
 CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout;
@@ -322,6 +330,7 @@ void CSchceduleSearchView::clearSearch()
 
 void CSchceduleSearchView::updateDateShow()
 {
+    m_currentItem = NULL;
     //remove
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
@@ -329,10 +338,40 @@ void CSchceduleSearchView::updateDateShow()
     }
     m_gradientItemList->clear();
     m_labellist.clear();
+    //找最近日程
+    bool flag = false;
+    QDate tcurrentdata = QDate::currentDate();
     for (int i = 0; i < m_vlistData.size(); ++i) {
-        createItemWidget(m_vlistData[i].date);
+        if (m_vlistData[i].date == tcurrentdata) {
+            if (!m_vlistData.at(i).vData.isEmpty()) {
+                flag = true;
+                break;
+            }
+        }
+    }
+    if (!flag && !m_vlistData.isEmpty()) {
+        QDate topdate = tcurrentdata;
+        while (!flag) {
+            topdate = topdate.addDays(-1);
+            for (int i = 0; i < m_vlistData.size(); ++i) {
+                if (m_vlistData[i].date == topdate) {
+                    if (!m_vlistData.at(i).vData.isEmpty()) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+        }
+        tcurrentdata = topdate;
+    }
+
+    for (int i = 0; i < m_vlistData.size(); ++i) {
+        QListWidgetItem *titem = createItemWidget(m_vlistData[i].date);
+        if (m_vlistData[i].date == tcurrentdata) {
+            m_currentItem = titem;
+        }
         for (int j = 0; j < m_vlistData.at(i).vData.count(); j++) {
-            createItemWidget(m_vlistData.at(i).vData.at(j));
+            createItemWidget(m_vlistData.at(i).vData.at(j), m_vlistData[i].date);
         }
     }
     if (m_gradientItemList->count() == 0) {
@@ -354,9 +393,12 @@ void CSchceduleSearchView::updateDateShow()
         m_gradientItemList->addItem(listItem);
         m_gradientItemList->setItemWidget(listItem, gwi);
     }
+    if (m_currentItem != NULL) {
+        m_gradientItemList->scrollToItem(m_currentItem, QAbstractItemView::PositionAtTop);
+    }
 }
 
-void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info)
+void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date)
 {
     ScheduleDtailInfo &gd = info;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
@@ -373,10 +415,11 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info)
     font.setPixelSize(12);
     gwi->setTimeC(m_btimecolor, font);
     gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
-    gwi->setData(gd);
+    gwi->setData(gd, date);
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
     connect(gwi, &CSchceduleSearchItem::signalsEdit, this, &CSchceduleSearchView::slotedititem);
-
+    connect(gwi, &CSchceduleSearchItem::signalSelectDate, this, &CSchceduleSearchView::slotSelectDate);
+    //connect(gwi, SIGNAL(signalsDelete(QDate )), this, SIGNAL(signalDate(QDate )));
 
     QListWidgetItem *listItem = new QListWidgetItem;
     listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
@@ -387,7 +430,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info)
     m_labellist.append(gwi);
 }
 
-void CSchceduleSearchView::createItemWidget(QDate date)
+QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
 {
     CSchceduleSearchDateItem *gwi = new CSchceduleSearchDateItem();
     QFont font("SourceHanSansSC-Medium");
@@ -404,6 +447,7 @@ void CSchceduleSearchView::createItemWidget(QDate date)
     m_gradientItemList->addItem(listItem);
     m_gradientItemList->setItemWidget(listItem, gwi);
     m_labellist.append(gwi);
+    return listItem;
 }
 
 void CSchceduleSearchView::slotdeleteitem( CSchceduleSearchItem *item )
@@ -441,6 +485,11 @@ void CSchceduleSearchView::slotsetSearch(QString str)
         }
     }
     updateDateShow();
+}
+
+void CSchceduleSearchView::slotSelectDate(QDate date)
+{
+    emit signalDate(date);
 }
 
 void CSchceduleSearchView::resizeEvent(QResizeEvent *event)

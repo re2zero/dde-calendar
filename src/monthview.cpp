@@ -499,7 +499,7 @@ const CaLunarDayInfo CMonthView::getCaLunarDayInfo(int pos)
         return lunarCache->value(date);
     }
 
-    if (lunarCache->size() > 300)
+    if (lunarCache->size() > 60)
         lunarCache->clear();
 
 //    QTimer::singleShot(500, [this, pos] {getDbusData(pos);});

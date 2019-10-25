@@ -38,16 +38,18 @@ public:
     void clearSearch();
 signals:
     void signalsUpdateShcedule(int id = 0);
+    void signalDate(QDate date);
 public slots:
     void slotdeleteitem(CSchceduleSearchItem *item);
     void slotedititem(CSchceduleSearchItem *item);
     void slotsetSearch(QString str);
+    void slotSelectDate(QDate date);
 protected:
     void resizeEvent(QResizeEvent *event);
 private:
     void updateDateShow();
-    void createItemWidget(ScheduleDtailInfo info);
-    void createItemWidget(QDate date);
+    void createItemWidget(ScheduleDtailInfo info, QDate date);
+    QListWidgetItem *createItemWidget(QDate date);
 private:
     DListWidget                                 *m_gradientItemList; //下拉列表窗
     bool                                         m_widgetFlag;
@@ -60,6 +62,7 @@ private:
     QColor                m_bttextcolor = "#414D68";
     QColor                m_lBackgroundcolor = Qt::white;
     QColor                m_ltextcolor = "#001A2E";
+    QListWidgetItem      *m_currentItem;
 };
 
 class CSchceduleSearchItem : public DLabel
@@ -72,7 +75,7 @@ public:
     void setSplitLineColor(QColor color1);
     void setText(QColor tcolor, QFont font);
     void setTimeC(QColor tcolor, QFont font);
-    void setData(ScheduleDtailInfo  vScheduleInfo);
+    void setData(ScheduleDtailInfo  vScheduleInfo, QDate date);
     const ScheduleDtailInfo &getData() const
     {
         return m_ScheduleInfo;
@@ -80,6 +83,7 @@ public:
 signals:
     void signalsDelete(CSchceduleSearchItem *item);
     void signalsEdit(CSchceduleSearchItem *item);
+    void signalSelectDate(QDate date);
 public slots:
     void slotEdit();
     void slotDelete();
@@ -88,6 +92,7 @@ protected:
     void paintEvent ( QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 private:
     ScheduleDtailInfo          m_ScheduleInfo;
     QAction              *m_editAction;
@@ -98,6 +103,7 @@ private:
     QFont                 m_timefont;
     QColor                m_ttextcolor;
     QFont                 m_tfont;
+    QDate                 m_date;
 };
 class CSchceduleSearchDateItem : public DLabel
 {
