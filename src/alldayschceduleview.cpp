@@ -92,6 +92,7 @@ void CAllDaySchceduleWidgetItem::slotCreate()
     tDatatime.setDate(m_ScheduleInfo.beginDateTime.date());
     tDatatime.setTime(QTime::currentTime());
     dlg.setDate(tDatatime);
+    dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsEdit(this, 1);
     }
@@ -401,6 +402,7 @@ void CAllDaySchceduleView::slotCreate()
     tDatatime.setDate(m_currentDate);
     tDatatime.setTime(QTime::currentTime());
     dlg.setDate(tDatatime);
+    dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsCotrlUpdateShcedule(m_currentDate, 1);
     }

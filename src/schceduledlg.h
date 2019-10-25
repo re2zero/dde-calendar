@@ -53,6 +53,7 @@ public:
     void setDate(const QDateTime &date);
     ScheduleInfo getData();
     ScheduleDtailInfo getScheduleData();
+    void setAllDay(bool flag);
 public slots:
     void slotCancelBt();
     void slotOkBt();

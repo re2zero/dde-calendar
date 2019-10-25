@@ -95,6 +95,11 @@ ScheduleDtailInfo CSchceduleDlg::getScheduleData()
     return m_scheduleDtailInfo;
 }
 
+void CSchceduleDlg::setAllDay(bool flag)
+{
+    m_allDayCheckbox->setChecked(flag);
+}
+
 void CSchceduleDlg::slotCancelBt()
 {
     reject();
