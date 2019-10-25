@@ -37,16 +37,19 @@ class CAllDaySchceduleWeekView : public DListWidget
 public:
     CAllDaySchceduleWeekView(QWidget *parent = nullptr, int edittype = 0);
     ~CAllDaySchceduleWeekView();
-    void setDayData(QDate date, const QVector<ScheduleDtailInfo> &vlistData, int type = 1);
-    void setsolarDayData(QString solarDay);
-    void setDate(QDate date, int type = 1);
+    void setDayData(const QVector<ScheduleDtailInfo> &vlistData, int type = 1);
+    void setsolarDayData(QVector<QString> vSolarInfo, QVector<QDate> date);
     QVector<ScheduleDtailInfo> &getListData()
     {
         return  m_vlistData;
     }
-    QString getSolarDay()
+    QVector<QString> getSolarDay()
     {
-        return  m_solarDay;
+        return  m_vSolarDayInfo;
+    }
+    QVector<QDate> getDate()
+    {
+        return  m_vDate;
     }
     void setTheMe(int type = 0);
     void setRange(int w, int h, QDate begindate, QDate enddate);
@@ -57,7 +60,6 @@ public:
     void setLunarVisible(bool state);
 signals:
     void signalsUpdateShcedule(int id = 0);
-    void signalsCotrlUpdateShcedule(QDate date, int type = 0);
 public slots:
     void slotdeleteitem(CAllDaySchceduleWeekWidgetItem *item);
     void slotedititem(CAllDaySchceduleWeekWidgetItem *item, int type = 0);
@@ -68,7 +70,7 @@ protected:
 private:
     void updateDateShow();
     CAllDaySchceduleWeekWidgetItem *createItemWidget(int index, bool average = false);
-    CAllSolarDayWeekWidgetItem *createItemWidget(QString solarDay, bool average = false);
+    CAllSolarDayWeekWidgetItem *createItemWidget(QVector<QString>   vSolarInfo, QVector<QDate> date, bool average = false);
 
 private:
     QAction                                     *m_createAction;     // 创建日程
@@ -76,11 +78,12 @@ private:
     QVector<ScheduleDtailInfo>                   m_vlistData;
     QVector<DPushButton *>                       m_baseShowItem;
     int                                          m_type;
-    QDate                                        m_currentDate;
-    QString                                      m_solarDay;
+    QVector<QString>                             m_vSolarDayInfo;
+    QVector<QDate>                               m_vDate;
     int                                          m_editType = 0;
     QColor                                       m_soloColor = "#FF7272";
     CScheduleCoorManage                         *m_coorManage;
+    QDate                                       m_dianjiDay;
     bool                                        m_LunarVisible;
 };
 
@@ -139,6 +142,7 @@ private:
     QListWidgetItem      *m_item;
     bool                  m_avgeflag;
     int                   m_editType = 0;
+    QDate                                       m_dianjiDay;
     CScheduleCoorManage                         *m_coorManage;
 };
 class CAllSolarDayWeekWidgetItem : public DPushButton
@@ -149,7 +153,7 @@ public:
     explicit CAllSolarDayWeekWidgetItem(QWidget *parent = nullptr, int edittype = 0);
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos, bool avgeflag = false);
-    void setData(QString  vSolarInfo, QDate date);
+    void setData(QVector<QString>   vSolarInfo, QVector<QDate> date);
     void setCoorManage(CScheduleCoorManage *coor)
     {
         m_coorManage = coor;
@@ -157,14 +161,15 @@ public:
 protected:
     void paintEvent ( QPaintEvent *e);
 private:
-    QString               m_SolarDayInfo;
+
+    QVector<QString>      m_vSolarDayInfo;
+    QVector<QDate>        m_vDate;
     bool                  m_GradientFlag;
     QColor                m_color1;
     QColor                m_color2;
     QColor                m_textcolor;
     QFont                 m_font;
     QPoint                m_pos;
-    QDate                 m_date;
     CScheduleCoorManage                         *m_coorManage;
 };
 #endif // CSHCEDULEDAYVIEW_H

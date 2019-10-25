@@ -62,7 +62,7 @@ private slots:
     void slotnext();
     void slottoday();
     void slotCurrentWeek(QDate date, QDate currentDate);
-    void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
+    void slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type = 0);
     void slotcurrentDateChanged(QDate date);
 protected:
     void resizeEvent(QResizeEvent *event);

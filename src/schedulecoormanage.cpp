@@ -221,3 +221,10 @@ QDateTime CScheduleCoorManage::getDate(QPointF pos)
     begintime.setTime(QTime(hours, minutes, secss));
     return begintime;
 }
+
+QDate CScheduleCoorManage::getsDate(QPointF pos)
+{
+    int day = (1.0 * pos.x() / m_width) * m_totalDay;
+    QDate date = m_begindate.addDays(day);
+    return date;
+}

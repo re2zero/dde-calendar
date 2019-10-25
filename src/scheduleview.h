@@ -32,7 +32,7 @@ typedef struct _tagScheduleclassificationInfo {
 } ScheduleclassificationInfo;
 
 class CGraphicsView;
-class CAllDaySchceduleView;
+class CAllDaySchceduleWeekView;
 class CScheduleView : public DFrame
 {
     Q_OBJECT
@@ -56,7 +56,7 @@ signals:
 public slots:
     void slotPosHours(QVector<int> vPos, QVector<int> vHours);
     void setDate(QDate date);
-    void setDate(QDate date,  QString solarDay);
+    void setDate(QVector<QDate> vdate, QVector<QString> vSolarDay);
     void slotupdateSchedule(int id = 0);
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
 protected:
@@ -72,7 +72,8 @@ private:
     CGraphicsView            *m_graphicsView;
     QVector<int>              m_vPos;
     QVector<int>              m_vHours;
-    CAllDaySchceduleView     *m_alldaylist;
+    CAllDaySchceduleWeekView     *m_alldaylist;
+    QVector<ScheduleDateRangeInfo> m_vListSchedule;
     int                       m_leftMagin;
     int                       m_topMagin;
     int                       m_TotalDay;

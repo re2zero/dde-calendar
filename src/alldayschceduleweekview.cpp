@@ -89,7 +89,7 @@ void CAllDaySchceduleWeekWidgetItem::slotCreate()
 {
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
-    tDatatime.setDate(m_ScheduleInfo.beginDateTime.date());
+    tDatatime.setDate(m_dianjiDay);
     tDatatime.setTime(QTime::currentTime());
     dlg.setDate(tDatatime);
     dlg.setAllDay(true);
@@ -299,6 +299,7 @@ void CAllDaySchceduleWeekWidgetItem::contextMenuEvent( QContextMenuEvent *event 
     } else {
         DMenu Context(this);
         Context.addAction(m_createAction);
+        m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
         Context.exec(QCursor::pos());
     }
 }
@@ -313,33 +314,6 @@ void CAllDaySchceduleWeekWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
 }
 
-void CAllDaySchceduleWeekView::setDayData(QDate date, const QVector<ScheduleDtailInfo> &vlistData, int type)
-{
-    m_currentDate = date;
-    m_vlistData = vlistData;
-    m_type = type;
-    m_widgetFlag = false;
-    updateDateShow();
-}
-
-void CAllDaySchceduleWeekView::setsolarDayData(QString solarDay)
-{
-    m_solarDay = solarDay;
-    m_widgetFlag = false;
-    updateDateShow();
-}
-
-void CAllDaySchceduleWeekView::setDate(QDate date, int type)
-{
-    m_currentDate = date;
-    if (type) {
-        //m_vlistData = ScheduleDbManager::getScheduleInfo(date, 0);
-    } else {
-        // m_vlistData = ScheduleDbManager::getALLDayScheduleInfo(date);
-    }
-    m_type = type;
-    updateDateShow();
-}
 
 void CAllDaySchceduleWeekView::setTheMe(int type)
 {
@@ -395,16 +369,32 @@ CAllDaySchceduleWeekView::~CAllDaySchceduleWeekView()
 {
 
 }
+
+void CAllDaySchceduleWeekView::setDayData(const QVector<ScheduleDtailInfo> &vlistData, int type)
+{
+    m_vlistData = vlistData;
+    m_type = type;
+    m_widgetFlag = false;
+    updateDateShow();
+}
+
+void CAllDaySchceduleWeekView::setsolarDayData(QVector<QString> vSolarInfo, QVector<QDate> date)
+{
+    m_vSolarDayInfo = vSolarInfo;
+    m_widgetFlag = false;
+    m_vDate = date;
+    updateDateShow();
+}
 void CAllDaySchceduleWeekView::slotCreate()
 {
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
-    tDatatime.setDate(m_currentDate);
+    tDatatime.setDate(m_dianjiDay);
     tDatatime.setTime(QTime::currentTime());
     dlg.setDate(tDatatime);
     dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
-        emit signalsCotrlUpdateShcedule(m_currentDate, 1);
+        emit signalsUpdateShcedule(0);
     }
 }
 
@@ -413,6 +403,7 @@ void CAllDaySchceduleWeekView::contextMenuEvent(QContextMenuEvent *event)
     //if (m_vlistData.isEmpty()) {
     QMenu Context(this);
     Context.addAction(m_createAction);
+    m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
     Context.exec(QCursor::pos());
     //}
 }
@@ -429,7 +420,7 @@ void CAllDaySchceduleWeekView::updateDateShow()
         m_baseShowItem[i]->deleteLater();
     }
     m_baseShowItem.clear();
-    if (m_solarDay.isEmpty() || !m_LunarVisible) {
+    if (m_vSolarDayInfo.isEmpty() || !m_LunarVisible) {
         for (int i = 0; i < m_vlistData.size(); ++i) {
             CAllDaySchceduleWeekWidgetItem *gwi = createItemWidget(i);
             QListWidgetItem *listItem = new QListWidgetItem;
@@ -439,7 +430,7 @@ void CAllDaySchceduleWeekView::updateDateShow()
         }
 
     } else {
-        CAllSolarDayWeekWidgetItem *solargwi = createItemWidget(m_solarDay);
+        CAllSolarDayWeekWidgetItem *solargwi = createItemWidget(m_vSolarDayInfo, m_vDate);
         QListWidgetItem *solarlistItem = new QListWidgetItem;
         addItem(solarlistItem);
         setItemWidget(solarlistItem, solargwi);
@@ -501,7 +492,7 @@ CAllDaySchceduleWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(int i
     return gwi;
 }
 
-CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QString solarDay, bool average)
+CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QVector<QString> vSolarInfo, QVector<QDate> date, bool average)
 {
     CAllSolarDayWeekWidgetItem *gwi = new CAllSolarDayWeekWidgetItem(this, m_editType);
     gwi->setCoorManage(m_coorManage);
@@ -516,7 +507,7 @@ CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QString s
         } else {
             font.setPixelSize(12);
         }
-        gwi->setData(solarDay, m_currentDate);
+        gwi->setData(vSolarInfo, date);
         int w = width();
         if (average) {
             gwi->setFixedSize(width(), 22);
@@ -533,7 +524,7 @@ CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QString s
         } else {
             font.setPixelSize(12);
         }
-        gwi->setData(solarDay, m_currentDate);
+        gwi->setData(vSolarInfo, date);
         if (average) {
             gwi->setFixedSize(width(), 22);
             gwi->setText("#000000", font, QPoint(13, 2), average);
@@ -548,7 +539,6 @@ CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QString s
 void CAllDaySchceduleWeekView::slotdeleteitem( CAllDaySchceduleWeekWidgetItem *item)
 {
     emit signalsUpdateShcedule(item->getData().id);
-    emit signalsCotrlUpdateShcedule(m_currentDate, 1);
     updateDateShow();
     update();
 }
@@ -557,7 +547,6 @@ void CAllDaySchceduleWeekView::slotedititem(CAllDaySchceduleWeekWidgetItem *item
 {
 
     emit signalsUpdateShcedule(item->getData().id);
-    emit signalsCotrlUpdateShcedule(m_currentDate, type);
     updateDateShow();
     update();
 }
@@ -582,88 +571,58 @@ void CAllSolarDayWeekWidgetItem::setText(QColor tcolor, QFont font, QPoint pos, 
     m_pos = pos;
 }
 
-void CAllSolarDayWeekWidgetItem::setData(QString vSolarInfo, QDate date)
+void CAllSolarDayWeekWidgetItem::setData(QVector<QString> vSolarInfo, QVector<QDate> date)
 {
-    m_SolarDayInfo = vSolarInfo;
-    m_date = date;
-    setToolTip(vSolarInfo);
+    m_vSolarDayInfo = vSolarInfo;
+    m_vDate = date;
 }
-
 void CAllSolarDayWeekWidgetItem::paintEvent(QPaintEvent *e)
 {
     int labelwidth = width();
     int labelheight = height();
-
-    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_date, m_date);
-    if (drawrect.width() < 0) return;
     QPainter painter(this);
-    if (m_GradientFlag) {
-        QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
-        //将直线开始点设为0，终点设为1，然后分段设置颜色
-        painter.save();
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(QColor(0, 0, 0, 0));
-        painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 8, 8);
-        painter.restore();
-        painter.save();
-        QLinearGradient linearGradient(0, 0, labelwidth, 0);
-        linearGradient.setColorAt(0, m_color1);
-        linearGradient.setColorAt(1, m_color2);
-        QRect drawrect2 = drawrect;
-        //将直线开始点设为0，终点设为1，然后分段设置颜色
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(linearGradient);
-        painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(drawrect2, 8, 8);
-        painter.restore();
-        painter.setFont(m_font);
-        QFont solofont = m_font;
-        QFontMetrics fm = painter.fontMetrics();
-#if 0
-        while (fm.width(m_SolarDayInfo) > drawrect.width() - 6) {
-            solofont.setPixelSize(solofont.pixelSize() - 1);
-            painter.setFont(solofont);
-            fm = painter.fontMetrics();
-        }
-        painter.setPen(m_textcolor);
-        painter.drawText(QRect(drawrect.topLeft().x() + 2, drawrect.topLeft().y() + (drawrect.height() - fm.height()) / 2, drawrect.width(), drawrect.height()), Qt::AlignLeft, m_SolarDayInfo);
+    for (int i = 0; i < m_vDate.count(); i++) {
+        QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vDate.at(i), m_vDate.at(i));
+        if (drawrect.width() < 0) return;
 
-#else
-        QString str =  m_SolarDayInfo;
-        QString tstr;
-        for (int i = 0; i < str.count(); i++) {
-            tstr.append(str.at(i));
-            int widthT = fm.width(tstr);
-            if (widthT >= drawrect.width() - 6) {
-                tstr.chop(2);
-                break;
+        if (m_GradientFlag) {
+            QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
+            //将直线开始点设为0，终点设为1，然后分段设置颜色
+            painter.save();
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            painter.setBrush(QColor(0, 0, 0, 0));
+            painter.setPen(Qt::NoPen);
+            painter.drawRoundedRect(fillRect, 8, 8);
+            painter.restore();
+            painter.save();
+            QLinearGradient linearGradient(0, 0, labelwidth, 0);
+            linearGradient.setColorAt(0, m_color1);
+            linearGradient.setColorAt(1, m_color2);
+            QRect drawrect2 = drawrect;
+            //将直线开始点设为0，终点设为1，然后分段设置颜色
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            painter.setBrush(linearGradient);
+            painter.setPen(Qt::NoPen);
+            painter.drawRoundedRect(drawrect2, 8, 8);
+            painter.restore();
+            painter.setFont(m_font);
+            QFont solofont = m_font;
+            QFontMetrics fm = painter.fontMetrics();
+            QString str =  m_vSolarDayInfo.at(i);
+            QString tstr;
+            for (int i = 0; i < str.count(); i++) {
+                tstr.append(str.at(i));
+                int widthT = fm.width(tstr);
+                if (widthT >= drawrect.width() - 6) {
+                    tstr.chop(2);
+                    break;
+                }
             }
+            if (tstr != str) {
+                tstr = tstr + "...";
+            }
+            painter.setPen(m_textcolor);
+            painter.drawText(QRect(drawrect.topLeft().x() + 2, drawrect.topLeft().y() + (drawrect.height() - fm.height()) / 2, drawrect.width(), drawrect.height()), Qt::AlignLeft, tstr);
         }
-        if (tstr != str) {
-            tstr = tstr + "...";
-        }
-        painter.setPen(m_textcolor);
-        painter.drawText(QRect(drawrect.topLeft().x() + 2, drawrect.topLeft().y() + (drawrect.height() - fm.height()) / 2, drawrect.width(), drawrect.height()), Qt::AlignLeft, tstr);
-#endif
-
-    } else {
-        QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
-        //将直线开始点设为0，终点设为1，然后分段设置颜色
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(m_color1);
-        painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 3, 2);
-
-        painter.setFont(m_font);
-        QFont solofont = m_font;
-        QFontMetrics fm = painter.fontMetrics();
-        while (fm.width(m_SolarDayInfo) > labelwidth - m_pos.x() - 3) {
-            solofont.setPixelSize(solofont.pixelSize() - 1);
-            painter.setFont(solofont);
-            fm = painter.fontMetrics();
-        }
-        painter.setPen(m_textcolor);
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignLeft, m_SolarDayInfo);
     }
 }

@@ -35,6 +35,7 @@ public:
     QRectF getDrawRegionF(QDateTime begintime, QDateTime endtime);
     QRect getAllDayDrawRegion(QDate begin, QDate end);
     QDateTime getDate(QPointF pos);
+    QDate getsDate(QPointF pos);
 private:
     int                  m_width;
     int                  m_height;

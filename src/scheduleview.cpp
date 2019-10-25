@@ -21,7 +21,7 @@
 #include "graphicsview.h"
 #include "schedulecoormanage.h"
 #include "dbmanager.h"
-#include "alldayschceduleview.h"
+#include "alldayschceduleweekview.h"
 #include "scheduledatamanage.h"
 #include <DPalette>
 DGUI_USE_NAMESPACE
@@ -163,6 +163,7 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
 {
     if (w != this) return;
     m_graphicsView->clearSchdule();
+    m_vListSchedule = data;
     for (int i = 0; i < m_TotalDay; i++) {
         for (int j = 0; j < data.size(); j++) {
             if (data.at(j).date == m_beginDate.addDays(i)) {
@@ -200,20 +201,23 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
             }
         }
     }
+    updateAllday(0);
     setEnabled(true);
 }
 
 void CScheduleView::setDate( QDate date )
 {
     m_currteDate = date;
-    m_alldaylist->setsolarDayData(QString());
+    QVector<QDate> vdate;
+    QVector<QString> vSolarDay;
+    m_alldaylist->setsolarDayData(vSolarDay, vdate);
     updateAllday();
 }
 
-void CScheduleView::setDate(QDate date, QString solarDay)
+void CScheduleView::setDate(QVector<QDate> vdate, QVector<QString> vSolarDay)
 {
-    m_currteDate = date;
-    m_alldaylist->setsolarDayData(solarDay);
+    //m_currteDate = date;
+    m_alldaylist->setsolarDayData(vSolarDay, vdate);
     updateAllday();
 }
 
@@ -325,7 +329,7 @@ void CScheduleView::initUI()
     layout->addWidget(m_graphicsView);
     setLayout(layout);
     m_graphicsView->scrollBarValueChangedSlot();
-    m_alldaylist = new CAllDaySchceduleView(this, 1);
+    m_alldaylist = new CAllDaySchceduleWeekView(this, 1);
     //m_alldaylist->setFixedSize(635, 99);
     m_alldaylist->move(72, 5);
 }
@@ -334,9 +338,7 @@ void CScheduleView::initConnection()
 {
     connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     //connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
-    connect(m_alldaylist, &CAllDaySchceduleView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
-    //connect(m_alldaylist, &CSchceduleAllDayView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
-    connect(m_alldaylist, &CAllDaySchceduleView::signalsCotrlUpdateShcedule, this, &CScheduleView::slotCtrlSchceduleUpdate);
+    connect(m_alldaylist, &CAllDaySchceduleWeekView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
 
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);
@@ -353,19 +355,45 @@ void CScheduleView::updateSchedule(int id)
     setEnabled(false);
     emit signalsupdatescheduleD(this, m_beginDate, m_endDate);
 }
-
+bool WScheduleDateThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
+{
+    if (s1.beginDateTime.date() != s1.endDateTime.date() && s2.beginDateTime.date() == s2.endDateTime.date()) {
+        return true;
+    } else if (s1.beginDateTime.date() == s1.endDateTime.date() && s2.beginDateTime.date() != s2.endDateTime.date()) {
+        return false;
+    } else if (s1.beginDateTime.date() != s1.endDateTime.date() && s2.beginDateTime.date() != s2.endDateTime.date()) {
+        return s1.beginDateTime.date() < s2.beginDateTime.date();
+    } else {
+        return s1.beginDateTime < s2.beginDateTime;
+    }
+}
+bool WScheduleDaysThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
+{
+    return s1.beginDateTime.daysTo(s1.endDateTime) > s2.beginDateTime.daysTo(s2.endDateTime);
+}
 void CScheduleView::updateAllday(int id)
 {
-    QVector<ScheduleDateRangeInfo> out;
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfo(m_currteDate, m_currteDate, out);
-    QVector<ScheduleDtailInfo> vData;
-    if (!out.isEmpty())  {
-        for (int i = 0; i < out[0].vData.size(); i++) {
-            if (out[0].vData[i].allday)
-                vData.append(out[0].vData[i]);
+    QVector<ScheduleDateRangeInfo> out = m_vListSchedule;
+    QVector<ScheduleDtailInfo> vListData;
+    for (int j = 0; j < out.size(); j++) {
+        QVector<ScheduleDtailInfo> scheduleInfolist = out.at(j).vData;
+        for (int m = 0; m < scheduleInfolist.count(); m++) {
+            if (!scheduleInfolist.at(m).allday) continue;
+            int k = 0;
+            for (; k < vListData.count(); k++) {
+                if (scheduleInfolist.at(m).id == vListData.at(k).id
+                        && scheduleInfolist.at(m).RecurID == vListData.at(k).RecurID) {
+                    break;
+                }
+            }
+            if (k == vListData.count()) {
+                vListData.append(scheduleInfolist.at(m));
+            }
         }
     }
-    m_alldaylist->setDayData(m_currteDate, vData, 0);
+    qSort(vListData.begin(), vListData.end(), WScheduleDaysThan);
+    qSort(vListData.begin(), vListData.end(), WScheduleDateThan);
+    m_alldaylist->setDayData(vListData, 0);
     // m_alldaylist->update();
 }
 

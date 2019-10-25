@@ -330,22 +330,40 @@ void CWeekWindow::slotCurrentWeek(QDate date, QDate currentDate)
     //m_scheduleView->setDate(m_currentdate);
 }
 
-void CWeekWindow::slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type)
+void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type)
 {
-    if (date != QDate::currentDate()) {
+    int i = 0;
+    for (; i < vdate.count(); i++) {
+        if (vdate.at(i) == QDate::currentDate())
+            break;
+    }
+    if (i == vdate.count()) {
         m_today->setEnabled(true);
     } else {
         m_today->setEnabled(false);
     }
-    if (detail.mLunarFestival.isEmpty()) {
-        m_scheduleView->setDate(m_currentdate, detail.mSolarFestival);
-    } else {
-        m_scheduleView->setDate(m_currentdate, detail.mLunarFestival + "    " + detail.mSolarFestival);
-    }
-    m_currentdate = date;
-    if (type == 1) {
-        m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
-        m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
+    if (!vdate.isEmpty()) {
+        CaLunarDayInfo detail = vdetail.at(0);
+
+        QVector<QDate> tvdate;
+        QVector<QString> tvStr;
+
+        for (int i = 0; i < vdetail.count(); i++) {
+            if (vdetail.at(i).mLunarFestival.isEmpty() && vdetail.at(i).mSolarFestival.isEmpty()) continue;
+            tvdate.append(vdate.at(i));
+            QString str;
+            if (vdetail.at(i).mLunarFestival.isEmpty()) {
+                str = vdetail.at(i).mSolarFestival;
+            } else {
+                str = vdetail.at(i).mLunarFestival + "    " + vdetail.at(i).mSolarFestival;
+            }
+            tvStr.append(str);
+        }
+        m_scheduleView->setDate(tvdate, tvStr);
+        if (type == 1) {
+            m_YearLabel->setText(QString::number(vdate.at(0).year()) + tr("Y"));
+            m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
+        }
     }
 }
 

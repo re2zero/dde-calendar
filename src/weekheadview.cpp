@@ -247,7 +247,7 @@ bool CWeekHeadView::eventFilter(QObject *o, QEvent *e)
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
-            cellClicked(cell);
+            //cellClicked(cell);
         }
     }
 
@@ -278,7 +278,14 @@ void CWeekHeadView::updateCurrentLunar(const CaLunarDayInfo &info)
     } else {
         emit currentFestivalChanged("");
     }
-    emit signalcurrentLunarDateChanged(m_currentDate, getCaLunarDayInfo(getDateIndex(m_currentDate)), 1);
+    QVector<QDate> vdate;
+    QVector<CaLunarDayInfo> vdetail;
+    for (int i = 0; i < 7; i++) {
+        vdate.append(m_days[i]);
+        vdetail.append(getCaLunarDayInfo(getDateIndex(m_days[i])));
+    }
+    emit signalcurrentLunarDateChanged(vdate, vdetail, 1);
+    //emit signalcurrentLunarDateChanged(m_currentDate, getCaLunarDayInfo(getDateIndex(m_currentDate)), 1);
     updateDate();
 }
 
@@ -372,9 +379,10 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
     const int pos = m_cellList.indexOf(cell);
     const int type = getDateType(m_days[pos]);
-    const bool isSelectedCell = pos == m_selectedCell;
-    const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
 
+    const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
+    // const bool isSelectedCell = pos == m_selectedCell;
+    const bool isSelectedCell = isCurrentDay;
     int d = checkDay(pos - m_firstWeekDay);
 
     QPainter painter(cell);
@@ -500,7 +508,7 @@ void CWeekHeadView::setSelectedCell(int index)
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
     emit dateSelected(m_days[index], getCaLunarDayInfo(index));
-    emit signalcurrentLunarDateChanged(m_days[index], getCaLunarDayInfo(index), 0);
+    //emit signalcurrentLunarDateChanged(m_days[index], getCaLunarDayInfo(index), 0);
 }
 int CWeekHeadView::checkDay(int weekday)
 {

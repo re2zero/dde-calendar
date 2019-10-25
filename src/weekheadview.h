@@ -61,7 +61,8 @@ public:
     void setWeekDay(QVector<QDate> vDays);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
-    void signalcurrentLunarDateChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
+    //void signalcurrentLunarDateChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
+    void signalcurrentLunarDateChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type = 0);
     void signalcurrentDateChanged(QDate date);
     void currentDateChanged(const int year, const int month);
     void currentFestivalChanged(const QString &festival);

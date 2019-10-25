@@ -290,11 +290,20 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
         //m_SolarDay->setText(detail.mSolarFestival);
     }
     m_scheduleView->setRange(m_currentdate, m_currentdate);
-    if (detail.mLunarFestival.isEmpty()) {
-        m_scheduleView->setDate(m_currentdate, detail.mSolarFestival);
-    } else {
-        m_scheduleView->setDate(m_currentdate, detail.mLunarFestival + "    " + detail.mSolarFestival);
+    if (!detail.mLunarFestival.isEmpty() || !detail.mSolarFestival.isEmpty()) {
+        QVector<QDate> vdate;
+        QVector<QString> tvStr;
+        QString str;
+        if (detail.mLunarFestival.isEmpty()) {
+            str = detail.mSolarFestival;
+        } else {
+            str = detail.mLunarFestival + "    " + detail.mSolarFestival;
+        }
+        tvStr.append(str);
+        vdate.append(m_currentdate);
+        m_scheduleView->setDate(vdate, tvStr);
     }
+
 }
 
 void CDayWindow::slotcurrentDateChanged(QDate date)
