@@ -101,6 +101,8 @@ public Q_SLOTS: // METHODS
     bool GetJob(qint64 jobId, ScheduleDtailInfo &out);
     bool UpdateJob(const ScheduleDtailInfo &info);
     bool DeleteJob(qint64 jobId);
+    bool QueryJobs(QString key, QDateTime starttime, QDateTime endtime, QVector<ScheduleDateRangeInfo> &out);
+
 
     bool GetTypes(QVector<ScheduleType> &out);
     bool GetType(qint64 jobId, ScheduleType &out);

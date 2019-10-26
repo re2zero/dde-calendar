@@ -413,6 +413,56 @@ bool CSchedulesDBus::DeleteJob(qint64 jobId)
     return true;
 }
 
+bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endtime, QVector<ScheduleDateRangeInfo> &out)
+{
+    QJsonObject qjson;
+    qjson.insert("Key", key);
+    qjson.insert("Start", toconvertData(starttime));
+    qjson.insert("End", toconvertData(endtime));
+    // 构建 JSON 文档
+    QJsonDocument qdocument;
+    qdocument.setObject(qjson);
+    QByteArray qbyteArray = qdocument.toJson(QJsonDocument::Compact);
+    QString strJson(qbyteArray);
+
+    QList<QVariant> argumentList;
+    argumentList << QVariant::fromValue(strJson);
+    QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("QueryJobs"), argumentList);
+    if (reply.type() != QDBusMessage::ReplyMessage ) {
+        return false;
+    }
+    QDBusReply<QString> jobs =  reply;
+
+    if (!jobs.isValid()) return false;
+    QJsonParseError json_error;
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(jobs.value().toLocal8Bit(), &json_error));
+
+    if (json_error.error != QJsonParseError::NoError) {
+        return false;
+    }
+
+    QJsonArray rootarry = jsonDoc.array();
+    for (int i = 0; i < rootarry.size(); i++) {
+
+        QJsonObject subObj = rootarry.at(i).toObject();
+
+        ScheduleDateRangeInfo info;
+        //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+        if (subObj.contains("Date")) {
+            info.date = QDate::fromString(subObj.value("Date").toString(), "yyyy-MM-dd");
+        }
+        if (subObj.contains("Jobs")) {
+            QJsonArray subarry = subObj.value("Jobs").toArray();
+            for (int j = 0; j < subarry.size(); j++) {
+                QJsonObject ssubObj = subarry.at(j).toObject();
+                info.vData.append(parsingScheduleDtailInfojsonID(ssubObj));
+            }
+        }
+        out.append(info);
+    }
+    return  true;
+}
+
 bool CSchedulesDBus::GetTypes(QVector<ScheduleType> &out)
 {
     QList<QVariant> argumentList;

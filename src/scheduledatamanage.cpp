@@ -209,6 +209,11 @@ bool CScheduleDataCtrl::getScheduleInfo(const QDate bdate, const QDate edate, QV
     return m_dbus->GetJobs(bdate.year(), bdate.month(), bdate.day(), edate.year(), edate.month(), edate.day(), out);
 }
 
+bool CScheduleDataCtrl::queryScheduleInfo(QString key, QDateTime starttime, QDateTime endtime, QVector<ScheduleDateRangeInfo> &out)
+{
+    return m_dbus->QueryJobs(key, starttime, endtime, out);
+}
+
 bool CScheduleDataCtrl::updateScheduleInfo(const ScheduleDtailInfo &scheduledate)
 {
     clearData();
