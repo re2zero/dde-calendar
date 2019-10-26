@@ -751,7 +751,7 @@ void CMonthView::paintCell(QWidget *cell)
         painter.drawText(QRect(cell->width() - 50, 6, 50, 18), Qt::AlignCenter, dayLunar);
         if (getShowSolarDayByDate(m_days[pos])) {
             CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
-            if (!dayInfo.mSolarFestival.isEmpty()) {
+            if (!dayInfo.mSolarFestival.isEmpty() || !dayInfo.mLunarFestival.isEmpty()) {
                 QRect fillRect = QRect(6, 34, cell->width() - 12, 22);
                 painter.setRenderHints(QPainter::HighQualityAntialiasing);
                 painter.setBrush(QBrush(m_solofestivalLunarColor));
@@ -768,6 +768,13 @@ void CMonthView::paintCell(QWidget *cell)
                 //}
                 QFontMetrics fm = painter.fontMetrics();
                 QString str =  dayInfo.mSolarFestival;
+                if (!dayInfo.mSolarFestival.isEmpty() && dayInfo.mLunarFestival.isEmpty()) {
+                    str = dayInfo.mSolarFestival;
+                } else if (!dayInfo.mSolarFestival.isEmpty() && !dayInfo.mLunarFestival.isEmpty()) {
+                    str = dayInfo.mSolarFestival + " " + dayInfo.mLunarFestival;
+                } else {
+                    str = dayInfo.mLunarFestival;
+                }
                 QString tstr;
                 for (int i = 0; i < str.count(); i++) {
                     tstr.append(str.at(i));

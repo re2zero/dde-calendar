@@ -275,8 +275,8 @@ void CYearWindow::setTheMe(int type)
 
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
-        todaypa.setColor(DPalette::Dark, Qt::black);
-        todaypa.setColor(DPalette::Light, Qt::black);
+        todaypa.setColor(DPalette::Dark, "#414141");
+        todaypa.setColor(DPalette::Light, "#484848");
         m_today->setPalette(todaypa);
 
         //DPalette prevpa = m_prevButton->palette();
