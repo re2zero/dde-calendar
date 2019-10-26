@@ -42,6 +42,7 @@ public:
     void setSearchText(QString str);
     void setLunarVisible(bool state);
     void setTheMe(int type = 0);
+    void setTime(QTime time);
 private:
     void initUI();
     void initConnection();

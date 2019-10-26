@@ -12,58 +12,58 @@
     <name>CAllDaySchceduleWeekView</name>
     <message>
         <source>Create</source>
-        <translation type="unfinished">新建日程</translation>
+        <translation>新建日程</translation>
     </message>
 </context>
 <context>
     <name>CAllDaySchceduleWeekWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">编辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">删除</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">新建日程</translation>
+        <translation>新建日程</translation>
     </message>
     <message>
         <source>You are deleted schedule</source>
-        <translation type="unfinished">您正在删除日程</translation>
+        <translation>您正在删除日程</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
-        <translation type="unfinished">您确定要删除此日程吗？</translation>
+        <translation>您确定要删除此日程吗？</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Delete Schedule</source>
-        <translation type="unfinished">删除日程</translation>
+        <translation>删除日程</translation>
     </message>
     <message>
         <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation type="unfinished">您要删除这个日程的所有重复，还是只删除所选重复？</translation>
+        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>All Deleted</source>
-        <translation type="unfinished">全部删除</translation>
+        <translation>全部删除</translation>
     </message>
     <message>
         <source>Just Delete Schedule</source>
-        <translation type="unfinished">仅删除该日程</translation>
+        <translation>仅删除该日程</translation>
     </message>
     <message>
         <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation type="unfinished">您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>Delete all schedule in the future</source>
-        <translation type="unfinished">删除所有将来日程</translation>
+        <translation>删除所有将来日程</translation>
     </message>
 </context>
 <context>

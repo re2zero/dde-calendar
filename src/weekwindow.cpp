@@ -281,6 +281,11 @@ void CWeekWindow::setTheMe(int type)
     m_scheduleView->setTheMe(type);
 }
 
+void CWeekWindow::setTime(QTime time)
+{
+    m_scheduleView->setTime(time);
+}
+
 void CWeekWindow::slotReturnTodayUpdate()
 {
     setDate(QDate::currentDate());
@@ -289,6 +294,7 @@ void CWeekWindow::slotReturnTodayUpdate()
 void CWeekWindow::slotupdateSchedule(int id)
 {
     m_scheduleView->slotupdateSchedule(id);
+    //m_scheduleView->setTime(QTime::currentTime());
 }
 
 void CWeekWindow::slotTransitSchedule(int id)

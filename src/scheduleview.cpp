@@ -109,6 +109,11 @@ void CScheduleView::setLunarVisible(bool state)
 {
     m_alldaylist->setLunarVisible(state);
 }
+
+void CScheduleView::setTime(QTime time)
+{
+    m_graphicsView->setTime(time);
+}
 bool MScheduleTimeThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
     if (s1.beginDateTime.secsTo(s1.endDateTime) == s2.beginDateTime.secsTo(s2.endDateTime)) {

@@ -228,3 +228,11 @@ QDate CScheduleCoorManage::getsDate(QPointF pos)
     QDate date = m_begindate.addDays(day);
     return date;
 }
+
+float CScheduleCoorManage::getHeight(QTime time)
+{
+    QTime beginzero(0, 0, 0);
+    int ScheduleBT = beginzero.secsTo(time);
+    float posY = m_height * (ScheduleBT / 86400.0);
+    return posY;
+}

@@ -234,7 +234,7 @@ public:
     ************************************************************************/
     void setLargeScalePen(const QPen &LRPen, const QPen &TBPen);
     void setFirstWeekday(int weekday);
-
+    void setTime(QTime time);
 protected:
     void paintEvent( QPaintEvent *event );
 public slots:

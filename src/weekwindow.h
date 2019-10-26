@@ -48,6 +48,7 @@ public:
     void initUI();
     void initConnection();
     void setTheMe(int type = 0);
+    void setTime(QTime time);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);

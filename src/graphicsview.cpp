@@ -683,3 +683,21 @@ void CGraphicsView::setFirstWeekday(int weekday)
 {
     m_firstWeekDay = weekday;
 }
+
+void CGraphicsView::setTime(QTime time)
+{
+    int viewWidth = viewport()->width();
+    int viewHeight = viewport()->height();
+    // view 根据鼠标下的点作为锚点来定位 scene
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
+    QPoint newCenter(viewWidth / 2,  viewHeight / 2);
+    QPointF centerpos = mapToScene(newCenter);
+    centerpos = QPointF(centerpos.x(), m_coorManage->getHeight(time));
+    centerOn(centerpos.x(), centerpos.y());
+
+    // scene 在 view 的中心点作为锚点
+    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+
+    scrollBarValueChangedSlot();
+}
