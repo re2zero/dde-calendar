@@ -118,7 +118,7 @@ public:
     bool getScheduleInfoById(int id, ScheduleDtailInfo &out);
     bool getScheduleInfo(const QDate bdate, const QDate edate, QVector<ScheduleDateRangeInfo> &out);
     bool queryScheduleInfo(QString key, QDateTime starttime, QDateTime endtime, QVector<ScheduleDateRangeInfo> &out);
-
+    bool queryScheduleInfo(QString key, QDateTime starttime, QDateTime endtime, QString &out);
     bool updateScheduleInfo(const ScheduleDtailInfo &scheduledate);
     bool deleteScheduleInfoById(int id);
     bool GetType(qint64 jobId, ScheduleType &out);

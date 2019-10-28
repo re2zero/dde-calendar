@@ -463,6 +463,31 @@ bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endti
     return  true;
 }
 
+bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endtime, QString &out)
+{
+    QJsonObject qjson;
+    qjson.insert("Key", key);
+    qjson.insert("Start", toconvertData(starttime));
+    qjson.insert("End", toconvertData(endtime));
+    // 构建 JSON 文档
+    QJsonDocument qdocument;
+    qdocument.setObject(qjson);
+    QByteArray qbyteArray = qdocument.toJson(QJsonDocument::Compact);
+    QString strJson(qbyteArray);
+
+    QList<QVariant> argumentList;
+    argumentList << QVariant::fromValue(strJson);
+    QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("QueryJobs"), argumentList);
+    if (reply.type() != QDBusMessage::ReplyMessage ) {
+        return false;
+    }
+    QDBusReply<QString> jobs =  reply;
+
+    if (!jobs.isValid()) return false;
+    out = jobs.value().toLocal8Bit();
+    return true;
+}
+
 bool CSchedulesDBus::GetTypes(QVector<ScheduleType> &out)
 {
     QList<QVariant> argumentList;

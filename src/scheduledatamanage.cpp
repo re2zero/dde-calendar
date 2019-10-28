@@ -214,6 +214,11 @@ bool CScheduleDataCtrl::queryScheduleInfo(QString key, QDateTime starttime, QDat
     return m_dbus->QueryJobs(key, starttime, endtime, out);
 }
 
+bool CScheduleDataCtrl::queryScheduleInfo(QString key, QDateTime starttime, QDateTime endtime, QString &out)
+{
+    return m_dbus->QueryJobs(key, starttime, endtime, out);
+}
+
 bool CScheduleDataCtrl::updateScheduleInfo(const ScheduleDtailInfo &scheduledate)
 {
     clearData();
