@@ -83,6 +83,7 @@ private:
     QDate                     m_beginDate;
     QDate                     m_endDate;
     int                       m_viewType = 0;
+    int                       m_sMaxNum = 3;
     QColor                    m_linecolor = Qt::lightGray;
     QColor                    m_weekColor = "#E6EEF2";
     QColor                    m_ALLDayColor = "#303030";

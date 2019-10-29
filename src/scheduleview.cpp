@@ -181,24 +181,24 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
                 for (int m = 0; m  < info.count(); m++) {
                     int tnum = info.at(m).vData.count();
                     if (m_viewType == 0) {
-                        if (tnum > 3) {
-                            tnum = 4;
+                        if (tnum > m_sMaxNum) {
+                            tnum = m_sMaxNum + 1;
                             for (int n = 0; n  < tnum - 1; n++) {
-                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType);
+                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType, m_sMaxNum);
                             }
-                            ScheduleDtailInfo tdetaliinfo = info.at(m).vData.at(1);
+                            ScheduleDtailInfo tdetaliinfo = info.at(m).vData.at(tnum - 2);
                             tdetaliinfo.titleName = "...";
                             tdetaliinfo.type.ID = 3;
-                            m_graphicsView->addSchduleItem(tdetaliinfo, tdate, 4, tnum, 1, m_viewType);
+                            m_graphicsView->addSchduleItem(tdetaliinfo, tdate, tnum, tnum, 1, m_viewType, m_sMaxNum);
                         } else {
                             for (int n = 0; n  < tnum; n++) {
-                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType);
+                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType, m_sMaxNum);
                             }
                         }
 
                     } else {
                         for (int n = 0; n  < tnum; n++) {
-                            m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType);
+                            m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType, m_sMaxNum);
                         }
                     }
                 }
@@ -282,7 +282,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
         painter.setPen(Qt::SolidLine);
         painter.setPen(m_linecolor);
         for (int i = 1; i < m_TotalDay; i++) {
-            painter.drawLine(QPoint(m_leftMagin + i * intenval, 1), QPoint(m_leftMagin  + i * intenval, m_topMagin));
+            painter.drawLine(QPoint(m_leftMagin + i * intenval + 1, 1), QPoint(m_leftMagin  + i * intenval + 1, m_topMagin));
         }
         painter.restore();
         painter.save();
@@ -308,6 +308,7 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     m_graphicsView->resize(width(), height());
     int tt = 0.0968 * height() + 0.5;
     if (m_viewType == 0) {
+        m_sMaxNum = ((width() - m_leftMagin) / 7 - 19) / 30;
         m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
         m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
@@ -322,6 +323,7 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     m_graphicsView->update();
     m_alldaylist->update();
     QFrame::resizeEvent(event);
+    slotupdateSchedule(0);
 }
 
 void CScheduleView::initUI()

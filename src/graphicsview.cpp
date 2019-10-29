@@ -131,11 +131,11 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate )
     scrollBarValueChangedSlot();
 }
 
-void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype)
+void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
 {
 
     CScheduleItem *item = new CScheduleItem(m_coorManage, 0, m_graphicsScene, type);
-    item->setData(info, date, index, totalNum, viewtype);
+    item->setData(info, date, index, totalNum, viewtype, maxnum);
     m_vScheduleItem.append(item);
 
 }
@@ -405,6 +405,7 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     if (item == NULL) {
         return;
     }
+    if (item->getType() == 1) return;
     CMySchceduleView dlg(this);
     dlg.setSchedules(item->getData());
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
@@ -586,7 +587,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     if (m_TBFlag) {
         t_painter.save();
         t_painter.setPen(m_TBPen);
-        for (int i = 0; i < m_vTBLarge.size() - 1; ++i)
+        for (int i = 0; i < m_vTBLarge.size(); ++i)
             t_painter.drawLine(QPoint(m_vTBLarge[i] - 1, 0), QPoint(m_vTBLarge[i] - 1, t_height));
         t_painter.restore();
         if (m_totalDay == 7) {

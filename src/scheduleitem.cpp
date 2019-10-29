@@ -36,7 +36,7 @@ CScheduleItem::~CScheduleItem()
 
 }
 
-void CScheduleItem::setData( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype)
+void CScheduleItem::setData( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype, int maxnum)
 {
     if (m_type == 0) setToolTip(info.titleName);
     m_scheduleInfo = info;
@@ -45,6 +45,7 @@ void CScheduleItem::setData( const ScheduleDtailInfo &info, QDate date, int inde
     m_totalNum = totalNum;
     m_date = date;
     m_viewtype = viewtype;
+    m_sMaxNum = maxnum;
     update();
 }
 
@@ -52,7 +53,7 @@ QRectF CScheduleItem::boundingRect() const
 {
     QRectF t_rect;
 
-    t_rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_viewtype);
+    t_rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum, m_viewtype);
 
     //t_rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum);
 
@@ -72,7 +73,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     painter->setBrush(gdcolor.Purecolor);
     painter->setPen(Qt::NoPen);
-    QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_viewtype);
+    QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum, m_viewtype);
     painter->drawRect(rect);
     painter->save();
     QPen pen(gdcolor.shadowcolor);

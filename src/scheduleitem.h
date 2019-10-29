@@ -32,7 +32,7 @@ class CScheduleItem : public QObject, public QGraphicsItem
 public:
     CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0, int type = 0);
     ~CScheduleItem();
-    void setData(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype);
+    void setData(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype, int maxnum);
     int getType()
     {
         return  m_type;
@@ -71,6 +71,7 @@ private:
     int                              m_viewtype;
     int                              m_index;
     int                              m_totalNum;
+    int                              m_sMaxNum;
 };
 
 #endif // SCHEDULEITEM_H
