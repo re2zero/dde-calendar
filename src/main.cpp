@@ -32,6 +32,7 @@
 #include "calendarmainwindow.h"
 //#include "monthwindow.h"
 #include "yearwindow.h"
+#include "exportedinterface.h"
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 /**********************复制部分**************************/
@@ -152,7 +153,7 @@ int main(int argc, char *argv[])
         QTextStream in(&file);
         QString str = in.readAll();
         file.close();
-        ww.Invoke("CREATE", str);
+        //ww.Invoke("CREATE", str);
     }
     ww.move(PrimaryRect().center() - ww.geometry().center());
     //ww.setDate(QDate::currentDate());
@@ -171,7 +172,7 @@ int main(int argc, char *argv[])
     });
     if (dbus.registerService("com.deepin.Calendar"), QDBusConnectionInterface::ReplaceExistingService, QDBusConnectionInterface::AllowReplacement) {
 
-
+        ExportedInterface einterface(&ww);
         return a.exec();
     }
     return 0;

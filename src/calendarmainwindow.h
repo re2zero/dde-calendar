@@ -45,8 +45,9 @@ class Calendarmainwindow : public DMainWindow
     Q_OBJECT
 public:
     Calendarmainwindow(QWidget *w = NULL);
-    void Invoke(const QString &mothodName, const QString &content);
+    //void Invoke(const QString &mothodName, const QString &content);
     bool analysisCreate(const QString &content, ScheduleDtailInfo &info);
+    void viewWindow(int type, QDateTime datetime);
 public slots:
     void slotTheme(int type);
     void OpenSchedule(QString job);

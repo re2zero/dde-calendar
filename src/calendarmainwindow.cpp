@@ -60,7 +60,7 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     resize(CalendarMWidth, CalendarMHeight);
 }
 
-void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
+/*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
 {
     if (mothodName == "CREATE") {
         ScheduleDtailInfo info;
@@ -78,7 +78,7 @@ void Calendarmainwindow::Invoke(const QString &mothodName, const QString &conten
         m_DayWindow->setDate(info.beginDateTime.date());
         m_DayWindow->slotupdateSchedule(0);
     }
-}
+}*/
 
 bool Calendarmainwindow::analysisCreate(const QString &content, ScheduleDtailInfo &info)
 {
@@ -120,6 +120,46 @@ bool Calendarmainwindow::analysisCreate(const QString &content, ScheduleDtailInf
         }
     }
     return true;
+}
+
+void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
+{
+    if (type < 0 || type > m_stackWidget->count()) {
+
+        return;
+    }
+    m_stackWidget->setCurrentIndex(type - 1);
+    switch (type) {
+    case 1: {
+        m_yearButton->setFocus();
+        m_yearButton->setChecked(true);
+        m_yearwindow->setDate(datetime.date());
+    }
+    break;
+    case 2: {
+        m_monthButton->setFocus();
+        m_monthButton->setChecked(true);
+        m_monthWindow->setDate(datetime.date());
+        m_monthWindow->slotupdateSchedule(0);
+    }
+    break;
+    case 3: {
+        m_weekButton->setFocus();
+        m_weekButton->setChecked(true);
+        m_weekWindow->setDate(datetime.date());
+        m_weekWindow->setTime(datetime.time());
+        m_weekWindow->slotupdateSchedule(0);
+    }
+    break;
+    case 4: {
+        m_dayButton->setFocus();
+        m_dayButton->setChecked(true);
+        m_DayWindow->setDate(datetime.date());
+        m_DayWindow->setTime(datetime.time());
+        m_DayWindow->slotupdateSchedule(0);
+    }
+    break;
+    }
 }
 
 void Calendarmainwindow::slotTheme(int type)

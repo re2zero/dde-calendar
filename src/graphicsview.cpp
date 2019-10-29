@@ -38,6 +38,7 @@ DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent)
     : DGraphicsView(parent)
 {
+    setContentsMargins(0, 0, 0, 0);
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     setAlignment(Qt::AlignLeft | Qt::AlignTop);
     m_coorManage = new CScheduleCoorManage;
