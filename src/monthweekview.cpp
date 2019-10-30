@@ -127,7 +127,7 @@ void CMonthWeekView::setTheMe(int type)
                 DPalette monthpa = m_weekData.at(i).first->palette();
                 QColor textC = "#0887FF";
                 QColor textbC = "#82AEC1";
-                textbC.setAlphaF(0.00);
+                textbC.setAlphaF(0.10);
                 monthpa.setColor(DPalette::WindowText, textC);
                 monthpa.setColor(DPalette::Background, textbC);
                 m_weekData.at(i).first->setPalette(monthpa);
@@ -137,7 +137,7 @@ void CMonthWeekView::setTheMe(int type)
                 DPalette monthpa = m_weekData.at(i).first->palette();
                 QColor textC = "#C0C6D4";
                 QColor textbC = "#82AEC1";
-                textbC.setAlphaF(0.00);
+                textbC.setAlphaF(0.10);
                 monthpa.setColor(DPalette::WindowText, textC);
                 monthpa.setColor(DPalette::Background, textbC);
                 m_weekData.at(i).first->setPalette(monthpa);

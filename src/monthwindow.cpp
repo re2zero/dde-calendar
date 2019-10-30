@@ -116,9 +116,7 @@ void CMonthWindow::setTheMe(int type)
         m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette gpa = m_gridWidget->palette();
-        QColor framecolor("#FFFFFF");
-        framecolor.setAlphaF(0.05);
-        gpa.setColor(DPalette::Background, framecolor);
+        gpa.setColor(DPalette::Background, "#252525");
         m_gridWidget->setPalette(gpa);
         m_gridWidget->setBackgroundRole(DPalette::Background);
     }

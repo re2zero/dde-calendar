@@ -46,7 +46,7 @@ CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
         m_cellList.append(cell);
     }
     setLayout(hboxLayout);
-
+    setFrameRounded(true);
 }
 
 CMonthDayView::~CMonthDayView()

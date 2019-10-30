@@ -102,6 +102,7 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
 
     connect(this, &CYearView::dateSelected, this, &CYearView::handleCurrentDateChanged);
     //setFixedSize(DDEYearCalendar::Y_MWindowWidth, DDEYearCalendar::Y_MWindowHeight);
+    setFrameRounded(true);
 }
 void CYearView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
 {
