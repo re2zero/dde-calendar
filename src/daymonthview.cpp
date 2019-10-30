@@ -103,21 +103,26 @@ void CDayMonthView::setTheMe(int type)
         DPalette pa = m_currentMouth->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_currentMouth->setPalette(pa);
+        m_currentMouth->setForegroundRole(DPalette::WindowText);
 
         DPalette daypa = m_currentDay->palette();
         daypa.setColor(DPalette::WindowText, QColor("#2CA7F8"));
         m_currentDay->setPalette(daypa);
+        m_currentDay->setForegroundRole(DPalette::WindowText);
 
 
         DPalette wpa = m_currentWeek->palette();
         wpa.setColor(DPalette::WindowText, QColor("#414D68"));
         m_currentWeek->setPalette(wpa);
+        m_currentWeek->setForegroundRole(DPalette::WindowText);
 
         m_currentYear->setPalette(wpa);
+        m_currentYear->setForegroundRole(DPalette::WindowText);
 
         DPalette hpa = m_currentLuna->palette();
         hpa.setColor(DPalette::WindowText, QColor("#414D68"));
         m_currentLuna->setPalette(hpa);
+        m_currentLuna->setForegroundRole(DPalette::WindowText);
 
         QFont hlabelF;
         hlabelF.setFamily("PingFangSC-Semibold");
@@ -168,22 +173,23 @@ void CDayMonthView::setTheMe(int type)
         DPalette pa = m_currentMouth->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_currentMouth->setPalette(pa);
+        m_currentMouth->setForegroundRole(DPalette::WindowText);
 
         DPalette daypa = m_currentDay->palette();
         daypa.setColor(DPalette::WindowText, QColor("#0081FF"));
         m_currentDay->setPalette(daypa);
-
+        m_currentDay->setForegroundRole(DPalette::WindowText);
 
         DPalette wpa = m_currentWeek->palette();
         wpa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_currentWeek->setPalette(wpa);
-
+        m_currentWeek->setForegroundRole(DPalette::WindowText);
         m_currentYear->setPalette(wpa);
-
+        m_currentYear->setForegroundRole(DPalette::WindowText);
         DPalette hpa = m_currentLuna->palette();
         hpa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_currentLuna->setPalette(hpa);
-
+        m_currentLuna->setForegroundRole(DPalette::WindowText);
         QFont hlabelF;
         hlabelF.setFamily("PingFangSC-Semibold");
         hlabelF.setPixelSize(14);

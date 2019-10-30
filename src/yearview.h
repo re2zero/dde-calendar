@@ -22,7 +22,7 @@ enum CalendarYearDayType {
     SO_YNotCurrentMonthFestival = SO_YNotCurrentMonth | SO_YFestival,
     SO_YDefault,
 };
-class CYearView: public QWidget
+class CYearView: public DFrame
 {
     Q_OBJECT
 

@@ -241,6 +241,7 @@ void CYearWindow::setTheMe(int type)
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#F8F8F8");
         m_contentBackground->setPalette(anipa);
+        m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#000000"));
@@ -261,17 +262,25 @@ void CYearWindow::setTheMe(int type)
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(pa);
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
 
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
         m_YearLunarLabel->setPalette(Lunapa);
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
 
         m_YearLunarDayLabel->setPalette(Lunapa);
+        m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);
+        DPalette gpa = m_gridWidget->palette();
+        gpa.setColor(DPalette::Background, "#F8F8F8");
+        m_gridWidget->setPalette(gpa);
+        m_gridWidget->setBackgroundRole(DPalette::Background);
 
     } else if (type == 2) {
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#252525");
         m_contentBackground->setPalette(anipa);
+        m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
@@ -294,12 +303,19 @@ void CYearWindow::setTheMe(int type)
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(pa);
-
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
         m_YearLunarLabel->setPalette(Lunapa);
-
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
         m_YearLunarDayLabel->setPalette(Lunapa);
+        m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);
+        DPalette gpa = m_gridWidget->palette();
+        QColor framecolor("#FFFFFF");
+        framecolor.setAlphaF(0.05);
+        gpa.setColor(DPalette::Background, framecolor);
+        m_gridWidget->setPalette(gpa);
+        m_gridWidget->setBackgroundRole(DPalette::Background);
     }
     for (int i = 0; i < 12; i++) {
         m_monthViewList.at(i)->setTheMe(type);

@@ -66,6 +66,7 @@ void CMonthWindow::setTheMe(int type)
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#F8F8F8");
         m_contentBackground->setPalette(anipa);
+        m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
@@ -79,11 +80,17 @@ void CMonthWindow::setTheMe(int type)
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(pa);
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
 
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
         m_YearLunarLabel->setPalette(Lunapa);
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
 
+        DPalette gpa = m_gridWidget->palette();
+        gpa.setColor(DPalette::Background, "#F8F8F8");
+        m_gridWidget->setPalette(gpa);
+        m_gridWidget->setBackgroundRole(DPalette::Background);
 
     } else if (type == 2) {
         DPalette todaypa = m_today->palette();
@@ -98,14 +105,22 @@ void CMonthWindow::setTheMe(int type)
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(pa);
-
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
         m_YearLunarLabel->setPalette(Lunapa);
-
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#252525");
         m_contentBackground->setPalette(anipa);
+        m_contentBackground->setBackgroundRole(DPalette::Background);
+
+        DPalette gpa = m_gridWidget->palette();
+        QColor framecolor("#FFFFFF");
+        framecolor.setAlphaF(0.05);
+        gpa.setColor(DPalette::Background, framecolor);
+        m_gridWidget->setPalette(gpa);
+        m_gridWidget->setBackgroundRole(DPalette::Background);
     }
     m_monthDayView->setTheMe(type);
     m_monthView->setTheMe(type);
@@ -209,10 +224,12 @@ void CMonthWindow::initUI()
     hhLayout->setMargin(0);
 
     hhLayout->addLayout(yeartitleLayout);
-    DFrame *frame = new DFrame();
-    frame->setLayout(mhLayout);
+    m_gridWidget = new DFrame();
+    m_gridWidget->setContentsMargins(0, 0, 0, 0);
+    m_gridWidget->setAutoFillBackground(true);
+    m_gridWidget->setLayout(mhLayout);
 
-    hhLayout->addWidget(frame);
+    hhLayout->addWidget(m_gridWidget);
     m_contentBackground->setLayout(hhLayout);
 
     m_animationContainer = new DFrame(m_contentBackground);

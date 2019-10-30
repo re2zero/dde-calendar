@@ -33,7 +33,7 @@
 #include <DPalette>
 #include <QLocale>
 DGUI_USE_NAMESPACE
-CYearView::CYearView(QWidget *parent) : DWidget(parent)
+CYearView::CYearView(QWidget *parent) : DFrame(parent)
 {
     m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
@@ -135,10 +135,12 @@ void CYearView::setTheMe(int type)
         DPalette anipa = m_gridWidget->palette();
         anipa.setColor(DPalette::Background, Qt::white);
         m_gridWidget->setPalette(anipa);
+        m_gridWidget->setBackgroundRole(DPalette::Background);
 
         DPalette Lunadpa = m_currentMouth->palette();
         Lunadpa.setColor(DPalette::WindowText, QColor("#CF0059"));
         m_currentMouth->setPalette(Lunadpa);
+        m_currentMouth->setForegroundRole(DPalette::WindowText);
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0081FF";
@@ -156,10 +158,12 @@ void CYearView::setTheMe(int type)
         framecolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, framecolor);
         m_gridWidget->setPalette(anipa);
+        m_gridWidget->setBackgroundRole(DPalette::Background);
 
         DPalette Lunadpa = m_currentMouth->palette();
         Lunadpa.setColor(DPalette::WindowText, QColor("#BF1D63"));
         m_currentMouth->setPalette(Lunadpa);
+        m_currentMouth->setForegroundRole(DPalette::WindowText);
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#2ca7f8";

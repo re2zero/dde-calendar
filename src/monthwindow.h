@@ -81,6 +81,7 @@ private:
     DLabel            *m_YearLabel;
     DLabel            *m_YearLunarLabel;
     QSpacerItem       *m_spaceitem;
+    DFrame            *m_gridWidget;
 };
 
 #endif // YEARWINDOW_H

@@ -106,6 +106,8 @@ void CMonthWeekView::setTheMe(int type)
                 monthpa.setColor(DPalette::WindowText, textC);
                 monthpa.setColor(DPalette::Background, textbC);
                 m_weekData.at(i).first->setPalette(monthpa);
+                m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
+                m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
             } else {
                 DPalette monthpa = m_weekData.at(i).first->palette();
                 QColor textC = "#6F6F6F";
@@ -114,6 +116,8 @@ void CMonthWeekView::setTheMe(int type)
                 monthpa.setColor(DPalette::WindowText, textC);
                 monthpa.setColor(DPalette::Background, textbC);
                 m_weekData.at(i).first->setPalette(monthpa);
+                m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
+                m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
             }
         }
 
@@ -127,6 +131,8 @@ void CMonthWeekView::setTheMe(int type)
                 monthpa.setColor(DPalette::WindowText, textC);
                 monthpa.setColor(DPalette::Background, textbC);
                 m_weekData.at(i).first->setPalette(monthpa);
+                m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
+                m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
             } else {
                 DPalette monthpa = m_weekData.at(i).first->palette();
                 QColor textC = "#C0C6D4";
@@ -135,6 +141,8 @@ void CMonthWeekView::setTheMe(int type)
                 monthpa.setColor(DPalette::WindowText, textC);
                 monthpa.setColor(DPalette::Background, textbC);
                 m_weekData.at(i).first->setPalette(monthpa);
+                m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
+                m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
             }
         }
     }

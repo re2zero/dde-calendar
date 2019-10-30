@@ -20,10 +20,10 @@
 #define MONTHDAYVIEW_H
 
 #include <QObject>
-#include <DWidget>
+#include <DFrame>
 #include <QDate>
 DWIDGET_USE_NAMESPACE
-class CMonthDayView : public DWidget
+class CMonthDayView : public DFrame
 {
     Q_OBJECT
 public:

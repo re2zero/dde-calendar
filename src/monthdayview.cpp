@@ -25,7 +25,7 @@
 #include <QEvent>
 #include <DPalette>
 DGUI_USE_NAMESPACE
-CMonthDayView::CMonthDayView(QWidget *parent) : DWidget(parent)
+CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
 {
     m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);
