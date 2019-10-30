@@ -681,6 +681,10 @@
         <source>A week ago(At 9 am)</source>
         <translation>1周前（上午9时）</translation>
     </message>
+    <message>
+        <source>A week ago</source>
+        <translation>1周前</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleNumButton</name>

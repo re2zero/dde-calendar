@@ -165,6 +165,8 @@ void CSchceduleDlg::slotOkBt()
                 scheduleDtailInfo.remindData.n = 1440;
             } else if (m_rmindCombox->currentIndex() == 6) {
                 scheduleDtailInfo.remindData.n = 2880;
+            } else if (m_rmindCombox->currentIndex() == 7) {
+                scheduleDtailInfo.remindData.n = 10080;
             }
         }
     }
@@ -400,6 +402,7 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
         m_rmindCombox->addItem(tr("1 hour ago"));
         m_rmindCombox->addItem(tr("1 day ago"));
         m_rmindCombox->addItem(tr("2 day ago"));
+        m_rmindCombox->addItem(tr("A week ago"));
         m_beginTimeEdit->setVisible(true);
         m_endTimeEdit->setVisible(true);
         if (m_type == 0) {
@@ -832,6 +835,8 @@ void CSchceduleDlg::initRmindRpeatUI()
             } else if (m_scheduleDtailInfo.remindData.n == 1440) {
                 m_rmindCombox->setCurrentIndex(5);
             } else if (m_scheduleDtailInfo.remindData.n == 2880) {
+                m_rmindCombox->setCurrentIndex(6);
+            } else if (m_scheduleDtailInfo.remindData.n == 10080) {
                 m_rmindCombox->setCurrentIndex(6);
             }
         } else {
