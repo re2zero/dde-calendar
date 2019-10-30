@@ -212,6 +212,7 @@ void CWeekWindow::setTheMe(int type)
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#F8F8F8");
         m_contentBackground->setPalette(anipa);
+        m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
@@ -232,19 +233,21 @@ void CWeekWindow::setTheMe(int type)
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(pa);
-
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
         m_YearLunarLabel->setPalette(Lunapa);
-
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
 
         DPalette wpa = m_weekLabel->palette();
         wpa.setColor(DPalette::WindowText, QColor("#717171"));
         m_weekLabel->setPalette(wpa);
+        m_weekLabel->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#252525");
         m_contentBackground->setPalette(anipa);
+        m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
@@ -267,14 +270,15 @@ void CWeekWindow::setTheMe(int type)
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(pa);
-
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
         m_YearLunarLabel->setPalette(Lunapa);
-
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
         DPalette wpa = m_weekLabel->palette();
         wpa.setColor(DPalette::WindowText, QColor("#717171"));
         m_weekLabel->setPalette(wpa);
+        m_weekLabel->setForegroundRole(DPalette::WindowText);
     }
     m_weekview->setTheMe(type);
     m_weekHeadView->setTheMe(type);

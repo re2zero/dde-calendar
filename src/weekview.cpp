@@ -25,7 +25,7 @@
 #include <QEvent>
 #include <QMessageBox>
 #include <QWheelEvent>
-CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
+CWeekView::CWeekView(QWidget *parent) : DFrame(parent)
 {
     m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);

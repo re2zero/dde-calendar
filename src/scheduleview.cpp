@@ -80,6 +80,7 @@ void CScheduleView::setTheMe(int type)
         DPalette palette(this->palette());
         palette.setColor(DPalette::Background, "#FFFFFF");
         this->setPalette(palette);
+        setBackgroundRole(DPalette::Background);
         m_linecolor = "#000000";
         m_linecolor.setAlphaF(0.1);
         m_weekColor = "#00429A";
@@ -93,6 +94,7 @@ void CScheduleView::setTheMe(int type)
         tbcolor.setAlphaF(0.05);
         palette.setColor(DPalette::Background, tbcolor);
         this->setPalette(palette);
+        setBackgroundRole(DPalette::Background);
         m_linecolor = "#000000";
         m_linecolor.setAlphaF(0.1);
         m_weekColor = "#4F9BFF";

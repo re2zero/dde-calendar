@@ -20,9 +20,10 @@
 #define WEEKVIEW_H
 
 #include <QObject>
-#include <QWidget>
+#include <DFrame>
 #include <QDate>
-class CWeekView : public QWidget
+DWIDGET_USE_NAMESPACE
+class CWeekView : public DFrame
 {
     Q_OBJECT
 public:

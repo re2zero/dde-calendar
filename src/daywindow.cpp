@@ -41,45 +41,48 @@ void CDayWindow::setTheMe(int type)
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#F8F8F8");
         m_contentBackground->setPalette(anipa);
+        m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette leftpa = m_leftground->palette();
         leftpa.setColor(DPalette::Background, "#FFFFFF");
         m_leftground->setPalette(leftpa);
+        m_leftground->setBackgroundRole(DPalette::Background);
 
         DPalette ypa = m_YearLabel->palette();
         ypa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(ypa);
-
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         DPalette lpa = m_LunarLabel->palette();
         lpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
         m_LunarLabel->setPalette(lpa);
-
+        m_LunarLabel->setForegroundRole(DPalette::WindowText);
         DPalette spa = m_SolarDay->palette();
         spa.setColor(DPalette::WindowText, Qt::red);
         m_SolarDay->setPalette(spa);
-
+        m_SolarDay->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
         DPalette anipa = m_contentBackground->palette();
         QColor bcolor  = "#FFFFFF";
         bcolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, bcolor);
         m_contentBackground->setPalette(anipa);
-
+        m_contentBackground->setBackgroundRole(DPalette::Background);
         DPalette leftpa = m_leftground->palette();
         leftpa.setColor(DPalette::Background, bcolor);
         m_leftground->setPalette(leftpa);
-
+        m_leftground->setBackgroundRole(DPalette::Background);
         DPalette ypa = m_YearLabel->palette();
         ypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(ypa);
-
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         DPalette lpa = m_LunarLabel->palette();
         lpa.setColor(DPalette::WindowText, QColor("#798BA8"));
         m_LunarLabel->setPalette(lpa);
-
+        m_LunarLabel->setForegroundRole(DPalette::WindowText);
         DPalette spa = m_SolarDay->palette();
         spa.setColor(DPalette::WindowText, Qt::red);
         m_SolarDay->setPalette(spa);
+        m_SolarDay->setForegroundRole(DPalette::WindowText);
     }
     m_daymonthView->setTheMe(type);
     m_schceduleSearchView->setTheMe(type);

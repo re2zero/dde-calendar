@@ -128,7 +128,8 @@ void CWeekHeadView::setTheMe(int type)
         monthpa.setColor(DPalette::WindowText, textC);
         monthpa.setColor(DPalette::Background, textbC);
         m_monthLabel->setPalette(monthpa);
-
+        m_monthLabel->setForegroundRole(DPalette::WindowText);
+        m_monthLabel->setBackgroundRole(DPalette::Background);
         m_backgroundCircleColor = "#2ca7f8";
 
         m_defaultTextColor = "#6F6F6F";
@@ -148,7 +149,8 @@ void CWeekHeadView::setTheMe(int type)
         monthpa.setColor(DPalette::WindowText, "#BF1D63");
         monthpa.setColor(DPalette::Background, textbC);
         m_monthLabel->setPalette(monthpa);
-
+        m_monthLabel->setForegroundRole(DPalette::WindowText);
+        m_monthLabel->setBackgroundRole(DPalette::Background);
         m_backgroundCircleColor = "#2ca7f8";
 
         m_defaultTextColor = "#C0C6D4";
