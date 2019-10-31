@@ -464,13 +464,14 @@ void CSchceduleSearchView::slotedititem(CSchceduleSearchItem *item)
 
 void CSchceduleSearchView::slotsetSearch(QString str)
 {
-    QDate date = QDate::currentDate();
+    QDateTime date = QDateTime::currentDateTime();
 
-    QDate bdate = date.addMonths(-6);
-    QDate edate = date.addMonths(6);
+    QDateTime bdate = date.addMonths(-6);
+    QDateTime edate = date.addMonths(6);
     QVector<ScheduleDateRangeInfo> vScheduleInfo;
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfo(bdate, edate, vScheduleInfo);
     m_vlistData.clear();
+#if 0
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfo(bdate.date(), edate.date(), vScheduleInfo);
     for (int i = 0; i < vScheduleInfo.count(); i++) {
         QVector<ScheduleDtailInfo> vData;
         for (int j = 0; j < vScheduleInfo.at(i).vData.count(); j++) {
@@ -484,6 +485,10 @@ void CSchceduleSearchView::slotsetSearch(QString str)
             m_vlistData.append(sinfo);
         }
     }
+#else
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(str, bdate, edate, vScheduleInfo);
+    m_vlistData = vScheduleInfo;
+#endif
     updateDateShow();
 }
 
