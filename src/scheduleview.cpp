@@ -185,7 +185,7 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
                     int tnum = info.at(m).vData.count();
                     if (m_viewType == 0) {
                         if (tnum > m_sMaxNum) {
-                            tnum = m_sMaxNum + 1;
+                            tnum = m_sMaxNum;
                             for (int n = 0; n  < tnum - 1; n++) {
                                 m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1, tnum, 0, m_viewType, m_sMaxNum);
                             }
@@ -311,7 +311,7 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     m_graphicsView->resize(width(), height());
     int tt = 0.0968 * height() + 0.5;
     if (m_viewType == 0) {
-        m_sMaxNum = ((width() - m_leftMagin) / 7 - 19) / 30;
+        m_sMaxNum = ((width() - m_leftMagin) / 7) / 27;
         m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate, m_endDate);
         m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);

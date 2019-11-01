@@ -146,7 +146,7 @@ QRect CScheduleCoorManage::getDrawRegion(QDate date, QDateTime begintime, QDateT
     int posY = m_height * (ScheduleBT / 86400.0);
     if (coount > maxnum && type == 0) {
 
-        float sscale = 30.0 / (m_width * (1.0 * day / m_totalDay));
+        float sscale = 27.0 / (m_width * (1.0 * day / m_totalDay));
         if (index < maxnum + 1) {
             rWidth = m_width * (1.0 * day / m_totalDay) * sscale + 0.5;
             posX = m_width * (1.0 * (beginday - 1) / m_totalDay) + (index - 1) * rWidth;

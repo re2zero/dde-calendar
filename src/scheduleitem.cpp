@@ -99,21 +99,25 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         QString str = stime.toString("ap HH:mm");
         QFontMetrics fontmetris(font);
         int amwidth = fontmetris.width(str);
-        if (fontmetris.width(str) > rect.width() - 2) {
+        if (fontmetris.width(str) > rect.width() - 5) {
             QString tstr;
             for (int i = 0; i < str.count(); i++) {
                 tstr.append(str.at(i));
                 int widthT = fontmetris.width(tstr) + 5;
                 if (widthT >= rect.width()) {
-                    tstr.chop(2);
+                    if (i < 2) {
+                        tstr.chop(1);
+                    } else {
+                        tstr.chop(2);
+                    }
                     tstr = tstr + "...";
                     break;
                 }
             }
-            painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 12, 20), Qt::AlignLeft, tstr);
+            painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, 20), Qt::AlignLeft, tstr);
 
         } else {
-            painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 12, 20), Qt::AlignLeft, str);
+            painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, 20), Qt::AlignLeft, str);
 
         }
         painter->restore();
