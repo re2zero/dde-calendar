@@ -48,6 +48,7 @@ public:
     //void Invoke(const QString &mothodName, const QString &content);
     bool analysisCreate(const QString &content, ScheduleDtailInfo &info);
     void viewWindow(int type, QDateTime datetime);
+    void UpdateJob();
 public slots:
     void slotTheme(int type);
     void OpenSchedule(QString job);

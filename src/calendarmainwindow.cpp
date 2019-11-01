@@ -162,6 +162,32 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
     }
 }
 
+void Calendarmainwindow::UpdateJob()
+{
+    int index = m_stackWidget->currentIndex();
+    if (index < 0 || index > m_stackWidget->count() - 1) {
+
+        return;
+    }
+    switch (index) {
+    case 1: {
+        //m_monthWindow->slotReturnTodayUpdate();
+        m_monthWindow->slotupdateSchedule(0);
+    }
+    break;
+    case 2: {
+        //m_weekWindow->slotReturnTodayUpdate();
+        m_weekWindow->slotupdateSchedule(0);
+    }
+    break;
+    case 3: {
+        //m_DayWindow->slotReturnTodayUpdate();
+        m_DayWindow->slotupdateSchedule(0);
+    }
+    break;
+    }
+}
+
 void Calendarmainwindow::slotTheme(int type)
 {
     if (type == 0) {

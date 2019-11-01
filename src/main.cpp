@@ -173,6 +173,10 @@ int main(int argc, char *argv[])
     if (dbus.registerService("com.deepin.Calendar"), QDBusConnectionInterface::ReplaceExistingService, QDBusConnectionInterface::AllowReplacement) {
 
         ExportedInterface einterface(&ww);
+        einterface.registerAction("CREATE", "create a new schedule");
+        einterface.registerAction("VIEW", "check a date on calendar");
+        einterface.registerAction("QUERY", "find a schedule information");
+        einterface.registerAction("CANCEL", "cancel a schedule");
         return a.exec();
     }
     return 0;

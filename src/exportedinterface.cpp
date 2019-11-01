@@ -15,7 +15,7 @@ QVariant ExportedInterface::invoke(const QString &action, const QString &paramet
     ScheduleDtailInfo info;
     Exportpara para;
     QString tstr = parameters;
-    if (analysispara(tstr, info, para)) {
+    if (!analysispara(tstr, info, para)) {
         return QVariant(false);
     }
 
@@ -45,6 +45,7 @@ QVariant ExportedInterface::invoke(const QString &action, const QString &paramet
             }
         }
     }
+    dynamic_cast<Calendarmainwindow *>(m_object)->UpdateJob();
     return QVariant(true);
 }
 
@@ -96,6 +97,7 @@ bool ExportedInterface::analysispara( QString &parameters, ScheduleDtailInfo &in
         }
     }
     if (rootObj.contains("ViewName")) {
+        //  para.viewType = rootObj.value("ViewName").toString().toInt();
         para.viewType = rootObj.value("ViewName").toInt();
     }
     if (rootObj.contains("ViewTime")) {
