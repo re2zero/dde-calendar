@@ -33,6 +33,7 @@
 //#include "monthwindow.h"
 #include "yearwindow.h"
 #include "exportedinterface.h"
+#include "configsettings.h"
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 /**********************复制部分**************************/
@@ -142,6 +143,12 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    CConfigSettings::init();
+    // set theme
+    bool isOk = false;
+    int viewtype = CConfigSettings::value("base.view").toInt(&isOk);
+    if (!isOk)
+        viewtype = 2;
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
     // 应用已保存的主题设置
@@ -158,6 +165,7 @@ int main(int argc, char *argv[])
     ww.move(PrimaryRect().center() - ww.geometry().center());
     //ww.setDate(QDate::currentDate());
     ww.slotTheme(getThemeTypeSetting());
+    ww.viewWindow(viewtype, QDateTime::currentDateTime());
     ww.show();
 
     QDBusConnection dbus = QDBusConnection::sessionBus();

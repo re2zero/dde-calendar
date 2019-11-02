@@ -38,6 +38,7 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QMessageBox>
+#include "configsettings.h"
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -470,6 +471,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     }
     break;
     }
+    CConfigSettings::setOption("base.view", index + 1);
 }
 
 void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
