@@ -392,6 +392,7 @@ void CSchceduleSearchView::updateDateShow()
         listItem->setFlags(Qt::ItemIsTristate );
         m_gradientItemList->addItem(listItem);
         m_gradientItemList->setItemWidget(listItem, gwi);
+        m_labellist.append(gwi);
     }
     if (m_currentItem != NULL) {
         m_gradientItemList->scrollToItem(m_currentItem, QAbstractItemView::PositionAtTop);
@@ -507,6 +508,12 @@ void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
     for (int i = 0; i < m_labellist.count(); i++) {
         m_labellist.at(i)->setFixedSize(m_gradientItemList->width() - 20, 35);
         m_labellist.at(i)->update();
+    }
+    if (m_gradientItemList->count() == 1) {
+        QListWidgetItem *item11 = m_gradientItemList->item(0);
+        item11->setSizeHint(QSize(m_gradientItemList->width(), height() * 0.7978)); //每次改变Item的高度
+        m_labellist.at(0)->setFixedSize(m_gradientItemList->width(), height() * 0.7978);
+        m_labellist.at(0)->update();
     }
     DWidget::resizeEvent(event);
 }
