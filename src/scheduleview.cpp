@@ -92,8 +92,8 @@ void CScheduleView::setTheMe(int type)
 
     } else if (type == 2) {
         DPalette palette(this->palette());
-        QColor tbcolor = "#FFFFFF";
-        tbcolor.setAlphaF(0.05);
+        QColor tbcolor = "#282828";
+        //tbcolor.setAlphaF(0.05);
         palette.setColor(DPalette::Background, tbcolor);
         this->setPalette(palette);
         setBackgroundRole(DPalette::Background);
@@ -286,7 +286,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
         painter.setPen(Qt::SolidLine);
         painter.setPen(m_linecolor);
         for (int i = 1; i < m_TotalDay; i++) {
-            painter.drawLine(QPoint(m_leftMagin + i * intenval + 1, 1), QPoint(m_leftMagin  + i * intenval + 1, m_topMagin + 1));
+            painter.drawLine(QPoint(m_leftMagin + i * intenval, 1), QPoint(m_leftMagin  + i * intenval, m_topMagin + 1));
         }
         painter.restore();
         painter.save();
@@ -296,10 +296,10 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.setBrush(m_weekColor);
             painter.setPen(Qt::NoPen);
             if (d == 6 ) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, intenval, m_topMagin + 1));
+                painter.drawRect(QRect(m_leftMagin + i * intenval, 0, intenval, m_topMagin));
             }
             if (d == 7) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, intenval, m_topMagin + 1));
+                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, intenval, m_topMagin));
             }
         }
         painter.restore();

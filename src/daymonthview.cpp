@@ -56,7 +56,7 @@ CDayMonthView::CDayMonthView(QWidget *parent) : DWidget(parent)
     m_weeklist.append(tr("Sunday"));
     initUI();
     initConnection();
-
+    setAutoFillBackground(true);
     //setFixedSize(DDEDayCalendar::D_MWindowWidth, DDEDayCalendar::D_MWindowHeight);
 }
 void CDayMonthView::handleCurrentDateChanged(const QDate date, const CaHuangLiDayInfo &detail)
@@ -84,6 +84,13 @@ void CDayMonthView::setLunarVisible(bool visible)
 void CDayMonthView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
+        DPalette anipa = this->palette();
+        QColor tbcolor = "#FFFFFF";
+        //tbcolor.setAlphaF(0.05);
+        anipa.setColor(DPalette::Background, tbcolor);
+        setPalette(anipa);
+        setBackgroundRole(DPalette::Background);
+
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
         todaypa.setColor(DPalette::Dark, Qt::white);
@@ -152,6 +159,14 @@ void CDayMonthView::setTheMe(int type)
 
 
     } else if (type == 2) {
+        DPalette anipa = this->palette();
+        QColor tbcolor = "#FFFFFF";
+        tbcolor.setAlphaF(0.05);
+        anipa.setColor(DPalette::Background, tbcolor);
+        setPalette(anipa);
+        setBackgroundRole(DPalette::Background);
+
+
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
         todaypa.setColor(DPalette::Light, "#484848");

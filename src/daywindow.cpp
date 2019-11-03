@@ -68,7 +68,7 @@ void CDayWindow::setTheMe(int type)
         m_contentBackground->setPalette(anipa);
         m_contentBackground->setBackgroundRole(DPalette::Background);
         DPalette leftpa = m_leftground->palette();
-        leftpa.setColor(DPalette::Background, bcolor);
+        leftpa.setColor(DPalette::Background, "#282828");
         m_leftground->setPalette(leftpa);
         m_leftground->setBackgroundRole(DPalette::Background);
         DPalette ypa = m_YearLabel->palette();
