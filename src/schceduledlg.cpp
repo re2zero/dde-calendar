@@ -760,10 +760,18 @@ void CSchceduleDlg::initUI()
     downlayout->addWidget(verline);
     downlayout->addWidget(m_OkBt);
     m_gwi = new DFrame(this);
+    m_gwi->setFrameShape(QFrame::NoFrame);
     maintlayout->addLayout(downlayout);
     maintlayout->addStretch();
     m_gwi->setLayout(maintlayout);
     m_gwi->setGeometry(0, 68, 438, 412);
+    DPalette anipa = m_gwi->palette();
+    QColor color = "#F8F8F8";
+    color.setAlphaF(0.0);
+    anipa.setColor(DPalette::Background, color);
+    m_gwi->setAutoFillBackground(true);
+    m_gwi->setPalette(anipa);
+    m_gwi->setBackgroundRole(DPalette::Background);
     //addContent(gwi);
     //setLayout(maintlayout);
     initDateEdit();

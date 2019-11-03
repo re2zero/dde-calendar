@@ -38,6 +38,7 @@ CScheduleView::CScheduleView(QWidget *parent, int viewType)
     initUI();
     initConnection();
     setFrameRounded(true);
+    setFrameShape(QFrame::NoFrame);
 }
 
 CScheduleView::~CScheduleView()

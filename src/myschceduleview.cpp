@@ -299,6 +299,13 @@ void CMySchceduleView::initUI()
     DFrame *gwi = new DFrame(this);
     gwi->setContentsMargins(0, 0, 0, 0);
     gwi->setLayout(mainLayout);
+    DPalette anipa = gwi->palette();
+    QColor color = "#F8F8F8";
+    color.setAlphaF(0.0);
+    anipa.setColor(DPalette::Background, color);
+    gwi->setAutoFillBackground(true);
+    gwi->setPalette(anipa);
+    gwi->setBackgroundRole(DPalette::Background);
     // gwi->setGeometry(0, 51, 380, 110);
     addContent(gwi, Qt::AlignCenter);
 }
