@@ -256,6 +256,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.setPen(m_timeColor);
     for (int i = 0; i < m_vPos.size(); i++) {
         if (m_vHours[i] == 0) continue;
+        if (m_vHours[i] == 24) continue;
         if (m_vHours[i] > 12) {
             painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
         } else {
