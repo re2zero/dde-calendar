@@ -58,6 +58,7 @@ private:
     CCaYearMonthEdit *m_monthLabel;
     CCaYearMonthEdit *m_yearLabel;
     QColor m_backgroundCircleColor = "#2ca7f8";
+    QWidget *topWidget;
 
     QColor m_defaultTextColor = Qt::black;
     QColor m_currentDayTextColor = "#2ca7f8";

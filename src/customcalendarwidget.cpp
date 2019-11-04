@@ -169,11 +169,15 @@ void CCustomCalendarWidget::resizeEvent(QResizeEvent *e)
 
 void CCustomCalendarWidget::initTopWidget()
 {
-    QWidget *topWidget = new QWidget(this);
+    topWidget = new QWidget(this);
     topWidget->setObjectName("CalendarTopWidget");
     topWidget->setFixedHeight(40);
     topWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-
+    topWidget->setAutoFillBackground(true);
+    DPalette anipa = topWidget->palette();
+    anipa.setColor(DPalette::Background, m_defaultBColor);
+    topWidget->setPalette(anipa);
+    topWidget->setBackgroundRole(DPalette::Background);
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setContentsMargins(12, 0, 12, 0);
     hboxLayout->setSpacing(4);
