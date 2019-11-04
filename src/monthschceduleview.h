@@ -125,6 +125,8 @@ protected:
     void paintEvent ( QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;

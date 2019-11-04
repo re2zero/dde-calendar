@@ -43,7 +43,7 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
-    connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
+    //connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
 }
 
 void CMonthSchceduleWidgetItem::setColor( QColor color1, QColor color2, bool GradientFlag /*= false*/ )
@@ -306,6 +306,18 @@ void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
     dlg.exec();
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
+}
+
+void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
+{
+    m_transparentf = false;
+    update();
+}
+
+void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
+{
+    m_transparentf = true;
+    update();
 }
 CMonthSchceduleNumButton::CMonthSchceduleNumButton(QWidget *parent /*= nullptr*/): DPushButton(parent)
 {

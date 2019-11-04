@@ -85,6 +85,12 @@ void CAllDaySchceduleWeekWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
     setToolTip(m_ScheduleInfo.titleName);
     update();
 }
+
+void CAllDaySchceduleWeekWidgetItem::setTransparentB(bool t, QColor tcolor)
+{
+    m_transparentcolor = tcolor;
+    m_transparentf = t;
+}
 void CAllDaySchceduleWeekWidgetItem::slotCreate()
 {
     CSchceduleDlg dlg(1, this);
@@ -263,6 +269,11 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         }
 
         painter.drawText(QRect(fillRect.topLeft().x() + 13, 0, fillRect.width(), fillRect.height()), Qt::AlignLeft, tstr);
+        if (m_transparentf) {
+            painter.setBrush(m_transparentcolor);
+            painter.setPen(Qt::NoPen);
+            painter.drawRoundedRect(QRect(fillRect.topLeft().x() + 13, 0, fillRect.width(), fillRect.height()), 8, 8);
+        }
     } else {
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -312,6 +323,18 @@ void CAllDaySchceduleWeekWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
     dlg.exec();
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
+}
+
+void CAllDaySchceduleWeekWidgetItem::mousePressEvent(QMouseEvent *event)
+{
+    m_transparentf = true;
+    update();
+}
+
+void CAllDaySchceduleWeekWidgetItem::mouseReleaseEvent(QMouseEvent *event)
+{
+    m_transparentf = false;
+    update();
 }
 
 
@@ -468,6 +491,9 @@ CAllDaySchceduleWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(int i
             gwi->setFixedSize(width(), 22);
             gwi->setText(gdcolor.textColor, font, QPoint(23, 2), average);
         }
+        QColor TransparentC = "#000000";
+        TransparentC.setAlphaF(0.05);
+        gwi->setTransparentB(false, TransparentC);
         gwi->setItem(NULL);
     } else {
         gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
@@ -484,6 +510,9 @@ CAllDaySchceduleWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(int i
             gwi->setFixedSize(width(), 22);
             gwi->setText(gdcolor.textColor, font, QPoint(8, 2), average);
         }
+        QColor TransparentC = "#000000";
+        TransparentC.setAlphaF(0.05);
+        gwi->setTransparentB(false, TransparentC);
         gwi->setData(gd);
         gwi->setItem(NULL);
     }

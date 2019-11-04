@@ -108,6 +108,7 @@ public:
     }
 
     void setData(ScheduleDtailInfo  vScheduleInfo);
+    void setTransparentB(bool t, QColor tcolor);
     const ScheduleDtailInfo &getData() const
     {
         return m_ScheduleInfo;
@@ -128,6 +129,8 @@ protected:
     void paintEvent ( QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;
@@ -144,6 +147,8 @@ private:
     int                   m_editType = 0;
     QDate                                       m_dianjiDay;
     CScheduleCoorManage                         *m_coorManage;
+    QColor                m_transparentcolor;
+    bool                  m_transparentf = false;
 };
 class CAllSolarDayWeekWidgetItem : public DPushButton
 {

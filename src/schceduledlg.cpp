@@ -73,6 +73,7 @@ void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
     m_allDayCheckbox->setChecked(info.allday);
     slotallDayStateChanged(info.allday);
     initRmindRpeatUI();
+    // m_textEdit->setTextCursor()
 }
 
 void CSchceduleDlg::setDate(const QDateTime &date)
@@ -777,6 +778,7 @@ void CSchceduleDlg::initUI()
     initDateEdit();
     if (m_type == 1)
         slotallDayStateChanged(0);
+    setFocus();
 }
 
 void CSchceduleDlg::initConnection()
