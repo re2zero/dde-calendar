@@ -564,6 +564,14 @@ void CSchceduleDlg::initUI()
         QColor conttelc("#FFFFFF");
         conttelc.setAlphaF(0.15);
         tpa.setColor(DPalette::Background, conttelc);
+        QTextCharFormat fmt;
+        conttelc.setAlphaF(0.0);
+
+        QTextCursor textcursor = m_textEdit->textCursor();
+        fmt = textcursor.charFormat();
+        fmt.setBackground(conttelc);
+        textcursor.setCharFormat(fmt);
+        m_textEdit->setTextCursor(textcursor);
     }
 
     m_textEdit->setPalette(tpa);
