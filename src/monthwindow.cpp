@@ -210,7 +210,7 @@ void CMonthWindow::initUI()
     yeartitleLayout->addStretch();
     yeartitleLayout->addWidget(m_today);
 
-    m_monthView = new CMonthView();
+    m_monthView = new CMonthView(this);
     QVBoxLayout *mhLayout = new QVBoxLayout;
     mhLayout->setMargin(0);
     mhLayout->setSpacing(0);

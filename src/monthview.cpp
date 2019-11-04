@@ -35,6 +35,8 @@
 #include "scheduledatamanage.h"
 #include "monthschceduleview.h"
 #include <DHiDPIHelper>
+#include <DPalette>
+DGUI_USE_NAMESPACE
 void CMonthView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
@@ -70,7 +72,6 @@ void CMonthView::setTheMe(int type)
 
         m_hoverColor = "#000000";
         m_hoverColor.setAlphaF(0.1);
-
     } else if (type == 2) {
 
         m_topBorderColor = Qt::red;
@@ -106,6 +107,11 @@ void CMonthView::setTheMe(int type)
         m_hoverColor = "#FFFFFF";
         m_hoverColor.setAlphaF(0.1);
     }
+    DPalette tooltippa = m_tooltipview->palette();
+    tooltippa.setColor(DPalette::WindowText, m_defaultTextColor);
+    m_tooltipview->setPalette(tooltippa);
+    m_tooltipview->setForegroundRole(DPalette::WindowText);
+
     m_weekIndicator->setTheMe(type);
     m_MonthSchceduleView->setTheMe(type);
 }
@@ -122,6 +128,10 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     if (!emptyCaLunarDayInfo)
         emptyCaLunarDayInfo = new CaLunarDayInfo;
 
+    m_tooltipview = new DLabel(parent);
+    m_tooltipview->setFixedHeight(22);
+    m_tooltipview->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    m_tooltipview->setAttribute(Qt::WA_TranslucentBackground);
     m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(24);
     m_dayNumFont.setWeight(QFont::Light);
@@ -372,10 +382,39 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             const int pos = m_cellList.indexOf(cell);
             m_cellhoverflag[pos] = false;
             m_cellList[pos]->update();
+            m_tooltipview->hide();
         } else if (e->type() == QEvent::Enter) {
             const int pos = m_cellList.indexOf(cell);
             m_cellhoverflag[pos] = true;
             m_cellList[pos]->update();
+        } else if (e->type() == QEvent::ToolTip) {
+            if (m_showState & ShowLunar) {
+                const int pos = m_cellList.indexOf(cell);
+                if (getShowSolarDayByDate(m_days[pos])) {
+                    QRect fillRect = QRect(6, 34, cell->width() - 12, 22);
+                    QPoint ss = QCursor::pos();
+                    ss = cell->mapFromGlobal(QCursor::pos());
+                    if (fillRect.contains(ss)) {
+                        CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
+                        if (!dayInfo.mSolarFestival.isEmpty() || !dayInfo.mLunarFestival.isEmpty()) {
+                            QString str =  dayInfo.mSolarFestival;
+                            if (!dayInfo.mSolarFestival.isEmpty() && dayInfo.mLunarFestival.isEmpty()) {
+                                str = dayInfo.mSolarFestival;
+                            } else if (!dayInfo.mSolarFestival.isEmpty() && !dayInfo.mLunarFestival.isEmpty()) {
+                                str = dayInfo.mSolarFestival + " " + dayInfo.mLunarFestival;
+                            } else {
+                                str = dayInfo.mLunarFestival;
+                            }
+                            m_tooltipview->setText(str);
+                            int px = cell->x();
+                            int py = cell->y();
+                            QPoint pos22 = mapToGlobal(QPoint(px, py));
+                            m_tooltipview->move(pos22.x() + ss.x(), pos22.y() + m_weekIndicator->height() + ss.y() + 22);
+                            m_tooltipview->show();
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -174,6 +174,7 @@ private:
     QVBoxLayout *m_mainLayout;
     int  m_leftmaagin = 0;
     int  m_topmagin = 0;
+    DLabel         *m_tooltipview;
 };
 
 #endif // MYCALENDARWIDGET_H
