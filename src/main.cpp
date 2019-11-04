@@ -109,7 +109,8 @@ QRect PrimaryRect()
 #include "schedulesdbus.h"
 int main(int argc, char *argv[])
 {
-    DApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //DApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     DApplication::loadDXcbPlugin();
     DApplication a(argc, argv);
     g_appPath = QDir::homePath() + QDir::separator() + "." + qApp->applicationName();
