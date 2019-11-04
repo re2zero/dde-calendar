@@ -376,7 +376,12 @@ bool WScheduleDateThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
     } else if (s1.beginDateTime.date() != s1.endDateTime.date() && s2.beginDateTime.date() != s2.endDateTime.date()) {
         return s1.beginDateTime.date() < s2.beginDateTime.date();
     } else {
-        return s1.beginDateTime < s2.beginDateTime;
+        if (s1.beginDateTime == s2.beginDateTime) {
+            return s1.titleName < s2.titleName;
+        } else {
+            return s1.beginDateTime < s2.beginDateTime;
+        }
+
     }
 }
 bool WScheduleDaysThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
