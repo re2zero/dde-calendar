@@ -240,9 +240,11 @@ protected:
 public slots:
     void scrollBarValueChangedSlot();
     void slotDoubleEvent(int type);
+    void slotDeleteItem();
 signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours);
     void signalsUpdateShcedule(int id = 0);
+    void signalsitem(void *item);
 private:
     int checkDay(int weekday);
 
@@ -250,6 +252,7 @@ private:
     QGraphicsScene                *m_graphicsScene;               //绘制Scene
     CScheduleCoorManage           *m_coorManage;
     QVector<CScheduleItem *>        m_vScheduleItem;
+    CScheduleItem                *m_currentItem; //当前item
     QMargins                       m_margins;                     //四周空白
     bool                           m_LRFlag;          //水平线
     QPen                           m_LRPen;           //水平线画笔

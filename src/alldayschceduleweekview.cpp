@@ -36,6 +36,7 @@
 #include <QGraphicsOpacityEffect>
 #include "schedulecoormanage.h"
 #include "schcedulectrldlg.h"
+
 DGUI_USE_NAMESPACE
 CAllDaySchceduleWeekWidgetItem::CAllDaySchceduleWeekWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
 {
@@ -335,6 +336,7 @@ void CAllDaySchceduleWeekWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
     m_transparentf = false;
     update();
+    emit signalsPress(this);
 }
 
 
@@ -385,6 +387,7 @@ CAllDaySchceduleWeekView::CAllDaySchceduleWeekView(QWidget *parent, int edittype
     connect(m_createAction, &QAction::triggered, this, &CAllDaySchceduleWeekView::slotCreate);
     //setStyleSheet("background-color:transparent");
     setSelectionMode(QAbstractItemView::NoSelection);
+
     //setSelectionModel(nullptr);
 }
 
@@ -433,6 +436,7 @@ void CAllDaySchceduleWeekView::contextMenuEvent(QContextMenuEvent *event)
 
 void CAllDaySchceduleWeekView::updateDateShow()
 {
+    m_currentitem = NULL;
     //remove
     for (int i = 0; i < this->count(); i++) {
         QListWidgetItem *item11 = this->takeItem(i);
@@ -518,6 +522,7 @@ CAllDaySchceduleWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(int i
     }
     connect(gwi, &CAllDaySchceduleWeekWidgetItem::signalsDelete, this, &CAllDaySchceduleWeekView::slotdeleteitem);
     connect(gwi, &CAllDaySchceduleWeekWidgetItem::signalsEdit, this, &CAllDaySchceduleWeekView::slotedititem);
+    connect(gwi, &CAllDaySchceduleWeekWidgetItem::signalsPress, this, &CAllDaySchceduleWeekView::slotupdateItem);
     return gwi;
 }
 
@@ -578,6 +583,19 @@ void CAllDaySchceduleWeekView::slotedititem(CAllDaySchceduleWeekWidgetItem *item
     emit signalsUpdateShcedule(item->getData().id);
     updateDateShow();
     update();
+}
+
+void CAllDaySchceduleWeekView::slotupdateItem(CAllDaySchceduleWeekWidgetItem *item)
+{
+    m_currentitem = item;
+    emit signalsitem(this);
+}
+
+void CAllDaySchceduleWeekView::slotDeleteItem()
+{
+    if (m_currentitem != NULL) {
+        m_currentitem->slotDelete();
+    }
 }
 
 

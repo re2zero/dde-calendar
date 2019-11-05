@@ -61,6 +61,8 @@ public slots:
     void setDate(QVector<QDate> vdate, QVector<QString> vSolarDay);
     void slotupdateSchedule(int id = 0);
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
+    void slotitem(void *item);
+    void slotDeleteitem();
 protected:
     void paintEvent( QPaintEvent *event );
     void resizeEvent(QResizeEvent *event);
@@ -85,6 +87,7 @@ private:
     QDate                     m_endDate;
     int                       m_viewType = 0;
     int                       m_sMaxNum = 4;
+    void                      *m_currentShcedule = NULL;
     QColor                    m_linecolor = Qt::lightGray;
     QColor                    m_weekColor = "#E6EEF2";
     QColor                    m_ALLDayColor = "#303030";

@@ -45,6 +45,7 @@ public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
     void slotupdateItem(CMonthSchceduleWidgetItem *item);
+    void slotDeleteItem();
 private:
 
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule);
@@ -65,6 +66,7 @@ private:
     int                                          m_leftMagin;
     int                                          m_topMagin;
     int                                          m_buttommagin;
+    CMonthSchceduleWidgetItem                   *m_currentitem = NULL;
 };
 
 class CMonthSchceduleNumButton : public DPushButton

@@ -60,9 +60,12 @@ public:
     void setLunarVisible(bool state);
 signals:
     void signalsUpdateShcedule(int id = 0);
+    void signalsitem(void *item);
 public slots:
     void slotdeleteitem(CAllDaySchceduleWeekWidgetItem *item);
     void slotedititem(CAllDaySchceduleWeekWidgetItem *item, int type = 0);
+    void slotupdateItem(CAllDaySchceduleWeekWidgetItem *item);
+    void slotDeleteItem();
 private slots:
     void slotCreate();
 protected:
@@ -85,6 +88,7 @@ private:
     CScheduleCoorManage                         *m_coorManage;
     QDate                                       m_dianjiDay;
     bool                                        m_LunarVisible;
+    CAllDaySchceduleWeekWidgetItem *m_currentitem = NULL;
 };
 
 class CAllDaySchceduleWeekWidgetItem : public DPushButton
@@ -120,6 +124,7 @@ public:
 signals:
     void signalsDelete(CAllDaySchceduleWeekWidgetItem *item);
     void signalsEdit(CAllDaySchceduleWeekWidgetItem *item, int type = 0);
+    void signalsPress(CAllDaySchceduleWeekWidgetItem *item);
 public slots:
     void slotEdit();
     void slotDelete();

@@ -173,6 +173,7 @@ void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
 void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
 {
     if (w != this) return;
+    m_currentShcedule = NULL;
     m_graphicsView->clearSchdule();
     m_vListSchedule = data;
     for (int i = 0; i < m_TotalDay; i++) {
@@ -365,6 +366,9 @@ void CScheduleView::initConnection()
     connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     //connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
     connect(m_alldaylist, &CAllDaySchceduleWeekView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
+    connect(m_graphicsView, &CGraphicsView::signalsitem, this, &CScheduleView::slotitem);
+    connect(m_alldaylist, &CAllDaySchceduleWeekView::signalsitem, this, &CScheduleView::slotitem);
+
 
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);
@@ -373,14 +377,34 @@ void CScheduleView::initConnection()
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreateSchedule()));
+
+    QShortcut *dshortcut = new QShortcut(this);
+    dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
+    connect(dshortcut, SIGNAL(activated()), this, SLOT(slotDeleteitem()));
 }
 void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
     updateSchedule(0);
     updateAllday(0);
 }
+
+void CScheduleView::slotitem(void *item)
+{
+    m_currentShcedule = item;
+}
+
+void CScheduleView::slotDeleteitem()
+{
+    if (m_currentShcedule == NULL) return;
+    if (m_currentShcedule == m_graphicsView) {
+        m_graphicsView->slotDeleteItem();
+    } else {
+        m_alldaylist->slotDeleteItem();
+    }
+}
 void CScheduleView::updateSchedule(int id)
 {
+    m_currentShcedule = NULL;
     m_graphicsView->clearSchdule();
     setEnabled(false);
     emit signalsupdatescheduleD(this, m_beginDate, m_endDate);

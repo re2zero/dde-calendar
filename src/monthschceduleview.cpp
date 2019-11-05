@@ -34,6 +34,7 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 #include "schcedulectrldlg.h"
+#include <QShortcut>
 DGUI_USE_NAMESPACE
 CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
 {
@@ -218,7 +219,7 @@ void CMonthSchceduleWidgetItem::slotDoubleEvent(int type)
 
 void CMonthSchceduleWidgetItem::slotPress()
 {
-    m_transparentf = true;
+    // m_transparentf = true;
     emit signalsPress(this);
 }
 
@@ -318,6 +319,7 @@ void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
     m_transparentf = true;
     update();
+    slotPress();
 }
 CMonthSchceduleNumButton::CMonthSchceduleNumButton(QWidget *parent /*= nullptr*/): DPushButton(parent)
 {
@@ -405,7 +407,9 @@ void CMonthSchceduleView::setTheMe(int type)
 
 CMonthSchceduleView::CMonthSchceduleView(QWidget *parent) : QObject (parent), m_parernt(parent)
 {
-
+    QShortcut *shortcut = new QShortcut(parent);
+    shortcut->setKey(QKeySequence(QLatin1String("Delete")));
+    connect(shortcut, SIGNAL(activated()), this, SLOT(slotDeleteItem()));
 }
 
 CMonthSchceduleView::~CMonthSchceduleView()
@@ -442,11 +446,23 @@ void CMonthSchceduleView::slotedititem(CMonthSchceduleWidgetItem *item, int type
 
 void CMonthSchceduleView::slotupdateItem(CMonthSchceduleWidgetItem *item)
 {
+    m_currentitem = item;
+    return;
     for (int i = 0; i < m_scheduleShowItem.count(); i++) {
         if (m_scheduleShowItem.at(i) == item) continue;
         CMonthSchceduleWidgetItem *titem = dynamic_cast<CMonthSchceduleWidgetItem *>(m_scheduleShowItem.at(i));
         if (titem != NULL) {
             titem->setTransparentB(false);
+        }
+    }
+}
+
+void CMonthSchceduleView::slotDeleteItem()
+{
+    if (m_currentitem != NULL) {
+        CMonthSchceduleWidgetItem *titem = dynamic_cast<CMonthSchceduleWidgetItem *>(m_currentitem);
+        if (titem != NULL) {
+            titem->slotDelete();
         }
     }
 }
@@ -701,6 +717,7 @@ void CMonthSchceduleView::updateData()
 }
 void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule)
 {
+    m_currentitem = NULL;
     for (int i = 0; i < m_scheduleShowItem.count(); i++) {
 
         m_scheduleShowItem[i]->deleteLater();
