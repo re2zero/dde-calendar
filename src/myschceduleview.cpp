@@ -26,6 +26,7 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 #include "schcedulectrldlg.h"
+#include <QShortcut>
 DGUI_USE_NAMESPACE
 CMySchceduleView::CMySchceduleView(QWidget *parent) : DDialog(parent)
 {
@@ -320,4 +321,7 @@ void CMySchceduleView::initConnection()
 {
     connect(m_editBt, &DPushButton::clicked, this, &CMySchceduleView::slotEditBt);
     connect(m_deleteBt, &DPushButton::clicked, this, &CMySchceduleView::slotDeleteBt);
+    QShortcut *shortcut = new QShortcut(this);
+    shortcut->setKey(QKeySequence(QLatin1String("ESC")));
+    connect(shortcut, SIGNAL(activated()), this, SLOT(close()));
 }

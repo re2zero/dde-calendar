@@ -31,6 +31,7 @@
 #include <DPalette>
 #include "schcedulectrldlg.h"
 #include "timeeditctrl.h"
+#include <QShortcut>
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
@@ -801,6 +802,10 @@ void CSchceduleDlg::initConnection()
     connect(m_bCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotBDateEidtInfo);
 
     connect(m_eCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotEDateEidtInfo);
+
+    QShortcut *shortcut = new QShortcut(this);
+    shortcut->setKey(QKeySequence(QLatin1String("ESC")));
+    connect(shortcut, SIGNAL(activated()), this, SLOT(slotCancelBt()));
 }
 
 void CSchceduleDlg::initDateEdit()

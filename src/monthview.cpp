@@ -36,6 +36,7 @@
 #include "monthschceduleview.h"
 #include <DHiDPIHelper>
 #include <DPalette>
+#include <QShortcut>
 DGUI_USE_NAMESPACE
 void CMonthView::setTheMe(int type)
 {
@@ -183,6 +184,10 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(this, &CMonthView::dateSelected, this, &CMonthView::handleCurrentDateChanged);
     m_createAction = new QAction(tr("Create"), this);
+
+    QShortcut *shortcut = new QShortcut(this);
+    shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
+    connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreate()));
     connect(m_createAction, &QAction::triggered, this, &CMonthView::slotCreate);
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CMonthView::slotsupdatescheduleD);
     connect(this, &CMonthView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);

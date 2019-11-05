@@ -24,6 +24,8 @@
 #include "alldayschceduleweekview.h"
 #include "scheduledatamanage.h"
 #include <DPalette>
+#include <QShortcut>
+#include "schceduledlg.h"
 DGUI_USE_NAMESPACE
 static int hourTextLMagin = 16;
 static int hourTextTMagin = 48;
@@ -214,6 +216,18 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
     setEnabled(true);
 }
 
+void CScheduleView::slotCreateSchedule()
+{
+    CSchceduleDlg dlg(1, this);
+    QDateTime tDatatime;
+    tDatatime.setDate(m_currteDate);
+    tDatatime.setTime(QTime::currentTime());
+    dlg.setDate(tDatatime);
+    if (dlg.exec() == DDialog::Accepted) {
+        slotupdateSchedule();
+    }
+}
+
 void CScheduleView::setDate( QDate date )
 {
     m_currteDate = date;
@@ -355,6 +369,10 @@ void CScheduleView::initConnection()
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);
     connect(this, &CScheduleView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
+
+    QShortcut *shortcut = new QShortcut(this);
+    shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
+    connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreateSchedule()));
 }
 void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
 {

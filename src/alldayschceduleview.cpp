@@ -36,6 +36,7 @@
 #include <QGraphicsOpacityEffect>
 #include "schedulecoormanage.h"
 #include "schcedulectrldlg.h"
+#include <QShortcut>
 DGUI_USE_NAMESPACE
 CAllDaySchceduleWidgetItem::CAllDaySchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
 {
@@ -385,6 +386,9 @@ CAllDaySchceduleView::CAllDaySchceduleView(QWidget *parent, int edittype) : DLis
     m_coorManage = new CScheduleCoorManage;
 
     m_createAction = new QAction(tr("Create"), this);
+    QShortcut *shortcut = new QShortcut(this);
+    shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
+    connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreate()));
     connect(m_createAction, &QAction::triggered, this, &CAllDaySchceduleView::slotCreate);
     //setStyleSheet("background-color:transparent");
     setSelectionMode(QAbstractItemView::NoSelection);

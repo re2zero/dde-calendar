@@ -50,6 +50,7 @@ public:
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
+    void slotCreateSchedule();
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 signals:

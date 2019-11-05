@@ -272,7 +272,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         if (m_transparentf) {
             painter.setBrush(m_transparentcolor);
             painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(QRect(fillRect.topLeft().x() + 13, 0, fillRect.width(), fillRect.height()), 8, 8);
+            painter.drawRoundedRect(fillRect, 8, 8);
         }
     } else {
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
