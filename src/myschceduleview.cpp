@@ -111,6 +111,8 @@ void CMySchceduleView::slotDeleteBt()
             return;
         } else if (msgBox.clickButton() == yesButton) {
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_scheduleInfo.id);
+        } else {
+            return;
         }
     } else {
         if (m_scheduleInfo.RecurID == 0) {
@@ -147,6 +149,8 @@ void CMySchceduleView::slotDeleteBt()
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleInfo.id, newschedule);
                 newschedule.ignore.append(m_scheduleInfo.beginDateTime);
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+            } else {
+                return;
             }
         } else {
             CSchceduleCtrlDlg msgBox;
@@ -188,6 +192,8 @@ void CMySchceduleView::slotDeleteBt()
 
                 newschedule.ignore.append(m_scheduleInfo.beginDateTime);
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+            } else {
+                return;
             }
         }
     }
