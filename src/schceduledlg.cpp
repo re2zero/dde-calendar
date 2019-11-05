@@ -129,7 +129,7 @@ void CSchceduleDlg::slotOkBt()
         QMessageBox::warning(this, tr("error"), tr("Schcedule is empty!"));
         return;
     }
-    if (beginDateTime >= endDateTime) {
+    if (beginDateTime > endDateTime) {
         QMessageBox::warning(this, tr("error"), tr("The end time less than begin time!"));
         return;
     }

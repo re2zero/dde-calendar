@@ -351,6 +351,12 @@ void CSchceduleSearchView::updateDateShow()
     }
     if (!flag && !m_vlistData.isEmpty()) {
         QDate topdate = tcurrentdata;
+        QDate mindate = topdate;
+        for (int i = 0; i < m_vlistData.size(); ++i) {
+            if (m_vlistData[i].date > mindate) {
+                mindate = m_vlistData[i].date;
+            }
+        }
         while (!flag) {
             topdate = topdate.addDays(-1);
             for (int i = 0; i < m_vlistData.size(); ++i) {
@@ -361,6 +367,7 @@ void CSchceduleSearchView::updateDateShow()
                     }
                 }
             }
+            if (topdate < mindate) break;
         }
         tcurrentdata = topdate;
     }
