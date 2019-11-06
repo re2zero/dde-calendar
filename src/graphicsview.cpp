@@ -75,10 +75,6 @@ CGraphicsView::CGraphicsView(QWidget *parent)
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
     m_createAction = new QAction(tr("Create"), this);
-
-    QShortcut *shortcut = new QShortcut(this);
-    shortcut->setKey(QKeySequence(QLatin1String("D")));
-    connect(shortcut, SIGNAL(activated()), this, SLOT(slotDeleteItem()));
 }
 
 CGraphicsView::~CGraphicsView()

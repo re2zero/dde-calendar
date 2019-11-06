@@ -374,9 +374,9 @@ void CScheduleView::initConnection()
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);
     connect(this, &CScheduleView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
 
-    QShortcut *shortcut = new QShortcut(this);
-    shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
-    connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreateSchedule()));
+    //QShortcut *shortcut = new QShortcut(this);
+    //shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
+    //connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreateSchedule()));
 
     QShortcut *dshortcut = new QShortcut(this);
     dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
