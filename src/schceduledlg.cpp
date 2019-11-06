@@ -491,7 +491,7 @@ void CSchceduleDlg::initUI()
     QFont titlelabelF;
     titlelabelF.setFamily("SourceHanSansSC");
     titlelabelF.setWeight(QFont::Medium);
-    titlelabelF.setPixelSize(14);
+    titlelabelF.setPixelSize(17);
     QColor btitleColor = "#000000";
     btitleColor.setAlphaF(0.01);
     DPalette titlepa = m_titleLabel->palette();
@@ -508,6 +508,7 @@ void CSchceduleDlg::initUI()
     m_titleLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
     //m_titleLabel->setGeometry(165, 0, 108, 51);
     m_titleLabel->move(145, 0);
+    m_titleLabel->setFont(titlelabelF);
 
 
     setSpacing(0);
