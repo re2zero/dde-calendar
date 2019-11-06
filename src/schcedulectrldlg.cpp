@@ -84,6 +84,7 @@ void CSchceduleCtrlDlg::initUI()
         wpa.setColor(DPalette::WindowText, QColor("#A8B7D1"));
     }
     m_firstLabel->setPalette(wpa);
+    m_firstLabel->setForegroundRole(DPalette::WindowText);
     m_firstLabel->setFont(labelF);
     m_mainBoxLayout->addWidget(m_firstLabel);
 
@@ -101,6 +102,7 @@ void CSchceduleCtrlDlg::initUI()
         tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
     }
     m_seconLabel->setPalette(tpa);
+    m_seconLabel->setForegroundRole(DPalette::WindowText);
     m_seconLabel->setFont(labelT);
     m_seconLabel->setAlignment(Qt::AlignCenter);
     m_seconLabel->setWordWrap(true);
