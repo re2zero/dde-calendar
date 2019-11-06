@@ -66,6 +66,7 @@ private slots:
     void slotSreturnPressed();
     void slotStextChanged();
     void slotJobsUpdated(const QList<qlonglong> &Ids);
+    void slotSearchEdit();
 private:
     DLabel                    *m_icon;
     QStackedLayout              *m_stackWidget;

@@ -39,6 +39,7 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include "configsettings.h"
+#include <QShortcut>
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -59,6 +60,10 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     //setWindowFlag(Qt::WindowMaximizeButtonHint, false);
     new CalendarAdaptor(this);
     resize(CalendarMWidth, CalendarMHeight);
+
+    QShortcut *shortcut = new QShortcut(this);
+    shortcut->setKey(QKeySequence(QLatin1String("Ctrl+F")));
+    connect(shortcut, SIGNAL(activated()), this, SLOT(slotSearchEdit()));
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
@@ -547,5 +552,10 @@ void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
     }
     break;
     }
+}
+
+void Calendarmainwindow::slotSearchEdit()
+{
+    m_searchEdit->lineEdit()->setFocus();
 }
 
