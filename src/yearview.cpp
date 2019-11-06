@@ -100,7 +100,7 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     mainLayout->setSpacing(0);
 
     setLayout(mainLayout);
-
+    setAutoFillBackground(true);
     connect(this, &CYearView::dateSelected, this, &CYearView::handleCurrentDateChanged);
     //setFixedSize(DDEYearCalendar::Y_MWindowWidth, DDEYearCalendar::Y_MWindowHeight);
     setFrameRounded(true);
@@ -134,6 +134,11 @@ void CYearView::updateSelectState()
 void CYearView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
+        DPalette bpa = m_gridWidget->palette();
+        bpa.setColor(DPalette::Background, Qt::white);
+        setPalette(bpa);
+        setBackgroundRole(DPalette::Background);
+
         DPalette anipa = m_gridWidget->palette();
         anipa.setColor(DPalette::Background, Qt::white);
         m_gridWidget->setPalette(anipa);
@@ -157,10 +162,17 @@ void CYearView::setTheMe(int type)
     } else if (type == 2) {
         DPalette anipa = m_gridWidget->palette();
         QColor framecolor("#FFFFFF");
-        framecolor.setAlphaF(0.05);
+        //framecolor.setAlphaF(0.15);
+        framecolor = "#414141";
+        framecolor.setAlphaF(0.3);
         anipa.setColor(DPalette::Background, framecolor);
         m_gridWidget->setPalette(anipa);
         m_gridWidget->setBackgroundRole(DPalette::Background);
+
+        DPalette bpa = m_gridWidget->palette();
+        bpa.setColor(DPalette::Background, framecolor);
+        setPalette(bpa);
+        setBackgroundRole(DPalette::Background);
 
         DPalette Lunadpa = m_currentMouth->palette();
         Lunadpa.setColor(DPalette::WindowText, QColor("#BF1D63"));
@@ -168,14 +180,15 @@ void CYearView::setTheMe(int type)
         m_currentMouth->setForegroundRole(DPalette::WindowText);
 
         m_topBorderColor = Qt::red;
-        m_backgroundCircleColor = "#2ca7f8";
+        m_backgroundCircleColor = "#0059D2";
 
         m_defaultTextColor = "#C0C6D4";
-        m_currentDayTextColor = "#2ca7f8";
+        m_currentDayTextColor = "#0059D2";
         m_weekendsTextColor = Qt::black;
         m_selectedTextColor = Qt::white;
         m_festivalTextColor = Qt::black;
-        m_notCurrentTextColor = "#b2b2b2";
+        m_notCurrentTextColor = "#C0C6D4";
+        m_notCurrentTextColor.setAlphaF(0.5);
     }
 }
 

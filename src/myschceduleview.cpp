@@ -215,7 +215,8 @@ void CMySchceduleView::initUI()
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
     QFont labelTitle;
-    labelTitle.setFamily("SourceHanSansSC-Bold");
+    labelTitle.setFamily("SourceHanSansSC");
+    labelTitle.setWeight(QFont::Bold);
     labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
@@ -262,7 +263,8 @@ void CMySchceduleView::initUI()
     m_timeLabel->setFixedHeight(26);
     m_timeLabel->setAlignment(Qt::AlignCenter);
     QFont labelT;
-    labelT.setFamily("SourceHanSansSC-Bold");
+    labelT.setFamily("SourceHanSansSC");
+    labelT.setWeight(QFont::Bold);
     labelT.setPixelSize(14);
     DPalette tpa = m_timeLabel->palette();
 

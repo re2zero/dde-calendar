@@ -391,7 +391,8 @@ void CDayMonthView::initUI()
     m_currentDay->setFixedHeight(DDEDayCalendar::DDLableHeight);
     m_currentDay->setAlignment(Qt::AlignCenter);
     QFont daylabelF;
-    daylabelF.setFamily("DINAlternate-Bold");
+    daylabelF.setFamily("DINAlternate");
+    daylabelF.setWeight(QFont::Bold);
     daylabelF.setPixelSize(100);
     DPalette daypa = m_currentDay->palette();
     daypa.setColor(DPalette::WindowText, QColor("#2CA7F8"));

@@ -48,7 +48,8 @@ void CSchceduleCtrlDlg::initUI()
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
     QFont labelTitle;
-    labelTitle.setFamily("SourceHanSansSC-Bold");
+    labelTitle.setFamily("SourceHanSansSC");
+    labelTitle.setWeight(QFont::Bold);
     labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
@@ -94,7 +95,8 @@ void CSchceduleCtrlDlg::initUI()
     //m_seconLabel->setFixedHeight(26);
     m_seconLabel->setAlignment(Qt::AlignCenter);
     QFont labelT;
-    labelT.setFamily("SourceHanSansSC-Bold");
+    labelT.setFamily("SourceHanSansSC");
+    labelTitle.setWeight(QFont::Bold);
     labelT.setPixelSize(14);
     DPalette tpa = m_seconLabel->palette();
     if (themetype == 0 || themetype == 1) {
