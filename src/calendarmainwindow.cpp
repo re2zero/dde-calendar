@@ -130,6 +130,7 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
         return;
     }
     m_stackWidget->setCurrentIndex(type - 1);
+    m_searchflag = false;
     switch (type) {
     case 1: {
         m_yearButton->setFocus();
@@ -158,6 +159,7 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
         m_DayWindow->setDate(datetime.date());
         m_DayWindow->setTime(datetime.time());
         m_DayWindow->slotupdateSchedule(0);
+        m_searchflag = true;
     }
     break;
     }
@@ -449,6 +451,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
 
         return;
     }
+    m_searchflag = false;
     m_stackWidget->setCurrentIndex(index);
     switch (index) {
     case 0: {
@@ -468,6 +471,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     case 3: {
         m_DayWindow->slotReturnTodayUpdate();
         m_DayWindow->slotupdateSchedule(0);
+        m_searchflag = true;
     }
     break;
     }
@@ -498,7 +502,10 @@ void Calendarmainwindow::slotReturnTodyUpdate(QMainWindow *w)
 
 void Calendarmainwindow::slotSreturnPressed()
 {
-    m_dayButton->click();
+    if (!m_searchflag) {
+        m_dayButton->click();
+        m_searchflag = true;
+    }
     //m_segmentedControl->setCurrentIndex(3);
     //m_stackWidget->setCurrentIndex(3);
     m_DayWindow->setSearchText(m_searchEdit->text());
@@ -506,7 +513,10 @@ void Calendarmainwindow::slotSreturnPressed()
 
 void Calendarmainwindow::slotStextChanged()
 {
-    m_dayButton->click();
+    if (!m_searchflag) {
+        m_dayButton->click();
+        m_searchflag = true;
+    }
     m_DayWindow->clearSearch();
     //m_segmentedControl->setCurrentIndex(3);
     //m_stackWidget->setCurrentIndex(3);

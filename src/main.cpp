@@ -163,6 +163,11 @@ int main(int argc, char *argv[])
         file.close();
         //ww.Invoke("CREATE", str);
     }
+    ExportedInterface einterface(&ww);
+    einterface.registerAction("CREATE", "create a new schedule");
+    einterface.registerAction("VIEW", "check a date on calendar");
+    einterface.registerAction("QUERY", "find a schedule information");
+    einterface.registerAction("CANCEL", "cancel a schedule");
     ww.move(PrimaryRect().center() - ww.geometry().center());
     //ww.setDate(QDate::currentDate());
     ww.slotTheme(getThemeTypeSetting());
@@ -170,6 +175,7 @@ int main(int argc, char *argv[])
     ww.show();
 
     QDBusConnection dbus = QDBusConnection::sessionBus();
+    dbus.registerService("com.deepin.Calendar");
     dbus.registerObject("/com/deepin/Calendar", &ww);
     //监听当前应用主题切换事件
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
@@ -179,14 +185,10 @@ int main(int argc, char *argv[])
         saveThemeTypeSetting(type);
         DGuiApplicationHelper::instance()->setPaletteType(type);
     });
-    if (dbus.registerService("com.deepin.Calendar"), QDBusConnectionInterface::ReplaceExistingService, QDBusConnectionInterface::AllowReplacement) {
+//    if (dbus.registerService("com.deepin.Calendar"), QDBusConnectionInterface::ReplaceExistingService, QDBusConnectionInterface::AllowReplacement) {
 
-        ExportedInterface einterface(&ww);
-        einterface.registerAction("CREATE", "create a new schedule");
-        einterface.registerAction("VIEW", "check a date on calendar");
-        einterface.registerAction("QUERY", "find a schedule information");
-        einterface.registerAction("CANCEL", "cancel a schedule");
-        return a.exec();
-    }
-    return 0;
+
+//        return a.exec();
+//    }
+    return a.exec();
 }

@@ -81,6 +81,7 @@ private:
     CWeekWindow               *m_weekWindow;
     CDayWindow                *m_DayWindow;
     __Scheduler               *m_dbus;
+    bool                      m_searchflag = false;
 };
 
 #endif // CALENDARMAINWINDOW_H
