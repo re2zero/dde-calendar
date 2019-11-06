@@ -56,6 +56,16 @@ CYearWindow::~CYearWindow()
     m_monthViewList.clear();
 }
 
+bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == m_today) {
+        if (event->type() == QEvent::MouseButtonPress) {
+            slottoday();
+        }
+    }
+    return QMainWindow::eventFilter(watched, event);
+}
+
 void CYearWindow::setDate(QDate date)
 {
     m_currentdate = date;
@@ -85,19 +95,21 @@ void CYearWindow::initUI()
     anipa.setColor(DPalette::Background, "#F8F8F8");
     m_contentBackground->setAutoFillBackground(true);
     m_contentBackground->setPalette(anipa);
-    m_today = new DPushButton(this);
-    DPalette todaypa = m_today->palette();
-    todaypa.setColor(DPalette::ButtonText, QColor("#000000"));
-    todaypa.setColor(DPalette::Dark, Qt::white);
-    todaypa.setColor(DPalette::Light, Qt::white);
+    m_today = new DLabel(this);
+    m_today->installEventFilter(this);
+    // DPalette todaypa = m_today->palette();
+    //todaypa.setColor(DPalette::ButtonText, QColor("#000000"));
+    //todaypa.setColor(DPalette::Dark, Qt::white);
+    //todaypa.setColor(DPalette::Light, Qt::white);
 
-    m_today->setPalette(todaypa);
+    //m_today->setPalette(todaypa);
     // m_today->setFocusPolicy(Qt::NoFocus);
     // m_today->setFlat(true);
 
     QFont todayfont("SourceHanSansSC-Normal");
     todayfont.setPixelSize(16);
     m_today->setFont(todayfont);
+    m_today->setAlignment(Qt::AlignCenter);
     // DPalette pal = m_today->palette();
     //pal.setColor(DPalette::Button, QColor("#FFFFFF"));
     //pal.setColor(DPalette::ButtonText, QColor("#1D81EC"));
@@ -105,6 +117,7 @@ void CYearWindow::initUI()
     //m_today->setAutoFillBackground(true);
     m_today->setText(tr("Return today"));
     m_today->setFixedWidth(88);
+    m_today->setAutoFillBackground(true);
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
@@ -225,7 +238,7 @@ void CYearWindow::initUI()
 void CYearWindow::initConnection()
 {
     connect(m_prevButton, &DIconButton::clicked, this, &CYearWindow::slotprev);
-    connect(m_today, &DPushButton::clicked, this, &CYearWindow::slottoday);
+    //connect(m_today, &DPushButton::clicked, this, &CYearWindow::slottoday);
     connect(m_nextButton, &DIconButton::clicked, this, &CYearWindow::slotnext);
 }
 
@@ -244,10 +257,12 @@ void CYearWindow::setTheMe(int type)
         m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#000000"));
-        todaypa.setColor(DPalette::Dark, Qt::white);
-        todaypa.setColor(DPalette::Light, Qt::white);
+        todaypa.setColor(DPalette::WindowText, QColor("#000000"));
+        todaypa.setColor(DPalette::Background, Qt::white);
+        //todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
+        m_today->setForegroundRole(DPalette::WindowText);
+        m_today->setBackgroundRole(DPalette::Background);
 
         //DPalette prevpa = m_prevButton->palette();
         //prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
@@ -283,10 +298,12 @@ void CYearWindow::setTheMe(int type)
         m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
-        todaypa.setColor(DPalette::Dark, "#414141");
-        todaypa.setColor(DPalette::Light, "#484848");
+        todaypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        //todaypa.setColor(DPalette::Dark, "#414141");
+        todaypa.setColor(DPalette::Background, "#484848");
         m_today->setPalette(todaypa);
+        m_today->setForegroundRole(DPalette::WindowText);
+        m_today->setBackgroundRole(DPalette::Background);
 
         //DPalette prevpa = m_prevButton->palette();
         //prevpa.setColor(DPalette::Dark, QColor("#484848"));

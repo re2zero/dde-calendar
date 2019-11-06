@@ -59,6 +59,7 @@ private slots:
 protected:
     void resizeEvent(QResizeEvent *event);
     void wheelEvent(QWheelEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event);
 private:
     const QString getLunar(QDate date);
     const CaLunarDayInfo getCaLunarDayInfo(QDate date);
@@ -67,7 +68,7 @@ private:
     DFrame *m_contentBackground = nullptr;
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
-    DPushButton       *m_today = nullptr;
+    DLabel           *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_YearLunarLabel;

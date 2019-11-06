@@ -46,7 +46,7 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     m_currentMouth->setFixedHeight(24);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
-    m_momthFont.setFamily("Helvetica");
+    m_momthFont.setFamily("SourceHanSansSC-Medium");
     m_momthFont.setPixelSize(16);
     m_currentMouth->setFont(m_momthFont);
     DPalette Lunadpa = m_currentMouth->palette();
