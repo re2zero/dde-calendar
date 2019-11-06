@@ -40,6 +40,7 @@
 #include <QMessageBox>
 #include "configsettings.h"
 #include <QShortcut>
+#include "shortcut.h"
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -64,6 +65,10 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("Ctrl+F")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(slotSearchEdit()));
+
+    QShortcut *viewshortcut = new QShortcut(this);
+    viewshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Shift+/")));
+    connect(viewshortcut, SIGNAL(activated()), this, SLOT(onViewShortcut()));
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
@@ -127,7 +132,22 @@ bool Calendarmainwindow::analysisCreate(const QString &content, ScheduleDtailInf
     }
     return true;
 }
+void Calendarmainwindow::onViewShortcut()
+{
+    QRect rect = window()->geometry();
+    QPoint pos(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+    Shortcut sc;
+    QStringList shortcutString;
+    QString param1 = "-j=" + sc.toStr();
+    QString param2 = "-p=" + QString::number(pos.x()) + "," + QString::number(pos.y());
+    shortcutString << "-b" << param1 << param2;
 
+    QProcess *shortcutViewProc = new QProcess(this);
+    shortcutViewProc->startDetached("killall deepin-shortcut-viewer");
+    shortcutViewProc->startDetached("deepin-shortcut-viewer", shortcutString);
+
+    connect(shortcutViewProc, SIGNAL(finished(int)), shortcutViewProc, SLOT(deleteLater()));
+}
 void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
 {
     if (type < 0 || type > m_stackWidget->count()) {

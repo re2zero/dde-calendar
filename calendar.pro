@@ -71,7 +71,8 @@ HEADERS += src/calendardbus.h \
     src/alldayschceduleweekview.h \
     src/exportedinterface.h \
     src/configsettings.h \
-    src/singleton.h
+    src/singleton.h \
+    src/shortcut.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \
            src/calendarwindow.cpp \
@@ -119,7 +120,8 @@ SOURCES += src/calendardbus.cpp \
     src/timeeditctrl.cpp \
     src/alldayschceduleweekview.cpp \
     src/exportedinterface.cpp \
-    src/configsettings.cpp
+    src/configsettings.cpp \
+    src/shortcut.cpp
 RESOURCES += src/resources.qrc
 #TRANSLATIONS += translations/dde-calendar.ts \
 #                translations/desktop/desktop_zh_CN.ts\

@@ -53,6 +53,7 @@ public slots:
     void slotTheme(int type);
     void OpenSchedule(QString job);
     void ActiveWindow();
+    void onViewShortcut();
 private:
     void initUI();
     void initConnection();

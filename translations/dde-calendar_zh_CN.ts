@@ -938,4 +938,63 @@
         <translation>今天</translation>
     </message>
 </context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Start/Calendar</source>
+        <translation>开始/日历</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>搜索</translation>
+    </message>
+    <message>
+        <source>Schedule Edit</source>
+        <translation>日程编辑</translation>
+    </message>
+    <message>
+        <source>Schedule Content Editing</source>
+        <translation>日程内容编辑</translation>
+    </message>
+    <message>
+        <source>Window Size Toggle</source>
+        <translation>窗口大小切换</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>关闭应用</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation>帮助</translation>
+    </message>
+    <message>
+        <source>Create</source>
+        <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <source>Cancel Dialog</source>
+        <translation>取消对话框</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation>拷贝</translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation>剪切</translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation>粘贴</translation>
+    </message>
+    <message>
+        <source>All election</source>
+        <translation>全选</translation>
+    </message>
+</context>
 </TS>
