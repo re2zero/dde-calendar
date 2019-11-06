@@ -346,7 +346,8 @@ void CDayMonthView::initUI()
     m_currentMouth = new DLabel(this);
     m_currentMouth->setFixedSize(74, DDEDayCalendar::D_MLableHeight);
     QFont mlabelF;
-    mlabelF.setFamily("SourceHanSansSC-Medium");
+    mlabelF.setFamily("SourceHanSansSC");
+    mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(24);
     DPalette pa = m_currentMouth->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));

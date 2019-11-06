@@ -42,9 +42,11 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
     if (!emptyCaLunarDayInfo)
         emptyCaLunarDayInfo = new CaLunarDayInfo;
 
-    m_dayNumFont.setFamily("SourceHanSansSC-Medium");
+    m_dayNumFont.setFamily("SourceHanSansSC");
+    m_dayNumFont.setWeight(QFont::Medium);
     m_dayNumFont.setPixelSize(16);
-    m_monthFont.setFamily("SourceHanSansSC-Medium");
+    m_monthFont.setFamily("SourceHanSansSC");
+    m_monthFont.setWeight(QFont::Medium);
     m_monthFont.setPixelSize(20);
 
     // cells grid
@@ -63,7 +65,8 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
     m_monthLabel->setAutoFillBackground(true);
     m_monthLabel->setPalette(monthpa);
     QFont mlabelF;
-    mlabelF.setFamily("SourceHanSansSC-Medium");
+    mlabelF.setFamily("SourceHanSansSC");
+    mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(20);
     m_monthLabel->setFont(mlabelF);
     // m_monthLabel->setStyleSheet("color:#000000;background: rgb(230,238,242);");

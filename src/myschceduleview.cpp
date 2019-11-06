@@ -42,7 +42,8 @@ void CMySchceduleView::AutoFeed(QString text)
 {
     QString strText = text;
     QFont labelF;
-    labelF.setFamily("SourceHanSansSC-Medium");
+    labelF.setFamily("SourceHanSansSC");
+    labelF.setWeight(QFont::Medium);
     labelF.setPixelSize(14);
     QFontMetrics fm(labelF);
     int row = 0;
@@ -242,7 +243,8 @@ void CMySchceduleView::initUI()
     m_schceduleLabel->setFixedHeight(26);
     m_schceduleLabel->setAlignment(Qt::AlignCenter);
     QFont labelF;
-    labelF.setFamily("SourceHanSansSC-Medium");
+    labelF.setFamily("SourceHanSansSC");
+    labelF.setWeight(QFont::Medium);
     labelF.setPixelSize(14);
     DPalette wpa = m_schceduleLabel->palette();
     if (themetype == 0 || themetype == 1) {

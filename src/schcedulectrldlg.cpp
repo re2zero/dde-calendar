@@ -74,7 +74,8 @@ void CSchceduleCtrlDlg::initUI()
     m_firstLabel->adjustSize();
     m_firstLabel->setWordWrap(true);
     QFont labelF;
-    labelF.setFamily("SourceHanSansSC-Medium");
+    labelF.setFamily("SourceHanSansSC");
+    labelF.setWeight(QFont::Medium);
     labelF.setPixelSize(14);
     DPalette wpa = m_firstLabel->palette();
     if (themetype == 0 || themetype == 1) {
@@ -185,7 +186,8 @@ void CSchceduleCtrlDlg::buttonJudge(int id)
 DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName)
 {
     QFont labelTitle;
-    labelTitle.setFamily("SourceHanSansSC-Medium");
+    labelTitle.setFamily("SourceHanSansSC");
+    labelTitle.setWeight(QFont::Medium);
     labelTitle.setPixelSize(14);
     QFontMetrics fm(labelTitle);
     int w = fm.width(btName);

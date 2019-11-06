@@ -118,7 +118,7 @@ void CYearWindow::initUI()
     m_today->setText(tr("Return today"));
     m_today->setFixedWidth(88);
     m_today->setAutoFillBackground(true);
-    m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight - 4);
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
@@ -155,7 +155,8 @@ void CYearWindow::initUI()
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     QFont t_labelF;
-    t_labelF.setFamily("SourceHanSansSC-Medium");
+    t_labelF.setFamily("SourceHanSansSC");
+    t_labelF.setWeight(QFont::Medium);
     t_labelF.setPixelSize(30);
     m_YearLabel->setFont(t_labelF);
     DPalette pa = m_YearLabel->palette();
@@ -166,7 +167,8 @@ void CYearWindow::initUI()
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;
-    ylabelF.setFamily("SourceHanSansSC-Medium");
+    ylabelF.setFamily("SourceHanSansSC");
+    ylabelF.setWeight(QFont::Medium);
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
     DPalette Lunapa = m_YearLunarLabel->palette();
@@ -198,7 +200,7 @@ void CYearWindow::initUI()
     yeartitleLayout1->addStretch();
     yeartitleLayout1->addWidget(m_YearLunarDayLabel);
     yeartitleLayout1->addWidget(m_prevButton);
-    yeartitleLayout1->addWidget(m_today);
+    yeartitleLayout1->addWidget(m_today, 0, Qt::AlignCenter);
     yeartitleLayout1->addWidget(m_nextButton);
     yeartitleLayout->addLayout(yeartitleLayout1);
 
@@ -300,7 +302,9 @@ void CYearWindow::setTheMe(int type)
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         //todaypa.setColor(DPalette::Dark, "#414141");
-        todaypa.setColor(DPalette::Background, "#484848");
+        QColor tbcolor = "#414141";
+        tbcolor.setAlphaF(0.3);
+        todaypa.setColor(DPalette::Background, tbcolor);
         m_today->setPalette(todaypa);
         m_today->setForegroundRole(DPalette::WindowText);
         m_today->setBackgroundRole(DPalette::Background);

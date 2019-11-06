@@ -142,7 +142,8 @@ void CDayWindow::initUI()
     m_YearLabel = new DLabel();
     m_YearLabel->setMinimumSize(175, DDEDayCalendar::D_YLableHeight);
     QFont labelF;
-    labelF.setFamily("SourceHanSansSC-Medium");
+    labelF.setFamily("SourceHanSansSC");
+    labelF.setWeight(QFont::Medium);
     labelF.setPixelSize(24);
     m_YearLabel->setFont(labelF);
     DPalette ypa = m_YearLabel->palette();

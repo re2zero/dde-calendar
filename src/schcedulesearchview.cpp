@@ -441,7 +441,8 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date)
 QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
 {
     CSchceduleSearchDateItem *gwi = new CSchceduleSearchDateItem();
-    QFont font("SourceHanSansSC-Medium");
+    QFont font("SourceHanSansSC");
+    font.setWeight(QFont::Medium);
     font.setPixelSize(16);
     gwi->setBackgroundColor(m_lBackgroundcolor);
 

@@ -281,7 +281,8 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.restore();
     painter.save();
     QFont alldayfont;
-    alldayfont.setFamily("SourceHanSansSC-Medium");
+    alldayfont.setFamily("SourceHanSansSC");
+    alldayfont.setWeight(QFont::Medium);
     alldayfont.setPixelSize(14);
     painter.setFont(alldayfont);
     painter.setPen(m_ALLDayColor);
