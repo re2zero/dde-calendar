@@ -175,6 +175,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_mainLayout->addWidget(gridWidget);
     for (int i = 0; i < 42; i++) {
         m_cellhoverflag[i] = false;
+        m_cellfoceflag[i] = false;
     }
     m_banColor = "#F85566";
     m_banColor.setAlphaF(0.2);
@@ -383,6 +384,14 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             Context.exec(QCursor::pos());
         } else if (e->type() == QEvent::MouseButtonRelease) {
             m_updateflag = true;
+        } else if (e->type() == QEvent::FocusIn) {
+            const int pos = m_cellList.indexOf(cell);
+            m_cellfoceflag[pos] = true;
+            m_cellList[pos]->update();
+        } else if (e->type() == QEvent::FocusOut) {
+            const int pos = m_cellList.indexOf(cell);
+            m_cellfoceflag[pos] = false;
+            m_cellList[pos]->update();
         } else if (e->type() == QEvent::Leave) {
             const int pos = m_cellList.indexOf(cell);
             m_cellhoverflag[pos] = false;
@@ -671,17 +680,7 @@ void CMonthView::paintCell(QWidget *cell)
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
 
     // draw selected cell background circle
-    if (isSelectedCell && m_fouceFlag) {
-        QRect fillRect = QRect(2, 2, cellwidth - 3, cellheight - 3);
 
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        //painter.setBrush(QBrush(m_backgroundCircleColor));
-        QPen pen;
-        pen.setColor(m_backgroundCircleColor);
-        pen.setWidth(2);
-        painter.setPen(pen);
-        painter.drawRoundedRect(fillRect, 3, 3);
-    }
 
     painter.setPen(Qt::SolidLine);
 
@@ -850,6 +849,17 @@ void CMonthView::paintCell(QWidget *cell)
         painter.setBrush(m_hoverColor);
         painter.setPen(Qt::NoPen);
         painter.drawRoundedRect(fillRect, 8, 8);
+    }
+    if (m_cellfoceflag[pos]) {
+        QRect fillRect = QRect(2, 2, cellwidth - 3, cellheight - 3);
+
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        //painter.setBrush(QBrush(m_backgroundCircleColor));
+        QPen pen;
+        pen.setColor(m_backgroundCircleColor);
+        pen.setWidth(2);
+        painter.setPen(pen);
+        painter.drawRoundedRect(fillRect, 3, 3);
     }
     painter.end();
 }

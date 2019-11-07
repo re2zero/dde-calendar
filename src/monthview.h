@@ -117,6 +117,7 @@ private:
     QList<QWidget *> m_cellList;
 
     bool m_cellhoverflag[42];
+    bool m_cellfoceflag[42];
 
     CMonthSchceduleView *m_MonthSchceduleView;
 
