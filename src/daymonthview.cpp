@@ -222,7 +222,7 @@ void CDayMonthView::setTheMe(int type)
         m_jiLabel->update();
 
         m_topBorderColor = Qt::red;
-        m_backgroundCircleColor = "#2ca7f8";
+        m_backgroundCircleColor = "#0059D2";
 
         m_defaultTextColor = "#C0C6D4";
         m_currentDayTextColor = "#0081FF";

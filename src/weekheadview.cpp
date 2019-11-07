@@ -154,7 +154,7 @@ void CWeekHeadView::setTheMe(int type)
         m_monthLabel->setPalette(monthpa);
         m_monthLabel->setForegroundRole(DPalette::WindowText);
         m_monthLabel->setBackgroundRole(DPalette::Background);
-        m_backgroundCircleColor = "#2ca7f8";
+        m_backgroundCircleColor = "#0059D2";
 
         m_defaultTextColor = "#C0C6D4";
         m_currentDayTextColor = "#C0C6D4";

@@ -86,7 +86,7 @@ void CWeekView::setTheMe(int type)
         m_backgrounddefaultColor = "#FFFFFF";
         m_backgrounddefaultColor.setAlphaF(0.05);
         m_currentDayTextColor = "#B8D3FF";
-        m_backgroundcurrentDayColor = "#0081FF";
+        m_backgroundcurrentDayColor = "#0059D2";
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
     }
