@@ -31,6 +31,15 @@ CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
     setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+    if (themetype == 2) {
+        DPalette anipa = palette();
+        QColor color = "#191919";
+        color.setAlphaF(0.8);
+        anipa.setColor(DPalette::Background, color);
+        setPalette(anipa);
+    }
+
     //setTitle(tr("My Schcedule"));
     resize(380, 160);
 

@@ -35,6 +35,14 @@ CMySchceduleView::CMySchceduleView(QWidget *parent) : DDialog(parent)
     initConnection();
     //setTitle(tr("My Schcedule"));
     setFixedSize(403, 160);
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+    if (themetype == 2) {
+        DPalette anipa = palette();
+        QColor color = "#191919";
+        color.setAlphaF(0.8);
+        anipa.setColor(DPalette::Background, color);
+        setPalette(anipa);
+    }
 
     //setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 }
@@ -231,7 +239,8 @@ void CMySchceduleView::initUI()
     m_Title->setPalette(titlepa);
     m_Title->setFont(labelTitle);
     m_Title->setText(tr("My Schcedule"));
-    m_Title->move(136, 0);
+    m_Title->move(148, 0);
+    m_Title->setAlignment(Qt::AlignCenter);
 
 
 
@@ -300,11 +309,14 @@ void CMySchceduleView::initUI()
         pa.setColor(DPalette::Light, QColor("#004C9C"));
     }
     m_editBt->setPalette(pa);
-    m_editBt->setFixedSize(170, 36);
+    m_editBt->setFixedSize(165, 36);
     m_deleteBt = new DPushButton(tr("Delete"));
-    m_deleteBt->setFixedSize(170, 36);
+    m_deleteBt->setFixedSize(165, 36);
+
     hBtLayout->addWidget(m_deleteBt);
+    hBtLayout->addSpacing(5);
     hBtLayout->addWidget(btframe);
+    hBtLayout->addSpacing(5);
     hBtLayout->addWidget(m_editBt);
     mainLayout->addLayout(hBtLayout);
     DFrame *gwi = new DFrame(this);
