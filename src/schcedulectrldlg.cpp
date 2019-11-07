@@ -194,7 +194,7 @@ void CSchceduleCtrlDlg::buttonJudge(int id)
     accept();
 }
 
-DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName)
+DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
 {
     QFont labelTitle;
     labelTitle.setFamily("SourceHanSansSC");
@@ -202,9 +202,9 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName)
     labelTitle.setPixelSize(14);
     QFontMetrics fm(labelTitle);
     int w = fm.width(btName);
-    if (w > 107) w = w + 18;
+    if (w > 101) w = w + 12;
     else {
-        w = 107;
+        w = 101;
     }
     DPushButton *button  = new DPushButton(btName);
     button->setFixedWidth(w);
@@ -213,12 +213,19 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName)
     m_Buttongroup->addButton(button, m_Buttongroup->buttons().count());
     if (m_Buttongroup->buttons().count() > 1) {
         DVerticalLine *btframe = new DVerticalLine(this);
+        m_btBoxLayout->addSpacing(8);
         btframe->setFixedSize(3, 28);
-        m_btBoxLayout->addWidget(btframe);
+        m_btBoxLayout->addWidget(btframe, 0, Qt::AlignCenter);
+        if (type == 1) {
+            m_btBoxLayout->addSpacing(4);
+        } else {
+            m_btBoxLayout->addSpacing(2);
+        }
+
     }
 
 
-    m_btBoxLayout->addWidget(button);
+    m_btBoxLayout->addWidget(button, 0, Qt::AlignCenter);
     m_buttonlist.append(button);
 
     return button;

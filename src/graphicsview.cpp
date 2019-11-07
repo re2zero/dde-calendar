@@ -298,7 +298,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                     msgBox.setText(tr("You are deleted schedule"));
                     msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
                     DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                    DPushButton *yesButton = msgBox.addPushButton(tr("Delete Schedule"));
+                    DPushButton *yesButton = msgBox.addPushButton(tr("Delete Schedule"), 1);
                     msgBox.updatesize();
                     DPalette pa = yesButton->palette();
                     if (themetype == 0 || themetype == 1) {

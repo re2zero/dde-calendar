@@ -33,7 +33,7 @@ class CSchceduleCtrlDlg : public DDialog
     Q_OBJECT
 public:
     explicit CSchceduleCtrlDlg(QWidget *parent = nullptr);
-    DPushButton *addPushButton(QString btName);
+    DPushButton *addPushButton(QString btName, int type = 0);
     void setTitleName(QString tileName);
     void setText(QString str);
     void setInformativeText(QString str);
