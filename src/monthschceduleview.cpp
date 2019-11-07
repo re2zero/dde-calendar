@@ -261,8 +261,15 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         }
         painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 2 * avge), Qt::AlignLeft, tstr);
 
-        if (m_transparentf) {
+        if (m_hoverflag) {
             painter.setBrush(m_transparentcolor);
+            painter.setPen(Qt::NoPen);
+            painter.drawRoundedRect(fillRect, 8, 8);
+        }
+        if (m_selectflag) {
+            QColor selcolor = m_transparentcolor;
+            selcolor.setAlphaF(0.2);
+            painter.setBrush(selcolor);
             painter.setPen(Qt::NoPen);
             painter.drawRoundedRect(fillRect, 8, 8);
         }
@@ -321,6 +328,30 @@ void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
     update();
     slotPress();
 }
+
+void CMonthSchceduleWidgetItem::focusInEvent(QFocusEvent *event)
+{
+    m_selectflag = true;
+    update();
+}
+
+void CMonthSchceduleWidgetItem::focusOutEvent(QFocusEvent *event)
+{
+    m_selectflag = false;
+    update();
+}
+
+void CMonthSchceduleWidgetItem::enterEvent(QEvent *event)
+{
+    m_hoverflag = true;
+    update();
+}
+
+void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
+{
+    m_selectflag = false;
+    update();
+}
 CMonthSchceduleNumButton::CMonthSchceduleNumButton(QWidget *parent /*= nullptr*/): DPushButton(parent)
 {
 
@@ -355,7 +386,7 @@ void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
 {
     int labelwidth = width();
     int labelheight = height();
-
+    int type = CScheduleDataManage::getScheduleDataManage()->getTheme();
     QPainter painter(this);
     if (m_GradientFlag) {
         QLinearGradient linearGradient(0, 0, labelwidth, 0);
