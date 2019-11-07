@@ -69,7 +69,7 @@ void CDayHuangLiLabel::paintEvent( QPaintEvent *e )
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
     painter.setBrush(QBrush(m_backgroundColor));
     painter.setPen(Qt::NoPen);
-    painter.drawRoundedRect(fillRect, 3, 3);
+    painter.drawRoundedRect(fillRect, 12, 12);
     QPixmap pixmap;
     if (m_type == 0)
         pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-yi.svg").scaled(20, 20);

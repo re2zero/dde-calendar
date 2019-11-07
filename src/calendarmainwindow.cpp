@@ -69,6 +69,8 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     QShortcut *viewshortcut = new QShortcut(this);
     viewshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Shift+/")));
     connect(viewshortcut, SIGNAL(activated()), this, SLOT(onViewShortcut()));
+
+    setTitlebarShadowEnabled(false);
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)

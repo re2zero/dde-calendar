@@ -224,6 +224,7 @@ void CYearWindow::initUI()
     m_gridWidget->setLayout(gridLayout);
 
     m_gridWidget->setContentsMargins(5, 0, 0, 10);
+    m_gridWidget->setFrameRounded(true);
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->setMargin(0);
     hhLayout->setSpacing(0);

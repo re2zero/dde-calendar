@@ -206,7 +206,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
     painter.setBrush(QBrush(m_Backgroundcolor));
     painter.setPen(Qt::NoPen);
-    painter.drawRoundedRect(fillRect, 3, 3);
+    painter.drawRoundedRect(fillRect, 8, 8);
 
     painter.setFont(m_timefont);
     painter.setPen(m_timecolor);
@@ -301,7 +301,7 @@ void CSchceduleSearchView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
         m_bBackgroundcolor = "#000000";
-        m_bBackgroundcolor.setAlphaF(0.2);
+        m_bBackgroundcolor.setAlphaF(0.05);
         m_btimecolor = "#526A7F";
         m_bttextcolor = "#414D68";
         m_lBackgroundcolor = Qt::white;
