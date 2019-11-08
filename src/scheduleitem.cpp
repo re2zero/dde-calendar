@@ -29,6 +29,9 @@ CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent, Q
     setZValue(1);
     setFlag(QGraphicsItem::ItemIgnoresTransformations);
     setFlag(ItemIsSelectable, true);
+    m_transparentcolor = "#000000";
+    m_transparentcolor.setAlphaF(0.05);
+    setAcceptHoverEvents(true);
 }
 
 CScheduleItem::~CScheduleItem()
@@ -65,6 +68,30 @@ QPainterPath CScheduleItem::shape() const
     QPainterPath path;
     path.addRect(boundingRect());
     return path;
+}
+
+void CScheduleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    m_hoverflag = true;
+    update();
+}
+
+void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    m_hoverflag = false;
+    update();
+}
+
+void CScheduleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    m_selectflag = true;
+    update();
+}
+
+void CScheduleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    m_selectflag = false;
+    update();
 }
 
 void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /*= 0 */)
@@ -140,6 +167,18 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setPen(gdcolor.textColor);
         painter->drawText(rect, Qt::AlignCenter | Qt::AlignVCenter, "...");
         painter->restore();
+    }
+    if (m_hoverflag) {
+        painter->setBrush(m_transparentcolor);
+        painter->setPen(Qt::NoPen);
+        painter->drawRect(rect);
+    }
+    if (m_selectflag) {
+        QColor selcolor = m_transparentcolor;
+        selcolor.setAlphaF(0.2);
+        painter->setBrush(selcolor);
+        painter->setPen(Qt::NoPen);
+        painter->drawRect(rect);
     }
 }
 

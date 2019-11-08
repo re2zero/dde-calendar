@@ -40,5 +40,6 @@
         <file>resources/icon/data_day_line.svg</file>
         <file>resources/icon/checkbox_checked .svg</file>
         <file>resources/icon/checkbox_unchecked .svg</file>
+        <file>resources/icon/uos_logo.svg</file>
     </qresource>
 </RCC>

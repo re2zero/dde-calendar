@@ -41,6 +41,26 @@ public:
     {
         return m_scheduleInfo;
     }
+    QDate getdate()
+    {
+        return  m_date;
+    }
+    int getviewtype()
+    {
+        return  m_viewtype;
+    }
+    int getindex()
+    {
+        return m_index;
+    }
+    int gettotalNum()
+    {
+        return  m_totalNum;
+    }
+    int getmaxNum()
+    {
+        return m_sMaxNum;
+    }
     /*****************************************************************************
     Function:       boundingRect()
     Description:     获取边界矩形
@@ -51,6 +71,11 @@ public:
     *******************************************************************************/
     QRectF boundingRect() const;
     QPainterPath shape () const;
+protected:
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 private:
     /*****************************************************************************
     Function:       paint()
@@ -72,6 +97,9 @@ private:
     int                              m_index;
     int                              m_totalNum;
     int                              m_sMaxNum;
+    bool                  m_selectflag = false;
+    bool                  m_hoverflag = false;
+    QColor                m_transparentcolor;
 };
 
 #endif // SCHEDULEITEM_H

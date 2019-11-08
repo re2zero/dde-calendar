@@ -270,8 +270,20 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         }
 
         painter.drawText(QRect(fillRect.topLeft().x() + 13, 0, fillRect.width(), fillRect.height()), Qt::AlignLeft, tstr);
-        if (m_transparentf) {
+        //if (m_transparentf) {
+        //  painter.setBrush(m_transparentcolor);
+        //  painter.setPen(Qt::NoPen);
+        //  painter.drawRoundedRect(fillRect, 8, 8);
+        // }
+        if (m_hoverflag) {
             painter.setBrush(m_transparentcolor);
+            painter.setPen(Qt::NoPen);
+            painter.drawRoundedRect(fillRect, 8, 8);
+        }
+        if (m_selectflag) {
+            QColor selcolor = m_transparentcolor;
+            selcolor.setAlphaF(0.2);
+            painter.setBrush(selcolor);
             painter.setPen(Qt::NoPen);
             painter.drawRoundedRect(fillRect, 8, 8);
         }
@@ -337,6 +349,30 @@ void CAllDaySchceduleWeekWidgetItem::mouseReleaseEvent(QMouseEvent *event)
     m_transparentf = false;
     update();
     emit signalsPress(this);
+}
+
+void CAllDaySchceduleWeekWidgetItem::focusInEvent(QFocusEvent *event)
+{
+    m_selectflag = true;
+    update();
+}
+
+void CAllDaySchceduleWeekWidgetItem::focusOutEvent(QFocusEvent *event)
+{
+    m_selectflag = false;
+    update();
+}
+
+void CAllDaySchceduleWeekWidgetItem::enterEvent(QEvent *event)
+{
+    m_hoverflag = true;
+    update();
+}
+
+void CAllDaySchceduleWeekWidgetItem::leaveEvent(QEvent *event)
+{
+    m_hoverflag = false;
+    update();
 }
 
 

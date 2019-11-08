@@ -136,6 +136,10 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void focusInEvent(QFocusEvent *event);
+    void focusOutEvent(QFocusEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;
@@ -154,6 +158,8 @@ private:
     CScheduleCoorManage                         *m_coorManage;
     QColor                m_transparentcolor;
     bool                  m_transparentf = false;
+    bool                  m_selectflag = false;
+    bool                  m_hoverflag = false;
 };
 class CAllSolarDayWeekWidgetItem : public DPushButton
 {
