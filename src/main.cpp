@@ -123,11 +123,11 @@ int main(int argc, char *argv[])
     a.setApplicationVersion(DApplication::buildVersion("1.1"));
     //QList<QLocale> localeFallback = QList<QLocale>() << QLocale::system();
     // meta information that necessary to create the about dialog.
-    a.setProductName(QApplication::translate("CalendarWindow", "Deepin Calendar"));
+    a.setProductName(QApplication::translate("CalendarWindow", "Calendar"));
     QIcon t_icon = QIcon::fromTheme("dde-calendar");
     //a.setProductIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg"));
     a.setProductIcon(t_icon);
-    a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a date tool."));
+    a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. "));
     a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
     //a.setTheme("light");
     //a.setStyle("chameleon");
