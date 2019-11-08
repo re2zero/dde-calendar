@@ -61,7 +61,7 @@ Comment[tr]=Takvim, tarihi görüntüleyen bir araçtır.
 Comment[ug]=كالىندار ئۇ ۋاقىت قۇرالى
 Comment[uk]=Календар
 Comment[vi]=Lịch là một công cụ ngày tháng.
-Comment[zh_CN]=日历是一款查看日期的小工具。
+Comment[zh_CN]=日历是一款查看日期、管理日程的工具。
 Comment[zh_TW]=簡易日期顯示工具
 GenericName[am_ET]=ቀን መቁጠሪያ
 GenericName[ar]=التقويم
@@ -153,6 +153,6 @@ Name[tr]=Deepin Takvim
 Name[ug]=Deepin كالىندارى
 Name[uk]=Календар Deepin
 Name[vi]=Lịch Deepin
-Name[zh_CN]=深度日历
+Name[zh_CN]=日历
 Name[zh_TW]=Deepin 日曆
 

@@ -901,15 +901,11 @@
     </message>
     <message>
         <source>Deepin Calendar</source>
-        <translation>深度日历</translation>
-    </message>
-    <message>
-        <source>Calendar is a date tool.</source>
-        <translation type="vanished">日历是一个时间工具.</translation>
+        <translation>日历</translation>
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>日历是一款查看日期、管理日程的工具.</translation>
+        <translation>日历是一款查看日期、管理日程的工具。</translation>
     </message>
     <message>
         <source>Calendar</source>
@@ -920,7 +916,7 @@
     <name>Calendarmainwindow</name>
     <message>
         <source>Deepin Calendar</source>
-        <translation>深度日历</translation>
+        <translation>日历</translation>
     </message>
     <message>
         <source>Y</source>
