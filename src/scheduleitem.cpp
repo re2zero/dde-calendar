@@ -25,13 +25,21 @@
 CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent, QGraphicsScene *scene, int type)
     : QGraphicsItem(parent), m_coorManage(coor), m_type(type)
 {
-    scene->addItem(this);
+
+    setAcceptHoverEvents(true);
+    setAcceptedMouseButtons(Qt::LeftButton);
+    setFocus();
     setZValue(1);
+
     setFlag(QGraphicsItem::ItemIgnoresTransformations);
+    setFlag(QGraphicsItem::ItemIsFocusable);
     setFlag(ItemIsSelectable, true);
     m_transparentcolor = "#000000";
     m_transparentcolor.setAlphaF(0.05);
-    setAcceptHoverEvents(true);
+    scene->addItem(this);
+    //setAcceptHoverEvents(true);
+    //setAcceptedMouseButtons(Qt::LeftButton);
+    //setAcceptTouchEvents(true);
 }
 
 CScheduleItem::~CScheduleItem()
@@ -88,7 +96,7 @@ void CScheduleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     update();
 }
 
-void CScheduleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void CScheduleItem::focusOutEvent(QFocusEvent *event)
 {
     m_selectflag = false;
     update();

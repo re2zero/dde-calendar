@@ -75,6 +75,9 @@ CGraphicsView::CGraphicsView(QWidget *parent)
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
     m_createAction = new QAction(tr("Create"), this);
+    setMouseTracking(true);
+    viewport()->setMouseTracking(true);
+
 }
 
 CGraphicsView::~CGraphicsView()
@@ -398,16 +401,18 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             emit signalsitem(this);
         }
     }
+    DGraphicsView::mousePressEvent(event);
 }
 
 void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 {
-
+    DGraphicsView::mouseReleaseEvent(event);
 }
 
 
 void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
 {
+    DGraphicsView::mouseDoubleClickEvent(event);
     CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
     if (item == NULL) {
         return;
@@ -529,7 +534,7 @@ void CGraphicsView::slotDeleteItem()
 }
 void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
 {
-
+    DGraphicsView::mouseMoveEvent(event);
 }
 
 #ifndef QT_NO_WHEELEVENT
@@ -556,6 +561,7 @@ void CGraphicsView::wheelEvent( QWheelEvent *event )
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 
     scrollBarValueChangedSlot();
+    DGraphicsView::wheelEvent(event);
 }
 #endif
 
@@ -569,7 +575,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::keyPressEvent( QKeyEvent *event )
 {
-
+    DGraphicsView::keyPressEvent(event);
 }
 
 /************************************************************************
@@ -582,7 +588,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::keyReleaseEvent( QKeyEvent *event )
 {
-
+    DGraphicsView::keyReleaseEvent(event);
 }
 
 /************************************************************************
@@ -595,7 +601,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::focusInEvent( QFocusEvent *event )
 {
-
+    DGraphicsView::focusInEvent(event);
 }
 
 /************************************************************************
@@ -608,7 +614,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::focusOutEvent( QFocusEvent *event )
 {
-
+    DGraphicsView::focusOutEvent(event);
 }
 
 /************************************************************************
@@ -621,7 +627,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::enterEvent( QEvent *event )
 {
-
+    DGraphicsView::enterEvent(event);
 }
 
 /************************************************************************
@@ -634,7 +640,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::leaveEvent( QEvent *event )
 {
-
+    DGraphicsView::leaveEvent(event);
 }
 
 /************************************************************************
@@ -647,7 +653,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::contextMenuEvent( QContextMenuEvent *event )
 {
-
+    DGraphicsView::contextMenuEvent(event);
 }
 
 /************************************************************************
