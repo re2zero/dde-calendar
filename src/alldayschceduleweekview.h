@@ -135,8 +135,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void focusInEvent(QFocusEvent *event);
     void focusOutEvent(QFocusEvent *event);
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);

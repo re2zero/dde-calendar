@@ -340,21 +340,9 @@ void CAllDaySchceduleWeekWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CAllDaySchceduleWeekWidgetItem::mousePressEvent(QMouseEvent *event)
 {
-    m_transparentf = true;
-    update();
-}
-
-void CAllDaySchceduleWeekWidgetItem::mouseReleaseEvent(QMouseEvent *event)
-{
-    m_transparentf = false;
-    update();
-    emit signalsPress(this);
-}
-
-void CAllDaySchceduleWeekWidgetItem::focusInEvent(QFocusEvent *event)
-{
     m_selectflag = true;
     update();
+    emit signalsPress(this);
 }
 
 void CAllDaySchceduleWeekWidgetItem::focusOutEvent(QFocusEvent *event)

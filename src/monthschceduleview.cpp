@@ -318,21 +318,9 @@ void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
 {
-    m_transparentf = false;
-    update();
-}
-
-void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
-{
-    m_transparentf = true;
-    update();
-    slotPress();
-}
-
-void CMonthSchceduleWidgetItem::focusInEvent(QFocusEvent *event)
-{
     m_selectflag = true;
     update();
+    slotPress();
 }
 
 void CMonthSchceduleWidgetItem::focusOutEvent(QFocusEvent *event)
