@@ -41,5 +41,8 @@
         <file>resources/icon/checkbox_checked .svg</file>
         <file>resources/icon/checkbox_unchecked .svg</file>
         <file>resources/icon/uos_logo.svg</file>
+        <file>resources/icon/oval.svg</file>
+        <file>resources/icon/darkchoose30X30_checked .svg</file>
+        <file>resources/icon/darkchoose20X20_checked .svg</file>
     </qresource>
 </RCC>

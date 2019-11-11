@@ -290,6 +290,7 @@ CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
     m_bBackgroundcolor.setAlphaF(0.03);
+    m_gradientItemList->setLineWidth(0);
 }
 
 CSchceduleSearchView::~CSchceduleSearchView()

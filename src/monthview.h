@@ -176,6 +176,7 @@ private:
     int  m_leftmaagin = 0;
     int  m_topmagin = 0;
     DLabel         *m_tooltipview;
+    int                   m_themetype  = 1;
 };
 
 #endif // MYCALENDARWIDGET_H

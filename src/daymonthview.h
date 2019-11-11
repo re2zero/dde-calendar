@@ -137,6 +137,7 @@ private:
     QQueue<int> *queue = nullptr;
     QMap<QDate, CaHuangLiDayInfo> *lunarCache = nullptr;
     CaHuangLiDayInfo *emptyCaHuangLiDayInfo = nullptr;
+    int                   m_themetype  = 1;
 };
 
 #endif // YEARVIEW_H

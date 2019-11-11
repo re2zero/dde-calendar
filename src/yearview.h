@@ -94,6 +94,7 @@ private:
     int cellwidth = 20;
     int cellheight = 20;
     QVBoxLayout *m_hhLayout;
+    int                   m_themetype  = 1;
 };
 
 #endif // YEARVIEW_H
