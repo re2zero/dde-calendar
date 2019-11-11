@@ -78,6 +78,7 @@ CGraphicsView::CGraphicsView(QWidget *parent)
     setMouseTracking(true);
     viewport()->setMouseTracking(true);
 
+    setLineWidth(0);
 }
 
 CGraphicsView::~CGraphicsView()
