@@ -70,6 +70,10 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     viewshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Shift+/")));
     connect(viewshortcut, SIGNAL(activated()), this, SLOT(onViewShortcut()));
 
+    QShortcut *viewmaxminshortcut = new QShortcut(this);
+    viewmaxminshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Alt+F")));
+    connect(viewmaxminshortcut, SIGNAL(activated()), this, SLOT(slotmaxminViewShortcut()));
+
     setTitlebarShadowEnabled(false);
 }
 
@@ -149,6 +153,15 @@ void Calendarmainwindow::onViewShortcut()
     shortcutViewProc->startDetached("deepin-shortcut-viewer", shortcutString);
 
     connect(shortcutViewProc, SIGNAL(finished(int)), shortcutViewProc, SLOT(deleteLater()));
+}
+
+void Calendarmainwindow::slotmaxminViewShortcut()
+{
+    if (windowState() == Qt::WindowMaximized) {
+        showNormal();
+    } else {
+        showMaximized();
+    }
 }
 void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
 {

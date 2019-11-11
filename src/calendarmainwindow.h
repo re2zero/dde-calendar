@@ -54,6 +54,7 @@ public slots:
     void OpenSchedule(QString job);
     void ActiveWindow();
     void onViewShortcut();
+    void slotmaxminViewShortcut();
 private:
     void initUI();
     void initConnection();
