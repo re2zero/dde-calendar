@@ -27,6 +27,7 @@
 #include <QStyleOption>
 #include <QSignalMapper>
 #include <DLabel>
+#include <DFrame>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
 
@@ -39,7 +40,7 @@ enum CalendarWeekDayType {
     SO_MDefault,
 };
 
-class CWeekHeadView: public QWidget
+class CWeekHeadView: public DFrame
 {
     Q_OBJECT
 public:
@@ -59,6 +60,7 @@ public:
     }
     void setTheMe(int type = 0);
     void setWeekDay(QVector<QDate> vDays);
+    void setMounthLabelWidth(int w, int rw);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     //void signalcurrentLunarDateChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
@@ -120,6 +122,8 @@ private:
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
     int m_firstWeekDay;
     int m_themetype = 1;
+    int m_monthW = 80;
+    int m_fixwidth = 200;
 };
 
 #endif // MYCALENDARWIDGET_H

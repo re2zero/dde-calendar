@@ -411,7 +411,8 @@ CAllDaySchceduleWeekView::CAllDaySchceduleWeekView(QWidget *parent, int edittype
     connect(m_createAction, &QAction::triggered, this, &CAllDaySchceduleWeekView::slotCreate);
     //setStyleSheet("background-color:transparent");
     setSelectionMode(QAbstractItemView::NoSelection);
-
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setSelectionModel(nullptr);
 }
 

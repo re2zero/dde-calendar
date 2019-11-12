@@ -27,6 +27,7 @@
 #include <QHBoxLayout>
 #include <DPalette>
 #include <DHiDPIHelper>
+#include "schcedulesearchview.h"
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -165,28 +166,29 @@ void CWeekWindow::initUI()
     //yeartitleLayout->addSpacing(14);
     //yeartitleLayout->addWidget(m_YearLunarLabel);
     //yeartitleLayout->addSpacing(30);
-    m_spaceitem = new QSpacerItem(30, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    //m_spaceitem = new QSpacerItem(30, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    yeartitleLayout->addItem(m_spaceitem);
-    yeartitleLayout->addWidget(m_prevButton);
-    yeartitleLayout->addWidget(m_weekview);
-    yeartitleLayout->addWidget(m_nextButton);
-    yeartitleLayout->addSpacing(10);
-    yeartitleLayout->addWidget(m_weekLabel);
+    //yeartitleLayout->addItem(m_spaceitem);
     yeartitleLayout->addStretch();
-    yeartitleLayout->addWidget(m_today);
+    yeartitleLayout->addWidget(m_prevButton, 0, Qt::AlignCenter);
+    yeartitleLayout->addWidget(m_weekview, 0, Qt::AlignCenter);
+    yeartitleLayout->addWidget(m_nextButton, 0, Qt::AlignCenter);
+    yeartitleLayout->addSpacing(10);
+    yeartitleLayout->addWidget(m_weekLabel, 0, Qt::AlignCenter);
+    yeartitleLayout->addStretch();
+    yeartitleLayout->addWidget(m_today, 0, Qt::AlignRight);
 
     m_weekHeadView = new CWeekHeadView();
     m_scheduleView = new CScheduleView();
-    m_weekHeadView->setFixedWidth(840);
+    //m_weekHeadView->setFixedWidth(840);
     m_scheduleView->setviewMagin(73, 109, 0, 0);
     m_scheduleView->setRange(763, 1032, QDate(2019, 8, 12), QDate(2019, 8, 18));
-    m_scheduleView->setFixedSize(838, 450);
+    //m_scheduleView->setFixedSize(838, 450);
 
     m_mainhLayout = new QVBoxLayout;
     m_mainhLayout->setMargin(0);
     m_mainhLayout->setSpacing(0);
-    m_mainhLayout->setContentsMargins(8, 20, 10, 9);
+    m_mainhLayout->setContentsMargins(8, 20, 0, 9);
     m_mainhLayout->addWidget(m_weekHeadView);
     m_mainhLayout->addWidget(m_scheduleView);
     QVBoxLayout *hhLayout = new QVBoxLayout;
@@ -195,7 +197,26 @@ void CWeekWindow::initUI()
     hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addLayout(yeartitleLayout);
     hhLayout->addLayout(m_mainhLayout);
-    m_contentBackground->setLayout(hhLayout);
+
+    QHBoxLayout *tmainLayout = new QHBoxLayout;
+    tmainLayout->setMargin(0);
+    tmainLayout->setSpacing(0);
+    tmainLayout->setContentsMargins(0, 0, 10, 0);
+    tmainLayout->addLayout(hhLayout);
+    //mainLayout->addStretch(1);
+
+    m_schceduleSearchView = new CSchceduleSearchView(this);
+    m_schceduleSearchView->setFixedWidth(200);
+
+    QVBoxLayout *ssLayout = new QVBoxLayout;
+    ssLayout->setMargin(0);
+    ssLayout->setSpacing(0);
+    ssLayout->setContentsMargins(0, 10, 0, 10);
+    ssLayout->addWidget(m_schceduleSearchView);
+    tmainLayout->addLayout(ssLayout);
+    m_schceduleSearchView->setVisible(false);
+
+    m_contentBackground->setLayout(tmainLayout);
     setCentralWidget(m_contentBackground);
 }
 
@@ -208,6 +229,10 @@ void CWeekWindow::initConnection()
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentLunarDateChanged, this, &CWeekWindow::slotcurrentDateLunarChanged);
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentDateChanged, this, &CWeekWindow::slotcurrentDateChanged);
     connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CWeekWindow::slotTransitSchedule);
+
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CWeekWindow::slotTransitSearchSchedule);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CWeekWindow::slotsearchDateSelect);
+
 }
 
 void CWeekWindow::setTheMe(int type)
@@ -287,13 +312,30 @@ void CWeekWindow::setTheMe(int type)
     m_weekview->setTheMe(type);
     m_weekHeadView->setTheMe(type);
     m_scheduleView->setTheMe(type);
+    m_schceduleSearchView->setTheMe(type);
 }
 
 void CWeekWindow::setTime(QTime time)
 {
     m_scheduleView->setTime(time);
 }
+void CWeekWindow::setSearchWFlag(bool flag)
+{
+    m_searchfalg = flag;
+    m_weekview->setsearchfalg(flag);
+    m_schceduleSearchView->setVisible(flag);
+}
 
+void CWeekWindow::clearSearch()
+{
+    m_schceduleSearchView->clearSearch();
+}
+
+void CWeekWindow::setSearchText(QString str)
+{
+    m_searchText = str;
+    m_schceduleSearchView->slotsetSearch(str);
+}
 void CWeekWindow::slotReturnTodayUpdate()
 {
     setDate(QDate::currentDate());
@@ -307,6 +349,14 @@ void CWeekWindow::slotupdateSchedule(int id)
 
 void CWeekWindow::slotTransitSchedule(int id)
 {
+    m_schceduleSearchView->slotsetSearch(m_searchText);
+    emit signalsWUpdateShcedule(this, id);
+}
+
+void CWeekWindow::slotTransitSearchSchedule(int id)
+{
+    m_scheduleView->slotupdateSchedule();
+    m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
 }
 
@@ -392,6 +442,12 @@ void CWeekWindow::slotcurrentDateChanged(QDate date)
     m_scheduleView->setDate(date);
 }
 
+void CWeekWindow::slotsearchDateSelect(QDate date)
+{
+    setDate(date);
+    slotupdateSchedule();
+}
+
 void CWeekWindow::resizeEvent(QResizeEvent *event)
 {
     int sleftMagin = 0.093 * width() + 0.5;
@@ -408,18 +464,22 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
 
     int sw = (width() -  width() * 0.9802 + 0.5) / 2;
 
-    m_mainhLayout->setContentsMargins(sw, 20, width() -  width() * 0.9802 + 0.5 - sw, 10);
+    m_mainhLayout->setContentsMargins(sw, 20, 0, 10);
 
-    m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    //m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    if (!m_searchfalg) {
+        m_weekview->setwindowFixw(dw, width());
+    } else {
+        m_weekview->setwindowFixw(dw, width() - 0.2325 * width() + 0.5 - 220 - 260);
+    }
+    m_weekview->setFixedHeight(dh);
 
-
-    m_weekview->setFixedSize(dw, dh);
-
-    m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
-
+    //m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
+    m_weekHeadView->setMounthLabelWidth(sleftMagin + 1, width() * 0.9802 + 0.5);
+    m_weekHeadView->setFixedHeight(headh);
     m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
-
-    m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
+    m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
+    //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
     QMainWindow::resizeEvent(event);
 }
 

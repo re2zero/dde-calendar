@@ -31,7 +31,7 @@
 #include <DPalette>
 #include <DHiDPIHelper>
 DGUI_USE_NAMESPACE
-CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
+CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
                                    "/com/deepin/api/LunarCalendar",
@@ -84,6 +84,7 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
     setLayout(hboxLayout);
 
     connect(this, &CWeekHeadView::dateSelected, this, &CWeekHeadView::handleCurrentDateChanged);
+    setFrameRounded(true);
 }
 
 void CWeekHeadView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
@@ -176,6 +177,21 @@ void CWeekHeadView::setWeekDay(QVector<QDate> vDays)
     if (vDays.count() != 7) return;
     for (int i = 0; i != 7; ++i)
         m_days[i] = vDays[i];
+}
+
+void CWeekHeadView::setMounthLabelWidth(int w, int rw)
+{
+    m_monthW = w;
+    m_fixwidth = rw;
+    int mh = height();
+    m_monthLabel->setFixedSize(m_monthW, mh);
+
+    int ww = (width() - m_monthW) * 1.0 / 7 + 0.5;
+    int h = height();
+    for (int i(0); i != 7; ++i) {
+        m_cellList.at(i)->setFixedSize(w, h);
+        m_cellList.at(i)->update();
+    }
 }
 
 void CWeekHeadView::setCurrentDate(const QDate date)
@@ -401,6 +417,12 @@ void CWeekHeadView::paintCell(QWidget *cell)
     int bw = (cell->width() - 104) / 2;
     int bh = (cell->height() - 26) / 2;
 
+    if (bw < 0) {
+        bw = 2;
+    }
+    if (bh < 0) {
+        bh = 2;
+    }
     if (isSelectedCell) {
         if (m_showState & ShowLunar) {
             QRect fillRect(bw + 1, bh, 24, 24);
@@ -476,29 +498,30 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
     // draw text of day type
     if (m_showState & ShowLunar) {
-        if (d == 6 || d == 7)
-            painter.setPen(m_weekendsTextColor);
-        else
-            painter.setPen(m_defaultLunarColor);
+        if (cell->width() > 100) {
+            if (d == 6 || d == 7)
+                painter.setPen(m_weekendsTextColor);
+            else
+                painter.setPen(m_defaultLunarColor);
 
-        painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
-        CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
-        //if (!dayInfo.mSolarFestival.isEmpty()) {
-        if (false) {
-            QRect fillRect = QRect(2, 39, 106, 15);
-            painter.setPen(Qt::red);
-            QFont solofont = m_dayNumFont;
-            solofont.setPixelSize(10);
-            painter.setFont(solofont);
-            QFontMetrics fm = painter.fontMetrics();
-            while (fm.width(dayInfo.mSolarFestival) > 108) {
-                solofont.setPixelSize(solofont.pixelSize() - 1);
+            painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
+            CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
+            //if (!dayInfo.mSolarFestival.isEmpty()) {
+            if (false) {
+                QRect fillRect = QRect(2, 39, 106, 15);
+                painter.setPen(Qt::red);
+                QFont solofont = m_dayNumFont;
+                solofont.setPixelSize(10);
                 painter.setFont(solofont);
-                fm = painter.fontMetrics();
+                QFontMetrics fm = painter.fontMetrics();
+                while (fm.width(dayInfo.mSolarFestival) > 108) {
+                    solofont.setPixelSize(solofont.pixelSize() - 1);
+                    painter.setFont(solofont);
+                    fm = painter.fontMetrics();
+                }
+                painter.drawText(fillRect, Qt::AlignRight, dayInfo.mSolarFestival);
             }
-            painter.drawText(fillRect, Qt::AlignRight, dayInfo.mSolarFestival);
         }
-
     }
     painter.restore();
     painter.end();
@@ -551,14 +574,16 @@ int CWeekHeadView::checkDay(int weekday)
 
 void CWeekHeadView::resizeEvent(QResizeEvent *event)
 {
-    int mw = 0.0959 * width() + 0.5;
+    //int mw = 0.0959 * width() + 0.5;
     int mh = height();
-    m_monthLabel->setFixedSize(mw, mh);
-
-    int w = 0.1293 * width() + 0.5;
+    m_monthLabel->setFixedSize(m_monthW, mh);
+    float interval =  1.0 * (width() - m_monthW) / 7;
+    //int ww = (width() - m_monthW) * 1.0 / 7 + 0.5;
     int h = height();
-    for (int i(0); i != 7; ++i) {
-        m_cellList.at(i)->setFixedSize(w, h);
+    for (int i(0); i != 6; ++i) {
+        m_cellList.at(i)->setFixedSize(interval + 0.5, h);
     }
+    m_cellList.at(0)->setFixedSize(interval, h);
+    m_cellList.at(6)->setFixedSize(interval - 2, h);
     DWidget::resizeEvent(event);
 }

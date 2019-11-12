@@ -36,6 +36,7 @@ class CWeekHeadView;
 class CaLunarDayInfo;
 class CWeekView;
 class CScheduleView;
+class CSchceduleSearchView;
 class CWeekWindow: public QMainWindow
 {
     Q_OBJECT
@@ -49,6 +50,9 @@ public:
     void initConnection();
     void setTheMe(int type = 0);
     void setTime(QTime time);
+    void setSearchWFlag(bool flag);
+    void clearSearch();
+    void setSearchText(QString str);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
@@ -58,6 +62,7 @@ public slots:
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
+    void slotTransitSearchSchedule(int id = 0);
 private slots:
     void slotprev();
     void slotnext();
@@ -65,6 +70,7 @@ private slots:
     void slotCurrentWeek(QDate date, QDate currentDate);
     void slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type = 0);
     void slotcurrentDateChanged(QDate date);
+    void slotsearchDateSelect(QDate date);
 protected:
     void resizeEvent(QResizeEvent *event);
 private:
@@ -81,6 +87,9 @@ private:
     CScheduleView     *m_scheduleView;
     QSpacerItem       *m_spaceitem;
     QVBoxLayout       *m_mainhLayout;
+    CSchceduleSearchView *m_schceduleSearchView;
+    QString           m_searchText;
+    bool m_searchfalg = false;
 };
 
 #endif // YEARWINDOW_H
