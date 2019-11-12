@@ -24,6 +24,7 @@
 #include <QBrush>
 #include <QEvent>
 #include <DPalette>
+#include <DHiDPIHelper>
 DGUI_USE_NAMESPACE
 CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
 {
@@ -90,6 +91,7 @@ void CMonthDayView::setRCurrentDate(const QDate date)
 
 void CMonthDayView::setTheMe(int type)
 {
+    m_themetype = 1;
     if (type == 0 || type == 1) {
 
         m_defaultTextColor = Qt::black;
@@ -135,10 +137,20 @@ void CMonthDayView::paintCell(QWidget *cell)
     if (isSelectDay) {
         QRect fillRect((cell->width() - 30) / 2, 3, 30, 30);
 
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(QBrush(m_backgroundcurrentDayColor));
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(fillRect);
+        QPixmap pixmap;
+        if (m_themetype == 2)
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        else {
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        }
+        pixmap.setDevicePixelRatio(devicePixelRatioF());
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        painter.drawPixmap((cell->width() - 30) / 2 - 4, 3, pixmap);
+        painter.restore();
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
         painter.setPen(m_currentDayTextColor);
         painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
     } else {

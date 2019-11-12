@@ -119,7 +119,7 @@ private:
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
     int m_firstWeekDay;
-
+    int m_themetype = 1;
 };
 
 #endif // MYCALENDARWIDGET_H

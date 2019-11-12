@@ -29,6 +29,7 @@
 #include <QQueue>
 #include <QMenu>
 #include <DPalette>
+#include <DHiDPIHelper>
 DGUI_USE_NAMESPACE
 CWeekHeadView::CWeekHeadView(QWidget *parent) : QWidget(parent)
 {
@@ -123,6 +124,7 @@ int CWeekHeadView::getDateType(const QDate &date)
 
 void CWeekHeadView::setTheMe(int type)
 {
+    m_themetype = type;
     if (type == 0 || type == 1) {
 
         DPalette monthpa = m_monthLabel->palette();
@@ -402,16 +404,34 @@ void CWeekHeadView::paintCell(QWidget *cell)
     if (isSelectedCell) {
         if (m_showState & ShowLunar) {
             QRect fillRect(bw + 1, bh, 24, 24);
-            painter.setRenderHints(QPainter::HighQualityAntialiasing);
-            painter.setBrush(QBrush(m_weekendsTextColor));
-            painter.setPen(Qt::NoPen);
-            painter.drawEllipse(fillRect);
+            QPixmap pixmap;
+            if (m_themetype == 2)
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            else {
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            }
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            painter.drawPixmap(bw + 1 - 3, bh, pixmap);
+            painter.restore();
         } else {
             QRect fillRect(bw + 13, bh, 24, 24);
-            painter.setRenderHints(QPainter::HighQualityAntialiasing);
-            painter.setBrush(QBrush(m_weekendsTextColor));
-            painter.setPen(Qt::NoPen);
-            painter.drawEllipse(fillRect);
+            QPixmap pixmap;
+            if (m_themetype == 2)
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            else {
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            }
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            painter.drawPixmap(bw + 13 - 3, bh, pixmap);
+            painter.restore();
         }
 
     }

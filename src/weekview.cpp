@@ -25,6 +25,7 @@
 #include <QEvent>
 #include <QMessageBox>
 #include <QWheelEvent>
+#include <DHiDPIHelper>
 CWeekView::CWeekView(QWidget *parent) : DFrame(parent)
 {
     m_dayNumFont.setFamily("Avenir-Light");
@@ -136,10 +137,20 @@ void CWeekView::paintCell(QWidget *cell)
     if (isSelectDay) {
         QRect fillRect((cell->width() - 30) / 2, 3, 30, 30);
 
+        QPixmap pixmap;
+        if (m_themetype == 2)
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        else {
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        }
+        pixmap.setDevicePixelRatio(devicePixelRatioF());
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        painter.drawPixmap((cell->width() - 30) / 2 - 4, 3, pixmap);
+        painter.restore();
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(QBrush(m_backgroundcurrentDayColor));
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(fillRect);
         painter.setPen(m_currentDayTextColor);
         painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
     } else {

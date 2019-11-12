@@ -56,7 +56,7 @@ private:
     QColor m_currentDayTextColor = Qt::white;
     QColor m_backgroundcurrentDayColor = "#0081FF";
     QColor m_fillColor = Qt::white;
-
+    int m_themetype = 1;
 };
 
 #endif // MONTDAYVIEW_H

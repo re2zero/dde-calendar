@@ -61,6 +61,7 @@ private:
     QColor m_fillColor = Qt::white;
     int m_firstWeekDay;
     int m_weekAddDay = 0;
+    int m_themetype = 1;
 };
 
 #endif // MONTDAYVIEW_H
