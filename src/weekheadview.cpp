@@ -184,15 +184,16 @@ void CWeekHeadView::setMounthLabelWidth(int w, int rw)
 {
     m_monthW = w;
     m_fixwidth = rw;
-    int mh = height();
-    m_monthLabel->setFixedSize(m_monthW, mh);
+    /*
+        int mh = height();
+        m_monthLabel->setFixedSize(m_monthW, mh);
 
-    int ww = (width() - m_monthW) * 1.0 / 7 + 0.5;
-    int h = height();
-    for (int i(0); i != 7; ++i) {
-        m_cellList.at(i)->setFixedSize(w, h);
-        m_cellList.at(i)->update();
-    }
+        int ww = (width() - m_monthW) * 1.0 / 7 + 0.5;
+        int h = height();
+        for (int i(0); i != 7; ++i) {
+            m_cellList.at(i)->setFixedSize(w, h);
+            m_cellList.at(i)->update();
+        }*/
 }
 
 void CWeekHeadView::setCurrentDate(const QDate date)

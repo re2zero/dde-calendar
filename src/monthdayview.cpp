@@ -244,6 +244,7 @@ void CMonthDayView::setSelectedCell(int index, int type)
 
 void CMonthDayView::resizeEvent(QResizeEvent *event)
 {
+#if 0
     int w = m_fixwidth * 0.08333 + 0.5;
     int h = height();
     for (int c = 0; c != 12; ++c) {
@@ -269,6 +270,39 @@ void CMonthDayView::resizeEvent(QResizeEvent *event)
             m_cellList[i]->update();
         }
     }
+#endif
+    int w = width() / 10;
+    int h = height();
 
+    int ww = 36;
+    if (w >= ww) {
+        for (int c = 0; c != 12; ++c) {
+            m_cellList[c]->setFixedSize(w, h);
+            //m_cellList[c]->setVisible(true);
+            m_cellList[c]->update();
+        }
+        for (int i = 0; i < 12; i++) {
+            m_cellList[i]->setVisible(true);
+            m_cellList[i]->update();
+        }
+    } else {
+        for (int c = 0; c != 12; ++c) {
+            m_cellList[c]->setFixedSize(ww, h);
+            //m_cellList[c]->setVisible(true);
+            m_cellList[c]->update();
+        }
+        int t_num = qRound((ww * 12 - width() ) / ww / 2.0);
+        QVector<bool> vindex;
+        vindex.resize(12);
+        vindex.fill(true);
+        for (int i = 0; i < t_num; i++) {
+            vindex[i] = false;
+            vindex[11 - i] = false;
+        }
+        for (int i = 0; i < 12; i++) {
+            m_cellList[i]->setVisible(vindex[i]);
+            m_cellList[i]->update();
+        }
+    }
 }
 

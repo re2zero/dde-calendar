@@ -366,11 +366,13 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
     //m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
     //m_monthDayView->setFixedSize(dw, dh);
     if (!m_searchfalg) {
-        m_monthDayView->setwindowFixw(dw, width());
+        m_monthDayView->setFixedSize(dw, dh);
+        //m_monthDayView->setwindowFixw(dw, width());
     } else {
-        m_monthDayView->setwindowFixw(dw, width() - 0.2325 * width() + 0.5 - 260);
+        //m_monthDayView->setwindowFixw(dw, width() - 0.2325 * width() + 0.5 - 260);
+        m_monthDayView->setFixedSize(dw, dh);
     }
-    m_monthDayView->setFixedHeight(dh);
+    //m_monthDayView->setFixedHeight(dh);
     //m_monthView->setFixedSize(tw, th);
     //m_animationContainer->setFixedSize(m_monthView->width(),
     //                                 m_monthView->height() -  th * 0.1042 + 0.5);

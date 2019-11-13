@@ -87,7 +87,7 @@ private:
     CScheduleView     *m_scheduleView;
     QSpacerItem       *m_spaceitem;
     QVBoxLayout       *m_mainhLayout;
-    CSchceduleSearchView *m_schceduleSearchView;
+    // CSchceduleSearchView *m_schceduleSearchView;
     QString           m_searchText;
     bool m_searchfalg = false;
 };

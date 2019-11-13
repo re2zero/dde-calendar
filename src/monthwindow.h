@@ -90,7 +90,7 @@ private:
 
     CSchceduleSearchView *m_schceduleSearchView;
     QString           m_searchText;
-    bool m_searchfalg = true;
+    bool m_searchfalg = false;
 };
 
 #endif // YEARWINDOW_H

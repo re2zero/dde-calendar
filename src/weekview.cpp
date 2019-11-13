@@ -99,6 +99,7 @@ void CWeekView::setwindowFixw(int w, int rw)
 {
     m_fixwidth = w;
     m_realwidth = rw;
+    return;
     int w2 = m_fixwidth * 0.1 + 0.5;
     int h = height();
     for (int c = 0; c != 10; ++c) {
@@ -261,6 +262,7 @@ void CWeekView::updateDate()
 }
 void CWeekView::resizeEvent(QResizeEvent *event)
 {
+#if 0
     int w = m_fixwidth * 0.1 + 0.5;
     int h = height();
     for (int c = 0; c != 10; ++c) {
@@ -287,6 +289,41 @@ void CWeekView::resizeEvent(QResizeEvent *event)
             m_cellList[i]->update();
         }
     }
+#else
+    int w = width() / 10;
+    int h = height();
+
+    int ww = 36;
+    if (w >= ww) {
+        for (int c = 0; c != 10; ++c) {
+            m_cellList[c]->setFixedSize(w, h);
+            //m_cellList[c]->setVisible(true);
+            m_cellList[c]->update();
+        }
+        for (int i = 0; i < 10; i++) {
+            m_cellList[i]->setVisible(true);
+            m_cellList[i]->update();
+        }
+    } else {
+        for (int c = 0; c != 10; ++c) {
+            m_cellList[c]->setFixedSize(ww, h);
+            //m_cellList[c]->setVisible(true);
+            m_cellList[c]->update();
+        }
+        int t_num = qRound((ww * 10 - width() ) / ww / 2.0);
+        QVector<bool> vindex;
+        vindex.resize(10);
+        vindex.fill(true);
+        for (int i = 0; i < t_num; i++) {
+            vindex[i] = false;
+            vindex[9 - i] = false;
+        }
+        for (int i = 0; i < 10; i++) {
+            m_cellList[i]->setVisible(vindex[i]);
+            m_cellList[i]->update();
+        }
+    }
+#endif
 }
 void CWeekView::wheelEvent(QWheelEvent *event)
 {
