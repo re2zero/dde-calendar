@@ -552,17 +552,16 @@ void CGraphicsView::wheelEvent( QWheelEvent *event )
     int test = event -> delta();
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();
-    // view 根据鼠标下的点作为锚点来定位 scene
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     QPoint newCenter(viewWidth / 2,  viewHeight / 2 - test);
     QPointF centerpos = mapToScene(newCenter);
-    centerOn(centerpos.x(), centerpos.y() + 2);
-
+    // view 根据鼠标下的点作为锚点来定位 scene
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    centerOn(centerpos.x(), centerpos.y());
     // scene 在 view 的中心点作为锚点
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 
     scrollBarValueChangedSlot();
-    DGraphicsView::wheelEvent(event);
+    //DGraphicsView::wheelEvent(event);
 }
 #endif
 
@@ -740,6 +739,11 @@ void CGraphicsView::scrollBarValueChangedSlot()
 {
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();
+    QPoint newCenter(viewWidth / 2,  viewHeight / 2 );
+    QPointF centerpos = mapToScene(newCenter);
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    centerOn(centerpos.x(), centerpos.y());
+    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     m_vLRLarge.clear();
     m_vTBLarge.clear();
     QPointF leftToprealPos = mapToScene(QPoint(0, 0));
@@ -761,6 +765,7 @@ void CGraphicsView::scrollBarValueChangedSlot()
     }
     emit signalsPosHours(m_vLRLarge, vHours);
     scene()->update();
+    update();
 }
 
 int CGraphicsView::checkDay(int weekday)

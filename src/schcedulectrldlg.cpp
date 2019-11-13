@@ -77,7 +77,7 @@ void CSchceduleCtrlDlg::initUI()
     m_mainBoxLayout = new QVBoxLayout(this);
     m_mainBoxLayout->setMargin(0);
     m_mainBoxLayout->setSpacing(0);
-    m_mainBoxLayout->setContentsMargins(10, 28, 10, 10);
+    //m_mainBoxLayout->setContentsMargins(10, 28, 10, 10);
 
     m_firstLabel = new DLabel(this);
     m_firstLabel->setAlignment(Qt::AlignCenter);

@@ -224,7 +224,7 @@ void CMySchceduleView::initUI()
 
     QFont labelTitle;
     labelTitle.setFamily("SourceHanSansSC");
-    labelTitle.setWeight(QFont::Bold);
+    labelTitle.setWeight(QFont::Medium);
     labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
@@ -247,7 +247,7 @@ void CMySchceduleView::initUI()
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(10, 10, 10, 10);
+    // mainLayout->setContentsMargins(10, 10, 10, 10);
 
     m_schceduleLabel = new DLabel(this);
     m_schceduleLabel->setFixedHeight(26);
