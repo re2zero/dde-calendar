@@ -28,8 +28,9 @@
 #include <DFrame>
 #include <QSpacerItem>
 #include "calendardbus.h"
-DWIDGET_USE_NAMESPACE
 
+DWIDGET_USE_NAMESPACE
+class CSchceduleSearchView;
 class CMonthView;
 class CMonthDayView;
 class QPropertyAnimation;
@@ -43,10 +44,14 @@ public:
     void setDate(QDate date);
     void setLunarVisible(bool state);
     void setTheMe(int type = 0);
+    void setSearchWFlag(bool flag);
+    void clearSearch();
+    void setSearchText(QString str);
 public slots:
     void previousMonth();
     void nextMonth();
-
+    void slotTransitSearchSchedule(int id = 0);
+    void slotsearchDateSelect(QDate date);
 protected:
     void wheelEvent(QWheelEvent *);
 private:
@@ -71,7 +76,7 @@ private slots:
     void slotcurrentDateChanged(QDate date);
     void slotSelectedMonth(QDate date);
 private:
-    QFrame *m_animationContainer = nullptr;
+    //QFrame *m_animationContainer = nullptr;
 
     CMonthView        *m_monthView;
     CMonthDayView      *m_monthDayView;
@@ -82,6 +87,10 @@ private:
     DLabel            *m_YearLunarLabel;
     QSpacerItem       *m_spaceitem;
     DFrame            *m_gridWidget;
+
+    CSchceduleSearchView *m_schceduleSearchView;
+    QString           m_searchText;
+    bool m_searchfalg = true;
 };
 
 #endif // YEARWINDOW_H

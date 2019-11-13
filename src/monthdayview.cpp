@@ -112,6 +112,42 @@ void CMonthDayView::setTheMe(int type)
     }
 }
 
+void CMonthDayView::setwindowFixw(int w, int rw)
+{
+    m_fixwidth = w;
+    m_realwidth = rw;
+    int w2 = m_fixwidth * 0.08333 + 0.5;
+    int h = height();
+    for (int c = 0; c != 12; ++c) {
+        m_cellList[c]->setFixedSize(w2, h);
+        m_cellList[c]->update();
+    }
+    if ((m_realwidth   < m_fixwidth) && m_searchfalg) {
+        int t_num = qRound((m_fixwidth - m_realwidth ) / w2 / 2.0);
+        QVector<bool> vindex;
+        vindex.resize(12);
+        vindex.fill(true);
+        for (int i = 0; i < t_num; i++) {
+            vindex[i] = false;
+            vindex[11 - i] = false;
+        }
+        for (int i = 0; i < 12; i++) {
+            m_cellList[i]->setVisible(vindex[i]);
+            m_cellList[i]->update();
+        }
+    } else {
+        for (int i = 0; i < 12; i++) {
+            m_cellList[i]->setVisible(true);
+            m_cellList[i]->update();
+        }
+    }
+}
+
+void CMonthDayView::setsearchfalg(bool flag)
+{
+    m_searchfalg = flag;
+}
+
 void CMonthDayView::paintCell(QWidget *cell)
 {
     const QRect rect(0, 0, cell->width(), cell->height());
@@ -208,11 +244,31 @@ void CMonthDayView::setSelectedCell(int index, int type)
 
 void CMonthDayView::resizeEvent(QResizeEvent *event)
 {
-    int w = width() * 0.08333 + 0.5;
+    int w = m_fixwidth * 0.08333 + 0.5;
     int h = height();
     for (int c = 0; c != 12; ++c) {
         m_cellList[c]->setFixedSize(w, h);
         m_cellList[c]->update();
     }
+    if ((m_realwidth   < m_fixwidth) && m_searchfalg) {
+        int t_num = qRound((m_fixwidth - m_realwidth ) / w / 2.0);
+        QVector<bool> vindex;
+        vindex.resize(12);
+        vindex.fill(true);
+        for (int i = 0; i < t_num; i++) {
+            vindex[i] = false;
+            vindex[11 - i] = false;
+        }
+        for (int i = 0; i < 12; i++) {
+            m_cellList[i]->setVisible(vindex[i]);
+            m_cellList[i]->update();
+        }
+    } else {
+        for (int i = 0; i < 12; i++) {
+            m_cellList[i]->setVisible(true);
+            m_cellList[i]->update();
+        }
+    }
+
 }
 

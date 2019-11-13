@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <DPalette>
+#include "schcedulesearchview.h"
 DGUI_USE_NAMESPACE
 CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -134,6 +135,35 @@ void CMonthWindow::nextMonth()
     slideMonth(true);
 }
 
+void CMonthWindow::slotTransitSearchSchedule(int id)
+{
+    m_monthView->slotSchceduleUpdate(id);
+    m_schceduleSearchView->slotsetSearch(m_searchText);
+    emit signalsWUpdateShcedule(this, id);
+}
+
+void CMonthWindow::slotsearchDateSelect(QDate date)
+{
+    setDate(date);
+    slotupdateSchedule();
+}
+void CMonthWindow::setSearchWFlag(bool flag)
+{
+    m_searchfalg = flag;
+    m_monthDayView->setsearchfalg(flag);
+    m_schceduleSearchView->setVisible(flag);
+}
+
+void CMonthWindow::clearSearch()
+{
+    m_schceduleSearchView->clearSearch();
+}
+
+void CMonthWindow::setSearchText(QString str)
+{
+    m_searchText = str;
+    m_schceduleSearchView->slotsetSearch(str);
+}
 void CMonthWindow::wheelEvent(QWheelEvent *e)
 {
     if (e->delta() < 0) {
@@ -205,12 +235,13 @@ void CMonthWindow::initUI()
     yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout->addLayout(yeartitleLayout1);
     //yeartitleLayout->addSpacing(30);
-    m_spaceitem = new QSpacerItem(30, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    //m_spaceitem = new QSpacerItem(30, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    yeartitleLayout->addItem(m_spaceitem);
+    //yeartitleLayout->addItem(m_spaceitem);
+    yeartitleLayout->addStretch();
     yeartitleLayout->addWidget(m_monthDayView, 0, Qt::AlignCenter);
     yeartitleLayout->addStretch();
-    yeartitleLayout->addWidget(m_today);
+    yeartitleLayout->addWidget(m_today, 0, Qt::AlignRight);
 
     m_monthView = new CMonthView(this);
     QVBoxLayout *mhLayout = new QVBoxLayout;
@@ -230,18 +261,37 @@ void CMonthWindow::initUI()
     m_gridWidget->setLayout(mhLayout);
 
     hhLayout->addWidget(m_gridWidget);
-    m_contentBackground->setLayout(hhLayout);
 
-    m_animationContainer = new DFrame(m_contentBackground);
+    QHBoxLayout *tmainLayout = new QHBoxLayout;
+    tmainLayout->setMargin(0);
+    tmainLayout->setSpacing(0);
+    tmainLayout->setContentsMargins(0, 0, 0, 0);
+    tmainLayout->addLayout(hhLayout);
+    //mainLayout->addStretch(1);
+
+    m_schceduleSearchView = new CSchceduleSearchView(this);
+    m_schceduleSearchView->setFixedWidth(200);
+
+    QVBoxLayout *ssLayout = new QVBoxLayout;
+    ssLayout->setMargin(0);
+    ssLayout->setSpacing(0);
+    ssLayout->setContentsMargins(0, 10, 0, 10);
+    ssLayout->addWidget(m_schceduleSearchView);
+    tmainLayout->addLayout(ssLayout);
+    m_schceduleSearchView->setVisible(false);
+
+    m_contentBackground->setLayout(tmainLayout);
+
+    // m_animationContainer = new DFrame(m_contentBackground);
     // DPalette anipa = m_animationContainer->palette();
     // anipa.setColor(DPalette::Background, Qt::white);
     //m_animationContainer->setAutoFillBackground(true);
     //m_animationContainer->setPalette(anipa);
     //m_animationContainer->setStyleSheet("QFrame { background: rgba(0, 0, 0, 0) }");
-    m_animationContainer->setFixedSize(m_monthView->width(),
-                                       m_monthView->height() - DDEMonthCalendar::MDayCellHeight);
-    m_animationContainer->move(10, 130);
-    m_animationContainer->hide();
+    // m_animationContainer->setFixedSize(m_monthView->width(),
+    //                                   m_monthView->height() - DDEMonthCalendar::MDayCellHeight);
+    // m_animationContainer->move(10, 130);
+    // m_animationContainer->hide();
 
     setCentralWidget(m_contentBackground);
 }
@@ -263,8 +313,8 @@ void CMonthWindow::initLunar()
 
 void CMonthWindow::slideMonth(bool next)
 {
-    m_animationContainer->show();
-    m_animationContainer->raise();
+    // m_animationContainer->show();
+    // m_animationContainer->raise();
 #if 0
     if (next) {
         if (m_currentdate.month() != 1) {
@@ -313,14 +363,21 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
     int dw = width() * 0.5023 + 0.5;
     int dh = 36;
     int space = (width() - dw) / 2 - 184;
-    m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
-    m_monthDayView->setFixedSize(dw, dh);
-    m_monthView->setFixedSize(tw, th);
-    m_animationContainer->setFixedSize(m_monthView->width(),
-                                       m_monthView->height() -  th * 0.1042 + 0.5);
+    //m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
+    //m_monthDayView->setFixedSize(dw, dh);
+    if (!m_searchfalg) {
+        m_monthDayView->setwindowFixw(dw, width());
+    } else {
+        m_monthDayView->setwindowFixw(dw, width() - 0.2325 * width() + 0.5 - 260);
+    }
+    m_monthDayView->setFixedHeight(dh);
+    //m_monthView->setFixedSize(tw, th);
+    //m_animationContainer->setFixedSize(m_monthView->width(),
+    //                                 m_monthView->height() -  th * 0.1042 + 0.5);
     // for (int i = 0; i < m_monthViewList.count(); i++) {
     //   m_monthViewList.at(i)->setFixedSize(tw, th);
     //}
+    m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     QMainWindow::resizeEvent(event);
 }
 
@@ -337,7 +394,7 @@ void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail
     if (type == 1) {
         m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
         m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
-        m_animationContainer->hide();
+        //m_animationContainer->hide();
 
     } else if (type == 0) {
         if (date.month() != currentdate.month()) {

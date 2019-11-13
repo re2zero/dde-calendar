@@ -32,6 +32,8 @@ public:
     void setCurrentDate(const QDate date);
     void setRCurrentDate(const QDate date);
     void setTheMe(int type = 0);
+    void setwindowFixw(int w, int rw);
+    void setsearchfalg(bool flag);
 public slots:
     void cellClicked(QWidget *cell);
 signals:
@@ -57,6 +59,10 @@ private:
     QColor m_backgroundcurrentDayColor = "#0081FF";
     QColor m_fillColor = Qt::white;
     int m_themetype = 1;
+
+    int m_fixwidth = 200;
+    int m_realwidth = 100;
+    bool m_searchfalg = false;
 };
 
 #endif // MONTDAYVIEW_H
