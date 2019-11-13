@@ -33,6 +33,7 @@
 DGUI_USE_NAMESPACE
 CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
 {
+    setContentsMargins(0, 0, 0, 0);
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
                                    "/com/deepin/api/LunarCalendar",
                                    QDBusConnection::sessionBus(), this);
@@ -581,9 +582,9 @@ void CWeekHeadView::resizeEvent(QResizeEvent *event)
     //int ww = (width() - m_monthW) * 1.0 / 7 + 0.5;
     int h = height();
     for (int i(0); i != 6; ++i) {
-        m_cellList.at(i)->setFixedSize(interval + 0.5, h);
+        m_cellList.at(i)->setFixedSize(interval + 1, h);
     }
     m_cellList.at(0)->setFixedSize(interval, h);
-    m_cellList.at(6)->setFixedSize(interval - 2, h);
+    m_cellList.at(6)->setFixedSize(interval, h);
     DWidget::resizeEvent(event);
 }

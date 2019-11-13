@@ -24,6 +24,7 @@
 #include <DPalette>
 #include <DHiDPIHelper>
 #include <QMenuBar>
+#include "schcedulesearchview.h"
 DGUI_USE_NAMESPACE
 CYearWindow::CYearWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -187,7 +188,7 @@ void CYearWindow::initUI()
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(12, 10, 12, 0);
+    yeartitleLayout->setContentsMargins(2, 10, 2, 0);
 
     yeartitleLayout->addWidget(m_YearLabel);
 
@@ -206,7 +207,7 @@ void CYearWindow::initUI()
 
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setMargin(0);
-    gridLayout->setSpacing(0);
+    gridLayout->setSpacing(8);
     gridLayout->setContentsMargins(0, 0, 0, 0);
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 4; j++) {
@@ -215,7 +216,7 @@ void CYearWindow::initUI()
             connect(view, &CYearView::singanleActiveW, this, &CYearWindow::slotActiveW);
 
             connect(view, &CYearView::signalcurrentDateChanged, this, &CYearWindow::slotcurrentDateChanged);
-            view->setFixedSize(202, 159);
+            //view->setFixedSize(202, 159);
             gridLayout->addWidget(view, i, j);
             m_monthViewList.append(view);
         }
@@ -231,8 +232,27 @@ void CYearWindow::initUI()
     hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addLayout(yeartitleLayout);
     hhLayout->addWidget(m_gridWidget);
+
+    QHBoxLayout *tmainLayout = new QHBoxLayout;
+    tmainLayout->setMargin(0);
+    tmainLayout->setSpacing(0);
+    tmainLayout->setContentsMargins(10, 0, 10, 0);
+    tmainLayout->addLayout(hhLayout);
+    //mainLayout->addStretch(1);
+
+    m_schceduleSearchView = new CSchceduleSearchView(this);
+    m_schceduleSearchView->setFixedWidth(200);
+
+    QVBoxLayout *ssLayout = new QVBoxLayout;
+    ssLayout->setMargin(0);
+    ssLayout->setSpacing(0);
+    ssLayout->setContentsMargins(0, 10, 0, 10);
+    ssLayout->addWidget(m_schceduleSearchView);
+    tmainLayout->addLayout(ssLayout);
+    m_schceduleSearchView->setVisible(false);
+
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
-    m_contentBackground->setLayout(hhLayout);
+    m_contentBackground->setLayout(tmainLayout);
 
     //menuBar()->hide();
     setCentralWidget(m_contentBackground);
@@ -243,6 +263,8 @@ void CYearWindow::initConnection()
     connect(m_prevButton, &DIconButton::clicked, this, &CYearWindow::slotprev);
     //connect(m_today, &DPushButton::clicked, this, &CYearWindow::slottoday);
     connect(m_nextButton, &DIconButton::clicked, this, &CYearWindow::slotnext);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CYearWindow::slotTransitSearchSchedule);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CYearWindow::slotsearchDateSelect);
 }
 
 void CYearWindow::setLunarVisible(bool state)
@@ -341,7 +363,26 @@ void CYearWindow::setTheMe(int type)
         m_monthViewList.at(i)->setTheMe(type);
     }
 }
+void CYearWindow::setSearchWFlag(bool flag)
+{
+    m_schceduleSearchView->setVisible(flag);
+}
 
+void CYearWindow::clearSearch()
+{
+    m_schceduleSearchView->clearSearch();
+}
+
+void CYearWindow::setSearchText(QString str)
+{
+    m_searchText = str;
+    m_schceduleSearchView->slotsetSearch(str);
+}
+void CYearWindow::slotTransitSearchSchedule(int id)
+{
+    m_schceduleSearchView->slotsetSearch(m_searchText);
+    emit signalsWUpdateShcedule(this, id);
+}
 void CYearWindow::slotReturnTodayUpdate()
 {
     setDate(QDate::currentDate());
@@ -469,13 +510,20 @@ void CYearWindow::getDbusData()
     }
 }
 
+void CYearWindow::slotsearchDateSelect(QDate date)
+{
+    setDate(date);
+}
+
 void CYearWindow::resizeEvent(QResizeEvent *event)
 {
     int tw = width() * 0.237 + 0.5;
     int th = height() * 0.272 + 0.5;
+    m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     for (int i = 0; i < m_monthViewList.count(); i++) {
-        m_monthViewList.at(i)->setFixedSize(tw, th);
+        //m_monthViewList.at(i)->setFixedSize(tw, th);
     }
+
     QMainWindow::resizeEvent(event);
 }
 

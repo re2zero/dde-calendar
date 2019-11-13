@@ -33,6 +33,7 @@ DWIDGET_USE_NAMESPACE
 
 class CYearView;
 class CaLunarDayInfo;
+class CSchceduleSearchView;
 class CYearWindow: public QMainWindow
 {
     Q_OBJECT
@@ -44,9 +45,13 @@ public:
     void initConnection();
     void setLunarVisible(bool state);
     void setTheMe(int type = 0);
+    void setSearchWFlag(bool flag);
+    void clearSearch();
+    void setSearchText(QString str);
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsReturnTodayUpdate(QMainWindow *w);
+    void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
 public slots:
     void slotReturnTodayUpdate();
 private slots:
@@ -56,6 +61,9 @@ private slots:
     void slottoday();
     void slotcurrentDateChanged(QDate date);
     void getDbusData();
+private slots:
+    void slotsearchDateSelect(QDate date);
+    void slotTransitSearchSchedule(int id = 0);
 protected:
     void resizeEvent(QResizeEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -79,6 +87,9 @@ private:
     QQueue<QDate> *queue;
     QMap<QDate, CaLunarDayInfo> *lunarCache;
     CaLunarDayInfo *emptyCaLunarDayInfo;
+    CSchceduleSearchView *m_schceduleSearchView;
+    QString           m_searchText;
+    bool m_searchfalg = false;
 };
 
 #endif // YEARWINDOW_H
