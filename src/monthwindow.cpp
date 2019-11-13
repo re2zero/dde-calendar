@@ -151,7 +151,7 @@ void CMonthWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;
     m_monthDayView->setsearchfalg(flag);
-    m_schceduleSearchView->setVisible(flag);
+    //m_schceduleSearchView->setVisible(flag);
 }
 
 void CMonthWindow::clearSearch()

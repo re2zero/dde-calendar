@@ -34,12 +34,14 @@
 #include <DButtonBox>
 #include <QStackedLayout>
 #include "scheduledatamanage.h"
+#include <DFrame>
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
 class CMonthWindow;
 class CWeekWindow;
 class CDayWindow;
 class __Scheduler;
+class CSchceduleSearchView;
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
@@ -61,6 +63,8 @@ private:
     void initLunar();
     void createview();
     DPushButton *createButon(QString name);
+protected:
+    void resizeEvent(QResizeEvent *event);
 private slots:
     void slotstackWClicked(QAbstractButton *bt);
     void slotWUpdateShcedule(QMainWindow *w, int id = 0);
@@ -69,6 +73,8 @@ private slots:
     void slotStextChanged();
     void slotJobsUpdated(const QList<qlonglong> &Ids);
     void slotSearchEdit();
+    void slotTransitSearchSchedule(int id = 0);
+    void slotsearchDateSelect(QDate date);
 private:
     DLabel                    *m_icon;
     QStackedLayout              *m_stackWidget;
@@ -85,6 +91,8 @@ private:
     CDayWindow                *m_DayWindow;
     __Scheduler               *m_dbus;
     bool                      m_searchflag = false;
+    CSchceduleSearchView *m_schceduleSearchView;
+    DFrame *m_contentBackground = nullptr;
 };
 
 #endif // CALENDARMAINWINDOW_H

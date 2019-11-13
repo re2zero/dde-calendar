@@ -323,7 +323,7 @@ void CWeekWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;
     m_weekview->setsearchfalg(flag);
-    m_schceduleSearchView->setVisible(flag);
+    //m_schceduleSearchView->setVisible(flag);
 }
 
 void CWeekWindow::clearSearch()
