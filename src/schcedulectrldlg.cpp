@@ -213,13 +213,13 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
     m_Buttongroup->addButton(button, m_Buttongroup->buttons().count());
     if (m_Buttongroup->buttons().count() > 1) {
         DVerticalLine *btframe = new DVerticalLine(this);
-        m_btBoxLayout->addSpacing(8);
+        m_btBoxLayout->addSpacing(4);
         btframe->setFixedSize(3, 28);
         m_btBoxLayout->addWidget(btframe, 0, Qt::AlignCenter);
         if (type == 1) {
             m_btBoxLayout->addSpacing(4);
         } else {
-            m_btBoxLayout->addSpacing(2);
+            m_btBoxLayout->addSpacing(4);
         }
 
     }
