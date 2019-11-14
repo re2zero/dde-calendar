@@ -41,6 +41,7 @@ public:
     void updateData();
 signals:
     void signalsUpdateShcedule(int id = 0);
+    void signalsCurrentScheduleDate(QDate date);
 public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
@@ -79,12 +80,19 @@ public:
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos);
     void setTransparentB(bool t, QColor tcolor);
+    void setDate(QDate date)
+    {
+        m_date = date;
+    };
     void setData(int  num)
     {
         m_num = num;
     };
+signals:
+    void signalsCurrentScheduleDate(QDate date);
 protected:
     void paintEvent(QPaintEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 private:
     bool                  m_GradientFlag;
     QColor                m_color1;
@@ -95,6 +103,7 @@ private:
     int                   m_num;
     QColor                m_transparentcolor;
     bool                  m_transparentf = false;
+    QDate                 m_date;
 };
 
 class CMonthSchceduleWidgetItem : public DPushButton

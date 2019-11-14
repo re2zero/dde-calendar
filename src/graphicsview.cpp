@@ -418,7 +418,10 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     if (item == NULL) {
         return;
     }
-    if (item->getType() == 1) return;
+    if (item->getType() == 1) {
+        emit signalsCurrentScheduleDate(item->getData().beginDateTime.date());
+        return;
+    }
     CMySchceduleView dlg(this);
     dlg.setSchedules(item->getData());
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);

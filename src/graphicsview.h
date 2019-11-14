@@ -245,6 +245,7 @@ signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours);
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
+    void signalsCurrentScheduleDate(QDate date);
 private:
     int checkDay(int weekday);
 

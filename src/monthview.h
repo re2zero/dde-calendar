@@ -79,6 +79,8 @@ signals:
     void currentFestivalChanged(const QString &festival);
     void cellSelectableChanged(bool cellSelectable) const;
     void signalsSchceduleUpdate(int id = 0);
+    void signalsCurrentScheduleDate(QDate date);
+    void signalsViewSelectDate(QDate date);
 public slots:
     void setCurrentDate(const QDate date);
     void setLunarVisible(bool visible);

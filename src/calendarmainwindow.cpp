@@ -468,6 +468,11 @@ void Calendarmainwindow::initConnection()
 
     connect(m_yearwindow, &CYearWindow::signaldoubleclickDate, this, &Calendarmainwindow::slotdoubleclickDate);
     connect(m_yearwindow, &CYearWindow::signalselectMonth, this, &Calendarmainwindow::slotselectMonth);
+
+    connect(m_monthWindow, &CMonthWindow::signalsViewSelectDate, this, &Calendarmainwindow::slotViewSelectDate);
+    connect(m_monthWindow, &CMonthWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
+    connect(m_weekWindow, &CWeekWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
+
 }
 
 void Calendarmainwindow::initLunar()
@@ -755,5 +760,15 @@ void Calendarmainwindow::slotdoubleclickDate(QDate date)
 void Calendarmainwindow::slotselectMonth(QDate date)
 {
     viewWindow(2, QDateTime(date));
+}
+
+void Calendarmainwindow::slotCurrentScheduleDate(QDate date)
+{
+    viewWindow(4, QDateTime(date));
+}
+
+void Calendarmainwindow::slotViewSelectDate(QDate date)
+{
+    viewWindow(4, QDateTime(date));
 }
 

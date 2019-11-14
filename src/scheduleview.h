@@ -55,6 +55,7 @@ signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 signals:
     void signalsUpdateShcedule(int id = 0);
+    void signalsCurrentScheduleDate(QDate date);
 public slots:
     void slotPosHours(QVector<int> vPos, QVector<int> vHours);
     void setDate(QDate date);
@@ -63,6 +64,7 @@ public slots:
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
     void slotitem(void *item);
     void slotDeleteitem();
+    void slotCurrentScheduleDate(QDate date);
 protected:
     void paintEvent( QPaintEvent *event );
     void resizeEvent(QResizeEvent *event);

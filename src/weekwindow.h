@@ -57,6 +57,7 @@ signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
     void signalsReturnTodayUpdate(QMainWindow *w);
+    void signalsCurrentScheduleDate(QDate date);
 public slots:
     void slotReturnTodayUpdate();
 public slots:

@@ -369,6 +369,7 @@ void CScheduleView::initConnection()
     connect(m_alldaylist, &CAllDaySchceduleWeekView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     connect(m_graphicsView, &CGraphicsView::signalsitem, this, &CScheduleView::slotitem);
     connect(m_alldaylist, &CAllDaySchceduleWeekView::signalsitem, this, &CScheduleView::slotitem);
+    connect(m_graphicsView, &CGraphicsView::signalsCurrentScheduleDate, this, &CScheduleView::slotCurrentScheduleDate);
 
 
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
@@ -382,6 +383,7 @@ void CScheduleView::initConnection()
     QShortcut *dshortcut = new QShortcut(this);
     dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(dshortcut, SIGNAL(activated()), this, SLOT(slotDeleteitem()));
+
 }
 void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
@@ -403,6 +405,13 @@ void CScheduleView::slotDeleteitem()
         m_alldaylist->slotDeleteItem();
     }
 }
+
+void CScheduleView::slotCurrentScheduleDate(QDate date)
+{
+    if (m_viewType == 1) return;
+    emit signalsCurrentScheduleDate(date);
+}
+
 void CScheduleView::updateSchedule(int id)
 {
     m_currentShcedule = NULL;

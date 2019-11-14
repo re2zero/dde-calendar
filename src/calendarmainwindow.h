@@ -78,6 +78,9 @@ private slots:
 
     void slotdoubleclickDate(QDate date);
     void slotselectMonth(QDate date);
+
+    void slotCurrentScheduleDate(QDate date);
+    void slotViewSelectDate(QDate date);
 private:
     DLabel                    *m_icon;
     QStackedLayout              *m_stackWidget;

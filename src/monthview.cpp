@@ -165,6 +165,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
         }
     }
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
+    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsCurrentScheduleDate, this, &CMonthView::signalsCurrentScheduleDate);
 
     DFrame *gridWidget = new DFrame;
     gridWidget->setLayout(gridLayout);
@@ -376,21 +377,32 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             QMouseEvent *rightevent = dynamic_cast<QMouseEvent *>(e);
             if (rightevent->button() == Qt::RightButton)
                 m_updateflag = false;
-            if (rightevent->button() == Qt::LeftButton)
+            if (rightevent->button() == Qt::LeftButton) {
                 cellClicked(cell);
+                const int pos = m_cellList.indexOf(cell);
+                m_cellfoceflag[pos] = true;
+                m_cellList[pos]->update();
+                if (getShowSolarDayByDate(m_days[pos])) {
+                    emit signalsViewSelectDate(m_days[pos]);
+                }
+            }
         } else if (e->type() == QEvent::ContextMenu) {
             DMenu Context(this);
             Context.addAction(m_createAction);
             const int pos = m_cellList.indexOf(cell);
             m_createDate = m_days[pos];
             Context.exec(QCursor::pos());
+        } else if (e->type() == QEvent::MouseButtonDblClick) {
+            const int pos = m_cellList.indexOf(cell);
+            emit signalsViewSelectDate(m_days[pos]);
         } else if (e->type() == QEvent::MouseButtonRelease) {
             m_updateflag = true;
-        } else if (e->type() == QEvent::FocusIn) {
-            const int pos = m_cellList.indexOf(cell);
-            m_cellfoceflag[pos] = true;
-            m_cellList[pos]->update();
-        } else if (e->type() == QEvent::FocusOut) {
+        } //else if (e->type() == QEvent::FocusIn) {
+        //  const int pos = m_cellList.indexOf(cell);
+        //  m_cellfoceflag[pos] = true;
+        //  m_cellList[pos]->update();
+        //}
+        else if (e->type() == QEvent::FocusOut) {
             const int pos = m_cellList.indexOf(cell);
             m_cellfoceflag[pos] = false;
             m_cellList[pos]->update();
@@ -894,7 +906,8 @@ void CMonthView::paintCell(QWidget *cell)
         painter.setPen(Qt::NoPen);
         painter.drawRoundedRect(fillRect, 8, 8);
     }
-    if (m_cellfoceflag[pos]) {
+    //if (m_cellfoceflag[pos]) {
+    if (isSelectedCell) {
         QRect fillRect = QRect(2, 2, cellwidth - 3, cellheight - 3);
 
         painter.setRenderHints(QPainter::HighQualityAntialiasing);

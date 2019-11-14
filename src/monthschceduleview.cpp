@@ -419,6 +419,13 @@ void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
     }
 }
 
+void CMonthSchceduleNumButton::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (m_date.isValid()) {
+        emit  signalsCurrentScheduleDate(m_date);
+    }
+}
+
 void CMonthSchceduleView::setTheMe(int type)
 {
     updateData();
@@ -848,11 +855,13 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
     }
     gwi->setFixedSize(fw, fh);
     gwi->setData(info.num);
+    gwi->setDate(info.bdate);
     if (m_currentMonth != info.bdate.month() && m_currentMonth != info.edate.month()) {
         QColor TransparentC = "#000000";
         TransparentC.setAlphaF(0.05);
         gwi->setTransparentB(true, TransparentC);
     }
+    connect(gwi, &CMonthSchceduleNumButton::signalsCurrentScheduleDate, this, &CMonthSchceduleView::signalsCurrentScheduleDate);
     gwi->move(pos);
     gwi->setWindowFlags(gwi->windowFlags() | Qt::WindowStaysOnTopHint);
     gwi->show();
