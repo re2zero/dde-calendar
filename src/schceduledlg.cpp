@@ -44,6 +44,7 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
         m_beginTimeEdit->setTime(QTime::currentTime());
         m_endDateEdit->setDate(QDate::currentDate());
         m_endTimeEdit->setTime(QTime::currentTime().addSecs(3600));
+        //m_endRepeatDate->setMinimumDate(QDate::currentDate());
     } else {
         m_titleLabel->setText(tr("Edit Schcedule"));
     }
@@ -60,6 +61,7 @@ void CSchceduleDlg::setData(const ScheduleInfo &info)
     m_beginTimeEdit->setTime(info.beginDateTime.time());
     m_endDateEdit->setDate(info.endDateTime.date());
     m_endTimeEdit->setTime(info.endDateTime.time());
+    m_endRepeatDate->setMinimumDate(info.beginDateTime.date());
 }
 
 void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
@@ -72,6 +74,7 @@ void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
     m_endDateEdit->setDate(info.endDateTime.date());
     m_endTimeEdit->setTime(info.endDateTime.time());
     m_allDayCheckbox->setChecked(info.allday);
+    m_endRepeatDate->setMinimumDate(info.beginDateTime.date());
     slotallDayStateChanged(info.allday);
     initRmindRpeatUI();
     // m_textEdit->setTextCursor()
@@ -85,6 +88,7 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     QDateTime datetime = date.addSecs(3600);
     m_endDateEdit->setDate(datetime.date());
     m_endTimeEdit->setTime(datetime.time());
+    m_endRepeatDate->setMinimumDate(date.date());
 }
 
 ScheduleInfo CSchceduleDlg::getData()
@@ -386,6 +390,7 @@ void CSchceduleDlg::slotTextChange()
 void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)
 {
     m_beginDateEdit->setDate(date);
+    m_endRepeatDate->setMinimumDate(date);
 }
 
 void CSchceduleDlg::slotEDateEidtInfo(const QDate &date)
