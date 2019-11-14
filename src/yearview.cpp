@@ -246,7 +246,8 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
     }
     if (cell == m_currentMouth) {
         if (e->type() == QEvent::MouseButtonDblClick) {
-            emit signalselectMonth(QDate(m_currentDate.year(), m_currentDate.month(), 1));
+            //emit signalselectMonth(QDate(m_currentDate.year(), m_currentDate.month(), 1));
+            emit signalselectMonth(m_currentDate);
         }
     }
     return false;
