@@ -172,7 +172,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->setMargin(0);
     m_mainLayout->setSpacing(0);
-    m_mainLayout->setContentsMargins(10, 0, 10, 10);
+    m_mainLayout->setContentsMargins(10, 0, 0, 10);
     m_mainLayout->addWidget(m_weekIndicator);
     m_mainLayout->addWidget(gridWidget);
     for (int i = 0; i < 42; i++) {

@@ -29,6 +29,7 @@
 #include <DFrame>
 #include "calendardbus.h"
 #include <DIconButton>
+#include <QHBoxLayout>
 DWIDGET_USE_NAMESPACE
 
 class CYearView;
@@ -88,6 +89,7 @@ private:
     QMap<QDate, CaLunarDayInfo> *lunarCache;
     CaLunarDayInfo *emptyCaLunarDayInfo;
     CSchceduleSearchView *m_schceduleSearchView;
+    QHBoxLayout *m_tmainLayout;
     QString           m_searchText;
     bool m_searchfalg = false;
 };

@@ -424,7 +424,7 @@ void Calendarmainwindow::initUI()
     QVBoxLayout *ssLayout = new QVBoxLayout;
     ssLayout->setMargin(0);
     ssLayout->setSpacing(0);
-    ssLayout->setContentsMargins(0, 10, 10, 10);
+    ssLayout->setContentsMargins(0, 10, 0, 10);
     ssLayout->addWidget(m_schceduleSearchView);
     m_contentBackground->setLayout(ssLayout);
     tmainLayout->addWidget(m_contentBackground);
@@ -607,12 +607,16 @@ void Calendarmainwindow::slotStextChanged()
 #if 1
     m_schceduleSearchView->clearSearch();
     if (!m_searchEdit->text().isEmpty()) {
+        m_yearwindow->setSearchWFlag(true);
         m_weekWindow->setSearchWFlag(true);
         m_monthWindow->setSearchWFlag(true);
+        m_DayWindow->setSearchWFlag(true);
         m_contentBackground->setVisible(true);
     } else {
+        m_yearwindow->setSearchWFlag(false);
         m_monthWindow->setSearchWFlag(false);
         m_weekWindow->setSearchWFlag(false);
+        m_DayWindow->setSearchWFlag(false);
         m_contentBackground->setVisible(false);
     }
 #else

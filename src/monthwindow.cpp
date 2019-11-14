@@ -262,11 +262,11 @@ void CMonthWindow::initUI()
 
     hhLayout->addWidget(m_gridWidget);
 
-    QHBoxLayout *tmainLayout = new QHBoxLayout;
-    tmainLayout->setMargin(0);
-    tmainLayout->setSpacing(0);
-    tmainLayout->setContentsMargins(0, 0, 0, 0);
-    tmainLayout->addLayout(hhLayout);
+    m_tmainLayout = new QHBoxLayout;
+    m_tmainLayout->setMargin(0);
+    m_tmainLayout->setSpacing(0);
+    m_tmainLayout->setContentsMargins(0, 0, 10, 0);
+    m_tmainLayout->addLayout(hhLayout);
     //mainLayout->addStretch(1);
 
     m_schceduleSearchView = new CSchceduleSearchView(this);
@@ -277,10 +277,10 @@ void CMonthWindow::initUI()
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 10, 0, 10);
     ssLayout->addWidget(m_schceduleSearchView);
-    tmainLayout->addLayout(ssLayout);
+    m_tmainLayout->addLayout(ssLayout);
     m_schceduleSearchView->setVisible(false);
 
-    m_contentBackground->setLayout(tmainLayout);
+    m_contentBackground->setLayout(m_tmainLayout);
 
     // m_animationContainer = new DFrame(m_contentBackground);
     // DPalette anipa = m_animationContainer->palette();
@@ -363,8 +363,11 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
     int dw = width() * 0.5023 + 0.5;
     int dh = 36;
     int space = (width() - dw) / 2 - 184;
-    //m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
-    //m_monthDayView->setFixedSize(dw, dh);
+    if (m_searchfalg) {
+        m_tmainLayout->setContentsMargins(0, 0, 0, 0);
+    } else {
+        m_tmainLayout->setContentsMargins(0, 0, 0, 0);
+    }
     if (!m_searchfalg) {
         m_monthDayView->setFixedSize(dw, dh);
         //m_monthDayView->setwindowFixw(dw, width());
@@ -372,13 +375,6 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
         //m_monthDayView->setwindowFixw(dw, width() - 0.2325 * width() + 0.5 - 260);
         m_monthDayView->setFixedSize(dw, dh);
     }
-    //m_monthDayView->setFixedHeight(dh);
-    //m_monthView->setFixedSize(tw, th);
-    //m_animationContainer->setFixedSize(m_monthView->width(),
-    //                                 m_monthView->height() -  th * 0.1042 + 0.5);
-    // for (int i = 0; i < m_monthViewList.count(); i++) {
-    //   m_monthViewList.at(i)->setFixedSize(tw, th);
-    //}
     m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     QMainWindow::resizeEvent(event);
 }

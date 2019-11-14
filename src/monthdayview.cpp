@@ -61,6 +61,7 @@ CMonthDayView::~CMonthDayView()
 
 void CMonthDayView::setCurrentDate(const QDate date)
 {
+#if 0
     m_selectDate = date;
     for (int i = 0; i < 12; i++) {
         if (QDate(date.year(), i + 1, date.day()).isValid()) {
@@ -72,11 +73,24 @@ void CMonthDayView::setCurrentDate(const QDate date)
     setSelectedCell(m_selectDate.month() - 1);
     update();
     emit signalsCurrentDate(date);
+#endif
+    m_selectDate = date;
+    m_days[5] = m_selectDate;
+    for (int i(4); i >= 0; i--) {
+        m_days[4 - i] = m_selectDate.addMonths(-i - 1);
+    }
+    for (int i(6); i != 12; ++i) {
+        m_days[i] = m_selectDate.addMonths(i - 5);
+    }
+    setSelectedCell(5);
+    update();
+    emit signalsCurrentDate(date);
 }
 
 void CMonthDayView::setRCurrentDate(const QDate date)
 {
     if (m_selectDate == date) return;
+#if 0
     m_selectDate = date;
     for (int i = 0; i < 12; i++) {
         if (QDate(date.year(), i + 1, date.day()).isValid()) {
@@ -86,6 +100,17 @@ void CMonthDayView::setRCurrentDate(const QDate date)
         }
     }
     setSelectedCell(m_selectDate.month() - 1, 1);
+    update();
+#endif
+    m_selectDate = date;
+    m_days[5] = m_selectDate;
+    for (int i(4); i >= 0; i--) {
+        m_days[4 - i] = m_selectDate.addMonths(-i - 1);
+    }
+    for (int i(6); i != 12; ++i) {
+        m_days[i] = m_selectDate.addMonths(i - 5);
+    }
+    setSelectedCell(5);
     update();
 }
 

@@ -34,6 +34,7 @@ class CSchceduleSearchView;
 class CMonthView;
 class CMonthDayView;
 class QPropertyAnimation;
+class QHBoxLayout;
 class CMonthWindow: public QMainWindow
 {
     Q_OBJECT
@@ -91,6 +92,7 @@ private:
     CSchceduleSearchView *m_schceduleSearchView;
     QString           m_searchText;
     bool m_searchfalg = false;
+    QHBoxLayout *m_tmainLayout;
 };
 
 #endif // YEARWINDOW_H

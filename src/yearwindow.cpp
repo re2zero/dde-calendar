@@ -233,11 +233,11 @@ void CYearWindow::initUI()
     hhLayout->addLayout(yeartitleLayout);
     hhLayout->addWidget(m_gridWidget);
 
-    QHBoxLayout *tmainLayout = new QHBoxLayout;
-    tmainLayout->setMargin(0);
-    tmainLayout->setSpacing(0);
-    tmainLayout->setContentsMargins(10, 0, 10, 0);
-    tmainLayout->addLayout(hhLayout);
+    m_tmainLayout = new QHBoxLayout;
+    m_tmainLayout->setMargin(0);
+    m_tmainLayout->setSpacing(0);
+    m_tmainLayout->setContentsMargins(10, 0, 10, 0);
+    m_tmainLayout->addLayout(hhLayout);
     //mainLayout->addStretch(1);
 
     m_schceduleSearchView = new CSchceduleSearchView(this);
@@ -248,11 +248,11 @@ void CYearWindow::initUI()
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 10, 0, 10);
     ssLayout->addWidget(m_schceduleSearchView);
-    tmainLayout->addLayout(ssLayout);
+    m_tmainLayout->addLayout(ssLayout);
     m_schceduleSearchView->setVisible(false);
 
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
-    m_contentBackground->setLayout(tmainLayout);
+    m_contentBackground->setLayout(m_tmainLayout);
 
     //menuBar()->hide();
     setCentralWidget(m_contentBackground);
@@ -365,7 +365,8 @@ void CYearWindow::setTheMe(int type)
 }
 void CYearWindow::setSearchWFlag(bool flag)
 {
-    m_schceduleSearchView->setVisible(flag);
+    m_searchfalg = flag;
+    //m_schceduleSearchView->setVisible(flag);
 }
 
 void CYearWindow::clearSearch()
@@ -519,6 +520,11 @@ void CYearWindow::resizeEvent(QResizeEvent *event)
 {
     int tw = width() * 0.237 + 0.5;
     int th = height() * 0.272 + 0.5;
+    if (m_searchfalg) {
+        m_tmainLayout->setContentsMargins(10, 0, 0, 0);
+    } else {
+        m_tmainLayout->setContentsMargins(10, 0, 10, 0);
+    }
     m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     for (int i = 0; i < m_monthViewList.count(); i++) {
         //m_monthViewList.at(i)->setFixedSize(tw, th);

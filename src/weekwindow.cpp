@@ -199,11 +199,11 @@ void CWeekWindow::initUI()
     hhLayout->addLayout(yeartitleLayout);
     hhLayout->addLayout(m_mainhLayout);
 
-    QHBoxLayout *tmainLayout = new QHBoxLayout;
-    tmainLayout->setMargin(0);
-    tmainLayout->setSpacing(0);
-    tmainLayout->setContentsMargins(0, 0, 10, 0);
-    tmainLayout->addLayout(hhLayout);
+    m_tmainLayout = new QHBoxLayout;
+    m_tmainLayout->setMargin(0);
+    m_tmainLayout->setSpacing(0);
+    m_tmainLayout->setContentsMargins(0, 0, 10, 0);
+    m_tmainLayout->addLayout(hhLayout);
     //mainLayout->addStretch(1);
 
     //m_schceduleSearchView = new CSchceduleSearchView(this);
@@ -214,10 +214,10 @@ void CWeekWindow::initUI()
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 0, 0, 0);
     //ssLayout->addWidget(m_schceduleSearchView);
-    tmainLayout->addLayout(ssLayout);
+    m_tmainLayout->addLayout(ssLayout);
     //m_schceduleSearchView->setVisible(false);
 
-    m_contentBackground->setLayout(tmainLayout);
+    m_contentBackground->setLayout(m_tmainLayout);
     setCentralWidget(m_contentBackground);
 }
 
@@ -469,7 +469,14 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
 
     int sw = (width() -  width() * 0.9802 + 0.5) / 2;
 
-    m_mainhLayout->setContentsMargins(sw, 20, ww -  ww * 0.9917 + 0.5 - sw, 10);
+    m_mainhLayout->setContentsMargins(sw, 20, ww -  ww * 0.9917 + 0.5 - sw - 10, 10);
+
+    if (m_searchfalg) {
+        m_tmainLayout->setContentsMargins(0, 0, 0, 0);
+    } else {
+        m_tmainLayout->setContentsMargins(0, 0, 10, 0);
+    }
+
 
     //m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
     if (!m_searchfalg) {

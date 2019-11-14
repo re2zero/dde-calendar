@@ -30,6 +30,7 @@ DWIDGET_USE_NAMESPACE
 class CDayMonthView;
 class CScheduleView;
 class CSchceduleSearchView;
+class QHBoxLayout;
 class CDayWindow: public QMainWindow
 {
     Q_OBJECT
@@ -73,6 +74,8 @@ private:
     CScheduleView     *m_scheduleView;
     CSchceduleSearchView *m_schceduleSearchView;
     QString           m_searchText;
+    bool m_searchfalg = false;
+    QHBoxLayout *m_mainLayout;
 };
 
 #endif // YEARWINDOW_H

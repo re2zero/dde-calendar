@@ -104,7 +104,8 @@ void CDayWindow::setDate(QDate date)
 
 void CDayWindow::setSearchWFlag(bool flag)
 {
-    m_schceduleSearchView->setVisible(flag);
+    m_searchfalg = flag;
+    //m_schceduleSearchView->setVisible(flag);
 }
 
 void CDayWindow::clearSearch()
@@ -203,20 +204,20 @@ void CDayWindow::initUI()
     leftpa.setColor(DPalette::Background, "#FFFFFF");
     m_leftground->setPalette(leftpa);
 
-    QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(10, 10, 10, 10);
-    mainLayout->addWidget(m_leftground);
+    m_mainLayout = new QHBoxLayout;
+    m_mainLayout->setMargin(0);
+    m_mainLayout->setSpacing(0);
+    m_mainLayout->setContentsMargins(10, 10, 10, 10);
+    m_mainLayout->addWidget(m_leftground);
     //mainLayout->addStretch(1);
 
     m_schceduleSearchView = new CSchceduleSearchView(this);
     m_schceduleSearchView->setFixedWidth(200);
-    mainLayout->addWidget(m_schceduleSearchView);
+    m_mainLayout->addWidget(m_schceduleSearchView);
     m_schceduleSearchView->setVisible(false);
 
 
-    m_contentBackground->setLayout(mainLayout);
+    m_contentBackground->setLayout(m_mainLayout);
 
 
     setCentralWidget(m_contentBackground);
@@ -276,6 +277,11 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     int sleftMagin = 0.1046 * width() + 0.5;
     int stopMagin = 0.17123 * height() + 0.5;
     int sh = height() - 54;
+    if (m_searchfalg) {
+        m_mainLayout->setContentsMargins(10, 10, 0, 10);
+    } else {
+        m_mainLayout->setContentsMargins(10, 10, 10, 10);
+    }
     m_daymonthView->setFixedSize(dw, dh);
     m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
     m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);

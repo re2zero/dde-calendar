@@ -89,6 +89,7 @@ private:
     QVBoxLayout       *m_mainhLayout;
     // CSchceduleSearchView *m_schceduleSearchView;
     QString           m_searchText;
+    QHBoxLayout *m_tmainLayout;
     bool m_searchfalg = false;
 };
 

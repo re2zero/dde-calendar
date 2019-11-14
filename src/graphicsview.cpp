@@ -719,7 +719,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
                     t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval, t_height));
                 }
                 if (d == 6 ) {
-                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 1, t_height));
+                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 2, t_height));
                 }
             }
             t_painter.restore();
