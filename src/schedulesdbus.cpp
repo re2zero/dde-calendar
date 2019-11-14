@@ -190,7 +190,7 @@ QString CSchedulesDBus::createScheduleRRule(const ScheduleDtailInfo &info)
     }
     break;
     case 2: {
-        QDateTime datetime = info.enddata.date.addDays(-1);
+        QDateTime datetime = info.enddata.date;
         //datetime.setDate(datetime);
         str += ";UNTIL=" + datetime.toString("yyyyMMddThhmmss") + "Z";
         // str += ";UNTIL=" + toconvertData(datetime);
