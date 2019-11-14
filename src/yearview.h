@@ -50,6 +50,9 @@ signals:
     void signalcurrentDateChanged(QDate date);
     void cellSelectableChanged(bool cellSelectable) const;
     void singanleActiveW(CYearView *w);
+
+    void signaldoubleclickDate(QDate date);
+    void signalselectMonth(QDate date);
 public slots:
     void setCurrentDate(const QDate date, int type = 0);
     void setCellSelectable(bool selectable);

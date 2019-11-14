@@ -53,6 +53,8 @@ signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsReturnTodayUpdate(QMainWindow *w);
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
+    void signaldoubleclickDate(QDate date);
+    void signalselectMonth(QDate date);
 public slots:
     void slotReturnTodayUpdate();
 private slots:

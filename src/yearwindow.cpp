@@ -52,6 +52,8 @@ CYearWindow::~CYearWindow()
     for (int i = 0; i < 12; i++) {
         disconnect(m_monthViewList.at(i), &CYearView::singanleActiveW, this, &CYearWindow::slotActiveW);
         disconnect(m_monthViewList.at(i), &CYearView::signalcurrentDateChanged, this, &CYearWindow::slotcurrentDateChanged);
+        disconnect(m_monthViewList.at(i), &CYearView::signaldoubleclickDate, this, &CYearWindow::signaldoubleclickDate);
+        disconnect(m_monthViewList.at(i), &CYearView::signalselectMonth, this, &CYearWindow::signalselectMonth);
         delete  m_monthViewList.at(i);
     }
     m_monthViewList.clear();
@@ -216,6 +218,8 @@ void CYearWindow::initUI()
             connect(view, &CYearView::singanleActiveW, this, &CYearWindow::slotActiveW);
 
             connect(view, &CYearView::signalcurrentDateChanged, this, &CYearWindow::slotcurrentDateChanged);
+            connect(view, &CYearView::signaldoubleclickDate, this, &CYearWindow::signaldoubleclickDate);
+            connect(view, &CYearView::signalselectMonth, this, &CYearWindow::signalselectMonth);
             //view->setFixedSize(202, 159);
             gridLayout->addWidget(view, i, j);
             m_monthViewList.append(view);

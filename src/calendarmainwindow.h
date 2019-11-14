@@ -75,6 +75,9 @@ private slots:
     void slotSearchEdit();
     void slotTransitSearchSchedule(int id = 0);
     void slotsearchDateSelect(QDate date);
+
+    void slotdoubleclickDate(QDate date);
+    void slotselectMonth(QDate date);
 private:
     DLabel                    *m_icon;
     QStackedLayout              *m_stackWidget;
@@ -93,6 +96,7 @@ private:
     bool                      m_searchflag = false;
     CSchceduleSearchView *m_schceduleSearchView;
     DFrame *m_contentBackground = nullptr;
+    int                       m_priindex = 3; //默认打开日视图双击
 };
 
 #endif // CALENDARMAINWINDOW_H

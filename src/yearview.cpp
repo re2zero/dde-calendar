@@ -63,6 +63,7 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     // QSpacerItem *t_spaceitem = new QSpacerItem(30, 32, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //separatorLineLayout->addSpacerItem(t_spaceitem);
 
+    m_currentMouth->installEventFilter(this);
     // cells grid
     m_gridLayout = new QGridLayout;
     m_gridLayout->setMargin(0);
@@ -236,9 +237,18 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
             cellClicked(cell);
+        } else if (e->type() == QEvent::MouseButtonDblClick) {
+            const int pos = m_cellList.indexOf(cell);
+            if (pos != -1) {
+                emit signaldoubleclickDate(m_days[pos]);
+            }
         }
     }
-
+    if (cell == m_currentMouth) {
+        if (e->type() == QEvent::MouseButtonDblClick) {
+            emit signalselectMonth(QDate(m_currentDate.year(), m_currentDate.month(), 1));
+        }
+    }
     return false;
 }
 

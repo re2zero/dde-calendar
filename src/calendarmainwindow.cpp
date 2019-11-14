@@ -171,7 +171,9 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
         return;
     }
     m_stackWidget->setCurrentIndex(type - 1);
-    m_searchflag = false;
+    if (type - 1 != 0) {
+        m_priindex = type - 1;
+    }
     switch (type) {
     case 1: {
         m_yearButton->setFocus();
@@ -463,6 +465,9 @@ void Calendarmainwindow::initConnection()
     connect(m_dbus, &__Scheduler::JobsUpdated, this, &Calendarmainwindow::slotJobsUpdated);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &Calendarmainwindow::slotTransitSearchSchedule);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);
+
+    connect(m_yearwindow, &CYearWindow::signaldoubleclickDate, this, &Calendarmainwindow::slotdoubleclickDate);
+    connect(m_yearwindow, &CYearWindow::signalselectMonth, this, &Calendarmainwindow::slotselectMonth);
 }
 
 void Calendarmainwindow::initLunar()
@@ -540,6 +545,9 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     }
     m_searchflag = false;
     m_stackWidget->setCurrentIndex(index);
+    if (index != 0) {
+        m_priindex = index;
+    }
     switch (index) {
     case 0: {
         m_yearwindow->slotReturnTodayUpdate();
@@ -712,5 +720,40 @@ void Calendarmainwindow::slotsearchDateSelect(QDate date)
     }
     break;
     }
+}
+
+void Calendarmainwindow::slotdoubleclickDate(QDate date)
+{
+    m_stackWidget->setCurrentIndex(m_priindex);
+    switch (m_priindex) {
+    case 1: {
+        m_monthButton->setFocus();
+        m_monthButton->setChecked(true);
+        m_monthWindow->setDate(date);
+        m_monthWindow->slotupdateSchedule(0);
+    }
+    break;
+    case 2: {
+        m_weekButton->setFocus();
+        m_weekButton->setChecked(true);
+        m_weekWindow->setDate(date);
+        m_weekWindow->setTime(QTime::currentTime());
+        m_weekWindow->slotupdateSchedule(0);
+    }
+    break;
+    case 3: {
+        m_dayButton->setFocus();
+        m_dayButton->setChecked(true);
+        m_DayWindow->setDate(date);
+        m_DayWindow->setTime(QTime::currentTime());
+        m_DayWindow->slotupdateSchedule(0);
+    }
+    break;
+    }
+}
+
+void Calendarmainwindow::slotselectMonth(QDate date)
+{
+    viewWindow(2, QDateTime(date));
 }
 
