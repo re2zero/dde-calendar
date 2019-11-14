@@ -716,10 +716,10 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
                 t_painter.setBrush(QBrush(m_weekcolor));
                 t_painter.setPen(Qt::NoPen);
                 if ( d == 7) {
-                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval, t_height));
+                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 0, t_height));
                 }
                 if (d == 6 ) {
-                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 2, t_height));
+                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 5, t_height));
                 }
             }
             t_painter.restore();

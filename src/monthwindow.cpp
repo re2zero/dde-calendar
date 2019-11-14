@@ -225,7 +225,7 @@ void CMonthWindow::initUI()
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(21, 20, 18, 10);
+    yeartitleLayout->setContentsMargins(21, 20, 8, 10);
     yeartitleLayout->addWidget(m_YearLabel);
 
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
@@ -363,10 +363,12 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
     int dw = width() * 0.5023 + 0.5;
     int dh = 36;
     int space = (width() - dw) / 2 - 184;
+    int winframe = 10;
     if (m_searchfalg) {
         m_tmainLayout->setContentsMargins(0, 0, 0, 0);
     } else {
-        m_tmainLayout->setContentsMargins(0, 0, 0, 0);
+        winframe = 20;
+        m_tmainLayout->setContentsMargins(0, 0, 10, 0);
     }
     if (!m_searchfalg) {
         m_monthDayView->setFixedSize(dw, dh);

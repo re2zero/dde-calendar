@@ -147,7 +147,7 @@ void CWeekWindow::initUI()
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(21, 20, 18, 0);
+    yeartitleLayout->setContentsMargins(21, 20, 8, 0);
     yeartitleLayout->addWidget(m_YearLabel);
 
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
@@ -189,7 +189,7 @@ void CWeekWindow::initUI()
     m_mainhLayout = new QVBoxLayout;
     m_mainhLayout->setMargin(0);
     m_mainhLayout->setSpacing(0);
-    m_mainhLayout->setContentsMargins(8, 20, 10, 9);
+    m_mainhLayout->setContentsMargins(8, 20, 0, 9);
     m_mainhLayout->addWidget(m_weekHeadView);
     m_mainhLayout->addWidget(m_scheduleView);
     QVBoxLayout *hhLayout = new QVBoxLayout;
@@ -469,11 +469,14 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
 
     int sw = (width() -  width() * 0.9802 + 0.5) / 2;
 
-    m_mainhLayout->setContentsMargins(sw, 20, ww -  ww * 0.9917 + 0.5 - sw - 10, 10);
-
+    int winframe = 10;
+    //m_mainhLayout->setContentsMargins(sw, 20, ww -  ww * 0.9917 + 0.5 - sw - 10, 10);
+    m_mainhLayout->setContentsMargins(10, 20, 0, 10);
     if (m_searchfalg) {
+
         m_tmainLayout->setContentsMargins(0, 0, 0, 0);
     } else {
+        winframe += 10;
         m_tmainLayout->setContentsMargins(0, 0, 10, 0);
     }
 
@@ -492,10 +495,12 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
     //m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
     m_weekHeadView->setMounthLabelWidth(sleftMagin + 1, width() * 0.9802 + 0.5);
     // m_weekHeadView->setFixedHeight(headh);
-    m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
+    //m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
+    m_weekHeadView->setFixedSize(width() - winframe, headh);
     m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
     //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
-    m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
+    //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
+    m_scheduleView->setFixedSize(width() - winframe, sh);
     QMainWindow::resizeEvent(event);
 }
 
