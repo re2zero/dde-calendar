@@ -196,20 +196,29 @@ void CMonthDayView::paintCell(QWidget *cell)
     const QString dayNum = QString::number(m_days[pos].month());
 
     if (isSelectDay) {
-        QRect fillRect((cell->width() - 30) / 2, 3, 30, 30);
+        QRect fillRect(3, 3, cell->width() - 6, cell->height() - 6);
+        int hh = 0;
+
+        if (cell->width() > cell->height()) {
+            hh = cell->height();
+            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, hh * 0.1071, hh, hh);
+        } else {
+            hh = cell->width();
+            fillRect = QRect(0, (cell->height() - hh) / 2.0  + hh * 0.1071, hh, hh);
+        }
 
         QPixmap pixmap;
         if (m_themetype == 2)
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(hh, hh, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         else {
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(hh, hh, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         }
         pixmap.setDevicePixelRatio(devicePixelRatioF());
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
         painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        painter.drawPixmap((cell->width() - 30) / 2 - 4, 3, pixmap);
+        painter.drawPixmap(fillRect, pixmap);
         painter.restore();
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
         painter.setPen(m_currentDayTextColor);
