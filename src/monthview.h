@@ -136,6 +136,7 @@ private:
 
     QColor m_topBorderColor = Qt::red;
     QColor m_backgroundCircleColor = "#2ca7f8";
+    QColor m_backgroundShowColor = "#2CA7F8";
 
     QColor m_defaultTextColor = Qt::black;
     QColor m_currentDayTextColor = "#2ca7f8";

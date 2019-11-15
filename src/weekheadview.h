@@ -109,6 +109,7 @@ private:
 
 
     QColor m_backgroundCircleColor = "#2ca7f8";
+    QColor m_backgroundShowColor = "#2CA7F8";
 
     QColor m_defaultTextColor = "#6F6F6F";
     QColor m_currentDayTextColor = "#FFFFFF";

@@ -137,7 +137,9 @@ void CWeekHeadView::setTheMe(int type)
         m_monthLabel->setPalette(monthpa);
         m_monthLabel->setForegroundRole(DPalette::WindowText);
         m_monthLabel->setBackgroundRole(DPalette::Background);
-        m_backgroundCircleColor = "#2ca7f8";
+        m_backgroundCircleColor = "#0081FF";
+        m_backgroundShowColor = "#2CA7F8";
+        m_backgroundShowColor.setAlphaF(0.4);
 
         m_defaultTextColor = "#6F6F6F";
         m_currentDayTextColor = "#FFFFFF";
@@ -159,6 +161,8 @@ void CWeekHeadView::setTheMe(int type)
         m_monthLabel->setForegroundRole(DPalette::WindowText);
         m_monthLabel->setBackgroundRole(DPalette::Background);
         m_backgroundCircleColor = "#0059D2";
+        m_backgroundShowColor = "#002AAF";
+        m_backgroundShowColor.setAlphaF(0.4);
 
         m_defaultTextColor = "#C0C6D4";
         m_currentDayTextColor = "#C0C6D4";
@@ -428,6 +432,21 @@ void CWeekHeadView::paintCell(QWidget *cell)
     if (isSelectedCell) {
         if (m_showState & ShowLunar) {
             QRect fillRect(bw + 1, bh, 24, 24);
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            painter.setBrush(QBrush(m_backgroundCircleColor));
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
+            painter.save();
+            QRect fillRect1(bw + 1, bh, 24, 24);
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            QPen pen;
+            pen.setColor(m_backgroundShowColor);
+            pen.setWidthF(1.5);
+            painter.setBrush(Qt::NoBrush);
+            painter.setPen(pen);
+            painter.drawEllipse(fillRect1);
+            painter.restore();
+            /*
             QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -440,10 +459,24 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.setRenderHint(QPainter::HighQualityAntialiasing);
             painter.setRenderHint(QPainter::SmoothPixmapTransform);
             painter.drawPixmap(bw + 1 - 3, bh, pixmap);
-            painter.restore();
+            painter.restore();*/
         } else {
             QRect fillRect(bw + 13, bh, 24, 24);
-            QPixmap pixmap;
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            painter.setBrush(QBrush(m_backgroundCircleColor));
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
+
+            QRect fillRect1(bw + 13, bh + 1, 24, 24);
+            painter.setRenderHints(QPainter::HighQualityAntialiasing);
+            QPen pen;
+            pen.setColor(m_backgroundShowColor);
+            pen.setWidthF(1.5);
+            painter.setBrush(Qt::NoBrush);
+            painter.setPen(pen);
+            painter.drawEllipse(fillRect1);
+            painter.restore();
+            /*QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             else {
@@ -455,7 +488,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.setRenderHint(QPainter::HighQualityAntialiasing);
             painter.setRenderHint(QPainter::SmoothPixmapTransform);
             painter.drawPixmap(bw + 13 - 3, bh, pixmap);
-            painter.restore();
+            painter.restore();*/
         }
 
     }
