@@ -39,7 +39,30 @@ void CTimeEdit::setTime(QTime time)
 
 QTime CTimeEdit::getTime()
 {
-    m_time = QTime::fromString(m_timeEdit->text(), "hh:mm");
+    QString timetext = m_timeEdit->text();
+
+    if (timetext.count() == 1) {
+        timetext = "00:00";
+    }
+    if (timetext.right(1) == ":") {
+        timetext = timetext + "00";
+    }
+    if (timetext.left(1) == ":") {
+        timetext = "00" + timetext;
+    }
+    QStringList t_list = timetext.split(":");
+    QString firststr = t_list.at(0);
+    QString secondstr = t_list.at(1);
+    if (firststr.count() == 1) {
+        firststr = "0" + firststr;
+    }
+    if (secondstr.count() == 1) {
+        secondstr = "0" + secondstr;
+    }
+    timetext = firststr + ":" + secondstr;
+
+
+    m_time = QTime::fromString(timetext, "hh:mm");
     return m_time;
 }
 
@@ -48,7 +71,7 @@ void CTimeEdit::initUI()
     m_pListWidget = new DListWidget(this);
 
     m_timeEdit = new DLineEdit(this);
-    m_timeEdit->lineEdit()->setInputMask("00:00;#");
+    m_timeEdit->lineEdit()->setInputMask("00:00;0");
     m_timeEdit->setClearButtonEnabled(false);
     QRegExpValidator *validator = nullptr;
     QRegExp rx("0[0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]");
@@ -107,23 +130,28 @@ void CTimeEdit::showPopup()
     m_pos = m_timeEdit->lineEdit()->cursorPosition();
     m_verticalScroll->setFixedWidth(width());
     QString timetext = m_timeEdit->text();
-    /*
-        if (timetext.count() == 1)
-        {
-            timetext = "00:00";
-        }
-        if (timetext.count() == 3)
-        {
-            if (timetext.right(1) == ":")
-            {
-                timetext = timetext + "00";
-            }
-            else
-            {
-                timetext = "00"+ timetext;
-            }
-        }*/
+
+    if (timetext.count() == 1) {
+        timetext = "00:00";
+    }
+    if (timetext.right(1) == ":") {
+        timetext = timetext + "00";
+    }
+    if (timetext.left(1) == ":") {
+        timetext = "00" + timetext;
+    }
+    QStringList t_list = timetext.split(":");
+    QString firststr = t_list.at(0);
+    QString secondstr = t_list.at(1);
+    if (firststr.count() == 1) {
+        firststr = "0" + firststr;
+    }
+    if (secondstr.count() == 1) {
+        secondstr = "0" + secondstr;
+    }
+    timetext = firststr + ":" + secondstr;
     m_time = QTime::fromString(timetext, "hh:mm");
+
     if (m_pos < 3) {
         m_type = 0;
         m_verticalScroll->setRange(0, 23);
