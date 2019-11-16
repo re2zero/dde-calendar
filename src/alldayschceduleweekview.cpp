@@ -243,8 +243,19 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
     if (m_GradientFlag) {
 
         QLinearGradient linearGradient(0, 0, labelwidth, 0);
-        linearGradient.setColorAt(0, m_color1);
-        linearGradient.setColorAt(1, m_color2);
+
+        QColor color1 = m_color1;
+        QColor color2 = m_color2;
+        QColor textcolor = m_textcolor;
+
+        if (m_hoverflag) {
+            color1.setAlphaF(color1.alphaF() * 0.94);
+            color2.setAlphaF(color2.alphaF() * 0.94);
+            textcolor.setAlphaF(textcolor.alphaF() * 0.94);
+        }
+
+        linearGradient.setColorAt(0, color1);
+        linearGradient.setColorAt(1, color2);
         QRect fillRect = drawrect;
         //将直线开始点设为0，终点设为1，然后分段设置颜色
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
@@ -253,7 +264,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         painter.drawRoundedRect(fillRect, 8, 8);
 
         painter.setFont(m_font);
-        painter.setPen(m_textcolor);
+        painter.setPen(textcolor);
         QFontMetrics fm = painter.fontMetrics();
         QString str = "-" + m_ScheduleInfo.titleName;
         QString tstr;
@@ -276,9 +287,19 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         //  painter.drawRoundedRect(fillRect, 8, 8);
         // }
         if (m_hoverflag) {
-            painter.setBrush(m_transparentcolor);
-            painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(fillRect, 8, 8);
+            QRect trect = fillRect;
+            trect.setHeight(fillRect.height());
+            painter.save();
+            painter.setRenderHints(QPainter::Antialiasing);
+            QPen pen;
+            QColor selcolor = m_transparentcolor;
+            selcolor.setAlphaF(0.2);
+            pen.setColor(selcolor);
+            pen.setWidth(1);
+            painter.setBrush(Qt::NoBrush);
+            painter.setPen(pen);
+            painter.drawRoundedRect(trect, 8, 8);
+            painter.restore();
         }
         if (m_selectflag) {
             QColor selcolor = m_transparentcolor;
@@ -645,8 +666,14 @@ void CAllSolarDayWeekWidgetItem::setText(QColor tcolor, QFont font, QPoint pos, 
 
 void CAllSolarDayWeekWidgetItem::setData(QVector<QString> vSolarInfo, QVector<QDate> date)
 {
+    m_vhover.clear();
+    m_vselectflag.clear();
     m_vSolarDayInfo = vSolarInfo;
     m_vDate = date;
+    m_vhover.resize(m_vDate.count());
+    m_vselectflag.resize(m_vDate.count());
+    m_vhover.fill(false);
+    m_vselectflag.fill(false);
 }
 void CAllSolarDayWeekWidgetItem::paintEvent(QPaintEvent *e)
 {
@@ -668,8 +695,17 @@ void CAllSolarDayWeekWidgetItem::paintEvent(QPaintEvent *e)
             painter.restore();
             painter.save();
             QLinearGradient linearGradient(0, 0, labelwidth, 0);
-            linearGradient.setColorAt(0, m_color1);
-            linearGradient.setColorAt(1, m_color2);
+            QColor color1 = m_color1;
+            QColor color2 = m_color2;
+            QColor textcolor = m_textcolor;
+
+            if (m_vhover.at(i)) {
+                color1.setAlphaF(0.4);
+                color2.setAlphaF(0.4);
+                //textcolor.setAlphaF(textcolor.alphaF() * 0.94);
+            }
+            linearGradient.setColorAt(0, color1);
+            linearGradient.setColorAt(1, color2);
             QRect drawrect2 = drawrect;
             //将直线开始点设为0，终点设为1，然后分段设置颜色
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
@@ -693,8 +729,43 @@ void CAllSolarDayWeekWidgetItem::paintEvent(QPaintEvent *e)
             if (tstr != str) {
                 tstr = tstr + "...";
             }
-            painter.setPen(m_textcolor);
+            painter.setPen(textcolor);
             painter.drawText(QRect(drawrect.topLeft().x() + 2, drawrect.topLeft().y() + (drawrect.height() - fm.height()) / 2, drawrect.width(), drawrect.height()), Qt::AlignLeft, tstr);
         }
     }
+}
+void CAllSolarDayWeekWidgetItem::mousePressEvent(QMouseEvent *event)
+{
+    m_vselectflag.fill(false);
+    /*for (int i = 0; i < m_vDate.count(); i++) {
+        QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vDate.at(i), m_vDate.at(i));
+        if (drawrect.contains(mapFromGlobal(QCursor::pos()))) {
+            m_vhover[i] = true;
+        }
+    }*/
+    update();
+}
+
+void CAllSolarDayWeekWidgetItem::focusOutEvent(QFocusEvent *event)
+{
+    m_vselectflag.fill(false);
+    update();
+}
+
+void CAllSolarDayWeekWidgetItem::enterEvent(QEvent *event)
+{
+    m_vhover.fill(false);
+    /*for (int i = 0; i < m_vDate.count(); i++) {
+        QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vDate.at(i), m_vDate.at(i));
+        if (drawrect.contains(mapFromGlobal(QCursor::pos()))) {
+            m_vhover[i] = true;
+        }
+    }*/
+    update();
+}
+
+void CAllSolarDayWeekWidgetItem::leaveEvent(QEvent *event)
+{
+    m_vhover.fill(false);
+    update();
 }

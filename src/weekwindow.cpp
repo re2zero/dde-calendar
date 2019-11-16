@@ -212,7 +212,7 @@ void CWeekWindow::initUI()
     QVBoxLayout *ssLayout = new QVBoxLayout;
     ssLayout->setMargin(0);
     ssLayout->setSpacing(0);
-    ssLayout->setContentsMargins(0, 0, 0, 0);
+    ssLayout->setContentsMargins(0, 0, 0, 10);
     //ssLayout->addWidget(m_schceduleSearchView);
     m_tmainLayout->addLayout(ssLayout);
     //m_schceduleSearchView->setVisible(false);
@@ -501,7 +501,7 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
     m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
     //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
-    m_scheduleView->setFixedSize(width() - winframe, sh);
+    m_scheduleView->setFixedSize(width() - winframe, sh - 10);
     QMainWindow::resizeEvent(event);
 }
 

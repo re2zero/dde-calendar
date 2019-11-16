@@ -106,11 +106,17 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 {
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_scheduleInfo.type.ID);
 
-    painter->setBrush(gdcolor.Purecolor);
+    QColor bcolor = gdcolor.Purecolor;
+
+    if (m_hoverflag) {
+        bcolor.setAlphaF(0.3);
+    }
+    painter->setBrush(bcolor);
     painter->setPen(Qt::NoPen);
     QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum, m_viewtype);
     painter->drawRect(rect);
     painter->save();
+
     QPen pen(gdcolor.shadowcolor);
     pen.setWidth(2);
     painter->setPen(pen);
@@ -175,11 +181,6 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setPen(gdcolor.textColor);
         painter->drawText(rect, Qt::AlignCenter | Qt::AlignVCenter, "...");
         painter->restore();
-    }
-    if (m_hoverflag) {
-        painter->setBrush(m_transparentcolor);
-        painter->setPen(Qt::NoPen);
-        painter->drawRect(rect);
     }
     if (m_selectflag) {
         QColor selcolor = m_transparentcolor;

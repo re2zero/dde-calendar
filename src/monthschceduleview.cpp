@@ -231,8 +231,19 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
     QPainter painter(this);
     if (m_GradientFlag) {
         QLinearGradient linearGradient(0, 0, labelwidth, 0);
-        linearGradient.setColorAt(0, m_color1);
-        linearGradient.setColorAt(1, m_color2);
+        QColor color1 = m_color1;
+        QColor color2 = m_color2;
+        QColor textcolor = m_textcolor;
+
+        if (m_hoverflag) {
+            color1.setAlphaF(color1.alphaF() * 0.94);
+            color2.setAlphaF(color2.alphaF() * 0.94);
+            textcolor.setAlphaF(textcolor.alphaF() * 0.94);
+        }
+
+
+        linearGradient.setColorAt(0, color1);
+        linearGradient.setColorAt(1, color2);
 
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
         painter.save();
@@ -243,7 +254,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.drawRoundedRect(fillRect, 8, 8);
         painter.restore();
         painter.setFont(m_font);
-        painter.setPen(m_textcolor);
+        painter.setPen(textcolor);
         QFontMetrics fm = painter.fontMetrics();
 
         QString str =  "-" + m_ScheduleInfo.titleName;
@@ -262,9 +273,19 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 2 * avge), Qt::AlignLeft, tstr);
 
         if (m_hoverflag) {
-            painter.setBrush(m_transparentcolor);
-            painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(fillRect, 8, 8);
+            QRect trect = fillRect;
+            trect.setHeight(fillRect.height());
+            painter.save();
+            painter.setRenderHints(QPainter::Antialiasing);
+            QPen pen;
+            QColor selcolor = m_transparentcolor;
+            selcolor.setAlphaF(0.2);
+            pen.setColor(selcolor);
+            pen.setWidth(1);
+            painter.setBrush(Qt::NoBrush);
+            painter.setPen(pen);
+            painter.drawRoundedRect(trect, 8, 8);
+            painter.restore();
         }
         if (m_selectflag) {
             QColor selcolor = m_transparentcolor;
@@ -337,7 +358,7 @@ void CMonthSchceduleWidgetItem::enterEvent(QEvent *event)
 
 void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
 {
-    m_selectflag = false;
+    m_hoverflag = false;
     update();
 }
 CMonthSchceduleNumButton::CMonthSchceduleNumButton(QWidget *parent /*= nullptr*/): DPushButton(parent)

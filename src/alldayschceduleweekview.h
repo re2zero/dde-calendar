@@ -174,10 +174,16 @@ public:
     }
 protected:
     void paintEvent ( QPaintEvent *e);
+    void mousePressEvent(QMouseEvent *event);
+    void focusOutEvent(QFocusEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
 private:
 
     QVector<QString>      m_vSolarDayInfo;
     QVector<QDate>        m_vDate;
+    QVector<bool>         m_vhover;
+    QVector<bool>         m_vselectflag;
     bool                  m_GradientFlag;
     QColor                m_color1;
     QColor                m_color2;
@@ -185,5 +191,6 @@ private:
     QFont                 m_font;
     QPoint                m_pos;
     CScheduleCoorManage                         *m_coorManage;
+    QColor                m_transparentcolor = "#000000";
 };
 #endif // CSHCEDULEDAYVIEW_H
