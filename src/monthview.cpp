@@ -277,7 +277,7 @@ void CMonthView::setFirstWeekday(int weekday)
     m_firstWeekDay = weekday;
 
     m_weekIndicator->setList(weekday);
-
+    m_weekIndicator->updateWeek();
     updateDate();
 }
 
@@ -323,6 +323,7 @@ void CMonthView::setCurrentDate(const QDate date)
         slotSchceduleUpdate();
     emit currentDateChanged(date.year(), date.month());
     emit signalcurrentDateChanged(m_currentDate);
+    m_weekIndicator->updateWeek();
 }
 
 void CMonthView::setLunarVisible(bool visible)

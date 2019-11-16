@@ -49,6 +49,11 @@ void CMonthWeekView::setList(int weekday)
 
         int d = checkDay(i - weekday);
 
+        QVBoxLayout *hhLayout = new QVBoxLayout;
+        hhLayout->setMargin(0);
+        hhLayout->setSpacing(0);
+        hhLayout->setContentsMargins(0, 0, 0, 0);
+
         DLabel *label = new DLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
         label->setContentsMargins(0, 0, 0, 0);
         QFont weekfont;
@@ -86,12 +91,20 @@ void CMonthWeekView::setList(int weekday)
         }
 
         label->setAlignment(Qt::AlignCenter);
+        DHorizontalLine *splitline = new DHorizontalLine;
         if (i == 0 || i == 6) {
             label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, DDEMonthCalendar::MWeekCellHeight);
+            splitline->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, 2);
         } else {
             label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 3, DDEMonthCalendar::MWeekCellHeight);
+            splitline->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 3, 2);
         }
-        m_mainLayout->addWidget(label, 0, Qt::AlignCenter);
+        hhLayout->addWidget(label);
+        hhLayout->addWidget(splitline);
+        splitline->setAutoFillBackground(true);
+        m_vline.append(splitline);
+        splitline->setVisible(false);
+        m_mainLayout->addLayout(hhLayout);
     }
 }
 
@@ -120,6 +133,10 @@ void CMonthWeekView::setTheMe(int type)
                 m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
                 m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
             }
+            DPalette monthpa = m_vline.at(i)->palette();
+            monthpa.setColor(DPalette::Background, "#0081FF");
+            m_vline.at(i)->setPalette(monthpa);
+            m_vline.at(i)->setBackgroundRole(DPalette::Background);
         }
 
     } else if (type == 2) {
@@ -145,6 +162,27 @@ void CMonthWeekView::setTheMe(int type)
                 m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
                 m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
             }
+            DPalette monthpa = m_vline.at(i)->palette();
+            monthpa.setColor(DPalette::Background, "#0059D2");
+            m_vline.at(i)->setPalette(monthpa);
+            m_vline.at(i)->setBackgroundRole(DPalette::Background);
+        }
+    }
+}
+
+void CMonthWeekView::updateWeek()
+{
+    for (int i = 0; i < m_vline.count(); ++i) {
+        m_vline.at(i)->setVisible(false);
+    }
+    QDate date = QDate::currentDate();
+    int d = date.dayOfWeek();
+    QLocale locale;
+    QString str = locale.dayName(d ? d : 7, QLocale::ShortFormat);
+    for (int i = 0; i < m_vline.count(); ++i) {
+
+        if (m_weekData.at(i).first->text() == str) {
+            m_vline.at(i)->setVisible(true);
         }
     }
 }
@@ -174,6 +212,7 @@ void CMonthWeekView::resizeEvent(QResizeEvent *event)
         } else {
             m_weekData.at(i).first->setFixedSize(tw, th);
         }
+        m_vline.at(i)->setFixedWidth(tw);
     }
     DWidget::resizeEvent(event);
 }

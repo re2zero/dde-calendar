@@ -24,6 +24,7 @@
 #include <DWidget>
 #include <QHBoxLayout>
 #include <DLabel>
+#include <DHorizontalLine>
 DWIDGET_USE_NAMESPACE
 class CMonthWeekView : public DWidget
 {
@@ -32,6 +33,7 @@ public:
     explicit CMonthWeekView(QWidget *parent = 0);
     void setList(int weekday);
     void setTheMe(int type = 0);
+    void updateWeek();
 private:
     int checkDay(int weekday);
 protected:
@@ -39,6 +41,7 @@ protected:
 private:
     QHBoxLayout *m_mainLayout;
     QVector<QPair<DLabel *, int> >        m_weekData;
+    QVector<DHorizontalLine *>             m_vline;
 };
 
 #endif // WEEKINDICATOR_H
