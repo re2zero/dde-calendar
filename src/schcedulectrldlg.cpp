@@ -41,7 +41,7 @@ CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
     }
 
     //setTitle(tr("My Schcedule"));
-    resize(380, 160);
+    resize(400, 160);
 
 }
 
@@ -202,9 +202,9 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
     labelTitle.setPixelSize(14);
     QFontMetrics fm(labelTitle);
     int w = fm.width(btName);
-    if (w > 101) w = w + 12;
+    if (w > 109) w = w + 12;
     else {
-        w = 101;
+        w = 109;
     }
     DPushButton *button  = new DPushButton(btName);
     button->setFixedWidth(w);
