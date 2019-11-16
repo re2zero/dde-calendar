@@ -171,7 +171,7 @@ private:
     CMonthWeekView *m_weekIndicator;
     int m_firstWeekDay;
     QAction          *m_createAction;     // 创建日程
-    bool             m_updateflag = true;
+    bool             m_updateflag = false;
     bool             m_fouceFlag = true;
     int cellwidth = 120;
     int cellheight = 74;

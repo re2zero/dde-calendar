@@ -446,8 +446,10 @@ QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
     font.setWeight(QFont::Medium);
     font.setPixelSize(16);
     gwi->setBackgroundColor(m_lBackgroundcolor);
-
     gwi->setText(m_ltextcolor, font);
+    if (date == QDate::currentDate()) {
+        gwi->setText("#F85566", font);
+    }
     gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
     gwi->setDate(date);
     QListWidgetItem *listItem = new QListWidgetItem;
