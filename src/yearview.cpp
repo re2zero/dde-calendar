@@ -32,6 +32,7 @@
 #include <QSpacerItem>
 #include <DPalette>
 #include <QLocale>
+#include <DHiDPIHelper>
 DGUI_USE_NAMESPACE
 CYearView::CYearView(QWidget *parent) : DFrame(parent)
 {
@@ -297,17 +298,31 @@ void CYearView::paintCell(QWidget *cell)
         int hh = 0;
         QRect fillRect;
         if (cell->width() > cell->height()) {
-            hh = cell->height();
-            fillRect = QRect((cell->width() - hh) / 2.0, 0, hh, hh);
+            hh = cell->height() + 8;
+            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, 3, hh, hh);
         } else {
-            hh = cell->width();
-            fillRect = QRect(0, (cell->height() - hh) / 2, hh, hh);
+            hh = cell->width() + 8;
+            fillRect = QRect(0 - 3, (cell->height() - hh) / 2.0 + 3, hh, hh);
+        }
+        QPixmap pixmap;
+        if (m_themetype == 2)
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose20X20_checked .svg").scaled(hh, hh, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        else {
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose20X20_checked .svg").scaled(hh, hh, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         }
 
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        painter.setBrush(QBrush(m_backgroundCircleColor));
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(fillRect);
+        pixmap.setDevicePixelRatio(devicePixelRatioF());
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        painter.drawPixmap(fillRect, pixmap);
+        painter.restore();
+
+        // painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        // painter.setBrush(QBrush(m_backgroundCircleColor));
+        // painter.setPen(Qt::NoPen);
+        // painter.drawEllipse(fillRect);
     }
 
     painter.setPen(Qt::SolidLine);

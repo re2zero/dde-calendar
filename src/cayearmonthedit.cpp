@@ -50,7 +50,7 @@ int CCaYearMonthEdit::getNum()
 void CCaYearMonthEdit::initUI()
 {
     m_pListWidget = new DListWidget(this);
-
+    m_pListWidget->setLineWidth(0);
     m_timeEdit = new QLineEdit(m_pListWidget);
     //m_timeEdit->setInputMask("00:00;#");
     setModel(m_pListWidget->model());
