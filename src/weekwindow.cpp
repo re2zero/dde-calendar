@@ -28,6 +28,7 @@
 #include <DPalette>
 #include <DHiDPIHelper>
 #include "schcedulesearchview.h"
+#include "todybutton.h"
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -72,7 +73,7 @@ void CWeekWindow::initUI()
     m_contentBackground->setPalette(anipa);
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
 
-    m_today = new DPushButton;
+    m_today = new CTodyButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(DDEWeekCalendar::WTodayWindth, DDEWeekCalendar::WTodayHeight);
     DPalette todaypa = m_today->palette();
@@ -224,7 +225,7 @@ void CWeekWindow::initUI()
 void CWeekWindow::initConnection()
 {
     connect(m_prevButton, &DIconButton::clicked, this, &CWeekWindow::slotprev);
-    connect(m_today, &DPushButton::clicked, this, &CWeekWindow::slottoday);
+    connect(m_today, &CTodyButton::clicked, this, &CWeekWindow::slottoday);
     connect(m_nextButton, &DIconButton::clicked, this, &CWeekWindow::slotnext);
     connect(m_weekview, &CWeekView::signalsSelectDate, this, &CWeekWindow::slotCurrentWeek);
     connect(m_weekHeadView, &CWeekHeadView::signalcurrentLunarDateChanged, this, &CWeekWindow::slotcurrentDateLunarChanged);
@@ -250,6 +251,12 @@ void CWeekWindow::setTheMe(int type)
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
+        QColor todayhover = "#000000";
+        todayhover.setAlphaF(0.1);
+        QColor todaypress = "#000000";
+        todaypress.setAlphaF(0.2);
+        m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
+        m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
 
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
@@ -285,6 +292,8 @@ void CWeekWindow::setTheMe(int type)
         todaypa.setColor(DPalette::Dark, "#414141");
         todaypa.setColor(DPalette::Light, "#484848");
         m_today->setPalette(todaypa);
+        m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
+        m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
 
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#484848"));

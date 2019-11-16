@@ -35,6 +35,7 @@ class CMonthView;
 class CMonthDayView;
 class QPropertyAnimation;
 class QHBoxLayout;
+class CTodyButton;
 class CMonthWindow: public QMainWindow
 {
     Q_OBJECT
@@ -84,7 +85,7 @@ private:
     CMonthView        *m_monthView;
     CMonthDayView      *m_monthDayView;
     DFrame *m_contentBackground = nullptr;
-    DPushButton       *m_today = nullptr;
+    CTodyButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_YearLunarLabel;

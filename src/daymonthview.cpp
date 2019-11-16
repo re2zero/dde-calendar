@@ -34,6 +34,7 @@
 #include <DPalette>
 #include <DHorizontalLine>
 #include <DHiDPIHelper>
+#include "todybutton.h"
 DGUI_USE_NAMESPACE
 CDayMonthView::CDayMonthView(QWidget *parent) : DWidget(parent)
 {
@@ -97,6 +98,12 @@ void CDayMonthView::setTheMe(int type)
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
+        QColor todayhover = "#000000";
+        todayhover.setAlphaF(0.1);
+        QColor todaypress = "#000000";
+        todaypress.setAlphaF(0.2);
+        m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
+        m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
 
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
@@ -173,6 +180,8 @@ void CDayMonthView::setTheMe(int type)
         todaypa.setColor(DPalette::Light, "#484848");
         todaypa.setColor(DPalette::Dark, "#414141");
         m_today->setPalette(todaypa);
+        m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
+        m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
 
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#484848"));
@@ -312,7 +321,7 @@ void CDayMonthView::initUI()
     m_dayNumFont.setPixelSize(12);
     //m_dayNumFont.setWeight(QFont::Light);
 
-    m_today = new DPushButton;
+    m_today = new CTodyButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
     DPalette todaypa = m_today->palette();
@@ -489,7 +498,7 @@ void CDayMonthView::initUI()
 void CDayMonthView::initConnection()
 {
     connect(m_prevButton, &DIconButton::clicked, this, &CDayMonthView::slotprev);
-    connect(m_today, &DPushButton::clicked, this, &CDayMonthView::slottoday);
+    connect(m_today, &CTodyButton::clicked, this, &CDayMonthView::slottoday);
     connect(m_nextButton, &DIconButton::clicked, this, &CDayMonthView::slotnext);
     connect(this, &CDayMonthView::dateSelected, this, &CDayMonthView::handleCurrentDateChanged);
 }

@@ -25,6 +25,7 @@
 #include <QPainter>
 #include <DPalette>
 #include "schcedulesearchview.h"
+#include "todybutton.h"
 DGUI_USE_NAMESPACE
 CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -36,7 +37,7 @@ CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
 
 CMonthWindow::~CMonthWindow()
 {
-    disconnect(m_today, &DPushButton::clicked, this, &CMonthWindow::slottoday);
+    disconnect(m_today, &CTodyButton::clicked, this, &CMonthWindow::slottoday);
     delete  m_monthDayView;
     m_monthDayView = nullptr;
     delete  m_monthView;
@@ -77,6 +78,12 @@ void CMonthWindow::setTheMe(int type)
         sbcolor.setAlphaF(0.05);
         todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
+        QColor todayhover = "#000000";
+        todayhover.setAlphaF(0.1);
+        QColor todaypress = "#000000";
+        todaypress.setAlphaF(0.2);
+        m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
+        m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -102,6 +109,9 @@ void CMonthWindow::setTheMe(int type)
         sbcolor.setAlphaF(0.08);
         todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
+
+        m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
+        m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
@@ -182,7 +192,7 @@ void CMonthWindow::initUI()
     m_contentBackground->setAutoFillBackground(true);
     m_contentBackground->setPalette(anipa);
 
-    m_today = new DPushButton;
+    m_today = new CTodyButton;
     m_today->setText(tr("Return today"));
     m_today->setFixedSize(DDEMonthCalendar::MTodayWindth, DDEMonthCalendar::MTodayHeight);
     DPalette todaypa = m_today->palette();

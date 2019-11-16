@@ -37,6 +37,7 @@ class CaLunarDayInfo;
 class CWeekView;
 class CScheduleView;
 class CSchceduleSearchView;
+class CTodyButton;
 class CWeekWindow: public QMainWindow
 {
     Q_OBJECT
@@ -79,7 +80,7 @@ private:
     DFrame *m_contentBackground = nullptr;
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
-    DPushButton       *m_today = nullptr;
+    CTodyButton       *m_today = nullptr;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_YearLunarLabel;
