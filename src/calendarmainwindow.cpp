@@ -301,6 +301,7 @@ void Calendarmainwindow::slotTheme(int type)
     m_monthWindow->setTheMe(type);
     m_weekWindow->setTheMe(type);
     m_DayWindow->setTheMe(type);
+    m_schceduleSearchView->setTheMe(type);
 }
 
 void Calendarmainwindow::OpenSchedule(QString job)
