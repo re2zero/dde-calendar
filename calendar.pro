@@ -73,7 +73,6 @@ HEADERS += src/calendardbus.h \
     src/configsettings.h \
     src/singleton.h \
     src/shortcut.h \
-    src/todybutton.h \
     src/todybutton.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \

@@ -85,7 +85,7 @@ void CDayWindow::setTheMe(int type)
         m_SolarDay->setForegroundRole(DPalette::WindowText);
     }
     m_daymonthView->setTheMe(type);
-    m_schceduleSearchView->setTheMe(type);
+    //m_schceduleSearchView->setTheMe(type);
     m_scheduleView->setTheMe(type);
 }
 
@@ -110,13 +110,13 @@ void CDayWindow::setSearchWFlag(bool flag)
 
 void CDayWindow::clearSearch()
 {
-    m_schceduleSearchView->clearSearch();
+    //m_schceduleSearchView->clearSearch();
 }
 
 void CDayWindow::setSearchText(QString str)
 {
     m_searchText = str;
-    m_schceduleSearchView->slotsetSearch(str);
+    //m_schceduleSearchView->slotsetSearch(str);
 }
 
 void CDayWindow::setLunarVisible(bool state)
@@ -211,10 +211,10 @@ void CDayWindow::initUI()
     m_mainLayout->addWidget(m_leftground);
     //mainLayout->addStretch(1);
 
-    m_schceduleSearchView = new CSchceduleSearchView(this);
-    m_schceduleSearchView->setFixedWidth(200);
-    m_mainLayout->addWidget(m_schceduleSearchView);
-    m_schceduleSearchView->setVisible(false);
+    //m_schceduleSearchView = new CSchceduleSearchView(this);
+    // m_schceduleSearchView->setFixedWidth(200);
+    // m_mainLayout->addWidget(m_schceduleSearchView);
+    // m_schceduleSearchView->setVisible(false);
 
 
     m_contentBackground->setLayout(m_mainLayout);
@@ -231,8 +231,8 @@ void CDayWindow::initConnection()
     connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CDayWindow::signalViewtransparentFrame);
 
     connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSchedule);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSearchSchedule);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CDayWindow::slotsearchDateSelect);
+    //connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSearchSchedule);
+    // connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CDayWindow::slotsearchDateSelect);
 }
 
 
@@ -249,14 +249,14 @@ void CDayWindow::slotupdateSchedule(int id)
 
 void CDayWindow::slotTransitSchedule(int id)
 {
-    m_schceduleSearchView->slotsetSearch(m_searchText);
+    //m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
 }
 
 void CDayWindow::slotTransitSearchSchedule(int id)
 {
     m_scheduleView->slotupdateSchedule();
-    m_schceduleSearchView->slotsetSearch(m_searchText);
+    // m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
 }
 
@@ -285,7 +285,7 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     }
     m_daymonthView->setFixedSize(dw, dh);
     m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
-    m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
+    //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
 }
 

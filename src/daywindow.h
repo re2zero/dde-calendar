@@ -73,7 +73,7 @@ private:
     DLabel            *m_LunarLabel;
     DLabel            *m_SolarDay;
     CScheduleView     *m_scheduleView;
-    CSchceduleSearchView *m_schceduleSearchView;
+    // CSchceduleSearchView *m_schceduleSearchView;
     QString           m_searchText;
     bool m_searchfalg = false;
     QHBoxLayout *m_mainLayout;

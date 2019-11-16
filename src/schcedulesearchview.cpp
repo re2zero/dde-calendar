@@ -318,7 +318,9 @@ void CSchceduleSearchView::setTheMe(int type)
         m_bBackgroundcolor.setAlphaF(0.05);
         m_btimecolor = "#6D7C88";
         m_bttextcolor = "#C0C6D4";
-        m_lBackgroundcolor = "#282828";
+
+        m_lBackgroundcolor = "#FFFFFF";
+        m_lBackgroundcolor.setAlphaF(0.05);
         m_ltextcolor = "#C0C6D4";
     }
     updateDateShow();

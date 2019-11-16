@@ -148,7 +148,7 @@ void CMonthWindow::nextMonth()
 void CMonthWindow::slotTransitSearchSchedule(int id)
 {
     m_monthView->slotSchceduleUpdate(id);
-    m_schceduleSearchView->slotsetSearch(m_searchText);
+    //m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
 }
 
@@ -166,13 +166,13 @@ void CMonthWindow::setSearchWFlag(bool flag)
 
 void CMonthWindow::clearSearch()
 {
-    m_schceduleSearchView->clearSearch();
+    //m_schceduleSearchView->clearSearch();
 }
 
 void CMonthWindow::setSearchText(QString str)
 {
     m_searchText = str;
-    m_schceduleSearchView->slotsetSearch(str);
+    // m_schceduleSearchView->slotsetSearch(str);
 }
 void CMonthWindow::wheelEvent(QWheelEvent *e)
 {
@@ -279,16 +279,16 @@ void CMonthWindow::initUI()
     m_tmainLayout->addLayout(hhLayout);
     //mainLayout->addStretch(1);
 
-    m_schceduleSearchView = new CSchceduleSearchView(this);
-    m_schceduleSearchView->setFixedWidth(200);
+    //m_schceduleSearchView = new CSchceduleSearchView(this);
+    //m_schceduleSearchView->setFixedWidth(200);
 
     QVBoxLayout *ssLayout = new QVBoxLayout;
     ssLayout->setMargin(0);
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 10, 0, 10);
-    ssLayout->addWidget(m_schceduleSearchView);
+    //ssLayout->addWidget(m_schceduleSearchView);
     m_tmainLayout->addLayout(ssLayout);
-    m_schceduleSearchView->setVisible(false);
+    //m_schceduleSearchView->setVisible(false);
 
     m_contentBackground->setLayout(m_tmainLayout);
 
@@ -391,7 +391,7 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
         //m_monthDayView->setwindowFixw(dw, width() - 0.2325 * width() + 0.5 - 260);
         m_monthDayView->setFixedSize(dw, dh);
     }
-    m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
+    //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     QMainWindow::resizeEvent(event);
 }
 

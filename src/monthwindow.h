@@ -93,7 +93,7 @@ private:
     QSpacerItem       *m_spaceitem;
     DFrame            *m_gridWidget;
 
-    CSchceduleSearchView *m_schceduleSearchView;
+    //CSchceduleSearchView *m_schceduleSearchView;
     QString           m_searchText;
     bool m_searchfalg = false;
     QHBoxLayout *m_tmainLayout;

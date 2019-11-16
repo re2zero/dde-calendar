@@ -244,16 +244,16 @@ void CYearWindow::initUI()
     m_tmainLayout->addLayout(hhLayout);
     //mainLayout->addStretch(1);
 
-    m_schceduleSearchView = new CSchceduleSearchView(this);
-    m_schceduleSearchView->setFixedWidth(200);
+    //m_schceduleSearchView = new CSchceduleSearchView(this);
+    //m_schceduleSearchView->setFixedWidth(200);
 
     QVBoxLayout *ssLayout = new QVBoxLayout;
     ssLayout->setMargin(0);
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 10, 0, 10);
-    ssLayout->addWidget(m_schceduleSearchView);
+    //ssLayout->addWidget(m_schceduleSearchView);
     m_tmainLayout->addLayout(ssLayout);
-    m_schceduleSearchView->setVisible(false);
+    //m_schceduleSearchView->setVisible(false);
 
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
     m_contentBackground->setLayout(m_tmainLayout);
@@ -267,8 +267,8 @@ void CYearWindow::initConnection()
     connect(m_prevButton, &DIconButton::clicked, this, &CYearWindow::slotprev);
     //connect(m_today, &DPushButton::clicked, this, &CYearWindow::slottoday);
     connect(m_nextButton, &DIconButton::clicked, this, &CYearWindow::slotnext);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CYearWindow::slotTransitSearchSchedule);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CYearWindow::slotsearchDateSelect);
+    //connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CYearWindow::slotTransitSearchSchedule);
+    // connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CYearWindow::slotsearchDateSelect);
 }
 
 void CYearWindow::setLunarVisible(bool state)
@@ -375,17 +375,17 @@ void CYearWindow::setSearchWFlag(bool flag)
 
 void CYearWindow::clearSearch()
 {
-    m_schceduleSearchView->clearSearch();
+    //m_schceduleSearchView->clearSearch();
 }
 
 void CYearWindow::setSearchText(QString str)
 {
     m_searchText = str;
-    m_schceduleSearchView->slotsetSearch(str);
+    // m_schceduleSearchView->slotsetSearch(str);
 }
 void CYearWindow::slotTransitSearchSchedule(int id)
 {
-    m_schceduleSearchView->slotsetSearch(m_searchText);
+    // m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
 }
 void CYearWindow::slotReturnTodayUpdate()
@@ -529,7 +529,7 @@ void CYearWindow::resizeEvent(QResizeEvent *event)
     } else {
         m_tmainLayout->setContentsMargins(10, 0, 10, 0);
     }
-    m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
+    // m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     for (int i = 0; i < m_monthViewList.count(); i++) {
         //m_monthViewList.at(i)->setFixedSize(tw, th);
     }

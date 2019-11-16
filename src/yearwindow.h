@@ -90,7 +90,7 @@ private:
     QQueue<QDate> *queue;
     QMap<QDate, CaLunarDayInfo> *lunarCache;
     CaLunarDayInfo *emptyCaLunarDayInfo;
-    CSchceduleSearchView *m_schceduleSearchView;
+    //CSchceduleSearchView *m_schceduleSearchView;
     QHBoxLayout *m_tmainLayout;
     QString           m_searchText;
     bool m_searchfalg = false;
