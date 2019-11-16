@@ -372,6 +372,9 @@ void CScheduleView::initConnection()
     connect(m_alldaylist, &CAllDaySchceduleWeekView::signalsitem, this, &CScheduleView::slotitem);
     connect(m_graphicsView, &CGraphicsView::signalsCurrentScheduleDate, this, &CScheduleView::slotCurrentScheduleDate);
 
+    connect(m_alldaylist, &CAllDaySchceduleWeekView::signalViewtransparentFrame, this, &CScheduleView::signalViewtransparentFrame);
+    connect(m_graphicsView, &CGraphicsView::signalViewtransparentFrame, this, &CScheduleView::signalViewtransparentFrame);
+
 
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);

@@ -246,6 +246,7 @@ signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
     void signalsCurrentScheduleDate(QDate date);
+    void signalViewtransparentFrame(int type);
 private:
     int checkDay(int weekday);
 

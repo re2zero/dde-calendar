@@ -77,15 +77,18 @@ void CSchceduleSearchItem::setData( ScheduleDtailInfo vScheduleInfo, QDate date)
 }
 void CSchceduleSearchItem::slotEdit()
 {
+    emit signalViewtransparentFrame(1);
     CSchceduleDlg dlg(0, this);
     dlg.setData(m_ScheduleInfo);
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsEdit(this);
     }
+    emit signalViewtransparentFrame(0);
 }
 
 void CSchceduleSearchItem::slotDelete()
 {
+    emit signalViewtransparentFrame(1);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     if (m_ScheduleInfo.rpeat == 0) {
@@ -188,6 +191,7 @@ void CSchceduleSearchItem::slotDelete()
         }
     }
     emit signalsDelete(this);
+    emit signalViewtransparentFrame(0);
     //ScheduleDbManager::deleteScheduleInfoById(m_ScheduleInfo.id);
 }
 
@@ -260,11 +264,13 @@ void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 
 void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    emit signalViewtransparentFrame(1);
     CMySchceduleView dlg(this);
     dlg.setSchedules(m_ScheduleInfo);
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
     dlg.exec();
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
+    emit signalViewtransparentFrame(0);
 
 }
 
@@ -312,7 +318,7 @@ void CSchceduleSearchView::setTheMe(int type)
         m_bBackgroundcolor.setAlphaF(0.05);
         m_btimecolor = "#6D7C88";
         m_bttextcolor = "#C0C6D4";
-        m_lBackgroundcolor = m_bBackgroundcolor;
+        m_lBackgroundcolor = "#282828";
         m_ltextcolor = "#C0C6D4";
     }
     updateDateShow();
@@ -428,6 +434,8 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date)
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
     connect(gwi, &CSchceduleSearchItem::signalsEdit, this, &CSchceduleSearchView::slotedititem);
     connect(gwi, &CSchceduleSearchItem::signalSelectDate, this, &CSchceduleSearchView::slotSelectDate);
+    connect(gwi, &CSchceduleSearchItem::signalViewtransparentFrame, this, &CSchceduleSearchView::signalViewtransparentFrame);
+
     //connect(gwi, SIGNAL(signalsDelete(QDate )), this, SIGNAL(signalDate(QDate )));
 
     QListWidgetItem *listItem = new QListWidgetItem;

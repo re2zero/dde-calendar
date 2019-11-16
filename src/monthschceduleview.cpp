@@ -95,16 +95,19 @@ void CMonthSchceduleWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
 }
 void CMonthSchceduleWidgetItem::slotEdit()
 {
+    emit signalViewtransparentFrame(1);
     CSchceduleDlg dlg(0, this);
     dlg.setData(m_ScheduleInfo);
     if (dlg.exec() == DDialog::Accepted) {
 
         emit signalsEdit(this, 1);
     }
+    emit signalViewtransparentFrame(0);
 }
 
 void CMonthSchceduleWidgetItem::slotDelete()
 {
+    emit signalViewtransparentFrame(1);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     if (m_ScheduleInfo.rpeat == 0) {
         CSchceduleCtrlDlg msgBox;
@@ -210,6 +213,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
         }
     }
     emit signalsDelete(this);
+    emit signalViewtransparentFrame(0);
 }
 //有问题
 void CMonthSchceduleWidgetItem::slotDoubleEvent(int type)
@@ -330,10 +334,12 @@ void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     //if (m_editType == 0) return;
+    emit signalViewtransparentFrame(1);
     CMySchceduleView dlg(this);
     dlg.setSchedules(m_ScheduleInfo);
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
     dlg.exec();
+    emit signalViewtransparentFrame(0);
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
 }
 
@@ -852,6 +858,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     connect(gwi, &CMonthSchceduleWidgetItem::signalsDelete, this, &CMonthSchceduleView::slotdeleteitem);
     connect(gwi, &CMonthSchceduleWidgetItem::signalsEdit, this, &CMonthSchceduleView::slotedititem);
     connect(gwi, &CMonthSchceduleWidgetItem::signalsPress, this, &CMonthSchceduleView::slotupdateItem);
+    connect(gwi, &CMonthSchceduleWidgetItem::signalViewtransparentFrame, this, &CMonthSchceduleView::signalViewtransparentFrame);
 
     m_scheduleShowItem.append(gwi);
 }

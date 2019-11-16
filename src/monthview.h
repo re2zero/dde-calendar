@@ -81,6 +81,7 @@ signals:
     void signalsSchceduleUpdate(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
     void signalsViewSelectDate(QDate date);
+    void signalViewtransparentFrame(int type);
 public slots:
     void setCurrentDate(const QDate date);
     void setLunarVisible(bool visible);

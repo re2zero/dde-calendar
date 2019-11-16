@@ -39,6 +39,7 @@ public:
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalDate(QDate date);
+    void signalViewtransparentFrame(int type);
 public slots:
     void slotdeleteitem(CSchceduleSearchItem *item);
     void slotedititem(CSchceduleSearchItem *item);
@@ -84,6 +85,7 @@ signals:
     void signalsDelete(CSchceduleSearchItem *item);
     void signalsEdit(CSchceduleSearchItem *item);
     void signalSelectDate(QDate date);
+    void signalViewtransparentFrame(int type);
 public slots:
     void slotEdit();
     void slotDelete();

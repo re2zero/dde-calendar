@@ -261,6 +261,13 @@ void Calendarmainwindow::slotTheme(int type)
         m_contentBackground->setPalette(anipa);
         m_contentBackground->setBackgroundRole(DPalette::Background);
 
+        DPalette tframepa = m_transparentFrame->palette();
+        QColor tColor = "#FFFFFF";
+        tColor.setAlphaF(0.3);
+        tframepa.setColor(DPalette::Background, tColor);
+        m_transparentFrame->setPalette(tframepa);
+        m_transparentFrame->setBackgroundRole(DPalette::Background);
+
     } else {
         DPalette pl = m_yearButton->palette();
         pl.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
@@ -281,6 +288,13 @@ void Calendarmainwindow::slotTheme(int type)
         anipa.setColor(DPalette::Background, "#252525");
         m_contentBackground->setPalette(anipa);
         m_contentBackground->setBackgroundRole(DPalette::Background);
+
+        DPalette tframepa = m_transparentFrame->palette();
+        QColor tColor = "#000000";
+        tColor.setAlphaF(0.3);
+        tframepa.setColor(DPalette::Background, tColor);
+        m_transparentFrame->setPalette(tframepa);
+        m_transparentFrame->setBackgroundRole(DPalette::Background);
     }
     CScheduleDataManage::getScheduleDataManage()->setTheMe(type);
     m_yearwindow->setTheMe(type);
@@ -441,6 +455,9 @@ void Calendarmainwindow::initUI()
     //m_bttongroup->button(0)->setChecked(true);
     m_yearButton->setFocus();
     m_yearButton->setChecked(true);
+    m_transparentFrame = new DFrame(this);
+    m_transparentFrame->setAutoFillBackground(true);
+    m_transparentFrame->hide();
 }
 
 void Calendarmainwindow::initConnection()
@@ -472,7 +489,10 @@ void Calendarmainwindow::initConnection()
     connect(m_monthWindow, &CMonthWindow::signalsViewSelectDate, this, &Calendarmainwindow::slotViewSelectDate);
     connect(m_monthWindow, &CMonthWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
     connect(m_weekWindow, &CWeekWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
-
+    connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_DayWindow, &CDayWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
 }
 
 void Calendarmainwindow::initLunar()
@@ -770,5 +790,16 @@ void Calendarmainwindow::slotCurrentScheduleDate(QDate date)
 void Calendarmainwindow::slotViewSelectDate(QDate date)
 {
     viewWindow(4, QDateTime(date));
+}
+
+void Calendarmainwindow::slotViewtransparentFrame(int type)
+{
+    if (type) {
+        m_transparentFrame->resize(width(), height() - 50);
+        m_transparentFrame->move(0, 50);
+        m_transparentFrame->show();
+    } else {
+        m_transparentFrame->hide();
+    }
 }
 

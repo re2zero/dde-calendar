@@ -42,6 +42,7 @@ public:
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
+    void signalViewtransparentFrame(int type);
 public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
@@ -127,6 +128,7 @@ signals:
     void signalsDelete(CMonthSchceduleWidgetItem *item);
     void signalsEdit(CMonthSchceduleWidgetItem *item, int type = 0);
     void signalsPress(CMonthSchceduleWidgetItem *item);
+    void signalViewtransparentFrame(int type);
 public slots:
     void slotEdit();
     void slotDelete();

@@ -171,6 +171,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     }
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsCurrentScheduleDate, this, &CMonthView::signalsCurrentScheduleDate);
+    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
 
     DFrame *gridWidget = new DFrame;
     gridWidget->setLayout(gridLayout);
@@ -456,6 +457,7 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
 }
 void CMonthView::slotCreate()
 {
+    emit signalViewtransparentFrame(1);
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_createDate);
@@ -464,6 +466,7 @@ void CMonthView::slotCreate()
     if (dlg.exec() == DDialog::Accepted) {
         slotSchceduleUpdate();
     }
+    emit signalViewtransparentFrame(0);
 }
 void CMonthView::updateDate()
 {

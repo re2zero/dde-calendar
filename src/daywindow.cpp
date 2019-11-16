@@ -228,6 +228,7 @@ void CDayWindow::initConnection()
     connect(m_daymonthView, &CDayMonthView::signalcurrentLunarDateChanged, this, &CDayWindow::slotcurrentDateLunarChanged);
     connect(m_daymonthView, &CDayMonthView::signalcurrentDateChanged, this, &CDayWindow::slotcurrentDateChanged);
     connect(m_daymonthView, &CDayMonthView::signalsReturnDay, this, &CDayWindow::slotCurrentReturnDay);
+    connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CDayWindow::signalViewtransparentFrame);
 
     connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSchedule);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSearchSchedule);

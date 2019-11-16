@@ -276,12 +276,14 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             QAction *action_t = menu.exec(QCursor::pos());
             if (action_t == m_createAction) {
                 QPointF senceposs = mapToScene(event->pos());
+                emit signalViewtransparentFrame(1);
                 CSchceduleDlg dlg(1, this);
                 QDateTime tDatatime = m_coorManage->getDate(senceposs);
                 dlg.setDate(tDatatime);
                 if (dlg.exec() == DDialog::Accepted) {
                     emit signalsUpdateShcedule(0);
                 }
+                emit signalViewtransparentFrame(0);
             }
         } else {
             if (item->getType() == 1) return;
@@ -290,12 +292,15 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             menu.addAction(m_deleteAction);
             QAction *action_t = menu.exec(QCursor::pos());
             if (action_t == m_editAction) {
+                emit signalViewtransparentFrame(1);
                 CSchceduleDlg dlg(0, this);
                 dlg.setData(item->getData());
                 if (dlg.exec() == DDialog::Accepted) {
                     emit signalsUpdateShcedule(0);
                 }
+                emit signalViewtransparentFrame(0);
             } else if (action_t == m_deleteAction) {
+                emit signalViewtransparentFrame(1);
                 ScheduleDtailInfo info = item->getData();
                 if (info.rpeat == 0) {
                     CSchceduleCtrlDlg msgBox(this);
@@ -393,6 +398,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                     }
                 }
                 emit signalsUpdateShcedule(item->getData().id);
+                emit signalViewtransparentFrame(0);
             }
         }
     } else if (event->button() == Qt::LeftButton) {
@@ -422,10 +428,12 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
         emit signalsCurrentScheduleDate(item->getData().beginDateTime.date());
         return;
     }
+    emit signalViewtransparentFrame(1);
     CMySchceduleView dlg(this);
     dlg.setSchedules(item->getData());
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
     dlg.exec();
+    emit signalViewtransparentFrame(0);
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
 }
 void CGraphicsView::slotDoubleEvent(int type)

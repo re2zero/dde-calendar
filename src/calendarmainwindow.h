@@ -81,6 +81,7 @@ private slots:
 
     void slotCurrentScheduleDate(QDate date);
     void slotViewSelectDate(QDate date);
+    void slotViewtransparentFrame(int type);
 private:
     DLabel                    *m_icon;
     QStackedLayout              *m_stackWidget;
@@ -100,6 +101,7 @@ private:
     CSchceduleSearchView *m_schceduleSearchView;
     DFrame *m_contentBackground = nullptr;
     int                       m_priindex = 3; //默认打开日视图双击
+    DFrame                    *m_transparentFrame;
 };
 
 #endif // CALENDARMAINWINDOW_H

@@ -56,6 +56,7 @@ signals:
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
+    void signalViewtransparentFrame(int type);
 public slots:
     void slotPosHours(QVector<int> vPos, QVector<int> vHours);
     void setDate(QDate date);

@@ -59,6 +59,7 @@ signals:
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
     void signalsReturnTodayUpdate(QMainWindow *w);
     void signalsCurrentScheduleDate(QDate date);
+    void signalViewtransparentFrame(int type);
 public slots:
     void slotReturnTodayUpdate();
 public slots:

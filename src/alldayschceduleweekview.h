@@ -61,6 +61,7 @@ public:
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
+    void signalViewtransparentFrame(int type);
 public slots:
     void slotdeleteitem(CAllDaySchceduleWeekWidgetItem *item);
     void slotedititem(CAllDaySchceduleWeekWidgetItem *item, int type = 0);
@@ -125,6 +126,7 @@ signals:
     void signalsDelete(CAllDaySchceduleWeekWidgetItem *item);
     void signalsEdit(CAllDaySchceduleWeekWidgetItem *item, int type = 0);
     void signalsPress(CAllDaySchceduleWeekWidgetItem *item);
+    void signalViewtransparentFrame(int type);
 public slots:
     void slotEdit();
     void slotDelete();

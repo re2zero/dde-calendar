@@ -94,6 +94,7 @@ void CAllDaySchceduleWeekWidgetItem::setTransparentB(bool t, QColor tcolor)
 }
 void CAllDaySchceduleWeekWidgetItem::slotCreate()
 {
+    emit signalViewtransparentFrame(1);
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_dianjiDay);
@@ -103,20 +104,24 @@ void CAllDaySchceduleWeekWidgetItem::slotCreate()
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsEdit(this, 1);
     }
+    emit signalViewtransparentFrame(0);
 }
 
 void CAllDaySchceduleWeekWidgetItem::slotEdit()
 {
+    emit signalViewtransparentFrame(1);
     CSchceduleDlg dlg(0, this);
     dlg.setData(m_ScheduleInfo);
     if (dlg.exec() == DDialog::Accepted) {
 
         emit signalsEdit(this, 1);
     }
+    emit signalViewtransparentFrame(0);
 }
 
 void CAllDaySchceduleWeekWidgetItem::slotDelete()
 {
+    emit signalViewtransparentFrame(1);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     if (m_ScheduleInfo.rpeat == 0) {
@@ -223,6 +228,7 @@ void CAllDaySchceduleWeekWidgetItem::slotDelete()
         }
     }
     emit signalsDelete(this);
+    emit signalViewtransparentFrame(0);
 }
 //有问题
 void CAllDaySchceduleWeekWidgetItem::slotDoubleEvent(int type)
@@ -352,10 +358,12 @@ void CAllDaySchceduleWeekWidgetItem::contextMenuEvent( QContextMenuEvent *event 
 void CAllDaySchceduleWeekWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (m_editType == 0) return;
+    emit signalViewtransparentFrame(1);
     CMySchceduleView dlg(this);
     dlg.setSchedules(m_ScheduleInfo);
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
     dlg.exec();
+    emit signalViewtransparentFrame(0);
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
 }
 
@@ -569,6 +577,8 @@ CAllDaySchceduleWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(int i
     connect(gwi, &CAllDaySchceduleWeekWidgetItem::signalsDelete, this, &CAllDaySchceduleWeekView::slotdeleteitem);
     connect(gwi, &CAllDaySchceduleWeekWidgetItem::signalsEdit, this, &CAllDaySchceduleWeekView::slotedititem);
     connect(gwi, &CAllDaySchceduleWeekWidgetItem::signalsPress, this, &CAllDaySchceduleWeekView::slotupdateItem);
+    connect(gwi, &CAllDaySchceduleWeekWidgetItem::signalViewtransparentFrame, this, &CAllDaySchceduleWeekView::signalViewtransparentFrame);
+
     return gwi;
 }
 
