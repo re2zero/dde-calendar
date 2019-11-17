@@ -134,6 +134,7 @@ void CDayWindow::initUI()
     DPalette anipa = m_contentBackground->palette();
     anipa.setColor(DPalette::Background, "#F8F8F8");
     m_contentBackground->setPalette(anipa);
+    m_contentBackground->setFrameRounded(true);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
@@ -192,7 +193,7 @@ void CDayWindow::initUI()
 
     QHBoxLayout *lfetmainLayout = new QHBoxLayout;
     lfetmainLayout->setMargin(0);
-    lfetmainLayout->setSpacing(0);
+    lfetmainLayout->setSpacing(1);
     lfetmainLayout->setContentsMargins(0, 0, 0, 0);
     lfetmainLayout->addLayout(leftLayout);
     lfetmainLayout->addWidget(m_daymonthView);
@@ -200,6 +201,7 @@ void CDayWindow::initUI()
     m_leftground->setContentsMargins(0, 0, 0, 0);
     m_leftground->setLayout(lfetmainLayout);
     m_leftground->setAutoFillBackground(true);
+    m_leftground->setFrameRounded(true);
     DPalette leftpa = m_leftground->palette();
     leftpa.setColor(DPalette::Background, "#FFFFFF");
     m_leftground->setPalette(leftpa);

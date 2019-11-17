@@ -93,6 +93,7 @@ private slots:
 protected:
     void resizeEvent(QResizeEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void paintEvent ( QPaintEvent *e);
 private:
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
@@ -139,6 +140,7 @@ private:
     QMap<QDate, CaHuangLiDayInfo> *lunarCache = nullptr;
     CaHuangLiDayInfo *emptyCaHuangLiDayInfo = nullptr;
     int                   m_themetype  = 1;
+    int                      m_radius = 8;
 };
 
 #endif // YEARVIEW_H

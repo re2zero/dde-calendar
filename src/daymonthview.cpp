@@ -779,6 +779,46 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
         }
     }
 }
+
+void CDayMonthView::paintEvent(QPaintEvent *e)
+{
+    int labelwidth = width();
+    int labelheight = height();
+    DPalette anipa = this->palette();
+    QPainter painter(this);
+    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setBrush(anipa.background());
+    painter.setPen(Qt::NoPen);
+    QPainterPath painterPath;
+    painterPath.moveTo(m_radius, 0);
+
+    painterPath.lineTo(0, 0);
+    painterPath.lineTo(0, m_radius);
+
+    painterPath.lineTo(0, labelheight - m_radius);
+
+    painterPath.lineTo(0, labelheight);
+    painterPath.lineTo(m_radius, labelheight);
+
+    painterPath.lineTo(labelwidth - m_radius, labelheight);
+
+    painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+
+    painterPath.lineTo(labelwidth, m_radius);
+
+
+
+    painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
+
+
+    painterPath.lineTo(m_radius, 0);
+    painterPath.closeSubpath();
+    painter.drawPath(painterPath);
+    painter.restore();
+    //QFrame::paintEvent(e);
+}
 void CDayMonthView::slotprev()
 {
     if (m_currentDate.year() > 1900) {

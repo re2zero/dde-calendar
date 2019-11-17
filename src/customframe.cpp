@@ -15,6 +15,7 @@ CustomFrame::CustomFrame(QWidget *parent): QFrame (parent)
 void CustomFrame::setBColor(QColor normalC)
 {
     m_bnormalColor = normalC;
+    update();
 }
 
 void CustomFrame::setRoundState(bool lstate, bool tstate, bool rstate, bool bstate)
@@ -117,6 +118,6 @@ void CustomFrame::paintEvent(QPaintEvent *e)
         painter.drawText(fillRect, m_textflag, m_text);
         painter.restore();
     }
-    QWidget::paintEvent(e);
+    QFrame::paintEvent(e);
 }
 
