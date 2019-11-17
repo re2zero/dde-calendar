@@ -418,6 +418,7 @@ CAllDaySchceduleWeekView::CAllDaySchceduleWeekView(QWidget *parent, int edittype
     m_editType = edittype;
     m_widgetFlag = false;
     setContentsMargins(0, 0, 0, 0);
+    setSpacing(1);
     //DPalette mainpa = this->palette();
     // this->setAutoFillBackground(true);
     QPalette pal = palette();
