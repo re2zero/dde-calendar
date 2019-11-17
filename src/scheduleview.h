@@ -58,7 +58,7 @@ signals:
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
 public slots:
-    void slotPosHours(QVector<int> vPos, QVector<int> vHours);
+    void slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void setDate(QDate date);
     void setDate(QVector<QDate> vdate, QVector<QString> vSolarDay);
     void slotupdateSchedule(int id = 0);
@@ -95,6 +95,8 @@ private:
     QColor                    m_weekColor = "#E6EEF2";
     QColor                    m_ALLDayColor = "#303030";
     QColor                    m_timeColor = "#7D7D7D";
+    QColor                    m_currenttimecolor = "#FB2525";
+    int                       m_cuttrnttimetype = 0;
 };
 
 #endif // SCHEDULEVIEW_H

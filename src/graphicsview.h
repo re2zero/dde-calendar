@@ -23,6 +23,7 @@
 #include <QGraphicsScene>
 #include "schedulestructs.h"
 #include <QAction>
+#include <QMutex>
 DWIDGET_USE_NAMESPACE
 class CScheduleCoorManage;
 class CScheduleItem;
@@ -242,7 +243,7 @@ public slots:
     void slotDoubleEvent(int type);
     void slotDeleteItem();
 signals:
-    void signalsPosHours(QVector<int> vPos, QVector<int> vHours);
+    void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
     void signalsCurrentScheduleDate(QDate date);
@@ -270,6 +271,10 @@ private:
     QAction                       *m_deleteAction;
     QAction                       *m_createAction;
     QColor                        m_weekcolor = "#4F9BFF";
+    QColor                        m_currenttimecolor = "#FB2525";
+    int                           m_cuttrnttimetype = 0;
+    QTimer                       *m_timer;
+    QMutex                        m_Mutex;
 };
 
 #endif // GRAPHICSVIEW_H

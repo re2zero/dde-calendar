@@ -252,10 +252,11 @@ void CScheduleView::slotupdateSchedule(int id)
     updateAllday(id);
 }
 
-void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours)
+void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype)
 {
     m_vHours = vHours;
     m_vPos = vPos;
+    m_cuttrnttimetype = cuttrnttimetype;
     update();
 }
 
@@ -265,21 +266,43 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     QFont font;
     font.setFamily("SourceHanSansSC-Normal");
     font.setPixelSize(11);
-    painter.save();
-    painter.setFont(font);
 
-    //painter.setPen(Qt::SolidLine);
-    painter.setPen(m_timeColor);
-    for (int i = 0; i < m_vPos.size(); i++) {
-        if (m_vHours[i] == 0) continue;
-        if (m_vHours[i] == 24) continue;
-        if (m_vHours[i] > 12) {
-            painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
-        } else {
-            painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
+    if (m_cuttrnttimetype == 0) {
+        painter.save();
+        painter.setFont(font);
+        painter.setPen(m_timeColor);
+        for (int i = 0; i < m_vPos.size(); i++) {
+            if (m_vHours[i] == 0) continue;
+            if (m_vHours[i] == 24) continue;
+            if (m_vHours[i] > 12) {
+                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
+            } else {
+                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
+            }
         }
+        painter.restore();
+    } else {
+        painter.save();
+        painter.setFont(font);
+        painter.setPen(m_timeColor);
+        for (int i = 0; i < m_vPos.size() - 1; i++) {
+            if (m_vHours[i] == 0) continue;
+            if (m_vHours[i] == 24) continue;
+            if (m_vHours[i] > 12) {
+                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
+            } else {
+                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
+            }
+        }
+        painter.restore();
+        painter.save();
+        painter.setFont(font);
+        painter.setPen(m_currenttimecolor);
+        QString str = QTime::currentTime().toString("ap HH:mm");
+        painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight), Qt::AlignRight, str);
+        painter.restore();
     }
-    painter.restore();
+
     painter.save();
     QFont alldayfont;
     alldayfont.setFamily("SourceHanSansSC");
@@ -354,7 +377,7 @@ void CScheduleView::initUI()
     layout->setSpacing(0);
     layout->setMargin(0);
     m_graphicsView = new CGraphicsView(0);
-    connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int> )), this, SLOT(slotPosHours(QVector<int>, QVector<int> )));
+    connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this, SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
     layout->addWidget(m_graphicsView);
     setLayout(layout);
     m_graphicsView->scrollBarValueChangedSlot();

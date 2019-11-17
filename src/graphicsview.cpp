@@ -35,6 +35,7 @@
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
 #include <QShortcut>
+#include <QTimer>
 DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent)
     : DGraphicsView(parent)
@@ -79,10 +80,16 @@ CGraphicsView::CGraphicsView(QWidget *parent)
     viewport()->setMouseTracking(true);
 
     setLineWidth(0);
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(scrollBarValueChangedSlot()));
+    m_timer->start(60000);
+
 }
 
 CGraphicsView::~CGraphicsView()
 {
+    m_timer->stop();
+    m_timer->deleteLater();
     clearSchdule();
 }
 
@@ -738,23 +745,39 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     }
     //绘制水平线
     if (m_LRFlag) {
-        t_painter.save();
-        t_painter.setPen(m_LRPen);
-        for (int i = 0; i < m_vLRLarge.size(); ++i)
-            t_painter.drawLine(QPoint(0, m_vLRLarge[i] - 1), QPoint(t_width, m_vLRLarge[i] - 1));
-        t_painter.restore();
+        if (m_cuttrnttimetype == 0) {
+            t_painter.save();
+            t_painter.setPen(m_LRPen);
+            for (int i = 0; i < m_vLRLarge.size(); ++i)
+                t_painter.drawLine(QPoint(0, m_vLRLarge[i] - 1), QPoint(t_width, m_vLRLarge[i] - 1));
+            t_painter.restore();
+        } else {
+            t_painter.save();
+            t_painter.setPen(m_LRPen);
+            for (int i = 0; i < m_vLRLarge.size() - 1; ++i)
+                t_painter.drawLine(QPoint(0, m_vLRLarge[i] - 1), QPoint(t_width, m_vLRLarge[i] - 1));
+            t_painter.restore();
+            t_painter.save();
+            QPen pen = m_LRPen;
+            pen.setColor(m_currenttimecolor);
+            t_painter.setPen(pen);
+            int index = m_vLRLarge.count() - 1;
+            t_painter.drawLine(QPoint(0, m_vLRLarge[index] - 1), QPoint(t_width, m_vLRLarge[index] - 1));
+            t_painter.restore();
+        }
     }
 }
 
 void CGraphicsView::scrollBarValueChangedSlot()
 {
+    QMutexLocker locker(&m_Mutex);
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();
-    QPoint newCenter(viewWidth / 2,  viewHeight / 2 );
-    QPointF centerpos = mapToScene(newCenter);
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    centerOn(centerpos.x(), centerpos.y());
-    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    //QPoint newCenter(viewWidth / 2,  viewHeight / 2 );
+    //QPointF centerpos = mapToScene(newCenter);
+    //setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    //centerOn(centerpos.x(), centerpos.y());
+    //setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     m_vLRLarge.clear();
     m_vTBLarge.clear();
     QPointF leftToprealPos = mapToScene(QPoint(0, 0));
@@ -774,7 +797,18 @@ void CGraphicsView::scrollBarValueChangedSlot()
         m_vLRLarge.append(point.y());
         vHours.append(i / m_timeInterval + 0.5);
     }
-    emit signalsPosHours(m_vLRLarge, vHours);
+    float currentTime =  m_coorManage->getHeight(QTime::currentTime());
+    //if (currentTime >= beginpos && currentTime <= leftBttomrealPos.y()) {
+    if (0) {
+        m_cuttrnttimetype = 1;
+        QPoint point = mapFromScene(leftBttomrealPos.x(), currentTime);
+        m_vLRLarge.append(point.y());
+        vHours.append(currentTime / m_timeInterval + 0.5);
+        emit signalsPosHours(m_vLRLarge, vHours, m_cuttrnttimetype);
+    } else {
+        m_cuttrnttimetype = 0;
+        emit signalsPosHours(m_vLRLarge, vHours, m_cuttrnttimetype);
+    }
     scene()->update();
     update();
 }
