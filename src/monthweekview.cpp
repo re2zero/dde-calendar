@@ -54,14 +54,21 @@ void CMonthWeekView::setList(int weekday)
         hhLayout->setSpacing(0);
         hhLayout->setContentsMargins(0, 0, 0, 0);
 
-        DLabel *label = new DLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
+        CustomFrame *label = new CustomFrame();
+        label->setTextStr(locale.dayName(d ? d : 7, QLocale::ShortFormat));
         label->setContentsMargins(0, 0, 0, 0);
         QFont weekfont;
         weekfont.setFamily("SourceHanSansSC");
         weekfont.setWeight(QFont::Medium);
         weekfont.setPixelSize(16);
-        label->setFont(weekfont);
-        if (d == 7 || d == 6) {
+        label->setTextFont(weekfont);
+        if (d == 7) {
+            QColor textbC(0, 66, 154);
+            label->setTextColor("#0887FF");
+            label->setBColor(textbC);
+            label->setRoundState(true, false, false, false);
+            m_weekData.append(qMakePair(label, 1));
+#if 0
             DPalette monthpa = label->palette();
             QColor textC = "#0887FF";
             QColor textbC(0, 66, 154);
@@ -72,15 +79,19 @@ void CMonthWeekView::setList(int weekday)
             label->setPalette(monthpa);
             m_weekData.append(qMakePair(label, 1));
             //label->setStyleSheet("color:#0887FF;background: rgba(0,66,154,0.05);");
+#endif
+        } else if (d == 6) {
+            QColor textbC(0, 66, 154);
+            label->setTextColor("#0887FF");
+            label->setBColor(textbC);
+            label->setRoundState(false, true, false, false);
+            m_weekData.append(qMakePair(label, 1));
         } else {
-            DPalette monthpa = label->palette();
             QColor textC = Qt::black;
             QColor textbC(0, 66, 154);
             textbC.setAlphaF(0.05);
-            monthpa.setColor(DPalette::WindowText, textC);
-            monthpa.setColor(DPalette::Background, textbC);
-            label->setAutoFillBackground(true);
-            label->setPalette(monthpa);
+            label->setTextColor(textC);
+            label->setBColor(textbC);
             m_weekData.append(qMakePair(label, 0));
             //label->setStyleSheet("color:black;background: rgba(0,66,154,0.05);");
         }
@@ -90,7 +101,7 @@ void CMonthWeekView::setList(int weekday)
             label->setObjectName("MonthHeaderWeekday");
         }
 
-        label->setAlignment(Qt::AlignCenter);
+        // label->setAlignment(Qt::AlignCenter);
         DHorizontalLine *splitline = new DHorizontalLine;
         if (i == 0 || i == 6) {
             label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, DDEMonthCalendar::MWeekCellHeight);
@@ -113,25 +124,17 @@ void CMonthWeekView::setTheMe(int type)
     if (type == 0 || type == 1) {
         for (int i = 0; i < m_weekData.count(); i++) {
             if (m_weekData.at(i).second == 1) {
-                DPalette monthpa = m_weekData.at(i).first->palette();
                 QColor textC = "#0887FF";
                 QColor textbC("#75C18E");
                 textbC.setAlphaF(0.1);
-                monthpa.setColor(DPalette::WindowText, textC);
-                monthpa.setColor(DPalette::Background, textbC);
-                m_weekData.at(i).first->setPalette(monthpa);
-                m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
-                m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
+                m_weekData.at(i).first->setTextColor(textC);
+                m_weekData.at(i).first->setBColor(textbC);
             } else {
-                DPalette monthpa = m_weekData.at(i).first->palette();
                 QColor textC = "#6F6F6F";
                 QColor textbC("#75C18E");
                 textbC.setAlphaF(0.1);
-                monthpa.setColor(DPalette::WindowText, textC);
-                monthpa.setColor(DPalette::Background, textbC);
-                m_weekData.at(i).first->setPalette(monthpa);
-                m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
-                m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
+                m_weekData.at(i).first->setTextColor(textC);
+                m_weekData.at(i).first->setBColor(textbC);
             }
             DPalette monthpa = m_vline.at(i)->palette();
             monthpa.setColor(DPalette::Background, "#0081FF");
@@ -142,25 +145,17 @@ void CMonthWeekView::setTheMe(int type)
     } else if (type == 2) {
         for (int i = 0; i < m_weekData.count(); i++) {
             if (m_weekData.at(i).second == 1) {
-                DPalette monthpa = m_weekData.at(i).first->palette();
                 QColor textC = "#0887FF";
                 QColor textbC = "#82AEC1";
                 textbC.setAlphaF(0.10);
-                monthpa.setColor(DPalette::WindowText, textC);
-                monthpa.setColor(DPalette::Background, textbC);
-                m_weekData.at(i).first->setPalette(monthpa);
-                m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
-                m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
+                m_weekData.at(i).first->setTextColor(textC);
+                m_weekData.at(i).first->setBColor(textbC);
             } else {
-                DPalette monthpa = m_weekData.at(i).first->palette();
                 QColor textC = "#C0C6D4";
                 QColor textbC = "#82AEC1";
                 textbC.setAlphaF(0.10);
-                monthpa.setColor(DPalette::WindowText, textC);
-                monthpa.setColor(DPalette::Background, textbC);
-                m_weekData.at(i).first->setPalette(monthpa);
-                m_weekData.at(i).first->setForegroundRole(DPalette::WindowText);
-                m_weekData.at(i).first->setBackgroundRole(DPalette::Background);
+                m_weekData.at(i).first->setTextColor(textC);
+                m_weekData.at(i).first->setBColor(textbC);
             }
             DPalette monthpa = m_vline.at(i)->palette();
             monthpa.setColor(DPalette::Background, "#0059D2");
@@ -181,7 +176,7 @@ void CMonthWeekView::updateWeek()
     QString str = locale.dayName(d ? d : 7, QLocale::ShortFormat);
     for (int i = 0; i < m_vline.count(); ++i) {
 
-        if (m_weekData.at(i).first->text() == str) {
+        if (m_weekData.at(i).first->getTextStr() == str) {
             m_vline.at(i)->setVisible(true);
         }
     }

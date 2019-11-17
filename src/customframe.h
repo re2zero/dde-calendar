@@ -16,6 +16,10 @@ public:
     void setTextFont(QFont font);
     void setTextAlign(int flag = Qt::AlignCenter);
     void setRadius(int radius = 8);
+    QString getTextStr()
+    {
+        return  m_text;
+    }
 protected:
     void paintEvent ( QPaintEvent *e);
 private:

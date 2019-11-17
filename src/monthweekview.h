@@ -25,6 +25,7 @@
 #include <QHBoxLayout>
 #include <DLabel>
 #include <DHorizontalLine>
+#include "customframe.h"
 DWIDGET_USE_NAMESPACE
 class CMonthWeekView : public DWidget
 {
@@ -40,7 +41,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
 private:
     QHBoxLayout *m_mainLayout;
-    QVector<QPair<DLabel *, int> >        m_weekData;
+    QVector<QPair<CustomFrame *, int> >        m_weekData;
     QVector<DHorizontalLine *>             m_vline;
 };
 
