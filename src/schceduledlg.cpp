@@ -533,7 +533,7 @@ void CSchceduleDlg::initUI()
     QHBoxLayout *typelayout  = new QHBoxLayout;
     typelayout->setSpacing(0);
     typelayout->setMargin(0);
-    maintlayout->setContentsMargins(20, 0, 20, 10);
+    //maintlayout->setContentsMargins(20, 0, 20, 10);
     m_typeLabel = new DLabel(tr("Type:"));
     m_typeLabel->setFont(mlabelF);
     m_typeLabel->setPalette(pa);
@@ -783,7 +783,7 @@ void CSchceduleDlg::initUI()
     maintlayout->addLayout(downlayout);
     maintlayout->addStretch();
     m_gwi->setLayout(maintlayout);
-    m_gwi->setGeometry(0, 68, 438, 412);
+    //m_gwi->setGeometry(0, 68, 438, 412);
     DPalette anipa = m_gwi->palette();
     QColor color = "#F8F8F8";
     color.setAlphaF(0.0);
@@ -791,7 +791,7 @@ void CSchceduleDlg::initUI()
     m_gwi->setAutoFillBackground(true);
     m_gwi->setPalette(anipa);
     m_gwi->setBackgroundRole(DPalette::Background);
-    //addContent(gwi);
+    addContent(m_gwi, Qt::AlignCenter);
     //setLayout(maintlayout);
     initDateEdit();
     if (m_type == 1)
