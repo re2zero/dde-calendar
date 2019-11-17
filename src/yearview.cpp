@@ -299,10 +299,10 @@ void CYearView::paintCell(QWidget *cell)
         QRect fillRect;
         if (cell->width() > cell->height()) {
             hh = cell->height() + 8;
-            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, 3, hh, hh);
+            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, 4, hh, hh);
         } else {
             hh = cell->width() + 8;
-            fillRect = QRect(0 - 3, (cell->height() - hh) / 2.0 + 3, hh, hh);
+            fillRect = QRect(- 3, (cell->height() - hh) / 2.0 + 4, hh, hh);
         }
         QPixmap pixmap;
         if (m_themetype == 2)
