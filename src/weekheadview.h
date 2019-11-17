@@ -39,7 +39,7 @@ enum CalendarWeekDayType {
     SO_MNotCurrentMonthFestival = SO_MNotCurrentMonth | SO_MFestival,
     SO_MDefault,
 };
-
+class CustomFrame;
 class CWeekHeadView: public DFrame
 {
     Q_OBJECT
@@ -95,7 +95,7 @@ private slots:
     void getDbusData();
 private:
     QList<QWidget *> m_cellList;
-    DLabel        *m_monthLabel;
+    CustomFrame        *m_monthLabel;
     CalendarDBus *m_DBusInter;
     QDate m_days[7];
     QDate m_currentDate;
@@ -125,6 +125,7 @@ private:
     int m_themetype = 1;
     int m_monthW = 80;
     int m_fixwidth = 200;
+    int m_radius = 8;
 };
 
 #endif // MYCALENDARWIDGET_H

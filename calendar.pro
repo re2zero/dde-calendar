@@ -73,7 +73,8 @@ HEADERS += src/calendardbus.h \
     src/configsettings.h \
     src/singleton.h \
     src/shortcut.h \
-    src/todybutton.h
+    src/todybutton.h \
+    src/customframe.h
 SOURCES += src/calendardbus.cpp \
            src/calendarview.cpp \
            src/calendarwindow.cpp \
@@ -123,7 +124,8 @@ SOURCES += src/calendardbus.cpp \
     src/exportedinterface.cpp \
     src/configsettings.cpp \
     src/shortcut.cpp \
-    src/todybutton.cpp
+    src/todybutton.cpp \
+    src/customframe.cpp
 RESOURCES += src/resources.qrc
 #TRANSLATIONS += translations/dde-calendar.ts \
 #                translations/desktop/desktop_zh_CN.ts\

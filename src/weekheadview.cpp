@@ -30,6 +30,7 @@
 #include <QMenu>
 #include <DPalette>
 #include <DHiDPIHelper>
+#include "customframe.h"
 DGUI_USE_NAMESPACE
 CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
 {
@@ -56,21 +57,22 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
 
-    m_monthLabel = new DLabel(this);
+    m_monthLabel = new CustomFrame(this);
     m_monthLabel->setFixedSize(DDEWeekCalendar::WMCellHeadrWidth - 6, DDEWeekCalendar::WCellHeaderItemHeight);
-    m_monthLabel->setAlignment(Qt::AlignCenter);
-    DPalette monthpa = m_monthLabel->palette();
-    QColor textC = monthpa.color(DPalette::Text);
-    QColor textbC(230, 238, 242);
-    monthpa.setColor(DPalette::WindowText, textC);
-    monthpa.setColor(DPalette::Background, textbC);
-    m_monthLabel->setAutoFillBackground(true);
-    m_monthLabel->setPalette(monthpa);
+    m_monthLabel->setRoundState(true, false, false, false);
+    //m_monthLabel->setAlignment(Qt::AlignCenter);
+    //DPalette monthpa = m_monthLabel->palette();
+    //QColor textC = monthpa.color(DPalette::Text);
+    //QColor textbC(230, 238, 242);
+    //monthpa.setColor(DPalette::WindowText, textC);
+    //monthpa.setColor(DPalette::Background, textbC);
+    //m_monthLabel->setAutoFillBackground(true);
+    // m_monthLabel->setPalette(monthpa);
     QFont mlabelF;
     mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(20);
-    m_monthLabel->setFont(mlabelF);
+    m_monthLabel->setTextFont(mlabelF);
     // m_monthLabel->setStyleSheet("color:#000000;background: rgb(230,238,242);");
     hboxLayout->addWidget(m_monthLabel);
     for (int c = 0; c != 7; ++c) {
@@ -129,14 +131,18 @@ void CWeekHeadView::setTheMe(int type)
     m_themetype = type;
     if (type == 0 || type == 1) {
 
-        DPalette monthpa = m_monthLabel->palette();
-        QColor textC = monthpa.color(DPalette::Text);
+        // DPalette monthpa = m_monthLabel->palette();
+        QColor textC = "#000000";
         QColor textbC(230, 238, 242);
-        monthpa.setColor(DPalette::WindowText, textC);
-        monthpa.setColor(DPalette::Background, textbC);
-        m_monthLabel->setPalette(monthpa);
-        m_monthLabel->setForegroundRole(DPalette::WindowText);
-        m_monthLabel->setBackgroundRole(DPalette::Background);
+        // monthpa.setColor(DPalette::WindowText, textC);
+        //monthpa.setColor(DPalette::Background, textbC);
+        // m_monthLabel->setPalette(monthpa);
+        // m_monthLabel->setForegroundRole(DPalette::WindowText);
+        //m_monthLabel->setBackgroundRole(DPalette::Background);
+
+        m_monthLabel->setBColor(textbC);
+        m_monthLabel->setTextColor(textC);
+
         m_backgroundCircleColor = "#0081FF";
         m_backgroundShowColor = "#2CA7F8";
         m_backgroundShowColor.setAlphaF(0.4);
@@ -152,14 +158,16 @@ void CWeekHeadView::setTheMe(int type)
 
     } else if (type == 2) {
 
-        DPalette monthpa = m_monthLabel->palette();
+        //DPalette monthpa = m_monthLabel->palette();
         QColor textbC = "#82AEC1";
         textbC.setAlphaF(0.1);
-        monthpa.setColor(DPalette::WindowText, "#BF1D63");
-        monthpa.setColor(DPalette::Background, textbC);
-        m_monthLabel->setPalette(monthpa);
-        m_monthLabel->setForegroundRole(DPalette::WindowText);
-        m_monthLabel->setBackgroundRole(DPalette::Background);
+        //monthpa.setColor(DPalette::WindowText, "#BF1D63");
+        // monthpa.setColor(DPalette::Background, textbC);
+        //m_monthLabel->setPalette(monthpa);
+        //m_monthLabel->setForegroundRole(DPalette::WindowText);
+        //m_monthLabel->setBackgroundRole(DPalette::Background);
+        m_monthLabel->setBColor(textbC);
+        m_monthLabel->setTextColor("#BF1D63");
         m_backgroundCircleColor = "#0059D2";
         m_backgroundShowColor = "#002AAF";
         m_backgroundShowColor.setAlphaF(0.4);
@@ -217,7 +225,7 @@ void CWeekHeadView::setCurrentDate(const QDate date)
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
     QLocale locale;
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
-    m_monthLabel->setText(locale.monthName(date.month(), QLocale::ShortFormat));
+    m_monthLabel->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
     //m_monthLabel->setText(QString::number(date.month()) + tr("Mon"));
 
 }
@@ -417,8 +425,42 @@ void CWeekHeadView::paintCell(QWidget *cell)
     QPainter painter(cell);
     painter.setPen(Qt::NoPen);
     painter.setBrush(QBrush(m_backgroudColor));
-    painter.drawRect(rect);//画矩形
-    if (d == 6 || d == 7)  painter.drawRect(rect); //画矩形
+    if (d != 6) {
+        painter.drawRect(rect);//画矩形
+        if (d == 6 || d == 7)  painter.drawRect(rect); //画矩形
+    } else {
+        int labelwidth = cell->width();
+        int labelheight = cell->height();
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        painter.setBrush(QBrush(m_backgroudColor));
+        painter.setPen(Qt::NoPen);
+        QPainterPath painterPath;
+        painterPath.moveTo(m_radius, 0);
+
+        painterPath.lineTo(0, 0);
+        painterPath.lineTo(0, m_radius);
+
+        painterPath.lineTo(0, labelheight - m_radius);
+
+        painterPath.lineTo(0, labelheight);
+        painterPath.lineTo(m_radius, labelheight);
+
+        painterPath.lineTo(labelwidth - m_radius, labelheight);
+
+        painterPath.lineTo(labelwidth, labelheight);
+        painterPath.lineTo(labelwidth, labelheight - m_radius);
+
+        painterPath.lineTo(labelwidth, m_radius);
+        //painterPath.moveTo(labelwidth, m_radius);
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
+        painterPath.lineTo(m_radius, 0);
+        painterPath.closeSubpath();
+        painter.drawPath(painterPath);
+        painter.drawPath(painterPath);
+        painter.restore();
+    }
+
 
     int bw = (cell->width() - 104) / 2;
     int bh = (cell->height() - 26) / 2;
