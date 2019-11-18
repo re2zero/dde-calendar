@@ -454,11 +454,11 @@ void CSchceduleDlg::slotbRpeatactivated(int index)
     if (index > 0) {
         m_endrepeatWidget->setVisible(true);
         setFixedSize(438, 526);
-        m_gwi->setGeometry(0, 68, 438, 458);
+        //m_gwi->setGeometry(0, 68, 438, 458);
     } else {
         m_endrepeatWidget->setVisible(false);
         setFixedSize(438, 480);
-        m_gwi->setGeometry(0, 68, 438, 412);
+        //m_gwi->setGeometry(0, 68, 438, 412);
     }
 }
 
@@ -741,6 +741,7 @@ void CSchceduleDlg::initUI()
     m_endRepeatDate->setFixedSize(120, 36);
     m_endRepeatDate->setDate(QDate::currentDate());
     m_endRepeatDate->setDisplayFormat("yyyy-MM-dd");
+    m_endRepeatDate->setCurrentSectionIndex(2);
     QFont enddatefont;
     enddatefont.setFamily("SourceHanSansSC");
     enddatefont.setWeight(QFont::Medium);
