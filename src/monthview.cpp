@@ -914,13 +914,15 @@ void CMonthView::paintCell(QWidget *cell)
         QRect fillRect = QRect(0, 0, cellwidth, cellheight);
         painter.setBrush(m_pressColor);
         painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 8, 8);
+        //painter.drawRoundedRect(fillRect, 8, 8);
+        painter.drawRect(fillRect);
     }
     if (m_cellhoverflag[pos]) {
         QRect fillRect = QRect(0, 0, cellwidth, cellheight);
         painter.setBrush(m_hoverColor);
         painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 8, 8);
+        //painter.drawRoundedRect(fillRect, 8, 8);
+        painter.drawRect(fillRect);
     }
     //if (m_cellfoceflag[pos]) {
     if (isSelectedCell) {
@@ -933,6 +935,7 @@ void CMonthView::paintCell(QWidget *cell)
         pen.setWidth(2);
         painter.setPen(pen);
         painter.drawRoundedRect(fillRect, 3, 3);
+        //painter.drawRect(fillRect);
     }
     painter.end();
 }
