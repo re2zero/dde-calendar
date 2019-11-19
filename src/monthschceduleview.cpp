@@ -904,9 +904,9 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
     int bcol = (m_beginDate.daysTo(bgeindate) ) % 7;
     int ecol = (m_beginDate.daysTo(enddate) ) % 7;
 
-    fw = (ecol - bcol + 1) * ((m_width - m_leftMagin * 2) / 7.0) - 11;
+    fw = (ecol - bcol + 1) * ((m_width - m_leftMagin ) / 7.0) - 11;
     fh = 22;
-    int x = m_leftMagin + bcol * ((m_width - m_leftMagin * 2)  / 7.0 + 0.5) + 5;
+    int x = m_leftMagin + bcol * ((m_width - m_leftMagin )  / 7.0) + 5;
     int y = m_topMagin + ((m_height - m_topMagin - m_buttommagin) * brow / 6.0 + 0.5)  + 27 + (cnum - 1) * fh + 2.9;
     pos = QPoint(x, y);
 }

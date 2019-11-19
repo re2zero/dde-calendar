@@ -253,7 +253,7 @@ void CMonthView::resizeEvent(QResizeEvent *event)
     m_topmagin = topmagin;
     m_mainLayout->setContentsMargins(leftmagin, topmagin, 0, 10);
     m_weekIndicator->setFixedSize(width() - leftmagin, height() * 0.1042 + 0.5);
-    cellwidth = (width() - 20) / 7.0 + 0.5;
+    cellwidth = (width() - 10) / 7.0 + 0.5;
     cellheight = (height() - 20 - m_weekIndicator->height()) / 6.0 + 0.5;
     for (int i(0); i != 42; ++i) {
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
