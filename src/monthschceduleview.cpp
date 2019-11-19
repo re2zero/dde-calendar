@@ -477,7 +477,7 @@ void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom
     m_buttommagin = buttom;
     m_leftMagin = left;
     m_topMagin = top;
-    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0  - 27) / 23;
+    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
 }
 
 void CMonthSchceduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
@@ -906,8 +906,8 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
 
     fw = (ecol - bcol + 1) * ((m_width - m_leftMagin * 2) / 7.0) - 11;
     fh = 22;
-    int x = m_leftMagin + bcol * ((m_width - m_leftMagin * 2)  / 7.0) + 5;
-    int y = m_topMagin + (m_height - m_topMagin - m_buttommagin) / 6.0 * brow + 27 + (cnum - 1) * fh + 2.5;
+    int x = m_leftMagin + bcol * ((m_width - m_leftMagin * 2)  / 7.0 + 0.5) + 5;
+    int y = m_topMagin + ((m_height - m_topMagin - m_buttommagin) * brow / 6.0 + 0.5)  + 27 + (cnum - 1) * fh + 2.9;
     pos = QPoint(x, y);
 }
 

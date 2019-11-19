@@ -247,6 +247,7 @@ void CMonthView::resizeEvent(QResizeEvent *event)
     int leftmagin = 10;
     int rightmagin = leftmagin;
     int topmagin = height() * 0.0193 + 0.5;
+    topmagin = 10;
     int buttonmagin = topmagin;
     m_leftmaagin = leftmagin;
     m_topmagin = topmagin;
@@ -256,7 +257,8 @@ void CMonthView::resizeEvent(QResizeEvent *event)
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
         m_cellList.at(i)->update();
     }
-    m_MonthSchceduleView->setallsize(width(), height(), leftmagin, m_weekIndicator->height() + topmagin, topmagin);
+    m_MonthSchceduleView->setallsize(width(), height(), leftmagin, m_weekIndicator->height() + topmagin, buttonmagin);
+    // m_MonthSchceduleView->setallsize(width(), height(), leftmagin, height() - m_weekIndicator->height() - cellheight * 6, buttonmagin);
     m_MonthSchceduleView->updateData();
     DWidget::resizeEvent(event);
 }
