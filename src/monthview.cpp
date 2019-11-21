@@ -324,11 +324,12 @@ void CMonthView::setCurrentDate(const QDate date)
 
     // to refresh lunar calendar
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
-    if (flag)
-        slotSchceduleUpdate();
+
     emit currentDateChanged(date.year(), date.month());
     emit signalcurrentDateChanged(m_currentDate);
     m_weekIndicator->updateWeek();
+    if (flag)
+        slotSchceduleUpdate();
 }
 
 void CMonthView::setLunarVisible(bool visible)

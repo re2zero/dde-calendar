@@ -39,6 +39,7 @@ void CTimeEdit::setTime(QTime time)
 
 QTime CTimeEdit::getTime()
 {
+    m_timeEdit->lineEdit()->setInputMask("00:00;#");
     QString timetext = m_timeEdit->text();
 
     if (timetext.count() == 1) {
@@ -129,8 +130,9 @@ void CTimeEdit::showPopup()
     m_pListWidget->setFixedWidth(width());
     m_pos = m_timeEdit->lineEdit()->cursorPosition();
     m_verticalScroll->setFixedWidth(width());
+    m_timeEdit->lineEdit()->setInputMask("00:00;#");
     QString timetext = m_timeEdit->text();
-
+    m_timeEdit->lineEdit()->setInputMask("00:00;0");
     if (timetext.count() == 1) {
         timetext = "00:00";
     }
@@ -204,9 +206,10 @@ void CTimeEdit::slotcurrentValueChangedClose(int value)
 
 void CTimeEdit::slotEidtChange()
 {
+    m_timeEdit->lineEdit()->setInputMask("00:00;#");
     //QTime time = QTime(m_time.hour(), value);
     QTime time = QTime::fromString(m_timeEdit->text(), "hh:mm");
-
+    m_timeEdit->lineEdit()->setInputMask("00:00;0");
     QListWidgetItem *item = NULL;
     int iCount = m_pListWidget->count();
     for (int i = iCount - 1; i >= 1; i--) {
