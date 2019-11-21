@@ -180,7 +180,7 @@ void CDayWindow::initUI()
     leftLayout->setSpacing(0);
     m_scheduleView = new CScheduleView(this, 1);
     //leftLayout->setContentsMargins(12, 0, 10, 12);
-    m_scheduleView->setviewMagin(72, 109, 0, 0);
+    m_scheduleView->setviewMagin(72, 109, 20, 0);
     m_scheduleView->setRange(423, 1032, QDate(2019, 8, 12), QDate(2019, 8, 12));
     //m_scheduleView->setFixedSize(513, 450);
     leftLayout->addLayout(titleLayout);
@@ -288,7 +288,7 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
         m_mainLayout->setContentsMargins(10, 10, 10, 10);
     }
     m_daymonthView->setFixedSize(dw, dh);
-    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
+    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 20, 0);
     //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
 }

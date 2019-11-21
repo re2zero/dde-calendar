@@ -53,6 +53,7 @@ void CScheduleView::setviewMagin( int left, int top, int right, int bttom )
 {
     m_leftMagin = left;
     m_topMagin = top;
+    m_rightmagin = right;
     m_graphicsView->setMargins(left, top, right, bttom);
 }
 
@@ -359,9 +360,9 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
         m_alldaylist->move(m_leftMagin - 2, 5);
     } else {
-        m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.083 * height() + 0.5), m_beginDate, m_endDate);
-        m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
-        m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
+        m_graphicsView->setRange(width() - m_leftMagin - m_rightmagin, 24 * (0.083 * height() + 0.5), m_beginDate, m_endDate);
+        m_alldaylist->setFixedSize(width() - m_leftMagin - m_rightmagin, m_topMagin - 10);
+        m_alldaylist->setRange(width() - m_leftMagin - m_rightmagin, 22, m_beginDate, m_endDate);
         m_alldaylist->move(m_leftMagin - 2, 5);
     }
     update();

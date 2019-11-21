@@ -83,6 +83,7 @@ private:
     QVector<ScheduleDateRangeInfo> m_vListSchedule;
     int                       m_leftMagin;
     int                       m_topMagin;
+    int                       m_rightmagin = 0;
     int                       m_TotalDay;
     QDate                     m_currteDate;
     int                       m_firstWeekDay;
