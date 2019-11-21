@@ -115,29 +115,22 @@ void CDayMonthView::setTheMe(int type)
         nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
         //m_nextButton->setPalette(nextvpa);
 
-        DPalette pa = m_currentMouth->palette();
-        pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
-        m_currentMouth->setPalette(pa);
-        m_currentMouth->setForegroundRole(DPalette::WindowText);
-
-        DPalette daypa = m_currentDay->palette();
-        daypa.setColor(DPalette::WindowText, QColor("#2CA7F8"));
-        m_currentDay->setPalette(daypa);
-        m_currentDay->setForegroundRole(DPalette::WindowText);
+        m_currentMouth->setTextColor(QColor("#3B3B3B"));
+        //m_currentMouth->setBColor(tbcolor);
 
 
-        DPalette wpa = m_currentWeek->palette();
-        wpa.setColor(DPalette::WindowText, QColor("#414D68"));
-        m_currentWeek->setPalette(wpa);
-        m_currentWeek->setForegroundRole(DPalette::WindowText);
+        m_currentDay->setTextColor(QColor("#2CA7F8"));
+        //m_currentDay->setBColor(tbcolor);
 
-        m_currentYear->setPalette(wpa);
-        m_currentYear->setForegroundRole(DPalette::WindowText);
+        m_currentWeek->setTextColor(QColor("#414D68"));
+        //m_currentWeek->setBColor(tbcolor);
 
-        DPalette hpa = m_currentLuna->palette();
-        hpa.setColor(DPalette::WindowText, QColor("#414D68"));
-        m_currentLuna->setPalette(hpa);
-        m_currentLuna->setForegroundRole(DPalette::WindowText);
+        m_currentLuna->setTextColor(QColor("#414D68"));
+        //m_currentLuna->setBColor(tbcolor);
+
+        m_currentYear->setTextColor(QColor("#414D68"));
+        //m_currentYear->setBColor(tbcolor);
+
 
         QFont hlabelF;
         hlabelF.setFamily("PingFangSC-Semibold");
@@ -195,26 +188,24 @@ void CDayMonthView::setTheMe(int type)
         nextvpa.setColor(DPalette::Light, QColor("#414141"));
         //m_nextButton->setPalette(nextvpa);
 
-        DPalette pa = m_currentMouth->palette();
-        pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-        m_currentMouth->setPalette(pa);
-        m_currentMouth->setForegroundRole(DPalette::WindowText);
 
-        DPalette daypa = m_currentDay->palette();
-        daypa.setColor(DPalette::WindowText, QColor("#0081FF"));
-        m_currentDay->setPalette(daypa);
-        m_currentDay->setForegroundRole(DPalette::WindowText);
 
-        DPalette wpa = m_currentWeek->palette();
-        wpa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-        m_currentWeek->setPalette(wpa);
-        m_currentWeek->setForegroundRole(DPalette::WindowText);
-        m_currentYear->setPalette(wpa);
-        m_currentYear->setForegroundRole(DPalette::WindowText);
-        DPalette hpa = m_currentLuna->palette();
-        hpa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-        m_currentLuna->setPalette(hpa);
-        m_currentLuna->setForegroundRole(DPalette::WindowText);
+        m_currentMouth->setTextColor(QColor("#C0C6D4"));
+        //m_currentMouth->setBColor(tbcolor);
+
+
+        m_currentDay->setTextColor(QColor("#0081FF"));
+        //m_currentDay->setBColor(tbcolor);
+
+        m_currentWeek->setTextColor(QColor("#C0C6D4"));
+        //m_currentWeek->setBColor(tbcolor);
+
+        m_currentLuna->setTextColor(QColor("#C0C6D4"));
+        //m_currentLuna->setBColor(tbcolor);
+
+        m_currentYear->setTextColor(QColor("#C0C6D4"));
+        //m_currentYear->setBColor(tbcolor);
+
         QFont hlabelF;
         hlabelF.setFamily("PingFangSC-Semibold");
         hlabelF.setPixelSize(14);
@@ -353,17 +344,14 @@ void CDayMonthView::initUI()
     titleLayout->setSpacing(0);
     titleLayout->setContentsMargins(0, 0, 0, 3);
     //add separator line
-    m_currentMouth = new DLabel(this);
+    m_currentMouth = new CustomFrame(this);
     m_currentMouth->setFixedSize(74, DDEDayCalendar::D_MLableHeight);
     QFont mlabelF;
     mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(24);
-    DPalette pa = m_currentMouth->palette();
-    pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
-    m_currentMouth->setPalette(pa);
-    m_currentMouth->setFont(mlabelF);
-    m_currentMouth->setAlignment(Qt::AlignCenter);
+    m_currentMouth->setTextFont(mlabelF);
+    m_currentMouth->setTextAlign(Qt::AlignCenter);
     titleLayout->addWidget(m_prevButton);
     titleLayout->addWidget(m_currentMouth);
     titleLayout->addWidget(m_nextButton);
@@ -397,49 +385,40 @@ void CDayMonthView::initUI()
     midLayout->setMargin(0);
     midLayout->setSpacing(0);
     midLayout->setContentsMargins(0, 0, 0, 20);
-    m_currentDay = new DLabel(this);
+    m_currentDay = new CustomFrame(this);
     m_currentDay->setFixedHeight(DDEDayCalendar::DDLableHeight);
-    m_currentDay->setAlignment(Qt::AlignCenter);
+    m_currentDay->setMinimumWidth(width());
+    m_currentDay->setTextAlign(Qt::AlignCenter);
     QFont daylabelF;
     daylabelF.setFamily("DINAlternate");
     daylabelF.setWeight(QFont::Bold);
     daylabelF.setPixelSize(100);
-    DPalette daypa = m_currentDay->palette();
-    daypa.setColor(DPalette::WindowText, QColor("#2CA7F8"));
-    m_currentDay->setPalette(daypa);
-    m_currentDay->setFont(daylabelF);
+    m_currentDay->setTextFont(daylabelF);
     midLayout->addWidget(m_currentDay);
 
 
-    m_currentWeek = new DLabel(this);
+    m_currentWeek = new CustomFrame(this);
     m_currentWeek->setFixedHeight(DDEDayCalendar::DWLableHeight);
-    m_currentWeek->setAlignment(Qt::AlignCenter);
+    m_currentWeek->setTextAlign(Qt::AlignCenter);
     QFont wlabelF;
     wlabelF.setFamily("PingFangSC-Semibold");
     wlabelF.setPixelSize(16);
-    DPalette wpa = m_currentWeek->palette();
-    wpa.setColor(DPalette::WindowText, QColor("#414D68"));
-    m_currentWeek->setPalette(wpa);
-    m_currentWeek->setFont(wlabelF);
+    m_currentWeek->setTextFont(wlabelF);
     midLayout->addWidget(m_currentWeek);
 
-    m_currentYear = new DLabel(this);
+    m_currentYear = new CustomFrame(this);
     m_currentYear->setFixedHeight(DDEDayCalendar::DWLableHeight);
-    m_currentYear->setAlignment(Qt::AlignCenter);
-    m_currentYear->setFont(wlabelF);
-    m_currentYear->setPalette(wpa);
+    m_currentYear->setTextAlign(Qt::AlignCenter);
+    m_currentYear->setTextFont(wlabelF);
     midLayout->addWidget(m_currentYear);
 
-    m_currentLuna = new DLabel(this);
+    m_currentLuna = new CustomFrame(this);
     m_currentLuna->setFixedHeight(DDEDayCalendar::DHualiInfoLableHeight);
-    m_currentLuna->setAlignment(Qt::AlignCenter);
+    m_currentLuna->setTextAlign(Qt::AlignCenter);
     QFont hlabelF;
     hlabelF.setFamily("PingFangSC-Semibold");
     hlabelF.setPixelSize(12);
-    DPalette hpa = m_currentLuna->palette();
-    hpa.setColor(DPalette::WindowText, QColor("#414D68"));
-    m_currentLuna->setPalette(hpa);
-    m_currentLuna->setFont(hlabelF);
+    m_currentLuna->setTextFont(hlabelF);
     midLayout->addWidget(m_currentLuna);
 
 
@@ -507,19 +486,19 @@ void CDayMonthView::updateDateShow()
 {
     QLocale locale;
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
-    m_currentMouth->setText(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
+    m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
     // m_currentMouth->setText(QString::number(m_currentDate.month()) + tr("mon"));
-    m_currentDay->setText(QString::number(m_currentDate.day()));
+    m_currentDay->setTextStr(QString::number(m_currentDate.day()));
     if (m_currentDate.dayOfWeek() > 0)
-        m_currentWeek->setText(m_weeklist.at(m_currentDate.dayOfWeek() - 1));
-    m_currentYear->setText(m_currentDate.toString("yyyy/M"));
+        m_currentWeek->setTextStr(m_weeklist.at(m_currentDate.dayOfWeek() - 1));
+    m_currentYear->setTextStr(m_currentDate.toString("yyyy/M"));
 }
 
 void CDayMonthView::updateDateLunarDay()
 {
     if (!m_huanglistate) return;
     CaHuangLiDayInfo info = getCaHuangLiDayInfo(getDateIndex(m_currentDate));
-    m_currentLuna->setText(info.mGanZhiYear + tr("Y ") + tr("【") + info.mZodiac + tr("Y】") + info.mGanZhiMonth + tr("M ") + info.mGanZhiDay + tr("D "));
+    m_currentLuna->setTextStr(info.mGanZhiYear + tr("Y ") + tr("【") + info.mZodiac + tr("Y】") + info.mGanZhiMonth + tr("M ") + info.mGanZhiDay + tr("D "));
     QStringList yilist = info.mSuit.split(".", QString::SkipEmptyParts);
     QStringList jilist = info.mAvoid.split(".", QString::SkipEmptyParts);
     m_yiLabel->setHuangLiText(yilist);

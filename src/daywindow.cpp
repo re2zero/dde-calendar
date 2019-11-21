@@ -186,8 +186,8 @@ void CDayWindow::initUI()
     leftLayout->addLayout(titleLayout);
     leftLayout->addWidget(m_scheduleView);
 
-
-
+    m_verline = new DVerticalLine;
+    m_verline->setFixedWidth(2);
 
     m_daymonthView = new CDayMonthView(this);
 
@@ -196,6 +196,8 @@ void CDayWindow::initUI()
     lfetmainLayout->setSpacing(1);
     lfetmainLayout->setContentsMargins(0, 0, 0, 0);
     lfetmainLayout->addLayout(leftLayout);
+    lfetmainLayout->addWidget(m_verline);
+
     lfetmainLayout->addWidget(m_daymonthView);
     m_leftground = new DFrame();
     m_leftground->setContentsMargins(0, 0, 0, 0);

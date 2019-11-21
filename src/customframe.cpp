@@ -1,6 +1,7 @@
 #include "customframe.h"
 #include <QPainter>
 #include <DPalette>
+#include <QFontMetrics>
 DGUI_USE_NAMESPACE
 CustomFrame::CustomFrame(QWidget *parent): QFrame (parent)
 {
@@ -15,6 +16,7 @@ CustomFrame::CustomFrame(QWidget *parent): QFrame (parent)
 void CustomFrame::setBColor(QColor normalC)
 {
     m_bnormalColor = normalC;
+    m_bflag = true;
     update();
 }
 
@@ -37,6 +39,11 @@ void CustomFrame::setTextStr(QFont font, QColor tc, QString strc, int flag)
 void CustomFrame::setTextStr(QString strc)
 {
     m_text = strc;
+    if (!m_fixsizeflag) {
+        QFontMetrics fm(m_font);
+        int w = fm.width(m_text);
+        setMinimumWidth(w);
+    }
     update();
 }
 
@@ -61,6 +68,12 @@ void CustomFrame::setRadius(int radius)
     m_radius = radius;
 }
 
+void CustomFrame::setFixedSize(int w, int h)
+{
+    m_fixsizeflag = true;
+    QFrame::setFixedSize(w, h);
+}
+
 void CustomFrame::paintEvent(QPaintEvent *e)
 {
     int labelwidth = width();
@@ -68,46 +81,49 @@ void CustomFrame::paintEvent(QPaintEvent *e)
 
     QPainter painter(this);
     QRect fillRect = QRect(0, 0, labelwidth, labelheight);
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    painter.setBrush(QBrush(m_bnormalColor));
-    painter.setPen(Qt::NoPen);
-    QPainterPath painterPath;
-    painterPath.moveTo(m_radius, 0);
-    if (m_lstate) {
-        painterPath.arcTo(QRect(0, 0, m_radius * 2, m_radius * 2), 90, 90);
-    } else {
-        painterPath.lineTo(0, 0);
-        painterPath.lineTo(0, m_radius);
-    }
-    painterPath.lineTo(0, labelheight - m_radius);
-    if (m_bstate) {
-        painterPath.arcTo(QRect(0, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
-    } else {
-        painterPath.lineTo(0, labelheight);
-        painterPath.lineTo(m_radius, labelheight);
-    }
-    painterPath.lineTo(labelwidth - m_radius, labelheight);
-    if (m_rstate) {
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
-    } else {
-        painterPath.lineTo(labelwidth, labelheight);
-        painterPath.lineTo(labelwidth, labelheight - m_radius);
-    }
-    painterPath.lineTo(labelwidth, m_radius);
-    //painterPath.moveTo(labelwidth, m_radius);
-    if (m_tstate) {
+    if (m_bflag) {
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        painter.setBrush(QBrush(m_bnormalColor));
+        painter.setPen(Qt::NoPen);
+        QPainterPath painterPath;
+        painterPath.moveTo(m_radius, 0);
+        if (m_lstate) {
+            painterPath.arcTo(QRect(0, 0, m_radius * 2, m_radius * 2), 90, 90);
+        } else {
+            painterPath.lineTo(0, 0);
+            painterPath.lineTo(0, m_radius);
+        }
+        painterPath.lineTo(0, labelheight - m_radius);
+        if (m_bstate) {
+            painterPath.arcTo(QRect(0, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
+        } else {
+            painterPath.lineTo(0, labelheight);
+            painterPath.lineTo(m_radius, labelheight);
+        }
+        painterPath.lineTo(labelwidth - m_radius, labelheight);
+        if (m_rstate) {
+            painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+        } else {
+            painterPath.lineTo(labelwidth, labelheight);
+            painterPath.lineTo(labelwidth, labelheight - m_radius);
+        }
+        painterPath.lineTo(labelwidth, m_radius);
+        //painterPath.moveTo(labelwidth, m_radius);
+        if (m_tstate) {
 
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
+            painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
 
-    } else {
-        painterPath.lineTo(labelwidth, 0);
-        painterPath.lineTo(labelwidth - m_radius, 0);
+        } else {
+            painterPath.lineTo(labelwidth, 0);
+            painterPath.lineTo(labelwidth - m_radius, 0);
+        }
+        painterPath.lineTo(m_radius, 0);
+        painterPath.closeSubpath();
+        painter.drawPath(painterPath);
+        painter.restore();
     }
-    painterPath.lineTo(m_radius, 0);
-    painterPath.closeSubpath();
-    painter.drawPath(painterPath);
-    painter.restore();
+
 
     if (!m_text.isEmpty()) {
         painter.save();

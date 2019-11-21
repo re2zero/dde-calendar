@@ -20,12 +20,15 @@ public:
     {
         return  m_text;
     }
+    void setFixedSize(int w, int h);
 protected:
     void paintEvent ( QPaintEvent *e);
 private:
     QColor                   m_bnormalColor = "#FFFFFF";
     QColor                   m_tnormalColor = "#000000";
     QFont                    m_font;
+    bool                     m_bflag = false;
+    bool                     m_fixsizeflag = false;
     int                      m_textflag = Qt::AlignCenter;//对齐方式
     QString                  m_text;
     int                      m_radius = 8;

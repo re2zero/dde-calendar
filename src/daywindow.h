@@ -68,6 +68,7 @@ private:
     CDayMonthView     *m_daymonthView;
     DFrame *m_contentBackground = nullptr;
     DFrame *m_leftground = nullptr;
+    DVerticalLine *m_verline;
     QDate              m_currentdate;
     DLabel            *m_YearLabel;
     DLabel            *m_LunarLabel;

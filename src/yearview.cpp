@@ -47,7 +47,7 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     m_currentMouth->setFixedHeight(24);
     m_currentMouth->setTextStr("11");
     m_currentMouth->setContentsMargins(0, 0, 0, 0);
-    m_currentMouth->setMinimumWidth(100);
+    //m_currentMouth->setMinimumWidth(100);
     m_currentMouth->setTextAlign(Qt::AlignLeft);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 

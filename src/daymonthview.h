@@ -26,12 +26,12 @@
 #include <QSignalMapper>
 #include <DImageButton>
 #include <DPushButton>
-#include <DLabel>
 #include "calendardbus.h"
 #include <DFrame>
 #include <DIconButton>
 #include <QGridLayout>
 #include <QVBoxLayout>
+#include "customframe.h"
 DWIDGET_USE_NAMESPACE
 class QLabel;
 class CDayHuangLiLabel;
@@ -98,11 +98,11 @@ private:
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
     CTodyButton       *m_today = nullptr;
-    DLabel *m_currentMouth;
-    DLabel *m_currentDay;
-    DLabel *m_currentYear;
-    DLabel *m_currentWeek;
-    DLabel *m_currentLuna;
+    CustomFrame *m_currentMouth;
+    CustomFrame *m_currentDay;
+    CustomFrame *m_currentYear;
+    CustomFrame *m_currentWeek;
+    CustomFrame *m_currentLuna;
     CDayHuangLiLabel *m_yiLabel;
     CDayHuangLiLabel *m_jiLabel;
     QList<QWidget *> m_cellList;
