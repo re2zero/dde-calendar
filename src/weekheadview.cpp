@@ -662,5 +662,5 @@ void CWeekHeadView::resizeEvent(QResizeEvent *event)
     }
     m_cellList.at(0)->setFixedSize(interval, h);
     m_cellList.at(6)->setFixedSize(interval, h);
-    DWidget::resizeEvent(event);
+    DFrame::resizeEvent(event);
 }
