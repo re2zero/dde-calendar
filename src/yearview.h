@@ -10,6 +10,7 @@
 #include <QSignalMapper>
 #include "calendardbus.h"
 #include <DFrame>
+#include "customframe.h"
 DWIDGET_USE_NAMESPACE
 class CalendarDBus;
 class CaLunarDayInfo;
@@ -72,7 +73,7 @@ private slots:
 protected:
     void resizeEvent(QResizeEvent *event);
 private:
-    DLabel *m_currentMouth;
+    CustomFrame *m_currentMouth;
     QList<QWidget *> m_cellList;
     QDate m_days[42];
     QDate m_currentDate;

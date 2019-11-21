@@ -43,17 +43,21 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     //setStyleSheet("QWidget { background: rgba(0, 0, 0, 0) }");
 
     //add separator line
-    m_currentMouth = new DLabel();
+    m_currentMouth = new CustomFrame();
     m_currentMouth->setFixedHeight(24);
+    m_currentMouth->setTextStr("11");
+    m_currentMouth->setContentsMargins(0, 0, 0, 0);
+    m_currentMouth->setMinimumWidth(100);
+    m_currentMouth->setTextAlign(Qt::AlignLeft);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     m_momthFont.setFamily("SourceHanSansSC");
     m_momthFont.setWeight(QFont::Medium);
     m_momthFont.setPixelSize(16);
-    m_currentMouth->setFont(m_momthFont);
-    DPalette Lunadpa = m_currentMouth->palette();
-    Lunadpa.setColor(DPalette::WindowText, QColor("#CF0059"));
-    m_currentMouth->setPalette(Lunadpa);
+    m_currentMouth->setTextFont(m_momthFont);
+    //DPalette Lunadpa = m_currentMouth->palette();
+    //Lunadpa.setColor(DPalette::WindowText, QColor("#CF0059"));
+    //m_currentMouth->setPalette(Lunadpa);
     QHBoxLayout *separatorLineLayout = new QHBoxLayout;
     separatorLineLayout->setMargin(0);
     separatorLineLayout->setSpacing(0);
@@ -64,7 +68,9 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     // QSpacerItem *t_spaceitem = new QSpacerItem(30, 32, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //separatorLineLayout->addSpacerItem(t_spaceitem);
 
+    m_currentMouth->show();
     m_currentMouth->installEventFilter(this);
+
     // cells grid
     m_gridLayout = new QGridLayout;
     m_gridLayout->setMargin(0);
@@ -146,10 +152,8 @@ void CYearView::setTheMe(int type)
         m_gridWidget->setPalette(anipa);
         m_gridWidget->setBackgroundRole(DPalette::Background);
 
-        DPalette Lunadpa = m_currentMouth->palette();
-        Lunadpa.setColor(DPalette::WindowText, QColor("#CF0059"));
-        m_currentMouth->setPalette(Lunadpa);
-        m_currentMouth->setForegroundRole(DPalette::WindowText);
+        m_currentMouth->setTextColor( QColor("#CF0059"));
+        m_currentMouth->setBColor(Qt::white);
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0081FF";
@@ -176,10 +180,8 @@ void CYearView::setTheMe(int type)
         setPalette(bpa);
         setBackgroundRole(DPalette::Background);
 
-        DPalette Lunadpa = m_currentMouth->palette();
-        Lunadpa.setColor(DPalette::WindowText, QColor("#BF1D63"));
-        m_currentMouth->setPalette(Lunadpa);
-        m_currentMouth->setForegroundRole(DPalette::WindowText);
+        m_currentMouth->setTextColor( QColor("#BF1D63"));
+        m_currentMouth->setBColor(framecolor);
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0059D2";
@@ -205,7 +207,7 @@ void CYearView::setCurrentDate(const QDate date, int type)
     m_currentDate = date;
     QLocale locale;
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
-    m_currentMouth->setText(locale.monthName(date.month(), QLocale::ShortFormat));
+    m_currentMouth->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
     //m_currentMouth->setText(QString::number(date.month()) + tr("Mon"));
     updateDate();
     if (type == 1)
@@ -251,7 +253,7 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             emit signalselectMonth(m_currentDate);
         }
     }
-    return false;
+    return DFrame::eventFilter(o,  e);
 }
 
 void CYearView::updateDate()
