@@ -49,6 +49,7 @@ private:
     QList<QWidget *> m_cellList;
     QDate m_selectDate;
     QDate m_days[12];
+    char  m_roundangle[12];
     bool m_cellSelectable = true;
     int m_selectedCell = 0;
     QFont m_dayNumFont;
@@ -63,6 +64,7 @@ private:
     int m_fixwidth = 200;
     int m_realwidth = 100;
     bool m_searchfalg = false;
+    int                      m_radius = 8;
 };
 
 #endif // MONTDAYVIEW_H

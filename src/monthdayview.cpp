@@ -184,13 +184,52 @@ void CMonthDayView::paintCell(QWidget *cell)
 
 
     QPainter painter(cell);
-    painter.save();
 
-    painter.setRenderHints(QPainter::HighQualityAntialiasing);
-    painter.setBrush(QBrush(m_fillColor));
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(rect);//画矩形
-    painter.restore();
+    int labelwidth = cell->width();
+    int labelheight = cell->height();
+    if (1) {
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        painter.setBrush(QBrush(m_fillColor));
+        painter.setPen(Qt::NoPen);
+        QPainterPath painterPath;
+        painterPath.moveTo(m_radius, 0);
+        if (m_roundangle[pos] == -1) {
+            painterPath.arcTo(QRect(0, 0, m_radius * 2, m_radius * 2), 90, 90);
+        } else {
+            painterPath.lineTo(0, 0);
+            painterPath.lineTo(0, m_radius);
+        }
+        painterPath.lineTo(0, labelheight - m_radius);
+        if (m_roundangle[pos] == -1) {
+            painterPath.arcTo(QRect(0, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
+        } else {
+            painterPath.lineTo(0, labelheight);
+            painterPath.lineTo(m_radius, labelheight);
+        }
+        painterPath.lineTo(labelwidth - m_radius, labelheight);
+        if (m_roundangle[pos] == 1) {
+            painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+        } else {
+            painterPath.lineTo(labelwidth, labelheight);
+            painterPath.lineTo(labelwidth, labelheight - m_radius);
+        }
+        painterPath.lineTo(labelwidth, m_radius);
+        //painterPath.moveTo(labelwidth, m_radius);
+        if (m_roundangle[pos] == 1) {
+
+            painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
+
+        } else {
+            painterPath.lineTo(labelwidth, 0);
+            painterPath.lineTo(labelwidth - m_radius, 0);
+        }
+        painterPath.lineTo(m_radius, 0);
+        painterPath.closeSubpath();
+        painter.drawPath(painterPath);
+        painter.restore();
+    }
+
     painter.setPen(Qt::SolidLine);
 
     const QString dayNum = QString::number(m_days[pos].month());
@@ -305,13 +344,14 @@ void CMonthDayView::resizeEvent(QResizeEvent *event)
         }
     }
 #endif
-    int w = width() / 10;
+    int w = width() / 12;
     int h = height();
 
     int ww = 36;
     if (w >= ww) {
         for (int c = 0; c != 12; ++c) {
             m_cellList[c]->setFixedSize(w, h);
+            m_roundangle[c] = 0;
             //m_cellList[c]->setVisible(true);
             m_cellList[c]->update();
         }
@@ -319,10 +359,13 @@ void CMonthDayView::resizeEvent(QResizeEvent *event)
             m_cellList[i]->setVisible(true);
             m_cellList[i]->update();
         }
+        m_roundangle[0] = -1;
+        m_roundangle[11] = 1;
     } else {
         for (int c = 0; c != 12; ++c) {
             m_cellList[c]->setFixedSize(ww, h);
             //m_cellList[c]->setVisible(true);
+            m_roundangle[c] = 0;
             m_cellList[c]->update();
         }
         int t_num = qRound((ww * 12 - width() ) / ww / 2.0);
@@ -337,6 +380,8 @@ void CMonthDayView::resizeEvent(QResizeEvent *event)
             m_cellList[i]->setVisible(vindex[i]);
             m_cellList[i]->update();
         }
+        m_roundangle[t_num] = -1;
+        m_roundangle[11 - t_num] = 1;
     }
 }
 
