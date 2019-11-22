@@ -47,7 +47,9 @@ void CScheduleDataManage::setTheMe(int type)
         CSchedulesColor workC;
         workC.type = 1;
         workC.gradientFromC = "#FBCEB7";
+        workC.gradientFromC.setAlphaF(0.8);
         workC.gradientToC = "#FA9D9A";
+        workC.gradientToC.setAlphaF(0.8);
         workC.Purecolor = "#F85566";
         workC.Purecolor.setAlphaF(0.2);
         workC.shadowcolor = "#FB2525";
@@ -70,7 +72,9 @@ void CScheduleDataManage::setTheMe(int type)
         CSchedulesColor lifeC;
         lifeC.type = 2;
         lifeC.gradientFromC = "#B7E6FB";
+        lifeC.gradientFromC.setAlphaF(0.8);
         lifeC.gradientToC = "#D4FFB3";
+        lifeC.gradientToC.setAlphaF(0.8);
         lifeC.Purecolor = "#6FFF00";
         lifeC.Purecolor.setAlphaF(0.2);
         lifeC.shadowcolor = "#82D245";
@@ -92,7 +96,9 @@ void CScheduleDataManage::setTheMe(int type)
         CSchedulesColor otherC;
         otherC.type = 3;
         otherC.gradientFromC = "#FBE9B7";
+        otherC.gradientFromC.setAlphaF(0.8);
         otherC.gradientToC = "#DFB3FF";
+        otherC.gradientToC.setAlphaF(0.8);
         otherC.Purecolor = "#D191FF";
         otherC.Purecolor.setAlphaF(0.2);
         otherC.shadowcolor = "#BA60FA";
