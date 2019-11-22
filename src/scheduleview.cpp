@@ -265,7 +265,8 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QFont font;
-    font.setFamily("SourceHanSansSC-Normal");
+    font.setFamily("SourceHanSansSC");
+    font.setWeight(QFont::Normal);
     font.setPixelSize(11);
 
     if (m_cuttrnttimetype == 0) {

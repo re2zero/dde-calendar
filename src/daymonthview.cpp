@@ -161,8 +161,8 @@ void CDayMonthView::setTheMe(int type)
 
     } else if (type == 2) {
         DPalette anipa = this->palette();
-        QColor tbcolor = "#FFFFFF";
-        tbcolor.setAlphaF(0.05);
+        QColor tbcolor = "#282828";
+        //tbcolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, tbcolor);
         setPalette(anipa);
         setBackgroundRole(DPalette::Background);
@@ -231,6 +231,7 @@ void CDayMonthView::setTheMe(int type)
         m_selectedTextColor = "#B8D3FF";
         m_festivalTextColor = Qt::black;
         m_notCurrentTextColor = "#C0C6D4";
+        m_notCurrentTextColor.setAlphaF(0.5);
     }
 
     for (int i(0); i != 42; ++i) {
@@ -391,7 +392,7 @@ void CDayMonthView::initUI()
     m_currentDay->setTextAlign(Qt::AlignCenter);
     QFont daylabelF;
     daylabelF.setFamily("DINAlternate");
-    daylabelF.setWeight(QFont::Bold);
+    daylabelF.setWeight(QFont::Medium);
     daylabelF.setPixelSize(100);
     m_currentDay->setTextFont(daylabelF);
     midLayout->addWidget(m_currentDay);

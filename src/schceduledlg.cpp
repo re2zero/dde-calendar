@@ -35,6 +35,7 @@
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
+    setContentsMargins(0, 0, 0, 0);
     m_type = type;
     initUI();
     initConnection();
@@ -495,7 +496,7 @@ void CSchceduleDlg::initUI()
     m_titleLabel = new QLabel(this);
     QFont titlelabelF;
     titlelabelF.setFamily("SourceHanSansSC");
-    titlelabelF.setWeight(QFont::Medium);
+    titlelabelF.setWeight(QFont::Bold);
     titlelabelF.setPixelSize(17);
     QColor btitleColor = "#000000";
     btitleColor.setAlphaF(0.01);
@@ -530,6 +531,8 @@ void CSchceduleDlg::initUI()
     // pa.setColor(DPalette::WindowText, QColor("#414D68"));
 
     QVBoxLayout *maintlayout = new QVBoxLayout;
+    maintlayout->setMargin(0);
+    maintlayout->setSpacing(10);
     QHBoxLayout *typelayout  = new QHBoxLayout;
     typelayout->setSpacing(0);
     typelayout->setMargin(0);
@@ -719,6 +722,9 @@ void CSchceduleDlg::initUI()
     endrepeatLabellayout->addWidget(m_endrepeatCombox);
 
     QHBoxLayout *endrepeattimeslayout  = new QHBoxLayout;
+    endrepeattimeslayout->setSpacing(0);
+    endrepeattimeslayout->setMargin(0);
+    endrepeattimeslayout->setContentsMargins(10, 0, 0, 0);
     m_endrepeattimes = new DLineEdit(this);
     m_endrepeattimes->setFixedSize(71, 36);
     m_endrepeattimes->setText(QString::number(10));
@@ -729,6 +735,7 @@ void CSchceduleDlg::initUI()
     m_endrepeattimesLabel = new QLabel(tr("s"));
     m_endrepeattimesLabel->setFont(mlabelF);
     m_endrepeattimesLabel->setPalette(pa);
+    m_endrepeattimesLabel->setFixedHeight(36);
     endrepeattimeslayout->addWidget(m_endrepeattimes);
     endrepeattimeslayout->addWidget(m_endrepeattimesLabel);
     m_endrepeattimesWidget = new DWidget;
@@ -757,7 +764,7 @@ void CSchceduleDlg::initUI()
     maintlayout->addWidget(m_endrepeatWidget);
     m_endrepeatWidget->setVisible(false);
     QHBoxLayout *downlayout  = new QHBoxLayout;
-    downlayout->setContentsMargins(0, 20, 0, 0);
+    downlayout->setContentsMargins(0, 0, 0, 0);
     m_cancelBt = new DPushButton(tr("Cancel"));
     m_cancelBt->setFixedSize(189, 36);
     m_OkBt = new DPushButton(tr("OK"));
@@ -782,7 +789,7 @@ void CSchceduleDlg::initUI()
     m_gwi = new DFrame(this);
     m_gwi->setFrameShape(QFrame::NoFrame);
     maintlayout->addLayout(downlayout);
-    maintlayout->addStretch();
+    // maintlayout->addStretch();
     m_gwi->setLayout(maintlayout);
     //m_gwi->setGeometry(0, 68, 438, 412);
     DPalette anipa = m_gwi->palette();
