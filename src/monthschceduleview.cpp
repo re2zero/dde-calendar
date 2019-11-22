@@ -232,17 +232,20 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
     int labelwidth = width();
     int labelheight = height();
     float avge = 1;
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
+
     QPainter painter(this);
     if (m_GradientFlag) {
         QLinearGradient linearGradient(0, 0, labelwidth, 0);
-        QColor color1 = m_color1;
-        QColor color2 = m_color2;
-        QColor textcolor = m_textcolor;
-
+        QColor color1 = gdcolor.gradientFromC;
+        QColor color2 = gdcolor.gradientToC;
+        QColor textcolor = gdcolor.textColor;
         if (m_hoverflag) {
-            color1.setAlphaF(color1.alphaF() * 0.94);
-            color2.setAlphaF(color2.alphaF() * 0.94);
-            textcolor.setAlphaF(textcolor.alphaF() * 0.94);
+            color1 = gdcolor.hovergradientFromC;
+            color2 = gdcolor.hovergradientToC;
+        } else if (m_highflag) {
+            color1 = gdcolor.hightlightgradientFromC;
+            color2 = gdcolor.hightlightgradientToC;
         }
 
 
@@ -283,7 +286,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             painter.setRenderHints(QPainter::Antialiasing);
             QPen pen;
             QColor selcolor = m_transparentcolor;
-            selcolor.setAlphaF(0.2);
+            selcolor.setAlphaF(0.1);
             pen.setColor(selcolor);
             pen.setWidth(1);
             painter.setBrush(Qt::NoBrush);
@@ -293,7 +296,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         }
         if (m_selectflag) {
             QColor selcolor = m_transparentcolor;
-            selcolor.setAlphaF(0.2);
+            selcolor.setAlphaF(0.05);
             painter.setBrush(selcolor);
             painter.setPen(Qt::NoPen);
             painter.drawRoundedRect(fillRect, 8, 8);
@@ -345,14 +348,25 @@ void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
 {
-    m_selectflag = true;
-    update();
-    slotPress();
+    if (event->button() == Qt::LeftButton) {
+        m_selectflag = true;
+        update();
+        slotPress();
+    }
+}
+
+void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_selectflag = false;
+        m_highflag = true;
+        update();
+    }
 }
 
 void CMonthSchceduleWidgetItem::focusOutEvent(QFocusEvent *event)
 {
-    m_selectflag = false;
+    m_highflag = false;
     update();
 }
 

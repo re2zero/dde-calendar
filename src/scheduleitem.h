@@ -75,6 +75,7 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent ( QGraphicsSceneMouseEvent *event );
     void focusOutEvent ( QFocusEvent *event );
 private:
     /*****************************************************************************
@@ -99,6 +100,7 @@ private:
     int                              m_sMaxNum;
     bool                  m_selectflag = false;
     bool                  m_hoverflag = false;
+    bool                  m_highflag = false;
     QColor                m_transparentcolor;
 };
 

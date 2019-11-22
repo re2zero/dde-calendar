@@ -244,20 +244,23 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
     if (m_avgeflag) {
         avge = 0.5;
     }
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
+
     QRect drawrect = m_coorManage->getAllDayDrawRegion(m_ScheduleInfo.beginDateTime.date(), m_ScheduleInfo.endDateTime.date());
     QPainter painter(this);
     if (m_GradientFlag) {
 
         QLinearGradient linearGradient(0, 0, labelwidth, 0);
 
-        QColor color1 = m_color1;
-        QColor color2 = m_color2;
-        QColor textcolor = m_textcolor;
-
+        QColor color1 = gdcolor.gradientFromC;
+        QColor color2 = gdcolor.gradientToC;
+        QColor textcolor = gdcolor.textColor;
         if (m_hoverflag) {
-            color1.setAlphaF(color1.alphaF() * 0.94);
-            color2.setAlphaF(color2.alphaF() * 0.94);
-            textcolor.setAlphaF(textcolor.alphaF() * 0.94);
+            color1 = gdcolor.hovergradientFromC;
+            color2 = gdcolor.hovergradientToC;
+        } else if (m_highflag) {
+            color1 = gdcolor.hightlightgradientFromC;
+            color2 = gdcolor.hightlightgradientToC;
         }
 
         linearGradient.setColorAt(0, color1);
@@ -299,7 +302,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
             painter.setRenderHints(QPainter::Antialiasing);
             QPen pen;
             QColor selcolor = m_transparentcolor;
-            selcolor.setAlphaF(0.2);
+            selcolor.setAlphaF(0.1);
             pen.setColor(selcolor);
             pen.setWidth(1);
             painter.setBrush(Qt::NoBrush);
@@ -309,7 +312,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         }
         if (m_selectflag) {
             QColor selcolor = m_transparentcolor;
-            selcolor.setAlphaF(0.2);
+            selcolor.setAlphaF(0.05);
             painter.setBrush(selcolor);
             painter.setPen(Qt::NoPen);
             painter.drawRoundedRect(fillRect, 8, 8);
@@ -369,14 +372,25 @@ void CAllDaySchceduleWeekWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CAllDaySchceduleWeekWidgetItem::mousePressEvent(QMouseEvent *event)
 {
-    m_selectflag = true;
-    update();
-    emit signalsPress(this);
+    if (event->button() == Qt::LeftButton) {
+        m_selectflag = true;
+        update();
+        emit signalsPress(this);
+    }
+}
+
+void CAllDaySchceduleWeekWidgetItem::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_selectflag = false;
+        m_highflag = true;
+        update();
+    }
 }
 
 void CAllDaySchceduleWeekWidgetItem::focusOutEvent(QFocusEvent *event)
 {
-    m_selectflag = false;
+    m_highflag = false;
     update();
 }
 
@@ -589,7 +603,7 @@ CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QVector<Q
     gwi->setCoorManage(m_coorManage);
     QColor color1 = m_soloColor;
     color1.setAlphaF(0.3);
-
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(1);
     if (m_type == 0) {
         gwi->setColor(color1, color1, true);
         QFont font("PingFangSC-Light");
@@ -602,10 +616,10 @@ CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QVector<Q
         int w = width();
         if (average) {
             gwi->setFixedSize(width(), 22);
-            gwi->setText("#000000", font, QPoint(13, 2), average);
+            gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
         } else {
             gwi->setFixedSize(width(), 22);
-            gwi->setText("#000000", font, QPoint(13, 2), average);
+            gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
         }
     } else {
         gwi->setColor(color1, color1, true);
@@ -618,10 +632,10 @@ CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QVector<Q
         gwi->setData(vSolarInfo, date);
         if (average) {
             gwi->setFixedSize(width(), 22);
-            gwi->setText("#000000", font, QPoint(13, 2), average);
+            gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
         } else {
             gwi->setFixedSize(width(), 22);
-            gwi->setText("#000000", font, QPoint(13, 2), average);
+            gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
         }
     }
     return gwi;

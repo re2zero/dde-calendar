@@ -139,6 +139,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent (QMouseEvent *event );
     void focusOutEvent(QFocusEvent *event);
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
@@ -156,6 +157,7 @@ private:
     bool                  m_transparentf = false; //按下
     bool                  m_selectflag = false;
     bool                  m_hoverflag = false;
+    bool                  m_highflag = false;
     int                   m_editType = 0;
 };
 

@@ -32,6 +32,12 @@ struct CSchedulesColor {
     QColor shadowcolor;
     QColor textColor;
     QColor timeColor;
+    QColor hightlightgradientFromC;
+    QColor hightlightgradientToC;
+    QColor hightlightPurecolor;
+    QColor hovergradientFromC;
+    QColor hovergradientToC;
+    QColor hoverPurecolor;
 };
 
 class CSchedulesDBus;

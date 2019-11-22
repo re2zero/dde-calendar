@@ -54,6 +54,17 @@ void CScheduleDataManage::setTheMe(int type)
         workC.shadowcolor.setAlphaF(0.5);
         workC.textColor = "#000000";
         workC.timeColor = "#B54A4B";
+        workC.hightlightgradientFromC = "#FFD0B8";
+        workC.hightlightgradientToC = "#FF908D";
+        QColor workP("#F9AEB8");
+        //workP.setAlphaF(0.8);
+        workC.hightlightPurecolor = workP;
+
+        workC.hovergradientFromC = "#FFD0B8";
+        workC.hovergradientToC = "#FF9D9A";
+        QColor workhP("#FFB6BD");
+        workP.setAlphaF(0.8);
+        workC.hoverPurecolor = workhP;
         m_vScheduleColor.append(workC);
 
         CSchedulesColor lifeC;
@@ -65,6 +76,17 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.shadowcolor = "#82D245";
         lifeC.textColor = "#000000";
         lifeC.timeColor = "#53A316";
+        lifeC.hightlightgradientFromC = "#9AE5FF";
+        lifeC.hightlightgradientToC = "#C7FF94";
+        QColor lifeP("#C7FF94");
+        //lifeP.setAlphaF(0.8);
+        lifeC.hightlightPurecolor = lifeP;
+
+        lifeC.hovergradientFromC = "#A8E9FF";
+        lifeC.hovergradientToC = "#D5FFAF";
+        QColor lifehP("#C4FF98");
+        lifehP.setAlphaF(0.8);
+        lifeC.hoverPurecolor = lifehP;
         m_vScheduleColor.append(lifeC);
 
         CSchedulesColor otherC;
@@ -74,8 +96,19 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.Purecolor = "#D191FF";
         otherC.Purecolor.setAlphaF(0.2);
         otherC.shadowcolor = "#BA60FA";
-        workC.textColor = "#000000";
-        workC.timeColor = "#8548B1";
+        otherC.textColor = "#000000";
+        otherC.timeColor = "#8548B1";
+        otherC.hightlightgradientFromC = "#FFE8AC";
+        otherC.hightlightgradientToC = "#FBA5FF";
+        QColor otherP("#EAC4FF");
+        //otherP.setAlphaF(0.8);
+        otherC.hightlightPurecolor = otherP;
+
+        otherC.hovergradientFromC = "#FFE8AC";
+        otherC.hovergradientToC = "#E2A5FF";
+        QColor otherhP("#E6C5FF");
+        otherhP.setAlphaF(0.8);
+        otherC.hoverPurecolor = otherhP;
         m_vScheduleColor.append(otherC);
     } else if (type == 2) {
         CSchedulesColor workC;
@@ -84,11 +117,23 @@ void CScheduleDataManage::setTheMe(int type)
         workC.gradientToC = "#8B2521";
         workC.gradientToC.setAlphaF(0.9);
         workC.Purecolor = "#F85566";
-        workC.Purecolor.setAlphaF(0.2);
+        workC.Purecolor.setAlphaF(0.1);
         workC.shadowcolor = "#FB2525";
         workC.shadowcolor.setAlphaF(0.5);
         workC.textColor = "#C0C6D4";
         workC.timeColor = "#B54A4B";
+        workC.hightlightgradientToC = "#992D2A";
+        workC.hightlightgradientFromC = "#8B521F";
+        QColor workP("#77373E");
+        workP.setAlphaF(0.8);
+        workC.hightlightPurecolor = workP;
+
+        workC.hovergradientFromC = workC.gradientFromC;
+        workC.hovergradientToC = workC.gradientToC;
+        QColor workhP("#F85566");
+        workP.setAlphaF(0.2);
+        workC.hoverPurecolor = workhP;
+
         m_vScheduleColor.append(workC);
 
         CSchedulesColor lifeC;
@@ -96,11 +141,22 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.gradientFromC = "#2D6883";
         lifeC.gradientToC = "#5D7D44";
         lifeC.Purecolor = "#59F88D";
-        lifeC.Purecolor.setAlphaF(0.2);
+        lifeC.Purecolor.setAlphaF(0.1);
         lifeC.shadowcolor = "#25FA6B";
         lifeC.shadowcolor.setAlphaF(0.5);
-        workC.textColor = "#C0C6D4";
-        workC.timeColor = "#38A35B";
+        lifeC.textColor = "#C0C6D4";
+        lifeC.timeColor = "#38A35B";
+        lifeC.hightlightgradientFromC = "#2D6883";
+        lifeC.hightlightgradientToC = "#5D7D44";
+        QColor lifeP("#337044");
+        lifeP.setAlphaF(0.8);
+        lifeC.hightlightPurecolor = lifeP;
+
+        lifeC.hovergradientFromC = "#2D6883";
+        lifeC.hovergradientToC = "#5D7D44";
+        QColor lifehP("#59F88D");
+        lifehP.setAlphaF(0.2);
+        lifeC.hoverPurecolor = lifehP;
         m_vScheduleColor.append(lifeC);
 
         CSchedulesColor otherC;
@@ -108,11 +164,22 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.gradientFromC = "#8C4E2C";
         otherC.gradientToC = "#7D37AF";
         otherC.Purecolor = "#C155F8";
-        otherC.Purecolor.setAlphaF(0.2);
+        otherC.Purecolor.setAlphaF(0.1);
         otherC.shadowcolor = "#BE3DFF";
         otherC.shadowcolor.setAlphaF(0.5);
-        workC.textColor = "#C0C6D4";
-        workC.timeColor = "#9857C8";
+        otherC.textColor = "#C0C6D4";
+        otherC.timeColor = "#9857C8";
+        otherC.hightlightgradientFromC = "#8C4E2C";
+        otherC.hightlightgradientToC = "#803BAE";
+        QColor otherP("#613776");
+        otherP.setAlphaF(0.8);
+        otherC.hightlightPurecolor = otherP;
+
+        otherC.hovergradientFromC = "#8C4E2C";
+        otherC.hovergradientToC = "#7D37AF";
+        QColor otherhP("#C155F8");
+        otherhP.setAlphaF(0.2);
+        otherC.hoverPurecolor = otherhP;
         m_vScheduleColor.append(otherC);
     }
 }

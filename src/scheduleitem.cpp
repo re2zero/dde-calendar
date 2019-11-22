@@ -22,6 +22,7 @@
 #include "scheduledatamanage.h"
 #include <QFontMetricsF>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent, QGraphicsScene *scene, int type)
     : QGraphicsItem(parent), m_coorManage(coor), m_type(type)
 {
@@ -92,13 +93,24 @@ void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void CScheduleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_selectflag = true;
-    update();
+    if (event->button() == Qt::LeftButton) {
+        m_selectflag = true;
+        update();
+    }
+}
+
+void CScheduleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_selectflag = false;
+        m_highflag = true;
+        update();
+    }
 }
 
 void CScheduleItem::focusOutEvent(QFocusEvent *event)
 {
-    m_selectflag = false;
+    m_highflag = false;
     update();
 }
 
@@ -109,12 +121,25 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     QColor bcolor = gdcolor.Purecolor;
 
     if (m_hoverflag) {
-        bcolor.setAlphaF(0.3);
+        bcolor = gdcolor.hoverPurecolor;
+    } else if (m_highflag) {
+        bcolor = gdcolor.hightlightPurecolor;
     }
     painter->setBrush(bcolor);
     painter->setPen(Qt::NoPen);
     QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum, m_viewtype);
     painter->drawRect(rect);
+    if (m_hoverflag) {
+        painter->save();
+        QPen tpen;
+        QColor cc = "#FFFFFF";
+        cc.setAlphaF(0.08);
+        tpen.setColor(cc);
+        tpen.setWidth(1);
+        painter->setPen(tpen);
+        painter->drawRect(rect);
+        painter->restore();
+    }
     painter->save();
 
     QPen pen(gdcolor.shadowcolor);
@@ -184,7 +209,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     }
     if (m_selectflag) {
         QColor selcolor = m_transparentcolor;
-        selcolor.setAlphaF(0.2);
+        selcolor.setAlphaF(0.05);
         painter->setBrush(selcolor);
         painter->setPen(Qt::NoPen);
         painter->drawRect(rect);
