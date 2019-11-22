@@ -27,7 +27,10 @@
 #include <QWheelEvent>
 #include <DHiDPIHelper>
 #include <QtGlobal>
-CWeekView::CWeekView(QWidget *parent) : DFrame(parent)
+#include <DWidget>
+DWIDGET_USE_NAMESPACE
+
+CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
 {
     m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);
@@ -48,7 +51,6 @@ CWeekView::CWeekView(QWidget *parent) : DFrame(parent)
         m_cellList.append(cell);
     }
     setLayout(hboxLayout);
-    setFrameRounded(true);
     setMinimumWidth(150);
 }
 
@@ -331,6 +333,7 @@ void CWeekView::resizeEvent(QResizeEvent *event)
             m_cellList[i]->update();
         }
     }
+    QWidget::resizeEvent(event);
 #endif
 }
 void CWeekView::wheelEvent(QWheelEvent *event)

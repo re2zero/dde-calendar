@@ -21,7 +21,7 @@
 
 #include <QObject>
 #include <QWidget>
-#include <DLabel>
+#include <QLabel>
 #include <DDialog>
 #include <DPushButton>
 #include "schedulestructs.h"
@@ -47,12 +47,12 @@ private:
     void initConnection();
     void AutoFeed(QString text);
 private:
-    DLabel                           *m_schceduleLabel = nullptr;
-    DLabel                           *m_timeLabel = nullptr;
+    QLabel                           *m_schceduleLabel = nullptr;
+    QLabel                           *m_timeLabel = nullptr;
     DPushButton                      *m_editBt = nullptr;
     DPushButton                      *m_deleteBt = nullptr;
-    DLabel                           *m_icon;
-    DLabel                           *m_Title;
+    QLabel                           *m_icon;
+    QLabel                           *m_Title;
     ScheduleDtailInfo                     m_scheduleInfo;//日程
 
 };

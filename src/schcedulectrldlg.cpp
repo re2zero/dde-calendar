@@ -47,12 +47,12 @@ CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
 
 void CSchceduleCtrlDlg::initUI()
 {
-    m_icon = new DLabel(this);
+    m_icon = new QLabel(this);
     m_icon->setFixedSize(32, 32);
     m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
                       .scaled(m_icon->size() * devicePixelRatioF()));
     m_icon->move(10, 9);
-    m_Title = new DLabel(this);
+    m_Title = new QLabel(this);
     m_Title->setFixedHeight(48);
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
@@ -79,7 +79,7 @@ void CSchceduleCtrlDlg::initUI()
     m_mainBoxLayout->setSpacing(0);
     //m_mainBoxLayout->setContentsMargins(10, 28, 10, 10);
 
-    m_firstLabel = new DLabel(this);
+    m_firstLabel = new QLabel(this);
     m_firstLabel->setAlignment(Qt::AlignCenter);
     m_firstLabel->adjustSize();
     m_firstLabel->setWordWrap(true);
@@ -100,7 +100,7 @@ void CSchceduleCtrlDlg::initUI()
     m_mainBoxLayout->addWidget(m_firstLabel);
 
 
-    m_seconLabel = new DLabel(this);
+    m_seconLabel = new QLabel(this);
     //m_seconLabel->setFixedHeight(26);
     m_seconLabel->setAlignment(Qt::AlignCenter);
     QFont labelT;
@@ -121,6 +121,7 @@ void CSchceduleCtrlDlg::initUI()
     m_seconLabel->adjustSize();
     m_mainBoxLayout->addSpacing(3);
     m_mainBoxLayout->addWidget(m_seconLabel);
+    m_mainBoxLayout->addSpacing(10);
     m_btBoxLayout = new QHBoxLayout;
     m_btBoxLayout->setMargin(0);
     m_btBoxLayout->setSpacing(0);

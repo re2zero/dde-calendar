@@ -70,7 +70,7 @@ void CMySchceduleView::AutoFeed(QString text)
         }
     }
     m_schceduleLabel->setFixedHeight((row + 1) * 24);
-    setFixedHeight(row * 24 + 160);
+    setFixedHeight(row * 24 + 170);
     m_schceduleLabel->setText(strText);
     m_schceduleLabel->adjustSize();
 }
@@ -213,18 +213,18 @@ void CMySchceduleView::slotDeleteBt()
 
 void CMySchceduleView::initUI()
 {
-    m_icon = new DLabel(this);
+    m_icon = new QLabel(this);
     m_icon->setFixedSize(30, 30);
     m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
                       .scaled(m_icon->size() * devicePixelRatioF()));
     m_icon->move(11, 10);
-    m_Title = new DLabel(this);
+    m_Title = new QLabel(this);
     m_Title->setFixedSize(108, 51);
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
     QFont labelTitle;
     labelTitle.setFamily("SourceHanSansSC");
-    labelTitle.setWeight(QFont::Medium);
+    labelTitle.setWeight(QFont::Bold);
     labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
@@ -249,7 +249,7 @@ void CMySchceduleView::initUI()
     mainLayout->setSpacing(0);
     // mainLayout->setContentsMargins(10, 10, 10, 10);
 
-    m_schceduleLabel = new DLabel(this);
+    m_schceduleLabel = new QLabel(this);
     m_schceduleLabel->setFixedHeight(26);
     m_schceduleLabel->setAlignment(Qt::AlignCenter);
     QFont labelF;
@@ -268,7 +268,7 @@ void CMySchceduleView::initUI()
     mainLayout->addWidget(m_schceduleLabel);
 
 
-    m_timeLabel = new DLabel(this);
+    m_timeLabel = new QLabel(this);
     m_timeLabel->setFixedHeight(26);
     m_timeLabel->setAlignment(Qt::AlignCenter);
     QFont labelT;
@@ -318,6 +318,7 @@ void CMySchceduleView::initUI()
     hBtLayout->addWidget(btframe);
     hBtLayout->addSpacing(5);
     hBtLayout->addWidget(m_editBt);
+    mainLayout->addSpacing(20);
     mainLayout->addLayout(hBtLayout);
     DFrame *gwi = new DFrame(this);
     gwi->setContentsMargins(0, 0, 0, 0);

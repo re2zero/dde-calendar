@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QWidget>
 #include <DDialog>
-#include <DLabel>
+#include <QLabel>
 #include <QComboBox>
 #include <DTextEdit>
 #include <QDateEdit>
@@ -72,27 +72,27 @@ private:
     void initDateEdit();
     void initRmindRpeatUI();
 private:
-    DLabel                           *m_typeLabel = nullptr;
+    QLabel                           *m_typeLabel = nullptr;
     DComboBox                        *m_typeComBox = nullptr;
-    DLabel                           *m_contentLabel = nullptr;
+    QLabel                           *m_contentLabel = nullptr;
     DTextEdit                        *m_textEdit = nullptr;
-    DLabel                           *m_beginTimeLabel = nullptr;
+    QLabel                           *m_beginTimeLabel = nullptr;
     DDateEdit                        *m_beginDateEdit = nullptr;
     CTimeEdit                        *m_beginTimeEdit = nullptr;
-    DLabel                           *m_endTimeLabel = nullptr;
+    QLabel                           *m_endTimeLabel = nullptr;
     DDateEdit                        *m_endDateEdit = nullptr;
     CTimeEdit                        *m_endTimeEdit = nullptr;
 
-    DLabel                           *m_adllDayLabel = nullptr;
+    QLabel                           *m_adllDayLabel = nullptr;
     DCheckBox                        *m_allDayCheckbox = nullptr;
-    DLabel                           *m_remindSetLabel = nullptr;
+    QLabel                           *m_remindSetLabel = nullptr;
     DComboBox                        *m_rmindCombox = nullptr;
-    DLabel                           *m_beginrepeatLabel = nullptr;
+    QLabel                           *m_beginrepeatLabel = nullptr;
     DComboBox                        *m_beginrepeatCombox = nullptr;
-    DLabel                           *m_endrepeatLabel = nullptr;
+    QLabel                           *m_endrepeatLabel = nullptr;
     DComboBox                        *m_endrepeatCombox = nullptr;
     DLineEdit                        *m_endrepeattimes;
-    DLabel                           *m_endrepeattimesLabel = nullptr;
+    QLabel                           *m_endrepeattimesLabel = nullptr;
     DWidget                          *m_endrepeattimesWidget;
     DDateEdit                        *m_endRepeatDate = nullptr;
     DWidget                          *m_endrepeatWidget;
@@ -103,7 +103,7 @@ private:
     CCustomCalendarWidget            *m_bCustomDateW;
     CCustomCalendarWidget            *m_eCustomDateW;
     DFrame                           *m_gwi;
-    DLabel                           *m_titleLabel;
+    QLabel                           *m_titleLabel;
 private:
     ScheduleInfo                     m_scheduleInfo;//日程
     ScheduleDtailInfo                m_scheduleDtailInfo;

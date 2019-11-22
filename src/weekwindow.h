@@ -30,6 +30,7 @@
 #include "calendardbus.h"
 #include <DIconButton>
 #include <QHBoxLayout>
+#include "customframe.h"
 DWIDGET_USE_NAMESPACE
 
 class CWeekHeadView;
@@ -87,6 +88,7 @@ private:
     QLabel            *m_YearLunarLabel;
     QLabel            *m_weekLabel;
     CWeekView         *m_weekview = nullptr;
+    CustomFrame            *m_todayframe;
     CScheduleView     *m_scheduleView;
     QSpacerItem       *m_spaceitem;
     QVBoxLayout       *m_mainhLayout;

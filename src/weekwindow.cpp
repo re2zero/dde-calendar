@@ -172,9 +172,21 @@ void CWeekWindow::initUI()
 
     //yeartitleLayout->addItem(m_spaceitem);
     yeartitleLayout->addStretch();
-    yeartitleLayout->addWidget(m_prevButton, 0, Qt::AlignCenter);
-    yeartitleLayout->addWidget(m_weekview, 0, Qt::AlignCenter);
-    yeartitleLayout->addWidget(m_nextButton, 0, Qt::AlignCenter);
+    m_todayframe = new CustomFrame;
+    m_todayframe->setContentsMargins(0, 0, 0, 0);
+    m_todayframe->setRoundState(true, true, true, true);
+    m_todayframe->setBColor(Qt::white);
+    m_todayframe->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_todayframe->setboreder(1);
+    QHBoxLayout *todaylayout = new QHBoxLayout;
+    todaylayout->setMargin(0);
+    todaylayout->setSpacing(0);
+    todaylayout->addWidget(m_prevButton);
+    todaylayout->addWidget(m_weekview);
+    todaylayout->addWidget(m_nextButton);
+    m_todayframe->setLayout(todaylayout);
+
+    yeartitleLayout->addWidget(m_todayframe, 0, Qt::AlignCenter);
     yeartitleLayout->addSpacing(10);
     yeartitleLayout->addWidget(m_weekLabel, 0, Qt::AlignCenter);
     yeartitleLayout->addStretch();
@@ -268,7 +280,7 @@ void CWeekWindow::setTheMe(int type)
         nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
         nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
         //m_nextButton->setPalette(nextvpa);
-
+        m_todayframe->setBColor(Qt::white);
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(pa);
@@ -307,6 +319,9 @@ void CWeekWindow::setTheMe(int type)
         nextvpa.setColor(DPalette::Dark, QColor("#484848"));
         nextvpa.setColor(DPalette::Light, QColor("#414141"));
         //m_nextButton->setPalette(nextvpa);
+        QColor bcolor = "#FFFFFF";
+        bcolor.setAlphaF(0.05);
+        m_todayframe->setBColor(bcolor);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));

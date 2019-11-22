@@ -20,7 +20,7 @@
 #define CSCHCEDULECTRLDLG_H
 
 #include <QObject>
-#include <DLabel>
+#include <QLabel>
 #include <DDialog>
 #include <DPushButton>
 #include <QButtonGroup>
@@ -46,10 +46,10 @@ private:
 private slots:
     void buttonJudge(int id);
 private:
-    DLabel                           *m_firstLabel = nullptr;
-    DLabel                           *m_seconLabel = nullptr;
-    DLabel                           *m_icon;
-    DLabel                           *m_Title;
+    QLabel                           *m_firstLabel = nullptr;
+    QLabel                           *m_seconLabel = nullptr;
+    QLabel                           *m_icon;
+    QLabel                           *m_Title;
     int                              m_id = -1;
     QButtonGroup                     *m_Buttongroup;
     QVector<DPushButton *>            m_buttonlist;
