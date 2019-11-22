@@ -90,14 +90,17 @@ void CMonthView::setTheMe(int type)
         m_weekendsTextColor = m_defaultTextColor;
         m_selectedTextColor = "#B8D3FF";
         m_festivalTextColor = "#C0C6D4";
-        m_notCurrentTextColor = "#b2b2b2";
+        m_notCurrentTextColor = "#C0C6D4";
+        m_notCurrentTextColor.setAlphaF(0.6);
 
         m_defaultLunarColor = "#ABDAFF";
+        m_defaultLunarColor.setAlphaF(0.5);
         m_currentDayLunarColor = m_currentDayTextColor;
         m_weekendsLunarColor = m_defaultLunarColor;
         m_selectedLunarColor = Qt::white;
         m_festivalLunarColor = m_defaultLunarColor;
-        m_notCurrentLunarColor = "#dfdfdf";
+        m_notCurrentLunarColor = "#ABDAFF";
+        m_notCurrentLunarColor.setAlphaF(0.3);
         m_solofestivalLunarColor = "#4DFF7272";
         QColor wcolor = Qt::black;
         wcolor.setAlphaF(0.5);
@@ -140,7 +143,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_tooltipview->setFixedHeight(22);
     m_tooltipview->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     m_tooltipview->setAttribute(Qt::WA_TranslucentBackground);
-    m_dayNumFont.setFamily("Avenir-Light");
+    m_dayNumFont.setFamily("Avenir");
     m_dayNumFont.setPixelSize(24);
     m_dayNumFont.setWeight(QFont::Light);
 
