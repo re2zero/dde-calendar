@@ -798,8 +798,8 @@ void CGraphicsView::scrollBarValueChangedSlot()
         vHours.append(i / m_timeInterval + 0.5);
     }
     float currentTime =  m_coorManage->getHeight(QTime::currentTime());
-    //if (currentTime >= beginpos && currentTime <= leftBttomrealPos.y()) {
-    if (0) {
+    if (currentTime >= beginpos && currentTime <= leftBttomrealPos.y()) {
+        //if (0) {
         m_cuttrnttimetype = 1;
         QPoint point = mapFromScene(leftBttomrealPos.x(), currentTime);
         m_vLRLarge.append(point.y());

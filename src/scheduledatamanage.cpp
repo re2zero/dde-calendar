@@ -131,7 +131,7 @@ void CScheduleDataManage::setTheMe(int type)
         workC.hovergradientFromC = workC.gradientFromC;
         workC.hovergradientToC = workC.gradientToC;
         QColor workhP("#F85566");
-        workP.setAlphaF(0.2);
+        workhP.setAlphaF(0.2);
         workC.hoverPurecolor = workhP;
 
         m_vScheduleColor.append(workC);
