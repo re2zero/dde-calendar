@@ -109,11 +109,11 @@ void CMonthView::setTheMe(int type)
         m_xiuColor = "#ADFF71";
         m_xiuColor.setAlphaF(0.1);
 
-        m_pressColor = "#FFFFFF";
-        m_pressColor.setAlphaF(0.2);
+        m_pressColor = "#000000";
+        m_pressColor.setAlphaF(0.5);
 
         m_hoverColor = "#FFFFFF";
-        m_hoverColor.setAlphaF(0.1);
+        m_hoverColor.setAlphaF(0.05);
     }
     DPalette tooltippa = m_tooltipview->palette();
     tooltippa.setColor(DPalette::WindowText, m_defaultTextColor);
@@ -921,8 +921,7 @@ void CMonthView::paintCell(QWidget *cell)
         painter.setPen(Qt::NoPen);
         //painter.drawRoundedRect(fillRect, 8, 8);
         painter.drawRect(fillRect);
-    }
-    if (m_cellhoverflag[pos]) {
+    } else if (m_cellhoverflag[pos]) {
         QRect fillRect = QRect(0, 0, cellwidth, cellheight);
         painter.setBrush(m_hoverColor);
         painter.setPen(Qt::NoPen);
@@ -930,18 +929,18 @@ void CMonthView::paintCell(QWidget *cell)
         painter.drawRect(fillRect);
     }
     //if (m_cellfoceflag[pos]) {
-    if (isSelectedCell) {
-        QRect fillRect = QRect(2, 2, cellwidth - 3, cellheight - 3);
+    // if (isSelectedCell) {
+    // QRect fillRect = QRect(2, 2, cellwidth - 3, cellheight - 3);
 
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        //painter.setBrush(QBrush(m_backgroundCircleColor));
-        QPen pen;
-        pen.setColor(m_backgroundCircleColor);
-        pen.setWidth(2);
-        painter.setPen(pen);
-        painter.drawRoundedRect(fillRect, 3, 3);
-        //painter.drawRect(fillRect);
-    }
+    // painter.setRenderHints(QPainter::HighQualityAntialiasing);
+    //painter.setBrush(QBrush(m_backgroundCircleColor));
+    // QPen pen;
+    // pen.setColor(m_backgroundCircleColor);
+    // pen.setWidth(2);
+    // painter.setPen(pen);
+    //painter.drawRoundedRect(fillRect, 3, 3);
+    //painter.drawRect(fillRect);
+    //  }
     painter.end();
 }
 
