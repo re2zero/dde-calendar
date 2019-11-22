@@ -140,6 +140,7 @@ void CYearView::updateSelectState()
 
 void CYearView::setTheMe(int type)
 {
+    m_themetype = type;
     if (type == 0 || type == 1) {
         DPalette bpa = m_gridWidget->palette();
         bpa.setColor(DPalette::Background, Qt::white);

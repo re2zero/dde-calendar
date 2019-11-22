@@ -116,7 +116,7 @@ void CMonthDayView::setRCurrentDate(const QDate date)
 
 void CMonthDayView::setTheMe(int type)
 {
-    m_themetype = 1;
+    m_themetype = type;
     if (type == 0 || type == 1) {
 
         m_defaultTextColor = Qt::black;

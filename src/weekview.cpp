@@ -80,6 +80,7 @@ void CWeekView::setCurrentDate(const QDate date)
 
 void CWeekView::setTheMe(int type)
 {
+    m_themetype = type;
     if (type == 0 || type == 1) {
         m_defaultTextColor = Qt::black;
         m_backgrounddefaultColor = Qt::white;
