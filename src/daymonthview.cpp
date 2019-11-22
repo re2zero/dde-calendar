@@ -355,8 +355,8 @@ void CDayMonthView::initUI()
     titleLayout->addWidget(m_prevButton);
     titleLayout->addWidget(m_currentMouth);
     titleLayout->addWidget(m_nextButton);
-    titleLayout->addStretch(1);
-    titleLayout->addWidget(m_today);
+    titleLayout->addStretch();
+    titleLayout->addWidget(m_today, 0, Qt::AlignRight);
     // cells grid
     m_gridLayout = new QGridLayout;
     m_gridLayout->setMargin(0);
@@ -375,7 +375,7 @@ void CDayMonthView::initUI()
     m_upLayout = new QVBoxLayout;
     m_upLayout->setMargin(0);
     m_upLayout->setSpacing(0);
-    m_upLayout->setContentsMargins(22, 9, 9, 7);
+    m_upLayout->setContentsMargins(22, 9, 0, 7);
     m_upLayout->addLayout(titleLayout);
     m_upLayout->addLayout(m_gridLayout);
 
@@ -707,7 +707,7 @@ void CDayMonthView::resizeEvent(QResizeEvent *event)
     cellheight = height() * 0.0496 + 0.5;
     m_gridLayout->setHorizontalSpacing(width() * 0.0287 + 0.5);
     m_gridLayout->setVerticalSpacing(0);
-    int leftmagin = width() * 0.0632 + 0.5;
+    int leftmagin = width() * 0.0332 + 0.5;
     int rightmagin = leftmagin;
     int topmagin = height() * 0.0164 + 0.5;
     int buttonmagin = topmagin;

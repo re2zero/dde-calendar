@@ -22,7 +22,7 @@
 #include <QWidget>
 #include <DMainWindow>
 #include <QDate>
-#include <DLabel>
+#include <QLabel>
 #include <DFrame>
 #include "calendardbus.h"
 DWIDGET_USE_NAMESPACE
@@ -70,9 +70,9 @@ private:
     DFrame *m_leftground = nullptr;
     DVerticalLine *m_verline;
     QDate              m_currentdate;
-    DLabel            *m_YearLabel;
-    DLabel            *m_LunarLabel;
-    DLabel            *m_SolarDay;
+    QLabel            *m_YearLabel;
+    QLabel            *m_LunarLabel;
+    QLabel            *m_SolarDay;
     CScheduleView     *m_scheduleView;
     // CSchceduleSearchView *m_schceduleSearchView;
     QString           m_searchText;

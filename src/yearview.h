@@ -6,7 +6,7 @@
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
-#include <DLabel>
+#include <QLabel>
 #include <QSignalMapper>
 #include "calendardbus.h"
 #include <DFrame>

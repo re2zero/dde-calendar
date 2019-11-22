@@ -45,7 +45,6 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     //add separator line
     m_currentMouth = new CustomFrame();
     m_currentMouth->setFixedHeight(24);
-    m_currentMouth->setTextStr("11");
     m_currentMouth->setContentsMargins(0, 0, 0, 0);
     //m_currentMouth->setMinimumWidth(100);
     m_currentMouth->setTextAlign(Qt::AlignLeft);
@@ -398,7 +397,9 @@ void CYearView::resizeEvent(QResizeEvent *event)
     m_hhLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
     m_dayNumFont.setPixelSize(12 + (height() - 159) / 22.33);
     m_momthFont.setPixelSize(16 + (height() - 159) / 16.75);
+    m_currentMouth->setTextFont(m_momthFont);
     m_currentMouth->setFixedHeight(24 + (height() - 159) / 12);
+    m_currentMouth->update();
     for (int i(0); i != 42; ++i) {
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
     }

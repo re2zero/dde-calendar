@@ -209,9 +209,9 @@ void CMonthWindow::initUI()
     todayfont.setPixelSize(14);
     m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
-    m_YearLabel = new DLabel();
+    m_YearLabel = new QLabel();
     m_YearLabel->setFixedHeight(DDEMonthCalendar::M_YLableHeight);
-    m_YearLunarLabel = new DLabel();
+    m_YearLunarLabel = new QLabel();
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;

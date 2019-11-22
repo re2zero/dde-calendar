@@ -141,7 +141,7 @@ void CDayWindow::initUI()
     titleLayout->setSpacing(0);
     titleLayout->setContentsMargins(11, 8, 0, 3);
 
-    m_YearLabel = new DLabel();
+    m_YearLabel = new QLabel();
     m_YearLabel->setMinimumSize(175, DDEDayCalendar::D_YLableHeight);
     QFont labelF;
     labelF.setFamily("SourceHanSansSC");
@@ -153,7 +153,7 @@ void CDayWindow::initUI()
     m_YearLabel->setPalette(ypa);
     titleLayout->addWidget(m_YearLabel);
     //titleLayout->addStretch(1);
-    m_LunarLabel = new DLabel();
+    m_LunarLabel = new QLabel();
     titleLayout->addSpacing(15);
     m_LunarLabel->setFixedHeight(DDEDayCalendar::D_YLableHeight);
     labelF.setPixelSize(14);
@@ -164,7 +164,7 @@ void CDayWindow::initUI()
     m_LunarLabel->setPalette(lpa);
     titleLayout->addWidget(m_LunarLabel);
     //titleLayout->addStretch(1);
-    m_SolarDay = new DLabel();
+    m_SolarDay = new QLabel();
     labelF.setPixelSize(10);
     m_SolarDay->setFixedHeight(DDEDayCalendar::D_YLableHeight);
     m_SolarDay->setFont(labelF);

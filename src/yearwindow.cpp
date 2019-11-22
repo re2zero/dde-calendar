@@ -98,7 +98,7 @@ void CYearWindow::initUI()
     anipa.setColor(DPalette::Background, "#F8F8F8");
     m_contentBackground->setAutoFillBackground(true);
     m_contentBackground->setPalette(anipa);
-    m_today = new DLabel(this);
+    m_today = new QLabel(this);
     m_today->installEventFilter(this);
     // DPalette todaypa = m_today->palette();
     //todaypa.setColor(DPalette::ButtonText, QColor("#000000"));
@@ -153,7 +153,7 @@ void CYearWindow::initUI()
     //nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
     //m_nextButton->setPalette(nextvpa);
 
-    m_YearLabel = new DLabel();
+    m_YearLabel = new QLabel();
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
@@ -166,7 +166,7 @@ void CYearWindow::initUI()
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_YearLabel->setPalette(pa);
 
-    m_YearLunarLabel = new DLabel(m_contentBackground);
+    m_YearLunarLabel = new QLabel(m_contentBackground);
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;
@@ -179,7 +179,7 @@ void CYearWindow::initUI()
     m_YearLunarLabel->setPalette(Lunapa);
     //m_YearLunarLabel->move(116, 27);
 
-    m_YearLunarDayLabel = new DLabel(m_contentBackground);
+    m_YearLunarDayLabel = new QLabel(m_contentBackground);
     m_YearLunarDayLabel->setFixedSize(96, DDEMonthCalendar::M_YLunatLabelHeight);
 
     m_YearLunarDayLabel->setFont(ylabelF);
@@ -202,9 +202,22 @@ void CYearWindow::initUI()
     yeartitleLayout1->addSpacing(390);
     yeartitleLayout1->addStretch();
     yeartitleLayout1->addWidget(m_YearLunarDayLabel);
-    yeartitleLayout1->addWidget(m_prevButton);
-    yeartitleLayout1->addWidget(m_today, 0, Qt::AlignCenter);
-    yeartitleLayout1->addWidget(m_nextButton);
+    yeartitleLayout1->addSpacing(10);
+
+    m_todayframe = new CustomFrame;
+    m_todayframe->setContentsMargins(0, 0, 0, 0);
+    m_todayframe->setRoundState(true, true, true, true);
+    m_todayframe->setBColor(Qt::white);
+    m_todayframe->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_todayframe->setboreder(1);
+    QHBoxLayout *todaylayout = new QHBoxLayout;
+    todaylayout->setMargin(0);
+    todaylayout->setSpacing(0);
+    todaylayout->addWidget(m_prevButton);
+    todaylayout->addWidget(m_today, 0, Qt::AlignCenter);
+    todaylayout->addWidget(m_nextButton);
+    m_todayframe->setLayout(todaylayout);
+    yeartitleLayout1->addWidget(m_todayframe);
     yeartitleLayout->addLayout(yeartitleLayout1);
 
     QGridLayout *gridLayout = new QGridLayout;
@@ -293,6 +306,8 @@ void CYearWindow::setTheMe(int type)
         m_today->setForegroundRole(DPalette::WindowText);
         m_today->setBackgroundRole(DPalette::Background);
 
+        m_todayframe->setBColor(Qt::white);
+
         //DPalette prevpa = m_prevButton->palette();
         //prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
         //prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
@@ -330,12 +345,14 @@ void CYearWindow::setTheMe(int type)
         todaypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         //todaypa.setColor(DPalette::Dark, "#414141");
         QColor tbcolor = "#414141";
-        tbcolor.setAlphaF(0.3);
+        tbcolor.setAlphaF(0.0);
         todaypa.setColor(DPalette::Background, tbcolor);
         m_today->setPalette(todaypa);
         m_today->setForegroundRole(DPalette::WindowText);
         m_today->setBackgroundRole(DPalette::Background);
-
+        QColor tbcolor2 = "#414141";
+        tbcolor2.setAlphaF(0.3);
+        m_todayframe->setBColor(tbcolor2);
         //DPalette prevpa = m_prevButton->palette();
         //prevpa.setColor(DPalette::Dark, QColor("#484848"));
         //prevpa.setColor(DPalette::Light, QColor("#414141"));

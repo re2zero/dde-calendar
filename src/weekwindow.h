@@ -25,7 +25,7 @@
 #include <QLabel>
 #include <DImageButton>
 #include <DPushButton>
-#include <DLabel>
+#include <QLabel>
 #include <DFrame>
 #include "calendardbus.h"
 #include <DIconButton>
@@ -83,9 +83,9 @@ private:
     DIconButton      *m_nextButton = nullptr;
     CTodyButton       *m_today = nullptr;
     QDate              m_currentdate;
-    DLabel            *m_YearLabel;
-    DLabel            *m_YearLunarLabel;
-    DLabel            *m_weekLabel;
+    QLabel            *m_YearLabel;
+    QLabel            *m_YearLunarLabel;
+    QLabel            *m_weekLabel;
     CWeekView         *m_weekview = nullptr;
     CScheduleView     *m_scheduleView;
     QSpacerItem       *m_spaceitem;

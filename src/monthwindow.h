@@ -24,7 +24,6 @@
 #include <QDate>
 #include <QLabel>
 #include <DPushButton>
-#include <DLabel>
 #include <DFrame>
 #include <QSpacerItem>
 #include "calendardbus.h"
@@ -88,8 +87,8 @@ private:
     DFrame *m_contentBackground = nullptr;
     CTodyButton       *m_today = nullptr;
     QDate              m_currentdate;
-    DLabel            *m_YearLabel;
-    DLabel            *m_YearLunarLabel;
+    QLabel            *m_YearLabel;
+    QLabel            *m_YearLunarLabel;
     QSpacerItem       *m_spaceitem;
     DFrame            *m_gridWidget;
 

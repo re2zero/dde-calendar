@@ -63,7 +63,9 @@ void CScheduleDataManage::setTheMe(int type)
         workC.hightlightPurecolor = workP;
 
         workC.hovergradientFromC = "#FFD0B8";
+        workC.hovergradientFromC.setAlphaF(0.95);
         workC.hovergradientToC = "#FF9D9A";
+        workC.hovergradientToC.setAlphaF(0.95);
         QColor workhP("#FFB6BD");
         workP.setAlphaF(0.8);
         workC.hoverPurecolor = workhP;
@@ -88,6 +90,8 @@ void CScheduleDataManage::setTheMe(int type)
 
         lifeC.hovergradientFromC = "#A8E9FF";
         lifeC.hovergradientToC = "#D5FFAF";
+        lifeC.hovergradientFromC.setAlphaF(0.95);
+        lifeC.hovergradientToC.setAlphaF(0.95);
         QColor lifehP("#C4FF98");
         lifehP.setAlphaF(0.8);
         lifeC.hoverPurecolor = lifehP;
@@ -112,6 +116,8 @@ void CScheduleDataManage::setTheMe(int type)
 
         otherC.hovergradientFromC = "#FFE8AC";
         otherC.hovergradientToC = "#E2A5FF";
+        otherC.hovergradientFromC.setAlphaF(0.95);
+        otherC.hovergradientToC.setAlphaF(0.95);
         QColor otherhP("#E6C5FF");
         otherhP.setAlphaF(0.8);
         otherC.hoverPurecolor = otherhP;
@@ -121,7 +127,8 @@ void CScheduleDataManage::setTheMe(int type)
         workC.type = 1;
         workC.gradientFromC = "#965A26";
         workC.gradientToC = "#8B2521";
-        workC.gradientToC.setAlphaF(0.9);
+        workC.gradientToC.setAlphaF(0.8);
+        workC.gradientFromC.setAlphaF(0.8);
         workC.Purecolor = "#F85566";
         workC.Purecolor.setAlphaF(0.1);
         workC.shadowcolor = "#FB2525";
@@ -134,8 +141,10 @@ void CScheduleDataManage::setTheMe(int type)
         workP.setAlphaF(0.8);
         workC.hightlightPurecolor = workP;
 
-        workC.hovergradientFromC = workC.gradientFromC;
-        workC.hovergradientToC = workC.gradientToC;
+        workC.hovergradientFromC = "#965A26";
+        workC.hovergradientToC = "#8B2521";
+        workC.hovergradientFromC.setAlphaF(0.95);
+        workC.hovergradientToC.setAlphaF(0.95);
         QColor workhP("#F85566");
         workhP.setAlphaF(0.2);
         workC.hoverPurecolor = workhP;
@@ -146,6 +155,8 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.type = 2;
         lifeC.gradientFromC = "#2D6883";
         lifeC.gradientToC = "#5D7D44";
+        lifeC.gradientToC.setAlphaF(0.8);
+        lifeC.gradientFromC.setAlphaF(0.8);
         lifeC.Purecolor = "#59F88D";
         lifeC.Purecolor.setAlphaF(0.1);
         lifeC.shadowcolor = "#25FA6B";
@@ -160,6 +171,8 @@ void CScheduleDataManage::setTheMe(int type)
 
         lifeC.hovergradientFromC = "#2D6883";
         lifeC.hovergradientToC = "#5D7D44";
+        lifeC.hovergradientFromC.setAlphaF(0.95);
+        lifeC.hovergradientToC.setAlphaF(0.95);
         QColor lifehP("#59F88D");
         lifehP.setAlphaF(0.2);
         lifeC.hoverPurecolor = lifehP;
@@ -169,6 +182,8 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.type = 3;
         otherC.gradientFromC = "#8C4E2C";
         otherC.gradientToC = "#7D37AF";
+        otherC.gradientToC.setAlphaF(0.8);
+        otherC.gradientFromC.setAlphaF(0.8);
         otherC.Purecolor = "#C155F8";
         otherC.Purecolor.setAlphaF(0.1);
         otherC.shadowcolor = "#BE3DFF";
@@ -183,6 +198,8 @@ void CScheduleDataManage::setTheMe(int type)
 
         otherC.hovergradientFromC = "#8C4E2C";
         otherC.hovergradientToC = "#7D37AF";
+        otherC.hovergradientFromC.setAlphaF(0.95);
+        otherC.hovergradientToC.setAlphaF(0.95);
         QColor otherhP("#C155F8");
         otherhP.setAlphaF(0.2);
         otherC.hoverPurecolor = otherhP;

@@ -102,7 +102,7 @@ void CWeekWindow::initUI()
     m_nextButton->setFixedSize(36, 36);
     //m_nextButton->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
 
-    m_YearLabel = new DLabel();
+    m_YearLabel = new QLabel();
     m_YearLabel->setFixedHeight(DDEWeekCalendar::W_YLableHeight);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
@@ -116,13 +116,13 @@ void CWeekWindow::initUI()
     m_YearLabel->setPalette(Lunadpa);
     //m_YearLabel->setStyleSheet("color:#3B3B3B;");
 
-    m_YearLunarLabel = new DLabel(m_contentBackground);
+    m_YearLunarLabel = new QLabel(m_contentBackground);
     m_YearLunarLabel->setFixedSize(DDEWeekCalendar::W_YLunatLabelWindth, DDEWeekCalendar::W_YLunatLabelHeight);
 
     m_weekview  = new CWeekView(this);
     // m_weekview->setFixedHeight(DDEWeekCalendar::W_YLunatLabelHeight + 8);
 
-    m_weekLabel = new DLabel();
+    m_weekLabel = new QLabel();
     m_weekLabel->setFixedHeight(DDEWeekCalendar::W_YLableHeight);
     QFont weeklabelF;
     weeklabelF.setFamily("PingFangSC");

@@ -16,6 +16,7 @@ public:
     void setTextFont(QFont font);
     void setTextAlign(int flag = Qt::AlignCenter);
     void setRadius(int radius = 8);
+    void setboreder(int framew = 0);
     QString getTextStr()
     {
         return  m_text;
@@ -32,6 +33,7 @@ private:
     int                      m_textflag = Qt::AlignCenter;//对齐方式
     QString                  m_text;
     int                      m_radius = 8;
+    int                      m_borderframew = 0;
     bool                     m_lstate = false;
     bool                     m_tstate = false;
     bool                     m_rstate = false;

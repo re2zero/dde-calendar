@@ -25,11 +25,11 @@
 #include <QLabel>
 #include <DImageButton>
 #include <DPushButton>
-#include <DLabel>
 #include <DFrame>
 #include "calendardbus.h"
 #include <DIconButton>
 #include <QHBoxLayout>
+#include "customframe.h"
 DWIDGET_USE_NAMESPACE
 
 class CYearView;
@@ -79,13 +79,14 @@ private:
     DFrame *m_contentBackground = nullptr;
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
-    DLabel           *m_today = nullptr;
+    QLabel           *m_today = nullptr;
     QDate              m_currentdate;
-    DLabel            *m_YearLabel;
-    DLabel            *m_YearLunarLabel;
-    DLabel            *m_YearLunarDayLabel;
+    QLabel            *m_YearLabel;
+    QLabel            *m_YearLunarLabel;
+    QLabel            *m_YearLunarDayLabel;
     CYearView         *m_activeview = nullptr;
     DFrame            *m_gridWidget;
+    CustomFrame            *m_todayframe;
     CalendarDBus *m_DBusInter;
     QQueue<QDate> *queue;
     QMap<QDate, CaLunarDayInfo> *lunarCache;
