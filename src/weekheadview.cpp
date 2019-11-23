@@ -473,7 +473,8 @@ void CWeekHeadView::paintCell(QWidget *cell)
     }
     if (isSelectedCell) {
         if (m_showState & ShowLunar) {
-            QRect fillRect(bw + 1, bh, 24, 24);
+            QRect fillRect(bw - 5, bh - 2, 36, 36);
+            /*
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_backgroundCircleColor));
             painter.setPen(Qt::NoPen);
@@ -487,23 +488,24 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.setBrush(Qt::NoBrush);
             painter.setPen(pen);
             painter.drawEllipse(fillRect1);
-            painter.restore();
-            /*
+            painter.restore();*/
+
             QPixmap pixmap;
             if (m_themetype == 2)
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             else {
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             }
             pixmap.setDevicePixelRatio(devicePixelRatioF());
             painter.save();
             painter.setRenderHint(QPainter::Antialiasing);
             painter.setRenderHint(QPainter::HighQualityAntialiasing);
             painter.setRenderHint(QPainter::SmoothPixmapTransform);
-            painter.drawPixmap(bw + 1 - 3, bh, pixmap);
-            painter.restore();*/
+            painter.drawPixmap(fillRect, pixmap);
+            painter.restore();
         } else {
-            QRect fillRect(bw + 13, bh, 24, 24);
+            QRect fillRect(bw + 8, bh - 1, 36, 36);
+            /*
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_backgroundCircleColor));
             painter.setPen(Qt::NoPen);
@@ -517,20 +519,20 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.setBrush(Qt::NoBrush);
             painter.setPen(pen);
             painter.drawEllipse(fillRect1);
-            painter.restore();
-            /*QPixmap pixmap;
+            painter.restore();*/
+            QPixmap pixmap;
             if (m_themetype == 2)
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             else {
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 6, fillRect.height() + 6, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(fillRect.width() + 8, fillRect.height() + 8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             }
             pixmap.setDevicePixelRatio(devicePixelRatioF());
             painter.save();
             painter.setRenderHint(QPainter::Antialiasing);
             painter.setRenderHint(QPainter::HighQualityAntialiasing);
             painter.setRenderHint(QPainter::SmoothPixmapTransform);
-            painter.drawPixmap(bw + 13 - 3, bh, pixmap);
-            painter.restore();*/
+            painter.drawPixmap(fillRect, pixmap);
+            painter.restore();
         }
 
     }
