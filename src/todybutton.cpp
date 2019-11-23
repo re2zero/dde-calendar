@@ -93,6 +93,7 @@ void CTodyButton::mousePressEvent(QMouseEvent *event)
     todaypa.setColor(DPalette::ButtonText, m_tPressColor);
     todaypa.setColor(DPalette::Dark, m_dbPressColor);
     todaypa.setColor(DPalette::Light, m_bPressColor);
+    todaypa.setColor(DPalette::Shadow, m_shadowColor);
     setPalette(todaypa);
     DPushButton::mousePressEvent(event);
 }
@@ -103,6 +104,7 @@ void CTodyButton::mouseReleaseEvent(QMouseEvent *event)
     todaypa.setColor(DPalette::ButtonText, m_tnormalColor);
     todaypa.setColor(DPalette::Dark, m_dbnormalColor);
     todaypa.setColor(DPalette::Light, m_bnormalColor);
+    todaypa.setColor(DPalette::Shadow, m_shadowColor);
     setPalette(todaypa);
     DPushButton::mouseReleaseEvent(event);
 }
@@ -113,6 +115,7 @@ void CTodyButton::focusOutEvent(QFocusEvent *event)
     todaypa.setColor(DPalette::ButtonText, m_tnormalColor);
     todaypa.setColor(DPalette::Dark, m_dbnormalColor);
     todaypa.setColor(DPalette::Light, m_bnormalColor);
+    todaypa.setColor(DPalette::Shadow, m_shadowColor);
     setPalette(todaypa);
     DPushButton::focusOutEvent(event);
 }
@@ -123,6 +126,7 @@ void CTodyButton::enterEvent(QEvent *event)
     todaypa.setColor(DPalette::ButtonText, m_thoverColor);
     todaypa.setColor(DPalette::Dark, m_dbhoverColor);
     todaypa.setColor(DPalette::Light, m_bhoverColor);
+    todaypa.setColor(DPalette::Shadow, m_shadowColor);
     setPalette(todaypa);
     DPushButton::enterEvent(event);
 }
@@ -133,6 +137,7 @@ void CTodyButton::leaveEvent(QEvent *event)
     todaypa.setColor(DPalette::ButtonText, m_tnormalColor);
     todaypa.setColor(DPalette::Dark, m_dbnormalColor);
     todaypa.setColor(DPalette::Light, m_bnormalColor);
+    todaypa.setColor(DPalette::Shadow, m_shadowColor);
     setPalette(todaypa);
     DPushButton::leaveEvent(event);
 }

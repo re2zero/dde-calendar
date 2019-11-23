@@ -414,7 +414,7 @@ void CMonthSchceduleNumButton::setTransparentB(bool t, QColor tcolor)
 void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
 {
     int labelwidth = width();
-    int labelheight = height();
+    int labelheight = height() - 6;
     int type = CScheduleDataManage::getScheduleDataManage()->getTheme();
     QPainter painter(this);
     if (m_GradientFlag) {
@@ -441,11 +441,11 @@ void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
         }
 
         painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignCenter, str);
-        if (m_transparentf) {
-            painter.setBrush(m_transparentcolor);
-            painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(fillRect, 3, 2);
-        }
+        //if (m_transparentf) {
+        //  painter.setBrush(m_transparentcolor);
+        //  painter.setPen(Qt::NoPen);
+        //   painter.drawRoundedRect(fillRect, 3, 2);
+        // }
     } else {
         QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
         //将直线开始点设为0，终点设为1，然后分段设置颜色

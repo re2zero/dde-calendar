@@ -31,6 +31,7 @@ class CDayMonthView;
 class CScheduleView;
 class CSchceduleSearchView;
 class QHBoxLayout;
+class CustomFrame;
 class CDayWindow: public QMainWindow
 {
     Q_OBJECT
@@ -67,7 +68,7 @@ private slots:
 private:
     CDayMonthView     *m_daymonthView;
     DFrame *m_contentBackground = nullptr;
-    DFrame *m_leftground = nullptr;
+    CustomFrame *m_leftground = nullptr;
     DVerticalLine *m_verline;
     QDate              m_currentdate;
     QLabel            *m_YearLabel;

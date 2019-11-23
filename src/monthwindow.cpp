@@ -84,6 +84,7 @@ void CMonthWindow::setTheMe(int type)
         todaypress.setAlphaF(0.2);
         m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
         m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
+        m_today->setshadowColor(sbcolor);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -106,12 +107,13 @@ void CMonthWindow::setTheMe(int type)
         todaypa.setColor(DPalette::Light, "#484848");
         todaypa.setColor(DPalette::Dark, "#414141");
         QColor sbcolor("#000000");
-        sbcolor.setAlphaF(0.08);
+        sbcolor.setAlphaF(0.05);
         todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
 
         m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
         m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
+        m_today->setshadowColor(sbcolor);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));

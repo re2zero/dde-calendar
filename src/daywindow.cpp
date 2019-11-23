@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <DPalette>
+#include "customframe.h"
 DGUI_USE_NAMESPACE
 CDayWindow::CDayWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -43,10 +44,11 @@ void CDayWindow::setTheMe(int type)
         m_contentBackground->setPalette(anipa);
         m_contentBackground->setBackgroundRole(DPalette::Background);
 
-        DPalette leftpa = m_leftground->palette();
-        leftpa.setColor(DPalette::Background, "#FFFFFF");
-        m_leftground->setPalette(leftpa);
-        m_leftground->setBackgroundRole(DPalette::Background);
+        // DPalette leftpa = m_leftground->palette();
+        // leftpa.setColor(DPalette::Background, "#FFFFFF");
+        //m_leftground->setPalette(leftpa);
+        //m_leftground->setBackgroundRole(DPalette::Background);
+        m_leftground->setBColor("#FFFFFF");
 
         DPalette ypa = m_YearLabel->palette();
         ypa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -67,10 +69,12 @@ void CDayWindow::setTheMe(int type)
         anipa.setColor(DPalette::Background, bcolor);
         m_contentBackground->setPalette(anipa);
         m_contentBackground->setBackgroundRole(DPalette::Background);
-        DPalette leftpa = m_leftground->palette();
-        leftpa.setColor(DPalette::Background, "#282828");
-        m_leftground->setPalette(leftpa);
-        m_leftground->setBackgroundRole(DPalette::Background);
+        //DPalette leftpa = m_leftground->palette();
+        //leftpa.setColor(DPalette::Background, "#282828");
+        //m_leftground->setPalette(leftpa);
+        //m_leftground->setBackgroundRole(DPalette::Background);
+        m_leftground->setBColor("#282828");
+
         DPalette ypa = m_YearLabel->palette();
         ypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(ypa);
@@ -199,14 +203,16 @@ void CDayWindow::initUI()
     lfetmainLayout->addWidget(m_verline);
 
     lfetmainLayout->addWidget(m_daymonthView);
-    m_leftground = new DFrame();
-    m_leftground->setContentsMargins(0, 0, 0, 0);
+    m_leftground = new CustomFrame();
+    //m_leftground->setContentsMargins(0, 0, 0, 0);
+    m_leftground->setRoundState(true, true, true, true);
     m_leftground->setLayout(lfetmainLayout);
-    m_leftground->setAutoFillBackground(true);
-    m_leftground->setFrameRounded(true);
-    DPalette leftpa = m_leftground->palette();
-    leftpa.setColor(DPalette::Background, "#FFFFFF");
-    m_leftground->setPalette(leftpa);
+    // m_leftground->setAutoFillBackground(true);
+    //m_leftground->setFrameRounded(true);
+    m_leftground->setBColor("#FFFFFF");
+    //DPalette leftpa = m_leftground->palette();
+    //leftpa.setColor(DPalette::Background, "#FFFFFF");
+    //m_leftground->setPalette(leftpa);
 
     m_mainLayout = new QHBoxLayout;
     m_mainLayout->setMargin(0);

@@ -36,7 +36,7 @@ DWIDGET_USE_NAMESPACE
 class QLabel;
 class CDayHuangLiLabel;
 class CTodyButton;
-class CDayMonthView: public DWidget
+class CDayMonthView: public CustomFrame
 {
     Q_OBJECT
 

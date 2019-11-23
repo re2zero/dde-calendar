@@ -263,6 +263,9 @@ void CWeekWindow::setTheMe(int type)
         todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
+        QColor sbcolor("#002A57");
+        sbcolor.setAlphaF(0.05);
+        todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
         QColor todayhover = "#000000";
         todayhover.setAlphaF(0.1);
@@ -270,6 +273,7 @@ void CWeekWindow::setTheMe(int type)
         todaypress.setAlphaF(0.2);
         m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
         m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
+        m_today->setshadowColor(sbcolor);
 
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
@@ -304,9 +308,13 @@ void CWeekWindow::setTheMe(int type)
         todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
         todaypa.setColor(DPalette::Dark, "#414141");
         todaypa.setColor(DPalette::Light, "#484848");
+        QColor sbcolor("#000000");
+        sbcolor.setAlphaF(0.05);
+        todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
         m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
         m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
+        m_today->setshadowColor(sbcolor);
 
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#484848"));
