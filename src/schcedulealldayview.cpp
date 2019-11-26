@@ -406,7 +406,7 @@ CSchceduleAllDayView::CSchceduleAllDayView(QWidget *parent, int edittype) : DWid
     setLayout(m_layout);
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
-    m_createAction = new QAction(tr("Create"), this);
+    m_createAction = new QAction(tr("New event"), this);
     connect(m_createAction, &QAction::triggered, this, &CSchceduleAllDayView::slotCreate);
 }
 

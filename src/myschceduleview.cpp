@@ -100,10 +100,10 @@ void CMySchceduleView::slotDeleteBt()
         CSchceduleCtrlDlg msgBox;
         //msgBox.setWindowFlags(Qt::FramelessWindowHint);
         // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-        msgBox.setText(tr("You are deleted schedule"));
-        msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
+        msgBox.setText(tr("You are deleting an event."));
+        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
         DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-        DPushButton *yesButton = msgBox.addPushButton(tr("Delete Schedule"), 1);
+        DPushButton *yesButton = msgBox.addPushButton(tr("Delete"), 1);
         DPalette pa = yesButton->palette();
 
         if (themetype == 0 || themetype == 1) {
@@ -130,11 +130,11 @@ void CMySchceduleView::slotDeleteBt()
             //msgBox.setWindowFlags(Qt::FramelessWindowHint);
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
-            msgBox.setText(tr("You are deleted schedule"));
-            msgBox.setInformativeText(tr("You want to delete all repeat of the schedule, or just delete the selected repeat?"));
+            msgBox.setText(tr("You are deleting an event."));
+            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
             DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-            DPushButton *yesallbutton = msgBox.addPushButton(tr("All Deleted"));
-            DPushButton *yesButton = msgBox.addPushButton(tr("Just Delete Schedule"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
             msgBox.updatesize();
             DPalette pa = yesButton->palette();
             if (themetype == 0 || themetype == 1) {
@@ -166,11 +166,11 @@ void CMySchceduleView::slotDeleteBt()
             CSchceduleCtrlDlg msgBox;
             //msgBox.setWindowFlags(Qt::FramelessWindowHint);
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-            msgBox.setText(tr("You are deleted schedule"));
-            msgBox.setInformativeText(tr("You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?"));
+            msgBox.setText(tr("You are deleting an event."));
+            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
             DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete all schedule in the future"));
-            DPushButton *yesButton = msgBox.addPushButton(tr("Just Delete Schedule"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All Future Events"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
             msgBox.updatesize();
             DPalette pa = yesButton->palette();
             if (themetype == 0 || themetype == 1) {
@@ -238,7 +238,7 @@ void CMySchceduleView::initUI()
 
     m_Title->setPalette(titlepa);
     m_Title->setFont(labelTitle);
-    m_Title->setText(tr("My Schcedule"));
+    m_Title->setText(tr("My event"));
     m_Title->move(148, 0);
     m_Title->setAlignment(Qt::AlignCenter);
 

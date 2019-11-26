@@ -5,6 +5,10 @@
     <name>CAllDaySchceduleView</name>
     <message>
         <source>Create</source>
+        <translation type="vanished">新建日程</translation>
+    </message>
+    <message>
+        <source>New event</source>
         <translation>新建日程</translation>
     </message>
 </context>
@@ -12,6 +16,10 @@
     <name>CAllDaySchceduleWeekView</name>
     <message>
         <source>Create</source>
+        <translation type="vanished">新建日程</translation>
+    </message>
+    <message>
+        <source>New event</source>
         <translation>新建日程</translation>
     </message>
 </context>
@@ -27,15 +35,15 @@
     </message>
     <message>
         <source>Create</source>
-        <translation>新建日程</translation>
+        <translation type="vanished">新建日程</translation>
     </message>
     <message>
         <source>You are deleted schedule</source>
-        <translation>您正在删除日程</translation>
+        <translation type="vanished">您正在删除日程</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
+        <translation type="vanished">您确定要删除此日程吗？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -43,27 +51,59 @@
     </message>
     <message>
         <source>Delete Schedule</source>
-        <translation>删除日程</translation>
+        <translation type="vanished">删除日程</translation>
     </message>
     <message>
         <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
+        <translation type="vanished">您要删除这个日程的所有重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>All Deleted</source>
-        <translation>全部删除</translation>
+        <translation type="vanished">全部删除</translation>
     </message>
     <message>
         <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
+        <translation type="vanished">仅删除该日程</translation>
     </message>
     <message>
         <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+        <translation type="vanished">您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
+        <translation type="vanished">删除所有将来日程</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>您正在删除日程。</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的所有重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>全部删除</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>仅删除此日程</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>全删除所有将来日程</translation>
     </message>
 </context>
 <context>
@@ -110,11 +150,15 @@
     </message>
     <message>
         <source>Create</source>
-        <translation>新建日程</translation>
+        <translation type="vanished">新建日程</translation>
     </message>
     <message>
         <source>You are deleted schedule</source>
         <translation>您正在删除日程</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>新建日程</translation>
     </message>
 </context>
 <context>
@@ -229,7 +273,7 @@
     </message>
     <message>
         <source>Create</source>
-        <translation>新建日程</translation>
+        <translation type="vanished">新建日程</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -266,6 +310,38 @@
     <message>
         <source>You are deleted schedule</source>
         <translation>您正在删除日程</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>您正在删除日程。</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的所有重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>全部删除</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>仅删除此日程</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>全删除所有将来日程</translation>
     </message>
 </context>
 <context>
@@ -291,7 +367,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
+        <translation type="vanished">您确定要删除此日程吗？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -299,37 +375,69 @@
     </message>
     <message>
         <source>Delete Schedule</source>
-        <translation>删除日程</translation>
+        <translation type="vanished">删除日程</translation>
     </message>
     <message>
         <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
+        <translation type="vanished">您要删除这个日程的所有重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>All Deleted</source>
-        <translation>全部删除</translation>
+        <translation type="vanished">全部删除</translation>
     </message>
     <message>
         <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
+        <translation type="vanished">仅删除该日程</translation>
     </message>
     <message>
         <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+        <translation type="vanished">您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
+        <translation type="vanished">删除所有将来日程</translation>
     </message>
     <message>
         <source>You are deleted schedule</source>
-        <translation>您正在删除日程</translation>
+        <translation type="vanished">您正在删除日程</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>您正在删除日程。</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的所有重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>全部删除</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>仅删除此日程</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>全删除所有将来日程</translation>
     </message>
 </context>
 <context>
     <name>CMonthView</name>
     <message>
         <source>Create</source>
+        <translation type="vanished">新建日程</translation>
+    </message>
+    <message>
+        <source>New event</source>
         <translation>新建日程</translation>
     </message>
 </context>
@@ -348,11 +456,11 @@
     <name>CMySchceduleView</name>
     <message>
         <source>My Schcedule</source>
-        <translation>我的日程</translation>
+        <translation type="vanished">我的日程</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
+        <translation type="vanished">您确定要删除此日程吗？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -360,27 +468,27 @@
     </message>
     <message>
         <source>Delete Schedule</source>
-        <translation>删除日程</translation>
+        <translation type="vanished">删除日程</translation>
     </message>
     <message>
         <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
+        <translation type="vanished">您要删除这个日程的所有重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>All Deleted</source>
-        <translation>全部删除</translation>
+        <translation type="vanished">全部删除</translation>
     </message>
     <message>
         <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
+        <translation type="vanished">仅删除该日程</translation>
     </message>
     <message>
         <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+        <translation type="vanished">您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
+        <translation type="vanished">删除所有将来日程</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -392,13 +500,49 @@
     </message>
     <message>
         <source>You are deleted schedule</source>
-        <translation>您正在删除日程</translation>
+        <translation type="vanished">您正在删除日程</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>您正在删除日程。</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的所有重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>全部删除</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>仅删除此日程</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>全删除所有将来日程</translation>
+    </message>
+    <message>
+        <source>My event</source>
+        <translation>我的日程</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleAllDayView</name>
     <message>
         <source>Create</source>
+        <translation type="vanished">新建日程</translation>
+    </message>
+    <message>
+        <source>New event</source>
         <translation>新建日程</translation>
     </message>
 </context>
@@ -460,6 +604,10 @@
     <name>CSchceduleDayView</name>
     <message>
         <source>Create</source>
+        <translation type="vanished">新建日程</translation>
+    </message>
+    <message>
+        <source>New event</source>
         <translation>新建日程</translation>
     </message>
 </context>
@@ -467,11 +615,11 @@
     <name>CSchceduleDlg</name>
     <message>
         <source>Create Schcedule</source>
-        <translation>新建日程</translation>
+        <translation type="vanished">新建日程</translation>
     </message>
     <message>
         <source>Edit Schcedule</source>
-        <translation>编辑日程</translation>
+        <translation type="vanished">编辑日程</translation>
     </message>
     <message>
         <source>error</source>
@@ -495,7 +643,7 @@
     </message>
     <message>
         <source>Repetitive schedule of all must have the same throughout the state.</source>
-        <translation>重复日程的所有重复必须具有相同的全天状态。</translation>
+        <translation type="vanished">重复日程的所有重复必须具有相同的全天状态。</translation>
     </message>
     <message>
         <source>Repetitive schedule of all must have the same not throughout the state.</source>
@@ -503,15 +651,15 @@
     </message>
     <message>
         <source>Would you like to change all repeat?</source>
-        <translation>您要更改所有重复？</translation>
+        <translation type="vanished">您要更改所有重复？</translation>
     </message>
     <message>
         <source>All Changes</source>
-        <translation>全部更改</translation>
+        <translation type="vanished">全部更改</translation>
     </message>
     <message>
         <source>You are to change the schedule only the repeat, to repeat or change it all?</source>
-        <translation>您是要更改该日程的仅这一个重复，还是更改它的所有重复？</translation>
+        <translation type="vanished">您是要更改该日程的仅这一个重复，还是更改它的所有重复？</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -519,15 +667,15 @@
     </message>
     <message>
         <source>Only Schedule</source>
-        <translation>仅此日程</translation>
+        <translation type="vanished">仅此日程</translation>
     </message>
     <message>
         <source>Do you want to change the schedule only is this a repeat, besides it also changes the schedule all repeat in the future?</source>
-        <translation>您是要更改该日程的仅这一个重复，还是除它以外还更改该日程的所有将来重复？</translation>
+        <translation type="vanished">您是要更改该日程的仅这一个重复，还是除它以外还更改该日程的所有将来重复？</translation>
     </message>
     <message>
         <source>All future Schedule</source>
-        <translation>所有将来日程</translation>
+        <translation type="vanished">所有将来日程</translation>
     </message>
     <message>
         <source>infomation</source>
@@ -555,19 +703,19 @@
     </message>
     <message>
         <source>Content:</source>
-        <translation>内容：</translation>
+        <translation type="vanished">内容：</translation>
     </message>
     <message>
         <source>Begin Time:</source>
-        <translation>开始时间：</translation>
+        <translation type="vanished">开始时间：</translation>
     </message>
     <message>
         <source>End Time:</source>
-        <translation>结束时间：</translation>
+        <translation type="vanished">结束时间：</translation>
     </message>
     <message>
         <source>Remind Set:</source>
-        <translation>提醒设置：</translation>
+        <translation type="vanished">提醒设置：</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -575,39 +723,39 @@
     </message>
     <message>
         <source>None</source>
-        <translation>无</translation>
+        <translation type="vanished">无</translation>
     </message>
     <message>
         <source>Schedule occurs</source>
-        <translation>日程发生时</translation>
+        <translation type="vanished">日程发生时</translation>
     </message>
     <message>
         <source>15 minutes ago</source>
-        <translation>15分钟前</translation>
+        <translation type="vanished">15分钟前</translation>
     </message>
     <message>
         <source>30 minutes ago</source>
-        <translation>30分钟前</translation>
+        <translation type="vanished">30分钟前</translation>
     </message>
     <message>
         <source>1 hour ago</source>
-        <translation>1小时前</translation>
+        <translation type="vanished">1小时前</translation>
     </message>
     <message>
         <source>1 day ago</source>
-        <translation>1天前</translation>
+        <translation type="vanished">1天前</translation>
     </message>
     <message>
         <source>2 day ago</source>
-        <translation>2天前</translation>
+        <translation type="vanished">2天前</translation>
     </message>
     <message>
         <source>1 day ago(At 9 am)</source>
-        <translation>1天前（上午9时）</translation>
+        <translation type="vanished">1天前（上午9时）</translation>
     </message>
     <message>
         <source>2 day ago(At 9 am)</source>
-        <translation>2天前（上午9时）</translation>
+        <translation type="vanished">2天前（上午9时）</translation>
     </message>
     <message>
         <source>All Day:</source>
@@ -619,23 +767,23 @@
     </message>
     <message>
         <source>Every day</source>
-        <translation>每天</translation>
+        <translation type="vanished">每天</translation>
     </message>
     <message>
         <source>Every working day</source>
-        <translation>每工作日</translation>
+        <translation type="vanished">每工作日</translation>
     </message>
     <message>
         <source>Once a week</source>
-        <translation>每周</translation>
+        <translation type="vanished">每周</translation>
     </message>
     <message>
         <source>A month</source>
-        <translation>每月</translation>
+        <translation type="vanished">每月</translation>
     </message>
     <message>
         <source>Every year</source>
-        <translation>每年</translation>
+        <translation type="vanished">每年</translation>
     </message>
     <message>
         <source>End Repeat:</source>
@@ -643,7 +791,7 @@
     </message>
     <message>
         <source>On the date</source>
-        <translation>于日期</translation>
+        <translation type="vanished">于日期</translation>
     </message>
     <message>
         <source>OK</source>
@@ -651,7 +799,7 @@
     </message>
     <message>
         <source>Are you sure you want to change the schedule of repeat rules?</source>
-        <translation>您确定要更改此日程的重复规则吗？</translation>
+        <translation type="vanished">您确定要更改此日程的重复规则吗？</translation>
     </message>
     <message>
         <source>Never</source>
@@ -659,19 +807,19 @@
     </message>
     <message>
         <source>In</source>
-        <translation>于</translation>
+        <translation type="vanished">于</translation>
     </message>
     <message>
         <source>You are changing the schedule again</source>
-        <translation>您正在更改重复日程</translation>
+        <translation type="vanished">您正在更改重复日程</translation>
     </message>
     <message>
         <source>schedule day(At 9 am)</source>
-        <translation>日程发生当天（上午9时）</translation>
+        <translation type="vanished">日程发生当天（上午9时）</translation>
     </message>
     <message>
         <source>s</source>
-        <translation>次后</translation>
+        <translation type="vanished">次后</translation>
     </message>
     <message>
         <source>New Schedule</source>
@@ -679,11 +827,139 @@
     </message>
     <message>
         <source>A week ago(At 9 am)</source>
-        <translation>1周前（上午9时）</translation>
+        <translation type="vanished">1周前（上午9时）</translation>
     </message>
     <message>
         <source>A week ago</source>
+        <translation type="vanished">1周前</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>Edit Event</source>
+        <translation>编辑日程</translation>
+    </message>
+    <message>
+        <source>All occurrences of a repeating event must have the same all-day status.</source>
+        <translation>重复日程的所有重复必须具有相同的全天状态。</translation>
+    </message>
+    <message>
+        <source>Do you want to change all occurrences?</source>
+        <translation>您要更改所有重复吗？</translation>
+    </message>
+    <message>
+        <source>Changes All</source>
+        <translation>全部更改</translation>
+    </message>
+    <message>
+        <source>You are changing the repeating rule of this event.</source>
+        <translation>您正在更改日程的重复规则。</translation>
+    </message>
+    <message>
+        <source>Change All</source>
+        <translation>全部更改</translation>
+    </message>
+    <message>
+        <source>You are changing a repeating event.</source>
+        <translation>您正在更改重复日程。</translation>
+    </message>
+    <message>
+        <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
+        <translation>您要更改此日程的仅这一个重复，还是更改它的所有重复？</translation>
+    </message>
+    <message>
+        <source>Only This Event</source>
+        <translation>仅此日程</translation>
+    </message>
+    <message>
+        <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
+        <translation>您要更改此日程的这个重复和所有将来重复，还是只更改所选重复？</translation>
+    </message>
+    <message>
+        <source>All Future Events</source>
+        <translation>所有将来日程</translation>
+    </message>
+    <message>
+        <source>At time of event</source>
+        <translation>日程开始时</translation>
+    </message>
+    <message>
+        <source>15 minutes before</source>
+        <translation>15分钟前</translation>
+    </message>
+    <message>
+        <source>30 minutes before</source>
+        <translation>30分钟前</translation>
+    </message>
+    <message>
+        <source>1 hour before</source>
+        <translation>1小时前</translation>
+    </message>
+    <message>
+        <source>1 day before</source>
+        <translation>1天前</translation>
+    </message>
+    <message>
+        <source>2 days before</source>
+        <translation>2天前</translation>
+    </message>
+    <message>
+        <source>1 week before</source>
         <translation>1周前</translation>
+    </message>
+    <message>
+        <source>On start day (9:00 AM)</source>
+        <translation>日程发生当天（上午9时）</translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation>内容：</translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation>开始时间：</translation>
+    </message>
+    <message>
+        <source>Ends:</source>
+        <translation>结束时间：</translation>
+    </message>
+    <message>
+        <source>Remind Me:</source>
+        <translation>提醒：</translation>
+    </message>
+    <message>
+        <source>Daily</source>
+        <translation>每天</translation>
+    </message>
+    <message>
+        <source>Weekdays</source>
+        <translation>工作日</translation>
+    </message>
+    <message>
+        <source>Weekly</source>
+        <translation>每周</translation>
+    </message>
+    <message>
+        <source>Monthly</source>
+        <translation>每月</translation>
+    </message>
+    <message>
+        <source>Yearly</source>
+        <translation>每年</translation>
+    </message>
+    <message>
+        <source>After</source>
+        <translation>于</translation>
+    </message>
+    <message>
+        <source>On</source>
+        <translation>于日期</translation>
+    </message>
+    <message>
+        <source>time(s)</source>
+        <translation>次后</translation>
     </message>
 </context>
 <context>
@@ -720,7 +996,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
+        <translation type="vanished">您确定要删除此日程吗？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -728,31 +1004,59 @@
     </message>
     <message>
         <source>Delete Schedule</source>
-        <translation>删除日程</translation>
+        <translation type="vanished">删除日程</translation>
     </message>
     <message>
         <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
+        <translation type="vanished">您要删除这个日程的所有重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>All Deleted</source>
-        <translation>全部删除</translation>
+        <translation type="vanished">全部删除</translation>
     </message>
     <message>
         <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
+        <translation type="vanished">仅删除该日程</translation>
     </message>
     <message>
         <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+        <translation type="vanished">您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
     </message>
     <message>
         <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
+        <translation type="vanished">删除所有将来日程</translation>
     </message>
     <message>
         <source>You are deleted schedule</source>
-        <translation>您正在删除日程</translation>
+        <translation type="vanished">您正在删除日程</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>您正在删除日程。</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的所有重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>全部删除</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>仅删除此日程</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>您要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>全删除所有将来日程</translation>
     </message>
 </context>
 <context>
@@ -974,7 +1278,7 @@
     </message>
     <message>
         <source>Create</source>
-        <translation>新建日程</translation>
+        <translation type="vanished">新建日程</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -999,6 +1303,10 @@
     <message>
         <source>All election</source>
         <translation>全选</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>新建日程</translation>
     </message>
 </context>
 </TS>

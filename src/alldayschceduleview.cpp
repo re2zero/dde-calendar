@@ -46,7 +46,7 @@ CAllDaySchceduleWidgetItem::CAllDaySchceduleWidgetItem( QWidget *parent /*= null
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
-    m_createAction = new QAction(tr("Create"), this);
+    m_createAction = new QAction(tr("New event"), this);
     connect(m_createAction, &QAction::triggered, this, &CAllDaySchceduleWidgetItem::slotCreate);
     m_item = NULL;
 }
@@ -385,7 +385,7 @@ CAllDaySchceduleView::CAllDaySchceduleView(QWidget *parent, int edittype) : DLis
 
     m_coorManage = new CScheduleCoorManage;
 
-    m_createAction = new QAction(tr("Create"), this);
+    m_createAction = new QAction(tr("New event"), this);
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreate()));

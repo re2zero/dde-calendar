@@ -196,7 +196,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     setLayout(m_mainLayout);
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(this, &CMonthView::dateSelected, this, &CMonthView::handleCurrentDateChanged);
-    m_createAction = new QAction(tr("Create"), this);
+    m_createAction = new QAction(tr("New event"), this);
 
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));

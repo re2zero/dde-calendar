@@ -40,14 +40,14 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
     initUI();
     initConnection();
     if (type == 1) {
-        m_titleLabel->setText(tr("Create Schcedule"));
+        m_titleLabel->setText(tr("New Event"));
         m_beginDateEdit->setDate(QDate::currentDate());
         m_beginTimeEdit->setTime(QTime::currentTime());
         m_endDateEdit->setDate(QDate::currentDate());
         m_endTimeEdit->setTime(QTime::currentTime().addSecs(3600));
         //m_endRepeatDate->setMinimumDate(QDate::currentDate());
     } else {
-        m_titleLabel->setText(tr("Edit Schcedule"));
+        m_titleLabel->setText(tr("Edit Event"));
     }
     setFocusPolicy(Qt::WheelFocus);
     setFixedSize(438, 460);
@@ -215,14 +215,14 @@ void CSchceduleDlg::slotOkBt()
                 //msgBox.setWindowFlags(Qt::FramelessWindowHint);
                 //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
                 if (scheduleDtailInfo.allday) {
-                    msgBox.setText(tr("Repetitive schedule of all must have the same throughout the state."));
+                    msgBox.setText(tr("All occurrences of a repeating event must have the same all-day status."));
 
                 } else {
                     msgBox.setText(tr("Repetitive schedule of all must have the same not throughout the state."));
                 }
-                msgBox.setInformativeText(tr("Would you like to change all repeat?"));
+                msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                DPushButton *yesButton = msgBox.addPushButton(tr("All Changes"));
+                DPushButton *yesButton = msgBox.addPushButton(tr("Changes All"));
                 msgBox.updatesize();
                 DPalette pa = yesButton->palette();
                 if (themetype == 0 || themetype == 1) {
@@ -250,10 +250,10 @@ void CSchceduleDlg::slotOkBt()
                 CSchceduleCtrlDlg msgBox(this);
                 //msgBox.setWindowFlags(Qt::FramelessWindowHint);
                 //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                msgBox.setText(tr("Are you sure you want to change the schedule of repeat rules?"));
-                msgBox.setInformativeText(tr("Would you like to change all repeat?"));
+                msgBox.setText(tr("You are changing the repeating rule of this event."));
+                msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                DPushButton *yesButton = msgBox.addPushButton(tr("All Changes"));
+                DPushButton *yesButton = msgBox.addPushButton(tr("Change All"));
                 msgBox.updatesize();
                 DPalette pa = yesButton->palette();
                 if (themetype == 0 || themetype == 1) {
@@ -276,11 +276,11 @@ void CSchceduleDlg::slotOkBt()
                     CSchceduleCtrlDlg msgBox(this);
                     //msgBox.setWindowFlags(Qt::FramelessWindowHint);
                     //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                    msgBox.setText(tr("You are changing the schedule again"));
-                    msgBox.setInformativeText(tr("You are to change the schedule only the repeat, to repeat or change it all?"));
+                    msgBox.setText(tr("You are changing a repeating event."));
+                    msgBox.setInformativeText(tr("Do you want to change only this occurrence of the event, or all occurrences?"));
                     DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
                     DPushButton *yesallbutton = msgBox.addPushButton(tr("ALL"));
-                    DPushButton *yesButton = msgBox.addPushButton(tr("Only Schedule"));
+                    DPushButton *yesButton = msgBox.addPushButton(tr("Only This Event"));
                     msgBox.updatesize();
                     DPalette pa = yesButton->palette();
                     if (themetype == 0 || themetype == 1) {
@@ -317,11 +317,11 @@ void CSchceduleDlg::slotOkBt()
                     //msgBox.setWindowFlags(Qt::FramelessWindowHint);
                     // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
-                    msgBox.setText(tr("You are changing the schedule again"));
-                    msgBox.setInformativeText(tr("Do you want to change the schedule only is this a repeat, besides it also changes the schedule all repeat in the future?"));
+                    msgBox.setText(tr("You are changing a repeating event."));
+                    msgBox.setInformativeText(tr("Do you want to change only this occurrence of the event, or this and all future occurrences?"));
                     DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                    DPushButton *yesallbutton = msgBox.addPushButton(tr("All future Schedule"));
-                    DPushButton *yesButton = msgBox.addPushButton(tr("Only Schedule"));
+                    DPushButton *yesallbutton = msgBox.addPushButton(tr("All Future Events"));
+                    DPushButton *yesButton = msgBox.addPushButton(tr("Only This Event"));
                     msgBox.updatesize();
                     DPalette pa = yesButton->palette();
                     if (themetype == 0 || themetype == 1) {
@@ -403,14 +403,14 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
 {
     m_rmindCombox->clear();
     if (!state) {
-        m_rmindCombox->addItem(tr("None"));
-        m_rmindCombox->addItem(tr("Schedule occurs"));
-        m_rmindCombox->addItem(tr("15 minutes ago"));
-        m_rmindCombox->addItem(tr("30 minutes ago"));
-        m_rmindCombox->addItem(tr("1 hour ago"));
-        m_rmindCombox->addItem(tr("1 day ago"));
-        m_rmindCombox->addItem(tr("2 day ago"));
-        m_rmindCombox->addItem(tr("A week ago"));
+        m_rmindCombox->addItem(tr("Never"));
+        m_rmindCombox->addItem(tr("At time of event"));
+        m_rmindCombox->addItem(tr("15 minutes before"));
+        m_rmindCombox->addItem(tr("30 minutes before"));
+        m_rmindCombox->addItem(tr("1 hour before"));
+        m_rmindCombox->addItem(tr("1 day before"));
+        m_rmindCombox->addItem(tr("2 days before"));
+        m_rmindCombox->addItem(tr("1 week before"));
         m_beginTimeEdit->setVisible(true);
         m_endTimeEdit->setVisible(true);
         if (m_type == 0) {
@@ -426,11 +426,11 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
             m_endTimeEdit->setTime(m_currentDate.time().addSecs(3600));
         }
     } else {
-        m_rmindCombox->addItem(tr("None"));
-        m_rmindCombox->addItem(tr("schedule day(At 9 am)"));
-        m_rmindCombox->addItem(tr("1 day ago(At 9 am)"));
-        m_rmindCombox->addItem(tr("2 day ago(At 9 am)"));
-        m_rmindCombox->addItem(tr("A week ago(At 9 am)"));
+        m_rmindCombox->addItem(tr("Never"));
+        m_rmindCombox->addItem(tr("On start day (9:00 AM)"));
+        m_rmindCombox->addItem(tr("1 day before"));
+        m_rmindCombox->addItem(tr("2 days before"));
+        m_rmindCombox->addItem(tr("1 week before"));
         m_beginTimeEdit->setVisible(false);
         m_endTimeEdit->setVisible(false);
         if (m_type == 0) {
@@ -557,7 +557,7 @@ void CSchceduleDlg::initUI()
     QVBoxLayout *conttelabellayout = new QVBoxLayout;
     conttelabellayout->setSpacing(0);
     conttelabellayout->setMargin(0);
-    m_contentLabel = new QLabel(tr("Content:"));
+    m_contentLabel = new QLabel(tr("Description:"));
     m_contentLabel->setFont(mlabelF);
     m_contentLabel->setPalette(pa);
     m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -588,7 +588,7 @@ void CSchceduleDlg::initUI()
 
     m_textEdit->setPalette(tpa);
     if (m_type == 1) {
-        m_textEdit->setPlaceholderText(tr("New Schedule"));
+        m_textEdit->setPlaceholderText(tr("New Event"));
         //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
         QWidget *mpContentWidget = m_textEdit->viewport();
         //设置事件过滤器
@@ -616,7 +616,7 @@ void CSchceduleDlg::initUI()
     QHBoxLayout *beginLabellayout  = new QHBoxLayout;
     beginLabellayout->setSpacing(0);
     beginLabellayout->setMargin(0);
-    m_beginTimeLabel = new QLabel (tr("Begin Time:"));
+    m_beginTimeLabel = new QLabel (tr("Starts:"));
     m_beginTimeLabel->setFont(mlabelF);
     m_beginTimeLabel->setPalette(pa);
     m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -646,7 +646,7 @@ void CSchceduleDlg::initUI()
     QHBoxLayout *enQLabellayout  = new QHBoxLayout;
     enQLabellayout->setSpacing(0);
     enQLabellayout->setMargin(0);
-    m_endTimeLabel = new QLabel (tr("End Time:"));
+    m_endTimeLabel = new QLabel (tr("Ends:"));
     m_endTimeLabel->setFont(mlabelF);
     m_endTimeLabel->setPalette(pa);
     m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -670,7 +670,7 @@ void CSchceduleDlg::initUI()
     QHBoxLayout *rminQLabellayout  = new QHBoxLayout;
     rminQLabellayout->setSpacing(0);
     rminQLabellayout->setMargin(0);
-    m_remindSetLabel = new QLabel (tr("Remind Set:"));
+    m_remindSetLabel = new QLabel (tr("Remind Me:"));
     m_remindSetLabel->setFont(mlabelF);
     m_remindSetLabel->setPalette(pa);
     m_remindSetLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -694,12 +694,12 @@ void CSchceduleDlg::initUI()
     m_beginrepeatLabel->setFixedWidth(78);
     m_beginrepeatCombox = new DComboBox();
     m_beginrepeatCombox->setFixedSize(200, 36);
-    m_beginrepeatCombox->addItem(tr("None"));
-    m_beginrepeatCombox->addItem(tr("Every day"));
-    m_beginrepeatCombox->addItem(tr("Every working day"));
-    m_beginrepeatCombox->addItem(tr("Once a week"));
-    m_beginrepeatCombox->addItem(tr("A month"));
-    m_beginrepeatCombox->addItem(tr("Every year"));
+    m_beginrepeatCombox->addItem(tr("Never"));
+    m_beginrepeatCombox->addItem(tr("Daily"));
+    m_beginrepeatCombox->addItem(tr("Weekdays"));
+    m_beginrepeatCombox->addItem(tr("Weekly"));
+    m_beginrepeatCombox->addItem(tr("Monthly"));
+    m_beginrepeatCombox->addItem(tr("Yearly"));
     repeatLabellayout->addWidget(m_beginrepeatLabel);
     repeatLabellayout->addWidget(m_beginrepeatCombox);
     repeatLabellayout->addStretch();
@@ -716,8 +716,8 @@ void CSchceduleDlg::initUI()
     m_endrepeatCombox = new DComboBox();
     m_endrepeatCombox->setFixedSize(200, 36);
     m_endrepeatCombox->addItem(tr("Never"));
-    m_endrepeatCombox->addItem(tr("In"));
-    m_endrepeatCombox->addItem(tr("On the date"));
+    m_endrepeatCombox->addItem(tr("After"));
+    m_endrepeatCombox->addItem(tr("On"));
     endrepeatLabellayout->addWidget(m_endrepeatLabel);
     endrepeatLabellayout->addWidget(m_endrepeatCombox);
 
@@ -732,7 +732,7 @@ void CSchceduleDlg::initUI()
     QRegExp rx("^[1-9]\\d{0,2}$");
     QValidator *validator = new QRegExpValidator(rx, this);
     m_endrepeattimes->lineEdit()->setValidator(validator);
-    m_endrepeattimesLabel = new QLabel(tr("s"));
+    m_endrepeattimesLabel = new QLabel(tr("time(s)"));
     m_endrepeattimesLabel->setFont(mlabelF);
     m_endrepeattimesLabel->setPalette(pa);
     m_endrepeattimesLabel->setFixedHeight(36);

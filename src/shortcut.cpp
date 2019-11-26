@@ -40,7 +40,7 @@ Shortcut::Shortcut(QObject *parent) : QObject(parent)
 
 
     group3.groupItems <<
-                      ShortcutItem(tr("Create"),       "Ctrl+N") <<
+                      ShortcutItem(tr("New event"),       "Ctrl+N") <<
                       ShortcutItem(tr("Delete"),       "Delete") <<
                       ShortcutItem(tr("Cancel Dialog"),   "Esc");;
 

@@ -94,10 +94,10 @@ void CSchceduleSearchItem::slotDelete()
     if (m_ScheduleInfo.rpeat == 0) {
         CSchceduleCtrlDlg msgBox;
 
-        msgBox.setText(tr("You are deleted schedule"));
-        msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
+        msgBox.setText(tr("You are deleting an event."));
+        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
         DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-        DPushButton *yesButton = msgBox.addPushButton(tr("Delete Schedule"), 1);
+        DPushButton *yesButton = msgBox.addPushButton(tr("Delete"), 1);
         msgBox.updatesize();
         DPalette pa = yesButton->palette();
         if (themetype == 0 || themetype == 1) {
@@ -119,11 +119,11 @@ void CSchceduleSearchItem::slotDelete()
         if (m_ScheduleInfo.RecurID == 0) {
             CSchceduleCtrlDlg msgBox;
 
-            msgBox.setText(tr("You are deleted schedule"));
-            msgBox.setInformativeText(tr("You want to delete all repeat of the schedule, or just delete the selected repeat?"));
+            msgBox.setText(tr("You are deleting an event."));
+            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
             DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-            DPushButton *yesallbutton = msgBox.addPushButton(tr("All Deleted"));
-            DPushButton *yesButton = msgBox.addPushButton(tr("Just Delete Schedule"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
 
 
             msgBox.updatesize();
@@ -153,11 +153,11 @@ void CSchceduleSearchItem::slotDelete()
             }
         } else {
             CSchceduleCtrlDlg msgBox;
-            msgBox.setText(tr("You are deleted schedule"));
-            msgBox.setInformativeText(tr("You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?"));
+            msgBox.setText(tr("You are deleting an event."));
+            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
             DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete all schedule in the future"));
-            DPushButton *yesButton = msgBox.addPushButton(tr("Just Delete Schedule"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All Future Events"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
             msgBox.updatesize();
             DPalette pa = yesButton->palette();
             if (themetype == 0 || themetype == 1) {
