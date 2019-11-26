@@ -346,7 +346,7 @@ void CSchceduleDlg::slotOkBt()
                         ScheduleDtailInfo updatescheduleData;
                         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
                         updatescheduleData.enddata.type = 2;
-                        updatescheduleData.enddata.date = m_scheduleDtailInfo.beginDateTime;
+                        updatescheduleData.enddata.date = m_scheduleDtailInfo.beginDateTime.addDays(-1);
                         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(updatescheduleData);
                     } else if (msgBox.clickButton() == yesButton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
