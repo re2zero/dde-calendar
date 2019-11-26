@@ -233,7 +233,7 @@ void CSchedulesDBus::parsingScheduleRRule(QString str, ScheduleDtailInfo &info)
                 info.enddata.type = 2;
                 info.enddata.date = QDateTime::fromString(liststr.at(1).left(liststr.at(1).count() - 1), "yyyyMMddThhmmss");
                 //info.enddata.date = fromconvertData(liststr.at(1));
-                info.enddata.date = info.enddata.date.addDays(1);
+                info.enddata.date = info.enddata.date;
             }
         }
     }
