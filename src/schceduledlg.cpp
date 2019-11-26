@@ -496,7 +496,7 @@ void CSchceduleDlg::initUI()
     m_titleLabel = new QLabel(this);
     QFont titlelabelF;
     titlelabelF.setFamily("SourceHanSansSC");
-    titlelabelF.setWeight(QFont::Bold);
+    titlelabelF.setWeight(QFont::DemiBold);
     titlelabelF.setPixelSize(17);
     QColor btitleColor = "#000000";
     btitleColor.setAlphaF(0.01);

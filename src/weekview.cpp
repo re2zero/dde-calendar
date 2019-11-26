@@ -182,10 +182,10 @@ void CWeekView::paintCell(QWidget *cell)
 
         if (cell->width() > cell->height()) {
             hh = cell->height();
-            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, hh * 0.1071, hh, hh);
+            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 + 1, 4, hh, hh);
         } else {
             hh = cell->width();
-            fillRect = QRect(0, (cell->height() - hh) / 2.0  + hh * 0.1071, hh, hh);
+            fillRect = QRect(1, (cell->height() - hh) / 2.0  + 4, hh, hh);
         }
         QPixmap pixmap;
         if (m_themetype == 2)

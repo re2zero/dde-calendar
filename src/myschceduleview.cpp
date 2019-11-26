@@ -224,7 +224,7 @@ void CMySchceduleView::initUI()
 
     QFont labelTitle;
     labelTitle.setFamily("SourceHanSansSC");
-    labelTitle.setWeight(QFont::Bold);
+    labelTitle.setWeight(QFont::DemiBold);
     labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
