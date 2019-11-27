@@ -551,7 +551,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation type="vanished">确定</translation>
     </message>
     <message>
         <source>Never</source>
@@ -688,6 +688,10 @@
     <message>
         <source>time(s)</source>
         <translation>次后</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>保存</translation>
     </message>
 </context>
 <context>

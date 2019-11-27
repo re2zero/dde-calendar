@@ -767,7 +767,7 @@ void CSchceduleDlg::initUI()
     downlayout->setContentsMargins(0, 0, 0, 0);
     m_cancelBt = new DPushButton(tr("Cancel"));
     m_cancelBt->setFixedSize(189, 36);
-    m_OkBt = new DPushButton(tr("OK"));
+    m_OkBt = new DPushButton(tr("Save"));
     m_OkBt->setFixedSize(189, 36);
     DPalette okpa = m_OkBt->palette();
     if (themetype == 0 || themetype == 1) {

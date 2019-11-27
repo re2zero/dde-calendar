@@ -307,7 +307,7 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
         if (locale.language() == QLocale::Chinese) {
             m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
         } else {
-            m_YearLabel->setText(QLocale().toString(date));
+            m_YearLabel->setText(locale.toString(date, QLocale::ShortFormat));
         }
 
         m_LunarLabel->setText(detail.mLunarMonthName + detail.mLunarDayName);
@@ -339,7 +339,7 @@ void CDayWindow::slotcurrentDateChanged(QDate date)
     if (locale.language() == QLocale::Chinese) {
         m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
     } else {
-        m_YearLabel->setText(QLocale().toString(date));
+        m_YearLabel->setText(locale.toString(date, QLocale::ShortFormat));
     }
     //m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
     m_scheduleView->setRange(m_currentdate, m_currentdate);
