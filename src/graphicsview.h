@@ -32,7 +32,7 @@ class CGraphicsView : public DGraphicsView
     Q_OBJECT
 
 public:
-    CGraphicsView(QWidget *parent);
+    CGraphicsView(QWidget *parent, int viewType = 0);
     ~CGraphicsView();
     void setMargins(int left, int top, int right, int bottom);
     QMargins getMargins()
@@ -275,6 +275,7 @@ private:
     int                           m_cuttrnttimetype = 0;
     QTimer                       *m_timer;
     QMutex                        m_Mutex;
+    int                       m_viewType = 0;
 };
 
 #endif // GRAPHICSVIEW_H

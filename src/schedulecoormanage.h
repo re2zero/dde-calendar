@@ -37,6 +37,10 @@ public:
     QDateTime getDate(QPointF pos);
     QDate getsDate(QPointF pos);
     float getHeight(QTime time);
+    QDate getBegindate()
+    {
+        return  m_begindate;
+    }
 private:
     int                  m_width;
     int                  m_height;

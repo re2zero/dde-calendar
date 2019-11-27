@@ -37,8 +37,8 @@
 #include <QShortcut>
 #include <QTimer>
 DGUI_USE_NAMESPACE
-CGraphicsView::CGraphicsView(QWidget *parent)
-    : DGraphicsView(parent)
+CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
+    : DGraphicsView(parent), m_viewType(viewType)
 {
     setContentsMargins(0, 0, 0, 0);
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -759,14 +759,17 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
             t_painter.setPen(m_LRPen);
             for (int i = 0; i < m_vLRLarge.size() - 1; ++i)
                 t_painter.drawLine(QPoint(0, m_vLRLarge[i] - 1), QPoint(t_width, m_vLRLarge[i] - 1));
-            t_painter.restore();
-            t_painter.save();
-            QPen pen = m_LRPen;
-            pen.setColor(m_currenttimecolor);
-            t_painter.setPen(pen);
-            int index = m_vLRLarge.count() - 1;
-            t_painter.drawLine(QPoint(0, m_vLRLarge[index] - 1), QPoint(t_width, m_vLRLarge[index] - 1));
-            t_painter.restore();
+            if (m_viewType == 1 && m_coorManage->getBegindate() == QDate::currentDate()) {
+                t_painter.restore();
+                t_painter.save();
+                QPen pen = m_LRPen;
+                pen.setColor(m_currenttimecolor);
+                t_painter.setPen(pen);
+                int index = m_vLRLarge.count() - 1;
+                t_painter.drawLine(QPoint(0, m_vLRLarge[index] - 1), QPoint(t_width, m_vLRLarge[index] - 1));
+                t_painter.restore();
+            }
+
         }
     }
 }

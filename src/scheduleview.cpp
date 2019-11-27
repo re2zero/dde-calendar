@@ -296,13 +296,15 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
             }
         }
-        painter.restore();
-        painter.save();
-        painter.setFont(font);
-        painter.setPen(m_currenttimecolor);
-        QString str = QTime::currentTime().toString("ap HH:mm");
-        painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight), Qt::AlignRight, str);
-        painter.restore();
+        if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
+            painter.restore();
+            painter.save();
+            painter.setFont(font);
+            painter.setPen(m_currenttimecolor);
+            QString str = QTime::currentTime().toString("ap HH:mm");
+            painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight), Qt::AlignRight, str);
+            painter.restore();
+        }
     }
 
     painter.save();
@@ -378,7 +380,7 @@ void CScheduleView::initUI()
     QGridLayout *layout = new QGridLayout;
     layout->setSpacing(0);
     layout->setMargin(0);
-    m_graphicsView = new CGraphicsView(0);
+    m_graphicsView = new CGraphicsView(0, m_viewType);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this, SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
     layout->addWidget(m_graphicsView);
     setLayout(layout);
