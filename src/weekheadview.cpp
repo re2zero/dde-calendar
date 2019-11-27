@@ -194,7 +194,7 @@ void CWeekHeadView::setWeekDay(QVector<QDate> vDays)
 
 void CWeekHeadView::setMounthLabelWidth(int w, int rw)
 {
-    m_monthW = w;
+    m_monthW = w + 1;
     m_fixwidth = rw;
     /*
         int mh = height();
@@ -659,10 +659,21 @@ void CWeekHeadView::resizeEvent(QResizeEvent *event)
     float interval =  1.0 * (width() - m_monthW) / 7;
     //int ww = (width() - m_monthW) * 1.0 / 7 + 0.5;
     int h = height();
-    for (int i(0); i != 6; ++i) {
-        m_cellList.at(i)->setFixedSize(interval + 1, h);
+    int tt = 0;
+    int n = 0;
+    for (float i = interval; i <= width() - m_monthW; i = i + interval) {
+        if (n > 6) break;
+        m_cellList.at(n)->setFixedSize(i - tt, h);
+        tt = i;
+        n++;
     }
-    m_cellList.at(0)->setFixedSize(interval, h);
-    m_cellList.at(6)->setFixedSize(interval, h);
+    if (n == 6) {
+        m_cellList.at(n)->setFixedSize(width() - m_monthW - tt, h);
+    }
+    //for (int i(0); i != 7; ++i) {
+    //  m_cellList.at(i)->setFixedSize(interval + 0.5, h);
+    //}
+    //m_cellList.at(0)->setFixedSize(interval, h);
+    //m_cellList.at(6)->setFixedSize(interval, h);
     DFrame::resizeEvent(event);
 }
