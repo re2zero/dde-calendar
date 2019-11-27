@@ -397,9 +397,9 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
                 const int pos = m_cellList.indexOf(cell);
                 m_cellfoceflag[pos] = true;
                 m_cellList[pos]->update();
-                if (getShowSolarDayByDate(m_days[pos])) {
+                /*if (getShowSolarDayByDate(m_days[pos])) {
                     emit signalsViewSelectDate(m_days[pos]);
-                }
+                }*/
             }
         } else if (e->type() == QEvent::ContextMenu) {
             DMenu Context(this);
