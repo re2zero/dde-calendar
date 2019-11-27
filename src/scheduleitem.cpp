@@ -140,6 +140,10 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->drawRect(rect);
         painter->restore();
     }
+    if (m_selectflag) {
+        gdcolor.textColor.setAlphaF(0.6);
+        gdcolor.timeColor.setAlphaF(0.6);
+    }
     painter->save();
 
     QPen pen(gdcolor.shadowcolor);

@@ -269,43 +269,86 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     font.setWeight(QFont::Normal);
     font.setPixelSize(11);
 
-    if (m_cuttrnttimetype == 0) {
-        painter.save();
-        painter.setFont(font);
-        painter.setPen(m_timeColor);
-        for (int i = 0; i < m_vPos.size(); i++) {
-            if (m_vHours[i] == 0) continue;
-            if (m_vHours[i] == 24) continue;
-            if (m_vHours[i] > 12) {
-                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
-            } else {
-                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
-            }
-        }
-        painter.restore();
-    } else {
-        painter.save();
-        painter.setFont(font);
-        painter.setPen(m_timeColor);
-        for (int i = 0; i < m_vPos.size() - 1; i++) {
-            if (m_vHours[i] == 0) continue;
-            if (m_vHours[i] == 24) continue;
-            if (m_vHours[i] > 12) {
-                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
-            } else {
-                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
-            }
-        }
-        if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
-            painter.restore();
+    QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        if (m_cuttrnttimetype == 0) {
             painter.save();
             painter.setFont(font);
-            painter.setPen(m_currenttimecolor);
-            QString str = QTime::currentTime().toString("ap HH:mm");
-            painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight), Qt::AlignRight, str);
+            painter.setPen(m_timeColor);
+            for (int i = 0; i < m_vPos.size(); i++) {
+                if (m_vHours[i] == 0) continue;
+                if (m_vHours[i] == 24) continue;
+                if (m_vHours[i] > 12) {
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
+                } else {
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
+                }
+            }
             painter.restore();
+        } else {
+            painter.save();
+            painter.setFont(font);
+            painter.setPen(m_timeColor);
+            for (int i = 0; i < m_vPos.size() - 1; i++) {
+                if (m_vHours[i] == 0) continue;
+                if (m_vHours[i] == 24) continue;
+                if (m_vHours[i] > 12) {
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
+                } else {
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("AM ") + QString::number(m_vHours[i]) + tr(" h"));
+                }
+            }
+            if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
+                painter.restore();
+                painter.save();
+                painter.setFont(font);
+                painter.setPen(m_currenttimecolor);
+                QString str = QTime::currentTime().toString("AP HH:mm");
+                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight), Qt::AlignRight, str);
+                painter.restore();
+            }
+        }
+    } else {
+        if (m_cuttrnttimetype == 0) {
+            painter.save();
+            painter.setFont(font);
+            painter.setPen(m_timeColor);
+            for (int i = 0; i < m_vPos.size(); i++) {
+                if (m_vHours[i] == 0) continue;
+                if (m_vHours[i] == 24) continue;
+                if (m_vHours[i] > 12) {
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
+                } else {
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
+                }
+            }
+            painter.restore();
+        } else {
+            painter.save();
+            painter.setFont(font);
+            painter.setPen(m_timeColor);
+            for (int i = 0; i < m_vPos.size() - 1; i++) {
+                if (m_vHours[i] == 0) continue;
+                if (m_vHours[i] == 24) continue;
+                if (m_vHours[i] > 12) {
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
+                } else {
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
+                }
+            }
+            if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
+                painter.restore();
+                painter.save();
+                painter.setFont(font);
+                painter.setPen(m_currenttimecolor);
+                QString str = QTime::currentTime().toString("AP HH:mm");
+                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight), Qt::AlignRight, str);
+                painter.restore();
+            }
         }
     }
+
+
 
     painter.save();
     QFont alldayfont;

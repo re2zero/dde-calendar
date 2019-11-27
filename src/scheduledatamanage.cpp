@@ -47,9 +47,9 @@ void CScheduleDataManage::setTheMe(int type)
         CSchedulesColor workC;
         workC.type = 1;
         workC.gradientFromC = "#FBCEB7";
-        workC.gradientFromC.setAlphaF(0.8);
+        workC.gradientFromC.setAlphaF(0.7);
         workC.gradientToC = "#FA9D9A";
-        workC.gradientToC.setAlphaF(0.8);
+        workC.gradientToC.setAlphaF(0.7);
         workC.Purecolor = "#F85566";
         workC.Purecolor.setAlphaF(0.2);
         workC.shadowcolor = "#FB2525";
@@ -74,9 +74,9 @@ void CScheduleDataManage::setTheMe(int type)
         CSchedulesColor lifeC;
         lifeC.type = 2;
         lifeC.gradientFromC = "#B7E6FB";
-        lifeC.gradientFromC.setAlphaF(0.8);
+        lifeC.gradientFromC.setAlphaF(0.7);
         lifeC.gradientToC = "#D4FFB3";
-        lifeC.gradientToC.setAlphaF(0.8);
+        lifeC.gradientToC.setAlphaF(0.7);
         lifeC.Purecolor = "#6FFF00";
         lifeC.Purecolor.setAlphaF(0.2);
         lifeC.shadowcolor = "#82D245";
@@ -100,9 +100,9 @@ void CScheduleDataManage::setTheMe(int type)
         CSchedulesColor otherC;
         otherC.type = 3;
         otherC.gradientFromC = "#FBE9B7";
-        otherC.gradientFromC.setAlphaF(0.8);
+        otherC.gradientFromC.setAlphaF(0.7);
         otherC.gradientToC = "#DFB3FF";
-        otherC.gradientToC.setAlphaF(0.8);
+        otherC.gradientToC.setAlphaF(0.7);
         otherC.Purecolor = "#D191FF";
         otherC.Purecolor.setAlphaF(0.2);
         otherC.shadowcolor = "#BA60FA";
@@ -127,8 +127,8 @@ void CScheduleDataManage::setTheMe(int type)
         workC.type = 1;
         workC.gradientFromC = "#965A26";
         workC.gradientToC = "#8B2521";
-        workC.gradientToC.setAlphaF(0.8);
-        workC.gradientFromC.setAlphaF(0.8);
+        workC.gradientToC.setAlphaF(0.7);
+        workC.gradientFromC.setAlphaF(0.7);
         workC.Purecolor = "#F85566";
         workC.Purecolor.setAlphaF(0.1);
         workC.shadowcolor = "#FB2525";
@@ -155,8 +155,8 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.type = 2;
         lifeC.gradientFromC = "#2D6883";
         lifeC.gradientToC = "#5D7D44";
-        lifeC.gradientToC.setAlphaF(0.8);
-        lifeC.gradientFromC.setAlphaF(0.8);
+        lifeC.gradientToC.setAlphaF(0.7);
+        lifeC.gradientFromC.setAlphaF(0.7);
         lifeC.Purecolor = "#59F88D";
         lifeC.Purecolor.setAlphaF(0.1);
         lifeC.shadowcolor = "#25FA6B";
@@ -182,8 +182,8 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.type = 3;
         otherC.gradientFromC = "#8C4E2C";
         otherC.gradientToC = "#7D37AF";
-        otherC.gradientToC.setAlphaF(0.8);
-        otherC.gradientFromC.setAlphaF(0.8);
+        otherC.gradientToC.setAlphaF(0.7);
+        otherC.gradientFromC.setAlphaF(0.7);
         otherC.Purecolor = "#C155F8";
         otherC.Purecolor.setAlphaF(0.1);
         otherC.shadowcolor = "#BE3DFF";

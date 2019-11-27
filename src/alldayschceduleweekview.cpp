@@ -265,7 +265,9 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
             color1 = gdcolor.hightlightgradientFromC;
             color2 = gdcolor.hightlightgradientToC;
         }
-
+        if (m_selectflag) {
+            textcolor.setAlphaF(0.6);
+        }
         linearGradient.setColorAt(0, color1);
         linearGradient.setColorAt(1, color2);
         QRect fillRect = drawrect;
