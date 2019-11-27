@@ -52,7 +52,13 @@ void CMonthWindow::setFirstWeekday(int weekday)
 void CMonthWindow::setDate(QDate date)
 {
     m_currentdate = date;
-    m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
+    QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
+    } else {
+        m_YearLabel->setText(QString::number(date.year()));
+    }
+    //m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
     m_monthDayView->setCurrentDate(date);
 }
 
@@ -408,7 +414,13 @@ void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail
     QDate currentdate = m_currentdate;
     m_currentdate = date;
     if (type == 1) {
-        m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
+        QLocale locale;
+        if (locale.language() == QLocale::Chinese) {
+            m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
+        } else {
+            m_YearLabel->setText(QString::number(date.year()));
+        }
+        // m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
         m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
         //m_animationContainer->hide();
 

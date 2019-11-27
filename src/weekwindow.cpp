@@ -461,7 +461,13 @@ void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLu
         }
         m_scheduleView->setDate(tvdate, tvStr);
         if (type == 1) {
-            m_YearLabel->setText(QString::number(vdate.at(0).year()) + tr("Y"));
+            QLocale locale;
+            if (locale.language() == QLocale::Chinese) {
+                m_YearLabel->setText(QString::number(vdate.at(0).year()) + tr("Y"));
+            } else {
+                m_YearLabel->setText(QString::number(vdate.at(0).year()));
+            }
+            //m_YearLabel->setText(QString::number(vdate.at(0).year()) + tr("Y"));
             m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
         }
     }

@@ -578,7 +578,12 @@ void CSchceduleSearchDateItem::paintEvent(QPaintEvent *e)
     painter.setFont(m_font);
     painter.setPen(m_textcolor);
 
-    QString datestr = QString::number(m_date.year()) + tr("Y") + QString::number(m_date.month()) + tr("M") + QString::number(m_date.day()) + tr("D");
-
+    QLocale locale;
+    QString datestr;
+    if (locale.language() == QLocale::Chinese) {
+        datestr = QString::number(m_date.year()) + tr("Y") + QString::number(m_date.month()) + tr("M") + QString::number(m_date.day()) + tr("D");
+    } else {
+        datestr = m_date.toString("yyyy/M/d");
+    }
     painter.drawText(QRect(12, 8, labelwidth, labelheight - 8), Qt::AlignLeft, datestr);
 }

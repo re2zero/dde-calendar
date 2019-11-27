@@ -458,7 +458,13 @@ void CYearWindow::slotcurrentDateChanged(QDate date)
         m_today->setText(tr("Return"));
     }
     CaLunarDayInfo info = getCaLunarDayInfo(m_currentdate);
-    m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
+
+    QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
+    } else {
+        m_YearLabel->setText(QString::number(date.year()));
+    }
     m_YearLunarLabel->setText("-" + info.mGanZhiYear + info.mZodiac + "年-");
     m_YearLunarDayLabel->setText("-" + tr("Lunar") + info.mLunarMonthName + info.mLunarDayName + "-");
 }
