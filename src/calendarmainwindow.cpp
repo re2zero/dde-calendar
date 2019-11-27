@@ -720,6 +720,7 @@ void Calendarmainwindow::slotTransitSearchSchedule(int id)
     }
     break;
     }
+    m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
 }
 
 void Calendarmainwindow::slotsearchDateSelect(QDate date)

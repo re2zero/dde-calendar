@@ -328,6 +328,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                     msgBox.exec();
 
                     if (msgBox.clickButton() == noButton) {
+                        emit signalViewtransparentFrame(0);
                         return;
                     } else if (msgBox.clickButton() == yesButton) {
                         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
@@ -355,6 +356,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                         msgBox.exec();
 
                         if (msgBox.clickButton() == noButton) {
+                            emit signalViewtransparentFrame(0);
                             return;
                         } else if (msgBox.clickButton() == yesallbutton) {
                             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
@@ -387,6 +389,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                         msgBox.exec();
 
                         if (msgBox.clickButton() == noButton) {
+                            emit signalViewtransparentFrame(0);
                             return;
                         } else if (msgBox.clickButton() == yesallbutton) {
                             ScheduleDtailInfo newschedule;

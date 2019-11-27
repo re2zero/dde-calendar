@@ -131,6 +131,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
         msgBox.exec();
 
         if (msgBox.clickButton() == noButton) {
+            emit signalViewtransparentFrame(0);
             return;
         } else if (msgBox.clickButton() == yesButton) {
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_ScheduleInfo.id);
@@ -161,6 +162,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
             msgBox.exec();
 
             if (msgBox.clickButton() == noButton) {
+                emit signalViewtransparentFrame(0);
                 return;
             } else if (msgBox.clickButton() == yesallbutton) {
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_ScheduleInfo.id);
@@ -195,6 +197,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
             msgBox.exec();
 
             if (msgBox.clickButton() == noButton) {
+                emit signalViewtransparentFrame(0);
                 return;
             } else if (msgBox.clickButton() == yesallbutton) {
                 ScheduleDtailInfo newschedule;
@@ -212,8 +215,9 @@ void CMonthSchceduleWidgetItem::slotDelete()
             }
         }
     }
-    emit signalsDelete(this);
     emit signalViewtransparentFrame(0);
+    emit signalsDelete(this);
+
 }
 //有问题
 void CMonthSchceduleWidgetItem::slotDoubleEvent(int type)

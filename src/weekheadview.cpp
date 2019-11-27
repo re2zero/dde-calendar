@@ -504,7 +504,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.drawPixmap(fillRect, pixmap);
             painter.restore();
         } else {
-            QRect fillRect(bw + 8, bh - 1, 36, 36);
+            QRect fillRect(bw + 2, bh - 1, 36, 36);
             /*
             painter.setRenderHints(QPainter::HighQualityAntialiasing);
             painter.setBrush(QBrush(m_backgroundCircleColor));
@@ -567,12 +567,12 @@ void CWeekHeadView::paintCell(QWidget *cell)
         painter.drawText(QRect(bw + 24, bh, 30, 25), Qt::AlignCenter, dayWeek);
 
     } else {
-        painter.drawText(QRect(bw, bh, 52, 26), Qt::AlignCenter, dayNum);
+        painter.drawText(QRect(bw, bh, 40, 26), Qt::AlignCenter, dayNum);
         if (d == 6 || d == 7)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
-        painter.drawText(QRect(bw + 52, bh, 52, 26), Qt::AlignCenter, dayWeek);
+        painter.drawText(QRect(bw + 40, bh, 40, 26), Qt::AlignCenter, dayWeek);
     }
 
     // draw text of day type
