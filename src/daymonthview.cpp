@@ -78,6 +78,7 @@ void CDayMonthView::setLunarVisible(bool visible)
     m_yiLabel->setVisible(visible);
     m_jiLabel->setVisible(visible);
     m_currentLuna->setVisible(visible);
+    m_splitline->setVisible(visible);
     update();
 }
 
