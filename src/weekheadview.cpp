@@ -661,14 +661,14 @@ void CWeekHeadView::resizeEvent(QResizeEvent *event)
     int h = height();
     int tt = 0;
     int n = 0;
-    for (float i = interval; i <= width() - m_monthW; i = i + interval) {
+    for (float i = interval; n <= 5; i = i + interval) {
         if (n > 6) break;
-        m_cellList.at(n)->setFixedSize(i - tt, h);
-        tt = i;
+        m_cellList.at(n)->setFixedSize(i + 0.5 - tt, h);
+        tt = i + 0.5;
         n++;
     }
     if (n == 6) {
-        m_cellList.at(n)->setFixedSize(width() - m_monthW - tt, h);
+        m_cellList.at(n)->setFixedSize(width() - m_monthW - tt - 1, h);
     }
     //for (int i(0); i != 7; ++i) {
     //  m_cellList.at(i)->setFixedSize(interval + 0.5, h);

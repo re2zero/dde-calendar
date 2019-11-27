@@ -373,9 +373,14 @@ void CScheduleView::paintEvent(QPaintEvent *event)
         painter.save();
         painter.setPen(Qt::SolidLine);
         painter.setPen(m_linecolor);
-        for (int i = 1; i < m_TotalDay; i++) {
-            painter.drawLine(QPoint(m_leftMagin + i * intenval + 1, 1), QPoint(m_leftMagin  + i * intenval + 1, m_topMagin + 1));
+
+        for (float i = intenval; i < width() - m_leftMagin; i = i + intenval) {
+            painter.drawLine(QPoint(i + m_leftMagin + 1, 1), QPoint(i + m_leftMagin + 1, m_topMagin + 1));
         }
+
+        //for (int i = 1; i < m_TotalDay; i++) {
+        //   painter.drawLine(QPoint(m_leftMagin + i * intenval + 1, 1), QPoint(m_leftMagin  + i * intenval + 1, m_topMagin + 1));
+        //}
         painter.restore();
         painter.save();
         for (int i = 0; i != 7; ++i) {
@@ -384,7 +389,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.setBrush(m_weekColor);
             painter.setPen(Qt::NoPen);
             if (d == 6 ) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, intenval - 1, m_topMagin + 1));
+                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, width() - m_leftMagin - i * intenval - 2, m_topMagin + 1));
             }
             if (d == 7) {
                 painter.drawRect(QRect(m_leftMagin + i * intenval + 2, 0, intenval, m_topMagin + 1));
