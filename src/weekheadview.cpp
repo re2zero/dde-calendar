@@ -668,7 +668,7 @@ void CWeekHeadView::resizeEvent(QResizeEvent *event)
         n++;
     }
     if (n == 6) {
-        m_cellList.at(n)->setFixedSize(width() - m_monthW - tt - 1, h);
+        m_cellList.at(n)->setFixedSize(width() - m_monthW - tt, h);
     }
     //for (int i(0); i != 7; ++i) {
     //  m_cellList.at(i)->setFixedSize(interval + 0.5, h);

@@ -389,7 +389,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.setBrush(m_weekColor);
             painter.setPen(Qt::NoPen);
             if (d == 6 ) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, width() - m_leftMagin - i * intenval - 2, m_topMagin + 1));
+                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0, width() - m_leftMagin - i * intenval, m_topMagin + 1));
             }
             if (d == 7) {
                 painter.drawRect(QRect(m_leftMagin + i * intenval + 2, 0, intenval, m_topMagin + 1));
