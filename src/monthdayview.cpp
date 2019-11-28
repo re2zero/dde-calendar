@@ -134,7 +134,7 @@ void CMonthDayView::setTheMe(int type)
         m_backgrounddefaultColor = framecolor;
         m_currentDayTextColor = "#C0C6D4";
         m_backgroundcurrentDayColor = "#0059D2";
-        m_fillColor = "#000000";
+        m_fillColor = "#FFFFFF";
         m_fillColor.setAlphaF(0.05);
         frameclor = m_fillColor;
         m_fillColor.setAlphaF(0);
