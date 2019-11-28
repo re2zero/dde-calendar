@@ -166,10 +166,6 @@
         <translation>星期天 </translation>
     </message>
     <message>
-        <source>Return today</source>
-        <translation type="vanished">返回今天</translation>
-    </message>
-    <message>
         <source>Y </source>
         <translation>年</translation>
     </message>
@@ -366,10 +362,6 @@
     <message>
         <source>Y</source>
         <translation>年</translation>
-    </message>
-    <message>
-        <source>Return today</source>
-        <translation type="vanished">返回今天</translation>
     </message>
     <message>
         <source>Today</source>
@@ -857,10 +849,6 @@
 </context>
 <context>
     <name>CWeekWindow</name>
-    <message>
-        <source>Return today</source>
-        <translation type="vanished">返回今天</translation>
-    </message>
     <message>
         <source>Week</source>
         <translation>周</translation>

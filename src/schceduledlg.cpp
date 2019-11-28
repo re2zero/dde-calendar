@@ -189,7 +189,7 @@ void CSchceduleDlg::slotOkBt()
         } else if (m_endrepeatCombox->currentIndex() == 2) {
             QDateTime endrpeattime = beginDateTime;
             endrpeattime.setDate(m_endRepeatDate->date());
-            if (beginDateTime >= endrpeattime) {
+            if (beginDateTime > endrpeattime) {
                 QMessageBox::warning(this, tr("error"), tr("The end repeat time less than begin time!"));
                 return;
             }
