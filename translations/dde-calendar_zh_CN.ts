@@ -559,7 +559,7 @@
     </message>
     <message>
         <source>Never</source>
-        <translation>永不</translation>
+        <translation>无</translation>
     </message>
     <message>
         <source>New Schedule</source>
