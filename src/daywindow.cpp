@@ -97,6 +97,11 @@ void CDayWindow::setTime(QTime time)
 {
     m_scheduleView->setTime(time);
 }
+
+void CDayWindow::updateHigh()
+{
+    m_scheduleView->updateHigh();
+}
 void CDayWindow::setDate(QDate date)
 {
     m_currentdate = date;

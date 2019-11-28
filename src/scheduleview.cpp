@@ -122,6 +122,12 @@ void CScheduleView::setTime(QTime time)
 {
     m_graphicsView->setTime(time);
 }
+
+void CScheduleView::updateHigh()
+{
+    m_graphicsView->updateHigh();
+    m_alldaylist->updateHigh();
+}
 bool MScheduleTimeThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
     if (s1.beginDateTime.secsTo(s1.endDateTime) == s2.beginDateTime.secsTo(s2.endDateTime)) {

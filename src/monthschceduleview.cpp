@@ -237,7 +237,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
     int labelheight = height();
     float avge = 1;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
-
+    m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
     QPainter painter(this);
     if (m_GradientFlag) {
         QLinearGradient linearGradient(0, 0, labelwidth, 0);
@@ -365,14 +365,13 @@ void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
-        m_highflag = true;
         update();
     }
 }
 
 void CMonthSchceduleWidgetItem::focusOutEvent(QFocusEvent *event)
 {
-    m_highflag = false;
+    //m_selectflag = false;
     update();
 }
 
@@ -787,6 +786,13 @@ void CMonthSchceduleView::updateData()
 
     updateDateShow(vCMDaySchedule);
 
+}
+
+void CMonthSchceduleView::updateHigh()
+{
+    for (int i = 0; i < m_scheduleShowItem.count(); i++) {
+        m_scheduleShowItem.at(i)->update();
+    }
 }
 void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule)
 {

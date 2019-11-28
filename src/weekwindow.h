@@ -55,6 +55,7 @@ public:
     void setSearchWFlag(bool flag);
     void clearSearch();
     void setSearchText(QString str);
+    void updateHigh();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);

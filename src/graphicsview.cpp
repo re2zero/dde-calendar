@@ -123,6 +123,12 @@ void CGraphicsView::setTheMe(int type)
     update();
 }
 
+void CGraphicsView::updateHigh()
+{
+    scene()->update();
+    update();
+}
+
 void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate )
 {
     m_graphicsScene->setSceneRect(0, 0, w, h);

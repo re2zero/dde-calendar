@@ -62,6 +62,7 @@ public:
         Normal = ShowLunar | ShowLunarFestivalHighlight,
     };
     void setTheMe(int type = 0);
+    void updateHigh();
 public:
     explicit CMonthView(QWidget *parent = 0);
     void setFirstWeekday(int weekday);

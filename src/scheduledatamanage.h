@@ -49,6 +49,10 @@ public:
     CScheduleDataCtrl *getscheduleDataCtrl();
 
     CSchedulesColor getScheduleColorByType(int type);
+
+
+    void setSearchResult(QVector<ScheduleDateRangeInfo> &vData);
+    bool getSearchResult(ScheduleDtailInfo info);//true 高亮
     void setTheMe(int type = 0);
     int getTheme()
     {
@@ -61,6 +65,7 @@ private:
 private:
     CScheduleDataCtrl           *m_scheduleDataCtrl;
     QVector<CSchedulesColor>    m_vScheduleColor;
+    QVector<ScheduleDateRangeInfo> m_vScheduleInfo;
     int                         m_theme = 0;
     static CScheduleDataManage  *m_vscheduleDataManage;
 };

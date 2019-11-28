@@ -127,6 +127,11 @@ void CMonthView::setTheMe(int type)
     m_MonthSchceduleView->setTheMe(type);
 }
 
+void CMonthView::updateHigh()
+{
+    m_MonthSchceduleView->updateHigh();
+}
+
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",

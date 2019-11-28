@@ -39,6 +39,24 @@ CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
     return color;
 }
 
+void CScheduleDataManage::setSearchResult(QVector<ScheduleDateRangeInfo> &vData)
+{
+    m_vScheduleInfo = vData;
+}
+
+bool CScheduleDataManage::getSearchResult(ScheduleDtailInfo info)
+{
+    for (int i = 0; i < m_vScheduleInfo.size(); i++) {
+        QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
+        for (int j = 0; j < scheduleInfolist.count(); j++) {
+            if (scheduleInfolist.at(j).id == info.id) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void CScheduleDataManage::setTheMe(int type)
 {
     m_theme = type;

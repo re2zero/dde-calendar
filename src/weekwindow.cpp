@@ -372,6 +372,11 @@ void CWeekWindow::setSearchText(QString str)
     m_searchText = str;
     //m_schceduleSearchView->slotsetSearch(str);
 }
+
+void CWeekWindow::updateHigh()
+{
+    m_scheduleView->updateHigh();
+}
 void CWeekWindow::slotReturnTodayUpdate()
 {
     setDate(QDate::currentDate());

@@ -103,20 +103,20 @@ void CScheduleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
-        m_highflag = true;
         update();
     }
 }
 
 void CScheduleItem::focusOutEvent(QFocusEvent *event)
 {
-    m_highflag = false;
+    //m_highflag = false;
     update();
 }
 
 void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /*= 0 */)
 {
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_scheduleInfo.type.ID);
+    m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_scheduleInfo);
 
     QColor bcolor = gdcolor.Purecolor;
 

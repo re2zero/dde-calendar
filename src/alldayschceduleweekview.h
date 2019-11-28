@@ -58,6 +58,7 @@ public:
         return m_coorManage;
     }
     void setLunarVisible(bool state);
+    void updateHigh();
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);

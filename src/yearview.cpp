@@ -196,6 +196,11 @@ void CYearView::setTheMe(int type)
     }
 }
 
+void CYearView::updateHigh()
+{
+
+}
+
 void CYearView::setCurrentDate(const QDate date, int type)
 {
     qDebug() << "set current date " << date;

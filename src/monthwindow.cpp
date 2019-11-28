@@ -182,6 +182,11 @@ void CMonthWindow::setSearchText(QString str)
     m_searchText = str;
     // m_schceduleSearchView->slotsetSearch(str);
 }
+
+void CMonthWindow::updateHigh()
+{
+    m_monthView->updateHigh();
+}
 void CMonthWindow::wheelEvent(QWheelEvent *e)
 {
     if (e->delta() < 0) {

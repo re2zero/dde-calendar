@@ -45,7 +45,7 @@ public:
     }
     void updateSelectState();
     void setTheMe(int type = 0);
-
+    void updateHigh();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalcurrentDateChanged(QDate date);

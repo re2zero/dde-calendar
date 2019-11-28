@@ -248,6 +248,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         avge = 0.5;
     }
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
+    m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
 
     QRect drawrect = m_coorManage->getAllDayDrawRegion(m_ScheduleInfo.beginDateTime.date(), m_ScheduleInfo.endDateTime.date());
     QPainter painter(this);
@@ -294,7 +295,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
             tstr = tstr + "...";
         }
 
-        painter.drawText(QRect(fillRect.topLeft().x() + 13, 0, fillRect.width(), fillRect.height()), Qt::AlignLeft, tstr);
+        painter.drawText(QRect(fillRect.topLeft().x() + 13, 2, fillRect.width(), fillRect.height()), Qt::AlignLeft, tstr);
         //if (m_transparentf) {
         //  painter.setBrush(m_transparentcolor);
         //  painter.setPen(Qt::NoPen);
@@ -388,14 +389,13 @@ void CAllDaySchceduleWeekWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
-        m_highflag = true;
         update();
     }
 }
 
 void CAllDaySchceduleWeekWidgetItem::focusOutEvent(QFocusEvent *event)
 {
-    m_highflag = false;
+    //m_highflag = false;
     update();
 }
 
@@ -426,6 +426,13 @@ void CAllDaySchceduleWeekView::setRange(int w, int h, QDate begindate, QDate end
 void CAllDaySchceduleWeekView::setLunarVisible(bool state)
 {
     m_LunarVisible = state;
+}
+
+void CAllDaySchceduleWeekView::updateHigh()
+{
+    for (int i = 0; i < m_baseShowItem.count(); i++) {
+        m_baseShowItem.at(i)->update();
+    }
 }
 
 CAllDaySchceduleWeekView::CAllDaySchceduleWeekView(QWidget *parent, int edittype) : DListWidget (parent)

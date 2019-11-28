@@ -234,6 +234,32 @@ void Calendarmainwindow::UpdateJob()
     }
 }
 
+void Calendarmainwindow::updateHigh()
+{
+    int index = m_stackWidget->currentIndex();
+    if (index < 0 || index > m_stackWidget->count() - 1) {
+
+        return;
+    }
+    switch (index) {
+    case 0: {
+        m_yearwindow->updateHigh();
+    }
+    case 1: {
+        m_monthWindow->updateHigh();
+    }
+    break;
+    case 2: {
+        m_weekWindow->updateHigh();
+    }
+    break;
+    case 3: {
+        m_DayWindow->updateHigh();
+    }
+    break;
+    }
+}
+
 void Calendarmainwindow::slotTheme(int type)
 {
     if (type == 0) {
@@ -625,6 +651,7 @@ void Calendarmainwindow::slotSreturnPressed()
 {
 #if 1
     m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
+    updateHigh();
 #else
     if (!m_searchflag) {
         m_dayButton->click();
@@ -653,6 +680,7 @@ void Calendarmainwindow::slotStextChanged()
         m_DayWindow->setSearchWFlag(false);
         m_contentBackground->setVisible(false);
     }
+    updateHigh();
 #else
     if (!m_searchflag) {
         m_dayButton->click();

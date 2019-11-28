@@ -400,6 +400,13 @@ void CYearWindow::setSearchText(QString str)
     m_searchText = str;
     // m_schceduleSearchView->slotsetSearch(str);
 }
+
+void CYearWindow::updateHigh()
+{
+    for (int i = 0; i < 12; i++) {
+        m_monthViewList.at(i)->updateHigh();
+    }
+}
 void CYearWindow::slotTransitSearchSchedule(int id)
 {
     // m_schceduleSearchView->slotsetSearch(m_searchText);

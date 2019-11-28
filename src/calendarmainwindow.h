@@ -51,6 +51,7 @@ public:
     bool analysisCreate(const QString &content, ScheduleDtailInfo &info);
     void viewWindow(int type, QDateTime datetime);
     void UpdateJob();
+    void updateHigh();
 public slots:
     void slotTheme(int type);
     void OpenSchedule(QString job);

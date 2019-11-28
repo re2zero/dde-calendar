@@ -550,10 +550,6 @@
         <translation>结束重复：</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation type="vanished">确定</translation>
-    </message>
-    <message>
         <source>Never</source>
         <translation>永不</translation>
     </message>

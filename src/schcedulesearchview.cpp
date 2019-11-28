@@ -300,6 +300,7 @@ CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
     setFocusPolicy(Qt::StrongFocus);
     m_bBackgroundcolor.setAlphaF(0.03);
     m_gradientItemList->setLineWidth(0);
+    m_labellist.clear();
 }
 
 CSchceduleSearchView::~CSchceduleSearchView()
@@ -331,12 +332,16 @@ void CSchceduleSearchView::setTheMe(int type)
 void CSchceduleSearchView::clearSearch()
 {
     m_vlistData.clear();
+
     //remove
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
         m_gradientItemList->removeItemWidget(item11);
     }
+    m_labellist.clear();
     m_gradientItemList->clear();
+    QVector<ScheduleDateRangeInfo> vScheduleInfo;
+    CScheduleDataManage::getScheduleDataManage()->setSearchResult(vScheduleInfo);
 }
 
 void CSchceduleSearchView::updateDateShow()
@@ -512,6 +517,7 @@ void CSchceduleSearchView::slotsetSearch(QString str)
 #else
     CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(str, bdate, edate, vScheduleInfo);
     m_vlistData = vScheduleInfo;
+    CScheduleDataManage::getScheduleDataManage()->setSearchResult(vScheduleInfo);
 #endif
     updateDateShow();
 }

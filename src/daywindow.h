@@ -45,6 +45,7 @@ public:
     void setLunarVisible(bool state);
     void setTheMe(int type = 0);
     void setTime(QTime time);
+    void updateHigh();
 private:
     void initUI();
     void initConnection();

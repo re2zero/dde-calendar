@@ -44,6 +44,7 @@ public:
         return m_graphicsScene;
     }
     void setTheMe(int type = 0);
+    void updateHigh();
     void setRange(int w, int h, QDate begindate, QDate enddate);
 
     CScheduleCoorManage *getCoorManage()
