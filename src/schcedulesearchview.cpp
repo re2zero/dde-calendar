@@ -75,6 +75,12 @@ void CSchceduleSearchItem::setData( ScheduleDtailInfo vScheduleInfo, QDate date)
     setToolTip(m_ScheduleInfo.titleName);
     update();
 }
+
+void CSchceduleSearchItem::setRoundtype(int rtype)
+{
+    m_roundtype = rtype;
+    update();
+}
 void CSchceduleSearchItem::slotEdit()
 {
     emit signalViewtransparentFrame(1);
@@ -211,12 +217,56 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     QPainter painter(this);
     QRect fillRect = QRect(0, 0, labelwidth, labelheight);
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
-    painter.setBrush(QBrush(m_Backgroundcolor));
+    QColor bcolor = m_Backgroundcolor;
+    if (m_hoverflag) {
+        bcolor.setAlphaF(0.2);
+    }
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setBrush(QBrush(bcolor));
     painter.setPen(Qt::NoPen);
-    painter.drawRoundedRect(fillRect, 8, 8);
+    QPainterPath painterPath;
+    painterPath.moveTo(m_radius, m_borderframew);
+    if (m_roundtype == 1 || m_roundtype == 3) {
+        painterPath.arcTo(QRect(m_borderframew, m_borderframew, m_radius * 2, m_radius * 2), 90, 90);
+    } else {
+        painterPath.lineTo(m_borderframew, m_borderframew);
+        painterPath.lineTo(m_borderframew, m_radius);
+    }
+    painterPath.lineTo(0, labelheight - m_radius);
+    if (m_roundtype == 1 || m_roundtype == 2) {
+        painterPath.arcTo(QRect(m_borderframew, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
+    } else {
+        painterPath.lineTo(m_borderframew, labelheight);
+        painterPath.lineTo(m_radius, labelheight);
+    }
+    painterPath.lineTo(labelwidth - m_radius, labelheight);
+    if (m_roundtype == 1 || m_roundtype == 2) {
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+    } else {
+        painterPath.lineTo(labelwidth, labelheight);
+        painterPath.lineTo(labelwidth, labelheight - m_radius);
+    }
+    painterPath.lineTo(labelwidth, m_radius);
+    //painterPath.moveTo(labelwidth, m_radius);
+    if (m_roundtype == 1 || m_roundtype == 3) {
 
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
+
+    } else {
+        painterPath.lineTo(labelwidth, m_borderframew);
+        painterPath.lineTo(labelwidth - m_radius, m_borderframew);
+    }
+    painterPath.lineTo(m_radius, m_borderframew);
+    painterPath.closeSubpath();
+    painter.drawPath(painterPath);
+    painter.restore();
+    bcolor = m_timecolor;
+    if (m_selectflag) {
+        bcolor.setAlphaF(0.6);
+    }
     painter.setFont(m_timefont);
-    painter.setPen(m_timecolor);
+    painter.setPen(bcolor);
 
     QDate begindate  = m_ScheduleInfo.beginDateTime.date();
     QDate enddate = m_ScheduleInfo.endDateTime.date();
@@ -231,14 +281,22 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 
     painter.drawText(QRect(12, 8, 65, labelheight - 16), Qt::AlignLeft, datestr);
     painter.save();
-    QPen pen(m_splitlinecolor);
+    bcolor = m_splitlinecolor;
+    if (m_selectflag) {
+        bcolor.setAlphaF(0.6);
+    }
+    QPen pen(bcolor);
     pen.setWidth(2);
     painter.setPen(pen);
     painter.drawLine(82, 0, 82, labelheight);
     painter.restore();
 
     painter.setFont(m_tfont);
-    painter.setPen(m_ttextcolor);
+    bcolor = m_ttextcolor;
+    if (m_selectflag) {
+        bcolor.setAlphaF(0.6);
+    }
+    painter.setPen(bcolor);
     int tilenameW = labelwidth - 91;
     QFontMetrics fm = painter.fontMetrics();
     QString tStitlename = m_ScheduleInfo.titleName;
@@ -283,7 +341,29 @@ void CSchceduleSearchItem::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         emit signalSelectDate(m_date);
+        m_selectflag = true;
+        update();
     }
+}
+
+void CSchceduleSearchItem::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_selectflag = false;
+        update();
+    }
+}
+
+void CSchceduleSearchItem::enterEvent(QEvent *event)
+{
+    m_hoverflag = true;
+    update();
+}
+
+void CSchceduleSearchItem::leaveEvent(QEvent *event)
+{
+    m_hoverflag = false;
+    update();
 }
 CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
 {
@@ -395,8 +475,18 @@ void CSchceduleSearchView::updateDateShow()
         if (m_vlistData[i].date == tcurrentdata) {
             m_currentItem = titem;
         }
-        for (int j = 0; j < m_vlistData.at(i).vData.count(); j++) {
-            createItemWidget(m_vlistData.at(i).vData.at(j), m_vlistData[i].date);
+        if (m_vlistData.at(i).vData.isEmpty()) continue;
+        if (m_vlistData.at(i).vData.count() == 1) {
+            createItemWidget(m_vlistData.at(i).vData.at(0), m_vlistData[i].date, 1);
+        } else if (m_vlistData.at(i).vData.count() == 2) {
+            createItemWidget(m_vlistData.at(i).vData.at(0), m_vlistData[i].date, 3);
+            createItemWidget(m_vlistData.at(i).vData.at(1), m_vlistData[i].date, 2);
+        } else {
+            createItemWidget(m_vlistData.at(i).vData.at(0), m_vlistData[i].date, 3);
+            for (int j = 1; j < m_vlistData.at(i).vData.count() - 1; j++) {
+                createItemWidget(m_vlistData.at(i).vData.at(j), m_vlistData[i].date, 0);
+            }
+            createItemWidget(m_vlistData.at(i).vData.at(m_vlistData.at(i).vData.count() - 1), m_vlistData[i].date, 2);
         }
     }
     if (m_gradientItemList->count() == 0) {
@@ -424,7 +514,7 @@ void CSchceduleSearchView::updateDateShow()
     }
 }
 
-void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date)
+void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, int rtype)
 {
     ScheduleDtailInfo &gd = info;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
@@ -442,6 +532,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date)
     gwi->setTimeC(m_btimecolor, font);
     gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
     gwi->setData(gd, date);
+    gwi->setRoundtype(rtype);
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
     connect(gwi, &CSchceduleSearchItem::signalsEdit, this, &CSchceduleSearchView::slotedititem);
     connect(gwi, &CSchceduleSearchItem::signalSelectDate, this, &CSchceduleSearchView::slotSelectDate);

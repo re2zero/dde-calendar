@@ -49,7 +49,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
 private:
     void updateDateShow();
-    void createItemWidget(ScheduleDtailInfo info, QDate date);
+    void createItemWidget(ScheduleDtailInfo info, QDate date, int rtype);
     QListWidgetItem *createItemWidget(QDate date);
 private:
     DListWidget                                 *m_gradientItemList; //下拉列表窗
@@ -77,6 +77,7 @@ public:
     void setText(QColor tcolor, QFont font);
     void setTimeC(QColor tcolor, QFont font);
     void setData(ScheduleDtailInfo  vScheduleInfo, QDate date);
+    void setRoundtype(int rtype);
     const ScheduleDtailInfo &getData() const
     {
         return m_ScheduleInfo;
@@ -95,6 +96,9 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent (QMouseEvent *event );
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
 private:
     ScheduleDtailInfo          m_ScheduleInfo;
     QAction              *m_editAction;
@@ -106,6 +110,11 @@ private:
     QColor                m_ttextcolor;
     QFont                 m_tfont;
     QDate                 m_date;
+    bool                  m_selectflag = false;
+    bool                  m_hoverflag = false;
+    int m_roundtype = 1;
+    int                      m_radius = 8;
+    int                      m_borderframew = 0;
 };
 class CSchceduleSearchDateItem : public DLabel
 {
