@@ -496,7 +496,14 @@ void CSchceduleSearchView::updateDateShow()
         font.setPixelSize(20);
         gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
         DPalette daypa;
-        daypa.setColor(DPalette::WindowText, m_ltextcolor);
+        QColor textcolor = DPalette::ToolTipText;
+        int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+        if (themtype == 2) {
+            textcolor.setAlphaF(0.4);
+        } else {
+            textcolor.setAlphaF(0.3);
+        }
+        daypa.setColor(DPalette::WindowText, textcolor);
         daypa.setColor(DPalette::Window, m_lBackgroundcolor);
         gwi->setPalette(daypa);
         gwi->setFont(font);
