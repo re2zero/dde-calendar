@@ -292,7 +292,7 @@ CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
     m_gradientItemList->setAlternatingRowColors(true);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(m_gradientItemList);
-    m_gradientItemList->setSpacing(1);
+    //m_gradientItemList->setSpacing(1);
     // set default row
     m_gradientItemList->setCurrentRow(0);
     setLayout(layout);

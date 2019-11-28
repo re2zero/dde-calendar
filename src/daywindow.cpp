@@ -143,7 +143,8 @@ void CDayWindow::initUI()
     DPalette anipa = m_contentBackground->palette();
     anipa.setColor(DPalette::Background, "#F8F8F8");
     m_contentBackground->setPalette(anipa);
-    //m_contentBackground->setFrameRounded(true);
+    m_contentBackground->setFrameRounded(false);
+    m_contentBackground->setLineWidth(0);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
@@ -294,6 +295,7 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     int stopMagin = 0.17123 * height() + 0.5;
     int sh = height() - 54;
     if (m_searchfalg) {
+        dw = 0.55 * width();
         m_mainLayout->setContentsMargins(10, 10, 0, 10);
     } else {
         m_mainLayout->setContentsMargins(10, 10, 10, 10);
