@@ -37,7 +37,7 @@ CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
-    hboxLayout->setContentsMargins(0, 0, 0, 0);
+    hboxLayout->setContentsMargins(10, 0, 10, 0);
     for (int c = 0; c != 12; ++c) {
         QWidget *cell = new QWidget;
         cell->setFixedSize(DDEMonthCalendar::MDayCellWidth, DDEMonthCalendar::MDayCellHeight);
@@ -135,6 +135,10 @@ void CMonthDayView::setTheMe(int type)
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
     }
+    DPalette anipa = palette();
+    anipa.setColor(DPalette::Background, m_fillColor);
+    setPalette(anipa);
+    setBackgroundRole(DPalette::Background);
 }
 
 void CMonthDayView::setwindowFixw(int w, int rw)
@@ -240,10 +244,10 @@ void CMonthDayView::paintCell(QWidget *cell)
 
         if (cell->width() > cell->height()) {
             hh = cell->height();
-            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, hh * 0.1071, hh, hh);
+            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, 4, hh, hh);
         } else {
             hh = cell->width();
-            fillRect = QRect(0, (cell->height() - hh) / 2.0  + hh * 0.1071, hh, hh);
+            fillRect = QRect(0, (cell->height() - hh) / 2.0  + 4, hh, hh);
         }
 
         QPixmap pixmap;
@@ -344,7 +348,7 @@ void CMonthDayView::resizeEvent(QResizeEvent *event)
         }
     }
 #endif
-    int w = width() / 12;
+    int w = (width() - 20) / 12;
     int h = height();
 
     int ww = 36;
@@ -380,8 +384,8 @@ void CMonthDayView::resizeEvent(QResizeEvent *event)
             m_cellList[i]->setVisible(vindex[i]);
             m_cellList[i]->update();
         }
-        m_roundangle[t_num] = -1;
-        m_roundangle[11 - t_num] = 1;
+        //m_roundangle[t_num] = -1;
+        //m_roundangle[11 - t_num] = 1;
     }
 }
 

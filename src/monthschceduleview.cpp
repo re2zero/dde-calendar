@@ -900,12 +900,16 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
     QColor gradientFromC = "#000000";
     gradientFromC.setAlphaF(0.00);
     gwi->setColor(gradientFromC, gradientFromC, true);
-    QFont font("PingFangSC-Regular");
+    QFont font;
     font.setPixelSize(12);
     if (type == 0 || type == 1) {
-        gwi->setText(QColor("#5E5E5E"), font, QPoint(13, 3));
+        QColor tc("#5E5E5E");
+        tc.setAlphaF(0.9);
+        gwi->setText(tc, font, QPoint(13, 3));
     } else {
-        gwi->setText(QColor("#C0C6D4"), font, QPoint(13, 3));
+        QColor tc("#C0C6D4");
+        tc.setAlphaF(0.9);
+        gwi->setText(tc, font, QPoint(13, 3));
     }
     gwi->setFixedSize(fw, fh);
     gwi->setData(info.num);

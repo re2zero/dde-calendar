@@ -252,12 +252,16 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     if (date == m_currentDate) {
         return;
     }
-
     if (date == QDate::currentDate()) {
-        m_today->setEnabled(false);
+        m_today->setText(tr("Today"));
     } else {
-        m_today->setEnabled(true);
+        m_today->setText(tr("Return Today"));
     }
+    //if (date == QDate::currentDate()) {
+    //     m_today->setEnabled(false);
+    // } else {
+    //     m_today->setEnabled(true);
+    // }
     m_currentDate = date;
     // to refresh lunar calendar
     //updateDate();
@@ -321,7 +325,7 @@ void CDayMonthView::initUI()
     //m_dayNumFont.setWeight(QFont::Light);
 
     m_today = new CTodyButton;
-    m_today->setText(tr("Return today"));
+    m_today->setText(tr("Today"));
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
     DPalette todaypa = m_today->palette();
     todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
@@ -745,19 +749,29 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
     if (event->delta() < 0) {
         m_currentDate = m_currentDate.addDays(1);
         if (m_currentDate == QDate::currentDate()) {
-            m_today->setEnabled(false);
+            m_today->setText(tr("Today"));
         } else {
-            m_today->setEnabled(true);
+            m_today->setText(tr("Return Today"));
         }
+        // if (m_currentDate == QDate::currentDate()) {
+        //     m_today->setEnabled(false);
+        // } else {
+        //     m_today->setEnabled(true);
+        // }
         emit signalcurrentDateChanged(m_currentDate);
         updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
     } else {
         if (m_currentDate.year() > 1900) {
             m_currentDate = m_currentDate.addDays(-1);
+            //if (m_currentDate == QDate::currentDate()) {
+            //   m_today->setEnabled(false);
+            //} else {
+            //     m_today->setEnabled(true);
+            // }
             if (m_currentDate == QDate::currentDate()) {
-                m_today->setEnabled(false);
+                m_today->setText(tr("Today"));
             } else {
-                m_today->setEnabled(true);
+                m_today->setText(tr("Return Today"));
             }
             emit signalcurrentDateChanged(m_currentDate);
             updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
@@ -811,10 +825,15 @@ void CDayMonthView::slotprev()
     if (m_currentDate.year() > 1900) {
         m_currentDate = m_currentDate.addMonths(-1);
         if (m_currentDate == QDate::currentDate()) {
-            m_today->setEnabled(false);
+            m_today->setText(tr("Today"));
         } else {
-            m_today->setEnabled(true);
+            m_today->setText(tr("Return Today"));
         }
+        // if (m_currentDate == QDate::currentDate()) {
+        //    m_today->setEnabled(false);
+        // } else {
+        //     m_today->setEnabled(true);
+        // }
         emit signalcurrentDateChanged(m_currentDate);
         updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
     } else {
@@ -826,10 +845,15 @@ void CDayMonthView::slotnext()
 {
     m_currentDate = m_currentDate.addMonths(1);
     if (m_currentDate == QDate::currentDate()) {
-        m_today->setEnabled(false);
+        m_today->setText(tr("Today"));
     } else {
-        m_today->setEnabled(true);
+        m_today->setText(tr("Return Today"));
     }
+    //if (m_currentDate == QDate::currentDate()) {
+    //    m_today->setEnabled(false);
+    // } else {
+    //    m_today->setEnabled(true);
+    //}
     emit signalcurrentDateChanged(m_currentDate);
     updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
 }

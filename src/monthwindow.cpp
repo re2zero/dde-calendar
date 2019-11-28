@@ -206,7 +206,7 @@ void CMonthWindow::initUI()
     m_contentBackground->setPalette(anipa);
 
     m_today = new CTodyButton;
-    m_today->setText(tr("Return today"));
+    m_today->setText(tr("Today"));
     m_today->setFixedSize(DDEMonthCalendar::MTodayWindth, DDEMonthCalendar::MTodayHeight);
     DPalette todaypa = m_today->palette();
     todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
@@ -440,11 +440,16 @@ void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail
 void CMonthWindow::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
-    if (date != QDate::currentDate()) {
-        m_today->setEnabled(true);
+    if (m_currentdate == QDate::currentDate()) {
+        m_today->setText(tr("Today"));
     } else {
-        m_today->setEnabled(false);
+        m_today->setText(tr("Return Today"));
     }
+    //if (date != QDate::currentDate()) {
+    //    m_today->setEnabled(true);
+    //} else {
+    //    m_today->setEnabled(false);
+    //}
 }
 
 void CMonthWindow::slotSelectedMonth(QDate date)

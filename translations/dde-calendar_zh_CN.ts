@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>Return today</source>
-        <translation>返回今天</translation>
+        <translation type="vanished">返回今天</translation>
     </message>
     <message>
         <source>Y </source>
@@ -196,6 +196,14 @@
     <message>
         <source>Year less than 1900!</source>
         <translation>年少于1900年！</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>今天</translation>
+    </message>
+    <message>
+        <source>Return Today</source>
+        <translation>返回今天</translation>
     </message>
 </context>
 <context>
@@ -361,6 +369,14 @@
     </message>
     <message>
         <source>Return today</source>
+        <translation type="vanished">返回今天</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>今天</translation>
+    </message>
+    <message>
+        <source>Return Today</source>
         <translation>返回今天</translation>
     </message>
 </context>
@@ -843,7 +859,7 @@
     <name>CWeekWindow</name>
     <message>
         <source>Return today</source>
-        <translation>返回今天</translation>
+        <translation type="vanished">返回今天</translation>
     </message>
     <message>
         <source>Week</source>
@@ -860,6 +876,14 @@
     <message>
         <source>Y</source>
         <translation>年</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>今天</translation>
+    </message>
+    <message>
+        <source>Return Today</source>
+        <translation>返回今天</translation>
     </message>
 </context>
 <context>

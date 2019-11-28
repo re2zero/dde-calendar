@@ -555,9 +555,9 @@ bool CMonthView::getShowSolarDayByDate(const QDate &date)
 
 const QString CMonthView::getCellDayNum(int pos)
 {
-    if (m_days[pos].day() ==  1) {
-        return QString::number(m_days[pos].month()) + "/" + QString::number(m_days[pos].day());
-    }
+    //if (m_days[pos].day() ==  1) {
+    // return QString::number(m_days[pos].month()) + "/" + QString::number(m_days[pos].day());
+    //}
     return QString::number(m_days[pos].day());
 }
 
@@ -872,11 +872,11 @@ void CMonthView::paintCell(QWidget *cell)
     if (isCurrentDay) {
         if (isSelectedCell) {
             QFont tfont = m_dayNumFont;
-            if (m_days[pos].day() == 1) {
-                tfont.setPixelSize(11);
-            } else {
-                tfont.setPixelSize(19);
-            }
+            //if (m_days[pos].day() == 1) {
+            //   tfont.setPixelSize(11);
+            //} else {
+            tfont.setPixelSize(19);
+            // }
             painter.setFont(tfont);
             if (m_showState & ShowLunar) {
                 painter.drawText(QRect(4, 3, 28, 28), Qt::AlignCenter, dayNum, &test);
@@ -885,11 +885,11 @@ void CMonthView::paintCell(QWidget *cell)
             }
         } else {
             QFont tfont = m_dayNumFont;
-            if (m_days[pos].day() == 1) {
-                tfont.setPixelSize(12);
-            } else {
-                tfont.setPixelSize(20);
-            }
+            //if (m_days[pos].day() == 1) {
+            //   tfont.setPixelSize(12);
+            //} else {
+            tfont.setPixelSize(20);
+            //}
             painter.setFont(tfont);
             if (m_showState & ShowLunar) {
                 painter.drawText(QRect(4, 2, 30, 30), Qt::AlignCenter, dayNum, &test);
@@ -960,11 +960,12 @@ void CMonthView::paintCell(QWidget *cell)
                 if (tstr != str) {
                     tstr = tstr + "...";
                 }
-                painter.drawText(QRect(6 + (fillRect.width() - fm.width(tstr)) / 2,
+                /*painter.drawText(QRect(6 + (fillRect.width() - fm.width(tstr)) / 2,
                                        34 + (fillRect.height() - fm.height()) / 2,
                                        fm.width(tstr),
                                        fm.height()),
-                                 Qt::AlignLeft, tstr);
+                                 Qt::AlignLeft, tstr);*/
+                painter.drawText(QRect(8, 36, cell->width() - 12, 20), Qt::AlignLeft, tstr);
             }
         }
     }
