@@ -416,17 +416,16 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             const int pos = m_cellList.indexOf(cell);
             emit signalsViewSelectDate(m_days[pos]);
         } else if (e->type() == QEvent::MouseButtonRelease) {
+            const int pos = m_cellList.indexOf(cell);
+            m_cellfoceflag[pos] = false;
+            m_cellList[pos]->update();
             m_updateflag = true;
         } //else if (e->type() == QEvent::FocusIn) {
         //  const int pos = m_cellList.indexOf(cell);
         //  m_cellfoceflag[pos] = true;
         //  m_cellList[pos]->update();
         //}
-        else if (e->type() == QEvent::FocusOut) {
-            const int pos = m_cellList.indexOf(cell);
-            m_cellfoceflag[pos] = false;
-            m_cellList[pos]->update();
-        } else if (e->type() == QEvent::Leave) {
+        else if (e->type() == QEvent::Leave) {
             const int pos = m_cellList.indexOf(cell);
             m_cellhoverflag[pos] = false;
             m_cellList[pos]->update();
@@ -852,19 +851,22 @@ void CMonthView::paintCell(QWidget *cell)
 // draw text of day
 //if (isSelectedCell) {
 //   painter.setPen(m_selectedTextColor);
+    QColor daynumcolor;
     if (isCurrentDay) {
-        painter.setPen(m_currentDayTextColor);
+        daynumcolor = m_currentDayTextColor;
     } else {
         const int tType = type & 0xff;
         if (tType & SO_MNotCurrentMonth)
-            painter.setPen(m_notCurrentTextColor);
+            daynumcolor = m_notCurrentTextColor;
         else if (type == SO_MWeekends)
-            painter.setPen(m_weekendsTextColor);
+            daynumcolor = m_weekendsTextColor;
         else
-            painter.setPen(m_defaultTextColor);
+            daynumcolor = m_defaultTextColor;
     }
-
-
+    if (m_cellfoceflag[pos]) {
+        daynumcolor.setAlphaF(0.6);
+    }
+    painter.setPen(daynumcolor);
 //    painter.drawRect(rect);
     QRect test;
     painter.setFont(m_dayNumFont);
@@ -969,15 +971,15 @@ void CMonthView::paintCell(QWidget *cell)
             }
         }
     }
-    if (isSelectedCell) {
+    if (m_cellhoverflag[pos]) {
         QRect fillRect = QRect(0, 0, cellwidth, cellheight);
-        painter.setBrush(m_pressColor);
+        painter.setBrush(m_hoverColor);
         painter.setPen(Qt::NoPen);
         //painter.drawRoundedRect(fillRect, 8, 8);
         painter.drawRect(fillRect);
-    } else if (m_cellhoverflag[pos]) {
+    } else  if (m_cellfoceflag[pos]) {
         QRect fillRect = QRect(0, 0, cellwidth, cellheight);
-        painter.setBrush(m_hoverColor);
+        painter.setBrush(m_pressColor);
         painter.setPen(Qt::NoPen);
         //painter.drawRoundedRect(fillRect, 8, 8);
         painter.drawRect(fillRect);

@@ -565,7 +565,13 @@ QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
     gwi->setBackgroundColor(m_lBackgroundcolor);
     gwi->setText(m_ltextcolor, font);
     if (date == QDate::currentDate()) {
-        gwi->setText("#F85566", font);
+        int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+        if (themtype == 2) {
+            gwi->setText("#0059D2", font);
+        } else {
+            gwi->setText("#0081FF", font);
+        }
+
     }
     gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
     gwi->setDate(date);
