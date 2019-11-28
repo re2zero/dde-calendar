@@ -97,7 +97,7 @@ void CTimeVerticalScroll::mousePressEvent(QMouseEvent *e)
 //    qDebug()<<"mouse pressed on vertical scroll";
 
     homingAni->stop();
-    isDragging = true;
+    //isDragging = true;
     m_mouseSrcPos = e->pos().y();
     QWidget::mousePressEvent(e);
 }
@@ -135,6 +135,14 @@ void CTimeVerticalScroll::mouseReleaseEvent(QMouseEvent *e)
         emit currentValueChangedClose(m_currentValue);
         repaint();
     }
+    if (e->pos().y() == m_mouseSrcPos) {
+        m_bClicked = true;
+        m_deviation = m_currentY - e->pos().y();
+        homing();
+        emit currentValueChangedClose(m_currentValue);
+        repaint();
+    }
+
     m_bClicked = false;
 }
 
