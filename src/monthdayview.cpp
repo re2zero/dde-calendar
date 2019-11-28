@@ -117,6 +117,7 @@ void CMonthDayView::setRCurrentDate(const QDate date)
 void CMonthDayView::setTheMe(int type)
 {
     m_themetype = type;
+    QColor frameclor;
     if (type == 0 || type == 1) {
 
         m_defaultTextColor = Qt::black;
@@ -124,6 +125,7 @@ void CMonthDayView::setTheMe(int type)
         m_currentDayTextColor = Qt::white;
         m_backgroundcurrentDayColor = "#0081FF";
         m_fillColor = "#FFFFFF";
+        frameclor = m_fillColor;
 
     } else if (type == 2) {
         m_defaultTextColor = "#C0C6D4";
@@ -134,9 +136,12 @@ void CMonthDayView::setTheMe(int type)
         m_backgroundcurrentDayColor = "#0059D2";
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
+        frameclor = m_fillColor;
+        m_fillColor.setAlphaF(0);
     }
+
     DPalette anipa = palette();
-    anipa.setColor(DPalette::Background, m_fillColor);
+    anipa.setColor(DPalette::Background, frameclor);
     setPalette(anipa);
     setBackgroundRole(DPalette::Background);
 }

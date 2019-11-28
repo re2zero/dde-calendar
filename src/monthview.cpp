@@ -102,8 +102,8 @@ void CMonthView::setTheMe(int type)
         m_notCurrentLunarColor = "#ABDAFF";
         m_notCurrentLunarColor.setAlphaF(0.3);
         m_solofestivalLunarColor = "#4DFF7272";
-        QColor wcolor = Qt::black;
-        wcolor.setAlphaF(0.5);
+        QColor wcolor = "#282828";
+        //wcolor.setAlphaF(0.5);
         m_wrectColor = wcolor;
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
@@ -182,6 +182,8 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
 
     DFrame *gridWidget = new DFrame;
+    gridWidget->setFrameRounded(false);
+    gridWidget->setLineWidth(0);
     gridWidget->setLayout(gridLayout);
 
     m_mainLayout = new QVBoxLayout;
