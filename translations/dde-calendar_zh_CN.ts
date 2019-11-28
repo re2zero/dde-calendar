@@ -515,7 +515,7 @@
     </message>
     <message>
         <source>ALL</source>
-        <translation>全部</translation>
+        <translation>全部日程</translation>
     </message>
     <message>
         <source>infomation</source>
@@ -591,7 +591,7 @@
     </message>
     <message>
         <source>Change All</source>
-        <translation>全部更改</translation>
+        <translation type="vanished">全部更改</translation>
     </message>
     <message>
         <source>You are changing a repeating event.</source>
@@ -917,7 +917,7 @@
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>日历是一款查看日期、管理日程的工具。</translation>
+        <translation>日历是一款查看日期、管理日程的小工具。</translation>
     </message>
     <message>
         <source>Calendar</source>

@@ -77,7 +77,7 @@ private:
     QList<QWidget *> m_cellList;
     QDate m_days[42];
     QDate m_currentDate;
-
+    QStringList m_monthList;
     int m_selectedCell = -1;
     bool m_cellSelectable = true;
 

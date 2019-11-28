@@ -141,6 +141,7 @@ private:
     CaHuangLiDayInfo *emptyCaHuangLiDayInfo = nullptr;
     int                   m_themetype  = 1;
     int                      m_radius = 8;
+    QStringList m_monthList;
 };
 
 #endif // YEARVIEW_H

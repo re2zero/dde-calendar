@@ -88,6 +88,18 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
 
     connect(this, &CWeekHeadView::dateSelected, this, &CWeekHeadView::handleCurrentDateChanged);
     setFrameRounded(true);
+    m_monthList.append( "一月" );
+    m_monthList.append( "二月");
+    m_monthList.append( "三月" );
+    m_monthList.append( "四月" );
+    m_monthList.append( "五月" );
+    m_monthList.append( "六月" );
+    m_monthList.append( "七月" );
+    m_monthList.append( "八月");
+    m_monthList.append( "九月" );
+    m_monthList.append( "十月" );
+    m_monthList.append( "十一月");
+    m_monthList.append( "十二月");
 }
 
 void CWeekHeadView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
@@ -224,8 +236,14 @@ void CWeekHeadView::setCurrentDate(const QDate date)
     // to refresh lunar calendar
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
     QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        m_monthLabel->setTextStr(m_monthList.at(date.month() - 1));
+    } else {
+        m_monthLabel->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
+    }
+    //QLocale locale;
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
-    m_monthLabel->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
+//    m_monthLabel->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
     //m_monthLabel->setText(QString::number(date.month()) + tr("Mon"));
 
 }

@@ -253,7 +253,7 @@ void CSchceduleDlg::slotOkBt()
                 msgBox.setText(tr("You are changing the repeating rule of this event."));
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                DPushButton *yesButton = msgBox.addPushButton(tr("Change All"));
+                DPushButton *yesButton = msgBox.addPushButton(tr("Changes All"));
                 msgBox.updatesize();
                 DPalette pa = yesButton->palette();
                 if (themetype == 0 || themetype == 1) {

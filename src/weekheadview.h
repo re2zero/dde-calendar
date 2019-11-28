@@ -99,7 +99,7 @@ private:
     CalendarDBus *m_DBusInter;
     QDate m_days[7];
     QDate m_currentDate;
-
+    QStringList m_monthList;
     ShowState m_showState = Normal;
     int m_selectedCell = 0;
     bool m_cellSelectable = true;

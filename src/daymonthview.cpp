@@ -55,6 +55,18 @@ CDayMonthView::CDayMonthView(QWidget *parent) : CustomFrame(parent)
     m_weeklist.append(tr("Friday"));
     m_weeklist.append(tr("Saturday"));
     m_weeklist.append(tr("Sunday"));
+    m_monthList.append( "一月" );
+    m_monthList.append( "二月");
+    m_monthList.append( "三月" );
+    m_monthList.append( "四月" );
+    m_monthList.append( "五月" );
+    m_monthList.append( "六月" );
+    m_monthList.append( "七月" );
+    m_monthList.append( "八月");
+    m_monthList.append( "九月" );
+    m_monthList.append( "十月" );
+    m_monthList.append( "十一月");
+    m_monthList.append( "十二月");
     initUI();
     initConnection();
     //setFixedSize(DDEDayCalendar::D_MWindowWidth, DDEDayCalendar::D_MWindowHeight);
@@ -497,8 +509,14 @@ void CDayMonthView::initConnection()
 void CDayMonthView::updateDateShow()
 {
     QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        m_currentMouth->setTextStr(m_monthList.at(m_currentDate.month() - 1));
+    } else {
+        m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
+    }
+    //QLocale locale;
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
-    m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
+    //m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
     // m_currentMouth->setText(QString::number(m_currentDate.month()) + tr("mon"));
     m_currentDay->setTextStr(QString::number(m_currentDate.day()));
     if (m_currentDate.dayOfWeek() > 0)

@@ -111,6 +111,18 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     connect(this, &CYearView::dateSelected, this, &CYearView::handleCurrentDateChanged);
     //setFixedSize(DDEYearCalendar::Y_MWindowWidth, DDEYearCalendar::Y_MWindowHeight);
     setFrameRounded(true);
+    m_monthList.append( "一月" );
+    m_monthList.append( "二月");
+    m_monthList.append( "三月" );
+    m_monthList.append( "四月" );
+    m_monthList.append( "五月" );
+    m_monthList.append( "六月" );
+    m_monthList.append( "七月" );
+    m_monthList.append( "八月");
+    m_monthList.append( "九月" );
+    m_monthList.append( "十月" );
+    m_monthList.append( "十一月");
+    m_monthList.append( "十二月");
 }
 void CYearView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
 {
@@ -211,8 +223,13 @@ void CYearView::setCurrentDate(const QDate date, int type)
 
     m_currentDate = date;
     QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        m_currentMouth->setTextStr(m_monthList.at(date.month() - 1));
+    } else {
+        m_currentMouth->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
+    }
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
-    m_currentMouth->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
+
     //m_currentMouth->setText(QString::number(date.month()) + tr("Mon"));
     updateDate();
     if (type == 1)
