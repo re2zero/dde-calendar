@@ -241,7 +241,9 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painter.setPen(m_ttextcolor);
     int tilenameW = labelwidth - 91;
     QFontMetrics fm = painter.fontMetrics();
-    QString str =  m_ScheduleInfo.titleName;
+    QString tStitlename = m_ScheduleInfo.titleName;
+    tStitlename.replace("\n", "");
+    QString str = tStitlename;
     QString tstr;
     for (int i = 0; i < str.count(); i++) {
         tstr.append(str.at(i));

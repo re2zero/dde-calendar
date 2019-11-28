@@ -58,16 +58,34 @@ void CMySchceduleView::AutoFeed(QString text)
 
     QString str;
     if (!strText.isEmpty()) {
-        for (int i = 0; i < strText.count(); i++) {
-            str.append(strText.at(i));
-            int widthT = fm.width(str) + 5;
-            if (widthT >= 340) {
-                strText.insert(i - 1, "\n");
-                i--;
-                str.clear();
+        QStringList sslist = strText.split("\n");
+        QString result;
+        for (int j = 0; j < sslist.count(); j++) {
+            QString currentstr = sslist.at(j);
+            for (int i = 0; i < currentstr.count(); i++) {
+                str.append(currentstr.at(i));
+                int widthT = fm.width(str) + 5;
+                if (widthT >= 340) {
+                    currentstr.insert(i - 1, "\n");
+                    i--;
+                    str.clear();
+                    row++;
+                }
+            }
+            if (currentstr.isEmpty()) {
+                result += "\n";
                 row++;
+            } else {
+                if (j != sslist.count() - 1) {
+                    result += currentstr + "\n";
+                    row++;
+                } else {
+                    result += currentstr;
+                }
+
             }
         }
+        strText = result;
     }
     m_schceduleLabel->setFixedHeight((row + 1) * 24);
     setFixedHeight(row * 24 + 170);

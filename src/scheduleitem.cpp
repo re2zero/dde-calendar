@@ -155,7 +155,8 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     if (m_totalNum > 1) tmagin = 5;
     if (m_type == 0) {
         painter->save();
-        QFont font("SourceHanSansSC-Normal");
+        QFont font("SourceHanSansSC");
+        font.setWeight(QFont::Normal);
         //if (m_totalNum > 1) {
         //font.setPixelSize(6);
         //} else {
@@ -204,7 +205,8 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->restore();
     } else {
         painter->save();
-        QFont font("SourceHanSansSC-Normal");
+        QFont font("SourceHanSansSC");
+        font.setWeight(QFont::Normal);
         font.setPixelSize(12);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
@@ -228,6 +230,49 @@ void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringLis
     int heightT = fontmetris.height();
     //int singlecharw = widthT * 1.0 / str.count() + 1;
     //int rcharcount = w * 1.0 / singlecharw;
+#if 0
+    QStringList sslist = str.split("\n");
+    QStringList tliststr;
+    for (int j = 0; j < sslist.count(); j++) {
+        QString currentstr = sslist.at(j);
+        QString tstr;
+        int tcount = 0;
+        for (int i = 0; i < currentstr.count(); i++) {
+            tstr.append(currentstr.at(i));
+            int widthT = fontmetris.width(tstr) + 5;
+            if (widthT >= w) {
+                tstr.chop(1);
+                if (tstr.isEmpty()) break;
+                tliststr.append(tstr);
+                tstr.clear();
+                i--;
+            }
+        }
+        tliststr.append(tstr);
+    }
+    if (w < 12) {
+        liststr.append("...");
+    } else {
+        QString tstr;
+        for (int i = 0; i < tliststr.count(); i++) {
+            if ((i + 1)*heightT <= h) {
+                liststr.append(tliststr.at(i));
+            } else {
+                if (i == 0) {
+                    break;
+                    //liststr.append("...");
+                } else {
+                    tstr = liststr.at(i - 1);
+                    tstr.chop(3);
+                    liststr[i - 1] = tstr + "...";
+                }
+                break;
+            }
+        }
+    }
+#endif
+
+#if 1
     QString tstr;
     QStringList tliststr;
     int tcount = 0;
@@ -243,20 +288,28 @@ void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringLis
         }
     }
     tliststr.append(tstr);
-
-    for (int i = 0; i < tliststr.count(); i++) {
-        if ((i + 1)*heightT <= h) {
-            liststr.append(tliststr.at(i));
+    if (w < 30) {
+        if (tliststr.isEmpty()) {
+            liststr.append("...");
         } else {
-            if (i == 0) {
-                break;
-                //liststr.append("...");
+            liststr.append(tliststr.at(0) + "...");
+        }
+    } else {
+        for (int i = 0; i < tliststr.count(); i++) {
+            if ((i + 1)*heightT <= h) {
+                liststr.append(tliststr.at(i));
             } else {
-                tstr = liststr.at(i - 1);
-                tstr.chop(3);
-                liststr[i - 1] = tstr + "...";
+                if (i == 0) {
+                    break;
+                    //liststr.append("...");
+                } else {
+                    tstr = liststr.at(i - 1);
+                    tstr.chop(3);
+                    liststr[i - 1] = tstr + "...";
+                }
+                break;
             }
-            break;
         }
     }
+#endif
 }
