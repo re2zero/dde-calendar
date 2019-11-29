@@ -599,6 +599,7 @@ void CSchceduleSearchView::slotedititem(CSchceduleSearchItem *item)
 
 void CSchceduleSearchView::slotsetSearch(QString str)
 {
+    if (str.isEmpty()) return;
     QDateTime date = QDateTime::currentDateTime();
 
     QDateTime bdate = date.addMonths(-6);

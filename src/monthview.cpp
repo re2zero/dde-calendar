@@ -234,6 +234,7 @@ void CMonthView::slotSchceduleUpdate(int id)
 {
     setEnabled(false);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
+    emit signalsSchceduleUpdate(id);
 }
 
 void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)

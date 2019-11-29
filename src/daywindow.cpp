@@ -295,11 +295,11 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     int stopMagin = 0.17123 * height() + 0.5;
     int sh = height() - 54;
     if (m_searchfalg) {
-        dw = 0.55 * width();
         m_mainLayout->setContentsMargins(10, 10, 0, 10);
     } else {
         m_mainLayout->setContentsMargins(10, 10, 10, 10);
     }
+    if (dw < 350) dw = 350;
     m_daymonthView->setFixedSize(dw, dh);
     m_scheduleView->setviewMagin(sleftMagin, stopMagin, 20, 0);
     //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);

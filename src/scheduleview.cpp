@@ -257,6 +257,7 @@ void CScheduleView::slotupdateSchedule(int id)
 {
     updateSchedule(id);
     updateAllday(id);
+    emit signalsUpdateShcedule(id);
 }
 
 void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype)
@@ -426,7 +427,8 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     m_graphicsView->update();
     m_alldaylist->update();
     QFrame::resizeEvent(event);
-    slotupdateSchedule(0);
+    updateSchedule(0);
+    updateAllday(0);
 }
 
 void CScheduleView::initUI()
