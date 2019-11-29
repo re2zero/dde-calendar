@@ -23,7 +23,7 @@ enum CalendarYearDayType {
     SO_YNotCurrentMonthFestival = SO_YNotCurrentMonth | SO_YFestival,
     SO_YDefault,
 };
-class CYearView: public DFrame
+class CYearView: public CustomFrame
 {
     Q_OBJECT
 
@@ -72,6 +72,8 @@ private slots:
     void setSelectedCell(int index);
 protected:
     void resizeEvent(QResizeEvent *event);
+protected:
+    void paintEvent ( QPaintEvent *e);
 private:
     CustomFrame *m_currentMouth;
     QList<QWidget *> m_cellList;
@@ -93,7 +95,6 @@ private:
     QColor m_festivalTextColor = Qt::black;
     QColor m_notCurrentTextColor = "#b2b2b2";
     int m_firstWeekDay = 0;
-    DFrame *m_gridWidget;
     QGridLayout *m_gridLayout;
     int cellwidth = 20;
     int cellheight = 20;
@@ -102,6 +103,9 @@ private:
     QColor m_highColor = "#0081FF";
     QColor m_highTextColor = "#FFFFFF";
     QFont m_hightFont;
+    QColor                   m_bnormalColor = "#FFFFFF";
+    int                      m_radius = 8;
+    int                      m_borderframew = 0;
 };
 
 #endif // YEARVIEW_H

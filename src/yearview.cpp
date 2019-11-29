@@ -35,7 +35,7 @@
 #include <DHiDPIHelper>
 #include "scheduledatamanage.h"
 DGUI_USE_NAMESPACE
-CYearView::CYearView(QWidget *parent) : DFrame(parent)
+CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 {
     m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
@@ -92,26 +92,10 @@ CYearView::CYearView(QWidget *parent) : DFrame(parent)
     m_hhLayout->addLayout(m_gridLayout);
     m_hhLayout->setMargin(0);
     m_hhLayout->setSpacing(0);
-    m_hhLayout->setContentsMargins(13, 5, 10, 10);
-    m_gridWidget = new DFrame(this);
-    m_gridWidget->setContentsMargins(0, 0, 0, 0);
-    m_gridWidget->setLayout(m_hhLayout);
-    //m_gridWidget->setFixedSize(176, 113);
-    DPalette anipa = m_gridWidget->palette();
-    anipa.setColor(DPalette::Background, Qt::white);
-    m_gridWidget->setAutoFillBackground(true);
-    m_gridWidget->setPalette(anipa);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    // mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
-    mainLayout->addWidget(m_gridWidget, 0,  Qt::AlignHCenter);
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
+    m_hhLayout->setContentsMargins(13, 10, 10, 10);
 
-    setLayout(mainLayout);
-    setAutoFillBackground(true);
+    setLayout(m_hhLayout);
     connect(this, &CYearView::dateSelected, this, &CYearView::handleCurrentDateChanged);
-    //setFixedSize(DDEYearCalendar::Y_MWindowWidth, DDEYearCalendar::Y_MWindowHeight);
-    setFrameRounded(true);
     m_monthList.append( "一月" );
     m_monthList.append( "二月");
     m_monthList.append( "三月" );
@@ -157,19 +141,14 @@ void CYearView::setTheMe(int type)
 {
     m_themetype = type;
     if (type == 0 || type == 1) {
-        DPalette bpa = m_gridWidget->palette();
+        DPalette bpa = palette();
         bpa.setColor(DPalette::Background, Qt::white);
         setPalette(bpa);
         setBackgroundRole(DPalette::Background);
-
-        DPalette anipa = m_gridWidget->palette();
-        anipa.setColor(DPalette::Background, Qt::white);
-        m_gridWidget->setPalette(anipa);
-        m_gridWidget->setBackgroundRole(DPalette::Background);
-
+        // setBColor( Qt::white);
         m_currentMouth->setTextColor( QColor("#CF0059"));
-        m_currentMouth->setBColor(Qt::white);
 
+        m_bnormalColor = "#FFFFFF";
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0081FF";
 
@@ -181,22 +160,19 @@ void CYearView::setTheMe(int type)
         m_notCurrentTextColor = "#b2b2b2";
 
     } else if (type == 2) {
-        DPalette anipa = m_gridWidget->palette();
+
         QColor framecolor("#FFFFFF");
         //framecolor.setAlphaF(0.15);
         framecolor = "#414141";
         framecolor.setAlphaF(0.3);
-        anipa.setColor(DPalette::Background, framecolor);
-        m_gridWidget->setPalette(anipa);
-        m_gridWidget->setBackgroundRole(DPalette::Background);
-
-        DPalette bpa = m_gridWidget->palette();
+        DPalette bpa = palette();
         bpa.setColor(DPalette::Background, framecolor);
         setPalette(bpa);
         setBackgroundRole(DPalette::Background);
-
+        m_bnormalColor = framecolor;
+        //setBColor(m_bnormalColor);
         m_currentMouth->setTextColor( QColor("#BF1D63"));
-        m_currentMouth->setBColor(framecolor);
+        // m_currentMouth->setBColor(framecolor);
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0059D2";
@@ -209,6 +185,9 @@ void CYearView::setTheMe(int type)
         m_notCurrentTextColor = "#C0C6D4";
         m_notCurrentTextColor.setAlphaF(0.5);
     }
+    QColor monthcolor = Qt::white;
+    monthcolor.setAlphaF(0);
+    m_currentMouth->setBColor(monthcolor);
 }
 
 void CYearView::updateHigh()
@@ -280,7 +259,7 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             emit signalselectMonth(m_currentDate);
         }
     }
-    return DFrame::eventFilter(o,  e);
+    return false;
 }
 
 void CYearView::updateDate()
@@ -462,5 +441,56 @@ void CYearView::resizeEvent(QResizeEvent *event)
     for (int i(0); i != 42; ++i) {
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
     }
-    QWidget::resizeEvent(event);
+    QFrame::resizeEvent(event);
+}
+
+void CYearView::paintEvent(QPaintEvent *e)
+{
+    int labelwidth = width() - 2 * m_borderframew;
+    int labelheight = height() - 2 * m_borderframew;
+
+    QPainter painter(this);
+    QRect fillRect = QRect(m_borderframew, m_borderframew, labelwidth, labelheight);
+    if (1) {
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        painter.setBrush(QBrush(m_bnormalColor));
+        painter.setPen(Qt::NoPen);
+        QPainterPath painterPath;
+        painterPath.moveTo(m_radius, m_borderframew);
+        if (1) {
+            painterPath.arcTo(QRect(m_borderframew, m_borderframew, m_radius * 2, m_radius * 2), 90, 90);
+        } else {
+            painterPath.lineTo(m_borderframew, m_borderframew);
+            painterPath.lineTo(m_borderframew, m_radius);
+        }
+        painterPath.lineTo(0, labelheight - m_radius);
+        if (1) {
+            painterPath.arcTo(QRect(m_borderframew, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
+        } else {
+            painterPath.lineTo(m_borderframew, labelheight);
+            painterPath.lineTo(m_radius, labelheight);
+        }
+        painterPath.lineTo(labelwidth - m_radius, labelheight);
+        if (1) {
+            painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+        } else {
+            painterPath.lineTo(labelwidth, labelheight);
+            painterPath.lineTo(labelwidth, labelheight - m_radius);
+        }
+        painterPath.lineTo(labelwidth, m_radius);
+        //painterPath.moveTo(labelwidth, m_radius);
+        if (1) {
+
+            painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
+
+        } else {
+            painterPath.lineTo(labelwidth, m_borderframew);
+            painterPath.lineTo(labelwidth - m_radius, m_borderframew);
+        }
+        painterPath.lineTo(m_radius, m_borderframew);
+        painterPath.closeSubpath();
+        painter.drawPath(painterPath);
+        painter.restore();
+    }
 }
