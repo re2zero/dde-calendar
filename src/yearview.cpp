@@ -326,12 +326,13 @@ void CYearView::paintCell(QWidget *cell)
     if (highflag) {
         int hh = 0;
         QRect fillRect;
+        int t_pix = (height() - 159) / 22.33;
         if (cell->width() > cell->height()) {
-            hh = cell->height();
-            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, 0, hh, hh);
+            hh = cell->height() - t_pix;
+            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 + t_pix / 2, 0, hh, hh);
         } else {
-            hh = cell->width();
-            fillRect = QRect(0, (cell->height() - hh) / 2.0 + 0.5, hh, hh);
+            hh = cell->width() - t_pix;
+            fillRect = QRect(t_pix / 2, (cell->height() - hh) / 2.0 + 0.5, hh, hh);
         }
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_highColor));
@@ -354,10 +355,10 @@ void CYearView::paintCell(QWidget *cell)
             QRect fillRect;
             if (cell->width() > cell->height()) {
                 hh = cell->height() + 6;
-                fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 - 2, 2, hh + 4, hh + 4);
+                fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 - 2, 4 * cellwidth / cellheight, hh + 4, hh + 4);
             } else {
                 hh = cell->width() + 6;
-                fillRect = QRect(- 5, (cell->height() - hh) / 2.0 + 2, hh + 4, hh + 4);
+                fillRect = QRect(- 5, (cell->height() - hh) / 2.0 + hh * 0.0625 * cellheight / cellwidth, hh + 4, hh + 4);
             }
             QPixmap pixmap;
             if (m_themetype == 2)
@@ -440,14 +441,17 @@ void CYearView::setSelectedCell(int index)
 
 void CYearView::resizeEvent(QResizeEvent *event)
 {
-    cellwidth = width() * 0.099 + 0.5;
-    cellheight = height() * 0.1257 + 0.5;
+    //cellwidth = width() * 0.099 + 0.5;
+    //cellheight = height() * 0.1257 + 0.5;
+
     m_gridLayout->setHorizontalSpacing(width() * 0.0297 + 0.5);
     m_gridLayout->setVerticalSpacing(height() * 0.0034 + 0.5);
     int leftmagin = width() * 0.06435 + 0.5;
     int rightmagin = leftmagin;
     int topmagin = height() * 0.02955 + 0.5;
     int buttonmagin = height() * 0.044 + 0.5;
+    cellwidth = (width() - 2 * leftmagin) / 7;
+    cellheight = (height() -  (24 + (height() - 159) / 12 - topmagin - buttonmagin)) / 6;
     m_hhLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
     m_dayNumFont.setPixelSize(12 + (height() - 159) / 22.33);
     m_hightFont.setPixelSize(12 + (height() - 159) / 22.33);
