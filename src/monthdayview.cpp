@@ -48,6 +48,7 @@ CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
     }
     setLayout(hboxLayout);
     setFrameRounded(true);
+    setLineWidth(0);
 }
 
 CMonthDayView::~CMonthDayView()
@@ -126,6 +127,7 @@ void CMonthDayView::setTheMe(int type)
         m_backgroundcurrentDayColor = "#0081FF";
         m_fillColor = "#FFFFFF";
         frameclor = m_fillColor;
+        m_fillColor.setAlphaF(0);
 
     } else if (type == 2) {
         m_defaultTextColor = "#C0C6D4";

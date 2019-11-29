@@ -77,7 +77,7 @@ void CMonthView::setTheMe(int type)
         m_pressColor.setAlphaF(0.2);
 
         m_hoverColor = "#000000";
-        m_hoverColor.setAlphaF(0.1);
+        m_hoverColor.setAlphaF(0.05);
     } else if (type == 2) {
 
         m_topBorderColor = Qt::red;
