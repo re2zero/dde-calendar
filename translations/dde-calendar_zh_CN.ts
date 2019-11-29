@@ -292,10 +292,14 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>There is %1 schedule</source>
-        <translation>还有 %1 项</translation>
+        <translation type="vanished">还有 %1 项</translation>
     </message>
     <message>
         <source>There&apos;s %1 schedule</source>
+        <translation>还有 %1 项</translation>
+    </message>
+    <message>
+        <source>There&apos;s %1 event</source>
         <translation>还有 %1 项</translation>
     </message>
 </context>

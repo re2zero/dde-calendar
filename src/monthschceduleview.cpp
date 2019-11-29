@@ -438,16 +438,30 @@ void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
 
-        QString str =  QString(tr("There is %1 schedule")).arg(m_num) + "...";
+        QString str =  QString(tr("There's %1 event")).arg(m_num) + "...";
         QFont tfont = m_font;
         QFontMetrics fm = painter.fontMetrics();
-        while (fm.width(str) > labelwidth - m_pos.x()) {
-            tfont.setPixelSize(tfont.pixelSize() - 1);
-            painter.setFont(tfont);
-            fm = painter.fontMetrics();
+
+        QString tstr;
+        for (int i = 0; i < str.count(); i++) {
+            tstr.append(str.at(i));
+            int widthT = fm.width(tstr) + 5;
+            if (widthT >= labelwidth - m_pos.x()) {
+                tstr.chop(2);
+                break;
+            }
+        }
+        if (tstr != str) {
+            tstr = tstr + "...";
         }
 
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignCenter, str);
+        //while (fm.width(str) > labelwidth - m_pos.x()) {
+        //   tfont.setPixelSize(tfont.pixelSize() - 1);
+        //   painter.setFont(tfont);
+        //   fm = painter.fontMetrics();
+        //}
+
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignCenter, tstr);
         //if (m_transparentf) {
         //  painter.setBrush(m_transparentcolor);
         //  painter.setPen(Qt::NoPen);
