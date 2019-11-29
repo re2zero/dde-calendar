@@ -27,30 +27,30 @@ Shortcut::Shortcut(QObject *parent) : QObject(parent)
     ShortcutGroup group4;
 
     group1.groupName = tr("Start/Calendar");
-    group2.groupName = tr("Search");
+    //group2.groupName = tr("Search");
     group3.groupName = tr("Schedule Edit");
     group4.groupName = tr("Schedule Content Editing");
 
     group1.groupItems <<
-                      ShortcutItem(tr("Window Size Toggle"), "Ctrl+Alt+F") <<
-                      ShortcutItem(tr("Close"),  "Alt+F4") <<
+                      //ShortcutItem(tr("Window Size Toggle"), "Ctrl+Alt+F") <<
+                      // ShortcutItem(tr("Close"),  "Alt+F4") <<
                       ShortcutItem(tr("Help"),  "F1");
 
-    group2.groupItems << ShortcutItem(tr("Search"), "Ctrl+F");
+    //group2.groupItems << ShortcutItem(tr("Search"), "Ctrl+F");
 
 
     group3.groupItems <<
-                      ShortcutItem(tr("New event"),       "Ctrl+N") <<
-                      ShortcutItem(tr("Delete"),       "Delete") <<
-                      ShortcutItem(tr("Cancel Dialog"),   "Esc");;
+                      //ShortcutItem(tr("New event"),       "Ctrl+N") <<
+                      ShortcutItem(tr("Delete event"),       "Delete") ;
+    //ShortcutItem(tr("Cancel Dialog"),   "Esc");;
 
     group4.groupItems <<
                       ShortcutItem(tr("Copy"), "Ctrl+C") <<
                       ShortcutItem(tr("Cut"),  "Ctrl+X") <<
                       ShortcutItem(tr("Paste"), "Ctrl+V") <<
-                      ShortcutItem(tr("All election"), "Ctrl+A") <<
+                      ShortcutItem(tr("Select all"), "Ctrl+A") <<
                       ShortcutItem(tr("Delete"), "Delete");
-    m_shortcutGroups << group1 << group2 << group3 << group4;
+    m_shortcutGroups << group1  << group3 << group4;
 
     //convert to json object
     QJsonArray jsonGroups;
