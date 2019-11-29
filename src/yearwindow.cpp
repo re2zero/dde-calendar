@@ -118,7 +118,7 @@ void CYearWindow::initUI()
     //pal.setColor(DPalette::ButtonText, QColor("#1D81EC"));
     //m_today->setPalette(pal);
     //m_today->setAutoFillBackground(true);
-    m_today->setText(tr("Return today"));
+    m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedWidth(88);
     m_today->setAutoFillBackground(true);
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight - 4);
@@ -460,9 +460,9 @@ void CYearWindow::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
     if (m_currentdate == QDate::currentDate()) {
-        m_today->setText(tr("Today"));
+        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     } else {
-        m_today->setText(tr("Return"));
+        m_today->setText(QCoreApplication::translate("Return", "Today", "Return"));
     }
     CaLunarDayInfo info = getCaLunarDayInfo(m_currentdate);
 

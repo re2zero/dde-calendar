@@ -193,14 +193,6 @@
         <source>Year less than 1900!</source>
         <translation>年少于1900年！</translation>
     </message>
-    <message>
-        <source>Today</source>
-        <translation>今天</translation>
-    </message>
-    <message>
-        <source>Return Today</source>
-        <translation>返回今天</translation>
-    </message>
 </context>
 <context>
     <name>CDayWindow</name>
@@ -362,14 +354,6 @@
     <message>
         <source>Y</source>
         <translation>年</translation>
-    </message>
-    <message>
-        <source>Today</source>
-        <translation>今天</translation>
-    </message>
-    <message>
-        <source>Return Today</source>
-        <translation>返回今天</translation>
     </message>
 </context>
 <context>
@@ -588,10 +572,6 @@
     <message>
         <source>You are changing the repeating rule of this event.</source>
         <translation>您正在更改日程的重复规则。</translation>
-    </message>
-    <message>
-        <source>Change All</source>
-        <translation type="vanished">全部更改</translation>
     </message>
     <message>
         <source>You are changing a repeating event.</source>
@@ -865,21 +845,9 @@
         <source>Y</source>
         <translation>年</translation>
     </message>
-    <message>
-        <source>Today</source>
-        <translation>今天</translation>
-    </message>
-    <message>
-        <source>Return Today</source>
-        <translation>返回今天</translation>
-    </message>
 </context>
 <context>
     <name>CYearWindow</name>
-    <message>
-        <source>Return today</source>
-        <translation>返回今天</translation>
-    </message>
     <message>
         <source>infomation</source>
         <translation>提示</translation>
@@ -895,14 +863,6 @@
     <message>
         <source>Lunar</source>
         <translation>农历</translation>
-    </message>
-    <message>
-        <source>Today</source>
-        <translation>今天</translation>
-    </message>
-    <message>
-        <source>Return</source>
-        <translation>返回今天</translation>
     </message>
 </context>
 <context>
@@ -952,6 +912,22 @@
     <message>
         <source>Today</source>
         <translation>今天</translation>
+    </message>
+</context>
+<context>
+    <name>Return</name>
+    <message>
+        <source>Today</source>
+        <comment>Return</comment>
+        <translation>返回今天</translation>
+    </message>
+</context>
+<context>
+    <name>Return Today</name>
+    <message>
+        <source>Today</source>
+        <comment>Return Today</comment>
+        <translation>返回今天</translation>
     </message>
 </context>
 <context>
@@ -1011,6 +987,14 @@
     <message>
         <source>New event</source>
         <translation>新建日程</translation>
+    </message>
+</context>
+<context>
+    <name>today</name>
+    <message>
+        <source>Today</source>
+        <comment>Today</comment>
+        <translation>今天</translation>
     </message>
 </context>
 </TS>

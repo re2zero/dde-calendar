@@ -206,7 +206,7 @@ void CMonthWindow::initUI()
     m_contentBackground->setPalette(anipa);
 
     m_today = new CTodyButton;
-    m_today->setText(tr("Today"));
+    m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedSize(DDEMonthCalendar::MTodayWindth, DDEMonthCalendar::MTodayHeight);
     DPalette todaypa = m_today->palette();
     todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
@@ -441,9 +441,9 @@ void CMonthWindow::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
     if (m_currentdate == QDate::currentDate()) {
-        m_today->setText(tr("Today"));
+        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     } else {
-        m_today->setText(tr("Return Today"));
+        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
     }
     //if (date != QDate::currentDate()) {
     //    m_today->setEnabled(true);
