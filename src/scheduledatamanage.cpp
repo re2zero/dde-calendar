@@ -57,6 +57,17 @@ bool CScheduleDataManage::getSearchResult(ScheduleDtailInfo info)
     return false;
 }
 
+bool CScheduleDataManage::getSearchResult(QDate date)
+{
+    for (int i = 0; i < m_vScheduleInfo.size(); i++) {
+        QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
+        if (m_vScheduleInfo[i].date == date && !scheduleInfolist.isEmpty()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void CScheduleDataManage::setTheMe(int type)
 {
     m_theme = type;

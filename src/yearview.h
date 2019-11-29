@@ -99,6 +99,9 @@ private:
     int cellheight = 20;
     QVBoxLayout *m_hhLayout;
     int                   m_themetype  = 1;
+    QColor m_highColor = "#0081FF";
+    QColor m_highTextColor = "#FFFFFF";
+    QFont m_hightFont;
 };
 
 #endif // YEARVIEW_H
