@@ -38,6 +38,7 @@ struct CSchedulesColor {
     QColor hovergradientFromC;
     QColor hovergradientToC;
     QColor hoverPurecolor;
+    QColor splitColor;
 };
 
 class CSchedulesDBus;

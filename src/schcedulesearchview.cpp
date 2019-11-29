@@ -533,7 +533,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     //gwi->setBackgroundColor(Qt::white);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
-    gwi->setSplitLineColor(scolor);
+    gwi->setSplitLineColor(gdcolor.splitColor);
     gwi->setText(m_bttextcolor, font);
     font.setPixelSize(12);
     gwi->setTimeC(m_btimecolor, font);

@@ -79,6 +79,8 @@ void CScheduleDataManage::setTheMe(int type)
         QColor workP("#F9AEB8");
         //workP.setAlphaF(0.8);
         workC.hightlightPurecolor = workP;
+        workC.splitColor = "#FB2525";
+        workC.splitColor.setAlphaF(0.5);
 
         workC.hovergradientFromC = "#FFD0B8";
         workC.hovergradientFromC.setAlphaF(0.95);
@@ -113,6 +115,8 @@ void CScheduleDataManage::setTheMe(int type)
         QColor lifehP("#C4FF98");
         lifehP.setAlphaF(0.8);
         lifeC.hoverPurecolor = lifehP;
+        lifeC.splitColor = "#82D245";
+
         m_vScheduleColor.append(lifeC);
 
         CSchedulesColor otherC;
@@ -139,6 +143,7 @@ void CScheduleDataManage::setTheMe(int type)
         QColor otherhP("#E6C5FF");
         otherhP.setAlphaF(0.8);
         otherC.hoverPurecolor = otherhP;
+        otherC.splitColor = "#BA60FA";
         m_vScheduleColor.append(otherC);
     } else if (type == 2) {
         CSchedulesColor workC;
@@ -166,7 +171,8 @@ void CScheduleDataManage::setTheMe(int type)
         QColor workhP("#F85566");
         workhP.setAlphaF(0.2);
         workC.hoverPurecolor = workhP;
-
+        workC.splitColor = "#FB2525";
+        workC.splitColor.setAlphaF(0.5);
         m_vScheduleColor.append(workC);
 
         CSchedulesColor lifeC;
@@ -186,7 +192,8 @@ void CScheduleDataManage::setTheMe(int type)
         QColor lifeP("#337044");
         lifeP.setAlphaF(0.8);
         lifeC.hightlightPurecolor = lifeP;
-
+        lifeC.splitColor = "#25FA6B";
+        lifeC.splitColor.setAlphaF(0.3);
         lifeC.hovergradientFromC = "#2D6883";
         lifeC.hovergradientToC = "#5D7D44";
         lifeC.hovergradientFromC.setAlphaF(0.95);
@@ -221,6 +228,8 @@ void CScheduleDataManage::setTheMe(int type)
         QColor otherhP("#C155F8");
         otherhP.setAlphaF(0.2);
         otherC.hoverPurecolor = otherhP;
+        otherC.splitColor = "#BA32FF";
+        otherC.splitColor.setAlphaF(0.5);
         m_vScheduleColor.append(otherC);
     }
 }
