@@ -652,6 +652,7 @@ void CMonthView::paintCell(QWidget *cell)
     QPainter painter(cell);
     painter.save();
     if (m_showState & ShowLunar) {
+#if 0
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         int ftype = getFestivalInfoByDate(m_days[pos]);
         if (ftype == 2) {
@@ -692,7 +693,46 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.drawText(fillRect, Qt::AlignCenter, "休");
             }
         }
+#endif
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        int ftype = getFestivalInfoByDate(m_days[pos]);
+        if (ftype == 0) {
 
+            painter.setBrush(QBrush(m_fillColor));
+            painter.setPen(Qt::NoPen);
+            painter.drawRect(rect);//画矩形
+        } else {
+            if (!getShowSolarDayByDate(m_days[pos])) {
+                if (ftype == 2) {
+                    painter.setBrush(QBrush(m_banColor));
+                } else if (ftype == 1) {
+                    painter.setBrush(QBrush(m_xiuColor));
+                }
+                painter.setPen(Qt::NoPen);
+                painter.drawRect(rect);//画矩形
+            } else {
+                QPixmap pixmap;
+                if (ftype == 2) {
+                    if (m_themetype == 2) {
+                        pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dark_ban_bg.svg").scaled(cellwidth, cellheight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                    } else {
+                        pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/type_ban_bg.svg").scaled(cellwidth, cellheight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                    }
+                } else {
+                    if (m_themetype == 2) {
+                        pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dark_xiu_bg.svg").scaled(cellwidth, cellheight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                    } else {
+                        pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/type_xiu_bg.svg").scaled(cellwidth, cellheight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                    }
+                }
+                pixmap.setDevicePixelRatio(devicePixelRatioF());
+                painter.setRenderHint(QPainter::Antialiasing);
+                painter.setRenderHint(QPainter::HighQualityAntialiasing);
+                painter.setRenderHint(QPainter::SmoothPixmapTransform);
+                painter.drawPixmap(rect, pixmap);
+            }
+
+        }
     } else {
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_fillColor));

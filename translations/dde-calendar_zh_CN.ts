@@ -291,10 +291,6 @@
 <context>
     <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>There is %1 schedule</source>
-        <translation type="vanished">还有 %1 项</translation>
-    </message>
-    <message>
         <source>There&apos;s %1 schedule</source>
         <translation>还有 %1 项</translation>
     </message>
@@ -941,10 +937,6 @@
         <translation>开始/日历</translation>
     </message>
     <message>
-        <source>Search</source>
-        <translation type="vanished">搜索</translation>
-    </message>
-    <message>
         <source>Schedule Edit</source>
         <translation>日程编辑</translation>
     </message>
@@ -953,24 +945,12 @@
         <translation>日程内容编辑</translation>
     </message>
     <message>
-        <source>Window Size Toggle</source>
-        <translation type="vanished">窗口大小切换</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">关闭应用</translation>
-    </message>
-    <message>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
         <source>Delete</source>
         <translation>删除</translation>
-    </message>
-    <message>
-        <source>Cancel Dialog</source>
-        <translation type="vanished">取消对话框</translation>
     </message>
     <message>
         <source>Copy</source>
@@ -983,14 +963,6 @@
     <message>
         <source>Paste</source>
         <translation>粘贴</translation>
-    </message>
-    <message>
-        <source>All election</source>
-        <translation type="vanished">全选</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="vanished">新建日程</translation>
     </message>
     <message>
         <source>Delete event</source>
