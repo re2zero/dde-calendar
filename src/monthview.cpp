@@ -650,6 +650,7 @@ void CMonthView::paintCell(QWidget *cell)
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
 
     QPainter painter(cell);
+
     painter.save();
     if (m_showState & ShowLunar) {
 #if 0
@@ -740,7 +741,21 @@ void CMonthView::paintCell(QWidget *cell)
         painter.drawRect(rect);//画矩形
     }
     painter.restore();
-
+    painter.save();
+    if (m_cellfoceflag[pos]) {
+        QRect fillRect = QRect(0, 0, cellwidth, cellheight);
+        painter.setBrush(m_pressColor);
+        painter.setPen(Qt::NoPen);
+        //painter.drawRoundedRect(fillRect, 8, 8);
+        painter.drawRect(fillRect);
+    } else if (m_cellhoverflag[pos]) {
+        QRect fillRect = QRect(0, 0, cellwidth, cellheight);
+        painter.setBrush(m_hoverColor);
+        painter.setPen(Qt::NoPen);
+        //painter.drawRoundedRect(fillRect, 8, 8);
+        painter.drawRect(fillRect);
+    }
+    painter.restore();
 
     painter.setPen(Qt::SolidLine);
     painter.setPen(m_wrectColor);
@@ -1014,19 +1029,7 @@ void CMonthView::paintCell(QWidget *cell)
             }
         }
     }
-    if (m_cellfoceflag[pos]) {
-        QRect fillRect = QRect(0, 0, cellwidth, cellheight);
-        painter.setBrush(m_pressColor);
-        painter.setPen(Qt::NoPen);
-        //painter.drawRoundedRect(fillRect, 8, 8);
-        painter.drawRect(fillRect);
-    } else if (m_cellhoverflag[pos]) {
-        QRect fillRect = QRect(0, 0, cellwidth, cellheight);
-        painter.setBrush(m_hoverColor);
-        painter.setPen(Qt::NoPen);
-        //painter.drawRoundedRect(fillRect, 8, 8);
-        painter.drawRect(fillRect);
-    }
+
     //if (m_cellfoceflag[pos]) {
     // if (isSelectedCell) {
     // QRect fillRect = QRect(2, 2, cellwidth - 3, cellheight - 3);
