@@ -117,6 +117,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 {
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_scheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_scheduleInfo);
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     QColor bcolor = gdcolor.Purecolor;
 
@@ -124,6 +125,8 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         bcolor = gdcolor.hoverPurecolor;
     } else if (m_highflag) {
         bcolor = gdcolor.hightlightPurecolor;
+    } else if (m_selectflag) {
+        bcolor = gdcolor.pressPurecolor;
     }
     painter->setBrush(bcolor);
     painter->setPen(Qt::NoPen);

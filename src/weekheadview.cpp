@@ -236,11 +236,11 @@ void CWeekHeadView::setCurrentDate(const QDate date)
     // to refresh lunar calendar
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
     QLocale locale;
-    if (locale.language() == QLocale::Chinese) {
-        m_monthLabel->setTextStr(m_monthList.at(date.month() - 1));
-    } else {
-        m_monthLabel->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
-    }
+    //if (locale.language() == QLocale::Chinese) {
+    //  m_monthLabel->setTextStr(m_monthList.at(date.month() - 1));
+    //} else {
+    m_monthLabel->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
+    // }
     //QLocale locale;
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
 //    m_monthLabel->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));

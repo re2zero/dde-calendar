@@ -247,6 +247,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
     if (m_avgeflag) {
         avge = 0.5;
     }
+
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
 
@@ -254,7 +255,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
     QPainter painter(this);
     if (m_GradientFlag) {
 
-        QLinearGradient linearGradient(0, 0, labelwidth, 0);
+        QLinearGradient linearGradient(0, 0, drawrect.width(), 0);
 
         QColor color1 = gdcolor.gradientFromC;
         QColor color2 = gdcolor.gradientToC;
@@ -267,6 +268,8 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
             color2 = gdcolor.hightlightgradientToC;
         }
         if (m_selectflag) {
+            color1 = gdcolor.pressgradientFromC;
+            color2 = gdcolor.pressgradientToC;
             textcolor.setAlphaF(0.6);
         }
         linearGradient.setColorAt(0, color1);
@@ -310,8 +313,11 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
             painter.save();
             painter.setRenderHints(QPainter::Antialiasing);
             QPen pen;
-            QColor selcolor = m_transparentcolor;
-            selcolor.setAlphaF(0.1);
+            QColor selcolor;
+
+            selcolor = "#FFFFFF";
+            selcolor.setAlphaF(0.08);
+
             pen.setColor(selcolor);
             pen.setWidth(1);
             painter.setBrush(Qt::NoBrush);
@@ -320,7 +326,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
             painter.restore();
         }
         if (m_selectflag) {
-            QColor selcolor = m_transparentcolor;
+            QColor selcolor = "#000000";
             selcolor.setAlphaF(0.05);
             painter.setBrush(selcolor);
             painter.setPen(Qt::NoPen);

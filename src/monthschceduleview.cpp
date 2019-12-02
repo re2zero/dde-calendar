@@ -236,6 +236,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
     int labelwidth = width();
     int labelheight = height();
     float avge = 1;
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
     QPainter painter(this);
@@ -252,6 +253,8 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             color2 = gdcolor.hightlightgradientToC;
         }
         if (m_selectflag) {
+            color1 = gdcolor.pressgradientFromC;
+            color2 = gdcolor.pressgradientToC;
             textcolor.setAlphaF(0.6);
         }
 
@@ -293,8 +296,11 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             painter.save();
             painter.setRenderHints(QPainter::Antialiasing);
             QPen pen;
-            QColor selcolor = m_transparentcolor;
-            selcolor.setAlphaF(0.1);
+            QColor selcolor;
+
+            selcolor = "#FFFFFF";
+            selcolor.setAlphaF(0.08);
+
             pen.setColor(selcolor);
             pen.setWidth(1);
             painter.setBrush(Qt::NoBrush);
@@ -303,7 +309,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             painter.restore();
         }
         if (m_selectflag) {
-            QColor selcolor = m_transparentcolor;
+            QColor selcolor = "#000000";
             selcolor.setAlphaF(0.05);
             painter.setBrush(selcolor);
             painter.setPen(Qt::NoPen);

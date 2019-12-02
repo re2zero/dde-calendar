@@ -513,11 +513,11 @@ void CDayMonthView::initConnection()
 void CDayMonthView::updateDateShow()
 {
     QLocale locale;
-    if (locale.language() == QLocale::Chinese) {
-        m_currentMouth->setTextStr(m_monthList.at(m_currentDate.month() - 1));
-    } else {
-        m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
-    }
+    // if (locale.language() == QLocale::Chinese) {
+    //  m_currentMouth->setTextStr(m_monthList.at(m_currentDate.month() - 1));
+    //} else {
+    m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
+    //}
     //QLocale locale;
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
     //m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));

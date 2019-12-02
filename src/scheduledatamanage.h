@@ -39,6 +39,9 @@ struct CSchedulesColor {
     QColor hovergradientToC;
     QColor hoverPurecolor;
     QColor splitColor;
+    QColor pressgradientFromC;
+    QColor pressgradientToC;
+    QColor pressPurecolor;
 };
 
 class CSchedulesDBus;
