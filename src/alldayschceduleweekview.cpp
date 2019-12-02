@@ -255,7 +255,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
     QPainter painter(this);
     if (m_GradientFlag) {
 
-        QLinearGradient linearGradient(0, 0, drawrect.width(), 0);
+        QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
 
         QColor color1 = gdcolor.gradientFromC;
         QColor color2 = gdcolor.gradientToC;
@@ -307,7 +307,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         //  painter.setPen(Qt::NoPen);
         //  painter.drawRoundedRect(fillRect, 8, 8);
         // }
-        if (m_hoverflag) {
+        if (m_hoverflag && !m_selectflag) {
             QRect trect = fillRect;
             trect.setHeight(fillRect.height());
             painter.save();

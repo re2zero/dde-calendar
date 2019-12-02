@@ -132,13 +132,14 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->setPen(Qt::NoPen);
     QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum, m_viewtype);
     painter->drawRect(rect);
-    if (m_hoverflag) {
+    if (m_hoverflag && !m_selectflag) {
         painter->save();
         QPen tpen;
         QColor cc = "#FFFFFF";
         cc.setAlphaF(0.08);
         tpen.setColor(cc);
         tpen.setWidth(1);
+        painter->setBrush(Qt::NoBrush);
         painter->setPen(tpen);
         painter->drawRect(rect);
         painter->restore();

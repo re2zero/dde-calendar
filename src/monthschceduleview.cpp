@@ -241,7 +241,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
     QPainter painter(this);
     if (m_GradientFlag) {
-        QLinearGradient linearGradient(0, 0, labelwidth, 0);
+        QLinearGradient linearGradient(2, 0, labelwidth - 2, 0);
         QColor color1 = gdcolor.gradientFromC;
         QColor color2 = gdcolor.gradientToC;
         QColor textcolor = gdcolor.textColor;
@@ -290,7 +290,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         }
         painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 2 * avge), Qt::AlignLeft, tstr);
 
-        if (m_hoverflag) {
+        if (m_hoverflag && !m_selectflag) {
             QRect trect = fillRect;
             trect.setHeight(fillRect.height());
             painter.save();
