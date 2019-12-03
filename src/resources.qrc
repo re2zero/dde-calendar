@@ -46,5 +46,7 @@
         <file>resources/icon/darkchoose20X20_checked .svg</file>
         <file>resources/icon/dark_ban_bg.svg</file>
         <file>resources/icon/dark_xiu_bg.svg</file>
+        <file>resources/icon/ban.svg</file>
+        <file>resources/icon/xiu.svg</file>
     </qresource>
 </RCC>

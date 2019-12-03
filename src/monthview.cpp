@@ -694,7 +694,7 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.drawText(fillRect, Qt::AlignCenter, "休");
             }
         }
-#endif
+
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         int ftype = getFestivalInfoByDate(m_days[pos]);
         if (ftype == 0) {
@@ -733,6 +733,35 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.drawPixmap(rect, pixmap);
             }
 
+        }
+#endif
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        int ftype = getFestivalInfoByDate(m_days[pos]);
+        if (ftype == 2) {
+            painter.setBrush(QBrush(m_banColor));
+        } else if (ftype == 1) {
+            painter.setBrush(QBrush(m_xiuColor));
+        } else {
+            painter.setBrush(QBrush(m_fillColor));
+        }
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(rect);//画矩形
+        if (getShowSolarDayByDate(m_days[pos])) {
+            painter.save();
+            QRect fillRect(8, cell->height() - 15, 12, 12);
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            if (ftype == 2) {
+                QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
+                pixmap.setDevicePixelRatio(devicePixelRatioF());
+                painter.drawPixmap(fillRect, pixmap);
+            } else if (ftype == 1) {
+                QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
+                pixmap.setDevicePixelRatio(devicePixelRatioF());
+                painter.drawPixmap(fillRect, pixmap);
+            }
+            painter.restore();
         }
     } else {
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
