@@ -177,6 +177,7 @@ void CWeekView::paintCell(QWidget *cell)
     const QString dayNum = QString::number(m_days[pos].addDays(3).weekNumber());
 
     if (isSelectDay) {
+#if 0
         QRect fillRect((cell->width() - 30) / 2, 3, 30, 30);
         int hh = 0;
 
@@ -203,6 +204,25 @@ void CWeekView::paintCell(QWidget *cell)
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setPen(m_currentDayTextColor);
         painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
+#else
+        QRect fillRect((cell->width() - 30) / 2, (cell->height() - 30) / 2 + 4, 30, 30);
+        QPixmap pixmap;
+        if (m_themetype == 2)
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+        else {
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+        }
+        pixmap.setDevicePixelRatio(devicePixelRatioF());
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        painter.drawPixmap(fillRect, pixmap);
+        painter.restore();
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        painter.setPen(m_currentDayTextColor);
+        painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
+#endif
     } else {
         if (isCurrentDay) {
             painter.setPen(m_backgroundcurrentDayColor);

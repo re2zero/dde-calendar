@@ -489,6 +489,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     if (bh < 0) {
         bh = 2;
     }
+#if 0
     if (isSelectedCell) {
         if (m_showState & ShowLunar) {
             QRect fillRect(bw - 5, bh - 2, 36, 36);
@@ -554,7 +555,6 @@ void CWeekHeadView::paintCell(QWidget *cell)
         }
 
     }
-
     QLocale locale;
     const QString dayNum = getCellDayNum(pos);
     const QString dayLunar = getLunar(pos);
@@ -592,7 +592,6 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.setPen(m_defaultTextColor);
         painter.drawText(QRect(bw + 40, bh, 40, 26), Qt::AlignCenter, dayWeek);
     }
-
     // draw text of day type
     if (m_showState & ShowLunar) {
         if (cell->width() > 100) {
@@ -621,6 +620,110 @@ void CWeekHeadView::paintCell(QWidget *cell)
         }
     }
     painter.restore();
+#else
+    if (isSelectedCell) {
+        if (m_showState & ShowLunar) {
+            QRect fillRect(bw - 2, bh, 30, 30);
+            QPixmap pixmap;
+            if (m_themetype == 2)
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+            else {
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+            }
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            painter.drawPixmap(fillRect, pixmap);
+            painter.restore();
+        } else {
+            QRect fillRect(bw + 5, bh + 1, 30, 30);
+            QPixmap pixmap;
+            if (m_themetype == 2)
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+            else {
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+            }
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            painter.drawPixmap(fillRect, pixmap);
+            painter.restore();
+        }
+
+    }
+    QLocale locale;
+    const QString dayNum = getCellDayNum(pos);
+    const QString dayLunar = getLunar(pos);
+    const QString dayWeek = locale.dayName(d ? d : 7, QLocale::ShortFormat);
+
+    painter.save();
+    painter.setPen(Qt::SolidLine);
+    // draw text of day
+    if (isSelectedCell) {
+        painter.setPen(m_currentDayTextColor);
+    } else if (isCurrentDay) {
+        painter.setPen(m_weekendsTextColor);
+    } else {
+        if (d == 6 || d == 7)
+            painter.setPen(m_weekendsTextColor);
+        else
+            painter.setPen(m_defaultTextColor);
+    }
+
+//    painter.drawRect(rect);
+    painter.setFont(m_dayNumFont);
+    if (m_showState & ShowLunar) {
+        painter.drawText(QRect(bw + 1, bh, 24, 24), Qt::AlignCenter, dayNum);
+        if (d == 6 || d == 7)
+            painter.setPen(m_weekendsTextColor);
+        else
+            painter.setPen(m_defaultTextColor);
+        painter.drawText(QRect(bw + 24, bh, 30, 25), Qt::AlignCenter, dayWeek);
+
+    } else {
+        painter.drawText(QRect(bw, bh, 40, 26), Qt::AlignCenter, dayNum);
+        if (d == 6 || d == 7)
+            painter.setPen(m_weekendsTextColor);
+        else
+            painter.setPen(m_defaultTextColor);
+        painter.drawText(QRect(bw + 40, bh, 40, 26), Qt::AlignCenter, dayWeek);
+    }
+    // draw text of day type
+    if (m_showState & ShowLunar) {
+        if (cell->width() > 100) {
+            if (d == 6 || d == 7)
+                painter.setPen(m_weekendsTextColor);
+            else
+                painter.setPen(m_defaultLunarColor);
+
+            painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
+            CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
+            //if (!dayInfo.mSolarFestival.isEmpty()) {
+            if (false) {
+                QRect fillRect = QRect(2, 39, 106, 15);
+                painter.setPen(Qt::red);
+                QFont solofont = m_dayNumFont;
+                solofont.setPixelSize(10);
+                painter.setFont(solofont);
+                QFontMetrics fm = painter.fontMetrics();
+                while (fm.width(dayInfo.mSolarFestival) > 108) {
+                    solofont.setPixelSize(solofont.pixelSize() - 1);
+                    painter.setFont(solofont);
+                    fm = painter.fontMetrics();
+                }
+                painter.drawText(fillRect, Qt::AlignRight, dayInfo.mSolarFestival);
+            }
+        }
+    }
+    painter.restore();
+#endif
+
+
+
     painter.end();
 }
 
