@@ -52,6 +52,7 @@ static const int WorkViewWidth = 860;
 static const int WorkViewHeight = 584;
 Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
 {
+
     setContentsMargins(QMargins(0, 0, 0, 0));
     initUI();
     initConnection();
@@ -75,7 +76,8 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     viewmaxminshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Alt+F")));
     connect(viewmaxminshortcut, SIGNAL(activated()), this, SLOT(slotmaxminViewShortcut()));
 
-    setTitlebarShadowEnabled(false);
+    //setTitlebarShadowEnabled(false);
+    setFocusPolicy(Qt::ClickFocus);
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
@@ -356,12 +358,13 @@ void Calendarmainwindow::initUI()
     QFrame *titleframe = new QFrame(this);
     titleframe->setObjectName("TitleBar");
     titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_icon = new DLabel(this);
-    m_icon->setFixedSize(32, 32);
-    m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
-                      .scaled(m_icon->size() * devicePixelRatioF()));
-    m_icon->move(10, 9);
-
+    //m_icon = new DLabel(this);
+    // m_icon->setFixedSize(32, 32);
+    //m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
+    //.scaled(m_icon->size() * devicePixelRatioF()));
+    //m_icon->move(10, 9);
+    titlebar()->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
+                        .scaled(QSize(32, 32) * devicePixelRatioF()));
 
     QStringList titlelist;
     titlelist << tr("Y") << tr("M") << tr("W") << tr("D");
@@ -419,7 +422,7 @@ void Calendarmainwindow::initUI()
     //titleLayout->addWidget(m_ybutton);
     // titleLayout->addWidget(m_mbutton);
     //titleLayout->addWidget(m_wbutton);
-    titleLayout->addSpacing(60);
+    titleLayout->addSpacing(8);
     //titleLayout->addWidget(m_icon);
     //titleLayout->addSpacing(18);
     titleLayout->addWidget(m_buttonBox);
