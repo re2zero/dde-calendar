@@ -79,6 +79,13 @@ QPainterPath CScheduleItem::shape() const
     return path;
 }
 
+void CScheduleItem::updateitem()
+{
+    m_hoverflag = false;
+    m_selectflag = false;
+    update();
+}
+
 void CScheduleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     m_hoverflag = true;

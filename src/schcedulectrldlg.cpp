@@ -42,7 +42,7 @@ CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
 
     //setTitle(tr("My Schcedule"));
     resize(400, 160);
-
+    setFocusPolicy(Qt::ClickFocus);
 }
 
 void CSchceduleCtrlDlg::initUI()
@@ -140,6 +140,7 @@ void CSchceduleCtrlDlg::initUI()
     gwi->setBackgroundRole(DPalette::Background);
     //gwi->setGeometry(0, 51, 380, 110);
     addContent(gwi, Qt::AlignCenter);
+    setFocus();
 }
 
 void CSchceduleCtrlDlg::initConnection()
@@ -203,7 +204,7 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
     labelTitle.setPixelSize(14);
     QFontMetrics fm(labelTitle);
     int w = fm.width(btName);
-    if (w > 109) w = w + 12;
+    if (w > 109) w = w + 18;
     else {
         w = 109;
     }

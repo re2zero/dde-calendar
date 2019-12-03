@@ -71,6 +71,7 @@ public:
     *******************************************************************************/
     QRectF boundingRect() const;
     QPainterPath shape () const;
+    void updateitem();
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);

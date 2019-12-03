@@ -103,6 +103,7 @@ private:
     DFrame *m_contentBackground = nullptr;
     int                       m_priindex = 3; //默认打开日视图双击
     DFrame                    *m_transparentFrame;
+    bool                      m_opensearchflag = false;
 };
 
 #endif // CALENDARMAINWINDOW_H

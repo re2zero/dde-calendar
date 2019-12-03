@@ -76,7 +76,7 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     viewmaxminshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Alt+F")));
     connect(viewmaxminshortcut, SIGNAL(activated()), this, SLOT(slotmaxminViewShortcut()));
 
-    //setTitlebarShadowEnabled(false);
+    setTitlebarShadowEnabled(false);
     setFocusPolicy(Qt::ClickFocus);
 }
 
@@ -280,9 +280,9 @@ void Calendarmainwindow::slotTheme(int type)
         m_monthButton->setPalette(pl);
         m_weekButton->setPalette(pl);
         m_dayButton->setPalette(pl);
-        DPalette maintpl = palette();
-        maintpl.setColor(DPalette::Window, "#FFFFFF");
-        setPalette(maintpl);
+        // DPalette maintpl = palette();
+        //maintpl.setColor(DPalette::Window, "#FFFFFF");
+        //setPalette(maintpl);
 
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#F8F8F8");
@@ -308,9 +308,9 @@ void Calendarmainwindow::slotTheme(int type)
         m_monthButton->setPalette(pl);
         m_weekButton->setPalette(pl);
         m_dayButton->setPalette(pl);
-        DPalette maintpl = palette();
-        maintpl.setColor(DPalette::Window, Qt::black);
-        setPalette(maintpl);
+        //DPalette maintpl = palette();
+        //maintpl.setColor(DPalette::Window, Qt::black);
+        //setPalette(maintpl);
 
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#252525");
@@ -437,9 +437,9 @@ void Calendarmainwindow::initUI()
 
     DTitlebar *titlebar = this->titlebar();
     //用于切换主题
-    titlebar->setMenu(new DMenu);
+    //titlebar->setMenu(new DMenu);
 
-    titlebar->setTitle("");
+    //titlebar->setTitle("");
     titlebar->setFixedHeight(50);
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
     titlebar->setCustomWidget(m_searchEdit, true);
@@ -655,6 +655,10 @@ void Calendarmainwindow::slotReturnTodyUpdate(QMainWindow *w)
 void Calendarmainwindow::slotSreturnPressed()
 {
 #if 1
+    if (!m_opensearchflag && !m_searchEdit->text().isEmpty()) {
+        m_opensearchflag = true;
+        m_contentBackground->setVisible(true);
+    }
     m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
     updateHigh();
 #else
@@ -677,13 +681,14 @@ void Calendarmainwindow::slotStextChanged()
         m_weekWindow->setSearchWFlag(true);
         m_monthWindow->setSearchWFlag(true);
         m_DayWindow->setSearchWFlag(true);
-        m_contentBackground->setVisible(true);
+        // m_contentBackground->setVisible(true);
     } else {
         m_yearwindow->setSearchWFlag(false);
         m_monthWindow->setSearchWFlag(false);
         m_weekWindow->setSearchWFlag(false);
         m_DayWindow->setSearchWFlag(false);
         m_contentBackground->setVisible(false);
+        m_opensearchflag = false;
     }
     updateHigh();
 #else
@@ -835,6 +840,29 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
         m_transparentFrame->show();
     } else {
         m_transparentFrame->hide();
+    }
+
+    int index = m_stackWidget->currentIndex();
+    if (index < 0 || index > m_stackWidget->count() - 1) {
+
+        return;
+    }
+    switch (index) {
+    case 0: {
+        m_yearwindow->setFocus();
+    }
+    case 1: {
+        m_monthWindow->setFocus();
+    }
+    break;
+    case 2: {
+        m_weekWindow->setFocus();
+    }
+    break;
+    case 3: {
+        m_DayWindow->setFocus();
+    }
+    break;
     }
 }
 

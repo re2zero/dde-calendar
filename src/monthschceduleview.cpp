@@ -215,8 +215,9 @@ void CMonthSchceduleWidgetItem::slotDelete()
             }
         }
     }
-    emit signalViewtransparentFrame(0);
     emit signalsDelete(this);
+    emit signalViewtransparentFrame(0);
+
 
 }
 //有问题
