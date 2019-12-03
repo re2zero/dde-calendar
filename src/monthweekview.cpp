@@ -136,10 +136,7 @@ void CMonthWeekView::setTheMe(int type)
                 m_weekData.at(i).first->setTextColor(textC);
                 m_weekData.at(i).first->setBColor(textbC);
             }
-            DPalette monthpa = m_vline.at(i)->palette();
-            monthpa.setColor(DPalette::Background, "#0081FF");
-            m_vline.at(i)->setPalette(monthpa);
-            m_vline.at(i)->setBackgroundRole(DPalette::Background);
+            m_vline.at(i)->setBackgroundRole(DPalette::Highlight);
         }
 
     } else if (type == 2) {
@@ -157,10 +154,10 @@ void CMonthWeekView::setTheMe(int type)
                 m_weekData.at(i).first->setTextColor(textC);
                 m_weekData.at(i).first->setBColor(textbC);
             }
-            DPalette monthpa = m_vline.at(i)->palette();
-            monthpa.setColor(DPalette::Background, "#0059D2");
-            m_vline.at(i)->setPalette(monthpa);
-            m_vline.at(i)->setBackgroundRole(DPalette::Background);
+            //DPalette monthpa = m_vline.at(i)->palette();
+            //monthpa.setColor(DPalette::Background, "#0059D2");
+            //m_vline.at(i)->setPalette(monthpa);
+            m_vline.at(i)->setBackgroundRole(DPalette::Highlight);
         }
     }
 }
