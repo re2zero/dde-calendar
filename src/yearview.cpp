@@ -327,7 +327,7 @@ void CYearView::paintCell(QWidget *cell)
 
     } else {
         //    painter.drawRoundedRect(cell->rect(), 4, 4);
-
+#if 1
         // draw selected cell background circle
         if (isSelectedCell) {
             int hh = 0;
@@ -381,6 +381,57 @@ void CYearView::paintCell(QWidget *cell)
         painter.setFont(m_dayNumFont);
 
         painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
+#else
+        // draw selected cell background circle
+        if (isSelectedCell) {
+            int hh = 0;
+            QRect fillRect;
+            int t_pix = (height() - 159) / 22.33;
+            if (cell->width() > cell->height()) {
+                hh = cell->height() - t_pix;
+                fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 + t_pix / 2, 0, hh, hh);
+            } else {
+                hh = cell->width() - t_pix;
+                fillRect = QRect(t_pix / 2, (cell->height() - hh) / 2.0 + 0.5, hh, hh);
+            }
+            QPixmap pixmap;
+            if (m_themetype == 2)
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose20X20_checked .svg");
+            else {
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose20X20_checked .svg");
+            }
+
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            painter.drawPixmap(fillRect, pixmap);
+            painter.restore();
+        }
+
+        painter.setPen(Qt::SolidLine);
+
+        const QString dayNum = getCellDayNum(pos);
+
+        // draw text of day
+        if (isSelectedCell) {
+            painter.setPen(m_selectedTextColor);
+        } else if (isCurrentDay) {
+            painter.setPen(m_currentDayTextColor);
+        } else {
+            if (m_currentDate.month() == getCellDate(pos).month())
+                painter.setPen(m_defaultTextColor);
+            else
+                painter.setPen(m_notCurrentTextColor);
+        }
+
+        //    painter.drawRect(rect);
+        QRect test;
+        painter.setFont(m_dayNumFont);
+
+        painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
+#endif
     }
     painter.end();
 }

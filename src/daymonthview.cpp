@@ -558,7 +558,7 @@ void CDayMonthView::paintCell(QWidget *cell)
     QPainter painter(cell);
 
 //    painter.drawRoundedRect(cell->rect(), 4, 4);
-
+#if 0
     // draw selected cell background circle
     if (isSelectedCell) {
         int hh = 0;
@@ -612,6 +612,61 @@ void CDayMonthView::paintCell(QWidget *cell)
     painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
 
     painter.end();
+#else
+    // draw selected cell background circle
+    if (isSelectedCell) {
+        int hh = 0;
+        QRect fillRect;
+        if (cell->width() > cell->height()) {
+            hh = cell->height();
+            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, hh * 0.1271, hh, hh);
+        } else {
+            hh = cell->width();
+            fillRect = QRect(0, (cell->height() - hh) / 2.0  + hh * 0.1271, hh, hh);
+        }
+        QPixmap pixmap;
+        if (m_themetype == 2)
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+        else {
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+        }
+
+        pixmap.setDevicePixelRatio(devicePixelRatioF());
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        //painter.setRenderHints(QPainter::HighQualityAntialiasing);
+        //painter.setBrush(QBrush(m_backgroundCircleColor));
+        //painter.setPen(Qt::NoPen);
+        painter.drawPixmap(fillRect, pixmap);
+        painter.restore();
+    }
+
+    painter.setPen(Qt::SolidLine);
+
+    const QString dayNum = getCellDayNum(pos);
+
+    // draw text of day
+    if (isSelectedCell) {
+        painter.setPen(m_selectedTextColor);
+    } else if (isCurrentDay) {
+        painter.setPen(m_currentDayTextColor);
+    } else {
+        if (m_currentDate.month() == getCellDate(pos).month())
+            painter.setPen(m_defaultTextColor);
+        else
+            painter.setPen(m_notCurrentTextColor);
+    }
+
+//    painter.drawRect(rect);
+    QRect test;
+    painter.setFont(m_dayNumFont);
+
+    painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
+
+    painter.end();
+#endif
 }
 
 void CDayMonthView::cellClicked(QWidget *cell)
