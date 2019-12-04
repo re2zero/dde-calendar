@@ -201,7 +201,7 @@ void CYearWindow::initUI()
     yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout1->addSpacing(390);
     yeartitleLayout1->addStretch();
-    yeartitleLayout1->addWidget(m_YearLunarDayLabel);
+    yeartitleLayout1->addWidget(m_YearLunarDayLabel, 0, Qt::AlignVCenter);
     yeartitleLayout1->addSpacing(10);
 
     m_todayframe = new CustomFrame;
