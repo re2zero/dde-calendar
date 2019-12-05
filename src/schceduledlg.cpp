@@ -298,6 +298,7 @@ void CSchceduleDlg::slotOkBt()
                     if (msgBox.clickButton() == noButton) {
                         return;
                     } else if (msgBox.clickButton() == yesallbutton) {
+                        scheduleDtailInfo.ignore.clear();
                         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(scheduleDtailInfo);
                     } else if (msgBox.clickButton() == yesButton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
