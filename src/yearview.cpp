@@ -327,14 +327,14 @@ void CYearView::paintCell(QWidget *cell)
 
     } else {
         //    painter.drawRoundedRect(cell->rect(), 4, 4);
-#if 1
+#if 0
         // draw selected cell background circle
         if (isSelectedCell) {
             int hh = 0;
             QRect fillRect;
             if (cell->width() > cell->height()) {
                 hh = cell->height() + 6;
-                fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 - 2, 4 * cellwidth / cellheight, hh + 4, hh + 4);
+                fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 - 2,  cellwidth / cellheight, hh + 4, hh + 4);
             } else {
                 hh = cell->width() + 6;
                 fillRect = QRect(- 5, (cell->height() - hh) / 2.0 + hh * 0.0625 * cellheight / cellwidth, hh + 4, hh + 4);
@@ -386,19 +386,18 @@ void CYearView::paintCell(QWidget *cell)
         if (isSelectedCell) {
             int hh = 0;
             QRect fillRect;
-            int t_pix = (height() - 159) / 22.33;
             if (cell->width() > cell->height()) {
-                hh = cell->height() - t_pix;
-                fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 + t_pix / 2, 0, hh, hh);
+                hh = cell->height();
+                fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 - 3, hh * 0.11 - 2, hh + 6, hh + 6);
             } else {
-                hh = cell->width() - t_pix;
-                fillRect = QRect(t_pix / 2, (cell->height() - hh) / 2.0 + 0.5, hh, hh);
+                hh = cell->width();
+                fillRect = QRect(-3, (cell->height() - hh) / 2.0 + hh * 0.11 - 2, hh + 6, hh + 6);
             }
             QPixmap pixmap;
             if (m_themetype == 2)
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose20X20_checked .svg");
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
             else {
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose20X20_checked .svg");
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
             }
 
             pixmap.setDevicePixelRatio(devicePixelRatioF());
