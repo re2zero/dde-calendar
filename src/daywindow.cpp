@@ -64,8 +64,8 @@ void CDayWindow::setTheMe(int type)
         m_SolarDay->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
         DPalette anipa = m_contentBackground->palette();
-        QColor bcolor  = "#FFFFFF";
-        bcolor.setAlphaF(0.05);
+        QColor bcolor  = "#252525";
+        //bcolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, bcolor);
         m_contentBackground->setPalette(anipa);
         m_contentBackground->setBackgroundRole(DPalette::Background);
@@ -149,7 +149,7 @@ void CDayWindow::initUI()
     QHBoxLayout *titleLayout = new QHBoxLayout;
     titleLayout->setMargin(0);
     titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(11, 8, 0, 3);
+    titleLayout->setContentsMargins(10, 9, 0, 3);
 
     m_YearLabel = new QLabel();
     m_YearLabel->setMinimumSize(175, DDEDayCalendar::D_YLableHeight);

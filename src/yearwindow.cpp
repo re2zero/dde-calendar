@@ -160,7 +160,7 @@ void CYearWindow::initUI()
     QFont t_labelF;
     t_labelF.setFamily("SourceHanSansSC");
     t_labelF.setWeight(QFont::Medium);
-    t_labelF.setPixelSize(30);
+    t_labelF.setPixelSize(24);
     m_YearLabel->setFont(t_labelF);
     DPalette pa = m_YearLabel->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -190,14 +190,15 @@ void CYearWindow::initUI()
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    yeartitleLayout->setContentsMargins(2, 10, 2, 0);
-
+    //yeartitleLayout->setContentsMargins(2, 10, 2, 0);
+    yeartitleLayout->setContentsMargins(11, 12, 8, 10);
     yeartitleLayout->addWidget(m_YearLabel);
 
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
     yeartitleLayout1->setMargin(0);
     yeartitleLayout1->setSpacing(0);
-    yeartitleLayout1->setContentsMargins(0, 10, 8, 5);
+    //yeartitleLayout1->setContentsMargins(0, 10, 8, 5);
+    yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
     yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout1->addSpacing(390);
     yeartitleLayout1->addStretch();
@@ -241,7 +242,7 @@ void CYearWindow::initUI()
     m_gridWidget = new DFrame;
     m_gridWidget->setLayout(gridLayout);
 
-    m_gridWidget->setContentsMargins(5, 0, 0, 10);
+    m_gridWidget->setContentsMargins(0, 0, 0, 10);
     m_gridWidget->setFrameRounded(true);
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->setMargin(0);
@@ -260,12 +261,12 @@ void CYearWindow::initUI()
     //m_schceduleSearchView = new CSchceduleSearchView(this);
     //m_schceduleSearchView->setFixedWidth(200);
 
-    QVBoxLayout *ssLayout = new QVBoxLayout;
-    ssLayout->setMargin(0);
-    ssLayout->setSpacing(0);
-    ssLayout->setContentsMargins(0, 10, 0, 10);
+    //QVBoxLayout *ssLayout = new QVBoxLayout;
+    //ssLayout->setMargin(0);
+    //ssLayout->setSpacing(0);
+    // ssLayout->setContentsMargins(0, 10, 0, 10);
     //ssLayout->addWidget(m_schceduleSearchView);
-    m_tmainLayout->addLayout(ssLayout);
+    // m_tmainLayout->addLayout(ssLayout);
     //m_schceduleSearchView->setVisible(false);
 
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
