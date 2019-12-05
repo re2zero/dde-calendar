@@ -19,15 +19,15 @@
     <name>CAllDaySchceduleWeekWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>编 辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>删 除</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>New event</source>
@@ -66,11 +66,11 @@
     <name>CAllDaySchceduleWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>编 辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>删 除</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>Delete Schedule</source>
@@ -213,11 +213,11 @@
     <name>CGraphicsView</name>
     <message>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>编 辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>删 除</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this schedule?</source>
@@ -225,7 +225,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>Delete Schedule</source>
@@ -303,15 +303,15 @@
     <name>CMonthSchceduleWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>编 辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>删 除</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -360,15 +360,15 @@
     <name>CMySchceduleView</name>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>编 辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>删 除</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -421,11 +421,11 @@
     <name>CSchceduleAllWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>编 辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>删 除</translation>
     </message>
     <message>
         <source>You are deleted schedule.</source>
@@ -437,7 +437,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>Delete Schedule</source>
@@ -527,7 +527,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>All Day:</source>
@@ -675,7 +675,7 @@
     </message>
     <message>
         <source>Save</source>
-        <translation>保存</translation>
+        <translation>保 存</translation>
     </message>
 </context>
 <context>
@@ -704,15 +704,15 @@
     <name>CSchceduleSearchItem</name>
     <message>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>编 辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>删 除</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -754,11 +754,11 @@
     <name>CSchceduleWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>编 辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>删 除</translation>
     </message>
     <message>
         <source>You are deleted schedule.</source>
@@ -770,7 +770,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>取 消</translation>
     </message>
     <message>
         <source>Delete Schedule</source>
