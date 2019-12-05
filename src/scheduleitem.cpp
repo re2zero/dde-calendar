@@ -141,14 +141,17 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->drawRect(rect);
     if (m_hoverflag && !m_selectflag) {
         painter->save();
+
+        QRectF trect = QRectF(rect.x() + 0.5, rect.y() + 0.5, rect.width() - 1, rect.height() - 1);
         QPen tpen;
         QColor cc = "#FFFFFF";
         cc.setAlphaF(0.08);
         tpen.setColor(cc);
-        tpen.setWidth(1);
+        tpen.setWidthF(1);
+        tpen.setStyle(Qt::SolidLine);
         painter->setBrush(Qt::NoBrush);
         painter->setPen(tpen);
-        painter->drawRect(rect);
+        painter->drawRect(trect);
         painter->restore();
     }
     if (m_selectflag) {

@@ -308,8 +308,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
         //  painter.drawRoundedRect(fillRect, 8, 8);
         // }
         if (m_hoverflag && !m_selectflag) {
-            QRect trect = fillRect;
-            trect.setHeight(fillRect.height());
+            QRectF trect = QRectF(fillRect.x() + 0.5, fillRect.y() + 0.5, fillRect.width() - 1, fillRect.height() - 1);
             painter.save();
             painter.setRenderHints(QPainter::Antialiasing);
             QPen pen;
@@ -319,7 +318,8 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
             selcolor.setAlphaF(0.08);
 
             pen.setColor(selcolor);
-            pen.setWidth(1);
+            pen.setWidthF(1);
+            pen.setStyle(Qt::SolidLine);
             painter.setBrush(Qt::NoBrush);
             painter.setPen(pen);
             painter.drawRoundedRect(trect, 8, 8);

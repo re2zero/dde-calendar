@@ -292,8 +292,8 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 2 * avge), Qt::AlignLeft, tstr);
 
         if (m_hoverflag && !m_selectflag) {
-            QRect trect = fillRect;
-            trect.setHeight(fillRect.height());
+            QRectF trect = QRectF(2.5, 2.5, labelwidth - 3, labelheight - 3);
+            // trect.setHeight(fillRect.height());
             painter.save();
             painter.setRenderHints(QPainter::Antialiasing);
             QPen pen;
@@ -303,7 +303,8 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             selcolor.setAlphaF(0.08);
 
             pen.setColor(selcolor);
-            pen.setWidth(1);
+            pen.setWidthF(1);
+            pen.setStyle(Qt::SolidLine);
             painter.setBrush(Qt::NoBrush);
             painter.setPen(pen);
             painter.drawRoundedRect(trect, 8, 8);
