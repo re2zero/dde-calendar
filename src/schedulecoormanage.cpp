@@ -156,7 +156,7 @@ QRect CScheduleCoorManage::getDrawRegion(QDate date, QDateTime begintime, QDateT
             posX = m_width * (1.0 * (beginday - 1) / m_totalDay) + (index - 1) * trWidth;
         }
     }
-    if (rHeight < 1) rHeight = 1;
+    if (rHeight < 20) rHeight = 20;
     rect = QRect(posX, posY, rWidth, rHeight);
     return rect;
 }
