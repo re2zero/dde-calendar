@@ -546,6 +546,9 @@ void CAllDaySchceduleWeekView::updateDateShow()
         for (int i = 0; i < m_vlistData.size(); ++i) {
             CAllDaySchceduleWeekWidgetItem *gwi = createItemWidget(i);
             QListWidgetItem *listItem = new QListWidgetItem;
+            listItem->setSizeHint(QSize(gwi->width(), 23)); //每次改变Item的高度
+            //listItem->setBackgroundColor(Qt::white);
+            listItem->setFlags(Qt::ItemIsTristate );
             addItem(listItem);
             setItemWidget(listItem, gwi);
             gwi->setItem(listItem);
@@ -560,6 +563,9 @@ void CAllDaySchceduleWeekView::updateDateShow()
         for (int i = 0; i < m_vlistData.size(); ++i) {
             CAllDaySchceduleWeekWidgetItem *gwi = createItemWidget(i, false);
             QListWidgetItem *listItem = new QListWidgetItem;
+            listItem->setSizeHint(QSize(gwi->width(), 23)); //每次改变Item的高度
+            //listItem->setBackgroundColor(Qt::white);
+            listItem->setFlags(Qt::ItemIsTristate );
             addItem(listItem);
             setItemWidget(listItem, gwi);
             gwi->setItem(listItem);
