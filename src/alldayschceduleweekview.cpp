@@ -218,7 +218,7 @@ void CAllDaySchceduleWeekWidgetItem::slotDelete()
                 ScheduleDtailInfo newschedule;
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_ScheduleInfo.id, newschedule);
                 newschedule.enddata.type = 2;
-                newschedule.enddata.date = m_ScheduleInfo.beginDateTime;
+                newschedule.enddata.date = m_ScheduleInfo.beginDateTime.addDays(-1);
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
 
             } else if (msgBox.clickButton() == yesButton) {

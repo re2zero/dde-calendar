@@ -401,7 +401,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
                             ScheduleDtailInfo newschedule;
                             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
                             newschedule.enddata.type = 2;
-                            newschedule.enddata.date = info.beginDateTime;
+                            newschedule.enddata.date = info.beginDateTime.addDays(-1);
                             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
 
                         } else if (msgBox.clickButton() == yesButton) {
