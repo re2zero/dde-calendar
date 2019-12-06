@@ -145,6 +145,11 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         QRectF trect = QRectF(rect.x() + 0.5, rect.y() + 0.5, rect.width() - 1, rect.height() - 1);
         QPen tpen;
         QColor cc = "#FFFFFF";
+        if (themetype == 2) {
+            cc = "#FFFFFF";
+        } else {
+            cc = "#000000";
+        }
         cc.setAlphaF(0.08);
         tpen.setColor(cc);
         tpen.setWidthF(1);

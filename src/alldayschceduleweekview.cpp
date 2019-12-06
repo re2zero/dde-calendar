@@ -250,6 +250,7 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
 
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     QRect drawrect = m_coorManage->getAllDayDrawRegion(m_ScheduleInfo.beginDateTime.date(), m_ScheduleInfo.endDateTime.date());
     QPainter painter(this);
@@ -314,7 +315,11 @@ void CAllDaySchceduleWeekWidgetItem::paintEvent( QPaintEvent *e )
             QPen pen;
             QColor selcolor;
 
-            selcolor = "#FFFFFF";
+            if (themetype == 2) {
+                selcolor = "#FFFFFF";
+            } else {
+                selcolor = "#000000";
+            }
             selcolor.setAlphaF(0.08);
 
             pen.setColor(selcolor);

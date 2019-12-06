@@ -298,8 +298,12 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             painter.setRenderHints(QPainter::Antialiasing);
             QPen pen;
             QColor selcolor;
+            if (themetype == 2) {
+                selcolor = "#FFFFFF";
+            } else {
+                selcolor = "#000000";
+            }
 
-            selcolor = "#FFFFFF";
             selcolor.setAlphaF(0.08);
 
             pen.setColor(selcolor);
