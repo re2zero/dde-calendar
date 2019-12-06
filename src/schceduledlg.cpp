@@ -32,6 +32,7 @@
 #include "schcedulectrldlg.h"
 #include "timeeditctrl.h"
 #include <QShortcut>
+#include <QToolButton>
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
@@ -817,9 +818,9 @@ void CSchceduleDlg::initConnection()
     connect(m_allDayCheckbox, &DCheckBox::stateChanged, this, &CSchceduleDlg::slotallDayStateChanged);
     connect(m_beginrepeatCombox, QOverload<int>::of(&QComboBox::activated), this, &CSchceduleDlg::slotbRpeatactivated);
     connect(m_endrepeatCombox, QOverload<int>::of(&QComboBox::activated), this, &CSchceduleDlg::sloteRpeatactivated);
-    connect(m_bCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotBDateEidtInfo);
+    // connect(m_bCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotBDateEidtInfo);
 
-    connect(m_eCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotEDateEidtInfo);
+    //connect(m_eCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotEDateEidtInfo);
 
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("ESC")));
@@ -828,22 +829,125 @@ void CSchceduleDlg::initConnection()
 
 void CSchceduleDlg::initDateEdit()
 {
-    m_bCustomDateW = new CCustomCalendarWidget(0);
-    m_beginDateEdit->setCalendarWidget(m_bCustomDateW);
+    //m_bCustomDateW = new CCustomCalendarWidget(0);
+    // m_beginDateEdit->setCalendarWidget(m_bCustomDateW);
     m_beginDateEdit->setMinimumDate(QDate(1900, 1, 1)); // 0天
     m_beginDateEdit->setMaximumDate(QDate(9999, 12, 31)); //
     //m_beginDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
     // m_bCustomDateW->disconnect(SIGNAL(selectionChanged()));
     //m_bCustomDateW->disconnect(SIGNAL(clicked(QDate)));
 
-    m_eCustomDateW = new CCustomCalendarWidget(0);
-    m_endDateEdit->setCalendarWidget(m_eCustomDateW);
+    //m_eCustomDateW = new CCustomCalendarWidget(0);
+    //m_endDateEdit->setCalendarWidget(m_eCustomDateW);
     m_endDateEdit->setMinimumDate(QDate(1900, 1, 1)); // 0天
     m_endDateEdit->setMaximumDate(QDate(9999, 12, 31)); //
-    m_endDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
+    //m_endDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
     //m_eCustomDateW->disconnect(SIGNAL(selectionChanged()));
     //m_eCustomDateW->disconnect(SIGNAL(clicked(QDate)));
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
+    QWidget *view1 = m_beginDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
+    if (view1) {
+        DPalette anipa = view1->palette();
+        if (themetype == 2) {
+            QColor cc = "#FFFFFF";
+            cc.setAlphaF(0.1);
+            anipa.setColor(DPalette::Background, cc);
+        } else {
+            anipa.setColor(DPalette::Background, "#FFFFFF");
+        }
+        view1->setPalette(anipa);
+        view1->setBackgroundRole(DPalette::Background);
+    }
+    QToolButton *monthbutton1 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
+    if (monthbutton1) {
+        DPalette anipa = monthbutton1->palette();
+        if (themetype == 2) {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        } else {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        }
+        monthbutton1->setPalette(anipa);
+        //monthbutton1->setBackgroundRole(DPalette::ButtonText);
+    }
+    QToolButton *yearbutton1 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
+    if (yearbutton1) {
+        DPalette anipa = yearbutton1->palette();
+        if (themetype == 2) {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        } else {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        }
+        yearbutton1->setPalette(anipa);
+    }
+
+    QWidget *view2 = m_endDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
+    if (view2) {
+        DPalette anipa = view2->palette();
+        if (themetype == 2) {
+            anipa.setColor(DPalette::Background, "#252525");
+        } else {
+            anipa.setColor(DPalette::Background, "#FFFFFF");
+        }
+        view2->setPalette(anipa);
+        view2->setBackgroundRole(DPalette::Background);
+    }
+    QToolButton *monthbutton2 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
+    if (monthbutton2) {
+        DPalette anipa = monthbutton2->palette();
+        if (themetype == 2) {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        } else {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        }
+        monthbutton2->setPalette(anipa);
+
+    }
+    QToolButton *yearbutton2 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
+    if (yearbutton2) {
+        DPalette anipa = yearbutton2->palette();
+        if (themetype == 2) {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        } else {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        }
+        yearbutton2->setPalette(anipa);
+    }
+
+
+    QWidget *view3 = m_endRepeatDate->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
+    if (view3) {
+        DPalette anipa = view3->palette();
+        if (themetype == 2) {
+            anipa.setColor(DPalette::Background, "#252525");
+        } else {
+            anipa.setColor(DPalette::Background, "#FFFFFF");
+        }
+        view3->setPalette(anipa);
+        view3->setBackgroundRole(DPalette::Background);
+    }
+
+    QToolButton *monthbutton3 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
+    if (monthbutton3) {
+        DPalette anipa = monthbutton3->palette();
+        if (themetype == 2) {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        } else {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        }
+        monthbutton3->setPalette(anipa);
+
+    }
+    QToolButton *yearbutton3 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
+    if (yearbutton2) {
+        DPalette anipa = yearbutton3->palette();
+        if (themetype == 2) {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        } else {
+            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
+        }
+        yearbutton3->setPalette(anipa);
+    }
 }
 
 void CSchceduleDlg::initRmindRpeatUI()

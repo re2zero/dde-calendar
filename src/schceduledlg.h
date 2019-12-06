@@ -100,8 +100,8 @@ private:
     DPushButton                      *m_OkBt = nullptr;
     //CCalendarTimeEidt                *m_bCalendarTimeEidt;
     //CCalendarTimeEidt                *m_eCalendarTimeEidt;
-    CCustomCalendarWidget            *m_bCustomDateW;
-    CCustomCalendarWidget            *m_eCustomDateW;
+    //CCustomCalendarWidget            *m_bCustomDateW;
+    //CCustomCalendarWidget            *m_eCustomDateW;
     DFrame                           *m_gwi;
     QLabel                           *m_titleLabel;
 private:
