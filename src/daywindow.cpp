@@ -114,6 +114,7 @@ void CDayWindow::setDate(QDate date)
 void CDayWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;
+    m_daymonthView->setSearchFlag(flag);
     //m_schceduleSearchView->setVisible(flag);
 }
 

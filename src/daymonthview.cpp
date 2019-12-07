@@ -257,6 +257,12 @@ void CDayMonthView::setTheMe(int type)
         m_cellList.at(i)->update();
     }
 }
+
+void CDayMonthView::setSearchFlag(bool flag)
+{
+    m_searchflag = flag;
+    update();
+}
 void CDayMonthView::setCurrentDate(const QDate date, int type)
 {
     qDebug() << "set current date " << date;
@@ -872,15 +878,21 @@ void CDayMonthView::paintEvent(QPaintEvent *e)
 
     painterPath.lineTo(labelwidth - m_radius, labelheight);
 
-    painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
-
+    if (!m_searchflag) {
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+    } else {
+        painterPath.lineTo(labelwidth, labelheight);
+        painterPath.lineTo(labelwidth, labelheight - m_radius);
+    }
     painterPath.lineTo(labelwidth, m_radius);
+    if (!m_searchflag) {
 
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
 
-
-    painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
-
-
+    } else {
+        painterPath.lineTo(labelwidth, 0);
+        painterPath.lineTo(labelwidth - m_radius, 0);
+    }
     painterPath.lineTo(m_radius, 0);
     painterPath.closeSubpath();
     painter.drawPath(painterPath);

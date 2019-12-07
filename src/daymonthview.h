@@ -55,6 +55,7 @@ public:
         return m_currentDate;
     }
     void setTheMe(int type = 0);
+    void setSearchFlag(bool flag);
 signals:
     void dateSelected(const QDate date, const CaHuangLiDayInfo &detail) const;
     void signalcurrentDateChanged(QDate date);
@@ -142,6 +143,7 @@ private:
     int                   m_themetype  = 1;
     int                      m_radius = 8;
     QStringList m_monthList;
+    bool                 m_searchflag = false;
 };
 
 #endif // YEARVIEW_H
