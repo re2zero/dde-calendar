@@ -345,6 +345,7 @@ void CMonthView::setCurrentDate(const QDate date)
 
 void CMonthView::setLunarVisible(bool visible)
 {
+    //  visible = false;
     int state = int(m_showState);
 
     if (visible)
@@ -999,7 +1000,7 @@ void CMonthView::paintCell(QWidget *cell)
     int hh = 36;
     if (isCurrentDay) {
         if (m_showState & ShowLunar) {
-            QRect fillRect(3, 7, hh, hh);
+            QRect fillRect(3, 2, hh, hh);
             QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
@@ -1014,7 +1015,7 @@ void CMonthView::paintCell(QWidget *cell)
             painter.drawPixmap(fillRect, pixmap);
             painter.restore();
         } else {
-            QRect fillRect((cellwidth - 36) / 2 - 3, 7, hh, hh);
+            QRect fillRect((cellwidth - 36) / 2, 2, hh, hh);
             QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
@@ -1057,16 +1058,16 @@ void CMonthView::paintCell(QWidget *cell)
         tfont.setPixelSize(20);
         painter.setFont(tfont);
         if (m_showState & ShowLunar) {
-            painter.drawText(QRect(3, 3, hh, hh), Qt::AlignCenter, dayNum, &test);
+            painter.drawText(QRect(3, -2, hh, hh), Qt::AlignCenter, dayNum, &test);
         } else {
-            painter.drawText(QRect(0, 3, cell->width(), hh), Qt::AlignCenter, dayNum, &test);
+            painter.drawText(QRect(0, -2, cell->width(), hh), Qt::AlignCenter, dayNum, &test);
         }
 
     } else {
         if (m_showState & ShowLunar) {
-            painter.drawText(QRect(3, 3, hh, hh), Qt::AlignCenter, dayNum);
+            painter.drawText(QRect(3, -2, hh, hh), Qt::AlignCenter, dayNum);
         } else {
-            painter.drawText(QRect(0, 3, cell->width(), hh), Qt::AlignCenter, dayNum, &test);
+            painter.drawText(QRect(0, -2, cell->width(), hh), Qt::AlignCenter, dayNum, &test);
         }
     }
 #endif
