@@ -808,6 +808,7 @@ void CMonthView::paintCell(QWidget *cell)
 
     const QString dayNum = getCellDayNum(pos);
     const QString dayLunar = getLunar(pos);
+#if 1
     if (!isSelectedCell) {
         if (isCurrentDay) {
             if (m_showState & ShowLunar) {
@@ -993,7 +994,81 @@ void CMonthView::paintCell(QWidget *cell)
             painter.drawText(QRect(0, 0, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
         }
     }
+#else
 
+    if (isCurrentDay) {
+        if (m_showState & ShowLunar) {
+            QRect fillRect(4, 5, 30, 30);
+            QPixmap pixmap;
+            if (m_themetype == 2)
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+            else {
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+            }
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            painter.drawPixmap(fillRect, pixmap);
+            painter.restore();
+        } else {
+            QRect fillRect((cellwidth - 30) / 2 - 3, 4, 30, 30);
+            QPixmap pixmap;
+            if (m_themetype == 2)
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+            else {
+                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+            }
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            painter.drawPixmap(fillRect, pixmap);
+            painter.restore();
+        }
+    }
+
+    QColor daynumcolor;
+    if (isCurrentDay) {
+        daynumcolor = m_currentDayTextColor;
+    } else {
+        const int tType = type & 0xff;
+        if (tType & SO_MNotCurrentMonth)
+            daynumcolor = m_notCurrentTextColor;
+        else if (type == SO_MWeekends)
+            daynumcolor = m_weekendsTextColor;
+        else
+            daynumcolor = m_defaultTextColor;
+    }
+    if (m_cellfoceflag[pos]) {
+        daynumcolor.setAlphaF(0.6);
+    }
+    painter.setPen(daynumcolor);
+//    painter.drawRect(rect);
+    QRect test;
+    painter.setFont(m_dayNumFont);
+
+    if (isCurrentDay) {
+
+        QFont tfont = m_dayNumFont;
+        tfont.setPixelSize(20);
+        painter.setFont(tfont);
+        if (m_showState & ShowLunar) {
+            painter.drawText(QRect(4, 2, 30, 30), Qt::AlignCenter, dayNum, &test);
+        } else {
+            painter.drawText(QRect(0, 3, cell->width(), 30), Qt::AlignCenter, dayNum, &test);
+        }
+
+    } else {
+        if (m_showState & ShowLunar) {
+            painter.drawText(QRect(4, 2, 30, 30), Qt::AlignCenter, dayNum);
+        } else {
+            painter.drawText(QRect(0, 3, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
+        }
+    }
+#endif
 // draw text of day type
     if (m_showState & ShowLunar) {
         //if (isCurrentDay) {
