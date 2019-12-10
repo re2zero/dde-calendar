@@ -49,6 +49,7 @@ CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
     setLayout(hboxLayout);
     setFrameRounded(true);
     setLineWidth(0);
+    setWindowFlags(Qt::FramelessWindowHint);
 }
 
 CMonthDayView::~CMonthDayView()
@@ -275,7 +276,7 @@ void CMonthDayView::paintCell(QWidget *cell)
         painter.setPen(m_currentDayTextColor);
         painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
 #else
-        QRect fillRect((cell->width() - 30) / 2, (cell->height() - 30) / 2 + 4, 30, 30);
+        QRect fillRect((cell->width() - 30) / 2, (cell->height() - 30) / 2 + 3, 30, 30);
         QPixmap pixmap;
         if (m_themetype == 2)
             pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
