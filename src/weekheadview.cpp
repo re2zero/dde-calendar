@@ -623,7 +623,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
 #else
     if (isSelectedCell) {
         if (m_showState & ShowLunar) {
-            QRect fillRect(bw - 2, bh, 30, 30);
+            QRect fillRect(bw - 7, bh - 2, 36, 36);
             QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
@@ -638,7 +638,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.drawPixmap(fillRect, pixmap);
             painter.restore();
         } else {
-            QRect fillRect(bw + 5, bh + 1, 30, 30);
+            QRect fillRect(bw, bh - 1, 36, 36);
             QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
@@ -677,7 +677,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
 //    painter.drawRect(rect);
     painter.setFont(m_dayNumFont);
     if (m_showState & ShowLunar) {
-        painter.drawText(QRect(bw + 1, bh, 24, 24), Qt::AlignCenter, dayNum);
+        painter.drawText(QRect(bw - 1, bh, 24, 24), Qt::AlignCenter, dayNum);
         if (d == 6 || d == 7)
             painter.setPen(m_weekendsTextColor);
         else
@@ -685,7 +685,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
         painter.drawText(QRect(bw + 24, bh, 30, 25), Qt::AlignCenter, dayWeek);
 
     } else {
-        painter.drawText(QRect(bw, bh, 40, 26), Qt::AlignCenter, dayNum);
+        painter.drawText(QRect(bw - 2, bh, 40, 26), Qt::AlignCenter, dayNum);
         if (d == 6 || d == 7)
             painter.setPen(m_weekendsTextColor);
         else
