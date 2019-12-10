@@ -292,6 +292,7 @@ void CMonthDayView::paintCell(QWidget *cell)
         painter.restore();
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
         painter.setPen(m_currentDayTextColor);
+        painter.setFont(m_dayNumFont);
         painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
 #endif
     } else {
@@ -300,6 +301,7 @@ void CMonthDayView::paintCell(QWidget *cell)
         } else {
             painter.setPen(m_defaultTextColor);
         }
+        painter.setFont(m_dayNumFont);
         painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
     }
     painter.end();
