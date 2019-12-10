@@ -495,17 +495,21 @@ void CSchceduleSearchView::updateDateShow()
         QFont font("SourceHanSansSC-Normal");
         font.setPixelSize(20);
         gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-        DPalette daypa;
+        DPalette daypa = gwi->palette();
         QColor textcolor = DPalette::ToolTipText;
         int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
         if (themtype == 2) {
+            textcolor = "#C0C6D4";
             textcolor.setAlphaF(0.4);
         } else {
+            textcolor = "#000000";
             textcolor.setAlphaF(0.3);
         }
         daypa.setColor(DPalette::WindowText, textcolor);
         daypa.setColor(DPalette::Window, m_lBackgroundcolor);
         gwi->setPalette(daypa);
+        gwi->setForegroundRole(DPalette::WindowText);
+        //gwi->setForegroundRole(DPalette::Window);
         gwi->setFont(font);
         gwi->setText(tr("No search results"));
         gwi->setFixedSize(m_gradientItemList->width(), 450);
