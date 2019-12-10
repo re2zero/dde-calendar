@@ -62,6 +62,7 @@ void CScheduleView::setRange( int w, int h, QDate begin, QDate end )
     m_TotalDay = begin.daysTo(end) + 1;
     m_graphicsView->setRange(w, h, begin, end);
     m_alldaylist->setRange(w, 22, m_beginDate, m_endDate);
+    update();
 }
 
 void CScheduleView::setRange( QDate begin, QDate end )

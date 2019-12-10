@@ -83,6 +83,7 @@ void CYearWindow::setDate(QDate date)
             break;
         }
     }
+    emit signalCurrentDate(date);
 }
 
 void CYearWindow::initUI()

@@ -109,6 +109,7 @@ void CDayWindow::setDate(QDate date)
     m_daymonthView->setCurrentDate(date);
     int w = m_scheduleView->width() - 72 - 38;
     m_scheduleView->setRange(w, 1032, m_currentdate, m_currentdate);
+    emit signalCurrentDate(date);
 }
 
 void CDayWindow::setSearchWFlag(bool flag)
@@ -337,7 +338,7 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
         vdate.append(m_currentdate);
         m_scheduleView->setDate(vdate, tvStr);
     }
-
+    emit signalCurrentDate(date);
 }
 
 void CDayWindow::slotcurrentDateChanged(QDate date)
@@ -352,6 +353,7 @@ void CDayWindow::slotcurrentDateChanged(QDate date)
     //m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
     m_scheduleView->setRange(m_currentdate, m_currentdate);
     m_scheduleView->setDate(m_currentdate);
+    emit signalCurrentDate(date);
 }
 
 void CDayWindow::slotsearchDateSelect(QDate date)

@@ -48,6 +48,7 @@ void CWeekWindow::setDate(QDate date)
     m_currentdate = date;
     m_weekview->setCurrentDate(date);
     update();
+    emit signalCurrentDate(date);
 }
 
 void CWeekWindow::setFirstWeekday(int weekday)
@@ -428,6 +429,7 @@ void CWeekWindow::slotCurrentWeek(QDate date, QDate currentDate)
     QVector<QDate> vDate;
     for (int i = 0; i < 7; i++)
         vDate.append(date.addDays(i));
+    emit signalCurrentDate(vDate[0]);
     m_currentdate = currentDate;
     m_weekHeadView->setWeekDay(vDate);
     m_weekHeadView->setCurrentDate(m_currentdate);

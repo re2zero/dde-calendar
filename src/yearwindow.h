@@ -56,6 +56,7 @@ signals:
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
     void signaldoubleclickDate(QDate date);
     void signalselectMonth(QDate date);
+    void signalCurrentDate(QDate date);
 public slots:
     void slotReturnTodayUpdate();
 private slots:

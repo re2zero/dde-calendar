@@ -60,6 +60,7 @@ void CMonthWindow::setDate(QDate date)
     }
     //m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
     m_monthDayView->setCurrentDate(date);
+    emit signalCurrentDate(date);
 }
 
 void CMonthWindow::setLunarVisible(bool state)
@@ -366,6 +367,8 @@ void CMonthWindow::slideMonth(bool next)
     }
 #endif
     setDate(m_currentdate);
+    QDate tdate = QDate(m_currentdate.year(), m_currentdate.month(), 1);
+    emit signalCurrentDate(tdate);
 }
 
 void CMonthWindow::slotReturnTodayUpdate()
