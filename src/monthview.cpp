@@ -808,7 +808,7 @@ void CMonthView::paintCell(QWidget *cell)
 
     const QString dayNum = getCellDayNum(pos);
     const QString dayLunar = getLunar(pos);
-#if 1
+#if 0
     if (!isSelectedCell) {
         if (isCurrentDay) {
             if (m_showState & ShowLunar) {
@@ -996,9 +996,10 @@ void CMonthView::paintCell(QWidget *cell)
     }
 #else
 
+    int hh = 36;
     if (isCurrentDay) {
         if (m_showState & ShowLunar) {
-            QRect fillRect(4, 5, 30, 30);
+            QRect fillRect(3, 7, hh, hh);
             QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
@@ -1013,7 +1014,7 @@ void CMonthView::paintCell(QWidget *cell)
             painter.drawPixmap(fillRect, pixmap);
             painter.restore();
         } else {
-            QRect fillRect((cellwidth - 30) / 2 - 3, 4, 30, 30);
+            QRect fillRect((cellwidth - 36) / 2 - 3, 7, hh, hh);
             QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
@@ -1056,16 +1057,16 @@ void CMonthView::paintCell(QWidget *cell)
         tfont.setPixelSize(20);
         painter.setFont(tfont);
         if (m_showState & ShowLunar) {
-            painter.drawText(QRect(4, 2, 30, 30), Qt::AlignCenter, dayNum, &test);
+            painter.drawText(QRect(3, 3, hh, hh), Qt::AlignCenter, dayNum, &test);
         } else {
-            painter.drawText(QRect(0, 3, cell->width(), 30), Qt::AlignCenter, dayNum, &test);
+            painter.drawText(QRect(0, 3, cell->width(), hh), Qt::AlignCenter, dayNum, &test);
         }
 
     } else {
         if (m_showState & ShowLunar) {
-            painter.drawText(QRect(4, 2, 30, 30), Qt::AlignCenter, dayNum);
+            painter.drawText(QRect(3, 3, hh, hh), Qt::AlignCenter, dayNum);
         } else {
-            painter.drawText(QRect(0, 3, cell->width(), 33), Qt::AlignCenter, dayNum, &test);
+            painter.drawText(QRect(0, 3, cell->width(), hh), Qt::AlignCenter, dayNum, &test);
         }
     }
 #endif
