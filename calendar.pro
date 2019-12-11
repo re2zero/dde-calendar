@@ -133,6 +133,9 @@ RESOURCES += src/resources.qrc
 isEmpty(BINDIR):BINDIR=/usr/bin
 isEmpty(APPDIR):APPDIR=/usr/share/applications
 isEmpty(DSRDIR):DSRDIR=/usr/share/dde-calendar
+isEmpty(PREFIX){
+    PREFIX = /usr
+}
 
 # Automating generation .qm files from .ts files
 !system($$PWD/translate_generation.sh): error("Failed to generate translation")
