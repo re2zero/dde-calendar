@@ -139,7 +139,7 @@ isEmpty(DSRDIR):DSRDIR=/usr/share/dde-calendar
 
 target.path = $$INSTROOT$$BINDIR
 icon_files.path = $$PREFIX/share/icons/hicolor/scalable/apps/
-icon_files.files = $$PWD/images/dde-calendar.svg
+icon_files.files = $$PWD/src/resources/icon/dde-calendar.svg
 
 desktop.path = $$INSTROOT$$APPDIR
 desktop.files = dde-calendar.desktop
