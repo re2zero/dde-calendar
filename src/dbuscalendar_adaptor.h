@@ -35,6 +35,8 @@ class CalendarAdaptor: public QDBusAbstractAdaptor
                 "  <interface name=\"com.deepin.Calendar\">\n"
                 "    <method name=\"ActiveWindow\">\n"
                 "    </method>\n"
+                "    <method name=\"RaiseWindow\">\n"
+                "    </method>\n"
                 "    <method name=\"openSchedule\">\n"
                 "      <arg direction=\"in\" type=\"s\" name=\"job\"/>\n"
                 "    </method>\n"
@@ -47,6 +49,7 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void ActiveWindow();
+    void RaiseWindow();
     void OpenSchedule(QString job);
 Q_SIGNALS: // SIGNALS
 };

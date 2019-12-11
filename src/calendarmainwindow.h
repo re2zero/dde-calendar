@@ -56,6 +56,7 @@ public slots:
     void slotTheme(int type);
     void OpenSchedule(QString job);
     void ActiveWindow();
+    void RaiseWindow();
     void onViewShortcut();
     void slotmaxminViewShortcut();
 private:

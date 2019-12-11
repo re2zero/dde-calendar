@@ -354,6 +354,11 @@ void Calendarmainwindow::ActiveWindow()
 {
     raise();
 }
+
+void Calendarmainwindow::RaiseWindow()
+{
+    raise();
+}
 void Calendarmainwindow::initUI()
 {
     QFrame *titleframe = new QFrame(this);
