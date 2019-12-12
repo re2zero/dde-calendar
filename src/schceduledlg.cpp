@@ -378,15 +378,18 @@ void CSchceduleDlg::slotTextChange()
     int maxLength = 256; // 最大字符数
 
     if (length > maxLength) {
+
+        QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
+        textContent = textContent.mid(0, 256);
+        m_textEdit->setText(textContent);
         QTextCursor cursor = m_textEdit->textCursor();
         cursor.movePosition(QTextCursor::End);
-        if (cursor.hasSelection()) {
-            cursor.clearSelection();
-        }
-        cursor.deletePreviousChar();
+        //if (cursor.hasSelection()) {
+        //  cursor.clearSelection();
+        //}
+        //cursor.deletePreviousChar();
         //设置当前的光标为更改后的光标
         m_textEdit->setTextCursor(cursor);
-        QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
     }
 }
 
