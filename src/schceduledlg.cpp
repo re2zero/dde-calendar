@@ -33,6 +33,7 @@
 #include "timeeditctrl.h"
 #include <QShortcut>
 #include <QToolButton>
+#include <QTextBlock>
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {
@@ -371,18 +372,21 @@ void CSchceduleDlg::slotOkBt()
 
 void CSchceduleDlg::slotTextChange()
 {
+    QTextCursor cursor = m_textEdit->textCursor();
     QString textContent = m_textEdit->toPlainText();
-
     int length = textContent.count();
-
+    QString tStitlename = textContent;
+    if (tStitlename.contains("\n")) {
+        tStitlename.replace("\n", "");
+        m_textEdit->setText(tStitlename);
+        return;
+    }
     int maxLength = 256; // 最大字符数
-
     if (length > maxLength) {
 
         QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
         textContent = textContent.mid(0, 256);
         m_textEdit->setText(textContent);
-        QTextCursor cursor = m_textEdit->textCursor();
         cursor.movePosition(QTextCursor::End);
         //if (cursor.hasSelection()) {
         //  cursor.clearSelection();
@@ -391,6 +395,7 @@ void CSchceduleDlg::slotTextChange()
         //设置当前的光标为更改后的光标
         m_textEdit->setTextCursor(cursor);
     }
+
 }
 
 void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)
@@ -485,12 +490,29 @@ void CSchceduleDlg::sloteRpeatactivated(int index)
 bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
 {
     if (obj == m_textEdit) {
-        if (pEvent->type() == QEvent::FocusIn) {
-            //清空编辑框默认占位符
-            m_textEdit->setPlaceholderText("");
-        } else if (pEvent->type() == QEvent::FocusOut) {
-            //设置编辑框默认占位符
-            m_textEdit->setPlaceholderText(tr("New Schedule"));
+        if (pEvent->type() == QEvent::KeyPress) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(pEvent);
+            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
+                qDebug() << "1111111111";
+                return true;
+            }
+            /*QString textContent = m_textEdit->toPlainText();
+            int length = textContent.count();
+            int maxLength = 255; // 最大字符数
+            if (length > maxLength) {
+
+                QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
+                return true;
+            }*/
+        }
+        if (m_type == 1) {
+            if (pEvent->type() == QEvent::FocusIn) {
+                //清空编辑框默认占位符
+                m_textEdit->setPlaceholderText("");
+            } else if (pEvent->type() == QEvent::FocusOut) {
+                //设置编辑框默认占位符
+                m_textEdit->setPlaceholderText(tr("New Schedule"));
+            }
         }
     }
     return QDialog::eventFilter(obj, pEvent);
@@ -592,14 +614,14 @@ void CSchceduleDlg::initUI()
     }
 
     m_textEdit->setPalette(tpa);
-    if (m_type == 1) {
-        m_textEdit->setPlaceholderText(tr("New Event"));
-        //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
-        QWidget *mpContentWidget = m_textEdit->viewport();
-        //设置事件过滤器
-        m_textEdit->installEventFilter(this);
-        mpContentWidget->installEventFilter(this);
-    }
+    //if (m_type == 1) {
+    m_textEdit->setPlaceholderText(tr("New Event"));
+    //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
+    QWidget *mpContentWidget = m_textEdit->viewport();
+    //设置事件过滤器
+    m_textEdit->installEventFilter(this);
+    mpContentWidget->installEventFilter(this);
+    //}
 
     contentLabellayout->addLayout(conttelabellayout);
     contentLabellayout->addWidget(m_textEdit);
