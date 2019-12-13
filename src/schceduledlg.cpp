@@ -385,7 +385,10 @@ void CSchceduleDlg::slotTextChange()
     if (length > maxLength) {
 
         QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
-        textContent = textContent.mid(0, 256);
+        m_textEdit->setText(m_context);
+        cursor.movePosition(QTextCursor::End);
+        m_textEdit->setTextCursor(cursor);
+        /*textContent = textContent.mid(0, 256);
         m_textEdit->setText(textContent);
         cursor.movePosition(QTextCursor::End);
         //if (cursor.hasSelection()) {
@@ -393,9 +396,9 @@ void CSchceduleDlg::slotTextChange()
         //}
         //cursor.deletePreviousChar();
         //设置当前的光标为更改后的光标
-        m_textEdit->setTextCursor(cursor);
+        m_textEdit->setTextCursor(cursor);*/
     }
-
+    m_context = m_textEdit->toPlainText();
 }
 
 void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)

@@ -104,6 +104,8 @@ private:
     //CCustomCalendarWidget            *m_eCustomDateW;
     DFrame                           *m_gwi;
     QLabel                           *m_titleLabel;
+
+    QString                           m_context;
 private:
     ScheduleInfo                     m_scheduleInfo;//日程
     ScheduleDtailInfo                m_scheduleDtailInfo;
