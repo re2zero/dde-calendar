@@ -51,6 +51,7 @@ void CMonthWindow::setFirstWeekday(int weekday)
 
 void CMonthWindow::setDate(QDate date)
 {
+    if (!date.isValid()) return;
     m_currentdate = date;
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {

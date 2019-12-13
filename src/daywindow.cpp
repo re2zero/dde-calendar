@@ -104,6 +104,7 @@ void CDayWindow::updateHigh()
 }
 void CDayWindow::setDate(QDate date)
 {
+    if (!date.isValid()) return;
     m_currentdate = date;
     m_daymonthView->setFirstWeekday(0);
     m_daymonthView->setCurrentDate(date);

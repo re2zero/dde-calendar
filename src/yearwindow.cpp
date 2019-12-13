@@ -71,6 +71,7 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
 
 void CYearWindow::setDate(QDate date)
 {
+    if (!date.isValid()) return;
     m_currentdate = date;
     for (int i = 0; i < 12; i++) {
         QDate tdate(m_currentdate.year(), i + 1, 1);

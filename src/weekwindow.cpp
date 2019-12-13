@@ -45,6 +45,7 @@ CWeekWindow::~CWeekWindow()
 
 void CWeekWindow::setDate(QDate date)
 {
+    if (!date.isValid()) return;
     m_currentdate = date;
     m_weekview->setCurrentDate(date);
     update();
