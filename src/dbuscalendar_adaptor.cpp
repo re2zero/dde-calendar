@@ -46,7 +46,10 @@ void CalendarAdaptor::ActiveWindow()
 
 void CalendarAdaptor::RaiseWindow()
 {
-    QMetaObject::invokeMethod(parent(), "RaiseWindow");
+    QWidget *pp = qobject_cast<QWidget *>(parent());
+    pp->activateWindow();
+    pp->raise();
+    //QMetaObject::invokeMethod(parent(), "RaiseWindow");
 }
 
 void CalendarAdaptor::OpenSchedule(QString job)
