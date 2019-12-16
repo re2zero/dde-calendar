@@ -277,6 +277,7 @@ private:
     QTimer                       *m_timer;
     QMutex                        m_Mutex;
     int                       m_viewType = 0;
+    bool                         m_updateDflag  = false;
 };
 
 #endif // GRAPHICSVIEW_H

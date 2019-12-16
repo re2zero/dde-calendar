@@ -445,6 +445,7 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
         return;
     }
     emit signalViewtransparentFrame(1);
+    m_updateDflag  = false;
     CMySchceduleView dlg(this);
     dlg.setSchedules(item->getData());
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
@@ -454,10 +455,12 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     if (item == NULL) {
         return;
     }
-    item->updateitem();
+    if (!m_updateDflag)
+        item->updateitem();
 }
 void CGraphicsView::slotDoubleEvent(int type)
 {
+    m_updateDflag  = true;
     emit signalsUpdateShcedule(0);
 }
 
