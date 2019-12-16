@@ -441,7 +441,7 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
         return;
     }
     if (item->getType() == 1) {
-        emit signalsCurrentScheduleDate(item->getData().beginDateTime.date());
+        emit signalsCurrentScheduleDate(item->getdate());
         return;
     }
     emit signalViewtransparentFrame(1);
