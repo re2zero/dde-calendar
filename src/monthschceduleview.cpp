@@ -628,6 +628,7 @@ void CMonthSchceduleView::updateData()
     QVector<QVector<MScheduleDateRangeInfo> >vCMDaySchedule;
     vCfillSchedule.resize(m_cNum);
     vCMDaySchedule.resize(m_cNum);
+#if  0
     //设置日程状态
     for (int c = 0; c < m_cNum; c++) {
         vCfillSchedule[c].resize(42);
@@ -648,6 +649,46 @@ void CMonthSchceduleView::updateData()
                 vMDaySchedule[i].state = true;
         }
     }
+#else
+    //设置日程状态
+    for (int c = 0; c < m_cNum; c++) {
+        vCfillSchedule[c].resize(42);
+        for (int sd = 0; sd < 42; sd++) {
+            vCfillSchedule[c][sd] = -1;
+        }
+    }
+    for (int i = 0; i < vMDaySchedule.count(); i++) {
+        if (vMDaySchedule[i].state) continue;
+        int bindex = begindate.daysTo(vMDaySchedule[i].bdate);
+        int eindex = begindate.daysTo(vMDaySchedule[i].edate);
+        int c = -1;
+        for (int k = 0; k < m_cNum; k++) {
+            int t = 0;
+            for (t = bindex; t <= eindex; t++) {
+                if (vCfillSchedule[k][t] != -1) {
+                    break;
+                }
+            }
+            if (t == eindex + 1) {
+                c = k;
+                break;
+            }
+        }
+        if (c == -1) continue;
+
+        bool flag = false;
+        for (int sd = bindex; sd <= eindex; sd++) {
+            if (vCfillSchedule[c][sd] != -1) continue;
+            vCfillSchedule[c][sd] = i;
+            flag = true;
+        }
+        if (flag)
+            vMDaySchedule[i].state = true;
+
+    }
+
+#endif
+
 
     QVector<int> vId, vRid; //用于删除日程显示项目保证正确
     //重新组装数据

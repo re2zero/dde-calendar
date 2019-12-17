@@ -72,11 +72,19 @@ void CDayHuangLiLabel::paintEvent( QPaintEvent *e )
     painter.drawRoundedRect(fillRect, 12, 12);
     QPixmap pixmap;
     if (m_type == 0)
-        pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-yi.svg").scaled(20, 20);
+        pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-yi.svg");
     else {
-        pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ji.svg").scaled(20, 20);
+        pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-ji.svg");
     }
-    painter.drawPixmap(m_leftMagin, m_topMagin + 2, pixmap);
+    pixmap.setDevicePixelRatio(devicePixelRatioF());
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::HighQualityAntialiasing);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+    painter.drawPixmap(QRect(m_leftMagin, m_topMagin + 1, 22, 22), pixmap);
+    painter.restore();
+
+
     painter.setFont(m_font);
     painter.setPen(m_textcolor);
     int bw = m_leftMagin + 34;
