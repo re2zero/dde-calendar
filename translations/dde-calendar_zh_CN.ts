@@ -847,6 +847,28 @@
     </message>
 </context>
 <context>
+    <name>CYearSchceduleItem</name>
+    <message>
+        <source>ALL DaY</source>
+        <translation>全天</translation>
+    </message>
+    <message>
+        <source>h</source>
+        <translation>时</translation>
+    </message>
+</context>
+<context>
+    <name>CYearSchceduleView</name>
+    <message>
+        <source>No search results</source>
+        <translation type="obsolete">无搜索结果</translation>
+    </message>
+    <message>
+        <source>No Schcedule</source>
+        <translation>无日程</translation>
+    </message>
+</context>
+<context>
     <name>CYearWindow</name>
     <message>
         <source>infomation</source>
