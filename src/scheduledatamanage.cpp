@@ -19,11 +19,16 @@
 #include "scheduledatamanage.h"
 
 #include "schedulesdbus.h"
-
+#include "calendardbus.h"
 CScheduleDataManage *CScheduleDataManage::m_vscheduleDataManage = new CScheduleDataManage;
 CScheduleDataCtrl *CScheduleDataManage::getscheduleDataCtrl()
 {
     return m_scheduleDataCtrl;
+}
+
+CHuangliDayDataManage *CScheduleDataManage::getHuangliDayDataManage()
+{
+    return  m_HuangliDayDataManage;
 }
 
 CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
@@ -294,6 +299,7 @@ void CScheduleDataManage::clear()
 CScheduleDataManage::CScheduleDataManage ()
 {
     m_scheduleDataCtrl = new CScheduleDataCtrl;
+    m_HuangliDayDataManage = new CHuangliDayDataManage;
     CSchedulesColor workC;
     workC.type = 1;
     workC.gradientFromC = "#FBCEB7";
@@ -469,4 +475,34 @@ void CDataProcessThread::run()
         emit signalsDataProcess(out);
         break;
     }
+}
+
+CHuangliDayDataManage::CHuangliDayDataManage()
+{
+    m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
+                                   "/com/deepin/api/LunarCalendar",
+                                   QDBusConnection::sessionBus(), this);
+}
+
+CHuangliDayDataManage::~CHuangliDayDataManage()
+{
+    delete m_DBusInter;
+}
+
+bool CHuangliDayDataManage::getSoloDay(QDate date, QString &str)
+{
+    CaHuangLiDayInfo scurrentDayinfo;
+    if (m_DBusInter->GetHuangLiDayCalendar(date.year(), date.month(), date.day(), scurrentDayinfo)) {
+        if (scurrentDayinfo.mSolarFestival.isEmpty() && scurrentDayinfo.mLunarFestival.isEmpty()) {
+            str = QString();
+            return false;
+        } else if (!scurrentDayinfo.mSolarFestival.isEmpty() && !scurrentDayinfo.mLunarFestival.isEmpty()) {
+            str = scurrentDayinfo.mSolarFestival + " " + scurrentDayinfo.mLunarFestival;
+            return true;
+        } else {
+            str = scurrentDayinfo.mSolarFestival  + scurrentDayinfo.mLunarFestival;
+            return true;
+        }
+    }
+    return false;
 }

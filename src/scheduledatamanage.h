@@ -46,12 +46,13 @@ struct CSchedulesColor {
 
 class CSchedulesDBus;
 class CScheduleDataCtrl;
+class CHuangliDayDataManage;
 class CScheduleDataManage
 {
 public:
     static CScheduleDataManage *getScheduleDataManage();
     CScheduleDataCtrl *getscheduleDataCtrl();
-
+    CHuangliDayDataManage *getHuangliDayDataManage();
     CSchedulesColor getScheduleColorByType(int type);
 
 
@@ -69,6 +70,7 @@ private:
     ~CScheduleDataManage();
 private:
     CScheduleDataCtrl           *m_scheduleDataCtrl;
+    CHuangliDayDataManage       *m_HuangliDayDataManage;
     QVector<CSchedulesColor>    m_vScheduleColor;
     QVector<ScheduleDateRangeInfo> m_vScheduleInfo;
     int                         m_theme = 0;
@@ -152,5 +154,15 @@ private:
     QDate                m_enddate;
     QWidget              *m_currentWidget;
     CDataProcessThread   *m_thread;
+};
+class CalendarDBus;
+class CHuangliDayDataManage: public QObject
+{
+public:
+    CHuangliDayDataManage();
+    ~CHuangliDayDataManage();
+    bool getSoloDay(QDate date, QString &str);
+private:
+    CalendarDBus *m_DBusInter;
 };
 #endif // SCHEDULEVIEW_H

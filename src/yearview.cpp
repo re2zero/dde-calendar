@@ -34,6 +34,7 @@
 #include <QLocale>
 #include <DHiDPIHelper>
 #include "scheduledatamanage.h"
+#include "yearschceduleview.h"
 DGUI_USE_NAMESPACE
 CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 {
@@ -110,6 +111,12 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     m_monthList.append( "十二月");
     m_hightFont.setFamily("Helvetica");
     m_hightFont.setPixelSize(12);
+
+    m_Scheduleview = new CYearSchceduleView(parent);
+    //m_Scheduleview->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    //m_Scheduleview->setAttribute(Qt::WA_TranslucentBackground);
+    //m_Scheduleview->setWindowFlags(m_Scheduleview->windowFlags()& Qt::WindowStaysOnTopHint);
+    //m_Scheduleview->setVisible(false);
 }
 void CYearView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
 {
@@ -188,6 +195,7 @@ void CYearView::setTheMe(int type)
     QColor monthcolor = Qt::white;
     monthcolor.setAlphaF(0);
     m_currentMouth->setBColor(monthcolor);
+    m_Scheduleview->setTheMe(type);
 }
 
 void CYearView::updateHigh()
@@ -251,6 +259,31 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             if (pos != -1) {
                 emit signaldoubleclickDate(m_days[pos]);
             }
+        }
+        if (e->type() == QEvent::Leave) {
+            const int pos = m_cellList.indexOf(cell);
+            m_cellList[pos]->update();
+            m_Scheduleview->hide();
+        } else if (e->type() == QEvent::ToolTip) {
+            const int pos = m_cellList.indexOf(cell);
+            CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
+            QString soloday;
+            if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
+                m_Scheduleview->setSoloDay(soloday);
+            }
+            QVector<ScheduleDateRangeInfo> out;
+            if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[pos], m_days[pos], out)) {
+                if (!out.isEmpty()) {
+                    m_Scheduleview->setData(out[0].vData);
+                }
+            }
+            int px = cell->x();
+            int py = cell->y();
+            //QPoint pos22 = mapToGlobal(QPoint(px, py));
+            QPoint pos22 = QCursor::pos();
+            m_Scheduleview->move(pos22.x() + 10, pos22.y());
+            m_Scheduleview->showWindow();
+            m_Scheduleview->show();
         }
     }
     if (cell == m_currentMouth) {

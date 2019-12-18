@@ -15,6 +15,7 @@ DWIDGET_USE_NAMESPACE
 class CalendarDBus;
 class CaLunarDayInfo;
 class QLabel;
+class CYearSchceduleView;
 enum CalendarYearDayType {
     SO_YFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_YWeekends = QStyleOption::SO_CustomBase + 0x02,
@@ -106,6 +107,7 @@ private:
     QColor                   m_bnormalColor = "#FFFFFF";
     int                      m_radius = 8;
     int                      m_borderframew = 0;
+    CYearSchceduleView      *m_Scheduleview = nullptr;
 };
 
 #endif // YEARVIEW_H

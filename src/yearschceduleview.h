@@ -23,10 +23,11 @@
 #include <DPushButton>
 #include "schedulestructs.h"
 #include <DListWidget>
+#include <DFrame>
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CYearSchceduleItem;
-class CYearSchceduleView : public DWidget
+class CYearSchceduleView : public DFrame
 {
     Q_OBJECT
 

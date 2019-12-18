@@ -860,10 +860,6 @@
 <context>
     <name>CYearSchceduleView</name>
     <message>
-        <source>No search results</source>
-        <translation type="obsolete">无搜索结果</translation>
-    </message>
-    <message>
         <source>No Schcedule</source>
         <translation>无日程</translation>
     </message>

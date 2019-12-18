@@ -87,25 +87,13 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
     //圆点
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    painter.setBrush(QBrush(bcolor));
+    painter.setBrush(QBrush(m_Statecolor));
     painter.setPen(Qt::NoPen);
     painter.drawEllipse(QRect(10, (labelheight - 8) / 2, 8, 8));
     painter.restore();
-    //右边时间
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    painter.setPen(m_timecolor);
-    painter.setFont(m_timefont);
+
+
     QString str;
-    if (m_ScheduleInfo.allday) {
-        str = tr("ALL DaY");
-    } else {
-        str = m_ScheduleInfo.beginDateTime.time().toString("ap H") + tr("h");
-    }
-    painter.drawText(QRect(labelwidth - 50, 0, 50, labelheight), Qt::AlignRight | Qt::AlignVCenter, str);
-    painter.restore();
-
-
     //左边文字
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
@@ -115,7 +103,7 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
     QString tStitlename = m_ScheduleInfo.titleName;
     tStitlename.replace("\n", "");
     str = tStitlename;
-    int tilenameW = labelwidth - 80;
+    int tilenameW = labelwidth - 90;
     QString tstr;
     for (int i = 0; i < str.count(); i++) {
         tstr.append(str.at(i));
@@ -131,17 +119,33 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
 
     painter.drawText(QRect(28, 0, tilenameW, labelheight), Qt::AlignLeft | Qt::AlignVCenter, tstr);
     painter.restore();
+    //右边时间
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setPen(m_timecolor);
+    painter.setFont(m_timefont);
+
+    if (m_ScheduleInfo.allday) {
+        str = tr("ALL DaY");
+    } else {
+        str = m_ScheduleInfo.beginDateTime.time().toString("ap H") + tr("h");
+    }
+    QFontMetrics fm2 = painter.fontMetrics();
+    painter.drawText(QRect(labelwidth - 60, 0, 50, labelheight), Qt::AlignRight | Qt::AlignVCenter, str);
+    painter.restore();
 }
 
-CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
+CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DFrame(parent)
 {
+    //setContentsMargins(10, 10, 10, 10);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(0);
     layout->setSpacing(0);
     m_gradientItemList = new DListWidget(parent);
-    m_gradientItemList->setAlternatingRowColors(true);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(m_gradientItemList);
+    // m_gradientItemList->setAlternatingRowColors(true);
+    //layout->setContentsMargins(10, 10, 10, 10);
+    layout->addWidget(m_gradientItemList, 0, Qt::AlignCenter);
     //m_gradientItemList->setSpacing(1);
     // set default row
     m_gradientItemList->setCurrentRow(0);
@@ -151,6 +155,7 @@ CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
     m_bBackgroundcolor.setAlphaF(0.03);
     m_gradientItemList->setLineWidth(0);
     m_labellist.clear();
+    setFrameRounded(true);
 }
 
 CYearSchceduleView::~CYearSchceduleView()
@@ -183,13 +188,15 @@ void CYearSchceduleView::clearData()
 
 void CYearSchceduleView::showWindow()
 {
-    updateDateShow();
-    if (m_soloDay.isEmpty() && m_vlistData.isEmpty())
-        resize(100, 50);
-    else {
-        resize(210, 150);
+    if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
+        setFixedSize(120, 70);
+        m_gradientItemList->setFixedSize(100, 50);
+    } else {
+        setFixedSize(230, 170);
+        m_gradientItemList->setFixedSize(210, 150);
     }
-    show();
+    //show();
+    updateDateShow();
 }
 
 void CYearSchceduleView::setTheMe(int type)
@@ -243,7 +250,7 @@ void CYearSchceduleView::updateDateShow()
         QListWidgetItem *listItem = new QListWidgetItem;
         DLabel *gwi = new DLabel();
         QFont font("SourceHanSansSC-Normal");
-        font.setPixelSize(20);
+        font.setPixelSize(12);
         gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
         DPalette daypa = gwi->palette();
         QColor textcolor = DPalette::ToolTipText;
@@ -293,11 +300,11 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
     gwi->setText(m_bttextcolor, font);
     font.setPixelSize(12);
     gwi->setTimeC(m_btimecolor, font);
-    gwi->setFixedSize(m_gradientItemList->width() - 20, 28);
+    gwi->setFixedSize(m_gradientItemList->width() - 3, 28);
     gwi->setData(gd);
 
     QListWidgetItem *listItem = new QListWidgetItem;
-    listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 28)); //每次改变Item的高度
+    listItem->setSizeHint(QSize(m_gradientItemList->width() - 2, 29)); //每次改变Item的高度
     //listItem->setBackgroundColor(Qt::white);
     listItem->setFlags(Qt::ItemIsTristate );
     m_gradientItemList->addItem(listItem);
