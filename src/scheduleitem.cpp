@@ -83,6 +83,8 @@ void CScheduleItem::updateitem()
 {
     m_hoverflag = false;
     m_selectflag = false;
+    emit signalsSelectUpdateState(this, 0);
+    emit signalsHoverUpdateState(this, 0);
     update();
 }
 

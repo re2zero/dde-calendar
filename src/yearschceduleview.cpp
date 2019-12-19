@@ -215,6 +215,8 @@ void CYearSchceduleView::setTheMe(int type)
         m_solocolor = "#FF7272";
         m_TBcolor = "#EBEBEB";
         // m_TBcolor.setAlphaF(0.7);
+        m_borderColor = "#000000";
+        m_borderColor.setAlphaF(0.05);
 
     } else if (type == 2) {
         m_bBackgroundcolor = "#FFFFFF";
@@ -228,6 +230,8 @@ void CYearSchceduleView::setTheMe(int type)
         m_solocolor = "#FF7272";
         m_solocolor.setAlphaF(0.8);
         m_TBcolor = "#191919";
+        m_borderColor = "#FFFFFF";
+        m_borderColor.setAlphaF(0.05);
     }
     DPalette bpa = m_gradientItemList->palette();
     bpa.setColor(DPalette::Base, m_TBcolor);
@@ -550,4 +554,15 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
     }
 
     painter.fillPath(path, background);
+
+    painter.save();
+    painter.setRenderHints(QPainter::Antialiasing);
+    QPen pen;
+    pen.setColor(m_borderColor);
+    pen.setWidthF(1);
+    pen.setStyle(Qt::SolidLine);
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(pen);
+    painter.drawPath(path);
+    painter.restore();
 }

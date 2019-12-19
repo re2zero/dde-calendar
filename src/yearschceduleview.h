@@ -62,6 +62,7 @@ private:
     QColor                m_TBcolor = "#001A2E";
     int                   m_dtype = 3;
     int                   m_arrowheight = 0;
+    QColor                m_borderColor = "#000000";
 };
 
 class CYearSchceduleItem : public DLabel
