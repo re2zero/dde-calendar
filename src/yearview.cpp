@@ -288,17 +288,22 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             QRect wR = w->screenGeometry(w->primaryScreen());
 
             m_Scheduleview->showWindow();
+            int lfetorright = 0;
             int mw = pos22.x() + 10 + m_Scheduleview->width();
             if (mw > wR.width()) {
                 mw = pos22.x() - 10 - m_Scheduleview->width();
+                lfetorright = 1;
             } else {
                 mw = pos22.x() + 10;
+                lfetorright = 0;
             }
             int mh = pos22.y() + m_Scheduleview->height();
             if (mh > wR.height()) {
-                mh = pos22.y() - m_Scheduleview->height();
+                mh = wR.height() - m_Scheduleview->height();
+                m_Scheduleview->setDtype(lfetorright, pos22.y() - mh);
             } else {
-                mh = pos22.y();
+                mh = pos22.y() - m_Scheduleview->height() / 2;
+                m_Scheduleview->setDtype(lfetorright, m_Scheduleview->height() / 2);
             }
             m_Scheduleview->move(mw, mh);
             m_Scheduleview->show();

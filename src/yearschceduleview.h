@@ -23,11 +23,11 @@
 #include <DPushButton>
 #include "schedulestructs.h"
 #include <DListWidget>
-#include <DFrame>
+#include <DWidget>
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CYearSchceduleItem;
-class CYearSchceduleView : public DFrame
+class CYearSchceduleView : public DWidget
 {
     Q_OBJECT
 
@@ -39,9 +39,12 @@ public:
     void clearData();
     void showWindow();
     void setTheMe(int type = 0);
+    void setDtype(int type, int arrowheight);
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info, int type = 0);
+protected:
+    void paintEvent(QPaintEvent *event);
 private:
     DListWidget                                 *m_gradientItemList; //下拉列表窗
     bool                                         m_widgetFlag;
@@ -56,6 +59,9 @@ private:
     QColor                m_lBackgroundcolor = Qt::white;
     QColor                m_ltextcolor = "#001A2E";
     QColor                m_solocolor = "#001A2E";
+    QColor                m_TBcolor = "#001A2E";
+    int                   m_dtype = 3;
+    int                   m_arrowheight = 0;
 };
 
 class CYearSchceduleItem : public DLabel

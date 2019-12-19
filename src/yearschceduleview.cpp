@@ -135,14 +135,15 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
     painter.restore();
 }
 
-CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DFrame(parent)
+CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
 {
-    setContentsMargins(5, 5, 5, 5);
+    setContentsMargins(10, 10, 10, 10);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(0);
     layout->setSpacing(0);
     m_gradientItemList = new DListWidget(parent);
+    m_gradientItemList->setAutoFillBackground(true);
     // m_gradientItemList->setAlternatingRowColors(true);
     //layout->setContentsMargins(10, 10, 10, 10);
     layout->addWidget(m_gradientItemList, 0, Qt::AlignCenter);
@@ -155,7 +156,6 @@ CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DFrame(parent)
     m_bBackgroundcolor.setAlphaF(0.03);
     m_gradientItemList->setLineWidth(0);
     m_labellist.clear();
-    setFrameRounded(true);
     setAttribute(Qt::WA_TranslucentBackground);
 }
 
@@ -190,10 +190,10 @@ void CYearSchceduleView::clearData()
 void CYearSchceduleView::showWindow()
 {
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
-        setFixedSize(120, 70);
+        setFixedSize(130, 80);
         m_gradientItemList->setFixedSize(100, 50);
     } else {
-        setFixedSize(230, 170);
+        setFixedSize(240, 180);
         m_gradientItemList->setFixedSize(210, 150);
     }
     //show();
@@ -204,14 +204,17 @@ void CYearSchceduleView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
         m_bBackgroundcolor = "#FFFFFF";
-        m_bBackgroundcolor.setAlphaF(0.2);
+        m_bBackgroundcolor.setAlphaF(0.0);
         m_btimecolor = "#414D68";
         m_btimecolor.setAlphaF(0.7);
         m_bttextcolor = "#414D68";
         m_lBackgroundcolor = "#EBEBEB";
-        m_lBackgroundcolor.setAlphaF(0.3);
+        m_lBackgroundcolor.setAlphaF(0.0);
         m_ltextcolor = "#001A2E";
         m_solocolor = "#FF7272";
+        m_TBcolor = "#EBEBEB";
+        // m_TBcolor.setAlphaF(0.7);
+
     } else if (type == 2) {
         m_bBackgroundcolor = "#FFFFFF";
         m_bBackgroundcolor.setAlphaF(0.0);
@@ -219,11 +222,23 @@ void CYearSchceduleView::setTheMe(int type)
         m_btimecolor.setAlphaF(0.7);
         m_bttextcolor = "#C0C6D4";
         m_lBackgroundcolor = "#191919";
-        m_lBackgroundcolor.setAlphaF(0.05);
+        m_lBackgroundcolor.setAlphaF(0.00);
         m_ltextcolor = "#C0C6D4";
         m_solocolor = "#FF7272";
         m_solocolor.setAlphaF(0.8);
+        m_TBcolor = "#191919";
     }
+    DPalette bpa = m_gradientItemList->palette();
+    bpa.setColor(DPalette::ItemBackground, m_TBcolor);
+    m_gradientItemList->setPalette(bpa);
+    // m_gradientItemList->setBackgroundRole(DPalette::Background);
+}
+
+void CYearSchceduleView::setDtype(int type, int arrowheight)
+{
+    m_dtype = type;
+    m_arrowheight = arrowheight;
+    update();
 }
 
 void CYearSchceduleView::updateDateShow()
@@ -268,16 +283,7 @@ void CYearSchceduleView::updateDateShow()
         font.setPixelSize(12);
         gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
         DPalette daypa = gwi->palette();
-        QColor textcolor = DPalette::ToolTipText;
-        int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-        if (themtype == 2) {
-            textcolor = "#C0C6D4";
-            textcolor.setAlphaF(0.4);
-        } else {
-            textcolor = "#000000";
-            textcolor.setAlphaF(0.3);
-        }
-        daypa.setColor(DPalette::WindowText, textcolor);
+        daypa.setColor(DPalette::WindowText, m_bttextcolor);
         daypa.setColor(DPalette::Window, m_lBackgroundcolor);
         gwi->setPalette(daypa);
         gwi->setForegroundRole(DPalette::WindowText);
@@ -325,4 +331,223 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
     m_gradientItemList->addItem(listItem);
     m_gradientItemList->setItemWidget(listItem, gwi);
     m_labellist.append(gwi);
+}
+
+void CYearSchceduleView::paintEvent(QPaintEvent *event)
+{
+#if 0
+    QPainter painter(this);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
+    QPainterPath path;
+
+    auto palette = this->palette();
+
+    auto penWidthf = 1.0;
+    auto background =  m_TBcolor;
+    auto borderColor = m_TBcolor;
+
+    const qreal radius = 10;
+
+
+    switch (m_dtype) {
+    case 0: {
+        const qreal triHeight = 12;
+        const qreal triWidth = 16;
+        const qreal height = this->height() - triHeight;
+        const qreal width = this->width();
+        QRectF topRightRect(QPointF(0, 0),
+                            QPointF(2 * radius, 2 * radius));
+        QRectF bottomRightRect(QPointF(0, height - 2 * radius),
+                               QPointF(2 * radius, height));
+        QRectF topLeftRect(QPointF(width, 0),
+                           QPointF(width - 2 * radius, 2 * radius));
+        QRectF bottomLeftRect(QPointF(width, height),
+                              QPointF(width - 2 * radius, height - 2 * radius));
+        path.moveTo(radius, 0.0);
+        path.lineTo(width - radius, 0.0);
+        path.arcTo(topLeftRect, 90.0, 90.0);
+        path.lineTo(width, height - radius);
+        path.arcTo(bottomLeftRect, 180.0, -90.0);
+        path.lineTo(width / 2 + triWidth / 2, height);
+        path.lineTo(width / 2, height + triHeight);
+        path.lineTo(width / 2 - triWidth / 2, height);
+        path.lineTo(radius, height);
+
+        path.arcTo(bottomRightRect, 270.0, -90.0);
+        path.lineTo(0.0, radius);
+
+        path.arcTo(topRightRect, 180.0, -90.0);
+        path.lineTo(radius, 0.0);
+    }
+    break;
+    case 1: {
+        const qreal triHeight = 12;
+        const qreal triWidth = 16;
+        const qreal height = this->height() - triHeight;
+        const qreal width = this->width();
+
+        QRectF topRightRect(QPointF(0, triHeight),
+                            QPointF(2 * radius, 2 * radius + triHeight));
+        QRectF bottomRightRect(QPointF(0, this->height() - 2 * radius),
+                               QPointF(2 * radius, this->height()));
+        QRectF topLeftRect(QPointF(width, triHeight),
+                           QPointF(width - 2 * radius, 2 * radius + triHeight));
+        QRectF bottomLeftRect(QPointF(width, this->height()),
+                              QPointF(width - 2 * radius, this->height() - 2 * radius));
+        path.moveTo(radius, triHeight);
+        path.lineTo(width / 2 - triWidth / 2, triHeight);
+        path.lineTo(width / 2, 0);
+        path.lineTo(width / 2 + triWidth / 2, triHeight);
+        path.lineTo(width - radius, triHeight);
+        path.arcTo(topLeftRect, 90.0, 90.0);
+        path.lineTo(width, this->height() - radius);
+        path.arcTo(bottomLeftRect, 180.0, -90.0);
+        path.lineTo(radius, this->height());
+        path.arcTo(bottomRightRect, 270.0, -90.0);
+        path.lineTo(0.0, radius);
+        path.arcTo(topRightRect, 180.0, -90.0);
+        path.lineTo(radius, 0.0);
+    }
+    break;
+    case 2: {
+        const qreal triHeight = 16;
+        const qreal triWidth = 12;
+        const qreal height = this->height();
+        const qreal width = this->width() - triWidth;
+
+        QRectF topRightRect(QPointF(triWidth, 0),
+                            QPointF(2 * radius + triWidth, 2 * radius));
+        QRectF bottomRightRect(QPointF(triWidth, this->height() - 2 * radius),
+                               QPointF(2 * radius + triWidth, this->height()));
+        QRectF topLeftRect(QPointF(this->width(), 0),
+                           QPointF(this->width() - 2 * radius, 2 * radius));
+        QRectF bottomLeftRect(QPointF(this->width(), this->height()),
+                              QPointF(this->width() - 2 * radius, this->height() - 2 * radius));
+
+        path.moveTo(radius + triWidth, 0);
+        path.lineTo(this->width() - radius, 0.0);
+        path.arcTo(topLeftRect, 90.0, 90.0);
+        path.lineTo(this->width(), height - radius);
+        path.arcTo(bottomLeftRect, 180.0, -90.0);
+        path.lineTo(radius, this->height());
+        path.arcTo(bottomRightRect, 270.0, -90.0);
+        path.lineTo(triWidth, height / 2 + triHeight / 2);
+        path.lineTo(0, height / 2 );
+        path.lineTo(triWidth, height / 2 - triHeight / 2);
+        path.lineTo(triWidth, radius);
+        path.arcTo(topRightRect, 180.0, -90.0);
+        path.lineTo(radius + triWidth, 0.0);
+    }
+    break;
+    case 3: {
+        const qreal triHeight = 16;
+        const qreal triWidth = 12;
+        const qreal height = this->height();
+        const qreal width = this->width();
+
+        QRectF topRightRect(QPointF(0, 0),
+                            QPointF(2 * radius, 2 * radius));
+        QRectF bottomRightRect(QPointF(0, this->height() - 2 * radius),
+                               QPointF(2 * radius, this->height()));
+        QRectF topLeftRect(QPointF(width - triWidth, 0),
+                           QPointF(width - triWidth - 2 * radius, 2 * radius));
+        QRectF bottomLeftRect(QPointF(width - triWidth, this->height()),
+                              QPointF(width - triWidth - 2 * radius, this->height() - 2 * radius));
+
+        path.moveTo(radius, 0);
+        path.lineTo(this->width() - triWidth - radius, 0.0);
+        path.arcTo(topLeftRect, 90.0, 90.0);
+        path.lineTo(width - triWidth, height / 2 - triHeight / 2);
+        path.lineTo(width, height / 2 );
+        path.lineTo(width - triWidth, height / 2 + triHeight / 2);
+        path.lineTo(width - triWidth, height - radius);
+        path.arcTo(bottomLeftRect, 180.0, -90.0);
+        path.lineTo(radius, this->height());
+        path.arcTo(bottomRightRect, 270.0, -90.0);
+        path.lineTo(0.0, radius);
+        path.arcTo(topRightRect, 180.0, -90.0);
+        path.lineTo(radius, 0.0);
+    }
+    break;
+    }
+
+    painter.fillPath(path, background);
+#endif
+    QPainter painter(this);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
+    QPainterPath path;
+
+    auto palette = m_gradientItemList->palette();
+
+    auto penWidthf = 1.0;
+    auto background =  m_TBcolor;
+    auto borderColor = m_TBcolor;
+
+    const qreal radius = 10;
+
+
+    switch (m_dtype) {
+    case 0: {
+        const qreal triHeight = 16;
+        const qreal triWidth = 12;
+        const qreal height = this->height();
+        const qreal width = this->width() - triWidth;
+
+        QRectF topRightRect(QPointF(triWidth, 0),
+                            QPointF(2 * radius + triWidth, 2 * radius));
+        QRectF bottomRightRect(QPointF(triWidth, this->height() - 2 * radius),
+                               QPointF(2 * radius + triWidth, this->height()));
+        QRectF topLeftRect(QPointF(this->width(), 0),
+                           QPointF(this->width() - 2 * radius, 2 * radius));
+        QRectF bottomLeftRect(QPointF(this->width(), this->height()),
+                              QPointF(this->width() - 2 * radius, this->height() - 2 * radius));
+
+        path.moveTo(radius + triWidth, 0);
+        path.lineTo(this->width() - radius, 0.0);
+        path.arcTo(topLeftRect, 90.0, 90.0);
+        path.lineTo(this->width(), height - radius);
+        path.arcTo(bottomLeftRect, 180.0, -90.0);
+        path.lineTo(radius, this->height());
+        path.arcTo(bottomRightRect, 270.0, -90.0);
+        path.lineTo(triWidth, m_arrowheight + triHeight / 2);
+        path.lineTo(0, m_arrowheight );
+        path.lineTo(triWidth, m_arrowheight - triHeight / 2);
+        path.lineTo(triWidth, radius);
+        path.arcTo(topRightRect, 180.0, -90.0);
+        path.lineTo(radius + triWidth, 0.0);
+    }
+    break;
+    case 1: {
+        const qreal triHeight = 16;
+        const qreal triWidth = 12;
+        const qreal height = this->height();
+        const qreal width = this->width();
+
+        QRectF topRightRect(QPointF(0, 0),
+                            QPointF(2 * radius, 2 * radius));
+        QRectF bottomRightRect(QPointF(0, this->height() - 2 * radius),
+                               QPointF(2 * radius, this->height()));
+        QRectF topLeftRect(QPointF(width - triWidth, 0),
+                           QPointF(width - triWidth - 2 * radius, 2 * radius));
+        QRectF bottomLeftRect(QPointF(width - triWidth, this->height()),
+                              QPointF(width - triWidth - 2 * radius, this->height() - 2 * radius));
+
+        path.moveTo(radius, 0);
+        path.lineTo(this->width() - triWidth - radius, 0.0);
+        path.arcTo(topLeftRect, 90.0, 90.0);
+        path.lineTo(width - triWidth, m_arrowheight - triHeight / 2);
+        path.lineTo(width, m_arrowheight );
+        path.lineTo(width - triWidth, m_arrowheight + triHeight / 2);
+        path.lineTo(width - triWidth, height - radius);
+        path.arcTo(bottomLeftRect, 180.0, -90.0);
+        path.lineTo(radius, this->height());
+        path.arcTo(bottomRightRect, 270.0, -90.0);
+        path.lineTo(0.0, radius);
+        path.arcTo(topRightRect, 180.0, -90.0);
+        path.lineTo(radius, 0.0);
+    }
+    break;
+    }
+
+    painter.fillPath(path, background);
 }
