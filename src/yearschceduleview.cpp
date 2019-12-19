@@ -155,6 +155,7 @@ CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
     setFocusPolicy(Qt::StrongFocus);
     m_bBackgroundcolor.setAlphaF(0.03);
     m_gradientItemList->setLineWidth(0);
+    m_gradientItemList->setFrameShape(QListWidget::NoFrame);
     m_labellist.clear();
     setAttribute(Qt::WA_TranslucentBackground);
 }
@@ -229,9 +230,8 @@ void CYearSchceduleView::setTheMe(int type)
         m_TBcolor = "#191919";
     }
     DPalette bpa = m_gradientItemList->palette();
-    bpa.setColor(DPalette::ItemBackground, m_TBcolor);
+    bpa.setColor(DPalette::Base, m_TBcolor);
     m_gradientItemList->setPalette(bpa);
-    // m_gradientItemList->setBackgroundRole(DPalette::Background);
 }
 
 void CYearSchceduleView::setDtype(int type, int arrowheight)
@@ -287,7 +287,7 @@ void CYearSchceduleView::updateDateShow()
         daypa.setColor(DPalette::Window, m_lBackgroundcolor);
         gwi->setPalette(daypa);
         gwi->setForegroundRole(DPalette::WindowText);
-        //gwi->setForegroundRole(DPalette::Window);
+        gwi->setBackgroundRole(DPalette::Window);
         gwi->setFont(font);
         gwi->setText(tr("No Schcedule"));
         gwi->setFixedSize(m_gradientItemList->width(), 48);
