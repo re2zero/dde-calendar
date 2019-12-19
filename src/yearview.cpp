@@ -35,6 +35,8 @@
 #include <DHiDPIHelper>
 #include "scheduledatamanage.h"
 #include "yearschceduleview.h"
+#include <QDesktopWidget>
+#include <DApplication>
 DGUI_USE_NAMESPACE
 CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 {
@@ -282,8 +284,23 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             int py = cell->y();
             //QPoint pos22 = mapToGlobal(QPoint(px, py));
             QPoint pos22 = QCursor::pos();
-            m_Scheduleview->move(pos22.x() + 10, pos22.y());
+            QDesktopWidget *w = QApplication::desktop();
+            QRect wR = w->screenGeometry(w->primaryScreen());
+
             m_Scheduleview->showWindow();
+            int mw = pos22.x() + 10 + m_Scheduleview->width();
+            if (mw > wR.width()) {
+                mw = pos22.x() - 10 - m_Scheduleview->width();
+            } else {
+                mw = pos22.x() + 10;
+            }
+            int mh = pos22.y() + m_Scheduleview->height();
+            if (mh > wR.height()) {
+                mh = pos22.y() - m_Scheduleview->height();
+            } else {
+                mh = pos22.y();
+            }
+            m_Scheduleview->move(mw, mh);
             m_Scheduleview->show();
         }
     }

@@ -128,7 +128,7 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
     if (m_ScheduleInfo.allday) {
         str = tr("ALL DaY");
     } else {
-        str = m_ScheduleInfo.beginDateTime.time().toString("ap H") + tr("h");
+        str = m_ScheduleInfo.beginDateTime.time().toString("ap h") + tr("h");
     }
     QFontMetrics fm2 = painter.fontMetrics();
     painter.drawText(QRect(labelwidth - 60, 0, 50, labelheight), Qt::AlignRight | Qt::AlignVCenter, str);
@@ -137,7 +137,7 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
 
 CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DFrame(parent)
 {
-    //setContentsMargins(10, 10, 10, 10);
+    setContentsMargins(5, 5, 5, 5);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(0);
@@ -156,6 +156,7 @@ CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DFrame(parent)
     m_gradientItemList->setLineWidth(0);
     m_labellist.clear();
     setFrameRounded(true);
+    setAttribute(Qt::WA_TranslucentBackground);
 }
 
 CYearSchceduleView::~CYearSchceduleView()
