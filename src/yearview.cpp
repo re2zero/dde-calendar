@@ -264,6 +264,7 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             const int pos = m_cellList.indexOf(cell);
             m_cellList[pos]->update();
             m_Scheduleview->hide();
+            m_Scheduleview->clearData();
         } else if (e->type() == QEvent::ToolTip) {
             const int pos = m_cellList.indexOf(cell);
             CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();

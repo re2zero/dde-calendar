@@ -241,8 +241,22 @@ void CYearSchceduleView::updateDateShow()
         info.allday = true;
         createItemWidget(info, 1);
     }
+    int sviewNum = 0;
+    if (!m_soloDay.isEmpty()) {
+        if (m_vlistData.size() > 5) {
+            sviewNum = 5;
+        } else {
+            sviewNum = m_vlistData.size();
+        }
+    } else {
+        if (m_vlistData.size() > 6) {
+            sviewNum = 6;
+        } else {
+            sviewNum = m_vlistData.size();
+        }
+    }
 
-    for (int i = 0; i < m_vlistData.size(); ++i) {
+    for (int i = 0; i < sviewNum; ++i) {
         createItemWidget(m_vlistData.at(i), 0);
     }
 
@@ -269,8 +283,8 @@ void CYearSchceduleView::updateDateShow()
         //gwi->setForegroundRole(DPalette::Window);
         gwi->setFont(font);
         gwi->setText(tr("No Schcedule"));
-        gwi->setFixedSize(m_gradientItemList->width(), 50);
-        listItem->setSizeHint(QSize(m_gradientItemList->width(), 50)); //每次改变Item的高度
+        gwi->setFixedSize(m_gradientItemList->width(), 48);
+        listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
         //listItem->setBackgroundColor(Qt::white);
         listItem->setFlags(Qt::ItemIsTristate );
         m_gradientItemList->addItem(listItem);
