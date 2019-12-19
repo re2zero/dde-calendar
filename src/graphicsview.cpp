@@ -154,6 +154,9 @@ void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, i
     m_currentItem = NULL;
     CScheduleItem *item = new CScheduleItem(m_coorManage, 0, m_graphicsScene, type);
     item->setData(info, date, index, totalNum, viewtype, maxnum);
+    //用于修改联动bug
+    //connect(item, &CScheduleItem::signalsHoverUpdateState, this, &CGraphicsView::slotHoverUpdateState);
+    //connect(item, &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
     m_vScheduleItem.append(item);
 
 }
@@ -163,6 +166,9 @@ void CGraphicsView::deleteSchduleItem( CScheduleItem *item )
     int id = item->getData().id;
     for (int i = 0; i < m_vScheduleItem.size(); i++) {
         if (m_vScheduleItem[i]->getData().id == id) {
+            disconnect(item, &CScheduleItem::signalsHoverUpdateState, this, &CGraphicsView::slotHoverUpdateState);
+            disconnect(item, &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
+
             m_vScheduleItem.remove(i);
             m_graphicsScene->removeItem(item);
             delete m_vScheduleItem[i];
@@ -175,6 +181,8 @@ void CGraphicsView::deleteSchduleItem( CScheduleItem *item )
 void CGraphicsView::clearSchdule()
 {
     for (int i = 0; i < m_vScheduleItem.size(); i++) {
+        disconnect(m_vScheduleItem.at(i), &CScheduleItem::signalsHoverUpdateState, this, &CGraphicsView::slotHoverUpdateState);
+        disconnect(m_vScheduleItem.at(i), &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
         m_graphicsScene->removeItem(m_vScheduleItem.at(i));
         delete m_vScheduleItem[i];
         m_vScheduleItem[i] = NULL;
@@ -567,6 +575,33 @@ void CGraphicsView::slotDeleteItem()
     }
     emit signalsUpdateShcedule(m_currentItem->getData().id);
 }
+
+void CGraphicsView::slotHoverUpdateState(CScheduleItem *item, int state)
+{
+    if (item == nullptr) return;
+    ScheduleDtailInfo baseinfo = item->getData();
+    for (int i = 0; i < m_vScheduleItem.size(); i++) {
+        if (item == m_vScheduleItem.at(i)) continue;
+        ScheduleDtailInfo info = m_vScheduleItem.at(i)->getData();
+        if (baseinfo.id == info.id && baseinfo.RecurID == info.RecurID) {
+            m_vScheduleItem.at(i)->UpdateHoverState(state);
+        }
+    }
+}
+
+void CGraphicsView::slotSelectUpdateState(CScheduleItem *item, int state)
+{
+    if (item == nullptr) return;
+    ScheduleDtailInfo baseinfo = item->getData();
+    for (int i = 0; i < m_vScheduleItem.size(); i++) {
+        if (item == m_vScheduleItem.at(i)) continue;
+        ScheduleDtailInfo info = m_vScheduleItem.at(i)->getData();
+        if (baseinfo.id == info.id && baseinfo.RecurID == info.RecurID) {
+            m_vScheduleItem.at(i)->UpdateSelectState(state);
+        }
+    }
+}
+
 void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
 {
     DGraphicsView::mouseMoveEvent(event);

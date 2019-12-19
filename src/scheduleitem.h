@@ -72,6 +72,11 @@ public:
     QRectF boundingRect() const;
     QPainterPath shape () const;
     void updateitem();
+    void UpdateHoverState(int state);
+    void UpdateSelectState(int state);
+signals:
+    void signalsHoverUpdateState(CScheduleItem *item, int state);
+    void signalsSelectUpdateState(CScheduleItem *item, int state);
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);

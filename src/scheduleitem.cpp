@@ -86,16 +86,38 @@ void CScheduleItem::updateitem()
     update();
 }
 
+void CScheduleItem::UpdateSelectState(int state)
+{
+    if (state == 0) {
+        m_selectflag = false;
+    } else {
+        m_selectflag = true;
+    }
+    update();
+}
+
+void CScheduleItem::UpdateHoverState(int state)
+{
+    if (state == 0) {
+        m_hoverflag = false;
+    } else {
+        m_hoverflag = true;
+    }
+    update();
+}
+
 void CScheduleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     m_hoverflag = true;
     update();
+    emit signalsHoverUpdateState(this, 1);
 }
 
 void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     m_hoverflag = false;
     update();
+    emit signalsHoverUpdateState(this, 0);
 }
 
 void CScheduleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -103,6 +125,7 @@ void CScheduleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_selectflag = true;
         update();
+        emit signalsSelectUpdateState(this, 1);
     }
 }
 
@@ -111,6 +134,7 @@ void CScheduleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
         update();
+        emit signalsSelectUpdateState(this, 0);
     }
 }
 
