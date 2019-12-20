@@ -47,6 +47,12 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     //connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
 }
 
+CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
+{
+    disconnect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
+    disconnect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
+}
+
 void CMonthSchceduleWidgetItem::setColor( QColor color1, QColor color2, bool GradientFlag /*= false*/ )
 {
     m_color1 = color1;

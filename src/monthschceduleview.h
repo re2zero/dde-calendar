@@ -114,6 +114,7 @@ class CMonthSchceduleWidgetItem : public DPushButton
 
 public:
     explicit CMonthSchceduleWidgetItem(QWidget *parent = nullptr, int edittype = 0);
+    ~CMonthSchceduleWidgetItem();
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos);
     void getColor(QColor &color1, QColor &color2, bool &GradientFlag);

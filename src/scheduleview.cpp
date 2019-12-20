@@ -460,9 +460,9 @@ void CScheduleView::initConnection()
     connect(m_graphicsView, &CGraphicsView::signalViewtransparentFrame, this, &CScheduleView::signalViewtransparentFrame);
 
 
-    CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
-    connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);
-    connect(this, &CScheduleView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
+    //CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
+    //connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CScheduleView::slotsupdatescheduleD);
+    // connect(this, &CScheduleView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
 
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
@@ -504,8 +504,15 @@ void CScheduleView::updateSchedule(int id)
 {
     m_currentShcedule = NULL;
     m_graphicsView->clearSchdule();
-    setEnabled(false);
-    emit signalsupdatescheduleD(this, m_beginDate, m_endDate);
+    CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
+    QDateTime bdate = QDateTime(m_beginDate);
+    QDateTime edate = QDateTime(m_endDate);
+    edate.setTime(QTime(23, 59, 59));
+    QVector<ScheduleDateRangeInfo> data;
+    scheduleDataCtrl->queryScheduleInfo("", bdate, edate, data);
+    slotsupdatescheduleD(this, data);
+    //setEnabled(false);
+    //emit signalsupdatescheduleD(this, m_beginDate, m_endDate);
 }
 bool WScheduleDateThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
