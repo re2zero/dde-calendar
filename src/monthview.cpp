@@ -180,6 +180,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsCurrentScheduleDate, this, &CMonthView::signalsCurrentScheduleDate);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
+    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalUpdateUI, this, &CMonthView::slotUpdateUI);
 
     DFrame *gridWidget = new DFrame;
     gridWidget->setFrameRounded(false);
@@ -226,27 +227,39 @@ void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo
 
 void CMonthView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
-    setEnabled(false);
+    parentWidget()->setEnabled(false);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
 }
 
 void CMonthView::slotSchceduleUpdate(int id)
 {
-    setEnabled(false);
+    parentWidget()->setEnabled(false);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
     emit signalsSchceduleUpdate(id);
+}
+
+void CMonthView::slotUpdateUI(int type)
+{
+    if (type == 0) {
+        m_sflag = false;
+    } else {
+        m_sflag = true;
+        slotSchceduleUpdate();
+    }
 }
 
 void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
 {
     if (w != this) return;
-    setEnabled(true);
-    m_shceludelistdata = data;
-    m_MonthSchceduleView->setallsize(width(), height(), m_leftmaagin, m_weekIndicator->height() + m_topmagin, m_topmagin);
-    m_MonthSchceduleView->setData(data, m_currentDate.month());
-    for (int i(0); i != 42; ++i) {
-        m_cellList.at(i)->update();
+    if (m_sflag) {
+        m_shceludelistdata = data;
+        m_MonthSchceduleView->setallsize(width(), height(), m_leftmaagin, m_weekIndicator->height() + m_topmagin, m_topmagin);
+        m_MonthSchceduleView->setData(data, m_currentDate.month());
+        for (int i(0); i != 42; ++i) {
+            m_cellList.at(i)->update();
+        }
     }
+    parentWidget()->setEnabled(true);
 }
 
 void CMonthView::resizeEvent(QResizeEvent *event)
@@ -323,6 +336,7 @@ void CMonthView::setCurrentDate(const QDate date)
     qDebug() << "set current date " << date;
 
     if (date == m_currentDate) {
+        slotSchceduleUpdate();
         return;
     }
     bool flag = false;
@@ -501,7 +515,7 @@ void CMonthView::updateDate()
         //m_cellScheduleList[i]->setDate(m_days[i]);
     }
     if (m_updateflag) {
-        setEnabled(false);
+        parentWidget()->setEnabled(false);
         emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
     }
     setSelectedCell(currentIndex);

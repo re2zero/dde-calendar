@@ -460,5 +460,5 @@ void CMonthWindow::slotSelectedMonth(QDate date)
 {
     m_currentdate = date;
     m_monthView->setCurrentDate(date);
-    m_monthView->slotSchceduleUpdate();
+    //m_monthView->slotSchceduleUpdate();
 }

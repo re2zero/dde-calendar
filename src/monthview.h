@@ -91,6 +91,7 @@ public slots:
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
     void slotSchceduleUpdate(int id = 0);
+    void slotUpdateUI(int type);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
 signals:
@@ -182,6 +183,7 @@ private:
     int  m_topmagin = 0;
     DLabel         *m_tooltipview;
     int                   m_themetype  = 1;
+    bool           m_sflag = true;
 };
 
 #endif // MYCALENDARWIDGET_H

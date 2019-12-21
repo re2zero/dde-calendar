@@ -45,6 +45,7 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
     //connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
+    setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
@@ -354,10 +355,13 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 }
 void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {
+    emit signalUpdateUI(0);
     DMenu Context(this);
+    Context.setAttribute(Qt::WA_DeleteOnClose);
     Context.addAction(m_editAction);
     Context.addAction(m_deleteAction);
     Context.exec(QCursor::pos());
+    emit signalUpdateUI(1);
 }
 
 void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
@@ -960,6 +964,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     connect(gwi, &CMonthSchceduleWidgetItem::signalsEdit, this, &CMonthSchceduleView::slotedititem);
     connect(gwi, &CMonthSchceduleWidgetItem::signalsPress, this, &CMonthSchceduleView::slotupdateItem);
     connect(gwi, &CMonthSchceduleWidgetItem::signalViewtransparentFrame, this, &CMonthSchceduleView::signalViewtransparentFrame);
+    connect(gwi, &CMonthSchceduleWidgetItem::signalUpdateUI, this, &CMonthSchceduleView::signalUpdateUI);
 
     m_scheduleShowItem.append(gwi);
 }
