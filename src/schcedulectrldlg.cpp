@@ -47,11 +47,13 @@ CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
 
 void CSchceduleCtrlDlg::initUI()
 {
-    m_icon = new QLabel(this);
-    m_icon->setFixedSize(32, 32);
-    m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
-                      .scaled(m_icon->size() * devicePixelRatioF()));
-    m_icon->move(10, 9);
+    // m_icon = new QLabel(this);
+    // m_icon->setFixedSize(32, 32);
+    //m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
+    //.scaled(m_icon->size() * devicePixelRatioF()));
+    //m_icon->move(10, 9);
+    QIcon t_icon = QIcon::fromTheme("dde-calendar");
+    setIcon(t_icon);
     m_Title = new QLabel(this);
     m_Title->setFixedHeight(48);
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);

@@ -231,15 +231,16 @@ void CMySchceduleView::slotDeleteBt()
 
 void CMySchceduleView::initUI()
 {
-    m_icon = new QLabel(this);
-    m_icon->setFixedSize(30, 30);
-    m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
-                      .scaled(m_icon->size() * devicePixelRatioF()));
-    m_icon->move(11, 10);
+    //m_icon = new QLabel(this);
+    //  m_icon->setFixedSize(30, 30);
+    //m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
+    //         .scaled(m_icon->size() * devicePixelRatioF()));
+    //m_icon->move(11, 10);
     m_Title = new QLabel(this);
     m_Title->setFixedSize(108, 51);
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-
+    QIcon t_icon = QIcon::fromTheme("dde-calendar");
+    setIcon(t_icon);
     QFont labelTitle;
     labelTitle.setFamily("SourceHanSansSC");
     labelTitle.setWeight(QFont::DemiBold);

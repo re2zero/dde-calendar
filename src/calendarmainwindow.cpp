@@ -369,9 +369,10 @@ void Calendarmainwindow::initUI()
     //m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
     //.scaled(m_icon->size() * devicePixelRatioF()));
     //m_icon->move(10, 9);
-    titlebar()->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
-                        .scaled(QSize(32, 32) * devicePixelRatioF()));
-
+    //titlebar()->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
+    //   .scaled(QSize(32, 32) * devicePixelRatioF()));
+    QIcon t_icon = QIcon::fromTheme("dde-calendar");
+    titlebar()->setIcon(t_icon);
     QStringList titlelist;
     titlelist << tr("Y") << tr("M") << tr("W") << tr("D");
     m_buttonBox = new DButtonBox(this);
