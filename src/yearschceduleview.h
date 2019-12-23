@@ -45,6 +45,8 @@ private:
     void createItemWidget(ScheduleDtailInfo info, int type = 0);
 protected:
     void paintEvent(QPaintEvent *event);
+    void paintItem(ScheduleDtailInfo info, int index, int type = 0);
+    void paintItem();
 private:
     DListWidget                                 *m_gradientItemList; //下拉列表窗
     bool                                         m_widgetFlag;

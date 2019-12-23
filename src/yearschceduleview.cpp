@@ -147,7 +147,7 @@ CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
 {
     setContentsMargins(10, 10, 10, 10);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    QVBoxLayout *layout = new QVBoxLayout;
+    /*QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(0);
     layout->setSpacing(0);
     m_gradientItemList = new DListWidget(parent);
@@ -162,9 +162,9 @@ CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
     m_bBackgroundcolor.setAlphaF(0.03);
-    m_gradientItemList->setLineWidth(0);
+    // m_gradientItemList->setLineWidth(0);
     m_gradientItemList->setFrameShape(QListWidget::NoFrame);
-    m_labellist.clear();
+    m_labellist.clear();*/
     setAttribute(Qt::WA_TranslucentBackground);
 }
 
@@ -192,6 +192,7 @@ void CYearSchceduleView::clearData()
 {
     m_vlistData.clear();
     m_soloDay.clear();
+    return;
     //remove
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
@@ -205,10 +206,10 @@ void CYearSchceduleView::showWindow()
 {
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
         setFixedSize(130, 80);
-        m_gradientItemList->setFixedSize(100, 50);
+        //m_gradientItemList->setFixedSize(110, 60);
     } else {
         setFixedSize(240, 180);
-        m_gradientItemList->setFixedSize(210, 150);
+        //m_gradientItemList->setFixedSize(220, 160);
     }
     //show();
     updateDateShow();
@@ -246,9 +247,9 @@ void CYearSchceduleView::setTheMe(int type)
         m_borderColor = "#FFFFFF";
         m_borderColor.setAlphaF(0.05);
     }
-    DPalette bpa = m_gradientItemList->palette();
-    bpa.setColor(DPalette::Base, m_TBcolor);
-    m_gradientItemList->setPalette(bpa);
+    // DPalette bpa = m_gradientItemList->palette();
+    // bpa.setColor(DPalette::Base, m_TBcolor);
+    // m_gradientItemList->setPalette(bpa);
 }
 
 void CYearSchceduleView::setDtype(int type, int arrowheight)
@@ -260,6 +261,8 @@ void CYearSchceduleView::setDtype(int type, int arrowheight)
 
 void CYearSchceduleView::updateDateShow()
 {
+    update();
+    return;
     //remove
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
@@ -354,7 +357,54 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
 {
 #if 0
     QPainter painter(this);
-    painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
+    painter.setRenderHints(QPainter::Antialia if (!m_soloDay.isEmpty()) {
+    ScheduleDtailInfo info;
+    info.titleName = m_soloDay;
+    info.allday = true;
+    createItemWidget(info, 1);
+    }
+    int sviewNum = 0;
+    if (!m_soloDay.isEmpty()) {
+    if (m_vlistData.size() > 5) {
+            sviewNum = 5;
+        } else {
+            sviewNum = m_vlistData.size();
+        }
+    } else {
+        if (m_vlistData.size() > 6) {
+            sviewNum = 6;
+        } else {
+            sviewNum = m_vlistData.size();
+        }
+    }
+
+    for (int i = 0; i < sviewNum; ++i) {
+    createItemWidget(m_vlistData.at(i), 0);
+    }
+
+    if (m_gradientItemList->count() == 0) {
+    QListWidgetItem *listItem = new QListWidgetItem;
+    DLabel *gwi = new DLabel();
+        QFont font("SourceHanSansSC-Normal");
+        font.setPixelSize(12);
+        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+        DPalette daypa = gwi->palette();
+        daypa.setColor(DPalette::WindowText, m_bttextcolor);
+        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
+        gwi->setPalette(daypa);
+        gwi->setForegroundRole(DPalette::WindowText);
+        gwi->setBackgroundRole(DPalette::Window);
+        gwi->setFont(font);
+        gwi->setText(tr("No Schcedule"));
+        gwi->setFixedSize(m_gradientItemList->width(), 48);
+        listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
+        //listItem->setBackgroundColor(Qt::white);
+        listItem->setFlags(Qt::ItemIsTristate );
+        m_gradientItemList->addItem(listItem);
+        m_gradientItemList->setItemWidget(listItem, gwi);
+        m_labellist.append(gwi);
+    }
+    sing | QPainter::HighQualityAntialiasing);
     QPainterPath path;
 
     auto palette = this->palette();
@@ -374,7 +424,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
         const qreal width = this->width();
         QRectF topRightRect(QPointF(0, 0),
                             QPointF(2 * radius, 2 * radius));
-        QRectF bottomRightRect(QPointF(0, height - 2 * radius),
+        QRectF bottomRightRect(QPointF(0, height - 2 * tr("No Schcedule")radius),
                                QPointF(2 * radius, height));
         QRectF topLeftRect(QPointF(width, 0),
                            QPointF(width - 2 * radius, 2 * radius));
@@ -417,6 +467,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
         path.lineTo(width / 2 + triWidth / 2, triHeight);
         path.lineTo(width - radius, triHeight);
         path.arcTo(topLeftRect, 90.0, 90.0);
+        tr("No Schcedule")
         path.lineTo(width, this->height() - radius);
         path.arcTo(bottomLeftRect, 180.0, -90.0);
         path.lineTo(radius, this->height());
@@ -443,6 +494,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
 
         path.moveTo(radius + triWidth, 0);
         path.lineTo(this->width() - radius, 0.0);
+        m_bttextcolor
         path.arcTo(topLeftRect, 90.0, 90.0);
         path.lineTo(this->width(), height - radius);
         path.arcTo(bottomLeftRect, 180.0, -90.0);
@@ -494,7 +546,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
     painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
     QPainterPath path;
 
-    auto palette = m_gradientItemList->palette();
+    //auto palette = m_gradientItemList->palette();
 
     auto penWidthf = 1.0;
     auto background =  m_TBcolor;
@@ -578,4 +630,163 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
     painter.setPen(pen);
     painter.drawPath(path);
     painter.restore();
+
+    if (!m_soloDay.isEmpty()) {
+        ScheduleDtailInfo info;
+        info.titleName = m_soloDay;
+        info.allday = true;
+        paintItem(info, 0, 1);
+    }
+    int sviewNum = 0;
+    if (!m_soloDay.isEmpty()) {
+        if (m_vlistData.size() > 5) {
+            sviewNum = 5;
+        } else {
+            sviewNum = m_vlistData.size();
+        }
+    } else {
+        if (m_vlistData.size() > 6) {
+            sviewNum = 6;
+        } else {
+            sviewNum = m_vlistData.size();
+        }
+    }
+
+    for (int i = 0; i < sviewNum; ++i) {
+        if (!m_soloDay.isEmpty()) {
+            paintItem(m_vlistData.at(i), i + 1, 0);
+        } else {
+            paintItem(m_vlistData.at(i), i, 0);
+        }
+    }
+    if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
+        paintItem();
+    }
+}
+
+void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
+{
+    int labelwidth = width() - 30;
+    int bheight = index * 29 + 10;
+    int labelheight = 29;
+    ScheduleDtailInfo &gd = info;
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
+
+    QFont font("SourceHanSansSC");
+    font.setWeight(QFont::Medium);
+    font.setPixelSize(14);
+    //gwi->setBackgroundColor(Qt::white);
+    QColor scolor = gdcolor.Purecolor;
+    scolor.setAlphaF(1.0);
+
+
+    QPainter painter(this);
+    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
+    painter.setRenderHints(QPainter::HighQualityAntialiasing);
+    QColor bcolor = m_bBackgroundcolor;
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setBrush(QBrush(bcolor));
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(fillRect);
+    painter.restore();
+    //圆点
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    if (type == 0)
+
+        painter.setBrush(QBrush(gdcolor.splitColor));
+    else {
+
+        painter.setBrush(QBrush(m_solocolor));
+    }
+
+    painter.setPen(Qt::NoPen);
+    painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
+    painter.restore();
+
+
+    QString str;
+    //左边文字
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setPen(m_bttextcolor);
+    painter.setFont(font);
+    QFontMetrics fm = painter.fontMetrics();
+    QString tStitlename = gd.titleName;
+    tStitlename.replace("\n", "");
+    str = tStitlename;
+    int tilenameW = labelwidth - 80;
+    QString tstr;
+    for (int i = 0; i < str.count(); i++) {
+        tstr.append(str.at(i));
+        int widthT = fm.width(tstr) + 5;
+        if (widthT >= tilenameW) {
+            tstr.chop(1);
+            break;
+        }
+    }
+    if (tstr != str) {
+        tstr = tstr + "...";
+    }
+
+    painter.drawText(QRect(40, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
+    painter.restore();
+    //右边时间
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setPen(m_btimecolor);
+    painter.setFont(font);
+    QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        if (info.allday) {
+            str = tr("ALL Day");
+        } else {
+            str = info.beginDateTime.time().toString("ap h") + tr("h");
+        }
+    } else {
+        if (info.allday) {
+            str = tr("ALL Day");
+        } else {
+            str = info.beginDateTime.time().toString("ap h:mm");
+        }
+    }
+    QFontMetrics fm2 = painter.fontMetrics();
+    painter.drawText(QRect(width() - 70, bheight, 60, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
+    painter.restore();
+}
+
+void CYearSchceduleView::paintItem()
+{
+    int labelwidth = width() - 40;
+    int labelheight = 50;
+
+    QFont font("SourceHanSansSC-Normal");
+    font.setPixelSize(12);
+    QPainter painter(this);
+    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
+    painter.setRenderHints(QPainter::HighQualityAntialiasing);
+    QColor bcolor = m_bBackgroundcolor;
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setBrush(QBrush(bcolor));
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(fillRect);
+    painter.restore();
+
+
+
+    QString str;
+    //左边文字
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    painter.setPen(m_bttextcolor);
+    painter.setFont(font);
+    QFontMetrics fm = painter.fontMetrics();
+    QString tStitlename = tr("No Schcedule");
+
+
+    painter.drawText(QRect(0, 0, width(), height()), Qt::AlignCenter, tStitlename);
+    painter.restore();
+
 }

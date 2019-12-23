@@ -850,11 +850,15 @@
     <name>CYearSchceduleItem</name>
     <message>
         <source>ALL DaY</source>
-        <translation>全天</translation>
+        <translation type="vanished">全天</translation>
     </message>
     <message>
         <source>h</source>
         <translation>时</translation>
+    </message>
+    <message>
+        <source>ALL Day</source>
+        <translation>全天</translation>
     </message>
 </context>
 <context>
@@ -862,6 +866,14 @@
     <message>
         <source>No Schcedule</source>
         <translation>无日程</translation>
+    </message>
+    <message>
+        <source>ALL Day</source>
+        <translation>全天</translation>
+    </message>
+    <message>
+        <source>h</source>
+        <translation>时</translation>
     </message>
 </context>
 <context>
