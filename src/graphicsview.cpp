@@ -188,6 +188,7 @@ void CGraphicsView::clearSchdule()
         m_vScheduleItem[i] = NULL;
     }
     m_vScheduleItem.clear();
+    m_updateDflag = true;
 }
 
 /************************************************************************
