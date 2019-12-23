@@ -117,21 +117,29 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
         tstr = tstr + "...";
     }
 
-    painter.drawText(QRect(28, 0, tilenameW, labelheight), Qt::AlignLeft | Qt::AlignVCenter, tstr);
+    painter.drawText(QRect(28, 0, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
     painter.restore();
     //右边时间
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
     painter.setPen(m_timecolor);
     painter.setFont(m_timefont);
-
-    if (m_ScheduleInfo.allday) {
-        str = tr("ALL DaY");
+    QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        if (m_ScheduleInfo.allday) {
+            str = tr("ALL Day");
+        } else {
+            str = m_ScheduleInfo.beginDateTime.time().toString("ap h") + tr("h");
+        }
     } else {
-        str = m_ScheduleInfo.beginDateTime.time().toString("ap h") + tr("h");
+        if (m_ScheduleInfo.allday) {
+            str = tr("ALL Day");
+        } else {
+            str = m_ScheduleInfo.beginDateTime.time().toString("ap h:mm");
+        }
     }
     QFontMetrics fm2 = painter.fontMetrics();
-    painter.drawText(QRect(labelwidth - 60, 0, 50, labelheight), Qt::AlignRight | Qt::AlignVCenter, str);
+    painter.drawText(QRect(labelwidth - 60, 0, 50, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
     painter.restore();
 }
 
@@ -146,7 +154,7 @@ CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
     m_gradientItemList->setAutoFillBackground(true);
     // m_gradientItemList->setAlternatingRowColors(true);
     //layout->setContentsMargins(10, 10, 10, 10);
-    layout->addWidget(m_gradientItemList, 0, Qt::AlignCenter);
+    layout->addWidget(m_gradientItemList);
     //m_gradientItemList->setSpacing(1);
     // set default row
     m_gradientItemList->setCurrentRow(0);
@@ -169,9 +177,14 @@ void CYearSchceduleView::setSoloDay(QString soloday)
 {
     m_soloDay = soloday;
 }
-
+bool YScheduleDaysThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
+{
+    return s1.beginDateTime.time() < s2.beginDateTime.time();
+}
 void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
 {
+
+    qSort(vListData.begin(), vListData.end(), YScheduleDaysThan);
     m_vlistData = vListData;
 }
 
