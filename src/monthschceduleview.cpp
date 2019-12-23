@@ -723,6 +723,7 @@ void CMonthSchceduleView::updateData()
                     tbindex = 0;
                     tnum = -1;
                 }
+                continue;
                 if (c == m_cNum - 1) continue;
                 if (m_data[sd].vData.count() < c + 1) continue;
                 MScheduleDateRangeInfo info;
