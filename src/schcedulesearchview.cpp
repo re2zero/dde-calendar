@@ -607,7 +607,18 @@ void CSchceduleSearchView::slotsetSearch(QString str)
     QDateTime date = QDateTime::currentDateTime();
 
     QDateTime bdate = date.addMonths(-6);
+    if (!bdate.isValid()) {
+        QDateTime tdate = date;
+        tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
+        bdate = tdate.addMonths(-6);
+    }
     QDateTime edate = date.addMonths(6);
+    if (!edate.isValid()) {
+        QDateTime tdate = date;
+        tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
+        edate = tdate.addMonths(7);
+        edate = edate.addDays(-1);
+    }
     QVector<ScheduleDateRangeInfo> vScheduleInfo;
     m_vlistData.clear();
 #if 0
