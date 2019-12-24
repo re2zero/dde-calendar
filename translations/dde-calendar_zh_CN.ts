@@ -849,10 +849,6 @@
 <context>
     <name>CYearSchceduleItem</name>
     <message>
-        <source>ALL DaY</source>
-        <translation type="vanished">全天</translation>
-    </message>
-    <message>
         <source>h</source>
         <translation>时</translation>
     </message>

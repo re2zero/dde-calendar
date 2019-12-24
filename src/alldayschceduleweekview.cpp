@@ -83,7 +83,7 @@ void CAllDaySchceduleWeekWidgetItem::getText(QColor &tcolor, QFont &font, QPoint
 void CAllDaySchceduleWeekWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
 {
     m_ScheduleInfo = vScheduleInfo;
-    setToolTip(m_ScheduleInfo.titleName);
+    // setToolTip(m_ScheduleInfo.titleName);
     update();
 }
 
@@ -381,29 +381,40 @@ void CAllDaySchceduleWeekWidgetItem::contextMenuEvent( QContextMenuEvent *event 
 void CAllDaySchceduleWeekWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (m_editType == 0) return;
-    emit signalViewtransparentFrame(1);
-    CMySchceduleView dlg(this);
-    dlg.setSchedules(m_ScheduleInfo);
-    connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
-    dlg.exec();
-    emit signalViewtransparentFrame(0);
-    disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
+    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_ScheduleInfo.beginDateTime.date(), m_ScheduleInfo.endDateTime.date());
+    if (drawrect.contains(event->pos())) {
+        emit signalViewtransparentFrame(1);
+        CMySchceduleView dlg(this);
+        dlg.setSchedules(m_ScheduleInfo);
+        connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
+        dlg.exec();
+        emit signalViewtransparentFrame(0);
+        disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
+    }
+
 }
 
 void CAllDaySchceduleWeekWidgetItem::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
-        m_selectflag = true;
-        update();
-        emit signalsPress(this);
+    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_ScheduleInfo.beginDateTime.date(), m_ScheduleInfo.endDateTime.date());
+    if (drawrect.contains(event->pos())) {
+
+        if (event->button() == Qt::LeftButton) {
+            m_selectflag = true;
+            update();
+            emit signalsPress(this);
+        }
     }
 }
 
 void CAllDaySchceduleWeekWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
-        m_selectflag = false;
-        update();
+    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_ScheduleInfo.beginDateTime.date(), m_ScheduleInfo.endDateTime.date());
+    if (drawrect.contains(event->pos())) {
+        if (event->button() == Qt::LeftButton) {
+            m_selectflag = false;
+            update();
+        }
     }
 }
 
