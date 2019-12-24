@@ -439,8 +439,14 @@ void CYearWindow::slotActiveW(CYearView *w)
 
 void CYearWindow::slotprev()
 {
+    QDate tcurrent = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
+    if (!tcurrent.isValid()) {
+        m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), 1);
+    } else {
+        m_currentdate = tcurrent;
+    }
     if (m_currentdate.year() > 1900) {
-        m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
+        //m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
         setDate(m_currentdate);
     } else {
         QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
@@ -449,7 +455,12 @@ void CYearWindow::slotprev()
 
 void CYearWindow::slotnext()
 {
-    m_currentdate = QDate(m_currentdate.year() + 1, m_currentdate.month(), m_currentdate.day());
+    QDate tcurrent = QDate(m_currentdate.year() + 1, m_currentdate.month(), m_currentdate.day());
+    if (!tcurrent.isValid()) {
+        m_currentdate = QDate(m_currentdate.year() + 1, m_currentdate.month(), 1);
+    } else {
+        m_currentdate = tcurrent;
+    }
     setDate(m_currentdate);
 }
 
