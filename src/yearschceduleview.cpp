@@ -667,8 +667,8 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
 void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 {
     int labelwidth = width() - 30;
-    int bheight = index * 29 + 10;
-    int labelheight = 29;
+    int bheight = index * 28 + 10;
+    int labelheight = 28;
     ScheduleDtailInfo &gd = info;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
 
