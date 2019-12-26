@@ -854,6 +854,10 @@
     </message>
     <message>
         <source>ALL Day</source>
+        <translation type="vanished">全天</translation>
+    </message>
+    <message>
+        <source>All Day</source>
         <translation>全天</translation>
     </message>
 </context>
@@ -865,11 +869,19 @@
     </message>
     <message>
         <source>ALL Day</source>
-        <translation>全天</translation>
+        <translation type="vanished">全天</translation>
     </message>
     <message>
         <source>h</source>
         <translation>时</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>全天</translation>
+    </message>
+    <message>
+        <source>No event</source>
+        <translation>无日程</translation>
     </message>
 </context>
 <context>

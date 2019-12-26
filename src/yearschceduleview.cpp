@@ -127,13 +127,13 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
         if (m_ScheduleInfo.allday) {
-            str = tr("ALL Day");
+            str = tr("All Day");
         } else {
             str = m_ScheduleInfo.beginDateTime.time().toString("ap h") + tr("h");
         }
     } else {
         if (m_ScheduleInfo.allday) {
-            str = tr("ALL Day");
+            str = tr("All Day");
         } else {
             str = m_ScheduleInfo.beginDateTime.time().toString("ap h:mm");
         }
@@ -740,13 +740,13 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
         if (info.allday) {
-            str = tr("ALL Day");
+            str = tr("All Day");
         } else {
             str = info.beginDateTime.time().toString("ap h") + tr("h");
         }
     } else {
         if (info.allday) {
-            str = tr("ALL Day");
+            str = tr("All Day");
         } else {
             str = info.beginDateTime.time().toString("ap h:mm");
         }
@@ -783,7 +783,7 @@ void CYearSchceduleView::paintItem()
     painter.setPen(m_bttextcolor);
     painter.setFont(font);
     QFontMetrics fm = painter.fontMetrics();
-    QString tStitlename = tr("No Schcedule");
+    QString tStitlename = tr("No event");
 
 
     painter.drawText(QRect(0, 0, width(), height()), Qt::AlignCenter, tStitlename);
