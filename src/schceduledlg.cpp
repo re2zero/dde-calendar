@@ -1010,7 +1010,7 @@ void CSchceduleDlg::initRmindRpeatUI()
             } else if (m_scheduleDtailInfo.remindData.n == 2880) {
                 m_rmindCombox->setCurrentIndex(6);
             } else if (m_scheduleDtailInfo.remindData.n == 10080) {
-                m_rmindCombox->setCurrentIndex(6);
+                m_rmindCombox->setCurrentIndex(7);
             }
         } else {
             m_rmindCombox->setCurrentIndex(0);
