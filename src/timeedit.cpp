@@ -83,19 +83,19 @@ void CTimeEdit::initUI()
     setLineEdit(m_timeEdit->lineEdit());
     //disconnect(m_timeEdit, &QLineEdit::editingFinished, m_pListWidget, &QListWidget::update);
     //[2] 年月日选择控件
-    QListWidgetItem *pitem = new QListWidgetItem(m_pListWidget);
-    pitem->setSizeHint(QSize(m_pListWidget->width(), 300));
+    m_pitem = new QListWidgetItem(m_pListWidget);
+    m_pitem->setSizeHint(QSize(m_pListWidget->width() + 12, 300));
 
     m_pListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //pitem->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
     //listItem->setBackgroundColor(Qt::white);
-    pitem->setFlags(Qt::ItemIsTristate );
+    m_pitem->setFlags(Qt::ItemIsTristate );
     m_verticalScroll = new CTimeVerticalScroll(m_pListWidget);
     m_verticalScroll->setMinimumWidth(m_pListWidget->width());
-    m_pListWidget->setItemWidget(pitem, m_verticalScroll);
+    m_pListWidget->setItemWidget(m_pitem, m_verticalScroll);
     m_verticalScroll->setRange(0, 23);
     m_timeEdit->lineEdit()->setCursorPosition(1);
-    m_pListWidget->addItem(pitem);
+    m_pListWidget->addItem(m_pitem);
     m_pListWidget->setFixedWidth(width());
     m_verticalScroll->setFixedWidth(width());
 
@@ -127,9 +127,10 @@ void CTimeEdit::initConnection()
 void CTimeEdit::showPopup()
 {
     // QComboBox::showPopup();
-    m_pListWidget->setFixedWidth(width());
+    m_pListWidget->setFixedWidth(width() + 12);
     m_pos = m_timeEdit->lineEdit()->cursorPosition();
-    m_verticalScroll->setFixedWidth(width());
+    //m_pitem->setSizeHint(QSize(width() + 12, 300));
+    m_verticalScroll->setFixedWidth(width() + 12);
     m_timeEdit->lineEdit()->setInputMask("00:00;#");
     QString timetext = m_timeEdit->text();
     m_timeEdit->lineEdit()->setInputMask("00:00;0");

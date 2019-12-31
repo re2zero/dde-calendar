@@ -48,6 +48,7 @@ private:
     DLineEdit                 *m_timeEdit;
     CTimeVerticalScroll       *m_verticalScroll;
     DListWidget               *m_pListWidget;
+    QListWidgetItem           *m_pitem;
     int                       m_type = 0; // 0 h,1 m
     int                       m_pos = 0;
     QTime                     m_time;
