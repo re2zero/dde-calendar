@@ -223,7 +223,7 @@ void CSchceduleDlg::slotOkBt()
                 }
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                DPushButton *yesButton = msgBox.addPushButton(tr("Changes All"));
+                DPushButton *yesButton = msgBox.addPushButton(tr("Change All"));
                 msgBox.updatesize();
                 DPalette pa = yesButton->palette();
                 if (themetype == 0 || themetype == 1) {
@@ -254,7 +254,7 @@ void CSchceduleDlg::slotOkBt()
                 msgBox.setText(tr("You are changing the repeating rule of this event."));
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                DPushButton *yesButton = msgBox.addPushButton(tr("Changes All"));
+                DPushButton *yesButton = msgBox.addPushButton(tr("Change All"));
                 msgBox.updatesize();
                 DPalette pa = yesButton->palette();
                 if (themetype == 0 || themetype == 1) {
@@ -280,7 +280,7 @@ void CSchceduleDlg::slotOkBt()
                     msgBox.setText(tr("You are changing a repeating event."));
                     msgBox.setInformativeText(tr("Do you want to change only this occurrence of the event, or all occurrences?"));
                     DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                    DPushButton *yesallbutton = msgBox.addPushButton(tr("ALL"));
+                    DPushButton *yesallbutton = msgBox.addPushButton(tr("All"));
                     DPushButton *yesButton = msgBox.addPushButton(tr("Only This Event"));
                     msgBox.updatesize();
                     DPalette pa = yesButton->palette();

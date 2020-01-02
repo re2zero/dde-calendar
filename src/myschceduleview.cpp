@@ -256,7 +256,7 @@ void CMySchceduleView::initUI()
 
     m_Title->setPalette(titlepa);
     m_Title->setFont(labelTitle);
-    m_Title->setText(tr("My event"));
+    m_Title->setText(tr("My Event"));
     m_Title->move(148, 0);
     m_Title->setAlignment(Qt::AlignCenter);
 

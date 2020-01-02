@@ -320,6 +320,10 @@
     </message>
     <message>
         <source>My event</source>
+        <translation type="vanished">我的日程</translation>
+    </message>
+    <message>
+        <source>My Event</source>
         <translation>我的日程</translation>
     </message>
 </context>
@@ -351,7 +355,7 @@
     </message>
     <message>
         <source>ALL</source>
-        <translation>全部日程</translation>
+        <translation type="vanished">全部日程</translation>
     </message>
     <message>
         <source>infomation</source>
@@ -419,7 +423,7 @@
     </message>
     <message>
         <source>Changes All</source>
-        <translation>全部更改</translation>
+        <translation type="vanished">全部更改</translation>
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
@@ -528,6 +532,14 @@
     <message>
         <source>Save</source>
         <translation>保 存</translation>
+    </message>
+    <message>
+        <source>Change All</source>
+        <translation>全部更改</translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation>全部日程</translation>
     </message>
 </context>
 <context>
