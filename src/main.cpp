@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "calendarwindow.h"
 #include "environments.h"
 
 #include <QFile>
@@ -28,7 +27,6 @@
 #include <DApplication>
 #include <DLog>
 #include <DHiDPIHelper>
-#include "dbmanager.h"
 #include "calendarmainwindow.h"
 //#include "monthwindow.h"
 #include "yearwindow.h"

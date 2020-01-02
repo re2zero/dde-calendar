@@ -19,7 +19,6 @@
 #include "schcedulectrldlg.h"
 #include <QVBoxLayout>
 #include "schceduledlg.h"
-#include "dbmanager.h"
 #include "scheduledatamanage.h"
 #include <DMessageBox>
 #include <DPushButton>

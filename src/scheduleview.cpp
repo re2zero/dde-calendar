@@ -20,7 +20,6 @@
 #include <QGridLayout>
 #include "graphicsview.h"
 #include "schedulecoormanage.h"
-#include "dbmanager.h"
 #include "alldayschceduleweekview.h"
 #include "scheduledatamanage.h"
 #include <DPalette>

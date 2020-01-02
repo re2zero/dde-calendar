@@ -20,9 +20,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMessageBox>
-#include "calendartimeeidt.h"
 #include "timeedit.h"
-#include "customcalendarwidget.h"
 #include <DHiDPIHelper>
 #include <QIcon>
 #include <QIntValidator>
@@ -34,6 +32,7 @@
 #include <QShortcut>
 #include <QToolButton>
 #include <QTextBlock>
+#include <QCalendarWidget>
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
 {

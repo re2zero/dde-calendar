@@ -28,8 +28,6 @@
 #include <QMessageBox>
 #include <QTime>
 #include <QQueue>
-#include "schceduledayview.h"
-#include "dbmanager.h"
 #include "schceduledlg.h"
 #include <QMenu>
 #include "scheduledatamanage.h"

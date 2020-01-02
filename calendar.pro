@@ -22,8 +22,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Input
 HEADERS += src/calendardbus.h \
-           src/calendarview.h \
-           src/calendarwindow.h \
            src/constants.h \
            src/dbuscalendar_adaptor.h \
            src/infoview.h \
@@ -38,12 +36,10 @@ HEADERS += src/calendardbus.h \
     src/monthwindow.h \
     src/monthdayview.h \
     src/schedulecoormanage.h \
-    src/dbmanager.h \
     src/schedulestructs.h \
     src/scheduleitem.h \
     src/graphicsview.h \
     src/scheduleview.h \
-    src/schceduledayview.h \
     src/weekheadview.h \
     src/weekview.h \
     src/weekwindow.h \
@@ -52,19 +48,14 @@ HEADERS += src/calendardbus.h \
     src/dayhuangliview.h \
     src/daywindow.h \
     src/verticalscroll.h \
-    src/calendartimeeidt.h \
     src/verticalscrolltext.h \
     src/schceduledlg.h \
     src/myschceduleview.h \
-    src/cayearmonthedit.h \
     src/timeedit.h \
     src/timeverticalscroll.h \
-    src/customcalendarwidget.h \
     src/schedulesdbus.h \
     src/scheduledatamanage.h \
-    src/schcedulealldayview.h \
     src/creatorparschedule.h \
-    src/alldayschceduleview.h \
     src/monthschceduleview.h \
     src/schcedulectrldlg.h \
     src/timeeditctrl.h \
@@ -77,8 +68,6 @@ HEADERS += src/calendardbus.h \
     src/customframe.h \
     src/yearschceduleview.h
 SOURCES += src/calendardbus.cpp \
-           src/calendarview.cpp \
-           src/calendarwindow.cpp \
            src/dbuscalendar_adaptor.cpp \
            src/infoview.cpp \
            src/main.cpp \
@@ -91,13 +80,11 @@ SOURCES += src/calendardbus.cpp \
     src/monthweekview.cpp \
     src/monthwindow.cpp \
     src/monthdayview.cpp \
-    src/dbmanager.cpp \
     src/scheduleitem.cpp \
     src/graphicsview.cpp \
     src/schedulecoormanage.cpp \
     src/scheduleview.cpp \
     src/schceduledlg.cpp \
-    src/schceduledayview.cpp \
     src/weekheadview.cpp \
     src/weekview.cpp \
     src/weekwindow.cpp \
@@ -106,18 +93,13 @@ SOURCES += src/calendardbus.cpp \
     src/dayhuangliview.cpp \
     src/daywindow.cpp \
     src/verticalscrolltext.cpp \
-    src/calendartimeeidt.cpp \
     src/verticalscroll.cpp \
     src/myschceduleview.cpp \
     src/timeverticalscroll.cpp \
-    src/cayearmonthedit.cpp \
-    src/customcalendarwidget.cpp \
     src/timeedit.cpp \
     src/schedulesdbus.cpp \
     src/scheduledatamanage.cpp \
-    src/schcedulealldayview.cpp \
     src/creatorparschedule.cpp \
-    src/alldayschceduleview.cpp \
     src/monthschceduleview.cpp \
     src/schcedulectrldlg.cpp \
     src/timeeditctrl.cpp \

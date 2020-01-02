@@ -25,7 +25,6 @@
 #include <QHBoxLayout>
 #include <QStylePainter>
 #include <QRect>
-#include "dbmanager.h"
 #include "schceduledlg.h"
 #include "scheduledatamanage.h"
 #include <DMessageBox>

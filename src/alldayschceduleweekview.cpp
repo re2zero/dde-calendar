@@ -25,7 +25,6 @@
 #include <QHBoxLayout>
 #include <QStylePainter>
 #include <QRect>
-#include "dbmanager.h"
 #include "schceduledlg.h"
 #include "myschceduleview.h"
 #include "scheduledatamanage.h"
