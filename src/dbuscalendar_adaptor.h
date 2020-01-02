@@ -37,7 +37,7 @@ class CalendarAdaptor: public QDBusAbstractAdaptor
                 "    </method>\n"
                 "    <method name=\"RaiseWindow\">\n"
                 "    </method>\n"
-                "    <method name=\"openSchedule\">\n"
+                "    <method name=\"OpenSchedule\">\n"
                 "      <arg direction=\"in\" type=\"s\" name=\"job\"/>\n"
                 "    </method>\n"
                 "  </interface>\n"

@@ -168,15 +168,18 @@ int main(int argc, char *argv[])
     einterface.registerAction("VIEW", "check a date on calendar");
     einterface.registerAction("QUERY", "find a schedule information");
     einterface.registerAction("CANCEL", "cancel a schedule");
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    dbus.registerService("com.deepin.Calendar");
+    dbus.registerObject("/com/deepin/Calendar", &ww);
     ww.move(PrimaryRect().center() - ww.geometry().center());
     //ww.setDate(QDate::currentDate());
     ww.slotTheme(getThemeTypeSetting());
     ww.viewWindow(viewtype, QDateTime::currentDateTime());
     ww.show();
 
-    QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.registerService("com.deepin.Calendar");
-    dbus.registerObject("/com/deepin/Calendar", &ww);
+    //QDBusConnection dbus = QDBusConnection::sessionBus();
+    //dbus.registerService("com.deepin.Calendar");
+    //dbus.registerObject("/com/deepin/Calendar", &ww);
     //监听当前应用主题切换事件
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
     [] (DGuiApplicationHelper::ColorType type) {

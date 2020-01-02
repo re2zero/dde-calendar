@@ -853,10 +853,6 @@
         <translation>时</translation>
     </message>
     <message>
-        <source>ALL Day</source>
-        <translation type="vanished">全天</translation>
-    </message>
-    <message>
         <source>All Day</source>
         <translation>全天</translation>
     </message>
@@ -866,10 +862,6 @@
     <message>
         <source>No Schcedule</source>
         <translation>无日程</translation>
-    </message>
-    <message>
-        <source>ALL Day</source>
-        <translation type="vanished">全天</translation>
     </message>
     <message>
         <source>h</source>
