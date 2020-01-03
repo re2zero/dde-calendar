@@ -32,7 +32,7 @@ CTimeVerticalScroll::CTimeVerticalScroll(QWidget *parent): DWidget(parent)
     // this->setPalette(palette);
 //     ui->setupUi(this);
 //    this->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint/* | Qt::WindowStaysOnTopHint*/);
-
+    setContentsMargins(0, 0, 0, 0);
     m_minRange = 0;    //最小值默认为0
     m_maxRange = 59;   //最大值默认59
     m_currentValue = 15; //当前值默认0
@@ -254,7 +254,7 @@ void CTimeVerticalScroll::paintNum(QPainter &painter, int num, int deviation)
         if (deviation == 0) {
             painter.setPen(Qt::NoPen);
             painter.setBrush(QColor("#0887FF"));
-            painter.drawRect(0, y, Width + 1, height);
+            painter.drawRect(0, y, Width - 15, height);
             painter.setPen(QColor("#FFFFFF"));
             if (m_Zeropadd && num < 10) {
                 painter.drawText(QRectF(0, y, Width - 20, height),
