@@ -825,9 +825,9 @@ void CSchceduleDlg::initUI()
     QColor color = "#F8F8F8";
     color.setAlphaF(0.0);
     anipa.setColor(DPalette::Background, color);
-    m_gwi->setAutoFillBackground(true);
-    m_gwi->setPalette(anipa);
-    m_gwi->setBackgroundRole(DPalette::Background);
+    //m_gwi->setAutoFillBackground(true);
+    //m_gwi->setPalette(anipa);
+    //m_gwi->setBackgroundRole(DPalette::Background);
     addContent(m_gwi, Qt::AlignCenter);
     //setLayout(maintlayout);
     initDateEdit();
@@ -871,6 +871,7 @@ void CSchceduleDlg::initDateEdit()
     //m_endDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
     //m_eCustomDateW->disconnect(SIGNAL(selectionChanged()));
     //m_eCustomDateW->disconnect(SIGNAL(clicked(QDate)));
+    return;
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     QWidget *view1 = m_beginDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");

@@ -319,10 +319,6 @@
         <translation>全删除所有将来日程</translation>
     </message>
     <message>
-        <source>My event</source>
-        <translation type="vanished">我的日程</translation>
-    </message>
-    <message>
         <source>My Event</source>
         <translation>我的日程</translation>
     </message>
@@ -352,10 +348,6 @@
     <message>
         <source>Repetitive schedule of all must have the same not throughout the state.</source>
         <translation>重复日程的所有重复必须具有相同的非全天状态。</translation>
-    </message>
-    <message>
-        <source>ALL</source>
-        <translation type="vanished">全部日程</translation>
     </message>
     <message>
         <source>infomation</source>
@@ -420,10 +412,6 @@
     <message>
         <source>Do you want to change all occurrences?</source>
         <translation>您要更改所有重复吗？</translation>
-    </message>
-    <message>
-        <source>Changes All</source>
-        <translation type="vanished">全部更改</translation>
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
