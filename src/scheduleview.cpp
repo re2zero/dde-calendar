@@ -275,9 +275,11 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     font.setFamily("SourceHanSansSC");
     font.setWeight(QFont::Normal);
     font.setPixelSize(11);
-
+    if (m_vPos.isEmpty()) return;
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
+
+        QRect tinrect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight);
         if (m_cuttrnttimetype == 0) {
             painter.save();
             painter.setFont(font);
@@ -299,6 +301,8 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             for (int i = 0; i < m_vPos.size() - 1; i++) {
                 if (m_vHours[i] == 0) continue;
                 if (m_vHours[i] == 24) continue;
+                QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight);
+                if (rr.intersects(tinrect)) continue;
                 if (m_vHours[i] > 12) {
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, tr("PM ") + QString::number(m_vHours[i] - 12) + tr(" h"));
                 } else {
@@ -334,9 +338,13 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.save();
             painter.setFont(font);
             painter.setPen(m_timeColor);
+            QRect tinrect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight);
+
             for (int i = 0; i < m_vPos.size() - 1; i++) {
                 if (m_vHours[i] == 0) continue;
                 if (m_vHours[i] == 24) continue;
+                QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight);
+                if (rr.intersects(tinrect)) continue;
                 if (m_vHours[i] > 12) {
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
                 } else {
