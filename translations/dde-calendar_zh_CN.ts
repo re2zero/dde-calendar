@@ -179,10 +179,6 @@
 <context>
     <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>There&apos;s %1 schedule</source>
-        <translation type="vanished">还有 %1 项</translation>
-    </message>
-    <message>
         <source>There&apos;s %1 event</source>
         <translation>还有 %1 项</translation>
     </message>
@@ -314,10 +310,6 @@
         <translation>结束的重复结束时间大于日程的起始时间！</translation>
     </message>
     <message>
-        <source>Repetitive schedule of all must have the same not throughout the state.</source>
-        <translation type="vanished">重复日程的所有重复必须具有相同的非全天状态。</translation>
-    </message>
-    <message>
         <source>infomation</source>
         <translation>提示</translation>
     </message>
@@ -360,10 +352,6 @@
     <message>
         <source>Never</source>
         <translation>无</translation>
-    </message>
-    <message>
-        <source>New Schedule</source>
-        <translation type="vanished">新建日程</translation>
     </message>
     <message>
         <source>New Event</source>
@@ -728,18 +716,6 @@
 </context>
 <context>
     <name>Shortcut</name>
-    <message>
-        <source>Start/Calendar</source>
-        <translation type="vanished">开始/日历</translation>
-    </message>
-    <message>
-        <source>Schedule Edit</source>
-        <translation type="vanished">日程编辑</translation>
-    </message>
-    <message>
-        <source>Schedule Content Editing</source>
-        <translation type="vanished">日程内容编辑</translation>
-    </message>
     <message>
         <source>Help</source>
         <translation>帮助</translation>
