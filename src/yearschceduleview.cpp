@@ -308,7 +308,7 @@ void CYearSchceduleView::updateDateShow()
         gwi->setForegroundRole(DPalette::WindowText);
         gwi->setBackgroundRole(DPalette::Window);
         gwi->setFont(font);
-        gwi->setText(tr("No Schcedule"));
+        gwi->setText(tr("No event"));
         gwi->setFixedSize(m_gradientItemList->width(), 48);
         listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
         //listItem->setBackgroundColor(Qt::white);
@@ -394,7 +394,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
         gwi->setForegroundRole(DPalette::WindowText);
         gwi->setBackgroundRole(DPalette::Window);
         gwi->setFont(font);
-        gwi->setText(tr("No Schcedule"));
+        gwi->setText(tr("No event"));
         gwi->setFixedSize(m_gradientItemList->width(), 48);
         listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
         //listItem->setBackgroundColor(Qt::white);
@@ -423,7 +423,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
         const qreal width = this->width();
         QRectF topRightRect(QPointF(0, 0),
                             QPointF(2 * radius, 2 * radius));
-        QRectF bottomRightRect(QPointF(0, height - 2 * tr("No Schcedule")radius),
+        QRectF bottomRightRect(QPointF(0, height - 2 * tr("No event")radius),
                                QPointF(2 * radius, height));
         QRectF topLeftRect(QPointF(width, 0),
                            QPointF(width - 2 * radius, 2 * radius));
@@ -466,7 +466,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
         path.lineTo(width / 2 + triWidth / 2, triHeight);
         path.lineTo(width - radius, triHeight);
         path.arcTo(topLeftRect, 90.0, 90.0);
-        tr("No Schcedule")
+        tr("No event")
         path.lineTo(width, this->height() - radius);
         path.arcTo(bottomLeftRect, 180.0, -90.0);
         path.lineTo(radius, this->height());

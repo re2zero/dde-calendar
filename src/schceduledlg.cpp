@@ -133,7 +133,7 @@ void CSchceduleDlg::slotOkBt()
         scheduleDtailInfo.titleName = m_textEdit->toPlainText();
     }
     if (scheduleDtailInfo.titleName.isEmpty()) {
-        QMessageBox::warning(this, tr("error"), tr("Schcedule is empty!"));
+        QMessageBox::warning(this, tr("error"), tr("The event is empty!"));
         return;
     }
     if (beginDateTime > endDateTime) {

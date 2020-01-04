@@ -86,26 +86,6 @@
         <translation>星期天 </translation>
     </message>
     <message>
-        <source>Y </source>
-        <translation>年</translation>
-    </message>
-    <message>
-        <source>M </source>
-        <translation>月</translation>
-    </message>
-    <message>
-        <source>D </source>
-        <translation>日</translation>
-    </message>
-    <message>
-        <source>【</source>
-        <translation>【</translation>
-    </message>
-    <message>
-        <source>Y】</source>
-        <translation>年】</translation>
-    </message>
-    <message>
         <source>infomation</source>
         <translation>提示</translation>
     </message>
@@ -292,10 +272,6 @@
     <message>
         <source>error</source>
         <translation>错误</translation>
-    </message>
-    <message>
-        <source>Schcedule is empty!</source>
-        <translation>日程不存在！</translation>
     </message>
     <message>
         <source>The end time less than begin time!</source>
@@ -493,6 +469,10 @@
         <source>New event</source>
         <translation>新建日程</translation>
     </message>
+    <message>
+        <source>The event is empty!</source>
+        <translation>日程内容为空！</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -621,10 +601,6 @@
 </context>
 <context>
     <name>CYearSchceduleView</name>
-    <message>
-        <source>No Schcedule</source>
-        <translation>无日程</translation>
-    </message>
     <message>
         <source>h</source>
         <translation>时</translation>

@@ -86,26 +86,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Y </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>【</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Y】</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>M </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>D </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>infomation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -302,10 +282,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Schcedule is empty!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The end time less than begin time!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -493,6 +469,10 @@
         <source>New event</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The event is empty!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -621,10 +601,6 @@
 </context>
 <context>
     <name>CYearSchceduleView</name>
-    <message>
-        <source>No Schcedule</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>All Day</source>
         <translation type="unfinished"></translation>
