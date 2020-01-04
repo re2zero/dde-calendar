@@ -449,6 +449,14 @@
         <source>New event</source>
         <translation>新建日程</translation>
     </message>
+    <message>
+        <source>The end time less than begin time!</source>
+        <translation>日程结束时间不能小于开始时间！</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>错误</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>

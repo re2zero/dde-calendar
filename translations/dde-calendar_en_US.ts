@@ -449,6 +449,14 @@
         <source>New event</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The end time less than begin time!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
