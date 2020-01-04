@@ -137,7 +137,7 @@ void CSchceduleDlg::slotOkBt()
         return;
     }
     if (beginDateTime > endDateTime) {
-        QMessageBox::warning(this, tr("error"), tr("The end time less than begin time!"));
+        //QMessageBox::warning(this, tr("error"), tr("The end time less than begin time!"));
         return;
     }
     if (m_type == 1) scheduleDtailInfo.id = 0;
@@ -183,7 +183,7 @@ void CSchceduleDlg::slotOkBt()
         scheduleDtailInfo.enddata.type = m_endrepeatCombox->currentIndex();
         if (m_endrepeatCombox->currentIndex() == 1) {
             if (m_endrepeattimes->text().isEmpty()) {
-                QMessageBox::warning(this, tr("error"), tr("The end repeat times is null!"));
+                //QMessageBox::warning(this, tr("error"), tr("The end repeat times is null!"));
                 return;
             }
             scheduleDtailInfo.enddata.tcount = m_endrepeattimes->text().toInt();
@@ -191,7 +191,7 @@ void CSchceduleDlg::slotOkBt()
             QDateTime endrpeattime = beginDateTime;
             endrpeattime.setDate(m_endRepeatDate->date());
             if (beginDateTime > endrpeattime) {
-                QMessageBox::warning(this, tr("error"), tr("The end repeat time less than begin time!"));
+                //QMessageBox::warning(this, tr("error"), tr("The end repeat time less than begin time!"));
                 return;
             }
             scheduleDtailInfo.enddata.date = endrpeattime;

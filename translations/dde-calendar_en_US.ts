@@ -282,18 +282,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The end time less than begin time!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The end repeat times is null!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The end repeat time less than begin time!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
         <translation type="unfinished"></translation>
     </message>

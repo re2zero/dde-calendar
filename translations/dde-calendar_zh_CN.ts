@@ -274,18 +274,6 @@
         <translation>错误</translation>
     </message>
     <message>
-        <source>The end time less than begin time!</source>
-        <translation>终止时间小于起始时间！</translation>
-    </message>
-    <message>
-        <source>The end repeat times is null!</source>
-        <translation>请输入结束重复次数！</translation>
-    </message>
-    <message>
-        <source>The end repeat time less than begin time!</source>
-        <translation>结束的重复结束时间大于日程的起始时间！</translation>
-    </message>
-    <message>
         <source>infomation</source>
         <translation>提示</translation>
     </message>
