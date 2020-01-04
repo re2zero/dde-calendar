@@ -278,10 +278,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -450,15 +446,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Repetitive event of all must have the same not throughout the state.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>New event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The event is empty!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

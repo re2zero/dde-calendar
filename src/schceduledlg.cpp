@@ -133,7 +133,7 @@ void CSchceduleDlg::slotOkBt()
         scheduleDtailInfo.titleName = m_textEdit->toPlainText();
     }
     if (scheduleDtailInfo.titleName.isEmpty()) {
-        QMessageBox::warning(this, tr("error"), tr("The event is empty!"));
+        //QMessageBox::warning(this, tr("error"), tr("The event is empty!"));
         return;
     }
     if (beginDateTime > endDateTime) {
@@ -215,12 +215,13 @@ void CSchceduleDlg::slotOkBt()
                 CSchceduleCtrlDlg msgBox(this);
                 //msgBox.setWindowFlags(Qt::FramelessWindowHint);
                 //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                if (scheduleDtailInfo.allday) {
-                    msgBox.setText(tr("All occurrences of a repeating event must have the same all-day status."));
+                msgBox.setText(tr("All occurrences of a repeating event must have the same all-day status."));
+//                if (scheduleDtailInfo.allday) {
+//                    msgBox.setText(tr("All occurrences of a repeating event must have the same all-day status."));
 
-                } else {
-                    msgBox.setText(tr("Repetitive event of all must have the same not throughout the state."));
-                }
+//                } else {
+//                    msgBox.setText(tr("Repetitive event of all must have the same not throughout the state."));
+//                }
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
                 DPushButton *yesButton = msgBox.addPushButton(tr("Change All"));

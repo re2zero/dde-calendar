@@ -270,10 +270,6 @@
 <context>
     <name>CSchceduleDlg</name>
     <message>
-        <source>error</source>
-        <translation>错误</translation>
-    </message>
-    <message>
         <source>infomation</source>
         <translation>提示</translation>
     </message>
@@ -450,16 +446,8 @@
         <translation>全部日程</translation>
     </message>
     <message>
-        <source>Repetitive event of all must have the same not throughout the state.</source>
-        <translation>重复日程的所有重复必须具有相同的非全天状态。</translation>
-    </message>
-    <message>
         <source>New event</source>
         <translation>新建日程</translation>
-    </message>
-    <message>
-        <source>The event is empty!</source>
-        <translation>日程内容为空！</translation>
     </message>
 </context>
 <context>
