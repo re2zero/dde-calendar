@@ -405,6 +405,17 @@ void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)
 {
     m_beginDateEdit->setDate(date);
     m_endRepeatDate->setMinimumDate(date);
+    m_endDateEdit->setMinimumDate(date);
+
+    QDateTime beginDateTime, endDateTime;
+    beginDateTime.setDate(m_beginDateEdit->date());
+    beginDateTime.setTime(m_beginTimeEdit->getTime());
+    endDateTime.setDate(m_endDateEdit->date());
+    endDateTime.setTime(m_endTimeEdit->getTime());
+
+    if (endDateTime < beginDateTime) {
+        m_endTimeEdit->setTime(m_beginTimeEdit->getTime().addSecs(3600));
+    }
 }
 
 void CSchceduleDlg::slotEDateEidtInfo(const QDate &date)
@@ -846,7 +857,7 @@ void CSchceduleDlg::initConnection()
     connect(m_allDayCheckbox, &DCheckBox::stateChanged, this, &CSchceduleDlg::slotallDayStateChanged);
     connect(m_beginrepeatCombox, QOverload<int>::of(&QComboBox::activated), this, &CSchceduleDlg::slotbRpeatactivated);
     connect(m_endrepeatCombox, QOverload<int>::of(&QComboBox::activated), this, &CSchceduleDlg::sloteRpeatactivated);
-    // connect(m_bCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotBDateEidtInfo);
+    connect(m_beginDateEdit, &DDateEdit::userDateChanged, this, &CSchceduleDlg::slotBDateEidtInfo);
 
     //connect(m_eCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotEDateEidtInfo);
 
