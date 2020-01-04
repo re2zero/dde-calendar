@@ -137,7 +137,7 @@ void CSchceduleDlg::slotOkBt()
         return;
     }
     if (beginDateTime > endDateTime) {
-        QMessageBox::warning(this, tr("Error"), tr("The end time less than begin time!"));
+        //QMessageBox::warning(this, tr("Error"), tr("The end time less than begin time!"));
         return;
     }
     if (m_type == 1) scheduleDtailInfo.id = 0;
@@ -384,7 +384,7 @@ void CSchceduleDlg::slotTextChange()
     int maxLength = 256; // 最大字符数
     if (length > maxLength) {
 
-        QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
+        //QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
         m_textEdit->setText(m_context);
         cursor.movePosition(QTextCursor::End);
         m_textEdit->setTextCursor(cursor);

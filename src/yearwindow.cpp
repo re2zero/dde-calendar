@@ -449,7 +449,7 @@ void CYearWindow::slotprev()
         //m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
         setDate(m_currentdate);
     } else {
-        QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
+        //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
 }
 

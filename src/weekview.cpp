@@ -140,7 +140,7 @@ void CWeekView::slotprev()
         QDate date = m_selectDate.addDays(-6);
         setCurrentDate(date);
     } else {
-        QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
+        //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
 }
 

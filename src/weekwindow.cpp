@@ -409,7 +409,7 @@ void CWeekWindow::slotprev()
         m_currentdate = m_currentdate.addDays(-7);
         setDate(m_currentdate);
     } else {
-        QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
+        //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
 }
 

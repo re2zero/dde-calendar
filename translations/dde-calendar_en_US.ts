@@ -85,14 +85,6 @@
         <source>Sunday</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>infomation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Year less than 1900!</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CDayWindow</name>
@@ -322,14 +314,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>infomation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Max length is 256!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
@@ -449,14 +433,6 @@
         <source>New event</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>The end time less than begin time!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -531,28 +507,9 @@
     </message>
 </context>
 <context>
-    <name>CWeekView</name>
-    <message>
-        <source>infomation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Year less than 1900!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CWeekWindow</name>
     <message>
         <source>Week</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>infomation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Year less than 1900!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -580,14 +537,6 @@
 </context>
 <context>
     <name>CYearWindow</name>
-    <message>
-        <source>infomation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Year less than 1900!</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Y</source>
         <translation type="unfinished"></translation>

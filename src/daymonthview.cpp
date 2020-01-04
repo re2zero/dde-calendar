@@ -849,7 +849,7 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
             emit signalcurrentDateChanged(m_currentDate);
             updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
         } else {
-            QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
+            //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
         }
     }
 }
@@ -911,7 +911,7 @@ void CDayMonthView::slotprev()
         emit signalcurrentDateChanged(m_currentDate);
         updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
     } else {
-        QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
+        //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
 }
 
