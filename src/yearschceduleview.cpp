@@ -128,7 +128,7 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
         if (m_ScheduleInfo.allday) {
             str = tr("All Day");
         } else {
-            str = m_ScheduleInfo.beginDateTime.time().toString("ap h") + tr("h");
+            str = m_ScheduleInfo.beginDateTime.time().toString("ap h") + ("时");
         }
     } else {
         if (m_ScheduleInfo.allday) {
@@ -741,7 +741,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
         if (info.allday) {
             str = tr("All Day");
         } else {
-            str = info.beginDateTime.time().toString("ap h") + tr("h");
+            str = info.beginDateTime.time().toString("ap h") + ("时");
         }
     } else {
         if (info.allday) {

@@ -542,18 +542,6 @@
 <context>
     <name>CScheduleView</name>
     <message>
-        <source>PM </source>
-        <translation>下午</translation>
-    </message>
-    <message>
-        <source> h</source>
-        <translation>时</translation>
-    </message>
-    <message>
-        <source>AM </source>
-        <translation>上午</translation>
-    </message>
-    <message>
         <source>ALL DAY</source>
         <translation>全天</translation>
     </message>
@@ -591,20 +579,12 @@
 <context>
     <name>CYearSchceduleItem</name>
     <message>
-        <source>h</source>
-        <translation>时</translation>
-    </message>
-    <message>
         <source>All Day</source>
         <translation>全天</translation>
     </message>
 </context>
 <context>
     <name>CYearSchceduleView</name>
-    <message>
-        <source>h</source>
-        <translation>时</translation>
-    </message>
     <message>
         <source>All Day</source>
         <translation>全天</translation>
@@ -627,10 +607,6 @@
     <message>
         <source>Y</source>
         <translation>年</translation>
-    </message>
-    <message>
-        <source>Lunar</source>
-        <translation>农历</translation>
     </message>
 </context>
 <context>

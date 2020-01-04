@@ -542,18 +542,6 @@
 <context>
     <name>CScheduleView</name>
     <message>
-        <source>PM </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> h</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>AM </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ALL DAY</source>
         <translation type="unfinished"></translation>
     </message>
@@ -594,19 +582,11 @@
         <source>All Day</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>h</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CYearSchceduleView</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -626,10 +606,6 @@
     </message>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lunar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -487,7 +487,7 @@ void CYearWindow::slotcurrentDateChanged(QDate date)
         m_YearLabel->setText(QString::number(date.year()));
     }
     m_YearLunarLabel->setText("-" + info.mGanZhiYear + info.mZodiac + "年-");
-    m_YearLunarDayLabel->setText("-" + tr("Lunar") + info.mLunarMonthName + info.mLunarDayName + "-");
+    m_YearLunarDayLabel->setText("-农历" + info.mLunarMonthName + info.mLunarDayName + "-");
 }
 
 const QString CYearWindow::getLunar(QDate date)
@@ -555,7 +555,7 @@ void CYearWindow::getDbusData()
     if (date == m_currentdate) {
         //更新
         m_YearLunarLabel->setText("-" + currentDayInfo.mGanZhiYear + currentDayInfo.mZodiac + "年-");
-        m_YearLunarDayLabel->setText("-" + tr("Lunar") + currentDayInfo.mLunarMonthName + currentDayInfo.mLunarDayName + "-");
+        m_YearLunarDayLabel->setText("-农历" + currentDayInfo.mLunarMonthName + currentDayInfo.mLunarDayName + "-");
     }
 }
 
