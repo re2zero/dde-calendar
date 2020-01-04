@@ -140,40 +140,8 @@
         <translation>删 除</translation>
     </message>
     <message>
-        <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>取 消</translation>
-    </message>
-    <message>
-        <source>Delete Schedule</source>
-        <translation>删除日程</translation>
-    </message>
-    <message>
-        <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
-    </message>
-    <message>
-        <source>All Deleted</source>
-        <translation>全部删除</translation>
-    </message>
-    <message>
-        <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
-    </message>
-    <message>
-        <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
-    </message>
-    <message>
-        <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
-    </message>
-    <message>
-        <source>You are deleted schedule</source>
-        <translation>您正在删除日程</translation>
     </message>
     <message>
         <source>New event</source>
@@ -212,7 +180,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>There&apos;s %1 schedule</source>
-        <translation>还有 %1 项</translation>
+        <translation type="vanished">还有 %1 项</translation>
     </message>
     <message>
         <source>There&apos;s %1 event</source>
@@ -347,7 +315,7 @@
     </message>
     <message>
         <source>Repetitive schedule of all must have the same not throughout the state.</source>
-        <translation>重复日程的所有重复必须具有相同的非全天状态。</translation>
+        <translation type="vanished">重复日程的所有重复必须具有相同的非全天状态。</translation>
     </message>
     <message>
         <source>infomation</source>
@@ -395,7 +363,7 @@
     </message>
     <message>
         <source>New Schedule</source>
-        <translation>新建日程</translation>
+        <translation type="vanished">新建日程</translation>
     </message>
     <message>
         <source>New Event</source>
@@ -528,6 +496,14 @@
     <message>
         <source>All</source>
         <translation>全部日程</translation>
+    </message>
+    <message>
+        <source>Repetitive event of all must have the same not throughout the state.</source>
+        <translation>重复日程的所有重复必须具有相同的非全天状态。</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>新建日程</translation>
     </message>
 </context>
 <context>
@@ -707,10 +683,6 @@
 <context>
     <name>Calendarmainwindow</name>
     <message>
-        <source>Deepin Calendar</source>
-        <translation>日历</translation>
-    </message>
-    <message>
         <source>Y</source>
         <translation>年</translation>
     </message>
@@ -725,6 +697,10 @@
     <message>
         <source>D</source>
         <translation>日</translation>
+    </message>
+    <message>
+        <source>Calendar</source>
+        <translation>日历</translation>
     </message>
 </context>
 <context>
@@ -754,15 +730,15 @@
     <name>Shortcut</name>
     <message>
         <source>Start/Calendar</source>
-        <translation>开始/日历</translation>
+        <translation type="vanished">开始/日历</translation>
     </message>
     <message>
         <source>Schedule Edit</source>
-        <translation>日程编辑</translation>
+        <translation type="vanished">日程编辑</translation>
     </message>
     <message>
         <source>Schedule Content Editing</source>
-        <translation>日程内容编辑</translation>
+        <translation type="vanished">日程内容编辑</translation>
     </message>
     <message>
         <source>Help</source>

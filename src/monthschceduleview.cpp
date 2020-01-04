@@ -498,7 +498,7 @@ void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
 
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignLeft, QString(tr("There's %1 schedule")).arg(m_num));
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignLeft, QString(tr("There's %1 event")).arg(m_num));
     }
 }
 

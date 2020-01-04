@@ -219,7 +219,7 @@ void CSchceduleDlg::slotOkBt()
                     msgBox.setText(tr("All occurrences of a repeating event must have the same all-day status."));
 
                 } else {
-                    msgBox.setText(tr("Repetitive schedule of all must have the same not throughout the state."));
+                    msgBox.setText(tr("Repetitive event of all must have the same not throughout the state."));
                 }
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
@@ -513,7 +513,7 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
                 m_textEdit->setPlaceholderText("");
             } else if (pEvent->type() == QEvent::FocusOut) {
                 //设置编辑框默认占位符
-                m_textEdit->setPlaceholderText(tr("New Schedule"));
+                m_textEdit->setPlaceholderText(tr("New event"));
             }
         }
     }

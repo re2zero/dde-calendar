@@ -480,10 +480,10 @@ void CGraphicsView::slotDeleteItem()
     ScheduleDtailInfo info = m_currentItem->getData();
     if (info.rpeat == 0) {
         CSchceduleCtrlDlg msgBox(this);
-        msgBox.setText(tr("You are deleted schedule"));
-        msgBox.setInformativeText(tr("Are you sure you want to delete this schedule?"));
+        msgBox.setText(tr("You are deleting an event."));
+        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
         DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-        DPushButton *yesButton = msgBox.addPushButton(tr("Delete Schedule"));
+        DPushButton *yesButton = msgBox.addPushButton(tr("Delete"), 1);
         msgBox.updatesize();
         DPalette pa = yesButton->palette();
         if (themetype == 0 || themetype == 1) {
@@ -497,6 +497,7 @@ void CGraphicsView::slotDeleteItem()
         msgBox.exec();
 
         if (msgBox.clickButton() == noButton) {
+            emit signalViewtransparentFrame(0);
             return;
         } else if (msgBox.clickButton() == yesButton) {
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
@@ -504,11 +505,11 @@ void CGraphicsView::slotDeleteItem()
     } else {
         if (info.RecurID == 0) {
             CSchceduleCtrlDlg msgBox(this);
-            msgBox.setText(tr("You are deleted schedule"));
-            msgBox.setInformativeText(tr("You want to delete all repeat of the schedule, or just delete the selected repeat?"));
+            msgBox.setText(tr("You are deleting an event."));
+            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
             DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-            DPushButton *yesallbutton = msgBox.addPushButton(tr("All Deleted"));
-            DPushButton *yesButton = msgBox.addPushButton(tr("Just Delete Schedule"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
             msgBox.updatesize();
             DPalette pa = yesButton->palette();
             if (themetype == 0 || themetype == 1) {
@@ -524,6 +525,7 @@ void CGraphicsView::slotDeleteItem()
             msgBox.exec();
 
             if (msgBox.clickButton() == noButton) {
+                emit signalViewtransparentFrame(0);
                 return;
             } else if (msgBox.clickButton() == yesallbutton) {
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
@@ -536,11 +538,11 @@ void CGraphicsView::slotDeleteItem()
             }
         } else {
             CSchceduleCtrlDlg msgBox(this);
-            msgBox.setText(tr("You are deleted schedule"));
-            msgBox.setInformativeText(tr("You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?"));
+            msgBox.setText(tr("You are deleting an event."));
+            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
             DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete all schedule in the future"));
-            DPushButton *yesButton = msgBox.addPushButton(tr("Just Delete Schedule"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All Future Events"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
             msgBox.updatesize();
             DPalette pa = yesButton->palette();
             if (themetype == 0 || themetype == 1) {
@@ -556,12 +558,13 @@ void CGraphicsView::slotDeleteItem()
             msgBox.exec();
 
             if (msgBox.clickButton() == noButton) {
+                emit signalViewtransparentFrame(0);
                 return;
             } else if (msgBox.clickButton() == yesallbutton) {
                 ScheduleDtailInfo newschedule;
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
                 newschedule.enddata.type = 2;
-                newschedule.enddata.date = info.beginDateTime;
+                newschedule.enddata.date = info.beginDateTime.addDays(-1);
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
 
             } else if (msgBox.clickButton() == yesButton) {

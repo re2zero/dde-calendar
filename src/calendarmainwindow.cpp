@@ -60,7 +60,7 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     initLunar();
     //setFixedSize(CalendarMWidth, CalendarMHeight);
     setMinimumSize(CalendarMWidth, CalendarMHeight);
-    setWindowTitle(tr("Deepin Calendar"));
+    setWindowTitle(tr("Calendar"));
     //setWindowFlag(Qt::WindowMaximizeButtonHint, false);
     new CalendarAdaptor(this);
     resize(CalendarMWidth, CalendarMHeight);
