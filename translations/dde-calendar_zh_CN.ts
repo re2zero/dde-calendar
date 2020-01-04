@@ -151,8 +151,9 @@
 <context>
     <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>There&apos;s %1 event</source>
-        <translation>还有 %1 项</translation>
+        <source>%1 more</source>
+        <translation>还有%1项
+</translation>
     </message>
 </context>
 <context>
@@ -432,6 +433,10 @@
     <message>
         <source>New event</source>
         <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>End time must be greater than start time</source>
+        <translation>结束时间需晚于开始时间</translation>
     </message>
 </context>
 <context>

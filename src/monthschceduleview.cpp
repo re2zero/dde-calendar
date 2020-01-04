@@ -459,7 +459,7 @@ void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
 
-        QString str =  QString(tr("There's %1 event")).arg(m_num) + "...";
+        QString str =  QString(tr("%1 more")).arg(m_num) + "...";
         QFont tfont = m_font;
         QFontMetrics fm = painter.fontMetrics();
 
@@ -498,7 +498,7 @@ void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
 
         painter.setFont(m_font);
         painter.setPen(m_textcolor);
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignLeft, QString(tr("There's %1 event")).arg(m_num));
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight), Qt::AlignLeft, QString(tr("%1 more")).arg(m_num));
     }
 }
 

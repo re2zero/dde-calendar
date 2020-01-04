@@ -151,7 +151,7 @@
 <context>
     <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>There&apos;s %1 event</source>
+        <source>%1 more</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -431,6 +431,10 @@
     </message>
     <message>
         <source>New event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End time must be greater than start time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
