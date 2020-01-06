@@ -63,6 +63,7 @@ signals:
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     void signalCurrentDate(QDate date);
+    void signalsViewSelectDate(QDate date);
 public slots:
     void slotReturnTodayUpdate();
 public slots:

@@ -536,6 +536,7 @@ void Calendarmainwindow::initConnection()
     connect(m_monthWindow, &CMonthWindow::signalsViewSelectDate, this, &Calendarmainwindow::slotViewSelectDate);
     connect(m_monthWindow, &CMonthWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
     connect(m_weekWindow, &CWeekWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
+    connect(m_weekWindow, &CWeekWindow::signalsViewSelectDate, this, &Calendarmainwindow::slotViewSelectDate);
     connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
     connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);

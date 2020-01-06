@@ -303,6 +303,9 @@ bool CWeekHeadView::eventFilter(QObject *o, QEvent *e)
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
             //cellClicked(cell);
+        } else if (e->type() == QEvent::MouseButtonDblClick) {
+            const int pos = m_cellList.indexOf(cell);
+            emit signalsViewSelectDate(m_days[pos]);
         }
     }
 
