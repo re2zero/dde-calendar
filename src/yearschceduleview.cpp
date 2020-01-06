@@ -260,6 +260,26 @@ void CYearSchceduleView::setDtype(int type, int arrowheight)
 
 void CYearSchceduleView::updateDateShow()
 {
+    int sviewNum = 0;
+    if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty()) {
+        if (!m_soloDay.isEmpty()) {
+            if (m_vlistData.size() > 5) {
+                sviewNum = 5;
+                setFixedSize(240, 180);
+            } else {
+                sviewNum = m_vlistData.size();
+                setFixedSize(240, 45 + (sviewNum) * 29);
+            }
+        } else {
+            if (m_vlistData.size() > 6) {
+                sviewNum = 6;
+                setFixedSize(240, 180);
+            } else {
+                sviewNum = m_vlistData.size();
+                setFixedSize(240, 45 + (sviewNum - 1) * 29);
+            }
+        }
+    }
     update();
     return;
     //remove
@@ -276,18 +296,22 @@ void CYearSchceduleView::updateDateShow()
         info.allday = true;
         createItemWidget(info, 1);
     }
-    int sviewNum = 0;
+    sviewNum = 0;
     if (!m_soloDay.isEmpty()) {
         if (m_vlistData.size() > 5) {
             sviewNum = 5;
+            setFixedSize(240, 180);
         } else {
             sviewNum = m_vlistData.size();
+            setFixedSize(95 + (sviewNum + 1) * 29, 180);
         }
     } else {
         if (m_vlistData.size() > 6) {
             sviewNum = 6;
+            setFixedSize(240, 180);
         } else {
             sviewNum = m_vlistData.size();
+            setFixedSize(95 + sviewNum * 29, 180);
         }
     }
 
