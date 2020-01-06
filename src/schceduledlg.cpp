@@ -96,7 +96,13 @@ void CSchceduleDlg::setDate(const QDateTime &date)
         minnutes = date.time().minute() / 15 * 15 + 15;
     }
     if (minnutes == 60) {
-        m_currentDate.setTime(QTime(hours + 1, 0));
+        if (hours + 1 == 24) {
+            m_currentDate.setTime(QTime(0, 0));
+            m_currentDate = m_currentDate.addDays(1);
+        } else {
+            m_currentDate.setTime(QTime(hours + 1, 0));
+        }
+
     } else {
         m_currentDate.setTime(QTime(hours, minnutes));
     }

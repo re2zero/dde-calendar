@@ -389,6 +389,19 @@ void CAllDaySchceduleWeekWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
         dlg.exec();
         emit signalViewtransparentFrame(0);
         disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
+    } else {
+        m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
+        emit signalViewtransparentFrame(1);
+        CSchceduleDlg dlg(1, this);
+        QDateTime tDatatime;
+        tDatatime.setDate(m_dianjiDay);
+        tDatatime.setTime(QTime::currentTime());
+        dlg.setDate(tDatatime);
+        dlg.setAllDay(true);
+        if (dlg.exec() == DDialog::Accepted) {
+            emit signalsEdit(this, 1);
+        }
+        emit signalViewtransparentFrame(0);
     }
 
 }
@@ -518,6 +531,7 @@ void CAllDaySchceduleWeekView::setsolarDayData(QVector<QString> vSolarInfo, QVec
 }
 void CAllDaySchceduleWeekView::slotCreate()
 {
+    emit signalViewtransparentFrame(1);
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_dianjiDay);
@@ -527,6 +541,7 @@ void CAllDaySchceduleWeekView::slotCreate()
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsUpdateShcedule(0);
     }
+    emit signalViewtransparentFrame(0);
 }
 
 void CAllDaySchceduleWeekView::contextMenuEvent(QContextMenuEvent *event)
@@ -537,6 +552,22 @@ void CAllDaySchceduleWeekView::contextMenuEvent(QContextMenuEvent *event)
     m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
     Context.exec(QCursor::pos());
     //}
+}
+
+void CAllDaySchceduleWeekView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
+    emit signalViewtransparentFrame(1);
+    CSchceduleDlg dlg(1, this);
+    QDateTime tDatatime;
+    tDatatime.setDate(m_dianjiDay);
+    tDatatime.setTime(QTime::currentTime());
+    dlg.setDate(tDatatime);
+    dlg.setAllDay(true);
+    if (dlg.exec() == DDialog::Accepted) {
+        emit signalsUpdateShcedule(0);
+    }
+    emit signalViewtransparentFrame(0);
 }
 
 void CAllDaySchceduleWeekView::updateDateShow()

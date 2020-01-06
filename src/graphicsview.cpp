@@ -446,6 +446,15 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     DGraphicsView::mouseDoubleClickEvent(event);
     CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
     if (item == NULL) {
+        QPointF senceposs = mapToScene(event->pos());
+        emit signalViewtransparentFrame(1);
+        CSchceduleDlg dlg(1, this);
+        QDateTime tDatatime = m_coorManage->getDate(senceposs);
+        dlg.setDate(tDatatime);
+        if (dlg.exec() == DDialog::Accepted) {
+            emit signalsUpdateShcedule(0);
+        }
+        emit signalViewtransparentFrame(0);
         return;
     }
     if (item->getType() == 1) {

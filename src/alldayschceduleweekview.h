@@ -72,6 +72,7 @@ private slots:
     void slotCreate();
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 private:
     void updateDateShow();
     CAllDaySchceduleWeekWidgetItem *createItemWidget(int index, bool average = false);

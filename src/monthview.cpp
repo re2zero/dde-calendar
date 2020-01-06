@@ -430,7 +430,15 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             Context.exec(QCursor::pos());
         } else if (e->type() == QEvent::MouseButtonDblClick) {
             const int pos = m_cellList.indexOf(cell);
-            emit signalsViewSelectDate(m_days[pos]);
+            QRect fillRect = QRect(0, 0, cell->width(), 36);
+            QPoint ss = QCursor::pos();
+            ss = cell->mapFromGlobal(QCursor::pos());
+            if (!fillRect.contains(ss)) {
+                m_createDate = m_days[pos];
+                slotCreate();
+            } else {
+                emit signalsViewSelectDate(m_days[pos]);
+            }
         } else if (e->type() == QEvent::MouseButtonRelease) {
             const int pos = m_cellList.indexOf(cell);
             m_cellfoceflag[pos] = false;
