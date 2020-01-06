@@ -256,18 +256,7 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
             cellClicked(cell);
-        } else if (e->type() == QEvent::MouseButtonDblClick) {
-            const int pos = m_cellList.indexOf(cell);
-            if (pos != -1) {
-                emit signaldoubleclickDate(m_days[pos]);
-            }
-        }
-        if (e->type() == QEvent::Leave) {
-            const int pos = m_cellList.indexOf(cell);
-            m_cellList[pos]->update();
-            m_Scheduleview->hide();
-            m_Scheduleview->clearData();
-        } else if (e->type() == QEvent::ToolTip) {
+
             const int pos = m_cellList.indexOf(cell);
             CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
             QString soloday;
@@ -307,6 +296,58 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             }
             m_Scheduleview->move(mw, mh);
             m_Scheduleview->show();
+        } else if (e->type() == QEvent::MouseButtonDblClick) {
+            const int pos = m_cellList.indexOf(cell);
+            if (pos != -1) {
+                emit signaldoubleclickDate(m_days[pos]);
+            }
+        }
+        if (e->type() == QEvent::Leave) {
+            const int pos = m_cellList.indexOf(cell);
+            m_cellList[pos]->update();
+            m_Scheduleview->hide();
+            m_Scheduleview->clearData();
+        } else if (e->type() == QEvent::ToolTip) {
+            //return ;
+//            const int pos = m_cellList.indexOf(cell);
+//            CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
+//            QString soloday;
+//            if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
+//                m_Scheduleview->setSoloDay(soloday);
+//            }
+//            QVector<ScheduleDateRangeInfo> out;
+//            if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[pos], m_days[pos], out)) {
+//                if (!out.isEmpty()) {
+//                    m_Scheduleview->setData(out[0].vData);
+//                }
+//            }
+//            int px = cell->x();
+//            int py = cell->y();
+//            //QPoint pos22 = mapToGlobal(QPoint(px, py));
+//            QPoint pos22 = QCursor::pos();
+//            QDesktopWidget *w = QApplication::desktop();
+//            QRect wR = w->screenGeometry(w->primaryScreen());
+
+//            m_Scheduleview->showWindow();
+//            int lfetorright = 0;
+//            int mw = pos22.x() + 10 + m_Scheduleview->width();
+//            if (mw > wR.width()) {
+//                mw = pos22.x() - 10 - m_Scheduleview->width();
+//                lfetorright = 1;
+//            } else {
+//                mw = pos22.x() + 10;
+//                lfetorright = 0;
+//            }
+//            int mh = pos22.y() + m_Scheduleview->height();
+//            if (mh > wR.height()) {
+//                mh = wR.height() - m_Scheduleview->height();
+//                m_Scheduleview->setDtype(lfetorright, pos22.y() - mh);
+//            } else {
+//                mh = pos22.y() - m_Scheduleview->height() / 2;
+//                m_Scheduleview->setDtype(lfetorright, m_Scheduleview->height() / 2);
+//            }
+//            m_Scheduleview->move(mw, mh);
+//            m_Scheduleview->show();
         }
     }
     if (cell == m_currentMouth) {
