@@ -43,9 +43,14 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
     if (type == 1) {
         m_titleLabel->setText(tr("New Event"));
         m_beginDateEdit->setDate(QDate::currentDate());
-        m_beginTimeEdit->setTime(QTime::currentTime());
+        int hours = QTime::currentTime().hour();
+        int minnutes = QTime::currentTime().minute() % 15;
+        if (minnutes != 0) {
+            minnutes = QTime::currentTime().minute() / 15 * 15 + 15;
+        }
+        m_beginTimeEdit->setTime(QTime(hours, minnutes));
         m_endDateEdit->setDate(QDate::currentDate());
-        m_endTimeEdit->setTime(QTime::currentTime().addSecs(3600));
+        m_endTimeEdit->setTime(QTime(hours, minnutes).addSecs(3600));
         //m_endRepeatDate->setMinimumDate(QDate::currentDate());
     } else {
         m_titleLabel->setText(tr("Edit Event"));
@@ -85,9 +90,20 @@ void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
 void CSchceduleDlg::setDate(const QDateTime &date)
 {
     m_currentDate = date;
-    m_beginDateEdit->setDate(date.date());
-    m_beginTimeEdit->setTime(date.time());
-    QDateTime datetime = date.addSecs(3600);
+    int hours = date.time().hour();
+    int minnutes = date.time().minute() % 15;
+    if (minnutes != 0) {
+        minnutes = date.time().minute() / 15 * 15 + 15;
+    }
+    if (minnutes == 60) {
+        m_currentDate.setTime(QTime(hours + 1, 0));
+    } else {
+        m_currentDate.setTime(QTime(hours, minnutes));
+    }
+
+    m_beginDateEdit->setDate(m_currentDate.date());
+    m_beginTimeEdit->setTime(m_currentDate.time());
+    QDateTime datetime = m_currentDate.addSecs(3600);
     m_endDateEdit->setDate(datetime.date());
     m_endTimeEdit->setTime(datetime.time());
     m_endRepeatDate->setMinimumDate(date.date());
