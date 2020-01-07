@@ -176,15 +176,52 @@ void CYearSchceduleView::setSoloDay(QString soloday)
 {
     m_soloDay = soloday;
 }
+
+bool YScheduleDateThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
+{
+    QDate bdate1 = s1.beginDateTime.date();
+    QDate edate1 = s1.endDateTime.date();
+    QDate bdate2 = s2.beginDateTime.date();
+    QDate edate2 = s2.endDateTime.date();
+    if (bdate1 != edate1 && bdate2 == edate2) {
+        return true;
+    } else if (bdate1 == edate1 && bdate2 != edate2) {
+        return false;
+    } else if (bdate1 != edate1 && bdate2 != edate2) {
+        return bdate1 < bdate2;
+    } else {
+        if (s1.beginDateTime == s2.beginDateTime) {
+            return s1.titleName < s2.titleName;
+        } else {
+            return s1.beginDateTime < s2.beginDateTime;
+        }
+    }
+}
 bool YScheduleDaysThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
-    return s1.beginDateTime.time() < s2.beginDateTime.time();
+    return s1.beginDateTime.date().daysTo(s1.endDateTime.date()) > s2.beginDateTime.date().daysTo(s2.endDateTime.date());
 }
 void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
 {
+    QVector<ScheduleDtailInfo> valldayListData, vDaylistdata;
+    for (int i = 0; i < vListData.count(); i++) {
+        if (vListData.at(i).allday) {
+            valldayListData.append(vListData.at(i));
+        } else {
+            vDaylistdata.append(vListData.at(i));
+        }
+    }
 
-    qSort(vListData.begin(), vListData.end(), YScheduleDaysThan);
-    m_vlistData = vListData;
+    qSort(valldayListData.begin(), valldayListData.end(), YScheduleDaysThan);
+    qSort(valldayListData.begin(), valldayListData.end(), YScheduleDateThan);
+    qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDaysThan);
+    qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDateThan);
+
+
+
+    m_vlistData.clear();
+    m_vlistData.append(valldayListData);
+    m_vlistData.append(vDaylistdata);
 }
 
 void CYearSchceduleView::clearData()
