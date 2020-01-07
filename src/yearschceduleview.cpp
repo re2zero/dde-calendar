@@ -204,7 +204,7 @@ void CYearSchceduleView::clearData()
 void CYearSchceduleView::showWindow()
 {
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
-        setFixedSize(130, 80);
+        setFixedSize(130, 45);
         //m_gradientItemList->setFixedSize(110, 60);
     } else {
         setFixedSize(240, 180);
