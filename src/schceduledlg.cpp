@@ -159,7 +159,7 @@ void CSchceduleDlg::slotOkBt()
         return;
     }
     if (beginDateTime > endDateTime) {
-        QMessageBox::information(this, (""), tr("End time must be greater than start time"));
+        QMessageBox::information(this, ("    "), tr("End time must be greater than start time"));
         return;
     }
     if (m_type == 1) scheduleDtailInfo.id = 0;
