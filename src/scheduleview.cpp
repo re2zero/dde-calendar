@@ -306,6 +306,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             for (int i = 0; i < m_vPos.size(); i++) {
                 if (m_vHours[i] == 0) continue;
                 if (m_vHours[i] == 24) continue;
+                if (m_topMagin - 8 + m_vPos[i] < m_topMagin) continue;
                 if (m_vHours[i] > 12) {
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("下午 ") + QString::number(m_vHours[i] - 12) + (" 时"));
                 } else {
@@ -320,6 +321,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             for (int i = 0; i < m_vPos.size() - 1; i++) {
                 if (m_vHours[i] == 0) continue;
                 if (m_vHours[i] == 24) continue;
+                if (m_topMagin - 8 + m_vPos[i] < m_topMagin) continue;
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight);
                 if (rr.intersects(tinrect) && m_viewType == 1 && m_beginDate == QDate::currentDate()) continue;
                 if (m_vHours[i] > 12) {
@@ -346,6 +348,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             for (int i = 0; i < m_vPos.size(); i++) {
                 if (m_vHours[i] == 0) continue;
                 if (m_vHours[i] == 24) continue;
+                if (m_topMagin - 8 + m_vPos[i] < m_topMagin) continue;
                 if (m_vHours[i] > 12) {
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
                 } else {
@@ -362,6 +365,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             for (int i = 0; i < m_vPos.size() - 1; i++) {
                 if (m_vHours[i] == 0) continue;
                 if (m_vHours[i] == 24) continue;
+                if (m_topMagin - 8 + m_vPos[i] < m_topMagin) continue;
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight);
                 if (rr.intersects(tinrect) && m_viewType == 1 && m_beginDate == QDate::currentDate()) continue;
                 if (m_vHours[i] > 12) {
@@ -376,7 +380,8 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
                 QString str = QTime::currentTime().toString("AP HH:mm");
-                painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight), Qt::AlignRight, str);
+                if (m_topMagin - 8 + m_vPos[m_vPos.count() - 1] >= m_topMagin)
+                    painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth, hourTextHeight), Qt::AlignRight, str);
                 painter.restore();
             }
         }
