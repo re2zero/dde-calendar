@@ -266,7 +266,7 @@ void CDayMonthView::setSearchFlag(bool flag)
 void CDayMonthView::setCurrentDate(const QDate date, int type)
 {
     qDebug() << "set current date " << date;
-
+    if (date.year() < 1900) return;
     if (date == m_currentDate) {
         return;
     }
@@ -686,11 +686,11 @@ void CDayMonthView::cellClicked(QWidget *cell)
 
     setSelectedCell(pos);
 
-    // my gift eggs
-    static int gift = 0;
-    if (m_days[pos] == QDate(1993, 7, 28))
-        if (++gift == 10)
-            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
+//    // my gift eggs
+//    static int gift = 0;
+//    if (m_days[pos] == QDate(1993, 7, 28))
+//        if (++gift == 10)
+//            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
 }
 
 void CDayMonthView::setSelectedCell(int index)
@@ -704,6 +704,7 @@ void CDayMonthView::setSelectedCell(int index)
     updateDate();
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
+    if (m_currentDate.year() < 1900) return;
     emit signalcurrentDateChanged(m_days[index]);
     emit dateSelected(m_days[index], getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
 }
@@ -839,8 +840,11 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
         emit signalcurrentDateChanged(m_currentDate);
         updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
     } else {
-        if (m_currentDate.year() > 1900) {
-            m_currentDate = m_currentDate.addDays(-1);
+        QDate t_curret = m_currentDate.addDays(-1);
+        if (t_curret.year() < 1900) return;
+        if (m_currentDate.year() >= 1900) {
+            //if (m_currentDate.year() == 1900 && m_currentDate.month() == 1) return;
+            m_currentDate = t_curret;
             if (m_currentDate == QDate::currentDate()) {
                 m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
             } else {
@@ -901,7 +905,8 @@ void CDayMonthView::paintEvent(QPaintEvent *e)
 }
 void CDayMonthView::slotprev()
 {
-    if (m_currentDate.year() > 1900) {
+    if (m_currentDate.year() == 1900 && m_currentDate.month() == 1) return;
+    if (m_currentDate.year() >= 1900) {
         m_currentDate = m_currentDate.addMonths(-1);
         if (m_currentDate == QDate::currentDate()) {
             m_today->setText(QCoreApplication::translate("today", "Today", "Today"));

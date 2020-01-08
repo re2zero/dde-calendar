@@ -136,7 +136,7 @@ void CWeekView::setsearchfalg(bool flag)
 }
 void CWeekView::slotprev()
 {
-    if (m_selectDate.year() > 1900) {
+    if (m_selectDate.year() >= 1900) {
         QDate date = m_selectDate.addDays(-6);
         setCurrentDate(date);
     } else {
@@ -164,6 +164,7 @@ void CWeekView::paintCell(QWidget *cell)
     const bool isSelectDay = m_days[pos].addDays(m_weekAddDay).weekNumber() == m_selectDate.addDays(m_weekAddDay).weekNumber();
 
 
+
     QPainter painter(cell);
     painter.save();
 
@@ -175,7 +176,7 @@ void CWeekView::paintCell(QWidget *cell)
     painter.setPen(Qt::SolidLine);
 
     const QString dayNum = QString::number(m_days[pos].addDays(3).weekNumber());
-
+    if (m_days[pos].year() < 1900 && dayNum != "1") return;
     if (isSelectDay) {
 #if 0
         QRect fillRect((cell->width() - 30) / 2, 3, 30, 30);
@@ -274,6 +275,8 @@ void CWeekView::setSelectedCell(int index)
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
     m_selectDate = m_days[index];
+    const QString dayNum = QString::number(m_days[index].addDays(3).weekNumber());
+    if (m_days[index].year() < 1900 && dayNum != "1") return;
     emit signalsSelectDate(m_days[index], m_days[index].addDays(m_weekAddDay));
 }
 

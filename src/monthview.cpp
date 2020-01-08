@@ -333,6 +333,8 @@ void CMonthView::setCurrentDate(const QDate date)
 {
     qDebug() << "set current date " << date;
 
+    if (date.year() < 1900) return;
+
     if (date == m_currentDate) {
         slotSchceduleUpdate();
         return;
@@ -433,12 +435,15 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             QRect fillRect = QRect(0, 0, cell->width(), 36);
             QPoint ss = QCursor::pos();
             ss = cell->mapFromGlobal(QCursor::pos());
-            if (!fillRect.contains(ss)) {
-                m_createDate = m_days[pos];
-                slotCreate();
-            } else {
-                emit signalsViewSelectDate(m_days[pos]);
+            if (m_days[pos].year() >= 1900) {
+                if (!fillRect.contains(ss)) {
+                    m_createDate = m_days[pos];
+                    slotCreate();
+                } else {
+                    emit signalsViewSelectDate(m_days[pos]);
+                }
             }
+
         } else if (e->type() == QEvent::MouseButtonRelease) {
             const int pos = m_cellList.indexOf(cell);
             m_cellfoceflag[pos] = false;
@@ -1183,11 +1188,11 @@ void CMonthView::cellClicked(QWidget *cell)
 
     setSelectedCell(pos);
 
-    // my gift eggs
-    static int gift = 0;
-    if (m_days[pos] == QDate(1993, 7, 28))
-        if (++gift == 10)
-            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
+//    // my gift eggs
+//    static int gift = 0;
+//    if (m_days[pos] == QDate(1993, 7, 28))
+//        if (++gift == 10)
+//            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
 }
 
 void CMonthView::setSelectedCell(int index)
@@ -1200,6 +1205,7 @@ void CMonthView::setSelectedCell(int index)
 
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
+    if (m_days[index].year() < 1900) return;
     emit signalcurrentLunarDateChanged(m_days[index], getCaLunarDayInfo(getDateIndex(m_days[index])), 0);
     emit dateSelected(m_days[index], getCaLunarDayInfo(index));
 }

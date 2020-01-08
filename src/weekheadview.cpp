@@ -443,6 +443,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     const bool isSelectedCell = isCurrentDay;
     int d = checkDay(pos - m_firstWeekDay);
 
+
     QPainter painter(cell);
     painter.setPen(Qt::NoPen);
     painter.setBrush(QBrush(m_backgroudColor));
@@ -482,7 +483,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
         painter.restore();
     }
 
-
+    //if (m_days[pos].year() < 1900) return;
     int bw = (cell->width() - 104) / 2;
     int bh = (cell->height() - 26) / 2;
 

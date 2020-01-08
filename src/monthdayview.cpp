@@ -194,6 +194,7 @@ void CMonthDayView::paintCell(QWidget *cell)
 
     const bool isSelectDay = m_days[pos].month() == m_selectDate.month();
 
+    if (m_days[pos].year() < 1900) return;
 
     QPainter painter(cell);
 
@@ -345,7 +346,7 @@ void CMonthDayView::setSelectedCell(int index, int type)
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
     m_selectDate = m_days[index];
-    if (type == 0)
+    if (type == 0 && m_days[index].year() > 1899)
         emit signalsSelectDate(m_days[index]);
 }
 

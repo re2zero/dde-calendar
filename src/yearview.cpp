@@ -561,6 +561,7 @@ void CYearView::setSelectedCell(int index)
     updateDate();
     //m_cellList.at(prevPos)->update();
     //m_cellList.at(index)->update();
+    if (m_days[index].year() < 1900) return;
     emit singanleActiveW(this);
     emit signalcurrentDateChanged(m_days[index]);
 }

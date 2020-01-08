@@ -362,6 +362,7 @@ void CMonthWindow::slideMonth(bool next)
     }
 #else
     if (next) {
+        if (m_currentdate.year() == 1900 && m_currentdate.month() == 1) return;
         m_currentdate = m_currentdate.addMonths(-1);
     } else {
         m_currentdate = m_currentdate.addMonths(1);

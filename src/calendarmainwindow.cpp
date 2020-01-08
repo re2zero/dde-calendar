@@ -888,6 +888,7 @@ void Calendarmainwindow::slotCurrentScheduleDate(QDate date)
 
 void Calendarmainwindow::slotViewSelectDate(QDate date)
 {
+    if (date.year() < 1900) return;
     viewWindow(4, QDateTime(date));
 }
 

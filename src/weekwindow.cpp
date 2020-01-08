@@ -405,8 +405,10 @@ void CWeekWindow::slotTransitSearchSchedule(int id)
 
 void CWeekWindow::slotprev()
 {
-    if (m_currentdate.year() > 1900) {
-        m_currentdate = m_currentdate.addDays(-7);
+    QDate tcurrent = m_currentdate.addDays(-7);
+    if (tcurrent.year() < 1900) return;
+    if (m_currentdate.year() >= 1900) {
+        m_currentdate = tcurrent;
         setDate(m_currentdate);
     } else {
         //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
@@ -475,11 +477,14 @@ void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLu
         }
         m_scheduleView->setDate(tvdate, tvStr);
         if (type == 1) {
+            int yearnum = vdate.at(0).year();
+            if (yearnum < 1900) yearnum = 1900;
             QLocale locale;
             if (locale.language() == QLocale::Chinese) {
-                m_YearLabel->setText(QString::number(vdate.at(0).year()) + tr("Y"));
+
+                m_YearLabel->setText(QString::number(yearnum) + tr("Y"));
             } else {
-                m_YearLabel->setText(QString::number(vdate.at(0).year()));
+                m_YearLabel->setText(QString::number(yearnum));
             }
             //m_YearLabel->setText(QString::number(vdate.at(0).year()) + tr("Y"));
             m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
