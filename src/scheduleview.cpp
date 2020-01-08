@@ -593,6 +593,79 @@ void CScheduleView::updateAllday(int id)
     qSort(vListData.begin(), vListData.end(), WScheduleDaysThan);
     qSort(vListData.begin(), vListData.end(), WScheduleDateThan);
     m_alldaylist->setDayData(vListData, 0);
+
+    QVector<MScheduleDateRangeInfo> vMDaySchedule;
+    for (int i = 0; i < vListData.count(); i++) {
+        QDate tbegindate = vListData.at(i).beginDateTime.date();
+        QDate tenddate = vListData.at(i).endDateTime.date();
+        if (tbegindate <  m_beginDate) tbegindate = m_beginDate;
+        if (tenddate > m_endDate) tenddate = m_endDate;
+        MScheduleDateRangeInfo info;
+        info.bdate = tbegindate;
+        info.edate = tenddate;
+        info.tData = vListData.at(i);
+        info.state = false;
+        vMDaySchedule.append(info);
+    }
+    QVector<QVector<int> > vCfillSchedule;
+    vCfillSchedule.resize(vListData.count());
+    int tNum = m_beginDate.daysTo(m_endDate) + 1;
+    for (int i = 0; i < vListData.count(); i++) {
+        vCfillSchedule[i].resize(tNum);
+        vCfillSchedule[i].fill(-1);
+    }
+    //首先填充跨天日程
+    for (int i = 0; i < vMDaySchedule.count(); i++) {
+        if (vMDaySchedule[i].state) continue;
+        int bindex = m_beginDate.daysTo(vMDaySchedule[i].bdate);
+        int eindex = m_beginDate.daysTo(vMDaySchedule[i].edate);
+        int c = -1;
+        for (int k = 0; k < vListData.count(); k++) {
+            int t = 0;
+            for (t = bindex; t <= eindex; t++) {
+                if (vCfillSchedule[k][t] != -1) {
+                    break;
+                }
+            }
+            if (t == eindex + 1) {
+                c = k;
+                break;
+            }
+        }
+        if (c == -1) continue;
+
+        bool flag = false;
+        for (int sd = bindex; sd <= eindex; sd++) {
+            if (vCfillSchedule[c][sd] != -1) continue;
+            vCfillSchedule[c][sd] = i;
+            flag = true;
+        }
+        if (flag)
+            vMDaySchedule[i].state = true;
+    }
+    QVector<QVector<ScheduleDtailInfo> > vResultData;
+    for (int i = 0; i < vListData.count(); i++) {
+        QVector<int> vId;
+        for (int j = 0; j < tNum; j++) {
+            if (vCfillSchedule[i][j] != -1) {
+                int k = 0;
+                for (; k < vId.count(); k++) {
+                    if (vId[k] == vCfillSchedule[i][j])
+                        break;
+                }
+                if (k == vId.count())
+                    vId.append(vCfillSchedule[i][j]);
+            }
+        }
+        QVector<ScheduleDtailInfo> tData;
+        for (int j = 0; j < vId.count(); j++) {
+            tData.append(vMDaySchedule[vId[j]].tData);
+        }
+        if (!tData.isEmpty())
+            vResultData.append(tData);
+    }
+
+    int cc = 0;
     // m_alldaylist->update();
 }
 

@@ -66,7 +66,8 @@ HEADERS += src/calendardbus.h \
     src/shortcut.h \
     src/todybutton.h \
     src/customframe.h \
-    src/yearschceduleview.h
+    src/yearschceduleview.h \
+    src/alldayeventview.h
 SOURCES += src/calendardbus.cpp \
            src/dbuscalendar_adaptor.cpp \
            src/infoview.cpp \
@@ -109,7 +110,8 @@ SOURCES += src/calendardbus.cpp \
     src/shortcut.cpp \
     src/todybutton.cpp \
     src/customframe.cpp \
-    src/yearschceduleview.cpp
+    src/yearschceduleview.cpp \
+    src/alldayeventview.cpp
 RESOURCES += src/resources.qrc
 #TRANSLATIONS += translations/dde-calendar.ts \
 #                translations/desktop/desktop_zh_CN.ts\
