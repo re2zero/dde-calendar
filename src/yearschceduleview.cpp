@@ -64,7 +64,7 @@ void CYearSchceduleItem::setTimeC(QColor tcolor, QFont font)
 void CYearSchceduleItem::setData( ScheduleDtailInfo vScheduleInfo)
 {
     m_ScheduleInfo = vScheduleInfo;
-    setToolTip(m_ScheduleInfo.titleName);
+    //setToolTip(m_ScheduleInfo.titleName);
     update();
 }
 

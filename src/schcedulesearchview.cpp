@@ -71,7 +71,7 @@ void CSchceduleSearchItem::setData( ScheduleDtailInfo vScheduleInfo, QDate date)
 {
     m_ScheduleInfo = vScheduleInfo;
     m_date = date;
-    setToolTip(m_ScheduleInfo.titleName);
+    //setToolTip(m_ScheduleInfo.titleName);
     update();
 }
 

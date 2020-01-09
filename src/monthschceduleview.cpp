@@ -96,7 +96,7 @@ void CMonthSchceduleWidgetItem::setTransparentB(bool t)
 void CMonthSchceduleWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
 {
     m_ScheduleInfo = vScheduleInfo;
-    setToolTip(m_ScheduleInfo.titleName);
+    //setToolTip(m_ScheduleInfo.titleName);
     update();
 }
 void CMonthSchceduleWidgetItem::slotEdit()
