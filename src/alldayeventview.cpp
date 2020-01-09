@@ -89,7 +89,11 @@ void CAllDayEventWidgetItem::slotCreate()
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_dianjiDay);
-    tDatatime.setTime(QTime::currentTime());
+    if (m_dianjiDay == QDate::currentDate()) {
+        tDatatime.setTime(QTime::currentTime());
+    } else {
+        tDatatime.setTime(QTime(8, 0));
+    }
     dlg.setDate(tDatatime);
     dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
@@ -516,7 +520,11 @@ void CAllDayEventWeekView::slotCreate()
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_dianjiDay);
-    tDatatime.setTime(QTime::currentTime());
+    if (m_dianjiDay == QDate::currentDate()) {
+        tDatatime.setTime(QTime::currentTime());
+    } else {
+        tDatatime.setTime(QTime(8, 0));
+    }
     dlg.setDate(tDatatime);
     dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
