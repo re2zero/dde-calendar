@@ -463,7 +463,7 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             const int pos = m_cellList.indexOf(cell);
             m_cellhoverflag[pos] = true;
             m_cellList[pos]->update();
-        } else if (e->type() == QEvent::ToolTip) {
+        } /*else if (e->type() == QEvent::ToolTip) {
             if (m_showState & ShowLunar) {
                 const int pos = m_cellList.indexOf(cell);
                 if (getShowSolarDayByDate(m_days[pos])) {
@@ -491,7 +491,7 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
                     }
                 }
             }
-        }
+        }*/
     }
 
     return false;

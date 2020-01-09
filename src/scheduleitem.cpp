@@ -50,7 +50,7 @@ CScheduleItem::~CScheduleItem()
 
 void CScheduleItem::setData( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype, int maxnum)
 {
-    if (m_type == 0) setToolTip(info.titleName);
+    // if (m_type == 0) setToolTip(info.titleName);
     m_scheduleInfo = info;
     m_color = info.type.color;
     m_index = index;
