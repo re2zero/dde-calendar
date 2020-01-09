@@ -108,6 +108,8 @@ private:
     int                      m_radius = 8;
     int                      m_borderframew = 0;
     CYearSchceduleView      *m_Scheduleview = nullptr;
+    bool                     m_selectFlag = false;
+    QDate                    m_selectDate;
 };
 
 #endif // YEARVIEW_H

@@ -255,9 +255,11 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
+            m_selectFlag = true;
             cellClicked(cell);
 
             const int pos = m_cellList.indexOf(cell);
+            m_selectDate = m_days[pos];
             CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
             QString soloday;
             if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
@@ -296,6 +298,13 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             }
             m_Scheduleview->move(mw, mh);
             m_Scheduleview->show();
+
+            cell->update();
+        } else if (e->type() == QEvent::MouseButtonRelease) {
+            const int pos = m_cellList.indexOf(cell);
+            m_selectFlag = false;
+            cell->update();
+
         } else if (e->type() == QEvent::MouseButtonDblClick) {
             const int pos = m_cellList.indexOf(cell);
             if (pos != -1) {
@@ -391,8 +400,16 @@ void CYearView::paintCell(QWidget *cell)
     const QRect rect(0, 0, cell->width(), cell->height());
 
     const int pos = m_cellList.indexOf(cell);
-    const bool isSelectedCell = pos == m_selectedCell;
+    // bool isSelectedCell = pos == m_selectedCell;
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate() && getCellDate(pos).month() == m_currentDate.month();
+    bool isSelectedCell  = false;
+    if (m_days[pos] == QDate::currentDate()) {
+        isSelectedCell = true;
+    } /*else if (m_selectFlag) {
+        if (m_days[pos] == m_selectDate) {
+            isSelectedCell = true;
+        }
+    }*/
 
     QPainter painter(cell);
     bool highflag = false;
@@ -543,11 +560,11 @@ void CYearView::cellClicked(QWidget *cell)
 
     setSelectedCell(pos);
 
-    // my gift eggs
-    static int gift = 0;
-    if (m_days[pos] == QDate(1993, 7, 28))
-        if (++gift == 10)
-            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
+//    // my gift eggs
+//    static int gift = 0;
+//    if (m_days[pos] == QDate(1993, 7, 28))
+//        if (++gift == 10)
+//            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
 }
 
 void CYearView::setSelectedCell(int index)
