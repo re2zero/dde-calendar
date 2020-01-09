@@ -664,7 +664,25 @@ void CScheduleView::updateAllday(int id)
         if (!tData.isEmpty())
             vResultData.append(tData);
     }
+    QVector<QString> vSolarday = m_alldaylist->getSolarDay();
+    int solarNum = 0;
+    if (!vSolarday.isEmpty()) solarNum = 1;
 
+    if (vListData.count() + solarNum < 2) {
+        m_topMagin =  31;
+    } else if ( vListData.count() + solarNum < 6) {
+        m_topMagin =  31 + (vListData.count() + solarNum - 1) * 23;
+    } else {
+        m_topMagin =  123;
+    }
+
+    m_graphicsView->setMargins(m_leftMagin, m_topMagin, 0, 0);
+    if (m_viewType == 0) {
+        m_alldaylist->setFixedHeight(m_topMagin - 8);
+    } else {
+        m_alldaylist->setFixedHeight(m_topMagin - 8);
+    }
+    update();
     int cc = 0;
     // m_alldaylist->update();
 }
