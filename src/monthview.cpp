@@ -502,7 +502,12 @@ void CMonthView::slotCreate()
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_createDate);
-    tDatatime.setTime(QTime::currentTime());
+    if (m_createDate == QDate::currentDate()) {
+        tDatatime.setTime(QTime::currentTime());
+    } else {
+        tDatatime.setTime(QTime(8, 0));
+    }
+    dlg.setAllDay(true);
     dlg.setDate(tDatatime);
     if (dlg.exec() == DDialog::Accepted) {
         slotSchceduleUpdate();
