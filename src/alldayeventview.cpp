@@ -51,6 +51,8 @@ CAllDayEventWidgetItem::CAllDayEventWidgetItem( QWidget *parent /*= nullptr*/, i
     m_createAction = new QAction(tr("New event"), this);
     connect(m_createAction, &QAction::triggered, this, &CAllDayEventWidgetItem::slotCreate);
     m_item = NULL;
+    setMouseTracking(true);
+    //setAttribute(Qt::WA_TransparentForMouseEvents);
 }
 
 void CAllDayEventWidgetItem::setData(QVector<ScheduleDtailInfo> &vScheduleInfo)
@@ -239,9 +241,7 @@ void CAllDayEventWidgetItem::paintEvent( QPaintEvent *e )
 void CAllDayEventWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {
     m_currentIndex = getEventByPos(event->pos());
-    if (m_currentIndex == -1) return;
-    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo[m_currentIndex].beginDateTime.date(), m_vScheduleInfo[m_currentIndex].endDateTime.date());
-    if (drawrect.contains(event->pos())) {
+    if (m_currentIndex != -1) {
         DMenu Context(this);
         Context.addAction(m_editAction);
         Context.addAction(m_deleteAction);
@@ -258,9 +258,7 @@ void CAllDayEventWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (m_editType == 0) return;
     m_currentIndex = getEventByPos(event->pos());
-    if (m_currentIndex == -1) return;
-    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo[m_currentIndex].beginDateTime.date(), m_vScheduleInfo[m_currentIndex].endDateTime.date());
-    if (drawrect.contains(event->pos())) {
+    if (m_currentIndex != -1) {
         emit signalViewtransparentFrame(1);
         CMySchceduleView dlg(this);
         dlg.setSchedules(m_vScheduleInfo[m_currentIndex]);
@@ -300,6 +298,16 @@ void CAllDayEventWidgetItem::mousePressEvent(QMouseEvent *event)
     }
 }
 
+void CAllDayEventWidgetItem::mouseMoveEvent(QMouseEvent *event)
+{
+    m_vHoverflag.fill(false);
+    m_currentIndex = getEventByPos(event->pos());
+    qDebug() << m_currentIndex;
+    if (m_currentIndex == -1) return;
+    m_vHoverflag[m_currentIndex] = true;
+    update();
+}
+
 void CAllDayEventWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
     m_currentIndex = getEventByPos(event->pos());
@@ -319,19 +327,17 @@ void CAllDayEventWidgetItem::focusOutEvent(QFocusEvent *event)
     update();
 }
 
-void CAllDayEventWidgetItem::enterEvent(QEvent *event)
-{
-    m_currentIndex = getEventByPos(mapFrom(this, QCursor::pos()));
-    if (m_currentIndex == -1) return;
-    m_vHoverflag[m_currentIndex] = true;
-    update();
-}
+//void CAllDayEventWidgetItem::enterEvent(QEvent *event)
+//{
+//    m_vHoverflag.fill(false);
+//    m_currentIndex = getEventByPos(mapFromGlobal(QCursor::pos()));
+//    if (m_currentIndex == -1) return;
+//    m_vHoverflag[m_currentIndex] = true;
+//}
 
 void CAllDayEventWidgetItem::leaveEvent(QEvent *event)
 {
-    m_currentIndex = getEventByPos(mapFrom(this, QCursor::pos()));
-    if (m_currentIndex == -1) return;
-    m_vHoverflag[m_currentIndex] = false;
+    m_vHoverflag.fill(false);
     update();
 }
 
