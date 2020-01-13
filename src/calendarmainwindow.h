@@ -67,6 +67,7 @@ private:
     DPushButton *createButon(QString name);
 protected:
     void resizeEvent(QResizeEvent *event);
+    void closeEvent(QCloseEvent *event);
 private slots:
     void slotstackWClicked(QAbstractButton *bt);
     void slotWUpdateShcedule(QMainWindow *w, int id = 0);

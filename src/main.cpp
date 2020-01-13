@@ -169,10 +169,10 @@ int main(int argc, char *argv[])
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerService("com.deepin.Calendar");
     dbus.registerObject("/com/deepin/Calendar", &ww);
-    ww.move(PrimaryRect().center() - ww.geometry().center());
     //ww.setDate(QDate::currentDate());
     ww.slotTheme(getThemeTypeSetting());
     ww.viewWindow(viewtype, QDateTime::currentDateTime());
+    //ww.move(PrimaryRect().center() - ww.geometry().center());
     ww.show();
 
     //QDBusConnection dbus = QDBusConnection::sessionBus();

@@ -42,6 +42,8 @@
 #include <QShortcut>
 #include "shortcut.h"
 #include "schcedulesearchview.h"
+#include <QDesktopWidget>
+#include <QApplication>
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -79,6 +81,16 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
 
     setTitlebarShadowEnabled(true);
     setFocusPolicy(Qt::ClickFocus);
+    QByteArray arrybyte = CConfigSettings::value("base.geometry").toByteArray();
+    bool isOk = false;
+    int state = CConfigSettings::value("base.state").toInt(&isOk);
+    if (!arrybyte.isEmpty() && isOk) {
+        restoreGeometry(arrybyte);
+        setWindowState(static_cast<Qt::WindowStates >(state));
+    } else {
+        QDesktopWidget *w = QApplication::desktop();
+        move(w->screenGeometry(w->primaryScreen()).center() - geometry().center());
+    }
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
@@ -505,6 +517,7 @@ void Calendarmainwindow::initUI()
     m_transparentFrame = new DFrame(this);
     m_transparentFrame->setAutoFillBackground(true);
     m_transparentFrame->hide();
+
 }
 
 void Calendarmainwindow::initConnection()
@@ -930,4 +943,9 @@ void Calendarmainwindow::slotCurrentDate(QDate date)
 {
     m_currentdate = date;
 }
-
+void Calendarmainwindow::closeEvent(QCloseEvent *event)
+{
+    CConfigSettings::setOption("base.geometry", saveGeometry());
+    CConfigSettings::setOption("base.state", int(windowState()));
+    QWidget::closeEvent(event);
+}
