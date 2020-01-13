@@ -103,6 +103,7 @@ private:
     int                   m_themetype  = 1;
     QColor m_highColor = "#0081FF";
     QColor m_highTextColor = "#FFFFFF";
+    QColor m_ceventColor = "#FB2525";
     QFont m_hightFont;
     QColor                   m_bnormalColor = "#FFFFFF";
     int                      m_radius = 8;
