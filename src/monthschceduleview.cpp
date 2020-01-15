@@ -597,22 +597,26 @@ bool MScheduleDaysThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRang
 }
 void CMonthSchceduleView::updateData()
 {
+    //保护数据防止越界
     if (m_data.count() != 42 || m_cNum < 1) return;
+    //开始结束时间
     QDate begindate = m_data.begin()->date;
     QDate enddate = m_data[m_data.count() - 1].date;
     m_beginDate = begindate;
     m_endDate  = enddate;
+    //存储临时日程数据
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
+    //处理跨天日程数据
     for (int i = 0; i < m_data.count(); i++) {
         const QVector<ScheduleDtailInfo> &vData = m_data.at(i).vData;
         for (int j = 0; j < vData.size(); j++) {
+            //获取日程开始和结束时间
             QDate tbegindate = vData.at(j).beginDateTime.date();
             QDate tenddate = vData.at(j).endDateTime.date();
-            //if (tbegindate == tenddate) continue;
+            //日程时间重新标定
             if (tbegindate <  begindate) tbegindate = begindate;
             if (tenddate > enddate) tenddate = enddate;
-            //if (tbegindate == tenddate) continue;
-
+            //日程信息
             MScheduleDateRangeInfo info;
             info.bdate = tbegindate;
             info.edate = tenddate;
