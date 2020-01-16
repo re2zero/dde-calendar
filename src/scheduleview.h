@@ -99,6 +99,8 @@ private:
     QColor                    m_timeColor = "#7D7D7D";
     QColor                    m_currenttimecolor = "#FB2525";
     int                       m_cuttrnttimetype = 0;
+
+    int                       m_space = 30;
 };
 
 #endif // SCHEDULEVIEW_H

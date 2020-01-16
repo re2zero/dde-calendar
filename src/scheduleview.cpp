@@ -18,6 +18,7 @@
  */
 #include "scheduleview.h"
 #include <QGridLayout>
+#include <QVBoxLayout>
 #include "graphicsview.h"
 #include "schedulecoormanage.h"
 #include "alldayschceduleweekview.h"
@@ -469,10 +470,11 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
 
 void CScheduleView::initUI()
 {
-    QGridLayout *layout = new QGridLayout;
+    QVBoxLayout *layout = new QVBoxLayout;
     layout->setSpacing(0);
     layout->setMargin(0);
     m_graphicsView = new CGraphicsView(0, m_viewType);
+    layout->setContentsMargins(0, m_space, 0, 0);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this, SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
     layout->addWidget(m_graphicsView);
     setLayout(layout);
@@ -480,6 +482,8 @@ void CScheduleView::initUI()
     m_alldaylist = new CAllDaySchceduleWeekView(this, 1);
     //m_alldaylist->setFixedSize(635, 99);
     m_alldaylist->move(72, 5);
+//    m_graphicsView->setStyleSheet("background-color: rgb(255, 255, 0);");
+
 }
 
 void CScheduleView::initConnection()
@@ -676,7 +680,7 @@ void CScheduleView::updateAllday(int id)
         m_topMagin =  123;
     }
 
-    m_graphicsView->setMargins(m_leftMagin, m_topMagin, 0, 0);
+    m_graphicsView->setMargins(m_leftMagin, m_topMagin - m_space, 0, 0);
     if (m_viewType == 0) {
         m_alldaylist->setFixedHeight(m_topMagin - 8);
     } else {

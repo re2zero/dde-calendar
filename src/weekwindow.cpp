@@ -197,7 +197,7 @@ void CWeekWindow::initUI()
     m_weekHeadView = new CWeekHeadView(this);
     m_scheduleView = new CScheduleView(this);
     //m_weekHeadView->setFixedWidth(840);
-    m_scheduleView->setviewMagin(73, 109, 0, 0);
+    m_scheduleView->setviewMagin(73, 109 + 30, 0, 0);
     m_scheduleView->setRange(763, 1032, QDate(2019, 8, 12), QDate(2019, 8, 18));
     //m_scheduleView->setFixedSize(838, 450);
 

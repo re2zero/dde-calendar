@@ -52,7 +52,7 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     m_TBFlag = true;
     m_margins = QMargins(0, 0, 0, 0);
 
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_graphicsScene = new QGraphicsScene(this);
     m_graphicsScene->setSceneRect(0, 0, width(), height());
