@@ -21,7 +21,7 @@
 #include <QVBoxLayout>
 #include "graphicsview.h"
 #include "schedulecoormanage.h"
-#include "alldayschceduleweekview.h"
+#include "alldayeventview.h"
 #include "scheduledatamanage.h"
 #include <DPalette>
 #include <QShortcut>
@@ -479,7 +479,7 @@ void CScheduleView::initUI()
     layout->addWidget(m_graphicsView);
     setLayout(layout);
     m_graphicsView->scrollBarValueChangedSlot();
-    m_alldaylist = new CAllDaySchceduleWeekView(this, 1);
+    m_alldaylist = new CAllDayEventWeekView(this, 1);
     //m_alldaylist->setFixedSize(635, 99);
     m_alldaylist->move(72, 5);
 //    m_graphicsView->setStyleSheet("background-color: rgb(255, 255, 0);");
@@ -490,12 +490,12 @@ void CScheduleView::initConnection()
 {
     connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     //connect(m_graphicsView, &CGraphicsView::signalsUpdateShcedule, this, &CScheduleView::signalsUpdateShcedule);
-    connect(m_alldaylist, &CAllDaySchceduleWeekView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
+    connect(m_alldaylist, &CAllDayEventWeekView::signalsUpdateShcedule, this, &CScheduleView::slotupdateSchedule);
     connect(m_graphicsView, &CGraphicsView::signalsitem, this, &CScheduleView::slotitem);
-    connect(m_alldaylist, &CAllDaySchceduleWeekView::signalsitem, this, &CScheduleView::slotitem);
+    connect(m_alldaylist, &CAllDayEventWeekView::signalsitem, this, &CScheduleView::slotitem);
     connect(m_graphicsView, &CGraphicsView::signalsCurrentScheduleDate, this, &CScheduleView::slotCurrentScheduleDate);
 
-    connect(m_alldaylist, &CAllDaySchceduleWeekView::signalViewtransparentFrame, this, &CScheduleView::signalViewtransparentFrame);
+    connect(m_alldaylist, &CAllDayEventWeekView::signalViewtransparentFrame, this, &CScheduleView::signalViewtransparentFrame);
     connect(m_graphicsView, &CGraphicsView::signalViewtransparentFrame, this, &CScheduleView::signalViewtransparentFrame);
 
 
@@ -596,7 +596,7 @@ void CScheduleView::updateAllday(int id)
     }
     qSort(vListData.begin(), vListData.end(), WScheduleDaysThan);
     qSort(vListData.begin(), vListData.end(), WScheduleDateThan);
-    m_alldaylist->setDayData(vListData, 0);
+    //m_alldaylist->setDayData(vListData, 0);
 
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
     for (int i = 0; i < vListData.count(); i++) {
@@ -686,8 +686,10 @@ void CScheduleView::updateAllday(int id)
     } else {
         m_alldaylist->setFixedHeight(m_topMagin - 8);
     }
+
+    m_alldaylist->setDayData(vResultData, 0);
     update();
-    int cc = 0;
+    m_alldaylist->update();
     // m_alldaylist->update();
 }
 
