@@ -21,5 +21,5 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  dde-api
-Description: Calendar software for Deepin OS
- Calendar for Deepin Desktop Environment.
+Description: Calendar software for  UOS
+ Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life.
