@@ -470,14 +470,14 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
 
 void CScheduleView::initUI()
 {
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->setSpacing(0);
-    layout->setMargin(0);
+    m_layout = new QVBoxLayout;
+    m_layout->setSpacing(0);
+    m_layout->setMargin(0);
     m_graphicsView = new CGraphicsView(0, m_viewType);
-    layout->setContentsMargins(0, m_space, 0, 0);
+    m_layout->setContentsMargins(0, m_space, 0, 0);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this, SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
-    layout->addWidget(m_graphicsView);
-    setLayout(layout);
+    m_layout->addWidget(m_graphicsView);
+    setLayout(m_layout);
     m_graphicsView->scrollBarValueChangedSlot();
     m_alldaylist = new CAllDayEventWeekView(this, 1);
     //m_alldaylist->setFixedSize(635, 99);
@@ -672,14 +672,17 @@ void CScheduleView::updateAllday(int id)
     int solarNum = 0;
     if (!vSolarday.isEmpty()) solarNum = 1;
 
-    if (vListData.count() + solarNum < 2) {
+    if (vResultData.count() + solarNum < 2) {
         m_topMagin =  31;
-    } else if ( vListData.count() + solarNum < 6) {
-        m_topMagin =  31 + (vListData.count() + solarNum - 1) * 23;
+        m_space = 30;
+    } else if ( vResultData.count() + solarNum < 6) {
+        m_topMagin =  31 + (vResultData.count() + solarNum - 1) * 23;
+        m_space = m_topMagin - 1;
     } else {
         m_topMagin =  123;
+        m_space = 122;
     }
-
+    m_layout->setContentsMargins(0, m_space, 0, 0);
     m_graphicsView->setMargins(m_leftMagin, m_topMagin - m_space, 0, 0);
     if (m_viewType == 0) {
         m_alldaylist->setFixedHeight(m_topMagin - 8);

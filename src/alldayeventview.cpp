@@ -489,7 +489,7 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype) : DLis
     connect(m_createAction, &QAction::triggered, this, &CAllDayEventWeekView::slotCreate);
     //setStyleSheet("background-color:transparent");
     setSelectionMode(QAbstractItemView::NoSelection);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setSelectionModel(nullptr);
 }

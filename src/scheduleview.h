@@ -33,6 +33,7 @@ typedef struct _tagScheduleclassificationInfo {
 
 class CGraphicsView;
 class CAllDayEventWeekView;
+class QVBoxLayout;
 class CScheduleView : public DFrame
 {
     Q_OBJECT
@@ -101,6 +102,7 @@ private:
     int                       m_cuttrnttimetype = 0;
 
     int                       m_space = 30;
+    QVBoxLayout              *m_layout;
 };
 
 #endif // SCHEDULEVIEW_H
