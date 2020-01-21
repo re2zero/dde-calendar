@@ -227,6 +227,11 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
             if (m_vlistData.size() > 4) {
                 QVector<ScheduleDtailInfo> vTlistData;
                 for (int i = 0; i < 3; i++) {
+                    if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
+                        if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
+                            m_vlistData[i].allday = true;
+                        }
+                    }
                     vTlistData.append(m_vlistData.at(i));
                 }
                 ScheduleDtailInfo info;
@@ -239,6 +244,11 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
             if (m_vlistData.size() > 5) {
                 QVector<ScheduleDtailInfo> vTlistData;
                 for (int i = 0; i < 4; i++) {
+                    if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
+                        if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
+                            m_vlistData[i].allday = true;
+                        }
+                    }
                     vTlistData.append(m_vlistData.at(i));
                 }
                 ScheduleDtailInfo info;
@@ -320,6 +330,11 @@ void CYearSchceduleView::setDtype(int type, int arrowheight)
     m_dtype = type;
     m_arrowheight = arrowheight;
     update();
+}
+
+void CYearSchceduleView::setCurrentDate(QDate cdate)
+{
+    m_currentDate = cdate;
 }
 
 void CYearSchceduleView::updateDateShow()
@@ -817,13 +832,14 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
             if (info.allday) {
                 str = tr("All Day");
             } else {
-                str = info.beginDateTime.time().toString("ap h") + ("时");
+                //str = info.beginDateTime.time().toString("ap h") + ("时");
+                str = info.beginDateTime.time().toString("hh:mm");
             }
         } else {
             if (info.allday) {
                 str = tr("All Day");
             } else {
-                str = info.beginDateTime.time().toString("ap h:mm");
+                str = info.beginDateTime.time().toString("hh:mm");
             }
         }
         QFontMetrics fm2 = painter.fontMetrics();

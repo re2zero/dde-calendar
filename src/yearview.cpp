@@ -131,6 +131,15 @@ void CYearView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo 
     }
 }
 
+void CYearView::updateInfoWIndow(bool flag)
+{
+    if (flag) {
+        m_Scheduleview->show();
+    } else {
+        m_Scheduleview->hide();
+    }
+}
+
 void CYearView::setFirstWeekday(int weekday)
 {
     m_firstWeekDay = weekday;
@@ -265,6 +274,7 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
             if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
                 m_Scheduleview->setSoloDay(soloday);
             }
+            m_Scheduleview->setCurrentDate(m_days[pos]);
             QVector<ScheduleDateRangeInfo> out;
             if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[pos], m_days[pos], out)) {
                 if (!out.isEmpty()) {

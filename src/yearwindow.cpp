@@ -584,6 +584,9 @@ void CYearWindow::resizeEvent(QResizeEvent *event)
 
 void CYearWindow::wheelEvent(QWheelEvent *event)
 {
+    for (int i = 0; i < 12; i++) {
+        m_monthViewList.at(i)->updateInfoWIndow(false);
+    }
     if (event->delta() < 0) {
         slotnext();
     } else {

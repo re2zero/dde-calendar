@@ -59,7 +59,7 @@ public slots:
     void setCurrentDate(const QDate date, int type = 0);
     void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
-
+    void updateInfoWIndow(bool flag);
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
