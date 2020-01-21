@@ -41,6 +41,7 @@ public:
     void setTheMe(int type = 0);
     void setDtype(int type, int arrowheight);
     void setCurrentDate(QDate cdate);
+    QDate getCurrentDate();
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info, int type = 0);

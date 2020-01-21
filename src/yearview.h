@@ -55,6 +55,8 @@ signals:
 
     void signaldoubleclickDate(QDate date);
     void signalselectMonth(QDate date);
+    void signalHideInfo();
+    void signalSelectInfo(bool flag);
 public slots:
     void setCurrentDate(const QDate date, int type = 0);
     void setCellSelectable(bool selectable);
@@ -73,6 +75,7 @@ private slots:
     void setSelectedCell(int index);
 protected:
     void resizeEvent(QResizeEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 protected:
     void paintEvent ( QPaintEvent *e);
 private:

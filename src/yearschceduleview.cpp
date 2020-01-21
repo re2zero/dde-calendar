@@ -337,6 +337,11 @@ void CYearSchceduleView::setCurrentDate(QDate cdate)
     m_currentDate = cdate;
 }
 
+QDate CYearSchceduleView::getCurrentDate()
+{
+    return  m_currentDate;
+}
+
 void CYearSchceduleView::updateDateShow()
 {
     int sviewNum = 0;

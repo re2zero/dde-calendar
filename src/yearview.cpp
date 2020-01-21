@@ -266,53 +266,64 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
         } else if (e->type() == QEvent::MouseButtonPress) {
             m_selectFlag = true;
             cellClicked(cell);
-
             const int pos = m_cellList.indexOf(cell);
             m_selectDate = m_days[pos];
-            CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
-            QString soloday;
-            if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
-                m_Scheduleview->setSoloDay(soloday);
-            }
-            m_Scheduleview->setCurrentDate(m_days[pos]);
-            QVector<ScheduleDateRangeInfo> out;
-            if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[pos], m_days[pos], out)) {
-                if (!out.isEmpty()) {
-                    m_Scheduleview->setData(out[0].vData);
+            if (1) {
+                emit signalHideInfo();
+                emit signalSelectInfo(true);
+                m_Scheduleview->hide();
+                m_Scheduleview->clearData();
+                CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
+                QString soloday;
+                if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
+                    m_Scheduleview->setSoloDay(soloday);
                 }
-            }
-            int px = cell->x();
-            int py = cell->y();
-            //QPoint pos22 = mapToGlobal(QPoint(px, py));
-            QPoint pos22 = QCursor::pos();
-            QDesktopWidget *w = QApplication::desktop();
-            QRect wR = w->screenGeometry(w->primaryScreen());
+                m_Scheduleview->setCurrentDate(m_days[pos]);
+                QVector<ScheduleDateRangeInfo> out;
+                if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[pos], m_days[pos], out)) {
+                    if (!out.isEmpty()) {
+                        m_Scheduleview->setData(out[0].vData);
+                    }
+                }
+                int px = cell->x();
+                int py = cell->y();
+                //QPoint pos22 = mapToGlobal(QPoint(px, py));
+                QPoint pos22 = QCursor::pos();
+                QDesktopWidget *w = QApplication::desktop();
+                QRect wR = w->screenGeometry(w->primaryScreen());
 
-            m_Scheduleview->showWindow();
-            int lfetorright = 0;
-            int mw = pos22.x() + 10 + m_Scheduleview->width();
-            if (mw > wR.width()) {
-                mw = pos22.x() - 10 - m_Scheduleview->width();
-                lfetorright = 1;
-            } else {
-                mw = pos22.x() + 10;
-                lfetorright = 0;
-            }
-            int mh = pos22.y() + m_Scheduleview->height();
-            if (mh > wR.height()) {
-                mh = wR.height() - m_Scheduleview->height();
-                m_Scheduleview->setDtype(lfetorright, pos22.y() - mh);
-            } else {
-                mh = pos22.y() - m_Scheduleview->height() / 2;
-                m_Scheduleview->setDtype(lfetorright, m_Scheduleview->height() / 2);
-            }
-            m_Scheduleview->move(mw, mh);
-            m_Scheduleview->show();
+                m_Scheduleview->showWindow();
+                int lfetorright = 0;
+                int mw = pos22.x() + 10 + m_Scheduleview->width();
+                if (mw > wR.width()) {
+                    mw = pos22.x() - 10 - m_Scheduleview->width();
+                    lfetorright = 1;
+                } else {
+                    mw = pos22.x() + 10;
+                    lfetorright = 0;
+                }
+                int mh = pos22.y() + m_Scheduleview->height();
+                if (mh > wR.height()) {
+                    mh = wR.height() - m_Scheduleview->height();
+                    m_Scheduleview->setDtype(lfetorright, pos22.y() - mh);
+                } else {
+                    mh = pos22.y() - m_Scheduleview->height() / 2;
+                    m_Scheduleview->setDtype(lfetorright, m_Scheduleview->height() / 2);
+                }
+                m_Scheduleview->move(mw, mh);
+                m_Scheduleview->show();
 
-            cell->update();
+
+                cell->update();
+            } else {
+                m_Scheduleview->show();
+
+            }
+
         } else if (e->type() == QEvent::MouseButtonRelease) {
             const int pos = m_cellList.indexOf(cell);
             m_selectFlag = false;
+            emit signalSelectInfo(m_selectFlag);
             cell->update();
 
         } else if (e->type() == QEvent::MouseButtonDblClick) {
@@ -324,8 +335,8 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
         if (e->type() == QEvent::Leave) {
             const int pos = m_cellList.indexOf(cell);
             m_cellList[pos]->update();
-            m_Scheduleview->hide();
-            m_Scheduleview->clearData();
+            // m_Scheduleview->hide();
+            // m_Scheduleview->clearData();
         } else if (e->type() == QEvent::ToolTip) {
             //return ;
 //            const int pos = m_cellList.indexOf(cell);
@@ -630,6 +641,15 @@ void CYearView::resizeEvent(QResizeEvent *event)
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
     }
     QFrame::resizeEvent(event);
+}
+
+void CYearView::mousePressEvent(QMouseEvent *event)
+{
+    if (m_selectFlag) return;
+    if (event->button() == Qt::LeftButton) {
+        emit signalHideInfo();
+    }
+    CustomFrame::mousePressEvent(event);
 }
 
 void CYearView::paintEvent(QPaintEvent *e)

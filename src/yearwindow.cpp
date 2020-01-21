@@ -54,6 +54,8 @@ CYearWindow::~CYearWindow()
         disconnect(m_monthViewList.at(i), &CYearView::signalcurrentDateChanged, this, &CYearWindow::slotcurrentDateChanged);
         disconnect(m_monthViewList.at(i), &CYearView::signaldoubleclickDate, this, &CYearWindow::signaldoubleclickDate);
         disconnect(m_monthViewList.at(i), &CYearView::signalselectMonth, this, &CYearWindow::signalselectMonth);
+        disconnect(m_monthViewList.at(i), &CYearView::signalHideInfo, this, &CYearWindow::slotHideInfo);
+        disconnect(m_monthViewList.at(i), &CYearView::signalSelectInfo, this, &CYearWindow::slotSelectInfo);
         delete  m_monthViewList.at(i);
     }
     m_monthViewList.clear();
@@ -67,6 +69,15 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
         }
     }
     return QMainWindow::eventFilter(watched, event);
+}
+
+void CYearWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (m_selectFlag) return;
+    if (event->button() == Qt::LeftButton) {
+        slotHideInfo();
+    }
+    QMainWindow::mousePressEvent(event);
 }
 
 void CYearWindow::setDate(QDate date)
@@ -236,6 +247,8 @@ void CYearWindow::initUI()
             connect(view, &CYearView::signalcurrentDateChanged, this, &CYearWindow::slotcurrentDateChanged);
             connect(view, &CYearView::signaldoubleclickDate, this, &CYearWindow::signaldoubleclickDate);
             connect(view, &CYearView::signalselectMonth, this, &CYearWindow::signalselectMonth);
+            connect(view, &CYearView::signalHideInfo, this, &CYearWindow::slotHideInfo);
+            connect(view, &CYearView::signalSelectInfo, this, &CYearWindow::slotSelectInfo);
             //view->setFixedSize(202, 159);
             gridLayout->addWidget(view, i, j);
             m_monthViewList.append(view);
@@ -419,6 +432,19 @@ void CYearWindow::slotReturnTodayUpdate()
 {
     setDate(QDate::currentDate());
 }
+
+void CYearWindow::slotHideInfo()
+{
+    for (int i = 0; i < 12; i++) {
+        m_monthViewList.at(i)->updateInfoWIndow(false);
+    }
+}
+
+void CYearWindow::slotSelectInfo(bool flag)
+{
+    m_selectFlag = flag;
+}
+
 
 void CYearWindow::slotActiveW(CYearView *w)
 {

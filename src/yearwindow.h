@@ -59,6 +59,8 @@ signals:
     void signalCurrentDate(QDate date);
 public slots:
     void slotReturnTodayUpdate();
+    void slotHideInfo();
+    void slotSelectInfo(bool flag);
 private slots:
     void slotActiveW(CYearView *w);
     void slotprev();
@@ -73,6 +75,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
     void wheelEvent(QWheelEvent *event);
     bool eventFilter(QObject *watched, QEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 private:
     const QString getLunar(QDate date);
     const CaLunarDayInfo getCaLunarDayInfo(QDate date);
@@ -97,6 +100,7 @@ private:
     QHBoxLayout *m_tmainLayout;
     QString           m_searchText;
     bool m_searchfalg = false;
+    bool                     m_selectFlag = false;
 };
 
 #endif // YEARWINDOW_H
