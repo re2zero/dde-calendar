@@ -697,6 +697,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     }
     break;
     }
+    m_yearwindow->slotHideInfo();
     CConfigSettings::setOption("base.view", index + 1);
 }
 
