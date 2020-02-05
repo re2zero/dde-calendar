@@ -83,6 +83,7 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     connect(m_timer, SIGNAL(timeout()), this, SLOT(scrollBarValueChangedSlot()));
     m_timer->start(60000);
 
+    connect(this->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChangedSlot()));
 }
 
 CGraphicsView::~CGraphicsView()
