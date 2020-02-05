@@ -230,7 +230,7 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
             m_graphicsView->setTime(QTime::currentTime());
         } else {
             if (data.isEmpty()) {
-                m_graphicsView->setTime(QTime(12, 0));
+                m_graphicsView->setTime(QTime(13, 0));
             } else {
                 QVector<ScheduleDtailInfo> scheduleInfolist = data.at(0).vData;
                 if (scheduleInfolist.isEmpty()) {
