@@ -506,3 +506,21 @@ bool CHuangliDayDataManage::getSoloDay(QDate date, QString &str)
     }
     return false;
 }
+
+QVector<bool> CHuangliDayDataManage::getDayFlag(QDate date)
+{
+    QVector<bool> vflag;
+    vflag.resize(42);
+    vflag.fill(false);
+    CaHuangLiMonthInfo out;
+    if (m_DBusInter->GetHuangLiMonthCalendar(date.year(), date.month(), true, out)) {
+        if (out.mCaLunarDayInfo.count() == 42) {
+            for (int i = 0; i < 42; i++) {
+                if (!out.mCaLunarDayInfo.at(i).mSolarFestival.isEmpty() || !out.mCaLunarDayInfo.at(i).mLunarFestival.isEmpty()) {
+                    vflag[i] = true;
+                }
+            }
+        }
+    }
+    return vflag;
+}

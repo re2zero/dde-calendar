@@ -234,7 +234,19 @@ void CYearView::setCurrentDate(const QDate date, int type)
     //QString monthName(int month, QLocale::FormatType type = LongFormat)
 
     //m_currentMouth->setText(QString::number(date.month()) + tr("Mon"));
+
     updateDate();
+    CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
+    m_vlineflag = tdataManage->getHuangliDayDataManage()->getDayFlag(m_currentDate);
+    QVector<ScheduleDateRangeInfo> out;
+    if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[0], m_days[41], out)) {
+        if (out.count() == 42)
+            for (int i = 0; i < 42; i++) {
+                if (!out.at(i).vData.isEmpty()) {
+                    m_vlineflag[i] = true;
+                }
+            }
+    }
     if (type == 1)
         setSelectedCell(getDateIndex(date));
     emit signalcurrentDateChanged(date);
@@ -565,18 +577,19 @@ void CYearView::paintCell(QWidget *cell)
         painter.setFont(m_dayNumFont);
 
         painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
-
-        if (0) {
-            painter.save();
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setRenderHint(QPainter::HighQualityAntialiasing);
-            painter.setRenderHint(QPainter::SmoothPixmapTransform);
-            QPen pen;
-            pen.setWidth(2);
-            pen.setColor(m_ceventColor);
-            painter.setPen(pen);
-            painter.drawLine(0, cell->height() - 3, cell->width(), cell->height() - 3);
-            painter.restore();
+        if (m_vlineflag.count() == 42) {
+            if (m_vlineflag[pos]) {
+                painter.save();
+                painter.setRenderHint(QPainter::Antialiasing);
+                painter.setRenderHint(QPainter::HighQualityAntialiasing);
+                painter.setRenderHint(QPainter::SmoothPixmapTransform);
+                QPen pen;
+                pen.setWidth(2);
+                pen.setColor(m_ceventColor);
+                painter.setPen(pen);
+                painter.drawLine(0, cell->height() - 3, cell->width(), cell->height() - 3);
+                painter.restore();
+            }
         }
 #endif
     }

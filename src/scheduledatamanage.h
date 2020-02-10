@@ -162,6 +162,8 @@ public:
     CHuangliDayDataManage();
     ~CHuangliDayDataManage();
     bool getSoloDay(QDate date, QString &str);
+    //获取节日状态
+    QVector<bool> getDayFlag(QDate date);
 private:
     CalendarDBus *m_DBusInter;
 };

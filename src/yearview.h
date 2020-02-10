@@ -114,6 +114,8 @@ private:
     CYearSchceduleView      *m_Scheduleview = nullptr;
     bool                     m_selectFlag = false;
     QDate                    m_selectDate;
+
+    QVector<bool>            m_vlineflag; //节假日和日程标识
 };
 
 #endif // YEARVIEW_H
