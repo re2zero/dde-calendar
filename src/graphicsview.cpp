@@ -156,7 +156,7 @@ void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, i
     item->setData(info, date, index, totalNum, viewtype, maxnum);
     //用于修改联动bug
     connect(item, &CScheduleItem::signalsHoverUpdateState, this, &CGraphicsView::slotHoverUpdateState);
-    //connect(item, &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
+    connect(item, &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
     m_vScheduleItem.append(item);
 
 }
