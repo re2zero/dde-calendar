@@ -37,7 +37,7 @@ class CYearView: public CustomFrame
     Q_PROPERTY(QColor topBorderColor MEMBER m_topBorderColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(bool cellSelectable READ cellSelectable WRITE setCellSelectable NOTIFY cellSelectableChanged)
 public:
-    explicit CYearView(QWidget *parent = 0);
+    explicit CYearView(QWidget *parent = nullptr);
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
     inline bool cellSelectable() const
@@ -62,22 +62,23 @@ public slots:
     void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
     void updateInfoWIndow(bool flag);
+    void slotupdateSchedule(const int id);
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
     const QDate getCellDate(int pos);
     void paintCell(QWidget *cell);
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
     void updateDate();
 
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void mousePressEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 protected:
-    void paintEvent ( QPaintEvent *e);
+    void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
 private:
     CustomFrame *m_currentMouth;
     QList<QWidget *> m_cellList;

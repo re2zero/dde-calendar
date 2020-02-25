@@ -39,8 +39,8 @@ class CYearWindow: public QMainWindow
 {
     Q_OBJECT
 public:
-    CYearWindow(QWidget *parent = 0);
-    ~CYearWindow();
+    CYearWindow(QWidget *parent = nullptr);
+    ~CYearWindow() Q_DECL_OVERRIDE;
     void setDate(QDate date);
     void initUI();
     void initConnection();
@@ -61,6 +61,7 @@ public slots:
     void slotReturnTodayUpdate();
     void slotHideInfo();
     void slotSelectInfo(bool flag);
+    void slotupdateSchedule(const int id);
 private slots:
     void slotActiveW(CYearView *w);
     void slotprev();
@@ -72,10 +73,10 @@ private slots:
     void slotsearchDateSelect(QDate date);
     void slotTransitSearchSchedule(int id = 0);
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    bool eventFilter(QObject *watched, QEvent *event);
-    void mousePressEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     const QString getLunar(QDate date);
     const CaLunarDayInfo getCaLunarDayInfo(QDate date);

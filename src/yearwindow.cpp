@@ -445,6 +445,11 @@ void CYearWindow::slotSelectInfo(bool flag)
     m_selectFlag = flag;
 }
 
+void CYearWindow::slotupdateSchedule(const int id)
+{
+    m_activeview->slotupdateSchedule(id);
+}
+
 
 void CYearWindow::slotActiveW(CYearView *w)
 {

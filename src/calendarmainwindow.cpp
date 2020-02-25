@@ -260,6 +260,7 @@ void Calendarmainwindow::updateHigh()
     case 0: {
         m_yearwindow->updateHigh();
     }
+    break;
     case 1: {
         m_monthWindow->updateHigh();
     }
@@ -815,6 +816,10 @@ void Calendarmainwindow::slotTransitSearchSchedule(int id)
         return;
     }
     switch (index) {
+    case 0: {
+        m_yearwindow->slotupdateSchedule(0);
+    }
+    break;
     case 1: {
         //m_monthWindow->slotReturnTodayUpdate();
         m_monthWindow->slotupdateSchedule(0);

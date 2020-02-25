@@ -140,6 +140,11 @@ void CYearView::updateInfoWIndow(bool flag)
     }
 }
 
+void CYearView::slotupdateSchedule(const int id)
+{
+    setCurrentDate(m_currentDate, id);
+}
+
 void CYearView::setFirstWeekday(int weekday)
 {
     m_firstWeekDay = weekday;
