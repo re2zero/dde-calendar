@@ -225,19 +225,19 @@ void CYearView::setCurrentDate(const QDate date, int type)
     // }
 
     m_currentDate = date;
+    CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
         m_currentMouth->setTextStr(m_monthList.at(date.month() - 1));
+        m_vlineflag = tdataManage->getHuangliDayDataManage()->getDayFlag(m_currentDate);
     } else {
         m_currentMouth->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
+        m_vlineflag.resize(42);
+        m_vlineflag.fill(false);
     }
-    //QString monthName(int month, QLocale::FormatType type = LongFormat)
-
-    //m_currentMouth->setText(QString::number(date.month()) + tr("Mon"));
 
     updateDate();
-    CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
-    m_vlineflag = tdataManage->getHuangliDayDataManage()->getDayFlag(m_currentDate);
+
     QVector<ScheduleDateRangeInfo> out;
     if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[0], m_days[41], out)) {
         if (out.count() == 42)
@@ -287,8 +287,11 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
                 m_Scheduleview->clearData();
                 CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
                 QString soloday;
-                if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
-                    m_Scheduleview->setSoloDay(soloday);
+                QLocale locale;
+                if (locale.language() == QLocale::Chinese) {
+                    if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
+                        m_Scheduleview->setSoloDay(soloday);
+                    }
                 }
                 m_Scheduleview->setCurrentDate(m_days[pos]);
                 QVector<ScheduleDateRangeInfo> out;
