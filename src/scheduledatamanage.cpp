@@ -427,9 +427,10 @@ void CScheduleDataCtrl::clearData()
 }
 
 CDataProcessThread::CDataProcessThread(CSchedulesDBus *_DataManage)
+    : m_DataManage(_DataManage)
+    , m_stopFlag(false)
 {
-    m_DataManage = _DataManage;
-    m_stopFlag = false;
+    Q_ASSERT(m_DataManage != nullptr);
 }
 
 CDataProcessThread::~CDataProcessThread()

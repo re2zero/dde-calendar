@@ -59,6 +59,9 @@ void CScheduleView::setviewMagin( int left, int top, int right, int bttom )
 
 void CScheduleView::setRange( int w, int h, QDate begin, QDate end )
 {
+    if (!(w > 0)) {
+        return;
+    }
     m_TotalDay = begin.daysTo(end) + 1;
     m_graphicsView->setRange(w, h, begin, end);
     m_alldaylist->setRange(w, 22, m_beginDate, m_endDate);
@@ -335,8 +338,8 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("上午 ") + QString::number(m_vHours[i]) + (" 时"));
                 }
             }
+            painter.restore();
             if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
-                painter.restore();
                 painter.save();
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
@@ -379,8 +382,8 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
                 }
             }
+            painter.restore();
             if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
-                painter.restore();
                 painter.save();
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);

@@ -820,8 +820,8 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
             t_painter.setPen(m_LRPen);
             for (int i = 0; i < m_vLRLarge.size() - 1; ++i)
                 t_painter.drawLine(QPoint(0, m_vLRLarge[i] - 1), QPoint(t_width, m_vLRLarge[i] - 1));
+            t_painter.restore();
             if (m_viewType == 1 && m_coorManage->getBegindate() == QDate::currentDate()) {
-                t_painter.restore();
                 t_painter.save();
                 QPen pen = m_LRPen;
                 pen.setColor(m_currenttimecolor);

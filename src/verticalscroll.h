@@ -27,9 +27,10 @@
 class VerticalScroll : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(int deviation WRITE setDeviation)
 public:
 
-    explicit VerticalScroll(QWidget *parent = 0);
+    explicit VerticalScroll(QWidget *parent = nullptr);
 
     //设置范围
     void setRange(double min, double max);
@@ -39,15 +40,15 @@ public:
     void setCurrValue(int value);
 
 protected:
-    void mousePressEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 
-    void mouseMoveEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 
-    void mouseReleaseEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 
-    void wheelEvent(QWheelEvent *);
+    void wheelEvent(QWheelEvent *) Q_DECL_OVERRIDE;
 
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
     //描绘数字
     void paintNum(QPainter &painter, int num, int deviation);
     //使选中的数字回到屏幕中间

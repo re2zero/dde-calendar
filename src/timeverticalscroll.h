@@ -28,9 +28,10 @@ DWIDGET_USE_NAMESPACE
 class CTimeVerticalScroll : public DWidget
 {
     Q_OBJECT
+    Q_PROPERTY(int deviation WRITE setDeviation)
 public:
 
-    explicit CTimeVerticalScroll(QWidget *parent = 0);
+    explicit CTimeVerticalScroll(QWidget *parent = nullptr);
 
     //设置范围
     void setRange(double min, double max);
@@ -41,15 +42,15 @@ public:
     void setmZeropadd(bool flag);
     void setPadingStr(QString str);
 protected:
-    void mousePressEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 
-    void mouseMoveEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 
-    void mouseReleaseEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 
-    void wheelEvent(QWheelEvent *);
+    void wheelEvent(QWheelEvent *) Q_DECL_OVERRIDE;
 
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
     //描绘数字
     void paintNum(QPainter &painter, int num, int deviation);
     //使选中的数字回到屏幕中间
@@ -58,7 +59,7 @@ protected:
     int readDeviation();
     //设置偏移量
     void setDeviation(int n);
-    void resizeEvent(QResizeEvent *e);
+    void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
 signals:
 
     void currentValueChanged(int value);
