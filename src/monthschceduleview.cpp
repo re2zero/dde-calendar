@@ -582,7 +582,11 @@ bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRang
     } else if (s1.bdate == s1.edate && s2.bdate != s2.edate) {
         return false;
     } else if (s1.bdate != s1.edate && s2.bdate != s2.edate) {
-        return s1.bdate < s2.bdate;
+        if (s1.tData.beginDateTime == s2.tData.beginDateTime) {
+            return s1.bdate.daysTo(s1.edate) > s2.bdate.daysTo(s2.edate);
+        } else {
+            return s1.bdate < s2.bdate;
+        }
     } else {
         if (s1.tData.beginDateTime == s2.tData.beginDateTime) {
             return s1.tData.titleName < s2.tData.titleName;
