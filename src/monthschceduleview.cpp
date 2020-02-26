@@ -582,7 +582,11 @@ bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRang
     } else if (s1.bdate == s1.edate && s2.bdate != s2.edate) {
         return false;
     } else if (s1.bdate != s1.edate && s2.bdate != s2.edate) {
-        return s1.bdate < s2.bdate;
+        if (s1.tData.beginDateTime == s2.tData.beginDateTime) {
+            return s1.bdate.daysTo(s1.edate) > s2.bdate.daysTo(s2.edate);
+        } else {
+            return s1.bdate < s2.bdate;
+        }
     } else {
         if (s1.tData.beginDateTime == s2.tData.beginDateTime) {
             return s1.tData.titleName < s2.tData.titleName;
@@ -699,7 +703,37 @@ void CMonthSchceduleView::updateData()
             vMDaySchedule[i].state = true;
 
     }
+    //补充填充日程
+    for (int i = 0; i < vMDaySchedule.count(); i++) {
+        if (vMDaySchedule[i].state) continue;
+        int bindex = begindate.daysTo(vMDaySchedule[i].bdate);
+        int eindex = begindate.daysTo(vMDaySchedule[i].edate);
+        int c = -1;
+        for (int k = 0; k < m_cNum; k++) {
+            int t = 0;
+            bool flag = false;
+            for (t = bindex; t <= eindex; t++) {
+                if (vCfillSchedule[k][t] == -1) {
+                    c = k;
+                    break;
+                }
+            }
+            if (c != -1) {
+                break;
+            }
+        }
+        if (c == -1) continue;
 
+        bool flag = false;
+        for (int sd = bindex; sd <= eindex; sd++) {
+            if (vCfillSchedule[c][sd] != -1) continue;
+            vCfillSchedule[c][sd] = i;
+            flag = true;
+        }
+        if (flag)
+            vMDaySchedule[i].state = true;
+
+    }
 #endif
 
 
