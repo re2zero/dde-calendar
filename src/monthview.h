@@ -64,7 +64,7 @@ public:
     void setTheMe(int type = 0);
     void updateHigh();
 public:
-    explicit CMonthView(QWidget *parent = 0);
+    explicit CMonthView(QWidget *parent = nullptr);
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
     inline bool cellSelectable() const
@@ -97,9 +97,9 @@ public slots:
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void focusOutEvent (QFocusEvent *event );
-    void focusInEvent (QFocusEvent *event );
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void focusOutEvent (QFocusEvent *event ) Q_DECL_OVERRIDE;
+    void focusInEvent (QFocusEvent *event )Q_DECL_OVERRIDE;
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
@@ -107,7 +107,7 @@ private:
     const QString getLunar(int pos);
     const CaLunarDayInfo getCaLunarDayInfo(int pos);
     void paintCell(QWidget *cell);
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
     void updateDate();
     void updateCurrentLunar(const CaLunarDayInfo &info);
     char getFestivalInfoByDate(const QDate &date);

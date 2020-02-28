@@ -33,7 +33,7 @@ class CGraphicsView : public DGraphicsView
 
 public:
     CGraphicsView(QWidget *parent, int viewType = 0);
-    ~CGraphicsView();
+    ~CGraphicsView() Q_DECL_OVERRIDE;
     void setMargins(int left, int top, int right, int bottom);
     QMargins getMargins()
     {
@@ -54,15 +54,15 @@ public:
     void  addSchduleItem(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
     void  deleteSchduleItem(CScheduleItem *item);
     void  clearSchdule();
-    /************************************************************************
-    Function:       onViewEvent()
-    Description:    执行父类事件
-    Input:          event 事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void onViewEvent(QEvent *event);
+//    /************************************************************************
+//    Function:       onViewEvent()
+//    Description:    执行父类事件
+//    Input:          event 事件
+//    Output:         无
+//    Return:         无
+//    Others:         无
+//    ************************************************************************/
+//    void onViewEvent(QEvent *event);
 
     /************************************************************************
     Function:       mousePressEvent()
@@ -72,7 +72,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       mouseReleaseEvent()
@@ -82,7 +82,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       mouseDoubleClickEvent()
@@ -92,7 +92,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void mouseDoubleClickEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       mouseMoveEvent()
@@ -102,7 +102,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void mouseMoveEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 #ifndef QT_NO_WHEELEVENT
     /************************************************************************
@@ -113,7 +113,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void wheelEvent(QWheelEvent *event);
+    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
 
     /************************************************************************
@@ -124,7 +124,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       keyReleaseEvent()
@@ -134,7 +134,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void keyReleaseEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       focusInEvent()
@@ -144,7 +144,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void focusInEvent(QFocusEvent *event);
+    void focusInEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       focusOutEvent()
@@ -154,7 +154,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void focusOutEvent(QFocusEvent *event);
+    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       enterEvent()
@@ -164,7 +164,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void enterEvent(QEvent *event);
+    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       leaveEvent()
@@ -174,7 +174,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void leaveEvent(QEvent *event);
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       contextMenuEvent()
@@ -184,7 +184,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void contextMenuEvent(QContextMenuEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       resizeEvent()
@@ -194,7 +194,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
     /************************************************************************
     Function:       setLargeScale()
@@ -238,7 +238,7 @@ public:
     void setFirstWeekday(int weekday);
     void setTime(QTime time);
 protected:
-    void paintEvent( QPaintEvent *event );
+    void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
 public slots:
     void scrollBarValueChangedSlot();
     void slotDoubleEvent(int type);

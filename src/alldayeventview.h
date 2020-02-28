@@ -91,7 +91,7 @@ private:
     CScheduleCoorManage                         *m_coorManage;
     QDate                                       m_dianjiDay;
     bool                                        m_LunarVisible;
-    CAllDayEventWidgetItem *m_currentitem = NULL;
+    CAllDayEventWidgetItem *m_currentitem = nullptr;
 };
 
 class CAllDayEventWidgetItem : public DPushButton
@@ -125,15 +125,15 @@ public slots:
     void slotDoubleEvent(int type = 0);
     void slotCreate();
 protected:
-    void paintEvent ( QPaintEvent *e);
-    void contextMenuEvent(QContextMenuEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent (QMouseEvent *event );
-    void focusOutEvent(QFocusEvent *event);
+    void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
+    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent (QMouseEvent *event ) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
     //void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
 private:
     void paintItem(int index);
 private:
@@ -166,11 +166,11 @@ public:
         m_coorManage = coor;
     }
 protected:
-    void paintEvent ( QPaintEvent *e);
-    void mousePressEvent(QMouseEvent *event);
-    void focusOutEvent(QFocusEvent *event);
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
+    void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
+    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
 private:
 
     QVector<QString>      m_vSolarDayInfo;

@@ -25,13 +25,13 @@
 #include <QPainterPath>
 #include "schedulestructs.h"
 class CScheduleCoorManage;
-class CScheduleItem : public QObject, public QGraphicsItem
+class CScheduleItem :  public QObject, public QGraphicsItem
 {
     Q_OBJECT
 
 public:
-    CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0, int type = 0);
-    ~CScheduleItem();
+    CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent = nullptr, QGraphicsScene *scene = nullptr, int type = 0);
+    ~CScheduleItem() Q_DECL_OVERRIDE;
     void setData(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype, int maxnum);
     int getType()
     {
@@ -69,8 +69,8 @@ public:
     Return:             边界矩形
     Others:             无
     *******************************************************************************/
-    QRectF boundingRect() const;
-    QPainterPath shape () const;
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    QPainterPath shape () const Q_DECL_OVERRIDE;
     void updateitem();
     void UpdateHoverState(int state);
     void UpdateSelectState(int state);
@@ -78,10 +78,10 @@ signals:
     void signalsHoverUpdateState(CScheduleItem *item, int state);
     void signalsSelectUpdateState(CScheduleItem *item, int state);
 protected:
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent ( QGraphicsSceneMouseEvent *event );
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent ( QGraphicsSceneMouseEvent *event ) Q_DECL_OVERRIDE;
     void focusOutEvent ( QFocusEvent *event );
 private:
     /*****************************************************************************
@@ -92,7 +92,7 @@ private:
     Return:             无
     Others:             无
     *******************************************************************************/
-    void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0 );
+    void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr );
     void splitText(QFont font, int w, int h, QString str, QStringList &liststr);
 private:
     ScheduleDtailInfo                     m_scheduleInfo;

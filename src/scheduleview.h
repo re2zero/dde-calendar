@@ -93,7 +93,7 @@ private:
     QDate                     m_endDate;
     int                       m_viewType = 0;
     int                       m_sMaxNum = 4;
-    void                      *m_currentShcedule = NULL;
+    void                      *m_currentShcedule = nullptr;
     QColor                    m_linecolor = Qt::lightGray;
     QColor                    m_weekColor = "#E6EEF2";
     QColor                    m_ALLDayColor = "#303030";

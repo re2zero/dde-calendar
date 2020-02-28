@@ -611,7 +611,7 @@ CAllDayEventWidgetItem *CAllDayEventWeekView::createItemWidget(int index, bool a
     if (m_type == 0) {
         gwi->setData(m_vlistData[index]);
         gwi->setFixedSize(width(), 22);
-        gwi->setItem(NULL);
+        gwi->setItem(nullptr);
     }
     connect(gwi, &CAllDayEventWidgetItem::signalsDelete, this, &CAllDayEventWeekView::slotdeleteitem);
     connect(gwi, &CAllDayEventWidgetItem::signalsEdit, this, &CAllDayEventWeekView::slotedititem);

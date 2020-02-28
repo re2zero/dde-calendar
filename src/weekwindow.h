@@ -43,8 +43,8 @@ class CWeekWindow: public QMainWindow
 {
     Q_OBJECT
 public:
-    CWeekWindow(QWidget *parent = 0);
-    ~CWeekWindow();
+    CWeekWindow(QWidget *parent = nullptr);
+    ~CWeekWindow() Q_DECL_OVERRIDE;
     void setDate(QDate date);
     void setFirstWeekday(int weekday);
     void setLunarVisible(bool state);
@@ -79,7 +79,7 @@ private slots:
     void slotcurrentDateChanged(QDate date);
     void slotsearchDateSelect(QDate date);
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private:
     CWeekHeadView     *m_weekHeadView; //周视图头
     DFrame *m_contentBackground = nullptr;

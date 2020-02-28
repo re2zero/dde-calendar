@@ -44,7 +44,7 @@ class CSchceduleDlg : public DDialog
 {
     Q_OBJECT
 public:
-    CSchceduleDlg(int type, QWidget *parent = 0);
+    CSchceduleDlg(int type, QWidget *parent = nullptr);
     void setData(const ScheduleInfo &info);
     void setData(const ScheduleDtailInfo &info);
     void setDate(const QDateTime &date);

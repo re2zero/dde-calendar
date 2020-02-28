@@ -517,9 +517,6 @@ void CWeekWindow::slotsearchDateSelect(QDate date)
 
 void CWeekWindow::resizeEvent(QResizeEvent *event)
 {
-    int  ww = width();
-    int hh = height();
-
     int sleftMagin = 0.093 * width() + 0.5;
     int stopMagin = 0.1797 * height() + 0.5;
 
@@ -530,12 +527,11 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
 
     int dw = width() * 0.4186 + 0.5;
     int dh = 36;
-    int space = (width() - dw) / 2 - 220;
+//    int space = (width() - dw) / 2 - 220;
 
-    int sw = (width() -  width() * 0.9802 + 0.5) / 2;
+//    int sw = (width() -  width() * 0.9802 + 0.5) / 2;
 
     int winframe = 10;
-    //m_mainhLayout->setContentsMargins(sw, 20, ww -  ww * 0.9917 + 0.5 - sw - 10, 10);
     m_mainhLayout->setContentsMargins(10, 20, 0, 10);
     if (m_searchfalg) {
 

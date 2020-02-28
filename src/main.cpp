@@ -154,13 +154,6 @@ int main(int argc, char *argv[])
     DGuiApplicationHelper::instance()->setPaletteType(getThemeTypeSetting());
 
     Calendarmainwindow ww;
-    QFile file(QApplication::applicationDirPath() + "/json.txt");;
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&file);
-        QString str = in.readAll();
-        file.close();
-        //ww.Invoke("CREATE", str);
-    }
     ExportedInterface einterface(&ww);
     einterface.registerAction("CREATE", "create a new schedule");
     einterface.registerAction("VIEW", "check a date on calendar");

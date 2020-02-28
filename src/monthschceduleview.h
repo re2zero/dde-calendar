@@ -70,7 +70,7 @@ private:
     int                                          m_leftMagin;
     int                                          m_topMagin;
     int                                          m_buttommagin;
-    CMonthSchceduleWidgetItem                   *m_currentitem = NULL;
+    CMonthSchceduleWidgetItem                   *m_currentitem = nullptr;
 };
 
 class CMonthSchceduleNumButton : public DPushButton
@@ -86,11 +86,11 @@ public:
     void setDate(QDate date)
     {
         m_date = date;
-    };
+    }
     void setData(int  num)
     {
         m_num = num;
-    };
+    }
 signals:
     void signalsCurrentScheduleDate(QDate date);
 protected:
@@ -115,7 +115,7 @@ class CMonthSchceduleWidgetItem : public DPushButton
 
 public:
     explicit CMonthSchceduleWidgetItem(QWidget *parent = nullptr, int edittype = 0);
-    ~CMonthSchceduleWidgetItem();
+    ~CMonthSchceduleWidgetItem() Q_DECL_OVERRIDE;
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos);
     void getColor(QColor &color1, QColor &color2, bool &GradientFlag);
@@ -139,14 +139,14 @@ public slots:
     void slotDoubleEvent(int type = 0);
     void slotPress();
 protected:
-    void paintEvent ( QPaintEvent *e);
-    void contextMenuEvent(QContextMenuEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent (QMouseEvent *event );
-    void focusOutEvent(QFocusEvent *event);
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
+    void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
+    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent (QMouseEvent *event ) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
+    void enterEvent(QEvent *event)Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;

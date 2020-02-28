@@ -185,7 +185,7 @@ void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
 void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
 {
     if (w != this) return;
-    m_currentShcedule = NULL;
+    m_currentShcedule = nullptr;
     m_graphicsView->clearSchdule();
     m_vListSchedule = data;
     for (int i = 0; i < m_TotalDay; i++) {
@@ -336,7 +336,9 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 if (m_vHours[i] == 24) continue;
                 if (m_topMagin - 8 + m_vPos[i] < m_topMagin) continue;
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight);
-                if (rr.intersects(tinrect) && m_viewType == 1 && m_beginDate == QDate::currentDate()) continue;
+                if (rr.intersects(tinrect) && m_viewType == 1 && m_beginDate == QDate::currentDate()) {
+                    continue;
+                }
                 if (m_vHours[i] > 12) {
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i], hourTextWidth, hourTextHeight), Qt::AlignRight, ("下午 ") + QString::number(m_vHours[i] - 12) + (" 时"));
                 } else {
@@ -476,12 +478,13 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     updateAllday(0);
 }
 
+
 void CScheduleView::initUI()
 {
     m_layout = new QVBoxLayout;
     m_layout->setSpacing(0);
     m_layout->setMargin(0);
-    m_graphicsView = new CGraphicsView(0, m_viewType);
+    m_graphicsView = new CGraphicsView(this, m_viewType);
     m_layout->setContentsMargins(0, m_space, 0, 0);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this, SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
     m_layout->addWidget(m_graphicsView);
@@ -533,7 +536,7 @@ void CScheduleView::slotitem(void *item)
 
 void CScheduleView::slotDeleteitem()
 {
-    if (m_currentShcedule == NULL) return;
+    if (m_currentShcedule == nullptr) return;
     if (m_currentShcedule == m_graphicsView) {
         m_graphicsView->slotDeleteItem();
     } else {
@@ -549,7 +552,7 @@ void CScheduleView::slotCurrentScheduleDate(QDate date)
 
 void CScheduleView::updateSchedule(int id)
 {
-    m_currentShcedule = NULL;
+    m_currentShcedule = nullptr;
     m_graphicsView->clearSchdule();
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     QDateTime bdate = QDateTime(m_beginDate);
@@ -692,6 +695,7 @@ void CScheduleView::updateAllday(int id)
     }
     m_layout->setContentsMargins(0, m_space, 0, 0);
     m_graphicsView->setMargins(m_leftMagin, m_topMagin - m_space, 0, 0);
+
     if (m_viewType == 0) {
         m_alldaylist->setFixedHeight(m_topMagin - 8);
     } else {

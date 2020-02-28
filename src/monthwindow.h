@@ -39,7 +39,7 @@ class CMonthWindow: public QMainWindow
 {
     Q_OBJECT
 public:
-    CMonthWindow(QWidget *parent = 0);
+    CMonthWindow(QWidget *parent = nullptr);
     ~CMonthWindow();
     void setFirstWeekday(int weekday);
     void setDate(QDate date);

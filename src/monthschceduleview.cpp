@@ -559,8 +559,8 @@ void CMonthSchceduleView::slotupdateItem(CMonthSchceduleWidgetItem *item)
     return;
     for (int i = 0; i < m_scheduleShowItem.count(); i++) {
         if (m_scheduleShowItem.at(i) == item) continue;
-        CMonthSchceduleWidgetItem *titem = dynamic_cast<CMonthSchceduleWidgetItem *>(m_scheduleShowItem.at(i));
-        if (titem != NULL) {
+        CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(m_scheduleShowItem.at(i));
+        if (titem != nullptr) {
             titem->setTransparentB(false);
         }
     }
@@ -568,9 +568,9 @@ void CMonthSchceduleView::slotupdateItem(CMonthSchceduleWidgetItem *item)
 
 void CMonthSchceduleView::slotDeleteItem()
 {
-    if (m_currentitem != NULL) {
-        CMonthSchceduleWidgetItem *titem = dynamic_cast<CMonthSchceduleWidgetItem *>(m_currentitem);
-        if (titem != NULL) {
+    if (m_currentitem != nullptr) {
+        CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(m_currentitem);
+        if (titem != nullptr) {
             titem->slotDelete();
         }
     }
@@ -674,11 +674,14 @@ void CMonthSchceduleView::updateData()
             vCfillSchedule[c][sd] = -1;
         }
     }
-    for (int i = 0; i < vMDaySchedule.count(); i++) {
+    for (int i = 0; i < vMDaySchedule.count(); ++i) {
         if (vMDaySchedule[i].state) continue;
         int bindex = begindate.daysTo(vMDaySchedule[i].bdate);
         int eindex = begindate.daysTo(vMDaySchedule[i].edate);
         int c = -1;
+//        if (i < m_cNum) {
+//            c = i;
+//        }
         for (int k = 0; k < m_cNum; k++) {
             int t = 0;
             for (t = bindex; t <= eindex; t++) {
@@ -691,7 +694,8 @@ void CMonthSchceduleView::updateData()
                 break;
             }
         }
-        if (c == -1) continue;
+        if (c == -1)
+            continue;
 
         bool flag = false;
         for (int sd = bindex; sd <= eindex; sd++) {
@@ -711,7 +715,6 @@ void CMonthSchceduleView::updateData()
         int c = -1;
         for (int k = 0; k < m_cNum; k++) {
             int t = 0;
-            bool flag = false;
             for (t = bindex; t <= eindex; t++) {
                 if (vCfillSchedule[k][t] == -1) {
                     c = k;
@@ -913,7 +916,7 @@ void CMonthSchceduleView::updateHigh()
 }
 void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule)
 {
-    m_currentitem = NULL;
+    m_currentitem = nullptr;
     for (int i = 0; i < m_scheduleShowItem.count(); i++) {
 
         m_scheduleShowItem[i]->deleteLater();

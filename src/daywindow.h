@@ -36,7 +36,7 @@ class CDayWindow: public QMainWindow
 {
     Q_OBJECT
 public:
-    CDayWindow(QWidget *parent = 0);
+    CDayWindow(QWidget *parent = nullptr);
     ~CDayWindow();
     void setDate(QDate date);
     void setSearchWFlag(bool flag);

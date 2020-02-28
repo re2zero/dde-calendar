@@ -151,8 +151,8 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate )
 
 void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
 {
-    m_currentItem = NULL;
-    CScheduleItem *item = new CScheduleItem(m_coorManage, 0, m_graphicsScene, type);
+    m_currentItem = nullptr;
+    CScheduleItem *item = new CScheduleItem(m_coorManage, nullptr, m_graphicsScene, type);
     item->setData(info, date, index, totalNum, viewtype, maxnum);
     //用于修改联动bug
     connect(item, &CScheduleItem::signalsHoverUpdateState, this, &CGraphicsView::slotHoverUpdateState);
@@ -172,7 +172,7 @@ void CGraphicsView::deleteSchduleItem( CScheduleItem *item )
             m_vScheduleItem.remove(i);
             m_graphicsScene->removeItem(item);
             delete m_vScheduleItem[i];
-            m_vScheduleItem[i] = NULL;
+            m_vScheduleItem[i] = nullptr;
             i--;
         }
     }
@@ -185,98 +185,98 @@ void CGraphicsView::clearSchdule()
         disconnect(m_vScheduleItem.at(i), &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
         m_graphicsScene->removeItem(m_vScheduleItem.at(i));
         delete m_vScheduleItem[i];
-        m_vScheduleItem[i] = NULL;
+        m_vScheduleItem[i] = nullptr;
     }
     m_vScheduleItem.clear();
     m_updateDflag = true;
 }
 
-/************************************************************************
-Function:       onViewEvent()
-Description:    执行父类事件
-Input:          event 事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::onViewEvent( QEvent *event )
-{
-    //防止为空
-    if (NULL == event)
-        return;
-    switch (event->type()) {
-    case QEvent::MouseButtonPress: {
-        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::mousePressEvent(t_event);
-    }
-    break;
-    case QEvent::MouseMove: {
-        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::mouseMoveEvent(t_event);
-    }
-    break;
-    case QEvent::MouseButtonRelease: {
-        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::mouseReleaseEvent(t_event);
-    }
-    break;
-    case QEvent::MouseButtonDblClick: {
-        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::mouseDoubleClickEvent(t_event);
-    }
-    break;
-    case QEvent::Wheel: {
-        QWheelEvent *t_event = dynamic_cast<QWheelEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::wheelEvent(t_event);
-    }
-    break;
-    case QEvent::KeyPress: {
-        QKeyEvent *t_event = dynamic_cast<QKeyEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::keyPressEvent(t_event);
-    }
-    break;
-    case QEvent::KeyRelease: {
-        QKeyEvent *t_event = dynamic_cast<QKeyEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::keyReleaseEvent(t_event);
-    }
-    break;
-    case QEvent::FocusIn: {
-        QFocusEvent *t_event = dynamic_cast<QFocusEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::focusInEvent(t_event);
-    }
-    break;
-    case QEvent::FocusOut: {
-        QFocusEvent *t_event = dynamic_cast<QFocusEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::focusOutEvent(t_event);
-    }
-    break;
-    case QEvent::Enter: {
-        QGraphicsView::enterEvent(event);
-    }
-    break;
-    case QEvent::Leave: {
-        QGraphicsView::leaveEvent(event);
-    }
-    break;
-    case QEvent::ContextMenu: {
-        QContextMenuEvent *t_event = dynamic_cast<QContextMenuEvent *>(event);
-        if (NULL != t_event)
-            QGraphicsView::contextMenuEvent(t_event);
-    }
-    break;
-    default:
-        break;
-    }
-}
+///************************************************************************
+//Function:       onViewEvent()
+//Description:    执行父类事件
+//Input:          event 事件
+//Output:         无
+//Return:         无
+//Others:         无
+//************************************************************************/
+//void CGraphicsView::onViewEvent( QEvent *event )
+//{
+//    //防止为空
+//    if (nullptr == event)
+//        return;
+//    switch (event->type()) {
+//    case QEvent::MouseButtonPress: {
+//        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::mousePressEvent(t_event);
+//    }
+//    break;
+//    case QEvent::MouseMove: {
+//        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::mouseMoveEvent(t_event);
+//    }
+//    break;
+//    case QEvent::MouseButtonRelease: {
+//        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::mouseReleaseEvent(t_event);
+//    }
+//    break;
+//    case QEvent::MouseButtonDblClick: {
+//        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::mouseDoubleClickEvent(t_event);
+//    }
+//    break;
+//    case QEvent::Wheel: {
+//        QWheelEvent *t_event = dynamic_cast<QWheelEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::wheelEvent(t_event);
+//    }
+//    break;
+//    case QEvent::KeyPress: {
+//        QKeyEvent *t_event = dynamic_cast<QKeyEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::keyPressEvent(t_event);
+//    }
+//    break;
+//    case QEvent::KeyRelease: {
+//        QKeyEvent *t_event = dynamic_cast<QKeyEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::keyReleaseEvent(t_event);
+//    }
+//    break;
+//    case QEvent::FocusIn: {
+//        QFocusEvent *t_event = dynamic_cast<QFocusEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::focusInEvent(t_event);
+//    }
+//    break;
+//    case QEvent::FocusOut: {
+//        QFocusEvent *t_event = dynamic_cast<QFocusEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::focusOutEvent(t_event);
+//    }
+//    break;
+//    case QEvent::Enter: {
+//        QGraphicsView::enterEvent(event);
+//    }
+//    break;
+//    case QEvent::Leave: {
+//        QGraphicsView::leaveEvent(event);
+//    }
+//    break;
+//    case QEvent::ContextMenu: {
+//        QContextMenuEvent *t_event = dynamic_cast<QContextMenuEvent *>(event);
+//        if (nullptr != t_event)
+//            QGraphicsView::contextMenuEvent(t_event);
+//    }
+//    break;
+//    default:
+//        break;
+//    }
+//}
 
 /************************************************************************
 Function:       mousePressEvent()
@@ -292,7 +292,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
 
     if (event->button() == Qt::RightButton) {
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
-        if (item == NULL) {
+        if (item == nullptr) {
             DMenu menu(this);
             menu.addAction(m_createAction);
             QAction *action_t = menu.exec(QCursor::pos());
@@ -428,7 +428,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
         }
     } else if (event->button() == Qt::LeftButton) {
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
-        if (item != NULL) {
+        if (item != nullptr) {
             m_currentItem = item;
             emit signalsitem(this);
         }
@@ -446,7 +446,7 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
 {
     DGraphicsView::mouseDoubleClickEvent(event);
     CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
-    if (item == NULL) {
+    if (item == nullptr) {
         QPointF senceposs = mapToScene(event->pos());
         emit signalViewtransparentFrame(1);
         CSchceduleDlg dlg(1, this);
@@ -470,7 +470,7 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     dlg.exec();
     emit signalViewtransparentFrame(0);
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
-    if (item == NULL) {
+    if (item == nullptr) {
         return;
     }
     if (!m_updateDflag)
@@ -485,7 +485,7 @@ void CGraphicsView::slotDoubleEvent(int type)
 void CGraphicsView::slotDeleteItem()
 {
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    if (m_currentItem == NULL) return;
+    if (m_currentItem == nullptr) return;
 
     ScheduleDtailInfo info = m_currentItem->getData();
     if (info.rpeat == 0) {
@@ -750,6 +750,8 @@ void CGraphicsView::resizeEvent( QResizeEvent *event )
 {
     scrollBarValueChangedSlot();
     QGraphicsView::resizeEvent(event);
+    viewport()->update();
+    update();
 }
 /************************************************************************
 Function:       setLargeScale()

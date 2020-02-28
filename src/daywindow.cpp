@@ -304,9 +304,6 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     }
     if (dw < 350) dw = 350;
     m_daymonthView->setFixedSize(dw, dh);
-    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 20, 0);
-    //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
-    //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
 }
 
 void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail, int type)
