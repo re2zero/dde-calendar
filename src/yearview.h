@@ -77,6 +77,8 @@ private slots:
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 protected:
     void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
 private:
@@ -117,6 +119,9 @@ private:
     QDate                    m_selectDate;
 
     QVector<bool>            m_vlineflag; //节假日和日程标识
+
+    QPoint move_point; //移动的距离
+    bool mouse_press = false; //鼠标按下
 };
 
 #endif // YEARVIEW_H

@@ -85,7 +85,8 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
             QWidget *cell = new QWidget;
             cell->setFixedSize(cellwidth, cellheight);
             cell->installEventFilter(this);
-            cell->setFocusPolicy(Qt::ClickFocus);
+            //cell->setFocusPolicy(Qt::ClickFocus);
+            cell->setFocusPolicy(Qt::NoFocus);
             m_gridLayout->addWidget(cell, r, c);
             m_cellList.append(cell);
         }
@@ -113,7 +114,7 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     m_monthList.append( "十二月");
     m_hightFont.setFamily("Helvetica");
     m_hightFont.setPixelSize(12);
-
+    setFocusPolicy(Qt::NoFocus);
     m_Scheduleview = new CYearSchceduleView(parent);
     //m_Scheduleview->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     //m_Scheduleview->setAttribute(Qt::WA_TranslucentBackground);
@@ -671,6 +672,24 @@ void CYearView::mousePressEvent(QMouseEvent *event)
         emit signalHideInfo();
     }
     CustomFrame::mousePressEvent(event);
+}
+
+void CYearView::mouseMoveEvent(QMouseEvent *event)
+{
+    if (mouse_press) {
+        //鼠标相对于屏幕的位置
+        QPoint move_pos = event->globalPos();
+
+        //移动主窗体位置
+        //this->move(move_point);
+    }
+    //CustomFrame::mouseMoveEvent(event);
+}
+
+void CYearView::mouseReleaseEvent(QMouseEvent *event)
+{
+    mouse_press = false;
+    CustomFrame::mouseReleaseEvent(event);
 }
 
 void CYearView::paintEvent(QPaintEvent *e)
