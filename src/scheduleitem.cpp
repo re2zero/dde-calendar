@@ -17,17 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scheduleitem.h"
-#include <QPainter>
-#include "schedulecoormanage.h"
-#include "scheduledatamanage.h"
+#include <QDebug>
 #include <QFontMetricsF>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include <QDebug>
-CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent, QGraphicsScene *scene, int type)
-    : QGraphicsItem(parent), m_coorManage(coor), m_type(type)
+#include <QPainter>
+#include "schedulecoormanage.h"
+#include "scheduledatamanage.h"
+CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent,
+                             QGraphicsScene *scene, int type)
+    : QGraphicsItem(parent)
+    , m_coorManage(coor)
+    , m_type(type)
 {
-
     setAcceptHoverEvents(true);
     setAcceptedMouseButtons(Qt::LeftButton);
     setFocus();
@@ -39,17 +41,15 @@ CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent, Q
     m_transparentcolor = "#000000";
     m_transparentcolor.setAlphaF(0.05);
     scene->addItem(this);
-    //setAcceptHoverEvents(true);
-    //setAcceptedMouseButtons(Qt::LeftButton);
-    //setAcceptTouchEvents(true);
+    // setAcceptHoverEvents(true);
+    // setAcceptedMouseButtons(Qt::LeftButton);
+    // setAcceptTouchEvents(true);
 }
 
-CScheduleItem::~CScheduleItem()
-{
+CScheduleItem::~CScheduleItem() {}
 
-}
-
-void CScheduleItem::setData( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype, int maxnum)
+void CScheduleItem::setData(const ScheduleDtailInfo &info, QDate date, int index, int totalNum,
+                            int viewtype, int maxnum)
 {
     // if (m_type == 0) setToolTip(info.titleName);
     m_scheduleInfo = info;
@@ -66,9 +66,12 @@ QRectF CScheduleItem::boundingRect() const
 {
     QRectF t_rect;
 
-    t_rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum, m_viewtype);
+    t_rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime,
+                                         m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum,
+                                         m_viewtype);
 
-    //t_rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum);
+    // t_rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime,
+    // m_scheduleInfo.endDateTime, m_index, m_totalNum);
 
     return t_rect;
 }
@@ -143,13 +146,15 @@ void CScheduleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void CScheduleItem::focusOutEvent(QFocusEvent *event)
 {
-    //m_highflag = false;
+    // m_highflag = false;
     update();
 }
 
-void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /*= 0 */)
+void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                          QWidget *widget /*= 0 */)
 {
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_scheduleInfo.type.ID);
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
+        m_scheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_scheduleInfo);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
@@ -164,7 +169,9 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     }
     painter->setBrush(bcolor);
     painter->setPen(Qt::NoPen);
-    QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime, m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum, m_viewtype);
+    QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime,
+                                             m_scheduleInfo.endDateTime, m_index, m_totalNum,
+                                             m_sMaxNum, m_viewtype);
     painter->drawRect(rect);
     if (m_hoverflag && !m_selectflag) {
         painter->save();
@@ -198,13 +205,14 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->drawLine(rect.topLeft(), rect.bottomLeft());
     painter->restore();
     int tmagin = 10;
-    if (m_totalNum > 1) tmagin = 5;
+    if (m_totalNum > 1)
+        tmagin = 5;
     if (m_type == 0) {
         int timeTextHight = 0;
         QFont font("SourceHanSansSC");
         font.setWeight(QFont::Normal);
-        //if (m_totalNum > 1) {
-        //font.setPixelSize(6);
+        // if (m_totalNum > 1) {
+        // font.setPixelSize(6);
         //} else {
         font.setPixelSize(12);
         //}
@@ -213,7 +221,8 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
             painter->setFont(font);
             painter->setPen(gdcolor.timeColor);
             QTime stime = m_scheduleInfo.beginDateTime.time();
-            QString str = stime.toString("ap HH:mm");
+            //            QString str = stime.toString("ap HH:mm");
+            QString str = stime.toString("ap hh:mm");
             QFontMetrics fontmetris(font);
             if (fontmetris.width(str) > rect.width() - 5) {
                 QString tstr;
@@ -230,30 +239,35 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
                         break;
                     }
                 }
-                painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, 20), Qt::AlignLeft, tstr);
+                painter->drawText(
+                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, 20),
+                    Qt::AlignLeft, tstr);
 
             } else {
-                painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, 20), Qt::AlignLeft, str);
-
+                painter->drawText(
+                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, 20),
+                    Qt::AlignLeft, str);
             }
             painter->restore();
 
         } else {
             timeTextHight = -20;
-//            rect.setWidth(20);
-//            qDebug() << rect;
-
+            //            rect.setWidth(20);
+            //            qDebug() << rect;
         }
-
 
         painter->save();
         font.setPixelSize(14);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
-        splitText(font, rect.width() - tmagin - 5, rect.height() - 20, m_scheduleInfo.titleName, liststr);
+        splitText(font, rect.width() - tmagin - 5, rect.height() - 20, m_scheduleInfo.titleName,
+                  liststr);
         for (int i = 0; i < liststr.count(); i++) {
-            painter->drawText(QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 20 + timeTextHight + i * 20, rect.width() - 2, 20), Qt::AlignLeft, liststr.at(i));
+            painter->drawText(
+                QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 20 + timeTextHight + i * 20,
+                      rect.width() - 2, 20),
+                Qt::AlignLeft, liststr.at(i));
         }
         painter->restore();
     } else {
@@ -275,14 +289,15 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     }
 }
 
-void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringList &liststr )
+void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList &liststr)
 {
-    if (str.isEmpty()) return;
+    if (str.isEmpty())
+        return;
     QFontMetrics fontmetris(font);
-    //int widthT = fontmetris.width(str);
+    // int widthT = fontmetris.width(str);
     int heightT = fontmetris.height();
-    //int singlecharw = widthT * 1.0 / str.count() + 1;
-    //int rcharcount = w * 1.0 / singlecharw;
+    // int singlecharw = widthT * 1.0 / str.count() + 1;
+    // int rcharcount = w * 1.0 / singlecharw;
 #if 0
     QStringList sslist = str.split("\n");
     QStringList tliststr;
@@ -334,7 +349,8 @@ void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringLis
         int widthT = fontmetris.width(tstr) + 5;
         if (widthT >= w) {
             tstr.chop(1);
-            if (tstr.isEmpty()) break;
+            if (tstr.isEmpty())
+                break;
             tliststr.append(tstr);
             tstr.clear();
             i--;
@@ -349,12 +365,12 @@ void CScheduleItem::splitText( QFont font, int w, int h, QString str, QStringLis
         }
     } else {
         for (int i = 0; i < tliststr.count(); i++) {
-            if ((i + 1)*heightT <= h) {
+            if ((i + 1) * heightT <= h) {
                 liststr.append(tliststr.at(i));
             } else {
                 if (i == 0) {
                     break;
-                    //liststr.append("...");
+                    // liststr.append("...");
                 } else {
                     tstr = liststr.at(i - 1);
                     tstr.chop(3);
