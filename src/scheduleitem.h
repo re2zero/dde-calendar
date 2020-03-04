@@ -92,7 +92,7 @@ private:
     Return:             无
     Others:             无
     *******************************************************************************/
-    void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr );
+    void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr )Q_DECL_OVERRIDE;
     void splitText(QFont font, int w, int h, QString str, QStringList &liststr);
 private:
     ScheduleDtailInfo                     m_scheduleInfo;
