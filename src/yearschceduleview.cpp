@@ -34,6 +34,10 @@
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
 DGUI_USE_NAMESPACE
+
+const int fontsize = 12;
+const QString fontfamily = QStringLiteral("SourceHanSansSC-Medium");
+
 CYearSchceduleItem::CYearSchceduleItem( QWidget *parent /*= nullptr*/ ): DLabel(parent)
 {
 
@@ -763,9 +767,9 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
     ScheduleDtailInfo &gd = info;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
 
-    QFont font("SourceHanSansSC");
+    QFont font(fontfamily);
     font.setWeight(QFont::Medium);
-    font.setPixelSize(14);
+    font.setPixelSize(fontsize);
     //gwi->setBackgroundColor(Qt::white);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
@@ -859,8 +863,8 @@ void CYearSchceduleView::paintItem()
     int labelwidth = width() - 40;
     int labelheight = 45;
 
-    QFont font("SourceHanSansSC-Normal");
-    font.setPixelSize(12);
+    QFont font(fontfamily);
+    font.setPixelSize(fontsize);
     QPainter painter(this);
     QRect fillRect = QRect(0, 0, labelwidth, labelheight);
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
