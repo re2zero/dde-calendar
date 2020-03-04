@@ -34,8 +34,8 @@ WeekIndicator::WeekIndicator(QWidget *parent) : DWidget(parent)
 void WeekIndicator::setList(int weekday)
 {
     QLayoutItem *child;
-    while ((child = m_mainLayout->takeAt(0)) != 0) {
-        if (child->widget() != 0) {
+    while ((child = m_mainLayout->takeAt(0)) != nullptr) {
+        if (child->widget() != nullptr) {
             delete child->widget();
         }
         delete child;

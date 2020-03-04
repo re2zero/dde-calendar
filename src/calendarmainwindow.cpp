@@ -582,7 +582,7 @@ void Calendarmainwindow::initLunar()
 
 void Calendarmainwindow::createview()
 {
-    m_yearwindow = new CYearWindow;
+    m_yearwindow = new CYearWindow(this);
     m_yearwindow->setDate(QDate::currentDate());
     m_stackWidget->addWidget(m_yearwindow);
 #if 1
@@ -626,6 +626,7 @@ DPushButton *Calendarmainwindow::createButon(QString name)
 void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
     m_contentBackground->setFixedWidth(0.2325 * width() + 0.5);
+    m_yearwindow->slotSetSchceduleHide();
     DMainWindow::resizeEvent(event);
 }
 
@@ -930,6 +931,7 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
     case 0: {
         m_yearwindow->setFocus();
     }
+    break;
     case 1: {
         m_monthWindow->setFocus();
     }
@@ -954,4 +956,10 @@ void Calendarmainwindow::closeEvent(QCloseEvent *event)
     CConfigSettings::setOption("base.geometry", saveGeometry());
     CConfigSettings::setOption("base.state", int(windowState()));
     QWidget::closeEvent(event);
+}
+
+void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)
+{
+    DMainWindow::mouseMoveEvent(event);
+    m_yearwindow->slotSetSchceduleHide();
 }

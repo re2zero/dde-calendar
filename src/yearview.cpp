@@ -37,7 +37,10 @@
 #include "yearschceduleview.h"
 #include <QDesktopWidget>
 #include <DApplication>
+
+#include <DArrowRectangle>
 DGUI_USE_NAMESPACE
+CYearSchceduleView      *CYearView::m_Scheduleview = nullptr;
 CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 {
     m_dayNumFont.setFamily("Helvetica");
@@ -82,7 +85,7 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     m_gridLayout->setVerticalSpacing(3);
     for (int r = 0; r != 6; ++r) {
         for (int c = 0; c != 7; ++c) {
-            QWidget *cell = new QWidget;
+            QWidget *cell = new QWidget(this);
             cell->setFixedSize(cellwidth, cellheight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
@@ -114,7 +117,12 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     m_hightFont.setFamily("Helvetica");
     m_hightFont.setPixelSize(12);
 
-    m_Scheduleview = new CYearSchceduleView(parent);
+    createYearSchceduleView(parent);
+    // m_Scheduleview = new CYearSchceduleView(this);
+
+
+//    static DArrowRectangle *arr = new DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWidget, parent);
+//    arr->setFixedSize(200, 100);
     //m_Scheduleview->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     //m_Scheduleview->setAttribute(Qt::WA_TranslucentBackground);
     //m_Scheduleview->setWindowFlags(m_Scheduleview->windowFlags()& Qt::WindowStaysOnTopHint);
@@ -221,6 +229,12 @@ void CYearView::updateHigh()
     }
 }
 
+void CYearView::SchceduleViewHide()
+{
+//    if(m_Scheduleview->)
+    m_Scheduleview->hide();
+}
+
 void CYearView::setCurrentDate(const QDate date, int type)
 {
     qDebug() << "set current date " << date;
@@ -305,10 +319,9 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
                         m_Scheduleview->setData(out[0].vData);
                     }
                 }
-                int px = cell->x();
-                int py = cell->y();
                 //QPoint pos22 = mapToGlobal(QPoint(px, py));
                 QPoint pos22 = QCursor::pos();
+
                 QDesktopWidget *w = QApplication::desktop();
                 QRect wR = w->screenGeometry(w->primaryScreen());
 
@@ -426,6 +439,14 @@ void CYearView::updateDate()
 
     //setSelectedCell(currentIndex);
     update();
+}
+
+void CYearView::createYearSchceduleView(QWidget *parent)
+{
+    if (m_Scheduleview == nullptr) {
+        m_Scheduleview = new CYearSchceduleView(parent);
+    }
+
 }
 const QString CYearView::getCellDayNum(int pos)
 {

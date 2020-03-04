@@ -47,6 +47,7 @@ public:
     void updateSelectState();
     void setTheMe(int type = 0);
     void updateHigh();
+    static void SchceduleViewHide();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalcurrentDateChanged(QDate date);
@@ -70,7 +71,7 @@ private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
     void updateDate();
-
+    void createYearSchceduleView(QWidget *parent = nullptr);
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
@@ -112,7 +113,7 @@ private:
     QColor                   m_bnormalColor = "#FFFFFF";
     int                      m_radius = 8;
     int                      m_borderframew = 0;
-    CYearSchceduleView      *m_Scheduleview = nullptr;
+    static CYearSchceduleView      *m_Scheduleview;
     bool                     m_selectFlag = false;
     QDate                    m_selectDate;
 

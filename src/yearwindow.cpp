@@ -100,7 +100,7 @@ void CYearWindow::setDate(QDate date)
 
 void CYearWindow::initUI()
 {
-    m_contentBackground = new DFrame();
+    m_contentBackground = new DFrame(this);
     //m_contentBackground->setObjectName("CalendarBackground");
     // m_contentBackground->setStyleSheet("QFrame#CalendarBackground { "
     //"background:white;"
@@ -166,7 +166,7 @@ void CYearWindow::initUI()
     //nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
     //m_nextButton->setPalette(nextvpa);
 
-    m_YearLabel = new QLabel();
+    m_YearLabel = new QLabel(this);
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
@@ -218,7 +218,7 @@ void CYearWindow::initUI()
     yeartitleLayout1->addWidget(m_YearLunarDayLabel, 0, Qt::AlignVCenter);
     yeartitleLayout1->addSpacing(10);
 
-    m_todayframe = new CustomFrame;
+    m_todayframe = new CustomFrame(this);
     m_todayframe->setContentsMargins(0, 0, 0, 0);
     m_todayframe->setRoundState(true, true, true, true);
     m_todayframe->setBColor(Qt::white);
@@ -240,7 +240,8 @@ void CYearWindow::initUI()
     gridLayout->setContentsMargins(0, 0, 0, 0);
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 4; j++) {
-            CYearView *view = new CYearView();
+            CYearView *view = new CYearView(this);
+
             //view->setCurrentDate(QDate(date.year(),i*j + j+1,1));
             connect(view, &CYearView::singanleActiveW, this, &CYearWindow::slotActiveW);
 
@@ -252,9 +253,10 @@ void CYearWindow::initUI()
             //view->setFixedSize(202, 159);
             gridLayout->addWidget(view, i, j);
             m_monthViewList.append(view);
+
         }
     }
-    m_gridWidget = new DFrame;
+    m_gridWidget = new DFrame(this);
     m_gridWidget->setLayout(gridLayout);
 
     m_gridWidget->setContentsMargins(0, 0, 0, 10);
@@ -265,6 +267,7 @@ void CYearWindow::initUI()
     hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addLayout(yeartitleLayout);
     hhLayout->addWidget(m_gridWidget);
+
 
     m_tmainLayout = new QHBoxLayout;
     m_tmainLayout->setMargin(0);
@@ -289,6 +292,7 @@ void CYearWindow::initUI()
 
     //menuBar()->hide();
     setCentralWidget(m_contentBackground);
+
 }
 
 void CYearWindow::initConnection()
@@ -427,6 +431,11 @@ void CYearWindow::slotTransitSearchSchedule(int id)
 {
     // m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
+}
+
+void CYearWindow::slotSetSchceduleHide()
+{
+    CYearView::SchceduleViewHide();
 }
 void CYearWindow::slotReturnTodayUpdate()
 {

@@ -62,6 +62,7 @@ public slots:
     void slotHideInfo();
     void slotSelectInfo(bool flag);
     void slotupdateSchedule(const int id);
+    void slotSetSchceduleHide();
 private slots:
     void slotActiveW(CYearView *w);
     void slotprev();
@@ -72,6 +73,7 @@ private slots:
 private slots:
     void slotsearchDateSelect(QDate date);
     void slotTransitSearchSchedule(int id = 0);
+
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;

@@ -22,7 +22,7 @@
 
 #include <QWidget>
 
-#include <dimagebutton.h>
+#include <DImageButton>
 
 DWIDGET_USE_NAMESPACE
 
@@ -32,7 +32,7 @@ class Spinner : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Spinner(QWidget *parent = 0);
+    explicit Spinner(QWidget *parent = nullptr);
 
     void setRange(int min, int max);
     int value() const;

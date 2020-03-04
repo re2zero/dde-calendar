@@ -33,7 +33,7 @@ class CSchceduleSearchView : public DWidget
 
 public:
     CSchceduleSearchView(QWidget *parent = nullptr);
-    ~CSchceduleSearchView();
+    ~CSchceduleSearchView() Q_DECL_OVERRIDE;
     void setTheMe(int type = 0);
     void clearSearch();
 signals:
@@ -46,7 +46,7 @@ public slots:
     void slotsetSearch(QString str);
     void slotSelectDate(QDate date);
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info, QDate date, int rtype);

@@ -427,7 +427,7 @@ void CSchceduleSearchView::clearSearch()
 
 void CSchceduleSearchView::updateDateShow()
 {
-    m_currentItem = NULL;
+    m_currentItem = nullptr;
     //remove
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);

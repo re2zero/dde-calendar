@@ -29,7 +29,7 @@ class WeekIndicator : public DWidget
 {
     Q_OBJECT
 public:
-    explicit WeekIndicator(QWidget *parent = 0);
+    explicit WeekIndicator(QWidget *parent = nullptr);
     void setList(int weekday);
 
 private:

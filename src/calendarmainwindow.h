@@ -66,8 +66,9 @@ private:
     void createview();
     DPushButton *createButon(QString name);
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void closeEvent(QCloseEvent *event);
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private slots:
     void slotstackWClicked(QAbstractButton *bt);
     void slotWUpdateShcedule(QMainWindow *w, int id = 0);
