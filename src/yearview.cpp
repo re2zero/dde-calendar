@@ -617,7 +617,11 @@ void CYearView::paintCell(QWidget *cell)
                 pen.setWidth(2);
                 pen.setColor(m_ceventColor);
                 painter.setPen(pen);
-                painter.drawLine(0, cell->height() - 3, cell->width(), cell->height() - 3);
+                painter.setBrush(QBrush(m_ceventColor));
+                painter.setPen(Qt::NoPen);
+                int r = 4;
+                painter.drawEllipse(cell->width() - r - 3, r + 2, r, r);
+//                painter.drawLine(0, cell->height() - 3, cell->width(), cell->height() - 3);
                 painter.restore();
             }
         }
