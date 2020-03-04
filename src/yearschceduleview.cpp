@@ -837,20 +837,19 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
         painter.setPen(m_btimecolor);
         painter.setFont(font);
         QLocale locale;
-        if (locale.language() == QLocale::Chinese) {
-            if (info.allday) {
-                str = tr("All Day");
-            } else {
-                //str = info.beginDateTime.time().toString("ap h") + ("时");
-                str = info.beginDateTime.time().toString("hh:mm");
-            }
+
+        if (info.allday) {
+            str = tr("All Day");
         } else {
-            if (info.allday) {
+            if (m_currentDate > info.beginDateTime.date() && m_currentDate < info.endDateTime.date()) {
                 str = tr("All Day");
             } else {
                 str = info.beginDateTime.time().toString("hh:mm");
+
             }
+
         }
+
         QFontMetrics fm2 = painter.fontMetrics();
         painter.drawText(QRect(width() - 70, bheight, 60, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
         painter.restore();
