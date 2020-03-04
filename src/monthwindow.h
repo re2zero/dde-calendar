@@ -52,7 +52,6 @@ public:
 public slots:
     void previousMonth();
     void nextMonth();
-    void slotTransitSearchSchedule(int id = 0);
     void slotsearchDateSelect(QDate date);
 protected:
     void wheelEvent(QWheelEvent *);

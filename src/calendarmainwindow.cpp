@@ -851,6 +851,7 @@ void Calendarmainwindow::slotsearchDateSelect(QDate date)
     case 0: {
         m_yearwindow->setDate(date);
     }
+    break;
     case 1: {
         m_monthWindow->setDate(date);
     }

@@ -94,6 +94,7 @@ public slots:
     void slotUpdateUI(int type);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
+    void slotdelete(int id);
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 protected:

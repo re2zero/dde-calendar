@@ -155,13 +155,6 @@ void CMonthWindow::nextMonth()
     slideMonth(true);
 }
 
-void CMonthWindow::slotTransitSearchSchedule(int id)
-{
-    m_monthView->slotSchceduleUpdate(id);
-    //m_schceduleSearchView->slotsetSearch(m_searchText);
-    emit signalsWUpdateShcedule(this, id);
-}
-
 void CMonthWindow::slotsearchDateSelect(QDate date)
 {
     setDate(date);

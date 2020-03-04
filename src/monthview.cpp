@@ -176,6 +176,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
         }
     }
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
+    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotdelete);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsCurrentScheduleDate, this, &CMonthView::signalsCurrentScheduleDate);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalUpdateUI, this, &CMonthView::slotUpdateUI);
@@ -233,7 +234,6 @@ void CMonthView::slotSchceduleUpdate(int id)
 {
     parentWidget()->setEnabled(false);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
-    emit signalsSchceduleUpdate(id);
 }
 
 void CMonthView::slotUpdateUI(int type)
@@ -258,6 +258,11 @@ void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo>
         }
     }
     parentWidget()->setEnabled(true);
+}
+
+void CMonthView::slotdelete(int id)
+{
+    emit signalsSchceduleUpdate(0);
 }
 
 void CMonthView::resizeEvent(QResizeEvent *event)
@@ -511,6 +516,7 @@ void CMonthView::slotCreate()
     dlg.setDate(tDatatime);
     if (dlg.exec() == DDialog::Accepted) {
         slotSchceduleUpdate();
+        emit signalsSchceduleUpdate(0);
     }
     emit signalViewtransparentFrame(0);
 }

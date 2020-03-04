@@ -82,7 +82,7 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent ( QGraphicsSceneMouseEvent *event ) Q_DECL_OVERRIDE;
-    void focusOutEvent ( QFocusEvent *event );
+    void focusOutEvent ( QFocusEvent *event ) Q_DECL_OVERRIDE;
 private:
     /*****************************************************************************
     Function:       paint()
