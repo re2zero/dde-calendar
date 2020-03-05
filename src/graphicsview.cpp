@@ -643,7 +643,7 @@ void CGraphicsView::wheelEvent( QWheelEvent *event )
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 
     scrollBarValueChangedSlot();
-    //DGraphicsView::wheelEvent(event);
+//    //DGraphicsView::wheelEvent(event);
 }
 #endif
 
@@ -851,7 +851,6 @@ void CGraphicsView::scrollBarValueChangedSlot()
     m_vTBLarge.clear();
     QPointF leftToprealPos = mapToScene(QPoint(0, 0));
     QPointF leftBttomrealPos = mapToScene(QPoint(0, viewHeight));
-    QPointF rightToprealPos = mapToScene(QPoint(viewWidth, 0));
 
     for (float i = m_dayInterval; i < scene()->width(); i = i + m_dayInterval) {
         m_vTBLarge.append(i);

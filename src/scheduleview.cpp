@@ -156,13 +156,13 @@ void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
         int i = 0;
         for (; i < info.count(); i++) {
             if ((schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
-                 schedulelist.at(k).beginDateTime <= info.at(i).enddate) ||
-                (schedulelist.at(k).endDateTime >= info.at(i).begindate &&
-                 schedulelist.at(k).endDateTime <= info.at(i).enddate) ||
-                (schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
-                 schedulelist.at(k).endDateTime <= info.at(i).enddate) ||
-                (schedulelist.at(k).beginDateTime <= info.at(i).begindate &&
-                 schedulelist.at(k).endDateTime >= info.at(i).enddate)) {
+                    schedulelist.at(k).beginDateTime <= info.at(i).enddate) ||
+                    (schedulelist.at(k).endDateTime >= info.at(i).begindate &&
+                     schedulelist.at(k).endDateTime <= info.at(i).enddate) ||
+                    (schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
+                     schedulelist.at(k).endDateTime <= info.at(i).enddate) ||
+                    (schedulelist.at(k).beginDateTime <= info.at(i).begindate &&
+                     schedulelist.at(k).endDateTime >= info.at(i).enddate)) {
                 break;
             }
         }
@@ -251,6 +251,8 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
                 if (scheduleInfolist.isEmpty()) {
                     m_graphicsView->setTime(QTime(13, 0));
                 } else {
+                    qSort(scheduleInfolist.begin(), scheduleInfolist.end()
+                          , MScheduleTimeThan);
                     QTime time = scheduleInfolist.at(0).beginDateTime.time();
                     if (scheduleInfolist.at(0).beginDateTime.date() != m_beginDate) {
                         time = QTime(0, 0);
@@ -358,7 +360,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                          hourTextWidth, hourTextHeight);
                 if (rr.intersects(tinrect) && m_viewType == 1 &&
-                    m_beginDate == QDate::currentDate()) {
+                        m_beginDate == QDate::currentDate()) {
                     continue;
                 }
                 if (m_vHours[i] > 12) {
@@ -430,7 +432,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                          hourTextWidth, hourTextHeight);
                 if (rr.intersects(tinrect) && m_viewType == 1 &&
-                    m_beginDate == QDate::currentDate())
+                        m_beginDate == QDate::currentDate())
                     continue;
                 if (m_vHours[i] > 12) {
                     painter.drawText(
@@ -637,7 +639,7 @@ void CScheduleView::updateSchedule(int id)
 bool WScheduleDateThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
     if (s1.beginDateTime.date() != s1.endDateTime.date() &&
-        s2.beginDateTime.date() == s2.endDateTime.date()) {
+            s2.beginDateTime.date() == s2.endDateTime.date()) {
         return true;
     } else if (s1.beginDateTime.date() == s1.endDateTime.date() &&
                s2.beginDateTime.date() != s2.endDateTime.date()) {
@@ -669,7 +671,7 @@ void CScheduleView::updateAllday(int id)
             int k = 0;
             for (; k < vListData.count(); k++) {
                 if (scheduleInfolist.at(m).id == vListData.at(k).id &&
-                    scheduleInfolist.at(m).RecurID == vListData.at(k).RecurID) {
+                        scheduleInfolist.at(m).RecurID == vListData.at(k).RecurID) {
                     break;
                 }
             }
