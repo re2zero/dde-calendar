@@ -841,13 +841,11 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
         if (info.allday) {
             str = tr("All Day");
         } else {
-            if (m_currentDate > info.beginDateTime.date() && m_currentDate < info.endDateTime.date()) {
+            if (m_currentDate > info.beginDateTime.date()) {
                 str = tr("All Day");
             } else {
                 str = info.beginDateTime.time().toString("hh:mm");
-
             }
-
         }
 
         QFontMetrics fm2 = painter.fontMetrics();
