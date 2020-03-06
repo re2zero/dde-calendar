@@ -60,8 +60,8 @@ void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
         return;
     }
     m_TotalDay = begin.daysTo(end) + 1;
-    m_graphicsView->setRange(w, h, begin, end);
-    m_alldaylist->setRange(w, 22, m_beginDate, m_endDate);
+    m_graphicsView->setRange(w, h, begin, end, m_rightmagin);
+    m_alldaylist->setRange(w, 22, m_beginDate, m_endDate, m_rightmagin);
     update();
 }
 
@@ -523,15 +523,15 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     if (m_viewType == 0) {
         m_sMaxNum = ((width() - m_leftMagin) / 7) / 27;
         m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate,
-                                 m_endDate);
+                                 m_endDate, 0);
         m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 5);
-        m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate);
+        m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate, 0);
         m_alldaylist->move(m_leftMagin - 2, 5);
     } else {
-        m_graphicsView->setRange(width() - m_leftMagin - m_rightmagin,
-                                 24 * (0.083 * height() + 0.5), m_beginDate, m_endDate);
-        m_alldaylist->setFixedSize(width() - m_leftMagin - m_rightmagin, m_topMagin - 10);
-        m_alldaylist->setRange(width() - m_leftMagin - m_rightmagin, 22, m_beginDate, m_endDate);
+        m_graphicsView->setRange(width() - m_leftMagin,
+                                 24 * (0.083 * height() + 0.5), m_beginDate, m_endDate, m_rightmagin);
+        m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
+        m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate, m_rightmagin);
         m_alldaylist->move(m_leftMagin - 2, 5);
     }
     update();

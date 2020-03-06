@@ -45,7 +45,7 @@ public:
     }
     void setTheMe(int type = 0);
     void updateHigh();
-    void setRange(int w, int h, QDate begindate, QDate enddate);
+    void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
 
     CScheduleCoorManage *getCoorManage()
     {
@@ -280,6 +280,7 @@ private:
     QMutex                        m_Mutex;
     int                       m_viewType = 0;
     bool                         m_updateDflag  = false;
+    int                             m_rightmagin = 0;
 };
 
 #endif // GRAPHICSVIEW_H

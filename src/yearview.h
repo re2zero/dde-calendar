@@ -88,6 +88,11 @@ private:
         Cellhover = 1,
         CellPress = 2
     };
+    struct CellColor {
+        QColor normalColor;
+        QColor hoverColor;
+        QColor pressColor;
+    };
     CustomFrame *m_currentMouth;
     QList<QWidget *> m_cellList;
     QDate m_days[42];
@@ -107,6 +112,8 @@ private:
     QColor m_selectedTextColor = Qt::white;
     QColor m_festivalTextColor = Qt::black;
     QColor m_notCurrentTextColor = "#b2b2b2";
+    CellColor lightColor;
+    CellColor darkColor;
     QColor m_cellBackgroundColor = "#FFFFFF" ;
     CellEventType   m_cellEventType[42] {CellNormal};
     int m_firstWeekDay = 0;

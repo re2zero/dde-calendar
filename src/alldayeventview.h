@@ -37,7 +37,7 @@ class CAllDayEventWeekView : public DListWidget
 
 public:
     CAllDayEventWeekView(QWidget *parent = nullptr, int edittype = 0);
-    ~CAllDayEventWeekView();
+    ~CAllDayEventWeekView() Q_DECL_OVERRIDE;
     void setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData, int type = 1);
     void setsolarDayData(QVector<QString> vSolarInfo, QVector<QDate> date);
     QVector<QVector<ScheduleDtailInfo> > &getListData()
@@ -53,7 +53,7 @@ public:
         return  m_vDate;
     }
     void setTheMe(int type = 0);
-    void setRange(int w, int h, QDate begindate, QDate enddate);
+    void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
     CScheduleCoorManage *getCoorManage()
     {
         return m_coorManage;
@@ -72,8 +72,8 @@ public slots:
 private slots:
     void slotCreate();
 protected:
-    void contextMenuEvent(QContextMenuEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
     CAllDayEventWidgetItem *createItemWidget(int index, bool average = false);
@@ -92,7 +92,8 @@ private:
     CScheduleCoorManage                         *m_coorManage;
     QDate                                       m_dianjiDay;
     bool                                        m_LunarVisible;
-    CAllDayEventWidgetItem *m_currentitem = nullptr;
+    CAllDayEventWidgetItem                      *m_currentitem = nullptr;
+    int m_rightmagin = 0;
 };
 
 class CAllDayEventWidgetItem : public DPushButton

@@ -36,7 +36,6 @@ CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent,
     , m_coorManage(coor)
     , m_type(type)
 {
-    DGraphicsView *graphicsView = qobject_cast<DGraphicsView *>(scene->parent());
     setAcceptHoverEvents(true);
     setAcceptedMouseButtons(Qt::LeftButton);
     setFocus();
@@ -154,7 +153,7 @@ void CScheduleItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
         if (graphicsView != nullptr) {
             global = graphicsView->mapToGlobal(graphicsView->mapFromScene(sp));
         }
-        m_SchecduleRemindWidget->show(global.x() + 100, global.y());
+        m_SchecduleRemindWidget->show(global.x() + 90, global.y());
     }
 
 }

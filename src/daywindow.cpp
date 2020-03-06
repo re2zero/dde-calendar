@@ -108,7 +108,7 @@ void CDayWindow::setDate(QDate date)
     m_currentdate = date;
     m_daymonthView->setFirstWeekday(0);
     m_daymonthView->setCurrentDate(date);
-    int w = m_scheduleView->width() - 72 - 38;
+    int w = m_scheduleView->width() - 72;
     m_scheduleView->setRange(w, 1032, m_currentdate, m_currentdate);
     emit signalCurrentDate(date);
 }

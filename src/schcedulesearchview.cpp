@@ -519,7 +519,7 @@ void CSchceduleSearchView::updateDateShow()
         m_gradientItemList->setItemWidget(listItem, gwi);
         m_labellist.append(gwi);
     }
-    if (m_currentItem != NULL) {
+    if (m_currentItem != nullptr) {
         m_gradientItemList->scrollToItem(m_currentItem, QAbstractItemView::PositionAtTop);
     }
 }

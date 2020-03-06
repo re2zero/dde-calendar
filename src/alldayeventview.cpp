@@ -460,9 +460,10 @@ void CAllDayEventWeekView::setTheMe(int type)
     updateDateShow();
 }
 
-void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate)
+void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
-    m_coorManage->setRange(w, h, begindate, enddate);
+    m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
+    m_rightmagin = rightmagin;
     updateDateShow();
 }
 
@@ -582,7 +583,7 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CAllDayEventWeekView::updateDateShow()
 {
-    m_currentitem = NULL;
+    m_currentitem = nullptr;
     //remove
     for (int i = 0; i < this->count(); i++) {
         QListWidgetItem *item11 = this->takeItem(i);
@@ -631,7 +632,7 @@ CAllDayEventWidgetItem *CAllDayEventWeekView::createItemWidget(int index, bool a
     gwi->setCoorManage(m_coorManage);
     if (m_type == 0) {
         gwi->setData(m_vlistData[index]);
-        gwi->setFixedSize(width(), 22);
+        gwi->setFixedSize(width() - m_rightmagin, 22);
         gwi->setItem(nullptr);
     }
     connect(gwi, &CAllDayEventWidgetItem::signalsDelete, this, &CAllDayEventWeekView::slotdeleteitem);
@@ -659,10 +660,10 @@ CSolodayWidgetItem *CAllDayEventWeekView::createItemWidget(QVector<QString> vSol
         gwi->setData(vSolarInfo, date);
         int w = width();
         if (average) {
-            gwi->setFixedSize(width(), 22);
+            gwi->setFixedSize(width() - m_rightmagin, 22);
             gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
         } else {
-            gwi->setFixedSize(width(), 22);
+            gwi->setFixedSize(width() - m_rightmagin, 22);
             gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
         }
     } else {
@@ -675,10 +676,10 @@ CSolodayWidgetItem *CAllDayEventWeekView::createItemWidget(QVector<QString> vSol
         }
         gwi->setData(vSolarInfo, date);
         if (average) {
-            gwi->setFixedSize(width(), 22);
+            gwi->setFixedSize(width() - m_rightmagin, 22);
             gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
         } else {
-            gwi->setFixedSize(width(), 22);
+            gwi->setFixedSize(width() - m_rightmagin, 22);
             gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
         }
     }
@@ -708,7 +709,7 @@ void CAllDayEventWeekView::slotupdateItem(CAllDayEventWidgetItem *item)
 
 void CAllDayEventWeekView::slotDeleteItem()
 {
-    if (m_currentitem != NULL) {
+    if (m_currentitem != nullptr) {
         m_currentitem->slotDelete();
     }
 }

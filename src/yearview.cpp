@@ -108,6 +108,20 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     m_hightFont.setPixelSize(12);
 
     createYearSchceduleView(parent);
+
+    lightColor.hoverColor = "#000000";
+    lightColor.hoverColor.setAlphaF(0.05);
+    lightColor.pressColor = "#000000";
+    lightColor.pressColor.setAlphaF(0.2);
+    lightColor.normalColor = "#FFFFFF";
+    lightColor.normalColor.setAlphaF(1);
+
+    darkColor.hoverColor = "#000000";
+    darkColor.hoverColor.setAlphaF(0.05);
+    darkColor.pressColor = "#252525";
+    darkColor.pressColor.setAlphaF(1);
+    darkColor.normalColor = "#000000";
+    darkColor.normalColor.setAlphaF(0.05);
     // m_Scheduleview = new CYearSchceduleView(this);
 
 
@@ -183,15 +197,8 @@ void CYearView::setTheMe(int type)
 
     } else if (type == 2) {
 
-        QColor framecolor("#FFFFFF");
-        //framecolor.setAlphaF(0.15);
-        framecolor = "#414141";
-        framecolor.setAlphaF(0.3);
-        DPalette bpa = palette();
-        bpa.setColor(DPalette::Background, framecolor);
-        setPalette(bpa);
-        setBackgroundRole(DPalette::Background);
-        m_bnormalColor = framecolor;
+        m_bnormalColor = "#000000";
+        m_bnormalColor.setAlphaF(0.1);
         //setBColor(m_bnormalColor);
         m_currentMouth->setTextColor( QColor("#BF1D63"));
         // m_currentMouth->setBColor(framecolor);
@@ -434,21 +441,29 @@ void CYearView::paintCell(QWidget *cell)
 
     QPainter painter(cell);
 //    m_cellBackgroundColor =
-    if (m_cellEventType[pos] == CellPress) {
-        m_cellBackgroundColor = "#000000";
-        m_cellBackgroundColor.setAlphaF(0.2);
-    } else if (m_cellEventType[pos] == Cellhover) {
-        m_cellBackgroundColor = "#000000";
-        m_cellBackgroundColor.setAlphaF(0.05);
+
+    CellColor currentColor;
+    if (m_themetype == 2) {
+        currentColor = darkColor;
     } else {
-        m_cellBackgroundColor = "#FFFFFF";
-        m_cellBackgroundColor.setAlphaF(1);
+        currentColor = lightColor;
+    }
+    if (m_cellEventType[pos] == CellPress) {
+        m_cellBackgroundColor = currentColor.pressColor;
+    } else if (m_cellEventType[pos] == Cellhover) {
+        m_cellBackgroundColor = currentColor.hoverColor;
+    } else {
+        m_cellBackgroundColor = currentColor.normalColor;
+    }
+    if (m_themetype == 2 &&  m_cellEventType[pos] != CellPress) {
+
+    } else {
+        painter.setBrush(m_cellBackgroundColor);
+        painter.setPen(Qt::NoPen);
+        painter.drawRect(rect);
     }
 
 
-    painter.setBrush(m_cellBackgroundColor);
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(rect);
     bool highflag = false;
     if (getCellDate(pos).month() == m_currentDate.month()) {
         highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_days[pos]);
@@ -701,7 +716,6 @@ void CYearView::paintEvent(QPaintEvent *e)
     int labelheight = height() - 2 * m_borderframew;
 
     QPainter painter(this);
-    QRect fillRect = QRect(m_borderframew, m_borderframew, labelwidth, labelheight);
     if (1) {
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
@@ -709,36 +723,18 @@ void CYearView::paintEvent(QPaintEvent *e)
         painter.setPen(Qt::NoPen);
         QPainterPath painterPath;
         painterPath.moveTo(m_radius, m_borderframew);
-        if (1) {
-            painterPath.arcTo(QRect(m_borderframew, m_borderframew, m_radius * 2, m_radius * 2), 90, 90);
-        } else {
-            painterPath.lineTo(m_borderframew, m_borderframew);
-            painterPath.lineTo(m_borderframew, m_radius);
-        }
+        painterPath.arcTo(QRect(m_borderframew, m_borderframew, m_radius * 2, m_radius * 2), 90, 90);
+
         painterPath.lineTo(0, labelheight - m_radius);
-        if (1) {
-            painterPath.arcTo(QRect(m_borderframew, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
-        } else {
-            painterPath.lineTo(m_borderframew, labelheight);
-            painterPath.lineTo(m_radius, labelheight);
-        }
+        painterPath.arcTo(QRect(m_borderframew, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
+
         painterPath.lineTo(labelwidth - m_radius, labelheight);
-        if (1) {
-            painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
-        } else {
-            painterPath.lineTo(labelwidth, labelheight);
-            painterPath.lineTo(labelwidth, labelheight - m_radius);
-        }
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+
         painterPath.lineTo(labelwidth, m_radius);
-        //painterPath.moveTo(labelwidth, m_radius);
-        if (1) {
 
-            painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
 
-        } else {
-            painterPath.lineTo(labelwidth, m_borderframew);
-            painterPath.lineTo(labelwidth - m_radius, m_borderframew);
-        }
         painterPath.lineTo(m_radius, m_borderframew);
         painterPath.closeSubpath();
         painter.drawPath(painterPath);

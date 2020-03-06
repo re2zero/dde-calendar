@@ -458,9 +458,9 @@ void CAllDaySchceduleWeekView::setTheMe(int type)
     updateDateShow();
 }
 
-void CAllDaySchceduleWeekView::setRange(int w, int h, QDate begindate, QDate enddate)
+void CAllDaySchceduleWeekView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
-    m_coorManage->setRange(w, h, begindate, enddate);
+    m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
     updateDateShow();
 }
 

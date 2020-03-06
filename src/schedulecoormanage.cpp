@@ -28,10 +28,11 @@ CScheduleCoorManage::~CScheduleCoorManage()
 
 }
 
-void CScheduleCoorManage::setRange( int w, int h, QDate begindate, QDate enddate )
+void CScheduleCoorManage::setRange( int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
     m_width = w;
     m_height = h;
+    m_rightmagin = rightmagin;
     m_begindate = begindate;
     m_enddate = enddate;
     m_totalDay = begindate.daysTo(enddate) + 1;
@@ -214,7 +215,7 @@ QRect CScheduleCoorManage::getAllDayDrawRegion(QDate begin, QDate end)
     float rHeight = m_height;
     float posX = m_width * (1.0 * (beginday - 1) / m_totalDay);
     float posY = 0;
-    rect = QRect(posX, posY, rWidth, rHeight);
+    rect = QRect(posX, posY, rWidth - m_rightmagin, rHeight);
     return rect;
 }
 

@@ -52,7 +52,7 @@ public:
         return  m_vDate;
     }
     void setTheMe(int type = 0);
-    void setRange(int w, int h, QDate begindate, QDate enddate);
+    void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
     CScheduleCoorManage *getCoorManage()
     {
         return m_coorManage;

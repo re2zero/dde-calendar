@@ -129,10 +129,12 @@ void CGraphicsView::updateHigh()
     update();
 }
 
-void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate )
+void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
+    w = w - rightmagin;
     m_graphicsScene->setSceneRect(0, 0, w, h);
-    m_coorManage->setRange(w, h, begindate, enddate);
+    m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
+    m_rightmagin = rightmagin;
     int totalDay = begindate.daysTo(enddate) + 1;
     m_dayInterval = w * 1.0 / totalDay;
     m_timeInterval = h / 24.0;

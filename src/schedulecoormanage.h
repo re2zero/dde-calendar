@@ -26,9 +26,13 @@ class CScheduleCoorManage
 public:
     CScheduleCoorManage();
     ~CScheduleCoorManage();
-    void setRange(int w, int h, QDate begindate, QDate enddate);
+    void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
     void setSenceRange(int w, int h);
     void setDateRange(QDate begindate, QDate enddate);
+    int getRightMagin()const
+    {
+        return m_rightmagin;
+    }
     QRect getDrawRegion(QDateTime begintime, QDateTime endtime);
     QRect getDrawRegion(QDateTime begintime, QDateTime endtime, int index, int coount);
     QRect getDrawRegion(QDate date, QDateTime begintime, QDateTime endtime, int index, int coount, int maxNum, int type = 0);
@@ -47,6 +51,7 @@ private:
     QDate                m_begindate;
     QDate                m_enddate;
     int                  m_totalDay;
+    int                  m_rightmagin = 0;
 };
 
 #endif // SCHEDULECOORMANAGE_H
