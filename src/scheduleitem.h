@@ -86,6 +86,7 @@ protected:
     void mouseReleaseEvent ( QGraphicsSceneMouseEvent *event ) Q_DECL_OVERRIDE;
     void focusOutEvent ( QFocusEvent *event ) Q_DECL_OVERRIDE;
 private:
+
     void schceduleRemindHide();
     /*****************************************************************************
     Function:       paint()

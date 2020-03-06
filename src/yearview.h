@@ -83,6 +83,11 @@ protected:
 protected:
     void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
 private:
+    enum CellEventType {
+        CellNormal = 0,
+        Cellhover = 1,
+        CellPress = 2
+    };
     CustomFrame *m_currentMouth;
     QList<QWidget *> m_cellList;
     QDate m_days[42];
@@ -102,6 +107,8 @@ private:
     QColor m_selectedTextColor = Qt::white;
     QColor m_festivalTextColor = Qt::black;
     QColor m_notCurrentTextColor = "#b2b2b2";
+    QColor m_cellBackgroundColor = "#FFFFFF" ;
+    CellEventType   m_cellEventType[42] {CellNormal};
     int m_firstWeekDay = 0;
     QGridLayout *m_gridLayout;
     int cellwidth = 20;
@@ -110,7 +117,7 @@ private:
     int                   m_themetype  = 1;
     QColor m_highColor = "#0081FF";
     QColor m_highTextColor = "#FFFFFF";
-    QColor m_ceventColor = "#FB2525";
+    QColor m_ceventColor = "#FF5D00";
     QFont m_hightFont;
     QColor                   m_bnormalColor = "#FFFFFF";
     int                      m_radius = 8;

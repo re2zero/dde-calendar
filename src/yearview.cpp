@@ -45,6 +45,7 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 {
     m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
+    setMouseTracking(true);
     //m_dayNumFont.setWeight(QFont::Light);
 
     //setStyleSheet("QWidget { background: rgba(0, 0, 0, 0) }");
@@ -103,18 +104,6 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 
     setLayout(m_hhLayout);
     connect(this, &CYearView::dateSelected, this, &CYearView::handleCurrentDateChanged);
-    m_monthList.append( "一月" );
-    m_monthList.append( "二月");
-    m_monthList.append( "三月" );
-    m_monthList.append( "四月" );
-    m_monthList.append( "五月" );
-    m_monthList.append( "六月" );
-    m_monthList.append( "七月" );
-    m_monthList.append( "八月");
-    m_monthList.append( "九月" );
-    m_monthList.append( "十月" );
-    m_monthList.append( "十一月");
-    m_monthList.append( "十二月");
     m_hightFont.setFamily("Helvetica");
     m_hightFont.setPixelSize(12);
 
@@ -190,6 +179,7 @@ void CYearView::setTheMe(int type)
         m_selectedTextColor = Qt::white;
         m_festivalTextColor = Qt::black;
         m_notCurrentTextColor = "#b2b2b2";
+        m_ceventColor = QColor(255, 93, 0);
 
     } else if (type == 2) {
 
@@ -216,6 +206,7 @@ void CYearView::setTheMe(int type)
         m_festivalTextColor = Qt::black;
         m_notCurrentTextColor = "#C0C6D4";
         m_notCurrentTextColor.setAlphaF(0.5);
+        m_ceventColor = QColor(204, 77, 3);
     }
     QColor monthcolor = Qt::white;
     monthcolor.setAlphaF(0);
@@ -248,14 +239,12 @@ void CYearView::setCurrentDate(const QDate date, int type)
     CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
-        m_currentMouth->setTextStr(m_monthList.at(date.month() - 1));
         m_vlineflag = tdataManage->getHuangliDayDataManage()->getDayFlag(m_currentDate);
     } else {
-        m_currentMouth->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
         m_vlineflag.resize(42);
         m_vlineflag.fill(false);
     }
-
+    m_currentMouth->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
     updateDate();
 
     QVector<ScheduleDateRangeInfo> out;
@@ -296,9 +285,12 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
+
             m_selectFlag = true;
             cellClicked(cell);
             const int pos = m_cellList.indexOf(cell);
+            m_cellEventType[pos] = CellPress;
+            cell->update();
             m_selectDate = m_days[pos];
             if (1) {
                 emit signalHideInfo();
@@ -368,50 +360,16 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
         }
         if (e->type() == QEvent::Leave) {
             const int pos = m_cellList.indexOf(cell);
+            m_cellEventType[pos] = CellNormal;
             m_cellList[pos]->update();
             // m_Scheduleview->hide();
             // m_Scheduleview->clearData();
         } else if (e->type() == QEvent::ToolTip) {
-            //return ;
-//            const int pos = m_cellList.indexOf(cell);
-//            CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
-//            QString soloday;
-//            if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
-//                m_Scheduleview->setSoloDay(soloday);
-//            }
-//            QVector<ScheduleDateRangeInfo> out;
-//            if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[pos], m_days[pos], out)) {
-//                if (!out.isEmpty()) {
-//                    m_Scheduleview->setData(out[0].vData);
-//                }
-//            }
-//            int px = cell->x();
-//            int py = cell->y();
-//            //QPoint pos22 = mapToGlobal(QPoint(px, py));
-//            QPoint pos22 = QCursor::pos();
-//            QDesktopWidget *w = QApplication::desktop();
-//            QRect wR = w->screenGeometry(w->primaryScreen());
-
-//            m_Scheduleview->showWindow();
-//            int lfetorright = 0;
-//            int mw = pos22.x() + 10 + m_Scheduleview->width();
-//            if (mw > wR.width()) {
-//                mw = pos22.x() - 10 - m_Scheduleview->width();
-//                lfetorright = 1;
-//            } else {
-//                mw = pos22.x() + 10;
-//                lfetorright = 0;
-//            }
-//            int mh = pos22.y() + m_Scheduleview->height();
-//            if (mh > wR.height()) {
-//                mh = wR.height() - m_Scheduleview->height();
-//                m_Scheduleview->setDtype(lfetorright, pos22.y() - mh);
-//            } else {
-//                mh = pos22.y() - m_Scheduleview->height() / 2;
-//                m_Scheduleview->setDtype(lfetorright, m_Scheduleview->height() / 2);
-//            }
-//            m_Scheduleview->move(mw, mh);
-//            m_Scheduleview->show();
+        }
+        if (e->type() == QEvent::Enter) {
+            const int pos = m_cellList.indexOf(cell);
+            m_cellEventType[pos] = Cellhover;
+            cell->update();
         }
     }
     if (cell == m_currentMouth) {
@@ -475,6 +433,22 @@ void CYearView::paintCell(QWidget *cell)
     }*/
 
     QPainter painter(cell);
+//    m_cellBackgroundColor =
+    if (m_cellEventType[pos] == CellPress) {
+        m_cellBackgroundColor = "#000000";
+        m_cellBackgroundColor.setAlphaF(0.2);
+    } else if (m_cellEventType[pos] == Cellhover) {
+        m_cellBackgroundColor = "#000000";
+        m_cellBackgroundColor.setAlphaF(0.05);
+    } else {
+        m_cellBackgroundColor = "#FFFFFF";
+        m_cellBackgroundColor.setAlphaF(1);
+    }
+
+
+    painter.setBrush(m_cellBackgroundColor);
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(rect);
     bool highflag = false;
     if (getCellDate(pos).month() == m_currentDate.month()) {
         highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_days[pos]);
@@ -619,9 +593,13 @@ void CYearView::paintCell(QWidget *cell)
                 painter.setPen(pen);
                 painter.setBrush(QBrush(m_ceventColor));
                 painter.setPen(Qt::NoPen);
-                int r = cell->width() / 6;
-                painter.drawEllipse(cell->width() - r - 3, r + 2, r, r);
-//                painter.drawLine(0, cell->height() - 3, cell->width(), cell->height() - 3);
+                int r = cell->width() * (4 / 25);
+                if (r < 4) {
+                    r = 4;
+                } else if ( r > 7) {
+                    r = 7;
+                }
+                painter.drawEllipse(cell->width() - r, 0, r, r);
                 painter.restore();
             }
         }
