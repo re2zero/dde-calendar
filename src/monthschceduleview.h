@@ -24,10 +24,12 @@
 #include <DPushButton>
 #include "schedulestructs.h"
 #include <DListWidget>
+#include "scheduledatamanage.h"
 DWIDGET_USE_NAMESPACE
 class CMonthSchceduleWidgetItem;
 class QVBoxLayout;
 class CMonthSchceduleNumButton;
+class SchecduleRemindWidget;
 class CMonthSchceduleView : public QObject
 {
     Q_OBJECT
@@ -147,6 +149,9 @@ protected:
     void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
     void enterEvent(QEvent *event)Q_DECL_OVERRIDE;
     void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+private:
+    void SchecduleRemindWidgetHide();
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;
@@ -163,6 +168,8 @@ private:
     bool                  m_hoverflag = false;
     bool                  m_highflag = false;
     int                   m_editType = 0;
+    bool                    m_pressMove = false;
+    CSchedulesColor gdcolor;
 };
 
 #endif // CSHCEDULEDAYVIEW_H

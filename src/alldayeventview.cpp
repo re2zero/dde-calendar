@@ -50,7 +50,7 @@ CAllDayEventWidgetItem::CAllDayEventWidgetItem( QWidget *parent /*= nullptr*/, i
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
     m_createAction = new QAction(tr("New event"), this);
     connect(m_createAction, &QAction::triggered, this, &CAllDayEventWidgetItem::slotCreate);
-    m_item = NULL;
+    m_item = nullptr;
     setMouseTracking(true);
     //setAttribute(Qt::WA_TransparentForMouseEvents);
 }
@@ -289,6 +289,8 @@ void CAllDayEventWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CAllDayEventWidgetItem::mousePressEvent(QMouseEvent *event)
 {
+    m_pressMove = true;
+    SchecduleRemindWidgetHide();
     m_currentIndex = getEventByPos(event->pos());
     if (m_currentIndex == -1) return;
     QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo[m_currentIndex].beginDateTime.date(), m_vScheduleInfo[m_currentIndex].endDateTime.date());
@@ -306,14 +308,23 @@ void CAllDayEventWidgetItem::mouseMoveEvent(QMouseEvent *event)
 {
     m_vHoverflag.fill(false);
     m_currentIndex = getEventByPos(event->pos());
-    qDebug() << m_currentIndex;
+//    qDebug() << m_currentIndex;
     if (m_currentIndex == -1) return;
+    if (!m_pressMove) {
+        SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
+        CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo[m_currentIndex].type.ID);
+        m_SchecduleRemindWidget->setData(m_vScheduleInfo.at(m_currentIndex), gdcolor);
+        QPoint point = mapToGlobal(event->pos());
+        m_SchecduleRemindWidget->show(point.x() + 10, point.y());
+    }
+
     m_vHoverflag[m_currentIndex] = true;
     update();
 }
 
 void CAllDayEventWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
+    m_pressMove = false;
     m_currentIndex = getEventByPos(event->pos());
     if (m_currentIndex == -1) return;
     QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo[m_currentIndex].beginDateTime.date(), m_vScheduleInfo[m_currentIndex].endDateTime.date());
@@ -341,8 +352,18 @@ void CAllDayEventWidgetItem::focusOutEvent(QFocusEvent *event)
 
 void CAllDayEventWidgetItem::leaveEvent(QEvent *event)
 {
+    SchecduleRemindWidgetHide();
     m_vHoverflag.fill(false);
     update();
+}
+
+
+
+void CAllDayEventWidgetItem::SchecduleRemindWidgetHide()
+{
+    SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
+    m_SchecduleRemindWidget->hide();
+
 }
 
 void CAllDayEventWidgetItem::paintItem(int index)

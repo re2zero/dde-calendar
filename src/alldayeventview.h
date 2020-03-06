@@ -25,6 +25,7 @@
 #include <DPushButton>
 #include "schedulestructs.h"
 #include <DListWidget>
+#include "SchecduleRemindWidget.h"
 DWIDGET_USE_NAMESPACE
 class CAllDayEventWidgetItem;
 class QVBoxLayout;
@@ -135,6 +136,8 @@ protected:
     //void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
 private:
+    void SchecduleRemindWidgetHide();
+private:
     void paintItem(int index);
 private:
     QVector<ScheduleDtailInfo>  m_vScheduleInfo;
@@ -151,6 +154,7 @@ private:
     QVector<bool>         m_vSelectflag;
     QVector<bool>         m_vHoverflag;
     QVector<bool>         m_vHighflag;
+    bool                  m_pressMove = false;
 };
 class CSolodayWidgetItem : public DPushButton
 {

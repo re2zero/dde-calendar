@@ -24,6 +24,7 @@
 #include <QRectF>
 #include <QPainterPath>
 #include "schedulestructs.h"
+
 class CScheduleCoorManage;
 class CScheduleItem :  public QObject, public QGraphicsItem
 {
@@ -80,10 +81,12 @@ signals:
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent ( QGraphicsSceneMouseEvent *event ) Q_DECL_OVERRIDE;
     void focusOutEvent ( QFocusEvent *event ) Q_DECL_OVERRIDE;
 private:
+    void schceduleRemindHide();
     /*****************************************************************************
     Function:       paint()
     Description:    绘制
@@ -107,6 +110,7 @@ private:
     bool                  m_selectflag = false;
     bool                  m_hoverflag = false;
     bool                  m_highflag = false;
+    bool                  m_hoverPressMove = false;
     QColor                m_transparentcolor;
 };
 

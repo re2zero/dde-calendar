@@ -22,14 +22,21 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
+#include <DGraphicsView>
+#include <dtkwidget_global.h>
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
+#include "SchecduleRemindWidget.h"
+
+DWIDGET_USE_NAMESPACE
+
 CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent,
                              QGraphicsScene *scene, int type)
     : QGraphicsItem(parent)
     , m_coorManage(coor)
     , m_type(type)
 {
+    DGraphicsView *graphicsView = qobject_cast<DGraphicsView *>(scene->parent());
     setAcceptHoverEvents(true);
     setAcceptedMouseButtons(Qt::LeftButton);
     setFocus();
@@ -122,14 +129,42 @@ void CScheduleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     m_hoverflag = false;
+    schceduleRemindHide();
     update();
     emit signalsHoverUpdateState(this, 0);
+}
+
+void CScheduleItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+    if (!m_hoverPressMove) {
+        SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
+        CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
+                                      m_scheduleInfo.type.ID);
+        m_SchecduleRemindWidget->setData(m_scheduleInfo, gdcolor);
+
+        if (this->parent() != nullptr) {
+            qDebug() << this->parent()->metaObject()->className();
+        }
+        //获取相对于场景的位置
+        QPointF sp =  mapToScene(event->pos());
+
+        //查找项目的全局（屏幕）位置
+        DGraphicsView *graphicsView = qobject_cast<DGraphicsView *>(this->scene()->parent());
+        QPoint global(event->pos().x(), event->pos().y());
+        if (graphicsView != nullptr) {
+            global = graphicsView->mapToGlobal(graphicsView->mapFromScene(sp));
+        }
+        m_SchecduleRemindWidget->show(global.x() + 100, global.y());
+    }
+
 }
 
 void CScheduleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = true;
+        m_hoverPressMove = true;
+        schceduleRemindHide();
         update();
         emit signalsSelectUpdateState(this, 1);
     }
@@ -139,6 +174,7 @@ void CScheduleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
+        m_hoverPressMove = false;
         update();
         emit signalsSelectUpdateState(this, 0);
     }
@@ -150,11 +186,17 @@ void CScheduleItem::focusOutEvent(QFocusEvent *event)
     update();
 }
 
+
+void CScheduleItem::schceduleRemindHide()
+{
+    SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
+    m_SchecduleRemindWidget->hide();
+}
 void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                           QWidget *widget /*= 0 */)
 {
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-        m_scheduleInfo.type.ID);
+                                  m_scheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_scheduleInfo);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 

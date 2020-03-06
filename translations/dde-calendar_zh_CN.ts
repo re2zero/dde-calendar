@@ -492,6 +492,10 @@
         <source>End time must be greater than start time</source>
         <translation>结束时间需晚于开始时间</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>

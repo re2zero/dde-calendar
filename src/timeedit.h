@@ -37,8 +37,8 @@ public:
 private:
     void initUI();
     void initConnection();
-    void showPopup();
-    void hidePopup();
+    void showPopup() Q_DECL_OVERRIDE;
+    void hidePopup() Q_DECL_OVERRIDE;
 
 public slots:
     void slotcurrentValueChanged(int value);

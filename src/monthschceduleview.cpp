@@ -27,18 +27,20 @@
 #include <QRect>
 #include "schceduledlg.h"
 #include "myschceduleview.h"
-#include "scheduledatamanage.h"
 #include <DMessageBox>
 #include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
 #include "schcedulectrldlg.h"
+#include "SchecduleRemindWidget.h"
 #include <QShortcut>
 DGUI_USE_NAMESPACE
+
 CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
 {
     m_editType = edittype;
     //setMargin(0);
+    setMouseTracking(true);
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
@@ -244,7 +246,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
     int labelheight = height();
     float avge = 1;
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
+    gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
     QPainter painter(this);
     if (m_GradientFlag) {
@@ -379,8 +381,10 @@ void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = true;
+        m_pressMove = true;
         update();
         slotPress();
+        SchecduleRemindWidgetHide();
     }
 }
 
@@ -388,6 +392,7 @@ void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
+        m_pressMove = false;
         update();
     }
 }
@@ -408,7 +413,27 @@ void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
 {
     m_hoverflag = false;
     update();
+    SchecduleRemindWidgetHide();
 }
+
+void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
+{
+    if (!m_pressMove) {
+        SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
+        QPoint point = mapToGlobal(QPoint(e->x(), e->y()));
+        if (m_SchecduleRemindWidget == nullptr)
+            return;
+        m_SchecduleRemindWidget->setData(m_ScheduleInfo, gdcolor);
+        m_SchecduleRemindWidget->show(point.x() + 10, point.y());
+    }
+}
+
+void CMonthSchceduleWidgetItem::SchecduleRemindWidgetHide()
+{
+    SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
+    m_SchecduleRemindWidget->hide();
+}
+
 CMonthSchceduleNumButton::CMonthSchceduleNumButton(QWidget *parent /*= nullptr*/): DPushButton(parent)
 {
 
