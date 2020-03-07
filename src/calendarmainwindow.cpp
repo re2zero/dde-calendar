@@ -964,3 +964,10 @@ void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)
     DMainWindow::mouseMoveEvent(event);
     m_yearwindow->slotSetSchceduleHide();
 }
+
+void Calendarmainwindow::changeEvent(QEvent *event)
+{
+    DMainWindow::changeEvent(event);
+    m_yearwindow->slotSetSchceduleHide();
+}
+

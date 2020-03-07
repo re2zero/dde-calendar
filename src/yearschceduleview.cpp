@@ -650,7 +650,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
     }
 
     painter.fillPath(path, background);
-#endif
+
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
     QPainterPath path;
@@ -739,7 +739,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
     painter.setPen(pen);
     painter.drawPath(path);
     painter.restore();
-
+#endif
     if (!m_soloDay.isEmpty()) {
         ScheduleDtailInfo info;
         info.titleName = m_soloDay;
@@ -898,3 +898,47 @@ void CYearSchceduleView::paintItem()
     painter.restore();
 
 }
+
+CYearSchceduleOutView::CYearSchceduleOutView(QWidget *parent)
+    : DArrowRectangle(DArrowRectangle::ArrowLeft,parent)
+{
+    yearschceduleview = new CYearSchceduleView ();
+    this->setContent(yearschceduleview);
+}
+
+void CYearSchceduleOutView::setSoloDay(QString soloday)
+{
+    yearschceduleview->setSoloDay(soloday);
+}
+
+void CYearSchceduleOutView::setData(QVector<ScheduleDtailInfo> &vListData)
+{
+    yearschceduleview->setData(vListData);
+}
+
+void CYearSchceduleOutView::clearData()
+{
+    yearschceduleview->clearData();
+}
+
+void CYearSchceduleOutView::showWindow()
+{
+    yearschceduleview->showWindow();
+}
+
+void CYearSchceduleOutView::setTheMe(int type)
+{
+    yearschceduleview->setTheMe(type);
+}
+
+void CYearSchceduleOutView::setDtype(int type, int arrowheight)
+{
+    yearschceduleview->setDtype(type , arrowheight);
+}
+
+void CYearSchceduleOutView::setCurrentDate(QDate cdate)
+{
+    yearschceduleview->setCurrentDate(cdate);
+}
+
+

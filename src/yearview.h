@@ -16,6 +16,7 @@ class CalendarDBus;
 class CaLunarDayInfo;
 class QLabel;
 class CYearSchceduleView;
+class CYearSchceduleOutView;
 enum CalendarYearDayType {
     SO_YFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_YWeekends = QStyleOption::SO_CustomBase + 0x02,
@@ -129,7 +130,7 @@ private:
     QColor                   m_bnormalColor = "#FFFFFF";
     int                      m_radius = 8;
     int                      m_borderframew = 0;
-    static CYearSchceduleView      *m_Scheduleview;
+    static CYearSchceduleOutView      *m_Scheduleview;
     bool                     m_selectFlag = false;
     QDate                    m_selectDate;
 

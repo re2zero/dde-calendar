@@ -48,5 +48,6 @@
         <file>resources/icon/dark_xiu_bg.svg</file>
         <file>resources/icon/ban.svg</file>
         <file>resources/icon/xiu.svg</file>
+        <file>resources/icon/warning.svg</file>
     </qresource>
 </RCC>
