@@ -24,9 +24,12 @@
 #include "schedulestructs.h"
 #include <DListWidget>
 #include <DWidget>
+#include <DArrowRectangle>
+#include "yearwindow.h"
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CYearSchceduleItem;
+class CYearSchceduleOutView;
 class CYearSchceduleView : public DWidget
 {
     Q_OBJECT
@@ -90,6 +93,25 @@ private:
     QFont                 m_timefont;
     QColor                m_ttextcolor;
     QFont                 m_tfont;
+};
+
+class CYearSchceduleOutView : public DArrowRectangle
+{
+    Q_OBJECT
+
+public:
+    explicit CYearSchceduleOutView(QWidget *parent = nullptr);
+    void setSoloDay(QString soloday);
+    void setData(QVector<ScheduleDtailInfo> &vListData);
+    void clearData();
+    void showWindow();
+    void setTheMe(int type = 0);
+    void setDtype(int type, int arrowheight);
+    void setCurrentDate(QDate cdate);
+private:
+    DArrowRectangle *arrowRectangle;
+    CYearWindow *yearWindow;
+    CYearSchceduleView *yearschceduleview;
 };
 #endif // CSHCEDULEDAYVIEW_H
 
