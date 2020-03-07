@@ -354,7 +354,6 @@ void CMonthView::setCurrentDate(const QDate date)
 
     // to refresh lunar calendar
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
-
     emit currentDateChanged(date.year(), date.month());
     emit signalcurrentDateChanged(m_currentDate);
     m_weekIndicator->updateWeek();
@@ -421,9 +420,9 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             if (rightevent->button() == Qt::RightButton)
                 m_updateflag = false;
             if (rightevent->button() == Qt::LeftButton) {
-                cellClicked(cell);
                 const int pos = m_cellList.indexOf(cell);
                 m_cellfoceflag[pos] = true;
+                cellClicked(cell);
                 m_cellList[pos]->update();
                 /*if (getShowSolarDayByDate(m_days[pos])) {
                     emit signalsViewSelectDate(m_days[pos]);
@@ -529,7 +528,6 @@ void CMonthView::updateDate()
     if (currentIndex < 0) {
         return;
     }
-
     for (int i(0); i != 42; ++i) {
         m_days[i] = firstDay.addDays(i - day);
         if (m_days[i].month() != m_currentDate.month()) continue;
@@ -540,7 +538,7 @@ void CMonthView::updateDate()
         parentWidget()->setEnabled(false);
         emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
     }
-    setSelectedCell(currentIndex);
+//    setSelectedCell(currentIndex);
     update();
 }
 
@@ -634,7 +632,6 @@ const CaLunarDayInfo CMonthView::getCaLunarDayInfo(int pos)
     queue->push_back(pos);
 
     QTimer::singleShot(300, this, SLOT(getDbusData()));
-
     return *emptyCaLunarDayInfo;
 }
 
@@ -1198,7 +1195,7 @@ void CMonthView::cellClicked(QWidget *cell)
         return;
 
     setSelectedCell(pos);
-
+//    emit signalcurrentLunarDateChanged(m_days[pos], getCaLunarDayInfo(getDateIndex(m_days[pos])), 0);
 //    // my gift eggs
 //    static int gift = 0;
 //    if (m_days[pos] == QDate(1993, 7, 28))
@@ -1208,8 +1205,8 @@ void CMonthView::cellClicked(QWidget *cell)
 
 void CMonthView::setSelectedCell(int index)
 {
-    if (m_selectedCell == index)
-        return;
+//    if (m_selectedCell == index)
+//        return;
 
     const int prevPos = m_selectedCell;
     m_selectedCell = index;
@@ -1217,6 +1214,7 @@ void CMonthView::setSelectedCell(int index)
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
     if (m_days[index].year() < 1900) return;
-    emit signalcurrentLunarDateChanged(m_days[index], getCaLunarDayInfo(getDateIndex(m_days[index])), 0);
-    emit dateSelected(m_days[index], getCaLunarDayInfo(index));
+    QDate  clickDate = m_days[index];
+    emit signalcurrentLunarDateChanged(clickDate, getCaLunarDayInfo(getDateIndex(clickDate)), 0);
+    emit dateSelected(clickDate, getCaLunarDayInfo(index));
 }

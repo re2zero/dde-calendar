@@ -860,7 +860,6 @@ void CAllSolarDayWeekWidgetItem::focusOutEvent(QFocusEvent *event)
 
 void CAllSolarDayWeekWidgetItem::enterEvent(QEvent *event)
 {
-    qDebug() << Q_FUNC_INFO;
     m_vhover.fill(false);
     /*for (int i = 0; i < m_vDate.count(); i++) {
         QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vDate.at(i), m_vDate.at(i));

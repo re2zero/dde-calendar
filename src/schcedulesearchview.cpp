@@ -315,6 +315,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     }
 
     painter.drawText(QRect(91, 6, tilenameW, labelheight), Qt::AlignLeft, tstr);
+    painter.end();
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -493,7 +494,7 @@ void CSchceduleSearchView::updateDateShow()
         DLabel *gwi = new DLabel();
         QFont font("SourceHanSansSC-Normal");
         font.setPixelSize(20);
-        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+        gwi->setAlignment(Qt::AlignCenter );
         DPalette daypa = gwi->palette();
         QColor textcolor = DPalette::ToolTipText;
         int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
@@ -511,7 +512,7 @@ void CSchceduleSearchView::updateDateShow()
         //gwi->setForegroundRole(DPalette::Window);
         gwi->setFont(font);
         gwi->setText(tr("No search results"));
-        gwi->setFixedSize(m_gradientItemList->width(), 450);
+        gwi->setFixedSize(m_gradientItemList->width() - 20, 450);
         listItem->setSizeHint(QSize(m_gradientItemList->width(), 450)); //每次改变Item的高度
         //listItem->setBackgroundColor(Qt::white);
         listItem->setFlags(Qt::ItemIsTristate );
@@ -713,4 +714,5 @@ void CSchceduleSearchDateItem::paintEvent(QPaintEvent *e)
         datestr = m_date.toString("yyyy/M/d");
     }
     painter.drawText(QRect(12, 8, labelwidth, labelheight - 8), Qt::AlignLeft, datestr);
+    painter.end();
 }

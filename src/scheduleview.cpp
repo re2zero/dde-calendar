@@ -27,8 +27,6 @@
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
 DGUI_USE_NAMESPACE
-static int hourTextLMagin = 16;
-static int hourTextTMagin = 48;
 
 static int hourTextWidth = 50;
 static int hourTextHeight = 20;

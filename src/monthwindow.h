@@ -40,7 +40,7 @@ class CMonthWindow: public QMainWindow
     Q_OBJECT
 public:
     CMonthWindow(QWidget *parent = nullptr);
-    ~CMonthWindow();
+    ~CMonthWindow() Q_DECL_OVERRIDE;
     void setFirstWeekday(int weekday);
     void setDate(QDate date);
     void setLunarVisible(bool state);
@@ -54,7 +54,7 @@ public slots:
     void nextMonth();
     void slotsearchDateSelect(QDate date);
 protected:
-    void wheelEvent(QWheelEvent *);
+    void wheelEvent(QWheelEvent *) Q_DECL_OVERRIDE;
 private:
     void initUI();
     void initConnection();
@@ -74,7 +74,7 @@ public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private slots:
     void slottoday();
     void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
