@@ -17,24 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "schceduledlg.h"
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QMessageBox>
-#include "timeedit.h"
 #include <DHiDPIHelper>
-#include <QIcon>
-#include <QIntValidator>
-#include "scheduledatamanage.h"
 #include <DMessageBox>
 #include <DPalette>
-#include "schcedulectrldlg.h"
-#include "timeeditctrl.h"
-#include <QShortcut>
-#include <QToolButton>
-#include <QTextBlock>
 #include <QCalendarWidget>
+#include <QHBoxLayout>
+#include <QIcon>
+#include <QIntValidator>
+#include <QMessageBox>
+#include <QShortcut>
+#include <QTextBlock>
+#include <QToolButton>
+#include <QVBoxLayout>
+#include "schcedulectrldlg.h"
+#include "scheduledatamanage.h"
+#include "timeedit.h"
+#include "timeeditctrl.h"
 DGUI_USE_NAMESPACE
-CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
+CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent)
+    : DDialog(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     m_type = type;
@@ -51,7 +52,7 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent): DDialog(parent)
         m_beginTimeEdit->setTime(QTime(hours, minnutes));
         m_endDateEdit->setDate(QDate::currentDate());
         m_endTimeEdit->setTime(QTime(hours, minnutes).addSecs(3600));
-        //m_endRepeatDate->setMinimumDate(QDate::currentDate());
+        // m_endRepeatDate->setMinimumDate(QDate::currentDate());
     } else {
         m_titleLabel->setText(tr("Edit Event"));
     }
@@ -155,22 +156,25 @@ void CSchceduleDlg::slotOkBt()
         scheduleDtailInfo.titleName = m_textEdit->toPlainText();
     }
     if (scheduleDtailInfo.titleName.isEmpty()) {
-        //QMessageBox::warning(this, tr("error"), tr("The event is empty!"));
+        // QMessageBox::warning(this, tr("error"), tr("The event is empty!"));
         return;
     }
     if (beginDateTime > endDateTime) {
-//        QMessageBox::information(this, ("    "), tr("End time must be greater than start time"));
-        DDialog *prompt = new DDialog (this);
+        //        QMessageBox::information(this, ("    "), tr("End time must be greater than start
+        //        time"));
+        DDialog *prompt = new DDialog(this);
         prompt->setIcon(QIcon(":/resources/icon/warning.svg"));
         prompt->setMessage(tr("End time must be greater than start time"));
         prompt->setWindowFlags(prompt->windowFlags() | Qt::WindowStaysOnTopHint);
-        prompt->addButton(tr("OK"),true,DDialog::ButtonNormal);
+        prompt->addButton(tr("OK"), true, DDialog::ButtonNormal);
         prompt->show();
         return;
     }
-    if (m_type == 1) scheduleDtailInfo.id = 0;
+    if (m_type == 1)
+        scheduleDtailInfo.id = 0;
     scheduleDtailInfo.allday = m_allDayCheckbox->isChecked();
-    if (m_rmindCombox->currentIndex() == 0) scheduleDtailInfo.remind = false;
+    if (m_rmindCombox->currentIndex() == 0)
+        scheduleDtailInfo.remind = false;
     else {
         scheduleDtailInfo.remind = true;
     }
@@ -211,7 +215,7 @@ void CSchceduleDlg::slotOkBt()
         scheduleDtailInfo.enddata.type = m_endrepeatCombox->currentIndex();
         if (m_endrepeatCombox->currentIndex() == 1) {
             if (m_endrepeattimes->text().isEmpty()) {
-                //QMessageBox::warning(this, tr("error"), tr("The end repeat times is null!"));
+                // QMessageBox::warning(this, tr("error"), tr("The end repeat times is null!"));
                 return;
             }
             scheduleDtailInfo.enddata.tcount = m_endrepeattimes->text().toInt();
@@ -219,37 +223,44 @@ void CSchceduleDlg::slotOkBt()
             QDateTime endrpeattime = beginDateTime;
             endrpeattime.setDate(m_endRepeatDate->date());
             if (beginDateTime > endrpeattime) {
-                //QMessageBox::warning(this, tr("error"), tr("The end repeat time less than begin time!"));
+                // QMessageBox::warning(this, tr("error"), tr("The end repeat time less than begin
+                // time!"));
                 return;
             }
             scheduleDtailInfo.enddata.date = endrpeattime;
         }
     }
 
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(m_typeComBox->currentIndex() + 1, scheduleDtailInfo.type);
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
+        m_typeComBox->currentIndex() + 1, scheduleDtailInfo.type);
     scheduleDtailInfo.beginDateTime = beginDateTime;
     scheduleDtailInfo.endDateTime = endDateTime;
 
     if (m_type == 1) {
-        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(scheduleDtailInfo);
+        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
+            scheduleDtailInfo);
     } else if (m_type == 0) {
-
-        if (m_scheduleDtailInfo.rpeat == 0 && m_scheduleDtailInfo.rpeat == scheduleDtailInfo.rpeat) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(scheduleDtailInfo);
+        if (m_scheduleDtailInfo.rpeat == 0 &&
+            m_scheduleDtailInfo.rpeat == scheduleDtailInfo.rpeat) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
+                scheduleDtailInfo);
 
         } else {
             if (m_scheduleDtailInfo.allday != scheduleDtailInfo.allday) {
-
                 CSchceduleCtrlDlg msgBox(this);
-                //msgBox.setWindowFlags(Qt::FramelessWindowHint);
-                //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-                msgBox.setText(tr("All occurrences of a repeating event must have the same all-day status."));
-//                if (scheduleDtailInfo.allday) {
-//                    msgBox.setText(tr("All occurrences of a repeating event must have the same all-day status."));
+                // msgBox.setWindowFlags(Qt::FramelessWindowHint);
+                // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34,
+                // 34) * devicePixelRatioF()));
+                msgBox.setText(
+                    tr("All occurrences of a repeating event must have the same all-day status."));
+                //                if (scheduleDtailInfo.allday) {
+                //                    msgBox.setText(tr("All occurrences of a repeating event must
+                //                    have the same all-day status."));
 
-//                } else {
-//                    msgBox.setText(tr("Repetitive event of all must have the same not throughout the state."));
-//                }
+                //                } else {
+                //                    msgBox.setText(tr("Repetitive event of all must have the same
+                //                    not throughout the state."));
+                //                }
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
                 DPushButton *yesButton = msgBox.addPushButton(tr("Change All"));
@@ -260,7 +271,6 @@ void CSchceduleDlg::slotOkBt()
 
                 } else {
                     pa.setColor(DPalette::ButtonText, "#FF5736");
-
                 }
                 yesButton->setPalette(pa);
                 msgBox.exec();
@@ -269,17 +279,22 @@ void CSchceduleDlg::slotOkBt()
                     return;
                 } else if (msgBox.clickButton() == yesButton) {
                     ScheduleDtailInfo updatescheduleData;
-                    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(scheduleDtailInfo.id, updatescheduleData);
+                    CScheduleDataManage::getScheduleDataManage()
+                        ->getscheduleDataCtrl()
+                        ->getScheduleInfoById(scheduleDtailInfo.id, updatescheduleData);
                     scheduleDtailInfo.beginDateTime = updatescheduleData.beginDateTime;
                     scheduleDtailInfo.endDateTime = updatescheduleData.endDateTime;
                     scheduleDtailInfo.RecurID = updatescheduleData.RecurID;
-                    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(scheduleDtailInfo);
+                    CScheduleDataManage::getScheduleDataManage()
+                        ->getscheduleDataCtrl()
+                        ->updateScheduleInfo(scheduleDtailInfo);
                 }
 
             } else if (m_scheduleDtailInfo.rpeat != scheduleDtailInfo.rpeat) {
                 CSchceduleCtrlDlg msgBox(this);
-                //msgBox.setWindowFlags(Qt::FramelessWindowHint);
-                //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+                // msgBox.setWindowFlags(Qt::FramelessWindowHint);
+                // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34,
+                // 34) * devicePixelRatioF()));
                 msgBox.setText(tr("You are changing the repeating rule of this event."));
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
@@ -291,7 +306,6 @@ void CSchceduleDlg::slotOkBt()
 
                 } else {
                     pa.setColor(DPalette::ButtonText, "#FF5736");
-
                 }
                 yesButton->setPalette(pa);
                 msgBox.exec();
@@ -299,15 +313,20 @@ void CSchceduleDlg::slotOkBt()
                 if (msgBox.clickButton() == noButton) {
                     return;
                 } else if (msgBox.clickButton() == yesButton) {
-                    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(scheduleDtailInfo);
+                    CScheduleDataManage::getScheduleDataManage()
+                        ->getscheduleDataCtrl()
+                        ->updateScheduleInfo(scheduleDtailInfo);
                 }
             } else {
                 if (m_scheduleDtailInfo.RecurID == 0) {
                     CSchceduleCtrlDlg msgBox(this);
-                    //msgBox.setWindowFlags(Qt::FramelessWindowHint);
-                    //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+                    // msgBox.setWindowFlags(Qt::FramelessWindowHint);
+                    // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34,
+                    // 34) * devicePixelRatioF()));
                     msgBox.setText(tr("You are changing a repeating event."));
-                    msgBox.setInformativeText(tr("Do you want to change only this occurrence of the event, or all occurrences?"));
+                    msgBox.setInformativeText(
+                        tr("Do you want to change only this occurrence of the event, or all "
+                           "occurrences?"));
                     DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
                     DPushButton *yesallbutton = msgBox.addPushButton(tr("All"));
                     DPushButton *yesButton = msgBox.addPushButton(tr("Only This Event"));
@@ -329,27 +348,38 @@ void CSchceduleDlg::slotOkBt()
                         return;
                     } else if (msgBox.clickButton() == yesallbutton) {
                         scheduleDtailInfo.ignore.clear();
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(scheduleDtailInfo);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->updateScheduleInfo(scheduleDtailInfo);
                     } else if (msgBox.clickButton() == yesButton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
                         newschedule.rpeat = 0;
                         newschedule.RecurID = 0;
                         newschedule.id = 0;
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(newschedule);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->addSchedule(newschedule);
                         ScheduleDtailInfo updatescheduleData;
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
                         updatescheduleData.ignore.append(m_scheduleDtailInfo.beginDateTime);
 
-                        //m_scheduleDtailInfo.ignore.append(m_scheduleDtailInfo.beginDateTime);
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(updatescheduleData);
+                        // m_scheduleDtailInfo.ignore.append(m_scheduleDtailInfo.beginDateTime);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->updateScheduleInfo(updatescheduleData);
                     }
                 } else {
                     CSchceduleCtrlDlg msgBox(this);
-                    //msgBox.setWindowFlags(Qt::FramelessWindowHint);
-                    // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
+                    // msgBox.setWindowFlags(Qt::FramelessWindowHint);
+                    // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34,
+                    // 34) * devicePixelRatioF()));
 
                     msgBox.setText(tr("You are changing a repeating event."));
-                    msgBox.setInformativeText(tr("Do you want to change only this occurrence of the event, or this and all future occurrences?"));
+                    msgBox.setInformativeText(
+                        tr("Do you want to change only this occurrence of the event, or this and "
+                           "all future occurrences?"));
                     DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
                     DPushButton *yesallbutton = msgBox.addPushButton(tr("All Future Events"));
                     DPushButton *yesButton = msgBox.addPushButton(tr("Only This Event"));
@@ -373,25 +403,37 @@ void CSchceduleDlg::slotOkBt()
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
                         newschedule.RecurID = 0;
                         newschedule.id = 0;
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(newschedule);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->addSchedule(newschedule);
                         ScheduleDtailInfo updatescheduleData;
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
                         updatescheduleData.enddata.type = 2;
-                        updatescheduleData.enddata.date = m_scheduleDtailInfo.beginDateTime.addDays(-1);
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(updatescheduleData);
+                        updatescheduleData.enddata.date =
+                            m_scheduleDtailInfo.beginDateTime.addDays(-1);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->updateScheduleInfo(updatescheduleData);
                     } else if (msgBox.clickButton() == yesButton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
                         newschedule.rpeat = 0;
                         newschedule.RecurID = 0;
                         newschedule.id = 0;
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(newschedule);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->addSchedule(newschedule);
                         ScheduleDtailInfo updatescheduleData;
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
                         updatescheduleData.ignore.append(m_scheduleDtailInfo.beginDateTime);
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(updatescheduleData);
+                        CScheduleDataManage::getScheduleDataManage()
+                            ->getscheduleDataCtrl()
+                            ->updateScheduleInfo(updatescheduleData);
                     }
                 }
-
             }
         }
     }
@@ -409,10 +451,9 @@ void CSchceduleDlg::slotTextChange()
         m_textEdit->setText(tStitlename);
         return;
     }
-    int maxLength = 256; // 最大字符数
+    int maxLength = 256;  // 最大字符数
     if (length > maxLength) {
-
-        //QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
+        // QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
         m_textEdit->setText(m_context);
         cursor.movePosition(QTextCursor::End);
         m_textEdit->setTextCursor(cursor);
@@ -471,7 +512,6 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
             m_endDateEdit->setDate(m_scheduleDtailInfo.endDateTime.date());
             m_endTimeEdit->setTime(m_scheduleDtailInfo.endDateTime.time());
         } else {
-
             m_beginDateEdit->setDate(m_currentDate.date());
             m_beginTimeEdit->setTime(m_currentDate.time());
             m_endDateEdit->setDate(m_currentDate.date());
@@ -499,7 +539,7 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
         }
     }
 
-    //m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    // m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
 void CSchceduleDlg::slotbRpeatactivated(int index)
@@ -507,11 +547,11 @@ void CSchceduleDlg::slotbRpeatactivated(int index)
     if (index > 0) {
         m_endrepeatWidget->setVisible(true);
         setFixedSize(438, 506);
-        //m_gwi->setGeometry(0, 68, 438, 458);
+        // m_gwi->setGeometry(0, 68, 438, 458);
     } else {
         m_endrepeatWidget->setVisible(false);
         setFixedSize(438, 460);
-        //m_gwi->setGeometry(0, 68, 438, 412);
+        // m_gwi->setGeometry(0, 68, 438, 412);
     }
 }
 
@@ -581,17 +621,16 @@ void CSchceduleDlg::initUI()
     m_titleLabel->setPalette(titlepa);
     m_titleLabel->setFixedSize(148, 51);
     m_titleLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-    //m_titleLabel->setGeometry(165, 0, 108, 51);
+    // m_titleLabel->setGeometry(165, 0, 108, 51);
     m_titleLabel->move(145, 0);
     m_titleLabel->setFont(titlelabelF);
-
 
     setSpacing(0);
     QFont mlabelF;
     mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(14);
-    DPalette pa =  m_titleLabel->palette();
+    DPalette pa = m_titleLabel->palette();
     if (themetype == 0 || themetype == 1) {
         pa.setColor(DPalette::WindowText, QColor("#414D68"));
     } else {
@@ -602,25 +641,35 @@ void CSchceduleDlg::initUI()
     QVBoxLayout *maintlayout = new QVBoxLayout;
     maintlayout->setMargin(0);
     maintlayout->setSpacing(10);
-    QHBoxLayout *typelayout  = new QHBoxLayout;
+    QHBoxLayout *typelayout = new QHBoxLayout;
     typelayout->setSpacing(0);
     typelayout->setMargin(0);
-    //maintlayout->setContentsMargins(20, 0, 20, 10);
+    // maintlayout->setContentsMargins(20, 0, 20, 10);
     m_typeLabel = new QLabel(tr("Type:"));
     m_typeLabel->setFont(mlabelF);
     m_typeLabel->setPalette(pa);
     m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_typeLabel->setFixedSize(78, 36);
-    m_typeComBox = new DComboBox ();
+    m_typeComBox = new DComboBox();
     m_typeComBox->setFixedSize(319, 36);
-    m_typeComBox->insertItem(0, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Work"));
-    m_typeComBox->insertItem(1, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Life"));
-    m_typeComBox->insertItem(2, QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg").scaled(QSize(20, 20) * devicePixelRatioF())), tr("Other"));
+    m_typeComBox->insertItem(0,
+                             QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
+                                       .scaled(QSize(20, 20) * devicePixelRatioF())),
+                             tr("Work"));
+    m_typeComBox->insertItem(1,
+                             QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg")
+                                       .scaled(QSize(20, 20) * devicePixelRatioF())),
+                             tr("Life"));
+    m_typeComBox->insertItem(
+        2,
+        QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg")
+                  .scaled(QSize(20, 20) * devicePixelRatioF())),
+        tr("Other"));
     typelayout->addWidget(m_typeLabel);
     typelayout->addWidget(m_typeComBox);
     maintlayout->addLayout(typelayout);
 
-    QHBoxLayout *contentLabellayout  = new QHBoxLayout;
+    QHBoxLayout *contentLabellayout = new QHBoxLayout;
     contentLabellayout->setSpacing(0);
     contentLabellayout->setMargin(0);
     QVBoxLayout *conttelabellayout = new QVBoxLayout;
@@ -635,6 +684,8 @@ void CSchceduleDlg::initUI()
     conttelabellayout->addStretch();
     m_textEdit = new DTextEdit(this);
     m_textEdit->setFixedSize(319, 86);
+
+#if 0
     m_textEdit->setTextBackgroundColor(Qt::white);
     DPalette tpa = m_textEdit->palette();
     if (themetype == 0 || themetype == 1) {
@@ -656,7 +707,9 @@ void CSchceduleDlg::initUI()
     }
 
     m_textEdit->setPalette(tpa);
-    //if (m_type == 1) {
+#endif
+
+    // if (m_type == 1) {
     m_textEdit->setPlaceholderText(tr("New Event"));
     //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
     QWidget *mpContentWidget = m_textEdit->viewport();
@@ -669,7 +722,7 @@ void CSchceduleDlg::initUI()
     contentLabellayout->addWidget(m_textEdit);
     maintlayout->addLayout(contentLabellayout);
 
-    QHBoxLayout *alldayLabellayout  = new QHBoxLayout;
+    QHBoxLayout *alldayLabellayout = new QHBoxLayout;
     alldayLabellayout->setSpacing(0);
     alldayLabellayout->setMargin(0);
     m_adllDayLabel = new QLabel(tr("All Day:"));
@@ -682,10 +735,10 @@ void CSchceduleDlg::initUI()
     alldayLabellayout->addWidget(m_allDayCheckbox);
     maintlayout->addLayout(alldayLabellayout);
 
-    QHBoxLayout *beginLabellayout  = new QHBoxLayout;
+    QHBoxLayout *beginLabellayout = new QHBoxLayout;
     beginLabellayout->setSpacing(0);
     beginLabellayout->setMargin(0);
-    m_beginTimeLabel = new QLabel (tr("Starts:"));
+    m_beginTimeLabel = new QLabel(tr("Starts:"));
     m_beginTimeLabel->setFont(mlabelF);
     m_beginTimeLabel->setPalette(pa);
     m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -697,12 +750,12 @@ void CSchceduleDlg::initUI()
     m_beginTimeEdit->setFixedSize(109, 36);
     m_beginDateEdit->setCalendarPopup(true);
     m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
-    //QHBoxLayout *begintimeelayout  = new QHBoxLayout;
-    //begintimeelayout->addWidget(m_beginDateEdit, 1);
-    //begintimeelayout->addWidget(m_beginTimeEdit, 1);
-    //begintimeelayout->setMargin(0);
-    //begintimeelayout->setSpacing(0);
-    //begintimeelayout->addStretch();
+    // QHBoxLayout *begintimeelayout  = new QHBoxLayout;
+    // begintimeelayout->addWidget(m_beginDateEdit, 1);
+    // begintimeelayout->addWidget(m_beginTimeEdit, 1);
+    // begintimeelayout->setMargin(0);
+    // begintimeelayout->setSpacing(0);
+    // begintimeelayout->addStretch();
     beginLabellayout->addWidget(m_beginTimeLabel);
     beginLabellayout->addWidget(m_beginDateEdit);
     beginLabellayout->addSpacing(10);
@@ -711,11 +764,10 @@ void CSchceduleDlg::initUI()
     // beginLabellayout->addLayout(begintimeelayout);
     maintlayout->addLayout(beginLabellayout);
 
-
-    QHBoxLayout *enQLabellayout  = new QHBoxLayout;
+    QHBoxLayout *enQLabellayout = new QHBoxLayout;
     enQLabellayout->setSpacing(0);
     enQLabellayout->setMargin(0);
-    m_endTimeLabel = new QLabel (tr("Ends:"));
+    m_endTimeLabel = new QLabel(tr("Ends:"));
     m_endTimeLabel->setFont(mlabelF);
     m_endTimeLabel->setPalette(pa);
     m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -733,13 +785,13 @@ void CSchceduleDlg::initUI()
 
     enQLabellayout->addWidget(m_endTimeEdit);
     enQLabellayout->addStretch();
-    //enQLabellayout->addLayout(endtimeelayout);
+    // enQLabellayout->addLayout(endtimeelayout);
     maintlayout->addLayout(enQLabellayout);
 
-    QHBoxLayout *rminQLabellayout  = new QHBoxLayout;
+    QHBoxLayout *rminQLabellayout = new QHBoxLayout;
     rminQLabellayout->setSpacing(0);
     rminQLabellayout->setMargin(0);
-    m_remindSetLabel = new QLabel (tr("Remind Me:"));
+    m_remindSetLabel = new QLabel(tr("Remind Me:"));
     m_remindSetLabel->setFont(mlabelF);
     m_remindSetLabel->setPalette(pa);
     m_remindSetLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -753,10 +805,10 @@ void CSchceduleDlg::initUI()
     rminQLabellayout->addStretch();
     maintlayout->addLayout(rminQLabellayout);
 
-    QHBoxLayout *repeatLabellayout  = new QHBoxLayout;
+    QHBoxLayout *repeatLabellayout = new QHBoxLayout;
     repeatLabellayout->setSpacing(0);
     repeatLabellayout->setMargin(0);
-    m_beginrepeatLabel = new QLabel (tr("Repeat:"));
+    m_beginrepeatLabel = new QLabel(tr("Repeat:"));
     m_beginrepeatLabel->setFont(mlabelF);
     m_beginrepeatLabel->setPalette(pa);
     m_beginrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -774,10 +826,10 @@ void CSchceduleDlg::initUI()
     repeatLabellayout->addStretch();
     maintlayout->addLayout(repeatLabellayout);
 
-    QHBoxLayout *endrepeatLabellayout  = new QHBoxLayout;
+    QHBoxLayout *endrepeatLabellayout = new QHBoxLayout;
     endrepeatLabellayout->setSpacing(0);
     endrepeatLabellayout->setMargin(0);
-    m_endrepeatLabel = new QLabel (tr("End Repeat:"));
+    m_endrepeatLabel = new QLabel(tr("End Repeat:"));
     m_endrepeatLabel->setFont(mlabelF);
     m_endrepeatLabel->setPalette(pa);
     m_endrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -790,7 +842,7 @@ void CSchceduleDlg::initUI()
     endrepeatLabellayout->addWidget(m_endrepeatLabel);
     endrepeatLabellayout->addWidget(m_endrepeatCombox);
 
-    QHBoxLayout *endrepeattimeslayout  = new QHBoxLayout;
+    QHBoxLayout *endrepeattimeslayout = new QHBoxLayout;
     endrepeattimeslayout->setSpacing(0);
     endrepeattimeslayout->setMargin(0);
     endrepeattimeslayout->setContentsMargins(10, 0, 0, 0);
@@ -823,8 +875,8 @@ void CSchceduleDlg::initUI()
     enddatefont.setWeight(QFont::Medium);
     enddatefont.setPixelSize(11);
     m_endRepeatDate->setFont(enddatefont);
-    //m_endRepeatDate->setMinimumWidth(150);
-    //m_endRepeatDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    // m_endRepeatDate->setMinimumWidth(150);
+    // m_endRepeatDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     endrepeatLabellayout->addWidget(m_endRepeatDate);
     endrepeatLabellayout->addStretch();
     m_endRepeatDate->setVisible(false);
@@ -832,7 +884,7 @@ void CSchceduleDlg::initUI()
     m_endrepeatWidget->setLayout(endrepeatLabellayout);
     maintlayout->addWidget(m_endrepeatWidget);
     m_endrepeatWidget->setVisible(false);
-    QHBoxLayout *downlayout  = new QHBoxLayout;
+    QHBoxLayout *downlayout = new QHBoxLayout;
     downlayout->setContentsMargins(0, 0, 0, 0);
     m_cancelBt = new DPushButton(tr("Cancel"));
     m_cancelBt->setFixedSize(189, 36);
@@ -860,16 +912,16 @@ void CSchceduleDlg::initUI()
     maintlayout->addLayout(downlayout);
     // maintlayout->addStretch();
     m_gwi->setLayout(maintlayout);
-    //m_gwi->setGeometry(0, 68, 438, 412);
+    // m_gwi->setGeometry(0, 68, 438, 412);
     DPalette anipa = m_gwi->palette();
     QColor color = "#F8F8F8";
     color.setAlphaF(0.0);
     anipa.setColor(DPalette::Background, color);
-    //m_gwi->setAutoFillBackground(true);
-    //m_gwi->setPalette(anipa);
-    //m_gwi->setBackgroundRole(DPalette::Background);
+    // m_gwi->setAutoFillBackground(true);
+    // m_gwi->setPalette(anipa);
+    // m_gwi->setBackgroundRole(DPalette::Background);
     addContent(m_gwi, Qt::AlignCenter);
-    //setLayout(maintlayout);
+    // setLayout(maintlayout);
     initDateEdit();
     if (m_type == 1)
         slotallDayStateChanged(0);
@@ -882,12 +934,16 @@ void CSchceduleDlg::initConnection()
     connect(m_OkBt, &DPushButton::clicked, this, &CSchceduleDlg::slotOkBt);
     connect(m_textEdit, &DTextEdit::textChanged, this, &CSchceduleDlg::slotTextChange);
 
-    connect(m_allDayCheckbox, &DCheckBox::stateChanged, this, &CSchceduleDlg::slotallDayStateChanged);
-    connect(m_beginrepeatCombox, QOverload<int>::of(&QComboBox::activated), this, &CSchceduleDlg::slotbRpeatactivated);
-    connect(m_endrepeatCombox, QOverload<int>::of(&QComboBox::activated), this, &CSchceduleDlg::sloteRpeatactivated);
+    connect(m_allDayCheckbox, &DCheckBox::stateChanged, this,
+            &CSchceduleDlg::slotallDayStateChanged);
+    connect(m_beginrepeatCombox, QOverload<int>::of(&QComboBox::activated), this,
+            &CSchceduleDlg::slotbRpeatactivated);
+    connect(m_endrepeatCombox, QOverload<int>::of(&QComboBox::activated), this,
+            &CSchceduleDlg::sloteRpeatactivated);
     connect(m_beginDateEdit, &DDateEdit::userDateChanged, this, &CSchceduleDlg::slotBDateEidtInfo);
 
-    //connect(m_eCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this, &CSchceduleDlg::slotEDateEidtInfo);
+    // connect(m_eCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this,
+    // &CSchceduleDlg::slotEDateEidtInfo);
 
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("ESC")));
@@ -896,25 +952,26 @@ void CSchceduleDlg::initConnection()
 
 void CSchceduleDlg::initDateEdit()
 {
-    //m_bCustomDateW = new CCustomCalendarWidget(0);
+    // m_bCustomDateW = new CCustomCalendarWidget(0);
     // m_beginDateEdit->setCalendarWidget(m_bCustomDateW);
-    m_beginDateEdit->setMinimumDate(QDate(1900, 1, 1)); // 0天
-    m_beginDateEdit->setMaximumDate(QDate(9999, 12, 31)); //
-    //m_beginDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
+    m_beginDateEdit->setMinimumDate(QDate(1900, 1, 1));    // 0天
+    m_beginDateEdit->setMaximumDate(QDate(9999, 12, 31));  //
+    // m_beginDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
     // m_bCustomDateW->disconnect(SIGNAL(selectionChanged()));
-    //m_bCustomDateW->disconnect(SIGNAL(clicked(QDate)));
+    // m_bCustomDateW->disconnect(SIGNAL(clicked(QDate)));
 
-    //m_eCustomDateW = new CCustomCalendarWidget(0);
-    //m_endDateEdit->setCalendarWidget(m_eCustomDateW);
-    m_endDateEdit->setMinimumDate(QDate(1900, 1, 1)); // 0天
-    m_endDateEdit->setMaximumDate(QDate(9999, 12, 31)); //
-    //m_endDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
-    //m_eCustomDateW->disconnect(SIGNAL(selectionChanged()));
-    //m_eCustomDateW->disconnect(SIGNAL(clicked(QDate)));
+    // m_eCustomDateW = new CCustomCalendarWidget(0);
+    // m_endDateEdit->setCalendarWidget(m_eCustomDateW);
+    m_endDateEdit->setMinimumDate(QDate(1900, 1, 1));    // 0天
+    m_endDateEdit->setMaximumDate(QDate(9999, 12, 31));  //
+    // m_endDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
+    // m_eCustomDateW->disconnect(SIGNAL(selectionChanged()));
+    // m_eCustomDateW->disconnect(SIGNAL(clicked(QDate)));
     return;
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
-    QWidget *view1 = m_beginDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
+    QWidget *view1 =
+        m_beginDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
     if (view1) {
         DPalette anipa = view1->palette();
         if (themetype == 2) {
@@ -927,7 +984,8 @@ void CSchceduleDlg::initDateEdit()
         view1->setPalette(anipa);
         view1->setBackgroundRole(DPalette::Background);
     }
-    QToolButton *monthbutton1 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
+    QToolButton *monthbutton1 =
+        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
     if (monthbutton1) {
         DPalette anipa = monthbutton1->palette();
         if (themetype == 2) {
@@ -936,9 +994,10 @@ void CSchceduleDlg::initDateEdit()
             anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
         }
         monthbutton1->setPalette(anipa);
-        //monthbutton1->setBackgroundRole(DPalette::ButtonText);
+        // monthbutton1->setBackgroundRole(DPalette::ButtonText);
     }
-    QToolButton *yearbutton1 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
+    QToolButton *yearbutton1 =
+        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
     if (yearbutton1) {
         DPalette anipa = yearbutton1->palette();
         if (themetype == 2) {
@@ -949,7 +1008,8 @@ void CSchceduleDlg::initDateEdit()
         yearbutton1->setPalette(anipa);
     }
 
-    QWidget *view2 = m_endDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
+    QWidget *view2 =
+        m_endDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
     if (view2) {
         DPalette anipa = view2->palette();
         if (themetype == 2) {
@@ -960,7 +1020,8 @@ void CSchceduleDlg::initDateEdit()
         view2->setPalette(anipa);
         view2->setBackgroundRole(DPalette::Background);
     }
-    QToolButton *monthbutton2 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
+    QToolButton *monthbutton2 =
+        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
     if (monthbutton2) {
         DPalette anipa = monthbutton2->palette();
         if (themetype == 2) {
@@ -969,9 +1030,9 @@ void CSchceduleDlg::initDateEdit()
             anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
         }
         monthbutton2->setPalette(anipa);
-
     }
-    QToolButton *yearbutton2 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
+    QToolButton *yearbutton2 =
+        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
     if (yearbutton2) {
         DPalette anipa = yearbutton2->palette();
         if (themetype == 2) {
@@ -982,8 +1043,8 @@ void CSchceduleDlg::initDateEdit()
         yearbutton2->setPalette(anipa);
     }
 
-
-    QWidget *view3 = m_endRepeatDate->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
+    QWidget *view3 =
+        m_endRepeatDate->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
     if (view3) {
         DPalette anipa = view3->palette();
         if (themetype == 2) {
@@ -995,7 +1056,8 @@ void CSchceduleDlg::initDateEdit()
         view3->setBackgroundRole(DPalette::Background);
     }
 
-    QToolButton *monthbutton3 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
+    QToolButton *monthbutton3 =
+        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
     if (monthbutton3) {
         DPalette anipa = monthbutton3->palette();
         if (themetype == 2) {
@@ -1004,9 +1066,9 @@ void CSchceduleDlg::initDateEdit()
             anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
         }
         monthbutton3->setPalette(anipa);
-
     }
-    QToolButton *yearbutton3 = m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
+    QToolButton *yearbutton3 =
+        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
     if (yearbutton2) {
         DPalette anipa = yearbutton3->palette();
         if (themetype == 2) {
@@ -1073,6 +1135,4 @@ void CSchceduleDlg::initRmindRpeatUI()
     } else {
         m_endrepeatWidget->hide();
     }
-
 }
-
