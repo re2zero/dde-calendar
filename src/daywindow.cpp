@@ -17,25 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "daywindow.h"
-#include "daymonthview.h"
-#include "constants.h"
-#include "scheduleview.h"
-#include "schcedulesearchview.h"
-#include <QMessageBox>
-#include <QHBoxLayout>
 #include <DPalette>
+#include <QHBoxLayout>
+#include <QMessageBox>
+#include "constants.h"
 #include "customframe.h"
+#include "daymonthview.h"
+#include "schcedulesearchview.h"
+#include "scheduleview.h"
 DGUI_USE_NAMESPACE
-CDayWindow::CDayWindow(QWidget *parent): QMainWindow (parent)
+CDayWindow::CDayWindow(QWidget *parent)
+    : QMainWindow(parent)
 {
     initUI();
     initConnection();
 }
 
-CDayWindow::~CDayWindow()
-{
-
-}
+CDayWindow::~CDayWindow() {}
 void CDayWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
@@ -46,8 +44,8 @@ void CDayWindow::setTheMe(int type)
 
         // DPalette leftpa = m_leftground->palette();
         // leftpa.setColor(DPalette::Background, "#FFFFFF");
-        //m_leftground->setPalette(leftpa);
-        //m_leftground->setBackgroundRole(DPalette::Background);
+        // m_leftground->setPalette(leftpa);
+        // m_leftground->setBackgroundRole(DPalette::Background);
         m_leftground->setBColor("#FFFFFF");
 
         DPalette ypa = m_YearLabel->palette();
@@ -64,15 +62,15 @@ void CDayWindow::setTheMe(int type)
         m_SolarDay->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
         DPalette anipa = m_contentBackground->palette();
-        QColor bcolor  = "#252525";
-        //bcolor.setAlphaF(0.05);
+        QColor bcolor = "#252525";
+        // bcolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, bcolor);
         m_contentBackground->setPalette(anipa);
         m_contentBackground->setBackgroundRole(DPalette::Background);
-        //DPalette leftpa = m_leftground->palette();
-        //leftpa.setColor(DPalette::Background, "#282828");
-        //m_leftground->setPalette(leftpa);
-        //m_leftground->setBackgroundRole(DPalette::Background);
+        // DPalette leftpa = m_leftground->palette();
+        // leftpa.setColor(DPalette::Background, "#282828");
+        // m_leftground->setPalette(leftpa);
+        // m_leftground->setBackgroundRole(DPalette::Background);
         m_leftground->setBColor("#282828");
 
         DPalette ypa = m_YearLabel->palette();
@@ -89,7 +87,7 @@ void CDayWindow::setTheMe(int type)
         m_SolarDay->setForegroundRole(DPalette::WindowText);
     }
     m_daymonthView->setTheMe(type);
-    //m_schceduleSearchView->setTheMe(type);
+    // m_schceduleSearchView->setTheMe(type);
     m_scheduleView->setTheMe(type);
 }
 
@@ -104,7 +102,8 @@ void CDayWindow::updateHigh()
 }
 void CDayWindow::setDate(QDate date)
 {
-    if (!date.isValid()) return;
+    if (!date.isValid())
+        return;
     m_currentdate = date;
     m_daymonthView->setFirstWeekday(0);
     m_daymonthView->setCurrentDate(date);
@@ -117,18 +116,18 @@ void CDayWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;
     m_daymonthView->setSearchFlag(flag);
-    //m_schceduleSearchView->setVisible(flag);
+    // m_schceduleSearchView->setVisible(flag);
 }
 
 void CDayWindow::clearSearch()
 {
-    //m_schceduleSearchView->clearSearch();
+    // m_schceduleSearchView->clearSearch();
 }
 
 void CDayWindow::setSearchText(QString str)
 {
     m_searchText = str;
-    //m_schceduleSearchView->slotsetSearch(str);
+    // m_schceduleSearchView->slotsetSearch(str);
 }
 
 void CDayWindow::setLunarVisible(bool state)
@@ -155,7 +154,8 @@ void CDayWindow::initUI()
     titleLayout->setContentsMargins(10, 9, 0, 3);
 
     m_YearLabel = new QLabel();
-    m_YearLabel->setMinimumSize(175, DDEDayCalendar::D_YLableHeight);
+    //    m_YearLabel->setMinimumSize(175, DDEDayCalendar::D_YLableHeight);
+    m_YearLabel->setMinimumHeight(DDEDayCalendar::D_YLableHeight);
     QFont labelF;
     labelF.setFamily("SourceHanSansSC");
     labelF.setWeight(QFont::Medium);
@@ -165,18 +165,18 @@ void CDayWindow::initUI()
     ypa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_YearLabel->setPalette(ypa);
     titleLayout->addWidget(m_YearLabel);
-    //titleLayout->addStretch(1);
+    // titleLayout->addStretch(1);
     m_LunarLabel = new QLabel();
     titleLayout->addSpacing(15);
     m_LunarLabel->setFixedHeight(DDEDayCalendar::D_YLableHeight);
     labelF.setPixelSize(14);
     m_LunarLabel->setFont(labelF);
-    m_LunarLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+    m_LunarLabel->setAlignment(Qt::AlignCenter);
     DPalette lpa = m_LunarLabel->palette();
     lpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_LunarLabel->setPalette(lpa);
     titleLayout->addWidget(m_LunarLabel);
-    //titleLayout->addStretch(1);
+    // titleLayout->addStretch(1);
     m_SolarDay = new QLabel();
     labelF.setPixelSize(10);
     m_SolarDay->setFixedHeight(DDEDayCalendar::D_YLableHeight);
@@ -192,10 +192,10 @@ void CDayWindow::initUI()
     leftLayout->setMargin(0);
     leftLayout->setSpacing(0);
     m_scheduleView = new CScheduleView(this, 1);
-    //leftLayout->setContentsMargins(12, 0, 10, 12);
+    // leftLayout->setContentsMargins(12, 0, 10, 12);
     m_scheduleView->setviewMagin(72, 109, 20, 0);
     m_scheduleView->setRange(423, 1032, QDate(2019, 8, 12), QDate(2019, 8, 12));
-    //m_scheduleView->setFixedSize(513, 450);
+    // m_scheduleView->setFixedSize(513, 450);
     leftLayout->addLayout(titleLayout);
     leftLayout->addWidget(m_scheduleView);
 
@@ -213,47 +213,51 @@ void CDayWindow::initUI()
 
     lfetmainLayout->addWidget(m_daymonthView);
     m_leftground = new CustomFrame();
-    //m_leftground->setContentsMargins(0, 0, 0, 0);
+    // m_leftground->setContentsMargins(0, 0, 0, 0);
     m_leftground->setRoundState(true, true, true, true);
     m_leftground->setLayout(lfetmainLayout);
     // m_leftground->setAutoFillBackground(true);
-    //m_leftground->setFrameRounded(true);
+    // m_leftground->setFrameRounded(true);
     m_leftground->setBColor("#FFFFFF");
-    //DPalette leftpa = m_leftground->palette();
-    //leftpa.setColor(DPalette::Background, "#FFFFFF");
-    //m_leftground->setPalette(leftpa);
+    // DPalette leftpa = m_leftground->palette();
+    // leftpa.setColor(DPalette::Background, "#FFFFFF");
+    // m_leftground->setPalette(leftpa);
 
     m_mainLayout = new QHBoxLayout;
     m_mainLayout->setMargin(0);
     m_mainLayout->setSpacing(0);
     m_mainLayout->setContentsMargins(10, 10, 10, 10);
     m_mainLayout->addWidget(m_leftground);
-    //mainLayout->addStretch(1);
+    // mainLayout->addStretch(1);
 
-    //m_schceduleSearchView = new CSchceduleSearchView(this);
+    // m_schceduleSearchView = new CSchceduleSearchView(this);
     // m_schceduleSearchView->setFixedWidth(200);
     // m_mainLayout->addWidget(m_schceduleSearchView);
     // m_schceduleSearchView->setVisible(false);
 
-
     m_contentBackground->setLayout(m_mainLayout);
-
 
     setCentralWidget(m_contentBackground);
 }
 
 void CDayWindow::initConnection()
 {
-    connect(m_daymonthView, &CDayMonthView::signalcurrentLunarDateChanged, this, &CDayWindow::slotcurrentDateLunarChanged);
-    connect(m_daymonthView, &CDayMonthView::signalcurrentDateChanged, this, &CDayWindow::slotcurrentDateChanged);
-    connect(m_daymonthView, &CDayMonthView::signalsReturnDay, this, &CDayWindow::slotCurrentReturnDay);
-    connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CDayWindow::signalViewtransparentFrame);
+    connect(m_daymonthView, &CDayMonthView::signalcurrentLunarDateChanged, this,
+            &CDayWindow::slotcurrentDateLunarChanged);
+    connect(m_daymonthView, &CDayMonthView::signalcurrentDateChanged, this,
+            &CDayWindow::slotcurrentDateChanged);
+    connect(m_daymonthView, &CDayMonthView::signalsReturnDay, this,
+            &CDayWindow::slotCurrentReturnDay);
+    connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this,
+            &CDayWindow::signalViewtransparentFrame);
 
-    connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSchedule);
-    //connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CDayWindow::slotTransitSearchSchedule);
-    // connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CDayWindow::slotsearchDateSelect);
+    connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this,
+            &CDayWindow::slotTransitSchedule);
+    // connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this,
+    // &CDayWindow::slotTransitSearchSchedule);
+    // connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this,
+    // &CDayWindow::slotsearchDateSelect);
 }
-
 
 void CDayWindow::slotupdateSchedule(int id)
 {
@@ -268,7 +272,7 @@ void CDayWindow::slotupdateSchedule(int id)
 
 void CDayWindow::slotTransitSchedule(int id)
 {
-    //m_schceduleSearchView->slotsetSearch(m_searchText);
+    // m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
 }
 
@@ -302,7 +306,8 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     } else {
         m_mainLayout->setContentsMargins(10, 10, 10, 10);
     }
-    if (dw < 350) dw = 350;
+    if (dw < 350)
+        dw = 350;
     m_daymonthView->setFixedSize(dw, dh);
 }
 
@@ -312,15 +317,16 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
     if (type == 1) {
         QLocale locale;
         if (locale.language() == QLocale::Chinese) {
-            m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
+            m_YearLabel->setText(QString::number(date.year()) + tr("Y") +
+                                 QString::number(date.month()) + tr("M") +
+                                 QString::number(date.day()) + tr("D"));
         } else {
             m_YearLabel->setText(locale.toString(date, "yyyy/M/d"));
         }
 
         m_LunarLabel->setText(detail.mLunarMonthName + detail.mLunarDayName);
 
-
-        //m_SolarDay->setText(detail.mSolarFestival);
+        // m_SolarDay->setText(detail.mSolarFestival);
     }
     m_scheduleView->setRange(m_currentdate, m_currentdate);
     if (!detail.mLunarFestival.isEmpty() || !detail.mSolarFestival.isEmpty()) {
@@ -344,11 +350,14 @@ void CDayWindow::slotcurrentDateChanged(QDate date)
     m_currentdate = date;
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
-        m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
+        m_YearLabel->setText(QString::number(date.year()) + tr("Y") +
+                             QString::number(date.month()) + tr("M") + QString::number(date.day()) +
+                             tr("D"));
     } else {
         m_YearLabel->setText(locale.toString(date, "yyyy/M/d"));
     }
-    //m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) + tr("M") + QString::number(date.day()) + tr("D"));
+    // m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) +
+    // tr("M") + QString::number(date.day()) + tr("D"));
     m_scheduleView->setRange(m_currentdate, m_currentdate);
     m_scheduleView->setDate(m_currentdate);
     emit signalCurrentDate(date);
@@ -359,5 +368,3 @@ void CDayWindow::slotsearchDateSelect(QDate date)
     setDate(date);
     slotupdateSchedule();
 }
-
-
