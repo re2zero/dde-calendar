@@ -785,74 +785,83 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
     painter.setPen(Qt::NoPen);
     painter.drawRect(fillRect);
     painter.restore();
-    if (info.id != -1) {
-        //圆点
+    if(gd.id == -1){
+
+        QString str = "...";
+
         painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-        if (type == 0)
-
-            painter.setBrush(QBrush(gdcolor.splitColor));
-        else {
-
-            painter.setBrush(QBrush(m_solocolor));
-        }
-
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
-        painter.restore();
-    }
-
-
-
-    QString str;
-    //左边文字
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    painter.setPen(m_bttextcolor);
-    painter.setFont(font);
-    QFontMetrics fm = painter.fontMetrics();
-    QString tStitlename = gd.titleName;
-    tStitlename.replace("\n", "");
-    str = tStitlename;
-    int tilenameW = labelwidth - 80;
-    QString tstr;
-    for (int i = 0; i < str.count(); i++) {
-        tstr.append(str.at(i));
-        int widthT = fm.width(tstr) + 5;
-        if (widthT >= tilenameW) {
-            tstr.chop(1);
-            break;
-        }
-    }
-    if (tstr != str) {
-        tstr = tstr + "...";
-    }
-
-    painter.drawText(QRect(40, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
-    painter.restore();
-    if (info.id != -1) {
-        //右边时间
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.setPen(m_btimecolor);
         painter.setFont(font);
-        QLocale locale;
+        painter.drawText(QRect(25, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
+        painter.restore();
+    } else {
+        if (info.id != -1) {
+            //圆点
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+            if (type == 0)
 
-        if (info.allday) {
-            str = tr("All Day");
-        } else {
-            if (m_currentDate > info.beginDateTime.date()) {
-                str = tr("All Day");
-            } else {
-                str = info.beginDateTime.time().toString("hh:mm");
+                painter.setBrush(QBrush(gdcolor.splitColor));
+            else {
+
+                painter.setBrush(QBrush(m_solocolor));
             }
+
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
+            painter.restore();
         }
 
-        QFontMetrics fm2 = painter.fontMetrics();
-        painter.drawText(QRect(width() - 70, bheight, 60, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
-        painter.restore();
-    }
+        QString str;
+        //左边文字
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        painter.setPen(m_bttextcolor);
+        painter.setFont(font);
+        QFontMetrics fm = painter.fontMetrics();
+        QString tStitlename = gd.titleName;
+        tStitlename.replace("\n", "");
+        str = tStitlename;
+        int tilenameW = labelwidth - 80;
+        QString tstr;
+        for (int i = 0; i < str.count(); i++) {
+            tstr.append(str.at(i));
+            int widthT = fm.width(tstr) + 5;
+            if (widthT >= tilenameW) {
+                tstr.chop(1);
+                break;
+            }
+        }
+        if (tstr != str) {
+            tstr = tstr + "...";
+        }
 
+        painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
+        painter.restore();
+        if (info.id != -1) {
+            //右边时间
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+            painter.setPen(m_btimecolor);
+            painter.setFont(font);
+            QLocale locale;
+
+            if (info.allday) {
+                str = tr("All Day");
+            } else {
+                if (m_currentDate > info.beginDateTime.date()) {
+                    str = tr("All Day");
+                } else {
+                    str = info.beginDateTime.time().toString("hh:mm");
+                }
+            }
+
+            QFontMetrics fm2 = painter.fontMetrics();
+            painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
+            painter.restore();
+        }
+    }
 }
 
 void CYearSchceduleView::paintItem()
