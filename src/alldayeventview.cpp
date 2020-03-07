@@ -800,7 +800,7 @@ void CSolodayWidgetItem::paintEvent(QPaintEvent *e)
                 tstr = tstr + "...";
             }
             painter.setPen(textcolor);
-            painter.drawText(QRect(drawrect.topLeft().x() + 2, drawrect.topLeft().y() + (drawrect.height() - fm.height()) / 2, drawrect.width(), drawrect.height()), Qt::AlignLeft, tstr);
+            painter.drawText(QRect(drawrect.topLeft().x() + 13, drawrect.topLeft().y() + (drawrect.height() - fm.height()) / 2, drawrect.width(), drawrect.height()), Qt::AlignLeft, tstr);
         }
     }
 }
