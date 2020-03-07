@@ -1,24 +1,24 @@
 ﻿/*
-* Copyright (C) 2015 ~ 2018 Deepin Technology Co., Ltd.
-*
-* Author:     kirigaya <kirigaya@mkacg.com>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2015 ~ 2018 Deepin Technology Co., Ltd.
+ *
+ * Author:     kirigaya <kirigaya@mkacg.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "timeedit.h"
-#include "timeverticalscroll.h"
 #include <QRegExpValidator>
+#include "timeverticalscroll.h"
 CTimeEdit::CTimeEdit(QWidget *parent)
     : DComboBox(parent)
 {
@@ -27,9 +27,7 @@ CTimeEdit::CTimeEdit(QWidget *parent)
     setFocus(Qt::MouseFocusReason);
 }
 
-CTimeEdit::~CTimeEdit()
-{
-}
+CTimeEdit::~CTimeEdit() {}
 
 void CTimeEdit::setTime(QTime time)
 {
@@ -62,14 +60,13 @@ QTime CTimeEdit::getTime()
     }
     timetext = firststr + ":" + secondstr;
 
-
     m_time = QTime::fromString(timetext, "hh:mm");
     return m_time;
 }
 
 void CTimeEdit::initUI()
 {
-    m_pListWidget = new DListWidget(this);
+    //    m_pListWidget = new DListWidget(this);
 
     m_timeEdit = new DLineEdit(this);
     m_timeEdit->lineEdit()->setInputMask("00:00;0");
@@ -78,9 +75,18 @@ void CTimeEdit::initUI()
     QRegExp rx("0[0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]");
     validator = new QRegExpValidator(rx, this);
     m_timeEdit->lineEdit()->setValidator(validator);
+    setLineEdit(m_timeEdit->lineEdit());
+
+    QStringList list;
+    for (int i = 0; i < 24; i++) {
+        list << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(0, 2, 10, QLatin1Char('0'));
+        list << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(30);
+    }
+    this->addItems(list);
+
+#if 0
     setModel(m_pListWidget->model());
     setView(m_pListWidget);
-    setLineEdit(m_timeEdit->lineEdit());
     //disconnect(m_timeEdit, &QLineEdit::editingFinished, m_pListWidget, &QListWidget::update);
     //[2] 年月日选择控件
     m_pListWidget->setContentsMargins(0, 0, 0, 0);
@@ -102,14 +108,17 @@ void CTimeEdit::initUI()
     m_pListWidget->setItemWidget(m_pitem, m_verticalScroll);
     m_pListWidget->setFocusPolicy(Qt::NoFocus);
     m_pListWidget->viewport()->setContentsMargins(0, 0, 0, 0);
+#endif
 }
 
 void CTimeEdit::initConnection()
 {
+#if 0
     connect(m_verticalScroll, &CTimeVerticalScroll::currentValueChanged, this, &CTimeEdit::slotcurrentValueChanged);
     connect(m_verticalScroll, &CTimeVerticalScroll::currentValueChangedClose, this, &CTimeEdit::slotcurrentValueChangedClose);
-    //connect(m_timeEdit, &DLineEdit::editingFinished, this, &CTimeEdit::slotEidtChange);
-    //connect(m_timeEdit, &DLineEdit::returnPressed, this, &CTimeEdit::slotEidtChange);
+#endif
+    // connect(m_timeEdit, &DLineEdit::editingFinished, this, &CTimeEdit::slotEidtChange);
+    // connect(m_timeEdit, &DLineEdit::returnPressed, this, &CTimeEdit::slotEidtChange);
     m_timeEdit->disconnect(SIGNAL(returnPressed()));
     m_timeEdit->disconnect(SIGNAL(editingFinished()));
     m_timeEdit->disconnect(SIGNAL(selectionChanged()));
@@ -127,6 +136,7 @@ void CTimeEdit::initConnection()
     disconnect(SIGNAL(highlighted(const QString &)));
 }
 
+#if 0
 void CTimeEdit::showPopup()
 {
     // QComboBox::showPopup();
@@ -226,3 +236,4 @@ void CTimeEdit::slotEidtChange()
     m_timeEdit->setText(m_time.toString("hh:mm"));
 }
 
+#endif
