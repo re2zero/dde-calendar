@@ -19,24 +19,25 @@
 #ifndef SCHCEDULEDLG_H
 #define SCHCEDULEDLG_H
 
-#include <QObject>
-#include <QWidget>
-#include <DDialog>
-#include <QLabel>
-#include <QComboBox>
-#include <DTextEdit>
-#include <QDateEdit>
-#include <QTimeEdit>
-#include <QRadioButton>
-#include <DPushButton>
-#include <QButtonGroup>
 #include <DArrowButton>
-#include <DDateEdit>
-#include <DTimeEdit>
-#include <DLineEdit>
 #include <DCheckBox>
+#include <DDateEdit>
+#include <DDialog>
 #include <DFrame>
+#include <DLineEdit>
+#include <DPushButton>
+#include <DTextEdit>
+#include <DTimeEdit>
+#include <QButtonGroup>
+#include <QComboBox>
+#include <QDateEdit>
+#include <QLabel>
+#include <QObject>
+#include <QRadioButton>
+#include <QTimeEdit>
+#include <QWidget>
 //#include <DDateEdit>
+#include <DComboBox>
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
 class CTimeEdit;
@@ -60,54 +61,58 @@ public slots:
     void slotallDayStateChanged(int state);
     void slotbRpeatactivated(int index);
     void sloteRpeatactivated(int index);
+
 protected:
     // void focusInEvent(QFocusEvent *event);
     bool eventFilter(QObject *obj, QEvent *pEvent);
+
 private:
     void initUI();
     void initConnection();
     void initDateEdit();
     void initRmindRpeatUI();
-private:
-    QLabel                           *m_typeLabel = nullptr;
-    DComboBox                        *m_typeComBox = nullptr;
-    QLabel                           *m_contentLabel = nullptr;
-    DTextEdit                        *m_textEdit = nullptr;
-    QLabel                           *m_beginTimeLabel = nullptr;
-    DDateEdit                        *m_beginDateEdit = nullptr;
-    CTimeEdit                        *m_beginTimeEdit = nullptr;
-    QLabel                           *m_endTimeLabel = nullptr;
-    DDateEdit                        *m_endDateEdit = nullptr;
-    CTimeEdit                        *m_endTimeEdit = nullptr;
 
-    QLabel                           *m_adllDayLabel = nullptr;
-    DCheckBox                        *m_allDayCheckbox = nullptr;
-    QLabel                           *m_remindSetLabel = nullptr;
-    DComboBox                        *m_rmindCombox = nullptr;
-    QLabel                           *m_beginrepeatLabel = nullptr;
-    DComboBox                        *m_beginrepeatCombox = nullptr;
-    QLabel                           *m_endrepeatLabel = nullptr;
-    DComboBox                        *m_endrepeatCombox = nullptr;
-    DLineEdit                        *m_endrepeattimes;
-    QLabel                           *m_endrepeattimesLabel = nullptr;
-    DWidget                          *m_endrepeattimesWidget;
-    DDateEdit                        *m_endRepeatDate = nullptr;
-    DWidget                          *m_endrepeatWidget;
-    DPushButton                      *m_cancelBt = nullptr;
-    DPushButton                      *m_OkBt = nullptr;
-    //CCalendarTimeEidt                *m_bCalendarTimeEidt;
-    //CCalendarTimeEidt                *m_eCalendarTimeEidt;
-    //CCustomCalendarWidget            *m_bCustomDateW;
-    //CCustomCalendarWidget            *m_eCustomDateW;
-    DFrame                           *m_gwi;
-    QLabel                           *m_titleLabel;
-
-    QString                           m_context;
 private:
-    ScheduleInfo                     m_scheduleInfo;//日程
-    ScheduleDtailInfo                m_scheduleDtailInfo;
-    int                              m_type; //1新建 0 编辑日程
-    QDateTime                        m_currentDate;
+    QLabel *m_typeLabel = nullptr;
+    DComboBox *m_typeComBox = nullptr;
+    QLabel *m_contentLabel = nullptr;
+    DTextEdit *m_textEdit = nullptr;
+    QLabel *m_beginTimeLabel = nullptr;
+    DDateEdit *m_beginDateEdit = nullptr;
+    CTimeEdit *m_beginTimeEdit = nullptr;
+    QLabel *m_endTimeLabel = nullptr;
+    DDateEdit *m_endDateEdit = nullptr;
+    CTimeEdit *m_endTimeEdit = nullptr;
+
+    QLabel *m_adllDayLabel = nullptr;
+    DCheckBox *m_allDayCheckbox = nullptr;
+    QLabel *m_remindSetLabel = nullptr;
+    DComboBox *m_rmindCombox = nullptr;
+    QLabel *m_beginrepeatLabel = nullptr;
+    DComboBox *m_beginrepeatCombox = nullptr;
+    QLabel *m_endrepeatLabel = nullptr;
+    DComboBox *m_endrepeatCombox = nullptr;
+    DLineEdit *m_endrepeattimes;
+    QLabel *m_endrepeattimesLabel = nullptr;
+    DWidget *m_endrepeattimesWidget;
+    DDateEdit *m_endRepeatDate = nullptr;
+    DWidget *m_endrepeatWidget;
+    DPushButton *m_cancelBt = nullptr;
+    DPushButton *m_OkBt = nullptr;
+    // CCalendarTimeEidt                *m_bCalendarTimeEidt;
+    // CCalendarTimeEidt                *m_eCalendarTimeEidt;
+    // CCustomCalendarWidget            *m_bCustomDateW;
+    // CCustomCalendarWidget            *m_eCustomDateW;
+    DFrame *m_gwi;
+    QLabel *m_titleLabel;
+
+    QString m_context;
+
+private:
+    ScheduleInfo m_scheduleInfo;  //日程
+    ScheduleDtailInfo m_scheduleDtailInfo;
+    int m_type;  // 1新建 0 编辑日程
+    QDateTime m_currentDate;
 };
 
-#endif // SHCEDULEDLG_H
+#endif  // SHCEDULEDLG_H
