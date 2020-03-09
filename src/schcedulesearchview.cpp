@@ -469,24 +469,39 @@ void CSchceduleSearchView::updateDateShow()
         }
         tcurrentdata = topdate;
     }
-
+    QVector<ScheduleDateRangeInfo> m_showData;
+    ScheduleDateRangeInfo showData;
     for (int i = 0; i < m_vlistData.size(); ++i) {
-        QListWidgetItem *titem = createItemWidget(m_vlistData[i].date);
-        if (m_vlistData[i].date == tcurrentdata) {
+        showData.date = m_vlistData.at(i).date;
+        for (int j = 0 ; j < m_vlistData.at(i).vData.size(); ++j) {
+            if (m_vlistData.at(i).vData.at(j).beginDateTime.date() == m_vlistData.at(i).date) {
+                showData.vData.append(m_vlistData.at(i).vData.at(j));
+            }
+        }
+        if (showData.vData.count() > 0) {
+            m_showData.append(showData);
+        }
+
+        showData.vData.clear();
+    }
+
+    for (int i = 0; i < m_showData.size(); ++i) {
+        QListWidgetItem *titem = createItemWidget(m_showData[i].date);
+        if (m_showData[i].date == tcurrentdata) {
             m_currentItem = titem;
         }
-        if (m_vlistData.at(i).vData.isEmpty()) continue;
-        if (m_vlistData.at(i).vData.count() == 1) {
-            createItemWidget(m_vlistData.at(i).vData.at(0), m_vlistData[i].date, 1);
-        } else if (m_vlistData.at(i).vData.count() == 2) {
-            createItemWidget(m_vlistData.at(i).vData.at(0), m_vlistData[i].date, 3);
-            createItemWidget(m_vlistData.at(i).vData.at(1), m_vlistData[i].date, 2);
+        if (m_showData.at(i).vData.isEmpty()) continue;
+        if (m_showData.at(i).vData.count() == 1) {
+            createItemWidget(m_showData.at(i).vData.at(0), m_showData[i].date, 1);
+        } else if (m_showData.at(i).vData.count() == 2) {
+            createItemWidget(m_showData.at(i).vData.at(0), m_showData[i].date, 3);
+            createItemWidget(m_showData.at(i).vData.at(1), m_showData[i].date, 2);
         } else {
-            createItemWidget(m_vlistData.at(i).vData.at(0), m_vlistData[i].date, 3);
-            for (int j = 1; j < m_vlistData.at(i).vData.count() - 1; j++) {
-                createItemWidget(m_vlistData.at(i).vData.at(j), m_vlistData[i].date, 0);
+            createItemWidget(m_showData.at(i).vData.at(0), m_showData[i].date, 3);
+            for (int j = 1; j < m_showData.at(i).vData.count() - 1; j++) {
+                createItemWidget(m_showData.at(i).vData.at(j), m_showData[i].date, 0);
             }
-            createItemWidget(m_vlistData.at(i).vData.at(m_vlistData.at(i).vData.count() - 1), m_vlistData[i].date, 2);
+            createItemWidget(m_showData.at(i).vData.at(m_showData.at(i).vData.count() - 1), m_showData[i].date, 2);
         }
     }
     if (m_gradientItemList->count() == 0) {

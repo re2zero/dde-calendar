@@ -30,7 +30,7 @@ class CSchceduleSearchDateItem;
 class CSchceduleSearchView : public DWidget
 {
     Q_OBJECT
-
+//    Q_PROPERTY(int    )
 public:
     CSchceduleSearchView(QWidget *parent = nullptr);
     ~CSchceduleSearchView() Q_DECL_OVERRIDE;

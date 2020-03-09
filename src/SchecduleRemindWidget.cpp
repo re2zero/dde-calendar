@@ -101,9 +101,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     }
     for (int i = 0; i < testList.count(); i++) {
         painter.drawText(
-            QRect(x
-                  , 30 + i * textheight,
-                  textRectWidth, textheight),
+            QRect(x, 30 + i * textheight, textRectWidth, textheight),
             Qt::AlignLeft, testList.at(i));
     }
     this->setFixedHeight(testList.count() * textheight + 30 + 8);
