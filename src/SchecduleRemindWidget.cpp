@@ -1,5 +1,6 @@
 #include "SchecduleRemindWidget.h"
 #include <QPainter>
+#include <QtMath>
 SchecduleRemindWidget *SchecduleRemindWidget::m_instance_ptr = nullptr;
 SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWindow, parent)
@@ -97,43 +98,46 @@ bool SchecduleRemindWidget::eventFilter(QObject *object, QEvent *event)
         QString timestr;
 
         QLocale locale;
-//        if (locale.language() == QLocale::Chinese) {
-//            timestr = tr("上午");
-//        }
         timestr = m_ScheduleInfo.beginDateTime.time().toString("ap hh:mm");
         painter.drawText(QRect( x + 13, 7, 60, 18), Qt::AlignLeft | Qt::AlignTop, timestr);
         int textRectWidth = 165;
 
         QFontMetrics metrics = painter.fontMetrics();
-        int flags = Qt::TextWordWrap | Qt::AlignLeft | Qt::AlignTop ; // 自动换行
-        QRect textBoundingRect = metrics.boundingRect(QRect(x, 30, textRectWidth, 0), flags, m_ScheduleInfo.titleName);
+        const int  textwidth = metrics.width(m_ScheduleInfo.titleName);
+        const int  h_count = qCeil(textwidth / textRectWidth);
 
-        pen.setColor(QColor(65, 77, 104));
-        painter.setPen(pen);
-        if (textBoundingRect.height() > 108) {
-            textBoundingRect.setHeight(108);
-            QStringList liststr;
-            splitText(timeFont, textBoundingRect.width(), textBoundingRect.height(), m_ScheduleInfo.titleName,
-                      liststr);
-            for (int i = 0; i < liststr.count(); i++) {
-                painter.drawText(
-                    QRect(textBoundingRect.x()
-                          , textBoundingRect.y() + i * 20,
-                          textBoundingRect.width(), 20),
-                    Qt::AlignLeft, liststr.at(i));
-            }
+        QString text;
+        QStringList testList;
+        if (h_count < 1) {
+            testList.append(m_ScheduleInfo.titleName);
         } else {
-            painter.drawText(textBoundingRect
-                             , flags
-                             , m_ScheduleInfo.titleName);
+            for (int i = 0; i < m_ScheduleInfo.titleName.count(); ++i) {
+                text += m_ScheduleInfo.titleName.at(i);
+
+                if (metrics.width(text) > textRectWidth) {
+                    text.remove(text.count() - 1, 1);
+                    testList.append(text);
+                    text = "";
+                    if (testList.count() == 4) {
+                        text = m_ScheduleInfo.titleName.right( m_ScheduleInfo.titleName.count() - i );
+                        testList.append(metrics.elidedText(text, Qt::ElideRight, textRectWidth));
+                        break;
+                    }
+                    --i;
+                }
+
+            }
+
         }
-        m_centerWidget->setFixedHeight(textBoundingRect.height() + 30 + 17);
+        for (int i = 0; i < testList.count(); i++) {
+            painter.drawText(
+                QRect(x
+                      , 30 + i * 20,
+                      textRectWidth, 20),
+                Qt::AlignLeft, testList.at(i));
+        }
 
-//        QString strElidedText = metrics.elidedText(m_ScheduleInfo.titleName, Qt::ElideRight, textRectWidth, Qt::TextShowMnemonic);
-//        painter.drawText(textBoundingRect
-//                         , flags
-//                         , strElidedText);
-
+        m_centerWidget->setFixedHeight(testList.count() * 20 + 30 + 13);
         painter.end();
     }
 

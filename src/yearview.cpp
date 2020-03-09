@@ -87,7 +87,7 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     for (int r = 0; r != 6; ++r) {
         for (int c = 0; c != 7; ++c) {
             QWidget *cell = new QWidget(this);
-            cell->setFixedSize(cellwidth, cellheight);
+//            cell->setFixedSize(cellwidth, cellheight);
             cell->installEventFilter(this);
             //cell->setFocusPolicy(Qt::ClickFocus);
             cell->setFocusPolicy(Qt::NoFocus);
@@ -146,7 +146,7 @@ void CYearView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo 
 void CYearView::updateInfoWIndow(bool flag)
 {
     if (flag) {
-        m_Scheduleview->show(0,0);
+        m_Scheduleview->show(0, 0);
     } else {
         m_Scheduleview->hide();
     }
@@ -344,12 +344,12 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
 //                    m_Scheduleview->setDtype(lfetorright, m_Scheduleview->height() / 2);
 //                }
 //                m_Scheduleview->move(mw, mh);
-                m_Scheduleview->show(pos22.x() + 10,pos22.y());
+                m_Scheduleview->show(pos22.x() + 10, pos22.y());
 
 
                 cell->update();
             } else {
-                m_Scheduleview->show(0,0);
+                m_Scheduleview->show(0, 0);
 
             }
 
@@ -440,6 +440,7 @@ void CYearView::paintCell(QWidget *cell)
     }*/
 
     QPainter painter(cell);
+    painter.setRenderHints(QPainter::Antialiasing);
 //    m_cellBackgroundColor =
 
     CellColor currentColor;
@@ -479,7 +480,7 @@ void CYearView::paintCell(QWidget *cell)
             hh = cell->width() - t_pix;
             fillRect = QRect(t_pix / 2, (cell->height() - hh) / 2.0 + 0.5, hh, hh);
         }
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
+
         painter.setBrush(QBrush(m_highColor));
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);
@@ -677,9 +678,9 @@ void CYearView::resizeEvent(QResizeEvent *event)
     m_currentMouth->setTextFont(m_momthFont);
     m_currentMouth->setFixedHeight(24 + (height() - 159) / 12);
     m_currentMouth->update();
-    for (int i(0); i != 42; ++i) {
-        m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
-    }
+//    for (int i(0); i != 42; ++i) {
+//        m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
+//    }
     QFrame::resizeEvent(event);
 }
 

@@ -128,6 +128,7 @@ void CScheduleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     m_hoverflag = false;
+    m_hoverPressMove = false;
     schceduleRemindHide();
     update();
     emit signalsHoverUpdateState(this, 0);
