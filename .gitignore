@@ -25,3 +25,9 @@ build*/
 
 .vscode/
 build/
+.qmake.stash
+dde-calendar
+Makefile
+debian/dde-calendar.debhelper.log
+debian/dde-calendar.substvars
+debian/files
