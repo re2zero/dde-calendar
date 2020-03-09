@@ -8,13 +8,16 @@
 
 DWIDGET_USE_NAMESPACE
 
+class CenterWidget;
+
 class SchecduleRemindWidget : public DArrowRectangle
 {
     Q_OBJECT
     Q_DISABLE_COPY(SchecduleRemindWidget)
 public:
-    static SchecduleRemindWidget *getSchecduleRemindWidget(){
-        if( m_instance_ptr == nullptr){
+    static SchecduleRemindWidget *getSchecduleRemindWidget()
+    {
+        if ( m_instance_ptr == nullptr) {
             m_instance_ptr = new SchecduleRemindWidget(nullptr);
         }
         return  m_instance_ptr;
@@ -23,17 +26,28 @@ public:
     void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
 private:
     explicit SchecduleRemindWidget(QWidget *parent = nullptr);
-    void splitText(QFont &font, int w, int h, QString &str, QStringList &liststr);
-protected:
-    bool eventFilter(QObject *object, QEvent *event) Q_DECL_OVERRIDE;
 signals:
 
 public slots:
 private:
-    DWidget *m_centerWidget;
+    CenterWidget *m_centerWidget;
     ScheduleDtailInfo     m_ScheduleInfo;
     CSchedulesColor gdcolor;
     static SchecduleRemindWidget *m_instance_ptr;
+};
+
+class CenterWidget : public DWidget
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(CenterWidget)
+public:
+    CenterWidget(DWidget *parent = nullptr);
+    ~CenterWidget() Q_DECL_OVERRIDE;
+    void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
+protected:
+    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    ScheduleDtailInfo     m_ScheduleInfo;
+    CSchedulesColor gdcolor;
 };
 
 
