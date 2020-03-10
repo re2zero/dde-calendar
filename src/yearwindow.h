@@ -29,6 +29,7 @@
 #include "calendardbus.h"
 #include <DIconButton>
 #include <QHBoxLayout>
+#include <DLabel>
 #include "customframe.h"
 DWIDGET_USE_NAMESPACE
 
@@ -82,6 +83,9 @@ protected:
 private:
     const QString getLunar(QDate date);
     const CaLunarDayInfo getCaLunarDayInfo(QDate date);
+    DWidget *creatAnimationWidget(QDate date);
+    DWidget *creatAnimationListView(QDate date);
+    void startAnimation(DWidget *first, DWidget *second, bool next);
 private:
     QList<CYearView *> m_monthViewList;
     DFrame *m_contentBackground = nullptr;
@@ -94,6 +98,7 @@ private:
     QLabel            *m_YearLunarDayLabel;
     CYearView         *m_activeview = nullptr;
     DFrame            *m_gridWidget;
+    DWidget            *m_gridWidgethidebak;
     CustomFrame            *m_todayframe;
     CalendarDBus *m_DBusInter;
     QQueue<QDate> *queue;
@@ -104,6 +109,10 @@ private:
     QString           m_searchText;
     bool m_searchfalg = false;
     bool                     m_selectFlag = false;
+    DWidget *m_animationbody = nullptr;
+    DWidget *m_body = nullptr;
+    int m_theMeType = 0;
+    bool banimationrunning = false;
 };
 
 #endif // YEARWINDOW_H

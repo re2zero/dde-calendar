@@ -24,6 +24,9 @@
 #include <DPalette>
 #include <DHiDPIHelper>
 #include <QMenuBar>
+#include <QScreen>
+#include <QPixmap>
+#include <QGuiApplication>
 #include "schcedulesearchview.h"
 DGUI_USE_NAMESPACE
 CYearWindow::CYearWindow(QWidget *parent): QMainWindow (parent)
@@ -78,6 +81,185 @@ void CYearWindow::mousePressEvent(QMouseEvent *event)
         slotHideInfo();
     }
     QMainWindow::mousePressEvent(event);
+}
+
+DWidget *CYearWindow::creatAnimationListView(QDate date)
+{
+    DWidget *dw = new DWidget(m_animationbody);
+
+    dw->setFixedSize(m_gridWidget->size());
+
+
+    QGridLayout *gridLayout = new QGridLayout;
+    gridLayout->setMargin(0);
+    gridLayout->setSpacing(8);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            CYearView *view = new CYearView(dw);
+            //view->setFixedSize(202, 159);
+            gridLayout->addWidget(view, i, j);
+            QDate tdate(date.year(), i * 4 + j + 1, 1);
+            view->setCurrentDate(tdate, 0);
+            if (date.year() == tdate.year() && date.month() == tdate.month()) {
+                view->setCurrentDate(date, 1);
+            }
+            view->setTheMe(m_theMeType);
+//            m_monthViewList.append(view);
+
+        }
+    }
+    DFrame *gridWidget = new DFrame(dw);
+    gridWidget->setLayout(gridLayout);
+
+    gridWidget->setContentsMargins(0, 0, 0, 10);
+    gridWidget->setFrameRounded(true);
+    QVBoxLayout *hhLayout = new QVBoxLayout;
+    hhLayout->setMargin(0);
+    hhLayout->setSpacing(0);
+    hhLayout->setContentsMargins(0, 0, 0, 0);
+//    hhLayout->addLayout(yeartitleLayout);
+//    hhLayout->addWidget(m_topwidget);
+    hhLayout->addWidget(gridWidget);
+
+    dw->setLayout(hhLayout);
+    return dw;
+}
+
+DWidget *CYearWindow::creatAnimationWidget(QDate date)
+{
+    DWidget *dw = new DWidget(m_animationbody);
+
+    dw->setFixedSize(QSize(m_contentBackground->width() - 20, m_contentBackground->height()/* - DDEMonthCalendar::M_YTopHeight */));
+    QLabel *yearLabel = new QLabel();
+    yearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
+    //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
+
+    QFont t_labelF;
+    t_labelF.setFamily("SourceHanSansSC");
+    t_labelF.setWeight(QFont::Medium);
+    t_labelF.setPixelSize(24);
+    yearLabel->setFont(t_labelF);
+    DPalette pa = yearLabel->palette();
+    pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
+    yearLabel->setPalette(pa);
+
+    QLabel *yearLunarLabel = new QLabel(dw);
+    yearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
+
+    QFont ylabelF;
+    ylabelF.setFamily("SourceHanSansSC");
+    ylabelF.setWeight(QFont::Medium);
+    ylabelF.setPixelSize(14);
+    yearLunarLabel->setFont(ylabelF);
+    DPalette Lunapa = yearLunarLabel->palette();
+    Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+    yearLunarLabel->setPalette(Lunapa);
+    //m_YearLunarLabel->move(116, 27);
+
+    QLabel *yearLunarDayLabel = new QLabel(dw);
+    yearLunarDayLabel->setFixedSize(96, DDEMonthCalendar::M_YLunatLabelHeight);
+
+    yearLunarDayLabel->setFont(ylabelF);
+
+    yearLunarDayLabel->setPalette(Lunapa);
+
+
+    QHBoxLayout *yeartitleLayout = new QHBoxLayout;
+    yeartitleLayout->setMargin(0);
+    yeartitleLayout->setSpacing(0);
+    //yeartitleLayout->setContentsMargins(2, 10, 2, 0);
+    yeartitleLayout->setContentsMargins(11, 12, 8, 10);
+    yeartitleLayout->addWidget(yearLabel);
+
+    QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
+    yeartitleLayout1->setMargin(0);
+    yeartitleLayout1->setSpacing(0);
+    //yeartitleLayout1->setContentsMargins(0, 10, 8, 5);
+    yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
+    yeartitleLayout1->addWidget(yearLunarLabel);
+    yeartitleLayout1->addSpacing(390);
+    yeartitleLayout1->addStretch();
+//    yeartitleLayout1->addWidget(yearLunarDayLabel, 0, Qt::AlignVCenter);
+//    yeartitleLayout1->addSpacing(10);
+
+//    CustomFrame *todayframe = new CustomFrame(dw);
+//    todayframe->setContentsMargins(0, 0, 0, 0);
+//    todayframe->setRoundState(true, true, true, true);
+//    todayframe->setBColor(Qt::white);
+//    todayframe->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+//    todayframe->setboreder(1);
+//    QHBoxLayout *todaylayout = new QHBoxLayout;
+//    todaylayout->setMargin(0);
+//    todaylayout->setSpacing(0);
+//    todaylayout->addWidget(m_prevButton);
+//    todaylayout->addWidget(m_today, 0, Qt::AlignCenter);
+//    todaylayout->addWidget(m_nextButton);
+//    m_todayframe->setLayout(todaylayout);
+//    yeartitleLayout1->addWidget(m_todayframe);
+    yeartitleLayout->addLayout(yeartitleLayout1);
+
+    QGridLayout *gridLayout = new QGridLayout;
+    gridLayout->setMargin(0);
+    gridLayout->setSpacing(8);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            CYearView *view = new CYearView(dw);
+            //view->setFixedSize(202, 159);
+            gridLayout->addWidget(view, i, j);
+            QDate tdate(date.year(), i * 4 + j + 1, 1);
+            view->setCurrentDate(tdate, 0);
+            if (date.year() == tdate.year() && date.month() == tdate.month()) {
+                view->setCurrentDate(date, 1);
+            }
+            view->setTheMe(m_theMeType);
+//            m_monthViewList.append(view);
+
+        }
+    }
+    DFrame *gridWidget = new DFrame(dw);
+    gridWidget->setLayout(gridLayout);
+
+    gridWidget->setContentsMargins(0, 0, 0, 10);
+    gridWidget->setFrameRounded(true);
+    QVBoxLayout *hhLayout = new QVBoxLayout;
+    hhLayout->setMargin(0);
+    hhLayout->setSpacing(0);
+    hhLayout->setContentsMargins(0, 0, 0, 0);
+    DWidget *m_topwidget = new DWidget;
+    m_topwidget->setLayout(yeartitleLayout);
+    m_topwidget->setFixedHeight(DDEMonthCalendar::M_YTopHeight);
+//    hhLayout->addLayout(yeartitleLayout);
+    hhLayout->addWidget(m_topwidget);
+    hhLayout->addWidget(gridWidget);
+
+
+    CaLunarDayInfo currentDayInfo;
+    if (!lunarCache->contains(date)) {
+        bool o1 = true;
+        QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(date.year(), date.month(), false, o1);
+
+        QDate cacheDate;
+        cacheDate.setDate(date.year(), date.month(), 1);
+        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
+            lunarCache->insert(cacheDate, dayInfo);
+            currentDayInfo = dayInfo;
+            cacheDate = cacheDate.addDays(1);
+        }
+    } else {
+        currentDayInfo = lunarCache->value(date);
+    }
+    yearLunarLabel->setText("-" + currentDayInfo.mGanZhiYear + currentDayInfo.mZodiac + "年-");
+
+    QLocale locale;
+    if (locale.language() == QLocale::Chinese) {
+        yearLabel->setText(QString::number(date.year()) + tr("Y"));
+    } else {
+        yearLabel->setText(QString::number(date.year()));
+    }
+    dw->setLayout(hhLayout);
+    return dw;
 }
 
 void CYearWindow::setDate(QDate date)
@@ -207,6 +389,33 @@ void CYearWindow::initUI()
     yeartitleLayout->setContentsMargins(11, 12, 8, 10);
     yeartitleLayout->addWidget(m_YearLabel);
 
+//    QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
+//    yeartitleLayout1->setMargin(0);
+//    yeartitleLayout1->setSpacing(0);
+//    //yeartitleLayout1->setContentsMargins(0, 10, 8, 5);
+//    yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
+//    yeartitleLayout1->addWidget(m_YearLunarLabel);
+//    yeartitleLayout1->addSpacing(390);
+//    yeartitleLayout1->addStretch();
+//    yeartitleLayout1->addWidget(m_YearLunarDayLabel, 0, Qt::AlignVCenter);
+//    yeartitleLayout1->addSpacing(10);
+
+//    m_todayframe = new CustomFrame(this);
+//    m_todayframe->setContentsMargins(0, 0, 0, 0);
+//    m_todayframe->setRoundState(true, true, true, true);
+//    m_todayframe->setBColor(Qt::white);
+//    m_todayframe->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+//    m_todayframe->setboreder(1);
+//    QHBoxLayout *todaylayout = new QHBoxLayout;
+//    todaylayout->setMargin(0);
+//    todaylayout->setSpacing(0);
+//    todaylayout->addWidget(m_prevButton);
+//    todaylayout->addWidget(m_today, 0, Qt::AlignCenter);
+//    todaylayout->addWidget(m_nextButton);
+//    m_todayframe->setLayout(todaylayout);
+//    yeartitleLayout1->addWidget(m_todayframe);
+//    yeartitleLayout->addLayout(yeartitleLayout1);
+
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
     yeartitleLayout1->setMargin(0);
     yeartitleLayout1->setSpacing(0);
@@ -261,12 +470,22 @@ void CYearWindow::initUI()
 
     m_gridWidget->setContentsMargins(0, 0, 0, 10);
     m_gridWidget->setFrameRounded(true);
+
+
+    m_gridWidgethidebak = new DWidget(this);
+
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->setMargin(0);
     hhLayout->setSpacing(0);
     hhLayout->setContentsMargins(0, 0, 0, 0);
-    hhLayout->addLayout(yeartitleLayout);
+    DWidget *m_topwidget = new DWidget;
+    m_topwidget->setLayout(yeartitleLayout);
+    m_topwidget->setFixedHeight(DDEMonthCalendar::M_YTopHeight);
+//    hhLayout->addLayout(yeartitleLayout);
+    hhLayout->addWidget(m_topwidget);
     hhLayout->addWidget(m_gridWidget);
+    hhLayout->addWidget(m_gridWidgethidebak);
+    m_gridWidgethidebak->hide();
 
 
     m_tmainLayout = new QHBoxLayout;
@@ -276,23 +495,16 @@ void CYearWindow::initUI()
     m_tmainLayout->addLayout(hhLayout);
     //mainLayout->addStretch(1);
 
-    //m_schceduleSearchView = new CSchceduleSearchView(this);
-    //m_schceduleSearchView->setFixedWidth(200);
-
-    //QVBoxLayout *ssLayout = new QVBoxLayout;
-    //ssLayout->setMargin(0);
-    //ssLayout->setSpacing(0);
-    // ssLayout->setContentsMargins(0, 10, 0, 10);
-    //ssLayout->addWidget(m_schceduleSearchView);
-    // m_tmainLayout->addLayout(ssLayout);
-    //m_schceduleSearchView->setVisible(false);
-
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
     m_contentBackground->setLayout(m_tmainLayout);
 
     //menuBar()->hide();
     setCentralWidget(m_contentBackground);
-
+    m_animationbody = new DWidget(m_contentBackground);
+    m_animationbody->setFixedSize(QSize(m_contentBackground->width(), m_contentBackground->height() - DDEMonthCalendar::M_YTopHeight));
+    m_animationbody->move(0, DDEMonthCalendar::M_YTopHeight);
+    m_animationbody->hide();
+    m_animationbody->raise();
 }
 
 void CYearWindow::initConnection()
@@ -312,6 +524,7 @@ void CYearWindow::setLunarVisible(bool state)
 
 void CYearWindow::setTheMe(int type)
 {
+    m_theMeType = type;
     if (type == 0 || type == 1) {
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#F8F8F8");
@@ -479,6 +692,9 @@ void CYearWindow::slotActiveW(CYearView *w)
 
 void CYearWindow::slotprev()
 {
+    if (banimationrunning)
+        return;
+    DWidget *dw = creatAnimationWidget(m_currentdate);
     if (m_currentdate.year() == 1900) return;
     QDate tcurrent = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
     if (!tcurrent.isValid()) {
@@ -488,21 +704,83 @@ void CYearWindow::slotprev()
     }
     if (m_currentdate.year() >= 1900) {
         //m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
+        DWidget *dl = creatAnimationListView(m_currentdate);
         setDate(m_currentdate);
+        startAnimation(dw, dl, false);
     } else {
         //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
+        delete dw;
     }
+}
+
+void CYearWindow::startAnimation(DWidget *first, DWidget *second, bool next)
+{
+    first->show();
+    second->show();
+    m_animationbody->show();
+    m_gridWidget->hide();
+    m_gridWidgethidebak->show();
+
+    if (next) {
+        first->move(10, 0);
+        second->move(10, first->height());
+    } else {
+        first->move(10, -DDEMonthCalendar::M_YTopHeight);
+        second->move(10, -second->height() - DDEMonthCalendar::M_YTopHeight);
+    }
+
+    QPropertyAnimation *animationfirst = new QPropertyAnimation(first, "geometry", this);
+    QPropertyAnimation *animationsecond = new QPropertyAnimation(second, "geometry", this);
+    QParallelAnimationGroup *animationgroup = new QParallelAnimationGroup;
+    animationfirst->setDuration(500);
+    animationsecond->setDuration(500);
+    animationgroup->addAnimation(animationfirst);
+    animationgroup->addAnimation(animationsecond);
+    animationfirst->setStartValue(first->geometry());
+    animationsecond->setStartValue(second->geometry());
+
+    if (next) {
+        animationfirst->setEndValue(QRect(10, -DDEMonthCalendar::M_YTopHeight - first->height(), first->width(), first->height()));
+        animationsecond->setEndValue(QRect(10, -DDEMonthCalendar::M_YTopHeight, second->width(), second->height()));
+    } else {
+        animationfirst->setEndValue(QRect(10, first->height() - DDEMonthCalendar::M_YTopHeight, first->width(), first->height()));
+        animationsecond->setEndValue(QRect(10, 0, second->width(), second->height()));
+    }
+    banimationrunning = true;
+    connect(animationgroup, &QPropertyAnimation::finished,
+    this, [ = ] {
+        setDate(m_currentdate);
+        m_gridWidget->show();
+        m_gridWidgethidebak->hide();
+        first->hide();
+        second->hide();
+        m_animationbody->hide();
+        animationfirst->deleteLater();
+        animationsecond->deleteLater();
+        animationgroup->deleteLater();
+        delete first;
+        delete second;
+        banimationrunning = false;
+    });
+
+    animationgroup->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void CYearWindow::slotnext()
 {
+    if (banimationrunning)
+        return;
+    DWidget *dl = creatAnimationListView(m_currentdate);
     QDate tcurrent = QDate(m_currentdate.year() + 1, m_currentdate.month(), m_currentdate.day());
     if (!tcurrent.isValid()) {
         m_currentdate = QDate(m_currentdate.year() + 1, m_currentdate.month(), 1);
     } else {
         m_currentdate = tcurrent;
     }
-    setDate(m_currentdate);
+//    setDate(m_currentdate);
+    DWidget *dw = creatAnimationWidget(m_currentdate);
+    startAnimation(dl, dw, true);
+
 }
 
 void CYearWindow::slottoday()
@@ -620,6 +898,9 @@ void CYearWindow::resizeEvent(QResizeEvent *event)
     }
 
     QMainWindow::resizeEvent(event);
+//    animationwg1->setFixedSize(QSize(m_contentBackground->width(), m_contentBackground->height() - DDEMonthCalendar::M_YTopHeight));
+//    animationwg2->setFixedSize(m_contentBackground->size());
+    m_animationbody->setFixedSize(QSize(m_contentBackground->width(), m_contentBackground->height() - DDEMonthCalendar::M_YTopHeight));
 }
 
 void CYearWindow::wheelEvent(QWheelEvent *event)
