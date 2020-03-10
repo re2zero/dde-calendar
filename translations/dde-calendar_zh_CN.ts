@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.1">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -12,11 +10,11 @@
     <name>CAllDayEventWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>编 辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删 除</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>New event</source>
@@ -32,7 +30,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取 消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -52,7 +50,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>全删除所有将来日程</translation>
+        <translation>删除所有将来日程</translation>
     </message>
 </context>
 <context>
@@ -66,15 +64,11 @@
     <name>CAllDaySchceduleWeekWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>编 辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删 除</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取 消</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>New event</source>
@@ -87,6 +81,10 @@
     <message>
         <source>Are you sure you want to delete this event?</source>
         <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -106,7 +104,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>全删除所有将来日程</translation>
+        <translation>删除所有将来日程</translation>
     </message>
 </context>
 <context>
@@ -137,7 +135,7 @@
     </message>
     <message>
         <source>Sunday</source>
-        <translation>星期天 </translation>
+        <translation>星期日</translation>
     </message>
 </context>
 <context>
@@ -147,27 +145,23 @@
         <translation>年</translation>
     </message>
     <message>
-        <source>D</source>
-        <translation>日</translation>
-    </message>
-    <message>
         <source>M</source>
         <translation>月</translation>
+    </message>
+    <message>
+        <source>D</source>
+        <translation>日</translation>
     </message>
 </context>
 <context>
     <name>CGraphicsView</name>
     <message>
         <source>Edit</source>
-        <translation>编 辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删 除</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取 消</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>New event</source>
@@ -182,6 +176,10 @@
         <translation>您确定要删除此日程吗？</translation>
     </message>
     <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
         <translation>您要删除此日程的所有重复，还是只删除所选重复？</translation>
     </message>
@@ -199,30 +197,25 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>全删除所有将来日程</translation>
+        <translation>删除所有将来日程</translation>
     </message>
 </context>
 <context>
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>还有%1项
-</translation>
+        <translation>还有%1项</translation>
     </message>
 </context>
 <context>
     <name>CMonthSchceduleWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>编 辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删 除</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取 消</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -233,6 +226,10 @@
         <translation>您确定要删除此日程吗？</translation>
     </message>
     <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
         <translation>您要删除此日程的所有重复，还是只删除所选重复？</translation>
     </message>
@@ -250,7 +247,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>全删除所有将来日程</translation>
+        <translation>删除所有将来日程</translation>
     </message>
 </context>
 <context>
@@ -270,24 +267,20 @@
 <context>
     <name>CMySchceduleView</name>
     <message>
-        <source>Cancel</source>
-        <translation>取 消</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>编 辑</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>删 除</translation>
-    </message>
-    <message>
         <source>You are deleting an event.</source>
         <translation>您正在删除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
         <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>删除</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -307,51 +300,19 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>全删除所有将来日程</translation>
+        <translation>删除所有将来日程</translation>
     </message>
     <message>
         <source>My Event</source>
         <translation>我的日程</translation>
     </message>
+    <message>
+        <source>Edit</source>
+        <translation>编辑</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
-    <message>
-        <source>Type:</source>
-        <translation>类型：</translation>
-    </message>
-    <message>
-        <source>Work</source>
-        <translation>工作</translation>
-    </message>
-    <message>
-        <source>Life</source>
-        <translation>生活</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>其他</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取 消</translation>
-    </message>
-    <message>
-        <source>All Day:</source>
-        <translation>全天:</translation>
-    </message>
-    <message>
-        <source>Repeat:</source>
-        <translation>重复：</translation>
-    </message>
-    <message>
-        <source>End Repeat:</source>
-        <translation>结束重复：</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation>无</translation>
-    </message>
     <message>
         <source>New Event</source>
         <translation>新建日程</translation>
@@ -369,6 +330,14 @@
         <translation>您要更改所有重复吗？</translation>
     </message>
     <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Change All</source>
+        <translation>全部更改</translation>
+    </message>
+    <message>
         <source>You are changing the repeating rule of this event.</source>
         <translation>您正在更改日程的重复规则。</translation>
     </message>
@@ -381,6 +350,10 @@
         <translation>您要更改此日程的仅这一个重复，还是更改它的所有重复？</translation>
     </message>
     <message>
+        <source>All</source>
+        <translation>全部日程</translation>
+    </message>
+    <message>
         <source>Only This Event</source>
         <translation>仅此日程</translation>
     </message>
@@ -391,6 +364,10 @@
     <message>
         <source>All Future Events</source>
         <translation>所有将来日程</translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation>从不</translation>
     </message>
     <message>
         <source>At time of event</source>
@@ -422,11 +399,31 @@
     </message>
     <message>
         <source>On start day (9:00 AM)</source>
-        <translation>日程发生当天（上午9时）</translation>
+        <translation>日程发生当天（上午9点）</translation>
+    </message>
+    <message>
+        <source>Type:</source>
+        <translation>类型：</translation>
+    </message>
+    <message>
+        <source>Work</source>
+        <translation>工作</translation>
+    </message>
+    <message>
+        <source>Life</source>
+        <translation>生活</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>其他</translation>
     </message>
     <message>
         <source>Description:</source>
         <translation>内容：</translation>
+    </message>
+    <message>
+        <source>All Day:</source>
+        <translation>全天：</translation>
     </message>
     <message>
         <source>Starts:</source>
@@ -439,6 +436,10 @@
     <message>
         <source>Remind Me:</source>
         <translation>提醒：</translation>
+    </message>
+    <message>
+        <source>Repeat:</source>
+        <translation>重复：</translation>
     </message>
     <message>
         <source>Daily</source>
@@ -461,6 +462,10 @@
         <translation>每年</translation>
     </message>
     <message>
+        <source>End Repeat:</source>
+        <translation>结束重复：</translation>
+    </message>
+    <message>
         <source>After</source>
         <translation>于</translation>
     </message>
@@ -474,15 +479,7 @@
     </message>
     <message>
         <source>Save</source>
-        <translation>保 存</translation>
-    </message>
-    <message>
-        <source>Change All</source>
-        <translation>全部更改</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>全部日程</translation>
+        <translation>保存</translation>
     </message>
     <message>
         <source>New event</source>
@@ -494,7 +491,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -516,15 +513,11 @@
     <name>CSchceduleSearchItem</name>
     <message>
         <source>Edit</source>
-        <translation>编 辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>删 除</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取 消</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -533,6 +526,10 @@
     <message>
         <source>Are you sure you want to delete this event?</source>
         <translation>您确定要删除此日程吗？</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -552,7 +549,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>全删除所有将来日程</translation>
+        <translation>删除所有将来日程</translation>
     </message>
 </context>
 <context>
@@ -608,16 +605,20 @@
 <context>
     <name>CalendarWindow</name>
     <message>
-        <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>日历是一款查看日期、管理日程的小工具。</translation>
-    </message>
-    <message>
         <source>Calendar</source>
         <translation>日历</translation>
+    </message>
+    <message>
+        <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
+        <translation>日历是一款查看日期、管理日程的小工具。</translation>
     </message>
 </context>
 <context>
     <name>Calendarmainwindow</name>
+    <message>
+        <source>Calendar</source>
+        <translation>日历</translation>
+    </message>
     <message>
         <source>Y</source>
         <translation>年</translation>
@@ -633,10 +634,6 @@
     <message>
         <source>D</source>
         <translation>日</translation>
-    </message>
-    <message>
-        <source>Calendar</source>
-        <translation>日历</translation>
     </message>
 </context>
 <context>
@@ -669,8 +666,8 @@
         <translation>帮助</translation>
     </message>
     <message>
-        <source>Delete</source>
-        <translation>删除</translation>
+        <source>Delete event</source>
+        <translation>删除日程</translation>
     </message>
     <message>
         <source>Copy</source>
@@ -685,12 +682,12 @@
         <translation>粘贴</translation>
     </message>
     <message>
-        <source>Delete event</source>
-        <translation>删除日程</translation>
-    </message>
-    <message>
         <source>Select all</source>
         <translation>全选</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>删除</translation>
     </message>
 </context>
 <context>

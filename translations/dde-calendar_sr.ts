@@ -1,5 +1,59 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="sr" version="2.1">
 <context>
+    <name>CAllDayEventWeekView</name>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>CAllDayEventWidgetItem</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CAllDaySchceduleWeekView</name>
     <message>
         <source>New event</source>
@@ -34,7 +88,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -46,7 +100,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -127,7 +181,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -139,7 +193,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -150,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation type="unfinished"/>
+        <translation>Још %1</translation>
     </message>
 </context>
 <context>
@@ -189,7 +243,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -230,7 +284,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -242,7 +296,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -269,11 +323,11 @@
     </message>
     <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation type="unfinished"/>
+        <translation>Све појаве понављајућег догађаја морају имати исти целодневни статус.</translation>
     </message>
     <message>
         <source>Do you want to change all occurrences?</source>
-        <translation>Да ли желите да промените сва понављања?</translation>
+        <translation>Желите ли да промените све појаве?</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -285,15 +339,15 @@
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
-        <translation type="unfinished"/>
+        <translation>Мењате правило понављања овог догађаја.</translation>
     </message>
     <message>
         <source>You are changing a repeating event.</source>
-        <translation type="unfinished"/>
+        <translation>Мењате понаљајући догађај.</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation>Да ли желите да обришете све појаве овог догађаја или све ставке?</translation>
+        <translation>Желите ли да промените само ову појаву догађаја или све?</translation>
     </message>
     <message>
         <source>All</source>
@@ -305,7 +359,7 @@
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Желите ли да промените ову појаву догађаја или ову појаву и све будуће појаве?</translation>
     </message>
     <message>
         <source>All Future Events</source>
@@ -317,35 +371,35 @@
     </message>
     <message>
         <source>At time of event</source>
-        <translation type="unfinished"/>
+        <translation>У време догађаја</translation>
     </message>
     <message>
         <source>15 minutes before</source>
-        <translation>Пре 15 минута</translation>
+        <translation>15 минута раније</translation>
     </message>
     <message>
         <source>30 minutes before</source>
-        <translation>Пре 30 минута</translation>
+        <translation>30 минута раније</translation>
     </message>
     <message>
         <source>1 hour before</source>
-        <translation>Пре 1 сат</translation>
+        <translation>1 сат раније</translation>
     </message>
     <message>
         <source>1 day before</source>
-        <translation>Пре 1 дан</translation>
+        <translation>1 дан раније</translation>
     </message>
     <message>
         <source>2 days before</source>
-        <translation>Пре 2 дана</translation>
+        <translation>2 дана раније</translation>
     </message>
     <message>
         <source>1 week before</source>
-        <translation>Пре 1 седмице</translation>
+        <translation>1 седмица раније</translation>
     </message>
     <message>
         <source>On start day (9:00 AM)</source>
-        <translation type="unfinished"/>
+        <translation>На дан почетка (9:00 АМ)</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -385,11 +439,11 @@
     </message>
     <message>
         <source>Repeat:</source>
-        <translation>Понови:</translation>
+        <translation>Понављај:</translation>
     </message>
     <message>
         <source>Daily</source>
-        <translation>Дневно</translation>
+        <translation>Свакодневно</translation>
     </message>
     <message>
         <source>Weekdays</source>
@@ -409,19 +463,19 @@
     </message>
     <message>
         <source>End Repeat:</source>
-        <translation type="unfinished"/>
+        <translation>Окончај понављање:</translation>
     </message>
     <message>
         <source>After</source>
-        <translation type="unfinished"/>
+        <translation>Након</translation>
     </message>
     <message>
         <source>On</source>
-        <translation type="unfinished"/>
+        <translation>На</translation>
     </message>
     <message>
         <source>time(s)</source>
-        <translation type="unfinished"/>
+        <translation>пут(а)</translation>
     </message>
     <message>
         <source>Save</source>
@@ -433,6 +487,10 @@
     </message>
     <message>
         <source>End time must be greater than start time</source>
+        <translation>Крајње време мора бити након почетног</translation>
+    </message>
+    <message>
+        <source>OK</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -475,7 +533,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -487,7 +545,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
