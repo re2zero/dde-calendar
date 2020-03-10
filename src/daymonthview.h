@@ -41,7 +41,7 @@ class CDayMonthView: public CustomFrame
     Q_OBJECT
 
 public:
-    explicit CDayMonthView(QWidget *parent = 0);
+    explicit CDayMonthView(QWidget *parent = nullptr);
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
     inline bool cellSelectable() const
@@ -75,6 +75,7 @@ private:
     void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e);
     void updateDate();
+    void getlineflag();
 
     const QString getLunar(int pos);
     const CaHuangLiDayInfo getCaHuangLiDayInfo(int pos);
@@ -144,6 +145,8 @@ private:
     int                      m_radius = 8;
     QStringList m_monthList;
     bool                 m_searchflag = false;
+    QColor m_ceventColor = "#FF5D00";
+    QVector<bool>            m_vlineflag; //节假日和日程标识
 };
 
 #endif // YEARVIEW_H

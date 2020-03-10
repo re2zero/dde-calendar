@@ -35,6 +35,7 @@
 #include <DHorizontalLine>
 #include <DHiDPIHelper>
 #include "todybutton.h"
+#include "scheduledatamanage.h"
 DGUI_USE_NAMESPACE
 CDayMonthView::CDayMonthView(QWidget *parent) : CustomFrame(parent)
 {
@@ -173,6 +174,7 @@ void CDayMonthView::setTheMe(int type)
         m_selectedTextColor = Qt::white;
         m_festivalTextColor = Qt::black;
         m_notCurrentTextColor = "#b2b2b2";
+        m_ceventColor = QColor(255, 93, 0);
 
 
     } else if (type == 2) {
@@ -251,6 +253,7 @@ void CDayMonthView::setTheMe(int type)
         m_festivalTextColor = Qt::black;
         m_notCurrentTextColor = "#C0C6D4";
         m_notCurrentTextColor.setAlphaF(0.5);
+        m_ceventColor = QColor(204, 77, 3);
     }
 
     for (int i(0); i != 42; ++i) {
@@ -275,6 +278,8 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     } else {
         m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
     }
+
+
 
     //if (date == QDate::currentDate()) {
     //     m_today->setEnabled(false);
@@ -334,7 +339,29 @@ void CDayMonthView::updateDate()
     }
 
     setSelectedCell(currentIndex);
+    getlineflag();
     update();
+}
+
+void CDayMonthView::getlineflag()
+{
+    QLocale locale;
+    CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
+    if (locale.language() == QLocale::Chinese) {
+        m_vlineflag = tdataManage->getHuangliDayDataManage()->getDayFlag(m_currentDate);
+    } else {
+        m_vlineflag.resize(42);
+        m_vlineflag.fill(false);
+    }
+    QVector<ScheduleDateRangeInfo> out;
+    if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[0], m_days[41], out)) {
+        if (out.count() == 42)
+            for (int i = 0; i < 42; i++) {
+                if (!out.at(i).vData.isEmpty()) {
+                    m_vlineflag[i] = true;
+                }
+            }
+    }
 }
 
 void CDayMonthView::initUI()
@@ -670,6 +697,29 @@ void CDayMonthView::paintCell(QWidget *cell)
     painter.setFont(m_dayNumFont);
 
     painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
+
+    if (m_vlineflag.count() == 42) {
+        if (m_vlineflag[pos]) {
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            QPen pen;
+            pen.setWidth(2);
+            pen.setColor(m_ceventColor);
+            painter.setPen(pen);
+            painter.setBrush(QBrush(m_ceventColor));
+            painter.setPen(Qt::NoPen);
+            int r = cell->width() * (4 / 25);
+            if (r < 4) {
+                r = 4;
+            } else if ( r > 7) {
+                r = 7;
+            }
+            painter.drawEllipse(cell->width() - r, 0, r, r);
+            painter.restore();
+        }
+    }
 
     painter.end();
 #endif
