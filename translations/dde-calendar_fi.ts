@@ -1,5 +1,59 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" version="2.1">
 <context>
+    <name>CAllDayEventWeekView</name>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>CAllDayEventWidgetItem</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CAllDaySchceduleWeekView</name>
     <message>
         <source>New event</source>
@@ -150,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation type="unfinished"/>
+        <translation>%1 lisää</translation>
     </message>
 </context>
 <context>
@@ -250,7 +304,7 @@
     </message>
     <message>
         <source>My Event</source>
-        <translation>Oma tapahtuma</translation>
+        <translation>Tapahtuma</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -357,7 +411,7 @@
     </message>
     <message>
         <source>Life</source>
-        <translation>Elinaika</translation>
+        <translation>Oma</translation>
     </message>
     <message>
         <source>Other</source>
@@ -381,7 +435,7 @@
     </message>
     <message>
         <source>Remind Me:</source>
-        <translation>Muistuta minua:</translation>
+        <translation>Muistuta:</translation>
     </message>
     <message>
         <source>Repeat:</source>
@@ -433,6 +487,10 @@
     </message>
     <message>
         <source>End time must be greater than start time</source>
+        <translation>Lopetusajan on oltava pidempi kuin aloitusaika</translation>
+    </message>
+    <message>
+        <source>OK</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -552,7 +610,7 @@
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>Kalenteri on työkalu päivämäärien tarkastelemiseen ja myös älykäs päiväsuunnittelija ajoittaaksesi kaikki asiat.</translation>
+        <translation>Kalenteri on työkalu päivämäärien tarkastelemiseen ja myös älykäs päiväsuunnittelija kaikille asioille.</translation>
     </message>
 </context>
 <context>
