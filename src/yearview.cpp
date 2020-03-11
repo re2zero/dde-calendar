@@ -444,6 +444,11 @@ void CYearView::paintCell(QWidget *cell)
 //    m_cellBackgroundColor =
 
     CellColor currentColor;
+    const int r = cell->width() > cell->height() ? cell->height() * 0.9 : cell->width() * 0.9 ;
+    const int x = ( cell->width() - r ) / 2;
+    const int y = (cell->height() - r) / 2;
+    QRect fillRect = QRect(x, y, r, r);
+
     if (m_themetype == 2) {
         currentColor = darkColor;
     } else {
@@ -461,7 +466,7 @@ void CYearView::paintCell(QWidget *cell)
     } else {
         painter.setBrush(m_cellBackgroundColor);
         painter.setPen(Qt::NoPen);
-        painter.drawRect(rect);
+        painter.drawEllipse(fillRect);
     }
 
 
