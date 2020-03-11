@@ -255,7 +255,12 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
                     if (scheduleInfolist.at(0).beginDateTime.date() != m_beginDate) {
                         time = QTime(0, 0);
                     }
-                    time = time.addSecs(14400);
+                    if (time.hour() + 4 >= 24) {
+                        time = QTime(20, 0);
+                    } else {
+                        time = time.addSecs(14400);
+                    }
+
                     m_graphicsView->setTime(time);
                 }
             }
