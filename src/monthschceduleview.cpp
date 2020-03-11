@@ -51,6 +51,7 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
 
 CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
 {
+    SchecduleRemindWidgetHide();
     disconnect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     disconnect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
 }

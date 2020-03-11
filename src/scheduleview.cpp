@@ -331,17 +331,21 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     continue;
                 if (m_topMagin - 8 + m_vPos[i] < m_topMagin)
                     continue;
-                if (m_vHours[i] > 12) {
-                    painter.drawText(
-                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                              hourTextWidth, hourTextHeight),
-                        Qt::AlignRight, ("下午 ") + QString::number(m_vHours[i] - 12) + (" 时"));
-                } else {
-                    painter.drawText(
-                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                              hourTextWidth, hourTextHeight),
-                        Qt::AlignRight, ("上午 ") + QString::number(m_vHours[i]) + (" 时"));
-                }
+//                if (m_vHours[i] > 12) {
+//                    painter.drawText(
+//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+//                              hourTextWidth, hourTextHeight),
+//                        Qt::AlignRight, ("下午 ") + QString::number(m_vHours[i] - 12) + (" 时"));
+//                } else {
+//                    painter.drawText(
+//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+//                              hourTextWidth, hourTextHeight),
+//                        Qt::AlignRight, ("上午 ") + QString::number(m_vHours[i]) + (" 时"));
+//                }
+                painter.drawText(
+                    QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+                          hourTextWidth, hourTextHeight),
+                    Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP h 时"));
             }
             painter.restore();
         } else {
@@ -361,17 +365,21 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                         m_beginDate == QDate::currentDate()) {
                     continue;
                 }
-                if (m_vHours[i] > 12) {
-                    painter.drawText(
-                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                              hourTextWidth, hourTextHeight),
-                        Qt::AlignRight, ("下午 ") + QString::number(m_vHours[i] - 12) + (" 时"));
-                } else {
-                    painter.drawText(
-                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                              hourTextWidth, hourTextHeight),
-                        Qt::AlignRight, ("上午 ") + QString::number(m_vHours[i]) + (" 时"));
-                }
+//                if (m_vHours[i] > 12) {
+//                    painter.drawText(
+//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+//                              hourTextWidth, hourTextHeight),
+//                        Qt::AlignRight, ("下午 ") + QString::number(m_vHours[i] - 12) + (" 时"));
+//                } else {
+//                    painter.drawText(
+//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+//                              hourTextWidth, hourTextHeight),
+//                        Qt::AlignRight, ("上午 ") + QString::number(m_vHours[i]) + (" 时"));
+//                }
+                painter.drawText(
+                    QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+                          hourTextWidth, hourTextHeight),
+                    Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP h 时"));
             }
             painter.restore();
             if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
@@ -399,17 +407,21 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     continue;
                 if (m_topMagin - 8 + m_vPos[i] < m_topMagin)
                     continue;
-                if (m_vHours[i] > 12) {
-                    painter.drawText(
-                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                              hourTextWidth, hourTextHeight),
-                        Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
-                } else {
-                    painter.drawText(
-                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                              hourTextWidth, hourTextHeight),
-                        Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
-                }
+//                if (m_vHours[i] > 12) {
+//                    painter.drawText(
+//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+//                              hourTextWidth, hourTextHeight),
+//                        Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
+//                } else {
+//                    painter.drawText(
+//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+//                              hourTextWidth, hourTextHeight),
+//                        Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
+//                }
+                painter.drawText(
+                    QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+                          hourTextWidth, hourTextHeight),
+                    Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP hh:mm"));
             }
             painter.restore();
         } else {
@@ -432,17 +444,21 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 if (rr.intersects(tinrect) && m_viewType == 1 &&
                         m_beginDate == QDate::currentDate())
                     continue;
-                if (m_vHours[i] > 12) {
-                    painter.drawText(
-                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                              hourTextWidth, hourTextHeight),
-                        Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
-                } else {
-                    painter.drawText(
-                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                              hourTextWidth, hourTextHeight),
-                        Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
-                }
+//                if (m_vHours[i] > 12) {
+//                    painter.drawText(
+//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+//                              hourTextWidth, hourTextHeight),
+//                        Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
+//                } else {
+//                    painter.drawText(
+//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+//                              hourTextWidth, hourTextHeight),
+//                        Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
+//                }
+                painter.drawText(
+                    QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
+                          hourTextWidth, hourTextHeight),
+                    Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP hh:mm"));
             }
             painter.restore();
             if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
