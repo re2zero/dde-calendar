@@ -65,7 +65,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     QString timestr;
 
     QLocale locale;
-    timestr = m_ScheduleInfo.beginDateTime.time().toString("ap hh:mm");
+    timestr = m_ScheduleInfo.beginDateTime.time().toString("ap HH:mm");
     painter.drawText(QRect( x + 13, 7, 60, 18), Qt::AlignLeft | Qt::AlignTop, timestr);
     int textRectWidth = 165;
     QFontMetrics metrics = painter.fontMetrics();
