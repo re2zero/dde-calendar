@@ -552,6 +552,7 @@ void CAllDayEventWeekView::slotCreate()
 void CAllDayEventWeekView::contextMenuEvent(QContextMenuEvent *event)
 {
     //if (m_vlistData.isEmpty()) {
+    emit signalScheduleShow(false, 0);
     QMenu Context(this);
     Context.addAction(m_createAction);
     m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
@@ -578,6 +579,12 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
 void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
 {
     DListWidget::wheelEvent(event);
+    emit signalScheduleShow(false, 0);
+}
+
+void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
+{
+    DListWidget::mousePressEvent(event);
     emit signalScheduleShow(false, 0);
 }
 
@@ -647,6 +654,7 @@ CAllDayEventWidgetItem *CAllDayEventWeekView::createItemWidget(int index, bool a
 CSolodayWidgetItem *CAllDayEventWeekView::createItemWidget(QVector<QString> vSolarInfo, QVector<QDate> date, bool average)
 {
     CSolodayWidgetItem *gwi = new CSolodayWidgetItem(this, m_editType);
+    connect(gwi, &CSolodayWidgetItem::signalScheduleShow, this, &CAllDayEventWeekView::signalScheduleShow);
     gwi->setCoorManage(m_coorManage);
     QColor color1 = m_soloColor;
     color1.setAlphaF(0.3);

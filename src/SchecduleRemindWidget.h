@@ -36,10 +36,12 @@ public:
     CenterWidget(DWidget *parent = nullptr);
     ~CenterWidget() Q_DECL_OVERRIDE;
     void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
+    void setTheMe(const int type = 0);
 protected:
     void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
     ScheduleDtailInfo     m_ScheduleInfo;
     CSchedulesColor gdcolor;
+    QColor textColor;
 };
 
 

@@ -76,6 +76,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
     void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
     CAllDayEventWidgetItem *createItemWidget(int index, bool average = false);

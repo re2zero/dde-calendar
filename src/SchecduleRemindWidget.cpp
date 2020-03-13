@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QtMath>
 #include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 const int fontsize = 12;//DFontSizeManager::T8;
 SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWindow, parent)
@@ -9,7 +10,11 @@ SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
 {
     m_centerWidget->setFixedWidth(207);
     m_centerWidget->setFixedHeight(57);
+//    m_centerWidget->setTheMe(DGuiApplicationHelper::instance()->themeType());
     setContent(m_centerWidget);
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
+                     m_centerWidget,
+                     &CenterWidget::setTheMe);
 }
 
 SchecduleRemindWidget::~SchecduleRemindWidget()
@@ -28,7 +33,7 @@ void SchecduleRemindWidget::setData(const ScheduleDtailInfo &vScheduleInfo, cons
 CenterWidget::CenterWidget(DWidget *parent)
     : DWidget (parent)
 {
-
+    setTheMe(0);
 }
 
 CenterWidget::~CenterWidget()
@@ -40,6 +45,14 @@ void CenterWidget::setData(const ScheduleDtailInfo &vScheduleInfo, const CSchedu
 {
     m_ScheduleInfo = vScheduleInfo;
     gdcolor = gcolor;
+    update();
+}
+
+void CenterWidget::setTheMe(const int type)
+{
+    Q_UNUSED(type);
+    DPalette palette;
+    textColor = palette.color(DPalette::Normal, DPalette::Text);
     update();
 }
 
@@ -58,7 +71,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     painter.drawEllipse(x, y, diam, diam);
     //draw time
     QPen pen;
-    pen.setColor(QColor(65, 77, 104, 178));
+    pen.setColor(textColor);
     painter.setPen(pen);
     painter.setFont(timeFont);
     QString timestr;
