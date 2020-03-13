@@ -205,7 +205,7 @@ void CScheduleDataManage::setTheMe(int type)
         QColor workhP("#F85566");
         workhP.setAlphaF(0.2);
         workC.hoverPurecolor = workhP;
-        workC.splitColor = "#FB2525";
+        workC.splitColor = "#F85566";
         workC.splitColor.setAlphaF(0.5);
         workC.pressgradientToC = workC.gradientToC;
         workC.pressgradientFromC = workC.gradientFromC;

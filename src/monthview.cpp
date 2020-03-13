@@ -337,7 +337,6 @@ int CMonthView::getDateType(const QDate &date)
 void CMonthView::setCurrentDate(const QDate date)
 {
     qDebug() << "set current date " << date;
-
     if (date.year() < 1900) return;
 
     if (date == m_currentDate) {

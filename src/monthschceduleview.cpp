@@ -45,7 +45,7 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
-    //connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
+    connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
     setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
@@ -329,6 +329,14 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             painter.setPen(Qt::NoPen);
             painter.drawRoundedRect(fillRect, 8, 8);
         }
+
+        if(m_transparentf){
+            QColor selcolor = "#000000";
+            selcolor.setAlphaF(0.05);
+            painter.setBrush(selcolor);
+            painter.setPen(Qt::NoPen);
+            painter.drawRoundedRect(fillRect, 8, 8);
+        }
     } else {
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -600,6 +608,7 @@ void CMonthSchceduleView::slotDeleteItem()
         }
     }
 }
+
 bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
 {
     if (s1.bdate != s1.edate && s2.bdate == s2.edate) {
