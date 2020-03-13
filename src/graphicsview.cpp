@@ -432,9 +432,13 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
     } else if (event->button() == Qt::LeftButton) {
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
         if (item != nullptr) {
+            if (item->getType() == 1)
+                return;
             m_currentItem = item;
             m_press = true;
+
             emit signalScheduleShow(true, item->getData().id);
+
             emit signalsitem(this);
         }
     }
@@ -599,6 +603,7 @@ void CGraphicsView::slotDeleteItem()
 void CGraphicsView::slotHoverUpdateState(CScheduleItem *item, int state)
 {
     if (item == nullptr) return;
+    if (item->getType() == 1) return;
     ScheduleDtailInfo baseinfo = item->getData();
     for (int i = 0; i < m_vScheduleItem.size(); i++) {
         if (item == m_vScheduleItem.at(i)) continue;

@@ -81,13 +81,10 @@ signals:
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    void hoverMoveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent ( QGraphicsSceneMouseEvent *event ) Q_DECL_OVERRIDE;
     void focusOutEvent ( QFocusEvent *event ) Q_DECL_OVERRIDE;
 private:
-
-    void schceduleRemindHide();
     /*****************************************************************************
     Function:       paint()
     Description:    绘制
