@@ -22,6 +22,7 @@
 
 #include <QDate>
 #include "schedulestructs.h"
+#include "SchecduleRemindWidget.h"
 #include <DFrame>
 
 DWIDGET_USE_NAMESPACE
@@ -68,6 +69,7 @@ public slots:
     void slotitem(void *item);
     void slotDeleteitem();
     void slotCurrentScheduleDate(QDate date);
+    void slotScheduleShow(const bool isShow, const int ScheduleID = 0);
 protected:
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
@@ -103,6 +105,7 @@ private:
 
     int                       m_space = 30;
     QVBoxLayout              *m_layout;
+    SchecduleRemindWidget    *m_ScheduleRemindWidget;
 };
 
 #endif // SCHEDULEVIEW_H

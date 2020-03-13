@@ -160,6 +160,7 @@ void CMonthWindow::slotsearchDateSelect(QDate date)
     setDate(date);
     slotupdateSchedule();
 }
+
 void CMonthWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;
@@ -312,6 +313,8 @@ void CMonthWindow::initUI()
     // m_animationContainer->hide();
 
     setCentralWidget(m_contentBackground);
+
+
 }
 
 void CMonthWindow::initConnection()
@@ -369,6 +372,11 @@ void CMonthWindow::slideMonth(bool next)
 void CMonthWindow::slotReturnTodayUpdate()
 {
     setDate(QDate::currentDate());
+}
+
+void CMonthWindow::slotScheduleHide()
+{
+    m_monthView->slotScheduleRemindWidget(false);
 }
 
 void CMonthWindow::slotupdateSchedule(int id)

@@ -47,6 +47,7 @@ signals:
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
+    void signalPressScheduleShow(const bool isShow, const int id);
 public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
@@ -135,6 +136,7 @@ signals:
     void signalsPress(CMonthSchceduleWidgetItem *item);
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
+    void signalPressScheduleShow(const bool isShow, const int id);
 public slots:
     void slotEdit();
     void slotDelete();
@@ -150,8 +152,6 @@ protected:
     void enterEvent(QEvent *event)Q_DECL_OVERRIDE;
     void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-private:
-    void SchecduleRemindWidgetHide();
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;

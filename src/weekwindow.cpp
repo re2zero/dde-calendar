@@ -248,6 +248,7 @@ void CWeekWindow::initConnection()
     connect(m_scheduleView, &CScheduleView::signalsCurrentScheduleDate, this, &CWeekWindow::signalsCurrentScheduleDate);
     connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CWeekWindow::signalViewtransparentFrame);
     connect(m_weekHeadView, &CWeekHeadView::signalsViewSelectDate, this, &CWeekWindow::signalsViewSelectDate);
+    connect(m_weekHeadView, &CWeekHeadView::signaleSchedulHide, this, &CWeekWindow::slotScheduleHide);
     // connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CWeekWindow::slotTransitSearchSchedule);
     // connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CWeekWindow::slotsearchDateSelect);
 
@@ -405,6 +406,7 @@ void CWeekWindow::slotTransitSearchSchedule(int id)
 
 void CWeekWindow::slotprev()
 {
+    slotScheduleHide();
     QDate tcurrent = m_currentdate.addDays(-7);
     if (tcurrent.year() < 1900) return;
     if (m_currentdate.year() >= 1900) {
@@ -417,12 +419,14 @@ void CWeekWindow::slotprev()
 
 void CWeekWindow::slotnext()
 {
+    slotScheduleHide();
     m_currentdate = m_currentdate.addDays(7);;
     setDate(m_currentdate);
 }
 
 void CWeekWindow::slottoday()
 {
+    slotScheduleHide();
     emit signalsReturnTodayUpdate(this);
     setDate(QDate::currentDate());
 }
@@ -515,6 +519,11 @@ void CWeekWindow::slotsearchDateSelect(QDate date)
     slotupdateSchedule();
 }
 
+void CWeekWindow::slotScheduleHide()
+{
+    m_scheduleView->slotScheduleShow(false);
+}
+
 void CWeekWindow::resizeEvent(QResizeEvent *event)
 {
     int sleftMagin = 0.093 * width() + 0.5;
@@ -563,6 +572,11 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
     //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
     m_scheduleView->setFixedSize(width() - winframe, sh - 10);
     QMainWindow::resizeEvent(event);
+}
+
+void CWeekWindow::mousePressEvent(QMouseEvent *event)
+{
+    slotScheduleHide();
 }
 
 

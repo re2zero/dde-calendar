@@ -530,6 +530,7 @@ void Calendarmainwindow::initConnection()
     connect(m_DayWindow, &CDayWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &Calendarmainwindow::slotSreturnPressed);
     connect(m_searchEdit, &DSearchEdit::textChanged, this, &Calendarmainwindow::slotStextChanged);
+    connect(m_searchEdit, &DSearchEdit::focusChanged, this, &Calendarmainwindow::slotStextfocusChanged);
     connect(m_weekWindow, &CWeekWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
     connect(m_monthWindow, &CMonthWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
     connect(m_DayWindow, &CDayWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
@@ -623,10 +624,18 @@ DPushButton *Calendarmainwindow::createButon(QString name)
     return  button;
 }
 
+void Calendarmainwindow::setScheduleHide()
+{
+    m_yearwindow->slotSetSchceduleHide();
+    m_monthWindow->slotScheduleHide();
+    m_weekWindow->slotScheduleHide();
+    m_DayWindow->slotScheduleHide();
+}
+
 void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
     m_contentBackground->setFixedWidth(0.2325 * width() + 0.5);
-    m_yearwindow->slotSetSchceduleHide();
+    setScheduleHide();
     DMainWindow::resizeEvent(event);
 }
 
@@ -667,6 +676,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     }
     CConfigSettings::setOption("base.view", index + 1);
 #endif
+    setScheduleHide();
     int index = m_buttonBox->id(bt);
     if (index < 0 || index > m_stackWidget->count() - 1) {
 
@@ -776,6 +786,13 @@ void Calendarmainwindow::slotStextChanged()
     //m_stackWidget->setCurrentIndex(3);
     m_DayWindow->setSearchWFlag(!m_searchEdit->text().isEmpty());
 #endif
+}
+
+void Calendarmainwindow::slotStextfocusChanged(bool onFocus)
+{
+    if (onFocus) {
+        setScheduleHide();
+    }
 }
 
 void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
@@ -962,12 +979,19 @@ void Calendarmainwindow::closeEvent(QCloseEvent *event)
 void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)
 {
     DMainWindow::mouseMoveEvent(event);
-    m_yearwindow->slotSetSchceduleHide();
+    setScheduleHide();
 }
 
 void Calendarmainwindow::changeEvent(QEvent *event)
 {
     DMainWindow::changeEvent(event);
-    m_yearwindow->slotSetSchceduleHide();
+    if (event->type() == QEvent::ActivationChange) {
+        setScheduleHide();
+    }
+}
+
+void Calendarmainwindow::mousePressEvent(QMouseEvent *event)
+{
+    setScheduleHide();
 }
 

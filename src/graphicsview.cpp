@@ -290,6 +290,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::mousePressEvent( QMouseEvent *event )
 {
+    emit signalScheduleShow(false);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     if (event->button() == Qt::RightButton) {
@@ -432,6 +433,8 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
         if (item != nullptr) {
             m_currentItem = item;
+            m_press = true;
+            emit signalScheduleShow(true, item->getData().id);
             emit signalsitem(this);
         }
     }
@@ -441,11 +444,13 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
 void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 {
     DGraphicsView::mouseReleaseEvent(event);
+    m_press = false;
 }
 
 
 void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
 {
+    emit signalScheduleShow(false);
     DGraphicsView::mouseDoubleClickEvent(event);
     CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
     if (item == nullptr) {
@@ -620,6 +625,10 @@ void CGraphicsView::slotSelectUpdateState(CScheduleItem *item, int state)
 void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
 {
     DGraphicsView::mouseMoveEvent(event);
+    if (m_press) {
+        emit signalScheduleShow(false);
+        m_press = false;
+    }
 }
 
 #ifndef QT_NO_WHEELEVENT
@@ -633,6 +642,7 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::wheelEvent( QWheelEvent *event )
 {
+    emit signalScheduleShow(false);
     int test = event -> delta();
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();

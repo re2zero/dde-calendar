@@ -253,6 +253,8 @@ void CDayWindow::initConnection()
 
     connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this,
             &CDayWindow::slotTransitSchedule);
+    connect(m_daymonthView, &CDayMonthView::signalSchedulHide
+            , this, &CDayWindow::slotScheduleHide);
     // connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this,
     // &CDayWindow::slotTransitSearchSchedule);
     // connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this,
@@ -291,6 +293,11 @@ void CDayWindow::slotReturnTodayUpdate()
 void CDayWindow::slotCurrentReturnDay()
 {
     emit signalsReturnTodayUpdate(this);
+}
+
+void CDayWindow::slotScheduleHide()
+{
+    m_scheduleView->slotScheduleShow(false);
 }
 
 void CDayWindow::resizeEvent(QResizeEvent *event)

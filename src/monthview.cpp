@@ -180,6 +180,10 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsCurrentScheduleDate, this, &CMonthView::signalsCurrentScheduleDate);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalUpdateUI, this, &CMonthView::slotUpdateUI);
+    connect(m_MonthSchceduleView
+            , &CMonthSchceduleView::signalPressScheduleShow
+            , this
+            , &CMonthView::slotScheduleRemindWidget);
 
     DFrame *gridWidget = new DFrame;
     gridWidget->setFrameRounded(false);
@@ -204,6 +208,8 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     connect(this, &CMonthView::dateSelected, this, &CMonthView::handleCurrentDateChanged);
     m_createAction = new QAction(tr("New event"), this);
+
+    m_RemindWidget = new SchecduleRemindWidget(this);
 
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
@@ -265,6 +271,23 @@ void CMonthView::slotdelete(int id)
     emit signalsSchceduleUpdate(0);
 }
 
+void CMonthView::slotScheduleRemindWidget(const bool isShow, const int ID)
+{
+    if (isShow) {
+        QPoint pos22 = QCursor::pos();
+        CScheduleDataManage *m_DataManage = CScheduleDataManage::getScheduleDataManage();
+        ScheduleDtailInfo out;
+        m_DataManage->getscheduleDataCtrl()->getScheduleInfoById(ID, out);
+        CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
+                                      out.type.ID);
+        m_RemindWidget->setData(out, gdcolor);
+        m_RemindWidget->show(pos22.x() + 10, pos22.y());
+
+    } else {
+        m_RemindWidget->hide();
+    }
+}
+
 void CMonthView::resizeEvent(QResizeEvent *event)
 {
     //cellwidth = width() * 0.1395 + 0.5;
@@ -304,6 +327,16 @@ void CMonthView::focusInEvent(QFocusEvent *event)
     DWidget::focusInEvent(event);
 }
 
+void CMonthView::mousePressEvent(QMouseEvent *event)
+{
+    slotScheduleRemindWidget(false, 0);
+}
+
+void CMonthView::mouseMoveEvent(QMouseEvent *event)
+{
+
+}
+
 void CMonthView::setFirstWeekday(int weekday)
 {
     m_firstWeekDay = weekday;
@@ -336,6 +369,7 @@ int CMonthView::getDateType(const QDate &date)
 
 void CMonthView::setCurrentDate(const QDate date)
 {
+    slotScheduleRemindWidget(false);
     qDebug() << "set current date " << date;
 
     if (date.year() < 1900) return;
@@ -416,6 +450,7 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
+            slotScheduleRemindWidget(false, 0);
             QMouseEvent *rightevent = dynamic_cast<QMouseEvent *>(e);
             if (rightevent->button() == Qt::RightButton)
                 m_updateflag = false;

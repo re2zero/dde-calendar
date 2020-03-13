@@ -47,7 +47,7 @@ CAllDaySchceduleWeekWidgetItem::CAllDaySchceduleWeekWidgetItem( QWidget *parent 
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
     m_createAction = new QAction(tr("New event"), this);
     connect(m_createAction, &QAction::triggered, this, &CAllDaySchceduleWeekWidgetItem::slotCreate);
-    m_item = NULL;
+    m_item = nullptr;
 }
 
 void CAllDaySchceduleWeekWidgetItem::setColor( QColor color1, QColor color2, bool GradientFlag /*= false*/ )

@@ -251,6 +251,7 @@ signals:
     void signalsitem(void *item);
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
+    void signalScheduleShow(bool isShow, const int scheduleID = 0);
 private:
     int checkDay(int weekday);
 
@@ -281,6 +282,7 @@ private:
     int                       m_viewType = 0;
     bool                         m_updateDflag  = false;
     int                             m_rightmagin = 0;
+    bool                            m_press = false;
 };
 
 #endif // GRAPHICSVIEW_H

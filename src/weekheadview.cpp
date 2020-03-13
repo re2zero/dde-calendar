@@ -802,3 +802,8 @@ void CWeekHeadView::resizeEvent(QResizeEvent *event)
     //m_cellList.at(6)->setFixedSize(interval, h);
     DFrame::resizeEvent(event);
 }
+
+void CWeekHeadView::mousePressEvent(QMouseEvent *event)
+{
+    emit signaleSchedulHide();
+}

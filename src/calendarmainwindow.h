@@ -65,17 +65,20 @@ private:
     void initLunar();
     void createview();
     DPushButton *createButon(QString name);
+    void setScheduleHide();
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private slots:
     void slotstackWClicked(QAbstractButton *bt);
     void slotWUpdateShcedule(QMainWindow *w, int id = 0);
     void slotReturnTodyUpdate(QMainWindow *w);
     void slotSreturnPressed();
     void slotStextChanged();
+    void slotStextfocusChanged(bool onFocus);
     void slotJobsUpdated(const QList<qlonglong> &Ids);
     void slotSearchEdit();
     void slotTransitSearchSchedule(int id = 0);

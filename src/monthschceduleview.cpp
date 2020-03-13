@@ -32,7 +32,6 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 #include "schcedulectrldlg.h"
-#include "SchecduleRemindWidget.h"
 #include <QShortcut>
 DGUI_USE_NAMESPACE
 
@@ -51,7 +50,6 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
 
 CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
 {
-    SchecduleRemindWidgetHide();
     disconnect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     disconnect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
 }
@@ -369,6 +367,7 @@ void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     //if (m_editType == 0) return;
+    emit signalPressScheduleShow(false, 0);
     emit signalViewtransparentFrame(1);
     CMySchceduleView dlg(this);
     dlg.setSchedules(m_ScheduleInfo);
@@ -385,7 +384,7 @@ void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
         m_pressMove = true;
         update();
         slotPress();
-        SchecduleRemindWidgetHide();
+        emit signalPressScheduleShow(true, m_ScheduleInfo.id);
     }
 }
 
@@ -413,27 +412,18 @@ void CMonthSchceduleWidgetItem::enterEvent(QEvent *event)
 void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
 {
     m_hoverflag = false;
+    m_pressMove = false;
     update();
-    SchecduleRemindWidgetHide();
 }
 
 void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
 {
-    if (!m_pressMove) {
-        SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
-        QPoint point = mapToGlobal(QPoint(e->x(), e->y()));
-        if (m_SchecduleRemindWidget == nullptr)
-            return;
-        m_SchecduleRemindWidget->setData(m_ScheduleInfo, gdcolor);
-        m_SchecduleRemindWidget->show(point.x() + 10, point.y());
+    if (m_pressMove) {
+        emit signalPressScheduleShow(false, 0);
+        m_pressMove = false;
     }
 }
 
-void CMonthSchceduleWidgetItem::SchecduleRemindWidgetHide()
-{
-    SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
-    m_SchecduleRemindWidget->hide();
-}
 
 CMonthSchceduleNumButton::CMonthSchceduleNumButton(QWidget *parent /*= nullptr*/): DPushButton(parent)
 {
@@ -1032,6 +1022,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     connect(gwi, &CMonthSchceduleWidgetItem::signalsPress, this, &CMonthSchceduleView::slotupdateItem);
     connect(gwi, &CMonthSchceduleWidgetItem::signalViewtransparentFrame, this, &CMonthSchceduleView::signalViewtransparentFrame);
     connect(gwi, &CMonthSchceduleWidgetItem::signalUpdateUI, this, &CMonthSchceduleView::signalUpdateUI);
+    connect(gwi, &CMonthSchceduleWidgetItem::signalPressScheduleShow, this, &CMonthSchceduleView::signalPressScheduleShow);
 
     m_scheduleShowItem.append(gwi);
 }

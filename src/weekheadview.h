@@ -51,7 +51,7 @@ public:
     };
 
 public:
-    explicit CWeekHeadView(QWidget *parent = 0);
+    explicit CWeekHeadView(QWidget *parent = nullptr);
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
     inline bool cellSelectable() const
@@ -70,6 +70,7 @@ signals:
     void currentFestivalChanged(const QString &festival);
     void cellSelectableChanged(bool cellSelectable) const;
     void signalsViewSelectDate(QDate date);
+    void signaleSchedulHide();
 public slots:
     void setCurrentDate(const QDate date);
     void setLunarVisible(bool visible);
@@ -83,13 +84,14 @@ private:
     const QString getLunar(int pos);
     const CaLunarDayInfo getCaLunarDayInfo(int pos);
     void paintCell(QWidget *cell);
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e)Q_DECL_OVERRIDE;
     void updateDate();
     void updateCurrentLunar(const CaLunarDayInfo &info);
 
     int checkDay(int weekday);
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event)Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);

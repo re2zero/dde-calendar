@@ -137,24 +137,24 @@ void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 void CScheduleItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
     if (!m_hoverPressMove) {
-        SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
-        CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-                                      m_scheduleInfo.type.ID);
-        m_SchecduleRemindWidget->setData(m_scheduleInfo, gdcolor);
+//        SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
+//        CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
+//                                      m_scheduleInfo.type.ID);
+//        m_SchecduleRemindWidget->setData(m_scheduleInfo, gdcolor);
 
-        if (this->parent() != nullptr) {
-            qDebug() << this->parent()->metaObject()->className();
-        }
-        //获取相对于场景的位置
-        QPointF sp =  mapToScene(event->pos());
+//        if (this->parent() != nullptr) {
+//            qDebug() << this->parent()->metaObject()->className();
+//        }
+//        //获取相对于场景的位置
+//        QPointF sp =  mapToScene(event->pos());
 
-        //查找项目的全局（屏幕）位置
-        DGraphicsView *graphicsView = qobject_cast<DGraphicsView *>(this->scene()->parent());
-        QPoint global(event->pos().x(), event->pos().y());
-        if (graphicsView != nullptr) {
-            global = graphicsView->mapToGlobal(graphicsView->mapFromScene(sp));
-        }
-        m_SchecduleRemindWidget->show(global.x() + 90, global.y());
+//        //查找项目的全局（屏幕）位置
+//        DGraphicsView *graphicsView = qobject_cast<DGraphicsView *>(this->scene()->parent());
+//        QPoint global(event->pos().x(), event->pos().y());
+//        if (graphicsView != nullptr) {
+//            global = graphicsView->mapToGlobal(graphicsView->mapFromScene(sp));
+//        }
+//        m_SchecduleRemindWidget->show(global.x() + 90, global.y());
     }
 
 }
@@ -189,8 +189,8 @@ void CScheduleItem::focusOutEvent(QFocusEvent *event)
 
 void CScheduleItem::schceduleRemindHide()
 {
-    SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
-    m_SchecduleRemindWidget->hide();
+//    SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
+//    m_SchecduleRemindWidget->hide();
 }
 void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                           QWidget *widget /*= 0 */)

@@ -61,6 +61,7 @@ public slots:
     void slotTransitSearchSchedule(int id = 0);
     void slotReturnTodayUpdate();
     void slotCurrentReturnDay();
+    void slotScheduleHide();
 protected:
     void resizeEvent(QResizeEvent *event);
 private slots:

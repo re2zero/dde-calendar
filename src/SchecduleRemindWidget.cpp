@@ -3,7 +3,6 @@
 #include <QtMath>
 #include <DFontSizeManager>
 const int fontsize = 12;//DFontSizeManager::T8;
-SchecduleRemindWidget *SchecduleRemindWidget::m_instance_ptr = nullptr;
 SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWindow, parent)
     , m_centerWidget(new CenterWidget(this))

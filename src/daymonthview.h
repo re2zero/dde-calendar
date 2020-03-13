@@ -62,6 +62,7 @@ signals:
     void signalcurrentLunarDateChanged(QDate date,  CaHuangLiDayInfo detail, int type = 0);
     void cellSelectableChanged(bool cellSelectable) const;
     void signalsReturnDay();
+    void signalSchedulHide();
 public slots:
     void setCurrentDate(const QDate date, int type = 0);
     void setCellSelectable(bool selectable);

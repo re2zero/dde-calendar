@@ -15,17 +15,10 @@ class SchecduleRemindWidget : public DArrowRectangle
     Q_OBJECT
     Q_DISABLE_COPY(SchecduleRemindWidget)
 public:
-    static SchecduleRemindWidget *getSchecduleRemindWidget()
-    {
-        if ( m_instance_ptr == nullptr) {
-            m_instance_ptr = new SchecduleRemindWidget(nullptr);
-        }
-        return  m_instance_ptr;
-    }
+    explicit SchecduleRemindWidget(QWidget *parent = nullptr);
     ~SchecduleRemindWidget() Q_DECL_OVERRIDE;
     void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
-private:
-    explicit SchecduleRemindWidget(QWidget *parent = nullptr);
+
 signals:
 
 public slots:
@@ -33,7 +26,6 @@ private:
     CenterWidget *m_centerWidget;
     ScheduleDtailInfo     m_ScheduleInfo;
     CSchedulesColor gdcolor;
-    static SchecduleRemindWidget *m_instance_ptr;
 };
 
 class CenterWidget : public DWidget

@@ -244,6 +244,7 @@ void CAllDayEventWidgetItem::paintEvent( QPaintEvent *e )
 }
 void CAllDayEventWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {
+    emit signalScheduleShow(false);
     m_currentIndex = getEventByPos(event->pos());
     if (m_currentIndex != -1) {
         DMenu Context(this);
@@ -260,6 +261,7 @@ void CAllDayEventWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 
 void CAllDayEventWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    emit signalScheduleShow(false);
     if (m_editType == 0) return;
     m_currentIndex = getEventByPos(event->pos());
     if (m_currentIndex != -1) {
@@ -289,10 +291,12 @@ void CAllDayEventWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CAllDayEventWidgetItem::mousePressEvent(QMouseEvent *event)
 {
-    m_pressMove = true;
-    SchecduleRemindWidgetHide();
+    if (m_currentIndex == -1) {
+        emit signalScheduleShow(false);
+        return;
+    }
+
     m_currentIndex = getEventByPos(event->pos());
-    if (m_currentIndex == -1) return;
     QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo[m_currentIndex].beginDateTime.date(), m_vScheduleInfo[m_currentIndex].endDateTime.date());
     if (drawrect.contains(event->pos())) {
 
@@ -300,6 +304,8 @@ void CAllDayEventWidgetItem::mousePressEvent(QMouseEvent *event)
             m_vSelectflag[m_currentIndex] = true;
             update();
             emit signalsPress(this);
+            m_pressMove = true;
+            emit signalScheduleShow(true, m_vScheduleInfo.at(m_currentIndex).id);
         }
     }
 }
@@ -310,12 +316,9 @@ void CAllDayEventWidgetItem::mouseMoveEvent(QMouseEvent *event)
     m_currentIndex = getEventByPos(event->pos());
 //    qDebug() << m_currentIndex;
     if (m_currentIndex == -1) return;
-    if (!m_pressMove) {
-        SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
-        CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo[m_currentIndex].type.ID);
-        m_SchecduleRemindWidget->setData(m_vScheduleInfo.at(m_currentIndex), gdcolor);
-        QPoint point = mapToGlobal(event->pos());
-        m_SchecduleRemindWidget->show(point.x() + 10, point.y());
+    if (m_pressMove) {
+        emit signalScheduleShow(false);
+        m_pressMove = false;
     }
 
     m_vHoverflag[m_currentIndex] = true;
@@ -352,19 +355,10 @@ void CAllDayEventWidgetItem::focusOutEvent(QFocusEvent *event)
 
 void CAllDayEventWidgetItem::leaveEvent(QEvent *event)
 {
-    SchecduleRemindWidgetHide();
     m_vHoverflag.fill(false);
     update();
 }
 
-
-
-void CAllDayEventWidgetItem::SchecduleRemindWidgetHide()
-{
-    SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
-    m_SchecduleRemindWidget->hide();
-
-}
 
 void CAllDayEventWidgetItem::paintItem(int index)
 {
@@ -581,6 +575,13 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
     emit signalViewtransparentFrame(0);
 }
 
+void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
+{
+    DListWidget::wheelEvent(event);
+    emit signalScheduleShow(false, 0);
+}
+
+
 void CAllDayEventWeekView::updateDateShow()
 {
     m_currentitem = nullptr;
@@ -639,6 +640,7 @@ CAllDayEventWidgetItem *CAllDayEventWeekView::createItemWidget(int index, bool a
     connect(gwi, &CAllDayEventWidgetItem::signalsEdit, this, &CAllDayEventWeekView::slotedititem);
     connect(gwi, &CAllDayEventWidgetItem::signalsPress, this, &CAllDayEventWeekView::slotupdateItem);
     connect(gwi, &CAllDayEventWidgetItem::signalViewtransparentFrame, this, &CAllDayEventWeekView::signalViewtransparentFrame);
+    connect(gwi, &CAllDayEventWidgetItem::signalScheduleShow, this, &CAllDayEventWeekView::signalScheduleShow);
     return gwi;
 }
 
@@ -806,6 +808,7 @@ void CSolodayWidgetItem::paintEvent(QPaintEvent *e)
 }
 void CSolodayWidgetItem::mousePressEvent(QMouseEvent *event)
 {
+    emit signalScheduleShow(false);
     m_vselectflag.fill(false);
     /*for (int i = 0; i < m_vDate.count(); i++) {
         QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vDate.at(i), m_vDate.at(i));

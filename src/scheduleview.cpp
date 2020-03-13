@@ -576,6 +576,7 @@ void CScheduleView::initUI()
     m_alldaylist = new CAllDayEventWeekView(this, 1);
     // m_alldaylist->setFixedSize(635, 99);
     m_alldaylist->move(72, 5);
+    m_ScheduleRemindWidget = new SchecduleRemindWidget(this);
     //    m_graphicsView->setStyleSheet("background-color: rgb(255, 255, 0);");
 }
 
@@ -596,6 +597,13 @@ void CScheduleView::initConnection()
             &CScheduleView::signalViewtransparentFrame);
     connect(m_graphicsView, &CGraphicsView::signalViewtransparentFrame, this,
             &CScheduleView::signalViewtransparentFrame);
+
+    connect(m_graphicsView
+            , &CGraphicsView::signalScheduleShow
+            , this, &CScheduleView::slotScheduleShow);
+
+    connect(m_alldaylist, &CAllDayEventWeekView::signalScheduleShow
+            , this, &CScheduleView::slotScheduleShow);
 
     // CScheduleDataCtrl  *scheduleDataCtrl =
     // CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
@@ -638,6 +646,23 @@ void CScheduleView::slotCurrentScheduleDate(QDate date)
     if (m_viewType == 1)
         return;
     emit signalsCurrentScheduleDate(date);
+}
+
+void CScheduleView::slotScheduleShow(const bool isShow, const int ScheduleID)
+{
+    if (isShow) {
+        QPoint pos22 = QCursor::pos();
+        CScheduleDataManage *m_DataManage = CScheduleDataManage::getScheduleDataManage();
+        ScheduleDtailInfo out;
+        m_DataManage->getscheduleDataCtrl()->getScheduleInfoById(ScheduleID, out);
+        CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
+                                      out.type.ID);
+        m_ScheduleRemindWidget->setData(out, gdcolor);
+        m_ScheduleRemindWidget->show(pos22.x() + 10, pos22.y());
+
+    } else {
+        m_ScheduleRemindWidget->hide();
+    }
 }
 
 void CScheduleView::updateSchedule(int id)

@@ -30,6 +30,7 @@
 #include <QAction>
 #include "calendardbus.h"
 #include "schedulestructs.h"
+#include "SchecduleRemindWidget.h"
 DWIDGET_USE_NAMESPACE
 class CSchceduleDayView;
 class CMonthSchceduleView;
@@ -95,12 +96,15 @@ public slots:
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
     void slotdelete(int id);
+    void slotScheduleRemindWidget(const bool isShow, const int ID = 0);
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void focusOutEvent (QFocusEvent *event ) Q_DECL_OVERRIDE;
     void focusInEvent (QFocusEvent *event )Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
@@ -185,6 +189,8 @@ private:
     DLabel         *m_tooltipview;
     int                   m_themetype  = 1;
     bool           m_sflag = true;
+
+    SchecduleRemindWidget *m_RemindWidget;
 };
 
 #endif // MYCALENDARWIDGET_H

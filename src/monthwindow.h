@@ -27,6 +27,7 @@
 #include <DFrame>
 #include <QSpacerItem>
 #include "calendardbus.h"
+#include "SchecduleRemindWidget.h"
 
 DWIDGET_USE_NAMESPACE
 class CSchceduleSearchView;
@@ -70,6 +71,7 @@ signals:
     void signalCurrentDate(QDate date);
 public slots:
     void slotReturnTodayUpdate();
+    void slotScheduleHide();
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
@@ -97,6 +99,7 @@ private:
     QString           m_searchText;
     bool m_searchfalg = false;
     QHBoxLayout *m_tmainLayout;
+
 };
 
 #endif // YEARWINDOW_H

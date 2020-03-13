@@ -70,6 +70,7 @@ public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
     void slotTransitSearchSchedule(int id = 0);
+    void slotScheduleHide();
 private slots:
     void slotprev();
     void slotnext();
@@ -78,8 +79,10 @@ private slots:
     void slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type = 0);
     void slotcurrentDateChanged(QDate date);
     void slotsearchDateSelect(QDate date);
+
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     CWeekHeadView     *m_weekHeadView; //周视图头
     DFrame *m_contentBackground = nullptr;

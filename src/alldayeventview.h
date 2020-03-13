@@ -64,6 +64,7 @@ signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
     void signalViewtransparentFrame(int type);
+    void signalScheduleShow(const bool isShow, const int scheduleID);
 public slots:
     void slotdeleteitem(CAllDayEventWidgetItem *item);
     void slotedititem(CAllDayEventWidgetItem *item, int type = 0);
@@ -74,6 +75,7 @@ private slots:
 protected:
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
     void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
     CAllDayEventWidgetItem *createItemWidget(int index, bool average = false);
@@ -121,6 +123,7 @@ signals:
     void signalsEdit(CAllDayEventWidgetItem *item, int type = 0);
     void signalsPress(CAllDayEventWidgetItem *item);
     void signalViewtransparentFrame(int type);
+    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
 public slots:
     void slotEdit();
     void slotDelete();
@@ -134,10 +137,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent (QMouseEvent *event ) Q_DECL_OVERRIDE;
     void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    //void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
-private:
-    void SchecduleRemindWidgetHide();
 private:
     void paintItem(int index);
 private:
@@ -170,6 +170,8 @@ public:
     {
         m_coorManage = coor;
     }
+signals:
+    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
 protected:
     void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

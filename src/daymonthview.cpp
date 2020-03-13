@@ -955,6 +955,7 @@ void CDayMonthView::paintEvent(QPaintEvent *e)
 }
 void CDayMonthView::slotprev()
 {
+    emit signalSchedulHide();
     if (m_currentDate.year() == 1900 && m_currentDate.month() == 1) return;
     if (m_currentDate.year() >= 1900) {
         m_currentDate = m_currentDate.addMonths(-1);
@@ -972,6 +973,7 @@ void CDayMonthView::slotprev()
 
 void CDayMonthView::slotnext()
 {
+    emit signalSchedulHide();
     m_currentDate = m_currentDate.addMonths(1);
     if (m_currentDate == QDate::currentDate()) {
         m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
@@ -984,6 +986,7 @@ void CDayMonthView::slotnext()
 
 void CDayMonthView::slottoday()
 {
+    emit signalSchedulHide();
     emit signalsReturnDay();
     setCurrentDate(QDate::currentDate());
 }
