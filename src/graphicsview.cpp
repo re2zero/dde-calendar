@@ -609,6 +609,7 @@ void CGraphicsView::slotHoverUpdateState(CScheduleItem *item, int state)
         if (item == m_vScheduleItem.at(i)) continue;
         ScheduleDtailInfo info = m_vScheduleItem.at(i)->getData();
         if (baseinfo.id == info.id && baseinfo.RecurID == info.RecurID) {
+            if (m_vScheduleItem.at(i)->getType() == 1) continue;
             m_vScheduleItem.at(i)->UpdateHoverState(state);
         }
     }
@@ -622,6 +623,7 @@ void CGraphicsView::slotSelectUpdateState(CScheduleItem *item, int state)
         if (item == m_vScheduleItem.at(i)) continue;
         ScheduleDtailInfo info = m_vScheduleItem.at(i)->getData();
         if (baseinfo.id == info.id && baseinfo.RecurID == info.RecurID) {
+            if (m_vScheduleItem.at(i)->getType() == 1) continue;
             m_vScheduleItem.at(i)->UpdateSelectState(state);
         }
     }
