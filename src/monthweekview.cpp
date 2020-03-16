@@ -59,8 +59,19 @@ void CMonthWeekWidget::dropEvent(QDropEvent *event)
     if (event->mimeData()->hasFormat("drag schcedule")) {
         QByteArray pieceData = event->mimeData()->data("drag schcedule");
 
+        QVariant var;
+        QDataStream dataStream(&pieceData, QIODevice::ReadOnly);
         ScheduleDtailInfo info;
-        memcpy(&info, pieceData.data(), sizeof(info));
+        dataStream >> info.id >> info.beginDateTime
+
+                   >> info.endDateTime >> info.ignore
+                   >> info.titleName >> info.description
+                   >> info.allday
+                   >> info.type.typeName >> info.type.color >> info.type.ID
+                   >> info.RecurID >> info.remind
+                   >> info.remindData.n >> info.remindData.time
+                   >> info.rpeat
+                   >> info.enddata.type >> info.enddata.date >> info.enddata.tcount;
         emit sigSendDropMessage(info);
 //        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(info);
         event->setDropAction(Qt::MoveAction);
