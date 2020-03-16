@@ -191,6 +191,7 @@ void CScheduleDataManage::setTheMe(int type)
         workC.shadowcolor = "#FB2525";
         workC.shadowcolor.setAlphaF(0.5);
         workC.textColor = "#C0C6D4";
+        workC.textColor.setAlphaF(1);
         workC.timeColor = "#B54A4B";
         workC.hightlightgradientToC = "#992D2A";
         workC.hightlightgradientFromC = "#8B521F";
@@ -226,6 +227,7 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.shadowcolor = "#25FA6B";
         lifeC.shadowcolor.setAlphaF(0.5);
         lifeC.textColor = "#C0C6D4";
+        lifeC.textColor.setAlphaF(1);
         lifeC.timeColor = "#38A35B";
         lifeC.hightlightgradientFromC = "#2D6883";
         lifeC.hightlightgradientToC = "#5D7D44";
@@ -260,6 +262,7 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.shadowcolor = "#BE3DFF";
         otherC.shadowcolor.setAlphaF(0.5);
         otherC.textColor = "#C0C6D4";
+        otherC.textColor.setAlphaF(1);
         otherC.timeColor = "#9857C8";
         otherC.hightlightgradientFromC = "#8C4E2C";
         otherC.hightlightgradientToC = "#803BAE";

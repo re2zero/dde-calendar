@@ -329,14 +329,6 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             painter.setPen(Qt::NoPen);
             painter.drawRoundedRect(fillRect, 8, 8);
         }
-
-        if(m_transparentf){
-            QColor selcolor = "#000000";
-            selcolor.setAlphaF(0.05);
-            painter.setBrush(selcolor);
-            painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(fillRect, 8, 8);
-        }
     } else {
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
         //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -1062,8 +1054,8 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
         tc.setAlphaF(0.9);
         gwi->setText(tc, font, QPoint(13, 3));
     } else {
-        QColor tc("#C0C6D4");
-        tc.setAlphaF(0.9);
+        QColor tc("#798190");
+        tc.setAlphaF(1);
         gwi->setText(tc, font, QPoint(13, 3));
     }
     gwi->setFixedSize(fw, fh);
