@@ -322,6 +322,7 @@ qint64 CSchedulesDBus::CreateJob(const ScheduleDtailInfo &info)
 
 bool CSchedulesDBus::GetJobs(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, QVector<ScheduleDateRangeInfo> &out)
 {
+//    QMutexLocker mutex(&m_mutex);
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(startYear) << QVariant::fromValue(startMonth) << QVariant::fromValue(startDay);
     argumentList << QVariant::fromValue(endYear) << QVariant::fromValue(endMonth) << QVariant::fromValue(endDay);

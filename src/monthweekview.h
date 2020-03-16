@@ -26,7 +26,23 @@
 #include <DLabel>
 #include <DHorizontalLine>
 #include "customframe.h"
+#include "scheduledatamanage.h"
+#include "monthschceduleview.h"
 DWIDGET_USE_NAMESPACE
+class CMonthWeekWidget : public DWidget
+{
+    Q_OBJECT
+public:
+    explicit CMonthWeekWidget(QWidget *parent = 0);
+signals:
+    void sigSendDropMessage(ScheduleDtailInfo info);
+private:
+    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
+    void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
+//    void dragLeaveEvent(QDragLeaveEvent *event) Q_DECL_OVERRIDE;
+    void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
+};
+
 class CMonthWeekView : public DWidget
 {
     Q_OBJECT

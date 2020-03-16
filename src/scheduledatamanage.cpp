@@ -510,6 +510,7 @@ bool CHuangliDayDataManage::getSoloDay(QDate date, QString &str)
 
 QVector<bool> CHuangliDayDataManage::getDayFlag(QDate date)
 {
+//    QMutexLocker mutex(&m_mutexbus);
     QVector<bool> vflag;
     vflag.resize(42);
     vflag.fill(false);

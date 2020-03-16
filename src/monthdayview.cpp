@@ -25,9 +25,15 @@
 #include <QEvent>
 #include <DPalette>
 #include <DHiDPIHelper>
+#include <QMimeData>
+#include "scheduledatamanage.h"
+#include "monthschceduleview.h"
 DGUI_USE_NAMESPACE
 CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
 {
+//    setAcceptDrops(true);
+//    setFocusPolicy(Qt::StrongFocus);
+//    setMouseTracking(true);
     m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);
     m_dayNumFont.setWeight(QFont::Light);
@@ -349,6 +355,42 @@ void CMonthDayView::setSelectedCell(int index, int type)
     if (type == 0 && m_days[index].year() > 1899)
         emit signalsSelectDate(m_days[index]);
 }
+
+
+//void CMonthDayView::dragEnterEvent(QDragEnterEvent *event)
+//{
+//    if (event->mimeData()->hasFormat("drag schcedule"))
+//        event->accept();
+//    else
+//        event->ignore();
+//}
+//void CMonthDayView::dragMoveEvent(QDragMoveEvent *event)
+//{
+//    if (event->mimeData()->hasFormat("drag schcedule")) {
+//        event->setDropAction(Qt::MoveAction);
+//        event->accept();
+//    } else {
+//        event->ignore();
+//    }
+//}
+
+//void CMonthDayView::dropEvent(QDropEvent *event)
+//{
+
+//    if (event->mimeData()->hasFormat("drag schcedule")) {
+//        QByteArray pieceData = event->mimeData()->data("drag schcedule");
+
+//        ScheduleDtailInfo info;
+//        memcpy(&info, pieceData.data(), sizeof(info));
+
+//        int day = m_selectDate.day();
+//        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(info);
+//        event->setDropAction(Qt::MoveAction);
+//        event->accept();
+//    } else {
+//        event->ignore();
+//    }
+//}
 
 void CMonthDayView::resizeEvent(QResizeEvent *event)
 {
