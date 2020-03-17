@@ -23,6 +23,7 @@
 #include <QDateTime>
 #include <QColor>
 #include <QVector>
+#include <QDataStream>
 typedef struct _tagScheduleInfo {
     int               id;
     QDateTime         beginDateTime;
@@ -72,6 +73,9 @@ typedef struct _tagScheduleDtailInfo {
     int               rpeat; //0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
     ScheduleEndRepeatData enddata;
 } ScheduleDtailInfo;
+
+//Q_DECLARE_METATYPE(ScheduleDtailInfo);
+
 typedef struct _tagScheduleDateRangeInfo {
     QDate date;
     QVector<ScheduleDtailInfo> vData;

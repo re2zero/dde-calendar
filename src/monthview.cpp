@@ -165,15 +165,29 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     gridLayout->setSpacing(0);
     for (int r = 0; r != 6; ++r) {
         for (int c = 0; c != 7; ++c) {
-            QWidget *cell = new QWidget(this);
+            CMonthWeekWidget *cell = new CMonthWeekWidget(this);
             cell->setFixedSize(cellwidth, cellheight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
 
             gridLayout->addWidget(cell, r, c);
             m_cellList.append(cell);
-
         }
+    }
+    for (int i = 0; i < m_cellList.size(); ++i) {
+        const int pos = i;
+        connect((CMonthWeekWidget *)m_cellList[i], &CMonthWeekWidget::sigSendDropMessage, this, [ = ](ScheduleDtailInfo info) {
+            ScheduleDtailInfo minfo = info;
+
+            QString strDate = m_days[pos].toString("yyyy-MM-dd");
+            QString strTimeStart = minfo.beginDateTime.toString("hh:mm:ss");
+            QString strTimeEnd = minfo.endDateTime.toString("hh:mm:ss");
+            minfo.beginDateTime = QDateTime::fromString(strDate + " " + strTimeStart, "yyyy-MM-dd hh:mm:ss");
+            minfo.endDateTime = QDateTime::fromString(strDate + " " + strTimeEnd, "yyyy-MM-dd hh:mm:ss");
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(minfo);
+            slotSchceduleUpdate();
+            emit signalsSchceduleUpdate(0);
+        });
     }
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
     connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotdelete);
@@ -336,6 +350,44 @@ void CMonthView::mouseMoveEvent(QMouseEvent *event)
 {
 
 }
+
+//void CMonthView::dragEnterEvent(QDragEnterEvent *event)
+//{
+//    if (event->mimeData()->hasFormat("drag schcedule"))
+//        event->accept();
+//    else
+//        event->ignore();
+//}
+//void CMonthView::dragMoveEvent(QDragMoveEvent *event)
+//{
+//    if (event->mimeData()->hasFormat("drag schcedule")) {
+//        event->setDropAction(Qt::MoveAction);
+//        event->accept();
+//    } else {
+//        event->ignore();
+//    }
+//}
+////void CMonthView::dragLeaveEvent(QDragLeaveEvent *event)
+////{
+
+////}
+//void CMonthView::dropEvent(QDropEvent *event)
+//{
+
+//    if (event->mimeData()->hasFormat("drag schcedule")) {
+//        QByteArray pieceData = event->mimeData()->data("drag schcedule");
+
+//        ScheduleDtailInfo info;
+//        memcpy(&info, pieceData.data(), sizeof(info));
+
+//        int day = m_currentDate.day();
+//        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(info);
+//        event->setDropAction(Qt::MoveAction);
+//        event->accept();
+//    } else {
+//        event->ignore();
+//    }
+//}
 
 void CMonthView::setFirstWeekday(int weekday)
 {

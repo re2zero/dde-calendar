@@ -257,7 +257,7 @@ private:
 
 private:
     QGraphicsScene                *m_graphicsScene;               //绘制Scene
-    CScheduleCoorManage           *m_coorManage;
+    CScheduleCoorManage           *m_coorManage = nullptr;
     QVector<CScheduleItem *>        m_vScheduleItem;
     CScheduleItem                *m_currentItem; //当前item
     QMargins                       m_margins;                     //四周空白

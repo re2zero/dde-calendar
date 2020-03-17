@@ -105,6 +105,10 @@ protected:
     void focusInEvent (QFocusEvent *event )Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
+//    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
+//    void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
+////    void dragLeaveEvent(QDragLeaveEvent *event) Q_DECL_OVERRIDE;
+//    void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
