@@ -34,6 +34,7 @@
 #include <DButtonBox>
 #include <QStackedLayout>
 #include "scheduledatamanage.h"
+#include "animationstackedwidget.h"
 #include <DFrame>
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
@@ -91,9 +92,10 @@ private slots:
     void slotViewSelectDate(QDate date);
     void slotViewtransparentFrame(int type);
     void slotCurrentDate(QDate date);
+    void slotSetButtonBox();
 private:
     DLabel                    *m_icon;
-    QStackedLayout              *m_stackWidget;
+    AnimationStackedWidget              *m_stackWidget;
     //DSegmentedControl         *m_segmentedControl;
     DButtonBox                *m_buttonBox;
     DButtonBoxButton          *m_yearButton;

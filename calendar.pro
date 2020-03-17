@@ -68,7 +68,8 @@ HEADERS += src/calendardbus.h \
     src/customframe.h \
     src/yearschceduleview.h \
     src/alldayeventview.h \
-    src/SchecduleRemindWidget.h
+    src/SchecduleRemindWidget.h \
+    src/animationstackedwidget.h
 SOURCES += src/calendardbus.cpp \
            src/dbuscalendar_adaptor.cpp \
            src/infoview.cpp \
@@ -113,7 +114,8 @@ SOURCES += src/calendardbus.cpp \
     src/customframe.cpp \
     src/yearschceduleview.cpp \
     src/alldayeventview.cpp \
-    src/SchecduleRemindWidget.cpp
+    src/SchecduleRemindWidget.cpp \
+    src/animationstackedwidget.cpp
 RESOURCES += src/resources.qrc
 #TRANSLATIONS += translations/dde-calendar.ts \
 #                translations/desktop/desktop_zh_CN.ts\

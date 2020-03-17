@@ -474,17 +474,18 @@ void Calendarmainwindow::initUI()
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
     titlebar->setCustomWidget(m_searchEdit, true);
     // titlebar->move(36, 3);
-    m_stackWidget = new QStackedLayout();
+    m_stackWidget = new AnimationStackedWidget();
     m_stackWidget->setContentsMargins(0, 0, 0, 0);
-    m_stackWidget->setMargin(0);
-    m_stackWidget->setSpacing(0);
+    m_stackWidget->setDuration(350);
+//    m_stackWidget->setMargin(0);
+//    m_stackWidget->setSpacing(0);
     //m_stackWidget->setFixedSize(WorkViewWidth, WorkViewHeight);
     createview();
     QHBoxLayout *tmainLayout = new QHBoxLayout;
     tmainLayout->setMargin(0);
     tmainLayout->setSpacing(0);
     tmainLayout->setContentsMargins(0, 0, 0, 0);
-    tmainLayout->addLayout(m_stackWidget);
+    tmainLayout->addWidget(m_stackWidget);
     //mainLayout->addStretch(1);
 
     m_contentBackground = new DFrame;
@@ -523,6 +524,10 @@ void Calendarmainwindow::initUI()
 
 void Calendarmainwindow::initConnection()
 {
+    connect(m_stackWidget
+            , &AnimationStackedWidget::signalIsFinished
+            , this
+            , &Calendarmainwindow::slotSetButtonBox);
     connect(m_buttonBox, &DButtonBox::buttonClicked, this, &Calendarmainwindow::slotstackWClicked);
     //connect(m_bttongroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &Calendarmainwindow::slotstackWClicked);
     connect(m_weekWindow, &CWeekWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
@@ -594,6 +599,7 @@ void Calendarmainwindow::createview()
     m_weekWindow  = new CWeekWindow(this);
     m_weekWindow->setFirstWeekday(0);
     m_weekWindow->setDate(QDate::currentDate());
+    m_weekWindow->slotupdateSchedule(0);
     m_stackWidget->addWidget(m_weekWindow);
 
     m_DayWindow = new CDayWindow;
@@ -676,6 +682,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     }
     CConfigSettings::setOption("base.view", index + 1);
 #endif
+    m_buttonBox->setEnabled(false);
     setScheduleHide();
     int index = m_buttonBox->id(bt);
     if (index < 0 || index > m_stackWidget->count() - 1) {
@@ -683,7 +690,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
         return;
     }
     m_searchflag = false;
-    m_stackWidget->setCurrentIndex(index);
+    m_stackWidget->setCurrent(index);
     if (index != 0) {
         m_priindex = index;
     }
@@ -968,6 +975,11 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
 void Calendarmainwindow::slotCurrentDate(QDate date)
 {
     m_currentdate = date;
+}
+
+void Calendarmainwindow::slotSetButtonBox()
+{
+    m_buttonBox->setEnabled(true);
 }
 void Calendarmainwindow::closeEvent(QCloseEvent *event)
 {

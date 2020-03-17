@@ -567,7 +567,7 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
     // m_weekHeadView->setFixedHeight(headh);
     //m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
     m_weekHeadView->setFixedSize(width() - winframe, headh);
-    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
+//    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
     //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
     m_scheduleView->setFixedSize(width() - winframe, sh - 10);

@@ -95,7 +95,10 @@ CGraphicsView::~CGraphicsView()
 
 void CGraphicsView::setMargins(int left, int top, int right, int bottom)
 {
+
     m_margins = QMargins(left, top, right, bottom);
+//    qDebug() << Q_FUNC_INFO;
+//    qDebug() << m_margins;
     setViewportMargins(m_margins);
 }
 
