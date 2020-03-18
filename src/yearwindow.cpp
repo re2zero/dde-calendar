@@ -375,11 +375,12 @@ void CYearWindow::initUI()
     //m_YearLunarLabel->move(116, 27);
 
     m_YearLunarDayLabel = new QLabel(m_contentBackground);
-    m_YearLunarDayLabel->setFixedSize(96, DDEMonthCalendar::M_YLunatLabelHeight);
+    m_YearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunatLabelHeight);
 
     m_YearLunarDayLabel->setFont(ylabelF);
 
     m_YearLunarDayLabel->setPalette(Lunapa);
+    m_YearLunarDayLabel->setAlignment(Qt::AlignRight);
 
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
@@ -425,7 +426,7 @@ void CYearWindow::initUI()
     yeartitleLayout1->addSpacing(390);
     yeartitleLayout1->addStretch();
     yeartitleLayout1->addWidget(m_YearLunarDayLabel, 0, Qt::AlignVCenter);
-    yeartitleLayout1->addSpacing(14);
+    yeartitleLayout1->addSpacing(10);
 
     m_todayframe = new CustomFrame(this);
     m_todayframe->setContentsMargins(0, 0, 0, 0);

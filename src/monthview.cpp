@@ -1205,7 +1205,8 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.setPen(m_defaultLunarColor);
         }
         painter.setFont(m_dayLunarFont);
-        painter.drawText(QRect(cell->width() - 50, 6, 50, 18), Qt::AlignCenter, dayLunar);
+        painter.drawText(QRect(cell->width() - 58, 6, 58, 18), Qt::AlignCenter, dayLunar);
+
         if (getShowSolarDayByDate(m_days[pos])) {
             CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
             if (!dayInfo.mSolarFestival.isEmpty() || !dayInfo.mLunarFestival.isEmpty()) {
