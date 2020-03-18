@@ -55,7 +55,7 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
-    //connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
+    connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
     setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
@@ -688,6 +688,7 @@ void CMonthSchceduleView::slotDeleteItem()
         }
     }
 }
+
 bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
 {
     if (s1.bdate != s1.edate && s2.bdate == s2.edate) {
@@ -1142,8 +1143,8 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
         tc.setAlphaF(0.9);
         gwi->setText(tc, font, QPoint(13, 3));
     } else {
-        QColor tc("#C0C6D4");
-        tc.setAlphaF(0.9);
+        QColor tc("#798190");
+        tc.setAlphaF(1);
         gwi->setText(tc, font, QPoint(13, 3));
     }
     gwi->setFixedSize(fw, fh);

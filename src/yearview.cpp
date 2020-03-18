@@ -38,6 +38,8 @@
 #include <QDesktopWidget>
 #include <DApplication>
 
+#include <QMouseEvent>
+
 #include <DArrowRectangle>
 DGUI_USE_NAMESPACE
 CYearSchceduleOutView      *CYearView::m_Scheduleview = nullptr;
@@ -197,8 +199,8 @@ void CYearView::setTheMe(int type)
 
     } else if (type == 2) {
 
-        m_bnormalColor = "#000000";
-        m_bnormalColor.setAlphaF(0.1);
+        m_bnormalColor = "#FFFFFF";
+        m_bnormalColor.setAlphaF(0.05);
         //setBColor(m_bnormalColor);
         m_currentMouth->setTextColor( QColor("#BF1D63"));
         // m_currentMouth->setBColor(framecolor);
@@ -287,11 +289,14 @@ int CYearView::getDateIndex(const QDate &date) const
 bool CYearView::eventFilter(QObject *o, QEvent *e)
 {
     QWidget *cell = qobject_cast<QWidget *>(o);
+    QMouseEvent *event = dynamic_cast<QMouseEvent *>(e);
 
     if (cell && m_cellList.contains(cell)) {
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
+            if(event->button() == Qt::RightButton)
+                return false;
 
             m_selectFlag = true;
             cellClicked(cell);
@@ -346,7 +351,6 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
 //                m_Scheduleview->move(mw, mh);
                 m_Scheduleview->show(pos22.x() + 10, pos22.y());
 
-
                 cell->update();
             } else {
                 m_Scheduleview->show(0, 0);
@@ -361,7 +365,7 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
 
         } else if (e->type() == QEvent::MouseButtonDblClick) {
             const int pos = m_cellList.indexOf(cell);
-            if (pos != -1) {
+            if (pos != -1 && event->button() == Qt::LeftButton) {
                 emit signaldoubleclickDate(m_days[pos]);
             }
         }

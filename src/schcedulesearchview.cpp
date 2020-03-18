@@ -218,6 +218,9 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
     QColor bcolor = m_Backgroundcolor;
     if (m_hoverflag) {
+        bcolor.setAlphaF(0.1);
+    }
+    if(m_selectflag){
         bcolor.setAlphaF(0.2);
     }
     painter.save();
@@ -261,9 +264,9 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painter.drawPath(painterPath);
     painter.restore();
     bcolor = m_timecolor;
-    if (m_selectflag) {
-        bcolor.setAlphaF(0.6);
-    }
+//    if (m_selectflag) {
+//        bcolor.setAlphaF(0.6);
+//    }
     painter.setFont(m_timefont);
     painter.setPen(bcolor);
 
@@ -281,9 +284,9 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painter.drawText(QRect(12, 8, 65, labelheight - 16), Qt::AlignLeft, datestr);
     painter.save();
     bcolor = m_splitlinecolor;
-    if (m_selectflag) {
-        bcolor.setAlphaF(0.6);
-    }
+//    if (m_selectflag) {
+//        bcolor.setAlphaF(0.6);
+//    }
     QPen pen(bcolor);
     pen.setWidth(2);
     painter.setPen(pen);
@@ -292,9 +295,9 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 
     painter.setFont(m_tfont);
     bcolor = m_ttextcolor;
-    if (m_selectflag) {
-        bcolor.setAlphaF(0.6);
-    }
+//    if (m_selectflag) {
+//        bcolor.setAlphaF(0.6);
+//    }
     painter.setPen(bcolor);
     int tilenameW = labelwidth - 91;
     QFontMetrics fm = painter.fontMetrics();
@@ -394,7 +397,7 @@ void CSchceduleSearchView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
         m_bBackgroundcolor = "#000000";
-        m_bBackgroundcolor.setAlphaF(0.05);
+        m_bBackgroundcolor.setAlphaF(0.03);
         m_btimecolor = "#526A7F";
         m_bttextcolor = "#414D68";
         m_lBackgroundcolor = Qt::white;

@@ -562,7 +562,7 @@
     <name>CSchceduleSearchView</name>
     <message>
         <source>No search results</source>
-        <translation>无搜索结果</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

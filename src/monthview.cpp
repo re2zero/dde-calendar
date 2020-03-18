@@ -423,12 +423,10 @@ void CMonthView::setCurrentDate(const QDate date)
 {
     slotScheduleRemindWidget(false);
     qDebug() << "set current date " << date;
-
     if (date.year() < 1900) return;
-
     if (date == m_currentDate) {
         slotSchceduleUpdate();
-        return;
+//        return;
     }
     bool flag = false;
     if (date.month() != m_currentDate.month()) {
