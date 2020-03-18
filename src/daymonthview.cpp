@@ -439,12 +439,14 @@ void CDayMonthView::initUI()
     wlabelF.setPixelSize(16);
     m_currentWeek->setTextFont(wlabelF);
     midLayout->addWidget(m_currentWeek);
+    midLayout->addSpacing(2);
 
     m_currentYear = new CustomFrame(this);
     m_currentYear->setFixedHeight(DDEDayCalendar::DWLableHeight);
     m_currentYear->setTextAlign(Qt::AlignCenter);
     m_currentYear->setTextFont(wlabelF);
     midLayout->addWidget(m_currentYear);
+    midLayout->addSpacing(2);
 
     m_currentLuna = new CustomFrame(this);
     m_currentLuna->setFixedHeight(DDEDayCalendar::DHualiInfoLableHeight);
