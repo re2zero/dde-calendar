@@ -64,7 +64,7 @@ public slots:
 
 protected:
     // void focusInEvent(QFocusEvent *event);
-    bool eventFilter(QObject *obj, QEvent *pEvent);
+    //    bool eventFilter(QObject *obj, QEvent *pEvent);
 
 private:
     void initUI();

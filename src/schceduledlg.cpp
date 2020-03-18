@@ -442,6 +442,7 @@ void CSchceduleDlg::slotOkBt()
 
 void CSchceduleDlg::slotTextChange()
 {
+#if 0
     QTextCursor cursor = m_textEdit->textCursor();
     QString textContent = m_textEdit->toPlainText();
     int length = textContent.count();
@@ -468,6 +469,7 @@ void CSchceduleDlg::slotTextChange()
         m_textEdit->setTextCursor(cursor);*/
     }
     m_context = m_textEdit->toPlainText();
+#endif
 }
 
 void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)
@@ -569,6 +571,7 @@ void CSchceduleDlg::sloteRpeatactivated(int index)
     }
 }
 
+#if 0
 bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
 {
     if (obj == m_textEdit) {
@@ -599,6 +602,7 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
     }
     return QDialog::eventFilter(obj, pEvent);
 }
+#endif
 
 void CSchceduleDlg::initUI()
 {
@@ -712,10 +716,10 @@ void CSchceduleDlg::initUI()
     // if (m_type == 1) {
     m_textEdit->setPlaceholderText(tr("New Event"));
     //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
-    QWidget *mpContentWidget = m_textEdit->viewport();
+    //    QWidget *mpContentWidget = m_textEdit->viewport();
     //设置事件过滤器
-    m_textEdit->installEventFilter(this);
-    mpContentWidget->installEventFilter(this);
+    //    m_textEdit->installEventFilter(this);
+    //    mpContentWidget->installEventFilter(this);
     //}
 
     contentLabellayout->addLayout(conttelabellayout);
