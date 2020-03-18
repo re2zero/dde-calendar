@@ -578,7 +578,6 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
         if (pEvent->type() == QEvent::KeyPress) {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(pEvent);
             if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-                qDebug() << "1111111111";
                 return true;
             }
             /*QString textContent = m_textEdit->toPlainText();

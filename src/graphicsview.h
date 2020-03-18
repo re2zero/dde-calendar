@@ -275,7 +275,7 @@ private:
     QAction                       *m_deleteAction;
     QAction                       *m_createAction;
     QColor                        m_weekcolor = "#4F9BFF";
-    QColor                        m_currenttimecolor = "#FB2525";
+    QColor                        m_currenttimecolor = "#F74444";
     int                           m_cuttrnttimetype = 0;
     QTimer                       *m_timer;
     QMutex                        m_Mutex;

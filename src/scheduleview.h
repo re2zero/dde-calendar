@@ -100,7 +100,7 @@ private:
     QColor                    m_weekColor = "#E6EEF2";
     QColor                    m_ALLDayColor = "#303030";
     QColor                    m_timeColor = "#7D7D7D";
-    QColor                    m_currenttimecolor = "#FB2525";
+    QColor                    m_currenttimecolor = "#F74444";
     int                       m_cuttrnttimetype = 0;
 
     int                       m_space = 30;
