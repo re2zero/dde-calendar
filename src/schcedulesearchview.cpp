@@ -281,7 +281,9 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
                   + "-" + m_ScheduleInfo.endDateTime.toString("hh:mm");
     }
 
-    painter.drawText(QRect(12, 8, 65, labelheight - 16), Qt::AlignLeft, datestr);
+    QFontMetrics fm1(m_timefont);
+    int durationSize = fm1.horizontalAdvance(datestr);
+    painter.drawText(QRect(12, 8, durationSize, labelheight - 16), Qt::AlignLeft, datestr);
     painter.save();
     bcolor = m_splitlinecolor;
 //    if (m_selectflag) {
@@ -290,7 +292,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     QPen pen(bcolor);
     pen.setWidth(2);
     painter.setPen(pen);
-    painter.drawLine(82, 0, 82, labelheight);
+    painter.drawLine(durationSize + 17, 0, durationSize + 17, labelheight);
     painter.restore();
 
     painter.setFont(m_tfont);
@@ -317,7 +319,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
         tstr = tstr + "...";
     }
 
-    painter.drawText(QRect(91, 6, tilenameW, labelheight), Qt::AlignLeft, tstr);
+    painter.drawText(QRect(durationSize + 17 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, tstr);
     painter.end();
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
@@ -551,6 +553,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     CSchceduleSearchItem *gwi = new CSchceduleSearchItem();
     QFont font("SourceHanSansSC-Normal");
     font.setPixelSize(14);
+    font.setWeight(QFont::Normal);
     gwi->setBackgroundColor(m_bBackgroundcolor);
     //gwi->setBackgroundColor(Qt::white);
     QColor scolor = gdcolor.Purecolor;
@@ -558,6 +561,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     gwi->setSplitLineColor(gdcolor.splitColor);
     gwi->setText(m_bttextcolor, font);
     font.setPixelSize(12);
+
     gwi->setTimeC(m_btimecolor, font);
     gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
     gwi->setData(gd, date);
