@@ -49,6 +49,7 @@ public:
     void setTheMe(int type = 0);
     void setLunarVisible(bool state);
     void setTime(QTime time);
+    void setSelectID(const int ID);
     void updateHigh();
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info);
 public slots:

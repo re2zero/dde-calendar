@@ -47,7 +47,7 @@ class CMonthWeekView : public DWidget
 {
     Q_OBJECT
 public:
-    explicit CMonthWeekView(QWidget *parent = 0);
+    explicit CMonthWeekView(QWidget *parent = nullptr);
     void setList(int weekday);
     void setTheMe(int type = 0);
     void updateWeek();

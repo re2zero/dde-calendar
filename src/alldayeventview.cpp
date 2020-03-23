@@ -473,6 +473,14 @@ void CAllDayEventWeekView::updateHigh()
     }
 }
 
+void CAllDayEventWeekView::setSelectSchedule(const ScheduleDtailInfo &info)
+{
+    for (int i = 0; i < count(); ++i) {
+        CAllDayEventWidgetItem *item = qobject_cast<CAllDayEventWidgetItem *>(itemWidget(this->item(i)));
+
+    }
+}
+
 CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype) : DListWidget (parent)
 {
 

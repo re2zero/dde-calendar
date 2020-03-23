@@ -262,7 +262,7 @@ void CMySchceduleView::initUI()
 
 
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
     // mainLayout->setContentsMargins(10, 10, 10, 10);

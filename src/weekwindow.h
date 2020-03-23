@@ -46,6 +46,7 @@ public:
     CWeekWindow(QWidget *parent = nullptr);
     ~CWeekWindow() Q_DECL_OVERRIDE;
     void setDate(QDate date);
+    void setSelectID(const int ID);
     void setFirstWeekday(int weekday);
     void setLunarVisible(bool state);
     void initUI();

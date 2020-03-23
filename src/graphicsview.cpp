@@ -183,6 +183,19 @@ void CGraphicsView::deleteSchduleItem( CScheduleItem *item )
     }
 }
 
+void CGraphicsView::setSelectSchedule(const ScheduleDtailInfo &info)
+{
+    setTime(info.beginDateTime.time());
+    for (int i = 0 ; i < m_vScheduleItem.size(); ++i) {
+        if (m_vScheduleItem.at(i)->hasSelectSchedule(info)) {
+
+            m_vScheduleItem.at(i)->setStartValue(0);
+            m_vScheduleItem.at(i)->setEndValue(10);
+            m_vScheduleItem.at(i)->startAnimation();
+        }
+    }
+}
+
 void CGraphicsView::clearSchdule()
 {
     for (int i = 0; i < m_vScheduleItem.size(); i++) {
@@ -634,11 +647,11 @@ void CGraphicsView::slotSelectUpdateState(CScheduleItem *item, int state)
 
 void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
 {
-    DGraphicsView::mouseMoveEvent(event);
     if (m_press) {
         emit signalScheduleShow(false);
         m_press = false;
     }
+    DGraphicsView::mouseMoveEvent(event);
 }
 
 #ifndef QT_NO_WHEELEVENT

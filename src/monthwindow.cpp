@@ -52,6 +52,7 @@ void CMonthWindow::setFirstWeekday(int weekday)
 void CMonthWindow::setDate(QDate date)
 {
     if (!date.isValid()) return;
+    if (m_currentdate == date) return;
     m_currentdate = date;
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
@@ -387,6 +388,11 @@ void CMonthWindow::slotupdateSchedule(int id)
 void CMonthWindow::slotTransitSchedule(int id)
 {
     emit signalsWUpdateShcedule(this, id);
+}
+
+void CMonthWindow::setSelectScheduleID(const int ScheduleID)
+{
+    m_monthView->setSelectScheduleID(ScheduleID);
 }
 
 void CMonthWindow::resizeEvent(QResizeEvent *event)

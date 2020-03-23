@@ -24,16 +24,18 @@
 #include <QRectF>
 #include <QPainterPath>
 #include "schedulestructs.h"
-
+class QPropertyAnimation;
+class QSequentialAnimationGroup;
 class CScheduleCoorManage;
 class CScheduleItem :  public QObject, public QGraphicsItem
 {
     Q_OBJECT
-
+    Q_PROPERTY(int offset WRITE setOffset)
 public:
     CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent = nullptr, QGraphicsScene *scene = nullptr, int type = 0);
     ~CScheduleItem() Q_DECL_OVERRIDE;
     void setData(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype, int maxnum);
+    bool hasSelectSchedule(const ScheduleDtailInfo &info);
     int getType()
     {
         return  m_type;
@@ -75,6 +77,10 @@ public:
     void updateitem();
     void UpdateHoverState(int state);
     void UpdateSelectState(int state);
+    void setOffset(const int size);
+    void setStartValue(const int value);
+    void setEndValue(const int value);
+    void startAnimation();
 signals:
     void signalsHoverUpdateState(CScheduleItem *item, int state);
     void signalsSelectUpdateState(CScheduleItem *item, int state);
@@ -110,6 +116,10 @@ private:
     bool                  m_highflag = false;
     bool                  m_hoverPressMove = false;
     QColor                m_transparentcolor;
+    int                             m_offset = 0;
+    QPropertyAnimation *m_properAnimationFirst;
+    QPropertyAnimation *m_properANimationSecond;
+    QSequentialAnimationGroup *m_Group;
 };
 
 #endif // SCHEDULEITEM_H

@@ -40,6 +40,8 @@
 #include <QGuiApplication>
 #include <QApplication>
 #include <QBitmap>
+#include <QPropertyAnimation>
+#include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
 DGUI_USE_NAMESPACE
 
@@ -57,6 +59,16 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
     //connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
     setAttribute(Qt::WA_DeleteOnClose, true);
+    const int duration = 100;
+    m_properAnimationFirst = new QPropertyAnimation( this, "setRectOffset", this);
+    m_properAnimationFirst->setObjectName("First");
+    m_properAnimationSecond = new QPropertyAnimation( this, "setRectOffset", this);
+    m_properAnimationSecond->setObjectName("Second");
+    m_properAnimationFirst->setDuration(duration);
+    m_properAnimationSecond->setDuration(duration);
+    m_Group = new QSequentialAnimationGroup(this);
+    m_Group->addAnimation(m_properAnimationFirst);
+    m_Group->addAnimation(m_properAnimationSecond);
 }
 
 CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
@@ -108,8 +120,37 @@ void CMonthSchceduleWidgetItem::setTransparentB(bool t)
 void CMonthSchceduleWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
 {
     m_ScheduleInfo = vScheduleInfo;
-    //setToolTip(m_ScheduleInfo.titleName);
     update();
+}
+
+void CMonthSchceduleWidgetItem::setRectOffset(int offset)
+{
+    QRect rect(m_rect.x() - offset / 2
+               , m_rect.y() - offset / 2
+               , m_rect.width() + offset
+               , m_rect.height() + offset);
+    this->setGeometry(rect);
+    this->setFixedSize(rect.width(), rect.height());
+}
+
+void CMonthSchceduleWidgetItem::startAnimation()
+{
+    if (m_Group->state() != QSequentialAnimationGroup::Running) {
+        m_Group->start();
+    }
+}
+
+void CMonthSchceduleWidgetItem::setStartValue(int offset)
+{
+    m_properAnimationFirst->setStartValue(offset);
+    m_properAnimationSecond->setEndValue(offset);
+    m_rect = this->geometry();
+}
+
+void CMonthSchceduleWidgetItem::setEndValue(int offset)
+{
+    m_properAnimationFirst->setEndValue(offset);
+    m_properAnimationSecond->setStartValue(offset);
 }
 void CMonthSchceduleWidgetItem::slotEdit()
 {
@@ -1026,6 +1067,11 @@ void CMonthSchceduleView::updateHigh()
     for (int i = 0; i < m_scheduleShowItem.count(); i++) {
         m_scheduleShowItem.at(i)->update();
     }
+}
+
+QVector<DPushButton *> CMonthSchceduleView::getScheduleShowItem() const
+{
+    return m_scheduleShowItem;
 }
 void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule)
 {

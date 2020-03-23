@@ -60,6 +60,7 @@ public:
     }
     void setLunarVisible(bool state);
     void updateHigh();
+    void setSelectSchedule(const ScheduleDtailInfo &info);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);

@@ -341,6 +341,7 @@ void CSchceduleSearchItem::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         emit signalSelectDate(m_date);
+        emit signalSelectID(m_ScheduleInfo.id);
         m_selectflag = true;
         update();
     }
@@ -562,6 +563,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
     connect(gwi, &CSchceduleSearchItem::signalsEdit, this, &CSchceduleSearchView::slotedititem);
     connect(gwi, &CSchceduleSearchItem::signalSelectDate, this, &CSchceduleSearchView::slotSelectDate);
+    connect(gwi, &CSchceduleSearchItem::signalSelectID, this, &CSchceduleSearchView::slotSelectID);
     connect(gwi, &CSchceduleSearchItem::signalViewtransparentFrame, this, &CSchceduleSearchView::signalViewtransparentFrame);
 
     //connect(gwi, SIGNAL(signalsDelete(QDate )), this, SIGNAL(signalDate(QDate )));
@@ -662,6 +664,11 @@ void CSchceduleSearchView::slotsetSearch(QString str)
 void CSchceduleSearchView::slotSelectDate(QDate date)
 {
     emit signalDate(date);
+}
+
+void CSchceduleSearchView::slotSelectID(const int ID)
+{
+    emit signalSelectID(ID);
 }
 
 void CSchceduleSearchView::resizeEvent(QResizeEvent *event)

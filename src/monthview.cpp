@@ -36,6 +36,7 @@
 #include <DPalette>
 #include <QShortcut>
 #include <DHiDPIHelper>
+
 DGUI_USE_NAMESPACE
 void CMonthView::setTheMe(int type)
 {
@@ -266,6 +267,22 @@ void CMonthView::slotUpdateUI(int type)
     }
 }
 
+void CMonthView::setSelectScheduleID(int ScheduleID)
+{
+    QVector<DPushButton *> mscheduleShowBtn = m_MonthSchceduleView->getScheduleShowItem();
+    for (int i = 0; i < mscheduleShowBtn.size(); ++i) {
+        CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(mscheduleShowBtn.at(i));
+        if (titem == nullptr) continue;
+        if (titem->getData().id == ScheduleID) {
+            const  int offset = 4;
+            titem->setStartValue(0);
+            titem->setEndValue(offset);
+            titem->startAnimation();
+        }
+    }
+
+}
+
 void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
 {
     if (w != this) return;
@@ -423,7 +440,6 @@ void CMonthView::setCurrentDate(const QDate date)
 {
     slotScheduleRemindWidget(false);
     qDebug() << "set current date " << date;
-
     if (date.year() < 1900) return;
 
     if (date == m_currentDate) {
@@ -437,6 +453,7 @@ void CMonthView::setCurrentDate(const QDate date)
         flag = true;
     }
     m_currentDate = date;
+    updateDate();
 
     // to refresh lunar calendar
     updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
@@ -625,7 +642,7 @@ void CMonthView::updateDate()
         parentWidget()->setEnabled(false);
         emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
     }
-//    setSelectedCell(currentIndex);
+    setSelectedCell(currentIndex);
     update();
 }
 

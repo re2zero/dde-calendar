@@ -122,6 +122,18 @@ void CScheduleView::setTime(QTime time)
     m_graphicsView->setTime(time);
 }
 
+void CScheduleView::setSelectID(const int ID)
+{
+    CScheduleDataManage *m_DataManage = CScheduleDataManage::getScheduleDataManage();
+    ScheduleDtailInfo out;
+    m_DataManage->getscheduleDataCtrl()->getScheduleInfoById(ID, out);
+    if (out.allday) {
+        m_alldaylist->setSelectSchedule(out);
+    } else {
+        m_graphicsView->setSelectSchedule(out);
+    }
+}
+
 void CScheduleView::updateHigh()
 {
     m_graphicsView->updateHigh();
@@ -658,7 +670,7 @@ void CScheduleView::slotScheduleShow(const bool isShow, const int ScheduleID)
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
                                       out.type.ID);
         m_ScheduleRemindWidget->setData(out, gdcolor);
-        m_ScheduleRemindWidget->show(pos22.x() + 10, pos22.y());
+        m_ScheduleRemindWidget->show(pos22.x() + 30, pos22.y());
 
     } else {
         m_ScheduleRemindWidget->hide();

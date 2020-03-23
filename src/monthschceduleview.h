@@ -30,6 +30,8 @@ class CMonthSchceduleWidgetItem;
 class QVBoxLayout;
 class CMonthSchceduleNumButton;
 class SchecduleRemindWidget;
+class QPropertyAnimation;
+class QSequentialAnimationGroup;
 class CMonthSchceduleView : public QObject
 {
     Q_OBJECT
@@ -42,6 +44,7 @@ public:
     void setTheMe(int type = 0);
     void updateData();
     void updateHigh();
+    QVector<DPushButton *> getScheduleShowItem() const;
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
@@ -115,7 +118,7 @@ private:
 class CMonthSchceduleWidgetItem : public DPushButton
 {
     Q_OBJECT
-
+    Q_PROPERTY(int setRectOffset WRITE setRectOffset)
 public:
     explicit CMonthSchceduleWidgetItem(QWidget *parent = nullptr, int edittype = 0);
     ~CMonthSchceduleWidgetItem() Q_DECL_OVERRIDE;
@@ -130,6 +133,10 @@ public:
     {
         return m_ScheduleInfo;
     }
+    void setRectOffset(int offset);
+    void startAnimation();
+    void setStartValue(int offset);
+    void setEndValue(int offset);
 signals:
     void signalsDelete(CMonthSchceduleWidgetItem *item);
     void signalsEdit(CMonthSchceduleWidgetItem *item, int type = 0);
@@ -176,6 +183,10 @@ private:
     bool                    m_pressMove = false;
     bool                    m_firstPressMove = false;
     CSchedulesColor gdcolor;
+    QPropertyAnimation *m_properAnimationFirst = nullptr;
+    QPropertyAnimation *m_properAnimationSecond = nullptr;
+    QSequentialAnimationGroup *m_Group = nullptr;
+    QRect              m_rect;
 };
 
 #endif // CSHCEDULEDAYVIEW_H

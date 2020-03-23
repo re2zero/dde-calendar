@@ -52,6 +52,11 @@ void CWeekWindow::setDate(QDate date)
     emit signalCurrentDate(date);
 }
 
+void CWeekWindow::setSelectID(const int ID)
+{
+    m_scheduleView->setSelectID(ID);
+}
+
 void CWeekWindow::setFirstWeekday(int weekday)
 {
     m_weekview->setFirstWeekDay(weekday);

@@ -55,7 +55,6 @@ class CMonthView: public DWidget
     Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor topBorderColor MEMBER m_topBorderColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(bool cellSelectable READ cellSelectable WRITE setCellSelectable NOTIFY cellSelectableChanged)
-
 public:
     enum ShowState {
         ShowLunar = 0x01,
@@ -93,6 +92,7 @@ public slots:
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
     void slotSchceduleUpdate(int id = 0);
     void slotUpdateUI(int type);
+    void setSelectScheduleID(int ScheduleID);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
     void slotdelete(int id);
@@ -193,7 +193,6 @@ private:
     DLabel         *m_tooltipview;
     int                   m_themetype  = 1;
     bool           m_sflag = true;
-
     SchecduleRemindWidget *m_RemindWidget;
 };
 

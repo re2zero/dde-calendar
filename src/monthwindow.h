@@ -33,7 +33,6 @@ DWIDGET_USE_NAMESPACE
 class CSchceduleSearchView;
 class CMonthView;
 class CMonthDayView;
-class QPropertyAnimation;
 class QHBoxLayout;
 class CTodyButton;
 class CMonthWindow: public QMainWindow
@@ -75,6 +74,7 @@ public slots:
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
+    void setSelectScheduleID(const int ScheduleID);
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private slots:
@@ -99,7 +99,6 @@ private:
     QString           m_searchText;
     bool m_searchfalg = false;
     QHBoxLayout *m_tmainLayout;
-
 };
 
 #endif // YEARWINDOW_H

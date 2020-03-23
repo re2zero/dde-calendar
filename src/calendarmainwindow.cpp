@@ -549,6 +549,8 @@ void Calendarmainwindow::initConnection()
     connect(m_dbus, &__Scheduler::JobsUpdated, this, &Calendarmainwindow::slotJobsUpdated);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &Calendarmainwindow::slotTransitSearchSchedule);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalSelectID,
+            this, &Calendarmainwindow::slotSearchSelectID);
 
     connect(m_yearwindow, &CYearWindow::signaldoubleclickDate, this, &Calendarmainwindow::slotdoubleclickDate);
     connect(m_yearwindow, &CYearWindow::signalselectMonth, this, &Calendarmainwindow::slotselectMonth);
@@ -886,6 +888,33 @@ void Calendarmainwindow::slotsearchDateSelect(QDate date)
     break;
     case 3: {
         m_DayWindow->setDate(date);
+    }
+    break;
+    }
+}
+
+void Calendarmainwindow::slotSearchSelectID(const int ID)
+{
+    int index = m_stackWidget->currentIndex();
+    if (index < 0 || index > m_stackWidget->count() - 1) {
+
+        return;
+    }
+    switch (index) {
+    case 0: {
+//        m_yearwindow->setDate(date);
+    }
+    break;
+    case 1: {
+        m_monthWindow->setSelectScheduleID(ID);
+    }
+    break;
+    case 2: {
+        m_weekWindow->setSelectID(ID);
+    }
+    break;
+    case 3: {
+        m_DayWindow->setSelectID(ID);
     }
     break;
     }

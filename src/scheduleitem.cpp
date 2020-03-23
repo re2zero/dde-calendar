@@ -23,6 +23,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <DGraphicsView>
+#include <QPropertyAnimation>
+#include <QSequentialAnimationGroup>
 #include <dtkwidget_global.h>
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
@@ -47,6 +49,15 @@ CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent,
     m_transparentcolor = "#000000";
     m_transparentcolor.setAlphaF(0.05);
     scene->addItem(this);
+    const int duration = 100;
+    m_properAnimationFirst = new  QPropertyAnimation(this, "offset", this);
+    m_properANimationSecond  = new QPropertyAnimation(this, "offset", this);
+    m_properAnimationFirst->setDuration(duration);
+    m_properANimationSecond->setDuration(duration);
+    m_Group = new QSequentialAnimationGroup(this);
+    m_Group->addAnimation(m_properAnimationFirst);
+    m_Group->addAnimation(m_properANimationSecond);
+//    setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
     // setAcceptHoverEvents(true);
     // setAcceptedMouseButtons(Qt::LeftButton);
     // setAcceptTouchEvents(true);
@@ -68,17 +79,22 @@ void CScheduleItem::setData(const ScheduleDtailInfo &info, QDate date, int index
     update();
 }
 
+bool CScheduleItem::hasSelectSchedule(const ScheduleDtailInfo &info)
+{
+    return (info.id == m_scheduleInfo.id) && (info.RecurID == m_scheduleInfo.RecurID);
+}
+
 QRectF CScheduleItem::boundingRect() const
 {
-    QRectF t_rect;
+    QRect t_rect;
 
     t_rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime,
                                          m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum,
                                          m_viewtype);
-
-    // t_rect = m_coorManage->getDrawRegion(m_scheduleInfo.beginDateTime,
-    // m_scheduleInfo.endDateTime, m_index, m_totalNum);
-
+    t_rect = QRect(t_rect.x() - m_offset / 2,
+                   t_rect.y() - m_offset / 2,
+                   t_rect.width() + m_offset,
+                   t_rect.height() + m_offset);
     return t_rect;
 }
 
@@ -106,6 +122,31 @@ void CScheduleItem::UpdateSelectState(int state)
         m_selectflag = true;
     }
     update();
+}
+
+void CScheduleItem::setOffset(const int size)
+{
+    m_offset = size;
+    update();
+}
+
+void CScheduleItem::setStartValue(const int value)
+{
+    m_properAnimationFirst->setStartValue(value);
+    m_properANimationSecond->setEndValue(value);
+}
+
+void CScheduleItem::setEndValue(const int value)
+{
+    m_properAnimationFirst->setEndValue(value);
+    m_properANimationSecond->setStartValue(value);
+}
+
+void CScheduleItem::startAnimation()
+{
+    if (m_Group->state() != QAnimationGroup::Running) {
+        m_Group->start();
+    }
 }
 
 void CScheduleItem::UpdateHoverState(int state)
@@ -181,6 +222,10 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     QRect rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime,
                                              m_scheduleInfo.endDateTime, m_index, m_totalNum,
                                              m_sMaxNum, m_viewtype);
+    rect = QRect(rect.x() - m_offset / 2,
+                 rect.y() - m_offset / 2,
+                 rect.width() + m_offset,
+                 rect.height() + m_offset);
     painter->drawRect(rect);
     if (m_hoverflag && !m_selectflag) {
         painter->save();
@@ -231,7 +276,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
             painter->setPen(gdcolor.timeColor);
             QTime stime = m_scheduleInfo.beginDateTime.time();
             //            QString str = stime.toString("ap HH:mm");
-            QString str = stime.toString("ap hh:mm");
+            QString str = stime.toString("AP H:mm");
             QFontMetrics fontmetris(font);
             if (fontmetris.width(str) > rect.width() - 5) {
                 QString tstr;

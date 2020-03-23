@@ -39,6 +39,7 @@ public:
     CDayWindow(QWidget *parent = nullptr);
     ~CDayWindow();
     void setDate(QDate date);
+    void setSelectID(const int ID);
     void setSearchWFlag(bool flag);
     void clearSearch();
     void setSearchText(QString str);

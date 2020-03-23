@@ -112,6 +112,12 @@ void CDayWindow::setDate(QDate date)
     emit signalCurrentDate(date);
 }
 
+void CDayWindow::setSelectID(const int ID)
+{
+    m_scheduleView->setSelectID(ID);
+
+}
+
 void CDayWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;

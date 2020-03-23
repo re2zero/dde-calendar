@@ -24,6 +24,8 @@
 #include "schedulestructs.h"
 #include <QAction>
 #include <QMutex>
+#include <QPropertyAnimation>
+#include <QSequentialAnimationGroup>
 DWIDGET_USE_NAMESPACE
 class CScheduleCoorManage;
 class CScheduleItem;
@@ -53,6 +55,7 @@ public:
     }
     void  addSchduleItem(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
     void  deleteSchduleItem(CScheduleItem *item);
+    void  setSelectSchedule(const ScheduleDtailInfo &info);
     void  clearSchdule();
 //    /************************************************************************
 //    Function:       onViewEvent()

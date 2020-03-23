@@ -84,6 +84,7 @@ private slots:
     void slotSearchEdit();
     void slotTransitSearchSchedule(int id = 0);
     void slotsearchDateSelect(QDate date);
+    void slotSearchSelectID(const int ID);
 
     void slotdoubleclickDate(QDate date);
     void slotselectMonth(QDate date);
