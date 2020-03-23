@@ -33,25 +33,16 @@
 #include <DPalette>
 #include "schcedulectrldlg.h"
 #include <QShortcut>
-#include <QMimeData>
-#include <QDrag>
-#include <QScreen>
-#include <QPixmap>
-#include <QGuiApplication>
-#include <QApplication>
-#include <QBitmap>
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
-DGUI_USE_NAMESPACE
 
-static bool bpressmoveing = false;
+DGUI_USE_NAMESPACE
 
 CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
 {
     m_editType = edittype;
     //setMargin(0);
-    setAcceptDrops(true);
     setMouseTracking(true);
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
@@ -434,7 +425,6 @@ void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_selectflag = true;
         m_pressMove = true;
-        m_firstPressMove = true;
         update();
         slotPress();
         emit signalPressScheduleShow(true, m_ScheduleInfo.id);
@@ -446,8 +436,6 @@ void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
         m_pressMove = false;
-        m_firstPressMove = false;
-        bpressmoveing = false;
         update();
     }
 }
@@ -471,80 +459,8 @@ void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
     update();
 }
 
-void CMonthSchceduleWidgetItem::dragMoveEvent(QDragMoveEvent *event)
-{
-    if (event->mimeData()->hasFormat("drag schcedule")) {
-        if (event->source() == this) {
-            event->setDropAction(Qt::MoveAction);
-            event->accept();
-        }
-    } else {
-        event->ignore();
-    }
-}
-
-QImage convertImageWhiteColorAlpha(QImage val)
-{
-    QImage imageAlpha = val.convertToFormat(QImage::Format_RGBA8888_Premultiplied, Qt::NoFormatConversion);
-    int nWidth = imageAlpha.width();
-    int nHeight = imageAlpha.height();
-
-    for (int nCol = 0; nCol < nWidth; ++nCol) {
-        for (int nRow = 0; nRow < nHeight; ++nRow) {
-            QColor pixelColor = imageAlpha.pixelColor(nCol, nRow);
-
-            // 如果该像素点的各分量值均大于240则认为该像素点的颜色为白色
-            if (pixelColor.red() > 240 && pixelColor.green() > 240 && pixelColor.blue() > 240) {
-                pixelColor.setAlpha(0);
-                imageAlpha.setPixelColor(nCol, nRow, pixelColor);
-            }
-        }
-    }
-
-    return imageAlpha;
-}
-
 void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
 {
-//    if (!m_pressMove && !bpressmoveing) {
-//        SchecduleRemindWidget *m_SchecduleRemindWidget = SchecduleRemindWidget::getSchecduleRemindWidget();
-//        QPoint point = mapToGlobal(QPoint(e->x(), e->y()));
-//        if (m_SchecduleRemindWidget == nullptr)
-//            return;
-//        m_SchecduleRemindWidget->setData(m_ScheduleInfo, gdcolor);
-//        m_SchecduleRemindWidget->show(point.x() + 10, point.y());
-//    } else {
-    if (m_pressMove) {
-        if (m_firstPressMove) {
-            bpressmoveing = true;
-            m_firstPressMove = false;
-            QEventLoop loop;
-            QTimer::singleShot(100, &loop, SLOT(quit()));
-            loop.exec();
-//        QApplication::processEvents();
-            QDrag *drag = new QDrag(this);
-            QMimeData *mime = new QMimeData;
-            drag->setMimeData(mime);
-            QScreen *pqscreen  = QGuiApplication::primaryScreen() ;
-            QPixmap pixmap = pqscreen->grabWindow(this->winId());
-            setAcceptDrops(false);
-            this->hide();
-            QImage image = convertImageWhiteColorAlpha(pixmap.toImage());
-            pixmap = QPixmap::fromImage(image);
-            drag->setPixmap(pixmap);
-            drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
-
-            QByteArray qba;
-            qba.resize(sizeof(m_ScheduleInfo));
-            memcpy(qba.data(), &m_ScheduleInfo, sizeof(m_ScheduleInfo));
-            mime->setData(tr("drag schcedule"), qba);
-            Qt::DropAction dropAction = drag->exec();
-            emit signalViewtransparentFrame(1);
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_ScheduleInfo.id);
-            emit signalsDelete(this);
-            emit signalViewtransparentFrame(0);
-        }
-    }
     if (m_pressMove) {
         emit signalPressScheduleShow(false, 0);
         m_pressMove = false;

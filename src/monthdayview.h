@@ -22,8 +22,6 @@
 #include <QObject>
 #include <DFrame>
 #include <QDate>
-#include <QDragEnterEvent>
-
 DWIDGET_USE_NAMESPACE
 class CMonthDayView : public DFrame
 {
@@ -47,10 +45,6 @@ private:
     void setSelectedCell(int index, int type = 0);
 protected:
     void resizeEvent(QResizeEvent *event);
-//    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
-//    void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
-////    void dragLeaveEvent(QDragLeaveEvent *event) Q_DECL_OVERRIDE;
-//    void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
 private:
     QList<QWidget *> m_cellList;
     QDate m_selectDate;

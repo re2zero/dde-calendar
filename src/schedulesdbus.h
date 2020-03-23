@@ -113,7 +113,5 @@ public Q_SLOTS: // METHODS
 
 Q_SIGNALS: // SIGNALS
 // begin property changed signals
-//private:
-//    QMutex m_mutex;
 };
 #endif

@@ -159,11 +159,6 @@ protected:
     void enterEvent(QEvent *event)Q_DECL_OVERRIDE;
     void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-//    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
-    void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
-//    void dragLeaveEvent(QDragLeaveEvent *event) Q_DECL_OVERRIDE;
-//    void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
-//    void startDrag(Qt::DropActions supportedActions) Q_DECL_OVERRIDE;
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
     QAction              *m_editAction;
@@ -181,7 +176,6 @@ private:
     bool                  m_highflag = false;
     int                   m_editType = 0;
     bool                    m_pressMove = false;
-    bool                    m_firstPressMove = false;
     CSchedulesColor gdcolor;
     QPropertyAnimation *m_properAnimationFirst = nullptr;
     QPropertyAnimation *m_properAnimationSecond = nullptr;

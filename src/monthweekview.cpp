@@ -25,53 +25,7 @@
 #include <DPalette>
 #include <DApplicationHelper>
 #include <DPalette>
-#include <QDragEnterEvent>
-#include <QMimeData>
 DGUI_USE_NAMESPACE
-CMonthWeekWidget::CMonthWeekWidget(QWidget *parent) : DWidget(parent)
-{
-    setAcceptDrops(true);
-    setMouseTracking(true);
-    setFocusPolicy(Qt::StrongFocus);
-}
-
-void CMonthWeekWidget::dragEnterEvent(QDragEnterEvent *event)
-{
-    if (event->mimeData()->hasFormat("drag schcedule"))
-        event->accept();
-    else
-        event->ignore();
-}
-
-void CMonthWeekWidget::dragMoveEvent(QDragMoveEvent *event)
-{
-    if (event->mimeData()->hasFormat("drag schcedule")) {
-        event->setDropAction(Qt::MoveAction);
-        event->accept();
-    } else {
-        event->ignore();
-    }
-}
-
-void CMonthWeekWidget::dropEvent(QDropEvent *event)
-{
-
-    if (event->mimeData()->hasFormat("drag schcedule")) {
-        QByteArray pieceData = event->mimeData()->data("drag schcedule");
-
-        ScheduleDtailInfo info;
-        memcpy(&info, pieceData.data(), sizeof(info));
-        emit sigSendDropMessage(info);
-//        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(info);
-        event->setDropAction(Qt::MoveAction);
-        event->accept();
-    } else {
-        event->ignore();
-    }
-}
-
-
-
 CMonthWeekView::CMonthWeekView(QWidget *parent) : DWidget(parent)
 {
     m_mainLayout = new QHBoxLayout;
@@ -158,13 +112,10 @@ void CMonthWeekView::setList(int weekday)
         }
         hhLayout->addWidget(label);
         hhLayout->addWidget(splitline);
-//        CMonthWeekWidget *mwidget = new CMonthWeekWidget;
-//        mwidget->setLayout(hhLayout);
         splitline->setAutoFillBackground(true);
         m_vline.append(splitline);
         splitline->setVisible(false);
         m_mainLayout->addLayout(hhLayout);
-//        m_mainLayout->addWidget(mwidget);
     }
 }
 

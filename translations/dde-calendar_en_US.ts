@@ -251,10 +251,6 @@
         <source>Delete All Future Events</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>drag schcedule</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CMonthView</name>

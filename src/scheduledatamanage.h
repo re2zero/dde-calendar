@@ -116,7 +116,7 @@ protected:
     ******/
     void run();
 private:
-    CSchedulesDBus       *m_DataManage = nullptr;
+    CSchedulesDBus       *m_DataManage;
     //锁
     QMutex               m_mutex;
     //更新类型
@@ -166,6 +166,5 @@ public:
     QVector<bool> getDayFlag(QDate date);
 private:
     CalendarDBus *m_DBusInter;
-//    QMutex               m_mutexbus;
 };
 #endif // SCHEDULEVIEW_H
