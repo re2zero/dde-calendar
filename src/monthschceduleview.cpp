@@ -33,17 +33,12 @@
 #include <DPalette>
 #include "schcedulectrldlg.h"
 #include <QShortcut>
-<<<<<<< HEAD
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
 
 DGUI_USE_NAMESPACE
 
-=======
-DGUI_USE_NAMESPACE
-
->>>>>>> parent of 0ac69c6... Type:rebase
 CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
 {
     m_editType = edittype;
