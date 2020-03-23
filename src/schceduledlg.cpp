@@ -575,7 +575,6 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
         if (pEvent->type() == QEvent::KeyPress) {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(pEvent);
             if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-                qDebug() << "1111111111";
                 return true;
             }
             /*QString textContent = m_textEdit->toPlainText();
@@ -712,10 +711,10 @@ void CSchceduleDlg::initUI()
     // if (m_type == 1) {
     m_textEdit->setPlaceholderText(tr("New Event"));
     //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
-    QWidget *mpContentWidget = m_textEdit->viewport();
+        QWidget *mpContentWidget = m_textEdit->viewport();
     //设置事件过滤器
-    m_textEdit->installEventFilter(this);
-    mpContentWidget->installEventFilter(this);
+        m_textEdit->installEventFilter(this);
+        mpContentWidget->installEventFilter(this);
     //}
 
     contentLabellayout->addLayout(conttelabellayout);

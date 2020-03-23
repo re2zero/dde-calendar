@@ -277,6 +277,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
             QTime stime = m_scheduleInfo.beginDateTime.time();
             //            QString str = stime.toString("ap HH:mm");
             QString str = stime.toString("AP H:mm");
+
             QFontMetrics fontmetris(font);
             if (fontmetris.width(str) > rect.width() - 5) {
                 QString tstr;

@@ -441,10 +441,9 @@ void CMonthView::setCurrentDate(const QDate date)
     slotScheduleRemindWidget(false);
     qDebug() << "set current date " << date;
     if (date.year() < 1900) return;
-
     if (date == m_currentDate) {
         slotSchceduleUpdate();
-        return;
+//        return;
     }
     bool flag = false;
     if (date.month() != m_currentDate.month()) {
@@ -1224,7 +1223,8 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.setPen(m_defaultLunarColor);
         }
         painter.setFont(m_dayLunarFont);
-        painter.drawText(QRect(cell->width() - 50, 6, 50, 18), Qt::AlignCenter, dayLunar);
+        painter.drawText(QRect(cell->width() - 58, 6, 58, 18), Qt::AlignCenter, dayLunar);
+
         if (getShowSolarDayByDate(m_days[pos])) {
             CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
             if (!dayInfo.mSolarFestival.isEmpty() || !dayInfo.mLunarFestival.isEmpty()) {

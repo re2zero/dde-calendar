@@ -221,6 +221,7 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
     }
     break;
     }
+    m_priindex = 3;
 }
 
 void Calendarmainwindow::UpdateJob()

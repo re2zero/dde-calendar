@@ -375,11 +375,12 @@ void CYearWindow::initUI()
     //m_YearLunarLabel->move(116, 27);
 
     m_YearLunarDayLabel = new QLabel(m_contentBackground);
-    m_YearLunarDayLabel->setFixedSize(96, DDEMonthCalendar::M_YLunatLabelHeight);
+    m_YearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunatLabelHeight);
 
     m_YearLunarDayLabel->setFont(ylabelF);
 
     m_YearLunarDayLabel->setPalette(Lunapa);
+    m_YearLunarDayLabel->setAlignment(Qt::AlignRight);
 
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
