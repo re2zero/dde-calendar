@@ -515,15 +515,13 @@ void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
 //        m_SchecduleRemindWidget->show(point.x() + 10, point.y());
 //    } else {
     if (m_pressMove) {
-        emit signalPressScheduleShow(false, 0);
-        m_pressMove = false;
         if (m_firstPressMove) {
             bpressmoveing = true;
             m_firstPressMove = false;
-            emit signalPressScheduleShow(false, 0);
             QEventLoop loop;
-            QTimer::singleShot(200, &loop, SLOT(quit()));
+            QTimer::singleShot(100, &loop, SLOT(quit()));
             loop.exec();
+//        QApplication::processEvents();
             QDrag *drag = new QDrag(this);
             QMimeData *mime = new QMimeData;
             drag->setMimeData(mime);
@@ -537,17 +535,8 @@ void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
             drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
 
             QByteArray qba;
-            QDataStream dataStream(&qba, QIODevice::WriteOnly);
-            dataStream << /*(quint32)*/m_ScheduleInfo.id << m_ScheduleInfo.beginDateTime
-
-                       << m_ScheduleInfo.endDateTime << m_ScheduleInfo.ignore
-                       << m_ScheduleInfo.titleName << m_ScheduleInfo.description
-                       << m_ScheduleInfo.allday
-                       << m_ScheduleInfo.type.typeName << m_ScheduleInfo.type.color << m_ScheduleInfo.type.ID
-                       << m_ScheduleInfo.RecurID << m_ScheduleInfo.remind
-                       << m_ScheduleInfo.remindData.n << m_ScheduleInfo.remindData.time
-                       << m_ScheduleInfo.rpeat
-                       << m_ScheduleInfo.enddata.type << m_ScheduleInfo.enddata.date << m_ScheduleInfo.enddata.tcount;
+            qba.resize(sizeof(m_ScheduleInfo));
+            memcpy(qba.data(), &m_ScheduleInfo, sizeof(m_ScheduleInfo));
             mime->setData(tr("drag schcedule"), qba);
             Qt::DropAction dropAction = drag->exec();
             emit signalViewtransparentFrame(1);
@@ -556,10 +545,10 @@ void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
             emit signalViewtransparentFrame(0);
         }
     }
-//    if (m_pressMove) {
-//        emit signalPressScheduleShow(false, 0);
-//        m_pressMove = false;
-//    }
+    if (m_pressMove) {
+        emit signalPressScheduleShow(false, 0);
+        m_pressMove = false;
+    }
 }
 
 
