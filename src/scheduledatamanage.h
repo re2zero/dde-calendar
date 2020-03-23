@@ -28,6 +28,7 @@ struct CSchedulesColor {
     int type;
     QColor gradientFromC;
     QColor gradientToC;
+    QColor dotColor;
     QColor Purecolor;
     QColor shadowcolor;
     QColor textColor;

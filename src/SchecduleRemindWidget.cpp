@@ -67,7 +67,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QBrush(gdcolor.gradientToC));
+    painter.setBrush(QBrush(gdcolor.dotColor));
     painter.drawEllipse(x, y, diam, diam);
     //draw time
     QPen pen;
