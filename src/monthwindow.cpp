@@ -358,14 +358,15 @@ void CMonthWindow::slideMonth(bool next)
         }
     }
 #else
+    QDate currentDate;
     if (next) {
         if (m_currentdate.year() == 1900 && m_currentdate.month() == 1) return;
-        m_currentdate = m_currentdate.addMonths(-1);
+        currentDate = m_currentdate.addMonths(-1);
     } else {
-        m_currentdate = m_currentdate.addMonths(1);
+        currentDate = m_currentdate.addMonths(1);
     }
 #endif
-    setDate(m_currentdate);
+    setDate(currentDate);
     QDate tdate = QDate(m_currentdate.year(), m_currentdate.month(), 1);
     emit signalCurrentDate(tdate);
 }
