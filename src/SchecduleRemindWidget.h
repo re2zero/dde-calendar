@@ -37,11 +37,19 @@ public:
     ~CenterWidget() Q_DECL_OVERRIDE;
     void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
     void setTheMe(const int type = 0);
+private:
+    void UpdateTextList();
 protected:
     void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    QStringList testList;
+    QFont     textfont;
+    int  textwidth;
+    int  textheight;
+    const int textRectWidth = 165;
     ScheduleDtailInfo     m_ScheduleInfo;
     CSchedulesColor gdcolor;
     QColor textColor;
+    QColor timeColor;
 };
 
 
