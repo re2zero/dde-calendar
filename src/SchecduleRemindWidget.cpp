@@ -124,7 +124,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     QString timestr;
 
     QLocale locale;
-    timestr = m_ScheduleInfo.beginDateTime.time().toString("AP H:mm");
+    timestr = m_ScheduleInfo.beginDateTime.time().toString("AP h:mm");
     QFontMetrics metrics(timeFont);
     int timewidth = metrics.width(timestr);
     int timeheight = metrics.height();
