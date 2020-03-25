@@ -110,7 +110,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     Q_UNUSED(e);
     int diam = 8;
     int x = 40 - 13;
-    int y = 17 - 5;
+//    int y = 17 - 5;
     QFont timeFont;
     timeFont.setFamily("SourceHanSansSC-Medium");
     timeFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, timeFont);

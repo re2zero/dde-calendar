@@ -220,7 +220,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     if (m_hoverflag) {
         bcolor.setAlphaF(0.1);
     }
-    if(m_selectflag){
+    if (m_selectflag) {
         bcolor.setAlphaF(0.2);
     }
     painter.save();
@@ -282,8 +282,17 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     }
 
     QFontMetrics fm1(m_timefont);
-    int durationSize = fm1.horizontalAdvance(datestr);
-    painter.drawText(QRect(12, 8, durationSize, labelheight - 16), Qt::AlignLeft, datestr);
+    int durationSize = 0;
+    if (m_ScheduleInfo.allday) {
+        datestr = tr("All Day");
+        durationSize = 64;
+    } else {
+        durationSize = fm1.horizontalAdvance(datestr);
+
+    }
+    painter.drawText(QRect(12, 8, durationSize, labelheight - 16), Qt::AlignCenter, datestr);
+
+
     painter.save();
     bcolor = m_splitlinecolor;
 //    if (m_selectflag) {
@@ -696,6 +705,11 @@ void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
         m_labellist.at(0)->update();
     }
     DWidget::resizeEvent(event);
+}
+
+void CSchceduleSearchView::mousePressEvent(QMouseEvent *event)
+{
+    qDebug() << Q_FUNC_INFO;
 }
 
 
