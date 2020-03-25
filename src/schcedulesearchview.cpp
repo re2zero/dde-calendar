@@ -707,12 +707,6 @@ void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
     DWidget::resizeEvent(event);
 }
 
-void CSchceduleSearchView::mousePressEvent(QMouseEvent *event)
-{
-    qDebug() << Q_FUNC_INFO;
-}
-
-
 CSchceduleSearchDateItem::CSchceduleSearchDateItem(QWidget *parent): DLabel(parent)
 {
     setAutoFillBackground(true);
