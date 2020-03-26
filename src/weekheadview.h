@@ -90,7 +90,6 @@ private:
 
     int checkDay(int weekday);
 protected:
-    void resizeEvent(QResizeEvent *event)Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
 private slots:
     void cellClicked(QWidget *cell);

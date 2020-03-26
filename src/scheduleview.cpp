@@ -670,7 +670,7 @@ void CScheduleView::slotScheduleShow(const bool isShow, const int ScheduleID)
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
                                       out.type.ID);
         m_ScheduleRemindWidget->setData(out, gdcolor);
-        m_ScheduleRemindWidget->show(pos22.x() + 30, pos22.y());
+        m_ScheduleRemindWidget->show(pos22.x() + 15, pos22.y());
 
     } else {
         m_ScheduleRemindWidget->hide();

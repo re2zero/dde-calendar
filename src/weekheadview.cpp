@@ -58,26 +58,18 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
     hboxLayout->setSpacing(0);
 
     m_monthLabel = new CustomFrame(this);
-    m_monthLabel->setFixedSize(DDEWeekCalendar::WMCellHeadrWidth - 6, DDEWeekCalendar::WCellHeaderItemHeight);
+    m_monthLabel->setFixedWidth(DDEWeekCalendar::WMCellHeadrWidth - 5);
     m_monthLabel->setRoundState(true, false, false, false);
-    //m_monthLabel->setAlignment(Qt::AlignCenter);
-    //DPalette monthpa = m_monthLabel->palette();
-    //QColor textC = monthpa.color(DPalette::Text);
-    //QColor textbC(230, 238, 242);
-    //monthpa.setColor(DPalette::WindowText, textC);
-    //monthpa.setColor(DPalette::Background, textbC);
-    //m_monthLabel->setAutoFillBackground(true);
-    // m_monthLabel->setPalette(monthpa);
     QFont mlabelF;
     mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(20);
     m_monthLabel->setTextFont(mlabelF);
-    // m_monthLabel->setStyleSheet("color:#000000;background: rgb(230,238,242);");
     hboxLayout->addWidget(m_monthLabel);
+    hboxLayout->setStretch(0, 0);
+    hboxLayout->setSpacing(0);
     for (int c = 0; c != 7; ++c) {
         QWidget *cell = new QWidget(this);
-        cell->setFixedSize(DDEWeekCalendar::WCellHeaderItemWidth, DDEWeekCalendar::WCellHeaderItemHeight);
         cell->installEventFilter(this);
         cell->setFocusPolicy(Qt::ClickFocus);
         hboxLayout->addWidget(cell);
@@ -776,32 +768,6 @@ int CWeekHeadView::checkDay(int weekday)
     return weekday;
 }
 
-void CWeekHeadView::resizeEvent(QResizeEvent *event)
-{
-    //int mw = 0.0959 * width() + 0.5;
-    int mh = height();
-    m_monthLabel->setFixedSize(m_monthW, mh);
-    float interval =  1.0 * (width() - m_monthW) / 7;
-    //int ww = (width() - m_monthW) * 1.0 / 7 + 0.5;
-    int h = height();
-    int tt = 0;
-    int n = 0;
-    for (float i = interval; n <= 5; i = i + interval) {
-        if (n > 6) break;
-        m_cellList.at(n)->setFixedSize(i + 0.5 - tt, h);
-        tt = i + 0.5;
-        n++;
-    }
-    if (n == 6) {
-        m_cellList.at(n)->setFixedSize(width() - m_monthW - tt, h);
-    }
-    //for (int i(0); i != 7; ++i) {
-    //  m_cellList.at(i)->setFixedSize(interval + 0.5, h);
-    //}
-    //m_cellList.at(0)->setFixedSize(interval, h);
-    //m_cellList.at(6)->setFixedSize(interval, h);
-    DFrame::resizeEvent(event);
-}
 
 void CWeekHeadView::mousePressEvent(QMouseEvent *event)
 {
