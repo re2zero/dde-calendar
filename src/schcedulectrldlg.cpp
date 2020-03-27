@@ -75,7 +75,7 @@ void CSchceduleCtrlDlg::initUI()
     m_Title->setFont(labelTitle);
 
 
-    m_mainBoxLayout = new QVBoxLayout(this);
+    m_mainBoxLayout = new QVBoxLayout();
     m_mainBoxLayout->setMargin(0);
     m_mainBoxLayout->setSpacing(0);
     //m_mainBoxLayout->setContentsMargins(10, 28, 10, 10);

@@ -554,6 +554,8 @@ void Calendarmainwindow::initConnection()
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalSelectID,
             this, &Calendarmainwindow::slotSearchSelectID);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalScheduleHide,
+            this, &Calendarmainwindow::setScheduleHide);
 
     connect(m_yearwindow, &CYearWindow::signaldoubleclickDate, this, &Calendarmainwindow::slotdoubleclickDate);
     connect(m_yearwindow, &CYearWindow::signalselectMonth, this, &Calendarmainwindow::slotselectMonth);
@@ -871,9 +873,9 @@ void Calendarmainwindow::slotTransitSearchSchedule(int id)
 
 void Calendarmainwindow::slotsearchDateSelect(QDate date)
 {
+    setScheduleHide();
     int index = m_stackWidget->currentIndex();
     if (index < 0 || index > m_stackWidget->count() - 1) {
-
         return;
     }
     switch (index) {

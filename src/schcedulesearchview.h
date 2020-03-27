@@ -25,12 +25,12 @@
 #include <DListWidget>
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
+class CScheduleListWidget;
 class CSchceduleSearchItem;
 class CSchceduleSearchDateItem;
 class CSchceduleSearchView : public DWidget
 {
     Q_OBJECT
-//    Q_PROPERTY(int    )
 public:
     CSchceduleSearchView(QWidget *parent = nullptr);
     ~CSchceduleSearchView() Q_DECL_OVERRIDE;
@@ -41,6 +41,7 @@ signals:
     void signalDate(QDate date);
     void signalSelectID(const int id);
     void signalViewtransparentFrame(int type);
+    void signalScheduleHide();
 public slots:
     void slotdeleteitem(CSchceduleSearchItem *item);
     void slotedititem(CSchceduleSearchItem *item);
@@ -49,12 +50,13 @@ public slots:
     void slotSelectID(const int ID);
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info, QDate date, int rtype);
     QListWidgetItem *createItemWidget(QDate date);
 private:
-    DListWidget                                 *m_gradientItemList; //下拉列表窗
+    CScheduleListWidget                                 *m_gradientItemList; //下拉列表窗
     bool                                         m_widgetFlag;
     QVector<ScheduleDateRangeInfo>               m_vlistData;
     QVector<DLabel *>                             m_labellist;
@@ -66,6 +68,18 @@ private:
     QColor                m_lBackgroundcolor = Qt::white;
     QColor                m_ltextcolor = "#001A2E";
     QListWidgetItem      *m_currentItem;
+};
+
+class CScheduleListWidget : public DListWidget
+{
+    Q_OBJECT
+public:
+    CScheduleListWidget(QWidget *parent = nullptr);
+    ~CScheduleListWidget() Q_DECL_OVERRIDE;
+signals:
+    void signalListWidgetScheduleHide();
+protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 };
 
 class CSchceduleSearchItem : public DLabel
@@ -128,8 +142,11 @@ public:
     void setBackgroundColor(QColor color1);
     void setText(QColor tcolor, QFont font);
     void setDate(QDate  date);
+signals:
+    void signalLabelScheduleHide();
 protected:
     void paintEvent ( QPaintEvent *e);
+    void mousePressEvent(QMouseEvent *event);
 private:
     QColor                m_Backgroundcolor;
     QColor                m_textcolor;

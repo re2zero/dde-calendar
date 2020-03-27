@@ -298,16 +298,14 @@ void CScheduleView::setDate(QDate date)
     m_currteDate = date;
     QVector<QDate> vdate;
     QVector<QString> vSolarDay;
-    m_alldaylist->setsolarDayData(vSolarDay, vdate);
     updateAllday();
 }
 
 void CScheduleView::setDate(QVector<QDate> vdate, QVector<QString> vSolarDay)
 {
-    // m_currteDate = date;
-    m_alldaylist->setsolarDayData(vSolarDay, vdate);
-    updateAllday();
+
 }
+
 
 void CScheduleView::slotupdateSchedule(int id)
 {
@@ -662,6 +660,7 @@ void CScheduleView::slotCurrentScheduleDate(QDate date)
 
 void CScheduleView::slotScheduleShow(const bool isShow, const int ScheduleID)
 {
+
     if (isShow) {
         QPoint pos22 = QCursor::pos();
         CScheduleDataManage *m_DataManage = CScheduleDataManage::getScheduleDataManage();
@@ -833,12 +832,7 @@ void CScheduleView::updateAllday(int id)
     m_layout->setContentsMargins(0, m_space, 0, 0);
     m_graphicsView->setMargins(m_leftMagin, m_topMagin - m_space, 0, 0);
 
-    if (m_viewType == 0) {
-        m_alldaylist->setFixedHeight(m_topMagin - 8);
-    } else {
-        m_alldaylist->setFixedHeight(m_topMagin - 8);
-    }
-
+    m_alldaylist->setFixedHeight(m_topMagin - 6);
     m_alldaylist->setDayData(vResultData, 0);
     update();
     m_alldaylist->update();

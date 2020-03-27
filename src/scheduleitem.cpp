@@ -50,7 +50,7 @@ CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent,
     m_transparentcolor = "#000000";
     m_transparentcolor.setAlphaF(0.05);
     scene->addItem(this);
-    const int duration = 100;
+    const int duration = 200;
     m_properAnimationFirst = new  QPropertyAnimation(this, "offset", this);
     m_properANimationSecond  = new QPropertyAnimation(this, "offset", this);
     m_properAnimationFirst->setDuration(duration);

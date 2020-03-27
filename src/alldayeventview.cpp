@@ -37,56 +37,109 @@
 #include "schcedulectrldlg.h"
 
 DGUI_USE_NAMESPACE
-CAllDayEventWidgetItem::CAllDayEventWidgetItem( QWidget *parent /*= nullptr*/, int edittype): DPushButton(parent)
+CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRect rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
+    : QGraphicsRectItem(parent),
+      m_rect(rect)
 {
+    setZValue(0);
+    setAcceptHoverEvents(true);
+    setRect(rect);
     m_editType = edittype;
-    QFont font("PingFangSC-Light");
-    font.setPixelSize(12);
-    m_font = font;
+    m_font.setFamily("PingFangSC-Light");
+    const int duration = 300;
+    m_properAnimationFirst = new  QPropertyAnimation(this, "offset", this);
+    m_properANimationSecond  = new QPropertyAnimation(this, "offset", this);
+    m_properAnimationFirst->setDuration(duration);
+    m_properANimationSecond->setDuration(duration);
+    m_Group = new QSequentialAnimationGroup(this);
+    m_Group->addAnimation(m_properAnimationFirst);
+    m_Group->addAnimation(m_properANimationSecond);
     //setMargin(0);
-    m_editAction = new QAction(tr("Edit"), this);
-    m_deleteAction = new QAction(tr("Delete"), this);
-    connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
-    connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
-    m_createAction = new QAction(tr("New event"), this);
-    connect(m_createAction, &QAction::triggered, this, &CAllDayEventWidgetItem::slotCreate);
-    m_item = nullptr;
-    setMouseTracking(true);
-    //setAttribute(Qt::WA_TransparentForMouseEvents);
+
+
 }
 
-void CAllDayEventWidgetItem::setData(QVector<ScheduleDtailInfo> &vScheduleInfo)
+void CAllDayEventWidgetItem::setData(const ScheduleDtailInfo &vScheduleInfo)
 {
     m_vScheduleInfo = vScheduleInfo;
-    m_vSelectflag.clear();
-    m_vHoverflag.clear();
-    m_vHighflag.clear();
-    m_vSelectflag.resize(m_vScheduleInfo.count());
-    m_vHoverflag.resize(m_vScheduleInfo.count());
-    m_vHighflag.resize(m_vScheduleInfo.count());
-    m_vSelectflag.fill(false);
-    m_vHoverflag.fill(false);
-    m_vHighflag.fill(false);
+    m_vSelectflag = false;
+    m_vHoverflag = false;
+    m_vHighflag = false;
     update();
+}
+
+ScheduleDtailInfo CAllDayEventWidgetItem::getData() const
+{
+    return m_vScheduleInfo;
 }
 
 int CAllDayEventWidgetItem::getEventByPos(QPoint pos)
 {
     int tindex = -1;
-    for (int i = 0; i  < m_vScheduleInfo.count(); i++) {
-        QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo.at(i).beginDateTime.date(), m_vScheduleInfo.at(i).endDateTime.date());
-        if (drawrect.contains(pos)) {
-            tindex = i;
-            break;
-        }
-    }
+//    for (int i = 0; i  < m_vScheduleInfo.count(); i++) {
+//        QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo.at(i).beginDateTime.date(), m_vScheduleInfo.at(i).endDateTime.date());
+//        if (drawrect.contains(pos)) {
+//            tindex = i;
+//            break;
+//        }
+//    }
     return tindex;
+}
+
+void CAllDayEventWidgetItem::updateitem()
+{
+
+}
+
+void CAllDayEventWidgetItem::setPressFlag(const bool flag)
+{
+    m_press = flag;
+    update();
+}
+
+void CAllDayEventWidgetItem::setFont(DFontSizeManager::SizeType type)
+{
+    m_sizeType = type;
+}
+
+void CAllDayEventWidgetItem::setOffset(const int &offset)
+{
+    setRect(QRect(m_rect.x() - offset / 2,
+                  m_rect.y() - offset / 2,
+                  m_rect.width() + offset,
+                  m_rect.height() + offset));
+    setZValue(offset);
+    update();
+}
+
+bool CAllDayEventWidgetItem::hasSelectSchedule(const ScheduleDtailInfo &info)
+{
+    return (info.id == m_vScheduleInfo.id) && (info.RecurID == m_vScheduleInfo.RecurID);
+}
+
+void CAllDayEventWidgetItem::setStartValue(const int value)
+{
+    m_properAnimationFirst->setStartValue(value);
+    m_properANimationSecond->setEndValue(value);
+}
+
+void CAllDayEventWidgetItem::setEndValue(const int value)
+{
+    m_properAnimationFirst->setEndValue(value);
+    m_properANimationSecond->setStartValue(value);
+}
+
+void CAllDayEventWidgetItem::startAnimation()
+{
+    if (m_Group->state() != QAnimationGroup::Running) {
+        m_Group->start();
+    }
 }
 
 void CAllDayEventWidgetItem::slotCreate()
 {
     emit signalViewtransparentFrame(1);
-    CSchceduleDlg dlg(1, this);
+    CSchceduleDlg dlg(1, nullptr);
     QDateTime tDatatime;
     tDatatime.setDate(m_dianjiDay);
     if (m_dianjiDay == QDate::currentDate()) {
@@ -102,12 +155,115 @@ void CAllDayEventWidgetItem::slotCreate()
     emit signalViewtransparentFrame(0);
 }
 
+void CAllDayEventWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    m_vHoverflag = true;
+    update();
+}
+
+void CAllDayEventWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    m_vHoverflag = false;
+//    m_hoverPressMove = false;
+    m_press = false;
+    update();
+}
+
+void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(widget)
+    m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
+    painter->setRenderHints(QPainter::Antialiasing);
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.type.ID);
+    m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
+    QRectF drawrect = this->rect();
+
+
+    QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
+
+    QColor color1 = gdcolor.gradientFromC;
+    QColor color2 = gdcolor.gradientToC;
+    QColor textcolor = gdcolor.textColor;
+    if (m_vHoverflag) {
+        color1 = gdcolor.hovergradientFromC;
+        color2 = gdcolor.hovergradientToC;
+    } else if (m_vHighflag) {
+        color1 = gdcolor.hightlightgradientFromC;
+        color2 = gdcolor.hightlightgradientToC;
+    }
+    if (m_vSelectflag) {
+        color1 = gdcolor.pressgradientFromC;
+        color2 = gdcolor.pressgradientToC;
+        textcolor.setAlphaF(0.6);
+    }
+    linearGradient.setColorAt(0, color1);
+    linearGradient.setColorAt(1, color2);
+    QRectF fillRect = drawrect;
+    //将直线开始点设为0，终点设为1，然后分段设置颜色
+    painter->setBrush(linearGradient);
+    painter->setPen(Qt::NoPen);
+    painter->drawRoundedRect(fillRect, 8, 8);
+
+    painter->setFont(m_font);
+    painter->setPen(textcolor);
+    QFontMetrics fm = painter->fontMetrics();
+    QString tStitlename = m_vScheduleInfo.titleName;
+    tStitlename.replace("\n", "");
+    QString str = tStitlename;
+
+    QString tstr;
+    for (int i = 0; i < str.count(); i++) {
+        tstr.append(str.at(i));
+        int widthT = fm.width(tstr) + 5;
+        if (widthT >= fillRect.width() - 13) {
+            tstr.chop(2);
+            break;
+        }
+    }
+    if (tstr != str) {
+        tstr = tstr + "...";
+    }
+
+    painter->drawText(QRect(fillRect.topLeft().x() + 13, fillRect.y(), fillRect.width(), fillRect.height()),
+                      Qt::AlignLeft | Qt::AlignVCenter, tstr);
+    if (m_vHoverflag && !m_vSelectflag) {
+        QRectF trect = QRectF(fillRect.x() + 0.5, fillRect.y() + 0.5, fillRect.width() - 1, fillRect.height() - 1);
+        painter->save();
+
+        QPen pen;
+        QColor selcolor;
+
+        if (themetype == 2) {
+            selcolor = "#FFFFFF";
+        } else {
+            selcolor = "#000000";
+        }
+        selcolor.setAlphaF(0.08);
+
+        pen.setColor(selcolor);
+        pen.setWidthF(1);
+        pen.setStyle(Qt::SolidLine);
+        painter->setBrush(Qt::NoBrush);
+        painter->setPen(pen);
+        painter->drawRoundedRect(trect, 8, 8);
+        painter->restore();
+    }
+    if (m_vSelectflag) {
+        QColor selcolor = "#000000";
+        selcolor.setAlphaF(0.05);
+        painter->setBrush(selcolor);
+        painter->setPen(Qt::NoPen);
+        painter->drawRoundedRect(fillRect, 8, 8);
+    }
+}
+
 void CAllDayEventWidgetItem::slotEdit()
 {
-    if (m_currentIndex == -1) return;
     emit signalViewtransparentFrame(1);
-    CSchceduleDlg dlg(0, this);
-    dlg.setData(m_vScheduleInfo[m_currentIndex]);
+    CSchceduleDlg dlg(0, nullptr);
+    dlg.setData(m_vScheduleInfo);
     if (dlg.exec() == DDialog::Accepted) {
 
         emit signalsEdit(this, 1);
@@ -117,15 +273,11 @@ void CAllDayEventWidgetItem::slotEdit()
 
 void CAllDayEventWidgetItem::slotDelete()
 {
-    if (m_currentIndex == -1) return;
     emit signalViewtransparentFrame(1);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    ScheduleDtailInfo tinfo = m_vScheduleInfo[m_currentIndex];
+    ScheduleDtailInfo tinfo = m_vScheduleInfo;
     if (tinfo.rpeat == 0) {
-        CSchceduleCtrlDlg msgBox(this);
-        //msgBox.setWindowFlags(Qt::FramelessWindowHint);
-        // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-
+        CSchceduleCtrlDlg msgBox(nullptr);
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
         DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
@@ -150,7 +302,7 @@ void CAllDayEventWidgetItem::slotDelete()
         }
     } else {
         if (tinfo.RecurID == 0) {
-            CSchceduleCtrlDlg msgBox(this);
+            CSchceduleCtrlDlg msgBox(nullptr);
             //msgBox.setWindowFlags(Qt::FramelessWindowHint);
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 
@@ -179,14 +331,13 @@ void CAllDayEventWidgetItem::slotDelete()
             } else if (msgBox.clickButton() == yesallbutton) {
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(tinfo.id);
             } else if (msgBox.clickButton() == yesButton) {
-
                 ScheduleDtailInfo newschedule;
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(tinfo.id, newschedule);
                 newschedule.ignore.append(tinfo.beginDateTime);
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
             }
         } else {
-            CSchceduleCtrlDlg msgBox(this);
+            CSchceduleCtrlDlg msgBox(nullptr);
             //msgBox.setWindowFlags(Qt::FramelessWindowHint);
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
             msgBox.setText(tr("You are deleting an event."));
@@ -236,217 +387,7 @@ void CAllDayEventWidgetItem::slotDoubleEvent(int type)
     emit signalsEdit(this, 1);
 }
 
-void CAllDayEventWidgetItem::paintEvent( QPaintEvent *e )
-{
-    for (int i = 0; i  < m_vScheduleInfo.count(); i++) {
-        paintItem(i);
-    }
-}
-void CAllDayEventWidgetItem::contextMenuEvent( QContextMenuEvent *event )
-{
-    emit signalScheduleShow(false);
-    m_currentIndex = getEventByPos(event->pos());
-    if (m_currentIndex != -1) {
-        DMenu Context(this);
-        Context.addAction(m_editAction);
-        Context.addAction(m_deleteAction);
-        Context.exec(QCursor::pos());
-    } else {
-        DMenu Context(this);
-        Context.addAction(m_createAction);
-        m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
-        Context.exec(QCursor::pos());
-    }
-}
 
-void CAllDayEventWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
-{
-    emit signalScheduleShow(false);
-    if (m_editType == 0) return;
-    m_currentIndex = getEventByPos(event->pos());
-    if (m_currentIndex != -1) {
-        emit signalViewtransparentFrame(1);
-        CMySchceduleView dlg(this);
-        dlg.setSchedules(m_vScheduleInfo[m_currentIndex]);
-        connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDayEventWidgetItem::slotDoubleEvent);
-        dlg.exec();
-        emit signalViewtransparentFrame(0);
-        disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDayEventWidgetItem::slotDoubleEvent);
-    } else {
-        m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
-        emit signalViewtransparentFrame(1);
-        CSchceduleDlg dlg(1, this);
-        QDateTime tDatatime;
-        tDatatime.setDate(m_dianjiDay);
-        tDatatime.setTime(QTime::currentTime());
-        dlg.setDate(tDatatime);
-        dlg.setAllDay(true);
-        if (dlg.exec() == DDialog::Accepted) {
-            emit signalsEdit(this, 1);
-        }
-        emit signalViewtransparentFrame(0);
-    }
-
-}
-
-void CAllDayEventWidgetItem::mousePressEvent(QMouseEvent *event)
-{
-    if (m_currentIndex == -1) {
-        emit signalScheduleShow(false);
-        return;
-    }
-
-    m_currentIndex = getEventByPos(event->pos());
-    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo[m_currentIndex].beginDateTime.date(), m_vScheduleInfo[m_currentIndex].endDateTime.date());
-    if (drawrect.contains(event->pos())) {
-
-        if (event->button() == Qt::LeftButton) {
-            m_vSelectflag[m_currentIndex] = true;
-            update();
-            emit signalsPress(this);
-            m_pressMove = true;
-            emit signalScheduleShow(true, m_vScheduleInfo.at(m_currentIndex).id);
-        }
-    }
-}
-
-void CAllDayEventWidgetItem::mouseMoveEvent(QMouseEvent *event)
-{
-    m_vHoverflag.fill(false);
-    m_currentIndex = getEventByPos(event->pos());
-//    qDebug() << m_currentIndex;
-    if (m_currentIndex == -1) return;
-    if (m_pressMove) {
-        emit signalScheduleShow(false);
-        m_pressMove = false;
-    }
-
-    m_vHoverflag[m_currentIndex] = true;
-    update();
-}
-
-void CAllDayEventWidgetItem::mouseReleaseEvent(QMouseEvent *event)
-{
-    m_pressMove = false;
-    m_currentIndex = getEventByPos(event->pos());
-    if (m_currentIndex == -1) return;
-    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo[m_currentIndex].beginDateTime.date(), m_vScheduleInfo[m_currentIndex].endDateTime.date());
-    if (drawrect.contains(event->pos())) {
-        if (event->button() == Qt::LeftButton) {
-            m_vSelectflag[m_currentIndex] = false;
-            update();
-        }
-    }
-}
-
-void CAllDayEventWidgetItem::focusOutEvent(QFocusEvent *event)
-{
-    //m_highflag = false;
-    update();
-}
-
-//void CAllDayEventWidgetItem::enterEvent(QEvent *event)
-//{
-//    m_vHoverflag.fill(false);
-//    m_currentIndex = getEventByPos(mapFromGlobal(QCursor::pos()));
-//    if (m_currentIndex == -1) return;
-//    m_vHoverflag[m_currentIndex] = true;
-//}
-
-void CAllDayEventWidgetItem::leaveEvent(QEvent *event)
-{
-    m_vHoverflag.fill(false);
-    update();
-}
-
-
-void CAllDayEventWidgetItem::paintItem(int index)
-{
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo[index].type.ID);
-    m_vHighflag[index] = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo[index]);
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
-    QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vScheduleInfo[index].beginDateTime.date(), m_vScheduleInfo[index].endDateTime.date());
-    QPainter painter(this);
-
-
-    QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
-
-    QColor color1 = gdcolor.gradientFromC;
-    QColor color2 = gdcolor.gradientToC;
-    QColor textcolor = gdcolor.textColor;
-    if (m_vHoverflag[index]) {
-        color1 = gdcolor.hovergradientFromC;
-        color2 = gdcolor.hovergradientToC;
-    } else if (m_vHighflag[index]) {
-        color1 = gdcolor.hightlightgradientFromC;
-        color2 = gdcolor.hightlightgradientToC;
-    }
-    if (m_vSelectflag[index]) {
-        color1 = gdcolor.pressgradientFromC;
-        color2 = gdcolor.pressgradientToC;
-        textcolor.setAlphaF(0.6);
-    }
-    linearGradient.setColorAt(0, color1);
-    linearGradient.setColorAt(1, color2);
-    QRect fillRect = drawrect;
-    //将直线开始点设为0，终点设为1，然后分段设置颜色
-    painter.setRenderHints(QPainter::HighQualityAntialiasing);
-    painter.setBrush(linearGradient);
-    painter.setPen(Qt::NoPen);
-    painter.drawRoundedRect(fillRect, 8, 8);
-
-    painter.setFont(m_font);
-    painter.setPen(textcolor);
-    QFontMetrics fm = painter.fontMetrics();
-    QString tStitlename = m_vScheduleInfo[index].titleName;
-    tStitlename.replace("\n", "");
-    QString str = tStitlename;
-
-    QString tstr;
-    for (int i = 0; i < str.count(); i++) {
-        tstr.append(str.at(i));
-        int widthT = fm.width(tstr) + 5;
-        if (widthT >= fillRect.width() - 13) {
-            tstr.chop(2);
-            break;
-        }
-    }
-    if (tstr != str) {
-        tstr = tstr + "...";
-    }
-
-    painter.drawText(QRect(fillRect.topLeft().x() + 13, 2, fillRect.width(), fillRect.height()), Qt::AlignLeft, tstr);
-    if (m_vHoverflag[index] && !m_vSelectflag[index]) {
-        QRectF trect = QRectF(fillRect.x() + 0.5, fillRect.y() + 0.5, fillRect.width() - 1, fillRect.height() - 1);
-        painter.save();
-        painter.setRenderHints(QPainter::Antialiasing);
-        QPen pen;
-        QColor selcolor;
-
-        if (themetype == 2) {
-            selcolor = "#FFFFFF";
-        } else {
-            selcolor = "#000000";
-        }
-        selcolor.setAlphaF(0.08);
-
-        pen.setColor(selcolor);
-        pen.setWidthF(1);
-        pen.setStyle(Qt::SolidLine);
-        painter.setBrush(Qt::NoBrush);
-        painter.setPen(pen);
-        painter.drawRoundedRect(trect, 8, 8);
-        painter.restore();
-    }
-    if (m_vSelectflag[index]) {
-        QColor selcolor = "#000000";
-        selcolor.setAlphaF(0.05);
-        painter.setBrush(selcolor);
-        painter.setPen(Qt::NoPen);
-        painter.drawRoundedRect(fillRect, 8, 8);
-    }
-}
 
 
 void CAllDayEventWeekView::setTheMe(int type)
@@ -457,6 +398,7 @@ void CAllDayEventWeekView::setTheMe(int type)
 void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
+    m_Scene->setSceneRect(0, 0, w, h);
     m_rightmagin = rightmagin;
     updateDateShow();
 }
@@ -475,47 +417,47 @@ void CAllDayEventWeekView::updateHigh()
 
 void CAllDayEventWeekView::setSelectSchedule(const ScheduleDtailInfo &info)
 {
-    for (int i = 0; i < count(); ++i) {
-        CAllDayEventWidgetItem *item = qobject_cast<CAllDayEventWidgetItem *>(itemWidget(this->item(i)));
+    for (int i = 0; i < m_baseShowItem.size(); ++i) {
+        CAllDayEventWidgetItem *item = m_baseShowItem.at(i);
+        if (item->hasSelectSchedule(info)) {
+            QRectF rect = item->rect();
+            centerOn(0, rect.y());
+            setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+            item->setStartValue(0);
+            item->setEndValue(4);
+            item->startAnimation();
+        }
 
     }
 }
 
-CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype) : DListWidget (parent)
+CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
+    : DGraphicsView (parent),
+      m_Scene(new QGraphicsScene(this))
 {
-
-
-    //setWindowFlags(Qt::FramelessWindowHint);
-    //setAttribute(Qt::WA_TranslucentBackground, true);
+    setScene(m_Scene);
     m_editType = edittype;
     m_widgetFlag = false;
     setContentsMargins(0, 0, 0, 0);
-    //setSpacing(1);
-    //DPalette mainpa = this->palette();
-    // this->setAutoFillBackground(true);
     QPalette pal = palette();
     pal.setColor(QPalette::Light, QColor(0, 0, 0, 0));
     pal.setColor(QPalette::Dark, QColor(0, 0, 0, 0));
     pal.setColor(QPalette::Base, QColor(0, 0, 0, 0));
-    //pal.setBrush(backgroundRole(), QColor(0, 0, 0, 0));
     setPalette(pal);
-
-    //setWindowFlags(Qt::FramelessWindowHint);
-    //setAttribute(Qt::WA_TranslucentBackground, true);
-    setFrameShape(QListWidget::NoFrame);
-    //setWindowOpacity(0);
-    setMouseTracking(true);
-    setFocusPolicy(Qt::NoFocus);
 
     m_coorManage = new CScheduleCoorManage;
 
+    m_editAction = new QAction(tr("Edit"), this);
+    m_deleteAction = new QAction(tr("Delete"), this);
     m_createAction = new QAction(tr("New event"), this);
     connect(m_createAction, &QAction::triggered, this, &CAllDayEventWeekView::slotCreate);
-    //setStyleSheet("background-color:transparent");
-    setSelectionMode(QAbstractItemView::NoSelection);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //setSelectionModel(nullptr);
+    this->setViewportMargins(0, 0, 0, 0);
+    setMouseTracking(true);
+    viewport()->setMouseTracking(true);
+    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    setAlignment(Qt::AlignLeft | Qt::AlignTop);
 }
 
 CAllDayEventWeekView::~CAllDayEventWeekView()
@@ -533,6 +475,7 @@ void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo> >
 
 void CAllDayEventWeekView::setsolarDayData(QVector<QString> vSolarInfo, QVector<QDate> date)
 {
+    return;
     m_vSolarDayInfo = vSolarInfo;
     m_widgetFlag = false;
     m_vDate = date;
@@ -557,152 +500,270 @@ void CAllDayEventWeekView::slotCreate()
     emit signalViewtransparentFrame(0);
 }
 
-void CAllDayEventWeekView::contextMenuEvent(QContextMenuEvent *event)
+void CAllDayEventWeekView::slotDoubleEvent()
 {
-    //if (m_vlistData.isEmpty()) {
-    emit signalScheduleShow(false, 0);
-    QMenu Context(this);
-    Context.addAction(m_createAction);
-    m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
-    Context.exec(QCursor::pos());
-    //}
+    m_updateDflag  = true;
+    emit signalsUpdateShcedule(0);
+}
+
+
+void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
+{
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
+    if (event->button() == Qt::RightButton) {
+        emit signalScheduleShow(false);
+        CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
+        if (item == nullptr) {
+            DMenu Context(this);
+            Context.addAction(m_createAction);
+            m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
+            Context.exec(QCursor::pos());
+
+        } else {
+            DMenu menu(this);
+            menu.addAction(m_editAction);
+            menu.addAction(m_deleteAction);
+            QAction *action_t = menu.exec(QCursor::pos());
+            if (action_t == m_editAction) {
+                emit signalViewtransparentFrame(1);
+                CSchceduleDlg dlg(0, this);
+                dlg.setData(item->getData());
+                if (dlg.exec() == DDialog::Accepted) {
+                    emit signalsUpdateShcedule(0);
+                }
+                emit signalViewtransparentFrame(0);
+            } else if (action_t == m_deleteAction) {
+                emit signalViewtransparentFrame(1);
+                ScheduleDtailInfo info = item->getData();
+                if (info.rpeat == 0) {
+                    CSchceduleCtrlDlg msgBox(this);
+                    msgBox.setText(tr("You are deleting an event."));
+                    msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
+                    DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+                    DPushButton *yesButton = msgBox.addPushButton(tr("Delete"), 1);
+                    msgBox.updatesize();
+                    DPalette pa = yesButton->palette();
+                    if (themetype == 0 || themetype == 1) {
+                        pa.setColor(DPalette::ButtonText, Qt::red);
+
+                    } else {
+                        pa.setColor(DPalette::ButtonText, "#FF5736");
+
+                    }
+                    yesButton->setPalette(pa);
+                    msgBox.exec();
+
+                    if (msgBox.clickButton() == noButton) {
+                        emit signalViewtransparentFrame(0);
+                        return;
+                    } else if (msgBox.clickButton() == yesButton) {
+                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
+                    }
+                } else {
+                    if (info.RecurID == 0) {
+                        CSchceduleCtrlDlg msgBox(this);
+                        msgBox.setText(tr("You are deleting an event."));
+                        msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
+                        DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+                        DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All"));
+                        DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
+                        msgBox.updatesize();
+                        DPalette pa = yesButton->palette();
+                        if (themetype == 0 || themetype == 1) {
+                            pa.setColor(DPalette::ButtonText, Qt::white);
+                            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                            pa.setColor(DPalette::Light, QColor("#0098FF"));
+                        } else {
+                            pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                            pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                            pa.setColor(DPalette::Light, QColor("#004C9C"));
+                        }
+                        yesButton->setPalette(pa);
+                        msgBox.exec();
+
+                        if (msgBox.clickButton() == noButton) {
+                            emit signalViewtransparentFrame(0);
+                            return;
+                        } else if (msgBox.clickButton() == yesallbutton) {
+                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
+                        } else if (msgBox.clickButton() == yesButton) {
+
+                            ScheduleDtailInfo newschedule;
+                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
+                            newschedule.ignore.append(info.beginDateTime);
+                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+                        }
+                    } else {
+                        CSchceduleCtrlDlg msgBox(this);
+                        msgBox.setText(tr("You are deleting an event."));
+                        msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
+                        DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+                        DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All Future Events"));
+                        DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
+                        msgBox.updatesize();
+                        DPalette pa = yesButton->palette();
+                        if (themetype == 0 || themetype == 1) {
+                            pa.setColor(DPalette::ButtonText, Qt::white);
+                            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                            pa.setColor(DPalette::Light, QColor("#0098FF"));
+                        } else {
+                            pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                            pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                            pa.setColor(DPalette::Light, QColor("#004C9C"));
+                        }
+                        yesButton->setPalette(pa);
+                        msgBox.exec();
+
+                        if (msgBox.clickButton() == noButton) {
+                            emit signalViewtransparentFrame(0);
+                            return;
+                        } else if (msgBox.clickButton() == yesallbutton) {
+                            ScheduleDtailInfo newschedule;
+                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
+                            newschedule.enddata.type = 2;
+                            newschedule.enddata.date = info.beginDateTime.addDays(-1);
+                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+
+                        } else if (msgBox.clickButton() == yesButton) {
+
+                            ScheduleDtailInfo newschedule;
+                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
+                            newschedule.ignore.append(info.beginDateTime);
+                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+                        }
+                    }
+                }
+                emit signalsUpdateShcedule(item->getData().id);
+                emit signalViewtransparentFrame(0);
+            }
+        }
+    } else if (event->button() == Qt::LeftButton) {
+        CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
+        if (item != nullptr) {
+            m_currentitem = item;
+            m_press = true;
+            item->setPressFlag(true);
+
+            emit signalScheduleShow(true, item->getData().id);
+
+            emit signalsitem(this);
+        } else {
+            emit signalScheduleShow(false);
+        }
+    }
+}
+
+void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
+{
+    m_press = false;
+    CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
+    if (item != nullptr) {
+        item->setPressFlag(false);
+    }
 }
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
-    emit signalViewtransparentFrame(1);
-    CSchceduleDlg dlg(1, this);
-    QDateTime tDatatime;
-    tDatatime.setDate(m_dianjiDay);
-    tDatatime.setTime(QTime::currentTime());
-    dlg.setDate(tDatatime);
-    dlg.setAllDay(true);
-    if (dlg.exec() == DDialog::Accepted) {
-        emit signalsUpdateShcedule(0);
+    emit signalScheduleShow(false);
+    DGraphicsView::mouseDoubleClickEvent(event);
+    CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
+    if (item == nullptr) {
+        m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
+        emit signalViewtransparentFrame(1);
+        CSchceduleDlg dlg(1, this);
+        QDateTime tDatatime;
+        tDatatime.setDate(m_dianjiDay);
+        tDatatime.setTime(QTime::currentTime());
+        dlg.setDate(tDatatime);
+        dlg.setAllDay(true);
+        if (dlg.exec() == DDialog::Accepted) {
+            emit signalsUpdateShcedule(0);
+        }
+        emit signalViewtransparentFrame(0);
+    } else {
+        emit signalViewtransparentFrame(1);
+        m_updateDflag  = false;
+        CMySchceduleView dlg(this);
+        dlg.setSchedules(item->getData());
+        connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
+        dlg.exec();
+        emit signalViewtransparentFrame(0);
+        disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
+        if (item == nullptr) {
+            return;
+        }
+        if (!m_updateDflag)
+            item->updateitem();
     }
-    emit signalViewtransparentFrame(0);
+}
+
+void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
+{
+    if (m_press) {
+        emit signalScheduleShow(false);
+        m_press = false;
+    }
+    DGraphicsView::mouseMoveEvent(event);
 }
 
 void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
 {
-    DListWidget::wheelEvent(event);
-    emit signalScheduleShow(false, 0);
+    emit signalScheduleShow(false);
+    DGraphicsView::wheelEvent(event);
 }
-
-void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
-{
-    DListWidget::mousePressEvent(event);
-    emit signalScheduleShow(false, 0);
-}
-
 
 void CAllDayEventWeekView::updateDateShow()
 {
     m_currentitem = nullptr;
-    //remove
-    for (int i = 0; i < this->count(); i++) {
-        QListWidgetItem *item11 = this->takeItem(i);
-        this->removeItemWidget(item11);
-    }
-    this->clear();
+    m_Scene->setSceneRect(0,
+                          0,
+                          m_Scene->width(),
+                          (itemHeight + 1)*m_vlistData.size());
+
     for (int i = 0; i < m_baseShowItem.count(); i++) {
-        m_baseShowItem[i]->deleteLater();
+        delete  m_baseShowItem[i];
     }
     m_baseShowItem.clear();
-    if (m_vSolarDayInfo.isEmpty() || !m_LunarVisible) {
-        for (int i = 0; i < m_vlistData.size(); ++i) {
-            CAllDayEventWidgetItem *gwi = createItemWidget(i);
-            QListWidgetItem *listItem = new QListWidgetItem;
-            listItem->setSizeHint(QSize(gwi->width(), 23)); //每次改变Item的高度
-            //listItem->setBackgroundColor(Qt::white);
-            listItem->setFlags(Qt::ItemIsTristate );
-            addItem(listItem);
-            setItemWidget(listItem, gwi);
-            gwi->setItem(listItem);
-        }
-
-    } else {
-        CSolodayWidgetItem *solargwi = createItemWidget(m_vSolarDayInfo, m_vDate);
-        QListWidgetItem *solarlistItem = new QListWidgetItem;
-        addItem(solarlistItem);
-        setItemWidget(solarlistItem, solargwi);
-        m_baseShowItem.append(solargwi);
-        for (int i = 0; i < m_vlistData.size(); ++i) {
-            CAllDayEventWidgetItem *gwi = createItemWidget(i, false);
-            QListWidgetItem *listItem = new QListWidgetItem;
-            listItem->setSizeHint(QSize(gwi->width(), 23)); //每次改变Item的高度
-            //listItem->setBackgroundColor(Qt::white);
-            listItem->setFlags(Qt::ItemIsTristate );
-            addItem(listItem);
-            setItemWidget(listItem, gwi);
-            gwi->setItem(listItem);
-        }
-
+    for (int i = 0; i < m_vlistData.size(); ++i) {
+        createItemWidget(i);
     }
+//    if (m_vSolarDayInfo.isEmpty() || !m_LunarVisible) {
+//        for (int i = 0; i < m_vlistData.size(); ++i) {
+//            createItemWidget(i);
+//        }
+
+//    } else {
+//        for (int i = 0; i < m_vlistData.size(); ++i) {
+//            createItemWidget(i, false);
+//        }
+
+//    }
 }
 
-CAllDayEventWidgetItem *CAllDayEventWeekView::createItemWidget(int index, bool average)
+void CAllDayEventWeekView::createItemWidget(int index, bool average)
 {
-    CAllDayEventWidgetItem *gwi = new CAllDayEventWidgetItem(this, m_editType);
-    gwi->setCoorManage(m_coorManage);
-    if (m_type == 0) {
-        gwi->setData(m_vlistData[index]);
-        gwi->setFixedSize(width() - m_rightmagin, 22);
-        gwi->setItem(nullptr);
+    Q_UNUSED(average)
+    for (int i = 0; i < m_vlistData[index].size(); ++i) {
+        const ScheduleDtailInfo &info = m_vlistData[index].at(i);
+
+        QRect drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
+        drawrect.setX(drawrect.x() + 8);
+        drawrect.setY((itemHeight + 1)*index);
+        drawrect.setWidth(drawrect.width() + 11);
+        drawrect.setHeight(itemHeight);
+        CAllDayEventWidgetItem *gwi = new CAllDayEventWidgetItem(drawrect, nullptr, m_editType);
+        gwi->setCoorManage(m_coorManage);
+        gwi->setData(m_vlistData[index].at(i));
+        m_Scene->addItem(gwi);
+        m_baseShowItem.append(gwi);
+        connect(gwi, &CAllDayEventWidgetItem::signalsDelete, this, &CAllDayEventWeekView::slotdeleteitem);
+        connect(gwi, &CAllDayEventWidgetItem::signalsEdit, this, &CAllDayEventWeekView::slotedititem);
+        connect(gwi, &CAllDayEventWidgetItem::signalsPress, this, &CAllDayEventWeekView::slotupdateItem);
+        connect(gwi, &CAllDayEventWidgetItem::signalViewtransparentFrame, this, &CAllDayEventWeekView::signalViewtransparentFrame);
     }
-    connect(gwi, &CAllDayEventWidgetItem::signalsDelete, this, &CAllDayEventWeekView::slotdeleteitem);
-    connect(gwi, &CAllDayEventWidgetItem::signalsEdit, this, &CAllDayEventWeekView::slotedititem);
-    connect(gwi, &CAllDayEventWidgetItem::signalsPress, this, &CAllDayEventWeekView::slotupdateItem);
-    connect(gwi, &CAllDayEventWidgetItem::signalViewtransparentFrame, this, &CAllDayEventWeekView::signalViewtransparentFrame);
-    connect(gwi, &CAllDayEventWidgetItem::signalScheduleShow, this, &CAllDayEventWeekView::signalScheduleShow);
-    return gwi;
 }
 
-CSolodayWidgetItem *CAllDayEventWeekView::createItemWidget(QVector<QString> vSolarInfo, QVector<QDate> date, bool average)
-{
-    CSolodayWidgetItem *gwi = new CSolodayWidgetItem(this, m_editType);
-    connect(gwi, &CSolodayWidgetItem::signalScheduleShow, this, &CAllDayEventWeekView::signalScheduleShow);
-    gwi->setCoorManage(m_coorManage);
-    QColor color1 = m_soloColor;
-    color1.setAlphaF(0.3);
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(1);
-    if (m_type == 0) {
-        gwi->setColor(color1, color1, true);
-        QFont font("PingFangSC-Light");
-        if (average) {
-            font.setPixelSize(6);
-        } else {
-            font.setPixelSize(12);
-        }
-        gwi->setData(vSolarInfo, date);
-        int w = width();
-        if (average) {
-            gwi->setFixedSize(width() - m_rightmagin, 22);
-            gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
-        } else {
-            gwi->setFixedSize(width() - m_rightmagin, 22);
-            gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
-        }
-    } else {
-        gwi->setColor(color1, color1, true);
-        QFont font("PingFangSC-Light");
-        if (average) {
-            font.setPixelSize(6);
-        } else {
-            font.setPixelSize(12);
-        }
-        gwi->setData(vSolarInfo, date);
-        if (average) {
-            gwi->setFixedSize(width() - m_rightmagin, 22);
-            gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
-        } else {
-            gwi->setFixedSize(width() - m_rightmagin, 22);
-            gwi->setText(gdcolor.textColor, font, QPoint(13, 2), average);
-        }
-    }
-    return gwi;
-}
 
 void CAllDayEventWeekView::slotdeleteitem( CAllDayEventWidgetItem *item)
 {
@@ -713,7 +774,6 @@ void CAllDayEventWeekView::slotdeleteitem( CAllDayEventWidgetItem *item)
 
 void CAllDayEventWeekView::slotedititem(CAllDayEventWidgetItem *item, int type)
 {
-
     emit signalsUpdateShcedule(0);
     updateDateShow();
     update();
@@ -730,131 +790,4 @@ void CAllDayEventWeekView::slotDeleteItem()
     if (m_currentitem != nullptr) {
         m_currentitem->slotDelete();
     }
-}
-
-
-CSolodayWidgetItem::CSolodayWidgetItem(QWidget *parent, int edittype)
-{
-
-}
-
-void CSolodayWidgetItem::setColor(QColor color1, QColor color2, bool GradientFlag)
-{
-    m_color1 = color1;
-    m_color2 = color2;
-    m_GradientFlag = GradientFlag;
-}
-
-void CSolodayWidgetItem::setText(QColor tcolor, QFont font, QPoint pos, bool avgeflag)
-{
-    m_textcolor = tcolor;
-    m_font = font;
-    m_pos = pos;
-}
-
-void CSolodayWidgetItem::setData(QVector<QString> vSolarInfo, QVector<QDate> date)
-{
-    m_vhover.clear();
-    m_vselectflag.clear();
-    m_vSolarDayInfo = vSolarInfo;
-    m_vDate = date;
-    m_vhover.resize(m_vDate.count());
-    m_vselectflag.resize(m_vDate.count());
-    m_vhover.fill(false);
-    m_vselectflag.fill(false);
-}
-void CSolodayWidgetItem::paintEvent(QPaintEvent *e)
-{
-    int labelwidth = width();
-    int labelheight = height();
-    QPainter painter(this);
-    for (int i = 0; i < m_vDate.count(); i++) {
-        QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vDate.at(i), m_vDate.at(i));
-        if (drawrect.width() < 0) return;
-
-        if (m_GradientFlag) {
-            QRect fillRect = QRect(2, 1, labelwidth - 2, labelheight - 1);
-            //将直线开始点设为0，终点设为1，然后分段设置颜色
-            painter.save();
-            painter.setRenderHints(QPainter::HighQualityAntialiasing);
-            painter.setBrush(QColor(0, 0, 0, 0));
-            painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(fillRect, 8, 8);
-            painter.restore();
-            painter.save();
-            QLinearGradient linearGradient(0, 0, labelwidth, 0);
-            QColor color1 = m_color1;
-            QColor color2 = m_color2;
-            QColor textcolor = m_textcolor;
-
-            if (m_vhover.at(i)) {
-                color1.setAlphaF(0.4);
-                color2.setAlphaF(0.4);
-                //textcolor.setAlphaF(textcolor.alphaF() * 0.94);
-            }
-            linearGradient.setColorAt(0, color1);
-            linearGradient.setColorAt(1, color2);
-            QRect drawrect2 = drawrect;
-            //将直线开始点设为0，终点设为1，然后分段设置颜色
-            painter.setRenderHints(QPainter::HighQualityAntialiasing);
-            painter.setBrush(linearGradient);
-            painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(drawrect2, 8, 8);
-            painter.restore();
-            painter.setFont(m_font);
-            QFont solofont = m_font;
-            QFontMetrics fm = painter.fontMetrics();
-            QString str =  m_vSolarDayInfo.at(i);
-            QString tstr;
-            for (int i = 0; i < str.count(); i++) {
-                tstr.append(str.at(i));
-                int widthT = fm.width(tstr);
-                if (widthT >= drawrect.width() - 6) {
-                    tstr.chop(2);
-                    break;
-                }
-            }
-            if (tstr != str) {
-                tstr = tstr + "...";
-            }
-            painter.setPen(textcolor);
-            painter.drawText(QRect(drawrect.topLeft().x() + 13, drawrect.topLeft().y() + (drawrect.height() - fm.height()) / 2, drawrect.width(), drawrect.height()), Qt::AlignLeft, tstr);
-        }
-    }
-}
-void CSolodayWidgetItem::mousePressEvent(QMouseEvent *event)
-{
-    emit signalScheduleShow(false);
-    m_vselectflag.fill(false);
-    /*for (int i = 0; i < m_vDate.count(); i++) {
-        QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vDate.at(i), m_vDate.at(i));
-        if (drawrect.contains(mapFromGlobal(QCursor::pos()))) {
-            m_vhover[i] = true;
-        }
-    }*/
-    update();
-}
-
-void CSolodayWidgetItem::focusOutEvent(QFocusEvent *event)
-{
-    m_vselectflag.fill(false);
-    update();
-}
-
-void CSolodayWidgetItem::enterEvent(QEvent *event)
-{
-    m_vhover.fill(false);
-    /*for (int i = 0; i < m_vDate.count(); i++) {
-        QRect drawrect = m_coorManage->getAllDayDrawRegion(m_vDate.at(i), m_vDate.at(i));
-        if (drawrect.contains(mapFromGlobal(QCursor::pos()))) {
-            m_vhover[i] = true;
-        }
-    }*/
-    update();
-}
-
-void CSolodayWidgetItem::leaveEvent(QEvent *event)
-{
-    m_vhover.fill(false);
-    update();
 }

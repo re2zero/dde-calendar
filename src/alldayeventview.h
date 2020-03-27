@@ -24,14 +24,18 @@
 #include <QMouseEvent>
 #include <DPushButton>
 #include "schedulestructs.h"
-#include <DListWidget>
+#include <DGraphicsView>
+#include <QGraphicsRectItem>
+#include <QGraphicsScene>
+#include <DFontSizeManager>
+#include <QPropertyAnimation>
+#include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
 DWIDGET_USE_NAMESPACE
 class CAllDayEventWidgetItem;
-class QVBoxLayout;
 class CSolodayWidgetItem;
 class CScheduleCoorManage;
-class CAllDayEventWeekView : public DListWidget
+class CAllDayEventWeekView : public DGraphicsView
 {
     Q_OBJECT
 
@@ -65,7 +69,7 @@ signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
     void signalViewtransparentFrame(int type);
-    void signalScheduleShow(const bool isShow, const int scheduleID);
+    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
 public slots:
     void slotdeleteitem(CAllDayEventWidgetItem *item);
     void slotedititem(CAllDayEventWidgetItem *item, int type = 0);
@@ -73,21 +77,24 @@ public slots:
     void slotDeleteItem();
 private slots:
     void slotCreate();
+    void slotDoubleEvent();
 protected:
-    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
-    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
-    CAllDayEventWidgetItem *createItemWidget(int index, bool average = false);
-    CSolodayWidgetItem *createItemWidget(QVector<QString>   vSolarInfo, QVector<QDate> date, bool average = false);
-
+    void createItemWidget(int index, bool average = false);
 private:
+    int                     itemHeight = 22;
     QAction                                     *m_createAction;     // 创建日程
+    QAction                       *m_editAction;
+    QAction                       *m_deleteAction;
     bool                                         m_widgetFlag;
     QVector<QVector<ScheduleDtailInfo> >         m_vlistData;
-    QVector<DPushButton *>                       m_baseShowItem;
+    QVector<CAllDayEventWidgetItem *>                       m_baseShowItem;
     int                                          m_type;
     QVector<QString>                             m_vSolarDayInfo;
     QVector<QDate>                               m_vDate;
@@ -98,102 +105,67 @@ private:
     bool                                        m_LunarVisible;
     CAllDayEventWidgetItem                      *m_currentitem = nullptr;
     int m_rightmagin = 0;
+    bool                         m_updateDflag  = false;
+    QGraphicsScene                              *m_Scene;
+    bool                            m_press = false;
 };
 
-class CAllDayEventWidgetItem : public DPushButton
+class CAllDayEventWidgetItem : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
-
+    Q_PROPERTY(int offset WRITE setOffset)
 public:
-    explicit CAllDayEventWidgetItem(QWidget *parent = nullptr, int edittype = 0);
-    void setItem(QListWidgetItem *_item)
-    {
-        m_item = _item;
-    }
-    QListWidgetItem *getItem()
-    {
-        return m_item;
-    }
-    void setData(QVector<ScheduleDtailInfo>  &vScheduleInfo);
+    explicit CAllDayEventWidgetItem(QRect rect, QGraphicsItem *parent = nullptr, int edittype = 0);
+    void setData(const ScheduleDtailInfo  &vScheduleInfo);
+    ScheduleDtailInfo getData() const;
     void setCoorManage(CScheduleCoorManage *coor)
     {
         m_coorManage = coor;
     }
     int getEventByPos(QPoint pos);
+    void updateitem();
+    void setPressFlag(const bool flag);
+    void setFont(DFontSizeManager::SizeType type);
+    void setOffset(const int &offset);
+    bool hasSelectSchedule(const ScheduleDtailInfo &info);
+    void setStartValue(const int value);
+    void setEndValue(const int value);
+    void startAnimation();
 signals:
     void signalsDelete(CAllDayEventWidgetItem *item);
     void signalsEdit(CAllDayEventWidgetItem *item, int type = 0);
     void signalsPress(CAllDayEventWidgetItem *item);
     void signalViewtransparentFrame(int type);
-    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
+//    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
 public slots:
     void slotEdit();
     void slotDelete();
     void slotDoubleEvent(int type = 0);
     void slotCreate();
 protected:
-    void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
-    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
-    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent (QMouseEvent *event ) Q_DECL_OVERRIDE;
-    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 private:
-    void paintItem(int index);
-private:
-    QVector<ScheduleDtailInfo>  m_vScheduleInfo;
+    ScheduleDtailInfo     m_vScheduleInfo;
     QAction              *m_editAction;
     QAction              *m_deleteAction;
     QAction              *m_createAction;     // 创建日程
     QFont                 m_font;
-    QListWidgetItem      *m_item;
     bool                  m_avgeflag;
     int                   m_editType = 0;
     QDate                                       m_dianjiDay;
     CScheduleCoorManage                         *m_coorManage;
-    int                   m_currentIndex = -1;
-    QVector<bool>         m_vSelectflag;
-    QVector<bool>         m_vHoverflag;
-    QVector<bool>         m_vHighflag;
+    bool         m_vSelectflag;
+    bool         m_vHoverflag;
+    bool         m_vHighflag;
+    bool            m_press = false;
     bool                  m_pressMove = false;
-};
-class CSolodayWidgetItem : public DPushButton
-{
-    Q_OBJECT
-
-public:
-    explicit CSolodayWidgetItem(QWidget *parent = nullptr, int edittype = 0);
-    void setColor(QColor color1, QColor color2, bool GradientFlag = false);
-    void setText(QColor tcolor, QFont font, QPoint pos, bool avgeflag = false);
-    void setData(QVector<QString>   vSolarInfo, QVector<QDate> date);
-    void setCoorManage(CScheduleCoorManage *coor)
-    {
-        m_coorManage = coor;
-    }
-signals:
-    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
-protected:
-    void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
-    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
-private:
-
-    QVector<QString>      m_vSolarDayInfo;
-    QVector<QDate>        m_vDate;
-    QVector<bool>         m_vhover;
-    QVector<bool>         m_vselectflag;
-    bool                  m_GradientFlag;
-    QColor                m_color1;
-    QColor                m_color2;
-    QColor                m_textcolor;
-    QFont                 m_font;
-    QPoint                m_pos;
-    CScheduleCoorManage                         *m_coorManage;
-    QColor                m_transparentcolor = "#000000";
+    QRect       m_rect;
+    DFontSizeManager::SizeType      m_sizeType  = DFontSizeManager::T8;
+    QPropertyAnimation *m_properAnimationFirst;
+    QPropertyAnimation *m_properANimationSecond;
+    QSequentialAnimationGroup *m_Group;
 };
 #endif // CSHCEDULEDAYVIEW_H
 
