@@ -3,54 +3,86 @@
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Uusi tapahtuma</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>Muokkaa</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Poista</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>Olet poistamassa tapahtumaa.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>Haluatko varmasti poistaa tämän tapahtuman?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Peruuta</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>Haluatko poistaa kaikki tämän tapahtuman esiintymät vai vain valitun tapahtuman?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>Poista kaikki</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>Poista vain tämä tapahtuma</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>Haluatko poistaa tämän ja kaikki tämän tapahtuman tulevat esiintymät vai vain valitun tapahtuman?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>Poista kaikki tulevat tapahtumat</translation>
     </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Poista</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Olet poistamassa tapahtumaa.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Haluatko varmasti poistaa tämän tapahtuman?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Haluatko poistaa kaikki tämän tapahtuman esiintymät vai vain valitun tapahtuman?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Poista kaikki</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Poista vain tämä tapahtuma</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Haluatko poistaa tämän ja kaikki tämän tapahtuman tulevat esiintymät vai vain valitun tapahtuman?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Poista kaikki tulevat tapahtumat</translation>
     </message>
 </context>
 <context>
@@ -491,7 +523,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -550,6 +582,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Poista kaikki tulevat tapahtumat</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Koko päivä</translation>
     </message>
 </context>
 <context>

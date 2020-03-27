@@ -3,54 +3,86 @@
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Ny begivenhed</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>Rediger</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Slet</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>Du er ved at slette en begivenhed.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>Er du sikker på, at du vil slette begivenheden?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annuller</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>Vil du slette alle forekomster af begivenheden eller kun den valgte forekomst?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>Slet alle</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>Slet kun denne begivenhed</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>Vil du slette denne og alle fremtidige forekomster af begivenheden eller kun den valgte forekomst?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>Slet alle fremtidige begivenheder</translation>
     </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Slet</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Du er ved at slette en begivenhed.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Er du sikker på, at du vil slette begivenheden?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuller</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Vil du slette alle forekomster af begivenheden eller kun den valgte forekomst?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Slet alle</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Slet kun denne begivenhed</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Vil du slette denne og alle fremtidige forekomster af begivenheden eller kun den valgte forekomst?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Slet alle fremtidige begivenheder</translation>
     </message>
 </context>
 <context>
@@ -491,7 +523,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -550,6 +582,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Slet alle fremtidige begivenheder</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Hele dagen</translation>
     </message>
 </context>
 <context>

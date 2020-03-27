@@ -3,54 +3,86 @@
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Novo evento</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>Editar</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Eliminar</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>Está a eliminar um evento.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>Tem a certeza que deseja eliminar este evento?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>Deseja eliminar todas as ocorrências para este evento ou apenas a ocorrência selecionada?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>Eliminar tudo</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>Eliminar apenas este evento</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>Deseja eliminar esta e todas as ocorrências futuras deste evento ou apenas a ocorrência selecionada?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>Eliminar todos os eventos futuros</translation>
     </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Está a eliminar um evento.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Tem a certeza que deseja eliminar este evento?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Deseja eliminar todas as ocorrências para este evento ou apenas a ocorrência selecionada?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar tudo</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar apenas este evento</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Deseja eliminar esta e todas as ocorrências futuras deste evento ou apenas a ocorrência selecionada?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar todos os eventos futuros</translation>
     </message>
 </context>
 <context>
@@ -335,7 +367,7 @@
     </message>
     <message>
         <source>Change All</source>
-        <translation>Mudar Tudo</translation>
+        <translation>Alterar tudo</translation>
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
@@ -491,7 +523,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -550,6 +582,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Eliminar todos os eventos futuros</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Todo o dia</translation>
     </message>
 </context>
 <context>

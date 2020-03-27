@@ -3,54 +3,86 @@
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Peristiwa baharu</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>Sunting</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Padam</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>Anda telah memadam satu peristiwa.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>Anda pasti mahu memadam peristiwa ini?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Batal</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>Anda pasti mahu memadam semua kemunculan peristiwa ini, atau hanya kemunculan terpilih?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>Padam Semua</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>Hanya Padam Peristiwa Ini</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>Anda pasti mahu memadam peristiwa ini dan semua kemunculannya yang akan datang, atau hanya kemunculan terpilih?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>Padam Semua Peristiwa Akan Datang</translation>
     </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Padam</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Anda telah memadam satu peristiwa.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Anda pasti mahu memadam peristiwa ini?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Batal</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Anda pasti mahu memadam semua kemunculan peristiwa ini, atau hanya kemunculan terpilih?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Padam Semua</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Hanya Padam Peristiwa Ini</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Anda pasti mahu memadam peristiwa ini dan semua kemunculannya yang akan datang, atau hanya kemunculan terpilih?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Padam Semua Peristiwa Akan Datang</translation>
     </message>
 </context>
 <context>
@@ -491,7 +523,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -550,6 +582,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Padam Semua Peristiwa Akan Datang</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Sepanjang Hari</translation>
     </message>
 </context>
 <context>

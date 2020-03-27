@@ -3,54 +3,86 @@
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Esdeveniment nou</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>Edita</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Elimina</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>Elimineu un esdeveniment.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>Segur que voleu eliminar aquest esdeveniment?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel·la</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>Voleu eliminar totes les ocurrències d&apos;aquest esdeveniment o només l&apos;ocurrència seleccionada?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>Elimina-les totes</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>Elimina només aquest esdeveniment</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>Voleu eliminar aquesta i totes les futures ocurrències d&apos;aquest esdeveniment, o només l&apos;ocurrència seleccionada?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>Elimina tots els esdeveniments futurs</translation>
     </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Elimineu un esdeveniment.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Segur que voleu eliminar aquest esdeveniment?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel·la</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Voleu eliminar totes les ocurrències d&apos;aquest esdeveniment o només l&apos;ocurrència seleccionada?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Elimina-les totes</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Elimina només aquest esdeveniment</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Voleu eliminar aquesta i totes les futures ocurrències d&apos;aquest esdeveniment, o només l&apos;ocurrència seleccionada?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Elimina tots els esdeveniments futurs</translation>
     </message>
 </context>
 <context>
@@ -491,7 +523,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>D&apos;acord</translation>
     </message>
 </context>
 <context>
@@ -550,6 +582,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Suprimeix tots els esdeveniments futurs</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Tot el dia</translation>
     </message>
 </context>
 <context>

@@ -3,65 +3,8 @@
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Novo evento</translation>
     </message>
-</context>
-<context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Novo Evento</translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
     <message>
         <source>Edit</source>
         <translation>Editar</translation>
@@ -69,10 +12,6 @@
     <message>
         <source>Delete</source>
         <translation>Excluir</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Novo Evento</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -96,7 +35,100 @@
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>Excluir Apenas este Evento</translation>
+        <translation>Excluir Apenas Este Evento</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>Excluir esta e todas as ocorrências futuras deste evento ou apenas a ocorrência selecionada?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>Excluir Todos os Eventos Futuros</translation>
+    </message>
+</context>
+<context>
+    <name>CAllDayEventWidgetItem</name>
+    <message>
+        <source>Delete</source>
+        <translation>Excluir</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>Está excluindo um evento.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>Excluir este evento?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>Excluir todas as ocorrências deste evento ou apenas a ocorrência selecionada?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>Excluir Tudo</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>Excluir Apenas Este Evento</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>Excluir esta e todas as ocorrências futuras deste evento ou apenas a ocorrência selecionada?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>Excluir Todos os Eventos Futuros</translation>
+    </message>
+</context>
+<context>
+    <name>CAllDaySchceduleWeekView</name>
+    <message>
+        <source>New event</source>
+        <translation>Novo evento</translation>
+    </message>
+</context>
+<context>
+    <name>CAllDaySchceduleWeekWidgetItem</name>
+    <message>
+        <source>Edit</source>
+        <translation>Editar</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Excluir</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>Novo evento</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>Está excluindo um evento.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>Excluir este evento?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>Excluir todas as ocorrências deste evento ou apenas a ocorrência selecionada?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>Excluir Tudo</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>Excluir Apenas Este Evento</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
@@ -165,7 +197,7 @@
     </message>
     <message>
         <source>New event</source>
-        <translation>Novo Evento</translation>
+        <translation>Novo evento</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -189,7 +221,7 @@
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>Excluir Apenas este Evento</translation>
+        <translation>Excluir Apenas Este Evento</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
@@ -239,7 +271,7 @@
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>Excluir Apenas este Evento</translation>
+        <translation>Excluir Apenas Este Evento</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
@@ -254,7 +286,7 @@
     <name>CMonthView</name>
     <message>
         <source>New event</source>
-        <translation>Novo Evento</translation>
+        <translation>Novo evento</translation>
     </message>
 </context>
 <context>
@@ -292,7 +324,7 @@
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>Excluir Apenas este Evento</translation>
+        <translation>Excluir Apenas Este Evento</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
@@ -343,7 +375,7 @@
     </message>
     <message>
         <source>You are changing a repeating event.</source>
-        <translation>Está alterando um evento repetido.</translation>
+        <translation>Alterando um evento repetido.</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
@@ -483,7 +515,7 @@
     </message>
     <message>
         <source>New event</source>
-        <translation>Novo Evento</translation>
+        <translation>Novo evento</translation>
     </message>
     <message>
         <source>End time must be greater than start time</source>
@@ -491,7 +523,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -541,7 +573,7 @@
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>Excluir Apenas este Evento</translation>
+        <translation>Excluir Apenas Este Evento</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
@@ -551,12 +583,16 @@
         <source>Delete All Future Events</source>
         <translation>Excluir Todos os Eventos Futuros</translation>
     </message>
+    <message>
+        <source>All Day</source>
+        <translation>Dia Todo</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchView</name>
     <message>
         <source>No search results</source>
-        <translation>Nenhum Resultado</translation>
+        <translation>Nenhum resultado</translation>
     </message>
 </context>
 <context>
@@ -667,7 +703,7 @@
     </message>
     <message>
         <source>Delete event</source>
-        <translation>Excluir Evento</translation>
+        <translation>Excluir evento</translation>
     </message>
     <message>
         <source>Copy</source>

@@ -3,54 +3,86 @@
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Нови догађај</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>Уреди</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Обриши</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation>Бришете догађај.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation>Заиста желите да обришете овај догађај?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Откажи</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation>Обриши све</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation>Обриши само овај догађај</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation>Обриши све будуће догађаје</translation>
     </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Обриши</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Бришете догађај.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Заиста желите да обришете овај догађај?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Откажи</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Обриши све</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Обриши само овај догађај</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Обриши све будуће догађаје</translation>
     </message>
 </context>
 <context>
@@ -403,7 +435,7 @@
     </message>
     <message>
         <source>Type:</source>
-        <translation>Тип:</translation>
+        <translation>Врста:</translation>
     </message>
     <message>
         <source>Work</source>
@@ -491,7 +523,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>У реду</translation>
     </message>
 </context>
 <context>
@@ -550,6 +582,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Обриши све будуће догађаје</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Цео дан</translation>
     </message>
 </context>
 <context>
