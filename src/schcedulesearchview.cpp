@@ -385,7 +385,7 @@ CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(0);
     layout->setSpacing(0);
-    m_gradientItemList = new DListWidget(parent);
+    m_gradientItemList = new CScheduleListWidget(parent);
     m_gradientItemList->setAlternatingRowColors(true);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(m_gradientItemList);
@@ -398,6 +398,11 @@ CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
     m_bBackgroundcolor.setAlphaF(0.03);
     m_gradientItemList->setLineWidth(0);
     m_labellist.clear();
+
+    connect(m_gradientItemList,
+            &CScheduleListWidget::signalListWidgetScheduleHide,
+            this,
+            &CSchceduleSearchView::signalScheduleHide);
 }
 
 CSchceduleSearchView::~CSchceduleSearchView()
@@ -612,6 +617,10 @@ QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
     }
     gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
     gwi->setDate(date);
+    connect(gwi,
+            &CSchceduleSearchDateItem::signalLabelScheduleHide,
+            this,
+            &CSchceduleSearchView::signalScheduleHide);
     QListWidgetItem *listItem = new QListWidgetItem;
     listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
     //listItem->setBackgroundColor(Qt::white);
@@ -707,6 +716,12 @@ void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
     DWidget::resizeEvent(event);
 }
 
+void CSchceduleSearchView::mousePressEvent(QMouseEvent *event)
+{
+    DWidget::mousePressEvent(event);
+    qDebug() << Q_FUNC_INFO;
+}
+
 CSchceduleSearchDateItem::CSchceduleSearchDateItem(QWidget *parent): DLabel(parent)
 {
     setAutoFillBackground(true);
@@ -752,4 +767,26 @@ void CSchceduleSearchDateItem::paintEvent(QPaintEvent *e)
     }
     painter.drawText(QRect(12, 8, labelwidth, labelheight - 8), Qt::AlignLeft, datestr);
     painter.end();
+}
+
+void CSchceduleSearchDateItem::mousePressEvent(QMouseEvent *event)
+{
+    emit signalLabelScheduleHide();
+}
+
+CScheduleListWidget::CScheduleListWidget(QWidget *parent)
+    : DListWidget (parent)
+{
+
+}
+
+CScheduleListWidget::~CScheduleListWidget()
+{
+
+}
+
+void CScheduleListWidget::mousePressEvent(QMouseEvent *event)
+{
+    DListWidget::mousePressEvent(event);
+    emit signalListWidgetScheduleHide();
 }

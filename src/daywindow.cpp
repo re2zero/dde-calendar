@@ -353,7 +353,6 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
         }
         tvStr.append(str);
         vdate.append(m_currentdate);
-        m_scheduleView->setDate(vdate, tvStr);
     }
     emit signalCurrentDate(date);
 }

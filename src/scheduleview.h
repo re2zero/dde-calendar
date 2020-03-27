@@ -38,7 +38,6 @@ class QVBoxLayout;
 class CScheduleView : public DFrame
 {
     Q_OBJECT
-
 public:
     CScheduleView(QWidget *parent = nullptr, int viewType = 0);
     ~CScheduleView() Q_DECL_OVERRIDE;
@@ -103,7 +102,6 @@ private:
     QColor                    m_timeColor = "#7D7D7D";
     QColor                    m_currenttimecolor = "#F74444";
     int                       m_cuttrnttimetype = 0;
-
     int                       m_space = 30;
     QVBoxLayout              *m_layout;
     SchecduleRemindWidget    *m_ScheduleRemindWidget;

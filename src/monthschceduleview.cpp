@@ -50,7 +50,7 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
     connect(this, SIGNAL(pressed()), this, SLOT(slotPress()));
     setAttribute(Qt::WA_DeleteOnClose, true);
-    const int duration = 100;
+    const int duration = 200;
     m_properAnimationFirst = new QPropertyAnimation( this, "setRectOffset", this);
     m_properAnimationFirst->setObjectName("First");
     m_properAnimationSecond = new QPropertyAnimation( this, "setRectOffset", this);
