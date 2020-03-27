@@ -29,6 +29,7 @@
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
 #include "SchecduleRemindWidget.h"
+#include <DFontSizeManager>
 
 DWIDGET_USE_NAMESPACE
 
@@ -210,6 +211,9 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     QColor bcolor = gdcolor.Purecolor;
 
+    QFontMetrics fm = painter->fontMetrics();
+    int h = fm.height();
+
     if (m_hoverflag) {
         bcolor = gdcolor.hoverPurecolor;
     } else if (m_highflag) {
@@ -268,7 +272,8 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         // if (m_totalNum > 1) {
         // font.setPixelSize(6);
         //} else {
-        font.setPixelSize(12);
+        font = DFontSizeManager::instance()->get(DFontSizeManager::T8,font);
+//        font.setPixelSize(12);
         //}
         if (m_scheduleInfo.beginDateTime.date() == m_date) {
             painter->save();
@@ -279,11 +284,11 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
             QString str = stime.toString("AP h:mm");
 
             QFontMetrics fontmetris(font);
-            if (fontmetris.width(str) > rect.width() - 5) {
+            if (fm.width(str) > rect.width() - 5) {
                 QString tstr;
                 for (int i = 0; i < str.count(); i++) {
                     tstr.append(str.at(i));
-                    int widthT = fontmetris.width(tstr) + 5;
+                    int widthT = fm.width(tstr) + 5;
                     if (widthT >= rect.width()) {
                         if (i < 2) {
                             tstr.chop(1);
@@ -295,14 +300,15 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
                     }
                 }
                 painter->drawText(
-                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, 20),
+                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, h),
                     Qt::AlignLeft, tstr);
 
             } else {
                 painter->drawText(
-                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, 20),
+                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, h),
                     Qt::AlignLeft, str);
             }
+
             painter->restore();
 
         } else {
@@ -312,16 +318,17 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         }
 
         painter->save();
-        font.setPixelSize(14);
+        font = DFontSizeManager::instance()->get(DFontSizeManager::T6,font);
+//        font.setPixelSize(14);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
-        splitText(font, rect.width() - tmagin - 5, rect.height() - 20, m_scheduleInfo.titleName,
+        splitText(font, rect.width() - tmagin - 8, rect.height() - 20, m_scheduleInfo.titleName,
                   liststr);
         for (int i = 0; i < liststr.count(); i++) {
             painter->drawText(
                 QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 20 + timeTextHight + i * 20,
-                      rect.width() - 2, 20),
+                      rect.width() - 2, h),
                 Qt::AlignLeft, liststr.at(i));
         }
         painter->restore();
@@ -329,7 +336,8 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->save();
         QFont font("SourceHanSansSC");
         font.setWeight(QFont::Normal);
-        font.setPixelSize(12);
+        font = DFontSizeManager::instance()->get(DFontSizeManager::T8,font);
+//        font.setPixelSize(12);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         painter->drawText(rect, Qt::AlignCenter | Qt::AlignVCenter, "...");

@@ -143,6 +143,7 @@ void CMonthSchceduleWidgetItem::setEndValue(int offset)
     m_properAnimationFirst->setEndValue(offset);
     m_properAnimationSecond->setStartValue(offset);
 }
+
 void CMonthSchceduleWidgetItem::slotEdit()
 {
     emit signalViewtransparentFrame(1);
@@ -282,6 +283,11 @@ void CMonthSchceduleWidgetItem::slotPress()
     emit signalsPress(this);
 }
 
+void CMonthSchceduleWidgetItem::slotScheduleChange(int h)
+{
+    hight = h;
+}
+
 void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 {
     int labelwidth = width();
@@ -312,7 +318,11 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         linearGradient.setColorAt(0, color1);
         linearGradient.setColorAt(1, color2);
 
-        QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
+        QFontMetrics fm1 = painter.fontMetrics();
+        int schedultHightChange = fm1.height();
+        emit signalScheduleChange(schedultHightChange);
+
+        QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, schedultHightChange /*labelheight - 2 * avge*/);
         painter.save();
         //将直线开始点设为0，终点设为1，然后分段设置颜色
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
@@ -339,7 +349,10 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         if (tstr != str) {
             tstr = tstr + "...";
         }
-        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 2 * avge), Qt::AlignLeft, tstr);
+
+        painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(),
+                               /*labelheight - m_pos.y() + 2 * avge*/schedultHightChange - 2),
+                         Qt::AlignLeft | Qt::AlignVCenter, tstr);
 
         if (m_hoverflag && !m_selectflag) {
             QRectF trect = QRectF(2.5, 2.5, labelwidth - 3, labelheight - 3);
@@ -578,6 +591,7 @@ CMonthSchceduleView::CMonthSchceduleView(QWidget *parent) : QObject (parent), m_
     QShortcut *shortcut = new QShortcut(parent);
     shortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(slotDeleteItem()));
+//    connect(item,&CMonthSchceduleWidgetItem::signalhc,this,&CMonthSchceduleView::slothight);
 }
 
 CMonthSchceduleView::~CMonthSchceduleView()
@@ -592,7 +606,7 @@ void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom
     m_buttommagin = buttom;
     m_leftMagin = left;
     m_topMagin = top;
-    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
+//    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 31;
 }
 
 void CMonthSchceduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
@@ -632,6 +646,15 @@ void CMonthSchceduleView::slotDeleteItem()
         if (titem != nullptr) {
             titem->slotDelete();
         }
+    }
+}
+
+void CMonthSchceduleView::slotGetScheduleChange(int h)
+{
+    if(h != hieght){
+        hieght = h;
+        m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (hieght + 4);
+        updateData();
     }
 }
 
@@ -1049,8 +1072,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     computePos(cnum, info.bdate, info.edate, pos, fw, fh);
     gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
     QFont font("PingFangSC-Light");
-
-    font.setPixelSize(12);
+//    font.setPixelSize(12);
 
     gwi->setData(gd);
     gwi->setFixedSize(fw, fh);
@@ -1072,6 +1094,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     connect(gwi, &CMonthSchceduleWidgetItem::signalViewtransparentFrame, this, &CMonthSchceduleView::signalViewtransparentFrame);
     connect(gwi, &CMonthSchceduleWidgetItem::signalUpdateUI, this, &CMonthSchceduleView::signalUpdateUI);
     connect(gwi, &CMonthSchceduleWidgetItem::signalPressScheduleShow, this, &CMonthSchceduleView::signalPressScheduleShow);
+    connect(gwi, &CMonthSchceduleWidgetItem::signalScheduleChange, this, &CMonthSchceduleView::slotGetScheduleChange);
 
     m_scheduleShowItem.append(gwi);
 }
@@ -1088,7 +1111,7 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
     gradientFromC.setAlphaF(0.00);
     gwi->setColor(gradientFromC, gradientFromC, true);
     QFont font;
-    font.setPixelSize(12);
+//    font.setPixelSize(12);
     if (type == 0 || type == 1) {
         QColor tc("#5E5E5E");
         tc.setAlphaF(0.9);
@@ -1122,9 +1145,10 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
     int ecol = (m_beginDate.daysTo(enddate) ) % 7;
 
     fw = (ecol - bcol + 1) * ((m_width - m_leftMagin ) / 7.0) - 11;
-    fh = 22;
+    fh = hieght + 5;
     int x = m_leftMagin + bcol * ((m_width - m_leftMagin )  / 7.0) + 5;
     int y = m_topMagin + ((m_height - m_topMagin - m_buttommagin) * brow / 6.0 + 0.5)  + 27 + (cnum - 1) * fh + 2.9;
     pos = QPoint(x, y);
 }
+
 

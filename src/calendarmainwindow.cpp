@@ -44,6 +44,7 @@
 #include "schcedulesearchview.h"
 #include <QDesktopWidget>
 #include <QApplication>
+#include <DFontSizeManager>
 DGUI_USE_NAMESPACE
 static const int CalendarMTitleHeight = 50;
 
@@ -459,6 +460,7 @@ void Calendarmainwindow::initUI()
     // QSpacerItem *lspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //titleLayout->addSpacerItem(lspaceitem);
     m_searchEdit = new DSearchEdit;
+    DFontSizeManager::instance()->bind(m_searchEdit,DFontSizeManager::T6);
     m_searchEdit->setFixedHeight(36);
     m_searchEdit->setFixedWidth(240);
     m_searchEdit->setFont(viewfont);

@@ -26,6 +26,7 @@
 #include <DPalette>
 #include "schcedulectrldlg.h"
 #include <QShortcut>
+#include <DFontSizeManager>
 DGUI_USE_NAMESPACE
 CMySchceduleView::CMySchceduleView(QWidget *parent) : DDialog(parent)
 {
@@ -238,6 +239,7 @@ void CMySchceduleView::initUI()
     m_Title = new QLabel(this);
     m_Title->setFixedSize(108, 51);
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+    DFontSizeManager::instance()->bind(m_Title,DFontSizeManager::T5);
     QIcon t_icon = QIcon::fromTheme("dde-calendar");
     setIcon(t_icon);
     QFont labelTitle;
@@ -270,6 +272,7 @@ void CMySchceduleView::initUI()
     m_schceduleLabel = new QLabel(this);
     m_schceduleLabel->setFixedHeight(26);
     m_schceduleLabel->setAlignment(Qt::AlignCenter);
+    DFontSizeManager::instance()->bind(m_schceduleLabel,DFontSizeManager::T6);
     QFont labelF;
     labelF.setFamily("SourceHanSansSC");
     labelF.setWeight(QFont::Medium);
@@ -289,6 +292,7 @@ void CMySchceduleView::initUI()
     m_timeLabel = new QLabel(this);
     m_timeLabel->setFixedHeight(26);
     m_timeLabel->setAlignment(Qt::AlignCenter);
+    DFontSizeManager::instance()->bind(m_timeLabel,DFontSizeManager::T6);
     QFont labelT;
     labelT.setFamily("SourceHanSansSC");
     labelT.setWeight(QFont::Bold);
