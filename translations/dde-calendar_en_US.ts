@@ -553,6 +553,10 @@
         <source>Delete All Future Events</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>All Day</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchView</name>

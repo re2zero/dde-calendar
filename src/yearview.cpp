@@ -118,8 +118,8 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     lightColor.normalColor = "#FFFFFF";
     lightColor.normalColor.setAlphaF(1);
 
-    darkColor.hoverColor = "#000000";
-    darkColor.hoverColor.setAlphaF(0.05);
+    darkColor.hoverColor = "#FFFFFF";
+    darkColor.hoverColor.setAlphaF(0.1);
     darkColor.pressColor = "#252525";
     darkColor.pressColor.setAlphaF(1);
     darkColor.normalColor = "#000000";
@@ -468,6 +468,11 @@ void CYearView::paintCell(QWidget *cell)
     if (m_themetype == 2 &&  m_cellEventType[pos] != CellPress) {
 
     } else {
+        painter.setBrush(m_cellBackgroundColor);
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(fillRect);
+    }
+    if (m_themetype == 2 &&  m_cellEventType[pos] == Cellhover){
         painter.setBrush(m_cellBackgroundColor);
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);

@@ -56,6 +56,7 @@ public slots:
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
     void slotupdateItem(CMonthSchceduleWidgetItem *item);
     void slotDeleteItem();
+    void slotGetScheduleChange(int h);
 private:
 
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule);
@@ -77,6 +78,7 @@ private:
     int                                          m_topMagin;
     int                                          m_buttommagin;
     CMonthSchceduleWidgetItem                   *m_currentitem = nullptr;
+    int hieght = 22;
 };
 
 class CMonthSchceduleNumButton : public DPushButton
@@ -144,11 +146,13 @@ signals:
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
     void signalPressScheduleShow(const bool isShow, const int id);
+    void signalScheduleChange(int h);
 public slots:
     void slotEdit();
     void slotDelete();
     void slotDoubleEvent(int type = 0);
     void slotPress();
+    void slotScheduleChange(int h);
 protected:
     void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
@@ -181,6 +185,8 @@ private:
     QPropertyAnimation *m_properAnimationSecond = nullptr;
     QSequentialAnimationGroup *m_Group = nullptr;
     QRect              m_rect;
+    int hight = 0;
+
 };
 
 #endif // CSHCEDULEDAYVIEW_H
