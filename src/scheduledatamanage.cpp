@@ -185,6 +185,38 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.pressgradientFromC.setAlphaF(0.8);
         otherC.pressPurecolor.setAlphaF(0.8);
         m_vScheduleColor.append(otherC);
+
+        CSchedulesColor solar;
+        solar.type = 4;
+        solar.dotColor = "#FF7272";
+        solar.dotColor.setAlphaF(1);
+        solar.gradientFromC = "#FF7272";
+        solar.gradientFromC.setAlphaF(0.3);
+        solar.gradientToC = "#FF7272";
+        solar.gradientToC.setAlphaF(0.3);
+        solar.Purecolor = "#FF7272";
+        solar.Purecolor.setAlphaF(0.3);
+        solar.shadowcolor = "#BA60FA";
+        solar.textColor = "#000000";
+        solar.timeColor = "#8548B1";
+        solar.hightlightgradientFromC = "#FF7272";
+        solar.hightlightgradientToC = "#FF7272";
+        solar.hightlightPurecolor = "#FF7272";
+
+        solar.hovergradientFromC = "#FF7272";
+        solar.hovergradientToC = "#FF7272";
+        solar.hovergradientFromC.setAlphaF(0.5);
+        solar.hovergradientToC.setAlphaF(0.5);
+        solar.hoverPurecolor = "#FF7272";
+        solar.splitColor = "#FF7272";
+        solar.pressgradientToC = solar.gradientToC;
+        solar.pressgradientFromC = solar.gradientFromC;
+        solar.pressPurecolor = solar.Purecolor;
+        solar.pressgradientToC.setAlphaF(0.8);
+        solar.pressgradientFromC.setAlphaF(0.8);
+        solar.pressPurecolor.setAlphaF(0.8);
+        m_vScheduleColor.append(solar);
+
     } else if (type == 2) {
         CSchedulesColor workC;
         workC.type = 1;
@@ -298,6 +330,37 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.pressgradientFromC.setAlphaF(0.4);
         otherC.pressPurecolor.setAlphaF(0.1);
         m_vScheduleColor.append(otherC);
+
+        CSchedulesColor solar;
+        solar.type = 4;
+        solar.dotColor = "#FF7272";
+        solar.dotColor.setAlphaF(0.8);
+        solar.gradientFromC = "#FF7272";
+        solar.gradientFromC.setAlphaF(0.3);
+        solar.gradientToC = "#FF7272";
+        solar.gradientToC.setAlphaF(0.3);
+        solar.Purecolor = "#FF7272";
+        solar.Purecolor.setAlphaF(0.3);
+        solar.shadowcolor = "#BA60FA";
+        solar.textColor = "#000000";
+        solar.timeColor = "#8548B1";
+        solar.hightlightgradientFromC = "#FF7272";
+        solar.hightlightgradientToC = "#FF7272";
+        solar.hightlightPurecolor = "#FF7272";
+
+        solar.hovergradientFromC = "#FF7272";
+        solar.hovergradientToC = "#FF7272";
+        solar.hovergradientFromC.setAlphaF(0.5);
+        solar.hovergradientToC.setAlphaF(0.5);
+        solar.hoverPurecolor = "#FF7272";
+        solar.splitColor = "#FF7272";
+        solar.pressgradientToC = solar.gradientToC;
+        solar.pressgradientFromC = solar.gradientFromC;
+        solar.pressPurecolor = solar.Purecolor;
+        solar.pressgradientToC.setAlphaF(0.8);
+        solar.pressgradientFromC.setAlphaF(0.8);
+        solar.pressPurecolor.setAlphaF(0.8);
+        m_vScheduleColor.append(solar);
     }
 }
 
@@ -345,9 +408,23 @@ CScheduleDataManage::CScheduleDataManage ()
     otherC.Purecolor = "#D191FF";
     otherC.Purecolor.setAlphaF(0.2);
     otherC.shadowcolor = "#BA60FA";
-    workC.textColor = "#000000";
-    workC.timeColor = "#8548B1";
+    otherC.textColor = "#000000";
+    otherC.timeColor = "#8548B1";
     m_vScheduleColor.append(otherC);
+    CSchedulesColor solar;
+    solar.type = 4;
+    solar.dotColor = "#FF7272";
+    solar.dotColor.setAlphaF(1);
+    solar.gradientFromC = "#FF7272";
+    solar.gradientFromC.setAlphaF(0.3);
+    solar.gradientToC = "#FF7272";
+    solar.gradientToC.setAlphaF(0.3);
+    solar.Purecolor = "#FF7272";
+    solar.Purecolor.setAlphaF(0.3);
+    solar.shadowcolor = "#BA60FA";
+    solar.textColor = "#000000";
+    solar.timeColor = "#8548B1";
+    m_vScheduleColor.append(solar);
 }
 
 CScheduleDataManage::~CScheduleDataManage()

@@ -193,7 +193,7 @@ void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphics
         color1 = gdcolor.hightlightgradientFromC;
         color2 = gdcolor.hightlightgradientToC;
     }
-    if (m_vSelectflag) {
+    if (m_vSelectflag || m_press) {
         color1 = gdcolor.pressgradientFromC;
         color2 = gdcolor.pressgradientToC;
         textcolor.setAlphaF(0.6);
@@ -521,6 +521,8 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
             Context.exec(QCursor::pos());
 
         } else {
+            if (item->getData().type.ID == 4)
+                return;
             DMenu menu(this);
             menu.addAction(m_editAction);
             menu.addAction(m_deleteAction);
@@ -641,12 +643,14 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
     } else if (event->button() == Qt::LeftButton) {
         CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
         if (item != nullptr) {
+            if (item->getData().type.ID == 4) {
+                emit signalScheduleShow(false);
+                return;
+            }
             m_currentitem = item;
             m_press = true;
             item->setPressFlag(true);
-
             emit signalScheduleShow(true, item->getData().id);
-
             emit signalsitem(this);
         } else {
             emit signalScheduleShow(false);
@@ -682,6 +686,9 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
         }
         emit signalViewtransparentFrame(0);
     } else {
+        if (item->getData().type.ID == 4) {
+            return;
+        }
         emit signalViewtransparentFrame(1);
         m_updateDflag  = false;
         CMySchceduleView dlg(this);
@@ -788,6 +795,8 @@ void CAllDayEventWeekView::slotupdateItem(CAllDayEventWidgetItem *item)
 void CAllDayEventWeekView::slotDeleteItem()
 {
     if (m_currentitem != nullptr) {
+        if (m_currentitem->getData().type.ID == 4)
+            return;
         m_currentitem->slotDelete();
     }
 }

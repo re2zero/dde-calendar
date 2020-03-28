@@ -303,6 +303,20 @@ void CScheduleView::setDate(QDate date)
 
 void CScheduleView::setDate(QVector<QDate> vdate, QVector<QString> vSolarDay)
 {
+    m_SolarToSchedule.clear();
+    for (int i = 0; i < vdate.size(); ++i) {
+        ScheduleDtailInfo info;
+        info.type.ID = 4;
+        info.type.typeName = "节日";
+        info.allday = true;
+        info.beginDateTime = QDateTime(vdate.at(i));
+        info.endDateTime = QDateTime(vdate.at(i), QTime(23, 59));
+        info.titleName = vSolarDay.at(i);
+        m_SolarToSchedule.append(info);
+    }
+
+    if (m_SolarToSchedule.size() > 0)
+        updateAllday();
 
 }
 
@@ -734,6 +748,11 @@ void CScheduleView::updateAllday(int id)
                 vListData.append(scheduleInfolist.at(m));
             }
         }
+    }
+    qDebug() << Q_FUNC_INFO;
+    qDebug() << m_SolarToSchedule.size();
+    for (int i = 0 ; i < m_SolarToSchedule.size(); ++i) {
+        vListData.append(m_SolarToSchedule.at(i));
     }
     qSort(vListData.begin(), vListData.end(), WScheduleDaysThan);
     qSort(vListData.begin(), vListData.end(), WScheduleDateThan);

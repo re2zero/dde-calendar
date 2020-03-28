@@ -105,6 +105,7 @@ private:
     int                       m_space = 30;
     QVBoxLayout              *m_layout;
     SchecduleRemindWidget    *m_ScheduleRemindWidget;
+    QVector<ScheduleDtailInfo>  m_SolarToSchedule;
 };
 
 #endif // SCHEDULEVIEW_H

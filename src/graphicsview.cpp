@@ -135,6 +135,8 @@ void CGraphicsView::updateHigh()
 void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
     w = w - rightmagin;
+    //不知为何要改变高度，现固定
+    h = 1300;
     m_graphicsScene->setSceneRect(0, 0, w, h);
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
     m_rightmagin = rightmagin;
