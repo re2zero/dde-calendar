@@ -744,6 +744,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
         ScheduleDtailInfo info;
         info.titleName = m_soloDay;
         info.allday = true;
+        info.id = 4;
         paintItem(info, 0, 1);
     }
 
@@ -785,7 +786,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
     painter.setPen(Qt::NoPen);
     painter.drawRect(fillRect);
     painter.restore();
-    if(gd.id == -1){
+    if (gd.id == -1) {
 
         QString str = "...";
 
@@ -900,7 +901,7 @@ void CYearSchceduleView::paintItem()
 }
 
 CYearSchceduleOutView::CYearSchceduleOutView(QWidget *parent)
-    : DArrowRectangle(DArrowRectangle::ArrowLeft,parent)
+    : DArrowRectangle(DArrowRectangle::ArrowLeft, parent)
 {
     yearschceduleview = new CYearSchceduleView ();
     this->setContent(yearschceduleview);
@@ -933,7 +934,7 @@ void CYearSchceduleOutView::setTheMe(int type)
 
 void CYearSchceduleOutView::setDtype(int type, int arrowheight)
 {
-    yearschceduleview->setDtype(type , arrowheight);
+    yearschceduleview->setDtype(type, arrowheight);
 }
 
 void CYearSchceduleOutView::setCurrentDate(QDate cdate)
