@@ -449,7 +449,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 //                }
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                          hourTextWidth, hourTextHeight),
+                          hourTextWidth + 2, hourTextHeight),
                     Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP HH:mm"));
             }
             painter.restore();
@@ -458,7 +458,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.setFont(font);
             painter.setPen(m_timeColor);
             QRect tinrect((m_leftMagin - hourTextWidth) / 2 - 5,
-                          m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth,
+                          m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth + 2,
                           hourTextHeight);
 
             for (int i = 0; i < m_vPos.size() - 1; i++) {
@@ -469,7 +469,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 if (m_topMagin - 8 + m_vPos[i] < m_topMagin)
                     continue;
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                         hourTextWidth, hourTextHeight);
+                         hourTextWidth + 2, hourTextHeight);
                 if (rr.intersects(tinrect) && m_viewType == 1 &&
                         m_beginDate == QDate::currentDate())
                     continue;
@@ -486,7 +486,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 //                }
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-                          hourTextWidth, hourTextHeight),
+                          hourTextWidth + 2, hourTextHeight),
                     Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP HH:mm"));
             }
             painter.restore();
@@ -499,7 +499,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 if (m_topMagin - 8 + m_vPos[m_vPos.count() - 1] >= m_topMagin)
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5,
                                            m_topMagin - 8 + m_vPos[m_vPos.count() - 1],
-                                           hourTextWidth, hourTextHeight),
+                                           hourTextWidth + 2, hourTextHeight),
                                      Qt::AlignRight, str);
                 painter.restore();
             }

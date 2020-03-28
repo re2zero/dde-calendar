@@ -36,6 +36,7 @@
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
+#include <DFontSizeManager>
 
 DGUI_USE_NAMESPACE
 
@@ -591,7 +592,6 @@ CMonthSchceduleView::CMonthSchceduleView(QWidget *parent) : QObject (parent), m_
     QShortcut *shortcut = new QShortcut(parent);
     shortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(slotDeleteItem()));
-//    connect(item,&CMonthSchceduleWidgetItem::signalhc,this,&CMonthSchceduleView::slothight);
 }
 
 CMonthSchceduleView::~CMonthSchceduleView()
@@ -1072,6 +1072,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     computePos(cnum, info.bdate, info.edate, pos, fw, fh);
     gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
     QFont font("PingFangSC-Light");
+    font = DFontSizeManager::instance()->get(DFontSizeManager::T8,font);
 //    font.setPixelSize(12);
 
     gwi->setData(gd);
@@ -1111,6 +1112,7 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
     gradientFromC.setAlphaF(0.00);
     gwi->setColor(gradientFromC, gradientFromC, true);
     QFont font;
+    font = DFontSizeManager::instance()->get(DFontSizeManager::T8,font);
 //    font.setPixelSize(12);
     if (type == 0 || type == 1) {
         QColor tc("#5E5E5E");
