@@ -25,6 +25,7 @@
 #include "schedulestructs.h"
 #include <DListWidget>
 #include "scheduledatamanage.h"
+#include <DFontSizeManager>
 DWIDGET_USE_NAMESPACE
 class CMonthSchceduleWidgetItem;
 class QVBoxLayout;
@@ -56,7 +57,6 @@ public slots:
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
     void slotupdateItem(CMonthSchceduleWidgetItem *item);
     void slotDeleteItem();
-    void slotGetScheduleChange(int h);
 private:
 
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule);
@@ -78,7 +78,6 @@ private:
     int                                          m_topMagin;
     int                                          m_buttommagin;
     CMonthSchceduleWidgetItem                   *m_currentitem = nullptr;
-    int hieght = 22;
 };
 
 class CMonthSchceduleNumButton : public DPushButton
@@ -90,6 +89,7 @@ public:
     ~CMonthSchceduleNumButton();
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos);
+    void setSizeType(DFontSizeManager::SizeType sizeType);
     void setTransparentB(bool t, QColor tcolor);
     void setDate(QDate date)
     {
@@ -115,6 +115,7 @@ private:
     QColor                m_transparentcolor;
     bool                  m_transparentf = false;
     QDate                 m_date;
+    DFontSizeManager::SizeType m_SizeType = DFontSizeManager::T8;
 };
 
 class CMonthSchceduleWidgetItem : public DPushButton
@@ -125,6 +126,7 @@ public:
     explicit CMonthSchceduleWidgetItem(QWidget *parent = nullptr, int edittype = 0);
     ~CMonthSchceduleWidgetItem() Q_DECL_OVERRIDE;
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
+    void setSizeType(DFontSizeManager::SizeType sizeType);
     void setText(QColor tcolor, QFont font, QPoint pos);
     void getColor(QColor &color1, QColor &color2, bool &GradientFlag);
     void getText(QColor &tcolor, QFont &font, QPoint &pos);
@@ -146,13 +148,11 @@ signals:
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
     void signalPressScheduleShow(const bool isShow, const int id);
-    void signalScheduleChange(int h);
 public slots:
     void slotEdit();
     void slotDelete();
     void slotDoubleEvent(int type = 0);
     void slotPress();
-    void slotScheduleChange(int h);
 protected:
     void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
@@ -185,7 +185,7 @@ private:
     QPropertyAnimation *m_properAnimationSecond = nullptr;
     QSequentialAnimationGroup *m_Group = nullptr;
     QRect              m_rect;
-    int hight = 0;
+    DFontSizeManager::SizeType m_SizeType = DFontSizeManager::T8;
 
 };
 
