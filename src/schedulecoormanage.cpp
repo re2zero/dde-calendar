@@ -206,16 +206,16 @@ QRect CScheduleCoorManage::getAllDayDrawRegion(QDate begin, QDate end)
     if (begindate < m_begindate) begindate = m_begindate;
     if (enddate > m_enddate)   enddate = m_enddate;
     //if (begindate < m_begindate || enddate > m_enddate) return rect;
-    int beginday = m_begindate.daysTo(begindate) + 1;
+    int beginday = m_begindate.daysTo(begindate);
 
     int day = begindate.daysTo(enddate) + 1;
 
 
     float rWidth = m_width * (1.0 * day / m_totalDay) - 12;
     float rHeight = m_height;
-    float posX = m_width * (1.0 * (beginday - 1) / m_totalDay);
+    float posX = m_width * (1.0 * beginday / m_totalDay);
     float posY = 0;
-    rect = QRect(posX, posY, rWidth - m_rightmagin, rHeight);
+    rect = QRect(posX + 6, posY, rWidth - m_rightmagin, rHeight);
     return rect;
 }
 

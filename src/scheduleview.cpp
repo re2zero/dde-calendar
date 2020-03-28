@@ -20,6 +20,7 @@
 #include <DPalette>
 #include <QGridLayout>
 #include <QShortcut>
+#include <DHorizontalLine>
 #include <QVBoxLayout>
 #include "alldayeventview.h"
 #include "graphicsview.h"
@@ -49,7 +50,8 @@ void CScheduleView::setviewMagin(int left, int top, int right, int bttom)
     m_leftMagin = left;
     m_topMagin = top;
     m_rightmagin = right;
-    m_graphicsView->setMargins(left, top, right, bttom);
+    m_graphicsView->setMargins(left, 0, right, bttom);
+    m_alldaylist->setMargins(left, 0, 0, 0);
 }
 
 void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
@@ -518,12 +520,12 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
     // painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
     int t_width = width();
-    int t_height = height();
-    painter.save();
-    painter.setPen(Qt::SolidLine);
-    painter.setPen(m_linecolor);
-    painter.drawLine(QPoint(0, m_topMagin), QPoint(t_width, m_topMagin));
-    painter.restore();
+//    int t_height = height();
+//    painter.save();
+//    painter.setPen(Qt::SolidLine);
+//    painter.setPen(m_linecolor);
+//    painter.drawLine(QPoint(0, m_topMagin), QPoint(t_width, m_topMagin));
+//    painter.restore();
     float intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
     if (m_TotalDay > 1) {
         painter.save();
@@ -567,19 +569,15 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
         m_sMaxNum = ((width() - m_leftMagin) / 7) / 27;
         m_graphicsView->setRange(width() - m_leftMagin, 24 * (0.0968 * height() + 0.5), m_beginDate,
                                  m_endDate, 0);
-        m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 5);
+        //   m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 5);
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate, 0);
-        m_alldaylist->move(m_leftMagin - 2, 5);
     } else {
         m_graphicsView->setRange(width() - m_leftMagin,
                                  24 * (0.083 * height() + 0.5), m_beginDate, m_endDate, m_rightmagin);
-        m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
+        //  m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
         m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate, m_rightmagin);
-        m_alldaylist->move(m_leftMagin - 2, 5);
     }
     update();
-    m_graphicsView->update();
-    m_alldaylist->update();
     QFrame::resizeEvent(event);
     updateSchedule(0);
     updateAllday(0);
@@ -587,21 +585,23 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
 
 void CScheduleView::initUI()
 {
+    DHorizontalLine *m_hline = new DHorizontalLine;
     m_layout = new QVBoxLayout;
     m_layout->setSpacing(0);
     m_layout->setMargin(0);
+    m_alldaylist = new CAllDayEventWeekView(this, 1);
+//    m_alldaylist->move(72, 5);
+    m_layout->addWidget(m_alldaylist);
+    m_layout->addWidget(m_hline);
     m_graphicsView = new CGraphicsView(this, m_viewType);
-    m_layout->setContentsMargins(0, m_space, 0, 0);
+//    m_layout->setContentsMargins(0, m_space, 0, 0);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this,
             SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
     m_layout->addWidget(m_graphicsView);
     setLayout(m_layout);
     m_graphicsView->scrollBarValueChangedSlot();
-    m_alldaylist = new CAllDayEventWeekView(this, 1);
-    // m_alldaylist->setFixedSize(635, 99);
-    m_alldaylist->move(72, 5);
+
     m_ScheduleRemindWidget = new SchecduleRemindWidget(this);
-    //    m_graphicsView->setStyleSheet("background-color: rgb(255, 255, 0);");
 }
 
 void CScheduleView::initConnection()
@@ -749,8 +749,6 @@ void CScheduleView::updateAllday(int id)
             }
         }
     }
-    qDebug() << Q_FUNC_INFO;
-    qDebug() << m_SolarToSchedule.size();
     for (int i = 0 ; i < m_SolarToSchedule.size(); ++i) {
         vListData.append(m_SolarToSchedule.at(i));
     }
@@ -848,8 +846,8 @@ void CScheduleView::updateAllday(int id)
         m_topMagin = 123;
         m_space = 122;
     }
-    m_layout->setContentsMargins(0, m_space, 0, 0);
-    m_graphicsView->setMargins(m_leftMagin, m_topMagin - m_space, 0, 0);
+//    m_layout->setContentsMargins(0, m_space, 0, 0);
+//    m_graphicsView->setMargins(m_leftMagin, m_topMagin - m_space, 0, 0);
 
     m_alldaylist->setFixedHeight(m_topMagin - 6);
     m_alldaylist->setDayData(vResultData, 0);

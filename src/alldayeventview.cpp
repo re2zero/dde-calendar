@@ -427,8 +427,12 @@ void CAllDayEventWeekView::setSelectSchedule(const ScheduleDtailInfo &info)
             item->setEndValue(4);
             item->startAnimation();
         }
-
     }
+}
+
+void CAllDayEventWeekView::setMargins(int left, int top, int right, int bottom)
+{
+    setViewportMargins(QMargins(left, top, right, bottom));
 }
 
 CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
@@ -720,6 +724,15 @@ void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
     DGraphicsView::wheelEvent(event);
 }
 
+void CAllDayEventWeekView::paintEvent(QPaintEvent *event)
+{
+//    QPainter painter(this->viewport());
+//    painter.setBrush(QBrush(Qt::red));
+//    painter.drawRect(this->viewport()->rect());
+//    painter.end();
+    DGraphicsView::paintEvent(event);
+}
+
 void CAllDayEventWeekView::updateDateShow()
 {
     m_currentitem = nullptr;
@@ -755,10 +768,9 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
         const ScheduleDtailInfo &info = m_vlistData[index].at(i);
 
         QRect drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
-        drawrect.setX(drawrect.x() + 8);
         drawrect.setY((itemHeight + 1)*index);
-        drawrect.setWidth(drawrect.width() + 11);
         drawrect.setHeight(itemHeight);
+
         CAllDayEventWidgetItem *gwi = new CAllDayEventWidgetItem(drawrect, nullptr, m_editType);
         gwi->setCoorManage(m_coorManage);
         gwi->setData(m_vlistData[index].at(i));

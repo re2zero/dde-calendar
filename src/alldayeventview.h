@@ -65,6 +65,7 @@ public:
     void setLunarVisible(bool state);
     void updateHigh();
     void setSelectSchedule(const ScheduleDtailInfo &info);
+    void setMargins(int left, int top, int right, int bottom);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
@@ -84,6 +85,7 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
     void createItemWidget(int index, bool average = false);
