@@ -704,7 +704,6 @@ void CMonthSchceduleView::updateData()
             info.state = false;
             int k = 0;
             for (; k < vMDaySchedule.count(); k++) {
-                qDebug() << vMDaySchedule.at(k).bdate << "++++++++++";
                 if (vData.at(j).id == vMDaySchedule.at(k).tData.id && vData.at(j).RecurID == vMDaySchedule.at(k).tData.RecurID) {
                     break;
                 }
