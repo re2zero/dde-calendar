@@ -60,7 +60,13 @@ void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
         return;
     }
     m_TotalDay = begin.daysTo(end) + 1;
-    m_graphicsView->setRange(w, h, begin, end, m_rightmagin);
+    int mheight = 0;
+    if (m_viewType == 0) {
+        mheight = 24 * (0.0968 * height() + 0.5);
+    } else {
+        mheight = 24 * (0.083 * height() + 0.5);
+    }
+    m_graphicsView->setRange(w, mheight, begin, end, m_rightmagin);
     m_alldaylist->setRange(w, 22, m_beginDate, m_endDate, m_rightmagin);
     update();
 }
@@ -563,7 +569,6 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
 void CScheduleView::resizeEvent(QResizeEvent *event)
 {
-    m_graphicsView->resize(width(), height());
     int tt = 0.0968 * height() + 0.5;
     if (m_viewType == 0) {
         m_sMaxNum = ((width() - m_leftMagin) / 7) / 27;
