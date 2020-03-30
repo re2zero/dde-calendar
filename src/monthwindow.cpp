@@ -391,9 +391,9 @@ void CMonthWindow::slotTransitSchedule(int id)
     emit signalsWUpdateShcedule(this, id);
 }
 
-void CMonthWindow::setSelectScheduleID(const int ScheduleID)
+void CMonthWindow::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
-    m_monthView->setSelectScheduleID(ScheduleID);
+    m_monthView->setSelectSchedule(scheduleInfo);
 }
 
 void CMonthWindow::resizeEvent(QResizeEvent *event)

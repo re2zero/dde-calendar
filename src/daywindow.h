@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <DFrame>
 #include "calendardbus.h"
+#include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
 
 class CDayMonthView;
@@ -39,7 +40,7 @@ public:
     CDayWindow(QWidget *parent = nullptr);
     ~CDayWindow();
     void setDate(QDate date);
-    void setSelectID(const int ID);
+    void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
     void setSearchWFlag(bool flag);
     void clearSearch();
     void setSearchText(QString str);

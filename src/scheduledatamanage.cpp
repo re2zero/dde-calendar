@@ -200,8 +200,11 @@ void CScheduleDataManage::setTheMe(int type)
         solar.textColor = "#000000";
         solar.timeColor = "#8548B1";
         solar.hightlightgradientFromC = "#FF7272";
+        solar.hightlightgradientFromC.setAlphaF(0.5);
         solar.hightlightgradientToC = "#FF7272";
+        solar.hightlightgradientToC.setAlphaF(0.5);
         solar.hightlightPurecolor = "#FF7272";
+        solar.hightlightPurecolor.setAlphaF(0.5);
 
         solar.hovergradientFromC = "#FF7272";
         solar.hovergradientToC = "#FF7272";
@@ -212,9 +215,9 @@ void CScheduleDataManage::setTheMe(int type)
         solar.pressgradientToC = solar.gradientToC;
         solar.pressgradientFromC = solar.gradientFromC;
         solar.pressPurecolor = solar.Purecolor;
-        solar.pressgradientToC.setAlphaF(0.8);
-        solar.pressgradientFromC.setAlphaF(0.8);
-        solar.pressPurecolor.setAlphaF(0.8);
+        solar.pressgradientToC.setAlphaF(0.4);
+        solar.pressgradientFromC.setAlphaF(0.4);
+        solar.pressPurecolor.setAlphaF(0.1);
         m_vScheduleColor.append(solar);
 
     } else if (type == 2) {
@@ -345,8 +348,11 @@ void CScheduleDataManage::setTheMe(int type)
         solar.textColor = "#000000";
         solar.timeColor = "#8548B1";
         solar.hightlightgradientFromC = "#FF7272";
+        solar.hightlightgradientFromC.setAlphaF(0.5);
         solar.hightlightgradientToC = "#FF7272";
+        solar.hightlightgradientToC.setAlphaF(0.5);
         solar.hightlightPurecolor = "#FF7272";
+        solar.hightlightPurecolor.setAlphaF(0.5);
 
         solar.hovergradientFromC = "#FF7272";
         solar.hovergradientToC = "#FF7272";
@@ -357,9 +363,9 @@ void CScheduleDataManage::setTheMe(int type)
         solar.pressgradientToC = solar.gradientToC;
         solar.pressgradientFromC = solar.gradientFromC;
         solar.pressPurecolor = solar.Purecolor;
-        solar.pressgradientToC.setAlphaF(0.8);
-        solar.pressgradientFromC.setAlphaF(0.8);
-        solar.pressPurecolor.setAlphaF(0.8);
+        solar.pressgradientToC.setAlphaF(0.4);
+        solar.pressgradientFromC.setAlphaF(0.4);
+        solar.pressPurecolor.setAlphaF(0.1);
         m_vScheduleColor.append(solar);
     }
 }

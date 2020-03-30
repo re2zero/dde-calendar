@@ -450,7 +450,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             m_currentItem = item;
             m_press = true;
 
-            emit signalScheduleShow(true, item->getData().id);
+            emit signalScheduleShow(true, item->getData());
 
             emit signalsitem(this);
         }

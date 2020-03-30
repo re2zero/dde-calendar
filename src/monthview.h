@@ -92,11 +92,11 @@ public slots:
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
     void slotSchceduleUpdate(int id = 0);
     void slotUpdateUI(int type);
-    void setSelectScheduleID(int ScheduleID);
+    void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
     void slotdelete(int id);
-    void slotScheduleRemindWidget(const bool isShow, const int ID = 0);
+    void slotScheduleRemindWidget(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 protected:

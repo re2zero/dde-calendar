@@ -126,6 +126,8 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     QLocale locale;
     timestr = m_ScheduleInfo.beginDateTime.time().toString("AP h:mm");
     QFontMetrics metrics(timeFont);
+    if (m_ScheduleInfo.allday)
+        timestr = tr("All Day");
     int timewidth = metrics.width(timestr);
     int timeheight = metrics.height();
 

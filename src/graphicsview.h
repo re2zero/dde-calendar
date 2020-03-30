@@ -254,7 +254,7 @@ signals:
     void signalsitem(void *item);
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
-    void signalScheduleShow(bool isShow, const int scheduleID = 0);
+    void signalScheduleShow(bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 private:
     int checkDay(int weekday);
 

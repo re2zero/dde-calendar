@@ -51,7 +51,7 @@ signals:
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
-    void signalPressScheduleShow(const bool isShow, const int id);
+    void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
@@ -147,7 +147,7 @@ signals:
     void signalsPress(CMonthSchceduleWidgetItem *item);
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
-    void signalPressScheduleShow(const bool isShow, const int id);
+    void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 public slots:
     void slotEdit();
     void slotDelete();

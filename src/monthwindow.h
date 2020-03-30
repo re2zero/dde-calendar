@@ -74,7 +74,7 @@ public slots:
 public slots:
     void slotupdateSchedule(int id = 0);
     void slotTransitSchedule(int id = 0);
-    void setSelectScheduleID(const int ScheduleID);
+    void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private slots:

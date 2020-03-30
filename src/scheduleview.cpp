@@ -124,15 +124,12 @@ void CScheduleView::setTime(QTime time)
     m_graphicsView->setTime(time);
 }
 
-void CScheduleView::setSelectID(const int ID)
+void CScheduleView::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
-    CScheduleDataManage *m_DataManage = CScheduleDataManage::getScheduleDataManage();
-    ScheduleDtailInfo out;
-    m_DataManage->getscheduleDataCtrl()->getScheduleInfoById(ID, out);
-    if (out.allday) {
-        m_alldaylist->setSelectSchedule(out);
+    if (scheduleInfo.allday) {
+        m_alldaylist->setSelectSchedule(scheduleInfo);
     } else {
-        m_graphicsView->setSelectSchedule(out);
+        m_graphicsView->setSelectSchedule(scheduleInfo);
     }
 }
 
@@ -302,26 +299,6 @@ void CScheduleView::setDate(QDate date)
     QVector<QString> vSolarDay;
     updateAllday();
 }
-
-void CScheduleView::setDate(QVector<QDate> vdate, QVector<QString> vSolarDay)
-{
-    m_SolarToSchedule.clear();
-    for (int i = 0; i < vdate.size(); ++i) {
-        ScheduleDtailInfo info;
-        info.type.ID = 4;
-        info.type.typeName = "节日";
-        info.allday = true;
-        info.beginDateTime = QDateTime(vdate.at(i));
-        info.endDateTime = QDateTime(vdate.at(i), QTime(23, 59));
-        info.titleName = vSolarDay.at(i);
-        m_SolarToSchedule.append(info);
-    }
-
-    if (m_SolarToSchedule.size() > 0)
-        updateAllday();
-
-}
-
 
 void CScheduleView::slotupdateSchedule(int id)
 {
@@ -674,14 +651,12 @@ void CScheduleView::slotCurrentScheduleDate(QDate date)
     emit signalsCurrentScheduleDate(date);
 }
 
-void CScheduleView::slotScheduleShow(const bool isShow, const int ScheduleID)
+void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out)
 {
 
     if (isShow) {
         QPoint pos22 = QCursor::pos();
         CScheduleDataManage *m_DataManage = CScheduleDataManage::getScheduleDataManage();
-        ScheduleDtailInfo out;
-        m_DataManage->getscheduleDataCtrl()->getScheduleInfoById(ScheduleID, out);
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
                                       out.type.ID);
         m_ScheduleRemindWidget->setData(out, gdcolor);
@@ -750,9 +725,6 @@ void CScheduleView::updateAllday(int id)
                 vListData.append(scheduleInfolist.at(m));
             }
         }
-    }
-    for (int i = 0 ; i < m_SolarToSchedule.size(); ++i) {
-        vListData.append(m_SolarToSchedule.at(i));
     }
     qSort(vListData.begin(), vListData.end(), WScheduleDaysThan);
     qSort(vListData.begin(), vListData.end(), WScheduleDateThan);
@@ -833,16 +805,12 @@ void CScheduleView::updateAllday(int id)
         if (!tData.isEmpty())
             vResultData.append(tData);
     }
-    QVector<QString> vSolarday = m_alldaylist->getSolarDay();
-    int solarNum = 0;
-    if (!vSolarday.isEmpty())
-        solarNum = 1;
 
-    if (vResultData.count() + solarNum < 2) {
+    if (vResultData.count() < 2) {
         m_topMagin = 31;
         m_space = 30;
-    } else if (vResultData.count() + solarNum < 6) {
-        m_topMagin = 31 + (vResultData.count() + solarNum - 1) * 23;
+    } else if (vResultData.count()  < 6) {
+        m_topMagin = 31 + (vResultData.count()  - 1) * 23;
         m_space = m_topMagin - 1;
     } else {
         m_topMagin = 123;

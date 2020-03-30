@@ -333,6 +333,8 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
+    if (m_ScheduleInfo.type.ID == 4)
+        return;
     DMenu Context(this);
     Context.addAction(m_editAction);
     Context.addAction(m_deleteAction);
@@ -355,7 +357,7 @@ void CSchceduleSearchItem::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         emit signalSelectDate(m_date);
-        emit signalSelectID(m_ScheduleInfo.id);
+        emit signalSelectSchedule(m_ScheduleInfo);
         m_selectflag = true;
         update();
     }
@@ -584,7 +586,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
     connect(gwi, &CSchceduleSearchItem::signalsEdit, this, &CSchceduleSearchView::slotedititem);
     connect(gwi, &CSchceduleSearchItem::signalSelectDate, this, &CSchceduleSearchView::slotSelectDate);
-    connect(gwi, &CSchceduleSearchItem::signalSelectID, this, &CSchceduleSearchView::slotSelectID);
+    connect(gwi, &CSchceduleSearchItem::signalSelectSchedule, this, &CSchceduleSearchView::slotSelectSchedule);
     connect(gwi, &CSchceduleSearchItem::signalViewtransparentFrame, this, &CSchceduleSearchView::signalViewtransparentFrame);
 
     //connect(gwi, SIGNAL(signalsDelete(QDate )), this, SIGNAL(signalDate(QDate )));
@@ -691,9 +693,9 @@ void CSchceduleSearchView::slotSelectDate(QDate date)
     emit signalDate(date);
 }
 
-void CSchceduleSearchView::slotSelectID(const int ID)
+void CSchceduleSearchView::slotSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
-    emit signalSelectID(ID);
+    emit signalSelectSchedule(scheduleInfo);
 }
 
 void CSchceduleSearchView::resizeEvent(QResizeEvent *event)

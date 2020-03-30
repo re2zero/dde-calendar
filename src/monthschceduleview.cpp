@@ -293,7 +293,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
     int labelwidth = width();
     int labelheight = height();
     float avge = 1;
-    m_font = DFontSizeManager::instance()->get(m_SizeType,m_font);
+    m_font = DFontSizeManager::instance()->get(m_SizeType, m_font);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
@@ -424,6 +424,7 @@ void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     //if (m_editType == 0) return;
+<<<<<<< HEAD
     if(event->button() == Qt::LeftButton){
         emit signalPressScheduleShow(false, 0);
         emit signalViewtransparentFrame(1);
@@ -434,6 +435,16 @@ void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
         emit signalViewtransparentFrame(0);
         disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
     }
+=======
+    emit signalPressScheduleShow(false);
+    emit signalViewtransparentFrame(1);
+    CMySchceduleView dlg(this);
+    dlg.setSchedules(m_ScheduleInfo);
+    connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
+    dlg.exec();
+    emit signalViewtransparentFrame(0);
+    disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
+>>>>>>> 8b559501f9de9704535dadd6abf25a7e710969d9
 }
 
 void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
@@ -443,7 +454,7 @@ void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
         m_pressMove = true;
         update();
         slotPress();
-        emit signalPressScheduleShow(true, m_ScheduleInfo.id);
+        emit signalPressScheduleShow(true, m_ScheduleInfo);
     }
 }
 
@@ -478,7 +489,7 @@ void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
 void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
 {
     if (m_pressMove) {
-        emit signalPressScheduleShow(false, 0);
+        emit signalPressScheduleShow(false);
         m_pressMove = false;
     }
 }
@@ -524,7 +535,7 @@ void CMonthSchceduleNumButton::paintEvent(QPaintEvent *e)
     int labelwidth = width();
     int labelheight = height() - 6;
     int type = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    m_font = DFontSizeManager::instance()->get(m_SizeType,m_font);
+    m_font = DFontSizeManager::instance()->get(m_SizeType, m_font);
     QPainter painter(this);
     if (m_GradientFlag) {
         QLinearGradient linearGradient(0, 0, labelwidth, 0);

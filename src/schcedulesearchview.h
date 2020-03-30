@@ -39,7 +39,7 @@ public:
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalDate(QDate date);
-    void signalSelectID(const int id);
+    void signalSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
     void signalScheduleHide();
 public slots:
@@ -47,7 +47,7 @@ public slots:
     void slotedititem(CSchceduleSearchItem *item);
     void slotsetSearch(QString str);
     void slotSelectDate(QDate date);
-    void slotSelectID(const int ID);
+    void slotSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -102,7 +102,7 @@ signals:
     void signalsDelete(CSchceduleSearchItem *item);
     void signalsEdit(CSchceduleSearchItem *item);
     void signalSelectDate(QDate date);
-    void signalSelectID(const int  id);
+    void signalSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
 public slots:
     void slotEdit();
