@@ -424,9 +424,8 @@ void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     //if (m_editType == 0) return;
-<<<<<<< HEAD
     if(event->button() == Qt::LeftButton){
-        emit signalPressScheduleShow(false, 0);
+        emit signalPressScheduleShow(false);
         emit signalViewtransparentFrame(1);
         CMySchceduleView dlg(m_ScheduleInfo,this);
 //        dlg.setSchedules(m_ScheduleInfo);
@@ -435,16 +434,6 @@ void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
         emit signalViewtransparentFrame(0);
         disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
     }
-=======
-    emit signalPressScheduleShow(false);
-    emit signalViewtransparentFrame(1);
-    CMySchceduleView dlg(this);
-    dlg.setSchedules(m_ScheduleInfo);
-    connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
-    dlg.exec();
-    emit signalViewtransparentFrame(0);
-    disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
->>>>>>> 8b559501f9de9704535dadd6abf25a7e710969d9
 }
 
 void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
