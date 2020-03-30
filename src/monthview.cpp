@@ -253,18 +253,31 @@ void CMonthView::slotUpdateUI(int type)
     }
 }
 
-void CMonthView::setSelectScheduleID(int ScheduleID)
+void CMonthView::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
     QVector<DPushButton *> mscheduleShowBtn = m_MonthSchceduleView->getScheduleShowItem();
     for (int i = 0; i < mscheduleShowBtn.size(); ++i) {
         CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(mscheduleShowBtn.at(i));
         if (titem == nullptr) continue;
-        if (titem->getData().id == ScheduleID) {
+        bool isAnimation = false;
+        if (scheduleInfo.type.ID == 4) {
+            isAnimation =
+                scheduleInfo.titleName == titem->getData().titleName &&
+                scheduleInfo.type.ID == titem->getData().type.ID &&
+                scheduleInfo.beginDateTime == titem->getData().beginDateTime &&
+                scheduleInfo.endDateTime == titem->getData().endDateTime ? true : false;
+        } else {
+            if (titem->getData().id == scheduleInfo.id) {
+                isAnimation = true;
+            }
+        }
+        if (isAnimation) {
             const  int offset = 4;
             titem->setStartValue(0);
             titem->setEndValue(offset);
             titem->startAnimation();
         }
+
     }
 
 }
@@ -288,13 +301,10 @@ void CMonthView::slotdelete(int id)
     emit signalsSchceduleUpdate(0);
 }
 
-void CMonthView::slotScheduleRemindWidget(const bool isShow, const int ID)
+void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDtailInfo &out)
 {
     if (isShow) {
         QPoint pos22 = QCursor::pos();
-        CScheduleDataManage *m_DataManage = CScheduleDataManage::getScheduleDataManage();
-        ScheduleDtailInfo out;
-        m_DataManage->getscheduleDataCtrl()->getScheduleInfoById(ID, out);
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
                                       out.type.ID);
         m_RemindWidget->setData(out, gdcolor);
@@ -346,7 +356,7 @@ void CMonthView::focusInEvent(QFocusEvent *event)
 
 void CMonthView::mousePressEvent(QMouseEvent *event)
 {
-    slotScheduleRemindWidget(false, 0);
+    slotScheduleRemindWidget(false);
 }
 
 void CMonthView::mouseMoveEvent(QMouseEvent *event)
@@ -466,7 +476,7 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
-            slotScheduleRemindWidget(false, 0);
+            slotScheduleRemindWidget(false);
             QMouseEvent *rightevent = dynamic_cast<QMouseEvent *>(e);
             if (rightevent->button() == Qt::RightButton)
                 m_updateflag = false;
@@ -475,9 +485,6 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
                 m_cellfoceflag[pos] = true;
                 cellClicked(cell);
                 m_cellList[pos]->update();
-                /*if (getShowSolarDayByDate(m_days[pos])) {
-                    emit signalsViewSelectDate(m_days[pos]);
-                }*/
             }
         } else if (e->type() == QEvent::ContextMenu) {
             DMenu Context(this);

@@ -41,6 +41,7 @@ private:
     void UpdateTextList();
 protected:
     void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+private:
     QStringList testList;
     QFont     textfont;
     int  textwidth;

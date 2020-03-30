@@ -23,7 +23,6 @@
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QDBusConnection>
-
 #include <DApplication>
 #include <DLog>
 #include <DHiDPIHelper>

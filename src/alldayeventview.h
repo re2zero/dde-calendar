@@ -43,14 +43,9 @@ public:
     CAllDayEventWeekView(QWidget *parent = nullptr, int edittype = 0);
     ~CAllDayEventWeekView() Q_DECL_OVERRIDE;
     void setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData, int type = 1);
-    void setsolarDayData(QVector<QString> vSolarInfo, QVector<QDate> date);
     QVector<QVector<ScheduleDtailInfo> > &getListData()
     {
         return  m_vlistData;
-    }
-    QVector<QString> getSolarDay()
-    {
-        return  m_vSolarDayInfo;
     }
     QVector<QDate> getDate()
     {
@@ -70,7 +65,7 @@ signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
     void signalViewtransparentFrame(int type);
-    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
+    void signalScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 public slots:
     void slotdeleteitem(CAllDayEventWidgetItem *item);
     void slotedititem(CAllDayEventWidgetItem *item, int type = 0);
@@ -98,7 +93,6 @@ private:
     QVector<QVector<ScheduleDtailInfo> >         m_vlistData;
     QVector<CAllDayEventWidgetItem *>                       m_baseShowItem;
     int                                          m_type;
-    QVector<QString>                             m_vSolarDayInfo;
     QVector<QDate>                               m_vDate;
     int                                          m_editType = 0;
     QColor                                       m_soloColor = "#FF7272";

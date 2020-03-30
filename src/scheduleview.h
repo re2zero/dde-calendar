@@ -48,7 +48,7 @@ public:
     void setTheMe(int type = 0);
     void setLunarVisible(bool state);
     void setTime(QTime time);
-    void setSelectID(const int ID);
+    void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
     void updateHigh();
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info);
 public slots:
@@ -63,13 +63,12 @@ signals:
 public slots:
     void slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void setDate(QDate date);
-    void setDate(QVector<QDate> vdate, QVector<QString> vSolarDay);
     void slotupdateSchedule(int id = 0);
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
     void slotitem(void *item);
     void slotDeleteitem();
     void slotCurrentScheduleDate(QDate date);
-    void slotScheduleShow(const bool isShow, const int ScheduleID = 0);
+    void slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 protected:
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
@@ -106,7 +105,6 @@ private:
     int                       m_space = 30;
     QVBoxLayout              *m_layout;
     SchecduleRemindWidget    *m_ScheduleRemindWidget;
-    QVector<ScheduleDtailInfo>  m_SolarToSchedule;
 };
 
 #endif // SCHEDULEVIEW_H

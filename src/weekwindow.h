@@ -31,6 +31,7 @@
 #include <DIconButton>
 #include <QHBoxLayout>
 #include "customframe.h"
+#include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
 
 class CWeekHeadView;
@@ -46,7 +47,7 @@ public:
     CWeekWindow(QWidget *parent = nullptr);
     ~CWeekWindow() Q_DECL_OVERRIDE;
     void setDate(QDate date);
-    void setSelectID(const int ID);
+    void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
     void setFirstWeekday(int weekday);
     void setLunarVisible(bool state);
     void initUI();

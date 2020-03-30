@@ -112,9 +112,9 @@ void CDayWindow::setDate(QDate date)
     emit signalCurrentDate(date);
 }
 
-void CDayWindow::setSelectID(const int ID)
+void CDayWindow::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
-    m_scheduleView->setSelectID(ID);
+    m_scheduleView->setSelectSchedule(scheduleInfo);
 
 }
 
@@ -336,25 +336,9 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
         } else {
             m_YearLabel->setText(locale.toString(date, "yyyy/M/d"));
         }
-
         m_LunarLabel->setText(detail.mLunarMonthName + detail.mLunarDayName);
-
-        // m_SolarDay->setText(detail.mSolarFestival);
     }
     m_scheduleView->setRange(m_currentdate, m_currentdate);
-    if (!detail.mLunarFestival.isEmpty() || !detail.mSolarFestival.isEmpty()) {
-        QVector<QDate> vdate;
-        QVector<QString> tvStr;
-        QString str;
-        if (detail.mLunarFestival.isEmpty()) {
-            str = detail.mSolarFestival;
-        } else {
-            str = detail.mLunarFestival + "    " + detail.mSolarFestival;
-        }
-        tvStr.append(str);
-        vdate.append(m_currentdate);
-        m_scheduleView->setDate(vdate, tvStr);
-    }
     emit signalCurrentDate(date);
 }
 

@@ -460,7 +460,7 @@ void Calendarmainwindow::initUI()
     // QSpacerItem *lspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //titleLayout->addSpacerItem(lspaceitem);
     m_searchEdit = new DSearchEdit;
-    DFontSizeManager::instance()->bind(m_searchEdit,DFontSizeManager::T6);
+    DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
     m_searchEdit->setFixedHeight(36);
     m_searchEdit->setFixedWidth(240);
     m_searchEdit->setFont(viewfont);
@@ -552,8 +552,8 @@ void Calendarmainwindow::initConnection()
     connect(m_dbus, &__Scheduler::JobsUpdated, this, &Calendarmainwindow::slotJobsUpdated);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &Calendarmainwindow::slotTransitSearchSchedule);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalSelectID,
-            this, &Calendarmainwindow::slotSearchSelectID);
+    connect(m_schceduleSearchView, &CSchceduleSearchView::signalSelectSchedule,
+            this, &Calendarmainwindow::slotSearchSelectSchedule);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalScheduleHide,
             this, &Calendarmainwindow::setScheduleHide);
 
@@ -898,7 +898,7 @@ void Calendarmainwindow::slotsearchDateSelect(QDate date)
     }
 }
 
-void Calendarmainwindow::slotSearchSelectID(const int ID)
+void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
     int index = m_stackWidget->currentIndex();
     if (index < 0 || index > m_stackWidget->count() - 1) {
@@ -907,19 +907,18 @@ void Calendarmainwindow::slotSearchSelectID(const int ID)
     }
     switch (index) {
     case 0: {
-//        m_yearwindow->setDate(date);
     }
     break;
     case 1: {
-        m_monthWindow->setSelectScheduleID(ID);
+        m_monthWindow->setSelectSchedule(scheduleInfo);
     }
     break;
     case 2: {
-        m_weekWindow->setSelectID(ID);
+        m_weekWindow->setSelectSchedule(scheduleInfo);
     }
     break;
     case 3: {
-        m_DayWindow->setSelectID(ID);
+        m_DayWindow->setSelectSchedule(scheduleInfo);
     }
     break;
     }

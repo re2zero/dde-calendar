@@ -29,6 +29,7 @@
 #include <DHiDPIHelper>
 #include "schcedulesearchview.h"
 #include "todybutton.h"
+
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -52,9 +53,9 @@ void CWeekWindow::setDate(QDate date)
     emit signalCurrentDate(date);
 }
 
-void CWeekWindow::setSelectID(const int ID)
+void CWeekWindow::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
-    m_scheduleView->setSelectID(ID);
+    m_scheduleView->setSelectSchedule(scheduleInfo);
 }
 
 void CWeekWindow::setFirstWeekday(int weekday)
@@ -469,22 +470,6 @@ void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLu
     // }
     if (!vdate.isEmpty()) {
         CaLunarDayInfo detail = vdetail.at(0);
-
-        QVector<QDate> tvdate;
-        QVector<QString> tvStr;
-
-        for (int i = 0; i < vdetail.count(); i++) {
-            if (vdetail.at(i).mLunarFestival.isEmpty() && vdetail.at(i).mSolarFestival.isEmpty()) continue;
-            tvdate.append(vdate.at(i));
-            QString str;
-            if (vdetail.at(i).mLunarFestival.isEmpty()) {
-                str = vdetail.at(i).mSolarFestival;
-            } else {
-                str = vdetail.at(i).mLunarFestival + "    " + vdetail.at(i).mSolarFestival;
-            }
-            tvStr.append(str);
-        }
-        m_scheduleView->setDate(tvdate, tvStr);
         if (type == 1) {
             int yearnum = vdate.at(0).year();
             if (yearnum < 1900) yearnum = 1900;

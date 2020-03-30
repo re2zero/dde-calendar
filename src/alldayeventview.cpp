@@ -477,14 +477,6 @@ void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo> >
     updateDateShow();
 }
 
-void CAllDayEventWeekView::setsolarDayData(QVector<QString> vSolarInfo, QVector<QDate> date)
-{
-    return;
-    m_vSolarDayInfo = vSolarInfo;
-    m_widgetFlag = false;
-    m_vDate = date;
-    updateDateShow();
-}
 void CAllDayEventWeekView::slotCreate()
 {
     emit signalViewtransparentFrame(1);
@@ -647,14 +639,10 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
     } else if (event->button() == Qt::LeftButton) {
         CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
         if (item != nullptr) {
-            if (item->getData().type.ID == 4) {
-                emit signalScheduleShow(false);
-                return;
-            }
             m_currentitem = item;
             m_press = true;
             item->setPressFlag(true);
-            emit signalScheduleShow(true, item->getData().id);
+            emit signalScheduleShow(true, item->getData());
             emit signalsitem(this);
         } else {
             emit signalScheduleShow(false);
