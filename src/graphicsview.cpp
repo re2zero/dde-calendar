@@ -814,7 +814,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
 
     QPainter t_painter(viewport());
     //t_painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
-    int t_width = viewport()->width() - m_rightmagin + 2;
+    int t_width = viewport()->width()  + 2;
     int t_height = viewport()->height();
     //绘制垂直线
     if (m_TBFlag) {

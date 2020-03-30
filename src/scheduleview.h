@@ -79,6 +79,7 @@ private:
     void updateSchedule(int id = 0);
     void updateAllday(int id = 0);
     int checkDay(int weekday);
+    int scheduleViewHegith();
 private:
     CGraphicsView            *m_graphicsView;
     QVector<int>              m_vPos;
