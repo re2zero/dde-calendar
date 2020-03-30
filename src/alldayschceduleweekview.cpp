@@ -387,8 +387,8 @@ void CAllDaySchceduleWeekWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
     QRect drawrect = m_coorManage->getAllDayDrawRegion(m_ScheduleInfo.beginDateTime.date(), m_ScheduleInfo.endDateTime.date());
     if (drawrect.contains(event->pos())) {
         emit signalViewtransparentFrame(1);
-        CMySchceduleView dlg(this);
-        dlg.setSchedules(m_ScheduleInfo);
+        CMySchceduleView dlg(m_ScheduleInfo,this);
+//        dlg.setSchedules(m_ScheduleInfo);
         connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDaySchceduleWeekWidgetItem::slotDoubleEvent);
         dlg.exec();
         emit signalViewtransparentFrame(0);

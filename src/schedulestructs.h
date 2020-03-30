@@ -65,7 +65,7 @@ typedef struct _tagScheduleDtailInfo {
     QString           titleName;
     QString           description;
     bool              allday;  //1全天
-    ScheduleType      type;    //0工作 1 生活 2其他
+    ScheduleType      type;    //1工作 2 生活 3其他
     int               RecurID;  //0 代表原始  大于0 代表克隆
     bool              remind;  //0无 1 提醒
     ScheduleRemindData remindData;

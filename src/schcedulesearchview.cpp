@@ -342,8 +342,8 @@ void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     emit signalViewtransparentFrame(1);
-    CMySchceduleView dlg(this);
-    dlg.setSchedules(m_ScheduleInfo);
+    CMySchceduleView dlg(m_ScheduleInfo, this);
+//    dlg.setSchedules(m_ScheduleInfo);
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
     dlg.exec();
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
