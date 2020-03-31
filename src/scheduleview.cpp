@@ -691,6 +691,9 @@ bool WScheduleDateThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
         return false;
     } else if (s1.beginDateTime.date() != s1.endDateTime.date() &&
                s2.beginDateTime.date() != s2.endDateTime.date()) {
+        if (s1.beginDateTime.date() == s2.beginDateTime.date()) {
+            return s1.beginDateTime.daysTo(s1.endDateTime) > s2.beginDateTime.daysTo(s2.endDateTime);
+        }
         return s1.beginDateTime.date() < s2.beginDateTime.date();
     } else {
         if (s1.beginDateTime == s2.beginDateTime) {
@@ -727,6 +730,7 @@ void CScheduleView::updateAllday(int id)
     }
     qSort(vListData.begin(), vListData.end(), WScheduleDaysThan);
     qSort(vListData.begin(), vListData.end(), WScheduleDateThan);
+
     // m_alldaylist->setDayData(vListData, 0);
 
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
@@ -818,7 +822,7 @@ void CScheduleView::updateAllday(int id)
 //    m_layout->setContentsMargins(0, m_space, 0, 0);
 //    m_graphicsView->setMargins(m_leftMagin, m_topMagin - m_space, 0, 0);
 
-    m_alldaylist->setFixedHeight(m_topMagin - 1);
+    m_alldaylist->setFixedHeight(m_topMagin - 3);
     m_alldaylist->setDayData(vResultData, 0);
     update();
     m_alldaylist->update();

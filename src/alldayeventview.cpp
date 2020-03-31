@@ -754,7 +754,7 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
         const ScheduleDtailInfo &info = m_vlistData[index].at(i);
 
         QRect drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
-        drawrect.setY(5 + (itemHeight + 1)*index);
+        drawrect.setY(3 + (itemHeight + 1)*index);
         drawrect.setHeight(itemHeight);
 
         CAllDayEventWidgetItem *gwi = new CAllDayEventWidgetItem(drawrect, nullptr, m_editType);
