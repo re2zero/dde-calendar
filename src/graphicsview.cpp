@@ -25,7 +25,6 @@
 #include "schedulecoormanage.h"
 #include "schceduledlg.h"
 #include <QMenu>
-//m_graphicsScene->setSceneRect(0,0,763,1032);
 #include "scheduledatamanage.h"
 #include <DMessageBox>
 #include <DPushButton>
