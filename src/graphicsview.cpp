@@ -183,6 +183,8 @@ void CGraphicsView::setSelectSchedule(const ScheduleDtailInfo &info)
 {
     setTime(info.beginDateTime.time());
     for (int i = 0 ; i < m_vScheduleItem.size(); ++i) {
+        if (m_vScheduleItem.at(i)->getType() == 1)
+            continue;
         if (m_vScheduleItem.at(i)->hasSelectSchedule(info)) {
 
             m_vScheduleItem.at(i)->setStartValue(0);

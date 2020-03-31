@@ -46,11 +46,13 @@ CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRect rect, QGraphicsItem *parent
     setRect(rect);
     m_editType = edittype;
     m_font.setFamily("PingFangSC-Light");
-    const int duration = 300;
+    const int duration = 200;
     m_properAnimationFirst = new  QPropertyAnimation(this, "offset", this);
     m_properANimationSecond  = new QPropertyAnimation(this, "offset", this);
     m_properAnimationFirst->setDuration(duration);
     m_properANimationSecond->setDuration(duration);
+    m_properAnimationFirst->setEasingCurve(QEasingCurve::InOutQuad);
+    m_properANimationSecond->setEasingCurve(QEasingCurve::InOutQuad);
     m_Group = new QSequentialAnimationGroup(this);
     m_Group->addAnimation(m_properAnimationFirst);
     m_Group->addAnimation(m_properANimationSecond);
@@ -104,9 +106,9 @@ void CAllDayEventWidgetItem::setFont(DFontSizeManager::SizeType type)
 
 void CAllDayEventWidgetItem::setOffset(const int &offset)
 {
-    setRect(QRect(m_rect.x() - offset / 2,
+    setRect(QRect(m_rect.x() - offset,
                   m_rect.y() - offset / 2,
-                  m_rect.width() + offset,
+                  m_rect.width() + offset * 2,
                   m_rect.height() + offset));
     setZValue(offset);
     update();
@@ -752,7 +754,7 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
         const ScheduleDtailInfo &info = m_vlistData[index].at(i);
 
         QRect drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
-        drawrect.setY((itemHeight + 1)*index);
+        drawrect.setY(5 + (itemHeight + 1)*index);
         drawrect.setHeight(itemHeight);
 
         CAllDayEventWidgetItem *gwi = new CAllDayEventWidgetItem(drawrect, nullptr, m_editType);

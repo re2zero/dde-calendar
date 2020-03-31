@@ -57,6 +57,8 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     m_properAnimationSecond->setObjectName("Second");
     m_properAnimationFirst->setDuration(duration);
     m_properAnimationSecond->setDuration(duration);
+    m_properAnimationFirst->setEasingCurve(QEasingCurve::InOutQuad);
+    m_properAnimationSecond->setEasingCurve(QEasingCurve::InOutQuad);
     m_Group = new QSequentialAnimationGroup(this);
     m_Group->addAnimation(m_properAnimationFirst);
     m_Group->addAnimation(m_properAnimationSecond);
@@ -121,9 +123,9 @@ void CMonthSchceduleWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
 
 void CMonthSchceduleWidgetItem::setRectOffset(int offset)
 {
-    QRect rect(m_rect.x() - offset / 2
+    QRect rect(m_rect.x() - offset
                , m_rect.y() - offset / 2
-               , m_rect.width() + offset
+               , m_rect.width() + offset * 2
                , m_rect.height() + offset);
     this->setGeometry(rect);
     this->setFixedSize(rect.width(), rect.height());
@@ -408,9 +410,9 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 }
 void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {
-    if(m_ScheduleInfo.type.ID ==4){
+    if (m_ScheduleInfo.type.ID == 4) {
 
-    }else {
+    } else {
         emit signalUpdateUI(0);
         DMenu Context(this);
         Context.setAttribute(Qt::WA_DeleteOnClose);
@@ -424,10 +426,10 @@ void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     //if (m_editType == 0) return;
-    if(event->button() == Qt::LeftButton){
+    if (event->button() == Qt::LeftButton) {
         emit signalPressScheduleShow(false);
         emit signalViewtransparentFrame(1);
-        CMySchceduleView dlg(m_ScheduleInfo,this);
+        CMySchceduleView dlg(m_ScheduleInfo, this);
 //        dlg.setSchedules(m_ScheduleInfo);
         connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
         dlg.exec();

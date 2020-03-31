@@ -656,7 +656,6 @@ void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo 
 
     if (isShow) {
         QPoint pos22 = QCursor::pos();
-        CScheduleDataManage *m_DataManage = CScheduleDataManage::getScheduleDataManage();
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
                                       out.type.ID);
         m_ScheduleRemindWidget->setData(out, gdcolor);
@@ -819,7 +818,7 @@ void CScheduleView::updateAllday(int id)
 //    m_layout->setContentsMargins(0, m_space, 0, 0);
 //    m_graphicsView->setMargins(m_leftMagin, m_topMagin - m_space, 0, 0);
 
-    m_alldaylist->setFixedHeight(m_topMagin - 6);
+    m_alldaylist->setFixedHeight(m_topMagin - 1);
     m_alldaylist->setDayData(vResultData, 0);
     update();
     m_alldaylist->update();

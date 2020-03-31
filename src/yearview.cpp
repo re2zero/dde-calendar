@@ -295,7 +295,7 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
-            if(event->button() == Qt::RightButton)
+            if (event->button() == Qt::RightButton)
                 return false;
 
             m_selectFlag = true;
@@ -472,7 +472,7 @@ void CYearView::paintCell(QWidget *cell)
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);
     }
-    if (m_themetype == 2 &&  m_cellEventType[pos] == Cellhover){
+    if (m_themetype == 2 &&  m_cellEventType[pos] == Cellhover) {
         painter.setBrush(m_cellBackgroundColor);
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);
