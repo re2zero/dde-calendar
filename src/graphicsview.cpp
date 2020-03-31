@@ -487,7 +487,7 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     }
     emit signalViewtransparentFrame(1);
     m_updateDflag  = false;
-    CMySchceduleView dlg(item->getData(),this);
+    CMySchceduleView dlg(item->getData(), this);
 //    dlg.setSchedules(item->getData());
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
     dlg.exec();
@@ -809,8 +809,6 @@ Others:         无
 ************************************************************************/
 void CGraphicsView::paintEvent(QPaintEvent *event)
 {
-    QGraphicsView::paintEvent(event);
-
     QPainter t_painter(viewport());
     //t_painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
     int t_width = viewport()->width()  + 2;
@@ -866,6 +864,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
 
         }
     }
+    QGraphicsView::paintEvent(event);
 }
 
 void CGraphicsView::scrollBarValueChangedSlot()

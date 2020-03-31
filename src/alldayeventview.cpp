@@ -683,7 +683,7 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
         }
         emit signalViewtransparentFrame(1);
         m_updateDflag  = false;
-        CMySchceduleView dlg(item->getData(),this);
+        CMySchceduleView dlg(item->getData(), this);
 //        dlg.setSchedules(item->getData());
         connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
         dlg.exec();
@@ -714,10 +714,6 @@ void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
 
 void CAllDayEventWeekView::paintEvent(QPaintEvent *event)
 {
-//    QPainter painter(this->viewport());
-//    painter.setBrush(QBrush(Qt::red));
-//    painter.drawRect(this->viewport()->rect());
-//    painter.end();
     DGraphicsView::paintEvent(event);
 }
 

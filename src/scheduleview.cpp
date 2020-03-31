@@ -526,11 +526,11 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.setPen(Qt::NoPen);
             if (d == 6) {
                 painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0,
-                                       width() - m_leftMagin - i * intenval, m_topMagin + 1));
+                                       width() - m_leftMagin - i * intenval, this->height()));
             }
             if (d == 7) {
                 painter.drawRect(
-                    QRect(m_leftMagin + i * intenval + 2, 0, intenval, m_topMagin + 1));
+                    QRect(m_leftMagin + i * intenval + 2, 0, intenval, this->height()));
             }
         }
         painter.restore();
