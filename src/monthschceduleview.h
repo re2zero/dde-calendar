@@ -101,9 +101,11 @@ public:
     }
 signals:
     void signalsCurrentScheduleDate(QDate date);
+    void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 protected:
-    void paintEvent(QPaintEvent *e);
-    void mouseDoubleClickEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     bool                  m_GradientFlag;
     QColor                m_color1;

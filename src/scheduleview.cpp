@@ -696,6 +696,8 @@ bool WScheduleDateThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
         }
         return s1.beginDateTime.date() < s2.beginDateTime.date();
     } else {
+        if (s1.type.ID == 4) return true;
+        if (s2.type.ID == 4) return false;
         if (s1.beginDateTime == s2.beginDateTime) {
             return s1.titleName < s2.titleName;
         } else {

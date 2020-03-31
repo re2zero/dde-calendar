@@ -146,15 +146,12 @@ void CSchceduleDlg::slotOkBt()
     beginDateTime.setTime(m_beginTimeEdit->getTime());
     endDateTime.setDate(m_endDateEdit->date());
     endDateTime.setTime(m_endTimeEdit->getTime());
-    if (m_type == 1) {
-        if (m_textEdit->toPlainText().isEmpty()) {
-            scheduleDtailInfo.titleName = m_textEdit->placeholderText();
-        } else {
-            scheduleDtailInfo.titleName = m_textEdit->toPlainText();
-        }
+    if (m_textEdit->toPlainText().isEmpty()) {
+        scheduleDtailInfo.titleName = m_textEdit->placeholderText();
     } else {
         scheduleDtailInfo.titleName = m_textEdit->toPlainText();
     }
+
     if (scheduleDtailInfo.titleName.isEmpty()) {
         // QMessageBox::warning(this, tr("error"), tr("The event is empty!"));
         return;
@@ -241,7 +238,7 @@ void CSchceduleDlg::slotOkBt()
             scheduleDtailInfo);
     } else if (m_type == 0) {
         if (m_scheduleDtailInfo.rpeat == 0 &&
-            m_scheduleDtailInfo.rpeat == scheduleDtailInfo.rpeat) {
+                m_scheduleDtailInfo.rpeat == scheduleDtailInfo.rpeat) {
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
                 scheduleDtailInfo);
 
@@ -280,14 +277,14 @@ void CSchceduleDlg::slotOkBt()
                 } else if (msgBox.clickButton() == yesButton) {
                     ScheduleDtailInfo updatescheduleData;
                     CScheduleDataManage::getScheduleDataManage()
-                        ->getscheduleDataCtrl()
-                        ->getScheduleInfoById(scheduleDtailInfo.id, updatescheduleData);
+                    ->getscheduleDataCtrl()
+                    ->getScheduleInfoById(scheduleDtailInfo.id, updatescheduleData);
                     scheduleDtailInfo.beginDateTime = updatescheduleData.beginDateTime;
                     scheduleDtailInfo.endDateTime = updatescheduleData.endDateTime;
                     scheduleDtailInfo.RecurID = updatescheduleData.RecurID;
                     CScheduleDataManage::getScheduleDataManage()
-                        ->getscheduleDataCtrl()
-                        ->updateScheduleInfo(scheduleDtailInfo);
+                    ->getscheduleDataCtrl()
+                    ->updateScheduleInfo(scheduleDtailInfo);
                 }
 
             } else if (m_scheduleDtailInfo.rpeat != scheduleDtailInfo.rpeat) {
@@ -314,8 +311,8 @@ void CSchceduleDlg::slotOkBt()
                     return;
                 } else if (msgBox.clickButton() == yesButton) {
                     CScheduleDataManage::getScheduleDataManage()
-                        ->getscheduleDataCtrl()
-                        ->updateScheduleInfo(scheduleDtailInfo);
+                    ->getscheduleDataCtrl()
+                    ->updateScheduleInfo(scheduleDtailInfo);
                 }
             } else {
                 if (m_scheduleDtailInfo.RecurID == 0) {
@@ -349,26 +346,26 @@ void CSchceduleDlg::slotOkBt()
                     } else if (msgBox.clickButton() == yesallbutton) {
                         scheduleDtailInfo.ignore.clear();
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->updateScheduleInfo(scheduleDtailInfo);
+                        ->getscheduleDataCtrl()
+                        ->updateScheduleInfo(scheduleDtailInfo);
                     } else if (msgBox.clickButton() == yesButton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
                         newschedule.rpeat = 0;
                         newschedule.RecurID = 0;
                         newschedule.id = 0;
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->addSchedule(newschedule);
+                        ->getscheduleDataCtrl()
+                        ->addSchedule(newschedule);
                         ScheduleDtailInfo updatescheduleData;
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
+                        ->getscheduleDataCtrl()
+                        ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
                         updatescheduleData.ignore.append(m_scheduleDtailInfo.beginDateTime);
 
                         // m_scheduleDtailInfo.ignore.append(m_scheduleDtailInfo.beginDateTime);
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->updateScheduleInfo(updatescheduleData);
+                        ->getscheduleDataCtrl()
+                        ->updateScheduleInfo(updatescheduleData);
                     }
                 } else {
                     CSchceduleCtrlDlg msgBox(this);
@@ -404,34 +401,34 @@ void CSchceduleDlg::slotOkBt()
                         newschedule.RecurID = 0;
                         newschedule.id = 0;
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->addSchedule(newschedule);
+                        ->getscheduleDataCtrl()
+                        ->addSchedule(newschedule);
                         ScheduleDtailInfo updatescheduleData;
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
+                        ->getscheduleDataCtrl()
+                        ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
                         updatescheduleData.enddata.type = 2;
                         updatescheduleData.enddata.date =
                             m_scheduleDtailInfo.beginDateTime.addDays(-1);
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->updateScheduleInfo(updatescheduleData);
+                        ->getscheduleDataCtrl()
+                        ->updateScheduleInfo(updatescheduleData);
                     } else if (msgBox.clickButton() == yesButton) {
                         ScheduleDtailInfo newschedule = scheduleDtailInfo;
                         newschedule.rpeat = 0;
                         newschedule.RecurID = 0;
                         newschedule.id = 0;
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->addSchedule(newschedule);
+                        ->getscheduleDataCtrl()
+                        ->addSchedule(newschedule);
                         ScheduleDtailInfo updatescheduleData;
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
+                        ->getscheduleDataCtrl()
+                        ->getScheduleInfoById(m_scheduleDtailInfo.id, updatescheduleData);
                         updatescheduleData.ignore.append(m_scheduleDtailInfo.beginDateTime);
                         CScheduleDataManage::getScheduleDataManage()
-                            ->getscheduleDataCtrl()
-                            ->updateScheduleInfo(updatescheduleData);
+                        ->getscheduleDataCtrl()
+                        ->updateScheduleInfo(updatescheduleData);
                     }
                 }
             }
@@ -653,16 +650,16 @@ void CSchceduleDlg::initUI()
     m_typeComBox->setFixedSize(319, 36);
     m_typeComBox->insertItem(0,
                              QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
-                                       .scaled(QSize(20, 20) * devicePixelRatioF())),
+                                   .scaled(QSize(20, 20) * devicePixelRatioF())),
                              tr("Work"));
     m_typeComBox->insertItem(1,
                              QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg")
-                                       .scaled(QSize(20, 20) * devicePixelRatioF())),
+                                   .scaled(QSize(20, 20) * devicePixelRatioF())),
                              tr("Life"));
     m_typeComBox->insertItem(
         2,
         QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg")
-                  .scaled(QSize(20, 20) * devicePixelRatioF())),
+              .scaled(QSize(20, 20) * devicePixelRatioF())),
         tr("Other"));
     typelayout->addWidget(m_typeLabel);
     typelayout->addWidget(m_typeComBox);
@@ -711,10 +708,10 @@ void CSchceduleDlg::initUI()
     // if (m_type == 1) {
     m_textEdit->setPlaceholderText(tr("New Event"));
     //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
-        QWidget *mpContentWidget = m_textEdit->viewport();
+    QWidget *mpContentWidget = m_textEdit->viewport();
     //设置事件过滤器
-        m_textEdit->installEventFilter(this);
-        mpContentWidget->installEventFilter(this);
+    m_textEdit->installEventFilter(this);
+    mpContentWidget->installEventFilter(this);
     //}
 
     contentLabellayout->addLayout(conttelabellayout);

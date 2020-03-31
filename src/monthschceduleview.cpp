@@ -592,6 +592,11 @@ void CMonthSchceduleNumButton::mouseDoubleClickEvent(QMouseEvent *event)
     }
 }
 
+void CMonthSchceduleNumButton::mousePressEvent(QMouseEvent *event)
+{
+    signalPressScheduleShow(false);
+}
+
 void CMonthSchceduleView::setTheMe(int type)
 {
     updateData();
@@ -1134,6 +1139,8 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
         gwi->setTransparentB(true, TransparentC);
     }
     connect(gwi, &CMonthSchceduleNumButton::signalsCurrentScheduleDate, this, &CMonthSchceduleView::signalsCurrentScheduleDate);
+    connect(gwi, &CMonthSchceduleNumButton::signalPressScheduleShow, this, &CMonthSchceduleView::signalPressScheduleShow);
+
     gwi->move(pos);
     gwi->setWindowFlags(gwi->windowFlags() | Qt::WindowStaysOnTopHint);
     gwi->show();
