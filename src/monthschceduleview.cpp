@@ -408,26 +408,32 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 }
 void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {
-    emit signalUpdateUI(0);
-    DMenu Context(this);
-    Context.setAttribute(Qt::WA_DeleteOnClose);
-    Context.addAction(m_editAction);
-    Context.addAction(m_deleteAction);
-    Context.exec(QCursor::pos());
-    emit signalUpdateUI(1);
+    if(m_ScheduleInfo.type.ID ==4){
+
+    }else {
+        emit signalUpdateUI(0);
+        DMenu Context(this);
+        Context.setAttribute(Qt::WA_DeleteOnClose);
+        Context.addAction(m_editAction);
+        Context.addAction(m_deleteAction);
+        Context.exec(QCursor::pos());
+        emit signalUpdateUI(1);
+    }
 }
 
 void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     //if (m_editType == 0) return;
-    emit signalPressScheduleShow(false);
-    emit signalViewtransparentFrame(1);
-    CMySchceduleView dlg(this);
-    dlg.setSchedules(m_ScheduleInfo);
-    connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
-    dlg.exec();
-    emit signalViewtransparentFrame(0);
-    disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
+    if(event->button() == Qt::LeftButton){
+        emit signalPressScheduleShow(false);
+        emit signalViewtransparentFrame(1);
+        CMySchceduleView dlg(m_ScheduleInfo,this);
+//        dlg.setSchedules(m_ScheduleInfo);
+        connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
+        dlg.exec();
+        emit signalViewtransparentFrame(0);
+        disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
+    }
 }
 
 void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)

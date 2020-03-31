@@ -683,8 +683,8 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
         }
         emit signalViewtransparentFrame(1);
         m_updateDflag  = false;
-        CMySchceduleView dlg(this);
-        dlg.setSchedules(item->getData());
+        CMySchceduleView dlg(item->getData(),this);
+//        dlg.setSchedules(item->getData());
         connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
         dlg.exec();
         emit signalViewtransparentFrame(0);

@@ -28,9 +28,12 @@
 #include <QShortcut>
 #include <DFontSizeManager>
 DGUI_USE_NAMESPACE
-CMySchceduleView::CMySchceduleView(QWidget *parent) : DDialog(parent)
+CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget *parent)
+    : DDialog(parent)
+//      m_scheduleInfo(ScheduleDtailInfo)
 {
     setContentsMargins(0, 0, 0, 0);
+    m_scheduleInfo = schduleInfo;
     initUI();
     initConnection();
     //setTitle(tr("My Schcedule"));
@@ -43,6 +46,10 @@ CMySchceduleView::CMySchceduleView(QWidget *parent) : DDialog(parent)
         anipa.setColor(DPalette::Background, color);
         setPalette(anipa);
     }
+
+    AutoFeed(m_scheduleInfo.titleName);
+    //m_schceduleLabel->setText(info.titleName);
+    m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString("yyyy-MM-dd hh:mm") + " ~ " + m_scheduleInfo.endDateTime.toString("yyyy-MM-dd hh:mm"));
 
     //setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 }
@@ -91,13 +98,6 @@ void CMySchceduleView::AutoFeed(QString text)
     setFixedHeight(row * 24 + 180);
     m_schceduleLabel->setText(strText);
     m_schceduleLabel->adjustSize();
-}
-void CMySchceduleView::setSchedules(ScheduleDtailInfo info)
-{
-    m_scheduleInfo = info;
-    AutoFeed(info.titleName);
-    //m_schceduleLabel->setText(info.titleName);
-    m_timeLabel->setText(info.beginDateTime.toString("yyyy-MM-dd hh:mm") + " ~ " + info.endDateTime.toString("yyyy-MM-dd hh:mm"));
 }
 
 void CMySchceduleView::slotEditBt()
@@ -312,36 +312,45 @@ void CMySchceduleView::initUI()
     m_timeLabel->setFont(labelT);
     mainLayout->addWidget(m_timeLabel);
 
-    DVerticalLine *btframe = new DVerticalLine(this);
-    btframe->setFixedSize(3, 28);
-    QHBoxLayout *hBtLayout = new QHBoxLayout;
-    hBtLayout->setMargin(0);
-    hBtLayout->setSpacing(0);
-    hBtLayout->setContentsMargins(0, 0, 0, 0);
-    // hBtLayout->addStretch();
-    m_editBt = new DPushButton(tr("Edit"));
-    DPalette pa = m_editBt->palette();
-    if (themetype == 0 || themetype == 1) {
-        pa.setColor(DPalette::ButtonText, Qt::white);
-        pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-        pa.setColor(DPalette::Light, QColor("#0098FF"));
-    } else {
-        pa.setColor(DPalette::ButtonText, "#B8D3FF");
-        pa.setColor(DPalette::Dark, QColor("#0056C1"));
-        pa.setColor(DPalette::Light, QColor("#004C9C"));
-    }
-    m_editBt->setPalette(pa);
-    m_editBt->setFixedSize(165, 36);
-    m_deleteBt = new DPushButton(tr("Delete"));
-    m_deleteBt->setFixedSize(165, 36);
+    if(m_scheduleInfo.type.ID == 4){
+        m_okBt = new DPushButton (tr("OK"));
+        m_okBt->setFocusPolicy(Qt::NoFocus);
+        m_okBt->setFixedSize(360,36);
+        connect(m_okBt,&DPushButton::clicked,this,&CMySchceduleView::close);
+        mainLayout->addSpacing(20);
+        mainLayout->addWidget(m_okBt);
+    }else {
+        DVerticalLine *btframe = new DVerticalLine(this);
+        btframe->setFixedSize(3, 28);
+        QHBoxLayout *hBtLayout = new QHBoxLayout;
+        hBtLayout->setMargin(0);
+        hBtLayout->setSpacing(0);
+        hBtLayout->setContentsMargins(0, 0, 0, 0);
+        // hBtLayout->addStretch();
+        m_editBt = new DPushButton(tr("Edit"));
+        DPalette pa = m_editBt->palette();
+        if (themetype == 0 || themetype == 1) {
+            pa.setColor(DPalette::ButtonText, Qt::white);
+            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+            pa.setColor(DPalette::Light, QColor("#0098FF"));
+        } else {
+            pa.setColor(DPalette::ButtonText, "#B8D3FF");
+            pa.setColor(DPalette::Dark, QColor("#0056C1"));
+            pa.setColor(DPalette::Light, QColor("#004C9C"));
+        }
+        m_editBt->setPalette(pa);
+        m_editBt->setFixedSize(165, 36);
+        m_deleteBt = new DPushButton(tr("Delete"));
+        m_deleteBt->setFixedSize(165, 36);
 
-    hBtLayout->addWidget(m_deleteBt);
-    hBtLayout->addSpacing(5);
-    hBtLayout->addWidget(btframe);
-    hBtLayout->addSpacing(5);
-    hBtLayout->addWidget(m_editBt);
-    mainLayout->addSpacing(20);
-    mainLayout->addLayout(hBtLayout);
+        hBtLayout->addWidget(m_deleteBt);
+        hBtLayout->addSpacing(5);
+        hBtLayout->addWidget(btframe);
+        hBtLayout->addSpacing(5);
+        hBtLayout->addWidget(m_editBt);
+        mainLayout->addSpacing(20);
+        mainLayout->addLayout(hBtLayout);
+    }
     DFrame *gwi = new DFrame(this);
     gwi->setContentsMargins(0, 0, 0, 0);
     gwi->setLayout(mainLayout);
@@ -358,8 +367,13 @@ void CMySchceduleView::initUI()
 
 void CMySchceduleView::initConnection()
 {
-    connect(m_editBt, &DPushButton::clicked, this, &CMySchceduleView::slotEditBt);
-    connect(m_deleteBt, &DPushButton::clicked, this, &CMySchceduleView::slotDeleteBt);
+    if(m_scheduleInfo.type.ID == 4){
+
+    }else {
+        connect(m_editBt, &DPushButton::clicked, this, &CMySchceduleView::slotEditBt);
+        connect(m_deleteBt, &DPushButton::clicked, this, &CMySchceduleView::slotDeleteBt);
+   }
+
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("ESC")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(close()));

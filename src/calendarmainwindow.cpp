@@ -358,8 +358,8 @@ void Calendarmainwindow::OpenSchedule(QString job)
         m_stackWidget->setCurrentIndex(3);
         m_DayWindow->setDate(out.beginDateTime.date());
         m_DayWindow->slotupdateSchedule(0);
-        CMySchceduleView dlg(this);
-        dlg.setSchedules(out);
+        CMySchceduleView dlg(out,this);
+//        dlg.setSchedules(out);
         dlg.exec();
         m_DayWindow->slotupdateSchedule(0);
     }
