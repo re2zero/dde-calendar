@@ -1,8 +1,8 @@
 #include "SchecduleRemindWidget.h"
 #include <QPainter>
 #include <QtMath>
-#include <DFontSizeManager>
 #include <DGuiApplicationHelper>
+DGUI_USE_NAMESPACE
 SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWindow, parent)
     , m_centerWidget(new CenterWidget(this))
@@ -49,7 +49,8 @@ void CenterWidget::setData(const ScheduleDtailInfo &vScheduleInfo, const CSchedu
 {
     m_ScheduleInfo = vScheduleInfo;
     gdcolor = gcolor;
-    textfont = DFontSizeManager::instance()->get(DFontSizeManager::T8, textfont);
+    textfont.setPixelSize(12);
+//    textfont = DFontSizeManager::instance()->get(DFontSizeManager::T8, textfont);
     UpdateTextList();
     update();
 }
@@ -113,7 +114,8 @@ void CenterWidget::paintEvent(QPaintEvent *e)
 //    int y = 17 - 5;
     QFont timeFont;
     timeFont.setFamily("SourceHanSansSC-Medium");
-    timeFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, timeFont);
+    timeFont.setPixelSize(12);
+//    timeFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, timeFont);
     QPainter painter(this);
 
     //draw time
