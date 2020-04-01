@@ -55,9 +55,12 @@ CScheduleItem::CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent,
     m_properANimationSecond  = new QPropertyAnimation(this, "offset", this);
     m_properAnimationFirst->setDuration(duration);
     m_properANimationSecond->setDuration(duration);
+    m_properAnimationFirst->setEasingCurve(QEasingCurve::InOutQuad);
+    m_properANimationSecond->setEasingCurve(QEasingCurve::InOutQuad);
     m_Group = new QSequentialAnimationGroup(this);
     m_Group->addAnimation(m_properAnimationFirst);
     m_Group->addAnimation(m_properANimationSecond);
+
 //    setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
     // setAcceptHoverEvents(true);
     // setAcceptedMouseButtons(Qt::LeftButton);
@@ -92,9 +95,9 @@ QRectF CScheduleItem::boundingRect() const
     t_rect = m_coorManage->getDrawRegion(m_date, m_scheduleInfo.beginDateTime,
                                          m_scheduleInfo.endDateTime, m_index, m_totalNum, m_sMaxNum,
                                          m_viewtype);
-    t_rect = QRect(t_rect.x() - m_offset / 2,
+    t_rect = QRect(t_rect.x() - m_offset,
                    t_rect.y() - m_offset / 2,
-                   t_rect.width() + m_offset,
+                   t_rect.width() + m_offset * 2,
                    t_rect.height() + m_offset);
     return t_rect;
 }
@@ -128,6 +131,7 @@ void CScheduleItem::UpdateSelectState(int state)
 void CScheduleItem::setOffset(const int size)
 {
     m_offset = size;
+    setZValue(size);
     update();
 }
 
@@ -272,7 +276,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         // if (m_totalNum > 1) {
         // font.setPixelSize(6);
         //} else {
-        font = DFontSizeManager::instance()->get(DFontSizeManager::T8,font);
+        font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
 //        font.setPixelSize(12);
         //}
         if (m_scheduleInfo.beginDateTime.date() == m_date) {
@@ -327,18 +331,24 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         }
 
         painter->save();
+
         font = DFontSizeManager::instance()->get(DFontSizeManager::T6,font);
         font.setLetterSpacing(QFont::PercentageSpacing,120);
 //        font.setPixelSize(14);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
-        splitText(font, rect.width() - tmagin - 5, rect.height() - 20, m_scheduleInfo.titleName,
+
+        QRect textRect = QRect(rect.x(),
+                               rect.y(),
+                               rect.width() - m_offset,
+                               rect.height() - m_offset);
+        splitText(font, textRect.width() - tmagin - 5, textRect.height() - 20, m_scheduleInfo.titleName,
                   liststr);
         for (int i = 0; i < liststr.count(); i++) {
             painter->drawText(
-                QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 20 + timeTextHight + i * 20,
-                      rect.width() - 2, h),
+                QRect(textRect.topLeft().x() + tmagin, textRect.topLeft().y() + 20 + timeTextHight + i * 20,
+                      textRect.width() - 2, h),
                 Qt::AlignLeft, liststr.at(i));
         }
         painter->restore();
@@ -346,7 +356,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->save();
         QFont font("SourceHanSansSC");
         font.setWeight(QFont::Normal);
-        font = DFontSizeManager::instance()->get(DFontSizeManager::T8,font);
+        font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
 //        font.setPixelSize(12);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);

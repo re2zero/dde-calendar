@@ -1179,53 +1179,6 @@ void CMonthView::paintCell(QWidget *cell)
         }
         painter.setFont(m_dayLunarFont);
         painter.drawText(QRect(cell->width() - 58, 6, 58, 18), Qt::AlignCenter, dayLunar);
-
-        if (getShowSolarDayByDate(m_days[pos])) {
-            CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
-            if (!dayInfo.mSolarFestival.isEmpty() || !dayInfo.mLunarFestival.isEmpty()) {
-                QRect fillRect = QRect(6, 34, cell->width() - 12, 22);
-                painter.setRenderHints(QPainter::HighQualityAntialiasing);
-                painter.setBrush(QBrush(m_solofestivalLunarColor));
-                painter.setPen(Qt::NoPen);
-                painter.drawRoundedRect(fillRect, 8, 8);
-                painter.setPen(m_defaultTextColor);
-                QFont solofont = m_dayLunarFont;
-                painter.setFont(solofont);
-                //QFontMetrics fm = painter.fontMetrics();
-                //while (fm.width(dayInfo.mSolarFestival) > cell->width() - 12) {
-                // solofont.setPixelSize(solofont.pixelSize() - 1);
-                // painter.setFont(solofont);
-                //fm = painter.fontMetrics();
-                //}
-                QFontMetrics fm = painter.fontMetrics();
-                QString str =  dayInfo.mSolarFestival;
-                if (!dayInfo.mSolarFestival.isEmpty() && dayInfo.mLunarFestival.isEmpty()) {
-                    str = dayInfo.mSolarFestival;
-                } else if (!dayInfo.mSolarFestival.isEmpty() && !dayInfo.mLunarFestival.isEmpty()) {
-                    str = dayInfo.mSolarFestival + " " + dayInfo.mLunarFestival;
-                } else {
-                    str = dayInfo.mLunarFestival;
-                }
-                QString tstr;
-                for (int i = 0; i < str.count(); i++) {
-                    tstr.append(str.at(i));
-                    int widthT = fm.width(tstr) + 5;
-                    if (widthT >= cell->width() - 12) {
-                        tstr.chop(2);
-                        break;
-                    }
-                }
-                if (tstr != str) {
-                    tstr = tstr + "...";
-                }
-                /*painter.drawText(QRect(6 + (fillRect.width() - fm.width(tstr)) / 2,
-                                       34 + (fillRect.height() - fm.height()) / 2,
-                                       fm.width(tstr),
-                                       fm.height()),
-                                 Qt::AlignLeft, tstr);*/
-                painter.drawText(QRect(8, 36, cell->width() - 12, 20), Qt::AlignLeft, tstr);
-            }
-        }
     }
 
     //if (m_cellfoceflag[pos]) {
