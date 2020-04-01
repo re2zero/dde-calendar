@@ -34,12 +34,17 @@
 #include "timeedit.h"
 #include "timeeditctrl.h"
 DGUI_USE_NAMESPACE
-CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent)
-    : DDialog(parent)
+CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
+    : DDialog(parent), m_createAllDay(isAllDay)
 {
     setContentsMargins(0, 0, 0, 0);
     m_type = type;
     initUI();
+    if (m_type == 0 && isAllDay) {
+        m_allDayCheckbox->setChecked(true);
+        m_beginTimeEdit->setVisible(false);
+        m_endTimeEdit->setVisible(false);
+    }
     initConnection();
     if (type == 1) {
         m_titleLabel->setText(tr("New Event"));
@@ -60,18 +65,6 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent)
     setFixedSize(438, 460);
 }
 
-void CSchceduleDlg::setData(const ScheduleInfo &info)
-{
-    m_scheduleInfo = info;
-    m_typeComBox->setCurrentIndex(info.infotype);
-    m_textEdit->setText(info.titleName);
-    m_beginDateEdit->setDate(info.beginDateTime.date());
-    m_beginTimeEdit->setTime(info.beginDateTime.time());
-    m_endDateEdit->setDate(info.endDateTime.date());
-    m_endTimeEdit->setTime(info.endDateTime.time());
-    m_endRepeatDate->setMinimumDate(info.beginDateTime.date());
-}
-
 void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
 {
     m_scheduleDtailInfo = info;
@@ -83,7 +76,12 @@ void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
     m_endTimeEdit->setTime(info.endDateTime.time());
     m_allDayCheckbox->setChecked(info.allday);
     m_endRepeatDate->setMinimumDate(info.beginDateTime.date());
-    slotallDayStateChanged(info.allday);
+    if (m_type == 0 && m_createAllDay) {
+
+    } else {
+        slotallDayStateChanged(info.allday);
+    }
+
     initRmindRpeatUI();
     // m_textEdit->setTextCursor()
 }
@@ -114,11 +112,6 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     m_endDateEdit->setDate(datetime.date());
     m_endTimeEdit->setTime(datetime.time());
     m_endRepeatDate->setMinimumDate(date.date());
-}
-
-ScheduleInfo CSchceduleDlg::getData()
-{
-    return m_scheduleInfo;
 }
 
 ScheduleDtailInfo CSchceduleDlg::getScheduleData()
