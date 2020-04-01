@@ -80,7 +80,7 @@ private:
 
     const QString getLunar(int pos);
     const CaHuangLiDayInfo getCaHuangLiDayInfo(int pos);
-    void updateCurrentLunar(const CaHuangLiDayInfo &info);
+    void updateCurrentLunar();
 
     void initUI();
     void initConnection();

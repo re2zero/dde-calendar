@@ -295,8 +295,6 @@ void CScheduleView::slotCreateSchedule()
 void CScheduleView::setDate(QDate date)
 {
     m_currteDate = date;
-    QVector<QDate> vdate;
-    QVector<QString> vSolarDay;
     updateAllday();
 }
 
