@@ -222,13 +222,13 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
     qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDaysThan);
     qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDateThan);
 
-    for(int i = 0; i < valldayListData.count(); i++){
+    for (int i = 0; i < valldayListData.count(); i++) {
         QVector<ScheduleDtailInfo>::iterator iter = valldayListData.begin();
-        if(valldayListData.at(i).type.ID == 4){
+        if (valldayListData.at(i).type.ID == 4) {
             ScheduleDtailInfo moveDate;
             moveDate = valldayListData.at(i);
             valldayListData.removeAt(i);
-            valldayListData.insert(iter,moveDate);
+            valldayListData.insert(iter, moveDate);
         }
     }
 
@@ -256,22 +256,22 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
 //                m_vlistData = vTlistData;
 //            }
 //        } else {
-            if (m_vlistData.size() > 5) {
-                QVector<ScheduleDtailInfo> vTlistData;
-                for (int i = 0; i < 4; i++) {
-                    if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
-                        if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
-                            m_vlistData[i].allday = true;
-                        }
-                    }
-                    vTlistData.append(m_vlistData.at(i));
+    if (m_vlistData.size() > 5) {
+        QVector<ScheduleDtailInfo> vTlistData;
+        for (int i = 0; i < 4; i++) {
+            if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
+                if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
+                    m_vlistData[i].allday = true;
                 }
-                ScheduleDtailInfo info;
-                info.titleName = "......";
-                info.id = -1;
-                vTlistData.append(info);
-                m_vlistData = vTlistData;
             }
+            vTlistData.append(m_vlistData.at(i));
+        }
+        ScheduleDtailInfo info;
+        info.titleName = "......";
+        info.id = -1;
+        vTlistData.append(info);
+        m_vlistData = vTlistData;
+    }
 //        }
 //    }
 }
@@ -368,12 +368,12 @@ void CYearSchceduleView::updateDateShow()
 //                sviewNum = m_vlistData.size() + 1;
 //            }
 //        } else {
-            if (m_vlistData.size() > 5) {
-                sviewNum = 5;
-            } else {
-                sviewNum = m_vlistData.size();
-            }
+        if (m_vlistData.size() > 5) {
+            sviewNum = 5;
+        } else {
+            sviewNum = m_vlistData.size();
         }
+    }
 //    }
     if (/*!m_soloDay.isEmpty() || */!m_vlistData.isEmpty())
         setFixedSize(240, 45 + (sviewNum - 1) * 29);
@@ -403,13 +403,13 @@ void CYearSchceduleView::updateDateShow()
 //            setFixedSize(95 + (sviewNum + 1) * 29, 180);
 //        }
 //    } else {
-        if (m_vlistData.size() > 6) {
-            sviewNum = 6;
-            setFixedSize(240, 180);
-        } else {
-            sviewNum = m_vlistData.size();
-            setFixedSize(95 + sviewNum * 29, 180);
-        }
+    if (m_vlistData.size() > 6) {
+        sviewNum = 6;
+        setFixedSize(240, 180);
+    } else {
+        sviewNum = m_vlistData.size();
+        setFixedSize(95 + sviewNum * 29, 180);
+    }
 //    }
 
     for (int i = 0; i < sviewNum; ++i) {
@@ -763,7 +763,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
 //        if (!m_soloDay.isEmpty()) {
 //            paintItem(m_vlistData.at(i), i + 1, 0);
 //        } else {
-            paintItem(m_vlistData.at(i), i, 0);
+        paintItem(m_vlistData.at(i), i, 0);
 //        }
     }
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
