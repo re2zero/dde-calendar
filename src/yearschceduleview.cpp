@@ -205,6 +205,7 @@ bool YScheduleDaysThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
     return s1.beginDateTime.date().daysTo(s1.endDateTime.date()) > s2.beginDateTime.date().daysTo(s2.endDateTime.date());
 }
+
 void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
 {
     QVector<ScheduleDtailInfo> valldayListData, vDaylistdata;
@@ -221,48 +222,58 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
     qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDaysThan);
     qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDateThan);
 
+    for (int i = 0; i < valldayListData.count(); i++) {
+        QVector<ScheduleDtailInfo>::iterator iter = valldayListData.begin();
+        if (valldayListData.at(i).type.ID == 4) {
+            ScheduleDtailInfo moveDate;
+            moveDate = valldayListData.at(i);
+            valldayListData.removeAt(i);
+            valldayListData.insert(iter, moveDate);
+        }
+    }
+
 
 
     m_vlistData.clear();
     m_vlistData.append(valldayListData);
     m_vlistData.append(vDaylistdata);
-    if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty()) {
-        if (!m_soloDay.isEmpty()) {
-            if (m_vlistData.size() > 4) {
-                QVector<ScheduleDtailInfo> vTlistData;
-                for (int i = 0; i < 3; i++) {
-                    if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
-                        if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
-                            m_vlistData[i].allday = true;
-                        }
-                    }
-                    vTlistData.append(m_vlistData.at(i));
+//    if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty()) {
+//        if (!m_soloDay.isEmpty()) {
+//            if (m_vlistData.size() > 4) {
+//                QVector<ScheduleDtailInfo> vTlistData;
+//                for (int i = 0; i < 3; i++) {
+//                    if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
+//                        if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
+//                            m_vlistData[i].allday = true;
+//                        }
+//                    }
+//                    vTlistData.append(m_vlistData.at(i));
+//                }
+//                ScheduleDtailInfo info;
+//                info.titleName = "......";
+//                info.id = -1;
+//                vTlistData.append(info);
+//                m_vlistData = vTlistData;
+//            }
+//        } else {
+    if (m_vlistData.size() > 5) {
+        QVector<ScheduleDtailInfo> vTlistData;
+        for (int i = 0; i < 4; i++) {
+            if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
+                if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
+                    m_vlistData[i].allday = true;
                 }
-                ScheduleDtailInfo info;
-                info.titleName = "......";
-                info.id = -1;
-                vTlistData.append(info);
-                m_vlistData = vTlistData;
             }
-        } else {
-            if (m_vlistData.size() > 5) {
-                QVector<ScheduleDtailInfo> vTlistData;
-                for (int i = 0; i < 4; i++) {
-                    if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
-                        if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
-                            m_vlistData[i].allday = true;
-                        }
-                    }
-                    vTlistData.append(m_vlistData.at(i));
-                }
-                ScheduleDtailInfo info;
-                info.titleName = "......";
-                info.id = -1;
-                vTlistData.append(info);
-                m_vlistData = vTlistData;
-            }
+            vTlistData.append(m_vlistData.at(i));
         }
+        ScheduleDtailInfo info;
+        info.titleName = "......";
+        info.id = -1;
+        vTlistData.append(info);
+        m_vlistData = vTlistData;
     }
+//        }
+//    }
 }
 
 void CYearSchceduleView::clearData()
@@ -279,7 +290,7 @@ void CYearSchceduleView::clearData()
     m_gradientItemList->clear();
 }
 
-void CYearSchceduleView::showWindow()
+int CYearSchceduleView::showWindow()
 {
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
         setFixedSize(130, 45);
@@ -290,6 +301,7 @@ void CYearSchceduleView::showWindow()
     }
     //show();
     updateDateShow();
+    return this->width();
 }
 
 void CYearSchceduleView::setTheMe(int type)
@@ -369,64 +381,64 @@ void CYearSchceduleView::updateDateShow()
     update();
     return;
     //remove
-    for (int i = 0; i < m_gradientItemList->count(); i++) {
-        QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
-        m_gradientItemList->removeItemWidget(item11);
-    }
-    m_gradientItemList->clear();
-    m_labellist.clear();
+//    for (int i = 0; i < m_gradientItemList->count(); i++) {
+//        QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
+//        m_gradientItemList->removeItemWidget(item11);
+//    }
+//    m_gradientItemList->clear();
+//    m_labellist.clear();
 
-    if (!m_soloDay.isEmpty()) {
-        ScheduleDtailInfo info;
-        info.titleName = m_soloDay;
-        info.allday = true;
-        createItemWidget(info, 1);
-    }
-    sviewNum = 0;
-    if (!m_soloDay.isEmpty()) {
-        if (m_vlistData.size() > 5) {
-            sviewNum = 5;
-            setFixedSize(240, 180);
-        } else {
-            sviewNum = m_vlistData.size();
-            setFixedSize(95 + (sviewNum + 1) * 29, 180);
-        }
-    } else {
-        if (m_vlistData.size() > 6) {
-            sviewNum = 6;
-            setFixedSize(240, 180);
-        } else {
-            sviewNum = m_vlistData.size();
-            setFixedSize(95 + sviewNum * 29, 180);
-        }
-    }
+////    if (!m_soloDay.isEmpty()) {
+////        ScheduleDtailInfo info;
+////        info.titleName = m_soloDay;
+////        info.allday = true;
+////        createItemWidget(info, 1);
+////    }
+//    sviewNum = 0;
+////    if (!m_soloDay.isEmpty()) {
+////        if (m_vlistData.size() > 5) {
+////            sviewNum = 5;
+////            setFixedSize(240, 180);
+////        } else {
+////            sviewNum = m_vlistData.size();
+////            setFixedSize(95 + (sviewNum + 1) * 29, 180);
+////        }
+////    } else {
+//    if (m_vlistData.size() > 6) {
+//        sviewNum = 6;
+//        setFixedSize(240, 180);
+//    } else {
+//        sviewNum = m_vlistData.size();
+//        setFixedSize(95 + sviewNum * 29, 180);
+//    }
+////    }
 
-    for (int i = 0; i < sviewNum; ++i) {
-        createItemWidget(m_vlistData.at(i), 0);
-    }
+//    for (int i = 0; i < sviewNum; ++i) {
+//        createItemWidget(m_vlistData.at(i), 0);
+//    }
 
-    if (m_gradientItemList->count() == 0) {
-        QListWidgetItem *listItem = new QListWidgetItem;
-        DLabel *gwi = new DLabel();
-        QFont font("SourceHanSansSC-Normal");
-        font.setPixelSize(12);
-        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-        DPalette daypa = gwi->palette();
-        daypa.setColor(DPalette::WindowText, m_bttextcolor);
-        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
-        gwi->setPalette(daypa);
-        gwi->setForegroundRole(DPalette::WindowText);
-        gwi->setBackgroundRole(DPalette::Window);
-        gwi->setFont(font);
-        gwi->setText(tr("No event"));
-        gwi->setFixedSize(m_gradientItemList->width(), 48);
-        listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
-        //listItem->setBackgroundColor(Qt::white);
-        listItem->setFlags(Qt::ItemIsTristate );
-        m_gradientItemList->addItem(listItem);
-        m_gradientItemList->setItemWidget(listItem, gwi);
-        m_labellist.append(gwi);
-    }
+//    if (m_gradientItemList->count() == 0) {
+//        QListWidgetItem *listItem = new QListWidgetItem;
+//        DLabel *gwi = new DLabel();
+//        QFont font("SourceHanSansSC-Normal");
+//        font.setPixelSize(12);
+//        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+//        DPalette daypa = gwi->palette();
+//        daypa.setColor(DPalette::WindowText, m_bttextcolor);
+//        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
+//        gwi->setPalette(daypa);
+//        gwi->setForegroundRole(DPalette::WindowText);
+//        gwi->setBackgroundRole(DPalette::Window);
+//        gwi->setFont(font);
+//        gwi->setText(tr("No event"));
+//        gwi->setFixedSize(m_gradientItemList->width(), 48);
+//        listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
+//        //listItem->setBackgroundColor(Qt::white);
+//        listItem->setFlags(Qt::ItemIsTristate );
+//        m_gradientItemList->addItem(listItem);
+//        m_gradientItemList->setItemWidget(listItem, gwi);
+//        m_labellist.append(gwi);
+//    }
 }
 
 void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
@@ -740,20 +752,20 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
     painter.drawPath(path);
     painter.restore();
 #endif
-    if (!m_soloDay.isEmpty()) {
-        ScheduleDtailInfo info;
-        info.titleName = m_soloDay;
-        info.allday = true;
-        info.id = 4;
-        paintItem(info, 0, 1);
-    }
+//    if (!m_soloDay.isEmpty()) {
+//        ScheduleDtailInfo info;
+//        info.titleName = m_soloDay;
+//        info.allday = true;
+//        info.id = 4;
+//        paintItem(info, 0, 1);
+//    }
 
     for (int i = 0; i < m_vlistData.size(); ++i) {
-        if (!m_soloDay.isEmpty()) {
-            paintItem(m_vlistData.at(i), i + 1, 0);
-        } else {
-            paintItem(m_vlistData.at(i), i, 0);
-        }
+//        if (!m_soloDay.isEmpty()) {
+//            paintItem(m_vlistData.at(i), i + 1, 0);
+//        } else {
+        paintItem(m_vlistData.at(i), i, 0);
+//        }
     }
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
         paintItem();
@@ -905,6 +917,7 @@ CYearSchceduleOutView::CYearSchceduleOutView(QWidget *parent)
 {
     yearschceduleview = new CYearSchceduleView ();
     this->setContent(yearschceduleview);
+    qDebug() << this->width();
 }
 
 void CYearSchceduleOutView::setSoloDay(QString soloday)
@@ -924,7 +937,8 @@ void CYearSchceduleOutView::clearData()
 
 void CYearSchceduleOutView::showWindow()
 {
-    yearschceduleview->showWindow();
+    int w = yearschceduleview->showWindow();
+    this->setFixedSize(w, yearschceduleview->height());
 }
 
 void CYearSchceduleOutView::setTheMe(int type)

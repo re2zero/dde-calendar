@@ -40,7 +40,7 @@ public:
     void setSoloDay(QString soloday);
     void setData(QVector<ScheduleDtailInfo> &vListData);
     void clearData();
-    void showWindow();
+    int showWindow();
     void setTheMe(int type = 0);
     void setDtype(int type, int arrowheight);
     void setCurrentDate(QDate cdate);
@@ -109,8 +109,6 @@ public:
     void setDtype(int type, int arrowheight);
     void setCurrentDate(QDate cdate);
 private:
-    DArrowRectangle *arrowRectangle;
-    CYearWindow *yearWindow;
     CYearSchceduleView *yearschceduleview;
 };
 #endif // CSHCEDULEDAYVIEW_H

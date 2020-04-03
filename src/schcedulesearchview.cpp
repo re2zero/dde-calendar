@@ -283,14 +283,10 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 
     QFontMetrics fm1(m_timefont);
     int durationSize = 0;
-    int flag = Qt::AlignCenter;
+    durationSize = fm1.horizontalAdvance(datestr);
+    int flag = Qt::AlignLeft | Qt::AlignCenter;
     if (m_ScheduleInfo.allday) {
         datestr = tr("All Day");
-        durationSize = 64;
-        flag = Qt::AlignLeft | Qt::AlignVCenter;
-    } else {
-        durationSize = fm1.horizontalAdvance(datestr);
-
     }
     painter.drawText(QRect(12, 8, durationSize, labelheight - 16), flag, datestr);
 

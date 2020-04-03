@@ -316,8 +316,8 @@ void CYearWindow::setTheMe(int type)
     YearWidget_First->setTheMe(type);
     YearWidget_Second->setTheMe(type);
 
-    DPalette palette ; //= m_topWidget->palette();
-    palette.setBrush(DPalette::Background, palette.color(DPalette::Window));
+    DPalette palette = m_topWidget->palette();
+    palette.setBrush(DPalette::WindowText, palette.color(DPalette::Window));
     m_topWidget->setAutoFillBackground(true);
     m_topWidget->setPalette(palette);
 }
@@ -612,10 +612,12 @@ void YearFrame::getLunarData()
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
         m_YearLabel->setText(QString::number(m_currentdate.year()) + tr("Y"));
+        m_YearLunarLabel->setText(m_LunarYear);
     } else {
         m_YearLabel->setText(QString::number(m_currentdate.year()));
+        m_YearLunarLabel->setText("");
     }
-    m_YearLunarLabel->setText(m_LunarYear);
+
 }
 
 void YearFrame::mousePressEvent(QMouseEvent *event)

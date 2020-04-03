@@ -663,6 +663,9 @@ void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    if(event->button() == Qt::RightButton){
+        return;
+    }
     emit signalScheduleShow(false);
     DGraphicsView::mouseDoubleClickEvent(event);
     CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
@@ -680,9 +683,6 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
         }
         emit signalViewtransparentFrame(0);
     } else {
-        if (item->getData().type.ID == 4) {
-            return;
-        }
         emit signalViewtransparentFrame(1);
         m_updateDflag  = false;
         CMySchceduleView dlg(item->getData(), this);
