@@ -311,11 +311,11 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
                 CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
                 QString soloday;
                 QLocale locale;
-                if (locale.language() == QLocale::Chinese) {
-                    if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
-                        m_Scheduleview->setSoloDay(soloday);
-                    }
-                }
+//                if (locale.language() == QLocale::Chinese) {
+//                    if (tdataManage->getHuangliDayDataManage()->getSoloDay(m_days[pos], soloday)) {
+//                        m_Scheduleview->setSoloDay(soloday);
+//                    }
+//                }
                 m_Scheduleview->setCurrentDate(m_days[pos]);
                 QVector<ScheduleDateRangeInfo> out;
                 if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[pos], m_days[pos], out)) {
@@ -348,7 +348,14 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
 //                    m_Scheduleview->setDtype(lfetorright, m_Scheduleview->height() / 2);
 //                }
 //                m_Scheduleview->move(mw, mh);
-                m_Scheduleview->show(pos22.x() + 10, pos22.y());
+                if (pos22.x() + 10 + m_Scheduleview->width() < w->width()) {
+                    m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowLeft);
+                    m_Scheduleview->show(pos22.x() + 10, pos22.y());
+                } else {
+                    m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowRight);
+                    m_Scheduleview->show(pos22.x() - 10, pos22.y());
+                }
+
 
                 cell->update();
             } else {

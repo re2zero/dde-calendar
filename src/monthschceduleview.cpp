@@ -621,7 +621,7 @@ void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom
     m_buttommagin = buttom;
     m_leftMagin = left;
     m_topMagin = top;
-    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
+    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 25;
 }
 
 void CMonthSchceduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
@@ -729,6 +729,15 @@ void CMonthSchceduleView::updateData()
     qSort(vMDaySchedule.begin(), vMDaySchedule.end(), MScheduleDaysThan);
     qSort(vMDaySchedule.begin(), vMDaySchedule.end(), MScheduleDateThan);
 
+    for(int i = 0; i < vMDaySchedule.count(); i++){
+        QVector<MScheduleDateRangeInfo>::iterator iter = vMDaySchedule.begin();
+        if(vMDaySchedule.at(i).tData.type.ID == 4){
+            MScheduleDateRangeInfo moveDate;
+            moveDate = vMDaySchedule.at(i);
+            vMDaySchedule.removeAt(i);
+            vMDaySchedule.insert(iter,moveDate);
+        }
+    }
 
     QVector<QVector<int> > vCfillSchedule;
     QVector<QVector<MScheduleDateRangeInfo> >vCMDaySchedule;

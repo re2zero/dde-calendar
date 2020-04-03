@@ -284,7 +284,6 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
             painter->setFont(font);
             painter->setPen(gdcolor.timeColor);
             QTime stime = m_scheduleInfo.beginDateTime.time();
-            //            QString str = stime.toString("ap HH:mm");
             QString str = stime.toString("AP h:mm");
 
             QFontMetrics fontmetris(font);
@@ -292,17 +291,27 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
                 QString tstr;
                 for (int i = 0; i < str.count(); i++) {
                     tstr.append(str.at(i));
-                    int widthT = fm.width(tstr) + 5;
+                    int widthT = fm.width(tstr) - 5;
                     if (widthT >= rect.width()) {
-                        if (i < 2) {
-                            tstr.chop(1);
+                        if (i < 1) {
+                            tstr.chop(7);
                         } else {
-                            tstr.chop(2);
+                            tstr.chop(5);
                         }
                         tstr = tstr + "...";
                         break;
                     }
                 }
+
+//                if(rect.width() < fm.width(tstr) - 2){
+//                    tstr.chop(5);
+//                    tstr = tstr + "...";
+//                    if(rect.width() < fm.width(tstr) - 2){
+//                        tstr.chop(6);
+//                        tstr = tstr + "...";
+//                    }
+//                }
+
                 painter->drawText(
                     QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, h),
                     Qt::AlignLeft, tstr);
@@ -322,16 +331,19 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         }
 
         painter->save();
+
         font = DFontSizeManager::instance()->get(DFontSizeManager::T6, font);
+        font.setLetterSpacing(QFont::PercentageSpacing, 120);
 //        font.setPixelSize(14);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
+
         QRect textRect = QRect(rect.x(),
                                rect.y(),
                                rect.width() - m_offset,
                                rect.height() - m_offset);
-        splitText(font, textRect.width() - tmagin - 8, textRect.height() - 20, m_scheduleInfo.titleName,
+        splitText(font, textRect.width() - tmagin - 5, textRect.height() - 20, m_scheduleInfo.titleName,
                   liststr);
         for (int i = 0; i < liststr.count(); i++) {
             painter->drawText(
@@ -429,11 +441,14 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
     }
     tliststr.append(tstr);
     if (w < 30) {
-        if (tliststr.isEmpty()) {
+//        if (tliststr.isEmpty()) {
+        if (h < 23)
+            liststr.append("");
+        else
             liststr.append("...");
-        } else {
-            liststr.append(tliststr.at(0) + "...");
-        }
+//        } else {
+//            liststr.append(tliststr.at(0) + "...");
+//        }
     } else {
         for (int i = 0; i < tliststr.count(); i++) {
             if ((i + 1) * heightT <= h) {
@@ -444,7 +459,12 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
                     // liststr.append("...");
                 } else {
                     tstr = liststr.at(i - 1);
-                    tstr.chop(3);
+                    for (int i = 0; i < tstr.count(); i++ ) {
+                        if (fontmetris.width(tstr) + 5 > w)
+                            tstr.chop(1);
+                    }
+//                    if(fontmetris.width(tstr) < w)
+//                        tstr.chop(3);
                     liststr[i - 1] = tstr + "...";
                 }
                 break;

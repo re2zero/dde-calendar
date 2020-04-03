@@ -351,7 +351,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth, hourTextHeight),
-                    Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP h 时"));
+                    /*Qt::AlignRight | */Qt::AlignCenter, QTime(m_vHours[i], 0).toString("AP h 时"));
             }
             painter.restore();
         } else {
@@ -385,7 +385,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth, hourTextHeight),
-                    Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP h 时"));
+                    /*Qt::AlignRight | */Qt::AlignCenter, QTime(m_vHours[i], 0).toString("AP h 时"));
             }
             painter.restore();
             if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
@@ -397,7 +397,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5,
                                        m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth,
                                        hourTextHeight),
-                                 Qt::AlignRight, str);
+                                 /*Qt::AlignRight | */Qt::AlignCenter, str);
                 painter.restore();
             }
         }
@@ -427,7 +427,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth + 2, hourTextHeight),
-                    Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP HH:mm"));
+                    /*Qt::AlignRight | */Qt::AlignCenter, QTime(m_vHours[i], 0).toString(/*"AP */"HH:mm"));
             }
             painter.restore();
         } else {
@@ -464,7 +464,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth + 2, hourTextHeight),
-                    Qt::AlignRight, QTime(m_vHours[i], 0).toString("AP HH:mm"));
+                    /*Qt::AlignRight | */Qt::AlignCenter, QTime(m_vHours[i], 0).toString(/*"AP */"HH:mm"));
             }
             painter.restore();
             if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
@@ -472,12 +472,12 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
                 //                QString str = QTime::currentTime().toString("AP HH:mm");
-                QString str = QTime::currentTime().toString("AP HH:mm");
+                QString str = QTime::currentTime().toString(/*"AP */"HH:mm");
                 if (m_topMagin - 8 + m_vPos[m_vPos.count() - 1] >= m_topMagin)
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5,
                                            m_topMagin - 8 + m_vPos[m_vPos.count() - 1],
                                            hourTextWidth + 2, hourTextHeight),
-                                     Qt::AlignRight, str);
+                                     /*Qt::AlignRight | */Qt::AlignCenter, str);
                 painter.restore();
             }
         }

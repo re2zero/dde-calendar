@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -342,6 +344,10 @@
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -670,6 +676,13 @@
     <message>
         <source>D</source>
         <translation>D</translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation type="unfinished">All Day</translation>
     </message>
 </context>
 <context>

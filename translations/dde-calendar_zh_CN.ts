@@ -344,6 +344,10 @@
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">确定</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -672,6 +676,13 @@
     <message>
         <source>D</source>
         <translation>日</translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation type="unfinished">全天</translation>
     </message>
 </context>
 <context>
