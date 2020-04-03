@@ -349,7 +349,14 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
 //                    m_Scheduleview->setDtype(lfetorright, m_Scheduleview->height() / 2);
 //                }
 //                m_Scheduleview->move(mw, mh);
-                m_Scheduleview->show(pos22.x() + 10, pos22.y());
+                if (pos22.x() + 10 + m_Scheduleview->width() < w->width()) {
+                    m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowLeft);
+                    m_Scheduleview->show(pos22.x() + 10, pos22.y());
+                } else {
+                    m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowRight);
+                    m_Scheduleview->show(pos22.x() - 10, pos22.y());
+                }
+
 
                 cell->update();
             } else {

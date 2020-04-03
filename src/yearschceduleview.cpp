@@ -290,9 +290,9 @@ void CYearSchceduleView::clearData()
     m_gradientItemList->clear();
 }
 
-void CYearSchceduleView::showWindow()
+int CYearSchceduleView::showWindow()
 {
-    if (/*m_soloDay.isEmpty() && */m_vlistData.isEmpty()) {
+    if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
         setFixedSize(130, 45);
         //m_gradientItemList->setFixedSize(110, 60);
     } else {
@@ -301,6 +301,7 @@ void CYearSchceduleView::showWindow()
     }
     //show();
     updateDateShow();
+    return this->width();
 }
 
 void CYearSchceduleView::setTheMe(int type)
@@ -360,84 +361,84 @@ QDate CYearSchceduleView::getCurrentDate()
 void CYearSchceduleView::updateDateShow()
 {
     int sviewNum = 0;
-    if (/*!m_soloDay.isEmpty() || */!m_vlistData.isEmpty()) {
-//        if (!m_soloDay.isEmpty()) {
-//            if (m_vlistData.size() > 4) {
-//                sviewNum = 5;
-//            } else {
-//                sviewNum = m_vlistData.size() + 1;
-//            }
-//        } else {
-        if (m_vlistData.size() > 5) {
-            sviewNum = 5;
+    if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty()) {
+        if (!m_soloDay.isEmpty()) {
+            if (m_vlistData.size() > 4) {
+                sviewNum = 5;
+            } else {
+                sviewNum = m_vlistData.size() + 1;
+            }
         } else {
-            sviewNum = m_vlistData.size();
+            if (m_vlistData.size() > 5) {
+                sviewNum = 5;
+            } else {
+                sviewNum = m_vlistData.size();
+            }
         }
     }
-//    }
-    if (/*!m_soloDay.isEmpty() || */!m_vlistData.isEmpty())
+    if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty())
         setFixedSize(240, 45 + (sviewNum - 1) * 29);
     update();
     return;
     //remove
-    for (int i = 0; i < m_gradientItemList->count(); i++) {
-        QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
-        m_gradientItemList->removeItemWidget(item11);
-    }
-    m_gradientItemList->clear();
-    m_labellist.clear();
-
-//    if (!m_soloDay.isEmpty()) {
-//        ScheduleDtailInfo info;
-//        info.titleName = m_soloDay;
-//        info.allday = true;
-//        createItemWidget(info, 1);
+//    for (int i = 0; i < m_gradientItemList->count(); i++) {
+//        QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
+//        m_gradientItemList->removeItemWidget(item11);
 //    }
-    sviewNum = 0;
-//    if (!m_soloDay.isEmpty()) {
-//        if (m_vlistData.size() > 5) {
-//            sviewNum = 5;
-//            setFixedSize(240, 180);
-//        } else {
-//            sviewNum = m_vlistData.size();
-//            setFixedSize(95 + (sviewNum + 1) * 29, 180);
-//        }
+//    m_gradientItemList->clear();
+//    m_labellist.clear();
+
+////    if (!m_soloDay.isEmpty()) {
+////        ScheduleDtailInfo info;
+////        info.titleName = m_soloDay;
+////        info.allday = true;
+////        createItemWidget(info, 1);
+////    }
+//    sviewNum = 0;
+////    if (!m_soloDay.isEmpty()) {
+////        if (m_vlistData.size() > 5) {
+////            sviewNum = 5;
+////            setFixedSize(240, 180);
+////        } else {
+////            sviewNum = m_vlistData.size();
+////            setFixedSize(95 + (sviewNum + 1) * 29, 180);
+////        }
+////    } else {
+//    if (m_vlistData.size() > 6) {
+//        sviewNum = 6;
+//        setFixedSize(240, 180);
 //    } else {
-    if (m_vlistData.size() > 6) {
-        sviewNum = 6;
-        setFixedSize(240, 180);
-    } else {
-        sviewNum = m_vlistData.size();
-        setFixedSize(95 + sviewNum * 29, 180);
-    }
+//        sviewNum = m_vlistData.size();
+//        setFixedSize(95 + sviewNum * 29, 180);
+//    }
+////    }
+
+//    for (int i = 0; i < sviewNum; ++i) {
+//        createItemWidget(m_vlistData.at(i), 0);
 //    }
 
-    for (int i = 0; i < sviewNum; ++i) {
-        createItemWidget(m_vlistData.at(i), 0);
-    }
-
-    if (m_gradientItemList->count() == 0) {
-        QListWidgetItem *listItem = new QListWidgetItem;
-        DLabel *gwi = new DLabel();
-        QFont font("SourceHanSansSC-Normal");
-        font.setPixelSize(12);
-        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-        DPalette daypa = gwi->palette();
-        daypa.setColor(DPalette::WindowText, m_bttextcolor);
-        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
-        gwi->setPalette(daypa);
-        gwi->setForegroundRole(DPalette::WindowText);
-        gwi->setBackgroundRole(DPalette::Window);
-        gwi->setFont(font);
-        gwi->setText(tr("No event"));
-        gwi->setFixedSize(m_gradientItemList->width(), 48);
-        listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
-        //listItem->setBackgroundColor(Qt::white);
-        listItem->setFlags(Qt::ItemIsTristate );
-        m_gradientItemList->addItem(listItem);
-        m_gradientItemList->setItemWidget(listItem, gwi);
-        m_labellist.append(gwi);
-    }
+//    if (m_gradientItemList->count() == 0) {
+//        QListWidgetItem *listItem = new QListWidgetItem;
+//        DLabel *gwi = new DLabel();
+//        QFont font("SourceHanSansSC-Normal");
+//        font.setPixelSize(12);
+//        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+//        DPalette daypa = gwi->palette();
+//        daypa.setColor(DPalette::WindowText, m_bttextcolor);
+//        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
+//        gwi->setPalette(daypa);
+//        gwi->setForegroundRole(DPalette::WindowText);
+//        gwi->setBackgroundRole(DPalette::Window);
+//        gwi->setFont(font);
+//        gwi->setText(tr("No event"));
+//        gwi->setFixedSize(m_gradientItemList->width(), 48);
+//        listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
+//        //listItem->setBackgroundColor(Qt::white);
+//        listItem->setFlags(Qt::ItemIsTristate );
+//        m_gradientItemList->addItem(listItem);
+//        m_gradientItemList->setItemWidget(listItem, gwi);
+//        m_labellist.append(gwi);
+//    }
 }
 
 void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
@@ -916,6 +917,7 @@ CYearSchceduleOutView::CYearSchceduleOutView(QWidget *parent)
 {
     yearschceduleview = new CYearSchceduleView ();
     this->setContent(yearschceduleview);
+    qDebug() << this->width();
 }
 
 void CYearSchceduleOutView::setSoloDay(QString soloday)
@@ -935,7 +937,8 @@ void CYearSchceduleOutView::clearData()
 
 void CYearSchceduleOutView::showWindow()
 {
-    yearschceduleview->showWindow();
+    int w = yearschceduleview->showWindow();
+    this->setFixedSize(w, yearschceduleview->height());
 }
 
 void CYearSchceduleOutView::setTheMe(int type)
