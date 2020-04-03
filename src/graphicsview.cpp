@@ -83,6 +83,10 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     m_timer->start(60000);
 
     connect(this->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChangedSlot()));
+    connect(this->verticalScrollBar(),
+            &QScrollBar::sliderPressed,
+            this,
+            &CGraphicsView::slotScrollBar);
 }
 
 CGraphicsView::~CGraphicsView()
@@ -643,6 +647,11 @@ void CGraphicsView::slotSelectUpdateState(CScheduleItem *item, int state)
     }
 }
 
+void CGraphicsView::slotScrollBar()
+{
+    emit signalScheduleShow(false);
+}
+
 void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
 {
     if (m_press) {
@@ -871,6 +880,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
 
 void CGraphicsView::scrollBarValueChangedSlot()
 {
+    emit signalScheduleShow(false);
     QMutexLocker locker(&m_Mutex);
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();

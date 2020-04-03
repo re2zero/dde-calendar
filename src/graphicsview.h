@@ -248,6 +248,7 @@ public slots:
     void slotDeleteItem();
     void slotHoverUpdateState(CScheduleItem *item, int state);
     void slotSelectUpdateState(CScheduleItem *item, int state);
+    void slotScrollBar();
 signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void signalsUpdateShcedule(int id = 0);

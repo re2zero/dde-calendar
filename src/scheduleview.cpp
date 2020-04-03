@@ -22,6 +22,7 @@
 #include <QShortcut>
 #include <DHorizontalLine>
 #include <QVBoxLayout>
+#include <QApplication>
 #include "alldayeventview.h"
 #include "graphicsview.h"
 #include "schceduledlg.h"
@@ -393,7 +394,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
                 //                QString str = QTime::currentTime().toString("AP HH:mm");
-                QString str = QTime::currentTime().toString("AP HH:mm");
+                QString str = QTime::currentTime().toString("AP hh:mm");
                 painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5,
                                        m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth,
                                        hourTextHeight),
@@ -472,7 +473,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
                 //                QString str = QTime::currentTime().toString("AP HH:mm");
-                QString str = QTime::currentTime().toString(/*"AP */"HH:mm");
+                QString str = QTime::currentTime().toString(/*"AP */"hh:mm");
                 if (m_topMagin - 8 + m_vPos[m_vPos.count() - 1] >= m_topMagin)
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5,
                                            m_topMagin - 8 + m_vPos[m_vPos.count() - 1],
@@ -656,9 +657,15 @@ void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo 
         QPoint pos22 = QCursor::pos();
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
                                       out.type.ID);
+        QDesktopWidget *w = QApplication::desktop();
         m_ScheduleRemindWidget->setData(out, gdcolor);
-        m_ScheduleRemindWidget->show(pos22.x() + 15, pos22.y());
-
+        if ((pos22.x() + m_ScheduleRemindWidget->width() + 15) > w->width()) {
+            m_ScheduleRemindWidget->setArrowDirection(DArrowRectangle::ArrowRight);
+            m_ScheduleRemindWidget->show(pos22.x() - 15, pos22.y());
+        } else {
+            m_ScheduleRemindWidget->setArrowDirection(DArrowRectangle::ArrowLeft);
+            m_ScheduleRemindWidget->show(pos22.x() + 15, pos22.y());
+        }
     } else {
         m_ScheduleRemindWidget->hide();
     }

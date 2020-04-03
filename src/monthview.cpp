@@ -36,6 +36,7 @@
 #include <DPalette>
 #include <QShortcut>
 #include <DHiDPIHelper>
+#include <QApplication>
 
 DGUI_USE_NAMESPACE
 void CMonthView::setTheMe(int type)
@@ -309,6 +310,14 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDtail
                                       out.type.ID);
         m_RemindWidget->setData(out, gdcolor);
         m_RemindWidget->show(pos22.x() + 10, pos22.y());
+        QDesktopWidget *w = QApplication::desktop();
+        if ((pos22.x() + m_RemindWidget->width() + 10) > w->width()) {
+            m_RemindWidget->setArrowDirection(DArrowRectangle::ArrowRight);
+            m_RemindWidget->show(pos22.x() - 10, pos22.y());
+        } else {
+            m_RemindWidget->setArrowDirection(DArrowRectangle::ArrowLeft);
+            m_RemindWidget->show(pos22.x() + 10, pos22.y());
+        }
 
     } else {
         m_RemindWidget->hide();
