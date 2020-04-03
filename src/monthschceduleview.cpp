@@ -721,8 +721,8 @@ void CMonthSchceduleView::updateData()
                     break;
                 }
             }
-            if (k == vMDaySchedule.count())
-                vMDaySchedule.append(info);
+//            if (k == vMDaySchedule.count())
+            vMDaySchedule.append(info);
         }
     }
 
