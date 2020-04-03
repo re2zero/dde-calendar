@@ -267,7 +267,6 @@ void CYearView::setCurrentDate(const QDate date, int type)
     }
     if (type == 1)
         setSelectedCell(getDateIndex(date));
-    emit signalcurrentDateChanged(date);
 }
 
 void CYearView::setCellSelectable(bool selectable)
@@ -648,28 +647,17 @@ void CYearView::cellClicked(QWidget *cell)
         return;
 
     setSelectedCell(pos);
-
-//    // my gift eggs
-//    static int gift = 0;
-//    if (m_days[pos] == QDate(1993, 7, 28))
-//        if (++gift == 10)
-//            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
+    emit signalcurrentDateChanged(m_days[pos]);
 }
 
 void CYearView::setSelectedCell(int index)
 {
     if (m_selectedCell == index)
         return;
-
-    const int prevPos = m_selectedCell;
     m_selectedCell = index;
-
     updateDate();
-    //m_cellList.at(prevPos)->update();
-    //m_cellList.at(index)->update();
     if (m_days[index].year() < 1900) return;
     emit singanleActiveW(this);
-    emit signalcurrentDateChanged(m_days[index]);
 }
 
 void CYearView::resizeEvent(QResizeEvent *event)
