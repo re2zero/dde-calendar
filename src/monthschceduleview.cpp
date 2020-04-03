@@ -721,21 +721,21 @@ void CMonthSchceduleView::updateData()
                     break;
                 }
             }
-            if (k == vMDaySchedule.count())
-                vMDaySchedule.append(info);
+//            if (k == vMDaySchedule.count())
+            vMDaySchedule.append(info);
         }
     }
 
     qSort(vMDaySchedule.begin(), vMDaySchedule.end(), MScheduleDaysThan);
     qSort(vMDaySchedule.begin(), vMDaySchedule.end(), MScheduleDateThan);
 
-    for(int i = 0; i < vMDaySchedule.count(); i++){
+    for (int i = 0; i < vMDaySchedule.count(); i++) {
         QVector<MScheduleDateRangeInfo>::iterator iter = vMDaySchedule.begin();
-        if(vMDaySchedule.at(i).tData.type.ID == 4){
+        if (vMDaySchedule.at(i).tData.type.ID == 4) {
             MScheduleDateRangeInfo moveDate;
             moveDate = vMDaySchedule.at(i);
             vMDaySchedule.removeAt(i);
-            vMDaySchedule.insert(iter,moveDate);
+            vMDaySchedule.insert(iter, moveDate);
         }
     }
 
