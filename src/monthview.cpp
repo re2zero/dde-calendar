@@ -709,7 +709,7 @@ void CMonthView::getDbusData()
     if (!lunarCache->contains(date)) {
         bool o1 = true;
         QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(date.year(), date.month(), false, o1);
-        QDBusReply<CaLunarDayInfo> replydd = m_DBusInter->GetLunarInfoBySolar(date.year(), date.month(), date.day(), o1);
+//        QDBusReply<CaLunarDayInfo> replydd = m_DBusInter->GetLunarInfoBySolar(date.year(), date.month(), date.day(), o1);
 
         QDate cacheDate;
         cacheDate.setDate(date.year(), date.month(), 1);

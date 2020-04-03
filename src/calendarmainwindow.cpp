@@ -260,7 +260,7 @@ void Calendarmainwindow::updateHigh()
     }
     switch (index) {
     case 0: {
-        m_yearwindow->updateHigh();
+//        m_yearwindow->updateHigh();
     }
     break;
     case 1: {
@@ -358,7 +358,7 @@ void Calendarmainwindow::OpenSchedule(QString job)
         m_stackWidget->setCurrentIndex(3);
         m_DayWindow->setDate(out.beginDateTime.date());
         m_DayWindow->slotupdateSchedule(0);
-        CMySchceduleView dlg(out,this);
+        CMySchceduleView dlg(out, this);
 //        dlg.setSchedules(out);
         dlg.exec();
         m_DayWindow->slotupdateSchedule(0);
@@ -723,7 +723,6 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     }
     break;
     }
-    m_yearwindow->slotHideInfo();
     CConfigSettings::setOption("base.view", index + 1);
 }
 

@@ -290,7 +290,7 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     // to refresh lunar calendar
     //updateDate();
     emit signalcurrentDateChanged(date);
-    updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
+    updateCurrentLunar();
 }
 
 void CDayMonthView::setCellSelectable(bool selectable)
@@ -758,9 +758,9 @@ void CDayMonthView::setSelectedCell(int index)
     m_cellList.at(index)->update();
     if (m_currentDate.year() < 1900) return;
     emit signalcurrentDateChanged(m_days[index]);
-    emit dateSelected(m_days[index], getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
+//    emit dateSelected(m_days[index], getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
 }
-void CDayMonthView::updateCurrentLunar(const CaHuangLiDayInfo &info)
+void CDayMonthView::updateCurrentLunar()
 {
     updateDate();
     updateDateShow();
@@ -845,7 +845,7 @@ void CDayMonthView::getDbusData()
 
     // refresh   lunar info
     if (date == m_currentDate) {
-        updateCurrentLunar(currentDayInfo);
+        updateCurrentLunar();
     }
 }
 
@@ -890,7 +890,7 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
             m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
         }
         emit signalcurrentDateChanged(m_currentDate);
-        updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
+        updateCurrentLunar();
     } else {
         QDate t_curret = m_currentDate.addDays(-1);
         if (t_curret.year() < 1900) return;
@@ -903,7 +903,7 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
                 m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
             }
             emit signalcurrentDateChanged(m_currentDate);
-            updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
+            updateCurrentLunar();
         } else {
             //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
         }
@@ -967,7 +967,7 @@ void CDayMonthView::slotprev()
             m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
         }
         emit signalcurrentDateChanged(m_currentDate);
-        updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
+        updateCurrentLunar();
     } else {
         //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
@@ -983,7 +983,7 @@ void CDayMonthView::slotnext()
         m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
     }
     emit signalcurrentDateChanged(m_currentDate);
-    updateCurrentLunar(getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
+    updateCurrentLunar();
 }
 
 void CDayMonthView::slottoday()

@@ -45,11 +45,9 @@ class CSchceduleDlg : public DDialog
 {
     Q_OBJECT
 public:
-    CSchceduleDlg(int type, QWidget *parent = nullptr);
-    void setData(const ScheduleInfo &info);
+    CSchceduleDlg(int type, QWidget *parent = nullptr, const bool isAllDay = true);
     void setData(const ScheduleDtailInfo &info);
     void setDate(const QDateTime &date);
-    ScheduleInfo getData();
     ScheduleDtailInfo getScheduleData();
     void setAllDay(bool flag);
 public slots:
@@ -107,9 +105,10 @@ private:
     QLabel *m_titleLabel;
 
     QString m_context;
+    const bool                        m_createAllDay;
 
 private:
-    ScheduleInfo m_scheduleInfo;  //日程
+//日程
     ScheduleDtailInfo m_scheduleDtailInfo;
     int m_type;  // 1新建 0 编辑日程
     QDateTime m_currentDate;

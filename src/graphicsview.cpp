@@ -332,7 +332,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             QAction *action_t = menu.exec(QCursor::pos());
             if (action_t == m_editAction) {
                 emit signalViewtransparentFrame(1);
-                CSchceduleDlg dlg(0, this);
+                CSchceduleDlg dlg(0, this, false);
                 dlg.setData(item->getData());
                 if (dlg.exec() == DDialog::Accepted) {
                     emit signalsUpdateShcedule(0);

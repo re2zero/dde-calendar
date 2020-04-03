@@ -344,20 +344,8 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
 
 void CDayWindow::slotcurrentDateChanged(QDate date)
 {
-    m_currentdate = date;
-    QLocale locale;
-    if (locale.language() == QLocale::Chinese) {
-        m_YearLabel->setText(QString::number(date.year()) + tr("Y") +
-                             QString::number(date.month()) + tr("M") + QString::number(date.day()) +
-                             tr("D"));
-    } else {
-        m_YearLabel->setText(locale.toString(date, "yyyy/M/d"));
-    }
-    // m_YearLabel->setText(QString::number(date.year()) + tr("Y") + QString::number(date.month()) +
-    // tr("M") + QString::number(date.day()) + tr("D"));
-    m_scheduleView->setRange(m_currentdate, m_currentdate);
-    m_scheduleView->setDate(m_currentdate);
-    emit signalCurrentDate(date);
+    setDate(date);
+    slotupdateSchedule();
 }
 
 void CDayWindow::slotsearchDateSelect(QDate date)

@@ -8,12 +8,18 @@
 class AnimationStackedWidget : public QStackedWidget
 {
     Q_OBJECT
-    enum MoveOrientation {LeftToRight, RightToLeft};
+    enum MoveOrientation {LeftToRight, RightToLeft, TopToBottom, BottomToTop};
 public:
-    explicit AnimationStackedWidget(QWidget *parent = nullptr);
+    enum AnimationOri {LR, TB}; //LR:Left Right  ,TB:Top  Bottom
+public:
+    explicit AnimationStackedWidget(const AnimationOri ori = LR, QWidget *parent = nullptr);
     ~AnimationStackedWidget() Q_DECL_OVERRIDE;
     //设置动画持续的间隔
     void setDuration(int duration = 500);
+    bool IsRunning()const
+    {
+        return isAnimation;
+    }
 protected:
     void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
 signals:
@@ -25,10 +31,13 @@ public slots:
     void animationFinished();
     //设置当前页
     void setCurrent(int index);
+    void setPre();
+    void setNext();
 private:
     void paintPrevious(QPainter &, int);
     void paintNext(QPainter &, int);
 private:
+    AnimationOri     m_animationOri;
     QPropertyAnimation *animation;
     int duration;
     bool isAnimation = false;
@@ -36,6 +45,7 @@ private:
     int         widgetCount;
     int         nextIndex;
     MoveOrientation  m_moveOri = MoveOrientation::LeftToRight;
+
 };
 
 #endif // AnimationStackedWidget_H

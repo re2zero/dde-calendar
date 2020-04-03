@@ -31,11 +31,13 @@
 #include <QHBoxLayout>
 #include <DLabel>
 #include "customframe.h"
+#include "animationstackedwidget.h"
 DWIDGET_USE_NAMESPACE
 
 class CYearView;
 class CaLunarDayInfo;
 class CSchceduleSearchView;
+class YearFrame;
 class CYearWindow: public QMainWindow
 {
     Q_OBJECT
@@ -50,7 +52,6 @@ public:
     void setSearchWFlag(bool flag);
     void clearSearch();
     void setSearchText(QString str);
-    void updateHigh();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsReturnTodayUpdate(QMainWindow *w);
@@ -58,36 +59,26 @@ signals:
     void signaldoubleclickDate(QDate date);
     void signalselectMonth(QDate date);
     void signalCurrentDate(QDate date);
-public slots:
-    void slotReturnTodayUpdate();
-    void slotHideInfo();
-    void slotSelectInfo(bool flag);
-    void slotupdateSchedule(const int id);
-    void slotSetSchceduleHide();
+
 private slots:
-    void slotActiveW(CYearView *w);
     void slotprev();
     void slotnext();
     void slottoday();
-    void slotcurrentDateChanged(QDate date);
-    void getDbusData();
-private slots:
     void slotsearchDateSelect(QDate date);
     void slotTransitSearchSchedule(int id = 0);
-
+public slots:
+    void slotSetSchceduleHide();
+    void slotReturnTodayUpdate();
+    void slotupdateSchedule(const int id);
+    void setYearData();
+    void slotUpdateCurrentDate(const QDate &date);
 protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private:
-    const QString getLunar(QDate date);
-    const CaLunarDayInfo getCaLunarDayInfo(QDate date);
-    DWidget *creatAnimationWidget(QDate date);
-    DWidget *creatAnimationListView(QDate date);
-    void startAnimation(DWidget *first, DWidget *second, bool next);
-private:
-    QList<CYearView *> m_monthViewList;
+
     DFrame *m_contentBackground = nullptr;
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
@@ -96,23 +87,63 @@ private:
     QLabel            *m_YearLabel;
     QLabel            *m_YearLunarLabel;
     QLabel            *m_YearLunarDayLabel;
-    CYearView         *m_activeview = nullptr;
-    DFrame            *m_gridWidget;
-    DWidget            *m_gridWidgethidebak;
+    YearFrame            *m_YearWidget;
+    YearFrame               *YearWidget_First;
+    YearFrame               *YearWidget_Second;
     CustomFrame            *m_todayframe;
-    CalendarDBus *m_DBusInter;
-    QQueue<QDate> *queue;
-    QMap<QDate, CaLunarDayInfo> *lunarCache;
-    CaLunarDayInfo *emptyCaLunarDayInfo;
+    AnimationStackedWidget *m_StackedWidget;
     //CSchceduleSearchView *m_schceduleSearchView;
     QHBoxLayout *m_tmainLayout;
     QString           m_searchText;
-    bool m_searchfalg = false;
-    bool                     m_selectFlag = false;
-    DWidget *m_animationbody = nullptr;
-    DWidget *m_body = nullptr;
-    int m_theMeType = 0;
-    bool banimationrunning = false;
+    bool    m_searchfalg = false;
+    DWidget                  *m_topWidget;
+};
+
+class YearFrame : public DFrame
+{
+    Q_OBJECT
+public:
+    explicit YearFrame(DWidget *parent = nullptr);
+    ~YearFrame() Q_DECL_OVERRIDE;
+    void setDate(QDate &date);
+    void setTheMe(int type = 0);
+    void setSearchWFlag(bool flag);
+    QString getLunarYear()const
+    {
+        return m_LunarYear;
+    }
+    QString getLunarDay()const
+    {
+        return m_LunarDay;
+    }
+    void getLunarData();
+protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+private:
+    void slotActiveW(CYearView *w);
+    void getDbusData();
+signals:
+    void signaldoubleclickDate(QDate date);
+    void signalselectMonth(QDate date);
+    void signalUpdateYearDate(const QDate &date);
+public slots:
+    void slotHideInfo();
+    void slotSelectInfo(bool flag);
+    void slotupdateSchedule(const int id);
+    void slotSetSchceduleHide();
+    void slotcurrentDateChanged(QDate date);
+private:
+    QList<CYearView *> m_monthViewList;
+    QLabel            *m_YearLabel;
+    QLabel            *m_YearLunarLabel;
+    CYearView         *m_activeview = nullptr;
+    CalendarDBus *m_DBusInter;
+    QDate              m_currentdate;
+    bool                        m_searchfalg = false;
+    bool                        m_selectFlag = false;
+    QString                 m_LunarYear;
+    QString                 m_LunarDay;
+    DWidget                  *m_topWidget;
 };
 
 #endif // YEARWINDOW_H
