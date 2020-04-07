@@ -847,6 +847,12 @@ void CMonthView::paintCell(QWidget *cell)
         } else {
             painter.setBrush(QBrush(m_fillColor));
         }
+
+        if (m_currentDate.month() == m_days[pos].month()) {
+
+        } else {
+            painter.setOpacity(0.4);
+        }
         painter.setPen(Qt::NoPen);
         painter.drawRect(rect);//画矩形
         if (getShowSolarDayByDate(m_days[pos])) {
