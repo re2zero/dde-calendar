@@ -415,7 +415,9 @@ void CMonthView::setCurrentDate(const QDate date)
     bool flag = false;
     if (date.month() != m_currentDate.month()) {
         m_festivallist.clear();
+        m_DBusInter->GetFestivalMonth(date.year(), date.addMonths(-1).month(), m_festivallist);
         m_DBusInter->GetFestivalMonth(date.year(), date.month(), m_festivallist);
+        m_DBusInter->GetFestivalMonth(date.year(), date.addMonths(1).month(), m_festivallist);
         flag = true;
     }
     m_currentDate = date;
@@ -633,14 +635,14 @@ void CMonthView::updateCurrentLunar(const CaLunarDayInfo &info)
 char CMonthView::getFestivalInfoByDate(const QDate &date)
 {
     for (int i = 0; i < m_festivallist.count(); i++) {
-        if (date.year() == m_festivallist[i].year && date.month() == m_festivallist[i].month) {
-            for (int j = 0; j < m_festivallist[i].listHoliday.count(); j++) {
+//        if (date.year() == m_festivallist[i].year && date.month() == m_festivallist[i].month) {
+        for (int j = 0; j < m_festivallist[i].listHoliday.count(); j++) {
 
-                if (m_festivallist[i].listHoliday[j].date == date) {
-                    return m_festivallist[i].listHoliday[j].status;
-                }
+            if (m_festivallist[i].listHoliday[j].date == date) {
+                return m_festivallist[i].listHoliday[j].status;
             }
         }
+//        }
     }
     return 0;
 }
