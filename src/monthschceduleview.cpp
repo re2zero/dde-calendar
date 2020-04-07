@@ -717,12 +717,14 @@ void CMonthSchceduleView::updateData()
             info.state = false;
             int k = 0;
             for (; k < vMDaySchedule.count(); k++) {
-                if (vData.at(j).id == vMDaySchedule.at(k).tData.id && vData.at(j).RecurID == vMDaySchedule.at(k).tData.RecurID) {
+                if (vData.at(j).id == vMDaySchedule.at(k).tData.id &&
+                        vData.at(j).RecurID == vMDaySchedule.at(k).tData.RecurID &&
+                        vData.at(j).type.ID != 4) {
                     break;
                 }
             }
-//            if (k == vMDaySchedule.count())
-            vMDaySchedule.append(info);
+            if (k == vMDaySchedule.count())
+                vMDaySchedule.append(info);
         }
     }
 
