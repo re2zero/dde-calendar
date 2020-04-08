@@ -569,6 +569,8 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
             if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
                 return true;
             }
+            if (keyEvent->key() == Qt::Key_Tab)
+                return true;
             /*QString textContent = m_textEdit->toPlainText();
             int length = textContent.count();
             int maxLength = 255; // 最大字符数
