@@ -66,7 +66,7 @@ void CDayWindow::setTheMe(int type)
         // bcolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, bcolor);
         m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);
+            m_contentBackground->setBackgroundRole(DPalette::Background);
         // DPalette leftpa = m_leftground->palette();
         // leftpa.setColor(DPalette::Background, "#282828");
         // m_leftground->setPalette(leftpa);

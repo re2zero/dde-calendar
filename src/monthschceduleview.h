@@ -86,7 +86,7 @@ class CMonthSchceduleNumButton : public DPushButton
 
 public:
     CMonthSchceduleNumButton(QWidget *parent = nullptr);
-    ~CMonthSchceduleNumButton();
+    ~CMonthSchceduleNumButton() Q_DECL_OVERRIDE;
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos);
     void setSizeType(DFontSizeManager::SizeType sizeType);

@@ -71,6 +71,33 @@ typedef struct _tagScheduleDtailInfo {
     ScheduleRemindData remindData;
     int               rpeat; //0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
     ScheduleEndRepeatData enddata;
+    bool operator ==(const _tagScheduleDtailInfo &info)const{
+        return this->id == info.id &&this->RecurID == info.RecurID &&
+                titleName == info.titleName;
+    }
+    bool operator <(const _tagScheduleDtailInfo &info)const{
+        if (beginDateTime.date() != endDateTime.date() &&
+                info.beginDateTime.date() == info.endDateTime.date()) {
+            return true;
+        } else if (beginDateTime.date() == endDateTime.date() &&
+                   info.beginDateTime.date() != info.endDateTime.date()) {
+            return false;
+        } else if (beginDateTime.date() != endDateTime.date() &&
+                   info.beginDateTime.date() != info.endDateTime.date()) {
+            if (beginDateTime.date() == info.beginDateTime.date()) {
+                return beginDateTime.daysTo(endDateTime) > info.beginDateTime.daysTo(info.endDateTime);
+            }
+            return beginDateTime.date() < info.beginDateTime.date();
+        } else {
+            if (type.ID == 4) return true;
+            if (info.type.ID == 4) return false;
+            if (beginDateTime == info.beginDateTime) {
+                return titleName < info.titleName;
+            } else {
+                return beginDateTime < info.beginDateTime;
+            }
+        }
+    }
 } ScheduleDtailInfo;
 typedef struct _tagScheduleDateRangeInfo {
     QDate date;
