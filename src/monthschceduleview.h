@@ -40,12 +40,16 @@ class CMonthSchceduleView : public QObject
 public:
     CMonthSchceduleView(QWidget *parent);
     ~CMonthSchceduleView();
-    void setallsize(int w, int h, int left, int top, int buttom);
+    void setallsize(int w, int h, int left, int top, int buttom, int itemHeight = 22);
     void setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth);
     void setTheMe(int type = 0);
     void updateData();
     void updateHigh();
     QVector<DPushButton *> getScheduleShowItem() const;
+    int getSchceduleHeight() const
+    {
+        return he;
+    }
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
@@ -57,6 +61,7 @@ public slots:
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
     void slotupdateItem(CMonthSchceduleWidgetItem *item);
     void slotDeleteItem();
+    void slotUpdatehe(int h);
 private:
 
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule);
@@ -78,6 +83,7 @@ private:
     int                                          m_topMagin;
     int                                          m_buttommagin;
     CMonthSchceduleWidgetItem                   *m_currentitem = nullptr;
+    int he = 22;
 };
 
 class CMonthSchceduleNumButton : public DPushButton
@@ -150,6 +156,7 @@ signals:
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
     void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
+    void signalupdatehe(int he);
 public slots:
     void slotEdit();
     void slotDelete();
@@ -188,6 +195,7 @@ private:
     QSequentialAnimationGroup *m_Group = nullptr;
     QRect              m_rect;
     DFontSizeManager::SizeType m_SizeType = DFontSizeManager::T8;
+    int he = 0;
 
 };
 

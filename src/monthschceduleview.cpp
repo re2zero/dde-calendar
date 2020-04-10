@@ -332,6 +332,10 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.setFont(m_font);
         painter.setPen(textcolor);
         QFontMetrics fm = painter.fontMetrics();
+        if (he != fm.height()) {
+            he = fm.height();
+            emit signalupdatehe(fm.height());
+        }
 
         QString tStitlename = m_ScheduleInfo.titleName;
         tStitlename.replace("\n", "");
@@ -614,14 +618,15 @@ CMonthSchceduleView::~CMonthSchceduleView()
 
 }
 
-void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom)
+void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom, int itemHeight)
 {
     m_width = w;
     m_height = h;
     m_buttommagin = buttom;
     m_leftMagin = left;
     m_topMagin = top;
-    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 25;
+    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (itemHeight + 1);
+//    qDebug()<< he;
 }
 
 void CMonthSchceduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
@@ -660,6 +665,19 @@ void CMonthSchceduleView::slotDeleteItem()
         CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(m_currentitem);
         if (titem != nullptr) {
             titem->slotDelete();
+        }
+    }
+}
+
+void CMonthSchceduleView::slotUpdatehe(int h)
+{
+    if (he != h) {
+        if (h < 22 ) {
+            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
+        } else {
+            he = h;
+            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (he + 1);
+            updateData();
         }
     }
 }
@@ -1113,6 +1131,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     connect(gwi, &CMonthSchceduleWidgetItem::signalViewtransparentFrame, this, &CMonthSchceduleView::signalViewtransparentFrame);
     connect(gwi, &CMonthSchceduleWidgetItem::signalUpdateUI, this, &CMonthSchceduleView::signalUpdateUI);
     connect(gwi, &CMonthSchceduleWidgetItem::signalPressScheduleShow, this, &CMonthSchceduleView::signalPressScheduleShow);
+    connect(gwi,&CMonthSchceduleWidgetItem::signalupdatehe,this,&CMonthSchceduleView::slotUpdatehe);
 
     m_scheduleShowItem.append(gwi);
 }
