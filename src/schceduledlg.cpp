@@ -106,11 +106,19 @@ void CSchceduleDlg::setDate(const QDateTime &date)
         m_currentDate.setTime(QTime(hours, minnutes));
     }
 
-    m_beginDateEdit->setDate(m_currentDate.date());
-    m_beginTimeEdit->setTime(m_currentDate.time());
-    QDateTime datetime = m_currentDate.addSecs(3600);
-    m_endDateEdit->setDate(datetime.date());
-    m_endTimeEdit->setTime(datetime.time());
+    if (m_scheduleDtailInfo.allday) {
+        m_beginDateEdit->setDate(m_currentDate.date());
+        m_beginTimeEdit->setTime(QTime(0, 0));
+        QDateTime datetime = m_currentDate.addSecs(3600);
+        m_endDateEdit->setDate(datetime.date());
+        m_endTimeEdit->setTime(QTime(23, 59));
+    } else {
+        m_beginDateEdit->setDate(m_currentDate.date());
+        m_beginTimeEdit->setTime(m_currentDate.time());
+        QDateTime datetime = m_currentDate.addSecs(3600);
+        m_endDateEdit->setDate(datetime.date());
+        m_endTimeEdit->setTime(datetime.time());
+    }
     m_endRepeatDate->setMinimumDate(date.date());
 }
 
