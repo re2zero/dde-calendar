@@ -190,6 +190,8 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
     if (type - 1 != 0) {
         m_priindex = type - 1;
     }
+//    if (datetime.date().year() <=1900)
+//        return;
     switch (type) {
     case 1: {
         m_yearButton->setFocus();
@@ -222,7 +224,7 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
     }
     break;
     }
-    m_priindex = 3;
+//    m_priindex = 3;
 }
 
 void Calendarmainwindow::UpdateJob()
@@ -701,6 +703,8 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     if (index != 0) {
         m_priindex = index;
     }
+    if (m_currentdate.year() <= 1900)
+        return;
     switch (index) {
     case 0: {
         m_yearwindow->setDate(m_currentdate);

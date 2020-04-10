@@ -18,6 +18,7 @@
  */
 #include "timeedit.h"
 #include <QRegExpValidator>
+#include <QDebug>
 #include "timeverticalscroll.h"
 CTimeEdit::CTimeEdit(QWidget *parent)
     : DComboBox(parent)

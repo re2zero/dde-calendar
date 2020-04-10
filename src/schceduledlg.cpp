@@ -40,11 +40,11 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
     setContentsMargins(0, 0, 0, 0);
     m_type = type;
     initUI();
-    if (m_type == 0 && isAllDay) {
-        m_allDayCheckbox->setChecked(true);
-        m_beginTimeEdit->setVisible(false);
-        m_endTimeEdit->setVisible(false);
-    }
+//    if (m_type == 0 && isAllDay) {
+//        m_allDayCheckbox->setChecked(true);
+//        m_beginTimeEdit->setVisible(false);
+//        m_endTimeEdit->setVisible(false);
+//    }
     initConnection();
     if (type == 1) {
         m_titleLabel->setText(tr("New Event"));
@@ -76,11 +76,11 @@ void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
     m_endTimeEdit->setTime(info.endDateTime.time());
     m_allDayCheckbox->setChecked(info.allday);
     m_endRepeatDate->setMinimumDate(info.beginDateTime.date());
-    if (m_type == 0 && m_createAllDay) {
+//    if (m_type == 0 && m_createAllDay) {
 
-    } else {
-        slotallDayStateChanged(info.allday);
-    }
+//    } else {
+    slotallDayStateChanged(info.allday);
+//    }
 
     initRmindRpeatUI();
     // m_textEdit->setTextCursor()
@@ -569,6 +569,8 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
             if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
                 return true;
             }
+            if (keyEvent->key() == Qt::Key_Tab)
+                return true;
             /*QString textContent = m_textEdit->toPlainText();
             int length = textContent.count();
             int maxLength = 255; // 最大字符数
