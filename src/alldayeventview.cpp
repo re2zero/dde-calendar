@@ -116,7 +116,7 @@ void CAllDayEventWidgetItem::setOffset(const int &offset)
 
 bool CAllDayEventWidgetItem::hasSelectSchedule(const ScheduleDtailInfo &info)
 {
-    return (info.id == m_vScheduleInfo.id) && (info.RecurID == m_vScheduleInfo.RecurID);
+    return info == m_vScheduleInfo;
 }
 
 void CAllDayEventWidgetItem::setStartValue(const int value)

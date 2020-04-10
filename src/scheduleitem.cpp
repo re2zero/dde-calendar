@@ -85,7 +85,7 @@ void CScheduleItem::setData(const ScheduleDtailInfo &info, QDate date, int index
 
 bool CScheduleItem::hasSelectSchedule(const ScheduleDtailInfo &info)
 {
-    return (info.id == m_scheduleInfo.id) && (info.RecurID == m_scheduleInfo.RecurID);
+    return info == m_scheduleInfo;
 }
 
 QRectF CScheduleItem::boundingRect() const

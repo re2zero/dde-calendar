@@ -268,7 +268,7 @@ void CMonthView::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
                 scheduleInfo.beginDateTime == titem->getData().beginDateTime &&
                 scheduleInfo.endDateTime == titem->getData().endDateTime ? true : false;
         } else {
-            if (titem->getData().id == scheduleInfo.id) {
+            if (titem->getData() == scheduleInfo) {
                 isAnimation = true;
             }
         }
