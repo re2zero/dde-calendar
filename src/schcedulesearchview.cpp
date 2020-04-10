@@ -284,7 +284,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     QFontMetrics fm1(m_timefont);
     int durationSize = 0;
     durationSize = fm1.horizontalAdvance(datestr);
-    int flag = Qt::AlignLeft | Qt::AlignCenter;
+    int flag = Qt::AlignLeft | Qt::AlignVCenter;
     if (m_ScheduleInfo.allday) {
         datestr = tr("All Day");
     }
