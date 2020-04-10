@@ -749,11 +749,12 @@ void CMonthView::paintCell(QWidget *cell)
 
     const int pos = m_cellList.indexOf(cell);
     const int type = getDateType(m_days[pos]);
-    const bool isSelectedCell = pos == m_selectedCell;
+
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
 
     QPainter painter(cell);
 
+    int ftype = getFestivalInfoByDate(m_days[pos]);
     painter.save();
     if (m_showState & ShowLunar) {
 #if 0
@@ -838,8 +839,7 @@ void CMonthView::paintCell(QWidget *cell)
 
         }
 #endif
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        int ftype = getFestivalInfoByDate(m_days[pos]);
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);        
         if (ftype == 2) {
             painter.setBrush(QBrush(m_banColor));
         } else if (ftype == 1) {
@@ -854,24 +854,7 @@ void CMonthView::paintCell(QWidget *cell)
             painter.setOpacity(0.4);
         }
         painter.setPen(Qt::NoPen);
-        painter.drawRect(rect);//画矩形
-        if (getShowSolarDayByDate(m_days[pos])) {
-            painter.save();
-            QRect fillRect(8, cell->height() - 15, 12, 12);
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setRenderHint(QPainter::HighQualityAntialiasing);
-            painter.setRenderHint(QPainter::SmoothPixmapTransform);
-            if (ftype == 2) {
-                QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
-                pixmap.setDevicePixelRatio(devicePixelRatioF());
-                painter.drawPixmap(fillRect, pixmap);
-            } else if (ftype == 1) {
-                QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
-                pixmap.setDevicePixelRatio(devicePixelRatioF());
-                painter.drawPixmap(fillRect, pixmap);
-            }
-            painter.restore();
-        }
+        painter.drawRect(rect);//画矩形        
     } else {
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_fillColor));
@@ -1195,6 +1178,23 @@ void CMonthView::paintCell(QWidget *cell)
                 painter.setPen(m_defaultLunarColor);
         }
         painter.setFont(m_dayLunarFont);
+        painter.save();
+        QFontMetrics metrics(m_dayLunarFont);
+        int Lunarwidth = metrics.width(dayLunar);
+        QRect fillRect(cell->width()-12-3-(58 +Lunarwidth)/2, 9, 12, 12);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        if (ftype == 2) {
+            QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.drawPixmap(fillRect, pixmap);
+        } else if (ftype == 1) {
+            QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
+            pixmap.setDevicePixelRatio(devicePixelRatioF());
+            painter.drawPixmap(fillRect, pixmap);
+        }
+        painter.restore();
         painter.drawText(QRect(cell->width() - 58, 6, 58, 18), Qt::AlignCenter, dayLunar);
     }
 
