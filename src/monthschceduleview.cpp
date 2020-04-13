@@ -332,6 +332,10 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.setFont(m_font);
         painter.setPen(textcolor);
         QFontMetrics fm = painter.fontMetrics();
+        if (he != fm.height()) {
+            he = fm.height();
+            emit signalupdatehe(fm.height());
+        }
 
         QString tStitlename = m_ScheduleInfo.titleName;
         tStitlename.replace("\n", "");
@@ -429,7 +433,7 @@ void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         emit signalPressScheduleShow(false);
         emit signalViewtransparentFrame(1);
-        CMySchceduleView dlg(m_ScheduleInfo, this);
+        CMySchceduleView dlg(m_ScheduleInfo, nullptr);
 //        dlg.setSchedules(m_ScheduleInfo);
         connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
         dlg.exec();
@@ -615,14 +619,15 @@ CMonthSchceduleView::~CMonthSchceduleView()
 
 }
 
-void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom)
+void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom, int itemHeight)
 {
     m_width = w;
     m_height = h;
     m_buttommagin = buttom;
     m_leftMagin = left;
     m_topMagin = top;
-    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
+
+    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (itemHeight + 1);
 }
 
 void CMonthSchceduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
@@ -646,7 +651,7 @@ void CMonthSchceduleView::slotupdateItem(CMonthSchceduleWidgetItem *item)
 {
     m_currentitem = item;
     return;
-    for (int i = 0; i < m_scheduleShowItem.count(); i++) {
+    for (int i = 0; i < m_scheduleShowItem.count(); ++i) {
         if (m_scheduleShowItem.at(i) == item) continue;
         CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(m_scheduleShowItem.at(i));
         if (titem != nullptr) {
@@ -661,6 +666,19 @@ void CMonthSchceduleView::slotDeleteItem()
         CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(m_currentitem);
         if (titem != nullptr) {
             titem->slotDelete();
+        }
+    }
+}
+
+void CMonthSchceduleView::slotUpdatehe(int h)
+{
+    if (he != h) {
+        if (h < 22 ) {
+            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
+        } else {
+            he = h;
+            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (he + 1);
+            updateData();
         }
     }
 }
@@ -708,14 +726,12 @@ void CMonthSchceduleView::updateData()
 
     for (int i = 0 ; i < 6; ++i) {
         m_weekSchedule->setData(m_data,i*7,7);
-        m_weekSchedule->setHeight(22,(m_height - m_topMagin - m_buttommagin) / 6.0-27);
+        m_weekSchedule->setHeight(he,(m_height - m_topMagin - m_buttommagin) / 6.0-27);
         m_weekSchedule->updateSchedule();
         QVector<QVector<MScheduleDateRangeInfo> > mSchedule = m_weekSchedule->getMScheduleInfo();
         updateDateShow(mSchedule);
     }
     return;
-
-
 
     //存储临时日程数据
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
@@ -1111,6 +1127,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     connect(gwi, &CMonthSchceduleWidgetItem::signalViewtransparentFrame, this, &CMonthSchceduleView::signalViewtransparentFrame);
     connect(gwi, &CMonthSchceduleWidgetItem::signalUpdateUI, this, &CMonthSchceduleView::signalUpdateUI);
     connect(gwi, &CMonthSchceduleWidgetItem::signalPressScheduleShow, this, &CMonthSchceduleView::signalPressScheduleShow);
+    connect(gwi,&CMonthSchceduleWidgetItem::signalupdatehe,this,&CMonthSchceduleView::slotUpdatehe);
 
     m_scheduleShowItem.append(gwi);
 }

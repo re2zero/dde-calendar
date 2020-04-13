@@ -288,7 +288,8 @@ void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo>
     if (w != this) return;
     if (m_sflag) {
         m_shceludelistdata = data;
-        m_MonthSchceduleView->setallsize(width(), height(), m_leftmaagin, m_weekIndicator->height() + m_topmagin, m_topmagin);
+        int h = m_MonthSchceduleView->getSchceduleHeight();
+        m_MonthSchceduleView->setallsize(width(), height(), m_leftmaagin, m_weekIndicator->height() + m_topmagin, m_topmagin, h);
         m_MonthSchceduleView->setData(data, m_currentDate.month());
         for (int i(0); i != 42; ++i) {
             m_cellList.at(i)->update();
@@ -345,7 +346,8 @@ void CMonthView::resizeEvent(QResizeEvent *event)
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
         m_cellList.at(i)->update();
     }
-    m_MonthSchceduleView->setallsize(width(), height(), leftmagin, m_weekIndicator->height() + topmagin, buttonmagin);
+    int h = m_MonthSchceduleView->getSchceduleHeight();
+    m_MonthSchceduleView->setallsize(width(), height(), leftmagin, m_weekIndicator->height() + topmagin, buttonmagin, h);
     // m_MonthSchceduleView->setallsize(width(), height(), leftmagin, height() - m_weekIndicator->height() - cellheight * 6, buttonmagin);
     m_MonthSchceduleView->updateData();
     DWidget::resizeEvent(event);

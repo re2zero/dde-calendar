@@ -49,7 +49,11 @@ CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget 
 
     AutoFeed(m_scheduleInfo.titleName);
     //m_schceduleLabel->setText(info.titleName);
-    m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString("yyyy-MM-dd hh:mm") + " ~ " + m_scheduleInfo.endDateTime.toString("yyyy-MM-dd hh:mm"));
+    if (m_scheduleInfo.type.ID == 4) {
+        m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString(("yyyy-MM-dd")));
+    } else {
+        m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString("yyyy-MM-dd hh:mm") + " ~ " + m_scheduleInfo.endDateTime.toString("yyyy-MM-dd hh:mm"));
+    }
 
     //setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 }
@@ -312,14 +316,14 @@ void CMySchceduleView::initUI()
     m_timeLabel->setFont(labelT);
     mainLayout->addWidget(m_timeLabel);
 
-    if(m_scheduleInfo.type.ID == 4){
+    if (m_scheduleInfo.type.ID == 4) {
         m_okBt = new DPushButton (tr("OK"));
         m_okBt->setFocusPolicy(Qt::NoFocus);
         m_okBt->setFixedSize(360,36);
         connect(m_okBt,&DPushButton::clicked,this,&CMySchceduleView::close);
         mainLayout->addSpacing(20);
         mainLayout->addWidget(m_okBt);
-    }else {
+    } else {
         DVerticalLine *btframe = new DVerticalLine(this);
         btframe->setFixedSize(3, 28);
         QHBoxLayout *hBtLayout = new QHBoxLayout;
@@ -367,12 +371,12 @@ void CMySchceduleView::initUI()
 
 void CMySchceduleView::initConnection()
 {
-    if(m_scheduleInfo.type.ID == 4){
+    if (m_scheduleInfo.type.ID == 4) {
 
-    }else {
+    } else {
         connect(m_editBt, &DPushButton::clicked, this, &CMySchceduleView::slotEditBt);
         connect(m_deleteBt, &DPushButton::clicked, this, &CMySchceduleView::slotDeleteBt);
-   }
+    }
 
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("ESC")));
