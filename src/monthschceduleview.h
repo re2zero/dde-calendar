@@ -33,6 +33,7 @@ class CMonthSchceduleNumButton;
 class SchecduleRemindWidget;
 class QPropertyAnimation;
 class QSequentialAnimationGroup;
+class CWeekScheduleView;
 class CMonthSchceduleView : public QObject
 {
     Q_OBJECT
@@ -78,7 +79,39 @@ private:
     int                                          m_topMagin;
     int                                          m_buttommagin;
     CMonthSchceduleWidgetItem                   *m_currentitem = nullptr;
+    CWeekScheduleView   *m_weekSchedule;
 };
+
+class CWeekScheduleView :public QObject
+{
+    Q_OBJECT
+    typedef QVector<MScheduleDateRangeInfo> RowScheduleInfo;
+public:
+    CWeekScheduleView(QObject *parent = nullptr);
+    ~CWeekScheduleView();
+public:
+    void setData(QVector<ScheduleDateRangeInfo> &data,const int position,const int count =7);
+    void setHeight(const int ScheduleHeight,const int DayHeigth);
+    QVector<RowScheduleInfo> getMScheduleInfo() const{
+        return m_MScheduleInfo;
+    }
+    void updateSchedule();
+private:
+    void setMaxNum();
+    void mScheduleClear();
+    void sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySchedule);
+private:
+    QVector<RowScheduleInfo> m_MScheduleInfo;
+    QVector<ScheduleDtailInfo> m_ScheduleInfo;
+    QVector<int >          m_ColumnScheduleCount;
+    int                         m_ScheduleHeight;
+    int                         m_DayHeight;
+    int                         m_MaxNum;
+    QDate     beginDate;
+    QDate     endDate;
+    int                         m_colum;
+};
+
 
 class CMonthSchceduleNumButton : public DPushButton
 {

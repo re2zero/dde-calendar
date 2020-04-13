@@ -109,5 +109,27 @@ typedef struct _tagMScheduleDateRangeInfo {
     bool state;
     int  num;
     ScheduleDtailInfo tData;
+    bool operator <(const _tagMScheduleDateRangeInfo &info)const{
+        if(bdate == info.bdate){
+            if(bdate.daysTo(edate)==info.bdate.daysTo(info.edate)){
+                if(tData.beginDateTime == info.tData.beginDateTime){
+                    return tData.id < info.tData.id;
+                } else {
+                    return tData.beginDateTime < info.tData.beginDateTime;
+                }
+            }else {
+                return bdate.daysTo(edate)>info.bdate.daysTo(info.edate);
+            }
+        }else {
+            return bdate<info.bdate;
+        }
+    }
+    bool operator ==(const _tagMScheduleDateRangeInfo &info)const{
+        return bdate == info.bdate &&
+                edate == info.edate &&
+                tData == info.tData &&
+                state == info.state &&
+                num == info.num;
+    }
 } MScheduleDateRangeInfo;
 #endif

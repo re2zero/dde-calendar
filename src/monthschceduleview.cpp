@@ -607,6 +607,7 @@ CMonthSchceduleView::CMonthSchceduleView(QWidget *parent) : QObject (parent), m_
     QShortcut *shortcut = new QShortcut(parent);
     shortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(slotDeleteItem()));
+    m_weekSchedule = new CWeekScheduleView(this);
 }
 
 CMonthSchceduleView::~CMonthSchceduleView()
@@ -621,7 +622,7 @@ void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom
     m_buttommagin = buttom;
     m_leftMagin = left;
     m_topMagin = top;
-    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 25;
+    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
 }
 
 void CMonthSchceduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
@@ -690,6 +691,7 @@ bool MScheduleDaysThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRang
 }
 void CMonthSchceduleView::updateData()
 {
+
     //保护数据防止越界
     if (m_data.count() != 42 || m_cNum < 1) return;
     //开始结束时间
@@ -697,6 +699,24 @@ void CMonthSchceduleView::updateData()
     QDate enddate = m_data[m_data.count() - 1].date;
     m_beginDate = begindate;
     m_endDate  = enddate;
+    m_currentitem = nullptr;
+    for (int i = 0; i < m_scheduleShowItem.count(); i++) {
+
+        m_scheduleShowItem[i]->deleteLater();
+    }
+    m_scheduleShowItem.clear();
+
+    for (int i = 0 ; i < 6; ++i) {
+        m_weekSchedule->setData(m_data,i*7,7);
+        m_weekSchedule->setHeight(22,(m_height - m_topMagin - m_buttommagin) / 6.0-27);
+        m_weekSchedule->updateSchedule();
+        QVector<QVector<MScheduleDateRangeInfo> > mSchedule = m_weekSchedule->getMScheduleInfo();
+        updateDateShow(mSchedule);
+    }
+    return;
+
+
+
     //存储临时日程数据
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
     //处理跨天日程数据
@@ -717,9 +737,7 @@ void CMonthSchceduleView::updateData()
             info.state = false;
             int k = 0;
             for (; k < vMDaySchedule.count(); k++) {
-                if (vData.at(j).id == vMDaySchedule.at(k).tData.id &&
-                        vData.at(j).RecurID == vMDaySchedule.at(k).tData.RecurID &&
-                        vData.at(j).type.ID != 4) {
+                if (vData.at(j)== vMDaySchedule.at(k).tData) {
                     break;
                 }
             }
@@ -728,18 +746,8 @@ void CMonthSchceduleView::updateData()
         }
     }
 
-    qSort(vMDaySchedule.begin(), vMDaySchedule.end(), MScheduleDaysThan);
-    qSort(vMDaySchedule.begin(), vMDaySchedule.end(), MScheduleDateThan);
+    qSort(vMDaySchedule.begin(), vMDaySchedule.end());
 
-    for (int i = 0; i < vMDaySchedule.count(); i++) {
-        QVector<MScheduleDateRangeInfo>::iterator iter = vMDaySchedule.begin();
-        if (vMDaySchedule.at(i).tData.type.ID == 4) {
-            MScheduleDateRangeInfo moveDate;
-            moveDate = vMDaySchedule.at(i);
-            vMDaySchedule.removeAt(i);
-            vMDaySchedule.insert(iter, moveDate);
-        }
-    }
 
     QVector<QVector<int> > vCfillSchedule;
     QVector<QVector<MScheduleDateRangeInfo> >vCMDaySchedule;
@@ -1021,24 +1029,14 @@ QVector<DPushButton *> CMonthSchceduleView::getScheduleShowItem() const
 }
 void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule)
 {
-    m_currentitem = nullptr;
-    for (int i = 0; i < m_scheduleShowItem.count(); i++) {
-
-        m_scheduleShowItem[i]->deleteLater();
-    }
-    m_scheduleShowItem.clear();
-
     for (int i = 0; i < vCMDaySchedule.count(); i++) {
         for (int j = 0; j < vCMDaySchedule[i].count(); j++) {
-            QVector<MScheduleDateRangeInfo> newData;
-            splitSchedule(vCMDaySchedule[i][j], newData);
-            for (int k = 0; k < newData.count(); k++) {
-                if (newData[k].state) {
-                    createScheduleNumWidget(newData[k], i + 1);
+                if (vCMDaySchedule[i].at(j).state) {
+                    createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1);
                 } else {
-                    createScheduleItemWidget(newData[k], i + 1);
+                    createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1);
                 }
-            }
+
         }
     }
 }
@@ -1174,3 +1172,168 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
 }
 
 
+
+CWeekScheduleView::CWeekScheduleView(QObject *parent)
+    :QObject (parent),
+      m_ScheduleHeight(22),
+      m_DayHeight(47)
+{
+    setMaxNum();
+}
+
+CWeekScheduleView::~CWeekScheduleView()
+{
+
+}
+
+void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int position, const int count)
+{
+
+    int endPos = position+count;
+    Q_ASSERT(!(endPos>data.size()));
+    m_ScheduleInfo.clear();
+    for (int i = position; i<endPos; ++i) {
+        for (int j = 0 ; j < data.at(i).vData.size(); ++j) {
+            if(!m_ScheduleInfo.contains(data.at(i).vData.at(j))){
+                m_ScheduleInfo.append(data.at(i).vData.at(j));
+            }
+        }
+    }
+    beginDate  = data.at(position).date;
+    endDate = data.at(position+count -1).date;
+    m_colum = count;
+    updateSchedule();
+
+}
+
+void CWeekScheduleView::setHeight(const int ScheduleHeight, const int DayHeigth)
+{
+    m_ScheduleHeight = ScheduleHeight;
+    m_DayHeight = DayHeigth;
+    setMaxNum();
+}
+
+void CWeekScheduleView::updateSchedule()
+{
+    QDate   tbegindate,tenddate;
+    QVector<MScheduleDateRangeInfo> vMDaySchedule;
+    m_ColumnScheduleCount.clear();
+    m_ColumnScheduleCount.fill(0,m_colum);
+    for (int i = 0 ; i < m_ScheduleInfo.size();++i) {
+        //日程时间重新标定
+        tbegindate = m_ScheduleInfo.at(i).beginDateTime.date();
+        tenddate = m_ScheduleInfo.at(i).endDateTime.date();
+        if (tbegindate <  beginDate) tbegindate = beginDate;
+        if (tenddate > endDate) tenddate = endDate;
+        //日程信息
+        MScheduleDateRangeInfo info;
+        info.bdate = tbegindate;
+        info.edate = tenddate;
+        info.tData = m_ScheduleInfo.at(i);
+        info.state = false;
+        vMDaySchedule.append(info);
+        qint64 pos = beginDate.daysTo(info.bdate);
+        qint64 count = info.bdate.daysTo(info.edate);
+        int j = pos;
+        for (; j < (pos+ count+1); ++j) {
+            ++m_ColumnScheduleCount[j];
+        }
+    }
+    qSort(vMDaySchedule.begin(),vMDaySchedule.end());
+    sortAndFilter(vMDaySchedule);
+}
+
+void CWeekScheduleView::setMaxNum()
+{
+    m_MaxNum = m_DayHeight/(m_ScheduleHeight+1);
+}
+
+void CWeekScheduleView::mScheduleClear()
+{
+    for (int i = 0; i < m_MScheduleInfo.size();++i) {
+        m_MScheduleInfo[i].clear();
+    }
+    m_MScheduleInfo.clear();
+}
+
+void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySchedule)
+{
+    QVector<QVector<bool> > scheduleFill;
+    QVector<bool> scheduf;
+    scheduf.fill(false,m_colum);
+    scheduleFill.fill(scheduf,m_MaxNum);
+    int postion = 0;
+    int end = 0;
+    mScheduleClear();
+
+    for (int i = 0 ; i < vMDaySchedule.size(); ++i) {
+        postion = beginDate.daysTo(vMDaySchedule.at(i).bdate);
+        end     = beginDate.daysTo(vMDaySchedule.at(i).edate);
+        int row = 0;
+        int pos = postion;
+        int count = 0;
+        int scheduleRow = row;
+        for (;postion<end+1;++postion) {
+            if(row == m_MaxNum){
+                if(m_ColumnScheduleCount[postion] >m_MaxNum){
+                    continue;
+                }
+                row =0;
+                pos = postion;
+            }
+            while (row<m_MaxNum) {
+                if(m_MScheduleInfo.size()<(row+1)){
+                    RowScheduleInfo ms;
+                    m_MScheduleInfo.append(ms);
+                }
+                if(!scheduleFill[row][postion]){
+                    if((m_ColumnScheduleCount[postion]>m_MaxNum) &&(row>=m_MaxNum-1)){
+                        scheduleFill[row][postion] = true;
+                        if(pos !=postion){
+                            MScheduleDateRangeInfo scheduleInfo;
+                            scheduleInfo.bdate = beginDate.addDays(pos);
+                            scheduleInfo.edate = beginDate.addDays(postion -1);
+                            scheduleInfo.state = false;
+                            scheduleInfo.tData = vMDaySchedule.at(i).tData;
+                            m_MScheduleInfo[row].append(scheduleInfo);
+                        }
+
+                        MScheduleDateRangeInfo info;
+                        info.bdate = beginDate.addDays(postion);
+                        info.edate = info.bdate;
+                        info.num = m_ColumnScheduleCount[postion] -m_MaxNum +1;
+                        info.state = true;
+                        m_MScheduleInfo[row].append(info);
+
+                        pos = postion +1;
+                        if(pos<7 && pos <end +1){
+                            if(m_ColumnScheduleCount[pos]<row+1){
+                                row =m_ColumnScheduleCount[pos]-1;
+                            }
+                        }else {
+                            row = 0;
+                        }
+                        count = 0;                        
+                    }else {
+                        scheduleFill[row][postion] = true;
+                        ++count;
+                        scheduleRow = row;
+                    }
+                    break;
+                }else {
+                    ++row;
+                }
+            }
+        }
+        if(pos>6||count==0){
+
+        }else {
+            MScheduleDateRangeInfo scheduleInfo;
+            scheduleInfo.bdate = beginDate.addDays(pos);
+            scheduleInfo.edate = beginDate.addDays(postion -1);
+            scheduleInfo.state = false;
+            scheduleInfo.tData = vMDaySchedule.at(i).tData;
+            m_MScheduleInfo[scheduleRow].append(scheduleInfo);
+        }
+    }
+}

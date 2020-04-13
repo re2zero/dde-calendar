@@ -830,11 +830,6 @@ void CScheduleView::updateAllday(int id)
 
     m_alldaylist->setFixedHeight(m_topMagin - 3);
     m_alldaylist->setDayData(vResultData, 0);
-//    for (int i = 0; i < vResultData.size(); ++i) {
-//        for (int j = 0 ; j < vResultData.at(i).size(); ++j) {
-//            qDebug()<<vResultData.at(i).at(j).titleName;
-//        }
-//    }
     update();
     m_alldaylist->update();
     // m_alldaylist->update();
