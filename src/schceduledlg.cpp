@@ -655,16 +655,16 @@ void CSchceduleDlg::initUI()
     m_typeComBox->setFixedSize(319, 36);
     m_typeComBox->insertItem(0,
                              QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
-                                   .scaled(QSize(16, 16) * devicePixelRatioF())),
+                                   .scaled(QSize(20, 20) * devicePixelRatioF())),
                              tr("Work"));
     m_typeComBox->insertItem(1,
                              QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg")
-                                   .scaled(QSize(16, 16) * devicePixelRatioF())),
+                                   .scaled(QSize(20, 20) * devicePixelRatioF())),
                              tr("Life"));
     m_typeComBox->insertItem(
         2,
         QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg")
-              .scaled(QSize(16, 16) * devicePixelRatioF())),
+              .scaled(QSize(20, 20) * devicePixelRatioF())),
         tr("Other"));
     typelayout->addWidget(m_typeLabel);
     typelayout->addWidget(m_typeComBox);
@@ -676,7 +676,10 @@ void CSchceduleDlg::initUI()
     QVBoxLayout *conttelabellayout = new QVBoxLayout;
     conttelabellayout->setSpacing(0);
     conttelabellayout->setMargin(0);
-    m_contentLabel = new QLabel(tr("Description:"));
+    m_contentLabel = new QLabel();
+    QFontMetrics fontWidth_contentlabel(mlabelF);
+    QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"),Qt::ElideRight,78);
+    m_contentLabel->setText(str_contentlabel);
     m_contentLabel->setFont(mlabelF);
     m_contentLabel->setPalette(pa);
     m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -792,7 +795,10 @@ void CSchceduleDlg::initUI()
     QHBoxLayout *rminQLabellayout = new QHBoxLayout;
     rminQLabellayout->setSpacing(0);
     rminQLabellayout->setMargin(0);
-    m_remindSetLabel = new QLabel(tr("Remind Me:"));
+    m_remindSetLabel = new QLabel();
+    QFontMetrics fontWidth_remindSetLabel(mlabelF);
+    QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"),Qt::ElideRight,78);
+    m_remindSetLabel->setText(str_remindSetLabel);
     m_remindSetLabel->setFont(mlabelF);
     m_remindSetLabel->setPalette(pa);
     m_remindSetLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -830,7 +836,10 @@ void CSchceduleDlg::initUI()
     QHBoxLayout *endrepeatLabellayout = new QHBoxLayout;
     endrepeatLabellayout->setSpacing(0);
     endrepeatLabellayout->setMargin(0);
-    m_endrepeatLabel = new QLabel(tr("End Repeat:"));
+    m_endrepeatLabel = new QLabel();
+    QFontMetrics fontWidth_endrepeatLabel(mlabelF);
+    QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"),Qt::ElideRight,78);
+    m_endrepeatLabel->setText(str_endrepeatLabel);
     m_endrepeatLabel->setFont(mlabelF);
     m_endrepeatLabel->setPalette(pa);
     m_endrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
