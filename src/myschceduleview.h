@@ -25,6 +25,9 @@
 #include <DDialog>
 #include <DPushButton>
 #include "schedulestructs.h"
+#include <QScrollArea>
+#include <QScrollBar>
+#include <DTextEdit>
 DWIDGET_USE_NAMESPACE
 
 class CMySchceduleView : public DDialog
@@ -54,6 +57,7 @@ private:
     QLabel                           *m_icon;
     QLabel                           *m_Title;
     ScheduleDtailInfo                     m_scheduleInfo;//日程
+    QScrollArea                      *area;
 
 };
 

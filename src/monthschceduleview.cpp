@@ -1047,11 +1047,11 @@ void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>
 {
     for (int i = 0; i < vCMDaySchedule.count(); i++) {
         for (int j = 0; j < vCMDaySchedule[i].count(); j++) {
-                if (vCMDaySchedule[i].at(j).state) {
-                    createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1);
-                } else {
-                    createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1);
-                }
+            if (vCMDaySchedule[i].at(j).state) {
+                createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1);
+            } else {
+                createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1);
+            }
 
         }
     }
@@ -1192,8 +1192,8 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
 
 CWeekScheduleView::CWeekScheduleView(QObject *parent)
     :QObject (parent),
-      m_ScheduleHeight(22),
-      m_DayHeight(47)
+     m_ScheduleHeight(22),
+     m_DayHeight(47)
 {
     setMaxNum();
 }
@@ -1211,7 +1211,7 @@ void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int 
     m_ScheduleInfo.clear();
     for (int i = position; i<endPos; ++i) {
         for (int j = 0 ; j < data.at(i).vData.size(); ++j) {
-            if(!m_ScheduleInfo.contains(data.at(i).vData.at(j))){
+            if (!m_ScheduleInfo.contains(data.at(i).vData.at(j))) {
                 m_ScheduleInfo.append(data.at(i).vData.at(j));
             }
         }
@@ -1236,7 +1236,7 @@ void CWeekScheduleView::updateSchedule()
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
     m_ColumnScheduleCount.clear();
     m_ColumnScheduleCount.fill(0,m_colum);
-    for (int i = 0 ; i < m_ScheduleInfo.size();++i) {
+    for (int i = 0 ; i < m_ScheduleInfo.size(); ++i) {
         //日程时间重新标定
         tbegindate = m_ScheduleInfo.at(i).beginDateTime.date();
         tenddate = m_ScheduleInfo.at(i).endDateTime.date();
@@ -1267,7 +1267,7 @@ void CWeekScheduleView::setMaxNum()
 
 void CWeekScheduleView::mScheduleClear()
 {
-    for (int i = 0; i < m_MScheduleInfo.size();++i) {
+    for (int i = 0; i < m_MScheduleInfo.size(); ++i) {
         m_MScheduleInfo[i].clear();
     }
     m_MScheduleInfo.clear();
@@ -1290,23 +1290,23 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
         int pos = postion;
         int count = 0;
         int scheduleRow = row;
-        for (;postion<end+1;++postion) {
-            if(row == m_MaxNum){
-                if(m_ColumnScheduleCount[postion] >m_MaxNum){
+        for (; postion<end+1; ++postion) {
+            if (row == m_MaxNum) {
+                if (m_ColumnScheduleCount[postion] >m_MaxNum) {
                     continue;
                 }
                 row =0;
                 pos = postion;
             }
             while (row<m_MaxNum) {
-                if(m_MScheduleInfo.size()<(row+1)){
+                if (m_MScheduleInfo.size()<(row+1)) {
                     RowScheduleInfo ms;
                     m_MScheduleInfo.append(ms);
                 }
-                if(!scheduleFill[row][postion]){
-                    if((m_ColumnScheduleCount[postion]>m_MaxNum) &&(row>=m_MaxNum-1)){
+                if (!scheduleFill[row][postion]) {
+                    if ((m_ColumnScheduleCount[postion]>m_MaxNum) &&(row>=m_MaxNum-1)) {
                         scheduleFill[row][postion] = true;
-                        if(pos !=postion){
+                        if (pos !=postion) {
                             MScheduleDateRangeInfo scheduleInfo;
                             scheduleInfo.bdate = beginDate.addDays(pos);
                             scheduleInfo.edate = beginDate.addDays(postion -1);
@@ -1323,28 +1323,28 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
                         m_MScheduleInfo[row].append(info);
 
                         pos = postion +1;
-                        if(pos<7 && pos <end +1){
-                            if(m_ColumnScheduleCount[pos]<row+1){
+                        if (pos<7 && pos <end +1) {
+                            if (m_ColumnScheduleCount[pos]<row+1) {
                                 row =m_ColumnScheduleCount[pos]-1;
                             }
-                        }else {
+                        } else {
                             row = 0;
                         }
-                        count = 0;                        
-                    }else {
+                        count = 0;
+                    } else {
                         scheduleFill[row][postion] = true;
                         ++count;
                         scheduleRow = row;
                     }
                     break;
-                }else {
+                } else {
                     ++row;
                 }
             }
         }
-        if(pos>6||count==0){
+        if (pos>6||count==0) {
 
-        }else {
+        } else {
             MScheduleDateRangeInfo scheduleInfo;
             scheduleInfo.bdate = beginDate.addDays(pos);
             scheduleInfo.edate = beginDate.addDays(postion -1);

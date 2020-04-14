@@ -81,6 +81,8 @@ void CMySchceduleView::AutoFeed(QString text)
                     i--;
                     str.clear();
                     row++;
+                } else {
+
                 }
             }
             if (currentstr.isEmpty()) {
@@ -98,9 +100,21 @@ void CMySchceduleView::AutoFeed(QString text)
         }
         strText = result;
     }
-    m_schceduleLabel->setFixedHeight((row + 1) * 24);
-    setFixedHeight(row * 24 + 180);
-    m_schceduleLabel->setText(strText);
+//    m_schceduleLabel->setFixedHeight((row + 1) * 24);
+    if (((row + 1) * 24) > 100) {
+        area->setFixedHeight(100 - 20);
+    } else {
+        area->setFixedHeight((row + 1 ) * 24);
+    }
+
+    if ((row * 24 + 180) > 240) {
+        setFixedHeight(240);
+    } else {
+        setFixedHeight(row * 24 + 180);
+    }
+    qDebug() << row << row * 24 + 180;
+//    m_schceduleLabel->setText(strText);
+    m_schceduleLabel->setText(text);
     m_schceduleLabel->adjustSize();
 }
 
@@ -249,7 +263,7 @@ void CMySchceduleView::initUI()
     QFont labelTitle;
     labelTitle.setFamily("SourceHanSansSC");
     labelTitle.setWeight(QFont::DemiBold);
-    labelTitle.setPixelSize(17);
+//    labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     DPalette titlepa = m_Title->palette();
@@ -272,15 +286,31 @@ void CMySchceduleView::initUI()
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
     // mainLayout->setContentsMargins(10, 10, 10, 10);
+    area = new QScrollArea (this);
+    area->installEventFilter(this);
+    area->setFrameShape(QFrame::NoFrame);
+    area->setFixedWidth(365);
+    DPalette pa = area->palette();
+    if (themetype == 0 || themetype == 1) {
+        pa.setColor(DPalette::WindowText, QColor("#2C4767"));
+
+    } else {
+        pa.setColor(DPalette::WindowText, QColor("#A8B7D1"));
+    }
+    area->setBackgroundRole(QPalette::Background);
+    area->setPalette(pa);
+    area->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    area->setWidgetResizable(true);
+    area->setAlignment(Qt::AlignCenter);
 
     m_schceduleLabel = new QLabel(this);
-    m_schceduleLabel->setFixedHeight(26);
+    m_schceduleLabel->setWordWrap(true);
+    m_schceduleLabel->setFixedWidth(340);
     m_schceduleLabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_schceduleLabel,DFontSizeManager::T6);
     QFont labelF;
     labelF.setFamily("SourceHanSansSC");
     labelF.setWeight(QFont::Medium);
-    labelF.setPixelSize(14);
     DPalette wpa = m_schceduleLabel->palette();
     if (themetype == 0 || themetype == 1) {
         wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
@@ -290,7 +320,10 @@ void CMySchceduleView::initUI()
     }
     m_schceduleLabel->setPalette(wpa);
     m_schceduleLabel->setFont(labelF);
-    mainLayout->addWidget(m_schceduleLabel);
+
+    area->setWidget(m_schceduleLabel);
+    mainLayout->addWidget(area);
+//    mainLayout->addWidget(m_schceduleLabel);
 
 
     m_timeLabel = new QLabel(this);
@@ -300,7 +333,7 @@ void CMySchceduleView::initUI()
     QFont labelT;
     labelT.setFamily("SourceHanSansSC");
     labelT.setWeight(QFont::Bold);
-    labelT.setPixelSize(14);
+//    labelT.setPixelSize(14);
     DPalette tpa = m_timeLabel->palette();
 
 
