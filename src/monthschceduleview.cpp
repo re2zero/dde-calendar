@@ -163,11 +163,6 @@ void CMonthSchceduleWidgetItem::slotEdit()
             w, &CMonthView::signalViewtransparentFrame);
     dlg.setData(m_ScheduleInfo);
     dlg.exec();
-
-//    if (dlg.exec() == DDialog::Accepted) {
-//        emit signalsEdit(this, 1);
-//    }
-//    emit signalViewtransparentFrame(0);
 }
 
 void CMonthSchceduleWidgetItem::slotDelete()
