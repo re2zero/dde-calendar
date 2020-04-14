@@ -655,16 +655,16 @@ void CSchceduleDlg::initUI()
     m_typeComBox->setFixedSize(319, 36);
     m_typeComBox->insertItem(0,
                              QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
-                                   .scaled(QSize(20, 20) * devicePixelRatioF())),
+                                   .scaled(QSize(16, 16) * devicePixelRatioF())),
                              tr("Work"));
     m_typeComBox->insertItem(1,
                              QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg")
-                                   .scaled(QSize(20, 20) * devicePixelRatioF())),
+                                   .scaled(QSize(16, 16) * devicePixelRatioF())),
                              tr("Life"));
     m_typeComBox->insertItem(
         2,
         QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg")
-              .scaled(QSize(20, 20) * devicePixelRatioF())),
+              .scaled(QSize(16, 16) * devicePixelRatioF())),
         tr("Other"));
     typelayout->addWidget(m_typeLabel);
     typelayout->addWidget(m_typeComBox);
