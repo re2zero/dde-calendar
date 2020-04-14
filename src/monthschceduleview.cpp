@@ -1214,9 +1214,6 @@ void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int 
     m_ScheduleInfo.clear();
     for (int i = position; i<endPos; ++i) {
         for (int j = 0 ; j < data.at(i).vData.size(); ++j) {
-            if (data.at(i).vData.at(j).rpeat ==2) {
-
-            }
             if (!m_ScheduleInfo.contains(data.at(i).vData.at(j))) {
                 m_ScheduleInfo.append(data.at(i).vData.at(j));
             }

@@ -169,6 +169,7 @@ void CYearWindow::initUI()
     todaylayout->addWidget(m_today, 0, Qt::AlignCenter);
     todaylayout->addWidget(m_nextButton);
     m_todayframe->setLayout(todaylayout);
+    yeartitleLayout1->addSpacing(10);
     yeartitleLayout1->addWidget(m_todayframe);
     yeartitleLayout->addLayout(yeartitleLayout1);
 

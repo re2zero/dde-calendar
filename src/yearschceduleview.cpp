@@ -358,6 +358,11 @@ QDate CYearSchceduleView::getCurrentDate()
     return  m_currentDate;
 }
 
+void CYearSchceduleView::adjustPosition(bool ad)
+{
+    adjustPos = ad;
+}
+
 void CYearSchceduleView::updateDateShow()
 {
     int sviewNum = 0;
@@ -770,6 +775,7 @@ void CYearSchceduleView::paintEvent(QPaintEvent *event)
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
         paintItem();
     }
+    adjustPos = false;
 }
 
 void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
@@ -789,7 +795,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 
 
     QPainter painter(this);
-    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
+    QRect fillRect = QRect(0, 0, width(), height());
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
     QColor bcolor = m_bBackgroundcolor;
     painter.save();
@@ -806,7 +812,11 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setPen(m_btimecolor);
         painter.setFont(font);
-        painter.drawText(QRect(25, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
+        if (adjustPos) {
+            painter.drawText(QRect(25 - 8, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
+        } else {
+            painter.drawText(QRect(25, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
+        }
         painter.restore();
     } else {
         if (info.id != -1) {
@@ -822,7 +832,12 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
             }
 
             painter.setPen(Qt::NoPen);
-            painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
+            if (adjustPos) {
+                painter.drawEllipse(QRect(25 - 8, bheight + (labelheight - 8) / 2, 8, 8));
+            } else {
+                painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
+            }
+//            painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
             painter.restore();
         }
 
@@ -850,7 +865,12 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
             tstr = tstr + "...";
         }
 
-        painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
+        if (adjustPos) {
+            painter.drawText(QRect(41 - 8, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
+        } else {
+            painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
+        }
+//        painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
         painter.restore();
         if (info.id != -1) {
             //右边时间
@@ -871,7 +891,12 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
             }
 
             QFontMetrics fm2 = painter.fontMetrics();
-            painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
+            if (adjustPos) {
+                painter.drawText(QRect(width() - 70 - 8, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
+            } else {
+                painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
+            }
+//            painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
             painter.restore();
         }
     }
@@ -885,7 +910,7 @@ void CYearSchceduleView::paintItem()
     QFont font(fontfamily);
     font.setPixelSize(fontsize);
     QPainter painter(this);
-    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
+    QRect fillRect = QRect(0, 0, width(), height());
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
     QColor bcolor = m_bBackgroundcolor;
     painter.save();
@@ -917,7 +942,6 @@ CYearSchceduleOutView::CYearSchceduleOutView(QWidget *parent)
 {
     yearschceduleview = new CYearSchceduleView ();
     this->setContent(yearschceduleview);
-    qDebug() << this->width();
 }
 
 void CYearSchceduleOutView::setSoloDay(QString soloday)
@@ -954,6 +978,11 @@ void CYearSchceduleOutView::setDtype(int type, int arrowheight)
 void CYearSchceduleOutView::setCurrentDate(QDate cdate)
 {
     yearschceduleview->setCurrentDate(cdate);
+}
+
+void CYearSchceduleOutView::adjustPosition(bool ad)
+{
+    yearschceduleview->adjustPosition(ad);
 }
 
 

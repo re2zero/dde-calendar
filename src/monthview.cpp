@@ -582,8 +582,8 @@ void CMonthView::slotCreate()
     } else {
         tDatatime.setTime(QTime(8, 0));
     }
-    dlg.setAllDay(true);
     dlg.setDate(tDatatime);
+    dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
         slotSchceduleUpdate();
         emit signalsSchceduleUpdate(0);
@@ -841,7 +841,7 @@ void CMonthView::paintCell(QWidget *cell)
 
         }
 #endif
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);        
+        painter.setRenderHints(QPainter::HighQualityAntialiasing);
         if (ftype == 2) {
             painter.setBrush(QBrush(m_banColor));
         } else if (ftype == 1) {
@@ -856,7 +856,7 @@ void CMonthView::paintCell(QWidget *cell)
             painter.setOpacity(0.4);
         }
         painter.setPen(Qt::NoPen);
-        painter.drawRect(rect);//画矩形        
+        painter.drawRect(rect);//画矩形
     } else {
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(QBrush(m_fillColor));

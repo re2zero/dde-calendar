@@ -45,6 +45,7 @@ public:
     void setDtype(int type, int arrowheight);
     void setCurrentDate(QDate cdate);
     QDate getCurrentDate();
+    void adjustPosition(bool ad);
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info, int type = 0);
@@ -70,6 +71,7 @@ private:
     int                   m_dtype = 3;
     int                   m_arrowheight = 0;
     QColor                m_borderColor = "#000000";
+    bool                  adjustPos = false;
 };
 
 class CYearSchceduleItem : public DLabel
@@ -108,6 +110,7 @@ public:
     void setTheMe(int type = 0);
     void setDtype(int type, int arrowheight);
     void setCurrentDate(QDate cdate);
+    void adjustPosition(bool ad);
 private:
     CYearSchceduleView *yearschceduleview;
 };
