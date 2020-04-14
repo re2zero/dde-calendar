@@ -78,7 +78,7 @@ private:
     void updateSchedule(int id = 0);
     void updateAllday(int id = 0);
     int checkDay(int weekday);
-    int scheduleViewHegith();
+    int  scheduleViewHegith();
 private:
     CGraphicsView            *m_graphicsView;
     QVector<int>              m_vPos;
@@ -105,6 +105,7 @@ private:
     int                       m_space = 30;
     QVBoxLayout              *m_layout;
     SchecduleRemindWidget    *m_ScheduleRemindWidget;
+    int                             m_minTime;      //最小高度对应的最小时间
 };
 
 #endif // SCHEDULEVIEW_H

@@ -46,7 +46,7 @@ class CSchceduleDlg : public DDialog
     Q_OBJECT
 public:
     CSchceduleDlg(int type, QWidget *parent = nullptr, const bool isAllDay = true);
-    ~CSchceduleDlg();
+    ~CSchceduleDlg() Q_DECL_OVERRIDE;
     void setData(const ScheduleDtailInfo &info);
     void setDate(const QDateTime &date);
     ScheduleDtailInfo getScheduleData();
