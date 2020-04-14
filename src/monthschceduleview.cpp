@@ -1208,7 +1208,6 @@ CWeekScheduleView::~CWeekScheduleView()
 
 void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int position, const int count)
 {
-
     int endPos = position+count;
     Q_ASSERT(!(endPos>data.size()));
     m_ScheduleInfo.clear();
@@ -1223,7 +1222,6 @@ void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int 
     endDate = data.at(position+count -1).date;
     m_colum = count;
     updateSchedule();
-
 }
 
 void CWeekScheduleView::setHeight(const int ScheduleHeight, const int DayHeigth)

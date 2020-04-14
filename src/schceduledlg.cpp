@@ -97,7 +97,7 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     int hours = date.time().hour();
     int minnutes = date.time().minute() % 15;
     if (minnutes != 0) {
-        minnutes = date.time().minute() / 15 * 15 + 15;
+        minnutes = date.time().minute() / 15 * 15;
     }
     if (minnutes == 60) {
         if (hours + 1 == 24) {
