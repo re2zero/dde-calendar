@@ -208,6 +208,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
+    int                     m_widthoffset = 0;
     QAction              *m_editAction;
     QAction              *m_deleteAction;
     bool                  m_GradientFlag;

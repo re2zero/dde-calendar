@@ -127,6 +127,7 @@ void CMonthSchceduleWidgetItem::setRectOffset(int offset)
                , m_rect.y() - offset / 2
                , m_rect.width() + offset * 2
                , m_rect.height() + offset);
+    m_widthoffset = offset*2;
     this->setGeometry(rect);
     this->setFixedSize(rect.width(), rect.height());
 }
@@ -353,7 +354,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             tstr = tstr + "...";
         }
 
-        painter.drawText(QRect(m_pos.x(), 1, labelwidth - m_pos.x(),
+        painter.drawText(QRect(m_pos.x(), 1, labelwidth - m_pos.x()-m_widthoffset,
                                labelheight - m_pos.y() + 3 * avge ),
                          Qt::AlignLeft | Qt::AlignVCenter, tstr);
 
@@ -482,7 +483,7 @@ void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
 }
 
 void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
-{
+{    
     if (m_pressMove) {
         emit signalPressScheduleShow(false);
         m_pressMove = false;
@@ -1211,6 +1212,9 @@ void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int 
     m_ScheduleInfo.clear();
     for (int i = position; i<endPos; ++i) {
         for (int j = 0 ; j < data.at(i).vData.size(); ++j) {
+            if(data.at(i).vData.at(j).rpeat ==2){
+
+            }
             if(!m_ScheduleInfo.contains(data.at(i).vData.at(j))){
                 m_ScheduleInfo.append(data.at(i).vData.at(j));
             }
