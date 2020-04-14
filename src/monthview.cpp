@@ -294,7 +294,7 @@ void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo>
         for (int i(0); i != 42; ++i) {
             m_cellList.at(i)->update();
         }
-    }
+    }    
     parentWidget()->setEnabled(true);
 }
 

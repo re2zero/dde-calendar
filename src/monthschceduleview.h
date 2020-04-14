@@ -99,7 +99,8 @@ public:
 public:
     void setData(QVector<ScheduleDateRangeInfo> &data,const int position,const int count =7);
     void setHeight(const int ScheduleHeight,const int DayHeigth);
-    QVector<RowScheduleInfo> getMScheduleInfo() const{
+    QVector<RowScheduleInfo> getMScheduleInfo() const
+    {
         return m_MScheduleInfo;
     }
     void updateSchedule();

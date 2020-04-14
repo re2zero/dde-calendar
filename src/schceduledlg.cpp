@@ -65,6 +65,11 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
     setFixedSize(438, 460);
 }
 
+CSchceduleDlg::~CSchceduleDlg()
+{
+    emit signalViewtransparentFrame(0);
+}
+
 void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
 {
     m_scheduleDtailInfo = info;
@@ -436,6 +441,7 @@ void CSchceduleDlg::slotOkBt()
         }
     }
     accept();
+    emit  signalScheduleUpdate();
 }
 
 void CSchceduleDlg::slotTextChange()
@@ -599,6 +605,12 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
         }
     }
     return QDialog::eventFilter(obj, pEvent);
+}
+
+void CSchceduleDlg::showEvent(QShowEvent *event)
+{
+    Q_UNUSED(event);
+    emit signalViewtransparentFrame(1);
 }
 
 void CSchceduleDlg::initUI()

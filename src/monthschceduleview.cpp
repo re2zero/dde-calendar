@@ -36,6 +36,7 @@
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
+#include "monthview.h"
 
 DGUI_USE_NAMESPACE
 
@@ -154,14 +155,19 @@ void CMonthSchceduleWidgetItem::setEndValue(int offset)
 
 void CMonthSchceduleWidgetItem::slotEdit()
 {
-    emit signalViewtransparentFrame(1);
-    CSchceduleDlg dlg(0, this);
+    CMonthView *w = qobject_cast<CMonthView *>(this->parent());
+    CSchceduleDlg dlg(0, w);
+    connect(&dlg, &CSchceduleDlg::signalScheduleUpdate, w, &CMonthView::slotSchceduleUpdate);
+    connect(&dlg, &CSchceduleDlg::signalScheduleUpdate, w, &CMonthView::slotdelete);
+    connect(&dlg, &CSchceduleDlg::signalViewtransparentFrame,
+            w, &CMonthView::signalViewtransparentFrame);
     dlg.setData(m_ScheduleInfo);
-    if (dlg.exec() == DDialog::Accepted) {
+    dlg.exec();
 
-        emit signalsEdit(this, 1);
-    }
-    emit signalViewtransparentFrame(0);
+//    if (dlg.exec() == DDialog::Accepted) {
+//        emit signalsEdit(this, 1);
+//    }
+//    emit signalViewtransparentFrame(0);
 }
 
 void CMonthSchceduleWidgetItem::slotDelete()
@@ -233,7 +239,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
             }
         } else {
-            CSchceduleCtrlDlg msgBox(this);
+            CSchceduleCtrlDlg msgBox;
             //msgBox.setWindowFlags(Qt::FramelessWindowHint);
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
             msgBox.setText(tr("You are deleting an event."));
@@ -419,7 +425,7 @@ void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 
     } else {
         emit signalUpdateUI(0);
-        DMenu Context(this);
+        DMenu Context(qobject_cast<QWidget *>(this->parent()));
         Context.setAttribute(Qt::WA_DeleteOnClose);
         Context.addAction(m_editAction);
         Context.addAction(m_deleteAction);
@@ -433,13 +439,14 @@ void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
     //if (m_editType == 0) return;
     if (event->button() == Qt::LeftButton) {
         emit signalPressScheduleShow(false);
-        emit signalViewtransparentFrame(1);
-        CMySchceduleView dlg(m_ScheduleInfo, nullptr);
-//        dlg.setSchedules(m_ScheduleInfo);
-        connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
+        CMonthView *w = qobject_cast<CMonthView *>(this->parent());
+        CMySchceduleView dlg(m_ScheduleInfo, w);
+
+        connect(&dlg, &CMySchceduleView::signalsEditorDelete, w, &CMonthView::slotSchceduleUpdate);
+        connect(&dlg, &CMySchceduleView::signalsEditorDelete, w, &CMonthView::slotdelete);
+        connect(&dlg, &CMySchceduleView::signalViewtransparentFrame,
+                w, &CMonthView::signalViewtransparentFrame);
         dlg.exec();
-        emit signalViewtransparentFrame(0);
-        disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
     }
 }
 
@@ -483,7 +490,7 @@ void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
 }
 
 void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
-{    
+{
     if (m_pressMove) {
         emit signalPressScheduleShow(false);
         m_pressMove = false;
@@ -1048,11 +1055,11 @@ void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>
 {
     for (int i = 0; i < vCMDaySchedule.count(); i++) {
         for (int j = 0; j < vCMDaySchedule[i].count(); j++) {
-                if (vCMDaySchedule[i].at(j).state) {
-                    createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1);
-                } else {
-                    createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1);
-                }
+            if (vCMDaySchedule[i].at(j).state) {
+                createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1);
+            } else {
+                createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1);
+            }
 
         }
     }
@@ -1193,8 +1200,8 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
 
 CWeekScheduleView::CWeekScheduleView(QObject *parent)
     :QObject (parent),
-      m_ScheduleHeight(22),
-      m_DayHeight(47)
+     m_ScheduleHeight(22),
+     m_DayHeight(47)
 {
     setMaxNum();
 }
@@ -1212,10 +1219,10 @@ void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int 
     m_ScheduleInfo.clear();
     for (int i = position; i<endPos; ++i) {
         for (int j = 0 ; j < data.at(i).vData.size(); ++j) {
-            if(data.at(i).vData.at(j).rpeat ==2){
+            if (data.at(i).vData.at(j).rpeat ==2) {
 
             }
-            if(!m_ScheduleInfo.contains(data.at(i).vData.at(j))){
+            if (!m_ScheduleInfo.contains(data.at(i).vData.at(j))) {
                 m_ScheduleInfo.append(data.at(i).vData.at(j));
             }
         }
@@ -1240,7 +1247,7 @@ void CWeekScheduleView::updateSchedule()
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
     m_ColumnScheduleCount.clear();
     m_ColumnScheduleCount.fill(0,m_colum);
-    for (int i = 0 ; i < m_ScheduleInfo.size();++i) {
+    for (int i = 0 ; i < m_ScheduleInfo.size(); ++i) {
         //日程时间重新标定
         tbegindate = m_ScheduleInfo.at(i).beginDateTime.date();
         tenddate = m_ScheduleInfo.at(i).endDateTime.date();
@@ -1271,7 +1278,7 @@ void CWeekScheduleView::setMaxNum()
 
 void CWeekScheduleView::mScheduleClear()
 {
-    for (int i = 0; i < m_MScheduleInfo.size();++i) {
+    for (int i = 0; i < m_MScheduleInfo.size(); ++i) {
         m_MScheduleInfo[i].clear();
     }
     m_MScheduleInfo.clear();
@@ -1294,23 +1301,23 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
         int pos = postion;
         int count = 0;
         int scheduleRow = row;
-        for (;postion<end+1;++postion) {
-            if(row == m_MaxNum){
-                if(m_ColumnScheduleCount[postion] >m_MaxNum){
+        for (; postion<end+1; ++postion) {
+            if (row == m_MaxNum) {
+                if (m_ColumnScheduleCount[postion] >m_MaxNum) {
                     continue;
                 }
                 row =0;
                 pos = postion;
             }
             while (row<m_MaxNum) {
-                if(m_MScheduleInfo.size()<(row+1)){
+                if (m_MScheduleInfo.size()<(row+1)) {
                     RowScheduleInfo ms;
                     m_MScheduleInfo.append(ms);
                 }
-                if(!scheduleFill[row][postion]){
-                    if((m_ColumnScheduleCount[postion]>m_MaxNum) &&(row>=m_MaxNum-1)){
+                if (!scheduleFill[row][postion]) {
+                    if ((m_ColumnScheduleCount[postion]>m_MaxNum) &&(row>=m_MaxNum-1)) {
                         scheduleFill[row][postion] = true;
-                        if(pos !=postion){
+                        if (pos !=postion) {
                             MScheduleDateRangeInfo scheduleInfo;
                             scheduleInfo.bdate = beginDate.addDays(pos);
                             scheduleInfo.edate = beginDate.addDays(postion -1);
@@ -1327,28 +1334,28 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
                         m_MScheduleInfo[row].append(info);
 
                         pos = postion +1;
-                        if(pos<7 && pos <end +1){
-                            if(m_ColumnScheduleCount[pos]<row+1){
+                        if (pos<7 && pos <end +1) {
+                            if (m_ColumnScheduleCount[pos]<row+1) {
                                 row =m_ColumnScheduleCount[pos]-1;
                             }
-                        }else {
+                        } else {
                             row = 0;
                         }
-                        count = 0;                        
-                    }else {
+                        count = 0;
+                    } else {
                         scheduleFill[row][postion] = true;
                         ++count;
                         scheduleRow = row;
                     }
                     break;
-                }else {
+                } else {
                     ++row;
                 }
             }
         }
-        if(pos>6||count==0){
+        if (pos>6||count==0) {
 
-        }else {
+        } else {
             MScheduleDateRangeInfo scheduleInfo;
             scheduleInfo.bdate = beginDate.addDays(pos);
             scheduleInfo.edate = beginDate.addDays(postion -1);
