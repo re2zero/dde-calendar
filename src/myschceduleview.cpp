@@ -112,7 +112,6 @@ void CMySchceduleView::AutoFeed(QString text)
     } else {
         setFixedHeight(row * 24 + 180);
     }
-    qDebug() << row << row * 24 + 180;
 //    m_schceduleLabel->setText(strText);
     m_schceduleLabel->setText(text);
     m_schceduleLabel->adjustSize();

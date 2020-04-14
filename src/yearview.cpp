@@ -352,6 +352,7 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
                     m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowLeft);
                     m_Scheduleview->show(pos22.x() + 10, pos22.y());
                 } else {
+                    m_Scheduleview->adjustPosition(true);
                     m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowRight);
                     m_Scheduleview->show(pos22.x() - 10, pos22.y());
                 }
