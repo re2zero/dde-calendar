@@ -665,6 +665,7 @@ void CSchceduleDlg::initUI()
     m_typeLabel->setFixedSize(78, 36);
     m_typeComBox = new DComboBox();
     m_typeComBox->setFixedSize(319, 36);
+    m_typeComBox->setIconSize(QSize(20,20));
     m_typeComBox->insertItem(0,
                              QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
                                    .scaled(QSize(20, 20) * devicePixelRatioF())),
