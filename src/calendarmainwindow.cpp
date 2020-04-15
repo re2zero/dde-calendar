@@ -280,6 +280,11 @@ void Calendarmainwindow::updateHigh()
     }
 }
 
+void Calendarmainwindow::setSearchWidth(int w)
+{
+    m_contentBackground->setFixedWidth(w);
+}
+
 void Calendarmainwindow::slotTheme(int type)
 {
     if (type == 0) {
@@ -510,7 +515,7 @@ void Calendarmainwindow::initUI()
     ssLayout->addWidget(m_schceduleSearchView);
     m_contentBackground->setLayout(ssLayout);
     tmainLayout->addWidget(m_contentBackground);
-    m_contentBackground->setVisible(false);
+    m_contentBackground->setFixedWidth(0);
 
     DWidget *maincentralWidget = new DWidget(this);
 
@@ -524,6 +529,8 @@ void Calendarmainwindow::initUI()
     m_transparentFrame = new DFrame(this);
     m_transparentFrame->setAutoFillBackground(true);
     m_transparentFrame->hide();
+
+    m_animation = new QPropertyAnimation(this);
 
 }
 
@@ -649,7 +656,9 @@ void Calendarmainwindow::setScheduleHide()
 
 void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
-    m_contentBackground->setFixedWidth(0.2325 * width() + 0.5);
+    m_scheduleSearchViewMaxWidth = 0.2325 * width() + 0.5;
+    m_schceduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
+
     setScheduleHide();
     DMainWindow::resizeEvent(event);
 }
@@ -759,7 +768,12 @@ void Calendarmainwindow::slotSreturnPressed()
 #if 1
     if (!m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_opensearchflag = true;
-        m_contentBackground->setVisible(true);
+        m_animation->setTargetObject(this);
+        m_animation->setPropertyName("schedulesearchWidth");
+        m_animation->setDuration(500);
+        m_animation->setStartValue(0);
+        m_animation->setEndValue(m_scheduleSearchViewMaxWidth);
+        m_animation->start();
     }
     m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
     updateHigh();
@@ -777,8 +791,9 @@ void Calendarmainwindow::slotSreturnPressed()
 void Calendarmainwindow::slotStextChanged()
 {
 #if 1
-    m_schceduleSearchView->clearSearch();
+
     if (!m_searchEdit->text().isEmpty()) {
+        m_schceduleSearchView->clearSearch();
         m_yearwindow->setSearchWFlag(true);
         m_weekWindow->setSearchWFlag(true);
         m_monthWindow->setSearchWFlag(true);
@@ -789,7 +804,12 @@ void Calendarmainwindow::slotStextChanged()
         m_monthWindow->setSearchWFlag(false);
         m_weekWindow->setSearchWFlag(false);
         m_DayWindow->setSearchWFlag(false);
-        m_contentBackground->setVisible(false);
+
+        m_animation->setTargetObject(this);
+        m_animation->setDuration(500);
+        m_animation->setEndValue(0);
+        m_animation->setStartValue(m_scheduleSearchViewMaxWidth);
+        m_animation->start();
         m_opensearchflag = false;
     }
     updateHigh();

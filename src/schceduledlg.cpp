@@ -106,7 +106,6 @@ void CSchceduleDlg::setDate(const QDateTime &date)
         } else {
             m_currentDate.setTime(QTime(hours + 1, 0));
         }
-
     } else {
         m_currentDate.setTime(QTime(hours, minnutes));
     }

@@ -449,7 +449,7 @@ void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = true;
-        m_pressMove = true;
+        m_pressRemindTag = true;
         update();
         slotPress();
         emit signalPressScheduleShow(true, m_ScheduleInfo);
@@ -460,7 +460,7 @@ void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
-        m_pressMove = false;
+        m_pressRemindTag = false;
         update();
     }
 }
@@ -480,15 +480,15 @@ void CMonthSchceduleWidgetItem::enterEvent(QEvent *event)
 void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
 {
     m_hoverflag = false;
-    m_pressMove = false;
+    m_pressRemindTag = false;
     update();
 }
 
 void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
 {
-    if (m_pressMove) {
+    if (m_pressRemindTag) {
         emit signalPressScheduleShow(false);
-        m_pressMove = false;
+        m_pressRemindTag = false;
     }
 }
 

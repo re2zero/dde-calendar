@@ -224,7 +224,7 @@ private:
     bool                  m_hoverflag = false;
     bool                  m_highflag = false;
     int                   m_editType = 0;
-    bool                    m_pressMove = false;
+    bool                    m_pressRemindTag = false;
     CSchedulesColor gdcolor;
     QPropertyAnimation *m_properAnimationFirst = nullptr;
     QPropertyAnimation *m_properAnimationSecond = nullptr;

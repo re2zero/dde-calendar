@@ -33,6 +33,7 @@
 #include <DSegmentedControl>
 #include <DButtonBox>
 #include <QStackedLayout>
+#include <QPropertyAnimation>
 #include "scheduledatamanage.h"
 #include "animationstackedwidget.h"
 #include <DFrame>
@@ -46,6 +47,7 @@ class CSchceduleSearchView;
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
+    Q_PROPERTY(int schedulesearchWidth WRITE setSearchWidth)
 public:
     Calendarmainwindow(QWidget *w = nullptr);
     //void Invoke(const QString &mothodName, const QString &content);
@@ -53,6 +55,7 @@ public:
     void viewWindow(int type, QDateTime datetime);
     void UpdateJob();
     void updateHigh();
+    void setSearchWidth(int w);
 public slots:
     void slotTheme(int type);
     void OpenSchedule(QString job);
@@ -115,8 +118,9 @@ private:
     int                       m_priindex = 3; //默认打开日视图双击
     DFrame                    *m_transparentFrame;
     bool                      m_opensearchflag = false;
-
     QDate                     m_currentdate;
+    int                         m_scheduleSearchViewMaxWidth;
+    QPropertyAnimation          *m_animation;
 };
 
 #endif // CALENDARMAINWINDOW_H

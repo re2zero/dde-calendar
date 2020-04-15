@@ -35,8 +35,6 @@ CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
     m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);
     m_dayNumFont.setWeight(QFont::Light);
-
-
     // cells grid
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);

@@ -156,7 +156,6 @@ private:
     bool         m_vHoverflag;
     bool         m_vHighflag;
     bool            m_press = false;
-    bool                  m_pressMove = false;
     QRect       m_rect;
     DFontSizeManager::SizeType      m_sizeType  = DFontSizeManager::T8;
     QPropertyAnimation *m_properAnimationFirst;

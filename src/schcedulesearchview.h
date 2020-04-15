@@ -36,6 +36,7 @@ public:
     ~CSchceduleSearchView() Q_DECL_OVERRIDE;
     void setTheMe(int type = 0);
     void clearSearch();
+    void setMaxWidth(const int w);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalDate(QDate date);
@@ -68,6 +69,7 @@ private:
     QColor                m_lBackgroundcolor = Qt::white;
     QColor                m_ltextcolor = "#001A2E";
     QListWidgetItem      *m_currentItem;
+    int                                             m_maxWidth =200;
 };
 
 class CScheduleListWidget : public DListWidget

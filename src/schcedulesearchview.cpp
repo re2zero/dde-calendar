@@ -490,6 +490,11 @@ void CSchceduleSearchView::clearSearch()
     CScheduleDataManage::getScheduleDataManage()->setSearchResult(vScheduleInfo);
 }
 
+void CSchceduleSearchView::setMaxWidth(const int w)
+{
+    m_maxWidth = w;
+}
+
 void CSchceduleSearchView::updateDateShow()
 {
     m_currentItem = nullptr;
@@ -591,8 +596,8 @@ void CSchceduleSearchView::updateDateShow()
         //gwi->setForegroundRole(DPalette::Window);
         gwi->setFont(font);
         gwi->setText(tr("No search results"));
-        gwi->setFixedSize(m_gradientItemList->width() - 20, 450);
-        listItem->setSizeHint(QSize(m_gradientItemList->width(), 450)); //每次改变Item的高度
+        gwi->setFixedSize(m_maxWidth - 20, 450);
+        listItem->setSizeHint(QSize(m_maxWidth, 450)); //每次改变Item的高度
         //listItem->setBackgroundColor(Qt::white);
         listItem->setFlags(Qt::ItemIsTristate );
         m_gradientItemList->addItem(listItem);
@@ -622,7 +627,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     font.setPixelSize(12);
 
     gwi->setTimeC(m_btimecolor, font);
-    gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
+    gwi->setFixedSize(m_maxWidth - 20, 35);
     gwi->setData(gd, date);
     gwi->setRoundtype(rtype);
     connect(gwi, &CSchceduleSearchItem::signalsDelete, this, &CSchceduleSearchView::slotdeleteitem);
@@ -634,7 +639,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     //connect(gwi, SIGNAL(signalsDelete(QDate )), this, SIGNAL(signalDate(QDate )));
 
     QListWidgetItem *listItem = new QListWidgetItem;
-    listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
+    listItem->setSizeHint(QSize(m_maxWidth - 5, 36)); //每次改变Item的高度
     //listItem->setBackgroundColor(Qt::white);
     listItem->setFlags(Qt::ItemIsTristate );
     m_gradientItemList->addItem(listItem);
@@ -659,14 +664,14 @@ QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
         }
 
     }
-    gwi->setFixedSize(m_gradientItemList->width() - 20, 35);
+    gwi->setFixedSize(m_maxWidth - 20, 35);
     gwi->setDate(date);
     connect(gwi,
             &CSchceduleSearchDateItem::signalLabelScheduleHide,
             this,
             &CSchceduleSearchView::signalScheduleHide);
     QListWidgetItem *listItem = new QListWidgetItem;
-    listItem->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
+    listItem->setSizeHint(QSize(m_maxWidth - 5, 36)); //每次改变Item的高度
     //listItem->setBackgroundColor(Qt::white);
     listItem->setFlags(Qt::ItemIsTristate );
     m_gradientItemList->addItem(listItem);
@@ -744,17 +749,17 @@ void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
 {
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->item(i);
-        item11->setSizeHint(QSize(m_gradientItemList->width() - 5, 36)); //每次改变Item的高度
+        item11->setSizeHint(QSize(m_maxWidth - 5, 36)); //每次改变Item的高度
     }
     //remove
     for (int i = 0; i < m_labellist.count(); i++) {
-        m_labellist.at(i)->setFixedSize(m_gradientItemList->width() - 20, 35);
+        m_labellist.at(i)->setFixedSize(m_maxWidth - 20, 35);
         m_labellist.at(i)->update();
     }
     if (m_gradientItemList->count() == 1) {
         QListWidgetItem *item11 = m_gradientItemList->item(0);
-        item11->setSizeHint(QSize(m_gradientItemList->width(), height() * 0.7978)); //每次改变Item的高度
-        m_labellist.at(0)->setFixedSize(m_gradientItemList->width(), height() * 0.7978);
+        item11->setSizeHint(QSize(m_maxWidth, height() * 0.7978)); //每次改变Item的高度
+        m_labellist.at(0)->setFixedSize(m_maxWidth, height() * 0.7978);
         m_labellist.at(0)->update();
     }
     DWidget::resizeEvent(event);
