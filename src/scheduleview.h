@@ -75,8 +75,8 @@ protected:
 private:
     void initUI();
     void initConnection();
-    void updateSchedule(int id = 0);
-    void updateAllday(int id = 0);
+    void updateSchedule();
+    void updateAllday();
     int checkDay(int weekday);
     int  scheduleViewHegith();
 private:

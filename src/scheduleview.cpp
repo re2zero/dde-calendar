@@ -256,7 +256,7 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
             }
         }
     }
-    updateAllday(0);
+    updateAllday();
     m_graphicsView->update();
     m_graphicsView->getSence()->update();
     if (m_viewType == 1) {
@@ -316,9 +316,12 @@ void CScheduleView::setDate(QDate date)
 
 void CScheduleView::slotupdateSchedule(int id)
 {
-    updateSchedule(id);
-    updateAllday(id);
-    emit signalsUpdateShcedule(id);
+    updateSchedule();
+    updateAllday();
+    if (id !=1) {
+        emit signalsUpdateShcedule(id);
+    }
+
 }
 
 void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype)
@@ -572,8 +575,8 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate, m_rightmagin);
     update();
     QFrame::resizeEvent(event);
-    updateSchedule(0);
-    updateAllday(0);
+    updateSchedule();
+    updateAllday();
 }
 
 void CScheduleView::initUI()
@@ -638,8 +641,8 @@ void CScheduleView::initConnection()
 }
 void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
-    updateSchedule(0);
-    updateAllday(0);
+    updateSchedule();
+    updateAllday();
 }
 
 void CScheduleView::slotitem(void *item)
@@ -686,7 +689,7 @@ void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo 
     }
 }
 
-void CScheduleView::updateSchedule(int id)
+void CScheduleView::updateSchedule()
 {
     m_currentShcedule = nullptr;
     m_graphicsView->clearSchdule();
@@ -729,7 +732,7 @@ bool WScheduleDaysThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
     return s1.beginDateTime.daysTo(s1.endDateTime) > s2.beginDateTime.daysTo(s2.endDateTime);
 }
-void CScheduleView::updateAllday(int id)
+void CScheduleView::updateAllday()
 {
     QVector<ScheduleDateRangeInfo> out = m_vListSchedule;
     QVector<ScheduleDtailInfo> vListData;

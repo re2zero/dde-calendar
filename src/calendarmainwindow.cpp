@@ -726,12 +726,12 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     break;
     case 2: {
         m_weekWindow->setDate(m_currentdate);
-        m_weekWindow->slotupdateSchedule(0);
+        m_weekWindow->slotupdateSchedule(1);
     }
     break;
     case 3: {
         m_DayWindow->setDate(m_currentdate);
-        m_DayWindow->slotupdateSchedule(0);
+        m_DayWindow->slotupdateSchedule(1);
         m_searchflag = true;
     }
     break;
