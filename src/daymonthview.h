@@ -56,6 +56,7 @@ public:
     }
     void setTheMe(int type = 0);
     void setSearchFlag(bool flag);
+    void updateFlag();
 signals:
     void dateSelected(const QDate date, const CaHuangLiDayInfo &detail) const;
     void signalcurrentDateChanged(QDate date);

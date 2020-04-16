@@ -282,6 +282,7 @@ void CDayWindow::slotTransitSchedule(int id)
 {
     // m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
+    m_daymonthView->updateFlag();
 }
 
 void CDayWindow::slotTransitSearchSchedule(int id)

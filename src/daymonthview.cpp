@@ -266,9 +266,14 @@ void CDayMonthView::setSearchFlag(bool flag)
     m_searchflag = flag;
     update();
 }
+
+void CDayMonthView::updateFlag()
+{
+    getlineflag();
+    update();
+}
 void CDayMonthView::setCurrentDate(const QDate date, int type)
 {
-    qDebug() << "set current date " << date;
     if (date.year() < 1900) return;
     if (date == m_currentDate) {
         return;
@@ -278,9 +283,6 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     } else {
         m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
     }
-
-
-
     //if (date == QDate::currentDate()) {
     //     m_today->setEnabled(false);
     // } else {
@@ -737,12 +739,6 @@ void CDayMonthView::cellClicked(QWidget *cell)
         return;
 
     setSelectedCell(pos);
-
-//    // my gift eggs
-//    static int gift = 0;
-//    if (m_days[pos] == QDate(1993, 7, 28))
-//        if (++gift == 10)
-//            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
 }
 
 void CDayMonthView::setSelectedCell(int index)
