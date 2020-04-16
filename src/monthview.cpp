@@ -294,7 +294,7 @@ void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo>
         for (int i(0); i != 42; ++i) {
             m_cellList.at(i)->update();
         }
-    }    
+    }
     parentWidget()->setEnabled(true);
 }
 
@@ -850,9 +850,7 @@ void CMonthView::paintCell(QWidget *cell)
             painter.setBrush(QBrush(m_fillColor));
         }
 
-        if (m_currentDate.month() == m_days[pos].month()) {
-
-        } else {
+        if (m_currentDate.month() != m_days[pos].month()) {
             painter.setOpacity(0.4);
         }
         painter.setPen(Qt::NoPen);
@@ -1187,6 +1185,9 @@ void CMonthView::paintCell(QWidget *cell)
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
         painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        if (m_currentDate.month() != m_days[pos].month()) {
+            painter.setOpacity(0.4);
+        }
         if (ftype == 2) {
             QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
             pixmap.setDevicePixelRatio(devicePixelRatioF());
