@@ -3,6 +3,7 @@
 
 #include <DWidget>
 #include <DArrowRectangle>
+#include <DFrame>
 #include "schedulestructs.h"
 #include "scheduledatamanage.h"
 
@@ -28,7 +29,7 @@ private:
     CSchedulesColor gdcolor;
 };
 
-class CenterWidget : public DWidget
+class CenterWidget : public DFrame
 {
     Q_OBJECT
     Q_DISABLE_COPY(CenterWidget)

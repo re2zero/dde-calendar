@@ -9,12 +9,12 @@ SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
 {
     m_centerWidget->setFixedWidth(207);
     m_centerWidget->setFixedHeight(57);
-//    m_centerWidget->setTheMe(DGuiApplicationHelper::instance()->themeType());
     setContent(m_centerWidget);
     this->resizeWithContent();
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
                      m_centerWidget,
                      &CenterWidget::setTheMe);
+    m_centerWidget->setTheMe(DGuiApplicationHelper::instance()->themeType());
 }
 
 SchecduleRemindWidget::~SchecduleRemindWidget()
@@ -32,9 +32,8 @@ void SchecduleRemindWidget::setData(const ScheduleDtailInfo &vScheduleInfo, cons
 }
 
 CenterWidget::CenterWidget(DWidget *parent)
-    : DWidget (parent)
+    : DFrame(parent)
 {
-    setTheMe(0);
     textfont.setFamily("SourceHanSansSC-Medium");
     textfont.setWeight(QFont::Medium);
 //    DFontSizeManager::instance()->bind(this,DFontSizeManager::T8);
@@ -66,7 +65,6 @@ void CenterWidget::setTheMe(const int type)
         timeColor = QColor("#414D68");
         timeColor.setAlphaF(0.7);
     }
-
     update();
 }
 
