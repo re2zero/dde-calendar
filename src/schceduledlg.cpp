@@ -670,7 +670,7 @@ void CSchceduleDlg::initUI()
     conttelabellayout->setMargin(0);
     m_contentLabel = new QLabel();
     QFontMetrics fontWidth_contentlabel(mlabelF);
-    QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"),Qt::ElideRight,78);
+    QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"),Qt::ElideRight,68);
     m_contentLabel->setText(str_contentlabel);
     m_contentLabel->setFont(mlabelF);
     m_contentLabel->setPalette(pa);
@@ -789,7 +789,7 @@ void CSchceduleDlg::initUI()
     rminQLabellayout->setMargin(0);
     m_remindSetLabel = new QLabel();
     QFontMetrics fontWidth_remindSetLabel(mlabelF);
-    QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"),Qt::ElideRight,78);
+    QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"),Qt::ElideRight,68);
     m_remindSetLabel->setText(str_remindSetLabel);
     m_remindSetLabel->setFont(mlabelF);
     m_remindSetLabel->setPalette(pa);
@@ -830,7 +830,7 @@ void CSchceduleDlg::initUI()
     endrepeatLabellayout->setMargin(0);
     m_endrepeatLabel = new QLabel();
     QFontMetrics fontWidth_endrepeatLabel(mlabelF);
-    QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"),Qt::ElideRight,78);
+    QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"),Qt::ElideRight,68);
     m_endrepeatLabel->setText(str_endrepeatLabel);
     m_endrepeatLabel->setFont(mlabelF);
     m_endrepeatLabel->setPalette(pa);
