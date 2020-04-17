@@ -813,7 +813,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
         painter.setPen(m_btimecolor);
         painter.setFont(font);
         if (adjustPos) {
-            painter.drawText(QRect(25 - 8, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
+            painter.drawText(QRect(25 - 18, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
         } else {
             painter.drawText(QRect(25, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
         }
@@ -833,7 +833,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 
             painter.setPen(Qt::NoPen);
             if (adjustPos) {
-                painter.drawEllipse(QRect(25 - 8, bheight + (labelheight - 8) / 2, 8, 8));
+                painter.drawEllipse(QRect(25 - 18, bheight + (labelheight - 8) / 2, 8, 8));
             } else {
                 painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
             }
@@ -866,7 +866,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
         }
 
         if (adjustPos) {
-            painter.drawText(QRect(41 - 8, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
+            painter.drawText(QRect(41 - 18, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
         } else {
             painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
         }
@@ -892,7 +892,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 
             QFontMetrics fm2 = painter.fontMetrics();
             if (adjustPos) {
-                painter.drawText(QRect(width() - 70 - 8, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
+                painter.drawText(QRect(width() - 70 - 18, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
             } else {
                 painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
             }
