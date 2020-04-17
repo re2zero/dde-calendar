@@ -276,8 +276,12 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
                 if (scheduleInfolist.isEmpty()) {
                     m_graphicsView->setTime(QTime(13, 0));
                 } else {
-                    qSort(scheduleInfolist.begin(), scheduleInfolist.end()
-                          , MScheduleTimeThan);
+//                    qSort(scheduleInfolist.begin(), scheduleInfolist.end()
+//                          , MScheduleTimeThan);
+                    qSort(scheduleInfolist.begin(),scheduleInfolist.end(),
+                    [](const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2) ->bool {
+                        return s1.beginDateTime < s2.beginDateTime;
+                    });
                     QTime time = scheduleInfolist.at(0).beginDateTime.time();
                     if (scheduleInfolist.at(0).beginDateTime.date() != m_beginDate) {
                         time = QTime(0, 0);
