@@ -31,6 +31,7 @@
 #include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
+#include <DGuiApplicationHelper>
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
 DGUI_USE_NAMESPACE
@@ -41,6 +42,10 @@ CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent /*= nullptr*/ ): DLa
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
+    setTheMe(DGuiApplicationHelper::instance()->themeType());
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
+                     this,
+                     &CSchceduleSearchItem::setTheMe);
     //setFlat(true);
 
 }
@@ -79,6 +84,40 @@ void CSchceduleSearchItem::setRoundtype(int rtype)
 {
     m_roundtype = rtype;
     update();
+}
+
+void CSchceduleSearchItem::setTheMe(int type)
+{
+    if (type == 2) {
+        m_presscolor.background = "#FFFFFF";
+        m_presscolor.background.setAlphaF(0.2);
+        m_presscolor.timeColor = "#526A7F";
+        m_presscolor.timeColor = "#6D7C88";
+        m_presscolor.timeColor.setAlphaF(1);
+        m_presscolor.textColor = "#C0C6D4";
+        m_presscolor.textColor.setAlphaF(1);
+
+        m_hovercolor.background= "#FFFFFF";
+        m_hovercolor.background.setAlphaF(0.1);
+        m_hovercolor.timeColor = "#6D7C88";
+        m_hovercolor.timeColor.setAlphaF(1);
+        m_hovercolor.textColor = "#C0C6D4";
+        m_hovercolor.textColor.setAlphaF(1);
+    } else {
+        m_presscolor.background = "#0081FF";
+        m_presscolor.background.setAlphaF(1);
+        m_presscolor.timeColor = "#FFFFFF";
+        m_presscolor.timeColor.setAlphaF(1);
+        m_presscolor.textColor = "#FFFFFF";
+        m_presscolor.textColor.setAlphaF(1);
+
+        m_hovercolor.background= "#000000";
+        m_hovercolor.background.setAlphaF(0.2);
+        m_hovercolor.timeColor = "#526A7F";
+        m_hovercolor.timeColor.setAlphaF(1);
+        m_hovercolor.textColor = "#414D68";
+        m_hovercolor.textColor.setAlphaF(1);
+    }
 }
 void CSchceduleSearchItem::slotEdit()
 {
@@ -215,13 +254,18 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 
     QPainter painter(this);
     QRect fillRect = QRect(0, 0, labelwidth, labelheight);
-    painter.setRenderHints(QPainter::HighQualityAntialiasing);
     QColor bcolor = m_Backgroundcolor;
+    QColor textcolor = m_ttextcolor;
+    QColor timecolor = m_timecolor;
     if (m_hoverflag) {
-        bcolor.setAlphaF(0.1);
+        bcolor = m_hovercolor.background;
+        textcolor = m_hovercolor.textColor;
+        timecolor = m_hovercolor.timeColor;
     }
     if (m_selectflag) {
-        bcolor.setAlphaF(0.2);
+        bcolor = m_presscolor.background;
+        textcolor = m_presscolor.textColor;
+        timecolor = m_presscolor.timeColor;
     }
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
@@ -263,12 +307,12 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painterPath.closeSubpath();
     painter.drawPath(painterPath);
     painter.restore();
-    bcolor = m_timecolor;
+
 //    if (m_selectflag) {
 //        bcolor.setAlphaF(0.6);
 //    }
     painter.setFont(m_timefont);
-    painter.setPen(bcolor);
+    painter.setPen(timecolor);
 
     QDate begindate  = m_ScheduleInfo.beginDateTime.date();
     QDate enddate = m_ScheduleInfo.endDateTime.date();
@@ -303,11 +347,11 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painter.restore();
 
     painter.setFont(m_tfont);
-    bcolor = m_ttextcolor;
+
 //    if (m_selectflag) {
 //        bcolor.setAlphaF(0.6);
 //    }
-    painter.setPen(bcolor);
+    painter.setPen(textcolor);
     int tilenameW = labelwidth - 91;
     QFontMetrics fm = painter.fontMetrics();
     QString tStitlename = m_ScheduleInfo.titleName;

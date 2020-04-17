@@ -36,6 +36,7 @@
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
+#include "monthview.h"
 
 DGUI_USE_NAMESPACE
 
@@ -127,6 +128,7 @@ void CMonthSchceduleWidgetItem::setRectOffset(int offset)
                , m_rect.y() - offset / 2
                , m_rect.width() + offset * 2
                , m_rect.height() + offset);
+    m_widthoffset = offset*2;
     this->setGeometry(rect);
     this->setFixedSize(rect.width(), rect.height());
 }
@@ -153,14 +155,14 @@ void CMonthSchceduleWidgetItem::setEndValue(int offset)
 
 void CMonthSchceduleWidgetItem::slotEdit()
 {
-    emit signalViewtransparentFrame(1);
-    CSchceduleDlg dlg(0, this);
+    CMonthView *w = qobject_cast<CMonthView *>(this->parent());
+    CSchceduleDlg dlg(0, w);
+    connect(&dlg, &CSchceduleDlg::signalScheduleUpdate, w, &CMonthView::slotSchceduleUpdate);
+    connect(&dlg, &CSchceduleDlg::signalScheduleUpdate, w, &CMonthView::slotdelete);
+    connect(&dlg, &CSchceduleDlg::signalViewtransparentFrame,
+            w, &CMonthView::signalViewtransparentFrame);
     dlg.setData(m_ScheduleInfo);
-    if (dlg.exec() == DDialog::Accepted) {
-
-        emit signalsEdit(this, 1);
-    }
-    emit signalViewtransparentFrame(0);
+    dlg.exec();
 }
 
 void CMonthSchceduleWidgetItem::slotDelete()
@@ -232,7 +234,7 @@ void CMonthSchceduleWidgetItem::slotDelete()
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
             }
         } else {
-            CSchceduleCtrlDlg msgBox(this);
+            CSchceduleCtrlDlg msgBox;
             //msgBox.setWindowFlags(Qt::FramelessWindowHint);
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
             msgBox.setText(tr("You are deleting an event."));
@@ -353,7 +355,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             tstr = tstr + "...";
         }
 
-        painter.drawText(QRect(m_pos.x(), 1, labelwidth - m_pos.x(),
+        painter.drawText(QRect(m_pos.x(), 1, labelwidth - m_pos.x()-m_widthoffset,
                                labelheight - m_pos.y() + 3 * avge ),
                          Qt::AlignLeft | Qt::AlignVCenter, tstr);
 
@@ -418,7 +420,7 @@ void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 
     } else {
         emit signalUpdateUI(0);
-        DMenu Context(this);
+        DMenu Context(qobject_cast<QWidget *>(this->parent()));
         Context.setAttribute(Qt::WA_DeleteOnClose);
         Context.addAction(m_editAction);
         Context.addAction(m_deleteAction);
@@ -432,13 +434,14 @@ void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
     //if (m_editType == 0) return;
     if (event->button() == Qt::LeftButton) {
         emit signalPressScheduleShow(false);
-        emit signalViewtransparentFrame(1);
-        CMySchceduleView dlg(m_ScheduleInfo, nullptr);
-//        dlg.setSchedules(m_ScheduleInfo);
-        connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
+        CMonthView *w = qobject_cast<CMonthView *>(this->parent());
+        CMySchceduleView dlg(m_ScheduleInfo, w);
+
+        connect(&dlg, &CMySchceduleView::signalsEditorDelete, w, &CMonthView::slotSchceduleUpdate);
+        connect(&dlg, &CMySchceduleView::signalsEditorDelete, w, &CMonthView::slotdelete);
+        connect(&dlg, &CMySchceduleView::signalViewtransparentFrame,
+                w, &CMonthView::signalViewtransparentFrame);
         dlg.exec();
-        emit signalViewtransparentFrame(0);
-        disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthSchceduleWidgetItem::slotDoubleEvent);
     }
 }
 
@@ -1205,7 +1208,6 @@ CWeekScheduleView::~CWeekScheduleView()
 
 void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int position, const int count)
 {
-
     int endPos = position+count;
     Q_ASSERT(!(endPos>data.size()));
     m_ScheduleInfo.clear();
@@ -1220,7 +1222,6 @@ void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int 
     endDate = data.at(position+count -1).date;
     m_colum = count;
     updateSchedule();
-
 }
 
 void CWeekScheduleView::setHeight(const int ScheduleHeight, const int DayHeigth)

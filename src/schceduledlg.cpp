@@ -65,6 +65,11 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
     setFixedSize(438, 460);
 }
 
+CSchceduleDlg::~CSchceduleDlg()
+{
+    emit signalViewtransparentFrame(0);
+}
+
 void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
 {
     m_scheduleDtailInfo = info;
@@ -92,7 +97,7 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     int hours = date.time().hour();
     int minnutes = date.time().minute() % 15;
     if (minnutes != 0) {
-        minnutes = date.time().minute() / 15 * 15 + 15;
+        minnutes = date.time().minute() / 15 * 15;
     }
     if (minnutes == 60) {
         if (hours + 1 == 24) {
@@ -428,6 +433,7 @@ void CSchceduleDlg::slotOkBt()
         }
     }
     accept();
+    emit  signalScheduleUpdate();
 }
 
 void CSchceduleDlg::slotTextChange()
@@ -593,6 +599,12 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
     return QDialog::eventFilter(obj, pEvent);
 }
 
+void CSchceduleDlg::showEvent(QShowEvent *event)
+{
+    Q_UNUSED(event);
+    emit signalViewtransparentFrame(1);
+}
+
 void CSchceduleDlg::initUI()
 {
     m_titleLabel = new QLabel(this);
@@ -645,6 +657,7 @@ void CSchceduleDlg::initUI()
     m_typeLabel->setFixedSize(78, 36);
     m_typeComBox = new DComboBox();
     m_typeComBox->setFixedSize(319, 36);
+    m_typeComBox->setIconSize(QSize(20,20));
     m_typeComBox->insertItem(0,
                              QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
                                    .scaled(QSize(20, 20) * devicePixelRatioF())),

@@ -46,10 +46,14 @@ class CSchceduleDlg : public DDialog
     Q_OBJECT
 public:
     CSchceduleDlg(int type, QWidget *parent = nullptr, const bool isAllDay = true);
+    ~CSchceduleDlg() Q_DECL_OVERRIDE;
     void setData(const ScheduleDtailInfo &info);
     void setDate(const QDateTime &date);
     ScheduleDtailInfo getScheduleData();
     void setAllDay(bool flag);
+signals:
+    void signalViewtransparentFrame(int type);
+    void signalScheduleUpdate(int id = 0);
 public slots:
     void slotCancelBt();
     void slotOkBt();
@@ -62,8 +66,8 @@ public slots:
 
 protected:
 //     void focusInEvent(QFocusEvent *event);
-    bool eventFilter(QObject *obj, QEvent *pEvent);
-
+    bool eventFilter(QObject *obj, QEvent *pEvent) Q_DECL_OVERRIDE;
+    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 private:
     void initUI();
     void initConnection();

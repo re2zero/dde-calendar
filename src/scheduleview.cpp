@@ -141,11 +141,22 @@ void CScheduleView::updateHigh()
 }
 bool MScheduleTimeThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
-    if (s1.beginDateTime.secsTo(s1.endDateTime) == s2.beginDateTime.secsTo(s2.endDateTime)) {
-        return s1.beginDateTime < s2.beginDateTime;
+//    if (s1.beginDateTime.secsTo(s1.endDateTime) == s2.beginDateTime.secsTo(s2.endDateTime)) {
+//        return s1.beginDateTime < s2.beginDateTime;
+//    } else {
+//        return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
+//    }
+    if (s1.beginDateTime.date().daysTo(s1.endDateTime.date())==
+            s2.beginDateTime.date().daysTo(s2.endDateTime.date())) {
+        if (s1.beginDateTime == s2.beginDateTime) {
+            return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
+        } else {
+            return s1.beginDateTime < s2.beginDateTime;
+        }
     } else {
-        return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
+        return s1.beginDateTime.date().daysTo(s1.endDateTime.date())>s2.beginDateTime.date().daysTo(s2.endDateTime.date());
     }
+
 }
 void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
                                                QVector<ScheduleclassificationInfo> &info)
@@ -164,30 +175,35 @@ void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
     qSort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
     for (int k = 0; k < schedulelist.count(); k++) {
         int i = 0;
+        QDateTime endTime = schedulelist.at(k).endDateTime;
+        QDateTime begTime = schedulelist.at(k).beginDateTime;
+        if (begTime.date().daysTo(endTime.date())==0 && begTime.time().secsTo(endTime.time())<m_minTime) {
+            endTime = begTime.addSecs(m_minTime);
+        }
         for (; i < info.count(); i++) {
             if ((schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
                     schedulelist.at(k).beginDateTime <= info.at(i).enddate) ||
-                    (schedulelist.at(k).endDateTime >= info.at(i).begindate &&
-                     schedulelist.at(k).endDateTime <= info.at(i).enddate) ||
+                    (endTime >= info.at(i).begindate &&
+                     endTime <= info.at(i).enddate) ||
                     (schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
-                     schedulelist.at(k).endDateTime <= info.at(i).enddate) ||
+                     endTime <= info.at(i).enddate) ||
                     (schedulelist.at(k).beginDateTime <= info.at(i).begindate &&
-                     schedulelist.at(k).endDateTime >= info.at(i).enddate)) {
+                     endTime >= info.at(i).enddate)) {
                 break;
             }
         }
         if (i == info.count()) {
             ScheduleclassificationInfo firstschedule;
             firstschedule.begindate = schedulelist.at(k).beginDateTime;
-            firstschedule.enddate = schedulelist.at(k).endDateTime;
+            firstschedule.enddate = endTime;
             firstschedule.vData.append(schedulelist.at(k));
             info.append(firstschedule);
         } else {
             if (schedulelist.at(k).beginDateTime < info.at(i).begindate) {
                 info[i].begindate = schedulelist.at(k).beginDateTime;
             }
-            if (schedulelist.at(k).endDateTime > info.at(i).enddate) {
-                info[i].enddate = schedulelist.at(k).endDateTime;
+            if (endTime > info.at(i).enddate) {
+                info[i].enddate = endTime;
             }
             info[i].vData.append(schedulelist.at(k));
         }
@@ -207,7 +223,6 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
 
                 QVector<ScheduleclassificationInfo> info;
                 scheduleClassificationType(scheduleInfolist, info);
-
                 QDate tdate = m_beginDate.addDays(i);
                 for (int m = 0; m < info.count(); m++) {
                     int tnum = info.at(m).vData.count();
@@ -848,11 +863,15 @@ int CScheduleView::checkDay(int weekday)
 
 int CScheduleView::scheduleViewHegith()
 {
+//    rHeight = m_height * ((ScheduleET - ScheduleBT) / 86400.0)
+
     int mheight = 0;
     if (m_viewType == 0) {
         mheight = 24 * (0.0968 * height() + 0.5);
     } else {
         mheight = 24 * (0.083 * height() + 0.5);
     }
+    //现在最小高度为20;
+    m_minTime = (20.0/mheight)*86400;
     return  mheight;
 }

@@ -85,7 +85,6 @@ protected:
 class CSchceduleSearchItem : public DLabel
 {
     Q_OBJECT
-
 public:
     explicit CSchceduleSearchItem(QWidget *parent = nullptr);
     void setBackgroundColor(QColor color1);
@@ -94,6 +93,7 @@ public:
     void setTimeC(QColor tcolor, QFont font);
     void setData(ScheduleDtailInfo  vScheduleInfo, QDate date);
     void setRoundtype(int rtype);
+    void setTheMe(int type = 0);
     const ScheduleDtailInfo &getData() const
     {
         return m_ScheduleInfo;
@@ -117,10 +117,17 @@ protected:
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
 private:
+    struct ColorStatus {
+        QColor   background;
+        QColor   timeColor;
+        QColor   textColor;
+    };
     ScheduleDtailInfo          m_ScheduleInfo;
     QAction              *m_editAction;
     QAction              *m_deleteAction;
     QColor                m_Backgroundcolor;
+    ColorStatus                m_presscolor;
+    ColorStatus                m_hovercolor;
     QColor                m_timecolor;
     QColor                m_splitlinecolor;
     QFont                 m_timefont;

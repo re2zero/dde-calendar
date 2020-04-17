@@ -99,7 +99,8 @@ public:
 public:
     void setData(QVector<ScheduleDateRangeInfo> &data,const int position,const int count =7);
     void setHeight(const int ScheduleHeight,const int DayHeigth);
-    QVector<RowScheduleInfo> getMScheduleInfo() const{
+    QVector<RowScheduleInfo> getMScheduleInfo() const
+    {
         return m_MScheduleInfo;
     }
     void updateSchedule();
@@ -208,6 +209,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
+    int                     m_widthoffset = 0;
     QAction              *m_editAction;
     QAction              *m_deleteAction;
     bool                  m_GradientFlag;

@@ -57,6 +57,11 @@ CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget 
 
     //setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
 }
+
+CMySchceduleView::~CMySchceduleView()
+{
+    emit signalViewtransparentFrame(0);
+}
 void CMySchceduleView::AutoFeed(QString text)
 {
     QString strText = text;
@@ -115,6 +120,12 @@ void CMySchceduleView::AutoFeed(QString text)
 //    m_schceduleLabel->setText(strText);
     m_schceduleLabel->setText(text);
     m_schceduleLabel->adjustSize();
+}
+
+void CMySchceduleView::showEvent(QShowEvent *event)
+{
+    Q_UNUSED(event);
+    emit signalViewtransparentFrame(1);
 }
 
 void CMySchceduleView::slotEditBt()
