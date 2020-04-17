@@ -456,6 +456,12 @@ void CYearView::paintCell(QWidget *cell)
 
     CellColor currentColor;
     const int r = cell->width() > cell->height() ? cell->height() * 0.9 : cell->width() * 0.9 ;
+    int fontsize = 12 + (r - 18) *6/ 17;
+    if (fontsize <12) {
+        fontsize = 12;
+    }
+    m_dayNumFont.setPixelSize(fontsize);
+    m_hightFont.setPixelSize(fontsize);
     const int x = ( cell->width() - r ) / 2;
     const int y = (cell->height() - r) / 2;
     QRect fillRect = QRect(x, y, r, r);
@@ -509,9 +515,8 @@ void CYearView::paintCell(QWidget *cell)
 
         const QString dayNum = getCellDayNum(pos);
         painter.setPen(m_highTextColor);
-        QRect test;
         painter.setFont(m_hightFont);
-        painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
+        painter.drawText(fillRect, Qt::AlignCenter, dayNum);
 
     } else {
         //    painter.drawRoundedRect(cell->rect(), 4, 4);
@@ -612,12 +617,8 @@ void CYearView::paintCell(QWidget *cell)
             else
                 painter.setPen(m_notCurrentTextColor);
         }
-
-        //    painter.drawRect(rect);
-        QRect test;
         painter.setFont(m_dayNumFont);
-
-        painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
+        painter.drawText(fillRect, Qt::AlignCenter, dayNum);
         if (m_vlineflag.count() == 42) {
             if (m_vlineflag[pos]) {
                 painter.save();
@@ -679,11 +680,11 @@ void CYearView::resizeEvent(QResizeEvent *event)
     int rightmagin = leftmagin;
     int topmagin = height() * 0.02955 + 0.5;
     int buttonmagin = height() * 0.044 + 0.5;
-    cellwidth = (width() - 2 * leftmagin) / 7;
-    cellheight = (height() -  (24 + (height() - 159) / 12 - topmagin - buttonmagin)) / 6;
+//    cellwidth = (width() - 2 * leftmagin) / 7;
+//    cellheight = (height() -  (24 + (height() - 159) / 12 - topmagin - buttonmagin)) / 6;
     m_hhLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
-    m_dayNumFont.setPixelSize(12 + (height() - 159) / 22.33);
-    m_hightFont.setPixelSize(12 + (height() - 159) / 22.33);
+//    m_dayNumFont.setPixelSize(12 + (height() - 159) / 22.33);
+//    m_hightFont.setPixelSize(12 + (height() - 159) / 22.33);
     m_momthFont.setPixelSize(16 + (height() - 159) / 16.75);
     m_currentMouth->setTextFont(m_momthFont);
     m_currentMouth->setFixedHeight(24 + (height() - 159) / 12);
