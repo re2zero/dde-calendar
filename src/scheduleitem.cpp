@@ -294,9 +294,9 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
                     int widthT = fm.width(tstr) - 5;
                     if (widthT >= rect.width()) {
                         if (i < 1) {
-                            tstr.chop(7);
+                            tstr.chop(1);
                         } else {
-                            tstr.chop(5);
+                            tstr.chop(2);
                         }
                         tstr = tstr + "...";
                         break;
@@ -312,13 +312,14 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 //                    }
 //                }
 
+                QString tstrs = fontmetris.elidedText(str,Qt::ElideRight,rect.width() - 5);
                 painter->drawText(
-                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, h),
-                    Qt::AlignLeft, tstr);
+                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 5, rect.width() - 5, h),
+                    Qt::AlignLeft, tstrs);
 
             } else {
                 painter->drawText(
-                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y(), rect.width() - 5, h),
+                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 5, rect.width() - 5, h),
                     Qt::AlignLeft, str);
             }
 
@@ -333,22 +334,26 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->save();
 
         font = DFontSizeManager::instance()->get(DFontSizeManager::T6, font);
-        font.setLetterSpacing(QFont::PercentageSpacing, 120);
+        font.setLetterSpacing(QFont::PercentageSpacing, 105);
 //        font.setPixelSize(14);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
 
         QRect textRect = QRect(rect.x(),
-                               rect.y(),
+                               rect.y() + 5,
                                rect.width() - m_offset,
                                rect.height() - m_offset);
-        splitText(font, textRect.width() - tmagin - 5, textRect.height() - 20, m_scheduleInfo.titleName,
-                  liststr);
+        splitText(font, textRect.width() - tmagin - 8, textRect.height() - 20, m_scheduleInfo.titleName,
+                  liststr, fm);
         for (int i = 0; i < liststr.count(); i++) {
+            if ((20 + timeTextHight + (i + 1) * (h - 3)) > rect.height())
+                return;
             painter->drawText(
-                QRect(textRect.topLeft().x() + tmagin, textRect.topLeft().y() + 20 + timeTextHight + i * 20,
-                      textRect.width() - 2, h),
+                QRect(textRect.topLeft().x() + tmagin,
+                      textRect.topLeft().y() + 20 + timeTextHight + i * (h - 3),
+                      textRect.width() - 2,
+                      h ),
                 Qt::AlignLeft, liststr.at(i));
         }
         painter->restore();
@@ -372,13 +377,15 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     }
 }
 
-void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList &liststr)
+void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm)
 {
     if (str.isEmpty())
         return;
     QFontMetrics fontmetris(font);
     // int widthT = fontmetris.width(str);
-    int heightT = fontmetris.height();
+    int heightT = fontm.height();
+    int wi = fontm.width(str);
+
     // int singlecharw = widthT * 1.0 / str.count() + 1;
     // int rcharcount = w * 1.0 / singlecharw;
 #if 0
@@ -426,7 +433,6 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
 #if 1
     QString tstr;
     QStringList tliststr;
-    int tcount = 0;
     for (int i = 0; i < str.count(); i++) {
         tstr.append(str.at(i));
         int widthT = fontmetris.width(tstr) + 5;
@@ -441,14 +447,30 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
     }
     tliststr.append(tstr);
     if (w < 30) {
-//        if (tliststr.isEmpty()) {
-        if (h < 23)
-            liststr.append("");
-        else
-            liststr.append("...");
-//        } else {
-//            liststr.append(tliststr.at(0) + "...");
-//        }
+        QFontMetrics fm_s(fontm);
+        QFontMetrics f_st(font);
+        QString s = tliststr.at(0) + "...";
+//        int str_width = fm_s.width(s);
+//        int st_width = f_st.width(s);
+        if (h < 23) {
+            tliststr.append("");
+        } else {
+            if (tliststr.isEmpty()) {
+                liststr.append("");
+            } else {
+                QString c = str.at(0);
+                QString s = c + "...";
+                QFontMetrics fm(font);
+                while (f_st.width(s) > w && f_st.width(s) >24) {
+                    s.chop(1);
+                }
+//                if (wi > 72) {
+//                    liststr.append("...");
+//                } else {
+                liststr.append(s);
+//                }
+            }
+        }
     } else {
         for (int i = 0; i < tliststr.count(); i++) {
             if ((i + 1) * heightT <= h) {
@@ -456,20 +478,78 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
             } else {
                 if (i == 0) {
                     break;
-                    // liststr.append("...");
                 } else {
-                    tstr = liststr.at(i - 1);
-                    for (int i = 0; i < tstr.count(); i++ ) {
-                        if (fontmetris.width(tstr) + 5 > w)
-                            tstr.chop(1);
+                    QString s;
+                    QFontMetrics fm_str(fontm);
+                    if (i == tliststr.count())
+                        s = fontm.elidedText(tliststr.at(i - 1), Qt::ElideRight, w);
+                    else {
+                        s = fontm.elidedText(tliststr.at(i - 1) + "...", Qt::ElideRight, w);
                     }
-//                    if(fontmetris.width(tstr) < w)
-//                        tstr.chop(3);
-                    liststr[i - 1] = tstr + "...";
+                    liststr.removeAt(i - 1);
+                    liststr.append(s);
+                    break;
                 }
-                break;
             }
         }
     }
+//    应该先判断高度在判断宽度
+//    tliststr.append(tstr);
+//    if (w < 30) {
+//        if (h < 23) {
+//            tliststr.append("");
+//        } else {
+//            if (tliststr.isEmpty()) {
+//                liststr.append("");
+//            } else {
+//                QString c = str.at(0);
+//                QString s = c + "...";
+//                QFontMetrics fm(font);
+//                qDebug() << fm.width(c+"...") << w;
+//                while (fm.width(s) > w && fm.width(s) >24) {
+//                    s.chop(1);
+//                }
+//                if (wi > 72) {
+//                    liststr.append("...");
+//                } else {
+//                    liststr.append(/*tliststr.at(0) + "..."*/s);
+//                }
+//                qDebug() << tliststr.at(0) << str;
+//            }
+//        }
+//    } else {
+////        for (int i = 0; i < tliststr.count(); i++) {
+////            if ((i + 1) * heightT <= h) {
+////                liststr.append(tliststr.at(i));
+////            } else {
+////                if (i == 0) {
+////                    break;
+////                    // liststr.append("...");
+////                } else {m_selectflag
+////                    tstr = liststr.at(i - 1);
+////                    tstr.chop(3);
+////                    liststr[i - 1] = tstr + "...";
+////                    qDebug() << tstr << "===";
+//        for (int i = 0; i < tliststr.count(); i++) {
+//            if ((i + 1) * heightT <= h) {
+//                liststr.append(tliststr.at(i));
+//            } else {
+//                if (i == 0) {
+//                    break;
+//                    // liststr.append("...");
+//                } else {
+//                    tstr = liststr.at(i - 1);
+//                    for (int i = 0; i < tstr.count(); i++ ) {
+//                        if (fontmetris.width(tstr) + 5 > w)
+//                            tstr.chop(1);
+//                    }
+////                    if (fontmetris.width(tstr) < w)
+////                        tstr.chop(3);
+//                    liststr[i - 1] = tstr + "...";
+//                }
+//                break;
+//            }
+//        }
+//    }
 #endif
 }
