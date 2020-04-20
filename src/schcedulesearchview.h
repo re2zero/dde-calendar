@@ -87,6 +87,7 @@ protected:
 class CSchceduleSearchItem : public DLabel
 {
     Q_OBJECT
+    enum MouseStatus {M_NONE,M_PRESS,M_HOVER};
 public:
     explicit CSchceduleSearchItem(QWidget *parent = nullptr);
     void setBackgroundColor(QColor color1);
@@ -136,8 +137,9 @@ private:
     QColor                m_ttextcolor;
     QFont                 m_tfont;
     QDate                 m_date;
-    bool                  m_selectflag = false;
-    bool                  m_hoverflag = false;
+    MouseStatus             m_mouseStatus;
+//    bool                  m_selectflag = false;
+//    bool                  m_hoverflag = false;
     int m_roundtype = 1;
     int                      m_radius = 8;
     int                      m_borderframew = 0;

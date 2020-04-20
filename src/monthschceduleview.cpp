@@ -432,6 +432,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 }
 void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {
+    emit signalPressScheduleShow(false);
     if (m_ScheduleInfo.type.ID == 4) {
 
     } else {

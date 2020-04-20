@@ -46,6 +46,7 @@ CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent): DLabel(parent)
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
                      this,
                      &CSchceduleSearchItem::setTheMe);
+    m_mouseStatus = M_NONE;
     //setFlat(true);
 
 }
@@ -89,16 +90,15 @@ void CSchceduleSearchItem::setRoundtype(int rtype)
 void CSchceduleSearchItem::setTheMe(int type)
 {
     if (type == 2) {
-        m_presscolor.background = "#FFFFFF";
-        m_presscolor.background.setAlphaF(0.2);
-        m_presscolor.timeColor = "#526A7F";
-        m_presscolor.timeColor = "#6D7C88";
+        m_presscolor.background = "#0059D2";
+        m_presscolor.background.setAlphaF(1);
+        m_presscolor.timeColor = "#FFFFFF";
         m_presscolor.timeColor.setAlphaF(1);
-        m_presscolor.textColor = "#C0C6D4";
+        m_presscolor.textColor = "#FFFFFF";
         m_presscolor.textColor.setAlphaF(1);
 
         m_hovercolor.background= "#FFFFFF";
-        m_hovercolor.background.setAlphaF(0.1);
+        m_hovercolor.background.setAlphaF(0.2);
         m_hovercolor.timeColor = "#6D7C88";
         m_hovercolor.timeColor.setAlphaF(1);
         m_hovercolor.textColor = "#C0C6D4";
@@ -257,15 +257,25 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     QColor bcolor = m_Backgroundcolor;
     QColor textcolor = m_ttextcolor;
     QColor timecolor = m_timecolor;
-    if (m_hoverflag) {
+    switch (m_mouseStatus) {
+    case M_NONE: {
+        bcolor = m_Backgroundcolor;
+        textcolor = m_ttextcolor;
+        timecolor = m_timecolor;
+    }
+    break;
+    case M_HOVER: {
         bcolor = m_hovercolor.background;
         textcolor = m_hovercolor.textColor;
         timecolor = m_hovercolor.timeColor;
     }
-    if (m_selectflag) {
+    break;
+    case M_PRESS: {
         bcolor = m_presscolor.background;
         textcolor = m_presscolor.textColor;
         timecolor = m_presscolor.timeColor;
+    }
+    break;
     }
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
@@ -398,30 +408,30 @@ void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 void CSchceduleSearchItem::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
+        m_mouseStatus = M_PRESS;
+        update();
         emit signalSelectDate(m_date);
         emit signalSelectSchedule(m_ScheduleInfo);
-        m_selectflag = true;
-        update();
     }
 }
 
 void CSchceduleSearchItem::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        m_selectflag = false;
+        m_mouseStatus = M_HOVER;
         update();
     }
 }
 
 void CSchceduleSearchItem::enterEvent(QEvent *event)
 {
-    m_hoverflag = true;
+    m_mouseStatus = M_HOVER;
     update();
 }
 
 void CSchceduleSearchItem::leaveEvent(QEvent *event)
 {
-    m_hoverflag = false;
+    m_mouseStatus = M_NONE;
     update();
 }
 CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
@@ -782,7 +792,6 @@ void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
 void CSchceduleSearchView::mousePressEvent(QMouseEvent *event)
 {
     DWidget::mousePressEvent(event);
-    qDebug() << Q_FUNC_INFO;
 }
 
 CSchceduleSearchDateItem::CSchceduleSearchDateItem(QWidget *parent): DLabel(parent)
