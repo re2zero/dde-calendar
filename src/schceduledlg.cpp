@@ -692,6 +692,7 @@ void CSchceduleDlg::initUI()
     conttelabellayout->addStretch();
     m_textEdit = new DTextEdit(this);
     m_textEdit->setFixedSize(319, 86);
+    m_textEdit->setAcceptRichText(false);
 
 #if 0
     m_textEdit->setTextBackgroundColor(Qt::white);
