@@ -100,7 +100,7 @@ private:
     Others:             无
     *******************************************************************************/
     void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr )Q_DECL_OVERRIDE;
-    void splitText(QFont font, int w, int h, QString str, QStringList &liststr);
+    void splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm);
 private:
     ScheduleDtailInfo                     m_scheduleInfo;
     CScheduleCoorManage             *m_coorManage;

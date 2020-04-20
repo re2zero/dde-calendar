@@ -290,6 +290,8 @@ bool CYearView::eventFilter(QObject *o, QEvent *e)
     QWidget *cell = qobject_cast<QWidget *>(o);
     QMouseEvent *event = dynamic_cast<QMouseEvent *>(e);
 
+    int ps = m_cellList.indexOf(cell);
+    if (m_days[ps].year() < 1900) return true;
     if (cell && m_cellList.contains(cell)) {
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
