@@ -1181,22 +1181,26 @@ void CMonthView::paintCell(QWidget *cell)
         painter.save();
         QFontMetrics metrics(m_dayLunarFont);
         int Lunarwidth = metrics.width(dayLunar);
-        QRect fillRect(cell->width()-12-3-(58 +Lunarwidth)/2, 9, 12, 12);
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        if (m_currentDate.month() != m_days[pos].month()) {
-            painter.setOpacity(0.4);
+        int filleRectX = cell->width()-12-3-(58 +Lunarwidth)/2;
+        QRect fillRect(filleRectX, 9, 12, 12);
+        if (filleRectX>36) {
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+            if (m_currentDate.month() != m_days[pos].month()) {
+                painter.setOpacity(0.4);
+            }
+            if (ftype == 2) {
+                QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
+                pixmap.setDevicePixelRatio(devicePixelRatioF());
+                painter.drawPixmap(fillRect, pixmap);
+            } else if (ftype == 1) {
+                QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
+                pixmap.setDevicePixelRatio(devicePixelRatioF());
+                painter.drawPixmap(fillRect, pixmap);
+            }
         }
-        if (ftype == 2) {
-            QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
-            pixmap.setDevicePixelRatio(devicePixelRatioF());
-            painter.drawPixmap(fillRect, pixmap);
-        } else if (ftype == 1) {
-            QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
-            pixmap.setDevicePixelRatio(devicePixelRatioF());
-            painter.drawPixmap(fillRect, pixmap);
-        }
+
         painter.restore();
         painter.drawText(QRect(cell->width() - 58, 6, 58, 18), Qt::AlignCenter, dayLunar);
     }
