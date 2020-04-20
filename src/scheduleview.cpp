@@ -321,7 +321,6 @@ void CScheduleView::setDate(QDate date)
 void CScheduleView::slotupdateSchedule(int id)
 {
     updateSchedule();
-    updateAllday();
     if (id !=1) {
         emit signalsUpdateShcedule(id);
     }

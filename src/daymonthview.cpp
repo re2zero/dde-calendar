@@ -291,7 +291,7 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     m_currentDate = date;
     // to refresh lunar calendar
     //updateDate();
-    emit signalcurrentDateChanged(date);
+//    emit signalcurrentDateChanged(date);
     updateCurrentLunar();
 }
 
@@ -314,15 +314,16 @@ int CDayMonthView::getDateIndex(const QDate &date) const
 bool CDayMonthView::eventFilter(QObject *o, QEvent *e)
 {
     QWidget *cell = qobject_cast<QWidget *>(o);
-
     if (cell && m_cellList.contains(cell)) {
+        const int pos = m_cellList.indexOf(cell);
+        QDate date = m_days[pos];
+        if (date.year() < 1900) return false;
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
             cellClicked(cell);
         }
     }
-
     return false;
 }
 

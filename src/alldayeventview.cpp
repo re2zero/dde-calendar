@@ -56,9 +56,6 @@ CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRect rect, QGraphicsItem *parent
     m_Group = new QSequentialAnimationGroup(this);
     m_Group->addAnimation(m_properAnimationFirst);
     m_Group->addAnimation(m_properANimationSecond);
-    //setMargin(0);
-
-
 }
 
 void CAllDayEventWidgetItem::setData(const ScheduleDtailInfo &vScheduleInfo)
@@ -464,6 +461,7 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
     viewport()->setMouseTracking(true);
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
 CAllDayEventWeekView::~CAllDayEventWeekView()
@@ -663,7 +661,7 @@ void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::RightButton){
+    if (event->button() == Qt::RightButton) {
         return;
     }
     emit signalScheduleShow(false);

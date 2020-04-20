@@ -81,6 +81,7 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(scrollBarValueChangedSlot()));
     m_timer->start(60000);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     connect(this->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChangedSlot()));
     connect(this->verticalScrollBar(),

@@ -35,7 +35,7 @@
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
 DGUI_USE_NAMESPACE
-CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent /*= nullptr*/ ): DLabel(parent)
+CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent): DLabel(parent)
 {
     //setMargin(0);
     m_editAction = new QAction(tr("Edit"), this);

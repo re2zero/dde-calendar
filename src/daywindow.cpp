@@ -270,12 +270,16 @@ void CDayWindow::initConnection()
 void CDayWindow::slotupdateSchedule(int id)
 {
     m_daymonthView->setCurrentDate(m_currentdate);
-    if (m_daymonthView->getCurrDate() != m_currentdate) {
-        m_scheduleView->setRange(m_currentdate, m_currentdate);
-        m_scheduleView->setDate(m_currentdate);
-    } else {
-        m_scheduleView->slotupdateSchedule(id);
-    }
+    m_scheduleView->setRange(m_currentdate, m_currentdate);
+//    if (m_daymonthView->getCurrDate() != m_currentdate) {
+//        m_scheduleView->setRange(m_currentdate, m_currentdate);
+//        qDebug()<<Q_FUNC_INFO;
+////        m_scheduleView->setDate(m_currentdate);
+////        m_scheduleView->slotupdateSchedule(id);
+//    } else {
+//        m_scheduleView->slotupdateSchedule(id);
+//        qDebug()<<Q_FUNC_INFO<<"2222";
+//    }
 }
 
 void CDayWindow::slotTransitSchedule(int id)
@@ -339,8 +343,8 @@ void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail
         }
         m_LunarLabel->setText(detail.mLunarMonthName + detail.mLunarDayName);
     }
-    m_scheduleView->setRange(m_currentdate, m_currentdate);
-    emit signalCurrentDate(date);
+//    m_scheduleView->setRange(m_currentdate, m_currentdate);
+//    emit signalCurrentDate(date);
 }
 
 void CDayWindow::slotcurrentDateChanged(QDate date)
