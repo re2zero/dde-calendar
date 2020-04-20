@@ -63,6 +63,10 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem( QWidget *parent /*= nullpt
     m_Group = new QSequentialAnimationGroup(this);
     m_Group->addAnimation(m_properAnimationFirst);
     m_Group->addAnimation(m_properAnimationSecond);
+    connect(m_Group
+            , &QPropertyAnimation::finished
+            , this
+            , &CMonthSchceduleWidgetItem::animationFinished);
 }
 
 CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
@@ -122,6 +126,11 @@ void CMonthSchceduleWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
     update();
 }
 
+void CMonthSchceduleWidgetItem::setRect(int x, int y, int w, int h)
+{
+    m_rect = QRect(x,y,w,h);
+}
+
 void CMonthSchceduleWidgetItem::setRectOffset(int offset)
 {
     QRect rect(m_rect.x() - offset
@@ -135,16 +144,18 @@ void CMonthSchceduleWidgetItem::setRectOffset(int offset)
 
 void CMonthSchceduleWidgetItem::startAnimation()
 {
-    if (m_Group->state() != QSequentialAnimationGroup::Running) {
-        m_Group->start();
-    }
+    if (isAnimation)
+        return;
+    m_Group->start();
+    isAnimation = true;
+
 }
 
 void CMonthSchceduleWidgetItem::setStartValue(int offset)
 {
     m_properAnimationFirst->setStartValue(offset);
     m_properAnimationSecond->setEndValue(offset);
-    m_rect = this->geometry();
+//    m_rect = this->geometry();
 }
 
 void CMonthSchceduleWidgetItem::setEndValue(int offset)
@@ -292,8 +303,15 @@ void CMonthSchceduleWidgetItem::slotPress()
     emit signalsPress(this);
 }
 
+void CMonthSchceduleWidgetItem::animationFinished()
+{
+    isAnimation = false;
+}
+
 void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 {
+    QPainter painter(this);
+    painter.setRenderHints(QPainter::Antialiasing);
     int labelwidth = width();
     int labelheight = height();
     float avge = 1;
@@ -301,7 +319,6 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
-    QPainter painter(this);
     if (m_GradientFlag) {
         QLinearGradient linearGradient(2, 0, labelwidth - 2, 0);
         QColor color1 = gdcolor.gradientFromC;
@@ -323,10 +340,9 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         linearGradient.setColorAt(0, color1);
         linearGradient.setColorAt(1, color2);
 
-        QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
+        QRectF fillRect = QRectF(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
         painter.save();
         //将直线开始点设为0，终点设为1，然后分段设置颜色
-        painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setBrush(linearGradient);
         painter.setPen(Qt::NoPen);
         painter.drawRoundedRect(fillRect, 8, 8);
@@ -450,6 +466,8 @@ void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_selectflag = true;
         m_pressRemindTag = true;
+        m_pressMove = true;
+        m_pressPos = event->pos();
         update();
         slotPress();
         emit signalPressScheduleShow(true, m_ScheduleInfo);
@@ -461,6 +479,7 @@ void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         m_selectflag = false;
         m_pressRemindTag = false;
+        m_pressMove = false;
         update();
     }
 }
@@ -489,6 +508,8 @@ void CMonthSchceduleWidgetItem::mouseMoveEvent(QMouseEvent *e)
     if (m_pressRemindTag) {
         emit signalPressScheduleShow(false);
         m_pressRemindTag = false;
+    }
+    if (m_pressMove) {
     }
 }
 
@@ -1114,6 +1135,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     gwi->setFixedSize(fw, fh);
     gwi->setText(gdcolor.textColor, font, QPoint(13, 3));
     gwi->move(pos);
+    gwi->setRect(pos.x(),pos.y(),fw,fh);
     //if (m_currentMonth != info.bdate.month() && m_currentMonth != info.edate.month()) {
     // QColor TransparentC = "#000000";
     //TransparentC.setAlphaF(0.05);

@@ -176,6 +176,7 @@ public:
     void setTransparentB(bool t, QColor tcolor);
     void setTransparentB(bool t);
     void setData(ScheduleDtailInfo  vScheduleInfo);
+    void setRect(int x, int y, int w, int h);
     const ScheduleDtailInfo &getData() const
     {
         return m_ScheduleInfo;
@@ -184,6 +185,10 @@ public:
     void startAnimation();
     void setStartValue(int offset);
     void setEndValue(int offset);
+    bool isRunning()const
+    {
+        return isAnimation;
+    }
 signals:
     void signalsDelete(CMonthSchceduleWidgetItem *item);
     void signalsEdit(CMonthSchceduleWidgetItem *item, int type = 0);
@@ -197,6 +202,7 @@ public slots:
     void slotDelete();
     void slotDoubleEvent(int type = 0);
     void slotPress();
+    void animationFinished();
 protected:
     void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
@@ -225,7 +231,10 @@ private:
     bool                  m_highflag = false;
     int                   m_editType = 0;
     bool                    m_pressRemindTag = false;
+    bool                    m_pressMove = false;
+    QPoint                  m_pressPos;
     CSchedulesColor gdcolor;
+    bool isAnimation = false;
     QPropertyAnimation *m_properAnimationFirst = nullptr;
     QPropertyAnimation *m_properAnimationSecond = nullptr;
     QSequentialAnimationGroup *m_Group = nullptr;

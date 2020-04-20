@@ -383,7 +383,7 @@ void Calendarmainwindow::RaiseWindow()
 }
 void Calendarmainwindow::initUI()
 {
-    DFrame *titleframe = new DFrame(this);
+    QFrame *titleframe = new QFrame(this);
     titleframe->setObjectName("TitleBar");
     titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     //m_icon = new DLabel(this);
