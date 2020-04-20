@@ -383,7 +383,7 @@ void Calendarmainwindow::RaiseWindow()
 }
 void Calendarmainwindow::initUI()
 {
-    QFrame *titleframe = new QFrame(this);
+    DFrame *titleframe = new DFrame(this);
     titleframe->setObjectName("TitleBar");
     titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     //m_icon = new DLabel(this);
@@ -466,7 +466,7 @@ void Calendarmainwindow::initUI()
     titleLayout->addWidget(m_buttonBox);
     // QSpacerItem *lspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //titleLayout->addSpacerItem(lspaceitem);
-    m_searchEdit = new DSearchEdit;
+    m_searchEdit = new DSearchEdit(this);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
     m_searchEdit->setFixedHeight(36);
     m_searchEdit->setFixedWidth(240);
@@ -476,14 +476,10 @@ void Calendarmainwindow::initUI()
     titleframe->setLayout(titleLayout);
 
     DTitlebar *titlebar = this->titlebar();
-    //用于切换主题
-    //titlebar->setMenu(new DMenu);
-
-    //titlebar->setTitle("");
     titlebar->setFixedHeight(50);
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
     titlebar->setCustomWidget(m_searchEdit, true);
-    // titlebar->move(36, 3);
+//    titlebar->move(36, 3);
     m_stackWidget = new AnimationStackedWidget();
     m_stackWidget->setContentsMargins(0, 0, 0, 0);
     m_stackWidget->setDuration(350);
@@ -658,7 +654,9 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
     m_scheduleSearchViewMaxWidth = 0.2325 * width() + 0.5;
     m_schceduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
-
+    if (m_opensearchflag) {
+        setSearchWidth(m_scheduleSearchViewMaxWidth);
+    }
     setScheduleHide();
     DMainWindow::resizeEvent(event);
 }
@@ -791,9 +789,8 @@ void Calendarmainwindow::slotSreturnPressed()
 void Calendarmainwindow::slotStextChanged()
 {
 #if 1
-
+    m_schceduleSearchView->clearSearch();
     if (!m_searchEdit->text().isEmpty()) {
-        m_schceduleSearchView->clearSearch();
         m_yearwindow->setSearchWFlag(true);
         m_weekWindow->setSearchWFlag(true);
         m_monthWindow->setSearchWFlag(true);
