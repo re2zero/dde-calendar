@@ -346,7 +346,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -533,35 +533,35 @@
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>内容</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>类型</translation>
     </message>
     <message>
         <source>All Day</source>
-        <translation type="unfinished">全天</translation>
+        <translation>全天</translation>
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
+        <translation>开始时间</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>结束时间</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>提醒</translation>
     </message>
     <message>
         <source>Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>重复</translation>
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>结束重复</translation>
     </message>
 </context>
 <context>
@@ -714,7 +714,7 @@
     <name>CenterWidget</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished">全天</translation>
+        <translation>全天</translation>
     </message>
 </context>
 <context>
@@ -775,7 +775,7 @@
     <name>YearFrame</name>
     <message>
         <source>Y</source>
-        <translation type="unfinished">年</translation>
+        <translation>年</translation>
     </message>
 </context>
 <context>

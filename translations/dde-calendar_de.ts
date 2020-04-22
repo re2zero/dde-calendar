@@ -342,6 +342,10 @@
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -503,7 +507,7 @@
     </message>
     <message>
         <source>On</source>
-        <translation>An</translation>
+        <translation>Am</translation>
     </message>
     <message>
         <source>time(s)</source>
@@ -524,6 +528,38 @@
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Beschreibung</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Typ</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Ganztägig</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Wiederholung</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -646,7 +682,7 @@
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>Der Kalender ist ein Tool zum Anzeigen von Daten und ein smarter Tagesplaner zum Planen aller Dinge im Leben.</translation>
+        <translation>Der Kalender ist ein Werkzeug zum Anzeigen von Terminen und auch ein intelligenter Tagesplaner, um alle Dinge im Leben zu planen.</translation>
     </message>
 </context>
 <context>
@@ -670,6 +706,13 @@
     <message>
         <source>D</source>
         <translation>T</translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Ganztägig</translation>
     </message>
 </context>
 <context>
@@ -724,6 +767,13 @@
     <message>
         <source>Delete</source>
         <translation>Löschen</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>J</translation>
     </message>
 </context>
 <context>

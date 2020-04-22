@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Deseja eliminar todas as ocorrências para este evento ou apenas a ocorrência selecionada?</translation>
+        <translation>Deseja eliminar todas as ocorrências deste evento ou apenas a ocorrência selecionada?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -143,31 +143,31 @@
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
-        <translation>Segunda</translation>
+        <translation>Seg</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Terça</translation>
+        <translation>Ter</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Quarta</translation>
+        <translation>Qua</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Quinta</translation>
+        <translation>Qui</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Sexta</translation>
+        <translation>Sex</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Sábado</translation>
+        <translation>Sáb</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Domingo</translation>
+        <translation>Dom</translation>
     </message>
 </context>
 <context>
@@ -342,6 +342,10 @@
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>Aceitar</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -379,7 +383,7 @@
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation> Deseja mudar apenas esta ocorrência do evento, ou todas as ocorrências?</translation>
+        <translation>Deseja mudar apenas esta ocorrência do evento, ou todas as ocorrências?</translation>
     </message>
     <message>
         <source>All</source>
@@ -455,7 +459,7 @@
     </message>
     <message>
         <source>All Day:</source>
-        <translation>Todo o dia:</translation>
+        <translation>Dia todo:</translation>
     </message>
     <message>
         <source>Starts:</source>
@@ -523,7 +527,39 @@
     </message>
     <message>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation>Aceitar</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Descrição</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Dia todo</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Repetir</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -585,7 +621,7 @@
     </message>
     <message>
         <source>All Day</source>
-        <translation>Todo o dia</translation>
+        <translation>Dia todo</translation>
     </message>
 </context>
 <context>
@@ -599,7 +635,7 @@
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation>TODO O DIA</translation>
+        <translation>DIA TODO</translation>
     </message>
 </context>
 <context>
@@ -617,14 +653,14 @@
     <name>CYearSchceduleItem</name>
     <message>
         <source>All Day</source>
-        <translation>Todo o dia</translation>
+        <translation>Dia todo</translation>
     </message>
 </context>
 <context>
     <name>CYearSchceduleView</name>
     <message>
         <source>All Day</source>
-        <translation>Todo o dia</translation>
+        <translation>Dia todo</translation>
     </message>
     <message>
         <source>No event</source>
@@ -670,6 +706,13 @@
     <message>
         <source>D</source>
         <translation>D</translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Dia todo</translation>
     </message>
 </context>
 <context>
@@ -724,6 +767,13 @@
     <message>
         <source>Delete</source>
         <translation>Eliminar</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>A</translation>
     </message>
 </context>
 <context>

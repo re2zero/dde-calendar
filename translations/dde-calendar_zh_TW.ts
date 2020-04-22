@@ -342,6 +342,10 @@
         <source>Edit</source>
         <translation>編輯</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>確認</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -525,6 +529,38 @@
         <source>OK</source>
         <translation>確定</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>簡介</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>全天</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>重新輸入密碼</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -673,6 +709,13 @@
     </message>
 </context>
 <context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>全天</translation>
+    </message>
+</context>
+<context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
@@ -724,6 +767,13 @@
     <message>
         <source>Delete</source>
         <translation>刪除</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>年</translation>
     </message>
 </context>
 <context>

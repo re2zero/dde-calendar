@@ -342,6 +342,10 @@
         <source>Edit</source>
         <translation>Edita</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>D&apos;acord</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -525,6 +529,38 @@
         <source>OK</source>
         <translation>D&apos;acord</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Descripció</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tipus</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Tot el dia</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Repetir</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -673,6 +709,13 @@
     </message>
 </context>
 <context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Tot el dia</translation>
+    </message>
+</context>
+<context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
@@ -724,6 +767,13 @@
     <message>
         <source>Delete</source>
         <translation>Elimina</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>any</translation>
     </message>
 </context>
 <context>

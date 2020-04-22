@@ -342,6 +342,10 @@
         <source>Edit</source>
         <translation>Редагувати</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>Гаразд</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -525,6 +529,38 @@
         <source>OK</source>
         <translation>Гаразд</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Опис</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Друкувати</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Весь день</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Повторити</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -673,6 +709,13 @@
     </message>
 </context>
 <context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Весь день</translation>
+    </message>
+</context>
+<context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
@@ -724,6 +767,13 @@
     <message>
         <source>Delete</source>
         <translation>Вилучити</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>Р</translation>
     </message>
 </context>
 <context>

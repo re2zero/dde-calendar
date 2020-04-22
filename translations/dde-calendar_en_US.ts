@@ -346,7 +346,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -533,35 +533,35 @@
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Description</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <source>All Day</source>
-        <translation type="unfinished">All Day</translation>
+        <translation>All Day</translation>
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Starts</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>Ends</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Remind Me</translation>
     </message>
     <message>
         <source>Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Repeat</translation>
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>End Repeat</translation>
     </message>
 </context>
 <context>
@@ -714,7 +714,7 @@
     <name>CenterWidget</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished">All Day</translation>
+        <translation>All Day</translation>
     </message>
 </context>
 <context>
@@ -775,7 +775,7 @@
     <name>YearFrame</name>
     <message>
         <source>Y</source>
-        <translation type="unfinished">Y</translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>

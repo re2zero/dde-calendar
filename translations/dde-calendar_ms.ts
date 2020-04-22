@@ -342,6 +342,10 @@
         <source>Edit</source>
         <translation>Sunting</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -525,6 +529,38 @@
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Keterangan</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Jenis</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Sepanjang Hari</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Ulang</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -673,6 +709,13 @@
     </message>
 </context>
 <context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Sepanjang Hari</translation>
+    </message>
+</context>
+<context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
@@ -724,6 +767,13 @@
     <message>
         <source>Delete</source>
         <translation>Padam</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>T</translation>
     </message>
 </context>
 <context>

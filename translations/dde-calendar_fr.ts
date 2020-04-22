@@ -15,11 +15,11 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Vous supprimez un événement.</translation>
+        <translation>Vous allez supprimez un événement.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Voulez-vous vraiment supprimer cet événement ?</translation>
+        <translation>Voulez-vous vraiment le supprimer ?</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -54,11 +54,11 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Vous supprimez un événement.</translation>
+        <translation>Vous allez supprimez un événement.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Voulez-vous vraiment supprimer cet événement ?</translation>
+        <translation>Voulez-vous vraiment le supprimer ?</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -342,6 +342,10 @@
         <source>Edit</source>
         <translation>Modifier</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -525,6 +529,38 @@
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Description</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Toute la journée</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Répéter</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -592,7 +628,7 @@
     <name>CSchceduleSearchView</name>
     <message>
         <source>No search results</source>
-        <translation>Aucun résultat de recherche</translation>
+        <translation>Aucun résultat trouvé</translation>
     </message>
 </context>
 <context>
@@ -673,6 +709,13 @@
     </message>
 </context>
 <context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Toute la journée</translation>
+    </message>
+</context>
+<context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
@@ -724,6 +767,13 @@
     <message>
         <source>Delete</source>
         <translation>Supprimer</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>A</translation>
     </message>
 </context>
 <context>
