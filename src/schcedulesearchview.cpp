@@ -441,7 +441,6 @@ bool CSchceduleSearchItem::eventFilter(QObject *o, QEvent *e)
     if (e->type() == QEvent::MouseButtonPress) {
         QMouseEvent *m_press = dynamic_cast<QMouseEvent *>(e);
         if (m_press->button() == Qt::LeftButton) {
-            qDebug() << "+++";
             m_mouseStatus = M_PRESS;
         }
     }
