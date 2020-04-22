@@ -47,6 +47,7 @@ CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent): DLabel(parent)
                      this,
                      &CSchceduleSearchItem::setTheMe);
     m_mouseStatus = M_NONE;
+    installEventFilter(this);
     //setFlat(true);
 
 }
@@ -408,8 +409,8 @@ void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 void CSchceduleSearchItem::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        m_mouseStatus = M_PRESS;
-        update();
+//        m_mouseStatus = M_PRESS;
+//        update();
         emit signalSelectDate(m_date);
         emit signalSelectSchedule(m_ScheduleInfo);
     }
@@ -433,6 +434,19 @@ void CSchceduleSearchItem::leaveEvent(QEvent *event)
 {
     m_mouseStatus = M_NONE;
     update();
+}
+
+bool CSchceduleSearchItem::eventFilter(QObject *o, QEvent *e)
+{
+    if (e->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *m_press = dynamic_cast<QMouseEvent *>(e);
+        if (m_press->button() == Qt::LeftButton) {
+            qDebug() << "+++";
+            m_mouseStatus = M_PRESS;
+        }
+    }
+    update();
+    return false;
 }
 CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
 {

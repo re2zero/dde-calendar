@@ -473,7 +473,7 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
         }
     } else {
         for (int i = 0; i < tliststr.count(); i++) {
-            if ((i + 1) * heightT <= h) {
+            if ((i + 1) * heightT <= h - 1) {
                 liststr.append(tliststr.at(i));
             } else {
                 if (i == 0) {

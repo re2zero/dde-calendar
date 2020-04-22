@@ -119,6 +119,7 @@ protected:
     void mouseReleaseEvent (QMouseEvent *event );
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
+    bool eventFilter(QObject *o, QEvent *e);
 private:
     struct ColorStatus {
         QColor   background;
