@@ -310,6 +310,9 @@ void CMonthSchceduleWidgetItem::animationFinished()
 
 void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 {
+//    QRect ur=e->rect();//得到组件尺寸
+//    QPixmap pix(this->size());//以此为参数创建一个位图变量
+//    pix.fill(qRgba(255,255,255,0));
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing);
     int labelwidth = width();
@@ -345,7 +348,9 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         //将直线开始点设为0，终点设为1，然后分段设置颜色
         painter.setBrush(linearGradient);
         painter.setPen(Qt::NoPen);
+//        painter.setBackgroundMode(Qt::OpaqueMode);
         painter.drawRoundedRect(fillRect, 8, 8);
+//        painter.fillRect(fillRect, linearGradient);
         painter.restore();
         painter.setFont(m_font);
         painter.setPen(textcolor);
@@ -429,6 +434,10 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         }
         painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 4 * avge), Qt::AlignLeft, str);
     }
+    painter.end();
+//    QPainter painteritem(this);
+//    painteritem.drawPixmap(this->rect(),pix);
+//    painteritem.end();
 }
 void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -636,7 +645,11 @@ CMonthSchceduleView::CMonthSchceduleView(QWidget *parent) : QObject (parent), m_
     QShortcut *shortcut = new QShortcut(parent);
     shortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(slotDeleteItem()));
-    m_weekSchedule = new CWeekScheduleView(this);
+
+    for (int i = 0; i < 6; ++i) {
+        CWeekScheduleView *weekSchedule = new CWeekScheduleView(this);
+        m_weekSchedule.append(weekSchedule);
+    }
 }
 
 CMonthSchceduleView::~CMonthSchceduleView()
@@ -676,13 +689,6 @@ void CMonthSchceduleView::slotupdateItem(CMonthSchceduleWidgetItem *item)
 {
     m_currentitem = item;
     return;
-    for (int i = 0; i < m_scheduleShowItem.count(); ++i) {
-        if (m_scheduleShowItem.at(i) == item) continue;
-        CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(m_scheduleShowItem.at(i));
-        if (titem != nullptr) {
-            titem->setTransparentB(false);
-        }
-    }
 }
 
 void CMonthSchceduleView::slotDeleteItem()
@@ -734,7 +740,6 @@ bool MScheduleDaysThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRang
 }
 void CMonthSchceduleView::updateData()
 {
-
     //保护数据防止越界
     if (m_data.count() != 42 || m_cNum < 1) return;
     //开始结束时间
@@ -743,341 +748,47 @@ void CMonthSchceduleView::updateData()
     m_beginDate = begindate;
     m_endDate  = enddate;
     m_currentitem = nullptr;
-    for (int i = 0; i < m_scheduleShowItem.count(); i++) {
 
-        m_scheduleShowItem[i]->deleteLater();
-    }
-    m_scheduleShowItem.clear();
-
-    for (int i = 0 ; i < 6; ++i) {
-        m_weekSchedule->setData(m_data,i*7,7);
-        m_weekSchedule->setHeight(he,(m_height - m_topMagin - m_buttommagin) / 6.0-27);
-        m_weekSchedule->updateSchedule();
-        QVector<QVector<MScheduleDateRangeInfo> > mSchedule = m_weekSchedule->getMScheduleInfo();
-        updateDateShow(mSchedule);
+    for (int i = 0 ; i < m_weekSchedule.size(); ++i) {
+        m_weekSchedule[i]->clearItem();
+        m_weekSchedule[i]->setData(m_data,i*7,7);
+        m_weekSchedule[i]->setHeight(he,(m_height - m_topMagin - m_buttommagin) / 6.0-27);
+        m_weekSchedule[i]->updateSchedule();
+        QVector<QVector<MScheduleDateRangeInfo> > mSchedule = m_weekSchedule[i]->getMScheduleInfo();
+        updateDateShow(mSchedule,m_weekSchedule[i]->getScheduleShowItem());
     }
     return;
-
-    //存储临时日程数据
-    QVector<MScheduleDateRangeInfo> vMDaySchedule;
-    //处理跨天日程数据
-    for (int i = 0; i < m_data.count(); i++) {
-        const QVector<ScheduleDtailInfo> &vData = m_data.at(i).vData;
-        for (int j = 0; j < vData.size(); j++) {
-            //获取日程开始和结束时间
-            QDate tbegindate = vData.at(j).beginDateTime.date();
-            QDate tenddate = vData.at(j).endDateTime.date();
-            //日程时间重新标定
-            if (tbegindate <  begindate) tbegindate = begindate;
-            if (tenddate > enddate) tenddate = enddate;
-            //日程信息
-            MScheduleDateRangeInfo info;
-            info.bdate = tbegindate;
-            info.edate = tenddate;
-            info.tData = vData.at(j);
-            info.state = false;
-            int k = 0;
-            for (; k < vMDaySchedule.count(); k++) {
-                if (vData.at(j)== vMDaySchedule.at(k).tData) {
-                    break;
-                }
-            }
-            if (k == vMDaySchedule.count())
-                vMDaySchedule.append(info);
-        }
-    }
-
-    qSort(vMDaySchedule.begin(), vMDaySchedule.end());
-
-
-    QVector<QVector<int> > vCfillSchedule;
-    QVector<QVector<MScheduleDateRangeInfo> >vCMDaySchedule;
-    vCfillSchedule.resize(m_cNum);
-    vCMDaySchedule.resize(m_cNum);
-#if  0
-    //设置日程状态
-    for (int c = 0; c < m_cNum; c++) {
-        vCfillSchedule[c].resize(42);
-        for (int sd = 0; sd < 42; sd++) {
-            vCfillSchedule[c][sd] = -1;
-        }
-        for (int i = 0; i < vMDaySchedule.count(); i++) {
-            if (vMDaySchedule[i].state) continue;
-            int bindex = begindate.daysTo(vMDaySchedule[i].bdate);
-            int eindex = begindate.daysTo(vMDaySchedule[i].edate);
-            bool flag = false;
-            for (int sd = bindex; sd <= eindex; sd++) {
-                if (vCfillSchedule[c][sd] != -1) continue;
-                vCfillSchedule[c][sd] = i;
-                flag = true;
-            }
-            if (flag)
-                vMDaySchedule[i].state = true;
-        }
-    }
-#else
-    //设置日程状态
-    for (int c = 0; c < m_cNum; c++) {
-        vCfillSchedule[c].resize(42);
-        for (int sd = 0; sd < 42; sd++) {
-            vCfillSchedule[c][sd] = -1;
-        }
-    }
-    for (int i = 0; i < vMDaySchedule.count(); ++i) {
-        if (vMDaySchedule[i].state) continue;
-        int bindex = begindate.daysTo(vMDaySchedule[i].bdate);
-        int eindex = begindate.daysTo(vMDaySchedule[i].edate);
-        int c = -1;
-//        if (i < m_cNum) {
-//            c = i;
-//        }
-        for (int k = 0; k < m_cNum; k++) {
-            int t = 0;
-            for (t = bindex; t <= eindex; t++) {
-                if (vCfillSchedule[k][t] != -1) {
-                    break;
-                }
-            }
-            if (t == eindex + 1) {
-                c = k;
-                break;
-            }
-        }
-        if (c == -1)
-            continue;
-
-        bool flag = false;
-        for (int sd = bindex; sd <= eindex; sd++) {
-            if (vCfillSchedule[c][sd] != -1) continue;
-            vCfillSchedule[c][sd] = i;
-            flag = true;
-        }
-        if (flag)
-            vMDaySchedule[i].state = true;
-
-    }
-    //补充填充日程
-    for (int i = 0; i < vMDaySchedule.count(); i++) {
-        if (vMDaySchedule[i].state) continue;
-        int bindex = begindate.daysTo(vMDaySchedule[i].bdate);
-        int eindex = begindate.daysTo(vMDaySchedule[i].edate);
-        int c = -1;
-        for (int k = 0; k < m_cNum; k++) {
-            int t = 0;
-            for (t = bindex; t <= eindex; t++) {
-                if (vCfillSchedule[k][t] == -1) {
-                    c = k;
-                    break;
-                }
-            }
-            if (c != -1) {
-                break;
-            }
-        }
-        if (c == -1) continue;
-
-        bool flag = false;
-        for (int sd = bindex; sd <= eindex; sd++) {
-            if (vCfillSchedule[c][sd] != -1) continue;
-            vCfillSchedule[c][sd] = i;
-            flag = true;
-        }
-        if (flag)
-            vMDaySchedule[i].state = true;
-
-    }
-#endif
-
-
-    QVector<int> vId, vRid; //用于删除日程显示项目保证正确
-    //重新组装数据
-    for (int c = 0; c < m_cNum; c++) {
-        int tnum = -1;
-        int tsid = -1;
-        int tbindex = 0;
-        for (int sd = 0; sd < 42; sd++) {
-            if (vCfillSchedule[c][sd] == -1) {
-                if (tsid != -1) {
-                    MScheduleDateRangeInfo info;
-                    info.bdate = m_data[tbindex].date;
-                    info.edate = info.bdate.addDays(tnum);
-                    info.tData = vMDaySchedule[tsid].tData;
-                    info.state = false;
-                    vCMDaySchedule[c].append(info);
-                    if (c < m_cNum - 1) {
-                        vId.append(info.tData.id);
-                        vRid.append(info.tData.RecurID);
-                    }
-                    tsid = -1;
-                    tbindex = 0;
-                    tnum = -1;
-                }
-                continue;
-                if (c == m_cNum - 1) continue;
-                if (m_data[sd].vData.count() < c + 1) continue;
-                MScheduleDateRangeInfo info;
-                info.bdate = m_data[sd].date;
-                info.edate = m_data[sd].date;
-                info.tData = m_data[sd].vData.at(c);
-                info.state = false;
-                vCMDaySchedule[c].append(info);
-                vId.append(info.tData.id);
-                vRid.append(info.tData.RecurID);
-
-            } else {
-                if (tsid  == -1) {
-                    tsid = vCfillSchedule[c][sd];
-                    tbindex = sd;
-                    tnum++;
-                } else {
-                    if (tsid == vCfillSchedule[c][sd]) {
-                        tnum++;
-                    } else {
-                        MScheduleDateRangeInfo info;
-                        info.bdate = m_data[tbindex].date;
-                        info.edate = info.bdate.addDays(tnum);
-                        info.tData = vMDaySchedule[tsid].tData;
-                        info.state = false;
-                        vCMDaySchedule[c].append(info);
-                        if (c < m_cNum - 1) {
-                            vId.append(info.tData.id);
-                            vRid.append(info.tData.RecurID);
-                        }
-                        tsid = vCfillSchedule[c][sd];
-                        tbindex = sd;
-                        tnum = 0;
-                    }
-                }
-            }
-        }
-        if (tsid != -1) {
-            MScheduleDateRangeInfo info;
-            info.bdate = m_data[tbindex].date;
-            info.edate = info.bdate.addDays(tnum);
-            info.tData = vMDaySchedule[tsid].tData;
-            info.state = false;
-            vCMDaySchedule[c].append(info);
-            if (c < m_cNum - 1) {
-                vId.append(info.tData.id);
-                vRid.append(info.tData.RecurID);
-            }
-        }
-    }
-
-    QVector<ScheduleDateRangeInfo> listdata = m_data;
-    for (int did  = 0; did < vId.count(); did++) {
-        for (int  i = 0; i < listdata.count(); i++) {
-            for (int j = 0; j < listdata.at(i).vData.count(); j++) {
-                if (listdata.at(i).vData.at(j).id == vId[did] && listdata.at(i).vData.at(j).RecurID == vRid[did]) {
-                    listdata[i].vData.remove(j);
-                }
-            }
-        }
-    }
-    vId.clear();
-    vRid.clear();
-    //先判断是否有多余日程
-    for (int i = 0; i < vCMDaySchedule[m_cNum - 1].count(); i++) {
-        int bindex = begindate.daysTo(vCMDaySchedule[m_cNum - 1][i].bdate);
-        int eindex = begindate.daysTo(vCMDaySchedule[m_cNum - 1][i].edate);
-        int sd = bindex;
-        for ( ; sd <= eindex; sd++) {
-            if (listdata[sd].vData.count() > 1) break;
-        }
-        if (sd != eindex + 1) {
-            vCMDaySchedule[m_cNum - 1].remove(i);
-            i--;
-        } else {
-            vId.append(vCMDaySchedule[m_cNum - 1][i].tData.id);
-            vRid.append(vCMDaySchedule[m_cNum - 1][i].tData.RecurID);
-        }
-    }
-    //再次删除多与数据
-    for (int did  = 0; did < vId.count(); did++) {
-        for (int  i = 0; i < listdata.count(); i++) {
-            for (int j = 0; j < listdata.at(i).vData.count(); j++) {
-                if (listdata.at(i).vData.at(j).id == vId[did] && listdata.at(i).vData.at(j).RecurID == vRid[did]) {
-                    listdata[i].vData.remove(j);
-                }
-            }
-        }
-    }
-    QVector<int>  vlastfillSchedule;
-    vlastfillSchedule.resize(42);
-    for (int sd = 0; sd < 42; sd++) {
-        vlastfillSchedule[sd] = -1;
-    }
-
-    for (int i = 0; i < vCMDaySchedule[m_cNum - 1].count(); i++) {
-        int bindex = begindate.daysTo(vCMDaySchedule[m_cNum - 1][i].bdate);
-        int eindex = begindate.daysTo(vCMDaySchedule[m_cNum - 1][i].edate);
-        for ( int sd = bindex; sd <= eindex; sd++) {
-            vlastfillSchedule[sd] = 1;
-        }
-    }
-    //删除展示了的数据
-    for (int i = 0; i < vCMDaySchedule.count(); i++) {
-        for (int j = 0; j < vCMDaySchedule[i].count(); j++) {
-            ScheduleDtailInfo info = vCMDaySchedule[i][j].tData;
-            for (int  m = 0; m < listdata.count(); m++) {
-                for (int n = 0; n < listdata.at(m).vData.count(); n++) {
-                    if (listdata.at(m).vData.at(n).id == info.id && listdata.at(m).vData.at(n).RecurID == info.RecurID) {
-                        listdata[m].vData.remove(n);
-                    }
-                }
-            }
-        }
-
-    }
-
-    //处理最后一层的数据
-    for (int sd = 0; sd < 42; sd++) {
-        if (vlastfillSchedule[sd] == -1) {
-            if (listdata[sd].vData.isEmpty()) continue;
-            if (listdata[sd].vData.count() > 1) {
-                MScheduleDateRangeInfo info;
-                info.bdate = listdata[sd].date;
-                info.edate = listdata[sd].date;
-                info.num = listdata[sd].vData.count();
-                info.state = true;
-                vCMDaySchedule[m_cNum - 1].append(info);
-            } else {
-                MScheduleDateRangeInfo info;
-                info.bdate = listdata[sd].date;
-                info.edate = listdata[sd].date;
-                info.tData = listdata[sd].vData.at(0);
-                info.state = false;
-                vCMDaySchedule[m_cNum - 1].append(info);
-            }
-        }
-    }
-
-
-    updateDateShow(vCMDaySchedule);
-
 }
 
 void CMonthSchceduleView::updateHigh()
 {
-    for (int i = 0; i < m_scheduleShowItem.count(); i++) {
-        m_scheduleShowItem.at(i)->update();
+    for (int j = 0 ; j < m_weekSchedule.size(); ++j) {
+        for (int i = 0; i < m_weekSchedule[j]->getScheduleShowItem().count(); i++) {
+            m_weekSchedule[j]->getScheduleShowItem().at(i)->update();
+        }
     }
+
 }
 
 QVector<DPushButton *> CMonthSchceduleView::getScheduleShowItem() const
 {
+    QVector<DPushButton *>   m_scheduleShowItem;
+    for (int j = 0 ; j < m_weekSchedule.size(); ++j) {
+        for (int i = 0; i < m_weekSchedule[j]->getScheduleShowItem().count(); i++) {
+            m_scheduleShowItem.append(m_weekSchedule[j]->getScheduleShowItem().at(i));
+        }
+    }
     return m_scheduleShowItem;
 }
-void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule)
+void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule, QVector<DPushButton *> &schudeleShowItem)
 {
     for (int i = 0; i < vCMDaySchedule.count(); i++) {
         for (int j = 0; j < vCMDaySchedule[i].count(); j++) {
             if (vCMDaySchedule[i].at(j).state) {
-                createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1);
+                createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1,schudeleShowItem);
             } else {
-                createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1);
+                createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1,schudeleShowItem);
             }
-
         }
     }
 }
@@ -1117,7 +828,7 @@ void CMonthSchceduleView::splitSchedule(MScheduleDateRangeInfo &old, QVector<MSc
     }
 }
 
-void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum)
+void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum,QVector<DPushButton *> &schudeleShowItem)
 {
     ScheduleDtailInfo gd = info.tData;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
@@ -1155,10 +866,10 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     connect(gwi, &CMonthSchceduleWidgetItem::signalPressScheduleShow, this, &CMonthSchceduleView::signalPressScheduleShow);
     connect(gwi,&CMonthSchceduleWidgetItem::signalupdatehe,this,&CMonthSchceduleView::slotUpdatehe);
 
-    m_scheduleShowItem.append(gwi);
+    schudeleShowItem.append(gwi);
 }
 
-void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum)
+void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum,QVector<DPushButton *> &schudeleShowItem)
 {
     int type = CScheduleDataManage::getScheduleDataManage()->getTheme();
     CMonthSchceduleNumButton *gwi = new CMonthSchceduleNumButton(m_parernt);
@@ -1196,8 +907,7 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
     gwi->move(pos);
     gwi->setWindowFlags(gwi->windowFlags() | Qt::WindowStaysOnTopHint);
     gwi->show();
-    m_scheduleShowItem.append(gwi);
-
+    schudeleShowItem.append(gwi);
 }
 
 void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh)
@@ -1282,6 +992,15 @@ void CWeekScheduleView::updateSchedule()
     }
     qSort(vMDaySchedule.begin(),vMDaySchedule.end());
     sortAndFilter(vMDaySchedule);
+}
+
+void CWeekScheduleView::clearItem()
+{
+    for (int i = 0; i < m_scheduleShowItem.count(); i++) {
+
+        m_scheduleShowItem[i]->deleteLater();
+    }
+    m_scheduleShowItem.clear();
 }
 
 void CWeekScheduleView::setMaxNum()

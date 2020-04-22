@@ -71,11 +71,13 @@ typedef struct _tagScheduleDtailInfo {
     ScheduleRemindData remindData;
     int               rpeat; //0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
     ScheduleEndRepeatData enddata;
-    bool operator ==(const _tagScheduleDtailInfo &info)const{
+    bool operator ==(const _tagScheduleDtailInfo &info)const
+    {
         return this->id == info.id &&this->RecurID == info.RecurID &&
-                titleName == info.titleName;
+               titleName == info.titleName;
     }
-    bool operator <(const _tagScheduleDtailInfo &info)const{
+    bool operator <(const _tagScheduleDtailInfo &info)const
+    {
         if (beginDateTime.date() != endDateTime.date() &&
                 info.beginDateTime.date() == info.endDateTime.date()) {
             return true;
@@ -109,23 +111,25 @@ typedef struct _tagMScheduleDateRangeInfo {
     bool state;
     int  num;
     ScheduleDtailInfo tData;
-    bool operator <(const _tagMScheduleDateRangeInfo &info)const{
-        if(bdate == info.bdate){
-            if(bdate.daysTo(edate)==info.bdate.daysTo(info.edate)){
+    bool operator <(const _tagMScheduleDateRangeInfo &info)const
+    {
+        if (bdate == info.bdate) {
+            if (bdate.daysTo(edate)==info.bdate.daysTo(info.edate)) {
                 return tData<info.tData;
-            }else {
+            } else {
                 return bdate.daysTo(edate)>info.bdate.daysTo(info.edate);
             }
-        }else {
+        } else {
             return bdate<info.bdate;
         }
     }
-    bool operator ==(const _tagMScheduleDateRangeInfo &info)const{
+    bool operator ==(const _tagMScheduleDateRangeInfo &info)const
+    {
         return bdate == info.bdate &&
-                edate == info.edate &&
-                tData == info.tData &&
-                state == info.state &&
-                num == info.num;
+               edate == info.edate &&
+               tData == info.tData &&
+               state == info.state &&
+               num == info.num;
     }
 } MScheduleDateRangeInfo;
 #endif

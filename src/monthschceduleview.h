@@ -64,14 +64,12 @@ public slots:
     void slotDeleteItem();
     void slotUpdatehe(int h);
 private:
-
-    void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule);
+    void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule,QVector<DPushButton *> &schudeleShowItem);
     void splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData);
-    void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum);
-    void createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum);
+    void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum,QVector<DPushButton *> &schudeleShowItem);
+    void createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum,QVector<DPushButton *> &schudeleShowItem);
     void computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh);
 private:
-    QVector<DPushButton *>         m_scheduleShowItem;
     QVector<ScheduleDateRangeInfo>               m_data;
     int                                          m_cNum = 2;//日程层数
     QWidget                                     *m_parernt;
@@ -84,7 +82,7 @@ private:
     int                                          m_topMagin;
     int                                          m_buttommagin;
     CMonthSchceduleWidgetItem                   *m_currentitem = nullptr;
-    CWeekScheduleView   *m_weekSchedule;
+    QVector<CWeekScheduleView *>                     m_weekSchedule;
     int                                             he = 22;
 
 };
@@ -103,21 +101,27 @@ public:
     {
         return m_MScheduleInfo;
     }
+    QVector<DPushButton *> &getScheduleShowItem()
+    {
+        return m_scheduleShowItem;
+    }
     void updateSchedule();
+    void clearItem();
 private:
     void setMaxNum();
     void mScheduleClear();
     void sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySchedule);
 private:
-    QVector<RowScheduleInfo> m_MScheduleInfo;
-    QVector<ScheduleDtailInfo> m_ScheduleInfo;
-    QVector<int >          m_ColumnScheduleCount;
-    int                         m_ScheduleHeight;
-    int                         m_DayHeight;
-    int                         m_MaxNum;
-    QDate     beginDate;
-    QDate     endDate;
-    int                         m_colum;
+    QVector<DPushButton *>          m_scheduleShowItem;
+    QVector<RowScheduleInfo>        m_MScheduleInfo;
+    QVector<ScheduleDtailInfo>      m_ScheduleInfo;
+    QVector<int >                   m_ColumnScheduleCount;
+    int                             m_ScheduleHeight;
+    int                             m_DayHeight;
+    int                             m_MaxNum;
+    QDate                           beginDate;
+    QDate                           endDate;
+    int                             m_colum;
 };
 
 
