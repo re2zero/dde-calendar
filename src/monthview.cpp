@@ -1183,7 +1183,7 @@ void CMonthView::paintCell(QWidget *cell)
         int Lunarwidth = metrics.width(dayLunar);
         int filleRectX = cell->width()-12-3-(58 +Lunarwidth)/2;
         QRect fillRect(filleRectX, 9, 12, 12);
-        if (filleRectX>36) {
+        if (filleRectX>hh) {
             painter.setRenderHint(QPainter::Antialiasing);
             painter.setRenderHint(QPainter::HighQualityAntialiasing);
             painter.setRenderHint(QPainter::SmoothPixmapTransform);

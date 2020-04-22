@@ -511,7 +511,8 @@ void Calendarmainwindow::initUI()
     ssLayout->addWidget(m_schceduleSearchView);
     m_contentBackground->setLayout(ssLayout);
     tmainLayout->addWidget(m_contentBackground);
-    m_contentBackground->setFixedWidth(0);
+//    m_contentBackground->setFixedWidth(0);
+    m_contentBackground->setVisible(false);
 
     DWidget *maincentralWidget = new DWidget(this);
 
@@ -654,9 +655,9 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
     m_scheduleSearchViewMaxWidth = 0.2325 * width() + 0.5;
     m_schceduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
-    if (m_opensearchflag) {
-        setSearchWidth(m_scheduleSearchViewMaxWidth);
-    }
+//    if (m_opensearchflag) {
+    setSearchWidth(m_scheduleSearchViewMaxWidth);
+//    }
     setScheduleHide();
     DMainWindow::resizeEvent(event);
 }
@@ -766,12 +767,13 @@ void Calendarmainwindow::slotSreturnPressed()
 #if 1
     if (!m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_opensearchflag = true;
-        m_animation->setTargetObject(this);
-        m_animation->setPropertyName("schedulesearchWidth");
-        m_animation->setDuration(500);
-        m_animation->setStartValue(0);
-        m_animation->setEndValue(m_scheduleSearchViewMaxWidth);
-        m_animation->start();
+        m_contentBackground->setVisible(true);
+//        m_animation->setTargetObject(this);
+//        m_animation->setPropertyName("schedulesearchWidth");
+//        m_animation->setDuration(500);
+//        m_animation->setStartValue(0);
+//        m_animation->setEndValue(m_scheduleSearchViewMaxWidth);
+//        m_animation->start();
     }
     m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
     updateHigh();
@@ -801,12 +803,12 @@ void Calendarmainwindow::slotStextChanged()
         m_monthWindow->setSearchWFlag(false);
         m_weekWindow->setSearchWFlag(false);
         m_DayWindow->setSearchWFlag(false);
-
-        m_animation->setTargetObject(this);
-        m_animation->setDuration(500);
-        m_animation->setEndValue(0);
-        m_animation->setStartValue(m_scheduleSearchViewMaxWidth);
-        m_animation->start();
+        m_contentBackground->setVisible(false);
+//        m_animation->setTargetObject(this);
+//        m_animation->setDuration(500);
+//        m_animation->setEndValue(0);
+//        m_animation->setStartValue(m_scheduleSearchViewMaxWidth);
+//        m_animation->start();
         m_opensearchflag = false;
     }
     updateHigh();
