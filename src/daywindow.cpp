@@ -271,6 +271,7 @@ void CDayWindow::slotupdateSchedule(int id)
 {
     m_daymonthView->setCurrentDate(m_currentdate);
     m_scheduleView->setRange(m_currentdate, m_currentdate);
+    m_daymonthView->updateFlag();
 //    if (m_daymonthView->getCurrDate() != m_currentdate) {
 //        m_scheduleView->setRange(m_currentdate, m_currentdate);
 //        qDebug()<<Q_FUNC_INFO;

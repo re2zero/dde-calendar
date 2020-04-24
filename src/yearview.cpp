@@ -500,15 +500,15 @@ void CYearView::paintCell(QWidget *cell)
     }
     if (highflag) {
         int hh = 0;
-        QRect fillRect;
-        int t_pix = (height() - 159) / 22.33;
-        if (cell->width() > cell->height()) {
-            hh = cell->height() - t_pix;
-            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 + t_pix / 2, 0, hh, hh);
-        } else {
-            hh = cell->width() - t_pix;
-            fillRect = QRect(t_pix / 2, (cell->height() - hh) / 2.0 + 0.5, hh, hh);
-        }
+//        QRect fillRect;
+//        int t_pix = (height() - 159) / 22.33;
+//        if (cell->width() > cell->height()) {
+//            hh = cell->height() - t_pix;
+//            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 + t_pix / 2, 0, hh, hh);
+//        } else {
+//            hh = cell->width() - t_pix;
+//            fillRect = QRect(t_pix / 2, (cell->height() - hh) / 2.0 + 0.5, hh, hh);
+//        }
 
         painter.setBrush(QBrush(m_highColor));
         painter.setPen(Qt::NoPen);

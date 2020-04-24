@@ -216,6 +216,7 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
     m_currentShcedule = nullptr;
     m_graphicsView->clearSchdule();
     m_vListSchedule = data;
+    updateAllday();
     for (int i = 0; i < m_TotalDay; i++) {
         for (int j = 0; j < data.size(); j++) {
             if (data.at(j).date == m_beginDate.addDays(i)) {
@@ -256,7 +257,7 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
             }
         }
     }
-    updateAllday();
+
     m_graphicsView->update();
     m_graphicsView->getSence()->update();
     if (m_viewType == 1) {
@@ -578,7 +579,6 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     update();
     QFrame::resizeEvent(event);
     updateSchedule();
-    updateAllday();
 }
 
 void CScheduleView::initUI()
@@ -852,6 +852,7 @@ void CScheduleView::updateAllday()
     m_alldaylist->setDayData(vResultData, 0);
     update();
     m_alldaylist->update();
+    m_graphicsView->resize(m_graphicsView->width(),this->height()-m_alldaylist->height());
     // m_alldaylist->update();
 }
 
