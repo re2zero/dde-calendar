@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ug" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ug">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -78,7 +80,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -132,7 +134,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -225,7 +227,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -236,7 +238,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -275,7 +277,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -328,7 +330,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -359,7 +361,7 @@
     </message>
     <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Do you want to change all occurrences?</source>
@@ -375,27 +377,27 @@
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You are changing a repeating event.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Only This Event</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>All Future Events</source>
@@ -511,7 +513,7 @@
     </message>
     <message>
         <source>time(s)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
@@ -543,23 +545,23 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Repeat</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -613,7 +615,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -635,14 +637,14 @@
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CWeekWindow</name>
     <message>
         <source>Week</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Y</source>
@@ -664,7 +666,7 @@
     </message>
     <message>
         <source>No event</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -701,7 +703,7 @@
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>D</source>
