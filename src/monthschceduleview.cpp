@@ -349,7 +349,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.setBrush(linearGradient);
         painter.setPen(Qt::NoPen);
 //        painter.setBackgroundMode(Qt::OpaqueMode);
-        painter.drawRoundedRect(fillRect, 8, 8);
+        painter.drawRoundedRect(fillRect, this->height() / 3, this->height() / 3);
 //        painter.fillRect(fillRect, linearGradient);
         painter.restore();
         painter.setFont(m_font);
@@ -400,7 +400,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             pen.setStyle(Qt::SolidLine);
             painter.setBrush(Qt::NoBrush);
             painter.setPen(pen);
-            painter.drawRoundedRect(trect, 8, 8);
+            painter.drawRoundedRect(trect, this->height() / 3, this->height() / 3);
             painter.restore();
         }
         if (m_selectflag) {
@@ -408,7 +408,7 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
             selcolor.setAlphaF(0.05);
             painter.setBrush(selcolor);
             painter.setPen(Qt::NoPen);
-            painter.drawRoundedRect(fillRect, 8, 8);
+            painter.drawRoundedRect(fillRect, this->height() / 3, this->height() / 3);
         }
     } else {
         QRect fillRect = QRect(2, 2 * avge, labelwidth - 2, labelheight - 2 * avge);
@@ -703,15 +703,16 @@ void CMonthSchceduleView::slotDeleteItem()
 
 void CMonthSchceduleView::slotUpdatehe(int h)
 {
+//    he = h;
     if (he != h) {
-        if (h < 22 ) {
-            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
-        } else {
-            he = h;
-            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (he + 1);
-            updateData();
-        }
+//    if (h < 22 ) {
+//            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
+//    } else {
+        he = h;
+//            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (he + 1);
+        updateData();
     }
+//    }
 }
 
 bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
@@ -918,7 +919,7 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
     int ecol = (m_beginDate.daysTo(enddate) ) % 7;
 
     fw = (ecol - bcol + 1) * ((m_width - m_leftMagin ) / 7.0) - 11;
-    fh = 22;
+    fh = he;
     int x = m_leftMagin + bcol * ((m_width - m_leftMagin )  / 7.0) + 5;
     int y = m_topMagin + ((m_height - m_topMagin - m_buttommagin) * brow / 6.0 + 0.5)  + 27 + (cnum - 1) * fh + 2.9;
     pos = QPoint(x, y);
