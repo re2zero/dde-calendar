@@ -686,7 +686,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
-        painter.drawText(QRect(bw + 40, bh, 40, 26), Qt::AlignCenter, dayWeek);
+        painter.drawText(QRect(/*bw + 40*/bw + 40 - 4, bh, /*40*/40 + 30, 26), Qt::AlignCenter, dayWeek);
     }
     // draw text of day type
     if (m_showState & ShowLunar) {

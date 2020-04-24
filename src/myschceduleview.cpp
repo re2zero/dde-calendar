@@ -167,7 +167,7 @@ void CMySchceduleView::paintLabel(QWidget *label)
     strList.clear();
     if (titlewidth < 340) {
         strList.append(strText);
-        label->setFixedHeight(20);
+        label->setFixedHeight(h);
     } else {
         for (int i = 0; i < strText.count(); i++) {
             str += strText.at(i);
@@ -188,10 +188,10 @@ void CMySchceduleView::paintLabel(QWidget *label)
     } else {
         area->setFixedHeight(strList.count() * h);
     }
-    if (strList.count() * h + 180 > 240) {
+    if (strList.count() * h + 182 > 240) {
         setFixedHeight(240);
     } else {
-        setFixedHeight(strList.count() + 180);
+        setFixedHeight(strList.count() + 182);
     }
 
     for (int i = 0; i < strList.count(); i++) {

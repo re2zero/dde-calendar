@@ -2,25 +2,143 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>CCalendarTimeEidt</name>
+    <name>CAllDayEventWeekView</name>
     <message>
-        <source>AM</source>
-        <translation>上午</translation>
+        <source>Edit</source>
+        <translation type="unfinished">编辑</translation>
     </message>
     <message>
-        <source>PM</source>
-        <translation>下午</translation>
+        <source>Delete</source>
+        <translation type="unfinished">删除</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CCustomCalendarWidget</name>
+    <name>CAllDayEventWidgetItem</name>
     <message>
-        <source>M</source>
-        <translation>月</translation>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Y</source>
-        <translation>年</translation>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">删除</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CAllDaySchceduleWeekView</name>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CAllDaySchceduleWeekWidgetItem</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">编辑</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">删除</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -53,42 +171,6 @@
         <source>Sunday</source>
         <translation>星期天 </translation>
     </message>
-    <message>
-        <source>Return today</source>
-        <translation>返回今天</translation>
-    </message>
-    <message>
-        <source>mon</source>
-        <translation>月</translation>
-    </message>
-    <message>
-        <source>Y </source>
-        <translation>年</translation>
-    </message>
-    <message>
-        <source>M </source>
-        <translation>月</translation>
-    </message>
-    <message>
-        <source>D </source>
-        <translation>日</translation>
-    </message>
-    <message>
-        <source>【</source>
-        <translation>【</translation>
-    </message>
-    <message>
-        <source>Y】</source>
-        <translation>年】</translation>
-    </message>
-    <message>
-        <source>infomation</source>
-        <translation>提示</translation>
-    </message>
-    <message>
-        <source>Year less than 1900!</source>
-        <translation>年少于1900年！</translation>
-    </message>
 </context>
 <context>
     <name>CDayWindow</name>
@@ -116,131 +198,51 @@
         <translation>删除</translation>
     </message>
     <message>
-        <source>Create</source>
-        <translation>新建日程</translation>
-    </message>
-    <message>
-        <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <source>Delete Schedule</source>
-        <translation>删除日程</translation>
+        <source>New event</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All Deleted</source>
-        <translation>全部删除</translation>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CMonthView</name>
+    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>Create</source>
-        <translation>新建日程</translation>
+        <source>%1 more</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CMonthWindow</name>
-    <message>
-        <source>Y</source>
-        <translation>年</translation>
-    </message>
-    <message>
-        <source>Return today</source>
-        <translation>返回今天</translation>
-    </message>
-</context>
-<context>
-    <name>CMySchceduleView</name>
-    <message>
-        <source>My Schcedule</source>
-        <translation>我的日程</translation>
-    </message>
-    <message>
-        <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
-        <source>Delete Schedule</source>
-        <translation>删除日程</translation>
-    </message>
-    <message>
-        <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
-    </message>
-    <message>
-        <source>All Deleted</source>
-        <translation>全部删除</translation>
-    </message>
-    <message>
-        <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
-    </message>
-    <message>
-        <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
-    </message>
-    <message>
-        <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>编辑</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>删除</translation>
-    </message>
-</context>
-<context>
-    <name>CSchceduleAllDayView</name>
-    <message>
-        <source>Create</source>
-        <translation type="unfinished">新建日程</translation>
-    </message>
-</context>
-<context>
-    <name>CSchceduleAllNumButton</name>
-    <message>
-        <source>There is %1 schedule</source>
-        <translation type="unfinished">还有 %1 项</translation>
-    </message>
-</context>
-<context>
-    <name>CSchceduleAllWidgetItem</name>
+    <name>CMonthSchceduleWidgetItem</name>
     <message>
         <source>Edit</source>
         <translation type="unfinished">编辑</translation>
@@ -250,127 +252,105 @@
         <translation type="unfinished">删除</translation>
     </message>
     <message>
-        <source>You are deleted schedule.</source>
-        <translation type="unfinished">您正在删除日程。</translation>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete this schedule?</source>
-        <translation type="unfinished">您确定要删除此日程吗？</translation>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <source>Delete Schedule</source>
-        <translation type="unfinished">删除日程</translation>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation type="unfinished">您要删除这个日程的所有重复，还是只删除所选重复？</translation>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All Deleted</source>
-        <translation type="unfinished">全部删除</translation>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Just Delete Schedule</source>
-        <translation type="unfinished">仅删除该日程</translation>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation type="unfinished">您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
-    </message>
-    <message>
-        <source>Delete all schedule in the future</source>
-        <translation type="unfinished">删除所有将来日程</translation>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CSchceduleDayView</name>
+    <name>CMonthView</name>
     <message>
-        <source>Create</source>
-        <translation>新建日程</translation>
+        <source>New event</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CMonthWindow</name>
+    <message>
+        <source>Y</source>
+        <translation>年</translation>
+    </message>
+</context>
+<context>
+    <name>CMySchceduleView</name>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation>编辑</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">确定</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
-    <message>
-        <source>Create Schcedule</source>
-        <translation>创建日程</translation>
-    </message>
-    <message>
-        <source>Edit Schcedule</source>
-        <translation>编辑日程</translation>
-    </message>
-    <message>
-        <source>error</source>
-        <translation>错误</translation>
-    </message>
-    <message>
-        <source>Schcedule is empty!</source>
-        <translation>日程不存在！</translation>
-    </message>
-    <message>
-        <source>The end time less than begin time!</source>
-        <translation>终止时间小于起始时间！</translation>
-    </message>
-    <message>
-        <source>The end repeat times is null!</source>
-        <translation>请输入结束重复次数！</translation>
-    </message>
-    <message>
-        <source>The end repeat time less than begin time!</source>
-        <translation>结束的重复结束时间大于日程的起始时间！</translation>
-    </message>
-    <message>
-        <source>Repetitive schedule of all must have the same throughout the state.</source>
-        <translation>重复日程的所有重复必须具有相同的全天状态。</translation>
-    </message>
-    <message>
-        <source>Repetitive schedule of all must have the same not throughout the state.</source>
-        <translation>重复日程的所有重复必须具有相同的非全天状态。</translation>
-    </message>
-    <message>
-        <source>Would you like to change all repeat?</source>
-        <translation>您要更改所有重复？</translation>
-    </message>
-    <message>
-        <source>All Changes</source>
-        <translation>全部更改</translation>
-    </message>
-    <message>
-        <source>You are changing the schedule again.</source>
-        <translation>您正在更改重复日程。</translation>
-    </message>
-    <message>
-        <source>You are to change the schedule only the repeat, to repeat or change it all?</source>
-        <translation>您是要更改该日程的仅这一个重复，还是更改它的所有重复？</translation>
-    </message>
-    <message>
-        <source>ALL</source>
-        <translation>全部</translation>
-    </message>
-    <message>
-        <source>Only Schedule</source>
-        <translation>仅此日程</translation>
-    </message>
-    <message>
-        <source>Do you want to change the schedule only is this a repeat, besides it also changes the schedule all repeat in the future?</source>
-        <translation>您是要更改该日程的仅这一个重复，还是除它以外还更改该日程的所有将来重复？</translation>
-    </message>
-    <message>
-        <source>All future Schedule</source>
-        <translation>所有将来日程</translation>
-    </message>
-    <message>
-        <source>infomation</source>
-        <translation>提示</translation>
-    </message>
-    <message>
-        <source>Max length is 256!</source>
-        <translation>日程最大长度256字符！</translation>
-    </message>
     <message>
         <source>Type:</source>
         <translation>类型：</translation>
@@ -388,68 +368,8 @@
         <translation>其他</translation>
     </message>
     <message>
-        <source>Content:</source>
-        <translation>内容：</translation>
-    </message>
-    <message>
-        <source>Begin Time:</source>
-        <translation>开始时间：</translation>
-    </message>
-    <message>
-        <source>End Time:</source>
-        <translation>终止时间：</translation>
-    </message>
-    <message>
-        <source>Remind Set:</source>
-        <translation>提醒设置：</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>取消</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation>无</translation>
-    </message>
-    <message>
-        <source>Schedule occurs</source>
-        <translation>日程发生时</translation>
-    </message>
-    <message>
-        <source>15 minutes ago</source>
-        <translation>15分钟前</translation>
-    </message>
-    <message>
-        <source>30 minutes ago</source>
-        <translation>30分钟前</translation>
-    </message>
-    <message>
-        <source>1 hour ago</source>
-        <translation>1小时前</translation>
-    </message>
-    <message>
-        <source>1 day ago</source>
-        <translation>1天前</translation>
-    </message>
-    <message>
-        <source>2 day ago</source>
-        <translation>2天前</translation>
-    </message>
-    <message>
-        <source> schedule of the day(At 9 am)</source>
-        <translation>日程发生当天（上午9时）</translation>
-    </message>
-    <message>
-        <source>1 day ago(At 9 am)</source>
-        <translation>1天前（上午9时）</translation>
-    </message>
-    <message>
-        <source>2 day ago(At 9 am)</source>
-        <translation>2天前（上午9时）</translation>
-    </message>
-    <message>
-        <source>A week ago</source>
-        <translation>1周前</translation>
     </message>
     <message>
         <source>All Day:</source>
@@ -460,55 +380,188 @@
         <translation>重复：</translation>
     </message>
     <message>
-        <source>Every day</source>
-        <translation>每天</translation>
-    </message>
-    <message>
-        <source>Every working day</source>
-        <translation>每工作日</translation>
-    </message>
-    <message>
-        <source>Once a week</source>
-        <translation>每周</translation>
-    </message>
-    <message>
-        <source>A month</source>
-        <translation>每月</translation>
-    </message>
-    <message>
-        <source>Every year</source>
-        <translation>每年</translation>
-    </message>
-    <message>
         <source>End Repeat:</source>
         <translation>结束重复：</translation>
-    </message>
-    <message>
-        <source>never</source>
-        <translation>永不</translation>
-    </message>
-    <message>
-        <source>in</source>
-        <translation>于</translation>
-    </message>
-    <message>
-        <source>On the date</source>
-        <translation>于日期</translation>
-    </message>
-    <message>
-        <source>After time</source>
-        <translation>次后</translation>
     </message>
     <message>
         <source>OK</source>
         <translation>确定</translation>
     </message>
-</context>
-<context>
-    <name>CSchceduleNumButton</name>
     <message>
-        <source>There is %1 schedule</source>
-        <translation>还有 %1 项</translation>
+        <source>New Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End time must be greater than start time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All occurrences of a repeating event must have the same all-day status.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to change all occurrences?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are changing the repeating rule of this event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are changing a repeating event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Future Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At time of event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>15 minutes before</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>30 minutes before</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 hour before</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 day before</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2 days before</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 week before</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On start day (9:00 AM)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind Me:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weekdays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weekly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monthly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yearly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>time(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -537,40 +590,40 @@
         <translation>删除</translation>
     </message>
     <message>
-        <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <source>Delete Schedule</source>
-        <translation>删除日程</translation>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All Deleted</source>
-        <translation>全部删除</translation>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -581,160 +634,61 @@
     </message>
 </context>
 <context>
-    <name>CSchceduleWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>编辑</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <source>You are deleted schedule.</source>
-        <translation>您正在删除日程。</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this schedule?</source>
-        <translation>您确定要删除此日程吗？</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
-        <source>Delete Schedule</source>
-        <translation>删除日程</translation>
-    </message>
-    <message>
-        <source>You want to delete all repeat of the schedule, or just delete the selected repeat?</source>
-        <translation>您要删除这个日程的所有重复，还是只删除所选重复？</translation>
-    </message>
-    <message>
-        <source>All Deleted</source>
-        <translation>全部删除</translation>
-    </message>
-    <message>
-        <source>Just Delete Schedule</source>
-        <translation>仅删除该日程</translation>
-    </message>
-    <message>
-        <source>You want to delete the schedule of this repetition and all repeat in the future, or just delete all repeat?</source>
-        <translation>您是要删除此日程的这个重复和所有将来重复，还是只删除所选重复？</translation>
-    </message>
-    <message>
-        <source>Delete all schedule in the future</source>
-        <translation>删除所有将来日程</translation>
-    </message>
-</context>
-<context>
     <name>CScheduleView</name>
-    <message>
-        <source>PM </source>
-        <translation>下午</translation>
-    </message>
-    <message>
-        <source> h</source>
-        <translation>时</translation>
-    </message>
-    <message>
-        <source>AM </source>
-        <translation>上午</translation>
-    </message>
     <message>
         <source>ALL DAY</source>
         <translation>全天</translation>
     </message>
 </context>
 <context>
-    <name>CWeekHeadView</name>
-    <message>
-        <source>Mon</source>
-        <translation>月</translation>
-    </message>
-</context>
-<context>
     <name>CWeekWindow</name>
-    <message>
-        <source>Return today</source>
-        <translation>返回今天</translation>
-    </message>
     <message>
         <source>Week</source>
         <translation>周</translation>
     </message>
     <message>
-        <source>infomation</source>
-        <translation>提示</translation>
-    </message>
-    <message>
-        <source>Year less than 1900!</source>
-        <translation>年少于1900年！</translation>
-    </message>
-    <message>
         <source>Y</source>
         <translation>年</translation>
     </message>
 </context>
 <context>
-    <name>CYearView</name>
+    <name>CYearSchceduleItem</name>
     <message>
-        <source>Mon</source>
-        <translation>月</translation>
+        <source>All Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CYearSchceduleView</name>
+    <message>
+        <source>No event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CYearWindow</name>
     <message>
-        <source>Return today</source>
-        <translation>返回今天</translation>
-    </message>
-    <message>
-        <source>infomation</source>
-        <translation>提示</translation>
-    </message>
-    <message>
-        <source>Year less than 1900!</source>
-        <translation>年少于1900年！</translation>
-    </message>
-    <message>
         <source>Y</source>
         <translation>年</translation>
-    </message>
-    <message>
-        <source>Lunar</source>
-        <translation>农历</translation>
-    </message>
-    <message>
-        <source>Today</source>
-        <translation>今天</translation>
-    </message>
-    <message>
-        <source>Return Today</source>
-        <translation>返回今天</translation>
     </message>
 </context>
 <context>
     <name>CalendarWindow</name>
     <message>
-        <source>First Day of Week</source>
-        <translation>周第一天</translation>
+        <source>Calendar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deepin Calendar</source>
-        <translation>深度日历</translation>
-    </message>
-    <message>
-        <source>Calendar is a date tool.</source>
-        <translation>日历是一个时间工具.</translation>
+        <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Calendarmainwindow</name>
-    <message>
-        <source>Deepin Calendar</source>
-        <translation>深度日历</translation>
-    </message>
     <message>
         <source>Y</source>
         <translation>年</translation>
@@ -751,12 +705,85 @@
         <source>D</source>
         <translation>日</translation>
     </message>
+    <message>
+        <source>Calendar</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
         <translation>今天</translation>
+    </message>
+</context>
+<context>
+    <name>Return</name>
+    <message>
+        <source>Today</source>
+        <comment>Return</comment>
+        <translation type="unfinished">今天</translation>
+    </message>
+</context>
+<context>
+    <name>Return Today</name>
+    <message>
+        <source>Today</source>
+        <comment>Return Today</comment>
+        <translation type="unfinished">今天</translation>
+    </message>
+</context>
+<context>
+    <name>Shortcut</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">删除</translation>
+    </message>
+    <message>
+        <source>Select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation type="unfinished">年</translation>
+    </message>
+</context>
+<context>
+    <name>today</name>
+    <message>
+        <source>Today</source>
+        <comment>Today</comment>
+        <translation type="unfinished">今天</translation>
     </message>
 </context>
 </TS>

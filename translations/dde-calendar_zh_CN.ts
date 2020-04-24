@@ -346,7 +346,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -531,6 +531,38 @@
         <source>OK</source>
         <translation>确定</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>内容</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>类型</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>全天</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation>开始时间</translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation>结束时间</translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation>提醒</translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>重复</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation>结束重复</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -682,7 +714,7 @@
     <name>CenterWidget</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished">全天</translation>
+        <translation>全天</translation>
     </message>
 </context>
 <context>
@@ -737,6 +769,13 @@
     <message>
         <source>Delete</source>
         <translation>删除</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>年</translation>
     </message>
 </context>
 <context>

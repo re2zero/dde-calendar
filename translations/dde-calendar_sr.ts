@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="sr">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -27,7 +29,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -39,7 +41,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -66,7 +68,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -78,7 +80,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -120,7 +122,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -132,7 +134,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -213,7 +215,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -225,7 +227,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -263,7 +265,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Да ли желите да обришете све појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -275,7 +277,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -316,7 +318,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -328,7 +330,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -341,6 +343,10 @@
     <message>
         <source>Edit</source>
         <translation>Уреди</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>У реду</translation>
     </message>
 </context>
 <context>
@@ -467,7 +473,7 @@
     </message>
     <message>
         <source>Remind Me:</source>
-        <translation>Подсети ме:</translation>
+        <translation>Подсетник:</translation>
     </message>
     <message>
         <source>Repeat:</source>
@@ -495,7 +501,7 @@
     </message>
     <message>
         <source>End Repeat:</source>
-        <translation>Окончај понављање:</translation>
+        <translation>Окончај:</translation>
     </message>
     <message>
         <source>After</source>
@@ -503,7 +509,7 @@
     </message>
     <message>
         <source>On</source>
-        <translation>На</translation>
+        <translation>На дан</translation>
     </message>
     <message>
         <source>time(s)</source>
@@ -524,6 +530,38 @@
     <message>
         <source>OK</source>
         <translation>У реду</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Врста</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Цео дан</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Понови</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -565,7 +603,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете све појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -577,7 +615,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабране ставке?</translation>
+        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -673,6 +711,13 @@
     </message>
 </context>
 <context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Цео дан</translation>
+    </message>
+</context>
+<context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
@@ -724,6 +769,13 @@
     <message>
         <source>Delete</source>
         <translation>Обриши</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>Г</translation>
     </message>
 </context>
 <context>

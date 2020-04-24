@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fi">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -174,11 +176,11 @@
     <name>CDayWindow</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>V</translation>
     </message>
     <message>
         <source>M</source>
-        <translation>M</translation>
+        <translation>K</translation>
     </message>
     <message>
         <source>D</source>
@@ -293,7 +295,7 @@
     <name>CMonthWindow</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>V</translation>
     </message>
 </context>
 <context>
@@ -341,6 +343,10 @@
     <message>
         <source>Edit</source>
         <translation>Muokkaa</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -399,19 +405,19 @@
     </message>
     <message>
         <source>Never</source>
-        <translation>Unohda</translation>
+        <translation>Ei</translation>
     </message>
     <message>
         <source>At time of event</source>
-        <translation>Tapahtuman aika</translation>
+        <translation>Tapahtuman aikaan</translation>
     </message>
     <message>
         <source>15 minutes before</source>
-        <translation>15 minuuttia ennen</translation>
+        <translation>15 min ennen</translation>
     </message>
     <message>
         <source>30 minutes before</source>
-        <translation>30 minuuttia ennen</translation>
+        <translation>30 min ennen</translation>
     </message>
     <message>
         <source>1 hour before</source>
@@ -495,7 +501,7 @@
     </message>
     <message>
         <source>End Repeat:</source>
-        <translation>Lopeta toisto:</translation>
+        <translation>Lopeta:</translation>
     </message>
     <message>
         <source>After</source>
@@ -507,7 +513,7 @@
     </message>
     <message>
         <source>time(s)</source>
-        <translation>aika(s)</translation>
+        <translation>kerta(a)</translation>
     </message>
     <message>
         <source>Save</source>
@@ -525,16 +531,48 @@
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Kuvaus</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tyyppi</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Koko päivä</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Toista</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>V</translation>
     </message>
     <message>
         <source>M</source>
-        <translation>M</translation>
+        <translation>K</translation>
     </message>
     <message>
         <source>D</source>
@@ -599,7 +637,7 @@
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation>KOKO PÄIVÄN</translation>
+        <translation>KOKO PÄIVÄ</translation>
     </message>
 </context>
 <context>
@@ -610,7 +648,7 @@
     </message>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>V</translation>
     </message>
 </context>
 <context>
@@ -635,7 +673,7 @@
     <name>CYearWindow</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>V</translation>
     </message>
 </context>
 <context>
@@ -646,7 +684,7 @@
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>Kalenteri on työkalu päivämäärien tarkastelemiseen ja myös älykäs päiväsuunnittelija kaikille asioille.</translation>
+        <translation>Kalenteri on työkalu almanakan tarkasteluun ja voit myös tehdä hälytykset ja muistutukset kalenteriin.</translation>
     </message>
 </context>
 <context>
@@ -657,11 +695,11 @@
     </message>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>V</translation>
     </message>
     <message>
         <source>M</source>
-        <translation>M</translation>
+        <translation>K</translation>
     </message>
     <message>
         <source>W</source>
@@ -670,6 +708,13 @@
     <message>
         <source>D</source>
         <translation>P</translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Koko päivä</translation>
     </message>
 </context>
 <context>
@@ -724,6 +769,13 @@
     <message>
         <source>Delete</source>
         <translation>Poista</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>V</translation>
     </message>
 </context>
 <context>

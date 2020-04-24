@@ -240,7 +240,9 @@ void CScheduleDataManage::setTheMe(int type)
         workC.textColor.setAlphaF(1);
         workC.timeColor = "#B54A4B";
         workC.hightlightgradientToC = "#992D2A";
+        workC.hightlightgradientToC.setAlphaF(0.8);
         workC.hightlightgradientFromC = "#8B521F";
+        workC.hightlightgradientFromC.setAlphaF(0.8);
         QColor workP("#77373E");
         workP.setAlphaF(0.8);
         workC.hightlightPurecolor = workP;
@@ -278,7 +280,9 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.textColor.setAlphaF(1);
         lifeC.timeColor = "#38A35B";
         lifeC.hightlightgradientFromC = "#2D6883";
+        lifeC.hightlightgradientFromC.setAlphaF(0.8);
         lifeC.hightlightgradientToC = "#5D7D44";
+        lifeC.hightlightgradientToC.setAlphaF(0.8);
         QColor lifeP("#337044");
         lifeP.setAlphaF(0.8);
         lifeC.hightlightPurecolor = lifeP;
@@ -315,7 +319,9 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.textColor.setAlphaF(1);
         otherC.timeColor = "#9857C8";
         otherC.hightlightgradientFromC = "#8C4E2C";
+        otherC.hightlightgradientFromC.setAlphaF(0.8);
         otherC.hightlightgradientToC = "#803BAE";
+        otherC.hightlightgradientToC.setAlphaF(0.8);
         QColor otherP("#613776");
         otherP.setAlphaF(0.8);
         otherC.hightlightPurecolor = otherP;

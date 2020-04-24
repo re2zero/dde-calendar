@@ -346,7 +346,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -531,6 +531,38 @@
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Description</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>All Day</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation>Starts</translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation>Ends</translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation>Remind Me</translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Repeat</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation>End Repeat</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -682,7 +714,7 @@
     <name>CenterWidget</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished">All Day</translation>
+        <translation>All Day</translation>
     </message>
 </context>
 <context>
@@ -737,6 +769,13 @@
     <message>
         <source>Delete</source>
         <translation>Delete</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>Y</translation>
     </message>
 </context>
 <context>

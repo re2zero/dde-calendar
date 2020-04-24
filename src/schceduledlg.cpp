@@ -650,6 +650,9 @@ void CSchceduleDlg::initUI()
     typelayout->setMargin(0);
     // maintlayout->setContentsMargins(20, 0, 20, 10);
     m_typeLabel = new QLabel(tr("Type:"));
+    m_typeLabel->setToolTip(tr("Type"));
+    QFontMetrics fontWidth_typeLabel(mlabelF);
+    QString str_typelabel = fontWidth_typeLabel.elidedText(tr("Type:"),Qt::ElideRight,68);
     m_typeLabel->setFont(mlabelF);
     m_typeLabel->setPalette(pa);
     m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -686,6 +689,7 @@ void CSchceduleDlg::initUI()
     m_contentLabel->setText(str_contentlabel);
     m_contentLabel->setFont(mlabelF);
     m_contentLabel->setPalette(pa);
+    m_contentLabel->setToolTip(tr("Description"));
     m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_contentLabel->setFixedWidth(78);
     conttelabellayout->addWidget(m_contentLabel);
@@ -735,6 +739,9 @@ void CSchceduleDlg::initUI()
     alldayLabellayout->setSpacing(0);
     alldayLabellayout->setMargin(0);
     m_adllDayLabel = new QLabel(tr("All Day:"));
+    m_adllDayLabel->setToolTip(tr("All Day"));
+    QFontMetrics fontWidth_allDayLabel(mlabelF);
+    QString str_allDayLabel = fontWidth_allDayLabel.elidedText(tr("All Day:"), Qt::ElideRight, 68);
     m_adllDayLabel->setFont(mlabelF);
     m_adllDayLabel->setPalette(pa);
     m_adllDayLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -748,6 +755,9 @@ void CSchceduleDlg::initUI()
     beginLabellayout->setSpacing(0);
     beginLabellayout->setMargin(0);
     m_beginTimeLabel = new QLabel(tr("Starts:"));
+    m_beginTimeLabel->setToolTip(tr("Starts"));
+    QFontMetrics fontWidth_beginTimeLabel(mlabelF);
+    QString str_beginTimeLabel = fontWidth_beginTimeLabel.elidedText(tr("Starts:"), Qt::ElideRight, 68);
     m_beginTimeLabel->setFont(mlabelF);
     m_beginTimeLabel->setPalette(pa);
     m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -777,6 +787,9 @@ void CSchceduleDlg::initUI()
     enQLabellayout->setSpacing(0);
     enQLabellayout->setMargin(0);
     m_endTimeLabel = new QLabel(tr("Ends:"));
+    m_endTimeLabel->setToolTip(tr("Ends"));
+    QFontMetrics fontWidth_endTimeLabel(mlabelF);
+    QString str_endTimeLabel = fontWidth_endTimeLabel.elidedText(tr("Ends:"), Qt::ElideRight, 68);
     m_endTimeLabel->setFont(mlabelF);
     m_endTimeLabel->setPalette(pa);
     m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -803,6 +816,7 @@ void CSchceduleDlg::initUI()
     m_remindSetLabel = new QLabel();
     QFontMetrics fontWidth_remindSetLabel(mlabelF);
     QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"),Qt::ElideRight,68);
+    m_remindSetLabel->setToolTip(tr("Remind Me"));
     m_remindSetLabel->setText(str_remindSetLabel);
     m_remindSetLabel->setFont(mlabelF);
     m_remindSetLabel->setPalette(pa);
@@ -821,6 +835,9 @@ void CSchceduleDlg::initUI()
     repeatLabellayout->setSpacing(0);
     repeatLabellayout->setMargin(0);
     m_beginrepeatLabel = new QLabel(tr("Repeat:"));
+    m_beginrepeatLabel->setToolTip(tr("Repeat"));
+    QFontMetrics fontWidth_beginRepeatLabel(mlabelF);
+    QString str_beginRepeatLabel = fontWidth_beginRepeatLabel.elidedText(tr("Repeat:"), Qt::ElideRight, 68);
     m_beginrepeatLabel->setFont(mlabelF);
     m_beginrepeatLabel->setPalette(pa);
     m_beginrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -844,6 +861,7 @@ void CSchceduleDlg::initUI()
     m_endrepeatLabel = new QLabel();
     QFontMetrics fontWidth_endrepeatLabel(mlabelF);
     QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"),Qt::ElideRight,68);
+    m_endrepeatLabel->setToolTip(tr("End Repeat"));
     m_endrepeatLabel->setText(str_endrepeatLabel);
     m_endrepeatLabel->setFont(mlabelF);
     m_endrepeatLabel->setPalette(pa);

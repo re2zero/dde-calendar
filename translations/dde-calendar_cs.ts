@@ -1,9 +1,11 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="cs">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>Nová událost</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -19,11 +21,11 @@
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Opravdu chcete smazat tuto událost?</translation>
+        <translation>Opravdu chcete tuto událost smazat?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -54,35 +56,35 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Mažete událost.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete tuto událost smazat?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete smazat všechny výskyty této události, nebo jen vybraný výskyt?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Smazat vše</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Smazat jen tuto událost</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete smazat tento a všechny výskyty této události, nebo jen vybraný výskyt?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Smazat všechny budoucí události</translation>
     </message>
 </context>
 <context>
@@ -108,15 +110,15 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Mažete událost</translation>
+        <translation>Mažete událost.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Opravdu chcete smazat tuto událost?</translation>
+        <translation>Opravdu chcete tuto událost smazat?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -143,31 +145,31 @@
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
-        <translation>Pondělí</translation>
+        <translation>pondělí</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Úterý</translation>
+        <translation>úterý</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Středa</translation>
+        <translation>středa</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Čtvrtek</translation>
+        <translation>čtvrtek</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Pátek</translation>
+        <translation>pátek</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Sobota</translation>
+        <translation>sobota</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Neděle</translation>
+        <translation>neděle</translation>
     </message>
 </context>
 <context>
@@ -205,11 +207,11 @@
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Opravdu chcete smazat tuto událost?</translation>
+        <translation>Opravdu chcete tuto událost smazat?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -255,11 +257,11 @@
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Opravdu chcete smazat tuto událost?</translation>
+        <translation>Opravdu chcete tuto událost smazat?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -304,11 +306,11 @@
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Opravdu chcete smazat tuto událost?</translation>
+        <translation>Opravdu chcete tuto událost smazat?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -342,6 +344,10 @@
         <source>Edit</source>
         <translation>Upravit</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -355,7 +361,7 @@
     </message>
     <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation>Všechny výskyty opakující se události musí mít stejný celodenní stav.</translation>
+        <translation>Je třeba, aby všechny výskyty opakující se události měly stejný stav „celý den“.</translation>
     </message>
     <message>
         <source>Do you want to change all occurrences?</source>
@@ -363,7 +369,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Change All</source>
@@ -371,11 +377,11 @@
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
-        <translation>Měníte opakovací pravidlo této události.</translation>
+        <translation>Měníte pravidlo opakování této události.</translation>
     </message>
     <message>
         <source>You are changing a repeating event.</source>
-        <translation>Měníte pravidlo opakující se událost.</translation>
+        <translation>Měníte pravidlo opakující se události.</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
@@ -431,7 +437,7 @@
     </message>
     <message>
         <source>On start day (9:00 AM)</source>
-        <translation>V den začátku (9:00 dop.</translation>
+        <translation>V den začátku (9:00 dop.)</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -443,11 +449,11 @@
     </message>
     <message>
         <source>Life</source>
-        <translation>Život</translation>
+        <translation>Soukromé</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation>Jiné</translation>
+        <translation>Ostatní</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -519,11 +525,43 @@
     </message>
     <message>
         <source>End time must be greater than start time</source>
-        <translation>Čas konce musí být větší než čas začátku</translation>
+        <translation>Je třeba, aby okamžik konce následoval až po okamžiku začátku</translation>
     </message>
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Popis</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Typ</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Celý den</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Opakování</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -557,11 +595,11 @@
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Opravdu chcete smazat tuto událost?</translation>
+        <translation>Opravdu chcete tuto událost smazat?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -592,7 +630,7 @@
     <name>CSchceduleSearchView</name>
     <message>
         <source>No search results</source>
-        <translation>Žádné výsledky hledání</translation>
+        <translation>Nic nenalezeno</translation>
     </message>
 </context>
 <context>
@@ -646,7 +684,7 @@
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>Kalendář slouží k zobrazování schůzek, a také jako chytrý deníček na rozvrhování všeho v životě.</translation>
+        <translation>Kalendář slouží k zobrazování datumů a také jako chytrý každodenní plánovač všeho v životě.</translation>
     </message>
 </context>
 <context>
@@ -670,6 +708,13 @@
     <message>
         <source>D</source>
         <translation>D</translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Celý den</translation>
     </message>
 </context>
 <context>
@@ -724,6 +769,13 @@
     <message>
         <source>Delete</source>
         <translation>Smazat</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>R</translation>
     </message>
 </context>
 <context>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="it">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -35,7 +37,7 @@
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>Elimina solo il selezionato</translation>
+        <translation>Elimina solo quello selezionato</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
@@ -342,6 +344,10 @@
         <source>Edit</source>
         <translation>Modifica</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -525,6 +531,38 @@
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Descrizione</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Tutto il giorno</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Ripeti</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -642,11 +680,11 @@
     <name>CalendarWindow</name>
     <message>
         <source>Calendar</source>
-        <translation>Calendar</translation>
+        <translation>Calendario</translation>
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>Calendar è uno strumento per visualizzare il calendario ma anche per pianificare in modo intelligente tutti gli eventi della propria vita quotidiana.
+        <translation>Calendario è uno strumento per visualizzare il calendario ma anche per pianificare in modo intelligente tutti gli eventi della propria vita quotidiana.
 Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
 </context>
@@ -654,7 +692,7 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <name>Calendarmainwindow</name>
     <message>
         <source>Calendar</source>
-        <translation>Calendar</translation>
+        <translation>Calendario</translation>
     </message>
     <message>
         <source>Y</source>
@@ -671,6 +709,13 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <message>
         <source>D</source>
         <translation>D</translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Tutto il giorno</translation>
     </message>
 </context>
 <context>
@@ -725,6 +770,13 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <message>
         <source>Delete</source>
         <translation>Elimina</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>Y</translation>
     </message>
 </context>
 <context>

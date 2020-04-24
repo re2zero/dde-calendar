@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -15,7 +17,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Esta eliminando un evento.</translation>
+        <translation>Esta borrando un evento.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -54,7 +56,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Esta eliminando un evento.</translation>
+        <translation>Esta borrando un evento.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -108,7 +110,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Esta eliminando un evento</translation>
+        <translation>Esta borrando un evento</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -132,7 +134,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>¿Desea borrar este y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
+        <translation>¿Desea borrar esta y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -201,7 +203,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Esta eliminando un evento.</translation>
+        <translation>Esta borrando un evento.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -225,7 +227,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>¿Desea borrar este y todos los acontecimientos futuros de este evento, o solo el acontecimiento seleccionado?</translation>
+        <translation>¿Desea borrar esta y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -251,7 +253,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Esta eliminando un evento</translation>
+        <translation>Esta borrando un evento.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -275,7 +277,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>¿Desea borrar este y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
+        <translation>¿Desea borrar esta y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -300,7 +302,7 @@
     <name>CMySchceduleView</name>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Esta eliminando un evento</translation>
+        <translation>Esta borrando un evento.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -328,7 +330,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>¿Desea borrar este y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
+        <translation>¿Desea borrar esta y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -341,6 +343,10 @@
     <message>
         <source>Edit</source>
         <translation>Editar</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>Aceptar</translation>
     </message>
 </context>
 <context>
@@ -525,6 +531,38 @@
         <source>OK</source>
         <translation>Aceptar</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Descripción</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Todo el día</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Repetir</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -553,7 +591,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Esta eliminando un evento</translation>
+        <translation>Esta borrando un evento.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -565,7 +603,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>¿Desea borrar todos los acontecimientos de este evento, o solo el acontecimiento seleccionado?</translation>
+        <translation>¿Desea borrar todas las instancias de este evento, o solo la instancia seleccionada?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -577,7 +615,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>¿Desea borrar este y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
+        <translation>¿Desea borrar esta y todas las instancias futuras de este evento, o solo la instancia seleccionada?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -673,6 +711,13 @@
     </message>
 </context>
 <context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Todo el día</translation>
+    </message>
+</context>
+<context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
@@ -724,6 +769,13 @@
     <message>
         <source>Delete</source>
         <translation>Borrar</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>A</translation>
     </message>
 </context>
 <context>

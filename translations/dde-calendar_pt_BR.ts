@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -27,7 +29,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Excluir todas as ocorrências deste evento ou apenas a ocorrência selecionada?</translation>
+        <translation>Excluir todas as ocorrências deste evento, ou apenas a ocorrência selecionada?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -39,7 +41,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Excluir esta e todas as ocorrências futuras deste evento ou apenas a ocorrência selecionada?</translation>
+        <translation>Excluir esta e todas as ocorrências futuras deste evento, ou apenas a ocorrência selecionada?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -342,6 +344,10 @@
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation>Ok</translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
@@ -355,7 +361,7 @@
     </message>
     <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation>Todas as ocorrências de um evento repetido devem ter o mesmo status de dia inteiro.</translation>
+        <translation>Todas as ocorrências de um evento repetido, devem ter o mesmo status de dia inteiro.</translation>
     </message>
     <message>
         <source>Do you want to change all occurrences?</source>
@@ -455,7 +461,7 @@
     </message>
     <message>
         <source>All Day:</source>
-        <translation>Dia Todo:</translation>
+        <translation>Dia Inteiro:</translation>
     </message>
     <message>
         <source>Starts:</source>
@@ -525,6 +531,38 @@
         <source>OK</source>
         <translation>Ok</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Descrição</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Dia Inteiro</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Repetir</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
@@ -585,7 +623,7 @@
     </message>
     <message>
         <source>All Day</source>
-        <translation>Dia Todo</translation>
+        <translation>Dia Inteiro</translation>
     </message>
 </context>
 <context>
@@ -599,7 +637,7 @@
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation>DIA TODO</translation>
+        <translation>DIA INTEIRO</translation>
     </message>
 </context>
 <context>
@@ -617,14 +655,14 @@
     <name>CYearSchceduleItem</name>
     <message>
         <source>All Day</source>
-        <translation>Dia Todo</translation>
+        <translation>Dia Inteiro</translation>
     </message>
 </context>
 <context>
     <name>CYearSchceduleView</name>
     <message>
         <source>All Day</source>
-        <translation>Dia Todo</translation>
+        <translation>Dia Inteiro</translation>
     </message>
     <message>
         <source>No event</source>
@@ -670,6 +708,13 @@
     <message>
         <source>D</source>
         <translation>D</translation>
+    </message>
+</context>
+<context>
+    <name>CenterWidget</name>
+    <message>
+        <source>All Day</source>
+        <translation>Dia Inteiro</translation>
     </message>
 </context>
 <context>
@@ -724,6 +769,13 @@
     <message>
         <source>Delete</source>
         <translation>Excluir</translation>
+    </message>
+</context>
+<context>
+    <name>YearFrame</name>
+    <message>
+        <source>Y</source>
+        <translation>A</translation>
     </message>
 </context>
 <context>
