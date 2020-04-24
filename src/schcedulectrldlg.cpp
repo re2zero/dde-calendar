@@ -24,6 +24,7 @@
 #include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
+#include <DFontSizeManager>
 DGUI_USE_NAMESPACE
 CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
 {
@@ -87,7 +88,8 @@ void CSchceduleCtrlDlg::initUI()
     QFont labelF;
     labelF.setFamily("SourceHanSansSC");
     labelF.setWeight(QFont::Medium);
-    labelF.setPixelSize(14);
+    DFontSizeManager::instance()->bind(m_firstLabel,DFontSizeManager::T6);
+//    labelF.setPixelSize(14);
     DPalette wpa = m_firstLabel->palette();
     if (themetype == 0 || themetype == 1) {
         wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
@@ -107,7 +109,8 @@ void CSchceduleCtrlDlg::initUI()
     QFont labelT;
     labelT.setFamily("SourceHanSansSC");
     labelTitle.setWeight(QFont::Bold);
-    labelT.setPixelSize(14);
+    DFontSizeManager::instance()->bind(m_seconLabel,DFontSizeManager::T6);
+//    labelT.setPixelSize(14);
     DPalette tpa = m_seconLabel->palette();
     if (themetype == 0 || themetype == 1) {
         tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
@@ -202,7 +205,8 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
     QFont labelTitle;
     labelTitle.setFamily("SourceHanSansSC");
     labelTitle.setWeight(QFont::Medium);
-    labelTitle.setPixelSize(14);
+    labelTitle = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelTitle);
+//    labelTitle.setPixelSize(14);
     QFontMetrics fm(labelTitle);
     int w = fm.width(btName);
     if (w > 109) w = w + 18;
