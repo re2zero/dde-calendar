@@ -174,5 +174,5 @@ DEFINES += "DSR_LANG_PATH=\\\"$$DSR_LANG_PATH\\\""
 #DISTFILES += \
 #    image/newUI/focus/close-focus.svg
 
-DISTFILES += \
-    translations.pri
+#DISTFILES += \
+#    translations.pri
