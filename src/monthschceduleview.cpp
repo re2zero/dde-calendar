@@ -647,6 +647,7 @@ CMonthSchceduleView::CMonthSchceduleView(QWidget *parent) : QObject (parent), m_
         CWeekScheduleView *weekSchedule = new CWeekScheduleView(this);
         m_weekSchedule.append(weekSchedule);
     }
+    slotFontChange();
 }
 
 CMonthSchceduleView::~CMonthSchceduleView()
