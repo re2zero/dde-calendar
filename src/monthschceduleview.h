@@ -62,7 +62,7 @@ public slots:
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
     void slotupdateItem(CMonthSchceduleWidgetItem *item);
     void slotDeleteItem();
-    void slotUpdatehe(int h);
+    void slotFontChange();
 private:
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule,QVector<DPushButton *> &schudeleShowItem);
     void splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData);
@@ -200,7 +200,6 @@ signals:
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
     void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
-    void signalupdatehe(int he);
 public slots:
     void slotEdit();
     void slotDelete();

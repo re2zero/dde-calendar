@@ -186,6 +186,8 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
             , &CMonthSchceduleView::signalPressScheduleShow
             , this
             , &CMonthView::slotScheduleRemindWidget);
+    connect(this,&CMonthView::signalFontChange,
+            m_MonthSchceduleView,&CMonthSchceduleView::slotFontChange);
 
     DFrame *gridWidget = new DFrame;
     gridWidget->setFrameRounded(false);
@@ -372,6 +374,14 @@ void CMonthView::mousePressEvent(QMouseEvent *event)
 
 void CMonthView::mouseMoveEvent(QMouseEvent *event)
 {
+
+}
+
+void CMonthView::changeEvent(QEvent *event)
+{
+    if (event->type() ==QEvent::FontChange) {
+        emit signalFontChange();
+    }
 
 }
 

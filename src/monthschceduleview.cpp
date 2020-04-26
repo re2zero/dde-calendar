@@ -34,6 +34,7 @@
 #include "schcedulectrldlg.h"
 #include <QShortcut>
 #include <QPropertyAnimation>
+#include <QGuiApplication>
 #include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
 #include "monthview.h"
@@ -355,10 +356,6 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.setFont(m_font);
         painter.setPen(textcolor);
         QFontMetrics fm = painter.fontMetrics();
-        if (he != fm.height()) {
-            he = fm.height();
-            emit signalupdatehe(fm.height());
-        }
 
         QString tStitlename = m_ScheduleInfo.titleName;
         tStitlename.replace("\n", "");
@@ -701,18 +698,17 @@ void CMonthSchceduleView::slotDeleteItem()
     }
 }
 
-void CMonthSchceduleView::slotUpdatehe(int h)
+void CMonthSchceduleView::slotFontChange()
 {
-//    he = h;
+    QFont font("PingFangSC-Light");
+    DFontSizeManager::instance()->setFontGenericPixelSize(DFontSizeManager::instance()->fontPixelSize(qGuiApp->font()));
+    font= DFontSizeManager::instance()->t8(font);
+    QFontMetrics fm(font);
+    int h = fm.height();
     if (he != h) {
-//    if (h < 22 ) {
-//            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / 23;
-//    } else {
         he = h;
-//            m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (he + 1);
         updateData();
     }
-//    }
 }
 
 bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
@@ -865,7 +861,6 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     connect(gwi, &CMonthSchceduleWidgetItem::signalViewtransparentFrame, this, &CMonthSchceduleView::signalViewtransparentFrame);
     connect(gwi, &CMonthSchceduleWidgetItem::signalUpdateUI, this, &CMonthSchceduleView::signalUpdateUI);
     connect(gwi, &CMonthSchceduleWidgetItem::signalPressScheduleShow, this, &CMonthSchceduleView::signalPressScheduleShow);
-    connect(gwi,&CMonthSchceduleWidgetItem::signalupdatehe,this,&CMonthSchceduleView::slotUpdatehe);
 
     schudeleShowItem.append(gwi);
 }

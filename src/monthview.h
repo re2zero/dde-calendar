@@ -99,12 +99,14 @@ public slots:
     void slotScheduleRemindWidget(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
+    void signalFontChange();
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void focusOutEvent (QFocusEvent *event ) Q_DECL_OVERRIDE;
     void focusInEvent (QFocusEvent *event )Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
