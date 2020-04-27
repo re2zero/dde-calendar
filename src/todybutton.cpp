@@ -4,7 +4,7 @@
 DGUI_USE_NAMESPACE
 CTodyButton::CTodyButton(QWidget *parent): DPushButton(parent)
 {
-    m_font.setFamily("SourceHanSansSC");
+//    m_font.setFamily("SourceHanSansSC");
     m_font.setWeight(QFont::Medium);
     m_font.setPixelSize(14);
 }

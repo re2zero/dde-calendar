@@ -59,7 +59,7 @@ void CSchceduleCtrlDlg::initUI()
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
     QFont labelTitle;
-    labelTitle.setFamily("SourceHanSansSC");
+//    labelTitle.setFamily("SourceHanSansSC");
     labelTitle.setWeight(QFont::Bold);
     labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
@@ -86,7 +86,7 @@ void CSchceduleCtrlDlg::initUI()
     m_firstLabel->adjustSize();
     m_firstLabel->setWordWrap(true);
     QFont labelF;
-    labelF.setFamily("SourceHanSansSC");
+//    labelF.setFamily("SourceHanSansSC");
     labelF.setWeight(QFont::Medium);
     DFontSizeManager::instance()->bind(m_firstLabel,DFontSizeManager::T6);
 //    labelF.setPixelSize(14);
@@ -107,7 +107,7 @@ void CSchceduleCtrlDlg::initUI()
     //m_seconLabel->setFixedHeight(26);
     m_seconLabel->setAlignment(Qt::AlignCenter);
     QFont labelT;
-    labelT.setFamily("SourceHanSansSC");
+//    labelT.setFamily("SourceHanSansSC");
     labelTitle.setWeight(QFont::Bold);
     DFontSizeManager::instance()->bind(m_seconLabel,DFontSizeManager::T6);
 //    labelT.setPixelSize(14);
@@ -203,7 +203,7 @@ void CSchceduleCtrlDlg::buttonJudge(int id)
 DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
 {
     QFont labelTitle;
-    labelTitle.setFamily("SourceHanSansSC");
+//    labelTitle.setFamily("SourceHanSansSC");
     labelTitle.setWeight(QFont::Medium);
     labelTitle = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelTitle);
 //    labelTitle.setPixelSize(14);

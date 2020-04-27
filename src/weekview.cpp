@@ -32,7 +32,7 @@ DWIDGET_USE_NAMESPACE
 
 CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
 {
-    m_dayNumFont.setFamily("Avenir-Light");
+//    m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);
     m_dayNumFont.setWeight(QFont::Light);
     // cells grid

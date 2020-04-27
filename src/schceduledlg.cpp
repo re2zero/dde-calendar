@@ -608,7 +608,7 @@ void CSchceduleDlg::initUI()
 {
     m_titleLabel = new QLabel(this);
     QFont titlelabelF;
-    titlelabelF.setFamily("SourceHanSansSC");
+//    titlelabelF.setFamily("SourceHanSansSC");
     titlelabelF.setWeight(QFont::DemiBold);
     titlelabelF.setPixelSize(17);
     QColor btitleColor = "#000000";
@@ -631,7 +631,7 @@ void CSchceduleDlg::initUI()
 
     setSpacing(0);
     QFont mlabelF;
-    mlabelF.setFamily("SourceHanSansSC");
+//    mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(14);
     DPalette pa = m_titleLabel->palette();
@@ -904,7 +904,7 @@ void CSchceduleDlg::initUI()
     m_endRepeatDate->setDisplayFormat("yyyy-MM-dd");
     m_endRepeatDate->setCurrentSectionIndex(2);
     QFont enddatefont;
-    enddatefont.setFamily("SourceHanSansSC");
+//    enddatefont.setFamily("SourceHanSansSC");
     enddatefont.setWeight(QFont::Medium);
     enddatefont.setPixelSize(11);
     m_endRepeatDate->setFont(enddatefont);

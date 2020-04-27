@@ -58,7 +58,7 @@ void CMonthWeekView::setList(int weekday)
         label->setTextStr(locale.dayName(d ? d : 7, QLocale::ShortFormat));
         label->setContentsMargins(0, 0, 0, 0);
         QFont weekfont;
-        weekfont.setFamily("SourceHanSansSC");
+//        weekfont.setFamily("SourceHanSansSC");
         weekfont.setWeight(QFont::Medium);
         weekfont.setPixelSize(16);
         label->setTextFont(weekfont);

@@ -701,7 +701,7 @@ void CMonthSchceduleView::slotDeleteItem()
 
 void CMonthSchceduleView::slotFontChange()
 {
-    QFont font("PingFangSC-Light");
+    QFont font/*("PingFangSC-Light")*/;
     DFontSizeManager::instance()->setFontGenericPixelSize(DFontSizeManager::instance()->fontPixelSize(qGuiApp->font()));
     font= DFontSizeManager::instance()->t8(font);
     QFontMetrics fm(font);
@@ -836,7 +836,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     int fh;
     computePos(cnum, info.bdate, info.edate, pos, fw, fh);
     gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
-    QFont font("PingFangSC-Light");
+    QFont font/*("PingFangSC-Light")*/;
 //    font = DFontSizeManager::instance()->get(DFontSizeManager::T8,font);
     gwi->setSizeType(DFontSizeManager::T8);
 //    font.setPixelSize(12);

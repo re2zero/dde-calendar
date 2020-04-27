@@ -452,7 +452,7 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
 
     CYearSchceduleItem *gwi = new CYearSchceduleItem();
-    QFont font("SourceHanSansSC");
+    QFont font/*("SourceHanSansSC")*/;
     font.setWeight(QFont::Medium);
     font.setPixelSize(14);
     gwi->setBackgroundColor(m_bBackgroundcolor);
@@ -786,7 +786,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
     ScheduleDtailInfo &gd = info;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
 
-    QFont font(fontfamily);
+    QFont font/*(fontfamily)*/;
     font.setWeight(QFont::Medium);
     font.setPixelSize(fontsize);
     //gwi->setBackgroundColor(Qt::white);
@@ -907,7 +907,7 @@ void CYearSchceduleView::paintItem()
     int labelwidth = width() - 40;
     int labelheight = 45;
 
-    QFont font(fontfamily);
+    QFont font/*(fontfamily)*/;
     font.setPixelSize(fontsize);
     QPainter painter(this);
     QRect fillRect = QRect(0, 0, width(), height());

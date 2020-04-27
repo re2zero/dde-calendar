@@ -69,7 +69,7 @@ void CMySchceduleView::AutoFeed(QString text)
     QString strText = text;
     QString resultStr = nullptr;
     QFont labelF;
-    labelF.setFamily("SourceHanSansSC");
+//    labelF.setFamily("SourceHanSansSC");
     labelF.setWeight(QFont::Medium);
     labelF = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelF);
     QFontMetrics fm(labelF);
@@ -411,7 +411,7 @@ void CMySchceduleView::initUI()
     QIcon t_icon = QIcon::fromTheme("dde-calendar");
     setIcon(t_icon);
     QFont labelTitle;
-    labelTitle.setFamily("SourceHanSansSC");
+//    labelTitle.setFamily("SourceHanSansSC");
     labelTitle.setWeight(QFont::DemiBold);
 //    labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
@@ -467,7 +467,7 @@ void CMySchceduleView::initUI()
     m_schceduleLabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_schceduleLabel,DFontSizeManager::T6);
 //    QFont labelF;
-    labelF.setFamily("SourceHanSansSC");
+//    labelF.setFamily("SourceHanSansSC");
     labelF.setWeight(QFont::Medium);
     DPalette wpa = m_schceduleLabel->palette();
     if (themetype == 0 || themetype == 1) {
@@ -490,7 +490,7 @@ void CMySchceduleView::initUI()
     m_timeLabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_timeLabel,DFontSizeManager::T6);
     QFont labelT;
-    labelT.setFamily("SourceHanSansSC");
+//    labelT.setFamily("SourceHanSansSC");
     labelT.setWeight(QFont::Bold);
 //    labelT.setPixelSize(14);
     DPalette tpa = m_timeLabel->palette();

@@ -339,7 +339,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QFont font;
-    font.setFamily("SourceHanSansSC");
+//    font.setFamily("SourceHanSansSC");
     font.setWeight(QFont::Normal);
     font.setPixelSize(11);
     if (m_vPos.isEmpty())
@@ -507,7 +507,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
     painter.save();
     QFont alldayfont;
-    alldayfont.setFamily("SourceHanSansSC");
+//    alldayfont.setFamily("SourceHanSansSC");
     alldayfont.setWeight(QFont::Medium);
     alldayfont.setPixelSize(14);
     painter.setFont(alldayfont);

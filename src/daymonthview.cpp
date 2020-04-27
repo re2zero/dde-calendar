@@ -150,7 +150,7 @@ void CDayMonthView::setTheMe(int type)
 
 
         QFont hlabelF;
-        hlabelF.setFamily("PingFangSC-Semibold");
+//        hlabelF.setFamily("PingFangSC-Semibold");
         hlabelF.setPixelSize(14);
 
         QColor yicolor = QColor("#75C18E");
@@ -228,7 +228,7 @@ void CDayMonthView::setTheMe(int type)
         //m_currentYear->setBColor(tbcolor);
 
         QFont hlabelF;
-        hlabelF.setFamily("PingFangSC-Semibold");
+//        hlabelF.setFamily("PingFangSC-Semibold");
         hlabelF.setPixelSize(14);
 
         QColor yicolor = QColor("#2F8C4D");
@@ -369,7 +369,7 @@ void CDayMonthView::getlineflag()
 
 void CDayMonthView::initUI()
 {
-    m_dayNumFont.setFamily("Helvetica");
+//    m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
     //m_dayNumFont.setWeight(QFont::Light);
 
@@ -387,7 +387,7 @@ void CDayMonthView::initUI()
     sbcolor.setAlphaF(0.05);
     todaypa.setColor(DPalette::Shadow, sbcolor);
     QFont todayfont;
-    todayfont.setFamily("SourceHanSansSC-Medium");
+//    todayfont.setFamily("SourceHanSansSC-Medium");
     todayfont.setPixelSize(14);
     m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
@@ -411,7 +411,7 @@ void CDayMonthView::initUI()
     m_currentMouth = new CustomFrame(this);
     m_currentMouth->setFixedSize(74, DDEDayCalendar::D_MLableHeight);
     QFont mlabelF;
-    mlabelF.setFamily("SourceHanSansSC");
+//    mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(24);
     m_currentMouth->setTextFont(mlabelF);
@@ -454,7 +454,7 @@ void CDayMonthView::initUI()
     m_currentDay->setMinimumWidth(width());
     m_currentDay->setTextAlign(Qt::AlignCenter);
     QFont daylabelF;
-    daylabelF.setFamily("DINAlternate");
+//    daylabelF.setFamily("DINAlternate");
     daylabelF.setWeight(QFont::Medium);
     daylabelF.setPixelSize(100);
     m_currentDay->setTextFont(daylabelF);
@@ -465,7 +465,7 @@ void CDayMonthView::initUI()
     m_currentWeek->setFixedHeight(DDEDayCalendar::DWLableHeight);
     m_currentWeek->setTextAlign(Qt::AlignCenter);
     QFont wlabelF;
-    wlabelF.setFamily("PingFangSC-Semibold");
+//    wlabelF.setFamily("PingFangSC-Semibold");
     wlabelF.setPixelSize(16);
     m_currentWeek->setTextFont(wlabelF);
     midLayout->addWidget(m_currentWeek);
@@ -482,7 +482,7 @@ void CDayMonthView::initUI()
     m_currentLuna->setFixedHeight(DDEDayCalendar::DHualiInfoLableHeight);
     m_currentLuna->setTextAlign(Qt::AlignCenter);
     QFont hlabelF;
-    hlabelF.setFamily("PingFangSC-Semibold");
+//    hlabelF.setFamily("PingFangSC-Semibold");
     hlabelF.setPixelSize(12);
     m_currentLuna->setTextFont(hlabelF);
     midLayout->addWidget(m_currentLuna);

@@ -607,7 +607,7 @@ void CSchceduleSearchView::updateDateShow()
     if (m_gradientItemList->count() == 0) {
         QListWidgetItem *listItem = new QListWidgetItem;
         DLabel *gwi = new DLabel();
-        QFont font("SourceHanSansSC-Normal");
+        QFont font/*("SourceHanSansSC-Normal")*/;
         font.setPixelSize(20);
         gwi->setAlignment(Qt::AlignCenter );
         DPalette daypa = gwi->palette();
@@ -647,7 +647,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
 
     CSchceduleSearchItem *gwi = new CSchceduleSearchItem();
-    QFont font("SourceHanSansSC-Normal");
+    QFont font/*("SourceHanSansSC-Normal")*/;
     font.setPixelSize(14);
     font.setWeight(QFont::Normal);
     gwi->setBackgroundColor(m_bBackgroundcolor);
@@ -682,7 +682,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
 QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
 {
     CSchceduleSearchDateItem *gwi = new CSchceduleSearchDateItem();
-    QFont font("SourceHanSansSC");
+    QFont font/*("SourceHanSansSC")*/;
     font.setWeight(QFont::Medium);
     font.setPixelSize(16);
     gwi->setBackgroundColor(m_lBackgroundcolor);

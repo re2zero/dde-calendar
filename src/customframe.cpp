@@ -5,7 +5,7 @@
 DGUI_USE_NAMESPACE
 CustomFrame::CustomFrame(QWidget *parent): QFrame (parent)
 {
-    m_font.setFamily("SourceHanSansSC");
+//    m_font.setFamily("SourceHanSansSC");
     m_font.setWeight(QFont::Medium);
     m_font.setPixelSize(14);
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明

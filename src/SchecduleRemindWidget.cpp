@@ -34,7 +34,7 @@ void SchecduleRemindWidget::setData(const ScheduleDtailInfo &vScheduleInfo, cons
 CenterWidget::CenterWidget(DWidget *parent)
     : DFrame(parent)
 {
-    textfont.setFamily("SourceHanSansSC-Medium");
+//    textfont.setFamily("SourceHanSansSC-Medium");
     textfont.setWeight(QFont::Medium);
 //    DFontSizeManager::instance()->bind(this,DFontSizeManager::T8);
 }
@@ -111,7 +111,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     int x = 40 - 13;
 //    int y = 17 - 5;
     QFont timeFont;
-    timeFont.setFamily("SourceHanSansSC-Medium");
+//    timeFont.setFamily("SourceHanSansSC-Medium");
     timeFont.setPixelSize(12);
 //    timeFont = DFontSizeManager::instance()->get(DFontSizeManager::T8, timeFont);
     QPainter painter(this);

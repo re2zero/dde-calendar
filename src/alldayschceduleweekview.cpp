@@ -631,7 +631,7 @@ CAllDaySchceduleWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(int i
     gwi->setCoorManage(m_coorManage);
     if (m_type == 0) {
         gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
-        QFont font("PingFangSC-Light");
+        QFont font/*("PingFangSC-Light")*/;
         if (average) {
             font.setPixelSize(6);
         } else {
@@ -651,7 +651,7 @@ CAllDaySchceduleWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(int i
         gwi->setItem(NULL);
     } else {
         gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
-        QFont font("PingFangSC-Light");
+        QFont font/*("PingFangSC-Light")*/;
         if (average) {
             font.setPixelSize(6);
         } else {
@@ -687,7 +687,7 @@ CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QVector<Q
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(1);
     if (m_type == 0) {
         gwi->setColor(color1, color1, true);
-        QFont font("PingFangSC-Light");
+        QFont font/*("PingFangSC-Light")*/;
         if (average) {
             font.setPixelSize(6);
         } else {
@@ -704,7 +704,7 @@ CAllSolarDayWeekWidgetItem *CAllDaySchceduleWeekView::createItemWidget(QVector<Q
         }
     } else {
         gwi->setColor(color1, color1, true);
-        QFont font("PingFangSC-Light");
+        QFont font/*("PingFangSC-Light")*/;
         if (average) {
             font.setPixelSize(6);
         } else {

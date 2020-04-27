@@ -45,7 +45,7 @@ DGUI_USE_NAMESPACE
 CYearSchceduleOutView      *CYearView::m_Scheduleview = nullptr;
 CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 {
-    m_dayNumFont.setFamily("Helvetica");
+//    m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
     setMouseTracking(true);
     //m_dayNumFont.setWeight(QFont::Light);
@@ -60,7 +60,7 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     m_currentMouth->setTextAlign(Qt::AlignLeft);
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
-    m_momthFont.setFamily("SourceHanSansSC");
+//    m_momthFont.setFamily("SourceHanSansSC");
     m_momthFont.setWeight(QFont::Medium);
     m_momthFont.setPixelSize(16);
     m_currentMouth->setTextFont(m_momthFont);
@@ -106,7 +106,7 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 
     setLayout(m_hhLayout);
     connect(this, &CYearView::dateSelected, this, &CYearView::handleCurrentDateChanged);
-    m_hightFont.setFamily("Helvetica");
+//    m_hightFont.setFamily("Helvetica");
     m_hightFont.setPixelSize(12);
 
     createYearSchceduleView(parent);

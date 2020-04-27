@@ -148,11 +148,11 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_tooltipview->setFixedHeight(22);
     m_tooltipview->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     m_tooltipview->setAttribute(Qt::WA_TranslucentBackground);
-    m_dayNumFont.setFamily("Avenir");
+//    m_dayNumFont.setFamily("Avenir");
     m_dayNumFont.setPixelSize(24);
     m_dayNumFont.setWeight(QFont::Light);
 
-    m_dayLunarFont.setFamily("PingFangSC-Regular");
+//    m_dayLunarFont.setFamily("PingFangSC-Regular");
     m_dayLunarFont.setPixelSize(12);
 
     m_solofestivalLunarColor.setAlphaF(0.3);

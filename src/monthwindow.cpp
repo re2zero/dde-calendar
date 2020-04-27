@@ -214,7 +214,7 @@ void CMonthWindow::initUI()
     sbcolor.setAlphaF(0.05);
     todaypa.setColor(DPalette::Shadow, sbcolor);
     QFont todayfont;
-    todayfont.setFamily("SourceHanSansSC");
+//    todayfont.setFamily("SourceHanSansSC");
     todayfont.setWeight(QFont::Medium);
     todayfont.setPixelSize(14);
     m_today->setFont(todayfont);
@@ -225,7 +225,7 @@ void CMonthWindow::initUI()
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;
-    ylabelF.setFamily("SourceHanSansSC");
+//    ylabelF.setFamily("SourceHanSansSC");
     ylabelF.setWeight(QFont::Medium);
     ylabelF.setPixelSize(24);
     m_YearLabel->setFont(ylabelF);

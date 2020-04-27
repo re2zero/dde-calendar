@@ -92,7 +92,7 @@ void CWeekWindow::initUI()
     sbcolor.setAlphaF(0.05);
     todaypa.setColor(DPalette::Shadow, sbcolor);
     QFont todayfont;
-    todayfont.setFamily("SourceHanSansSC");
+//    todayfont.setFamily("SourceHanSansSC");
     todayfont.setWeight(QFont::Medium);
     todayfont.setPixelSize(14);
     m_today->setFont(todayfont);
@@ -115,7 +115,7 @@ void CWeekWindow::initUI()
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     QFont t_labelF;
-    t_labelF.setFamily("SourceHanSansSC");
+//    t_labelF.setFamily("SourceHanSansSC");
     t_labelF.setWeight(QFont::Medium);
     t_labelF.setPixelSize(24);
     m_YearLabel->setFont(t_labelF);
@@ -133,7 +133,7 @@ void CWeekWindow::initUI()
     m_weekLabel = new QLabel();
     m_weekLabel->setFixedHeight(DDEWeekCalendar::W_YLableHeight);
     QFont weeklabelF;
-    weeklabelF.setFamily("PingFangSC");
+//    weeklabelF.setFamily("PingFangSC");
     weeklabelF.setWeight(QFont::Medium);
     weeklabelF.setPixelSize(14);
     m_weekLabel->setFont(weeklabelF);
@@ -143,7 +143,7 @@ void CWeekWindow::initUI()
     m_weekLabel->setText(tr("Week"));
 
     QFont ylabelF;
-    ylabelF.setFamily("SourceHanSansSC");
+//    ylabelF.setFamily("SourceHanSansSC");
     ylabelF.setWeight(QFont::Medium);
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);

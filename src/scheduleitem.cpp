@@ -271,7 +271,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         tmagin = 5;
     if (m_type == 0) {
         int timeTextHight = 0;
-        QFont font("SourceHanSansSC");
+        QFont font/*("SourceHanSansSC")*/;
         font.setWeight(QFont::Normal);
         // if (m_totalNum > 1) {
         // font.setPixelSize(6);
@@ -359,7 +359,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->restore();
     } else {
         painter->save();
-        QFont font("SourceHanSansSC");
+        QFont font/*("SourceHanSansSC")*/;
         font.setWeight(QFont::Normal);
         font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
 //        font.setPixelSize(12);

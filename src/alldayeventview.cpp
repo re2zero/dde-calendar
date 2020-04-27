@@ -45,7 +45,7 @@ CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRect rect, QGraphicsItem *parent
     setAcceptHoverEvents(true);
     setRect(rect);
     m_editType = edittype;
-    m_font.setFamily("PingFangSC-Light");
+//    m_font.setFamily("PingFangSC-Light");
     const int duration = 200;
     m_properAnimationFirst = new  QPropertyAnimation(this, "offset", this);
     m_properANimationSecond  = new QPropertyAnimation(this, "offset", this);

@@ -419,7 +419,7 @@ void Calendarmainwindow::initUI()
     pl.setColor(DPalette::Shadow, sbcolor);
 
     QFont viewfont;
-    viewfont.setFamily("SourceHanSansSC");
+//    viewfont.setFamily("SourceHanSansSC");
     viewfont.setWeight(QFont::Medium);
     viewfont.setPixelSize(14);
 

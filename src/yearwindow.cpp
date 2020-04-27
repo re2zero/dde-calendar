@@ -88,7 +88,7 @@ void CYearWindow::initUI()
     m_today = new QLabel(this);
     m_today->installEventFilter(this);
 
-    QFont todayfont("SourceHanSansSC-Normal");
+    QFont todayfont/*("SourceHanSansSC-Normal")*/;
     todayfont.setPixelSize(16);
     m_today->setFont(todayfont);
     m_today->setAlignment(Qt::AlignCenter);
@@ -111,7 +111,7 @@ void CYearWindow::initUI()
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     QFont t_labelF;
-    t_labelF.setFamily("SourceHanSansSC");
+//    t_labelF.setFamily("SourceHanSansSC");
     t_labelF.setWeight(QFont::Medium);
     t_labelF.setPixelSize(24);
     m_YearLabel->setFont(t_labelF);
@@ -123,7 +123,7 @@ void CYearWindow::initUI()
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;
-    ylabelF.setFamily("SourceHanSansSC");
+//    ylabelF.setFamily("SourceHanSansSC");
     ylabelF.setWeight(QFont::Medium);
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
@@ -482,7 +482,7 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
     //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     QFont t_labelF;
-    t_labelF.setFamily("SourceHanSansSC");
+//    t_labelF.setFamily("SourceHanSansSC");
     t_labelF.setWeight(QFont::Medium);
     t_labelF.setPixelSize(24);
     m_YearLabel->setFont(t_labelF);
@@ -494,7 +494,7 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;
-    ylabelF.setFamily("SourceHanSansSC");
+//    ylabelF.setFamily("SourceHanSansSC");
     ylabelF.setWeight(QFont::Medium);
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
