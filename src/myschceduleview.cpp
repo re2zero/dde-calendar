@@ -49,7 +49,7 @@ CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget 
         setPalette(anipa);
     }
 
-//    AutoFeed(m_scheduleInfo.titleName);
+    AutoFeed(m_scheduleInfo.titleName);
     //m_schceduleLabel->setText(info.titleName);
     if (m_scheduleInfo.type.ID == 4) {
         m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString(("yyyy-MM-dd")));
@@ -67,61 +67,115 @@ CMySchceduleView::~CMySchceduleView()
 void CMySchceduleView::AutoFeed(QString text)
 {
     QString strText = text;
+    QString resultStr = nullptr;
     QFont labelF;
     labelF.setFamily("SourceHanSansSC");
     labelF.setWeight(QFont::Medium);
-    labelF.setPixelSize(14);
+    labelF = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelF);
     QFontMetrics fm(labelF);
-    int row = 0;
-
+    int titlewidth = fm.width(strText);
+    QStringList strList;
     QString str;
-    if (!strText.isEmpty()) {
-        QStringList sslist = strText.split("\n");
-        QString result;
-        for (int j = 0; j < sslist.count(); j++) {
-            QString currentstr = sslist.at(j);
-            for (int i = 0; i < currentstr.count(); i++) {
-                str.append(currentstr.at(i));
-                int widthT = fm.width(str) + 5;
-                if (widthT >= 340) {
-                    currentstr.insert(i - 1, "\n");
-                    i--;
-                    str.clear();
-                    row++;
-                } else {
-
-                }
-            }
-            if (currentstr.isEmpty()) {
-                result += "\n";
-                row++;
-            } else {
-                if (j != sslist.count() - 1) {
-                    result += currentstr + "\n";
-                    row++;
-                } else {
-                    result += currentstr;
-                }
-
+    int h = fm.height();
+    qDebug() << h;
+    strList.clear();
+    if (titlewidth < 340) {
+        strList.append(strText);
+        resultStr += strText;
+//        m_schceduleLabel->setFixedHeight(h);
+    } else {
+        for (int i = 0; i < strText.count(); i++) {
+            str += strText.at(i);
+            if (fm.width(str) > 340) {
+                str.remove(str.count() - 1,1);
+                strList.append(str);
+                resultStr += str + "\n";
+                str.clear();
+                --i;
             }
         }
-        strText = result;
-    }
-//    m_schceduleLabel->setFixedHeight((row + 1) * 24);
-    if (((row + 1) * 24) > 100) {
-        area->setFixedHeight(100 - 20);
-    } else {
-        area->setFixedHeight((row + 1 ) * 24);
+        strList.append(str);
+        resultStr += str;
+//        m_schceduleLabel->setFixedHeight(strList.count() * h + 8);
     }
 
-    if ((row * 24 + 180) > 240) {
-        setFixedHeight(240);
+    if (strList.count() * h + 140 > 240) {
+        area->setFixedHeight(100);
+        setFixedHeight(250);
     } else {
-        setFixedHeight(row * 24 + 180);
+        area->setFixedHeight(strList.count() * h);
+        setFixedHeight(strList.count() * h + 152);
     }
+//    if (strList.count() * h + 140 > 240) {
+//        qDebug() << "1";
+//        setFixedHeight(240);
+//    } else {
+//        qDebug() <<"2";
+//        setFixedHeight(strList.count() * h + 140);
+//    }
+
+    m_schceduleLabel->setText(resultStr);
+//    m_schceduleLabel->adjustSize();
+
+
+
+//    QString strText = text;
+////    QFont labelF;
+////    labelF.setFamily("SourceHanSansSC");
+////    labelF.setWeight(QFont::Medium);
+//    labelF = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelF);
+////    labelF.setPixelSize(14);
+//    QFontMetrics fm(labelF);
+//    int row = 0;
+
+//    QString str;
+//    if (!strText.isEmpty()) {
+//        QStringList sslist = strText.split("\n");
+//        QString result;
+//        for (int j = 0; j < sslist.count(); j++) {
+//            QString currentstr = sslist.at(j);
+//            for (int i = 0; i < currentstr.count(); i++) {
+//                str.append(currentstr.at(i));
+//                int widthT = fm.width(str) + 5;
+//                if (widthT >= 340) {
+//                    currentstr.insert(i - 1, "\n");
+//                    i--;
+//                    str.clear();
+//                    row++;
+//                } else {
+
+//                }
+//            }
+//            if (currentstr.isEmpty()) {
+//                result += "\n";
+//                row++;
+//            } else {
+//                if (j != sslist.count() - 1) {
+//                    result += currentstr + "\n";
+//                    row++;
+//                } else {
+//                    result += currentstr;
+//                }
+
+//            }
+//        }
+//        strText = result;
+//    }
+////    m_schceduleLabel->setFixedHeight((row + 1) * 24);
+//    if (((row + 1) * 24) > 100) {
+//        area->setFixedHeight(100 - 20);
+//    } else {
+//        area->setFixedHeight((row + 1 ) * 24);
+//    }
+
+//    if ((row * 24 + 180) > 240) {
+//        setFixedHeight(240);
+//    } else {
+//        setFixedHeight(row * 24 + 180);
+//    }
 //    m_schceduleLabel->setText(strText);
-    m_schceduleLabel->setText(text);
-    m_schceduleLabel->adjustSize();
+////    m_schceduleLabel->setText(text);
+//    m_schceduleLabel->adjustSize();
 }
 
 void CMySchceduleView::showEvent(QShowEvent *event)
@@ -130,77 +184,89 @@ void CMySchceduleView::showEvent(QShowEvent *event)
     emit signalViewtransparentFrame(1);
 }
 
-void CMySchceduleView::paintEvent(QPaintEvent *event)
-{
+//void CMySchceduleView::paintEvent(QPaintEvent *event)
+//{
 
-}
+//}
 
 bool CMySchceduleView::eventFilter(QObject *o, QEvent *e)
 {
-    QWidget *cell = qobject_cast<QWidget *>(o);
-    if (cell == w && e->type() == QEvent::Paint) {
-        paintLabel(cell);
+//    QWidget *cell = qobject_cast<QWidget *>(o);
+//    if (cell == w && e->type() == QEvent::Paint) {
+//        paintLabel(cell);
+//    }
+    if (e->type() == QEvent::FontChange) {
+        AutoFeed(m_scheduleInfo.titleName);
     }
     return false;
 }
 
-void CMySchceduleView::paintLabel(QWidget *label)
-{
-    QPainter painter(label);
-    QColor color;
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    painter.save();
-    if (themetype == 0 || themetype == 1) {
-        color = QColor("#2C4767");
+//void CMySchceduleView::changeEvent(QEvent *event)
+//{
+//    if (event->type() == QEvent::FontChange) {
+////        AutoFeed(m_scheduleInfo.titleName);
+////        update();
+////        qDebug() <<labelF.pixelSize()<< "+++";
+//    }
+//}
 
-    } else {
-        color = QColor("#A8B7D1");
-    }
-    painter.setPen(color);
+//void CMySchceduleView::paintLabel(QWidget *label)
+//{
+//    QPainter painter(label);
+//    QColor color;
+//    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+//    painter.save();
+//    if (themetype == 0 || themetype == 1) {
+//        color = QColor("#2C4767");
 
-    QString strText = m_scheduleInfo.titleName;
-    QFontMetrics fm = painter.fontMetrics();
-    int titlewidth = fm.width(strText);
-    QStringList strList;
-    QString str;
-    int h = fm.height();
-    strList.clear();
-    if (titlewidth < 340) {
-        strList.append(strText);
-        label->setFixedHeight(h);
-    } else {
-        for (int i = 0; i < strText.count(); i++) {
-            str += strText.at(i);
-            if (fm.width(str) > 340) {
-                str.remove(str.count() - 1,1);
-                strList.append(str);
-                str.clear();
-                --i;
-            }
-        }
-        strList.append(str);
-        label->setFixedHeight(strList.count() * h + 8);
-    }
+//    } else {
+//        color = QColor("#A8B7D1");
+//    }
+//    painter.setPen(color);
+
+//    QString strText = m_scheduleInfo.titleName;
+//    QFontMetrics fm = painter.fontMetrics();
+//    int titlewidth = fm.width(strText);
+//    QStringList strList;
+//    QString str;
+//    int h = fm.height();
+//    strList.clear();
+//    if (titlewidth < 340) {
+//        strList.append(strText);
+//        label->setFixedHeight(h);
+//    } else {
+//        for (int i = 0; i < strText.count(); i++) {
+//            str += strText.at(i);
+//            if (fm.width(str) > 340) {
+//                str.remove(str.count() - 1,1);
+//                strList.append(str);
+//                str.clear();
+//                --i;
+//            }
+//        }
+//        strList.append(str);
+//        label->setFixedHeight(strList.count() * h + 8);
+//    }
 
 
-    if (strList.count() * h > 100) {
-        area->setFixedHeight(100 - 18);
-    } else {
-        area->setFixedHeight(strList.count() * h);
-    }
-    if (strList.count() * h + 182 > 240) {
-        setFixedHeight(240);
-    } else {
-        setFixedHeight(strList.count() + 182);
-    }
+//    if (strList.count() * h > 100) {
+//        area->setFixedHeight(100 - 18);
+//    } else {
+//        area->setFixedHeight(strList.count() * h);
+//    }
+//    if (strList.count() * h + 182 > 240) {
+//        setFixedHeight(240);
+//    } else {
+//        setFixedHeight(strList.count() + 182);
+//    }
 
-    for (int i = 0; i < strList.count(); i++) {
-        painter.drawText(QRect(0, h * i, 340, h + 4),Qt::AlignHCenter,strList.at(i));
-    }
+//    for (int i = 0; i < strList.count(); i++) {
+//        painter.drawText(QRect(0, h * i, 340, h + 4),Qt::AlignHCenter,strList.at(i));
+//    }
 
-    painter.restore();
-    painter.end();
-}
+//    painter.restore();
+//    painter.end();
+//}
 
 void CMySchceduleView::slotEditBt()
 {
@@ -387,30 +453,35 @@ void CMySchceduleView::initUI()
     area->setWidgetResizable(true);
     area->setAlignment(Qt::AlignCenter);
 
-    w = new QWidget (this);
-    w->setFixedSize(340,24);
-    w->installEventFilter(this);
+//    w = new QWidget (this);
+//    w->setFixedSize(340,24);
+//    w->installEventFilter(this);
 
-    area->setWidget(w);
+//    area->setWidget(w);
+//    mainLayout->addWidget(area);
+
+    m_schceduleLabel = new QLabel(this);
+//    m_schceduleLabel->setWordWrap(true);
+    m_schceduleLabel->installEventFilter(this);
+    m_schceduleLabel->setFixedWidth(340);
+    m_schceduleLabel->setAlignment(Qt::AlignCenter);
+    DFontSizeManager::instance()->bind(m_schceduleLabel,DFontSizeManager::T6);
+//    QFont labelF;
+    labelF.setFamily("SourceHanSansSC");
+    labelF.setWeight(QFont::Medium);
+    DPalette wpa = m_schceduleLabel->palette();
+    if (themetype == 0 || themetype == 1) {
+        wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
+
+    } else {
+        wpa.setColor(DPalette::WindowText, QColor("#A8B7D1"));
+    }
+    m_schceduleLabel->setPalette(wpa);
+    m_schceduleLabel->setFont(labelF);
+
+    area->setWidget(m_schceduleLabel);
     mainLayout->addWidget(area);
 
-//    m_schceduleLabel = new QLabel(this);
-//    m_schceduleLabel->setWordWrap(true);
-//    m_schceduleLabel->setFixedWidth(340);
-//    m_schceduleLabel->setAlignment(Qt::AlignCenter);
-//    DFontSizeManager::instance()->bind(m_schceduleLabel,DFontSizeManager::T6);
-//    QFont labelF;
-//    labelF.setFamily("SourceHanSansSC");
-//    labelF.setWeight(QFont::Medium);
-//    DPalette wpa = m_schceduleLabel->palette();
-//    if (themetype == 0 || themetype == 1) {
-//        wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
-
-//    } else {
-//        wpa.setColor(DPalette::WindowText, QColor("#A8B7D1"));
-//    }
-//    m_schceduleLabel->setPalette(wpa);
-//    m_schceduleLabel->setFont(labelF);
 //    mainLayout->addWidget(m_schceduleLabel);
 
 
