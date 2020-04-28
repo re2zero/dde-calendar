@@ -45,10 +45,10 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
     if (!emptyCaLunarDayInfo)
         emptyCaLunarDayInfo = new CaLunarDayInfo;
 
-    m_dayNumFont.setFamily("SourceHanSansSC");
+//    m_dayNumFont.setFamily("SourceHanSansSC");
     m_dayNumFont.setWeight(QFont::Medium);
     m_dayNumFont.setPixelSize(16);
-    m_monthFont.setFamily("SourceHanSansSC");
+//    m_monthFont.setFamily("SourceHanSansSC");
     m_monthFont.setWeight(QFont::Medium);
     m_monthFont.setPixelSize(20);
 
@@ -61,7 +61,7 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
     m_monthLabel->setFixedWidth(DDEWeekCalendar::WMCellHeadrWidth - 5);
     m_monthLabel->setRoundState(true, false, false, false);
     QFont mlabelF;
-    mlabelF.setFamily("SourceHanSansSC");
+//    mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(20);
     m_monthLabel->setTextFont(mlabelF);
@@ -634,7 +634,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.drawPixmap(fillRect, pixmap);
             painter.restore();
         } else {
-            QRect fillRect(bw, bh - 1, 36, 36);
+            QRect fillRect(cell->width() - (cell->width()/2) - 4, bh - 1, 36, 36);
             QPixmap pixmap;
             if (m_themetype == 2)
                 pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
@@ -654,7 +654,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     QLocale locale;
     const QString dayNum = getCellDayNum(pos);
     const QString dayLunar = getLunar(pos);
-    const QString dayWeek = locale.dayName(d ? d : 7, QLocale::ShortFormat);
+    /*const*/ QString dayWeek = locale.dayName(d ? d : 7, QLocale::ShortFormat);
 
     painter.save();
     painter.setPen(Qt::SolidLine);
@@ -681,12 +681,18 @@ void CWeekHeadView::paintCell(QWidget *cell)
         painter.drawText(QRect(bw + 24, bh, 30, 25), Qt::AlignCenter, dayWeek);
 
     } else {
-        painter.drawText(QRect(bw - 2, bh, 40, 26), Qt::AlignCenter, dayNum);
+        QFontMetrics fm1 = painter.fontMetrics();
+
+        painter.drawText(QRect(cell->width() - (cell->width()/2) + 4, bh, cell->width()/2 - 4, 26), Qt::AlignLeft, dayNum);
         if (d == 6 || d == 7)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
-        painter.drawText(QRect(/*bw + 40*/bw + 40 - 4, bh, /*40*/40 + 30, 26), Qt::AlignCenter, dayWeek);
+
+        QFontMetrics fm = painter.fontMetrics();
+        while (fm.width(dayWeek) > cell->width()/2)
+            dayWeek.chop(1);
+        painter.drawText(QRect(0, bh, (cell->width()/2), 26), Qt::AlignRight, dayWeek);
     }
     // draw text of day type
     if (m_showState & ShowLunar) {
