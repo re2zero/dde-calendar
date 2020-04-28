@@ -272,16 +272,17 @@ void CSchceduleDlg::slotOkBt()
                 if (msgBox.clickButton() == noButton) {
                     return;
                 } else if (msgBox.clickButton() == yesButton) {
-                    ScheduleDtailInfo updatescheduleData;
-                    CScheduleDataManage::getScheduleDataManage()
-                    ->getscheduleDataCtrl()
-                    ->getScheduleInfoById(scheduleDtailInfo.id, updatescheduleData);
-                    scheduleDtailInfo.beginDateTime = updatescheduleData.beginDateTime;
-                    scheduleDtailInfo.endDateTime = updatescheduleData.endDateTime;
-                    scheduleDtailInfo.RecurID = updatescheduleData.RecurID;
+//                    ScheduleDtailInfo updatescheduleData;
+//                    CScheduleDataManage::getScheduleDataManage()
+//                    ->getscheduleDataCtrl()
+//                    ->getScheduleInfoById(scheduleDtailInfo.id, updatescheduleData);
+//                    scheduleDtailInfo.beginDateTime = updatescheduleData.beginDateTime;
+//                    scheduleDtailInfo.endDateTime = updatescheduleData.endDateTime;
+//                    scheduleDtailInfo.RecurID = updatescheduleData.RecurID;
                     CScheduleDataManage::getScheduleDataManage()
                     ->getscheduleDataCtrl()
                     ->updateScheduleInfo(scheduleDtailInfo);
+//                    qDebug() << scheduleDtailInfo.beginDateTime << scheduleDtailInfo.endDateTime << "+++";
                 }
 
             } else if (m_scheduleDtailInfo.rpeat != scheduleDtailInfo.rpeat) {

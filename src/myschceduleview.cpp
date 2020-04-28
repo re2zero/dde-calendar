@@ -77,7 +77,6 @@ void CMySchceduleView::AutoFeed(QString text)
     QStringList strList;
     QString str;
     int h = fm.height();
-    qDebug() << h;
     strList.clear();
     if (titlewidth < 340) {
         strList.append(strText);
