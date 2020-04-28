@@ -464,14 +464,6 @@
         <translation>Цео дан:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Почетак:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Крај:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Подсетник:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

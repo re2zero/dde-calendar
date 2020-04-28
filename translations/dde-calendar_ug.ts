@@ -464,14 +464,6 @@
         <translation>پۈتۈن كۈن:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>باشلىنىدۇ:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>ئاخىرلىشىدۇ:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>ماڭا ئەسكەرتىڭ:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

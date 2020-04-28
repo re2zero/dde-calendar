@@ -464,14 +464,6 @@
         <translation>Koko päivä:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Alkaa:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Loppuu:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Muistuta:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

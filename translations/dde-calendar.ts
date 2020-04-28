@@ -496,15 +496,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

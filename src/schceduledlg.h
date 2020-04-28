@@ -68,6 +68,7 @@ protected:
 //     void focusInEvent(QFocusEvent *event);
     bool eventFilter(QObject *obj, QEvent *pEvent) Q_DECL_OVERRIDE;
     void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
 private:
     void initUI();
     void initConnection();

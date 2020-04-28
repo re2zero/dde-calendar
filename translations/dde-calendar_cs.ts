@@ -464,14 +464,6 @@
         <translation>Celý den:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Začíná:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Končí:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Připomenout:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

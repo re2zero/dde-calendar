@@ -464,14 +464,6 @@
         <translation>Sepanjang Hari:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Mula:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Tamat:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Ingat Saya:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -464,14 +464,6 @@
         <translation>Hele dagen:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Starter:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Slutter:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Påmind mig:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -464,14 +464,6 @@
         <translation>Tüm Gün:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Başlangıç:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Bitiş:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Hatırlat:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

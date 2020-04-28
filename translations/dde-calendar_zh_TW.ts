@@ -464,14 +464,6 @@
         <translation>全天：</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>開始時間：</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>結束時間：</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>提醒：</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

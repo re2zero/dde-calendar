@@ -464,14 +464,6 @@
         <translation>하루 종일:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>시작:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>종료</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>알림 메시지:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

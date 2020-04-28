@@ -464,14 +464,6 @@
         <translation>All Day:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Starts:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Ends:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Remind Me:</translation>
     </message>
@@ -562,6 +554,14 @@
     <message>
         <source>End Repeat</source>
         <translation>End Repeat</translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

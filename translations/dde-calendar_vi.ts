@@ -464,14 +464,6 @@
         <translation>Tất cả các ngày:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Bắt đầu:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Kết thúc:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Nhắc nhở tôi:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

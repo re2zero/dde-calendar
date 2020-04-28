@@ -464,14 +464,6 @@
         <translation>Весь День:</translation>
     </message>
     <message>
-        <source>Starts:</source>
-        <translation>Начинания:</translation>
-    </message>
-    <message>
-        <source>Ends:</source>
-        <translation>Окончания:</translation>
-    </message>
-    <message>
         <source>Remind Me:</source>
         <translation>Напомнить Мне:</translation>
     </message>
@@ -561,6 +553,14 @@
     </message>
     <message>
         <source>End Repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
