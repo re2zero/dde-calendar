@@ -108,6 +108,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
     void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
@@ -120,6 +121,8 @@ private:
     void updateCurrentLunar(const CaLunarDayInfo &info);
     char getFestivalInfoByDate(const QDate &date);
     bool getShowSolarDayByDate(const QDate &date);
+    QDate getMoveDay(const QPoint &p)const;
+    ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
@@ -193,6 +196,12 @@ private:
     int                   m_themetype  = 1;
     bool           m_sflag = true;
     SchecduleRemindWidget *m_RemindWidget;
+
+    QPoint                  m_PressPoint;
+    bool                    isCreate;
+    QRect                   m_rect;
+    QDate                   m_PressDate;
+    QDate                   m_MoveDate;
 };
 
 #endif // MYCALENDARWIDGET_H

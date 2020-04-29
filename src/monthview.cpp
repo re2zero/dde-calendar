@@ -168,7 +168,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     for (int r = 0; r != 6; ++r) {
         for (int c = 0; c != 7; ++c) {
             QWidget *cell = new QWidget(this);
-            cell->setFixedSize(cellwidth, cellheight);
+//            cell->setFixedSize(cellwidth, cellheight);
             cell->installEventFilter(this);
             cell->setFocusPolicy(Qt::ClickFocus);
 
@@ -336,10 +336,7 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDtail
 
 void CMonthView::resizeEvent(QResizeEvent *event)
 {
-    //cellwidth = width() * 0.1395 + 0.5;
-    //cellheight = height() * 0.1428 + 0.5;
-
-
+    DWidget::resizeEvent(event);
     int leftmagin = 10;
     int rightmagin = leftmagin;
     int topmagin = height() * 0.0193 + 0.5;
@@ -351,15 +348,18 @@ void CMonthView::resizeEvent(QResizeEvent *event)
     m_weekIndicator->setFixedSize(width() - leftmagin, height() * 0.1042 + 0.5);
     cellwidth = (width() - 10) / 7.0 + 0.5;
     cellheight = (height() - 20 - m_weekIndicator->height()) / 6.0 + 0.5;
-    for (int i(0); i != 42; ++i) {
-        m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
-        m_cellList.at(i)->update();
-    }
+//    for (int i(0); i != 42; ++i) {
+//        m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
+//        m_cellList.at(i)->update();
+//    }
+    m_rect = QRect(0,
+                   0,
+                   width()-leftmagin,
+                   height()-m_weekIndicator->height() - topmagin-buttonmagin);
     int h = m_MonthSchceduleView->getSchceduleHeight();
     m_MonthSchceduleView->setallsize(width(), height(), leftmagin, m_weekIndicator->height() + topmagin, buttonmagin, h);
     // m_MonthSchceduleView->setallsize(width(), height(), leftmagin, height() - m_weekIndicator->height() - cellheight * 6, buttonmagin);
     m_MonthSchceduleView->updateData();
-    DWidget::resizeEvent(event);
 }
 
 void CMonthView::focusOutEvent(QFocusEvent *event)
@@ -389,6 +389,15 @@ void CMonthView::changeEvent(QEvent *event)
     if (event->type() ==QEvent::FontChange) {
         emit signalFontChange();
     }
+}
+
+void CMonthView::paintEvent(QPaintEvent *event)
+{
+//    QPainter painter(this);
+//    painter.setBrush(Qt::red);
+//    painter.drawRect(this->rect());
+//    painter.end();
+    DWidget::paintEvent(event);
 
 }
 
@@ -513,8 +522,15 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             if (rightevent->button() == Qt::LeftButton) {
                 const int pos = m_cellList.indexOf(cell);
                 m_cellfoceflag[pos] = true;
-                cellClicked(cell);
+//                cellClicked(cell);
                 m_cellList[pos]->update();
+
+                QMouseEvent *event = dynamic_cast<QMouseEvent *>(e);
+                m_PressPoint =  event->pos();
+                isCreate = false;
+                QPoint point = cell->mapToParent(event->pos());
+                m_PressDate = getMoveDay(point);
+                m_MoveDate = m_PressDate.addMonths(-2);
             }
         } else if (e->type() == QEvent::ContextMenu) {
             DMenu Context(this);
@@ -541,6 +557,13 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             m_cellfoceflag[pos] = false;
             m_cellList[pos]->update();
             m_updateflag = true;
+
+            if (qAbs(m_MoveDate.daysTo(m_PressDate)<43)) {
+//                qDebug()<<m_MoveDate;
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
+                    getScheduleInfo(m_PressDate,m_MoveDate));
+                slotSchceduleUpdate();
+            }
         } //else if (e->type() == QEvent::FocusIn) {
         //  const int pos = m_cellList.indexOf(cell);
         //  m_cellfoceflag[pos] = true;
@@ -555,11 +578,32 @@ bool CMonthView::eventFilter(QObject *o, QEvent *e)
             const int pos = m_cellList.indexOf(cell);
             m_cellhoverflag[pos] = true;
             m_cellList[pos]->update();
-        } /*else if (e->type() == QEvent::ToolTip) {
+        } else if (e->type() == QEvent::MouseMove) {
+            const int pos = m_cellList.indexOf(cell);
+            if (m_cellfoceflag[pos]) {
+                QMouseEvent *event = dynamic_cast<QMouseEvent *>(e);
+                QPoint p = event->pos() - m_PressPoint;
+                if (qAbs(p.x()) >20 ||
+                        (event->pos().y()>cell->height()) ||
+                        (event->pos().y()<0)) {
+                    isCreate = true;
+                }
+                if (isCreate) {
+                    QPoint pos = cell->mapToParent(event->pos());
+                    if (m_rect.contains(pos)) {
+                        QDate gDate = getMoveDay(pos);
+                        if (m_MoveDate !=gDate) {
+                            m_MoveDate = gDate;
+                            m_MonthSchceduleView->updateDate(getScheduleInfo(m_PressDate,m_MoveDate));
+                        }
+                    }
+                }
+            }
+        }/*else if (e->type() == QEvent::ToolTip) {
             if (m_showState & ShowLunar) {
                 const int pos = m_cellList.indexOf(cell);
                 if (getShowSolarDayByDate(m_days[pos])) {
-                    QRect fillRect = QRect(6, 34, cell->width() - 12, 22);
+                    QRect fillRect = QRect(6, 34m_shceludelistdata, cell->width() - 12, 22);
                     QPoint ss = QCursor::pos();
                     ss = cell->mapFromGlobal(QCursor::pos());
                     if (fillRect.contains(ss)) {
@@ -676,6 +720,41 @@ bool CMonthView::getShowSolarDayByDate(const QDate &date)
         }
     }
     return tflag;
+}
+
+QDate CMonthView::getMoveDay(const QPoint &p) const
+{
+    int index = (p.x()-m_rect.x())/(m_rect.width()/7) +(p.y()-m_rect.y())/(m_rect.height()/6)*7;
+    if (index <0) {
+        index +=7;
+    } else if (index >41) {
+        index -=7;
+    }
+    return m_days[index];
+}
+
+ScheduleDtailInfo CMonthView::getScheduleInfo(const QDate &beginDate, const QDate &endDate)
+{
+    ScheduleDtailInfo info;
+    if (beginDate.daysTo(endDate)>0) {
+        info.beginDateTime = QDateTime(beginDate,QTime(0,0,0));
+        info.endDateTime = QDateTime(endDate,QTime(23,59,59));
+    } else {
+        info.beginDateTime = QDateTime(endDate,QTime(0,0,0));
+        info.endDateTime = QDateTime(beginDate,QTime(23,59,00));
+    }
+    info.titleName = tr("New Event");
+    info.allday = true;
+    info.remind = true;
+    info.remindData.n = 1;
+    info.remindData.time = QTime(9, 0);
+    info.RecurID = 0;
+    info.id = 0;
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
+        1, info.type);
+    info.rpeat = 0;
+
+    return info;
 }
 
 const QString CMonthView::getCellDayNum(int pos)

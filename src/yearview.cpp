@@ -506,10 +506,9 @@ void CYearView::paintCell(QWidget *cell)
 //            hh = cell->height() - t_pix;
 //            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5 + t_pix / 2, 0, hh, hh);
 //        } else {
-//            hh = cell->width() - t_pix;
+//            hh = cell->width();
 //            fillRect = QRect(t_pix / 2, (cell->height() - hh) / 2.0 + 0.5, hh, hh);
 //        }
-
         painter.setBrush(QBrush(m_highColor));
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);

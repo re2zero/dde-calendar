@@ -51,6 +51,7 @@ public:
     {
         return he;
     }
+    void updateDate(const ScheduleDtailInfo &info);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
@@ -96,6 +97,7 @@ public:
     ~CWeekScheduleView();
 public:
     void setData(QVector<ScheduleDateRangeInfo> &data,const int position,const int count =7);
+    bool addData(const ScheduleDtailInfo &info);
     void setHeight(const int ScheduleHeight,const int DayHeigth);
     QVector<RowScheduleInfo> getMScheduleInfo() const
     {
@@ -105,7 +107,7 @@ public:
     {
         return m_scheduleShowItem;
     }
-    void updateSchedule();
+    void updateSchedule(const bool isCreate,const ScheduleDtailInfo &info = ScheduleDtailInfo());
     void clearItem();
 private:
     void setMaxNum();
