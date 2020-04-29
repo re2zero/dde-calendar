@@ -69,6 +69,7 @@ public slots:
     void slotDeleteitem();
     void slotCurrentScheduleDate(QDate date);
     void slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
+    void slotUpdatePaint(const int topM);
 protected:
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
@@ -102,7 +103,7 @@ private:
     QColor                    m_timeColor = "#7D7D7D";
     QColor                    m_currenttimecolor = "#F74444";
     int                       m_cuttrnttimetype = 0;
-    int                       m_space = 30;
+//    int                       m_space = 30;
     QVBoxLayout              *m_layout;
     SchecduleRemindWidget    *m_ScheduleRemindWidget;
     int                             m_minTime;      //最小高度对应的最小时间

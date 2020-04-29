@@ -38,11 +38,13 @@ class CScheduleCoorManage;
 class CAllDayEventWeekView : public DGraphicsView
 {
     Q_OBJECT
-
+    enum PosInItem {LEFT,MIDDLE,RIGHT};
+    enum DragStatus {IsCreate,ChangeBegin,ChangeEnd,ChangeWhole,NONE};
 public:
     CAllDayEventWeekView(QWidget *parent = nullptr, int edittype = 0);
     ~CAllDayEventWeekView() Q_DECL_OVERRIDE;
-    void setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData, int type = 1);
+    void setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData);
+    void setInfo(const QVector<ScheduleDtailInfo> &info);
     QVector<QVector<ScheduleDtailInfo> > &getListData()
     {
         return  m_vlistData;
@@ -53,6 +55,7 @@ public:
     }
     void setTheMe(int type = 0);
     void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
+    void setRange(QDate begin, QDate end);
     CScheduleCoorManage *getCoorManage()
     {
         return m_coorManage;
@@ -61,11 +64,13 @@ public:
     void updateHigh();
     void setSelectSchedule(const ScheduleDtailInfo &info);
     void setMargins(int left, int top, int right, int bottom);
+    int upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo());
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsitem(void *item);
     void signalViewtransparentFrame(int type);
     void signalScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
+    void signalUpdatePaint(const int topM);
 public slots:
     void slotdeleteitem(CAllDayEventWidgetItem *item);
     void slotedititem(CAllDayEventWidgetItem *item, int type = 0);
@@ -83,7 +88,10 @@ protected:
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
+    void DragPressEvent(const QPoint &pos,const CAllDayEventWidgetItem *item);
     void createItemWidget(int index, bool average = false);
+    ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
+    PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect);
 private:
     int                     itemHeight = 22;
     QAction                                     *m_createAction;     // 创建日程
@@ -91,8 +99,8 @@ private:
     QAction                       *m_deleteAction;
     bool                                         m_widgetFlag;
     QVector<QVector<ScheduleDtailInfo> >         m_vlistData;
+    QVector<ScheduleDtailInfo>                      m_scheduleInfo;
     QVector<CAllDayEventWidgetItem *>                       m_baseShowItem;
-    int                                          m_type;
     QVector<QDate>                               m_vDate;
     int                                          m_editType = 0;
     QColor                                       m_soloColor = "#FF7272";
@@ -104,6 +112,19 @@ private:
     bool                         m_updateDflag  = false;
     QGraphicsScene                              *m_Scene;
     bool                            m_press = false;
+
+    QDate                     m_beginDate;
+    QDate                     m_endDate;
+
+
+    DragStatus                      m_DragStatus =NONE;
+    bool                            m_isCreate;
+    QDate                           m_PressDate;
+    QDate                           m_MoveDate;
+    QPoint                          m_PressPos;
+    ScheduleDtailInfo               m_DragScheduleInfo;
+    QDateTime                       m_InfoBeginTime;
+    QDateTime                       m_InfoEndTime;
 };
 
 class CAllDayEventWidgetItem : public QObject, public QGraphicsRectItem

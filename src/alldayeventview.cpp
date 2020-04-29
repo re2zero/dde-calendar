@@ -396,10 +396,20 @@ void CAllDayEventWeekView::setTheMe(int type)
 
 void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
+    m_beginDate = begindate;
+    m_endDate = enddate;
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
     m_Scene->setSceneRect(0, 0, w, h);
     m_rightmagin = rightmagin;
     updateDateShow();
+
+}
+
+void CAllDayEventWeekView::setRange(QDate begin, QDate end)
+{
+    m_beginDate = begin;
+    m_endDate = end;
+    getCoorManage()->setDateRange(begin, end);
 }
 
 void CAllDayEventWeekView::setLunarVisible(bool state)
@@ -432,6 +442,121 @@ void CAllDayEventWeekView::setSelectSchedule(const ScheduleDtailInfo &info)
 void CAllDayEventWeekView::setMargins(int left, int top, int right, int bottom)
 {
     setViewportMargins(QMargins(left, top, right, bottom));
+}
+
+int CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const ScheduleDtailInfo &info)
+{
+    QVector<ScheduleDtailInfo> vListData;
+    vListData = m_scheduleInfo;
+    switch (status) {
+    case NONE:
+        Q_UNUSED(info);
+        break;
+    case ChangeBegin:
+    case ChangeEnd:
+    case ChangeWhole: {
+        int index = vListData.indexOf(info);
+        vListData[index] = info;
+    }
+    break;
+    case IsCreate:
+        vListData.append(info);
+        break;
+    }
+
+
+    qSort(vListData.begin(), vListData.end());
+
+    QVector<MScheduleDateRangeInfo> vMDaySchedule;
+    for (int i = 0; i < vListData.count(); i++) {
+        QDate tbegindate = vListData.at(i).beginDateTime.date();
+        QDate tenddate = vListData.at(i).endDateTime.date();
+        if (tbegindate < m_beginDate)
+            tbegindate = m_beginDate;
+        if (tenddate > m_endDate)
+            tenddate = m_endDate;
+        MScheduleDateRangeInfo sinfo;
+        sinfo.bdate = tbegindate;
+        sinfo.edate = tenddate;
+        sinfo.tData = vListData.at(i);
+        sinfo.state = false;
+        vMDaySchedule.append(sinfo);
+    }
+    QVector<QVector<int> > vCfillSchedule;
+    vCfillSchedule.resize(vListData.count());
+    int tNum = m_beginDate.daysTo(m_endDate) + 1;
+    for (int i = 0; i < vListData.count(); i++) {
+        vCfillSchedule[i].resize(tNum);
+        vCfillSchedule[i].fill(-1);
+    }
+    //首先填充跨天日程
+    for (int i = 0; i < vMDaySchedule.count(); i++) {
+        if (vMDaySchedule[i].state)
+            continue;
+        int bindex = m_beginDate.daysTo(vMDaySchedule[i].bdate);
+        int eindex = m_beginDate.daysTo(vMDaySchedule[i].edate);
+        int c = -1;
+        for (int k = 0; k < vListData.count(); k++) {
+            int t = 0;
+            for (t = bindex; t <= eindex; t++) {
+                if (vCfillSchedule[k][t] != -1) {
+                    break;
+                }
+            }
+            if (t == eindex + 1) {
+                c = k;
+                break;
+            }
+        }
+        if (c == -1)
+            continue;
+
+        bool flag = false;
+        for (int sd = bindex; sd <= eindex; sd++) {
+            if (vCfillSchedule[c][sd] != -1)
+                continue;
+            vCfillSchedule[c][sd] = i;
+            flag = true;
+        }
+        if (flag)
+            vMDaySchedule[i].state = true;
+    }
+    QVector<QVector<ScheduleDtailInfo> > vResultData;
+    for (int i = 0; i < vListData.count(); i++) {
+        QVector<int> vId;
+        for (int j = 0; j < tNum; j++) {
+            if (vCfillSchedule[i][j] != -1) {
+                int k = 0;
+                for (; k < vId.count(); k++) {
+                    if (vId[k] == vCfillSchedule[i][j])
+                        break;
+                }
+                if (k == vId.count())
+                    vId.append(vCfillSchedule[i][j]);
+            }
+        }
+        QVector<ScheduleDtailInfo> tData;
+        for (int j = 0; j < vId.count(); j++) {
+            tData.append(vMDaySchedule[vId[j]].tData);
+        }
+        if (!tData.isEmpty())
+            vResultData.append(tData);
+    }
+
+    int m_topMagin;
+    if (vResultData.count() < 2) {
+        m_topMagin = 31;
+    } else if (vResultData.count()  < 6) {
+        m_topMagin = 31 + (vResultData.count()  - 1) * (itemHeight+1);
+
+    } else {
+        m_topMagin = 123;
+    }
+    setFixedHeight(m_topMagin - 3);
+    setDayData(vResultData);
+    update();
+    emit signalUpdatePaint(m_topMagin);
+    return m_topMagin;
 }
 
 CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
@@ -469,12 +594,17 @@ CAllDayEventWeekView::~CAllDayEventWeekView()
     delete m_coorManage;
 }
 
-void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData, int type)
+void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData)
 {
     m_vlistData = vlistData;
-    m_type = type;
     m_widgetFlag = false;
     updateDateShow();
+}
+
+void CAllDayEventWeekView::setInfo(const QVector<ScheduleDtailInfo> &info)
+{
+    m_scheduleInfo = info;
+
 }
 
 void CAllDayEventWeekView::slotCreate()
@@ -644,19 +774,54 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
             item->setPressFlag(true);
             emit signalScheduleShow(true, item->getData());
             emit signalsitem(this);
+
         } else {
             emit signalScheduleShow(false);
+
         }
+        DragPressEvent(event->pos(),item);
     }
 }
 
 void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
 {
+    setCursor(Qt::ArrowCursor);
+    switch (m_DragStatus) {
+    case IsCreate:
+        if (qAbs(m_MoveDate.daysTo(m_PressDate)<7)) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
+                m_DragScheduleInfo);
+            emit signalsUpdateShcedule(0);
+//            updateDateShow();
+        }
+        break;
+    case ChangeBegin:
+        if (m_MoveDate != m_InfoBeginTime.date()) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
+                m_DragScheduleInfo);
+
+        }
+        emit signalsUpdateShcedule(0);
+        break;
+    case ChangeEnd:
+        if (m_MoveDate != m_InfoEndTime.date()) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
+                m_DragScheduleInfo);
+        }
+        emit signalsUpdateShcedule(0);
+
+        break;
+    default:
+        break;
+    }
+    m_DragStatus = NONE;
     m_press = false;
     CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
     if (item != nullptr) {
         item->setPressFlag(false);
     }
+
+
 }
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -703,6 +868,75 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
         emit signalScheduleShow(false);
         m_press = false;
     }
+    CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
+    if (item != nullptr) {
+        if (item->getData().type.ID == 4)
+            return;
+        if (m_DragStatus == NONE) {
+            switch (getPosInItem(event->pos(),item->rect())) {
+            case LEFT:
+            case RIGHT:
+                setCursor(Qt::SplitHCursor);
+                break;
+            default:
+                setCursor(Qt::ArrowCursor);
+                break;
+            }
+        }
+    } else {
+        if (m_DragStatus == NONE) {
+            setCursor(Qt::ArrowCursor);
+        }
+
+    }
+    QDate gDate =  m_coorManage->getsDate(mapFrom(this, event->pos()));
+    switch (m_DragStatus) {
+    case IsCreate:
+        if (qAbs(event->pos().x()-m_PressPos.x())>20 ||qAbs(m_PressDate.daysTo(gDate))>0) {
+            m_isCreate = true;
+        }
+        if (m_isCreate) {
+            if (m_MoveDate !=gDate) {
+                m_MoveDate = gDate;
+                m_DragScheduleInfo = getScheduleInfo(m_PressDate,m_MoveDate);
+                upDateInfoShow(IsCreate,getScheduleInfo(m_PressDate,m_MoveDate));
+            }
+        }
+        break;
+    case ChangeBegin:
+        if (m_MoveDate !=gDate) {
+            m_MoveDate = gDate;
+            if (m_MoveDate.daysTo(m_InfoEndTime.date())<0) {
+                m_DragScheduleInfo.beginDateTime = QDateTime(m_InfoEndTime.date().addDays(1),QTime(0,0,0));
+                m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate,QTime(23,59,0));
+            } else {
+                m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate,QTime(0,0,0));
+                m_DragScheduleInfo.endDateTime = m_InfoEndTime;
+            }
+            upDateInfoShow(ChangeBegin,m_DragScheduleInfo);
+        }
+        break;
+    case ChangeEnd:
+        if (m_MoveDate !=gDate) {
+            m_MoveDate = gDate;
+            if (m_InfoBeginTime.date().daysTo(m_MoveDate)<0) {
+                m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate,QTime(0,0,0));
+                m_DragScheduleInfo.endDateTime = QDateTime(m_InfoBeginTime.date().addDays(-1),QTime(23,59,0));
+            } else {
+                m_DragScheduleInfo.beginDateTime =m_InfoBeginTime;
+                m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate,QTime(23,59,0));
+            }
+            upDateInfoShow(ChangeEnd,m_DragScheduleInfo);
+        }
+
+        break;
+    case ChangeWhole:
+
+        break;
+    default:
+        break;
+    }
+
     DGraphicsView::mouseMoveEvent(event);
 }
 
@@ -732,17 +966,34 @@ void CAllDayEventWeekView::updateDateShow()
     for (int i = 0; i < m_vlistData.size(); ++i) {
         createItemWidget(i);
     }
-//    if (m_vSolarDayInfo.isEmpty() || !m_LunarVisible) {
-//        for (int i = 0; i < m_vlistData.size(); ++i) {
-//            createItemWidget(i);
-//        }
+}
 
-//    } else {
-//        for (int i = 0; i < m_vlistData.size(); ++i) {
-//            createItemWidget(i, false);
-//        }
-
-//    }
+void CAllDayEventWeekView::DragPressEvent(const QPoint &pos, const CAllDayEventWidgetItem *item)
+{
+    m_PressPos = pos;
+    m_PressDate = m_coorManage->getsDate(mapFrom(this, pos));
+    m_MoveDate = m_PressDate.addMonths(-2);
+    if (item != nullptr) {
+        m_DragScheduleInfo = item->getData();
+        m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
+        m_InfoEndTime = m_DragScheduleInfo.endDateTime;
+        switch (getPosInItem(pos,item->rect())) {
+        case LEFT:
+            m_DragStatus = ChangeBegin;
+            setCursor(Qt::SplitHCursor);
+            break;
+        case RIGHT:
+            m_DragStatus = ChangeEnd;
+            setCursor(Qt::SplitHCursor);
+            break;
+        default:
+            m_DragStatus = ChangeWhole;
+            break;
+        }
+    } else {
+        m_DragStatus = IsCreate;
+        m_isCreate = false;
+    }
 }
 
 void CAllDayEventWeekView::createItemWidget(int index, bool average)
@@ -765,6 +1016,45 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
         connect(gwi, &CAllDayEventWidgetItem::signalsPress, this, &CAllDayEventWeekView::slotupdateItem);
         connect(gwi, &CAllDayEventWidgetItem::signalViewtransparentFrame, this, &CAllDayEventWeekView::signalViewtransparentFrame);
     }
+}
+
+ScheduleDtailInfo CAllDayEventWeekView::getScheduleInfo(const QDate &beginDate, const QDate &endDate)
+{
+    ScheduleDtailInfo info;
+    if (beginDate.daysTo(endDate)>0) {
+        info.beginDateTime = QDateTime(beginDate,QTime(0,0,0));
+        info.endDateTime = QDateTime(endDate,QTime(23,59,59));
+    } else {
+        info.beginDateTime = QDateTime(endDate,QTime(0,0,0));
+        info.endDateTime = QDateTime(beginDate,QTime(23,59,00));
+    }
+    info.titleName = tr("New Event");
+    info.allday = true;
+    info.remind = true;
+    info.id = 0;
+    info.remindData.n = 1;
+    info.remindData.time = QTime(9, 0);
+    info.RecurID = 0;
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
+        1, info.type);
+    info.rpeat = 0;
+
+    return info;
+}
+
+CAllDayEventWeekView::PosInItem CAllDayEventWeekView::getPosInItem(const QPoint &p, const QRectF &itemRect)
+{
+    QPointF scenePos = this->mapToScene(p);
+    QPointF itemPos = QPointF(scenePos.x()-itemRect.x(),
+                              scenePos.y()-itemRect.y());
+    int bottomy = itemRect.width()- itemPos.x();
+    if (itemPos.x()<5) {
+        return LEFT;
+    }
+    if (bottomy <5) {
+        return RIGHT;
+    }
+    return MIDDLE;
 }
 
 

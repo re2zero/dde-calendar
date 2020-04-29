@@ -451,15 +451,19 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             }
         }
     } else if (event->button() == Qt::LeftButton) {
+        QPoint p = event->pos();
+        QPointF scenePos = this->mapToScene(p);
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
         if (item != nullptr) {
             if (item->getType() == 1)
                 return;
             m_currentItem = item;
             m_press = true;
+            QPointF itemPos = item->mapFromScene(scenePos);
+            setCursor(Qt::SplitVCursor);
+
 
             emit signalScheduleShow(true, item->getData());
-
             emit signalsitem(this);
         }
     }
@@ -661,6 +665,27 @@ void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
         emit signalScheduleShow(false);
         m_press = false;
     }
+    CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
+
+    if (item != nullptr) {
+        if (item->getType() == 1)
+            return;
+        QPoint p = event->pos();
+        QPointF scenePos = this->mapToScene(p);
+        m_currentItem = item;
+        m_press = true;
+        QPointF itemPos = QPointF(scenePos.x()-item->boundingRect().x(),
+                                  scenePos.y()-item->boundingRect().y());
+        int bottomy = item->boundingRect().height()- itemPos.y();
+        if (itemPos.y()<5 || bottomy<5) {
+            setCursor(Qt::SplitVCursor);
+        } else {
+            setCursor(Qt::ArrowCursor);
+        }
+    } else {
+        setCursor(Qt::ArrowCursor);
+    }
+
     DGraphicsView::mouseMoveEvent(event);
 }
 

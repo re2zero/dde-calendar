@@ -236,6 +236,11 @@ QDateTime CScheduleCoorManage::getDate(QPointF pos)
 QDate CScheduleCoorManage::getsDate(QPointF pos)
 {
     int day = (1.0 * pos.x() / m_width) * m_totalDay;
+    if (day <0) {
+        day = 0;
+    } else if (day >=m_totalDay) {
+        day = m_totalDay-1;
+    }
     QDate date = m_begindate.addDays(day);
     return date;
 }
