@@ -76,9 +76,9 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     viewshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Shift+/")));
     connect(viewshortcut, SIGNAL(activated()), this, SLOT(onViewShortcut()));
 
-    QShortcut *viewmaxminshortcut = new QShortcut(this);
-    viewmaxminshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Alt+F")));
-    connect(viewmaxminshortcut, SIGNAL(activated()), this, SLOT(slotmaxminViewShortcut()));
+//    QShortcut *viewmaxminshortcut = new QShortcut(this);
+//    viewmaxminshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Alt+F")));
+//    connect(viewmaxminshortcut, SIGNAL(activated()), this, SLOT(slotmaxminViewShortcut()));
 
     setTitlebarShadowEnabled(true);
     setFocusPolicy(Qt::ClickFocus);
