@@ -976,22 +976,26 @@ void Calendarmainwindow::slotdoubleclickDate(QDate date)
     }
     break;
     }
+    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotselectMonth(QDate date)
 {
     viewWindow(2, QDateTime(date));
+    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotCurrentScheduleDate(QDate date)
 {
     viewWindow(4, QDateTime(date));
+    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotViewSelectDate(QDate date)
 {
     if (date.year() < 1900) return;
     viewWindow(4, QDateTime(date));
+    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotViewtransparentFrame(int type)
