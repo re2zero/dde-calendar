@@ -54,7 +54,7 @@ bool CScheduleDataManage::getSearchResult(ScheduleDtailInfo info)
     for (int i = 0; i < m_vScheduleInfo.size(); i++) {
         QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
         for (int j = 0; j < scheduleInfolist.count(); j++) {
-            if (scheduleInfolist.at(j).id == info.id) {
+            if (scheduleInfolist.at(j) == info) {
                 return true;
             }
         }
