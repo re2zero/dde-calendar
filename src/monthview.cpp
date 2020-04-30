@@ -227,9 +227,18 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 
 CMonthView::~CMonthView()
 {
-    delete queue;
-    delete lunarCache;
-    delete emptyCaLunarDayInfo;
+    if (emptyCaLunarDayInfo != nullptr) {
+        delete  emptyCaLunarDayInfo;
+        emptyCaLunarDayInfo = nullptr;
+    }
+    if (lunarCache !=nullptr) {
+        delete lunarCache;
+        lunarCache  = nullptr;
+    }
+    if (queue != nullptr) {
+        delete queue;
+        queue = nullptr;
+    }
 }
 
 void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)

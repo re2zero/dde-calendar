@@ -97,6 +97,7 @@ CGraphicsView::~CGraphicsView()
     clearSchdule();
 
     delete m_coorManage;
+    m_coorManage = nullptr;
 }
 
 void CGraphicsView::setMargins(int left, int top, int right, int bottom)
@@ -137,6 +138,8 @@ void CGraphicsView::updateHigh()
 
 void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
+    m_beginDate = begindate;
+    m_endDate = enddate;
     w = w - rightmagin;
     m_graphicsScene->setSceneRect(0, 0, w, h);
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
@@ -155,6 +158,11 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int 
     // scene 在 view 的中心点作为锚点
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     scrollBarValueChangedSlot();
+}
+
+void CGraphicsView::setInfo(const QVector<ScheduleDtailInfo> &info)
+{
+    m_scheduleInfo = info;
 }
 
 void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)

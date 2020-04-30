@@ -258,7 +258,7 @@ signals:
     void signalScheduleShow(bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 private:
     int checkDay(int weekday);
-
+    void setInfo(const QVector<ScheduleDtailInfo> &info);
 private:
     QGraphicsScene                *m_graphicsScene;               //绘制Scene
     CScheduleCoorManage           *m_coorManage;
@@ -287,6 +287,9 @@ private:
     bool                         m_updateDflag  = false;
     int                             m_rightmagin = 0;
     bool                            m_press = false;
+    QDate                           m_beginDate;
+    QDate                           m_endDate;
+    QVector<ScheduleDtailInfo> m_scheduleInfo;
 };
 
 #endif // GRAPHICSVIEW_H

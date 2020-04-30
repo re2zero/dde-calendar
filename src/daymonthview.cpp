@@ -75,9 +75,18 @@ CDayMonthView::CDayMonthView(QWidget *parent) : CustomFrame(parent)
 
 CDayMonthView::~CDayMonthView()
 {
-    delete queue;
-    delete lunarCache;
-    delete emptyCaHuangLiDayInfo;
+    if (lunarCache !=nullptr) {
+        delete lunarCache;
+        lunarCache = nullptr;
+    }
+    if ( queue !=nullptr) {
+        delete queue;
+        queue = nullptr;
+    }
+    if (emptyCaHuangLiDayInfo != nullptr) {
+        delete emptyCaHuangLiDayInfo;
+        emptyCaHuangLiDayInfo = nullptr;
+    }
 }
 void CDayMonthView::handleCurrentDateChanged(const QDate date, const CaHuangLiDayInfo &detail)
 {

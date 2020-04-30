@@ -96,9 +96,19 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
 
 CWeekHeadView::~CWeekHeadView()
 {
-    delete queue;
-    delete lunarCache;
-    delete emptyCaLunarDayInfo;
+
+    if (lunarCache !=nullptr) {
+        delete lunarCache;
+        lunarCache = nullptr;
+    }
+    if (emptyCaLunarDayInfo != nullptr) {
+        delete  emptyCaLunarDayInfo;
+        emptyCaLunarDayInfo = nullptr;
+    }
+    if (queue != nullptr) {
+        delete queue;
+        queue = nullptr;
+    }
 }
 
 void CWeekHeadView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
