@@ -96,12 +96,20 @@ void CSchceduleDlg::setDate(const QDateTime &date)
 {
     m_currentDate = date;
     int hours = date.time().hour();
-    int minnutes = date.time().minute() % 15;
+    int minnutes = 0;
+    if (date.date() == QDate::currentDate()) {
+        minnutes = date.time().minute() % 15;
 //    if (minnutes != 0) {
-    minnutes = (date.time().minute() / 15 + 1) * 15;
+        minnutes = (date.time().minute() / 15 + 1) * 15;
 //    }else {
 
 //    }
+    } else {
+        int minnutes = date.time().minute() % 15;
+        if (minnutes != 0) {
+            minnutes = (date.time().minute() / 15 + 1) * 15;
+        }
+    }
     if (minnutes == 60) {
         if (hours + 1 == 24) {
             m_currentDate.setTime(QTime(0, 0));
