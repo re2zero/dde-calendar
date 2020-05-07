@@ -740,7 +740,15 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
 
 void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
 {
-    slotSreturnPressed();
+//    slotSreturnPressed();
+    if (!m_opensearchflag && !m_searchEdit->text().isEmpty()) {
+//        m_opensearchflag = true;
+//        m_contentBackground->setVisible(true);
+    }
+    m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
+//    m_yearwindow->setDate(m_currentdate);
+    m_yearwindow->slotupdateSchedule(0);
+    updateHigh();
     return;
     if (w != m_weekWindow)
         m_weekWindow->slotupdateSchedule(id);
