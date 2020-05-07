@@ -682,8 +682,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
     } else {
         QFontMetrics fm1 = painter.fontMetrics();
-
-        painter.drawText(QRect(cell->width() - (cell->width()/2) + 4, bh, cell->width()/2 - 4, 26), Qt::AlignLeft, dayNum);
+        painter.drawText(QRect(cell->width() - (cell->width()/2) - 4, bh - 1, 36, 26), Qt::AlignCenter, dayNum);
         if (d == 6 || d == 7)
             painter.setPen(m_weekendsTextColor);
         else
