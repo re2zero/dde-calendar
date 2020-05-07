@@ -139,124 +139,13 @@ void CScheduleView::updateHigh()
     m_graphicsView->updateHigh();
     m_alldaylist->updateHigh();
 }
-bool MScheduleTimeThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
-{
-//    if (s1.beginDateTime.secsTo(s1.endDateTime) == s2.beginDateTime.secsTo(s2.endDateTime)) {
-//        return s1.beginDateTime < s2.beginDateTime;
-//    } else {
-//        return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
-//    }
-    if (s1.beginDateTime.date().daysTo(s1.endDateTime.date())==
-            s2.beginDateTime.date().daysTo(s2.endDateTime.date())) {
-        if (s1.beginDateTime == s2.beginDateTime) {
-            return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
-        } else {
-            return s1.beginDateTime < s2.beginDateTime;
-        }
-    } else {
-        return s1.beginDateTime.date().daysTo(s1.endDateTime.date())>s2.beginDateTime.date().daysTo(s2.endDateTime.date());
-    }
 
-}
-void CScheduleView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
-                                               QVector<ScheduleclassificationInfo> &info)
+void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
 {
-    QVector<ScheduleDtailInfo> schedulelist;
-    for (int k = 0; k < scheduleInfolist.count(); k++) {
-        if (scheduleInfolist.at(k).allday) {
-            continue;
-        }
-        schedulelist.append(scheduleInfolist.at(k));
-    }
-    if (schedulelist.isEmpty())
-        return;
-
-    info.clear();
-    qSort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
-    for (int k = 0; k < schedulelist.count(); k++) {
-        int i = 0;
-        QDateTime endTime = schedulelist.at(k).endDateTime;
-        QDateTime begTime = schedulelist.at(k).beginDateTime;
-        if (begTime.date().daysTo(endTime.date())==0 && begTime.time().secsTo(endTime.time())<m_minTime) {
-            endTime = begTime.addSecs(m_minTime);
-        }
-        for (; i < info.count(); i++) {
-            if ((schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
-                    schedulelist.at(k).beginDateTime <= info.at(i).enddate) ||
-                    (endTime >= info.at(i).begindate &&
-                     endTime <= info.at(i).enddate) ||
-                    (schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
-                     endTime <= info.at(i).enddate) ||
-                    (schedulelist.at(k).beginDateTime <= info.at(i).begindate &&
-                     endTime >= info.at(i).enddate)) {
-                break;
-            }
-        }
-        if (i == info.count()) {
-            ScheduleclassificationInfo firstschedule;
-            firstschedule.begindate = schedulelist.at(k).beginDateTime;
-            firstschedule.enddate = endTime;
-            firstschedule.vData.append(schedulelist.at(k));
-            info.append(firstschedule);
-        } else {
-            if (schedulelist.at(k).beginDateTime < info.at(i).begindate) {
-                info[i].begindate = schedulelist.at(k).beginDateTime;
-            }
-            if (endTime > info.at(i).enddate) {
-                info[i].enddate = endTime;
-            }
-            info[i].vData.append(schedulelist.at(k));
-        }
-    }
-}
-void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
-{
-    if (w != this)
-        return;
     m_currentShcedule = nullptr;
-    m_graphicsView->clearSchdule();
-    m_vListSchedule = data;
+//    m_graphicsView->clearSchdule();
     updateAllday();
-    for (int i = 0; i < m_TotalDay; i++) {
-        for (int j = 0; j < data.size(); j++) {
-            if (data.at(j).date == m_beginDate.addDays(i)) {
-                QVector<ScheduleDtailInfo> scheduleInfolist = data.at(j).vData;
-
-                QVector<ScheduleclassificationInfo> info;
-                scheduleClassificationType(scheduleInfolist, info);
-                QDate tdate = m_beginDate.addDays(i);
-                for (int m = 0; m < info.count(); m++) {
-                    int tnum = info.at(m).vData.count();
-                    if (m_viewType == 0) {
-                        if (tnum > m_sMaxNum) {
-                            tnum = m_sMaxNum;
-                            for (int n = 0; n < tnum - 1; n++) {
-                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1,
-                                                               tnum, 0, m_viewType, m_sMaxNum);
-                            }
-                            ScheduleDtailInfo tdetaliinfo = info.at(m).vData.at(tnum - 2);
-                            tdetaliinfo.titleName = "...";
-                            tdetaliinfo.type.ID = 3;
-                            m_graphicsView->addSchduleItem(tdetaliinfo, tdate, tnum, tnum, 1,
-                                                           m_viewType, m_sMaxNum);
-                        } else {
-                            for (int n = 0; n < tnum; n++) {
-                                m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1,
-                                                               tnum, 0, m_viewType, m_sMaxNum);
-                            }
-                        }
-
-                    } else {
-                        for (int n = 0; n < tnum; n++) {
-                            m_graphicsView->addSchduleItem(info.at(m).vData.at(n), tdate, n + 1,
-                                                           tnum, 0, m_viewType, m_sMaxNum);
-                        }
-                    }
-                }
-                break;
-            }
-        }
-    }
+    m_graphicsView->upDateInfoShow();
 
     m_graphicsView->update();
     m_graphicsView->getSence()->update();
@@ -277,8 +166,6 @@ void CScheduleView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeIn
                 if (scheduleInfolist.isEmpty()) {
                     m_graphicsView->setTime(QTime(13, 0));
                 } else {
-//                    qSort(scheduleInfolist.begin(), scheduleInfolist.end()
-//                          , MScheduleTimeThan);
                     qSort(scheduleInfolist.begin(),scheduleInfolist.end(),
                     [](const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2) ->bool {
                         return s1.beginDateTime < s2.beginDateTime;
@@ -324,7 +211,6 @@ void CScheduleView::slotupdateSchedule(int id)
     if (id !=1) {
         emit signalsUpdateShcedule(id);
     }
-
 }
 
 void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype)
@@ -573,6 +459,7 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
 //        //  m_alldaylist->setFixedSize(width() - m_leftMagin, m_topMagin - 10);
 //        m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate, m_rightmagin);
     }
+    m_graphicsView->setMaxNum(m_sMaxNum);
     m_graphicsView->setRange(width() - m_leftMagin,
                              scheduleViewHegith(), m_beginDate, m_endDate, m_rightmagin);
     m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate, m_rightmagin);
@@ -720,36 +607,10 @@ void CScheduleView::updateSchedule()
         }
     }
     m_alldaylist->setInfo(allInfo);
-    slotsupdatescheduleD(this, data);
+    m_graphicsView->setInfo(nonAllInfo);
+    slotsupdatescheduleD(data);
 }
-bool WScheduleDateThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
-{
-    if (s1.beginDateTime.date() != s1.endDateTime.date() &&
-            s2.beginDateTime.date() == s2.endDateTime.date()) {
-        return true;
-    } else if (s1.beginDateTime.date() == s1.endDateTime.date() &&
-               s2.beginDateTime.date() != s2.endDateTime.date()) {
-        return false;
-    } else if (s1.beginDateTime.date() != s1.endDateTime.date() &&
-               s2.beginDateTime.date() != s2.endDateTime.date()) {
-        if (s1.beginDateTime.date() == s2.beginDateTime.date()) {
-            return s1.beginDateTime.daysTo(s1.endDateTime) > s2.beginDateTime.daysTo(s2.endDateTime);
-        }
-        return s1.beginDateTime.date() < s2.beginDateTime.date();
-    } else {
-        if (s1.type.ID == 4) return true;
-        if (s2.type.ID == 4) return false;
-        if (s1.beginDateTime == s2.beginDateTime) {
-            return s1.titleName < s2.titleName;
-        } else {
-            return s1.beginDateTime < s2.beginDateTime;
-        }
-    }
-}
-bool WScheduleDaysThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
-{
-    return s1.beginDateTime.daysTo(s1.endDateTime) > s2.beginDateTime.daysTo(s2.endDateTime);
-}
+
 void CScheduleView::updateAllday()
 {
     m_topMagin = m_alldaylist->upDateInfoShow();
@@ -779,6 +640,7 @@ int CScheduleView::scheduleViewHegith()
         mheight = 24 * (0.083 * height() + 0.5);
     }
     //现在最小高度为20;
-    m_minTime = (20.0/mheight)*86400;
+    int m_minTime = (20.0/mheight)*86400;
+    m_graphicsView->setMinTime(m_minTime);
     return  mheight;
 }

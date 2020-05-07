@@ -313,9 +313,10 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
 {
 //    QRect ur=e->rect();//得到组件尺寸
 //    QPixmap pix(this->size());//以此为参数创建一个位图变量
-//    pix.fill(qRgba(255,255,255,0));
+//    pix.fill(Qt::transparent);
     QPainter painter(this);
-    painter.setRenderHints(QPainter::Antialiasing);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+
     int labelwidth = width();
     int labelheight = height();
     float avge = 1;
@@ -432,9 +433,9 @@ void CMonthSchceduleWidgetItem::paintEvent( QPaintEvent *e )
         painter.drawText(QRect(m_pos.x(), m_pos.y(), labelwidth - m_pos.x(), labelheight - m_pos.y() + 4 * avge), Qt::AlignLeft, str);
     }
     painter.end();
-//    QPainter painteritem(this);
-//    painteritem.drawPixmap(this->rect(),pix);
-//    painteritem.end();
+//    painter.begin(this);
+//    painter.drawPixmap(this->rect(),pix);
+//    painter.end();
 }
 void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
 {

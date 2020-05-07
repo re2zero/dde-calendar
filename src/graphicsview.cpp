@@ -29,6 +29,7 @@
 #include <DMessageBox>
 #include <DPushButton>
 #include <DHiDPIHelper>
+#include <QMimeData>
 #include <DPalette>
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
@@ -88,6 +89,8 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
             &QScrollBar::sliderPressed,
             this,
             &CGraphicsView::slotScrollBar);
+
+    m_Drag = new QDrag(this);
 }
 
 CGraphicsView::~CGraphicsView()
@@ -165,6 +168,114 @@ void CGraphicsView::setInfo(const QVector<ScheduleDtailInfo> &info)
     m_scheduleInfo = info;
 }
 
+bool MScheduleTimeThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
+{
+//    if (s1.beginDateTime.secsTo(s1.endDateTime) == s2.beginDateTime.secsTo(s2.endDateTime)) {
+//        return s1.beginDateTime < s2.beginDateTime;
+//    } else {
+//        return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
+//    }
+    if (s1.beginDateTime.date().daysTo(s1.endDateTime.date())==
+            s2.beginDateTime.date().daysTo(s2.endDateTime.date())) {
+        if (s1.beginDateTime == s2.beginDateTime) {
+            return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
+        } else {
+            return s1.beginDateTime < s2.beginDateTime;
+        }
+    } else {
+        return s1.beginDateTime.date().daysTo(s1.endDateTime.date())>s2.beginDateTime.date().daysTo(s2.endDateTime.date());
+    }
+
+}
+
+void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, const ScheduleDtailInfo &info)
+{
+    clearSchdule();
+    QVector<ScheduleDtailInfo> vListData;
+    vListData = m_scheduleInfo;
+    switch (status) {
+    case NONE:
+        Q_UNUSED(info);
+        break;
+    case ChangeBegin:
+    case ChangeEnd:
+    case ChangeWhole: {
+        int index = vListData.indexOf(info);
+        vListData[index] = info;
+    }
+    break;
+    case IsCreate:
+        vListData.append(info);
+        break;
+    }
+
+    QMap<QDate,QVector<ScheduleDtailInfo> > m_InfoMap;
+    QDate currentDate;
+    qint64 count = m_beginDate.daysTo(m_endDate);
+    qint64 beginoffset = 0, endoffset = 0;
+    QVector<ScheduleDtailInfo> currentInfo;
+    for (int i = 0; i <= count; ++i) {
+        currentDate = m_beginDate.addDays(i);
+        currentInfo.clear();
+        for (int j = 0; j <vListData.size(); ++j) {
+            beginoffset = vListData.at(j).beginDateTime.date().daysTo(currentDate);
+            endoffset = currentDate.daysTo(vListData.at(j).endDateTime.date());
+            if (beginoffset<0 || endoffset <0) {
+                continue;
+            }
+//            if (beginoffset>0) {
+//                currentInfo.begindate = QDateTime(currentDate,QTime(0,0,0));
+//            } else {
+//                currentInfo.begindate = vListData.at(j).beginDateTime;
+//            }
+
+//            if(endoffset>0){
+//                currentInfo.enddate = QDateTime(currentDate,QTime(23,59,59));
+//            } else {
+//                currentInfo.enddate = vListData.at(j).endDateTime;
+//            }
+            currentInfo.append(vListData.at(j));
+        }
+        qSort(currentInfo.begin(), currentInfo.end(), MScheduleTimeThan);
+        if (currentInfo.size()>0) {
+            m_InfoMap[currentDate] = currentInfo;
+            QVector<ScheduleclassificationInfo> info;
+            scheduleClassificationType(currentInfo,info);
+
+            for (int m = 0; m < info.count(); m++) {
+                int tnum = info.at(m).vData.count();
+                if (m_viewType == 0) {
+                    if (tnum > m_sMaxNum) {
+                        tnum = m_sMaxNum;
+                        for (int n = 0; n < tnum - 1; n++) {
+                            addSchduleItem(info.at(m).vData.at(n), currentDate, n + 1,
+                                           tnum, 0, m_viewType, m_sMaxNum);
+                        }
+                        ScheduleDtailInfo tdetaliinfo = info.at(m).vData.at(tnum - 2);
+                        tdetaliinfo.titleName = "...";
+                        tdetaliinfo.type.ID = 3;
+                        addSchduleItem(tdetaliinfo, currentDate, tnum, tnum, 1,
+                                       m_viewType, m_sMaxNum);
+                    } else {
+                        for (int n = 0; n < tnum; n++) {
+                            addSchduleItem(info.at(m).vData.at(n), currentDate, n + 1,
+                                           tnum, 0, m_viewType, m_sMaxNum);
+                        }
+                    }
+
+                } else {
+                    for (int n = 0; n < tnum; n++) {
+                        addSchduleItem(info.at(m).vData.at(n), currentDate, n + 1,
+                                       tnum, 0, m_viewType, m_sMaxNum);
+                    }
+                }
+            }
+        }
+
+    }
+
+}
+
 void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
 {
     m_currentItem = nullptr;
@@ -220,6 +331,56 @@ void CGraphicsView::clearSchdule()
     }
     m_vScheduleItem.clear();
     m_updateDflag = true;
+}
+
+void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info)
+{
+    QVector<ScheduleDtailInfo> schedulelist = scheduleInfolist;
+    if (schedulelist.isEmpty())
+        return;
+
+    info.clear();
+    qSort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
+    for (int k = 0; k < schedulelist.count(); k++) {
+        int i = 0;
+        QDateTime endTime = schedulelist.at(k).endDateTime;
+        QDateTime begTime = schedulelist.at(k).beginDateTime;
+        if (begTime.date().daysTo(endTime.date())==0 && begTime.time().secsTo(endTime.time())<m_minTime) {
+            endTime = begTime.addSecs(m_minTime);
+        }
+        for (; i < info.count(); i++) {
+            if ((schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
+                    schedulelist.at(k).beginDateTime <= info.at(i).enddate) ||
+                    (endTime >= info.at(i).begindate &&
+                     endTime <= info.at(i).enddate) ||
+                    (schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
+                     endTime <= info.at(i).enddate) ||
+                    (schedulelist.at(k).beginDateTime <= info.at(i).begindate &&
+                     endTime >= info.at(i).enddate)) {
+                break;
+            }
+        }
+        if (i == info.count()) {
+            ScheduleclassificationInfo firstschedule;
+            firstschedule.begindate = schedulelist.at(k).beginDateTime;
+            firstschedule.enddate = endTime;
+            firstschedule.vData.append(schedulelist.at(k));
+            info.append(firstschedule);
+        } else {
+            if (schedulelist.at(k).beginDateTime < info.at(i).begindate) {
+                info[i].begindate = schedulelist.at(k).beginDateTime;
+            }
+            if (endTime > info.at(i).enddate) {
+                info[i].enddate = endTime;
+            }
+            info[i].vData.append(schedulelist.at(k));
+        }
+    }
+}
+
+void CGraphicsView::updateschedule()
+{
+
 }
 
 ///************************************************************************
@@ -459,21 +620,19 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             }
         }
     } else if (event->button() == Qt::LeftButton) {
-        QPoint p = event->pos();
-        QPointF scenePos = this->mapToScene(p);
+//        QPoint p = event->pos();
+//        QPointF scenePos = this->mapToScene(p);
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
         if (item != nullptr) {
             if (item->getType() == 1)
                 return;
             m_currentItem = item;
             m_press = true;
-            QPointF itemPos = item->mapFromScene(scenePos);
-            setCursor(Qt::SplitVCursor);
-
 
             emit signalScheduleShow(true, item->getData());
             emit signalsitem(this);
         }
+        DragPressEvent(event->pos(),item);
     }
     DGraphicsView::mousePressEvent(event);
 }
@@ -482,6 +641,36 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 {
     DGraphicsView::mouseReleaseEvent(event);
     m_press = false;
+
+    switch (m_DragStatus) {
+    case IsCreate:
+        if (qAbs(m_MoveDate.daysTo(m_PressDate)<7)) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
+                m_DragScheduleInfo);
+            emit signalsUpdateShcedule(0);
+//            updateDateShow();
+        }
+        break;
+    case ChangeBegin:
+        if (m_MoveDate != m_InfoBeginTime) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
+                m_DragScheduleInfo);
+
+        }
+        emit signalsUpdateShcedule(0);
+        break;
+    case ChangeEnd:
+        if (m_MoveDate != m_InfoEndTime) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
+                m_DragScheduleInfo);
+        }
+        emit signalsUpdateShcedule(0);
+
+        break;
+    default:
+        break;
+    }
+    m_DragStatus = NONE;
 }
 
 
@@ -676,22 +865,79 @@ void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
     CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
 
     if (item != nullptr) {
-        if (item->getType() == 1)
-            return;
-        QPoint p = event->pos();
-        QPointF scenePos = this->mapToScene(p);
-        m_currentItem = item;
-        m_press = true;
-        QPointF itemPos = QPointF(scenePos.x()-item->boundingRect().x(),
-                                  scenePos.y()-item->boundingRect().y());
-        int bottomy = item->boundingRect().height()- itemPos.y();
-        if (itemPos.y()<5 || bottomy<5) {
-            setCursor(Qt::SplitVCursor);
-        } else {
+        if (item->getData().type.ID != 4) {
+            if (m_DragStatus == NONE) {
+                switch (getPosInItem(event->pos(),item->boundingRect())) {
+                case TOP:
+                case BOTTOM:
+                    setCursor(Qt::SplitVCursor);
+                    break;
+                default:
+                    setCursor(Qt::ArrowCursor);
+                    break;
+                }
+            }
+        }
+
+    } else {
+        if (m_DragStatus == NONE) {
             setCursor(Qt::ArrowCursor);
         }
-    } else {
-        setCursor(Qt::ArrowCursor);
+
+    }
+    QDateTime gDate =  m_coorManage->getDate(mapToScene(event->pos()));
+    switch (m_DragStatus) {
+    case IsCreate:
+        if (qAbs(event->pos().x()-m_PressPos.x())>20 ||qAbs(m_PressDate.secsTo(gDate))>300) {
+            m_isCreate = true;
+        }
+        if (m_isCreate) {
+            if (m_MoveDate !=gDate) {
+                m_MoveDate = gDate;
+                m_DragScheduleInfo = getScheduleInfo(m_PressDate,m_MoveDate);
+                upDateInfoShow(IsCreate,getScheduleInfo(m_PressDate,m_MoveDate));
+            }
+        }
+        break;
+    case ChangeBegin:
+        if (qAbs(m_MoveDate.secsTo(gDate))>100) {
+            m_MoveDate = gDate;
+            if (m_MoveDate.secsTo(m_InfoEndTime)<0) {
+                m_DragScheduleInfo.beginDateTime = m_InfoEndTime;
+                m_DragScheduleInfo.endDateTime = m_MoveDate;
+            } else {
+                m_DragScheduleInfo.beginDateTime = m_MoveDate;
+                m_DragScheduleInfo.endDateTime = m_InfoEndTime;
+            }
+            upDateInfoShow(ChangeBegin,m_DragScheduleInfo);
+        }
+        break;
+    case ChangeEnd:
+        if (qAbs(m_MoveDate.secsTo(gDate))>100) {
+            m_MoveDate = gDate;
+            if (m_InfoBeginTime.secsTo(m_MoveDate)<0) {
+                m_DragScheduleInfo.beginDateTime = m_MoveDate;
+                m_DragScheduleInfo.endDateTime = m_InfoBeginTime;
+            } else {
+                m_DragScheduleInfo.beginDateTime =m_InfoBeginTime;
+                m_DragScheduleInfo.endDateTime = m_MoveDate;
+            }
+            upDateInfoShow(ChangeEnd,m_DragScheduleInfo);
+        }
+        break;
+    case ChangeWhole: {
+//        if (!m_currentitem->rect().contains(event->pos())) {
+//            Qt::DropAction dropAciton = m_Drag->exec( Qt::MoveAction);
+//            m_Drag = nullptr;
+//            m_DragStatus = NONE;
+//            qDebug()<<Q_FUNC_INFO<<"DropAction:"<<dropAciton;
+//        }
+
+    }
+    break;
+
+    default:
+        break;
     }
 
     DGraphicsView::mouseMoveEvent(event);
@@ -914,6 +1160,26 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     QGraphicsView::paintEvent(event);
 }
 
+void CGraphicsView::dragEnterEvent(QDragEnterEvent *event)
+{
+
+}
+
+void CGraphicsView::dragLeaveEvent(QDragLeaveEvent *event)
+{
+
+}
+
+void CGraphicsView::dragMoveEvent(QDragMoveEvent *event)
+{
+
+}
+
+void CGraphicsView::dropEvent(QDropEvent *event)
+{
+
+}
+
 void CGraphicsView::scrollBarValueChangedSlot()
 {
     emit signalScheduleShow(false);
@@ -968,6 +1234,87 @@ int CGraphicsView::checkDay(int weekday)
         return weekday -= 7;
 
     return weekday;
+}
+
+void CGraphicsView::DragPressEvent(const QPoint &pos, const CScheduleItem *item)
+{
+    m_PressPos = pos;
+    m_PressDate = m_coorManage->getDate(mapToScene(pos));
+
+    m_MoveDate = m_PressDate.addMonths(-2);
+    if (item != nullptr) {
+        if (item->getData().type.ID == 4)
+            return;
+        m_DragScheduleInfo = item->getData();
+        m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
+        m_InfoEndTime = m_DragScheduleInfo.endDateTime;
+        switch (getPosInItem(pos,item->boundingRect())) {
+        case TOP:
+            m_DragStatus = ChangeBegin;
+            setCursor(Qt::SplitVCursor);
+            break;
+        case BOTTOM:
+            m_DragStatus = ChangeEnd;
+            setCursor(Qt::SplitVCursor);
+            break;
+        default:
+            m_DragStatus = ChangeWhole;
+            QMimeData *mimeData = new QMimeData();
+            mimeData->setText(m_DragScheduleInfo.titleName);
+            mimeData->setData("Info",QString("Info").toUtf8());
+
+            if (m_Drag ==nullptr) {
+                m_Drag = new QDrag(this);
+            }
+            m_Drag->setMimeData(mimeData);
+            QPoint itemPos = QPoint(pos.x()-item->boundingRect().x(),
+                                    pos.y()-item->boundingRect().y());
+            m_Drag->setHotSpot(itemPos);
+            break;
+        }
+    } else {
+        m_DragStatus = IsCreate;
+        m_isCreate = false;
+    }
+}
+
+CGraphicsView::PosInItem CGraphicsView::getPosInItem(const QPoint &p, const QRectF &itemRect)
+{
+    QPointF scenePos = this->mapToScene(p);
+    QPointF itemPos = QPointF(scenePos.x()-itemRect.x(),
+                              scenePos.y()-itemRect.y());
+    int bottomy = itemRect.height()- itemPos.y();
+    if (itemPos.y()<5) {
+        return TOP;
+    }
+    if (bottomy <5) {
+        return BOTTOM;
+    }
+    return MIDDLE;
+}
+
+ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
+{
+    ScheduleDtailInfo info;
+    if (beginDate.secsTo(endDate)>0) {
+        info.beginDateTime = beginDate;
+        info.endDateTime = endDate;
+    } else {
+        info.beginDateTime = endDate;
+        info.endDateTime = beginDate;
+    }
+    info.titleName = tr("New Event");
+    info.allday = false;
+    info.remind = true;
+    info.id = 0;
+    info.remindData.n = 1;
+    info.remindData.time = QTime(9, 0);
+    info.RecurID = 0;
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
+        1, info.type);
+    info.rpeat = 0;
+
+    return info;
 }
 
 /************************************************************************

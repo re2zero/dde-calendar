@@ -986,7 +986,7 @@ void Calendarmainwindow::slotdoubleclickDate(QDate date)
     }
     break;
     }
-    CConfigSettings::setOption("base.view", m_priindex + 1);
+    CConfigSettings::setOption("base.view", m_priindex+1);
 }
 
 void Calendarmainwindow::slotselectMonth(QDate date)

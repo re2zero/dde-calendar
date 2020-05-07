@@ -26,12 +26,6 @@
 #include <DFrame>
 
 DWIDGET_USE_NAMESPACE
-typedef struct _tagScheduleclassificationInfo {
-    QDateTime begindate;
-    QDateTime enddate;
-    QVector<ScheduleDtailInfo> vData;
-} ScheduleclassificationInfo;
-
 class CGraphicsView;
 class CAllDayEventWeekView;
 class QVBoxLayout;
@@ -50,9 +44,8 @@ public:
     void setTime(QTime time);
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
     void updateHigh();
-    void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info);
 public slots:
-    void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
+    void slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data);
     void slotCreateSchedule();
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
@@ -85,7 +78,6 @@ private:
     QVector<int>              m_vPos;
     QVector<int>              m_vHours;
     CAllDayEventWeekView     *m_alldaylist;
-    QVector<ScheduleDateRangeInfo> m_vListSchedule;
     int                       m_leftMagin;
     int                       m_topMagin;
     int                       m_rightmagin = 0;
@@ -106,7 +98,7 @@ private:
 //    int                       m_space = 30;
     QVBoxLayout              *m_layout;
     SchecduleRemindWidget    *m_ScheduleRemindWidget;
-    int                             m_minTime;      //最小高度对应的最小时间
+//    int                             m_minTime;      //最小高度对应的最小时间
 };
 
 #endif // SCHEDULEVIEW_H

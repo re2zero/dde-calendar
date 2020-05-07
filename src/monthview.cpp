@@ -296,7 +296,6 @@ void CMonthView::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
             titem->setEndValue(offset);
             titem->startAnimation();
         }
-
     }
 
 }
@@ -1346,9 +1345,6 @@ void CMonthView::cellClicked(QWidget *cell)
 
 void CMonthView::setSelectedCell(int index)
 {
-//    if (m_selectedCell == index)
-//        return;
-
     const int prevPos = m_selectedCell;
     m_selectedCell = index;
 

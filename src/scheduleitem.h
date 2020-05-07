@@ -40,7 +40,7 @@ public:
     {
         return  m_type;
     }
-    ScheduleDtailInfo getData()
+    ScheduleDtailInfo getData() const
     {
         return m_scheduleInfo;
     }

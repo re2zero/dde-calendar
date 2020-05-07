@@ -25,6 +25,7 @@
 #include <QHBoxLayout>
 #include <QStylePainter>
 #include <QRect>
+#include <QMimeData>
 #include "schceduledlg.h"
 #include "myschceduleview.h"
 #include "scheduledatamanage.h"
@@ -32,6 +33,7 @@
 #include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
+#include <QDrag>
 #include <QGraphicsOpacityEffect>
 #include "schedulecoormanage.h"
 #include "schcedulectrldlg.h"
@@ -163,7 +165,6 @@ void CAllDayEventWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void CAllDayEventWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     m_vHoverflag = false;
-//    m_hoverPressMove = false;
     m_press = false;
     update();
 }
@@ -172,6 +173,7 @@ void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphics
 {
     Q_UNUSED(widget)
     m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
+
     painter->setRenderHints(QPainter::Antialiasing);
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.type.ID);
     m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
@@ -587,11 +589,14 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     setAlignment(Qt::AlignLeft | Qt::AlignTop);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
+    m_Drag = new QDrag(this);
 }
 
 CAllDayEventWeekView::~CAllDayEventWeekView()
 {
     delete m_coorManage;
+    m_coorManage = nullptr;
 }
 
 void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData)
@@ -785,7 +790,15 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
 
 void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
 {
+    DGraphicsView::mouseReleaseEvent(event);
     setCursor(Qt::ArrowCursor);
+    m_press = false;
+
+//    CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
+//    if (item != nullptr) {
+//        item->setPressFlag(false);
+//        item->update();
+//    }
     switch (m_DragStatus) {
     case IsCreate:
         if (qAbs(m_MoveDate.daysTo(m_PressDate)<7)) {
@@ -815,13 +828,6 @@ void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
         break;
     }
     m_DragStatus = NONE;
-    m_press = false;
-    CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
-    if (item != nullptr) {
-        item->setPressFlag(false);
-    }
-
-
 }
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -864,25 +870,28 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
 {
+    DGraphicsView::mouseMoveEvent(event);
     if (m_press) {
         emit signalScheduleShow(false);
         m_press = false;
     }
+
     CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
     if (item != nullptr) {
-        if (item->getData().type.ID == 4)
-            return;
-        if (m_DragStatus == NONE) {
-            switch (getPosInItem(event->pos(),item->rect())) {
-            case LEFT:
-            case RIGHT:
-                setCursor(Qt::SplitHCursor);
-                break;
-            default:
-                setCursor(Qt::ArrowCursor);
-                break;
+        if (item->getData().type.ID != 4) {
+            if (m_DragStatus == NONE) {
+                switch (getPosInItem(event->pos(),item->rect())) {
+                case LEFT:
+                case RIGHT:
+                    setCursor(Qt::SplitHCursor);
+                    break;
+                default:
+                    setCursor(Qt::ArrowCursor);
+                    break;
+                }
             }
         }
+
     } else {
         if (m_DragStatus == NONE) {
             setCursor(Qt::ArrowCursor);
@@ -928,16 +937,23 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
             }
             upDateInfoShow(ChangeEnd,m_DragScheduleInfo);
         }
-
         break;
-    case ChangeWhole:
+    case ChangeWhole: {
+        if (!m_currentitem->rect().contains(event->pos())) {
+            Qt::DropAction dropAciton = m_Drag->exec( Qt::MoveAction);
+            m_Drag = nullptr;
+            m_DragStatus = NONE;
+            qDebug()<<Q_FUNC_INFO<<"DropAction:"<<dropAciton;
+        }
 
-        break;
+    }
+    break;
+
     default:
         break;
     }
 
-    DGraphicsView::mouseMoveEvent(event);
+
 }
 
 void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
@@ -949,6 +965,32 @@ void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
 void CAllDayEventWeekView::paintEvent(QPaintEvent *event)
 {
     DGraphicsView::paintEvent(event);
+}
+
+void CAllDayEventWeekView::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasFormat("Info")) {
+        event->accept();
+        QPoint point = event->pos();
+    } else {
+        event->ignore();
+    }
+
+}
+
+void CAllDayEventWeekView::dragLeaveEvent(QDragLeaveEvent *event)
+{
+
+}
+
+void CAllDayEventWeekView::dragMoveEvent(QDragMoveEvent *event)
+{
+
+}
+
+void CAllDayEventWeekView::dropEvent(QDropEvent *event)
+{
+    qDebug()<<Q_FUNC_INFO;
 }
 
 void CAllDayEventWeekView::updateDateShow()
@@ -974,6 +1016,8 @@ void CAllDayEventWeekView::DragPressEvent(const QPoint &pos, const CAllDayEventW
     m_PressDate = m_coorManage->getsDate(mapFrom(this, pos));
     m_MoveDate = m_PressDate.addMonths(-2);
     if (item != nullptr) {
+        if (item->getData().type.ID == 4)
+            return;
         m_DragScheduleInfo = item->getData();
         m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
         m_InfoEndTime = m_DragScheduleInfo.endDateTime;
@@ -988,6 +1032,17 @@ void CAllDayEventWeekView::DragPressEvent(const QPoint &pos, const CAllDayEventW
             break;
         default:
             m_DragStatus = ChangeWhole;
+            QMimeData *mimeData = new QMimeData();
+            mimeData->setText(m_DragScheduleInfo.titleName);
+            mimeData->setData("Info",QString("Info").toUtf8());
+
+            if (m_Drag ==nullptr) {
+                m_Drag = new QDrag(this);
+            }
+            m_Drag->setMimeData(mimeData);
+            QPoint itemPos = QPoint(pos.x()-item->rect().x(),
+                                    pos.y()-item->rect().y());
+            m_Drag->setHotSpot(itemPos);
             break;
         }
     } else {

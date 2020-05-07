@@ -24,15 +24,24 @@
 #include "schedulestructs.h"
 #include <QAction>
 #include <QMutex>
+#include <QDrag>
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 DWIDGET_USE_NAMESPACE
+
+typedef struct _tagScheduleclassificationInfo {
+    QDateTime begindate;
+    QDateTime enddate;
+    QVector<ScheduleDtailInfo> vData;
+} ScheduleclassificationInfo;
+
 class CScheduleCoorManage;
 class CScheduleItem;
 class CGraphicsView : public DGraphicsView
 {
     Q_OBJECT
-
+    enum PosInItem {TOP,MIDDLE,BOTTOM};
+    enum DragStatus {IsCreate,ChangeBegin,ChangeEnd,ChangeWhole,NONE};
 public:
     CGraphicsView(QWidget *parent, int viewType = 0);
     ~CGraphicsView() Q_DECL_OVERRIDE;
@@ -53,69 +62,33 @@ public:
     {
         return m_coorManage;
     }
+    void setInfo(const QVector<ScheduleDtailInfo> &info);
+    void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo());
+
     void  addSchduleItem(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
     void  deleteSchduleItem(CScheduleItem *item);
     void  setSelectSchedule(const ScheduleDtailInfo &info);
     void  clearSchdule();
-//    /************************************************************************
-//    Function:       onViewEvent()
-//    Description:    执行父类事件
-//    Input:          event 事件
-//    Output:         无
-//    Return:         无
-//    Others:         无
-//    ************************************************************************/
-//    void onViewEvent(QEvent *event);
 
-    /************************************************************************
-    Function:       mousePressEvent()
-    Description:    鼠标按下事件
-    Input:          event 鼠标事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
+    void setMinTime(const int &minTime)
+    {
+        m_minTime = minTime;
+    }
+    void setMaxNum(const int maxnum)
+    {
+        m_sMaxNum = maxnum;
+    }
+
+    void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
+                                    QVector<ScheduleclassificationInfo> &info);
+    void updateschedule();
+
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       mouseReleaseEvent()
-    Description:    鼠标释放事件
-    Input:          event 鼠标事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       mouseDoubleClickEvent()
-    Description:    鼠标双击事件
-    Input:          event 鼠标事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
     void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       mouseMoveEvent()
-    Description:    鼠标移动事件
-    Input:          event 鼠标事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 #ifndef QT_NO_WHEELEVENT
-    /************************************************************************
-    Function:       wheelEvent()
-    Description:    鼠标滚轮事件
-    Input:          event 滚轮事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
 
@@ -242,6 +215,10 @@ public:
     void setTime(QTime time);
 protected:
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
+    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
+    void dragLeaveEvent(QDragLeaveEvent *event) Q_DECL_OVERRIDE;
+    void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
+    void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
 public slots:
     void scrollBarValueChangedSlot();
     void slotDoubleEvent(int type);
@@ -258,38 +235,55 @@ signals:
     void signalScheduleShow(bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 private:
     int checkDay(int weekday);
-    void setInfo(const QVector<ScheduleDtailInfo> &info);
+    void DragPressEvent(const QPoint &pos,const CScheduleItem *item);
+    PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect);
+    ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate,const QDateTime &endDate);
+
 private:
-    QGraphicsScene                *m_graphicsScene;               //绘制Scene
-    CScheduleCoorManage           *m_coorManage;
+    QGraphicsScene                  *m_graphicsScene;               //绘制Scene
+    CScheduleCoorManage             *m_coorManage;
     QVector<CScheduleItem *>        m_vScheduleItem;
-    CScheduleItem                *m_currentItem; //当前item
-    QMargins                       m_margins;                     //四周空白
-    bool                           m_LRFlag;          //水平线
-    QPen                           m_LRPen;           //水平线画笔
-    bool                           m_TBFlag;          //垂直线
-    QPen                           m_TBPen;           //垂直线画笔
-    QVector<int>                   m_vLRLarge;        //大刻度像素位置
-    QVector<int>                   m_vTBLarge;        //大刻度像素位置
-    float                            m_dayInterval;
-    float                          m_timeInterval;
-    int                            m_firstWeekDay;
-    int                            m_totalDay;
-    QAction                       *m_editAction;
-    QAction                       *m_deleteAction;
-    QAction                       *m_createAction;
-    QColor                        m_weekcolor = "#4F9BFF";
-    QColor                        m_currenttimecolor = "#F74444";
-    int                           m_cuttrnttimetype = 0;
-    QTimer                       *m_timer;
-    QMutex                        m_Mutex;
-    int                       m_viewType = 0;
-    bool                         m_updateDflag  = false;
+    CScheduleItem                   *m_currentItem; //当前item
+    QMargins                        m_margins;                     //四周空白
+    bool                            m_LRFlag;          //水平线
+    QPen                            m_LRPen;           //水平线画笔
+    bool                            m_TBFlag;          //垂直线
+    QPen                            m_TBPen;           //垂直线画笔
+    QVector<int>                    m_vLRLarge;        //大刻度像素位置
+    QVector<int>                    m_vTBLarge;        //大刻度像素位置
+    float                           m_dayInterval;
+    float                           m_timeInterval;
+    int                             m_firstWeekDay;
+    int                             m_totalDay;
+    QAction                         *m_editAction;
+    QAction                         *m_deleteAction;
+    QAction                         *m_createAction;
+    QColor                          m_weekcolor = "#4F9BFF";
+    QColor                          m_currenttimecolor = "#F74444";
+    int                             m_cuttrnttimetype = 0;
+    QTimer                          *m_timer;
+    QMutex                          m_Mutex;
+    int                             m_viewType = 0;
+    bool                            m_updateDflag  = false;
     int                             m_rightmagin = 0;
     bool                            m_press = false;
+
+
+    QVector<ScheduleDtailInfo>                      m_scheduleInfo;
     QDate                           m_beginDate;
     QDate                           m_endDate;
-    QVector<ScheduleDtailInfo> m_scheduleInfo;
+    int                             m_minTime;      //最小高度对应的最小时间
+    int                       m_sMaxNum = 4;
+
+    DragStatus                      m_DragStatus =NONE;
+    bool                            m_isCreate;
+    QDateTime                       m_PressDate;
+    QDateTime                       m_MoveDate;
+    QPoint                          m_PressPos;
+    ScheduleDtailInfo               m_DragScheduleInfo;
+    QDateTime                       m_InfoBeginTime;
+    QDateTime                       m_InfoEndTime;
+    QDrag                           *m_Drag;
 };
 
 #endif // GRAPHICSVIEW_H

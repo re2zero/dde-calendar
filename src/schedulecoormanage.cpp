@@ -223,6 +223,11 @@ QDateTime CScheduleCoorManage::getDate(QPointF pos)
 {
     QDateTime begintime;
     int day = (1.0 * pos.x() / m_width) * m_totalDay;
+    if (day <0) {
+        day = 0;
+    } else if (day >=m_totalDay) {
+        day = m_totalDay-1;
+    }
     int time = (1.0 * pos.y() / m_height) * 86400.0;
     int hours = time / 3600;
     int minutes = (time - 3600 * hours) / 60;

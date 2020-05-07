@@ -65,7 +65,7 @@ public:
     void updateHigh();
 public:
     explicit CMonthView(QWidget *parent = nullptr);
-    ~CMonthView();
+    ~CMonthView() Q_DECL_OVERRIDE;
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
     inline bool cellSelectable() const

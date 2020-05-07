@@ -32,6 +32,7 @@
 #include <QSequentialAnimationGroup>
 #include "SchecduleRemindWidget.h"
 DWIDGET_USE_NAMESPACE
+class QDrag;
 class CAllDayEventWidgetItem;
 class CSolodayWidgetItem;
 class CScheduleCoorManage;
@@ -86,6 +87,11 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
+
+    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
+    void dragLeaveEvent(QDragLeaveEvent *event) Q_DECL_OVERRIDE;
+    void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
+    void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
     void DragPressEvent(const QPoint &pos,const CAllDayEventWidgetItem *item);
@@ -125,6 +131,7 @@ private:
     ScheduleDtailInfo               m_DragScheduleInfo;
     QDateTime                       m_InfoBeginTime;
     QDateTime                       m_InfoEndTime;
+    QDrag                           *m_Drag;
 };
 
 class CAllDayEventWidgetItem : public QObject, public QGraphicsRectItem
