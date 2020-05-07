@@ -776,7 +776,8 @@ void Calendarmainwindow::slotSreturnPressed()
 //        m_animation->start();
     }
     m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
-    m_yearwindow->slotupdateSchedule(0);
+    m_yearwindow->setDate(m_currentdate);
+//    m_yearwindow->slotupdateSchedule(0);
     updateHigh();
 #else
     if (!m_searchflag) {
@@ -812,7 +813,8 @@ void Calendarmainwindow::slotStextChanged()
 //        m_animation->start();
         m_opensearchflag = false;
     }
-    m_yearwindow->slotupdateSchedule(0);
+//    m_yearwindow->setDate(m_currentdate);
+//    m_yearwindow->slotupdateSchedule(0);
     updateHigh();
 #else
     if (!m_searchflag) {
