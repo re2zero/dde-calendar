@@ -444,7 +444,7 @@ void CYearView::paintCell(QWidget *cell)
     // bool isSelectedCell = pos == m_selectedCell;
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate() && getCellDate(pos).month() == m_currentDate.month();
     bool isSelectedCell  = false;
-    if (m_days[pos] == QDate::currentDate()) {
+    if (isCurrentDay/*m_days[pos] == QDate::currentDate() && getCellDate(pos).month() == m_currentDate.month()*/) {
         isSelectedCell = true;
     } /*else if (m_selectFlag) {
         if (m_days[pos] == m_selectDate) {
