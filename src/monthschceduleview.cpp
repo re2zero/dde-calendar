@@ -694,7 +694,8 @@ void CMonthSchceduleView::slotDeleteItem()
     if (m_currentitem != nullptr) {
         CMonthSchceduleWidgetItem *titem = qobject_cast<CMonthSchceduleWidgetItem *>(m_currentitem);
         if (titem != nullptr) {
-            titem->slotDelete();
+            if (titem->getData().type.ID != 4)
+                titem->slotDelete();
         }
     }
 }
