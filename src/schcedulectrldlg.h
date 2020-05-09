@@ -43,6 +43,8 @@ private:
     void initUI();
     void initConnection();
 
+protected:
+    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
 private slots:
     void buttonJudge(int id);
 private:
@@ -55,6 +57,12 @@ private:
     QVector<DPushButton *>            m_buttonlist;
     QVBoxLayout                      *m_mainBoxLayout;
     QHBoxLayout                      *m_btBoxLayout;
+    QFont labelF;
+    QFont labelT;
+    QString str_firstLabel;
+    QString str_seconLabel;
+    QVector<QString> str_btName;
+    DPushButton *button;
 };
 
 #endif // MYSCHCEDULEVIEW_H

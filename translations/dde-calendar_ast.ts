@@ -333,10 +333,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>My Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -346,6 +342,10 @@
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -460,26 +460,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Work</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Life</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>All Day:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -556,11 +536,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Ends:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Starts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ends:</source>
+        <source>Work</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

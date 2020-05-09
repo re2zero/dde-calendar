@@ -333,10 +333,6 @@
         <translation>Vil du slette denne og alle fremtidige forekomster af begivenheden eller kun den valgte forekomst?</translation>
     </message>
     <message>
-        <source>Delete All Future Events</source>
-        <translation>Slet alle fremtidige begivenheder</translation>
-    </message>
-    <message>
         <source>My Event</source>
         <translation>Min begivenhed</translation>
     </message>
@@ -347,6 +343,10 @@
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">Slet alle fremtidige begivenheder</translation>
     </message>
 </context>
 <context>
@@ -444,22 +444,6 @@
         <translation>Type:</translation>
     </message>
     <message>
-        <source>Work</source>
-        <translation>Arbejde</translation>
-    </message>
-    <message>
-        <source>Life</source>
-        <translation>Leve</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>Andre</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation>Beskrivelse:</translation>
-    </message>
-    <message>
         <source>All Day:</source>
         <translation>Hele dagen:</translation>
     </message>
@@ -524,10 +508,6 @@
         <translation>OK</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>Beskrivelse</translation>
-    </message>
-    <message>
         <source>Type</source>
         <translation>Type</translation>
     </message>
@@ -556,11 +536,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Ends:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Starts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ends:</source>
+        <source>Work</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

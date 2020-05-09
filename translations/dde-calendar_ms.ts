@@ -333,10 +333,6 @@
         <translation>Anda mahu memadam semua kemunculan peristiwa ini dan akan datang, atau hanya kemunculan terpilih?</translation>
     </message>
     <message>
-        <source>Delete All Future Events</source>
-        <translation>Padam Semua Peristiwa Akan Datang</translation>
-    </message>
-    <message>
         <source>My Event</source>
         <translation>Peristiwa Saya</translation>
     </message>
@@ -347,6 +343,10 @@
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">Padam Semua Peristiwa Akan Datang</translation>
     </message>
 </context>
 <context>
@@ -444,22 +444,6 @@
         <translation>Jenis:</translation>
     </message>
     <message>
-        <source>Work</source>
-        <translation>Kerja</translation>
-    </message>
-    <message>
-        <source>Life</source>
-        <translation>Lapang</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>Lain-lain</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation>Keterangan:</translation>
-    </message>
-    <message>
         <source>All Day:</source>
         <translation>Sepanjang Hari:</translation>
     </message>
@@ -524,10 +508,6 @@
         <translation>OK</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>Keterangan</translation>
-    </message>
-    <message>
         <source>Type</source>
         <translation>Jenis</translation>
     </message>
@@ -556,11 +536,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Ends:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Starts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ends:</source>
+        <source>Work</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -333,10 +333,6 @@
         <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
     </message>
     <message>
-        <source>Delete All Future Events</source>
-        <translation>刪除所有將來日程</translation>
-    </message>
-    <message>
         <source>My Event</source>
         <translation>我的日程</translation>
     </message>
@@ -347,6 +343,10 @@
     <message>
         <source>OK</source>
         <translation>確認</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">刪除所有將來日程</translation>
     </message>
 </context>
 <context>
@@ -444,22 +444,6 @@
         <translation>Type:</translation>
     </message>
     <message>
-        <source>Work</source>
-        <translation>工作</translation>
-    </message>
-    <message>
-        <source>Life</source>
-        <translation>生活</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>其它</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation>內容：</translation>
-    </message>
-    <message>
         <source>All Day:</source>
         <translation>全天：</translation>
     </message>
@@ -524,10 +508,6 @@
         <translation>確定</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>簡介</translation>
-    </message>
-    <message>
         <source>Type</source>
         <translation>Type</translation>
     </message>
@@ -556,11 +536,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Ends:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Starts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ends:</source>
+        <source>Work</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

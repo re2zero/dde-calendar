@@ -333,10 +333,6 @@
         <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
     </message>
     <message>
-        <source>Delete All Future Events</source>
-        <translation>كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
-    </message>
-    <message>
         <source>My Event</source>
         <translation>مېنىڭ پائالىيەتلىرىم</translation>
     </message>
@@ -347,6 +343,10 @@
     <message>
         <source>OK</source>
         <translation>جەزىملەشتۈرۈش</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
     </message>
 </context>
 <context>
@@ -444,22 +444,6 @@
         <translation>تىپى: </translation>
     </message>
     <message>
-        <source>Work</source>
-        <translation>خىزمەت</translation>
-    </message>
-    <message>
-        <source>Life</source>
-        <translation>تۇرمۇش</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>باشقا</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation>ئىزاھات:</translation>
-    </message>
-    <message>
         <source>All Day:</source>
         <translation>پۈتۈن كۈن:</translation>
     </message>
@@ -524,10 +508,6 @@
         <translation>جەزىملەشتۈرۈش</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>ئىزاھات</translation>
-    </message>
-    <message>
         <source>Type</source>
         <translation>تىپ</translation>
     </message>
@@ -556,11 +536,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Ends:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Starts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ends:</source>
+        <source>Work</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
