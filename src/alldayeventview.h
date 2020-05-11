@@ -101,12 +101,12 @@ private:
 private:
     int                     itemHeight = 22;
     QAction                                     *m_createAction;     // 创建日程
-    QAction                       *m_editAction;
-    QAction                       *m_deleteAction;
+    QAction                                     *m_editAction;
+    QAction                                     *m_deleteAction;
     bool                                         m_widgetFlag;
     QVector<QVector<ScheduleDtailInfo> >         m_vlistData;
-    QVector<ScheduleDtailInfo>                      m_scheduleInfo;
-    QVector<CAllDayEventWidgetItem *>                       m_baseShowItem;
+    QVector<ScheduleDtailInfo>                   m_scheduleInfo;
+    QVector<CAllDayEventWidgetItem *>            m_baseShowItem;
     QVector<QDate>                               m_vDate;
     int                                          m_editType = 0;
     QColor                                       m_soloColor = "#FF7272";
@@ -115,13 +115,12 @@ private:
     bool                                        m_LunarVisible;
     CAllDayEventWidgetItem                      *m_currentitem = nullptr;
     int m_rightmagin = 0;
-    bool                         m_updateDflag  = false;
+    bool                            m_updateDflag  = false;
     QGraphicsScene                              *m_Scene;
     bool                            m_press = false;
 
-    QDate                     m_beginDate;
-    QDate                     m_endDate;
-
+    QDate                           m_beginDate;
+    QDate                           m_endDate;
 
     DragStatus                      m_DragStatus =NONE;
     bool                            m_isCreate;

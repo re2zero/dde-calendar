@@ -326,9 +326,9 @@ void CMonthWindow::initConnection()
     connect(m_monthDayView, &CMonthDayView::signalsSelectDate, this, &CMonthWindow::slotSelectedMonth);
     connect(m_monthView, &CMonthView::signalsSchceduleUpdate, this, &CMonthWindow::slotTransitSchedule);
     connect(m_monthDayView, &CMonthDayView::signalsCurrentDate, this, &CMonthWindow::slotSelectedMonth);
-    connect(m_monthView, &CMonthView::signalsViewSelectDate, this, &CMonthWindow::signalsViewSelectDate);
     connect(m_monthView, &CMonthView::signalsCurrentScheduleDate, this, &CMonthWindow::signalsCurrentScheduleDate);
     connect(m_monthView, &CMonthView::signalViewtransparentFrame, this, &CMonthWindow::signalViewtransparentFrame);
+    connect(m_monthView, &CMonthView::signalsViewSelectDate, this, &CMonthWindow::signalsViewSelectDate);
 
 }
 
@@ -458,11 +458,6 @@ void CMonthWindow::slotcurrentDateChanged(QDate date)
     } else {
         m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
     }
-    //if (date != QDate::currentDate()) {
-    //    m_today->setEnabled(true);
-    //} else {
-    //    m_today->setEnabled(false);
-    //}
 }
 
 void CMonthWindow::slotSelectedMonth(QDate date)

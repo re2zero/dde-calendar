@@ -83,11 +83,12 @@ public:
     ~CSchedulesDBus();
     QString toconvertIGData(QDateTime date);
     QDateTime fromconvertiIGData(QString str);
-private:
     QString createScheduleDtailInfojson(const ScheduleDtailInfo &info);
+    ScheduleDtailInfo parsingScheduleDtailInfojsonID(QJsonObject &obj);
+private:
     QString createScheduleTypejson(const ScheduleType &info);
     ScheduleType parsingScheduleTypejson(QJsonObject &object);
-    ScheduleDtailInfo parsingScheduleDtailInfojsonID(QJsonObject &obj);
+
     QString createScheduleRRule(const ScheduleDtailInfo &info);
     void parsingScheduleRRule(QString str, ScheduleDtailInfo &info);
     QString createScheduleRemind(const ScheduleDtailInfo &info);

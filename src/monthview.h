@@ -28,69 +28,32 @@
 #include <QStyleOption>
 #include <QSignalMapper>
 #include <QAction>
+#include <QGraphicsView>
 #include "calendardbus.h"
-#include "schedulestructs.h"
 #include "SchecduleRemindWidget.h"
+#include "monthgraphiview.h"
 DWIDGET_USE_NAMESPACE
-class CSchceduleDayView;
-class CMonthSchceduleView;
-enum CalendarMonthDayType {
-    SO_MFestival = QStyleOption::SO_CustomBase + 0x01,
-    SO_MWeekends = QStyleOption::SO_CustomBase + 0x02,
-    SO_MWeekendsAndFestival = SO_MFestival | SO_MWeekends,
-    SO_MNotCurrentMonth = 0x04,
-    SO_MNotCurrentMonthFestival = SO_MNotCurrentMonth | SO_MFestival,
-    SO_MDefault,
-};
 
 class CMonthView: public DWidget
 {
     Q_OBJECT
-
-    Q_PROPERTY(QColor backgroundCircleColor MEMBER m_backgroundCircleColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor defaultTextColor MEMBER m_defaultTextColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor defaultLunarColor MEMBER m_defaultLunarColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor festivalLunarColor MEMBER m_festivalLunarColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor weekendsTextColor MEMBER m_weekendsTextColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor topBorderColor MEMBER m_topBorderColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(bool cellSelectable READ cellSelectable WRITE setCellSelectable NOTIFY cellSelectableChanged)
 public:
-    enum ShowState {
-        ShowLunar = 0x01,
-        ShowLunarFestivalHighlight = 0x02,
-        Normal = ShowLunar | ShowLunarFestivalHighlight,
-    };
     void setTheMe(int type = 0);
     void updateHigh();
 public:
     explicit CMonthView(QWidget *parent = nullptr);
     ~CMonthView() Q_DECL_OVERRIDE;
     void setFirstWeekday(int weekday);
-    int getDateType(const QDate &date);
-    inline bool cellSelectable() const
-    {
-        return m_cellSelectable;
-    }
-
 signals:
-    void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalcurrentLunarDateChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
     void signalcurrentDateChanged(QDate date);
-    void currentDateChanged(const int year, const int month);
-    void currentFestivalChanged(const QString &festival);
-    void cellSelectableChanged(bool cellSelectable) const;
     void signalsSchceduleUpdate(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
-    void signalsViewSelectDate(QDate date);
     void signalViewtransparentFrame(int type);
+    void signalsViewSelectDate(QDate date);
 public slots:
     void setCurrentDate(const QDate date);
     void setLunarVisible(bool visible);
-    void setLunarFestivalHighlight(bool highlight);
-    void setCellSelectable(bool selectable);
-    void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
-    void slotCtrlSchceduleUpdate(QDate date, int type = 0);
     void slotSchceduleUpdate(int id = 0);
     void slotUpdateUI(int type);
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
@@ -100,106 +63,44 @@ public slots:
     void slotScheduleRemindWidget(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
-    void signalFontChange();
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void focusOutEvent (QFocusEvent *event ) Q_DECL_OVERRIDE;
-    void focusInEvent (QFocusEvent *event )Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
-    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
-    void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
+
 private:
     int getDateIndex(const QDate &date) const;
-    const QString getCellDayNum(int pos);
     const QDate getCellDate(int pos);
-    const QString getLunar(int pos);
-    const CaLunarDayInfo getCaLunarDayInfo(int pos);
-    void paintCell(QWidget *cell);
-    bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
+    const CaLunarDayInfo getCaLunarDayInfo(const QDate &date);
     void updateDate();
     void updateCurrentLunar(const CaLunarDayInfo &info);
-    char getFestivalInfoByDate(const QDate &date);
-    bool getShowSolarDayByDate(const QDate &date);
-    QDate getMoveDay(const QPoint &p)const;
     ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
 private slots:
-    void cellClicked(QWidget *cell);
-    void setSelectedCell(int index);
     void getDbusData();
 
-    void slotCreate();
 private:
-    QList<QWidget *> m_cellList;
+    CMonthGraphiview        *m_MonthGraphicsView;
+    CalendarDBus            *m_DBusInter;
+    QDate                   m_days[42];
+    QDate                   m_currentDate;
 
-    bool m_cellhoverflag[42];
-    bool m_cellfoceflag[42];
 
-    CMonthSchceduleView *m_MonthSchceduleView;
+    QDate                               m_createDate;
+    QMap<QDate, CaLunarDayInfo>         *lunarCache = nullptr;
+    QVector<FestivalInfo>               m_festivallist;
 
-    CalendarDBus *m_DBusInter;
-    QDate m_days[42];
-    QDate m_currentDate;
 
-    ShowState m_showState = Normal;
-    int m_selectedCell = 0;
-    bool m_cellSelectable = true;
-
-    QFont m_dayNumFont;
-    QFont m_dayLunarFont;
-
-    QColor m_topBorderColor = Qt::red;
-    QColor m_backgroundCircleColor = "#2ca7f8";
-    QColor m_backgroundShowColor = "#2CA7F8";
-
-    QColor m_defaultTextColor = Qt::black;
-    QColor m_currentDayTextColor = "#2ca7f8";
-    QColor m_weekendsTextColor = Qt::black;
-    QColor m_selectedTextColor = Qt::white;
-    QColor m_festivalTextColor = Qt::black;
-    QColor m_notCurrentTextColor = "#b2b2b2";
-
-    QColor m_defaultLunarColor = "#5E5E5E";
-    QColor m_currentDayLunarColor = m_currentDayTextColor;
-    QColor m_weekendsLunarColor = m_defaultLunarColor;
-    QColor m_selectedLunarColor = Qt::white;
-    QColor m_festivalLunarColor = m_defaultLunarColor;
-    QColor m_notCurrentLunarColor = "#dfdfdf";
-    QColor m_solofestivalLunarColor = "#4DFF7272";
-    QColor m_wrectColor = Qt::lightGray;
-    QColor m_fillColor = Qt::white;
-
-    QColor m_banColor = "#FBE9B7";
-    QColor m_xiuColor = "#D4FFB3";
-
-    QColor m_pressColor;
-    QColor m_hoverColor;
-
-    QDate  m_createDate;
-    QQueue<int> *queue = nullptr;
-    QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
-    CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
-    QVector<FestivalInfo>  m_festivallist;
-    QVector<ScheduleDateRangeInfo> m_shceludelistdata;
-
-    CMonthWeekView *m_weekIndicator;
-    int m_firstWeekDay;
-    QAction          *m_createAction;     // 创建日程
-    bool             m_updateflag = false;
-    bool             m_fouceFlag = true;
-    int cellwidth = 120;
-    int cellheight = 74;
-    QVBoxLayout *m_mainLayout;
-    int  m_leftmaagin = 0;
-    int  m_topmagin = 0;
-    DLabel         *m_tooltipview;
-    int                   m_themetype  = 1;
-    bool           m_sflag = true;
-    SchecduleRemindWidget *m_RemindWidget;
+    CMonthWeekView          *m_weekIndicator;
+    int                     m_firstWeekDay =0;
+    QAction                 *m_createAction;     // 创建日程
+    bool                    m_updateflag = false;
+    QVBoxLayout             *m_mainLayout;
+    int                     m_leftmaagin = 0;
+    int                     m_topmagin = 0;
+    bool                    m_sflag = true;
+    SchecduleRemindWidget   *m_RemindWidget;
 
     QPoint                  m_PressPoint;
     bool                    isCreate;
-    QRect                   m_rect;
     QDate                   m_PressDate;
     QDate                   m_MoveDate;
 };

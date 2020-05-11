@@ -518,6 +518,16 @@ bool CScheduleDataCtrl::GetType(qint64 jobId, ScheduleType &out)
     return m_dbus->GetType(jobId, out);
 }
 
+QString CScheduleDataCtrl::InfoToJson(const ScheduleDtailInfo &scheduledate)
+{
+    return m_dbus->createScheduleDtailInfojson(scheduledate);
+}
+
+ScheduleDtailInfo CScheduleDataCtrl::JsonObjectToInfo(QJsonObject &obj)
+{
+    return  m_dbus->parsingScheduleDtailInfojsonID(obj);
+}
+
 void CScheduleDataCtrl::slotupdatescheduleD(QWidget *w, QDate begin, QDate end)
 {
     m_currentWidget = w;

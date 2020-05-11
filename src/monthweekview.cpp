@@ -47,7 +47,7 @@ void CMonthWeekView::setList(int weekday)
     QLocale locale;
     for (int i = 0; i != 7; ++i) {
 
-        int d = checkDay(i - weekday);
+        int d = checkDay(i + weekday);
 
         QVBoxLayout *hhLayout = new QVBoxLayout;
         hhLayout->setMargin(0);
@@ -62,11 +62,15 @@ void CMonthWeekView::setList(int weekday)
         weekfont.setWeight(QFont::Medium);
         weekfont.setPixelSize(16);
         label->setTextFont(weekfont);
-        if (d == 7) {
+        if (i ==0) {
+            label->setRoundState(true, false, false, false);
+        } else if (i==6) {
+            label->setRoundState(false, true, false, false);
+        }
+        if (d == 0) {
             QColor textbC(0, 66, 154);
             label->setTextColor("#0887FF");
             label->setBColor(textbC);
-            label->setRoundState(true, false, false, false);
             m_weekData.append(qMakePair(label, 1));
 #if 0
             DPalette monthpa = label->palette();
@@ -84,7 +88,6 @@ void CMonthWeekView::setList(int weekday)
             QColor textbC(0, 66, 154);
             label->setTextColor("#0887FF");
             label->setBColor(textbC);
-            label->setRoundState(false, true, false, false);
             m_weekData.append(qMakePair(label, 1));
         } else {
             QColor textC = Qt::black;
@@ -184,13 +187,13 @@ int CMonthWeekView::checkDay(int weekday)
 
     // check the week, calculate the correct order in the custom.
 
-    if (weekday <= 0)
-        return weekday += 7;
+//    if (weekday <= 0)
+//        return weekday += 7;
 
-    if (weekday > 7)
-        return weekday -= 7;
+//    if (weekday > 7)
+//        return weekday -= 7;
 
-    return weekday;
+    return weekday % 7;
 }
 
 void CMonthWeekView::resizeEvent(QResizeEvent *event)

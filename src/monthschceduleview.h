@@ -22,10 +22,14 @@
 #include <DLabel>
 #include <QMouseEvent>
 #include <DPushButton>
-#include "schedulestructs.h"
 #include <DListWidget>
-#include "scheduledatamanage.h"
 #include <DFontSizeManager>
+#include <QGraphicsRectItem>
+#include <QGraphicsScene>
+
+#include "schedulestructs.h"
+#include "scheduledatamanage.h"
+
 DWIDGET_USE_NAMESPACE
 class CMonthSchceduleWidgetItem;
 class QVBoxLayout;
@@ -39,19 +43,21 @@ class CMonthSchceduleView : public QObject
     Q_OBJECT
 
 public:
-    CMonthSchceduleView(QWidget *parent);
+    CMonthSchceduleView(QWidget *parent,QGraphicsScene *scene);
     ~CMonthSchceduleView();
     void setallsize(int w, int h, int left, int top, int buttom, int itemHeight = 22);
     void setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth);
     void setTheMe(int type = 0);
     void updateData();
     void updateHigh();
-    QVector<DPushButton *> getScheduleShowItem() const;
+    QVector<QGraphicsRectItem *> getScheduleShowItem() const;
     int getSchceduleHeight() const
     {
-        return he;
+        return m_ItemHeight;
     }
     void updateDate(const ScheduleDtailInfo &info);
+    void changeDate(const ScheduleDtailInfo &info);
+    void updateDate(const int row,const ScheduleDtailInfo &info);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
@@ -62,29 +68,29 @@ public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
     void slotupdateItem(CMonthSchceduleWidgetItem *item);
-    void slotDeleteItem();
     void slotFontChange();
 private:
-    void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule,QVector<DPushButton *> &schudeleShowItem);
+    void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule,QVector<QGraphicsRectItem *> &schudeleShowItem);
     void splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData);
-    void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum,QVector<DPushButton *> &schudeleShowItem);
-    void createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum,QVector<DPushButton *> &schudeleShowItem);
+    void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum,QVector<QGraphicsRectItem *> &schudeleShowItem);
+    void createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum,QVector<QGraphicsRectItem *> &schudeleShowItem);
     void computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh);
 private:
-    QVector<ScheduleDateRangeInfo>               m_data;
-    int                                          m_cNum = 2;//日程层数
-    QWidget                                     *m_parernt;
-    int                                          m_currentMonth;
-    QDate                                        m_beginDate;
-    QDate                                        m_endDate;
-    int                                          m_width;
-    int                                          m_height;
-    int                                          m_leftMagin;
-    int                                          m_topMagin;
-    int                                          m_buttommagin;
-    CMonthSchceduleWidgetItem                   *m_currentitem = nullptr;
-    QVector<CWeekScheduleView *>                     m_weekSchedule;
-    int                                             he = 22;
+    QVector<ScheduleDateRangeInfo>                  m_data;
+    int                                             m_cNum = 2;//日程层数
+    QWidget                                         *m_parernt;
+    int                                             m_currentMonth=0;
+    QDate                                           m_beginDate;
+    QDate                                           m_endDate;
+    int                                             m_width =0;
+    int                                             m_height=0;
+    int                                             m_leftMagin=0;
+    int                                             m_topMagin=0;
+    int                                             m_buttommagin=0;
+    CMonthSchceduleWidgetItem                       *m_currentitem = nullptr;
+    QVector<CWeekScheduleView *>                    m_weekSchedule;
+    int                                             m_ItemHeight = 22;
+    QGraphicsScene                                  *m_Scene;
 
 };
 
@@ -98,12 +104,13 @@ public:
 public:
     void setData(QVector<ScheduleDateRangeInfo> &data,const int position,const int count =7);
     bool addData(const ScheduleDtailInfo &info);
+    void changeDate(const ScheduleDtailInfo &info);
     void setHeight(const int ScheduleHeight,const int DayHeigth);
     QVector<RowScheduleInfo> getMScheduleInfo() const
     {
         return m_MScheduleInfo;
     }
-    QVector<DPushButton *> &getScheduleShowItem()
+    QVector<QGraphicsRectItem *> &getScheduleShowItem()
     {
         return m_scheduleShowItem;
     }
@@ -114,25 +121,25 @@ private:
     void mScheduleClear();
     void sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySchedule);
 private:
-    QVector<DPushButton *>          m_scheduleShowItem;
-    QVector<RowScheduleInfo>        m_MScheduleInfo;
-    QVector<ScheduleDtailInfo>      m_ScheduleInfo;
-    QVector<int >                   m_ColumnScheduleCount;
-    int                             m_ScheduleHeight;
-    int                             m_DayHeight;
-    int                             m_MaxNum;
-    QDate                           beginDate;
-    QDate                           endDate;
-    int                             m_colum;
+    QVector<QGraphicsRectItem *>            m_scheduleShowItem;
+    QVector<RowScheduleInfo>                m_MScheduleInfo;
+    QVector<ScheduleDtailInfo>              m_ScheduleInfo;
+    QVector<int >                           m_ColumnScheduleCount;
+    int                                     m_ScheduleHeight=0;
+    int                                     m_DayHeight=0;
+    int                                     m_MaxNum=0;
+    QDate                                   beginDate;
+    QDate                                   endDate;
+    int                                     m_colum=0;
 };
 
 
-class CMonthSchceduleNumButton : public DPushButton
+class CMonthSchceduleNumButton : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 
 public:
-    CMonthSchceduleNumButton(QWidget *parent = nullptr);
+    CMonthSchceduleNumButton(QGraphicsItem *parent = nullptr);
     ~CMonthSchceduleNumButton() Q_DECL_OVERRIDE;
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos);
@@ -142,6 +149,10 @@ public:
     {
         m_date = date;
     }
+    QDate getDate()const
+    {
+        return  m_date;
+    }
     void setData(int  num)
     {
         m_num = num;
@@ -150,9 +161,7 @@ signals:
     void signalsCurrentScheduleDate(QDate date);
     void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 protected:
-    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
-    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 private:
     bool                  m_GradientFlag;
     QColor                m_color1;
@@ -167,22 +176,19 @@ private:
     DFontSizeManager::SizeType m_SizeType = DFontSizeManager::T8;
 };
 
-class CMonthSchceduleWidgetItem : public DPushButton
+class CMonthSchceduleWidgetItem :public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
     Q_PROPERTY(int setRectOffset WRITE setRectOffset)
 public:
-    explicit CMonthSchceduleWidgetItem(QWidget *parent = nullptr, int edittype = 0);
+    explicit CMonthSchceduleWidgetItem(QRect rect,QGraphicsItem  *parent = nullptr, int edittype = 0);
     ~CMonthSchceduleWidgetItem() Q_DECL_OVERRIDE;
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setSizeType(DFontSizeManager::SizeType sizeType);
     void setText(QColor tcolor, QFont font, QPoint pos);
-    void getColor(QColor &color1, QColor &color2, bool &GradientFlag);
-    void getText(QColor &tcolor, QFont &font, QPoint &pos);
     void setTransparentB(bool t, QColor tcolor);
     void setTransparentB(bool t);
     void setData(ScheduleDtailInfo  vScheduleInfo);
-    void setRect(int x, int y, int w, int h);
     const ScheduleDtailInfo &getData() const
     {
         return m_ScheduleInfo;
@@ -195,29 +201,15 @@ public:
     {
         return isAnimation;
     }
+    void setPressFlag(const bool ispress);
 signals:
-    void signalsDelete(CMonthSchceduleWidgetItem *item);
-    void signalsEdit(CMonthSchceduleWidgetItem *item, int type = 0);
-    void signalsPress(CMonthSchceduleWidgetItem *item);
-    void signalViewtransparentFrame(int type);
-    void signalUpdateUI(int type);
-    void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 public slots:
-    void slotEdit();
-    void slotDelete();
-    void slotDoubleEvent(int type = 0);
-    void slotPress();
     void animationFinished();
+    void slotDelete();
 protected:
-    void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
-    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
-    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent (QMouseEvent *event ) Q_DECL_OVERRIDE;
-    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    void enterEvent(QEvent *event)Q_DECL_OVERRIDE;
-    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 private:
     ScheduleDtailInfo     m_ScheduleInfo;
     int                     m_widthoffset = 0;

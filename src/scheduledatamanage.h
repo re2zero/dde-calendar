@@ -141,6 +141,8 @@ public:
     bool updateScheduleInfo(const ScheduleDtailInfo &scheduledate);
     bool deleteScheduleInfoById(int id);
     bool GetType(qint64 jobId, ScheduleType &out);
+    QString InfoToJson(const ScheduleDtailInfo &scheduledate);
+    ScheduleDtailInfo JsonObjectToInfo(QJsonObject &obj);
 public slots:
     void slotupdatescheduleD(QWidget *w, QDate begin, QDate end);
     void slotDataProcess(QVector<ScheduleDateRangeInfo> out);

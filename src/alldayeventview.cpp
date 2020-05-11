@@ -779,10 +779,8 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
             item->setPressFlag(true);
             emit signalScheduleShow(true, item->getData());
             emit signalsitem(this);
-
         } else {
             emit signalScheduleShow(false);
-
         }
         DragPressEvent(event->pos(),item);
     }
@@ -793,12 +791,6 @@ void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
     DGraphicsView::mouseReleaseEvent(event);
     setCursor(Qt::ArrowCursor);
     m_press = false;
-
-//    CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
-//    if (item != nullptr) {
-//        item->setPressFlag(false);
-//        item->update();
-//    }
     switch (m_DragStatus) {
     case IsCreate:
         if (qAbs(m_MoveDate.daysTo(m_PressDate)<7)) {
@@ -971,11 +963,9 @@ void CAllDayEventWeekView::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
         event->accept();
-        QPoint point = event->pos();
     } else {
         event->ignore();
     }
-
 }
 
 void CAllDayEventWeekView::dragLeaveEvent(QDragLeaveEvent *event)

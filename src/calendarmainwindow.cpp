@@ -942,23 +942,28 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &sched
 
         return;
     }
-    switch (index) {
-    case 0: {
-    }
-    break;
-    case 1: {
-        m_monthWindow->setSelectSchedule(scheduleInfo);
-    }
-    break;
-    case 2: {
-        m_weekWindow->setSelectSchedule(scheduleInfo);
-    }
-    break;
-    case 3: {
-        m_DayWindow->setSelectSchedule(scheduleInfo);
-    }
-    break;
-    }
+    //等界面刷新完成后进行动作
+    QTimer::singleShot(50, [this, index,scheduleInfo] {
+        switch (index)
+        {
+        case 0: {
+        }
+        break;
+        case 1: {
+            m_monthWindow->setSelectSchedule(scheduleInfo);
+        }
+        break;
+        case 2: {
+            m_weekWindow->setSelectSchedule(scheduleInfo);
+        }
+        break;
+        case 3: {
+            m_DayWindow->setSelectSchedule(scheduleInfo);
+        }
+        break;
+        }
+    });
+
 }
 
 void Calendarmainwindow::slotdoubleclickDate(QDate date)

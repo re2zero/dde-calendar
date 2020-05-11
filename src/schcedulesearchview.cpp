@@ -477,6 +477,8 @@ CSchceduleSearchView::~CSchceduleSearchView()
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
         m_gradientItemList->removeItemWidget(item11);
+        delete  item11;
+        item11 = nullptr;
     }
     m_gradientItemList->clear();
 }
@@ -510,6 +512,8 @@ void CSchceduleSearchView::clearSearch()
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
         m_gradientItemList->removeItemWidget(item11);
+        delete  item11;
+        item11 = nullptr;
     }
     m_labellist.clear();
     m_gradientItemList->clear();
@@ -529,6 +533,8 @@ void CSchceduleSearchView::updateDateShow()
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
         m_gradientItemList->removeItemWidget(item11);
+        delete  item11;
+        item11 = nullptr;
     }
     m_gradientItemList->clear();
     m_labellist.clear();
@@ -609,7 +615,7 @@ void CSchceduleSearchView::updateDateShow()
         }
     }
     if (m_gradientItemList->count() == 0) {
-        QListWidgetItem *listItem = new QListWidgetItem();
+        QListWidgetItem *listItem = new QListWidgetItem(m_gradientItemList);
         DLabel *gwi = new DLabel();
         QFont font/*("SourceHanSansSC-Normal")*/;
         font.setPixelSize(20);
