@@ -606,9 +606,11 @@ void Calendarmainwindow::createview()
     m_stackWidget->addWidget(m_yearwindow);
 #if 1
     m_monthWindow = new CMonthWindow;
-    m_monthWindow->setDate(QDate::currentDate());
+    //0:周日 1～6：周一～周六
     m_monthWindow->setFirstWeekday(0);
+    m_monthWindow->setDate(QDate::currentDate());
     m_stackWidget->addWidget(m_monthWindow);
+
     m_weekWindow  = new CWeekWindow(this);
     m_weekWindow->setFirstWeekday(0);
     m_weekWindow->setDate(QDate::currentDate());
@@ -653,6 +655,7 @@ void Calendarmainwindow::setScheduleHide()
 
 void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
+    m_transparentFrame->resize(width(), height() - 50);
     m_scheduleSearchViewMaxWidth = 0.2325 * width() + 0.5;
     m_schceduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
 //    if (m_opensearchflag) {
