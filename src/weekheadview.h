@@ -52,6 +52,7 @@ public:
 
 public:
     explicit CWeekHeadView(QWidget *parent = nullptr);
+    ~CWeekHeadView();
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
     inline bool cellSelectable() const

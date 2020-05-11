@@ -1,205 +1,203 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ug">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ug" version="2.1">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation>يېڭى پائالىيەت</translation>
+        <translation>New event</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>تەھرىرلەش</translation>
+        <translation>Edit</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>پائالىيەتنى ئۆچۈرىۋاتىسىز.</translation>
+        <translation>You are deleting an event.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>بۇ پائالىيەتنى ئۆچۈرەمسىز؟</translation>
+        <translation>Are you sure you want to delete this event?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>بۇ پائالىيەتنىڭ بارلىق يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation>ھەممىنى ئۆچۈرۈش</translation>
+        <translation>Delete All</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>بۇ پائالىيەتنىلا ئۆچۈرۈش</translation>
+        <translation>Delete Only This Event</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
+        <translation>Delete All Future Events</translation>
     </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
     <message>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>.سىز بىر پائالىيەتنى ئۆچۈرۈۋاتىسىز</translation>
+        <translation>You are deleting an event.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>بۇ پائالىيەتنى ئۆچۈرەمسىز؟</translation>
+        <translation>Are you sure you want to delete this event?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>بۇ پائالىيەتنىڭ بارلىق يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation>ھەممىنى ئۆچۈرۈش</translation>
+        <translation>Delete All</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>بۇ پائالىيەتنىلا ئۆچۈرۈش</translation>
+        <translation>Delete Only This Event</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
+        <translation>Delete All Future Events</translation>
     </message>
 </context>
 <context>
     <name>CAllDaySchceduleWeekView</name>
     <message>
         <source>New event</source>
-        <translation>يېڭى پائالىيەت</translation>
+        <translation>New event</translation>
     </message>
 </context>
 <context>
     <name>CAllDaySchceduleWeekWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>تەھرىرلەش</translation>
+        <translation>Edit</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>New event</source>
-        <translation>يېڭى پائالىيەت</translation>
+        <translation>New event</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>سىز بىر پائالىيەتنى ئۆچۈرىۋاتىسىز.</translation>
+        <translation>You are deleting an event.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>بۇ پائالىيەتنى ئۆچۈرەمسىز؟</translation>
+        <translation>Are you sure you want to delete this event?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>بۇ پائالىيەتنىڭ بارلىق يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation>ھەممىنى ئۆچۈرۈش</translation>
+        <translation>Delete All</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>بۇ پائالىيەتنىلا ئۆچۈرۈش</translation>
+        <translation>Delete Only This Event</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
+        <translation>Delete All Future Events</translation>
     </message>
 </context>
 <context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
-        <translation>دۈشەنبە</translation>
+        <translation>Monday</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>سەيشەنبە</translation>
+        <translation>Tuesday</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>چارشەنبە</translation>
+        <translation>Wednesday</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>پەيشەنبە</translation>
+        <translation>Thursday</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>جۈمە</translation>
+        <translation>Friday</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>شەنبە</translation>
+        <translation>Saturday</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>يەكشەنبە</translation>
+        <translation>Sunday</translation>
     </message>
 </context>
 <context>
     <name>CDayWindow</name>
     <message>
         <source>Y</source>
-        <translation>يىل</translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>M</source>
-        <translation>ئاي</translation>
+        <translation>M</translation>
     </message>
     <message>
         <source>D</source>
-        <translation>كۈن</translation>
+        <translation>D</translation>
     </message>
 </context>
 <context>
     <name>CGraphicsView</name>
     <message>
         <source>Edit</source>
-        <translation>تەھرىرلەش</translation>
+        <translation>Edit</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>New event</source>
-        <translation>يېڭى پائالىيەت</translation>
+        <translation>New event</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -207,49 +205,49 @@
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>بۇ پائالىيەتنى ئۆچۈرەمسىز؟</translation>
+        <translation>Are you sure you want to delete this event?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>بۇ پائالىيەتنىڭ بارلىق يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation>ھەممىنى ئۆچۈرۈش</translation>
+        <translation>Delete All</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>بۇ پائالىيەتنىلا ئۆچۈرۈش</translation>
+        <translation>Delete Only This Event</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
+        <translation>Delete All Future Events</translation>
     </message>
 </context>
 <context>
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 more</translation>
     </message>
 </context>
 <context>
     <name>CMonthSchceduleWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation>تەھرىرلەش</translation>
+        <translation>Edit</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -257,471 +255,471 @@
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>بۇ پائالىيەتنى ئۆچۈرەمسىز؟</translation>
+        <translation>Are you sure you want to delete this event?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>بۇ پائالىيەتنىڭ بارلىق يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation>ھەممىنى ئۆچۈرۈش</translation>
+        <translation>Delete All</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>بۇ پائالىيەتنىلا ئۆچۈرۈش</translation>
+        <translation>Delete Only This Event</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
+        <translation>Delete All Future Events</translation>
     </message>
 </context>
 <context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
-        <translation>يېڭى پائالىيەت</translation>
+        <translation>New event</translation>
     </message>
 </context>
 <context>
     <name>CMonthWindow</name>
     <message>
         <source>Y</source>
-        <translation>يىل</translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
     <name>CMySchceduleView</name>
     <message>
         <source>You are deleting an event.</source>
-        <translation>پائالىيەتنى ئۆچۈردىڭىز.</translation>
+        <translation>You are deleting an event.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>بۇ پائالىيەتنى ئۆچۈرەمسىز؟</translation>
+        <translation>Are you sure you want to delete this event?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>بۇ پائالىيەتنىڭ بارلىق يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation>ھەممىنى ئۆچۈرۈش</translation>
+        <translation>Delete All</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>بۇ پائالىيەتنىلا ئۆچۈرۈش</translation>
+        <translation>Delete Only This Event</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>My Event</source>
-        <translation>مېنىڭ پائالىيەتلىرىم</translation>
+        <translation>My Event</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>تەھرىرلەش</translation>
+        <translation>Edit</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation>جەزىملەشتۈرۈش</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished">كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
+        <translation>Delete All Future Events</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
     <message>
         <source>New Event</source>
-        <translation>يېڭى پائالىيەت</translation>
+        <translation>New Event</translation>
     </message>
     <message>
         <source>Edit Event</source>
-        <translation>پائالىيەتنى تەھرىرلەش</translation>
+        <translation>Edit Event</translation>
     </message>
     <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation type="unfinished"></translation>
+        <translation>All occurrences of a repeating event must have the same all-day status.</translation>
     </message>
     <message>
         <source>Do you want to change all occurrences?</source>
-        <translation>بارلىق يۈز بىرىش قېتىم سانىنى ئۆچۈرەمسىز؟</translation>
+        <translation>Do you want to change all occurrences?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Change All</source>
-        <translation>ھەممىسىنى ئۆزگەرتىش</translation>
+        <translation>Change All</translation>
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
-        <translation type="unfinished"></translation>
+        <translation>You are changing the repeating rule of this event.</translation>
     </message>
     <message>
         <source>You are changing a repeating event.</source>
-        <translation type="unfinished"></translation>
+        <translation>You are changing a repeating event.</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you want to change only this occurrence of the event, or all occurrences?</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>All</translation>
     </message>
     <message>
         <source>Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Only This Event</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you want to change only this occurrence of the event, or this and all future occurrences?</translation>
     </message>
     <message>
         <source>All Future Events</source>
-        <translation>كەلگۈسىدىكى بارلىق پائالىيەت</translation>
+        <translation>All Future Events</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation>ھېچقايسىسى ئەمەس</translation>
+        <translation>Never</translation>
     </message>
     <message>
         <source>At time of event</source>
-        <translation>پائالىيەت ۋاقتىدا</translation>
+        <translation>At time of event</translation>
     </message>
     <message>
         <source>15 minutes before</source>
-        <translation>‏‏15مىنۇت بۇرۇن</translation>
+        <translation>15 minutes before</translation>
     </message>
     <message>
         <source>30 minutes before</source>
-        <translation>‏‏30مىنۇت بۇرۇن</translation>
+        <translation>30 minutes before</translation>
     </message>
     <message>
         <source>1 hour before</source>
-        <translation>‏‏1سائەت بۇرۇن</translation>
+        <translation>1 hour before</translation>
     </message>
     <message>
         <source>1 day before</source>
-        <translation>‏‏1 كۈن  بۇرۇن</translation>
+        <translation>1 day before</translation>
     </message>
     <message>
         <source>2 days before</source>
-        <translation>‏  2كۈن بۇرۇن</translation>
+        <translation>2 days before</translation>
     </message>
     <message>
         <source>1 week before</source>
-        <translation>‏‏1 ھەپتە بۇرۇن</translation>
+        <translation>1 week before</translation>
     </message>
     <message>
         <source>On start day (9:00 AM)</source>
-        <translation>باشلىنىش كۈنى (9:00 AM)</translation>
+        <translation>On start day (9:00 AM)</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation>تىپى: </translation>
+        <translation>Type:</translation>
     </message>
     <message>
         <source>All Day:</source>
-        <translation>پۈتۈن كۈن:</translation>
+        <translation>All Day:</translation>
     </message>
     <message>
         <source>Remind Me:</source>
-        <translation>ماڭا ئەسكەرتىڭ:</translation>
+        <translation>Remind Me:</translation>
     </message>
     <message>
         <source>Repeat:</source>
-        <translation>تەكرار:</translation>
+        <translation>Repeat:</translation>
     </message>
     <message>
         <source>Daily</source>
-        <translation>كۈندىلىك</translation>
+        <translation>Daily</translation>
     </message>
     <message>
         <source>Weekdays</source>
-        <translation>ھەپتە كۈنلىرى</translation>
+        <translation>Weekdays</translation>
     </message>
     <message>
         <source>Weekly</source>
-        <translation>ھەپتىلىك</translation>
+        <translation>Weekly</translation>
     </message>
     <message>
         <source>Monthly</source>
-        <translation>ئايلىق</translation>
+        <translation>Monthly</translation>
     </message>
     <message>
         <source>Yearly</source>
-        <translation>يىللىق</translation>
+        <translation>Yearly</translation>
     </message>
     <message>
         <source>End Repeat:</source>
-        <translation>قايتا تەكرارلاش:</translation>
+        <translation>End Repeat:</translation>
     </message>
     <message>
         <source>After</source>
-        <translation>كېيىن</translation>
+        <translation>After</translation>
     </message>
     <message>
         <source>On</source>
-        <translation>ئۈستىدە</translation>
+        <translation>On</translation>
     </message>
     <message>
         <source>time(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>time(s)</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>ساقلاش</translation>
+        <translation>Save</translation>
     </message>
     <message>
         <source>New event</source>
-        <translation>يېڭى پائالىيەت</translation>
+        <translation>New event</translation>
     </message>
     <message>
         <source>End time must be greater than start time</source>
-        <translation>ئاخىرلىشىش ۋاقتى باشلىنىش ۋاقتىدىن چوڭ بولۇشى كېرەك</translation>
+        <translation>End time must be greater than start time</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation>جەزىملەشتۈرۈش</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>تىپ</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <source>All Day</source>
-        <translation>پۈتۈن كۈن:</translation>
+        <translation>All Day</translation>
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Starts</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>Ends</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Remind Me</translation>
     </message>
     <message>
         <source>Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Repeat</translation>
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>End Repeat</translation>
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ends:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Description:</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Description</translation>
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Starts:</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>Work</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"></translation>
+        <translation>Life</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Other</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
     <message>
         <source>Y</source>
-        <translation>يىل</translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>M</source>
-        <translation>ئاي</translation>
+        <translation>M</translation>
     </message>
     <message>
         <source>D</source>
-        <translation>كۈن</translation>
+        <translation>D</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleSearchItem</name>
     <message>
         <source>Edit</source>
-        <translation>تەھرىرلەش</translation>
+        <translation>Edit</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>پائالىيەتنى ئۆچۈردىڭىز.</translation>
+        <translation>You are deleting an event.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>بۇ پائالىيەتنى ئۆچۈرەمسىز؟</translation>
+        <translation>Are you sure you want to delete this event?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>بۇ پائالىيەتنىڭ بارلىق يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان يۈز بىرىش قېتىم سانىنى ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation>ھەممىنى ئۆچۈرۈش</translation>
+        <translation>Delete All</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>بۇ پائالىيەتنىلا ئۆچۈرۈش</translation>
+        <translation>Delete Only This Event</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished">سىز يۈز بەرمەكچى بولغان بارلىق پائالىيەتنى ئۆچۈرمەكچىمۇ ياكى پەقەت تاللانغان پائالىيەتنىلا ئۆچۈرمەكچىمۇ؟</translation>
+        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>كەلگۈسىدىكى بارلىق پائالىيەتنى ئۆچۈرۈش</translation>
+        <translation>Delete All Future Events</translation>
     </message>
     <message>
         <source>All Day</source>
-        <translation>پۈتۈن كۈن:</translation>
+        <translation>All Day</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleSearchView</name>
     <message>
         <source>No search results</source>
-        <translation>ھېچقانداق ئىزدەش نەتىجىسى تىپىلمىدى</translation>
+        <translation>No search results</translation>
     </message>
 </context>
 <context>
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation type="unfinished"></translation>
+        <translation>ALL DAY</translation>
     </message>
 </context>
 <context>
     <name>CWeekWindow</name>
     <message>
         <source>Week</source>
-        <translation type="unfinished"></translation>
+        <translation>Week</translation>
     </message>
     <message>
         <source>Y</source>
-        <translation>يىل</translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
     <name>CYearSchceduleItem</name>
     <message>
         <source>All Day</source>
-        <translation>پۈتۈن كۈن:</translation>
+        <translation>All Day</translation>
     </message>
 </context>
 <context>
     <name>CYearSchceduleView</name>
     <message>
         <source>All Day</source>
-        <translation>پۈتۈن كۈن:</translation>
+        <translation>All Day</translation>
     </message>
     <message>
         <source>No event</source>
-        <translation type="unfinished"></translation>
+        <translation>No event</translation>
     </message>
 </context>
 <context>
     <name>CYearWindow</name>
     <message>
         <source>Y</source>
-        <translation>يىل</translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
     <name>CalendarWindow</name>
     <message>
         <source>Calendar</source>
-        <translation>كالىندار </translation>
+        <translation>Calendar</translation>
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>كالېندار ۋاقىتنى كۆرۈش قورالى ، شۇنداقلا ھاياتتىكى بارلىق ئىشلارنى ئورۇنلاشتۇرىدىغان ئەقلىي ئىقتىدارلىق كۈندىلىك پىلانلىغۇچى.</translation>
+        <translation>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </translation>
     </message>
 </context>
 <context>
     <name>Calendarmainwindow</name>
     <message>
         <source>Calendar</source>
-        <translation>كالىندار </translation>
+        <translation>Calendar</translation>
     </message>
     <message>
         <source>Y</source>
-        <translation>يىل</translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>M</source>
-        <translation>ئاي</translation>
+        <translation>M</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation>W</translation>
     </message>
     <message>
         <source>D</source>
-        <translation>كۈن</translation>
+        <translation>D</translation>
     </message>
 </context>
 <context>
     <name>CenterWidget</name>
     <message>
         <source>All Day</source>
-        <translation>پۈتۈن كۈن:</translation>
+        <translation>All Day</translation>
     </message>
 </context>
 <context>
     <name>InfoView</name>
     <message>
         <source>Today</source>
-        <translation>بۈگۈن</translation>
+        <translation>Today</translation>
     </message>
 </context>
 <context>
@@ -729,7 +727,7 @@
     <message>
         <source>Today</source>
         <comment>Return</comment>
-        <translation>بۈگۈن</translation>
+        <translation>Today</translation>
     </message>
 </context>
 <context>
@@ -737,45 +735,45 @@
     <message>
         <source>Today</source>
         <comment>Return Today</comment>
-        <translation>بۈگۈن</translation>
+        <translation>Today</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>ياردەم</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Delete event</source>
-        <translation> پائالىيەتنى ئۆچۈرۈش</translation>
+        <translation>Delete event</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>كۆچۈرۈش</translation>
+        <translation>Copy</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>كېسىش</translation>
+        <translation>Cut</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation>چاپلاش</translation>
+        <translation>Paste</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation>ھەممىنى تاللاش</translation>
+        <translation>Select all</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation>Delete</translation>
     </message>
 </context>
 <context>
     <name>YearFrame</name>
     <message>
         <source>Y</source>
-        <translation>يىل</translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
@@ -783,7 +781,7 @@
     <message>
         <source>Today</source>
         <comment>Today</comment>
-        <translation>بۈگۈن</translation>
+        <translation>Today</translation>
     </message>
 </context>
 </TS>

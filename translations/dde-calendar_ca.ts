@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ca">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ca" version="2.1">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -346,7 +344,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Suprimeix tots els esdeveniments futurs</translation>
     </message>
 </context>
 <context>
@@ -517,51 +515,51 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Comença</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>Acaba</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Recorda-m&apos;ho</translation>
     </message>
     <message>
         <source>Repeat</source>
-        <translation>Repetir</translation>
+        <translation>Repeteix</translation>
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Acaba la repetició</translation>
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"></translation>
+        <translation>Acaba:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripció:</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripció</translation>
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Comença:</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>Feina</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"></translation>
+        <translation>Vida</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Altres</translation>
     </message>
 </context>
 <context>

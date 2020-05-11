@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ar">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ar" version="2.1">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -346,7 +344,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>حذف جميع الأحداث المستقبلية</translation>
     </message>
 </context>
 <context>
@@ -517,15 +515,15 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
+        <translation>يبدأ:</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>ينتهي:</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>ذكرني</translation>
     </message>
     <message>
         <source>Repeat</source>
@@ -533,35 +531,35 @@
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>نهاية التكرار</translation>
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"></translation>
+        <translation>ينتهي:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>الوصف:</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>الوصف</translation>
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>يبدأ:</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>عمل</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"></translation>
+        <translation>حياة</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>أخرى</translation>
     </message>
 </context>
 <context>

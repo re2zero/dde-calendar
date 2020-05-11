@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="sr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sr" version="2.1">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -346,7 +344,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished">Обриши све будуће догађаје</translation>
+        <translation>Обриши све будуће догађаје</translation>
     </message>
 </context>
 <context>
@@ -517,15 +515,15 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Почетак</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>Крај</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Подсетник</translation>
     </message>
     <message>
         <source>Repeat</source>
@@ -533,35 +531,35 @@
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Окончај</translation>
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"></translation>
+        <translation>Крај:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Опис:</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Опис</translation>
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Почетак:</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>Посао</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"></translation>
+        <translation>Живот</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Остало</translation>
     </message>
 </context>
 <context>

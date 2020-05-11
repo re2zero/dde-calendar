@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="vi">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi" version="2.1">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -346,7 +344,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished">Xóa tất cả các sự kiện trong tương lai</translation>
+        <translation>Xóa tất cả các sự kiện trong tương lai</translation>
     </message>
 </context>
 <context>
@@ -509,7 +507,7 @@
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Loại</translation>
     </message>
     <message>
         <source>All Day</source>
@@ -517,15 +515,15 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Bắt đầu</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>Kết thúc</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Nhắc nhở tôi</translation>
     </message>
     <message>
         <source>Repeat</source>
@@ -533,35 +531,35 @@
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Kết thúc lặp lại</translation>
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kết thúc:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mô tả:</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Mô tả</translation>
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bắt đầu:</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>Công việc</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuộc sống</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Khác</translation>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -346,7 +344,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished">Borrar todos los eventos futuros</translation>
+        <translation>Borrar todos los eventos futuros</translation>
     </message>
 </context>
 <context>
@@ -441,19 +439,19 @@
     </message>
     <message>
         <source>Type:</source>
-        <translation>Tipo:</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <source>All Day:</source>
-        <translation>Todo el día:</translation>
+        <translation>Todo el día</translation>
     </message>
     <message>
         <source>Remind Me:</source>
-        <translation>Recordarme:</translation>
+        <translation>Recordarme</translation>
     </message>
     <message>
         <source>Repeat:</source>
-        <translation>Repetir:</translation>
+        <translation>Repetir</translation>
     </message>
     <message>
         <source>Daily</source>
@@ -477,7 +475,7 @@
     </message>
     <message>
         <source>End Repeat:</source>
-        <translation>Fin de repetición:</translation>
+        <translation>Fin de repetición</translation>
     </message>
     <message>
         <source>After</source>
@@ -517,15 +515,15 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicia</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>Termina</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Recordarme</translation>
     </message>
     <message>
         <source>Repeat</source>
@@ -533,35 +531,35 @@
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Fin de repetición</translation>
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"></translation>
+        <translation>Termina</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicia</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>Trabajo</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"></translation>
+        <translation>Vida</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Otro</translation>
     </message>
 </context>
 <context>

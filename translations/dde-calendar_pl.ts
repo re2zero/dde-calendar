@@ -1,720 +1,718 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
+        <source>New event</source>
+        <translation>Nowe wydarzenie</translation>
+    </message>
+    <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Edycja</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuwasz wydarzenie.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć to wydarzenie?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć wszystkie wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystko</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń tylko to wydarzenie</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć to i wszystkie przyszłe wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystkie przyszłe zdarzenia</translation>
     </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
     <message>
+        <source>Delete</source>
+        <translation>Usuń</translation>
+    </message>
+    <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuwasz wydarzenie.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć to wydarzenie?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć wszystkie wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystko</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń tylko to wydarzenie</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć to i wszystkie przyszłe wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystkie przyszłe zdarzenia</translation>
     </message>
 </context>
 <context>
     <name>CAllDaySchceduleWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"></translation>
+        <translation>New event</translation>
     </message>
 </context>
 <context>
     <name>CAllDaySchceduleWeekWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Edycja</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <source>New event</source>
-        <translation type="unfinished"></translation>
+        <translation>New event</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuwasz wydarzenie.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć to wydarzenie?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć wszystkie wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystko</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń tylko to wydarzenie</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć to i wszystkie przyszłe wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystkie przyszłe zdarzenia</translation>
     </message>
 </context>
 <context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
-        <translation type="unfinished"></translation>
+        <translation>Poniedziałek</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation type="unfinished"></translation>
+        <translation>Wtorek</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation type="unfinished"></translation>
+        <translation>Środa</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation type="unfinished"></translation>
+        <translation>Czwartek</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation type="unfinished"></translation>
+        <translation>Piątek</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobota</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation type="unfinished"></translation>
+        <translation>Niedziela</translation>
     </message>
 </context>
 <context>
     <name>CDayWindow</name>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>M</source>
-        <translation type="unfinished"></translation>
+        <translation>M</translation>
     </message>
     <message>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation>D</translation>
     </message>
 </context>
 <context>
     <name>CGraphicsView</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Edycja</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <source>New event</source>
-        <translation type="unfinished"></translation>
+        <translation>New event</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuwasz wydarzenie.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć to wydarzenie?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć wszystkie wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystko</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń tylko to wydarzenie</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć to i wszystkie przyszłe wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystkie przyszłe zdarzenia</translation>
     </message>
 </context>
 <context>
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeszcze %1</translation>
     </message>
 </context>
 <context>
     <name>CMonthSchceduleWidgetItem</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Edycja</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuwasz wydarzenie.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć to wydarzenie?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć wszystkie wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystko</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń tylko to wydarzenie</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć to i wszystkie przyszłe wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystkie przyszłe zdarzenia</translation>
     </message>
 </context>
 <context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"></translation>
+        <translation>New event</translation>
     </message>
 </context>
 <context>
     <name>CMonthWindow</name>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
     <name>CMySchceduleView</name>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuwasz wydarzenie.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć to wydarzenie?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć wszystkie wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystko</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń tylko to wydarzenie</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć to i wszystkie przyszłe wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>My Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>Moje wydarzenie</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Edycja</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystkie przyszłe zdarzenia</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
     <message>
         <source>New Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowe wydarzenie</translation>
     </message>
     <message>
         <source>Edit Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End time must be greater than start time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>Edytuj wydarzenie</translation>
     </message>
     <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszystkie wystąpienia powtarzającego się zdarzenia muszą mieć ten sam status przez cały dzień.</translation>
     </message>
     <message>
         <source>Do you want to change all occurrences?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz zmienić wszystkie wystąpienia?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Change All</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmienić wszystko</translation>
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmieniasz powtarzającą się regułę tego wydarzenia.</translation>
     </message>
     <message>
         <source>You are changing a repeating event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmieniasz powtarzające się wydarzenie.</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz zmienić tylko to wystąpienie zdarzenia, czy wszystkie wystąpienia?</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszystko</translation>
     </message>
     <message>
         <source>Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Tylko to wydarzenie</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz zmienić tylko to wystąpienie zdarzenia, czy to i wszystkie przyszłe zdarzenia?</translation>
     </message>
     <message>
         <source>All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszystkie przyszłe wydarzenia</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Nigdy</translation>
     </message>
     <message>
         <source>At time of event</source>
-        <translation type="unfinished"></translation>
+        <translation>W momencie zdarzenia</translation>
     </message>
     <message>
         <source>15 minutes before</source>
-        <translation type="unfinished"></translation>
+        <translation>15 minut wcześniej</translation>
     </message>
     <message>
         <source>30 minutes before</source>
-        <translation type="unfinished"></translation>
+        <translation>30 minut wcześniej</translation>
     </message>
     <message>
         <source>1 hour before</source>
-        <translation type="unfinished"></translation>
+        <translation>1 godzinę wcześniej</translation>
     </message>
     <message>
         <source>1 day before</source>
-        <translation type="unfinished"></translation>
+        <translation>1 dzień wcześniej</translation>
     </message>
     <message>
         <source>2 days before</source>
-        <translation type="unfinished"></translation>
+        <translation>2 dni wcześniej</translation>
     </message>
     <message>
         <source>1 week before</source>
-        <translation type="unfinished"></translation>
+        <translation>1 tydzień wcześniej</translation>
     </message>
     <message>
         <source>On start day (9:00 AM)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"></translation>
+        <translation>W dniu rozpoczęcia (9:00)</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Rodzaj:</translation>
     </message>
     <message>
         <source>All Day:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All Day</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Starts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ends</source>
-        <translation type="unfinished"></translation>
+        <translation>Cały dzień:</translation>
     </message>
     <message>
         <source>Remind Me:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remind Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Przypomnij mi:</translation>
     </message>
     <message>
         <source>Repeat:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Powtarzać:</translation>
     </message>
     <message>
         <source>Daily</source>
-        <translation type="unfinished"></translation>
+        <translation>Codziennie</translation>
     </message>
     <message>
         <source>Weekdays</source>
-        <translation type="unfinished"></translation>
+        <translation>Dni powszednie</translation>
     </message>
     <message>
         <source>Weekly</source>
-        <translation type="unfinished"></translation>
+        <translation>Co tydzień</translation>
     </message>
     <message>
         <source>Monthly</source>
-        <translation type="unfinished"></translation>
+        <translation>Miesięcznie</translation>
     </message>
     <message>
         <source>Yearly</source>
-        <translation type="unfinished"></translation>
+        <translation>Rocznie</translation>
     </message>
     <message>
         <source>End Repeat:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Koniec powtórzenia:</translation>
     </message>
     <message>
         <source>After</source>
-        <translation type="unfinished"></translation>
+        <translation>Po</translation>
     </message>
     <message>
         <source>On</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz</translation>
     </message>
     <message>
         <source>time(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>raz(y)</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>New event</translation>
+    </message>
+    <message>
+        <source>End time must be greater than start time</source>
+        <translation>Czas zakończenia musi być dłuższy niż czas rozpoczęcia</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Typ</translation>
+    </message>
+    <message>
+        <source>All Day</source>
+        <translation>Cały dzień</translation>
+    </message>
+    <message>
+        <source>Starts</source>
+        <translation>Zaczyna się</translation>
+    </message>
+    <message>
+        <source>Ends</source>
+        <translation>Kończy się</translation>
+    </message>
+    <message>
+        <source>Remind Me</source>
+        <translation>Przypomnij mi</translation>
+    </message>
+    <message>
+        <source>Repeat</source>
+        <translation>Powtórzenie</translation>
+    </message>
+    <message>
+        <source>End Repeat</source>
+        <translation>Zakończ powtarzanie</translation>
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kończy się:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opis:</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Opis</translation>
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaczyna się:</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>Praca</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"></translation>
+        <translation>Życie</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Inne</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleSearchDateItem</name>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>M</source>
-        <translation type="unfinished"></translation>
+        <translation>M</translation>
     </message>
     <message>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation>D</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleSearchItem</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Edycja</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuwasz wydarzenie.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć to wydarzenie?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć wszystkie wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystko</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń tylko to wydarzenie</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz usunąć to i wszystkie przyszłe wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wszystkie przyszłe zdarzenia</translation>
     </message>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"></translation>
+        <translation>Cały dzień</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleSearchView</name>
     <message>
         <source>No search results</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak wyników wyszukiwania</translation>
     </message>
 </context>
 <context>
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation type="unfinished"></translation>
+        <translation>CAŁY DZIEŃ</translation>
     </message>
 </context>
 <context>
     <name>CWeekWindow</name>
     <message>
         <source>Week</source>
-        <translation type="unfinished"></translation>
+        <translation>Tydzień</translation>
     </message>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
     <name>CYearSchceduleItem</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"></translation>
+        <translation>Cały dzień</translation>
     </message>
 </context>
 <context>
     <name>CYearSchceduleView</name>
     <message>
-        <source>No event</source>
-        <translation type="unfinished"></translation>
+        <source>All Day</source>
+        <translation>Cały dzień</translation>
     </message>
     <message>
-        <source>All Day</source>
-        <translation type="unfinished"></translation>
+        <source>No event</source>
+        <translation>Brak zdarzenia</translation>
     </message>
 </context>
 <context>
     <name>CYearWindow</name>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
     <name>CalendarWindow</name>
     <message>
         <source>Calendar</source>
-        <translation type="unfinished"></translation>
+        <translation>Kalendarz</translation>
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation type="unfinished"></translation>
+        <translation>Kalendarz to narzędzie do przeglądania dat, a także inteligentny planer dzienny do planowania wszystkich rzeczy w życiu.</translation>
     </message>
 </context>
 <context>
     <name>Calendarmainwindow</name>
     <message>
         <source>Calendar</source>
-        <translation type="unfinished"></translation>
+        <translation>Kalendarz</translation>
     </message>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>M</source>
-        <translation type="unfinished"></translation>
+        <translation>M</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation>W</translation>
     </message>
     <message>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation>D</translation>
     </message>
 </context>
 <context>
     <name>CenterWidget</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"></translation>
+        <translation>Cały dzień</translation>
     </message>
 </context>
 <context>
@@ -729,7 +727,7 @@
     <message>
         <source>Today</source>
         <comment>Return</comment>
-        <translation type="unfinished">Dzisiaj</translation>
+        <translation>Dzisiaj</translation>
     </message>
 </context>
 <context>
@@ -737,45 +735,45 @@
     <message>
         <source>Today</source>
         <comment>Return Today</comment>
-        <translation type="unfinished">Dzisiaj</translation>
+        <translation>Dzisiaj</translation>
     </message>
 </context>
 <context>
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Pomoc</translation>
     </message>
     <message>
         <source>Delete event</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń wydarzenie</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiuj</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Wytnij</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Wklej</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaznacz wszystko</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Usuń</translation>
     </message>
 </context>
 <context>
     <name>YearFrame</name>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
@@ -783,7 +781,7 @@
     <message>
         <source>Today</source>
         <comment>Today</comment>
-        <translation type="unfinished">Dzisiaj</translation>
+        <translation>Dzisiaj</translation>
     </message>
 </context>
 </TS>
