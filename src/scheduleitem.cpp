@@ -314,12 +314,12 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
                 QString tstrs = fontmetris.elidedText(str,Qt::ElideRight,rect.width() - 5);
                 painter->drawText(
-                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 5, rect.width() - 5, h),
+                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, rect.width() - 5, h),
                     Qt::AlignLeft, tstrs);
 
             } else {
                 painter->drawText(
-                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 5, rect.width() - 5, h),
+                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, rect.width() - 5, h),
                     Qt::AlignLeft, str);
             }
 
@@ -351,7 +351,7 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
                 return;
             painter->drawText(
                 QRect(textRect.topLeft().x() + tmagin,
-                      textRect.topLeft().y() + 20 + timeTextHight + i * (h - 3),
+                      textRect.topLeft().y() + 20 + timeTextHight + i * (h - 3) - 3,
                       textRect.width() - 2,
                       h ),
                 Qt::AlignLeft, liststr.at(i));

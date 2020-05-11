@@ -42,6 +42,7 @@ class CDayMonthView: public CustomFrame
 
 public:
     explicit CDayMonthView(QWidget *parent = nullptr);
+    ~CDayMonthView();
     void setFirstWeekday(int weekday);
     int getDateType(const QDate &date);
     inline bool cellSelectable() const

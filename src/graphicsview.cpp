@@ -95,6 +95,8 @@ CGraphicsView::~CGraphicsView()
     m_timer->stop();
     m_timer->deleteLater();
     clearSchdule();
+
+    delete m_coorManage;
 }
 
 void CGraphicsView::setMargins(int left, int top, int right, int bottom)

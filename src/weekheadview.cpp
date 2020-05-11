@@ -94,6 +94,13 @@ CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
     m_monthList.append( "十二月");
 }
 
+CWeekHeadView::~CWeekHeadView()
+{
+    delete queue;
+    delete lunarCache;
+    delete emptyCaLunarDayInfo;
+}
+
 void CWeekHeadView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
 {
     Q_UNUSED(detail);

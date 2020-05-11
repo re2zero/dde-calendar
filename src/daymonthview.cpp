@@ -72,6 +72,13 @@ CDayMonthView::CDayMonthView(QWidget *parent) : CustomFrame(parent)
     initConnection();
     //setFixedSize(DDEDayCalendar::D_MWindowWidth, DDEDayCalendar::D_MWindowHeight);
 }
+
+CDayMonthView::~CDayMonthView()
+{
+    delete queue;
+    delete lunarCache;
+    delete emptyCaHuangLiDayInfo;
+}
 void CDayMonthView::handleCurrentDateChanged(const QDate date, const CaHuangLiDayInfo &detail)
 {
     Q_UNUSED(detail);

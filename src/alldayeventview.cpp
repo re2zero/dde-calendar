@@ -466,7 +466,7 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
 
 CAllDayEventWeekView::~CAllDayEventWeekView()
 {
-
+    delete m_coorManage;
 }
 
 void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData, int type)

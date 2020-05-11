@@ -225,6 +225,13 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     setFocusPolicy(Qt::StrongFocus);
 }
 
+CMonthView::~CMonthView()
+{
+    delete queue;
+    delete lunarCache;
+    delete emptyCaLunarDayInfo;
+}
+
 void CMonthView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
 {
     Q_UNUSED(detail);
