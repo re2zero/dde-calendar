@@ -51,11 +51,28 @@ void CScheduleDataManage::setSearchResult(QVector<ScheduleDateRangeInfo> &vData)
 
 bool CScheduleDataManage::getSearchResult(ScheduleDtailInfo info)
 {
+    QDateTime date = QDateTime::currentDateTime();
+
+    QDateTime bdate = date.addMonths(-6);
+    if (!bdate.isValid()) {
+        QDateTime tdate = date;
+        tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
+        bdate = tdate.addMonths(-6);
+    }
+    QDateTime edate = date.addMonths(6);
+    if (!edate.isValid()) {
+        QDateTime tdate = date;
+        tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
+        edate = tdate.addMonths(7);
+        edate = edate.addDays(-1);
+    }
+
     for (int i = 0; i < m_vScheduleInfo.size(); i++) {
         QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
         for (int j = 0; j < scheduleInfolist.count(); j++) {
             if (scheduleInfolist.at(j) == info) {
-                return true;
+                if (bdate < info.beginDateTime && edate > info.endDateTime)
+                    return true;
             }
         }
     }
