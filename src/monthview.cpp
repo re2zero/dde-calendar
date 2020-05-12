@@ -171,6 +171,7 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDtail
         }
 
     } else {
+        m_MonthGraphicsView->setInfoItemNull();
         m_RemindWidget->hide();
     }
 }

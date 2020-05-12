@@ -82,6 +82,7 @@ public:
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
                                     QVector<ScheduleclassificationInfo> &info);
     void updateschedule();
+    void setInfoItemNull();
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -239,8 +240,8 @@ private:
     PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect);
     void TimeRound(QDateTime &dtime);
     ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate,const QDateTime &endDate);
-
     void updateScheduleInfo(const ScheduleDtailInfo &info);
+    QDateTime TimeRounding(const QDateTime &time);
 private:
     QGraphicsScene                  *m_graphicsScene;               //绘制Scene
     CScheduleCoorManage             *m_coorManage;

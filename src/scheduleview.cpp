@@ -570,6 +570,8 @@ void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo 
             m_ScheduleRemindWidget->show(pos22.x() + 15, pos22.y());
         }
     } else {
+        m_alldaylist->setInfoItemNull();
+        m_graphicsView->setInfoItemNull();
         m_ScheduleRemindWidget->hide();
     }
 }

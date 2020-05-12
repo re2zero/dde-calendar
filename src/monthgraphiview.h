@@ -38,6 +38,7 @@ public:
     void setLunarVisible(bool visible);
     void setScheduleInfo(const QVector<ScheduleDateRangeInfo> &info);
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
+    void setInfoItemNull();
 private:
     void updateSize();
     void updateLunar();
@@ -109,6 +110,7 @@ private:
     QDateTime                       m_InfoEndTime;
     QDrag                           *m_Drag = nullptr;
     ScheduleDtailInfo               m_PressScheduleInfo;
+    QRectF                          m_PressRect;
 };
 
 

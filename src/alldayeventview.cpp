@@ -568,6 +568,11 @@ int CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedul
     return m_topMagin;
 }
 
+void CAllDayEventWeekView::setInfoItemNull()
+{
+    m_currentitem = nullptr;
+}
+
 CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
     : DGraphicsView (parent),
       m_Scene(new QGraphicsScene(this))
@@ -932,7 +937,7 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
         }
         break;
     case ChangeWhole: {
-        if (!m_currentitem->rect().contains(event->pos())) {
+        if (!m_PressRect.contains(event->pos())) {
             Qt::DropAction dropAciton = m_Drag->exec( Qt::MoveAction);
             m_Drag = nullptr;
             m_DragStatus = NONE;
@@ -1030,7 +1035,11 @@ void CAllDayEventWeekView::dragMoveEvent(QDragMoveEvent *event)
 void CAllDayEventWeekView::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        updateScheduleInfo(m_DragScheduleInfo);
+        if (m_MoveDate !=m_PressDate) {
+            updateScheduleInfo(m_DragScheduleInfo);
+        } else {
+            emit signalsUpdateShcedule(0);
+        }
         m_DragStatus = NONE;
         m_MoveDate = m_MoveDate.addMonths(2);
     }
@@ -1077,6 +1086,7 @@ void CAllDayEventWeekView::DragPressEvent(const QPoint &pos, const CAllDayEventW
         m_PressScheduleInfo = item->getData();
         m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
         m_InfoEndTime = m_DragScheduleInfo.endDateTime;
+        m_PressRect = item->rect();
         switch (getPosInItem(pos,item->rect())) {
         case LEFT:
             m_DragStatus = ChangeBegin;
@@ -1098,9 +1108,9 @@ void CAllDayEventWeekView::DragPressEvent(const QPoint &pos, const CAllDayEventW
                 m_Drag = new QDrag(this);
             }
             m_Drag->setMimeData(mimeData);
-            QPoint itemPos = QPoint(pos.x()-item->rect().x(),
-                                    pos.y()-item->rect().y());
-            m_Drag->setHotSpot(itemPos);
+            QPointF itemPos = QPointF(pos.x()-item->rect().x(),
+                                      pos.y()-item->rect().y());
+            m_Drag->setHotSpot(itemPos.toPoint());
             break;
         }
     } else {

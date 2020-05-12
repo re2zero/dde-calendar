@@ -127,6 +127,11 @@ void CMonthGraphiview::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
     }
 }
 
+void CMonthGraphiview::setInfoItemNull()
+{
+    m_infoitem = nullptr;
+}
+
 void CMonthGraphiview::updateSize()
 {
     m_Scene->setSceneRect(this->viewport()->rect());
@@ -218,6 +223,7 @@ void CMonthGraphiview::DragPressEvent(const QPoint &pos,QGraphicsItem *item)
         if (m_DragScheduleInfo.type.ID == 4) {
             return;
         }
+        m_PressRect = infoitem->rect();
         m_PressScheduleInfo = infoitem->getData();
         m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
         m_InfoEndTime = m_DragScheduleInfo.endDateTime;
@@ -650,7 +656,7 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
         }
         break;
     case ChangeWhole: {
-        if (!m_currentitem->rect().contains(event->pos())) {
+        if (!m_PressRect.contains(event->pos())) {
             m_Drag->exec( Qt::MoveAction);
             m_Drag = nullptr;
             m_DragStatus = NONE;

@@ -115,7 +115,6 @@ void CGraphicsView::setMargins(int left, int top, int right, int bottom)
 
 void CGraphicsView::setTheMe(int type)
 {
-    m_themetype = type;
     if (type == 0 || type == 1) {
         m_weekcolor = "#00429A";
         m_weekcolor.setAlphaF(0.05);
@@ -125,6 +124,7 @@ void CGraphicsView::setTheMe(int type)
         m_TBPen.setColor(linecolor);
         m_LRPen.setStyle(Qt::SolidLine);
         m_TBPen.setStyle(Qt::SolidLine);
+
     } else if (type == 2) {
         m_weekcolor = "#4F9BFF";
         m_weekcolor.setAlphaF(0.1);
@@ -207,10 +207,9 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
         vListData[index] = info;
     }
     break;
-    case ChangeWhole: {
+    case ChangeWhole:
         vListData.append(info);
-    }
-    break;
+        break;
     case IsCreate:
         vListData.append(info);
         break;
@@ -387,6 +386,12 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
 
 void CGraphicsView::updateschedule()
 {
+
+}
+
+void CGraphicsView::setInfoItemNull()
+{
+    m_currentItem = nullptr;
 
 }
 
@@ -655,17 +660,21 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
                 m_DragScheduleInfo);
             emit signalsUpdateShcedule(0);
+//            updateDateShow();
         }
         break;
     case ChangeBegin:
         if (m_MoveDate != m_InfoBeginTime) {
             updateScheduleInfo(m_DragScheduleInfo);
         }
+        emit signalsUpdateShcedule(0);
         break;
     case ChangeEnd:
         if (m_MoveDate != m_InfoEndTime) {
             updateScheduleInfo(m_DragScheduleInfo);
         }
+        emit signalsUpdateShcedule(0);
+
         break;
     default:
         break;
@@ -698,6 +707,7 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     emit signalViewtransparentFrame(1);
     m_updateDflag  = false;
     CMySchceduleView dlg(item->getData(), this);
+//    dlg.setSchedules(item->getData());
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
     dlg.exec();
     emit signalViewtransparentFrame(0);
@@ -818,7 +828,7 @@ void CGraphicsView::slotDeleteItem()
             }
         }
     }
-    emit signalsUpdateShcedule(m_currentItem->getData().id);
+    emit signalsUpdateShcedule(0);
 }
 
 void CGraphicsView::slotHoverUpdateState(CScheduleItem *item, int state)
@@ -885,7 +895,7 @@ void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
 
     }
     QDateTime gDate =  m_coorManage->getDate(mapToScene(event->pos()));
-    TimeRound(gDate);
+    gDate = TimeRounding(gDate);
     switch (m_DragStatus) {
     case IsCreate:
         if (qAbs(event->pos().x()-m_PressPos.x())>20 ||qAbs(m_PressDate.secsTo(gDate))>300) {
@@ -1178,6 +1188,7 @@ void CGraphicsView::dragEnterEvent(QDragEnterEvent *event)
         } else {
             event->accept();
         }
+
     } else {
         event->ignore();
     }
@@ -1193,27 +1204,27 @@ void CGraphicsView::dragMoveEvent(QDragMoveEvent *event)
 {
     QString str = event->mimeData()->data("Info");
     QDateTime gDate =  m_coorManage->getDate(mapToScene(event->pos()));
-    TimeRound(gDate);
+    gDate = TimeRounding(gDate);
     QJsonParseError json_error;
     QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
 
     if (json_error.error != QJsonParseError::NoError) {
         return;
     }
-    if (m_MoveDate !=gDate) {
 
+    if (m_MoveDate !=gDate) {
         m_MoveDate = gDate;
         QJsonObject rootobj = jsonDoc.object();
         m_DragScheduleInfo =
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
         if (!m_DragScheduleInfo.allday) {
             qint64 offset = m_PressDate.secsTo(m_MoveDate);
-//            qDebug()<<"offset:"<<offset;
             m_DragScheduleInfo.beginDateTime = m_DragScheduleInfo.beginDateTime.addSecs(offset);
             m_DragScheduleInfo.endDateTime    = m_DragScheduleInfo.endDateTime.addSecs(offset);
         } else {
             m_DragScheduleInfo.allday = false;
             if (m_DragScheduleInfo.remind) {
+//                m_DragScheduleInfo.remindData.time = QTime(9, 0);
                 m_DragScheduleInfo.remindData.n = 15;
             }
             m_DragScheduleInfo.beginDateTime = m_MoveDate;
@@ -1221,14 +1232,18 @@ void CGraphicsView::dragMoveEvent(QDragMoveEvent *event)
         }
         upDateInfoShow(ChangeWhole,m_DragScheduleInfo);
     }
-
 }
 
 void CGraphicsView::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        updateScheduleInfo(m_DragScheduleInfo);
+        if (m_MoveDate !=m_PressDate) {
+            updateScheduleInfo(m_DragScheduleInfo);
+        } else {
+            emit signalsUpdateShcedule(0);
+        }
         m_DragStatus = NONE;
+        m_MoveDate = m_MoveDate.addMonths(2);
     }
 }
 
@@ -1292,14 +1307,13 @@ void CGraphicsView::DragPressEvent(const QPoint &pos, const CScheduleItem *item)
 {
     m_PressPos = pos;
     m_PressDate = m_coorManage->getDate(mapToScene(pos));
-    TimeRound(m_PressDate);
+    m_PressDate = TimeRounding(m_PressDate);
 
     m_MoveDate = m_PressDate.addMonths(-2);
     if (item != nullptr) {
         if (item->getData().type.ID == 4)
             return;
         m_DragScheduleInfo = item->getData();
-        m_PressScheduleInfo = item->getData();
         m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
         m_InfoEndTime = m_DragScheduleInfo.endDateTime;
         switch (getPosInItem(pos,item->boundingRect())) {
@@ -1318,14 +1332,13 @@ void CGraphicsView::DragPressEvent(const QPoint &pos, const CScheduleItem *item)
             mimeData->setData("Info",
                               CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->InfoToJson(m_DragScheduleInfo).toUtf8());
 
-
             if (m_Drag ==nullptr) {
                 m_Drag = new QDrag(this);
             }
             m_Drag->setMimeData(mimeData);
-            QPoint itemPos = QPoint(pos.x()-item->boundingRect().x(),
-                                    pos.y()-item->boundingRect().y());
-            m_Drag->setHotSpot(itemPos);
+            QPointF itemPos = QPointF(pos.x()-item->boundingRect().x(),
+                                      pos.y()-item->boundingRect().y());
+            m_Drag->setHotSpot(itemPos.toPoint());
             break;
         }
     } else {
@@ -1349,17 +1362,6 @@ CGraphicsView::PosInItem CGraphicsView::getPosInItem(const QPoint &p, const QRec
     return MIDDLE;
 }
 
-void CGraphicsView::TimeRound(QDateTime &dtime)
-{
-    int hours = dtime.time().hour();
-    int minnutes = dtime.time().minute() / 15;
-//        qDebug()<<"hours:"<<hours;
-//        qDebug()<<"minute:"<<gDate.time().minute();
-//        qDebug()<<"minnutes:"<<minnutes;
-
-    dtime.setTime(QTime(hours,minnutes*15,0));
-}
-
 ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
 {
     ScheduleDtailInfo info;
@@ -1374,7 +1376,7 @@ ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, con
     info.allday = false;
     info.remind = true;
     info.id = 0;
-    info.remindData.n = 15;
+    info.remindData.n = 1;
     info.remindData.time = QTime(9, 0);
     info.RecurID = 0;
     CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
@@ -1386,14 +1388,19 @@ ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, con
 
 void CGraphicsView::updateScheduleInfo(const ScheduleDtailInfo &info)
 {
-    if (info.rpeat >0) {
-        CSchceduleDlg::ChangeRecurInfo(this,info,m_PressScheduleInfo,m_themetype);
-    } else {
-        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
-            info);
-    }
+    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
+        info);
 
     emit signalsUpdateShcedule(0);
+}
+
+QDateTime CGraphicsView::TimeRounding(const QDateTime &time)
+{
+    int hours = time.time().hour();
+    int minnutes = 0;
+
+    minnutes = time.time().minute() / 15;
+    return QDateTime(time.date(),QTime(hours,minnutes*15,0));
 }
 
 /************************************************************************
