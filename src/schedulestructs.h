@@ -73,6 +73,7 @@ typedef struct _tagScheduleDtailInfo {
     ScheduleEndRepeatData enddata;
     bool operator ==(const _tagScheduleDtailInfo &info)const
     {
+        //此处只对比普通日程，不对比节日日程
         return this->id == info.id &&this->RecurID == info.RecurID &&
                titleName == info.titleName;
     }

@@ -157,138 +157,32 @@ void CMonthSchceduleWidgetItem::setPressFlag(const bool ispress)
     update();
 }
 
+QPixmap CMonthSchceduleWidgetItem::getPixmap()
+{
+    QPixmap pixmap(this->rect().size().toSize());
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    paintBackground(&painter,pixmap.rect());
+    painter.end();
+    return  pixmap;
+}
+
 
 void CMonthSchceduleWidgetItem::animationFinished()
 {
     isAnimation = false;
 }
 
-void CMonthSchceduleWidgetItem::slotDelete()
+void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF &rect)
 {
-//    emit signalViewtransparentFrame(1);
-//    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-//    ScheduleDtailInfo tinfo = m_vScheduleInfo;
-//    if (tinfo.rpeat == 0) {
-//        CSchceduleCtrlDlg msgBox(nullptr);
-//        msgBox.setText(tr("You are deleting an event."));
-//        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-//        DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-//        DPushButton *yesButton = msgBox.addPushButton(tr("Delete"), 1);
-//        msgBox.updatesize();
-//        DPalette pa = yesButton->palette();
-//        if (themetype == 0 || themetype == 1) {
-//            pa.setColor(DPalette::ButtonText, Qt::red);
-
-//        } else {
-//            pa.setColor(DPalette::ButtonText, "#FF5736");
-
-//        }
-//        yesButton->setPalette(pa);
-//        msgBox.exec();
-
-//        if (msgBox.clickButton() == noButton) {
-//            emit signalViewtransparentFrame(0);
-//            return;
-//        } else if (msgBox.clickButton() == yesButton) {
-//            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(tinfo.id);
-//        }
-//    } else {
-//        if (tinfo.RecurID == 0) {
-//            CSchceduleCtrlDlg msgBox(nullptr);
-//            //msgBox.setWindowFlags(Qt::FramelessWindowHint);
-//            //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-
-//            msgBox.setText(tr("You are deleting an event."));
-//            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-//            DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-//            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All"));
-//            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (themetype == 0 || themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
-//            msgBox.exec();
-
-//            if (msgBox.clickButton() == noButton) {
-//                emit signalViewtransparentFrame(0);
-//                return;
-//            } else if (msgBox.clickButton() == yesallbutton) {
-//                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(tinfo.id);
-//            } else if (msgBox.clickButton() == yesButton) {
-//                ScheduleDtailInfo newschedule;
-//                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(tinfo.id, newschedule);
-//                newschedule.ignore.append(tinfo.beginDateTime);
-//                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-//            }
-//        } else {
-//            CSchceduleCtrlDlg msgBox(nullptr);
-//            //msgBox.setWindowFlags(Qt::FramelessWindowHint);
-//            //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
-//            msgBox.setText(tr("You are deleting an event."));
-//            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-//            DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-//            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All Future Events"));
-//            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (themetype == 0 || themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
-//            msgBox.exec();
-
-//            if (msgBox.clickButton() == noButton) {
-//                emit signalViewtransparentFrame(0);
-//                return;
-//            } else if (msgBox.clickButton() == yesallbutton) {
-//                ScheduleDtailInfo newschedule;
-//                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(tinfo.id, newschedule);
-//                newschedule.enddata.type = 2;
-//                newschedule.enddata.date = tinfo.beginDateTime.addDays(-1);
-//                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-
-//            } else if (msgBox.clickButton() == yesButton) {
-
-//                ScheduleDtailInfo newschedule;
-//                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(tinfo.id, newschedule);
-//                newschedule.ignore.append(tinfo.beginDateTime);
-//                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-//            }
-//        }
-//    }
-//    emit signalViewtransparentFrame(0);
-//    emit signalsDelete(this);
-}
-
-void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-//    painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-
-    qreal labelwidth = this->rect().width();
-    qreal labelheight = this->rect().height();
+    qreal labelwidth = rect.width();
+    qreal labelheight = rect.height();
     m_font = DFontSizeManager::instance()->get(m_SizeType, m_font);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
     if (m_GradientFlag) {
-        //drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
-        QLinearGradient linearGradient(this->rect().topLeft().x(), 0, this->rect().topRight().x(), 0);
+        QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
         QColor color1 = gdcolor.gradientFromC;
         QColor color2 = gdcolor.gradientToC;
         QColor textcolor = gdcolor.textColor;
@@ -308,8 +202,8 @@ void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraph
         linearGradient.setColorAt(0, color1);
         linearGradient.setColorAt(1, color2);
 
-        QRectF fillRect = QRectF(this->rect().x()+2,
-                                 this->rect().y()+2,
+        QRectF fillRect = QRectF(rect.x()+2,
+                                 rect.y()+2,
                                  labelwidth - 2,
                                  labelheight - 2);
         painter->save();
@@ -317,8 +211,8 @@ void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraph
         painter->setBrush(linearGradient);
         painter->setPen(Qt::NoPen);
         painter->drawRoundedRect(fillRect,
-                                 this->rect().height() / 3,
-                                 this->rect().height() / 3);
+                                 rect.height() / 3,
+                                 rect.height() / 3);
         painter->restore();
         painter->setFont(m_font);
         painter->setPen(textcolor);
@@ -340,14 +234,14 @@ void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraph
             tstr = tstr + "...";
         }
 
-        painter->drawText(QRectF(this->rect().x()+m_pos.x(),
-                                 this->rect().y()+1,
+        painter->drawText(QRectF(rect.x()+m_pos.x(),
+                                 rect.y()+1,
                                  labelwidth - m_pos.x()-m_widthoffset,
                                  labelheight - m_pos.y() + 3  ),
                           Qt::AlignLeft | Qt::AlignVCenter, tstr);
 
         if (m_hoverflag && !m_selectflag) {
-            QRectF trect = QRectF(this->rect().x()+2.5, this->rect().y()+2.5, labelwidth - 3, labelheight - 3);
+            QRectF trect = QRectF(rect.x()+2.5, rect.y()+2.5, labelwidth - 3, labelheight - 3);
             painter->save();
             painter->setRenderHints(QPainter::Antialiasing);
             QPen pen;
@@ -365,7 +259,7 @@ void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraph
             pen.setStyle(Qt::SolidLine);
             painter->setBrush(Qt::NoBrush);
             painter->setPen(pen);
-            painter->drawRoundedRect(trect, this->rect().height() / 3, this->rect().height() / 3);
+            painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
             painter->restore();
         }
         if (m_selectflag) {
@@ -373,10 +267,10 @@ void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraph
             selcolor.setAlphaF(0.05);
             painter->setBrush(selcolor);
             painter->setPen(Qt::NoPen);
-            painter->drawRoundedRect(fillRect, this->rect().height() / 3, this->rect().height() / 3);
+            painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
         }
     } else {
-        QRectF fillRect = QRectF(this->rect().x()+2,this->rect().y()+ 2, labelwidth - 2, labelheight - 2 );
+        QRectF fillRect = QRectF(rect.x()+2,rect.y()+ 2, labelwidth - 2, labelheight - 2 );
         //将直线开始点设为0，终点设为1，然后分段设置颜色
         painter->setRenderHints(QPainter::HighQualityAntialiasing);
         painter->setBrush(m_color1);
@@ -387,23 +281,32 @@ void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraph
         painter->setPen(m_textcolor);
         QFontMetrics fm = painter->fontMetrics();
         QString str = m_ScheduleInfo.titleName;
-        if (fm.width(str) > this->rect().width()) {
+        if (fm.width(str) >rect.width()) {
             int widthT = fm.width(str);
             qreal singlecharw = widthT * 1.0 / str.count();
-            qreal rcharcount = this->rect().width() * 1.0 / singlecharw;
+            qreal rcharcount = rect.width() * 1.0 / singlecharw;
             QString tstr;
             for (int i = 0; i < rcharcount - 8; i++) {
                 tstr.append(str.at(i));
             }
             str = tstr + "...";
         }
-        painter->drawText(QRectF(this->rect().x()+m_pos.x(),
-                                 this->rect().y()+m_pos.y(),
+        painter->drawText(QRectF(rect.x()+m_pos.x(),
+                                 rect.y()+m_pos.y(),
                                  labelwidth - m_pos.x(),
                                  labelheight - m_pos.y() + 4),
                           Qt::AlignLeft,
                           str);
     }
+}
+
+
+void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+    paintBackground(painter,this->rect());
+    //    painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 }
 
 void CMonthSchceduleWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

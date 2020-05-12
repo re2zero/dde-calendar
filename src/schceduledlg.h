@@ -74,6 +74,11 @@ private:
     void initConnection();
     void initDateEdit();
     void initRmindRpeatUI();
+public:
+    static void ChangeRecurInfo(QWidget *parent,const ScheduleDtailInfo &newinfo,
+                                const ScheduleDtailInfo &oldinfo,int m_themetype);
+    static void ChangeOnlyInfo(const ScheduleDtailInfo &newinfo,
+                               const ScheduleDtailInfo &oldinfo);
 
 private:
     QLabel *m_typeLabel = nullptr;

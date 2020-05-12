@@ -202,10 +202,13 @@ public:
         return isAnimation;
     }
     void setPressFlag(const bool ispress);
+    QPixmap getPixmap();
 signals:
 public slots:
     void animationFinished();
-    void slotDelete();
+private:
+    void paintBackground(QPainter *painter,const QRectF &rect);
+
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;

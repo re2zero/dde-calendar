@@ -34,6 +34,10 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 #include <QDrag>
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonObject>
+
 #include <QGraphicsOpacityEffect>
 #include "schedulecoormanage.h"
 #include "schcedulectrldlg.h"
@@ -393,6 +397,7 @@ void CAllDayEventWidgetItem::slotDoubleEvent(int type)
 
 void CAllDayEventWeekView::setTheMe(int type)
 {
+    m_themetype=type;
     updateDateShow();
 }
 
@@ -455,12 +460,14 @@ int CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedul
         Q_UNUSED(info);
         break;
     case ChangeBegin:
-    case ChangeEnd:
-    case ChangeWhole: {
+    case ChangeEnd: {
         int index = vListData.indexOf(info);
         vListData[index] = info;
     }
     break;
+    case ChangeWhole:
+        vListData.append(info);
+        break;
     case IsCreate:
         vListData.append(info);
         break;
@@ -802,19 +809,13 @@ void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
         break;
     case ChangeBegin:
         if (m_MoveDate != m_InfoBeginTime.date()) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
-                m_DragScheduleInfo);
-
+            updateScheduleInfo(m_DragScheduleInfo);
         }
-        emit signalsUpdateShcedule(0);
         break;
     case ChangeEnd:
         if (m_MoveDate != m_InfoEndTime.date()) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
-                m_DragScheduleInfo);
+            updateScheduleInfo(m_DragScheduleInfo);
         }
-        emit signalsUpdateShcedule(0);
-
         break;
     default:
         break;
@@ -935,9 +936,7 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
             Qt::DropAction dropAciton = m_Drag->exec( Qt::MoveAction);
             m_Drag = nullptr;
             m_DragStatus = NONE;
-            qDebug()<<Q_FUNC_INFO<<"DropAction:"<<dropAciton;
         }
-
     }
     break;
 
@@ -962,7 +961,26 @@ void CAllDayEventWeekView::paintEvent(QPaintEvent *event)
 void CAllDayEventWeekView::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        event->accept();
+        if (event->source() !=this) {
+            QJsonParseError json_error;
+            QString str = event->mimeData()->data("Info");
+            QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
+
+            if (json_error.error != QJsonParseError::NoError) {
+                event->ignore();
+            }
+            QJsonObject rootobj = jsonDoc.object();
+            ScheduleDtailInfo info =
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
+            if (info.rpeat>0) {
+                event->ignore();
+            } else {
+                event->accept();
+            }
+        } else {
+            event->accept();
+        }
+
     } else {
         event->ignore();
     }
@@ -970,17 +988,52 @@ void CAllDayEventWeekView::dragEnterEvent(QDragEnterEvent *event)
 
 void CAllDayEventWeekView::dragLeaveEvent(QDragLeaveEvent *event)
 {
-
+    upDateInfoShow();
+    m_MoveDate = m_MoveDate.addMonths(2);
 }
 
 void CAllDayEventWeekView::dragMoveEvent(QDragMoveEvent *event)
 {
+    QString str = event->mimeData()->data("Info");
+    QDate gDate =  m_coorManage->getsDate(mapFrom(this, event->pos()));
+    QJsonParseError json_error;
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
 
+    if (json_error.error != QJsonParseError::NoError) {
+        return;
+    }
+
+    if (m_MoveDate !=gDate) {
+        m_MoveDate = gDate;
+        QJsonObject rootobj = jsonDoc.object();
+        m_DragScheduleInfo =
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
+        if (m_DragScheduleInfo.allday) {
+            qint64 offset = m_PressDate.daysTo(m_MoveDate);
+            m_DragScheduleInfo.beginDateTime = m_DragScheduleInfo.beginDateTime.addDays(offset);
+            m_DragScheduleInfo.endDateTime    = m_DragScheduleInfo.endDateTime.addDays(offset);
+        } else {
+            qint64 offset = m_DragScheduleInfo.beginDateTime.daysTo(m_DragScheduleInfo.endDateTime);
+            m_DragScheduleInfo.allday = true;
+            if (m_DragScheduleInfo.remind) {
+                m_DragScheduleInfo.remindData.time = QTime(9, 0);
+                m_DragScheduleInfo.remindData.n = 1;
+            }
+//            m_DragScheduleInfo.remind = false;
+            m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate,QTime(0,0,0));
+            m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate.addDays(offset),QTime(23,59,59));
+        }
+        upDateInfoShow(ChangeWhole,m_DragScheduleInfo);
+    }
 }
 
 void CAllDayEventWeekView::dropEvent(QDropEvent *event)
 {
-    qDebug()<<Q_FUNC_INFO;
+    if (event->mimeData()->hasFormat("Info")) {
+        updateScheduleInfo(m_DragScheduleInfo);
+        m_DragStatus = NONE;
+        m_MoveDate = m_MoveDate.addMonths(2);
+    }
 }
 
 void CAllDayEventWeekView::updateDateShow()
@@ -1000,6 +1053,18 @@ void CAllDayEventWeekView::updateDateShow()
     }
 }
 
+void CAllDayEventWeekView::updateScheduleInfo(const ScheduleDtailInfo &info)
+{
+    if (info.rpeat >0) {
+        CSchceduleDlg::ChangeRecurInfo(this,info,
+                                       m_PressScheduleInfo,m_themetype);
+    } else {
+        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
+            info);
+    }
+    emit signalsUpdateShcedule(0);
+}
+
 void CAllDayEventWeekView::DragPressEvent(const QPoint &pos, const CAllDayEventWidgetItem *item)
 {
     m_PressPos = pos;
@@ -1009,6 +1074,7 @@ void CAllDayEventWeekView::DragPressEvent(const QPoint &pos, const CAllDayEventW
         if (item->getData().type.ID == 4)
             return;
         m_DragScheduleInfo = item->getData();
+        m_PressScheduleInfo = item->getData();
         m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
         m_InfoEndTime = m_DragScheduleInfo.endDateTime;
         switch (getPosInItem(pos,item->rect())) {
@@ -1024,7 +1090,9 @@ void CAllDayEventWeekView::DragPressEvent(const QPoint &pos, const CAllDayEventW
             m_DragStatus = ChangeWhole;
             QMimeData *mimeData = new QMimeData();
             mimeData->setText(m_DragScheduleInfo.titleName);
-            mimeData->setData("Info",QString("Info").toUtf8());
+            mimeData->setData("Info",
+                              CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->InfoToJson(m_DragScheduleInfo).toUtf8());
+
 
             if (m_Drag ==nullptr) {
                 m_Drag = new QDrag(this);

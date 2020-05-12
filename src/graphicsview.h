@@ -237,13 +237,15 @@ private:
     int checkDay(int weekday);
     void DragPressEvent(const QPoint &pos,const CScheduleItem *item);
     PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect);
+    void TimeRound(QDateTime &dtime);
     ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate,const QDateTime &endDate);
 
+    void updateScheduleInfo(const ScheduleDtailInfo &info);
 private:
     QGraphicsScene                  *m_graphicsScene;               //绘制Scene
     CScheduleCoorManage             *m_coorManage;
     QVector<CScheduleItem *>        m_vScheduleItem;
-    CScheduleItem                   *m_currentItem; //当前item
+    CScheduleItem                   *m_currentItem;             //当前item
     QMargins                        m_margins;                     //四周空白
     bool                            m_LRFlag;          //水平线
     QPen                            m_LRPen;           //水平线画笔
@@ -267,13 +269,14 @@ private:
     bool                            m_updateDflag  = false;
     int                             m_rightmagin = 0;
     bool                            m_press = false;
+    int                             m_themetype = 0;
 
 
     QVector<ScheduleDtailInfo>                      m_scheduleInfo;
     QDate                           m_beginDate;
     QDate                           m_endDate;
     int                             m_minTime;      //最小高度对应的最小时间
-    int                       m_sMaxNum = 4;
+    int                             m_sMaxNum = 4;
 
     DragStatus                      m_DragStatus =NONE;
     bool                            m_isCreate;
@@ -284,6 +287,7 @@ private:
     QDateTime                       m_InfoBeginTime;
     QDateTime                       m_InfoEndTime;
     QDrag                           *m_Drag;
+    ScheduleDtailInfo               m_PressScheduleInfo;
 };
 
 #endif // GRAPHICSVIEW_H

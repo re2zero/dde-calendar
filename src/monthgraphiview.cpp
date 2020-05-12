@@ -218,6 +218,7 @@ void CMonthGraphiview::DragPressEvent(const QPoint &pos,QGraphicsItem *item)
         if (m_DragScheduleInfo.type.ID == 4) {
             return;
         }
+        m_PressScheduleInfo = infoitem->getData();
         m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
         m_InfoEndTime = m_DragScheduleInfo.endDateTime;
         switch (getPosInItem(pos,infoitem->rect())) {
@@ -241,6 +242,7 @@ void CMonthGraphiview::DragPressEvent(const QPoint &pos,QGraphicsItem *item)
             }
             m_currentitem = infoitem;
             m_Drag->setMimeData(mimeData);
+            m_Drag->setPixmap(infoitem->getPixmap());
             QPointF itemPos = QPointF(pos.x()-infoitem->rect().x(),
                                       pos.y()-infoitem->rect().y());
             m_Drag->setHotSpot(itemPos.toPoint());
@@ -313,7 +315,7 @@ QDate CMonthGraphiview::getPosDate(const QPoint &p)
     return  m_DayItem[xoffset+yoffset*7]->getDate();
 }
 
-int CMonthGraphiview::upDateInfoShow(const CMonthGraphiview::DragStatus &status, const ScheduleDtailInfo &info)
+void CMonthGraphiview::upDateInfoShow(const CMonthGraphiview::DragStatus &status, const ScheduleDtailInfo &info)
 {
     switch (status) {
     case NONE:
@@ -330,17 +332,20 @@ int CMonthGraphiview::upDateInfoShow(const CMonthGraphiview::DragStatus &status,
     }
     break;
     case IsCreate:
-//        vListData.append(info);
         m_MonthSchceduleView->updateDate(info);
         break;
     }
-
 }
 
 void CMonthGraphiview::updateScheduleInfo(const ScheduleDtailInfo &info)
 {
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
-        info);
+    if (info.rpeat >0) {
+        CSchceduleDlg::ChangeRecurInfo(this,info,
+                                       m_PressScheduleInfo,m_themetype);
+    } else {
+        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
+            info);
+    }
     emit slotSchceduleUpdate(0);
 }
 
@@ -502,7 +507,11 @@ void CMonthGraphiview::dragMoveEvent(QDragMoveEvent *event)
 void CMonthGraphiview::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        updateScheduleInfo(m_DragScheduleInfo);
+        if (m_MoveDate !=m_PressDate) {
+            updateScheduleInfo(m_DragScheduleInfo);
+        } else {
+            emit slotSchceduleUpdate(0);
+        }
         m_DragStatus = NONE;
     }
 }
@@ -562,6 +571,7 @@ void CMonthGraphiview::mousePressEvent(QMouseEvent *event)
         m_infoitem = infoitem;
         m_press = true;
         infoitem->setPressFlag(true);
+
         m_MonthSchceduleView->slotupdateItem(infoitem);
         emit signalScheduleShow(true, infoitem->getData());
     } else {
@@ -645,7 +655,6 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
-
         }
     }
     break;

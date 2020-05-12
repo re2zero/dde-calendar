@@ -48,7 +48,7 @@ private:
     ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
     PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect);
     QDate getPosDate(const QPoint &p);
-    int upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo());
+    void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo());
     void updateScheduleInfo(const ScheduleDtailInfo &info);
     void DeleteItem(CMonthSchceduleWidgetItem *infoitem);
 protected:
@@ -89,6 +89,7 @@ private:
     CMonthSchceduleWidgetItem           *m_infoitem;
     int                                 m_press = false;
 
+
     QAction                                     *m_createAction;     // 创建日程
     QAction                                     *m_editAction;
     QAction                                     *m_deleteAction;
@@ -107,6 +108,7 @@ private:
     QDateTime                       m_InfoBeginTime;
     QDateTime                       m_InfoEndTime;
     QDrag                           *m_Drag = nullptr;
+    ScheduleDtailInfo               m_PressScheduleInfo;
 };
 
 

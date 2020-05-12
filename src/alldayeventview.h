@@ -87,13 +87,13 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
-
     void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
     void dragLeaveEvent(QDragLeaveEvent *event) Q_DECL_OVERRIDE;
     void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
     void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
+    void updateScheduleInfo(const ScheduleDtailInfo &info);
     void DragPressEvent(const QPoint &pos,const CAllDayEventWidgetItem *item);
     void createItemWidget(int index, bool average = false);
     ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
@@ -114,6 +114,7 @@ private:
     QDate                                       m_dianjiDay;
     bool                                        m_LunarVisible;
     CAllDayEventWidgetItem                      *m_currentitem = nullptr;
+    int                                             m_themetype = 0;
     int m_rightmagin = 0;
     bool                            m_updateDflag  = false;
     QGraphicsScene                              *m_Scene;
@@ -131,6 +132,7 @@ private:
     QDateTime                       m_InfoBeginTime;
     QDateTime                       m_InfoEndTime;
     QDrag                           *m_Drag;
+    ScheduleDtailInfo               m_PressScheduleInfo;
 };
 
 class CAllDayEventWidgetItem : public QObject, public QGraphicsRectItem
