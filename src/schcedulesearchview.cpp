@@ -539,48 +539,14 @@ void CSchceduleSearchView::updateDateShow()
     m_gradientItemList->clear();
     m_labellist.clear();
     //找最近日程
-    bool flag = false;
     QDate tcurrentdata = QDate::currentDate();
-//    for (int i = 0; i < m_vlistData.size(); ++i) {
-//        if (m_vlistData[i].date == tcurrentdata) {
-//            if (!m_vlistData.at(i).vData.isEmpty()) {
-//                flag = true;
-//                break;
-//            }
-//        }
-//    }
-//    if (!flag && !m_vlistData.isEmpty()) {
-//        QDate topdate = tcurrentdata;
-//        QDate mindate = topdate;
-//        for (int i = 0; i < m_vlistData.size(); ++i) {
-//            if (m_vlistData[i].date > mindate) {
-//                mindate = m_vlistData[i].date;
-//            }
-//        }
-//        while (!flag) {
-//            topdate = topdate.addDays(-1);
-//            for (int i = 0; i < m_vlistData.size(); ++i) {
-//                if (m_vlistData[i].date == topdate) {
-//                    if (!m_vlistData.at(i).vData.isEmpty()) {
-//                        flag = true;
-//                        break;
-//                    }
-//                }
-//            }
-//            if (topdate < mindate) break;
-//        }
-//        tcurrentdata = topdate;
-//    }
     QVector<ScheduleDateRangeInfo> m_showData;
     ScheduleDateRangeInfo showData;
-    int offset = 1000;
+    qint64 offset = 1000;
     QDate topdate = tcurrentdata;
     for (int i = 0; i < m_vlistData.size(); ++i) {
-        int d = qAbs(m_vlistData.at(i).date.daysTo(tcurrentdata));
-        if ( d<offset) {
-            offset = d;
-            topdate = m_vlistData.at(i).date;
-        }
+        qint64 d = qAbs(m_vlistData.at(i).date.daysTo(tcurrentdata));
+
         showData.date = m_vlistData.at(i).date;
         for (int j = 0 ; j < m_vlistData.at(i).vData.size(); ++j) {
             if (m_vlistData.at(i).vData.at(j).beginDateTime.date() == m_vlistData.at(i).date) {
@@ -588,9 +554,12 @@ void CSchceduleSearchView::updateDateShow()
             }
         }
         if (showData.vData.count() > 0) {
+            if ( d<offset) {
+                offset = d;
+                topdate = showData.date;
+            }
             m_showData.append(showData);
         }
-
         showData.vData.clear();
     }
     tcurrentdata = topdate;

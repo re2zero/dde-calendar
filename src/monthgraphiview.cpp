@@ -789,6 +789,8 @@ void CMonthGraphiview::slotDeleteItem()
 {
     if (m_infoitem == nullptr)
         return;
+    if (m_infoitem->getData().type.ID ==4)
+        return;
     DeleteItem(m_infoitem);
     m_infoitem =nullptr;
 }
