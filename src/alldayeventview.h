@@ -66,10 +66,8 @@ public:
     void setSelectSchedule(const ScheduleDtailInfo &info);
     void setMargins(int left, int top, int right, int bottom);
     int upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo());
-    void setInfoItemNull();
 signals:
     void signalsUpdateShcedule(int id = 0);
-    void signalsitem(void *item);
     void signalViewtransparentFrame(int type);
     void signalScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
     void signalUpdatePaint(const int topM);

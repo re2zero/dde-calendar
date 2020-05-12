@@ -127,11 +127,6 @@ void CMonthGraphiview::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
     }
 }
 
-void CMonthGraphiview::setInfoItemNull()
-{
-    m_infoitem = nullptr;
-}
-
 void CMonthGraphiview::updateSize()
 {
     m_Scene->setSceneRect(this->viewport()->rect());
@@ -597,6 +592,7 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
         return;
     CMonthSchceduleWidgetItem *item = dynamic_cast<CMonthSchceduleWidgetItem *>(itemAt(event->pos()));
     if (item != nullptr) {
+        m_infoitem = item;
         if (item->getData().type.ID != 4) {
             if (m_DragStatus == NONE) {
                 switch (getPosInItem(event->pos(),item->rect())) {
@@ -615,6 +611,7 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
             setCursor(Qt::ArrowCursor);
         }
     }
+    m_infoitem = item;
     QDate gDate =  getPosDate(event->pos());
     switch (m_DragStatus) {
     case IsCreate:

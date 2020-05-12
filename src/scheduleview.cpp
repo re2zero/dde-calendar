@@ -142,8 +142,6 @@ void CScheduleView::updateHigh()
 
 void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
 {
-    m_currentShcedule = nullptr;
-//    m_graphicsView->clearSchdule();
     updateAllday();
     m_graphicsView->upDateInfoShow();
 
@@ -497,8 +495,6 @@ void CScheduleView::initConnection()
     // &CScheduleView::signalsUpdateShcedule);
     connect(m_alldaylist, &CAllDayEventWeekView::signalsUpdateShcedule, this,
             &CScheduleView::slotupdateSchedule);
-    connect(m_graphicsView, &CGraphicsView::signalsitem, this, &CScheduleView::slotitem);
-    connect(m_alldaylist, &CAllDayEventWeekView::signalsitem, this, &CScheduleView::slotitem);
     connect(m_graphicsView, &CGraphicsView::signalsCurrentScheduleDate, this,
             &CScheduleView::slotCurrentScheduleDate);
 
@@ -530,20 +526,11 @@ void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
     updateSchedule();
 }
 
-void CScheduleView::slotitem(void *item)
-{
-    m_currentShcedule = item;
-}
 
 void CScheduleView::slotDeleteitem()
 {
-    if (m_currentShcedule == nullptr)
-        return;
-    if (m_currentShcedule == m_graphicsView) {
-        m_graphicsView->slotDeleteItem();
-    } else {
-        m_alldaylist->slotDeleteItem();
-    }
+    m_graphicsView->slotDeleteItem();
+    m_alldaylist->slotDeleteItem();
 }
 
 void CScheduleView::slotCurrentScheduleDate(QDate date)
@@ -570,8 +557,6 @@ void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo 
             m_ScheduleRemindWidget->show(pos22.x() + 15, pos22.y());
         }
     } else {
-        m_alldaylist->setInfoItemNull();
-        m_graphicsView->setInfoItemNull();
         m_ScheduleRemindWidget->hide();
     }
 }
@@ -584,7 +569,6 @@ void CScheduleView::slotUpdatePaint(const int topM)
 
 void CScheduleView::updateSchedule()
 {
-    m_currentShcedule = nullptr;
     m_graphicsView->clearSchdule();
     CScheduleDataCtrl *scheduleDataCtrl =
         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();

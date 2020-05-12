@@ -642,7 +642,6 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             m_press = true;
 
             emit signalScheduleShow(true, item->getData());
-            emit signalsitem(this);
         }
         DragPressEvent(event->pos(),item);
     }
@@ -892,8 +891,8 @@ void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
         if (m_DragStatus == NONE) {
             setCursor(Qt::ArrowCursor);
         }
-
     }
+    m_currentItem = item;
     QDateTime gDate =  m_coorManage->getDate(mapToScene(event->pos()));
     gDate = TimeRounding(gDate);
     switch (m_DragStatus) {

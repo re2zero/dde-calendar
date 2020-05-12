@@ -230,7 +230,6 @@ public slots:
 signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void signalsUpdateShcedule(int id = 0);
-    void signalsitem(void *item);
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     void signalScheduleShow(bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());

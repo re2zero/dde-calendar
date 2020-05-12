@@ -59,7 +59,6 @@ public slots:
     void setDate(QDate date);
     void slotupdateSchedule(int id = 0);
     void slotCtrlSchceduleUpdate(QDate date, int type = 0);
-    void slotitem(void *item);
     void slotDeleteitem();
     void slotCurrentScheduleDate(QDate date);
     void slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
@@ -90,7 +89,6 @@ private:
     QDate                     m_endDate;
     int                       m_viewType = 0;
     int                       m_sMaxNum = 4;
-    void                      *m_currentShcedule = nullptr;
     QColor                    m_linecolor = Qt::lightGray;
     QColor                    m_weekColor = "#E6EEF2";
     QColor                    m_ALLDayColor = "#303030";

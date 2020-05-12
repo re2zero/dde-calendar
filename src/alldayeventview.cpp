@@ -568,11 +568,6 @@ int CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedul
     return m_topMagin;
 }
 
-void CAllDayEventWeekView::setInfoItemNull()
-{
-    m_currentitem = nullptr;
-}
-
 CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
     : DGraphicsView (parent),
       m_Scene(new QGraphicsScene(this))
@@ -790,7 +785,6 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
             m_press = true;
             item->setPressFlag(true);
             emit signalScheduleShow(true, item->getData());
-            emit signalsitem(this);
         } else {
             emit signalScheduleShow(false);
         }
@@ -894,8 +888,9 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
         if (m_DragStatus == NONE) {
             setCursor(Qt::ArrowCursor);
         }
-
     }
+    m_currentitem = item;
+
     QDate gDate =  m_coorManage->getsDate(mapFrom(this, event->pos()));
     switch (m_DragStatus) {
     case IsCreate:
@@ -1198,7 +1193,6 @@ void CAllDayEventWeekView::slotedititem(CAllDayEventWidgetItem *item, int type)
 void CAllDayEventWeekView::slotupdateItem(CAllDayEventWidgetItem *item)
 {
     m_currentitem = item;
-    emit signalsitem(this);
 }
 
 void CAllDayEventWeekView::slotDeleteItem()

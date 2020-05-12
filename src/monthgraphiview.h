@@ -38,7 +38,6 @@ public:
     void setLunarVisible(bool visible);
     void setScheduleInfo(const QVector<ScheduleDateRangeInfo> &info);
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
-    void setInfoItemNull();
 private:
     void updateSize();
     void updateLunar();
