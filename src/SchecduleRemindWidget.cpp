@@ -56,14 +56,18 @@ void CenterWidget::setData(const ScheduleDtailInfo &vScheduleInfo, const CSchedu
 
 void CenterWidget::setTheMe(const int type)
 {
-    DPalette palette;
-    textColor = palette.color(DPalette::Normal, DPalette::Text);
+//    DPalette palette;
+//    textColor = palette.color(DPalette::Normal, DPalette::Text);
     if (type == 2) {
         timeColor = QColor("#C0C6D4");
         timeColor.setAlphaF(0.7);
+        textColor = QColor("#C0C6D4");
+        textColor.setAlphaF(1);
     } else {
         timeColor = QColor("#414D68");
         timeColor.setAlphaF(0.7);
+        textColor = QColor("#414D68");
+        textColor.setAlphaF(1);
     }
     update();
 }
