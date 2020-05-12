@@ -349,6 +349,14 @@ void CSchceduleDlg::slotTextChange()
     m_context = m_textEdit->toPlainText();
 }
 
+void CSchceduleDlg::slotendrepeatTextchange()
+{
+    if (m_endrepeattimes->text().isEmpty())
+        m_OkBt->setEnabled(false);
+    else
+        m_OkBt->setEnabled(true);
+}
+
 void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)
 {
     m_beginDateEdit->setDate(date);
@@ -853,20 +861,20 @@ void CSchceduleDlg::initUI()
     downlayout->setContentsMargins(0, 0, 0, 0);
     m_cancelBt = new DPushButton(tr("Cancel"));
     m_cancelBt->setFixedSize(189, 36);
-    m_OkBt = new DPushButton(tr("Save"));
+    m_OkBt = new DSuggestButton(tr("Save"));
     m_OkBt->setFixedSize(189, 36);
-    DPalette okpa = m_OkBt->palette();
-    if (themetype == 0 || themetype == 1) {
-        okpa.setColor(DPalette::ButtonText, Qt::white);
-        okpa.setColor(DPalette::Dark, QColor("#25B7FF"));
-        okpa.setColor(DPalette::Light, QColor("#0098FF"));
-    } else {
-        okpa.setColor(DPalette::ButtonText, "#B8D3FF");
-        okpa.setColor(DPalette::Dark, QColor("#0056C1"));
-        okpa.setColor(DPalette::Light, QColor("#004C9C"));
-    }
+//    DPalette okpa = m_OkBt->palette();
+//    if (themetype == 0 || themetype == 1) {
+//        okpa.setColor(DPalette::ButtonText, Qt::white);
+//        okpa.setColor(DPalette::Dark, QColor("#25B7FF"));
+//        okpa.setColor(DPalette::Light, QColor("#0098FF"));
+//    } else {
+//        okpa.setColor(DPalette::ButtonText, "#B8D3FF");
+//        okpa.setColor(DPalette::Dark, QColor("#0056C1"));
+//        okpa.setColor(DPalette::Light, QColor("#004C9C"));
+//    }
 
-    m_OkBt->setPalette(okpa);
+//    m_OkBt->setPalette(okpa);
     downlayout->addWidget(m_cancelBt);
     DVerticalLine *verline = new DVerticalLine(this);
     verline->setFixedSize(3, 28);
@@ -898,6 +906,7 @@ void CSchceduleDlg::initConnection()
     connect(m_cancelBt, &DPushButton::clicked, this, &CSchceduleDlg::slotCancelBt);
     connect(m_OkBt, &DPushButton::clicked, this, &CSchceduleDlg::slotOkBt);
     connect(m_textEdit, &DTextEdit::textChanged, this, &CSchceduleDlg::slotTextChange);
+    connect(m_endrepeattimes,&DLineEdit::textChanged, this, &CSchceduleDlg::slotendrepeatTextchange);
 
     connect(m_allDayCheckbox, &DCheckBox::stateChanged, this,
             &CSchceduleDlg::slotallDayStateChanged);

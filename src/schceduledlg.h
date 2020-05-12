@@ -26,6 +26,7 @@
 #include <DFrame>
 #include <DLineEdit>
 #include <DPushButton>
+#include <DSuggestButton>
 #include <DTextEdit>
 #include <DTimeEdit>
 #include <QButtonGroup>
@@ -58,6 +59,7 @@ public slots:
     void slotCancelBt();
     void slotOkBt();
     void slotTextChange();
+    void slotendrepeatTextchange();
     void slotBDateEidtInfo(const QDate &date);
     void slotEDateEidtInfo(const QDate &date);
     void slotallDayStateChanged(int state);
@@ -106,7 +108,7 @@ private:
     DDateEdit *m_endRepeatDate = nullptr;
     DWidget *m_endrepeatWidget;
     DPushButton *m_cancelBt = nullptr;
-    DPushButton *m_OkBt = nullptr;
+    DSuggestButton *m_OkBt = nullptr;
     // CCalendarTimeEidt                *m_bCalendarTimeEidt;
     // CCalendarTimeEidt                *m_eCalendarTimeEidt;
     // CCustomCalendarWidget            *m_bCustomDateW;
