@@ -347,7 +347,6 @@ void CMonthGraphiview::updateScheduleInfo(const ScheduleDtailInfo &info)
         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
             info);
     }
-    emit slotSchceduleUpdate(0);
 }
 
 void CMonthGraphiview::DeleteItem(CMonthSchceduleWidgetItem *infoitem)
@@ -510,9 +509,8 @@ void CMonthGraphiview::dropEvent(QDropEvent *event)
     if (event->mimeData()->hasFormat("Info")) {
         if (m_MoveDate !=m_PressDate) {
             updateScheduleInfo(m_DragScheduleInfo);
-        } else {
-            emit slotSchceduleUpdate(0);
         }
+        emit slotSchceduleUpdate(0);
         m_DragStatus = NONE;
     }
 }
@@ -682,7 +680,6 @@ void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
         if (qAbs(m_MoveDate.daysTo(m_PressDate)<7)) {
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
                 m_DragScheduleInfo);
-            emit slotSchceduleUpdate(0);
         }
         break;
     case ChangeBegin:
@@ -699,6 +696,7 @@ void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
         break;
     }
     m_DragStatus = NONE;
+    emit slotSchceduleUpdate(0);
 }
 
 void CMonthGraphiview::contextMenuEvent(QContextMenuEvent *event)
