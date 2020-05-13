@@ -699,7 +699,7 @@ void CSchceduleDlg::initUI()
     m_beginDateEdit->setFixedSize(175, 36);
 
     m_beginTimeEdit = new CTimeEdit(this);
-    m_beginTimeEdit->setFixedSize(109, 36);
+    m_beginTimeEdit->setFixedSize(145, 36);
     m_beginDateEdit->setCalendarPopup(true);
     m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
     // QHBoxLayout *begintimeelayout  = new QHBoxLayout;
@@ -732,7 +732,7 @@ void CSchceduleDlg::initUI()
     m_endDateEdit = new QDateEdit(this);
     m_endDateEdit->setFixedSize(175, 36);
     m_endTimeEdit = new CTimeEdit(this);
-    m_endTimeEdit->setFixedSize(109, 36);
+    m_endTimeEdit->setFixedSize(145, 36);
     m_endDateEdit->setCalendarPopup(true);
     m_endDateEdit->setDisplayFormat("yyyy-MM-dd");
 
