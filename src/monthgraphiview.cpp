@@ -677,10 +677,11 @@ void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
     m_press = false;
     switch (m_DragStatus) {
     case IsCreate:
-        if (qAbs(m_MoveDate.daysTo(m_PressDate)<7)) {
+        if (qAbs(m_MoveDate.daysTo(m_PressDate)<43)) {
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
                 m_DragScheduleInfo);
         }
+        qDebug()<<qAbs(m_MoveDate.daysTo(m_PressDate));
         break;
     case ChangeBegin:
         if (m_MoveDate != m_InfoBeginTime.date()) {
