@@ -1236,7 +1236,7 @@ void CGraphicsView::dragMoveEvent(QDragMoveEvent *event)
 void CGraphicsView::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        if (m_MoveDate !=m_PressDate) {
+        if ( event->source() !=this ||m_MoveDate !=m_PressDate) {
             updateScheduleInfo(m_DragScheduleInfo);
         } else {
             emit signalsUpdateShcedule(0);
