@@ -57,6 +57,7 @@ public:
     void setTheMe(int type = 0);
     void updateHigh();
     void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
+    void setRange(QDate begin, QDate end);
 
     CScheduleCoorManage *getCoorManage()
     {

@@ -167,6 +167,13 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int 
     scrollBarValueChangedSlot();
 }
 
+void CGraphicsView::setRange(QDate begin, QDate end)
+{
+    m_beginDate = begin;
+    m_endDate = end;
+    getCoorManage()->setDateRange(begin, end);
+}
+
 void CGraphicsView::setInfo(const QVector<ScheduleDtailInfo> &info)
 {
     m_scheduleInfo = info;
@@ -214,7 +221,6 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
         vListData.append(info);
         break;
     }
-
     QMap<QDate,QVector<ScheduleDtailInfo> > m_InfoMap;
     QDate currentDate;
     qint64 count = m_beginDate.daysTo(m_endDate);

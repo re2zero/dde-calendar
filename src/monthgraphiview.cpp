@@ -735,6 +735,7 @@ void CMonthGraphiview::contextMenuEvent(QContextMenuEvent *event)
 
 void CMonthGraphiview::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
     updateSize();
     updateInfo();
 }
