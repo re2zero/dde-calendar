@@ -57,6 +57,8 @@ signals:
 
     void signaldoubleclickDate(QDate date);
     void signalselectMonth(QDate date);
+    void signalselectWeekwindow(QDate date);
+    void signalupdateschcedule(int i);
     void signalHideInfo();
     void signalSelectInfo(bool flag);
 public slots:

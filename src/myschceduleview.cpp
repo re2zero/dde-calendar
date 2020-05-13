@@ -527,18 +527,18 @@ void CMySchceduleView::initUI()
         hBtLayout->setSpacing(0);
         hBtLayout->setContentsMargins(0, 0, 0, 0);
         // hBtLayout->addStretch();
-        m_editBt = new DPushButton(tr("Edit"));
-        DPalette pa = m_editBt->palette();
-        if (themetype == 0 || themetype == 1) {
-            pa.setColor(DPalette::ButtonText, Qt::white);
-            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-            pa.setColor(DPalette::Light, QColor("#0098FF"));
-        } else {
-            pa.setColor(DPalette::ButtonText, "#B8D3FF");
-            pa.setColor(DPalette::Dark, QColor("#0056C1"));
-            pa.setColor(DPalette::Light, QColor("#004C9C"));
-        }
-        m_editBt->setPalette(pa);
+        m_editBt = new DSuggestButton(tr("Edit"));
+//        DPalette pa = m_editBt->palette();
+//        if (themetype == 0 || themetype == 1) {
+//            pa.setColor(DPalette::ButtonText, Qt::white);
+//            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+//            pa.setColor(DPalette::Light, QColor("#0098FF"));
+//        } else {
+//            pa.setColor(DPalette::ButtonText, "#B8D3FF");
+//            pa.setColor(DPalette::Dark, QColor("#0056C1"));
+//            pa.setColor(DPalette::Light, QColor("#004C9C"));
+//        }
+//        m_editBt->setPalette(pa);
         m_editBt->setFixedSize(165, 36);
         m_deleteBt = new DPushButton(tr("Delete"));
         m_deleteBt->setFixedSize(165, 36);

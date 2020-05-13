@@ -24,6 +24,7 @@
 #include <QLabel>
 #include <DDialog>
 #include <DPushButton>
+#include <DSuggestButton>
 #include "schedulestructs.h"
 #include <QScrollArea>
 #include <QScrollBar>
@@ -58,7 +59,7 @@ protected:
 private:
     QLabel                           *m_schceduleLabel = nullptr;
     QLabel                           *m_timeLabel = nullptr;
-    DPushButton                      *m_editBt = nullptr;
+    DSuggestButton                      *m_editBt = nullptr;
     DPushButton                      *m_deleteBt = nullptr;
     DPushButton                      *m_okBt = nullptr;
     QLabel                           *m_icon;

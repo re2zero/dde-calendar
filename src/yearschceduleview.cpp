@@ -951,7 +951,9 @@ void CYearSchceduleOutView::setSoloDay(QString soloday)
 
 void CYearSchceduleOutView::setData(QVector<ScheduleDtailInfo> &vListData)
 {
+    list_count = vListData.size();
     yearschceduleview->setData(vListData);
+    scheduleinfoList = yearschceduleview->getlistdate();
 }
 
 void CYearSchceduleOutView::clearData()
@@ -977,6 +979,7 @@ void CYearSchceduleOutView::setDtype(int type, int arrowheight)
 
 void CYearSchceduleOutView::setCurrentDate(QDate cdate)
 {
+    currentdate = cdate;
     yearschceduleview->setCurrentDate(cdate);
 }
 
@@ -985,4 +988,36 @@ void CYearSchceduleOutView::adjustPosition(bool ad)
     yearschceduleview->adjustPosition(ad);
 }
 
-
+void CYearSchceduleOutView::mousePressEvent(QMouseEvent *event)
+{
+    QPoint pos = QCursor::pos();
+    pos = this->mapFromGlobal(pos);
+    QVector<QRect> rect_press;
+    QRect rect(35,50,width() - 50,20);
+    int listShow = 0;
+    if (!scheduleinfoList.isEmpty()) {
+        if (scheduleinfoList.size() < 5)
+            listShow = scheduleinfoList.size();
+        else
+            listShow = 5;
+    }
+    for (int i = 0; i < listShow; i++) {
+        rect_press.append(QRect(35, 20 + i * 30, width() - 50, 20));
+    }
+    for (int i = 0; i < listShow; i++) {
+        if (rect_press.at(i).contains(pos)) {
+            if (i > 3 && list_count > 5) {
+                emit signalsViewSelectDate(currentdate);
+                this->hide();
+                //跳转到周视图
+            } else {
+                if (scheduleinfoList.at(i).type.ID != 4) {
+                    CSchceduleDlg dlg(0);
+                    dlg.setData(scheduleinfoList.at(i));
+                    if (dlg.exec() == DDialog::Accepted)
+                        emit signalupdateschcedule(1);
+                }
+            }
+        }
+    }
+}

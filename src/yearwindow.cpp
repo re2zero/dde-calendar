@@ -233,6 +233,15 @@ void CYearWindow::initConnection()
             &YearFrame::signalselectMonth,
             this,
             &CYearWindow::signalselectMonth);
+    connect(YearWidget_First,
+            &YearFrame::signalselectWeekwindow,
+            this,
+            &CYearWindow::signalselectWeekwindow);
+
+    connect(YearWidget_Second,
+            &YearFrame::signalselectWeekwindow,
+            this,
+            &CYearWindow::signalselectWeekwindow);
 
     connect(YearWidget_First,
             &YearFrame::signalUpdateYearDate,
@@ -468,6 +477,8 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
             connect(view, &CYearView::singanleActiveW, this, &YearFrame::slotActiveW);
             connect(view, &CYearView::signalcurrentDateChanged, this, &YearFrame::slotcurrentDateChanged);
             connect(view, &CYearView::signaldoubleclickDate, this, &YearFrame::signaldoubleclickDate);
+            connect(view, &CYearView::signalselectWeekwindow, this, &YearFrame::signalselectWeekwindow);
+            connect(view, &CYearView::signalupdateschcedule, this, &YearFrame::slotupdateSchedule);
             connect(view, &CYearView::signalselectMonth, this, &YearFrame::signalselectMonth);
             connect(view, &CYearView::signalHideInfo, this, &YearFrame::slotHideInfo);
             connect(view, &CYearView::signalSelectInfo, this, &YearFrame::slotSelectInfo);

@@ -91,6 +91,7 @@ private slots:
 
     void slotdoubleclickDate(QDate date);
     void slotselectMonth(QDate date);
+    void slotselectWeek(QDate date);
 
     void slotCurrentScheduleDate(QDate date);
     void slotViewSelectDate(QDate date);

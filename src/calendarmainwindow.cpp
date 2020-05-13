@@ -564,6 +564,7 @@ void Calendarmainwindow::initConnection()
             this, &Calendarmainwindow::setScheduleHide);
 
     connect(m_yearwindow, &CYearWindow::signaldoubleclickDate, this, &Calendarmainwindow::slotdoubleclickDate);
+    connect(m_yearwindow, &CYearWindow::signalselectWeekwindow, this, &Calendarmainwindow::slotselectWeek);
     connect(m_yearwindow, &CYearWindow::signalselectMonth, this, &Calendarmainwindow::slotselectMonth);
 
     connect(m_monthWindow, &CMonthWindow::signalsViewSelectDate, this, &Calendarmainwindow::slotViewSelectDate);
@@ -999,7 +1000,15 @@ void Calendarmainwindow::slotdoubleclickDate(QDate date)
 
 void Calendarmainwindow::slotselectMonth(QDate date)
 {
+    qDebug() << date;
     viewWindow(2, QDateTime(date));
+    CConfigSettings::setOption("base.view", m_priindex + 1);
+}
+
+void Calendarmainwindow::slotselectWeek(QDate date)
+{
+    qDebug() << date;
+    viewWindow(3, QDateTime(date));
     CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 

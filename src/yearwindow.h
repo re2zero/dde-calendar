@@ -58,6 +58,7 @@ signals:
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
     void signaldoubleclickDate(QDate date);
     void signalselectMonth(QDate date);
+    void signalselectWeekwindow(QDate date);
     void signalCurrentDate(QDate date);
 
 private slots:
@@ -124,6 +125,7 @@ private:
     void getDbusData();
 signals:
     void signaldoubleclickDate(QDate date);
+    void signalselectWeekwindow(QDate date);
     void signalselectMonth(QDate date);
     void signalUpdateYearDate(const QDate &date);
 public slots:

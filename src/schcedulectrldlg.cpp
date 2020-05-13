@@ -235,6 +235,7 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
     QFontMetrics font_button(labelTitle);
     QString text_button = font_button.elidedText(btName,Qt::ElideRight,112);
     button->setText(text_button);
+    button->setToolTip(btName);
     button->setFixedWidth(129);
     button->setFixedHeight(36);
     button->setFont(labelTitle);
@@ -265,11 +266,13 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
 void CSchceduleCtrlDlg::setText(QString str)
 {
     m_firstLabel->setText(str);
+    m_firstLabel->setToolTip(str);
 }
 
 void CSchceduleCtrlDlg::setInformativeText(QString str)
 {
     m_seconLabel->setText(str);
+    m_seconLabel->setToolTip(str);
 }
 
 DPushButton *CSchceduleCtrlDlg::clickButton()

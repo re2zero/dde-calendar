@@ -39,6 +39,10 @@ public:
     ~CYearSchceduleView();
     void setSoloDay(QString soloday);
     void setData(QVector<ScheduleDtailInfo> &vListData);
+    QVector<ScheduleDtailInfo> getlistdate()
+    {
+        return m_vlistData;
+    }
     void clearData();
     int showWindow();
     void setTheMe(int type = 0);
@@ -111,8 +115,16 @@ public:
     void setDtype(int type, int arrowheight);
     void setCurrentDate(QDate cdate);
     void adjustPosition(bool ad);
+signals:
+    void signalsViewSelectDate(QDate date);
+    void signalupdateschcedule(int i);
 private:
     CYearSchceduleView *yearschceduleview;
+    QVector<ScheduleDtailInfo> scheduleinfoList;
+    QDate currentdate;
+    int list_count = 0;
+protected:
+    void mousePressEvent(QMouseEvent *event);
 };
 #endif // CSHCEDULEDAYVIEW_H
 

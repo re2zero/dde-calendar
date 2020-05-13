@@ -424,6 +424,8 @@ void CYearView::createYearSchceduleView(QWidget *parent)
 {
     if (m_Scheduleview == nullptr) {
         m_Scheduleview = new CYearSchceduleOutView(parent);
+        connect(m_Scheduleview, &CYearSchceduleOutView::signalsViewSelectDate, this, &CYearView::signalselectWeekwindow);
+        connect(m_Scheduleview, &CYearSchceduleOutView::signalupdateschcedule, this, &CYearView::signalupdateschcedule);
     }
 
 }
