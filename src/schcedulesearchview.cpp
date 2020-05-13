@@ -605,6 +605,7 @@ void CSchceduleSearchView::updateDateShow()
         gwi->setForegroundRole(DPalette::WindowText);
         //gwi->setForegroundRole(DPalette::Window);
         gwi->setFont(font);
+        gwi->move(this->width() - 70, this->height() - 196);
         gwi->setText(tr("No search results"));
         gwi->setFixedSize(m_maxWidth - 20, 450);
         listItem->setSizeHint(QSize(m_maxWidth, 450)); //每次改变Item的高度
