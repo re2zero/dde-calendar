@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="th" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="th">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>ลบกิจกรรมในอนาคตทั้งหมด</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>กิจกรรมใหม่</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>ลบกิจกรรมในอนาคตทั้งหมด</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>อีก 1%</translation>
+        <source>New Event</source>
+        <translation>กิจกรรมใหม่</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>แก้ไข</translation>
@@ -248,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation>ลบ</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>กิจกรรมใหม่</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>กิจกรรมใหม่</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -283,10 +294,21 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>อีก 1%</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
         <translation>เหตุการณ์ใหม่</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>กิจกรรมใหม่</translation>
     </message>
 </context>
 <context>
@@ -483,7 +505,7 @@
     </message>
     <message>
         <source>On</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>time(s)</source>
@@ -701,7 +723,7 @@
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>D</source>

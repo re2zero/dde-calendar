@@ -47,6 +47,10 @@
         <source>Delete All Future Events</source>
         <translation>Delete All Future Events</translation>
     </message>
+    <message>
+        <source>New Event</source>
+        <translation>New Event</translation>
+    </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
@@ -233,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>Delete All Future Events</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>%1 more</translation>
+        <source>New Event</source>
+        <translation>New Event</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Edit</translation>
@@ -250,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation>Delete</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>New event</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>New Event</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -285,10 +294,21 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>%1 more</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
         <translation>New event</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>New Event</translation>
     </message>
 </context>
 <context>
@@ -346,7 +366,7 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished">Delete All Future Events</translation>
+        <translation>Delete All Future Events</translation>
     </message>
 </context>
 <context>
@@ -537,31 +557,31 @@
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ends:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Description:</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Description</translation>
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Starts:</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>Work</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"></translation>
+        <translation>Life</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Other</translation>
     </message>
 </context>
 <context>

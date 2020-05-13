@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="sr">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Обриши све будуће догађаје</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Нови догађај</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>Обриши све будуће догађаје</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>Још %1</translation>
+        <source>New Event</source>
+        <translation>Нови догађај</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Уреди</translation>
@@ -248,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation>Обриши</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>Нови догађај</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Нови догађај</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -263,7 +274,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Да ли желите да обришете све појаве овог догађаја или само изабрану ставку?</translation>
+        <translation>Желите ли да обришете све појаве овог догађаја или само изабрану ставку?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -283,9 +294,20 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>Још %1</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
+        <translation>Нови догађај</translation>
+    </message>
+    <message>
+        <source>New Event</source>
         <translation>Нови догађај</translation>
     </message>
 </context>

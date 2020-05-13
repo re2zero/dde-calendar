@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Delete All Future Events</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">New Event</translation>
     </message>
 </context>
 <context>
@@ -231,6 +237,61 @@
         <source>Delete All Future Events</source>
         <translation>Delete All Future Events</translation>
     </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">New Event</translation>
+    </message>
+</context>
+<context>
+    <name>CMonthGraphiview</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Edit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Delete</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">New event</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">New Event</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished">You are deleting an event.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished">Are you sure you want to delete this event?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished">Delete All</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished">Delete Only This Event</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">Delete All Future Events</translation>
+    </message>
 </context>
 <context>
     <name>CMonthSchceduleNumButton</name>
@@ -240,53 +301,14 @@
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>Edit</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Delete</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>You are deleting an event.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Are you sure you want to delete this event?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Delete All</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Delete Only This Event</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Delete All Future Events</translation>
-    </message>
-</context>
-<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
         <translation>New event</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">New Event</translation>
     </message>
 </context>
 <context>

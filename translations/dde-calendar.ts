@@ -47,6 +47,10 @@
         <source>Delete All Future Events</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CAllDayEventWidgetItem</name>
@@ -233,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
+        <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation type="unfinished">编辑</translation>
@@ -250,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation type="unfinished">删除</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -285,9 +294,20 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

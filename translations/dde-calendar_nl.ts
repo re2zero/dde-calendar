@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="nl">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Verwijder alle toekomstige afspraken</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Nieuwe afspraak</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>Verwijder alle toekomstige afspraken</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>%1 meer</translation>
+        <source>New Event</source>
+        <translation>Nieuwe afspraak</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Bewerken</translation>
@@ -248,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation>Verwijderen</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>Nieuwe gebeurtenis</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Nieuwe afspraak</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -275,7 +286,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Wil je deze én toekomstige afspraken verwijderen, of enkel de deze?</translation>
+        <translation>Wil je deze én toekomstige afspraken verwijderen, of enkel deze?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -283,10 +294,21 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>%1 meer</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
         <translation>Nieuwe gebeurtenis</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Nieuwe afspraak</translation>
     </message>
 </context>
 <context>

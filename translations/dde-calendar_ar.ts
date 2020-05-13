@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ar" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ar">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>حذف جميع الأحداث المستقبلية</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>حدث جديد</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>حذف جميع الأحداث المستقبلية</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>أكثر من 1%</translation>
+        <source>New Event</source>
+        <translation>حدث جديد</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>تحرير</translation>
@@ -250,8 +253,16 @@
         <translation>حذف</translation>
     </message>
     <message>
+        <source>New event</source>
+        <translation>حدث جديد</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>حدث جديد</translation>
+    </message>
+    <message>
         <source>You are deleting an event.</source>
-        <translation>أنت الآن تحذف الحدث</translation>
+        <translation>أنت تحذف الآن الحدث</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -263,7 +274,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>هل تريد حذف جميع الفعاليات لهذا الحدث أو الفعاليات المحددة فقط؟</translation>
+        <translation>هل تريد حذف جميع الفعاليات في هذا الحدث أو الفعاليات المحددة فقط؟</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -275,7 +286,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>هل تريد حذف هذه الفعالية لهذا الحدث وجميع الفعاليات المستقبلية أو حذف المحددة فقط؟</translation>
+        <translation>هل تريد حذف جميع الفعاليات المستقبلية لهذا الحدث، أو الفعاليات المحددة فقط؟</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -283,9 +294,20 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>أكثر من 1%</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
+        <translation>حدث جديد</translation>
+    </message>
+    <message>
+        <source>New Event</source>
         <translation>حدث جديد</translation>
     </message>
 </context>

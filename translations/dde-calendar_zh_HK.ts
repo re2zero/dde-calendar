@@ -1,9 +1,11 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_HK" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_HK">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>新建日程</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -15,11 +17,11 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在刪除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>您確定要刪除此日程嗎？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -27,23 +29,27 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的所有重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>全部刪除</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>僅刪除此日程</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>刪除所有將來日程</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>新建日程</translation>
     </message>
 </context>
 <context>
@@ -54,11 +60,11 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在刪除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>您確定要刪除此日程嗎？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -66,30 +72,30 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的所有重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>全部刪除</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>僅刪除此日程</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>刪除所有將來日程</translation>
     </message>
 </context>
 <context>
     <name>CAllDaySchceduleWeekView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>新建日程</translation>
     </message>
 </context>
 <context>
@@ -104,15 +110,15 @@
     </message>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>新建日程</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在刪除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>您確定要刪除此日程嗎？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -120,54 +126,54 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的所有重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>全部刪除</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>僅刪除此日程</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>刪除所有將來日程</translation>
     </message>
 </context>
 <context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
-        <translation type="unfinished"/>
+        <translation>星期一</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation type="unfinished"/>
+        <translation>星期二</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation type="unfinished"/>
+        <translation>星期三</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation type="unfinished"/>
+        <translation>星期四</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation type="unfinished"/>
+        <translation>星期五</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation type="unfinished"/>
+        <translation>星期六</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation type="unfinished"/>
+        <translation>星期日</translation>
     </message>
 </context>
 <context>
@@ -182,7 +188,7 @@
     </message>
     <message>
         <source>D</source>
-        <translation type="unfinished"/>
+        <translation>日</translation>
     </message>
 </context>
 <context>
@@ -197,15 +203,15 @@
     </message>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>新建日程</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在刪除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>您確定要刪除此日程嗎？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -213,49 +219,54 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的所有重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>全部刪除</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>僅刪除此日程</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>刪除所有將來日程</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation type="unfinished"/>
+        <source>New Event</source>
+        <translation>新建日程</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>更改</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>刪除</translation>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>新建日程</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在刪除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>您確定要刪除此日程嗎？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -263,30 +274,41 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的所有重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>全部刪除</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>僅刪除此日程</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>刪除所有將來日程</translation>
+    </message>
+</context>
+<context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>還有%1項</translation>
     </message>
 </context>
 <context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>新建日程</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>新建日程</translation>
     </message>
 </context>
 <context>
@@ -300,11 +322,11 @@
     <name>CMySchceduleView</name>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在刪除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>您確定要刪除此日程嗎？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -316,23 +338,23 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的所有重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>全部刪除</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>僅刪除此日程</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>My Event</source>
-        <translation type="unfinished"/>
+        <translation>我的日程</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -344,26 +366,26 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>刪除所有將來日程</translation>
     </message>
 </context>
 <context>
     <name>CSchceduleDlg</name>
     <message>
         <source>New Event</source>
-        <translation type="unfinished"/>
+        <translation>新建日程</translation>
     </message>
     <message>
         <source>Edit Event</source>
-        <translation type="unfinished"/>
+        <translation>更改日程</translation>
     </message>
     <message>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation type="unfinished"/>
+        <translation>重複日程的所有重複必須具有相同的全天狀態。</translation>
     </message>
     <message>
         <source>Do you want to change all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>您要更改所有重複嗎？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -371,35 +393,35 @@
     </message>
     <message>
         <source>Change All</source>
-        <translation type="unfinished"/>
+        <translation>全部更改</translation>
     </message>
     <message>
         <source>You are changing the repeating rule of this event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在更改日程的重複規則。</translation>
     </message>
     <message>
         <source>You are changing a repeating event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在更改重複日程。</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>您要更改此日程的僅這一個重複，還是更改它的所有重複？</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished"/>
+        <translation>全部日程</translation>
     </message>
     <message>
         <source>Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>僅此日程</translation>
     </message>
     <message>
         <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>您要更改此日程的這個重複和所有將來重複，還是只更改所選重複？</translation>
     </message>
     <message>
         <source>All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>所有將來日程</translation>
     </message>
     <message>
         <source>Never</source>
@@ -407,35 +429,35 @@
     </message>
     <message>
         <source>At time of event</source>
-        <translation type="unfinished"/>
+        <translation>日程開始時</translation>
     </message>
     <message>
         <source>15 minutes before</source>
-        <translation type="unfinished"/>
+        <translation>15分鐘前</translation>
     </message>
     <message>
         <source>30 minutes before</source>
-        <translation type="unfinished"/>
+        <translation>30分鐘前</translation>
     </message>
     <message>
         <source>1 hour before</source>
-        <translation type="unfinished"/>
+        <translation>1小時前</translation>
     </message>
     <message>
         <source>1 day before</source>
-        <translation type="unfinished"/>
+        <translation>1天前</translation>
     </message>
     <message>
         <source>2 days before</source>
-        <translation type="unfinished"/>
+        <translation>2天前</translation>
     </message>
     <message>
         <source>1 week before</source>
-        <translation type="unfinished"/>
+        <translation>1週前</translation>
     </message>
     <message>
         <source>On start day (9:00 AM)</source>
-        <translation type="unfinished"/>
+        <translation>日程發生當天（上午9點）</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -443,51 +465,51 @@
     </message>
     <message>
         <source>All Day:</source>
-        <translation type="unfinished"/>
+        <translation>全天：</translation>
     </message>
     <message>
         <source>Remind Me:</source>
-        <translation type="unfinished"/>
+        <translation>提醒：</translation>
     </message>
     <message>
         <source>Repeat:</source>
-        <translation type="unfinished"/>
+        <translation>重複：</translation>
     </message>
     <message>
         <source>Daily</source>
-        <translation type="unfinished"/>
+        <translation>每天</translation>
     </message>
     <message>
         <source>Weekdays</source>
-        <translation type="unfinished"/>
+        <translation>工作日</translation>
     </message>
     <message>
         <source>Weekly</source>
-        <translation type="unfinished"/>
+        <translation>每週</translation>
     </message>
     <message>
         <source>Monthly</source>
-        <translation type="unfinished"/>
+        <translation>每月</translation>
     </message>
     <message>
         <source>Yearly</source>
-        <translation type="unfinished"/>
+        <translation>每年</translation>
     </message>
     <message>
         <source>End Repeat:</source>
-        <translation type="unfinished"/>
+        <translation>結束重複：</translation>
     </message>
     <message>
         <source>After</source>
-        <translation type="unfinished"/>
+        <translation>於</translation>
     </message>
     <message>
         <source>On</source>
-        <translation>開</translation>
+        <translation>於日期</translation>
     </message>
     <message>
         <source>time(s)</source>
-        <translation type="unfinished"/>
+        <translation>次後</translation>
     </message>
     <message>
         <source>Save</source>
@@ -495,11 +517,11 @@
     </message>
     <message>
         <source>New event</source>
-        <translation type="unfinished"/>
+        <translation>新建日程</translation>
     </message>
     <message>
         <source>End time must be greater than start time</source>
-        <translation type="unfinished"/>
+        <translation>結束時間需晚於開始時間</translation>
     </message>
     <message>
         <source>OK</source>
@@ -511,35 +533,35 @@
     </message>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"/>
+        <translation>全天</translation>
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"/>
+        <translation>開始時間</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"/>
+        <translation>結束時間</translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"/>
+        <translation>提醒</translation>
     </message>
     <message>
         <source>Repeat</source>
-        <translation>按鍵重複</translation>
+        <translation>重複</translation>
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"/>
+        <translation>結束重複</translation>
     </message>
     <message>
         <source>Ends:</source>
-        <translation type="unfinished"/>
+        <translation>結束時間：</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"/>
+        <translation>描述：</translation>
     </message>
     <message>
         <source>Description</source>
@@ -547,15 +569,15 @@
     </message>
     <message>
         <source>Starts:</source>
-        <translation type="unfinished"/>
+        <translation>開始時間：</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"/>
+        <translation>工作</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation type="unfinished"/>
+        <translation>生活</translation>
     </message>
     <message>
         <source>Other</source>
@@ -574,7 +596,7 @@
     </message>
     <message>
         <source>D</source>
-        <translation type="unfinished"/>
+        <translation>日</translation>
     </message>
 </context>
 <context>
@@ -589,11 +611,11 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>您正在刪除日程。</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>您確定要刪除此日程嗎？</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -601,27 +623,27 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的所有重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>全部刪除</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>僅刪除此日程</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>刪除所有將來日程</translation>
     </message>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"/>
+        <translation>全天</translation>
     </message>
 </context>
 <context>
@@ -635,14 +657,14 @@
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation type="unfinished"/>
+        <translation>全天</translation>
     </message>
 </context>
 <context>
     <name>CWeekWindow</name>
     <message>
         <source>Week</source>
-        <translation type="unfinished"/>
+        <translation>周</translation>
     </message>
     <message>
         <source>Y</source>
@@ -653,18 +675,18 @@
     <name>CYearSchceduleItem</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"/>
+        <translation>全天</translation>
     </message>
 </context>
 <context>
     <name>CYearSchceduleView</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"/>
+        <translation>全天</translation>
     </message>
     <message>
         <source>No event</source>
-        <translation type="unfinished"/>
+        <translation>無日程</translation>
     </message>
 </context>
 <context>
@@ -682,7 +704,7 @@
     </message>
     <message>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation type="unfinished"/>
+        <translation>日曆是一款查看日期、管理日程的小工具。</translation>
     </message>
 </context>
 <context>
@@ -701,18 +723,18 @@
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"/>
+        <translation>周</translation>
     </message>
     <message>
         <source>D</source>
-        <translation type="unfinished"/>
+        <translation>日</translation>
     </message>
 </context>
 <context>
     <name>CenterWidget</name>
     <message>
         <source>All Day</source>
-        <translation type="unfinished"/>
+        <translation>全天</translation>
     </message>
 </context>
 <context>
@@ -746,7 +768,7 @@
     </message>
     <message>
         <source>Delete event</source>
-        <translation type="unfinished"/>
+        <translation>刪除日程</translation>
     </message>
     <message>
         <source>Copy</source>

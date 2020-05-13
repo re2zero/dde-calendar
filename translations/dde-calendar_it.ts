@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="it">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Tutte le occorrenze future</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Nuovo evento</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>Tutte le occorrenze future</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>%1 in più</translation>
+        <source>New Event</source>
+        <translation>Nuovo evento</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Modifica</translation>
@@ -248,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation>Elimina</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>Nuovo evento</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Nuovo evento</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -271,11 +282,11 @@
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>Elimina solo il singolo evento</translation>
+        <translation>Elimina solo quello selezionato</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Desideri eliminare questa e tutte le occorrenze successive di questo evento, oppure solo quella selezionata? </translation>
+        <translation>Desideri eliminare questa e tutte le occorrenze successive di questo evento, oppure solo quella selezionata?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -283,9 +294,20 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>%1 in più</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
+        <translation>Nuovo evento</translation>
+    </message>
+    <message>
+        <source>New Event</source>
         <translation>Nuovo evento</translation>
     </message>
 </context>

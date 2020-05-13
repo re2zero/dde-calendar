@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="uk">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Вилучити усі майбутні повторення</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Нова подія</translation>
     </message>
 </context>
 <context>
@@ -231,23 +237,28 @@
         <source>Delete All Future Events</source>
         <translation>Вилучити усі майбутні повторення</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>і ще %1</translation>
+        <source>New Event</source>
+        <translation>Нова подія</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Редагувати</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Вилучити</translation>
+        <translation>Видалити</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>Нова подія</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Нова подія</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -255,7 +266,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
-        <translation>Ви впевнені, що бажаєте вилучити цей запис події?</translation>
+        <translation>Ви справді хочете вилучити цей запис події?</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -283,9 +294,20 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>і ще %1</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
+        <translation>Нова подія</translation>
+    </message>
+    <message>
+        <source>New Event</source>
         <translation>Нова подія</translation>
     </message>
 </context>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ms" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ms">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Padam Semua Peristiwa Akan Datang</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Peristiwa Baharu</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>Padam Semua Peristiwa Akan Datang</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>%1 lagi</translation>
+        <source>New Event</source>
+        <translation>Peristiwa Baharu</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Sunting</translation>
@@ -250,8 +253,16 @@
         <translation>Padam</translation>
     </message>
     <message>
+        <source>New event</source>
+        <translation>Peristiwa baharu</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Peristiwa Baharu</translation>
+    </message>
+    <message>
         <source>You are deleting an event.</source>
-        <translation>Anda memadam satu peristiwa.</translation>
+        <translation>Anda telah memadam satu peristiwa.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -263,7 +274,7 @@
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Anda mahu memadam semua kemunculan peristiwa ini, atau hanya kemunculan terpilih?</translation>
+        <translation>Anda pasti mahu memadam semua kemunculan peristiwa ini, atau hanya kemunculan terpilih?</translation>
     </message>
     <message>
         <source>Delete All</source>
@@ -275,7 +286,7 @@
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Anda mahu memadam semua kemunculan peristiwa ini dan akan datang, atau hanya kemunculan terpilih?</translation>
+        <translation>Anda pasti mahu memadam peristiwa ini dan semua kemunculannya yang akan datang, atau hanya kemunculan terpilih?</translation>
     </message>
     <message>
         <source>Delete All Future Events</source>
@@ -283,10 +294,21 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>%1 lagi</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
         <translation>Peristiwa baharu</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Peristiwa Baharu</translation>
     </message>
 </context>
 <context>
@@ -515,15 +537,15 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Repeat</source>
@@ -531,7 +553,7 @@
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ends:</source>

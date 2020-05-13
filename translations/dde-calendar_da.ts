@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="da" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="da">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Slet alle fremtidige begivenheder</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Ny begivenhed</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>Slet alle fremtidige begivenheder</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>%1 mere</translation>
+        <source>New Event</source>
+        <translation>Ny begivenhed</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Rediger</translation>
@@ -248,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation>Slet</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>Ny begivenhed</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Ny begivenhed</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -283,9 +294,20 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>%1 mere</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
+        <translation>Ny begivenhed</translation>
+    </message>
+    <message>
+        <source>New Event</source>
         <translation>Ny begivenhed</translation>
     </message>
 </context>
@@ -515,15 +537,15 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remind Me</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Repeat</source>
@@ -531,7 +553,7 @@
     </message>
     <message>
         <source>End Repeat</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ends:</source>

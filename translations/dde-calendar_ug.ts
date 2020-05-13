@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ug" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ug">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Delete All Future Events</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>New Event</translation>
     </message>
 </context>
 <context>
@@ -231,23 +237,28 @@
         <source>Delete All Future Events</source>
         <translation>Delete All Future Events</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>%1 more</translation>
+        <source>New Event</source>
+        <translation>New Event</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
-        <translation>Edit</translation>
+        <translation>تەھرىرلەش</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Delete</translation>
+        <translation>ئۆچۈرۈش</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>New event</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>New Event</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -259,7 +270,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation>بىكار قىلىش</translation>
     </message>
     <message>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
@@ -283,10 +294,21 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>%1 more</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
         <translation>New event</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>New Event</translation>
     </message>
 </context>
 <context>

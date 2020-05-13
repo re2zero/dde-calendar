@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ru">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Удалить все будущие события</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Новое Событие</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>Удалить Все Будущие События</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>%1 более</translation>
+        <source>New Event</source>
+        <translation>Новое Событие</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Редактировать</translation>
@@ -248,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>Новое событие</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Новое Событие</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -267,11 +278,11 @@
     </message>
     <message>
         <source>Delete All</source>
-        <translation>Удалить Всё</translation>
+        <translation>Удалить все</translation>
     </message>
     <message>
         <source>Delete Only This Event</source>
-        <translation>Удалить Только Это Событие</translation>
+        <translation>Удалить только это событие</translation>
     </message>
     <message>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
@@ -279,7 +290,14 @@
     </message>
     <message>
         <source>Delete All Future Events</source>
-        <translation>Удалить Все Будущие События</translation>
+        <translation>Удалить все будущие события</translation>
+    </message>
+</context>
+<context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>%1 более</translation>
     </message>
 </context>
 <context>
@@ -287,6 +305,10 @@
     <message>
         <source>New event</source>
         <translation>Новое событие</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Новое Событие</translation>
     </message>
 </context>
 <context>

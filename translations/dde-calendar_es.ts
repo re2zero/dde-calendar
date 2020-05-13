@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>CAllDayEventWeekView</name>
     <message>
@@ -44,6 +46,10 @@
     <message>
         <source>Delete All Future Events</source>
         <translation>Borrar todos los eventos futuros</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Nuevo evento</translation>
     </message>
 </context>
 <context>
@@ -231,16 +237,13 @@
         <source>Delete All Future Events</source>
         <translation>Borrar todos los eventos futuros</translation>
     </message>
-</context>
-<context>
-    <name>CMonthSchceduleNumButton</name>
     <message>
-        <source>%1 more</source>
-        <translation>%1 más</translation>
+        <source>New Event</source>
+        <translation>Nuevo evento</translation>
     </message>
 </context>
 <context>
-    <name>CMonthSchceduleWidgetItem</name>
+    <name>CMonthGraphiview</name>
     <message>
         <source>Edit</source>
         <translation>Editar</translation>
@@ -248,6 +251,14 @@
     <message>
         <source>Delete</source>
         <translation>Borrar</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation>Nuevo evento</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation>Nuevo evento</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -283,9 +294,20 @@
     </message>
 </context>
 <context>
+    <name>CMonthSchceduleNumButton</name>
+    <message>
+        <source>%1 more</source>
+        <translation>%1 más</translation>
+    </message>
+</context>
+<context>
     <name>CMonthView</name>
     <message>
         <source>New event</source>
+        <translation>Nuevo evento</translation>
+    </message>
+    <message>
+        <source>New Event</source>
         <translation>Nuevo evento</translation>
     </message>
 </context>
