@@ -41,14 +41,9 @@ DGUI_USE_NAMESPACE
 void CMonthView::setTheMe(int type)
 {
     m_weekIndicator->setTheMe(type);
-
     m_MonthGraphicsView->setTheMe(type);
 }
 
-void CMonthView::updateHigh()
-{
-//    m_MonthSchceduleView->updateHigh();
-}
 
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
@@ -184,7 +179,7 @@ void CMonthView::resizeEvent(QResizeEvent *event)
     m_leftmaagin = leftmagin;
     m_topmagin = topmagin;
     m_mainLayout->setContentsMargins(leftmagin, topmagin, 0, 10);
-    m_weekIndicator->setFixedSize(width() - leftmagin, height() * 0.1042 + 0.5);
+    m_weekIndicator->setFixedSize(width()-leftmagin, height() * 0.1042 + 0.5);
 }
 
 

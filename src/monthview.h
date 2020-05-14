@@ -39,7 +39,6 @@ class CMonthView: public DWidget
     Q_OBJECT
 public:
     void setTheMe(int type = 0);
-    void updateHigh();
 public:
     explicit CMonthView(QWidget *parent = nullptr);
     ~CMonthView() Q_DECL_OVERRIDE;
@@ -66,7 +65,6 @@ signals:
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-
 private:
     int getDateIndex(const QDate &date) const;
     const QDate getCellDate(int pos);

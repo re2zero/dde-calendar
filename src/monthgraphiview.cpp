@@ -17,6 +17,7 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
     : DGraphicsView(parent),
       m_Scene(new QGraphicsScene(this))
 {
+    setFrameShape(DFrame::NoFrame);
     setContentsMargins(0, 0, 0, 0);
     this->setViewportMargins(0, 0, 0, 0);
     this->setScene(m_Scene);
@@ -542,9 +543,6 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
     CDayGraphicsItem *Dayitem = dynamic_cast<CDayGraphicsItem *>(listItem);
     if (Dayitem !=nullptr) {
         QPointF point = getItemPos(event->pos(),Dayitem->rect());
-        qDebug()<<"ItemPos:"<<point;
-        qDebug()<<"event->pos:"<<event->pos();
-        qDebug()<<"Dayitem->getDat:"<<Dayitem->getDate();
         if (point.y()<38) {
             //双击切换视图
             if (Dayitem->getDate().year()>1900) {
@@ -681,7 +679,6 @@ void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
                 m_DragScheduleInfo);
         }
-        qDebug()<<qAbs(m_MoveDate.daysTo(m_PressDate));
         break;
     case ChangeBegin:
         if (m_MoveDate != m_InfoBeginTime.date()) {
@@ -739,12 +736,6 @@ void CMonthGraphiview::resizeEvent(QResizeEvent *event)
     updateSize();
     updateInfo();
 }
-
-void CMonthGraphiview::paintEvent(QPaintEvent *event)
-{
-    DGraphicsView::paintEvent(event);
-}
-
 void CMonthGraphiview::changeEvent(QEvent *event)
 {
     if (event->type() ==QEvent::FontChange) {

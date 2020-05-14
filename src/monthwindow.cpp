@@ -180,10 +180,6 @@ void CMonthWindow::setSearchText(QString str)
     // m_schceduleSearchView->slotsetSearch(str);
 }
 
-void CMonthWindow::updateHigh()
-{
-    m_monthView->updateHigh();
-}
 void CMonthWindow::wheelEvent(QWheelEvent *e)
 {
     if (e->delta() < 0) {
@@ -275,7 +271,7 @@ void CMonthWindow::initUI()
     hhLayout->setMargin(0);
 
     hhLayout->addLayout(yeartitleLayout);
-    m_gridWidget = new DFrame();
+    m_gridWidget = new DWidget();
     m_gridWidget->setContentsMargins(0, 0, 0, 0);
     m_gridWidget->setAutoFillBackground(true);
     m_gridWidget->setLayout(mhLayout);

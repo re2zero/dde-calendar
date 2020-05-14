@@ -183,7 +183,6 @@ void Calendarmainwindow::slotmaxminViewShortcut()
 void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
 {
     if (type < 0 || type > m_stackWidget->count()) {
-
         return;
     }
     m_stackWidget->setCurrentIndex(type - 1);
@@ -224,6 +223,7 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
     }
     break;
     }
+    CConfigSettings::setOption("base.view", type);
 //    m_priindex = 3;
 }
 
@@ -266,7 +266,7 @@ void Calendarmainwindow::updateHigh()
     }
     break;
     case 1: {
-        m_monthWindow->updateHigh();
+
     }
     break;
     case 2: {
@@ -1002,7 +1002,6 @@ void Calendarmainwindow::slotselectMonth(QDate date)
 {
     qDebug() << date;
     viewWindow(2, QDateTime(date));
-    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotselectWeek(QDate date)
@@ -1015,14 +1014,12 @@ void Calendarmainwindow::slotselectWeek(QDate date)
 void Calendarmainwindow::slotCurrentScheduleDate(QDate date)
 {
     viewWindow(4, QDateTime(date));
-    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotViewSelectDate(QDate date)
 {
     if (date.year() < 1900) return;
     viewWindow(4, QDateTime(date));
-    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotViewtransparentFrame(int type)

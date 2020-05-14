@@ -8,8 +8,10 @@
 #include <QStyleOption>
 #include <QLabel>
 #include <QSignalMapper>
-#include "calendardbus.h"
 #include <DFrame>
+
+#include "calendardbus.h"
+#include "schedulestructs.h"
 #include "customframe.h"
 DWIDGET_USE_NAMESPACE
 class CalendarDBus;
@@ -25,16 +27,15 @@ enum CalendarYearDayType {
     SO_YNotCurrentMonthFestival = SO_YNotCurrentMonth | SO_YFestival,
     SO_YDefault,
 };
+//#define M_FLAG 0;
+
+class CYearMonthView;
 class CYearView: public CustomFrame
 {
     Q_OBJECT
 
     Q_PROPERTY(QColor backgroundCircleColor MEMBER m_backgroundCircleColor DESIGNABLE true SCRIPTABLE true)
-    Q_PROPERTY(QColor defaultTextColor MEMBER m_defaultTextColor DESIGNABLE true SCRIPTABLE true)
-    // Q_PROPERTY(QColor defaultLunarColor MEMBER m_defaultLunarColor DESIGNABLE true SCRIPTABLE true)
-    //Q_PROPERTY(QColor festivalLunarColor MEMBER m_festivalLunarColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor weekendsTextColor MEMBER m_weekendsTextColor DESIGNABLE true SCRIPTABLE true)
-    //Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor topBorderColor MEMBER m_topBorderColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(bool cellSelectable READ cellSelectable WRITE setCellSelectable NOTIFY cellSelectableChanged)
 public:
@@ -45,16 +46,11 @@ public:
     {
         return m_cellSelectable;
     }
-    void updateSelectState();
     void setTheMe(int type = 0);
-    void updateHigh();
     static void SchceduleViewHide();
 signals:
-    void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalcurrentDateChanged(QDate date);
     void cellSelectableChanged(bool cellSelectable) const;
-    void singanleActiveW(CYearView *w);
-
     void signaldoubleclickDate(QDate date);
     void signalselectMonth(QDate date);
     void signalselectWeekwindow(QDate date);
@@ -64,28 +60,93 @@ signals:
 public slots:
     void setCurrentDate(const QDate date, int type = 0);
     void setCellSelectable(bool selectable);
-    void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
     void updateInfoWIndow(bool flag);
     void slotupdateSchedule(const int id);
+    void slotDoubleClickDate(const QDate &date);
+    void slotPressClickDate(const QDate &date);
 private:
     int getDateIndex(const QDate &date) const;
-    const QString getCellDayNum(int pos);
-    const QDate getCellDate(int pos);
-    void paintCell(QWidget *cell);
     bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
     void updateDate();
     void createYearSchceduleView(QWidget *parent = nullptr);
-private slots:
-    void cellClicked(QWidget *cell);
-    void setSelectedCell(int index);
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 protected:
     void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
 private:
+    CustomFrame *m_currentMouth;
+    QDate m_days[42];
+    QDate m_currentDate;
+    QStringList m_monthList;
+    int m_selectedCell = -1;
+    bool m_cellSelectable = true;
+
+    QFont  m_momthFont;
+
+    QColor m_topBorderColor = Qt::red;
+    QColor m_backgroundCircleColor = "#2ca7f8";
+
+
+    QColor m_currentDayTextColor = "#2ca7f8";
+    QColor m_weekendsTextColor = Qt::black;
+    QColor m_festivalTextColor = Qt::black;
+
+    QColor m_cellBackgroundColor = "#FFFFFF" ;
+    int m_firstWeekDay = 0;
+    int cellwidth = 20;
+    int cellheight = 20;
+    QVBoxLayout *m_hhLayout;
+    int                   m_themetype  = 1;
+
+    QColor                   m_bnormalColor = "#FFFFFF";
+    int                      m_radius = 8;
+    int                      m_borderframew = 0;
+    static CYearSchceduleOutView      *m_Scheduleview;
+    bool                     m_selectFlag = false;
+    QDate                    m_selectDate;
+
+    QVector<bool>            m_vlineflag; //节假日和日程标识
+
+    CYearMonthView           *m_monthView;
+    QVector<ScheduleDateRangeInfo> m_DateRangeInfo;
+};
+
+class CMonthDayRect;
+class CYearMonthView : public DWidget
+{
+    Q_OBJECT
+public:
+    CYearMonthView(DWidget *parent = nullptr);
+    ~CYearMonthView() override;
+    void setDate(const QDate date[42]);
+    void setTheMe(int type = 0);
+    void setLintFlag(const QVector<bool> &lineFlag);
+private:
+    void updateSize();
+    int getMousePosItem(const QPointF &pos);
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+signals:
+    void signalPressDate(const QDate &date);
+    void signalDoubleClickDate(const QDate &date);
+private:
+    QVector<CMonthDayRect *>        m_DayItem;
+    int                             m_currentMonth =1;
+    QVector<bool>                   m_vlineflag; //节假日和日程标识
+    bool                            m_press = false;
+};
+
+
+class CMonthDayRect
+{
+public:
     enum CellEventType {
         CellNormal = 0,
         Cellhover = 1,
@@ -96,50 +157,43 @@ private:
         QColor hoverColor;
         QColor pressColor;
     };
-    CustomFrame *m_currentMouth;
-    QList<QWidget *> m_cellList;
-    QDate m_days[42];
-    QDate m_currentDate;
-    QStringList m_monthList;
-    int m_selectedCell = -1;
-    bool m_cellSelectable = true;
+    CMonthDayRect(DWidget *PaintDevice );
+    ~CMonthDayRect();
+    void setDate(const QDate &date);
+    QDate getDate()const;
+    void setCellEvent(const CellEventType &type);
+    void setIsCurrentMonth(const bool isCurrMonth);
+    QRectF rect() const;
+    void setRect(const QRectF &rect);
+    inline void setRect(qreal x, qreal y, qreal w, qreal h);
+    void paintItem(QPainter *painter, const QRectF &rect);
+    void setLineFlag(const bool flag);
 
-    QFont m_dayNumFont, m_momthFont;
+    static void setTheMe(int type = 0);
+    static void setDevicePixelRatio(const qreal pixel);
+    static void setCurrentRect(CMonthDayRect *currrect);
+private:
+    QFont                   m_dayNumFont;
+    QFont                   m_hightFont;
+    int                     m_themetype = 0;
+    CellEventType           m_cellEventType {CellNormal};
+    QColor                  m_highColor = "#0081FF";
+    QColor                  m_highTextColor = "#FFFFFF";
+    bool                    m_vlineflag = false;
+    QColor                  m_currentDayTextColor = "#2ca7f8";
 
-    QColor m_topBorderColor = Qt::red;
-    QColor m_backgroundCircleColor = "#2ca7f8";
+    static QColor                   m_defaultTextColor;
+    static QColor                   m_selectedTextColor;
+    static QColor                   m_notCurrentTextColor;
+    static CellColor                m_currentColor;
+    static QColor                   m_ceventColor;
+    static CMonthDayRect            *m_CurrentRect;
+    static qreal                    m_DevicePixelRatio;
 
-    QColor m_defaultTextColor = Qt::black;
-    QColor m_currentDayTextColor = "#2ca7f8";
-    QColor m_weekendsTextColor = Qt::black;
-    QColor m_selectedTextColor = Qt::white;
-    QColor m_festivalTextColor = Qt::black;
-    QColor m_notCurrentTextColor = "#b2b2b2";
-    CellColor lightColor;
-    CellColor darkColor;
-    QColor m_cellBackgroundColor = "#FFFFFF" ;
-    CellEventType   m_cellEventType[42] {CellNormal};
-    int m_firstWeekDay = 0;
-    QGridLayout *m_gridLayout;
-    int cellwidth = 20;
-    int cellheight = 20;
-    QVBoxLayout *m_hhLayout;
-    int                   m_themetype  = 1;
-    QColor m_highColor = "#0081FF";
-    QColor m_highTextColor = "#FFFFFF";
-    QColor m_ceventColor = "#FF5D00";
-    QFont m_hightFont;
-    QColor                   m_bnormalColor = "#FFFFFF";
-    int                      m_radius = 8;
-    int                      m_borderframew = 0;
-    static CYearSchceduleOutView      *m_Scheduleview;
-    bool                     m_selectFlag = false;
-    QDate                    m_selectDate;
-
-    QVector<bool>            m_vlineflag; //节假日和日程标识
-
-    QPoint move_point; //移动的距离
-    bool mouse_press = false; //鼠标按下
+    DWidget                 *m_PaintDevice;
+    QRectF                  m_rect;
+    QDate                   m_date;
+    bool                    m_isCurrentMonth = false;
 };
 
 #endif // YEARVIEW_H

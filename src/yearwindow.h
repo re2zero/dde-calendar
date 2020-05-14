@@ -60,7 +60,6 @@ signals:
     void signalselectMonth(QDate date);
     void signalselectWeekwindow(QDate date);
     void signalCurrentDate(QDate date);
-
 private slots:
     void slotprev();
     void slotnext();
@@ -120,9 +119,6 @@ public:
     void getLunarData();
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-private:
-    void slotActiveW(CYearView *w);
-    void getDbusData();
 signals:
     void signaldoubleclickDate(QDate date);
     void signalselectWeekwindow(QDate date);
@@ -135,17 +131,16 @@ public slots:
     void slotSetSchceduleHide();
     void slotcurrentDateChanged(QDate date);
 private:
-    QList<CYearView *> m_monthViewList;
-    QLabel            *m_YearLabel;
-    QLabel            *m_YearLunarLabel;
-    CYearView         *m_activeview = nullptr;
-    CalendarDBus *m_DBusInter;
-    QDate              m_currentdate;
+    QList<CYearView *>          m_monthViewList;
+    QLabel                      *m_YearLabel;
+    QLabel                      *m_YearLunarLabel;
+    CalendarDBus                *m_DBusInter;
+    QDate                       m_currentdate;
     bool                        m_searchfalg = false;
     bool                        m_selectFlag = false;
-    QString                 m_LunarYear;
-    QString                 m_LunarDay;
-    DWidget                  *m_topWidget;
+    QString                     m_LunarYear;
+    QString                     m_LunarDay;
+    DWidget                     *m_topWidget;
 };
 
 #endif // YEARWINDOW_H

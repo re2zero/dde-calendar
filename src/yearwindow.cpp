@@ -474,7 +474,6 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 4; j++) {
             CYearView *view = new CYearView(this);
-            connect(view, &CYearView::singanleActiveW, this, &YearFrame::slotActiveW);
             connect(view, &CYearView::signalcurrentDateChanged, this, &YearFrame::slotcurrentDateChanged);
             connect(view, &CYearView::signaldoubleclickDate, this, &YearFrame::signaldoubleclickDate);
             connect(view, &CYearView::signalselectWeekwindow, this, &YearFrame::signalselectWeekwindow);
@@ -640,71 +639,13 @@ void YearFrame::mousePressEvent(QMouseEvent *event)
     }
 }
 
-
-void YearFrame::slotActiveW(CYearView *w)
-{
-    if (m_activeview == nullptr) {
-        m_activeview = w;
-    } else if (m_activeview == w) {
-        return;
-    } else {
-        m_activeview = w;
-        for (int i = 0; i < 12; i++) {
-            if (m_monthViewList.at(i) == w) {
-                continue;
-            }
-            m_monthViewList.at(i)->updateSelectState();
-        }
-    }
-}
-
 void YearFrame::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
     getLunarData();
     emit signalUpdateYearDate(date);
-//    m_YearLunarDayLabel->setText("-农历" + info.mLunarMonthName + info.mLunarDayName + "-");
 }
 
-void YearFrame::getDbusData()
-{
-//    if (queue->isEmpty())
-//        return;
-
-//    const QDate tdate = queue->head();
-//    queue->pop_front();
-//    const QDate date = tdate;
-//    if (!date.isValid()) {
-//        return;
-//    }
-
-//    CaLunarDayInfo currentDayInfo;
-//    if (!lunarCache->contains(date)) {
-//        bool o1 = true;
-//        QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(date.year(), date.month(), false, o1);
-
-//        QDate cacheDate;
-//        cacheDate.setDate(date.year(), date.month(), 1);
-//        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
-//            lunarCache->insert(cacheDate, dayInfo);
-//            if (date == m_currentdate) {
-//                currentDayInfo = dayInfo;
-//            }
-//            cacheDate = cacheDate.addDays(1);
-//        }
-//    } else {
-//        currentDayInfo = lunarCache->value(date);
-//    }
-    // refresh   lunar info
-//    if (date == m_currentdate) {
-//        //更新
-//        m_LunarYear = QString("-%0%1年-").arg(currentDayInfo.mGanZhiYear).arg(currentDayInfo.mZodiac);
-//        m_LunarDay = QString("-农历%0%1-").arg(currentDayInfo.mLunarMonthName).arg(currentDayInfo.mLunarDayName);
-//        //QStringLiteral("-" + currentDayInfo.mGanZhiYear + currentDayInfo.mZodiac + "年-");
-//        //    m_YearLunarLabel->setText("-" + currentDayInfo.mGanZhiYear + currentDayInfo.mZodiac + "年-");
-//        //     m_YearLunarDayLabel->setText("-农历" + currentDayInfo.mLunarMonthName + currentDayInfo.mLunarDayName + "-");
-//    }
-}
 
 void YearFrame::slotHideInfo()
 {
@@ -718,7 +659,9 @@ void YearFrame::slotSelectInfo(bool flag)
 
 void YearFrame::slotupdateSchedule(const int id)
 {
-    m_activeview->slotupdateSchedule(id);
+    for (int i =0; i < m_monthViewList.size(); ++i) {
+        m_monthViewList.at(i)->slotupdateSchedule(id);
+    }
 }
 
 void YearFrame::slotSetSchceduleHide()
