@@ -461,6 +461,7 @@ void CMySchceduleView::initUI()
 
     m_schceduleLabel = new QLabel(this);
 //    m_schceduleLabel->setWordWrap(true);
+    m_schceduleLabel->setTextFormat(Qt::PlainText);//纯文本格式
     m_schceduleLabel->installEventFilter(this);
     m_schceduleLabel->setFixedWidth(340);
     m_schceduleLabel->setAlignment(Qt::AlignCenter);

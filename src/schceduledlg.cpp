@@ -75,7 +75,7 @@ void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
 {
     m_scheduleDtailInfo = info;
     m_typeComBox->setCurrentIndex(info.type.ID - 1);
-    m_textEdit->setText(info.titleName);
+    m_textEdit->setPlainText(info.titleName);
     m_beginDateEdit->setDate(info.beginDateTime.date());
     m_beginTimeEdit->setTime(info.beginDateTime.time());
     m_endDateEdit->setDate(info.endDateTime.date());
