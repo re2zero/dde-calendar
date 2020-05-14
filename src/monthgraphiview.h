@@ -63,6 +63,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     void changeEvent(QEvent *event) override;
+    void wheelEvent(QWheelEvent *) override;
 signals:
     void signalFontChange();
     void signalsViewSelectDate(QDate date);

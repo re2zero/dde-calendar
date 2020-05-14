@@ -743,6 +743,11 @@ void CMonthGraphiview::changeEvent(QEvent *event)
     }
 }
 
+void CMonthGraphiview::wheelEvent(QWheelEvent *e)
+{
+    Q_UNUSED(e);
+}
+
 void CMonthGraphiview::slotCreate(const QDate &date)
 {
     emit signalViewtransparentFrame(1);
