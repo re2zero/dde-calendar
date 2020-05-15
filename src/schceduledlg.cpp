@@ -1185,7 +1185,7 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
             newschedule.id = 0;
             if (newschedule.enddata.type ==1) {
                 newschedule.enddata.tcount = qAbs(newinfo.enddata.tcount - newinfo.RecurID);
-                if (newschedule.enddata.tcount <2) {
+                if (newschedule.enddata.tcount <1) {
                     newschedule.enddata.type =0;
                     newschedule.rpeat = 0;
                 }
