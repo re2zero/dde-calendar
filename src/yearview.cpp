@@ -319,6 +319,7 @@ void CYearView::mousePressEvent(QMouseEvent *event)
 
 void CYearView::paintEvent(QPaintEvent *e)
 {
+
     int labelwidth = width() - 2 * m_borderframew;
     int labelheight = height() - 2 * m_borderframew;
 
@@ -353,7 +354,7 @@ CYearMonthView::CYearMonthView(DWidget *parent)
     :DWidget (parent)
 {
     for (int i = 0; i < 42; ++i) {
-        CMonthDayRect *item = new CMonthDayRect(this);
+        CMonthDayRect *item = new CMonthDayRect();
         m_DayItem.append(item);
     }
     setMouseTracking(true);
@@ -430,6 +431,7 @@ int CYearMonthView::getMousePosItem(const QPointF &pos)
 
 void CYearMonthView::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
     updateSize();
 }
 
@@ -440,6 +442,7 @@ void CYearMonthView::mousePressEvent(QMouseEvent *event)
         m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
         m_press = true;
         if ( event->button() ==Qt::LeftButton) {
+            m_pressIndex = itemindex;
             emit signalPressDate(m_DayItem.at(itemindex)->getDate());
         }
     }
@@ -450,10 +453,12 @@ void CYearMonthView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     int itemindex = getMousePosItem(event->pos());
     if (!(itemindex<0)) {
-        m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
-        m_press = true;
-        if ( event->button() ==Qt::LeftButton) {
-            emit signalDoubleClickDate(m_DayItem.at(itemindex)->getDate());
+        if (m_pressIndex == itemindex) {
+            m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
+            m_press = true;
+            if ( event->button() ==Qt::LeftButton) {
+                emit signalDoubleClickDate(m_DayItem.at(itemindex)->getDate());
+            }
         }
     }
 }
@@ -495,8 +500,8 @@ void CYearMonthView::leaveEvent(QEvent *event)
 }
 
 
-CMonthDayRect::CMonthDayRect(DWidget *PaintDevice)
-    :m_PaintDevice(PaintDevice),m_rect(0,0,0,0)
+CMonthDayRect::CMonthDayRect()
+    :m_rect(0,0,0,0)
 {
     m_dayNumFont.setPixelSize(12);
     m_hightFont.setPixelSize(12);

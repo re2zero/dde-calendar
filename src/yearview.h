@@ -141,6 +141,7 @@ private:
     int                             m_currentMonth =1;
     QVector<bool>                   m_vlineflag; //节假日和日程标识
     bool                            m_press = false;
+    int                             m_pressIndex =0;
 };
 
 
@@ -157,7 +158,7 @@ public:
         QColor hoverColor;
         QColor pressColor;
     };
-    CMonthDayRect(DWidget *PaintDevice );
+    CMonthDayRect();
     ~CMonthDayRect();
     void setDate(const QDate &date);
     QDate getDate()const;
@@ -190,7 +191,6 @@ private:
     static CMonthDayRect            *m_CurrentRect;
     static qreal                    m_DevicePixelRatio;
 
-    DWidget                 *m_PaintDevice;
     QRectF                  m_rect;
     QDate                   m_date;
     bool                    m_isCurrentMonth = false;
