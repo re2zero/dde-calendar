@@ -90,7 +90,6 @@ private:
     CMonthWeekView          *m_weekIndicator;
     int                     m_firstWeekDay =0;
     QAction                 *m_createAction;     // 创建日程
-    bool                    m_updateflag = false;
     QVBoxLayout             *m_mainLayout;
     int                     m_leftmaagin = 0;
     int                     m_topmagin = 0;

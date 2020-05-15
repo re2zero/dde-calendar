@@ -114,7 +114,7 @@ CMonthView::~CMonthView()
 void CMonthView::slotSchceduleUpdate(int id)
 {
     Q_UNUSED(id);
-//    parentWidget()->setEnabled(false);
+    emit signalsSchceduleUpdate(id);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
 }
 
@@ -216,7 +216,7 @@ void CMonthView::setCurrentDate(const QDate date)
     m_MonthGraphicsView->setLunarInfo(lunarCache);
     emit signalcurrentDateChanged(m_currentDate);
     m_weekIndicator->updateWeek();
-    slotSchceduleUpdate();
+    emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
 }
 
 void CMonthView::setLunarVisible(bool visible)
@@ -250,10 +250,6 @@ void CMonthView::updateDate()
     }
 
     m_MonthGraphicsView->setDate(m_days);
-    if (m_updateflag) {
-        parentWidget()->setEnabled(false);
-        emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
-    }
     update();
 }
 
