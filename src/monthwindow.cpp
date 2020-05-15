@@ -62,6 +62,7 @@ void CMonthWindow::setDate(QDate date)
     }
     //m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
     m_monthDayView->setCurrentDate(date);
+    m_monthView->setCurrentDate(date);
     emit signalCurrentDate(date);
 }
 
@@ -182,10 +183,11 @@ void CMonthWindow::setSearchText(QString str)
 
 void CMonthWindow::wheelEvent(QWheelEvent *e)
 {
-    if (e->delta() < 0) {
-        previousMonth();
-    } else {
+    QPoint numDegrees = e->angleDelta();
+    if (numDegrees.y()>0) {
         nextMonth();
+    } else {
+        previousMonth();
     }
 }
 
@@ -335,25 +337,6 @@ void CMonthWindow::initLunar()
 
 void CMonthWindow::slideMonth(bool next)
 {
-    // m_animationContainer->show();
-    // m_animationContainer->raise();
-#if 0
-    if (next) {
-        if (m_currentdate.month() != 1) {
-            m_currentdate = m_currentdate.addMonths(-1);
-        } else {
-            m_animationContainer->hide();
-            return;
-        }
-    } else {
-        if (m_currentdate.month() != 12) {
-            m_currentdate = m_currentdate.addMonths(1);
-        } else {
-            m_animationContainer->hide();
-            return;
-        }
-    }
-#else
     QDate currentDate;
     if (next) {
         if (m_currentdate.year() == 1900 && m_currentdate.month() == 1) return;
@@ -361,7 +344,6 @@ void CMonthWindow::slideMonth(bool next)
     } else {
         currentDate = m_currentdate.addMonths(1);
     }
-#endif
     setDate(currentDate);
     QDate tdate = QDate(m_currentdate.year(), m_currentdate.month(), 1);
     emit signalCurrentDate(tdate);

@@ -82,20 +82,18 @@ private slots:
     void slotcurrentDateChanged(QDate date);
     void slotSelectedMonth(QDate date);
 private:
-    //QFrame *m_animationContainer = nullptr;
-
-    CMonthView        *m_monthView;
-    CMonthDayView      *m_monthDayView;
-    DFrame *m_contentBackground = nullptr;
-    CTodyButton       *m_today = nullptr;
-    QDate              m_currentdate;
-    QLabel            *m_YearLabel;
-    QLabel            *m_YearLunarLabel;
-    QSpacerItem       *m_spaceitem;
-    DWidget            *m_gridWidget;
-    QString           m_searchText;
-    bool m_searchfalg = false;
-    QHBoxLayout *m_tmainLayout;
+    CMonthView              *m_monthView;
+    CMonthDayView           *m_monthDayView;
+    DFrame                  *m_contentBackground = nullptr;
+    CTodyButton             *m_today = nullptr;
+    QDate                   m_currentdate;
+    QLabel                  *m_YearLabel;
+    QLabel                  *m_YearLunarLabel;
+    QSpacerItem             *m_spaceitem;
+    DWidget                 *m_gridWidget;
+    QString                 m_searchText;
+    bool                    m_searchfalg = false;
+    QHBoxLayout             *m_tmainLayout;
 };
 
 #endif // YEARWINDOW_H

@@ -24,58 +24,35 @@
 #include <QBrush>
 #include <QEvent>
 #include <DPalette>
+#include <QMouseEvent>
 #include <DHiDPIHelper>
+#include <QDebug>
 DGUI_USE_NAMESPACE
 CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
 {
-//    m_dayNumFont.setFamily("Avenir-Light");
-    m_dayNumFont.setPixelSize(16);
-    m_dayNumFont.setWeight(QFont::Light);
-
-
-    // cells grid
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
     hboxLayout->setContentsMargins(10, 0, 10, 0);
-    for (int c = 0; c != 12; ++c) {
-        QWidget *cell = new QWidget;
-        cell->setFixedSize(DDEMonthCalendar::MDayCellWidth, DDEMonthCalendar::MDayCellHeight);
-        cell->installEventFilter(this);
-        cell->setFocusPolicy(Qt::ClickFocus);
-        hboxLayout->addWidget(cell);
-        m_cellList.append(cell);
-    }
+    m_monthWidget = new CMonthWidget(this);
+    hboxLayout->addWidget(m_monthWidget);
     setLayout(hboxLayout);
     setFrameRounded(true);
     setLineWidth(0);
     setWindowFlags(Qt::FramelessWindowHint);
+
+    connect(m_monthWidget,
+            &CMonthWidget::signalsSelectDate,
+            this,
+            &CMonthDayView::signalsSelectDate);
 }
 
 CMonthDayView::~CMonthDayView()
 {
-    for (int i = 0; i < 12; i++) {
-        m_cellList.at(i)->removeEventFilter(this);
-        delete m_cellList.at(i);
-    }
-    m_cellList.clear();
 }
 
 void CMonthDayView::setCurrentDate(const QDate date)
 {
-#if 0
-    m_selectDate = date;
-    for (int i = 0; i < 12; i++) {
-        if (QDate(date.year(), i + 1, date.day()).isValid()) {
-            m_days[i] = QDate(date.year(), i + 1, date.day());
-        } else {
-            m_days[i] = QDate(date.year(), i + 1, 1);
-        }
-    }
-    setSelectedCell(m_selectDate.month() - 1);
-    update();
-    emit signalsCurrentDate(date);
-#endif
     m_selectDate = date;
     m_days[5] = m_selectDate;
     for (int i(4); i >= 0; i--) {
@@ -84,26 +61,14 @@ void CMonthDayView::setCurrentDate(const QDate date)
     for (int i(6); i != 12; ++i) {
         m_days[i] = m_selectDate.addMonths(i - 5);
     }
-    setSelectedCell(5);
     update();
-    emit signalsCurrentDate(date);
+    m_monthWidget->setDate(m_days);
 }
 
 void CMonthDayView::setRCurrentDate(const QDate date)
 {
     if (m_selectDate == date) return;
-#if 0
-    m_selectDate = date;
-    for (int i = 0; i < 12; i++) {
-        if (QDate(date.year(), i + 1, date.day()).isValid()) {
-            m_days[i] = QDate(date.year(), i + 1, date.day());
-        } else {
-            m_days[i] = QDate(date.year(), i + 1, 1);
-        }
-    }
-    setSelectedCell(m_selectDate.month() - 1, 1);
-    update();
-#endif
+
     m_selectDate = date;
     m_days[5] = m_selectDate;
     for (int i(4); i >= 0; i--) {
@@ -112,16 +77,214 @@ void CMonthDayView::setRCurrentDate(const QDate date)
     for (int i(6); i != 12; ++i) {
         m_days[i] = m_selectDate.addMonths(i - 5);
     }
-    setSelectedCell(5);
+    m_monthWidget->setDate(m_days);
     update();
 }
 
 void CMonthDayView::setTheMe(int type)
 {
+    QColor frameclor;
+    if (type == 0 || type == 1) {
+        frameclor = "#FFFFFF";
+    } else if (type == 2) {
+        frameclor = "#FFFFFF";
+        frameclor.setAlphaF(0.05);
+    }
+
+    DPalette anipa = palette();
+    anipa.setColor(DPalette::Background, frameclor);
+    setPalette(anipa);
+    setBackgroundRole(DPalette::Background);
+    CMonthRect::setTheMe(type);
+}
+
+void CMonthDayView::setwindowFixw(int w, int rw)
+{
+    m_fixwidth = w;
+    m_realwidth = rw;
+}
+
+void CMonthDayView::setsearchfalg(bool flag)
+{
+    m_searchfalg = flag;
+}
+
+CMonthWidget::CMonthWidget(QWidget *parent)
+    :QWidget(parent)
+{
+    for (int i = 0; i < 12; ++i) {
+        CMonthRect *monthrect = new CMonthRect();
+        m_MonthItem.append(monthrect);
+    }
+}
+
+CMonthWidget::~CMonthWidget()
+{
+    for (int i = 0; i < 12; ++i) {
+        CMonthRect *monthrect = m_MonthItem.at(i);
+        delete  monthrect;
+    }
+    m_MonthItem.clear();
+}
+
+void CMonthWidget::setDate(const QDate date[12])
+{
+    for (int i = 0 ; i <12; ++i) {
+        m_MonthItem.at(i)->setDate(date[i]);
+    }
+    CMonthRect::setSelectRect(m_MonthItem.at(5));
+    update();
+}
+
+void CMonthWidget::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+    updateSize();
+}
+
+void CMonthWidget::mousePressEvent(QMouseEvent *event)
+{
+    int itemindex = getMousePosItem(event->pos());
+    if (!(itemindex<0)) {
+        if (m_MonthItem.at(itemindex)->getDate().year()<1900) {
+            return;
+        }
+        CMonthRect::setSelectRect(m_MonthItem.at(itemindex));
+        emit signalsSelectDate(m_MonthItem.at(itemindex)->getDate());
+    }
+    update();
+}
+
+void CMonthWidget::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+    for (int i = 0; i < m_MonthItem.size(); ++i) {
+        m_MonthItem.at(i)->paintItem(&painter,
+                                     m_MonthItem.at(i)->rect());
+    }
+    painter.end();
+}
+
+void CMonthWidget::updateSize()
+{
+    qreal w= this->width()/m_MonthItem.size();
+    for (int i = 0; i < m_MonthItem.size(); ++i) {
+        m_MonthItem.at(i)->setRect(i*w,0,w,this->height());
+    }
+    update();
+}
+
+int CMonthWidget::getMousePosItem(const QPointF &pos)
+{
+    int res =-1;
+    for (int i = 0 ; i < m_MonthItem.size(); ++i) {
+        if (m_MonthItem.at(i)->rect().contains(pos)) {
+            res = i;
+            break;
+        }
+    }
+    return res;
+}
+
+
+int         CMonthRect::m_themetype ;
+qreal       CMonthRect::m_DevicePixelRatio;
+
+QColor      CMonthRect::m_defaultTextColor;
+QColor      CMonthRect::m_backgrounddefaultColor ;
+QColor      CMonthRect::m_currentDayTextColor;
+QColor      CMonthRect::m_backgroundcurrentDayColor;
+QColor      CMonthRect::m_fillColor;
+QFont       CMonthRect::m_dayNumFont;
+CMonthRect         *CMonthRect::m_SelectRect = nullptr;
+
+CMonthRect::CMonthRect()
+{
+    m_dayNumFont.setPixelSize(16);
+    m_dayNumFont.setWeight(QFont::Light);
+}
+
+void CMonthRect::setDate(const QDate &date)
+{
+    m_Date = date;
+}
+
+QDate CMonthRect::getDate() const
+{
+    return  m_Date;
+}
+
+QRectF CMonthRect::rect() const
+{
+    return  m_rect;
+}
+
+void CMonthRect::setRect(const QRectF &rect)
+{
+    m_rect = rect;
+}
+
+void CMonthRect::setRect(qreal x, qreal y, qreal w, qreal h)
+{
+    m_rect.setRect(x,y,w,h);
+}
+
+void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
+{
+    const bool isCurrentDay = (m_Date.month() == QDate::currentDate().month()
+                               && m_Date.year() == QDate::currentDate().year());
+
+
+    painter->setPen(Qt::SolidLine);
+
+    const QString dayNum = QString::number(m_Date.month());
+
+    if (m_SelectRect ==this) {
+        QRectF fillRect((rect.width() - 36) / 2 +rect.x(),
+                        (rect.height() - 36) / 2 + 4+rect.y(),
+                        36,
+                        36);
+        QPixmap pixmap;
+        if (m_themetype == 2)
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+        else {
+            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+        }
+        pixmap.setDevicePixelRatio(m_DevicePixelRatio);
+        painter->save();
+        painter->setRenderHint(QPainter::Antialiasing);
+        painter->setRenderHint(QPainter::HighQualityAntialiasing);
+        painter->setRenderHint(QPainter::SmoothPixmapTransform);
+        painter->drawPixmap(fillRect.toRect(), pixmap);
+        painter->restore();
+        painter->setRenderHint(QPainter::HighQualityAntialiasing);
+        painter->setPen(m_currentDayTextColor);
+        painter->setFont(m_dayNumFont);
+        painter->drawText(rect, Qt::AlignCenter, dayNum);
+    } else {
+        if (isCurrentDay) {
+            painter->setPen(m_backgroundcurrentDayColor);
+        } else {
+            painter->setPen(m_defaultTextColor);
+        }
+        painter->setFont(m_dayNumFont);
+        painter->drawText(rect, Qt::AlignCenter, dayNum);
+    }
+
+}
+
+void CMonthRect::setDevicePixelRatio(const qreal pixel)
+{
+    m_DevicePixelRatio = pixel;
+}
+
+void CMonthRect::setTheMe(int type)
+{
     m_themetype = type;
     QColor frameclor;
     if (type == 0 || type == 1) {
-
         m_defaultTextColor = Qt::black;
         m_backgrounddefaultColor = Qt::white;
         m_currentDayTextColor = Qt::white;
@@ -129,7 +292,6 @@ void CMonthDayView::setTheMe(int type)
         m_fillColor = "#FFFFFF";
         frameclor = m_fillColor;
         m_fillColor.setAlphaF(0);
-
     } else if (type == 2) {
         m_defaultTextColor = "#C0C6D4";
         QColor framecolor = Qt::black;
@@ -142,281 +304,9 @@ void CMonthDayView::setTheMe(int type)
         frameclor = m_fillColor;
         m_fillColor.setAlphaF(0);
     }
-
-    DPalette anipa = palette();
-    anipa.setColor(DPalette::Background, frameclor);
-    setPalette(anipa);
-    setBackgroundRole(DPalette::Background);
 }
 
-void CMonthDayView::setwindowFixw(int w, int rw)
+void CMonthRect::setSelectRect(CMonthRect *selectRect)
 {
-    m_fixwidth = w;
-    m_realwidth = rw;
-    int w2 = m_fixwidth * 0.08333 + 0.5;
-    int h = height();
-    for (int c = 0; c != 12; ++c) {
-        m_cellList[c]->setFixedSize(w2, h);
-        m_cellList[c]->update();
-    }
-    if ((m_realwidth   < m_fixwidth) && m_searchfalg) {
-        int t_num = qRound((m_fixwidth - m_realwidth ) / w2 / 2.0);
-        QVector<bool> vindex;
-        vindex.resize(12);
-        vindex.fill(true);
-        for (int i = 0; i < t_num; i++) {
-            vindex[i] = false;
-            vindex[11 - i] = false;
-        }
-        for (int i = 0; i < 12; i++) {
-            m_cellList[i]->setVisible(vindex[i]);
-            m_cellList[i]->update();
-        }
-    } else {
-        for (int i = 0; i < 12; i++) {
-            m_cellList[i]->setVisible(true);
-            m_cellList[i]->update();
-        }
-    }
+    m_SelectRect =selectRect;
 }
-
-void CMonthDayView::setsearchfalg(bool flag)
-{
-    m_searchfalg = flag;
-}
-
-void CMonthDayView::paintCell(QWidget *cell)
-{
-    const QRect rect(0, 0, cell->width(), cell->height());
-
-    const int pos = m_cellList.indexOf(cell);
-    const bool isCurrentDay = (m_days[pos].month() == QDate::currentDate().month() && m_days[pos].year() == QDate::currentDate().year());
-
-    const bool isSelectDay = m_days[pos].month() == m_selectDate.month();
-
-    if (m_days[pos].year() < 1900) return;
-
-    QPainter painter(cell);
-
-    int labelwidth = cell->width();
-    int labelheight = cell->height();
-    if (1) {
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-        painter.setBrush(QBrush(m_fillColor));
-        painter.setPen(Qt::NoPen);
-        QPainterPath painterPath;
-        painterPath.moveTo(m_radius, 0);
-        if (m_roundangle[pos] == -1) {
-            painterPath.arcTo(QRect(0, 0, m_radius * 2, m_radius * 2), 90, 90);
-        } else {
-            painterPath.lineTo(0, 0);
-            painterPath.lineTo(0, m_radius);
-        }
-        painterPath.lineTo(0, labelheight - m_radius);
-        if (m_roundangle[pos] == -1) {
-            painterPath.arcTo(QRect(0, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
-        } else {
-            painterPath.lineTo(0, labelheight);
-            painterPath.lineTo(m_radius, labelheight);
-        }
-        painterPath.lineTo(labelwidth - m_radius, labelheight);
-        if (m_roundangle[pos] == 1) {
-            painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
-        } else {
-            painterPath.lineTo(labelwidth, labelheight);
-            painterPath.lineTo(labelwidth, labelheight - m_radius);
-        }
-        painterPath.lineTo(labelwidth, m_radius);
-        //painterPath.moveTo(labelwidth, m_radius);
-        if (m_roundangle[pos] == 1) {
-
-            painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
-
-        } else {
-            painterPath.lineTo(labelwidth, 0);
-            painterPath.lineTo(labelwidth - m_radius, 0);
-        }
-        painterPath.lineTo(m_radius, 0);
-        painterPath.closeSubpath();
-        painter.drawPath(painterPath);
-        painter.restore();
-    }
-
-    painter.setPen(Qt::SolidLine);
-
-    const QString dayNum = QString::number(m_days[pos].month());
-
-    if (isSelectDay) {
-#if 0
-        QRect fillRect(3, 3, cell->width() - 6, cell->height() - 6);
-        int hh = 0;
-
-        if (cell->width() > cell->height()) {
-            hh = cell->height();
-            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, 4, hh, hh);
-        } else {
-            hh = cell->width();
-            fillRect = QRect(0, (cell->height() - hh) / 2.0  + 4, hh, hh);
-        }
-
-        QPixmap pixmap;
-        if (m_themetype == 2)
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(hh, hh, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        else {
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(hh, hh, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        }
-        pixmap.setDevicePixelRatio(devicePixelRatioF());
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        painter.drawPixmap(fillRect, pixmap);
-        painter.restore();
-        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        painter.setPen(m_currentDayTextColor);
-        painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
-#else
-        QRect fillRect((cell->width() - 36) / 2, (cell->height() - 36) / 2 + 4, 36, 36);
-        QPixmap pixmap;
-        if (m_themetype == 2)
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-        else {
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-        }
-        pixmap.setDevicePixelRatio(devicePixelRatioF());
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        painter.drawPixmap(fillRect, pixmap);
-        painter.restore();
-        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        painter.setPen(m_currentDayTextColor);
-        painter.setFont(m_dayNumFont);
-        painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
-#endif
-    } else {
-        if (isCurrentDay) {
-            painter.setPen(m_backgroundcurrentDayColor);
-        } else {
-            painter.setPen(m_defaultTextColor);
-        }
-        painter.setFont(m_dayNumFont);
-        painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
-    }
-    painter.end();
-}
-
-bool CMonthDayView::eventFilter(QObject *o, QEvent *e)
-{
-    QWidget *cell = qobject_cast<QWidget *>(o);
-
-    if (cell && m_cellList.contains(cell)) {
-        if (e->type() == QEvent::Paint) {
-            paintCell(cell);
-        } else if (e->type() == QEvent::MouseButtonPress) {
-            cellClicked(cell);
-        }
-    }
-
-    return false;
-}
-void CMonthDayView::cellClicked(QWidget *cell)
-{
-    if (!m_cellSelectable)
-        return;
-
-    const int pos = m_cellList.indexOf(cell);
-    if (pos == -1)
-        return;
-
-    setSelectedCell(pos);
-    update();
-}
-
-void CMonthDayView::setSelectedCell(int index, int type)
-{
-    if (m_selectedCell == index)
-        return;
-
-    const int prevPos = m_selectedCell;
-    m_selectedCell = index;
-
-    m_cellList.at(prevPos)->update();
-    m_cellList.at(index)->update();
-    m_selectDate = m_days[index];
-    if (type == 0 && m_days[index].year() > 1899)
-        emit signalsSelectDate(m_days[index]);
-}
-
-void CMonthDayView::resizeEvent(QResizeEvent *event)
-{
-#if 0
-    int w = m_fixwidth * 0.08333 + 0.5;
-    int h = height();
-    for (int c = 0; c != 12; ++c) {
-        m_cellList[c]->setFixedSize(w, h);
-        m_cellList[c]->update();
-    }
-    if ((m_realwidth   < m_fixwidth) && m_searchfalg) {
-        int t_num = qRound((m_fixwidth - m_realwidth ) / w / 2.0);
-        QVector<bool> vindex;
-        vindex.resize(12);
-        vindex.fill(true);
-        for (int i = 0; i < t_num; i++) {
-            vindex[i] = false;
-            vindex[11 - i] = false;
-        }
-        for (int i = 0; i < 12; i++) {
-            m_cellList[i]->setVisible(vindex[i]);
-            m_cellList[i]->update();
-        }
-    } else {
-        for (int i = 0; i < 12; i++) {
-            m_cellList[i]->setVisible(true);
-            m_cellList[i]->update();
-        }
-    }
-#endif
-    int w = (width() - 20) / 12;
-    int h = height();
-
-    int ww = 36;
-    if (w >= ww) {
-        for (int c = 0; c != 12; ++c) {
-            m_cellList[c]->setFixedSize(w, h);
-            m_roundangle[c] = 0;
-            //m_cellList[c]->setVisible(true);
-            m_cellList[c]->update();
-        }
-        for (int i = 0; i < 12; i++) {
-            m_cellList[i]->setVisible(true);
-            m_cellList[i]->update();
-        }
-        m_roundangle[0] = -1;
-        m_roundangle[11] = 1;
-    } else {
-        for (int c = 0; c != 12; ++c) {
-            m_cellList[c]->setFixedSize(ww, h);
-            //m_cellList[c]->setVisible(true);
-            m_roundangle[c] = 0;
-            m_cellList[c]->update();
-        }
-        int t_num = qRound((ww * 12 - width() ) / ww / 2.0);
-        QVector<bool> vindex;
-        vindex.resize(12);
-        vindex.fill(true);
-        for (int i = 0; i < t_num; i++) {
-            vindex[i] = false;
-            vindex[11 - i] = false;
-        }
-        for (int i = 0; i < 12; i++) {
-            m_cellList[i]->setVisible(vindex[i]);
-            m_cellList[i]->update();
-        }
-        //m_roundangle[t_num] = -1;
-        //m_roundangle[11 - t_num] = 1;
-    }
-}
-
