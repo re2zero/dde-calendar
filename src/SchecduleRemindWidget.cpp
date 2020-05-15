@@ -11,7 +11,7 @@ SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
     m_centerWidget->setFixedHeight(57);
     setContent(m_centerWidget);
     this->resizeWithContent();
-    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
                      m_centerWidget,
                      &CenterWidget::setTheMe);
     m_centerWidget->setTheMe(DGuiApplicationHelper::instance()->themeType());
