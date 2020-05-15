@@ -971,11 +971,15 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
         }
 //        pixmap.setDevicePixelRatio(devicePixelRatioF());
-        painter->drawPixmap(fillRect.toRect(), pixmap);
+        if (m_LunarVisible)
+            painter->drawPixmap(fillRect.toRect(),pixmap);
+        else
+            painter->drawPixmap(QPointF((this->rect().width() - pixmap.width()) / 2 + this->rect().x(), this->rect().y()), pixmap);
     } else {
         painter->setPen(m_dayNumColor);
     }
-    fillRect.setY(fillRect.y()-8);
+    fillRect.setY(fillRect.y()-10);
+    fillRect.setX(fillRect.x()-1);
     painter->drawText(fillRect,
                       Qt::AlignCenter,
                       QString::number(m_Date.day()));
