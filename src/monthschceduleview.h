@@ -208,7 +208,6 @@ public slots:
     void animationFinished();
 private:
     void paintBackground(QPainter *painter,const QRectF &rect);
-
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
@@ -226,21 +225,20 @@ private:
     QPoint                m_pos;
     QColor                m_transparentcolor;
     bool                  m_transparentf = false; //按下
-    bool                  m_selectflag = false;
-    bool                  m_hoverflag = false;
-    bool                  m_highflag = false;
-    int                   m_editType = 0;
-    bool                    m_pressRemindTag = false;
-    bool                    m_pressMove = false;
-    QPoint                  m_pressPos;
-    CSchedulesColor gdcolor;
-    bool isAnimation = false;
-    QPropertyAnimation *m_properAnimationFirst = nullptr;
-    QPropertyAnimation *m_properAnimationSecond = nullptr;
-    QSequentialAnimationGroup *m_Group = nullptr;
-    QRect              m_rect;
-    DFontSizeManager::SizeType m_SizeType = DFontSizeManager::T8;
-    int he = 0;
+    bool                                    m_selectflag = false;
+    bool                                    m_hoverflag = false;
+    bool                                    m_highflag = false;
+    int                                     m_editType = 0;
+    bool                                    m_pressRemindTag = false;
+    bool                                    m_pressMove = false;
+    QPoint                                  m_pressPos;
+    CSchedulesColor                         gdcolor;
+    bool                                    isAnimation = false;
+    QPropertyAnimation                      *m_properAnimationFirst = nullptr;
+    QPropertyAnimation                      *m_properAnimationSecond = nullptr;
+    QSequentialAnimationGroup               *m_Group = nullptr;
+    QRect                                   m_rect;
+    DFontSizeManager::SizeType              m_SizeType = DFontSizeManager::T8;
 
 };
 

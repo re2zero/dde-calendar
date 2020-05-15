@@ -300,20 +300,20 @@ QDate CMonthGraphiview::getPosDate(const QPoint &p)
     qreal y = 0;
     if (p.x()<0) {
         x =0;
-    } else if (p.x()>rect.width()) {
-        x = rect.width();
+    } else if (p.x()>(rect.width()-10)) {
+        x = rect.width()-10;
     } else {
         x = p.x();
     }
     if (p.y()<0) {
         y =0;
-    } else if (p.y()>rect.height()) {
-        y = rect.height();
+    } else if (p.y()>(rect.height()-10)) {
+        y = rect.height()-10;
     } else {
         y = p.y();
     }
-    int xoffset = qFloor(x/(rect.width()/7)) %7 ;
-    int yoffset = qFloor(y/(rect.height()/6))%6 ;
+    int xoffset = qFloor(x/(rect.width()/7))%7;
+    int yoffset = qFloor(y/(rect.height()/6))%6;
     return  m_DayItem[xoffset+yoffset*7]->getDate();
 }
 
