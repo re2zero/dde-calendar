@@ -110,6 +110,17 @@ void CMonthGraphiview::setLunarVisible(bool visible)
 
 void CMonthGraphiview::setScheduleInfo(const QVector<ScheduleDateRangeInfo> &info)
 {
+//    qDebug()<<Q_FUNC_INFO<<"=======Begin=====";
+//    for (int i = 0; i <info.size(); ++i) {
+//        qDebug()<<info.at(i).date;
+//        for (int j = 0; j < info.at(i).vData.size(); ++j) {
+//            qDebug()<<"beginDateTime:"<<info.at(i).vData.at(j).beginDateTime;
+//            qDebug()<<"endDateTime:"<<info.at(i).vData.at(j).endDateTime;
+//            qDebug()<<"titleName:"<<info.at(i).vData.at(j).titleName;
+//            qDebug()<<"allday:"<<info.at(i).vData.at(j).allday;
+//        }
+//    }
+//    qDebug()<<Q_FUNC_INFO<<"=======End=====";
     m_shceludelistdata = info;
     updateInfo();
 }

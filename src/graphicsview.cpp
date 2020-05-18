@@ -235,6 +235,11 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
             if (beginoffset<0 || endoffset <0) {
                 continue;
             }
+            if (vListData.at(j).endDateTime.date() == currentDate &&
+                    vListData.at(j).beginDateTime.daysTo(vListData.at(j).endDateTime)>0 &&
+                    vListData.at(j).endDateTime.time() ==QTime(0,0,0)) {
+                continue;
+            }
 //            if (beginoffset>0) {
 //                currentInfo.begindate = QDateTime(currentDate,QTime(0,0,0));
 //            } else {
@@ -360,6 +365,11 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
         if (begTime.date().daysTo(endTime.date())==0 && begTime.time().secsTo(endTime.time())<m_minTime) {
             endTime = begTime.addSecs(m_minTime);
         }
+        if (endTime.time().hour()==0&&
+                endTime.time().second()==0) {
+            endTime = endTime.addSecs(-1);
+        }
+
         for (; i < info.count(); i++) {
             if ((schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
                     schedulelist.at(k).beginDateTime <= info.at(i).enddate) ||

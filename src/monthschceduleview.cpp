@@ -651,9 +651,7 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     m_Scene->addItem(gwi);
 
     gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
-
     QFont font;
-
     gwi->setSizeType(DFontSizeManager::T8);
     gwi->setData(gd);
 
@@ -797,6 +795,12 @@ void CWeekScheduleView::updateSchedule(const bool isCreate, const ScheduleDtailI
         //日程时间重新标定
         tbegindate = schedulev.at(i).beginDateTime.date();
         tenddate = schedulev.at(i).endDateTime.date();
+//        if (tbegindate.daysTo(tenddate)>0 &&
+//                schedulev.at(i).endDateTime.time().hour()<1 &&
+//                schedulev.at(i).endDateTime.time().second()<1)
+//            tenddate = tenddate.addDays(-1);
+        if (tenddate<beginDate ||tbegindate>endDate)
+            continue;
         if (tbegindate <  beginDate) tbegindate = beginDate;
         if (tenddate > endDate) tenddate = endDate;
         //日程信息
@@ -808,7 +812,7 @@ void CWeekScheduleView::updateSchedule(const bool isCreate, const ScheduleDtailI
         vMDaySchedule.append(info);
         qint64 pos = beginDate.daysTo(info.bdate);
         qint64 count = info.bdate.daysTo(info.edate);
-        int j = pos;
+        qint64 j = pos;
         for (; j < (pos+ count+1); ++j) {
             ++m_ColumnScheduleCount[j];
         }
