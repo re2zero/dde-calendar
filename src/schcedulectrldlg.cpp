@@ -246,11 +246,9 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
         btframe->setFixedSize(3, 28);
         m_btBoxLayout->addWidget(btframe, 0, Qt::AlignCenter);
         if (type == 1) {
-//            m_btBoxLayout->addSpacing(4);
-            m_btBoxLayout->addStretch();
+            m_btBoxLayout->addSpacing(4);
         } else {
-//            m_btBoxLayout->addSpacing(4);
-            m_btBoxLayout->addStretch();
+            m_btBoxLayout->addSpacing(4);
         }
 
     }
@@ -261,6 +259,50 @@ DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
     str_btName.append(btName);
 
     return button;
+}
+
+DSuggestButton *CSchceduleCtrlDlg::addsuggestButton(QString btName, int type)
+{
+    QFont labelTitle;
+//    labelTitle.setFamily("SourceHanSansSC");
+    labelTitle.setWeight(QFont::Medium);
+    labelTitle = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelTitle);
+//    labelTitle.setPixelSize(14);
+    QFontMetrics fm(labelTitle);
+    int w = fm.width(btName);
+    if (w > 109) w = w + 18;
+    else {
+        w = 109;
+    }
+    suggestButton  = new DSuggestButton(btName);
+    DFontSizeManager::instance()->bind(suggestButton,DFontSizeManager::T6);
+    QFontMetrics font_button(labelTitle);
+    QString text_button = font_button.elidedText(btName,Qt::ElideRight,112);
+    suggestButton->setText(text_button);
+    suggestButton->setToolTip(btName);
+    suggestButton->setFixedWidth(129);
+    suggestButton->setFixedHeight(36);
+    suggestButton->setFont(labelTitle);
+    m_Buttongroup->addButton(suggestButton, m_Buttongroup->buttons().count());
+    if (m_Buttongroup->buttons().count() > 1) {
+        DVerticalLine *btframe = new DVerticalLine(this);
+        m_btBoxLayout->addSpacing(4);
+        btframe->setFixedSize(3, 28);
+        m_btBoxLayout->addWidget(btframe, 0, Qt::AlignCenter);
+        if (type == 1) {
+            m_btBoxLayout->addSpacing(4);
+        } else {
+            m_btBoxLayout->addSpacing(4);
+        }
+
+    }
+
+    m_btBoxLayout->addWidget(suggestButton, 0, Qt::AlignCenter);
+    m_buttonlist.append(suggestButton);
+
+    str_btName.append(btName);
+
+    return suggestButton;
 }
 
 void CSchceduleCtrlDlg::setText(QString str)

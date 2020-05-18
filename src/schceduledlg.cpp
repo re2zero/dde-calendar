@@ -1121,19 +1121,19 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
                "occurrences?"));
         DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
         DPushButton *yesallbutton = msgBox.addPushButton(tr("All"));
-        DPushButton *yesButton = msgBox.addPushButton(tr("Only This Event"));
+        DSuggestButton *yesButton = msgBox.addsuggestButton(tr("Only This Event"));
         msgBox.updatesize();
-        DPalette pa = yesButton->palette();
-        if (m_themetype == 0 || m_themetype == 1) {
-            pa.setColor(DPalette::ButtonText, Qt::white);
-            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-            pa.setColor(DPalette::Light, QColor("#0098FF"));
-        } else {
-            pa.setColor(DPalette::ButtonText, "#B8D3FF");
-            pa.setColor(DPalette::Dark, QColor("#0056C1"));
-            pa.setColor(DPalette::Light, QColor("#004C9C"));
-        }
-        yesButton->setPalette(pa);
+//        DPalette pa = yesButton->palette();
+//        if (m_themetype == 0 || m_themetype == 1) {
+//            pa.setColor(DPalette::ButtonText, Qt::white);
+//            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+//            pa.setColor(DPalette::Light, QColor("#0098FF"));
+//        } else {
+//            pa.setColor(DPalette::ButtonText, "#B8D3FF");
+//            pa.setColor(DPalette::Dark, QColor("#0056C1"));
+//            pa.setColor(DPalette::Light, QColor("#004C9C"));
+//        }
+//        yesButton->setPalette(pa);
         msgBox.exec();
         if (msgBox.clickButton() == noButton) {
             return;
@@ -1162,19 +1162,19 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
                "all future occurrences?"));
         DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
         DPushButton *yesallbutton = msgBox.addPushButton(tr("All Future Events"));
-        DPushButton *yesButton = msgBox.addPushButton(tr("Only This Event"));
+        DSuggestButton *yesButton = msgBox.addsuggestButton(tr("Only This Event"));
         msgBox.updatesize();
-        DPalette pa = yesButton->palette();
-        if (m_themetype == 0 || m_themetype == 1) {
-            pa.setColor(DPalette::ButtonText, Qt::white);
-            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-            pa.setColor(DPalette::Light, QColor("#0098FF"));
-        } else {
-            pa.setColor(DPalette::ButtonText, "#B8D3FF");
-            pa.setColor(DPalette::Dark, QColor("#0056C1"));
-            pa.setColor(DPalette::Light, QColor("#004C9C"));
-        }
-        yesButton->setPalette(pa);
+//        DPalette pa = yesButton->palette();
+//        if (m_themetype == 0 || m_themetype == 1) {
+//            pa.setColor(DPalette::ButtonText, Qt::white);
+//            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+//            pa.setColor(DPalette::Light, QColor("#0098FF"));
+//        } else {
+//            pa.setColor(DPalette::ButtonText, "#B8D3FF");
+//            pa.setColor(DPalette::Dark, QColor("#0056C1"));
+//            pa.setColor(DPalette::Light, QColor("#004C9C"));
+//        }
+//        yesButton->setPalette(pa);
         msgBox.exec();
 
         if (msgBox.clickButton() == noButton) {
