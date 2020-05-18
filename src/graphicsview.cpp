@@ -703,6 +703,7 @@ void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
         if (m_isCreate) {
             if (m_MoveDate !=gDate) {
                 m_MoveDate = gDate;
+
                 m_DragScheduleInfo = getScheduleInfo(m_PressDate,m_MoveDate);
                 upDateInfoShow(IsCreate,getScheduleInfo(m_PressDate,m_MoveDate));
             }
@@ -711,31 +712,30 @@ void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
     case ChangeBegin:
         if (qAbs(m_MoveDate.secsTo(gDate))>100) {
             m_MoveDate = gDate;
-            if (m_MoveDate.secsTo(m_InfoEndTime)<0) {
-                m_DragScheduleInfo.beginDateTime = m_InfoEndTime;
-                m_DragScheduleInfo.endDateTime = m_MoveDate;
+            if (m_MoveDate.secsTo(m_InfoEndTime)<1800) {
+                m_DragScheduleInfo.beginDateTime = m_InfoEndTime.addSecs(-1800);
             } else {
                 m_DragScheduleInfo.beginDateTime = m_MoveDate;
-                m_DragScheduleInfo.endDateTime = m_InfoEndTime;
             }
+            m_DragScheduleInfo.endDateTime = m_InfoEndTime;
             upDateInfoShow(ChangeBegin,m_DragScheduleInfo);
         }
         break;
     case ChangeEnd:
         if (qAbs(m_MoveDate.secsTo(gDate))>100) {
             m_MoveDate = gDate;
-            if (m_InfoBeginTime.secsTo(m_MoveDate)<0) {
-                m_DragScheduleInfo.beginDateTime = m_MoveDate;
-                m_DragScheduleInfo.endDateTime = m_InfoBeginTime;
+            if (m_InfoBeginTime.secsTo(m_MoveDate)<1800) {
+                m_DragScheduleInfo.endDateTime = m_InfoBeginTime.addSecs(1800);
             } else {
-                m_DragScheduleInfo.beginDateTime =m_InfoBeginTime;
                 m_DragScheduleInfo.endDateTime = m_MoveDate;
             }
+            m_DragScheduleInfo.beginDateTime =m_InfoBeginTime;
             upDateInfoShow(ChangeEnd,m_DragScheduleInfo);
         }
         break;
     case ChangeWhole: {
         Qt::DropAction dropAciton = m_Drag->exec( Qt::MoveAction);
+        Q_UNUSED(dropAciton);
         m_Drag = nullptr;
         m_DragStatus = NONE;
     }
@@ -1166,9 +1166,17 @@ ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, con
     ScheduleDtailInfo info;
     if (beginDate.secsTo(endDate)>0) {
         info.beginDateTime = beginDate;
-        info.endDateTime = endDate;
+        if (beginDate.secsTo(endDate)<1800) {
+            info.endDateTime = beginDate.addSecs(1800);
+        } else {
+            info.endDateTime = endDate;
+        }
     } else {
-        info.beginDateTime = endDate;
+        if (endDate.secsTo(beginDate)<1800) {
+            info.beginDateTime = beginDate.addSecs(-1800);
+        } else {
+            info.beginDateTime = endDate;
+        }
         info.endDateTime = beginDate;
     }
     info.titleName = tr("New Event");

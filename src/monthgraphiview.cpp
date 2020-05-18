@@ -626,12 +626,11 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
         if (m_MoveDate !=gDate) {
             m_MoveDate = gDate;
             if (m_MoveDate.daysTo(m_InfoEndTime.date())<0) {
-                m_DragScheduleInfo.beginDateTime = QDateTime(m_InfoEndTime.date().addDays(1),QTime(0,0,0));
-                m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate,QTime(23,59,0));
+                m_DragScheduleInfo.beginDateTime = QDateTime(m_InfoEndTime.date(),m_InfoBeginTime.time());
             } else {
-                m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate,QTime(0,0,0));
-                m_DragScheduleInfo.endDateTime = m_InfoEndTime;
+                m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate,m_InfoBeginTime.time());
             }
+            m_DragScheduleInfo.endDateTime = m_InfoEndTime;
             upDateInfoShow(ChangeBegin,m_DragScheduleInfo);
         }
         break;
@@ -639,12 +638,12 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
         if (m_MoveDate !=gDate) {
             m_MoveDate = gDate;
             if (m_InfoBeginTime.date().daysTo(m_MoveDate)<0) {
-                m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate,QTime(0,0,0));
-                m_DragScheduleInfo.endDateTime = QDateTime(m_InfoBeginTime.date().addDays(-1),QTime(23,59,0));
+                m_DragScheduleInfo.endDateTime = QDateTime(m_InfoBeginTime.date(),m_InfoEndTime.time());
             } else {
-                m_DragScheduleInfo.beginDateTime =m_InfoBeginTime;
-                m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate,QTime(23,59,0));
+
+                m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate,m_InfoEndTime.time());
             }
+            m_DragScheduleInfo.beginDateTime =m_InfoBeginTime;
             upDateInfoShow(ChangeEnd,m_DragScheduleInfo);
         }
         break;
@@ -664,6 +663,7 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
 
 void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     setCursor(Qt::ArrowCursor);
     m_press = false;
     switch (m_DragStatus) {
@@ -690,7 +690,7 @@ void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
         break;
     }
     m_DragStatus = NONE;
-
+    update();
 }
 
 void CMonthGraphiview::contextMenuEvent(QContextMenuEvent *event)

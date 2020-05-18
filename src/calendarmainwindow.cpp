@@ -748,10 +748,8 @@ void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
     Q_UNUSED(id);
     if (m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
-        //    m_yearwindow->setDate(m_currentdate);
         m_yearwindow->slotupdateSchedule(0);
     }
-
     updateHigh();
     return;
 }

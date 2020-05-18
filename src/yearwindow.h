@@ -78,25 +78,24 @@ protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private:
-
-    DFrame *m_contentBackground = nullptr;
-    DIconButton      *m_prevButton = nullptr;
-    DIconButton      *m_nextButton = nullptr;
-    QLabel           *m_today = nullptr;
-    QDate              m_currentdate;
-    QLabel            *m_YearLabel;
-    QLabel            *m_YearLunarLabel;
-    QLabel            *m_YearLunarDayLabel;
-    YearFrame            *m_YearWidget;
-    YearFrame               *YearWidget_First;
-    YearFrame               *YearWidget_Second;
-    CustomFrame            *m_todayframe;
-    AnimationStackedWidget *m_StackedWidget;
+    DFrame                      *m_contentBackground = nullptr;
+    DIconButton                 *m_prevButton = nullptr;
+    DIconButton                 *m_nextButton = nullptr;
+    QLabel                      *m_today = nullptr;
+    QDate                       m_currentdate;
+    QLabel                      *m_YearLabel;
+    QLabel                      *m_YearLunarLabel;
+    QLabel                      *m_YearLunarDayLabel;
+    YearFrame                   *m_YearWidget;
+    YearFrame                   *YearWidget_First;
+    YearFrame                   *YearWidget_Second;
+    CustomFrame                 *m_todayframe;
+    AnimationStackedWidget      *m_StackedWidget;
     //CSchceduleSearchView *m_schceduleSearchView;
-    QHBoxLayout *m_tmainLayout;
-    QString           m_searchText;
-    bool    m_searchfalg = false;
-    DWidget                  *m_topWidget;
+    QHBoxLayout                 *m_tmainLayout;
+    QString                     m_searchText;
+    bool                        m_searchfalg = false;
+    DWidget                     *m_topWidget;
 };
 
 class YearFrame : public DFrame
