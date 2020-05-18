@@ -1032,10 +1032,11 @@ void CGraphicsView::dragMoveEvent(QDragMoveEvent *event)
             m_DragScheduleInfo.endDateTime    = m_DragScheduleInfo.endDateTime.addSecs(offset);
         } else {
             m_DragScheduleInfo.allday = false;
-            if (m_DragScheduleInfo.remind) {
-//                m_DragScheduleInfo.remindData.time = QTime(9, 0);
-                m_DragScheduleInfo.remindData.n = 15;
-            }
+            m_DragScheduleInfo.remind = false;
+//            if (m_DragScheduleInfo.remind) {
+////                m_DragScheduleInfo.remindData.time = QTime(9, 0);
+//                m_DragScheduleInfo.remindData.n = 15;
+//            }
             m_DragScheduleInfo.beginDateTime = m_MoveDate;
             m_DragScheduleInfo.endDateTime = m_MoveDate.addSecs(3600);
         }
