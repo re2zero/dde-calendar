@@ -83,7 +83,6 @@ public:
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
                                     QVector<ScheduleclassificationInfo> &info);
     void updateschedule();
-    void setInfoItemNull();
 
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -215,6 +214,7 @@ public:
     void setLargeScalePen(const QPen &LRPen, const QPen &TBPen);
     void setFirstWeekday(int weekday);
     void setTime(QTime time);
+    void setCurrentItem(CScheduleItem *item);
 protected:
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
     void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
@@ -242,6 +242,8 @@ private:
     ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate,const QDateTime &endDate);
     void updateScheduleInfo(const ScheduleDtailInfo &info);
     QDateTime TimeRounding(const QDateTime &time);
+    void setPressSelectInfo(const ScheduleDtailInfo &info);
+    void DeleteItem(const ScheduleDtailInfo &info);
 private:
     QGraphicsScene                  *m_graphicsScene;               //绘制Scene
     CScheduleCoorManage             *m_coorManage;

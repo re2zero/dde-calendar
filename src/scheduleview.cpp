@@ -542,7 +542,6 @@ void CScheduleView::slotCurrentScheduleDate(QDate date)
 
 void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out)
 {
-
     if (isShow) {
         QPoint pos22 = QCursor::pos();
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(

@@ -42,7 +42,6 @@
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
-
 CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem(QRect rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
     : QGraphicsRectItem(parent),
       m_rect(rect)
@@ -181,6 +180,9 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_ScheduleInfo) {
+        m_highflag = true;
+    }
     if (m_GradientFlag) {
         QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
         QColor color1 = gdcolor.gradientFromC;
@@ -311,83 +313,17 @@ void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraph
 
 void CMonthSchceduleWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     m_hoverflag = true;
     update();
 }
 
 void CMonthSchceduleWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     m_hoverflag = false;
     update();
 }
-
-//void CMonthSchceduleWidgetItem::contextMenuEvent( QContextMenuEvent *event )
-//{
-//    emit signalPressScheduleShow(false);
-//    if (m_ScheduleInfo.type.ID == 4) {
-
-//    } else {
-//        emit signalUpdateUI(0);
-//        DMenu Context(qobject_cast<QWidget *>(this->parent()));
-//        Context.setAttribute(Qt::WA_DeleteOnClose);
-//        Context.addAction(m_editAction);
-//        Context.addAction(m_deleteAction);
-//        Context.exec(QCursor::pos());
-//        emit signalUpdateUI(1);
-//    }
-//}
-
-//void CMonthSchceduleWidgetItem::mouseDoubleClickEvent(QMouseEvent *event)
-//{
-//    if (event->button() == Qt::LeftButton) {
-//        emit signalPressScheduleShow(false);
-//        CMonthView *w = qobject_cast<CMonthView *>(this->parent());
-//        CMySchceduleView dlg(m_ScheduleInfo, w);
-
-//        connect(&dlg, &CMySchceduleView::signalsEditorDelete, w, &CMonthView::slotSchceduleUpdate);
-//        connect(&dlg, &CMySchceduleView::signalsEditorDelete, w, &CMonthView::slotdelete);
-//        connect(&dlg, &CMySchceduleView::signalViewtransparentFrame,
-//                w, &CMonthView::signalViewtransparentFrame);
-//        dlg.exec();
-//    }
-//}
-
-//void CMonthSchceduleWidgetItem::mousePressEvent(QMouseEvent *event)
-//{
-//    if (event->button() == Qt::LeftButton) {
-//        m_selectflag = true;
-//        m_pressRemindTag = true;
-//        m_pressMove = true;
-//        m_pressPos = event->pos();
-//        update();
-//        slotPress();
-//        emit signalPressScheduleShow(true, m_ScheduleInfo);
-//    }
-//}
-
-//void CMonthSchceduleWidgetItem::mouseReleaseEvent(QMouseEvent *event)
-//{
-//    if (event->button() == Qt::LeftButton) {
-//        m_selectflag = false;
-//        m_pressRemindTag = false;
-//        m_pressMove = false;
-//        update();
-//    }
-//}
-
-
-//void CMonthSchceduleWidgetItem::enterEvent(QEvent *event)
-//{
-//    m_hoverflag = true;
-//    update();
-//}
-
-//void CMonthSchceduleWidgetItem::leaveEvent(QEvent *event)
-//{
-//    m_hoverflag = false;
-//    m_pressRemindTag = false;
-//    update();
-//}
 
 CMonthSchceduleNumButton::CMonthSchceduleNumButton(QGraphicsItem *parent /*= nullptr*/): QGraphicsRectItem (parent)
 {

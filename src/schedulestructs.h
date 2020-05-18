@@ -71,11 +71,20 @@ typedef struct _tagScheduleDtailInfo {
     ScheduleRemindData remindData;
     int               rpeat; //0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
     ScheduleEndRepeatData enddata;
+    explicit _tagScheduleDtailInfo()
+    {
+        type.ID = -1;
+    }
     bool operator ==(const _tagScheduleDtailInfo &info)const
     {
-        //此处只对比普通日程，不对比节日日程
-        return this->id == info.id &&this->RecurID == info.RecurID &&
-               titleName == info.titleName;
+        if (info.type.ID ==4) {
+            return this->id == info.id &&this->RecurID == info.RecurID &&
+                   titleName == info.titleName &&
+                   beginDateTime ==info.beginDateTime;
+        } else {
+            return this->id == info.id &&this->RecurID == info.RecurID &&
+                   titleName == info.titleName;
+        }
     }
     bool operator <(const _tagScheduleDtailInfo &info)const
     {
@@ -102,6 +111,7 @@ typedef struct _tagScheduleDtailInfo {
         }
     }
 } ScheduleDtailInfo;
+
 typedef struct _tagScheduleDateRangeInfo {
     QDate date;
     QVector<ScheduleDtailInfo> vData;

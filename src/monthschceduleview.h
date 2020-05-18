@@ -213,18 +213,18 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 private:
-    ScheduleDtailInfo     m_ScheduleInfo;
-    int                     m_widthoffset = 0;
-    QAction              *m_editAction;
-    QAction              *m_deleteAction;
-    bool                  m_GradientFlag;
-    QColor                m_color1;
-    QColor                m_color2;
-    QColor                m_textcolor;
-    QFont                 m_font;
-    QPoint                m_pos;
-    QColor                m_transparentcolor;
-    bool                  m_transparentf = false; //按下
+    ScheduleDtailInfo                       m_ScheduleInfo;
+    int                                     m_widthoffset = 0;
+    QAction                                 *m_editAction;
+    QAction                                 *m_deleteAction;
+    bool                                    m_GradientFlag;
+    QColor                                  m_color1;
+    QColor                                  m_color2;
+    QColor                                  m_textcolor;
+    QFont                                   m_font;
+    QPoint                                  m_pos;
+    QColor                                  m_transparentcolor;
+    bool                                    m_transparentf = false; //按下
     bool                                    m_selectflag = false;
     bool                                    m_hoverflag = false;
     bool                                    m_highflag = false;
@@ -239,7 +239,6 @@ private:
     QSequentialAnimationGroup               *m_Group = nullptr;
     QRect                                   m_rect;
     DFontSizeManager::SizeType              m_SizeType = DFontSizeManager::T8;
-
 };
 
 #endif // CSHCEDULEDAYVIEW_H

@@ -211,6 +211,9 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
                                   m_scheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_scheduleInfo);
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_scheduleInfo) {
+        m_highflag = true;
+    }
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     QColor bcolor = gdcolor.Purecolor;

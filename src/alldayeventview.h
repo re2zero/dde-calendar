@@ -34,7 +34,6 @@
 DWIDGET_USE_NAMESPACE
 class QDrag;
 class CAllDayEventWidgetItem;
-class CSolodayWidgetItem;
 class CScheduleCoorManage;
 class CAllDayEventWeekView : public DGraphicsView
 {
@@ -74,7 +73,6 @@ signals:
 public slots:
     void slotdeleteitem(CAllDayEventWidgetItem *item);
     void slotedititem(CAllDayEventWidgetItem *item, int type = 0);
-    void slotupdateItem(CAllDayEventWidgetItem *item);
     void slotDeleteItem();
 private slots:
     void slotCreate();
@@ -97,6 +95,8 @@ private:
     void createItemWidget(int index, bool average = false);
     ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
     PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect);
+    void setPressSelectInfo(const ScheduleDtailInfo &info);
+    void DeleteItem(const ScheduleDtailInfo &info);
 private:
     int                     itemHeight = 22;
     QAction                                     *m_createAction;     // 创建日程
@@ -112,7 +112,6 @@ private:
     CScheduleCoorManage                         *m_coorManage;
     QDate                                       m_dianjiDay;
     bool                                        m_LunarVisible;
-    CAllDayEventWidgetItem                      *m_currentitem = nullptr;
     int                                             m_themetype = 0;
     int m_rightmagin = 0;
     bool                            m_updateDflag  = false;
@@ -159,7 +158,6 @@ public:
 signals:
     void signalsDelete(CAllDayEventWidgetItem *item);
     void signalsEdit(CAllDayEventWidgetItem *item, int type = 0);
-    void signalsPress(CAllDayEventWidgetItem *item);
     void signalViewtransparentFrame(int type);
 //    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
 public slots:
@@ -172,24 +170,24 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 private:
-    ScheduleDtailInfo     m_vScheduleInfo;
-    QAction              *m_editAction;
-    QAction              *m_deleteAction;
-    QAction              *m_createAction;     // 创建日程
-    QFont                 m_font;
-    bool                  m_avgeflag;
-    int                   m_editType = 0;
+    ScheduleDtailInfo                   m_vScheduleInfo;
+    QAction                             *m_editAction;
+    QAction                             *m_deleteAction;
+    QAction                             *m_createAction;     // 创建日程
+    QFont                               m_font;
+    bool                                m_avgeflag;
+    int                                 m_editType = 0;
     QDate                                       m_dianjiDay;
     CScheduleCoorManage                         *m_coorManage;
-    bool         m_vSelectflag;
-    bool         m_vHoverflag;
-    bool         m_vHighflag;
-    bool            m_press = false;
-    QRect       m_rect;
-    DFontSizeManager::SizeType      m_sizeType  = DFontSizeManager::T8;
-    QPropertyAnimation *m_properAnimationFirst;
-    QPropertyAnimation *m_properANimationSecond;
-    QSequentialAnimationGroup *m_Group;
+    bool                                m_vSelectflag;
+    bool                                m_vHoverflag;
+    bool                                m_vHighflag;
+    bool                                m_press = false;
+    QRect                               m_rect;
+    DFontSizeManager::SizeType          m_sizeType  = DFontSizeManager::T8;
+    QPropertyAnimation                  *m_properAnimationFirst;
+    QPropertyAnimation                  *m_properANimationSecond;
+    QSequentialAnimationGroup           *m_Group;
 };
 #endif // CSHCEDULEDAYVIEW_H
 

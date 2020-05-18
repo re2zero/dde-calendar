@@ -50,7 +50,8 @@ private:
     QDate getPosDate(const QPoint &p);
     void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo());
     void updateScheduleInfo(const ScheduleDtailInfo &info);
-    void DeleteItem(CMonthSchceduleWidgetItem *infoitem);
+    void DeleteItem(const ScheduleDtailInfo &info);
+    void setPressSelectInfo(const ScheduleDtailInfo &info);
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;
@@ -85,10 +86,7 @@ private:
     bool                                m_LunarVisible;
     ScheduleDtailInfo                   m_ScheduleInfo;
     QDate                               m_createDate;
-    QGraphicsRectItem                   *m_currentitem;
-    CMonthSchceduleWidgetItem           *m_infoitem;
     int                                 m_press = false;
-
 
     QAction                                     *m_createAction;     // 创建日程
     QAction                                     *m_editAction;

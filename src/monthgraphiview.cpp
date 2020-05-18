@@ -173,7 +173,6 @@ void CMonthGraphiview::updateLunar()
 
 void CMonthGraphiview::updateInfo()
 {
-    m_infoitem = nullptr;
     int h = m_MonthSchceduleView->getSchceduleHeight();
     m_MonthSchceduleView->setallsize(this->viewport()->width(),
                                      this->viewport()->height(),
@@ -242,7 +241,6 @@ void CMonthGraphiview::DragPressEvent(const QPoint &pos,QGraphicsItem *item)
             if (m_Drag ==nullptr) {
                 m_Drag = new QDrag(this);
             }
-            m_currentitem = infoitem;
             m_Drag->setMimeData(mimeData);
             m_Drag->setPixmap(infoitem->getPixmap());
             QPointF itemPos = QPointF(pos.x()-infoitem->rect().x(),
@@ -350,10 +348,9 @@ void CMonthGraphiview::updateScheduleInfo(const ScheduleDtailInfo &info)
     }
 }
 
-void CMonthGraphiview::DeleteItem(CMonthSchceduleWidgetItem *infoitem)
+void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
 {
     emit signalViewtransparentFrame(1);
-    ScheduleDtailInfo info = infoitem->getData();
     if (info.rpeat == 0) {
         CSchceduleCtrlDlg msgBox(this);
         msgBox.setText(tr("You are deleting an event."));
@@ -449,8 +446,13 @@ void CMonthGraphiview::DeleteItem(CMonthSchceduleWidgetItem *infoitem)
             }
         }
     }
-    emit slotSchceduleUpdate(infoitem->getData().id);
+    emit slotSchceduleUpdate(info.id);
     emit signalViewtransparentFrame(0);
+}
+
+void CMonthGraphiview::setPressSelectInfo(const ScheduleDtailInfo &info)
+{
+    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(info);
 }
 
 void CMonthGraphiview::dragEnterEvent(QDragEnterEvent *event)
@@ -558,17 +560,17 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CMonthGraphiview::mousePressEvent(QMouseEvent *event)
 {
-    m_infoitem = nullptr;
     if (event->button() != Qt::LeftButton) {
         return;
     }
+
+    setPressSelectInfo(ScheduleDtailInfo());
     QGraphicsItem *listItem =itemAt(event->localPos().toPoint());
     CMonthSchceduleWidgetItem *infoitem = dynamic_cast<CMonthSchceduleWidgetItem *>(listItem);
     if (infoitem != nullptr) {
-        m_infoitem = infoitem;
+        setPressSelectInfo(infoitem->getData());
         m_press = true;
         infoitem->setPressFlag(true);
-
         m_MonthSchceduleView->slotupdateItem(infoitem);
         emit signalScheduleShow(true, infoitem->getData());
     } else {
@@ -588,7 +590,6 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
         return;
     CMonthSchceduleWidgetItem *item = dynamic_cast<CMonthSchceduleWidgetItem *>(itemAt(event->pos()));
     if (item != nullptr) {
-        m_infoitem = item;
         if (item->getData().type.ID != 4) {
             if (m_DragStatus == NONE) {
                 switch (getPosInItem(event->pos(),item->rect())) {
@@ -607,7 +608,6 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
             setCursor(Qt::ArrowCursor);
         }
     }
-    m_infoitem = item;
     QDate gDate =  getPosDate(event->pos());
     switch (m_DragStatus) {
     case IsCreate:
@@ -669,7 +669,6 @@ void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
     if (infoitem != nullptr) {
         infoitem->setPressFlag(false);
     }
-
     DGraphicsView::mouseReleaseEvent(event);
     setCursor(Qt::ArrowCursor);
     m_press = false;
@@ -679,22 +678,25 @@ void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
                 m_DragScheduleInfo);
         }
+        emit slotSchceduleUpdate(0);
         break;
     case ChangeBegin:
         if (m_MoveDate != m_InfoBeginTime.date()) {
             updateScheduleInfo(m_DragScheduleInfo);
         }
+        emit slotSchceduleUpdate(0);
         break;
     case ChangeEnd:
         if (m_MoveDate != m_InfoEndTime.date()) {
             updateScheduleInfo(m_DragScheduleInfo);
         }
+        emit slotSchceduleUpdate(0);
         break;
     default:
         break;
     }
     m_DragStatus = NONE;
-    emit slotSchceduleUpdate(0);
+
 }
 
 void CMonthGraphiview::contextMenuEvent(QContextMenuEvent *event)
@@ -724,7 +726,7 @@ void CMonthGraphiview::contextMenuEvent(QContextMenuEvent *event)
                 }
                 emit signalViewtransparentFrame(0);
             } else if (action_t == m_deleteAction) {
-                DeleteItem(infoitem);
+                DeleteItem(infoitem->getData());
             }
         }
     }
@@ -783,12 +785,13 @@ void CMonthGraphiview::slotdelete(const int id)
 
 void CMonthGraphiview::slotDeleteItem()
 {
-    if (m_infoitem == nullptr)
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID <0) {
         return;
-    if (m_infoitem->getData().type.ID ==4)
-        return;
-    DeleteItem(m_infoitem);
-    m_infoitem =nullptr;
+    }
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID !=4) {
+        DeleteItem(CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo());
+    }
+    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
 }
 
 CDayGraphicsItem::CDayGraphicsItem(QGraphicsItem *parent)

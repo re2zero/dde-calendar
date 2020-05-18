@@ -43,6 +43,7 @@
 #include "schcedulectrldlg.h"
 
 DGUI_USE_NAMESPACE
+
 CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRect rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
     : QGraphicsRectItem(parent),
       m_rect(rect)
@@ -141,6 +142,7 @@ void CAllDayEventWidgetItem::startAnimation()
     }
 }
 
+
 void CAllDayEventWidgetItem::slotCreate()
 {
     emit signalViewtransparentFrame(1);
@@ -181,6 +183,9 @@ void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphics
     painter->setRenderHints(QPainter::Antialiasing);
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.type.ID);
     m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo) {
+        m_vHighflag = true;
+    }
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     QRectF drawrect = this->rect();
@@ -647,11 +652,10 @@ void CAllDayEventWeekView::slotDoubleEvent()
 
 void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
 {
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
+    setPressSelectInfo(ScheduleDtailInfo());
+    CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
     if (event->button() == Qt::RightButton) {
         emit signalScheduleShow(false);
-        CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
         if (item == nullptr) {
             DMenu Context(this);
             Context.addAction(m_createAction);
@@ -659,6 +663,7 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
             Context.exec(QCursor::pos());
 
         } else {
+//            setPressSelectInfo(item->getData());
             if (item->getData().type.ID == 4)
                 return;
             DMenu menu(this);
@@ -674,114 +679,12 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
                 }
                 emit signalViewtransparentFrame(0);
             } else if (action_t == m_deleteAction) {
-                emit signalViewtransparentFrame(1);
-                ScheduleDtailInfo info = item->getData();
-                if (info.rpeat == 0) {
-                    CSchceduleCtrlDlg msgBox(this);
-                    msgBox.setText(tr("You are deleting an event."));
-                    msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-                    DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                    DPushButton *yesButton = msgBox.addPushButton(tr("Delete"), 1);
-                    msgBox.updatesize();
-                    DPalette pa = yesButton->palette();
-                    if (themetype == 0 || themetype == 1) {
-                        pa.setColor(DPalette::ButtonText, Qt::red);
-
-                    } else {
-                        pa.setColor(DPalette::ButtonText, "#FF5736");
-
-                    }
-                    yesButton->setPalette(pa);
-                    msgBox.exec();
-
-                    if (msgBox.clickButton() == noButton) {
-                        emit signalViewtransparentFrame(0);
-                        return;
-                    } else if (msgBox.clickButton() == yesButton) {
-                        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
-                    }
-                } else {
-                    if (info.RecurID == 0) {
-                        CSchceduleCtrlDlg msgBox(this);
-                        msgBox.setText(tr("You are deleting an event."));
-                        msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-                        DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                        DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All"));
-                        DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
-                        msgBox.updatesize();
-                        DPalette pa = yesButton->palette();
-                        if (themetype == 0 || themetype == 1) {
-                            pa.setColor(DPalette::ButtonText, Qt::white);
-                            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-                            pa.setColor(DPalette::Light, QColor("#0098FF"));
-                        } else {
-                            pa.setColor(DPalette::ButtonText, "#B8D3FF");
-                            pa.setColor(DPalette::Dark, QColor("#0056C1"));
-                            pa.setColor(DPalette::Light, QColor("#004C9C"));
-                        }
-                        yesButton->setPalette(pa);
-                        msgBox.exec();
-
-                        if (msgBox.clickButton() == noButton) {
-                            emit signalViewtransparentFrame(0);
-                            return;
-                        } else if (msgBox.clickButton() == yesallbutton) {
-                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
-                        } else if (msgBox.clickButton() == yesButton) {
-
-                            ScheduleDtailInfo newschedule;
-                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                            newschedule.ignore.append(info.beginDateTime);
-                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-                        }
-                    } else {
-                        CSchceduleCtrlDlg msgBox(this);
-                        msgBox.setText(tr("You are deleting an event."));
-                        msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-                        DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-                        DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All Future Events"));
-                        DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
-                        msgBox.updatesize();
-                        DPalette pa = yesButton->palette();
-                        if (themetype == 0 || themetype == 1) {
-                            pa.setColor(DPalette::ButtonText, Qt::white);
-                            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-                            pa.setColor(DPalette::Light, QColor("#0098FF"));
-                        } else {
-                            pa.setColor(DPalette::ButtonText, "#B8D3FF");
-                            pa.setColor(DPalette::Dark, QColor("#0056C1"));
-                            pa.setColor(DPalette::Light, QColor("#004C9C"));
-                        }
-                        yesButton->setPalette(pa);
-                        msgBox.exec();
-
-                        if (msgBox.clickButton() == noButton) {
-                            emit signalViewtransparentFrame(0);
-                            return;
-                        } else if (msgBox.clickButton() == yesallbutton) {
-                            ScheduleDtailInfo newschedule;
-                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                            newschedule.enddata.type = 2;
-                            newschedule.enddata.date = info.beginDateTime.addDays(-1);
-                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-
-                        } else if (msgBox.clickButton() == yesButton) {
-
-                            ScheduleDtailInfo newschedule;
-                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                            newschedule.ignore.append(info.beginDateTime);
-                            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-                        }
-                    }
-                }
-                emit signalsUpdateShcedule(item->getData().id);
-                emit signalViewtransparentFrame(0);
+                DeleteItem(item->getData());
             }
         }
     } else if (event->button() == Qt::LeftButton) {
-        CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
         if (item != nullptr) {
-            m_currentitem = item;
+            setPressSelectInfo(item->getData());
             m_press = true;
             item->setPressFlag(true);
             emit signalScheduleShow(true, item->getData());
@@ -803,7 +706,6 @@ void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
                 m_DragScheduleInfo);
             emit signalsUpdateShcedule(0);
-//            updateDateShow();
         }
         break;
     case ChangeBegin:
@@ -889,7 +791,6 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
             setCursor(Qt::ArrowCursor);
         }
     }
-    m_currentitem = item;
 
     QDate gDate =  m_coorManage->getsDate(mapFrom(this, event->pos()));
     switch (m_DragStatus) {
@@ -1042,7 +943,6 @@ void CAllDayEventWeekView::dropEvent(QDropEvent *event)
 
 void CAllDayEventWeekView::updateDateShow()
 {
-    m_currentitem = nullptr;
     m_Scene->setSceneRect(0,
                           0,
                           m_Scene->width(),
@@ -1131,7 +1031,6 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
         m_baseShowItem.append(gwi);
         connect(gwi, &CAllDayEventWidgetItem::signalsDelete, this, &CAllDayEventWeekView::slotdeleteitem);
         connect(gwi, &CAllDayEventWidgetItem::signalsEdit, this, &CAllDayEventWeekView::slotedititem);
-        connect(gwi, &CAllDayEventWidgetItem::signalsPress, this, &CAllDayEventWeekView::slotupdateItem);
         connect(gwi, &CAllDayEventWidgetItem::signalViewtransparentFrame, this, &CAllDayEventWeekView::signalViewtransparentFrame);
     }
 }
@@ -1175,6 +1074,116 @@ CAllDayEventWeekView::PosInItem CAllDayEventWeekView::getPosInItem(const QPoint 
     return MIDDLE;
 }
 
+void CAllDayEventWeekView::setPressSelectInfo(const ScheduleDtailInfo &info)
+{
+    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(info);
+}
+
+void CAllDayEventWeekView::DeleteItem(const ScheduleDtailInfo &info)
+{
+    emit signalViewtransparentFrame(1);
+    if (info.rpeat == 0) {
+        CSchceduleCtrlDlg msgBox(this);
+        msgBox.setText(tr("You are deleting an event."));
+        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
+        DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+        DPushButton *yesButton = msgBox.addPushButton(tr("Delete"), 1);
+        msgBox.updatesize();
+        DPalette pa = yesButton->palette();
+        if (m_themetype == 0 || m_themetype == 1) {
+            pa.setColor(DPalette::ButtonText, Qt::red);
+
+        } else {
+            pa.setColor(DPalette::ButtonText, "#FF5736");
+
+        }
+        yesButton->setPalette(pa);
+        msgBox.exec();
+
+        if (msgBox.clickButton() == noButton) {
+            emit signalViewtransparentFrame(0);
+            return;
+        } else if (msgBox.clickButton() == yesButton) {
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
+        }
+    } else {
+        if (info.RecurID == 0) {
+            CSchceduleCtrlDlg msgBox(this);
+            msgBox.setText(tr("You are deleting an event."));
+            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
+            DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
+            msgBox.updatesize();
+            DPalette pa = yesButton->palette();
+            if (m_themetype == 0 || m_themetype == 1) {
+                pa.setColor(DPalette::ButtonText, Qt::white);
+                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                pa.setColor(DPalette::Light, QColor("#0098FF"));
+            } else {
+                pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                pa.setColor(DPalette::Light, QColor("#004C9C"));
+            }
+            yesButton->setPalette(pa);
+            msgBox.exec();
+
+            if (msgBox.clickButton() == noButton) {
+                emit signalViewtransparentFrame(0);
+                return;
+            } else if (msgBox.clickButton() == yesallbutton) {
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
+            } else if (msgBox.clickButton() == yesButton) {
+
+                ScheduleDtailInfo newschedule;
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
+                newschedule.ignore.append(info.beginDateTime);
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+            }
+        } else {
+            CSchceduleCtrlDlg msgBox(this);
+            msgBox.setText(tr("You are deleting an event."));
+            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
+            DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
+            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All Future Events"));
+            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
+            msgBox.updatesize();
+            DPalette pa = yesButton->palette();
+            if (m_themetype == 0 || m_themetype == 1) {
+                pa.setColor(DPalette::ButtonText, Qt::white);
+                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
+                pa.setColor(DPalette::Light, QColor("#0098FF"));
+            } else {
+                pa.setColor(DPalette::ButtonText, "#B8D3FF");
+                pa.setColor(DPalette::Dark, QColor("#0056C1"));
+                pa.setColor(DPalette::Light, QColor("#004C9C"));
+            }
+            yesButton->setPalette(pa);
+            msgBox.exec();
+
+            if (msgBox.clickButton() == noButton) {
+                emit signalViewtransparentFrame(0);
+                return;
+            } else if (msgBox.clickButton() == yesallbutton) {
+                ScheduleDtailInfo newschedule;
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
+                newschedule.enddata.type = 2;
+                newschedule.enddata.date = info.beginDateTime.addDays(-1);
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+
+            } else if (msgBox.clickButton() == yesButton) {
+
+                ScheduleDtailInfo newschedule;
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
+                newschedule.ignore.append(info.beginDateTime);
+                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
+            }
+        }
+    }
+    emit signalsUpdateShcedule(info.id);
+    emit signalViewtransparentFrame(0);
+}
+
 
 void CAllDayEventWeekView::slotdeleteitem( CAllDayEventWidgetItem *item)
 {
@@ -1190,16 +1199,14 @@ void CAllDayEventWeekView::slotedititem(CAllDayEventWidgetItem *item, int type)
     update();
 }
 
-void CAllDayEventWeekView::slotupdateItem(CAllDayEventWidgetItem *item)
-{
-    m_currentitem = item;
-}
 
 void CAllDayEventWeekView::slotDeleteItem()
 {
-    if (m_currentitem != nullptr) {
-        if (m_currentitem->getData().type.ID == 4)
-            return;
-        m_currentitem->slotDelete();
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID <0) {
+        return;
     }
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID !=4) {
+        DeleteItem(CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo());
+    }
+    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
 }

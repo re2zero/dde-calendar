@@ -468,6 +468,16 @@ CScheduleDataManage::~CScheduleDataManage()
 
 }
 
+ScheduleDtailInfo CScheduleDataManage::getPressSelectInfo() const
+{
+    return m_PressSelectInfo;
+}
+
+void CScheduleDataManage::setPressSelectInfo(const ScheduleDtailInfo &PressSelectInfo)
+{
+    m_PressSelectInfo = PressSelectInfo;
+}
+
 CScheduleDataCtrl::CScheduleDataCtrl()
 {
     qRegisterMetaType<QVector<ScheduleDateRangeInfo>>("QVector<ScheduleDateRangeInfo>");

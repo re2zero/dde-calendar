@@ -66,6 +66,9 @@ public:
         return m_theme;
     }
     void clear();
+    ScheduleDtailInfo getPressSelectInfo() const;
+    void setPressSelectInfo(const ScheduleDtailInfo &PressSelectInfo);
+
 private:
     CScheduleDataManage();
     ~CScheduleDataManage();
@@ -74,6 +77,7 @@ private:
     CHuangliDayDataManage       *m_HuangliDayDataManage;
     QVector<CSchedulesColor>    m_vScheduleColor;
     QVector<ScheduleDateRangeInfo> m_vScheduleInfo;
+    ScheduleDtailInfo           m_PressSelectInfo;
     int                         m_theme = 0;
     static CScheduleDataManage  *m_vscheduleDataManage;
 };
