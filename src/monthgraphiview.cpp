@@ -664,12 +664,6 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
 
 void CMonthGraphiview::mouseReleaseEvent(QMouseEvent *event)
 {
-    QGraphicsItem *listItem =itemAt(event->pos());
-    CMonthSchceduleWidgetItem *infoitem = dynamic_cast<CMonthSchceduleWidgetItem *>(listItem);
-    if (infoitem != nullptr) {
-        infoitem->setPressFlag(false);
-    }
-    DGraphicsView::mouseReleaseEvent(event);
     setCursor(Qt::ArrowCursor);
     m_press = false;
     switch (m_DragStatus) {

@@ -308,7 +308,6 @@ void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraph
     Q_UNUSED(option);
     Q_UNUSED(widget);
     paintBackground(painter,this->rect());
-    //    painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 }
 
 void CMonthSchceduleWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -322,6 +321,7 @@ void CMonthSchceduleWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     m_hoverflag = false;
+    m_selectflag = false;
     update();
 }
 

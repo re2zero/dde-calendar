@@ -697,7 +697,7 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
 
 void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
 {
-    DGraphicsView::mouseReleaseEvent(event);
+    Q_UNUSED(event);
     setCursor(Qt::ArrowCursor);
     m_press = false;
     switch (m_DragStatus) {
