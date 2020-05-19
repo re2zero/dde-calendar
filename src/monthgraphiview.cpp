@@ -572,6 +572,9 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
 void CMonthGraphiview::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton) {
+        m_press = false;
+        m_DragStatus =NONE;
+        emit signalScheduleShow(false);
         return;
     }
 

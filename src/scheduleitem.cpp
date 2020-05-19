@@ -179,26 +179,6 @@ void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     emit signalsHoverUpdateState(this, 0);
 }
 
-void CScheduleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton) {
-        m_selectflag = true;
-        m_hoverPressMove = true;
-        update();
-        emit signalsSelectUpdateState(this, 1);
-    }
-}
-
-void CScheduleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton) {
-        m_selectflag = false;
-        m_hoverPressMove = false;
-        update();
-        emit signalsSelectUpdateState(this, 0);
-    }
-}
-
 void CScheduleItem::focusOutEvent(QFocusEvent *event)
 {
     // m_highflag = false;

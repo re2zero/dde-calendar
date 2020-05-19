@@ -656,6 +656,8 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
     CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
     if (event->button() == Qt::RightButton) {
         emit signalScheduleShow(false);
+        m_press = false;
+        m_DragStatus =NONE;
         if (item == nullptr) {
             DMenu Context(this);
             Context.addAction(m_createAction);
@@ -722,6 +724,7 @@ void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
         break;
     }
     m_DragStatus = NONE;
+    update();
 }
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -833,6 +836,7 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
     case ChangeWhole: {
         if (!m_PressRect.contains(event->pos())) {
             Qt::DropAction dropAciton = m_Drag->exec( Qt::MoveAction);
+            Q_UNUSED(dropAciton);
             m_Drag = nullptr;
             m_DragStatus = NONE;
         }

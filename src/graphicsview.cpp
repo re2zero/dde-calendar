@@ -505,6 +505,8 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
     emit signalScheduleShow(false);
     setPressSelectInfo(ScheduleDtailInfo());
     if (event->button() == Qt::RightButton) {
+        m_press = false;
+        m_DragStatus =NONE;
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
         if (item == nullptr) {
             DMenu menu(this);
@@ -586,6 +588,7 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
         break;
     }
     m_DragStatus = NONE;
+    update();
 }
 
 
