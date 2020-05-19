@@ -184,7 +184,7 @@ void CYearWindow::initUI()
     m_StackedWidget->addWidget(YearWidget_First);
     m_StackedWidget->addWidget(YearWidget_Second);
     m_StackedWidget->setContentsMargins(0, 0, 0, 0);
-    m_StackedWidget->setDuration(1000);
+    m_StackedWidget->setDuration(600);
 
     m_YearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(0));
     QVBoxLayout *hhLayout = new QVBoxLayout;
