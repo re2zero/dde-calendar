@@ -586,7 +586,21 @@ void CWeekHeadView::paintCell(QWidget *cell)
             else
                 painter.setPen(m_defaultLunarColor);
 
-            painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
+
+            if (cell->width() < 132) {
+                QString str_dayLunar = nullptr;
+                if (dayLunar.count() > 2) {
+                    for (int i = 0; i < 2; i++) {
+                        str_dayLunar.append(dayLunar.at(i));
+                    }
+                    str_dayLunar.append("...");
+                } else {
+                    str_dayLunar = dayLunar;
+                }
+                painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, str_dayLunar);
+            } else {
+                painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
+            }
             CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
             //if (!dayInfo.mSolarFestival.isEmpty()) {
             if (false) {
