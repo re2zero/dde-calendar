@@ -918,10 +918,11 @@ void CAllDayEventWeekView::dragMoveEvent(QDragMoveEvent *event)
         } else {
             qint64 offset = m_DragScheduleInfo.beginDateTime.daysTo(m_DragScheduleInfo.endDateTime);
             m_DragScheduleInfo.allday = true;
-            if (m_DragScheduleInfo.remind) {
-                m_DragScheduleInfo.remindData.time = QTime(9, 0);
-                m_DragScheduleInfo.remindData.n = 1;
-            }
+            m_DragScheduleInfo.remind = true;
+//            if (m_DragScheduleInfo.remind) {
+            m_DragScheduleInfo.remindData.time = QTime(9, 0);
+            m_DragScheduleInfo.remindData.n = 1;
+//            }
 //            m_DragScheduleInfo.remind = false;
             m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate,QTime(0,0,0));
             m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate.addDays(offset),QTime(23,59,59));
