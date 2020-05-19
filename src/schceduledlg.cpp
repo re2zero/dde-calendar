@@ -82,13 +82,13 @@ void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
     m_endTimeEdit->setTime(info.endDateTime.time());
     m_allDayCheckbox->setChecked(info.allday);
     m_endRepeatDate->setMinimumDate(info.beginDateTime.date());
-//    if (m_type == 0 && m_createAllDay) {
 
-//    } else {
+    m_currentDate = info.beginDateTime;
+    m_EndDate = info.endDateTime;
+
     slotallDayStateChanged(info.allday);
-//    }
-
     initRmindRpeatUI();
+
     // m_textEdit->setTextCursor()
 }
 
@@ -124,6 +124,7 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     m_beginDateEdit->setDate(m_currentDate.date());
     m_beginTimeEdit->setTime(m_currentDate.time());
     QDateTime datetime = m_currentDate.addSecs(3600);
+    m_EndDate = datetime;
     m_endDateEdit->setDate(datetime.date());
     m_endTimeEdit->setTime(datetime.time());
     m_endRepeatDate->setMinimumDate(date.date());
@@ -401,8 +402,8 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
         } else {
             m_beginDateEdit->setDate(m_currentDate.date());
             m_beginTimeEdit->setTime(m_currentDate.time());
-            m_endDateEdit->setDate(m_currentDate.date());
-            m_endTimeEdit->setTime(m_currentDate.time().addSecs(3600));
+            m_endDateEdit->setDate(m_EndDate.date());
+            m_endTimeEdit->setTime(m_EndDate.time());
         }
     } else {
         m_rmindCombox->addItem(tr("Never"));
@@ -419,7 +420,7 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
             m_endTimeEdit->setTime(QTime(23, 59));
         } else {
             m_beginDateEdit->setDate(m_currentDate.date());
-            m_endDateEdit->setDate(m_currentDate.date());
+            m_endDateEdit->setDate(m_EndDate.date());
             m_beginTimeEdit->setTime(QTime(0, 0));
             m_endTimeEdit->setTime(QTime(23, 59));
             m_rmindCombox->setCurrentIndex(2);

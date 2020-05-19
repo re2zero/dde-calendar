@@ -124,6 +124,7 @@ private:
     ScheduleDtailInfo m_scheduleDtailInfo;
     int m_type;  // 1新建 0 编辑日程
     QDateTime m_currentDate;
+    QDateTime m_EndDate;
 };
 
 #endif  // SHCEDULEDLG_H

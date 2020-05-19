@@ -567,8 +567,10 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
     switch (m_DragStatus) {
     case IsCreate:
         if (qAbs(m_MoveDate.daysTo(m_PressDate)<7)) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
-                m_DragScheduleInfo);
+            CSchceduleDlg dlg(1, this);
+            dlg.setData(m_DragScheduleInfo);
+            if (dlg.exec() == DDialog::Accepted) {
+            }
             emit signalsUpdateShcedule(0);
         }
         break;
