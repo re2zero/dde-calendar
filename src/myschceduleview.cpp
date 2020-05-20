@@ -438,7 +438,7 @@ void CMySchceduleView::initUI()
 
     area = new QScrollArea (this);
     area->setFrameShape(QFrame::NoFrame);
-    area->setFixedWidth(390);
+    area->setFixedWidth(386);
     DPalette pa = area->palette();
     if (themetype == 0 || themetype == 1) {
         pa.setColor(DPalette::WindowText, QColor("#2C4767"));
