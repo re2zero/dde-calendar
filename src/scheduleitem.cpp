@@ -174,7 +174,6 @@ void CScheduleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     m_hoverflag = false;
-    m_hoverPressMove = false;
     update();
     emit signalsHoverUpdateState(this, 0);
 }

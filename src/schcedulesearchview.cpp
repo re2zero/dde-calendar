@@ -35,7 +35,9 @@
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
 DGUI_USE_NAMESPACE
-CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent): DLabel(parent)
+CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent):
+    DLabel(parent),
+    m_rightMenu(new DMenu(this))
 {
     //setMargin(0);
     m_editAction = new QAction(tr("Edit"), this);
@@ -388,10 +390,10 @@ void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
     if (m_ScheduleInfo.type.ID == 4)
         return;
-    DMenu Context(this);
-    Context.addAction(m_editAction);
-    Context.addAction(m_deleteAction);
-    Context.exec(QCursor::pos());
+    m_rightMenu->clear();
+    m_rightMenu->addAction(m_editAction);
+    m_rightMenu->addAction(m_deleteAction);
+    m_rightMenu->exec(QCursor::pos());
 }
 
 void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)

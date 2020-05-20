@@ -21,6 +21,7 @@
 
 #include <DLabel>
 #include <DPushButton>
+#include <DMenu>
 #include "schedulestructs.h"
 #include <DListWidget>
 DWIDGET_USE_NAMESPACE
@@ -139,6 +140,7 @@ private:
     QFont                 m_tfont;
     QDate                 m_date;
     MouseStatus             m_mouseStatus;
+    DMenu                   *m_rightMenu;
 //    bool                  m_selectflag = false;
 //    bool                  m_hoverflag = false;
     int m_roundtype = 1;

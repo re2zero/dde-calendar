@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QDate>
 #include <QDrag>
+#include <DMenu>
 
 #include <dtkwidget_global.h>
 #include "calendardbus.h"
@@ -95,6 +96,7 @@ private:
 
     CMonthSchceduleView                 *m_MonthSchceduleView;
     QVector<ScheduleDateRangeInfo>      m_shceludelistdata;
+    DMenu                               *m_rightMenu;
 
 
     DragStatus                      m_DragStatus =NONE;

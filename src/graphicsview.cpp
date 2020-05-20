@@ -24,7 +24,6 @@
 #include "scheduleitem.h"
 #include "schedulecoormanage.h"
 #include "schceduledlg.h"
-#include <QMenu>
 #include "scheduledatamanage.h"
 #include <DMessageBox>
 #include <DPushButton>
@@ -41,7 +40,9 @@
 #include <QTimer>
 DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
-    : DGraphicsView(parent), m_viewType(viewType)
+    : DGraphicsView(parent),
+      m_viewType(viewType),
+      m_rightMenu(new DMenu(this))
 {
     setContentsMargins(0, 0, 0, 0);
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -509,9 +510,9 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
         m_DragStatus =NONE;
         CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
         if (item == nullptr) {
-            DMenu menu(this);
-            menu.addAction(m_createAction);
-            QAction *action_t = menu.exec(QCursor::pos());
+            m_rightMenu->clear();
+            m_rightMenu->addAction(m_createAction);
+            QAction *action_t = m_rightMenu->exec(QCursor::pos());
             if (action_t == m_createAction) {
                 QPointF senceposs = mapToScene(event->pos());
                 emit signalViewtransparentFrame(1);
@@ -525,10 +526,10 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             }
         } else {
             if (item->getType() == 1) return;
-            DMenu menu(this);
-            menu.addAction(m_editAction);
-            menu.addAction(m_deleteAction);
-            QAction *action_t = menu.exec(QCursor::pos());
+            m_rightMenu->clear();
+            m_rightMenu->addAction(m_editAction);
+            m_rightMenu->addAction(m_deleteAction);
+            QAction *action_t = m_rightMenu->exec(QCursor::pos());
             if (action_t == m_editAction) {
                 emit signalViewtransparentFrame(1);
                 CSchceduleDlg dlg(0, this, false);

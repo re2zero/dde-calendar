@@ -112,7 +112,6 @@ private:
     bool                  m_selectflag = false;
     bool                  m_hoverflag = false;
     bool                  m_highflag = false;
-    bool                  m_hoverPressMove = false;
     QColor                m_transparentcolor;
     int                             m_offset = 0;
     QPropertyAnimation *m_properAnimationFirst;

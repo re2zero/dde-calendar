@@ -29,7 +29,6 @@
 #include <QTime>
 #include <QQueue>
 #include "schceduledlg.h"
-#include <QMenu>
 #include "scheduledatamanage.h"
 #include <DHiDPIHelper>
 #include <DPalette>

@@ -18,7 +18,6 @@
  */
 #include "alldayeventview.h"
 #include <QAction>
-#include <QMenu>
 #include <QListWidget>
 #include <QLabel>
 #include <QPainter>
@@ -575,7 +574,8 @@ int CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedul
 
 CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
     : DGraphicsView (parent),
-      m_Scene(new QGraphicsScene(this))
+      m_Scene(new QGraphicsScene(this)),
+      m_rightMenu(new DMenu(this))
 {
     setScene(m_Scene);
     m_editType = edittype;
@@ -659,19 +659,19 @@ void CAllDayEventWeekView::mousePressEvent(QMouseEvent *event)
         m_press = false;
         m_DragStatus =NONE;
         if (item == nullptr) {
-            DMenu Context(this);
-            Context.addAction(m_createAction);
+            m_rightMenu->clear();
+            m_rightMenu->addAction(m_createAction);
             m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
-            Context.exec(QCursor::pos());
+            m_rightMenu->exec(QCursor::pos());
 
         } else {
 //            setPressSelectInfo(item->getData());
             if (item->getData().type.ID == 4)
                 return;
-            DMenu menu(this);
-            menu.addAction(m_editAction);
-            menu.addAction(m_deleteAction);
-            QAction *action_t = menu.exec(QCursor::pos());
+            m_rightMenu->clear();
+            m_rightMenu->addAction(m_editAction);
+            m_rightMenu->addAction(m_deleteAction);
+            QAction *action_t = m_rightMenu->exec(QCursor::pos());
             if (action_t == m_editAction) {
                 emit signalViewtransparentFrame(1);
                 CSchceduleDlg dlg(0, this);

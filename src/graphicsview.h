@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QMutex>
 #include <QDrag>
+#include <DMenu>
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 DWIDGET_USE_NAMESPACE
@@ -273,6 +274,7 @@ private:
     int                             m_rightmagin = 0;
     bool                            m_press = false;
     int                             m_themetype = 0;
+    DMenu                           *m_rightMenu;
 
 
     QVector<ScheduleDtailInfo>                      m_scheduleInfo;

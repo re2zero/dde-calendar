@@ -1,7 +1,6 @@
 #include "monthgraphiview.h"
 #include <DHiDPIHelper>
 #include <QAction>
-#include <DMenu>
 #include <QMimeData>
 #include <QShortcut>
 
@@ -15,7 +14,8 @@ bool CDayGraphicsItem::m_LunarVisible = false;
 
 CMonthGraphiview::CMonthGraphiview(QWidget *parent)
     : DGraphicsView(parent),
-      m_Scene(new QGraphicsScene(this))
+      m_Scene(new QGraphicsScene(this)),
+      m_rightMenu(new DMenu(this))
 {
     setFrameShape(DFrame::NoFrame);
     setContentsMargins(0, 0, 0, 0);
@@ -714,19 +714,19 @@ void CMonthGraphiview::contextMenuEvent(QContextMenuEvent *event)
     QGraphicsItem *listItem = itemAt(event->pos());
     CDayGraphicsItem *Dayitem = dynamic_cast<CDayGraphicsItem *>(listItem);
     if (Dayitem != nullptr) {
-        DMenu Context(this);
-        Context.addAction(m_createAction);
+        m_rightMenu->clear();
+        m_rightMenu->addAction(m_createAction);
         m_createDate = Dayitem->getDate();
-        Context.exec(QCursor::pos());
+        m_rightMenu->exec(QCursor::pos());
     }
 
     CMonthSchceduleWidgetItem *infoitem = dynamic_cast<CMonthSchceduleWidgetItem *>(listItem);
     if (infoitem !=nullptr) {
         if (infoitem->getData().type.ID !=4) {
-            DMenu menu(this);
-            menu.addAction(m_editAction);
-            menu.addAction(m_deleteAction);
-            QAction *action_t = menu.exec(QCursor::pos());
+            m_rightMenu->clear();
+            m_rightMenu->addAction(m_editAction);
+            m_rightMenu->addAction(m_deleteAction);
+            QAction *action_t = m_rightMenu->exec(QCursor::pos());
             if (action_t == m_editAction) {
                 emit signalViewtransparentFrame(1);
                 CSchceduleDlg dlg(0, this);

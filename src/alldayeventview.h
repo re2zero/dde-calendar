@@ -30,6 +30,8 @@
 #include <DFontSizeManager>
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
+
+#include <DMenu>
 #include "SchecduleRemindWidget.h"
 DWIDGET_USE_NAMESPACE
 class QDrag;
@@ -120,6 +122,8 @@ private:
 
     QDate                           m_beginDate;
     QDate                           m_endDate;
+
+    DMenu                           *m_rightMenu;
 
     DragStatus                      m_DragStatus =NONE;
     bool                            m_isCreate;

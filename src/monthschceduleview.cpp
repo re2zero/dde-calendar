@@ -18,7 +18,6 @@
  */
 #include "monthschceduleview.h"
 #include <QAction>
-#include <QMenu>
 #include <QListWidget>
 #include <QLabel>
 #include <QPainter>
