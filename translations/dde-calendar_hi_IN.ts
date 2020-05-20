@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>हटाएँ</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>आप इस इवेंट को मिटाने वाले हैं</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>क्या आप निश्चित रूप से इस इवेंट को डीलिट करना चाहते है</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>रद्द करें</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>केवल इसी इवेंट को मिटाये</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>

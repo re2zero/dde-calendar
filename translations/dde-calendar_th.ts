@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>ลบ</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>คุณกำลังลบกิจกรรม</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>คุณแน่ใจหรือไม่ว่าคุณต้องการที่จะลบกิจกรรมนี้</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>ยกเลิก</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>คุณต้องการลบกิจกรรมทั้งหมดที่เกิดขึ้นหรือเฉพาะกิจกรรมที่เลือกไว้หรือไม่ ?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>ลบทั้งหมด</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>ลบเฉพาะกิจกรรมนี้</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>คุณต้องการลบกิจกรรมนี้และกิจกรรมที่จะเกิดขึ้นในอนาคตทั้งหมดหรือเฉพาะกิจกรรมที่เลือก ?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>ลบกิจกรรมในอนาคตทั้งหมด</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>อีก 1%</translation>
+        <translation type="unfinished">อีก 1%</translation>
     </message>
 </context>
 <context>

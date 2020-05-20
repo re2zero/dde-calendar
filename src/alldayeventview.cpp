@@ -193,6 +193,12 @@ void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphics
     painter->setBrush(linearGradient);
     painter->setPen(Qt::NoPen);
     painter->drawRoundedRect(fillRect, 8, 8);
+    if (m_vSelectflag || m_press) {
+        QColor color("#000000");
+        color.setAlphaF(0.05);
+        painter->setBrush(color);
+        painter->drawRoundRect(fillRect, 8, 8);
+    }
 
     painter->setFont(m_font);
     painter->setPen(textcolor);

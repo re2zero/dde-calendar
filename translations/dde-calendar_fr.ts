@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>Supprimer</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Vous allez supprimez un événement.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Voulez-vous vraiment le supprimer ?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuler</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voulez-vous supprimer toutes les occurrences de cet événement, ou uniquement l&apos;occurrence sélectionnée ?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Supprimer tout</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Supprimer uniquement cet événement</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voulez-vous supprimer cette occurrence et toutes les occurrences futures de cet événement, ou uniquement l&apos;occurrence sélectionnée ?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Supprimer tous les événements futurs</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>%1 de plus</translation>
+        <translation type="unfinished">%1 de plus</translation>
     </message>
 </context>
 <context>

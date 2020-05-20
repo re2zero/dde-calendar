@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>Fshije</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Po fshini një veprimtari.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Jeni i sigurt se doni të fshihet kjo veprimtari?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuloje</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Doni të fshihen krejt përsëritjet e kësaj veprimtarie, apo vetëm përsëritjen e përzgjedhur?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Fshiji Krejt</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Fshi Vetëm Këtë Veprimtari</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Doni të fshihet kjo dhe krejt përsëritjet në të ardhmen të kësaj veprimtarie, apo vetëm përsëritjen e përzgjedhur?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Fshi Krejt Veprimtaritë e Ardhshme</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>%1 më tepër</translation>
+        <translation type="unfinished">%1 më tepër</translation>
     </message>
 </context>
 <context>

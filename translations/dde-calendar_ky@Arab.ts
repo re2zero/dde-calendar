@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>ۅچۉرۉۉ</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>وقۇيانى جوق قىلىپ جاتاسىز.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>بۇل وقۇيانى چىن ەلە جوق قىلعىڭىز كەلەبى؟ </translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>جوققو چىعارۇۇ</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>بۇل وقۇيانىن باردىق وقۇيالارىن جوق قىلعىڭىز كەلەبى جە بئر عانا تاندالعان وقۇيا؟ </translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>باارىن جوق قىلۇۇ</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>بۇل وقۇيانى عانا جوق قىلۇۇ</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>ۇشۇل جانا كىيىنكى وقۇيالاردىن كىيىنكى وقۇيالارىن جە تاندالعان وقۇيانى جوق قىلعىڭىز كەلەبى ؟ </translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>باردىق كەلەچەكتەگى وقۇيالاردى جوق قىلۇۇ</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>%1 كۅپتۅگۅن</translation>
+        <translation type="unfinished">%1 كۅپتۅگۅن</translation>
     </message>
 </context>
 <context>

@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>Poista</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Olet poistamassa tapahtumaa.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Haluatko varmasti poistaa tämän tapahtuman?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Peruuta</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Haluatko poistaa kaikki tämän tapahtuman esiintymät vai vain valitun tapahtuman?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Poista kaikki</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Poista vain tämä tapahtuma</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Haluatko poistaa tämän ja kaikki tämän tapahtuman tulevat esiintymät vai vain valitun tapahtuman?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Poista kaikki tulevat tapahtumat</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>%1 lisää</translation>
+        <translation type="unfinished">%1 lisää</translation>
     </message>
 </context>
 <context>

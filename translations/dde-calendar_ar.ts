@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>حذف</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>أنت تحذف الآن الحدث</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>هل أنت متأكد من حذف هذا الحدث؟</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>إلغاء</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>هل تريد حذف جميع الفعاليات في هذا الحدث أو الفعاليات المحددة فقط؟</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>حذف الكل</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>حذف هذا الحدث فقط</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>هل تريد حذف جميع الفعاليات المستقبلية لهذا الحدث، أو الفعاليات المحددة فقط؟</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>حذف جميع الأحداث المستقبلية</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>أكثر من 1%</translation>
+        <translation type="unfinished">أكثر من 1%</translation>
     </message>
 </context>
 <context>

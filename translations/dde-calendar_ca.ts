@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>Elimina</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Elimineu un esdeveniment.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Segur que voleu eliminar aquest esdeveniment?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel·la</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voleu eliminar totes les ocurrències d&apos;aquest esdeveniment o només l&apos;ocurrència seleccionada?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Elimina-les totes</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Elimina només aquest esdeveniment</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voleu eliminar aquesta i totes les futures ocurrències d&apos;aquest esdeveniment, o només l&apos;ocurrència seleccionada?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Elimina tots els esdeveniments futurs</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>%1 més</translation>
+        <translation type="unfinished">%1 més</translation>
     </message>
 </context>
 <context>

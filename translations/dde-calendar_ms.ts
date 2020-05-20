@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>Padam</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Anda telah memadam satu peristiwa.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Anda pasti mahu memadam peristiwa ini?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Batal</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Anda pasti mahu memadam semua kemunculan peristiwa ini, atau hanya kemunculan terpilih?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Padam Semua</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Hanya Padam Peristiwa Ini</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Anda pasti mahu memadam peristiwa ini dan semua kemunculannya yang akan datang, atau hanya kemunculan terpilih?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Padam Semua Peristiwa Akan Datang</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>%1 lagi</translation>
+        <translation type="unfinished">%1 lagi</translation>
     </message>
 </context>
 <context>

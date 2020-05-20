@@ -53,45 +53,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDayEventWidgetItem</name>
-    <message>
-        <source>Delete</source>
-        <translation>Вилучити</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Ви вилучаєте запис події.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Ви справді хочете вилучити цей запис події?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Скасувати</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Ви хочете вилучити усі повторення цієї події чи лише позначений запис?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Вилучити всі</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Вилучити лише цей запис</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Ви хочете вилучити усі майбутні повторення цієї події чи лише позначені записи?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Вилучити усі майбутні повторення</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -243,7 +204,7 @@
     <name>CMonthSchceduleNumButton</name>
     <message>
         <source>%1 more</source>
-        <translation>і ще %1</translation>
+        <translation type="unfinished">і ще %1</translation>
     </message>
 </context>
 <context>
