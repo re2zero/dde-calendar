@@ -184,7 +184,7 @@ void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphics
     if (m_vSelectflag || m_press) {
         color1 = gdcolor.pressgradientFromC;
         color2 = gdcolor.pressgradientToC;
-        textcolor.setAlphaF(0.6);
+        textcolor.setAlphaF(0.4);
     }
     linearGradient.setColorAt(0, color1);
     linearGradient.setColorAt(1, color2);
@@ -193,12 +193,6 @@ void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphics
     painter->setBrush(linearGradient);
     painter->setPen(Qt::NoPen);
     painter->drawRoundedRect(fillRect, 8, 8);
-    if (m_vSelectflag || m_press) {
-        QColor color("#000000");
-        color.setAlphaF(0.05);
-        painter->setBrush(color);
-        painter->drawRoundRect(fillRect, 8, 8);
-    }
 
     painter->setFont(m_font);
     painter->setPen(textcolor);
@@ -244,7 +238,7 @@ void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphics
         painter->drawRoundedRect(trect, 8, 8);
         painter->restore();
     }
-    if (m_vSelectflag) {
+    if (m_vSelectflag || m_press) {
         QColor selcolor = "#000000";
         selcolor.setAlphaF(0.05);
         painter->setBrush(selcolor);

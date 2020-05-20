@@ -257,58 +257,25 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
             selcolor = "#FFFFFF";
         } else {
             selcolor = "#000000";
-            //将直线开始点设为0，终点设为1，然后分段设置颜色
-            painter->setBrush(linearGradient);
-            painter->setPen(Qt::NoPen);
-            painter->drawRoundedRect(fillRect,
-                                     rect.height() / 3,
-                                     rect.height() / 3);
-            if (m_selectflag) {
-                QColor color("#000000");
-                color.setAlphaF(0.05);
-                painter->setBrush(color);
-                painter->drawRoundedRect(fillRect,
-                                         rect.height() / 3,
-                                         rect.height() / 3);
-            }
-            painter->restore();
-            painter->setFont(m_font);
-            painter->setPen(textcolor);
-            QFontMetrics fm = painter->fontMetrics();
-
-            QString tStitlename = m_ScheduleInfo.titleName;
-            tStitlename.replace("\n", "");
-            QString str = tStitlename;
-            QString tstr;
-            for (int i = 0; i < str.count(); i++) {
-                tstr.append(str.at(i));
-                int widthT = fm.width(tstr) + 5;
-                if (widthT >= labelwidth - m_pos.x()) {
-                    tstr.chop(2);
-                    break;
-                }
-            }
-            if (tstr != str) {
-                tstr = tstr + "...";
-            }
-
-            selcolor.setAlphaF(0.08);
-
-            pen.setColor(selcolor);
-            pen.setWidthF(1);
-            pen.setStyle(Qt::SolidLine);
-            painter->setBrush(Qt::NoBrush);
-            painter->setPen(pen);
-            painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
-            painter->restore();
         }
-        if (m_selectflag) {
-            QColor selcolor = "#000000";
-            selcolor.setAlphaF(0.05);
-            painter->setBrush(selcolor);
-            painter->setPen(Qt::NoPen);
-            painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
-        }
+
+        selcolor.setAlphaF(0.08);
+
+        pen.setColor(selcolor);
+        pen.setWidthF(1);
+        pen.setStyle(Qt::SolidLine);
+        painter->setBrush(Qt::NoBrush);
+        painter->setPen(pen);
+        painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
+        painter->restore();
+    }
+    if (m_selectflag) {
+        QColor selcolor = "#000000";
+        selcolor.setAlphaF(0.05);
+        painter->setBrush(selcolor);
+        painter->setPen(Qt::NoPen);
+        painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
+    }
 //    } else {
 //        QRectF fillRect = QRectF(rect.x()+2,rect.y()+ 2, labelwidth - 2, labelheight - 2 );
 //        //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -338,7 +305,6 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
 //                          Qt::AlignLeft,
 //                          str);
 //    }
-    }
 }
 
 void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
