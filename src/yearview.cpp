@@ -144,6 +144,7 @@ void CYearView::slotPressClickDate(const QDate &date)
     QPoint pos22 = QCursor::pos();
     QDesktopWidget *w = QApplication::desktop();
     m_Scheduleview->showWindow();
+    m_Scheduleview->setCurrentDate(date);
 
     if (pos22.x() + 10 + m_Scheduleview->width() < w->width()) {
         m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowLeft);
