@@ -247,7 +247,6 @@ void CMonthView::updateDate()
     for (int i(0); i != 42; ++i) {
         m_days[i] = firstDay.addDays(i - day);
     }
-
     m_MonthGraphicsView->setDate(m_days);
     update();
 }

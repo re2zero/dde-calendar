@@ -117,7 +117,7 @@ void CScheduleView::setTheMe(int type)
 
 void CScheduleView::setLunarVisible(bool state)
 {
-    m_alldaylist->setLunarVisible(state);
+//    m_alldaylist->setLunarVisible(state);
 }
 
 void CScheduleView::setTime(QTime time)
@@ -512,9 +512,9 @@ void CScheduleView::initConnection()
 
     connect(m_alldaylist,&CAllDayEventWeekView::signalUpdatePaint,
             this,&CScheduleView::slotUpdatePaint);
-    connect(m_alldaylist,&CAllDayEventWeekView::signalScene,
+    connect(m_alldaylist,&CAllDayEventWeekView::signalSceneUpdate,
             this,&CScheduleView::slotUpdateScene);
-    connect(m_graphicsView,&CGraphicsView::signalScene,
+    connect(m_graphicsView,&CGraphicsView::signalSceneUpdate,
             this,&CScheduleView::slotUpdateScene);
 
 

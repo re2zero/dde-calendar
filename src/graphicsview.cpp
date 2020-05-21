@@ -592,7 +592,7 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
     }
     m_DragStatus = NONE;
     update();
-    emit signalScene();
+    emit signalSceneUpdate();
 }
 
 

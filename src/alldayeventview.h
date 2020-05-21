@@ -62,7 +62,6 @@ public:
     {
         return m_coorManage;
     }
-    void setLunarVisible(bool state);
     void updateHigh();
     void setSelectSchedule(const ScheduleDtailInfo &info);
     void setMargins(int left, int top, int right, int bottom);
@@ -72,7 +71,7 @@ signals:
     void signalViewtransparentFrame(int type);
     void signalScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
     void signalUpdatePaint(const int topM);
-    void signalScene();
+    void signalSceneUpdate();
 public slots:
     void slotdeleteitem(CAllDayEventWidgetItem *item);
     void slotedititem(CAllDayEventWidgetItem *item, int type = 0);
@@ -115,7 +114,6 @@ private:
     QColor                                       m_soloColor = "#FF7272";
     CScheduleCoorManage                         *m_coorManage;
     QDate                                       m_dianjiDay;
-    bool                                        m_LunarVisible;
     int                                             m_themetype = 0;
     int m_rightmagin = 0;
     bool                            m_updateDflag  = false;
@@ -152,7 +150,6 @@ public:
     {
         m_coorManage = coor;
     }
-    int getEventByPos(QPoint pos);
     void updateitem();
     void setPressFlag(const bool flag);
     void setFont(DFontSizeManager::SizeType type);
@@ -161,25 +158,12 @@ public:
     void setStartValue(const int value);
     void setEndValue(const int value);
     void startAnimation();
-signals:
-    void signalsDelete(CAllDayEventWidgetItem *item);
-    void signalsEdit(CAllDayEventWidgetItem *item, int type = 0);
-    void signalViewtransparentFrame(int type);
-//    void signalScheduleShow(const bool isShow, const int scheduleID = 0);
-public slots:
-    void slotEdit();
-    void slotDelete();
-    void slotDoubleEvent(int type = 0);
-    void slotCreate();
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 private:
     ScheduleDtailInfo                   m_vScheduleInfo;
-    QAction                             *m_editAction;
-    QAction                             *m_deleteAction;
-    QAction                             *m_createAction;     // 创建日程
     QFont                               m_font;
     bool                                m_avgeflag;
     int                                 m_editType = 0;

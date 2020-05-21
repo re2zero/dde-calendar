@@ -236,7 +236,7 @@ signals:
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     void signalScheduleShow(bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
-    void signalScene();
+    void signalSceneUpdate();
 private:
     int checkDay(int weekday);
     void DragPressEvent(const QPoint &pos,const CScheduleItem *item);
