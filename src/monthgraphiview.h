@@ -84,7 +84,6 @@ private:
     QMap<QDate, CaLunarDayInfo>         *m_lunarCache;
     QVector<FestivalInfo>               m_festivallist;
     int                                 m_currentMonth;
-    ScheduleDtailInfo                   m_ScheduleInfo;
     QDate                               m_createDate;
     int                                 m_press = false;
 

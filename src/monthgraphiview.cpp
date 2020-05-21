@@ -522,8 +522,6 @@ void CMonthGraphiview::dragMoveEvent(QDragMoveEvent *event)
 void CMonthGraphiview::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        m_DragScheduleInfo.IsMoveInfo = false;
-        setPressSelectInfo(m_DragScheduleInfo);
         updateScheduleInfo(m_DragScheduleInfo);
         emit slotSchceduleUpdate(0);
         m_DragStatus = NONE;
@@ -665,10 +663,15 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
         break;
     case ChangeWhole: {
         if (!m_PressRect.contains(event->pos())) {
-            m_Drag->exec( Qt::MoveAction);
+            Qt::DropAction dropaction = m_Drag->exec( Qt::MoveAction);
+
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
+            m_DragScheduleInfo.IsMoveInfo = false;
+            setPressSelectInfo(m_DragScheduleInfo);
+            emit slotSchceduleUpdate(0);
+
         }
     }
     break;

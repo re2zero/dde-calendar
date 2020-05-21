@@ -857,6 +857,9 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
             Q_UNUSED(dropAciton);
             m_Drag = nullptr;
             m_DragStatus = NONE;
+            m_DragScheduleInfo.IsMoveInfo = false;
+            setPressSelectInfo(m_DragScheduleInfo);
+            emit signalsUpdateShcedule(0);
         }
     }
     break;
@@ -955,8 +958,6 @@ void CAllDayEventWeekView::dragMoveEvent(QDragMoveEvent *event)
 void CAllDayEventWeekView::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        m_DragScheduleInfo.IsMoveInfo = false;
-        setPressSelectInfo(m_DragScheduleInfo);
         if (event->source()!=this || m_MoveDate !=m_PressDate) {
             updateScheduleInfo(m_DragScheduleInfo);
         } else {
