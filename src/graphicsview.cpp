@@ -550,6 +550,7 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
             if (item->getType() == 1)
                 return;
             setCurrentItem(item);
+            item->setSelectState(true);
             setPressSelectInfo(item->getData());
             m_press = true;
 
@@ -564,6 +565,8 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 {
     DGraphicsView::mouseReleaseEvent(event);
     m_press = false;
+    if (m_currentItem != nullptr)
+        m_currentItem->setSelectState(false);
 
     switch (m_DragStatus) {
     case IsCreate:

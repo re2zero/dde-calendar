@@ -77,6 +77,7 @@ public:
     void updateitem();
     void UpdateHoverState(int state);
     void UpdateSelectState(int state);
+    void setSelectState(const bool state);
     void setOffset(const int size);
     void setStartValue(const int value);
     void setEndValue(const int value);

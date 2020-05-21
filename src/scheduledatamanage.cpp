@@ -130,7 +130,7 @@ void CScheduleDataManage::setTheMe(int type)
         workC.pressPurecolor = workC.Purecolor;
         workC.pressgradientToC.setAlphaF(0.8);
         workC.pressgradientFromC.setAlphaF(0.8);
-        workC.pressPurecolor.setAlphaF(0.8);
+        workC.pressPurecolor.setAlphaF(0.2);
         m_vScheduleColor.append(workC);
 
         CSchedulesColor lifeC;
@@ -165,7 +165,7 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.pressPurecolor = lifeC.Purecolor;
         lifeC.pressgradientToC.setAlphaF(0.8);
         lifeC.pressgradientFromC.setAlphaF(0.8);
-        lifeC.pressPurecolor.setAlphaF(0.8);
+        lifeC.pressPurecolor.setAlphaF(0.2);
         m_vScheduleColor.append(lifeC);
 
         CSchedulesColor otherC;
@@ -200,7 +200,7 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.pressPurecolor = otherC.Purecolor;
         otherC.pressgradientToC.setAlphaF(0.8);
         otherC.pressgradientFromC.setAlphaF(0.8);
-        otherC.pressPurecolor.setAlphaF(0.8);
+        otherC.pressPurecolor.setAlphaF(0.2);
         m_vScheduleColor.append(otherC);
 
         CSchedulesColor solar;
@@ -254,7 +254,7 @@ void CScheduleDataManage::setTheMe(int type)
         workC.shadowcolor = "#FB2525";
         workC.shadowcolor.setAlphaF(0.5);
         workC.textColor = "#C0C6D4";
-        workC.textColor.setAlphaF(1);
+//        workC.textColor.setAlphaF(1);
         workC.timeColor = "#B54A4B";
         workC.hightlightgradientToC = "#992D2A";
         workC.hightlightgradientToC.setAlphaF(0.8);
@@ -278,7 +278,7 @@ void CScheduleDataManage::setTheMe(int type)
         workC.pressPurecolor = workC.Purecolor;
         workC.pressgradientToC.setAlphaF(0.4);
         workC.pressgradientFromC.setAlphaF(0.4);
-        workC.pressPurecolor.setAlphaF(0.1);
+        workC.pressPurecolor.setAlphaF(0.15);
         m_vScheduleColor.append(workC);
 
         CSchedulesColor lifeC;
@@ -294,7 +294,7 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.shadowcolor = "#25FA6B";
         lifeC.shadowcolor.setAlphaF(0.5);
         lifeC.textColor = "#C0C6D4";
-        lifeC.textColor.setAlphaF(1);
+//        lifeC.textColor.setAlphaF(1);
         lifeC.timeColor = "#38A35B";
         lifeC.hightlightgradientFromC = "#2D6883";
         lifeC.hightlightgradientFromC.setAlphaF(0.8);
@@ -317,7 +317,7 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.pressPurecolor = lifeC.Purecolor;
         lifeC.pressgradientToC.setAlphaF(0.4);
         lifeC.pressgradientFromC.setAlphaF(0.4);
-        lifeC.pressPurecolor.setAlphaF(0.1);
+        lifeC.pressPurecolor.setAlphaF(0.15);
         m_vScheduleColor.append(lifeC);
 
         CSchedulesColor otherC;
@@ -333,7 +333,7 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.shadowcolor = "#BE3DFF";
         otherC.shadowcolor.setAlphaF(0.5);
         otherC.textColor = "#C0C6D4";
-        otherC.textColor.setAlphaF(1);
+//        otherC.textColor.setAlphaF(1);
         otherC.timeColor = "#9857C8";
         otherC.hightlightgradientFromC = "#8C4E2C";
         otherC.hightlightgradientFromC.setAlphaF(0.8);
@@ -357,7 +357,7 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.pressPurecolor = otherC.Purecolor;
         otherC.pressgradientToC.setAlphaF(0.4);
         otherC.pressgradientFromC.setAlphaF(0.4);
-        otherC.pressPurecolor.setAlphaF(0.1);
+        otherC.pressPurecolor.setAlphaF(0.15);
         m_vScheduleColor.append(otherC);
 
         CSchedulesColor solar;

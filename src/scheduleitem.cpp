@@ -128,6 +128,13 @@ void CScheduleItem::UpdateSelectState(int state)
     update();
 }
 
+void CScheduleItem::setSelectState(const bool state)
+{
+    m_selectflag = state;
+    emit signalsSelectUpdateState(this, state);
+    update();
+}
+
 void CScheduleItem::setOffset(const int size)
 {
     m_offset = size;
@@ -176,8 +183,10 @@ void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     m_hoverflag = false;
+    m_selectflag = false;
     update();
     emit signalsHoverUpdateState(this, 0);
+    emit signalsSelectUpdateState(this, 0);
 }
 
 void CScheduleItem::focusOutEvent(QFocusEvent *event)
@@ -210,12 +219,12 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     QFontMetrics fm = painter->fontMetrics();
     int h = fm.height();
-
     if (m_hoverflag) {
         bcolor = gdcolor.hoverPurecolor;
     } else if (m_highflag) {
         bcolor = gdcolor.hightlightPurecolor;
-    } else if (m_selectflag) {
+    }
+    if (m_selectflag) {
         bcolor = gdcolor.pressPurecolor;
     }
     painter->setBrush(bcolor);
@@ -249,8 +258,13 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->restore();
     }
     if (m_selectflag) {
-        gdcolor.textColor.setAlphaF(0.6);
-        gdcolor.timeColor.setAlphaF(0.6);
+        if (themetype == 0 || themetype ==1) {
+            gdcolor.textColor.setAlphaF(0.4);
+            gdcolor.timeColor.setAlphaF(0.4);
+        } else if (themetype ==2) {
+            gdcolor.textColor.setAlphaF(0.6);
+            gdcolor.timeColor.setAlphaF(0.6);
+        }
     }
     painter->save();
 
