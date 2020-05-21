@@ -93,6 +93,7 @@ void CMonthGraphiview::setDate(const QDate date[42])
         m_DayItem.at(i)->setCurrentMonth(date[i].month() == m_currentMonth);
         m_DayItem.at(i)->setStatus(CDayGraphicsItem::HolidayStatus(getFestivalInfoByDate(date[i])));
     }
+    this->scene()->update();
 }
 
 void CMonthGraphiview::setLunarInfo(QMap<QDate, CaLunarDayInfo> *lunarCache)
