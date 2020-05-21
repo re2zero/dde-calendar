@@ -92,60 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>新建日程</translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>更改</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>刪除</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>新建日程</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>您正在刪除日程。</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>您確定要刪除此日程嗎？</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>您要刪除此日程的所有重複，還是只刪除所選重複？</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>全部刪除</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>僅刪除此日程</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>您要刪除此日程的這個重複和所有將來重複，還是只刪除所選重複？</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>刪除所有將來日程</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>

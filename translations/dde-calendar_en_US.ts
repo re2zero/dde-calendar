@@ -92,60 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>New event</translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>Edit</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Delete</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>New event</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>You are deleting an event.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Are you sure you want to delete this event?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Do you want to delete all occurrences of this event, or only the selected occurrence?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Delete All</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Delete Only This Event</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Delete All Future Events</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>

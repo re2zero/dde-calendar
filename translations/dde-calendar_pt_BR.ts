@@ -92,60 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Novo evento</translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>Editar</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Excluir</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Novo evento</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Está excluindo um evento.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Excluir este evento?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Excluir todas as ocorrências deste evento ou apenas a ocorrência selecionada?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Excluir Tudo</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Excluir Apenas Este Evento</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Excluir esta e todas as ocorrências futuras deste evento ou apenas a ocorrência selecionada?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Excluir Todos os Eventos Futuros</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>

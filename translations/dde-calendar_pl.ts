@@ -92,60 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>New event</translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>Edycja</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Usuń</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>New event</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Usuwasz wydarzenie.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Czy na pewno chcesz usunąć to wydarzenie?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Czy chcesz usunąć wszystkie wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Usuń wszystko</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Usuń tylko to wydarzenie</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Czy chcesz usunąć to i wszystkie przyszłe wystąpienia tego zdarzenia, czy tylko wybrane wystąpienie?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Usuń wszystkie przyszłe zdarzenia</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>

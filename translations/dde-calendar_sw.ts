@@ -92,60 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>Hariri</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Futa</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Katisha</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>

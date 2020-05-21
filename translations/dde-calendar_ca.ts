@@ -92,60 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Nou esdeveniment</translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>Edita</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Elimina</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Nou esdeveniment</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Esteu suprimint un esdeveniment.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Esteu segur que voleu suprimir aquest esdeveniment?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel·la</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voleu suprimir totes les ocurrències d&apos;aquest esdeveniment o només l&apos;ocurrència seleccionada?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Suprimeix-les totes</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Suprimeix només aquest esdeveniment</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voleu suprimir aquesta i totes les futures ocurrències d&apos;aquest esdeveniment, o només l&apos;ocurrència seleccionada?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Suprimeix tots els esdeveniments futurs</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>

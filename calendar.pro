@@ -59,7 +59,6 @@ HEADERS += src/calendardbus.h \
     src/monthschceduleview.h \
     src/schcedulectrldlg.h \
     src/timeeditctrl.h \
-    src/alldayschceduleweekview.h \
     src/exportedinterface.h \
     src/configsettings.h \
     src/singleton.h \
@@ -107,7 +106,6 @@ SOURCES += src/calendardbus.cpp \
     src/monthschceduleview.cpp \
     src/schcedulectrldlg.cpp \
     src/timeeditctrl.cpp \
-    src/alldayschceduleweekview.cpp \
     src/exportedinterface.cpp \
     src/configsettings.cpp \
     src/shortcut.cpp \

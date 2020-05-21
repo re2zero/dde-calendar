@@ -92,60 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Neuer Termin</translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>Bearbeiten</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Löschen</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Neuer Termin</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Sie löschen einen Termin.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Sind Sie sicher, dass Sie diesen Termin löschen möchten?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Möchten Sie alle Vorkommen dieses Termins löschen oder nur das ausgewählte Vorkommen?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Alle löschen</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Nur diesen Termin löschen</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Möchten Sie diesen und alle zukünftigen Vorkommen dieses Termins löschen, oder nur das ausgewählte Vorkommen?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Alle zukünftigen Termine löschen</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>

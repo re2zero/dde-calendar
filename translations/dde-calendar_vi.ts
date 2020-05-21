@@ -92,60 +92,6 @@
     </message>
 </context>
 <context>
-    <name>CAllDaySchceduleWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Sự kiện mới</translation>
-    </message>
-</context>
-<context>
-    <name>CAllDaySchceduleWeekWidgetItem</name>
-    <message>
-        <source>Edit</source>
-        <translation>Chỉnh sửa</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Xóa</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Sự kiện mới</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Bạn đã xóa một sự kiện</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Bạn có muốn xóa sự kiện này không</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Hủy</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Bạn có muốn xóa tất cả các lần xuất hiện của sự kiện này hay chỉ xảy ra sự kiện đã chọn?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Xóa tất cả</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Chỉ xóa sự kiện này</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Bạn có muốn xóa sự kiện này và tất cả các lần xuất hiện trong tương lai của sự kiện này hay chỉ xảy ra sự kiện đã chọn?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Xóa tất cả các sự kiện trong tương lai</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
