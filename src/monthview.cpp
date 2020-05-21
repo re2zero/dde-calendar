@@ -203,9 +203,9 @@ void CMonthView::setCurrentDate(const QDate date)
     bool flag = false;
     if (date.month() != m_currentDate.month()) {
         m_festivallist.clear();
-        m_DBusInter->GetFestivalMonth(date.year(), date.addMonths(-1).month(), m_festivallist);
+        m_DBusInter->GetFestivalMonth(date.addMonths(-1).year(), date.addMonths(-1).month(), m_festivallist);
         m_DBusInter->GetFestivalMonth(date.year(), date.month(), m_festivallist);
-        m_DBusInter->GetFestivalMonth(date.year(), date.addMonths(1).month(), m_festivallist);
+        m_DBusInter->GetFestivalMonth(date.addMonths(1).year(), date.addMonths(1).month(), m_festivallist);
         flag = true;
     }
     m_currentDate = date;
