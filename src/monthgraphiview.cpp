@@ -104,7 +104,6 @@ void CMonthGraphiview::setLunarInfo(QMap<QDate, CaLunarDayInfo> *lunarCache)
 
 void CMonthGraphiview::setLunarVisible(bool visible)
 {
-    m_LunarVisible = visible;
     CDayGraphicsItem::m_LunarVisible = visible;
 }
 

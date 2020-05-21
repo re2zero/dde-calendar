@@ -1124,24 +1124,13 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
         DPushButton *yesallbutton = msgBox.addPushButton(tr("All"));
         DSuggestButton *yesButton = msgBox.addsuggestButton(tr("Only This Event"));
         msgBox.updatesize();
-//        DPalette pa = yesButton->palette();
-//        if (m_themetype == 0 || m_themetype == 1) {
-//            pa.setColor(DPalette::ButtonText, Qt::white);
-//            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//            pa.setColor(DPalette::Light, QColor("#0098FF"));
-//        } else {
-//            pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//            pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//            pa.setColor(DPalette::Light, QColor("#004C9C"));
-//        }
-//        yesButton->setPalette(pa);
         msgBox.exec();
         if (msgBox.clickButton() == noButton) {
             return;
         } else if (msgBox.clickButton() == yesallbutton) {
             ScheduleDtailInfo scheduleDtailInfo = newinfo;
 //            scheduleDtailInfo.ignore.clear();
-            if (scheduleDtailInfo.enddata.type ==1 &&scheduleDtailInfo.enddata.tcount<2) {
+            if (scheduleDtailInfo.enddata.type ==1 &&scheduleDtailInfo.enddata.tcount<1) {
                 scheduleDtailInfo.enddata.type =0;
             } else if (scheduleDtailInfo.enddata.type ==2 &&
                        scheduleDtailInfo.beginDateTime.daysTo(
@@ -1165,17 +1154,6 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
         DPushButton *yesallbutton = msgBox.addPushButton(tr("All Future Events"));
         DSuggestButton *yesButton = msgBox.addsuggestButton(tr("Only This Event"));
         msgBox.updatesize();
-//        DPalette pa = yesButton->palette();
-//        if (m_themetype == 0 || m_themetype == 1) {
-//            pa.setColor(DPalette::ButtonText, Qt::white);
-//            pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//            pa.setColor(DPalette::Light, QColor("#0098FF"));
-//        } else {
-//            pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//            pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//            pa.setColor(DPalette::Light, QColor("#004C9C"));
-//        }
-//        yesButton->setPalette(pa);
         msgBox.exec();
 
         if (msgBox.clickButton() == noButton) {
@@ -1200,7 +1178,7 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
             ->getScheduleInfoById(oldinfo.id, updatescheduleData);
             if (updatescheduleData.enddata.type == 1) {
                 updatescheduleData.enddata.tcount = newinfo.RecurID -1;
-                if (updatescheduleData.enddata.tcount <2) {
+                if (updatescheduleData.enddata.tcount <1) {
                     updatescheduleData.enddata.type =0;
                     updatescheduleData.rpeat = 0;
                 }
