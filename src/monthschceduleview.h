@@ -183,7 +183,6 @@ class CMonthSchceduleWidgetItem :public QObject, public QGraphicsRectItem
 public:
     explicit CMonthSchceduleWidgetItem(QRect rect,QGraphicsItem  *parent = nullptr, int edittype = 0);
     ~CMonthSchceduleWidgetItem() Q_DECL_OVERRIDE;
-    void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setSizeType(DFontSizeManager::SizeType sizeType);
     void setText(QColor tcolor, QFont font, QPoint pos);
     void setTransparentB(bool t, QColor tcolor);
@@ -207,7 +206,7 @@ signals:
 public slots:
     void animationFinished();
 private:
-    void paintBackground(QPainter *painter,const QRectF &rect);
+    void paintBackground(QPainter *painter,const QRectF &rect,const int isPixMap = false);
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
@@ -217,9 +216,6 @@ private:
     int                                     m_widthoffset = 0;
     QAction                                 *m_editAction;
     QAction                                 *m_deleteAction;
-    bool                                    m_GradientFlag;
-    QColor                                  m_color1;
-    QColor                                  m_color2;
     QColor                                  m_textcolor;
     QFont                                   m_font;
     QPoint                                  m_pos;

@@ -72,10 +72,12 @@ signals:
     void signalViewtransparentFrame(int type);
     void signalScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
     void signalUpdatePaint(const int topM);
+    void signalScene();
 public slots:
     void slotdeleteitem(CAllDayEventWidgetItem *item);
     void slotedititem(CAllDayEventWidgetItem *item, int type = 0);
     void slotDeleteItem();
+    void slotUpdateScene();
 private slots:
     void slotCreate();
     void slotDoubleEvent();

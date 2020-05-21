@@ -71,6 +71,8 @@ typedef struct _tagScheduleDtailInfo {
     ScheduleRemindData remindData;
     int               rpeat; //0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
     ScheduleEndRepeatData enddata;
+
+    bool                    IsMoveInfo = false;      //只在拖拽使用
     explicit _tagScheduleDtailInfo()
     {
         type.ID = -1;

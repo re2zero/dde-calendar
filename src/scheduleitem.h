@@ -100,23 +100,23 @@ private:
     void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr )Q_DECL_OVERRIDE;
     void splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm);
 private:
-    ScheduleDtailInfo                     m_scheduleInfo;
-    CScheduleCoorManage             *m_coorManage;
-    QDate                            m_date;
-    QColor                           m_color;
-    int                              m_type = 0;
-    int                              m_viewtype;
-    int                              m_index;
-    int                              m_totalNum;
-    int                              m_sMaxNum;
-    bool                  m_selectflag = false;
-    bool                  m_hoverflag = false;
-    bool                  m_highflag = false;
-    QColor                m_transparentcolor;
-    int                             m_offset = 0;
-    QPropertyAnimation *m_properAnimationFirst;
-    QPropertyAnimation *m_properANimationSecond;
-    QSequentialAnimationGroup *m_Group;
+    ScheduleDtailInfo                   m_scheduleInfo;
+    CScheduleCoorManage                 *m_coorManage;
+    QDate                               m_date;
+    QColor                              m_color;
+    int                                 m_type = 0;
+    int                                 m_viewtype;
+    int                                 m_index;
+    int                                 m_totalNum;
+    int                                 m_sMaxNum;
+    bool                                m_selectflag = false;
+    bool                                m_hoverflag = false;
+    bool                                m_highflag = false;
+    QColor                              m_transparentcolor;
+    int                                 m_offset = 0;
+    QPropertyAnimation                  *m_properAnimationFirst;
+    QPropertyAnimation                  *m_properANimationSecond;
+    QSequentialAnimationGroup           *m_Group;
 };
 
 #endif // SCHEDULEITEM_H

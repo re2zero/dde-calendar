@@ -514,16 +514,18 @@ void CMonthGraphiview::dragMoveEvent(QDragMoveEvent *event)
             y = event->pos().y();
         }
         int yoffset = qFloor(y/(rect.height()/6))%6;
+        m_DragScheduleInfo.IsMoveInfo = true;
         m_MonthSchceduleView->updateDate(yoffset,m_DragScheduleInfo);
+        setPressSelectInfo(m_DragScheduleInfo);
     }
 }
 
 void CMonthGraphiview::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        if (m_MoveDate !=m_PressDate) {
-            updateScheduleInfo(m_DragScheduleInfo);
-        }
+        m_DragScheduleInfo.IsMoveInfo = false;
+        setPressSelectInfo(m_DragScheduleInfo);
+        updateScheduleInfo(m_DragScheduleInfo);
         emit slotSchceduleUpdate(0);
         m_DragStatus = NONE;
     }
@@ -633,6 +635,7 @@ void CMonthGraphiview::mouseMoveEvent(QMouseEvent *event)
                 m_MoveDate = gDate;
                 m_DragScheduleInfo = getScheduleInfo(m_PressDate,m_MoveDate);
                 upDateInfoShow(IsCreate,m_DragScheduleInfo);
+                setPressSelectInfo(m_DragScheduleInfo);
             }
         }
         break;

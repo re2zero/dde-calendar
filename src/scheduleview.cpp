@@ -512,6 +512,11 @@ void CScheduleView::initConnection()
 
     connect(m_alldaylist,&CAllDayEventWeekView::signalUpdatePaint,
             this,&CScheduleView::slotUpdatePaint);
+    connect(m_alldaylist,&CAllDayEventWeekView::signalScene,
+            this,&CScheduleView::slotUpdateScene);
+    connect(m_graphicsView,&CGraphicsView::signalScene,
+            this,&CScheduleView::slotUpdateScene);
+
 
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
@@ -520,6 +525,9 @@ void CScheduleView::initConnection()
     QShortcut *dshortcut = new QShortcut(this);
     dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(dshortcut, SIGNAL(activated()), this, SLOT(slotDeleteitem()));
+
+
+
 }
 void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
@@ -564,6 +572,12 @@ void CScheduleView::slotUpdatePaint(const int topM)
 {
     m_topMagin = topM;
     update();
+}
+
+void CScheduleView::slotUpdateScene()
+{
+    m_graphicsView->slotUpdateScene();
+    m_alldaylist->slotUpdateScene();
 }
 
 void CScheduleView::updateSchedule()

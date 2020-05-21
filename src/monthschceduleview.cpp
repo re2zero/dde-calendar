@@ -72,12 +72,6 @@ CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
 
 }
 
-void CMonthSchceduleWidgetItem::setColor( QColor color1, QColor color2, bool GradientFlag /*= false*/ )
-{
-    m_color1 = color1;
-    m_color2 = color2;
-    m_GradientFlag = GradientFlag;
-}
 
 void CMonthSchceduleWidgetItem::setSizeType(DFontSizeManager::SizeType sizeType)
 {
@@ -160,7 +154,7 @@ QPixmap CMonthSchceduleWidgetItem::getPixmap()
     QPixmap pixmap(this->rect().size().toSize());
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
-    paintBackground(&painter,pixmap.rect());
+    paintBackground(&painter,pixmap.rect(),true);
     painter.end();
     return  pixmap;
 }
@@ -171,7 +165,7 @@ void CMonthSchceduleWidgetItem::animationFinished()
     isAnimation = false;
 }
 
-void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF &rect)
+void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
 {
     qreal labelwidth = rect.width();
     qreal labelheight = rect.height();
@@ -179,126 +173,138 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_ScheduleInfo) {
-        m_highflag = true;
+    QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
+    QColor color1 = gdcolor.gradientFromC;
+    QColor color2 = gdcolor.gradientToC;
+    QColor textcolor = gdcolor.textColor;
+
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_ScheduleInfo ) {
+        if (m_ScheduleInfo.IsMoveInfo ==
+                CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
+            m_highflag = true;
+        } else {
+            painter->setOpacity(0.4);
+            textcolor.setAlphaF(0.4);
+        }
     }
-    if (m_GradientFlag) {
-        QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
-        QColor color1 = gdcolor.gradientFromC;
-        QColor color2 = gdcolor.gradientToC;
-        QColor textcolor = gdcolor.textColor;
-        if (m_hoverflag) {
-            color1 = gdcolor.hovergradientFromC;
-            color2 = gdcolor.hovergradientToC;
-        } else if (m_highflag) {
-            color1 = gdcolor.hightlightgradientFromC;
-            color2 = gdcolor.hightlightgradientToC;
-        }
-        if (m_selectflag) {
-            color1 = gdcolor.pressgradientFromC;
-            color2 = gdcolor.pressgradientToC;
-            textcolor.setAlphaF(0.6);
-        }
+    if (isPixMap) {
+        painter->setOpacity(0.6);
+        textcolor.setAlphaF(0.8);
+    }
+//    if (m_GradientFlag) {
 
-        linearGradient.setColorAt(0, color1);
-        linearGradient.setColorAt(1, color2);
+    if (m_hoverflag) {
+        color1 = gdcolor.hovergradientFromC;
+        color2 = gdcolor.hovergradientToC;
+    } else if (m_highflag) {
+        color1 = gdcolor.hightlightgradientFromC;
+        color2 = gdcolor.hightlightgradientToC;
+    }
+    if (m_selectflag) {
+        color1 = gdcolor.pressgradientFromC;
+        color2 = gdcolor.pressgradientToC;
+        textcolor.setAlphaF(0.6);
+    }
 
-        QRectF fillRect = QRectF(rect.x()+2,
-                                 rect.y()+2,
-                                 labelwidth - 2,
-                                 labelheight - 2);
+    linearGradient.setColorAt(0, color1);
+    linearGradient.setColorAt(1, color2);
+
+    QRectF fillRect = QRectF(rect.x()+2,
+                             rect.y()+2,
+                             labelwidth - 2,
+                             labelheight - 2);
+    painter->save();
+    //将直线开始点设为0，终点设为1，然后分段设置颜色
+    painter->setBrush(linearGradient);
+    painter->setPen(Qt::NoPen);
+    painter->drawRoundedRect(fillRect,
+                             rect.height() / 3,
+                             rect.height() / 3);
+    painter->restore();
+    painter->setFont(m_font);
+    painter->setPen(textcolor);
+    QFontMetrics fm = painter->fontMetrics();
+
+    QString tStitlename = m_ScheduleInfo.titleName;
+    tStitlename.replace("\n", "");
+    QString str = tStitlename;
+    QString tstr;
+    for (int i = 0; i < str.count(); i++) {
+        tstr.append(str.at(i));
+        int widthT = fm.width(tstr) + 5;
+        if (widthT >= labelwidth - m_pos.x()) {
+            tstr.chop(2);
+            break;
+        }
+    }
+    if (tstr != str) {
+        tstr = tstr + "...";
+    }
+
+    painter->drawText(QRectF(rect.x()+m_pos.x(),
+                             rect.y()+1,
+                             labelwidth - m_pos.x()-m_widthoffset,
+                             labelheight - m_pos.y() + 3  ),
+                      Qt::AlignLeft | Qt::AlignVCenter, tstr);
+
+    if (m_hoverflag && !m_selectflag) {
+        QRectF trect = QRectF(rect.x()+2.5, rect.y()+2.5, labelwidth - 3, labelheight - 3);
         painter->save();
-        //将直线开始点设为0，终点设为1，然后分段设置颜色
-        painter->setBrush(linearGradient);
-        painter->setPen(Qt::NoPen);
-        painter->drawRoundedRect(fillRect,
-                                 rect.height() / 3,
-                                 rect.height() / 3);
+        painter->setRenderHints(QPainter::Antialiasing);
+        QPen pen;
+        QColor selcolor;
+        if (themetype == 2) {
+            selcolor = "#FFFFFF";
+        } else {
+            selcolor = "#000000";
+        }
+
+        selcolor.setAlphaF(0.08);
+
+        pen.setColor(selcolor);
+        pen.setWidthF(1);
+        pen.setStyle(Qt::SolidLine);
+        painter->setBrush(Qt::NoBrush);
+        painter->setPen(pen);
+        painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
         painter->restore();
-        painter->setFont(m_font);
-        painter->setPen(textcolor);
-        QFontMetrics fm = painter->fontMetrics();
-
-        QString tStitlename = m_ScheduleInfo.titleName;
-        tStitlename.replace("\n", "");
-        QString str = tStitlename;
-        QString tstr;
-        for (int i = 0; i < str.count(); i++) {
-            tstr.append(str.at(i));
-            int widthT = fm.width(tstr) + 5;
-            if (widthT >= labelwidth - m_pos.x()) {
-                tstr.chop(2);
-                break;
-            }
-        }
-        if (tstr != str) {
-            tstr = tstr + "...";
-        }
-
-        painter->drawText(QRectF(rect.x()+m_pos.x(),
-                                 rect.y()+1,
-                                 labelwidth - m_pos.x()-m_widthoffset,
-                                 labelheight - m_pos.y() + 3  ),
-                          Qt::AlignLeft | Qt::AlignVCenter, tstr);
-
-        if (m_hoverflag && !m_selectflag) {
-            QRectF trect = QRectF(rect.x()+2.5, rect.y()+2.5, labelwidth - 3, labelheight - 3);
-            painter->save();
-            painter->setRenderHints(QPainter::Antialiasing);
-            QPen pen;
-            QColor selcolor;
-            if (themetype == 2) {
-                selcolor = "#FFFFFF";
-            } else {
-                selcolor = "#000000";
-            }
-
-            selcolor.setAlphaF(0.08);
-
-            pen.setColor(selcolor);
-            pen.setWidthF(1);
-            pen.setStyle(Qt::SolidLine);
-            painter->setBrush(Qt::NoBrush);
-            painter->setPen(pen);
-            painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
-            painter->restore();
-        }
-        if (m_selectflag) {
-            QColor selcolor = "#000000";
-            selcolor.setAlphaF(0.05);
-            painter->setBrush(selcolor);
-            painter->setPen(Qt::NoPen);
-            painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
-        }
-    } else {
-        QRectF fillRect = QRectF(rect.x()+2,rect.y()+ 2, labelwidth - 2, labelheight - 2 );
-        //将直线开始点设为0，终点设为1，然后分段设置颜色
-        painter->setRenderHints(QPainter::HighQualityAntialiasing);
-        painter->setBrush(m_color1);
-        painter->setPen(Qt::NoPen);
-        painter->drawRoundedRect(fillRect, 3, 3);
-
-        painter->setFont(m_font);
-        painter->setPen(m_textcolor);
-        QFontMetrics fm = painter->fontMetrics();
-        QString str = m_ScheduleInfo.titleName;
-        if (fm.width(str) >rect.width()) {
-            int widthT = fm.width(str);
-            qreal singlecharw = widthT * 1.0 / str.count();
-            qreal rcharcount = rect.width() * 1.0 / singlecharw;
-            QString tstr;
-            for (int i = 0; i < rcharcount - 8; i++) {
-                tstr.append(str.at(i));
-            }
-            str = tstr + "...";
-        }
-        painter->drawText(QRectF(rect.x()+m_pos.x(),
-                                 rect.y()+m_pos.y(),
-                                 labelwidth - m_pos.x(),
-                                 labelheight - m_pos.y() + 4),
-                          Qt::AlignLeft,
-                          str);
     }
+    if (m_selectflag) {
+        QColor selcolor = "#000000";
+        selcolor.setAlphaF(0.05);
+        painter->setBrush(selcolor);
+        painter->setPen(Qt::NoPen);
+        painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
+    }
+//    } else {
+//        QRectF fillRect = QRectF(rect.x()+2,rect.y()+ 2, labelwidth - 2, labelheight - 2 );
+//        //将直线开始点设为0，终点设为1，然后分段设置颜色
+//        painter->setRenderHints(QPainter::HighQualityAntialiasing);
+//        painter->setBrush(m_color1);
+//        painter->setPen(Qt::NoPen);
+//        painter->drawRoundedRect(fillRect, 3, 3);
+
+//        painter->setFont(m_font);
+//        painter->setPen(m_textcolor);
+//        QFontMetrics fm = painter->fontMetrics();
+//        QString str = m_ScheduleInfo.titleName;
+//        if (fm.width(str) >rect.width()) {
+//            int widthT = fm.width(str);
+//            qreal singlecharw = widthT * 1.0 / str.count();
+//            qreal rcharcount = rect.width() * 1.0 / singlecharw;
+//            QString tstr;
+//            for (int i = 0; i < rcharcount - 8; i++) {
+//                tstr.append(str.at(i));
+//            }
+//            str = tstr + "...";
+//        }
+//        painter->drawText(QRectF(rect.x()+m_pos.x(),
+//                                 rect.y()+m_pos.y(),
+//                                 labelwidth - m_pos.x(),
+//                                 labelheight - m_pos.y() + 4),
+//                          Qt::AlignLeft,
+//                          str);
+//    }
 }
 
 
@@ -649,7 +655,6 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     CMonthSchceduleWidgetItem *gwi = new CMonthSchceduleWidgetItem(QRect(pos.x(),pos.y(),fw,fh),nullptr);
     m_Scene->addItem(gwi);
 
-    gwi->setColor(gdcolor.gradientFromC, gdcolor.gradientToC, true);
     QFont font;
     gwi->setSizeType(DFontSizeManager::T8);
     gwi->setData(gd);

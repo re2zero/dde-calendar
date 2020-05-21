@@ -181,20 +181,31 @@ void CAllDayEventWidgetItem::paint(QPainter *painter, const QStyleOptionGraphics
 
     painter->setRenderHints(QPainter::Antialiasing);
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.type.ID);
-    m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo) {
-        m_vHighflag = true;
-    }
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
     QRectF drawrect = this->rect();
-
-
     QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
 
     QColor color1 = gdcolor.gradientFromC;
     QColor color2 = gdcolor.gradientToC;
     QColor textcolor = gdcolor.textColor;
+
+    m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
+
+
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo ) {
+        if (m_vScheduleInfo.IsMoveInfo ==
+                CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
+            m_vHighflag = true;
+        } else {
+            painter->setOpacity(0.4);
+            textcolor.setAlphaF(0.4);
+        }
+    }
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
+
+
+
+
     if (m_vHoverflag) {
         color1 = gdcolor.hovergradientFromC;
         color2 = gdcolor.hovergradientToC;
@@ -727,6 +738,7 @@ void CAllDayEventWeekView::mouseReleaseEvent(QMouseEvent *event)
     }
     m_DragStatus = NONE;
     update();
+    emit signalScene();
 }
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -808,6 +820,7 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
                 m_MoveDate = gDate;
                 m_DragScheduleInfo = getScheduleInfo(m_PressDate,m_MoveDate);
                 upDateInfoShow(IsCreate,getScheduleInfo(m_PressDate,m_MoveDate));
+                setPressSelectInfo(m_DragScheduleInfo);
             }
         }
         break;
@@ -837,6 +850,9 @@ void CAllDayEventWeekView::mouseMoveEvent(QMouseEvent *event)
         break;
     case ChangeWhole: {
         if (!m_PressRect.contains(event->pos())) {
+            m_DragScheduleInfo.IsMoveInfo = true;
+            setPressSelectInfo(m_DragScheduleInfo);
+            upDateInfoShow();
             Qt::DropAction dropAciton = m_Drag->exec( Qt::MoveAction);
             Q_UNUSED(dropAciton);
             m_Drag = nullptr;
@@ -929,13 +945,18 @@ void CAllDayEventWeekView::dragMoveEvent(QDragMoveEvent *event)
             m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate,QTime(0,0,0));
             m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate.addDays(offset),QTime(23,59,59));
         }
+        m_DragScheduleInfo.IsMoveInfo = true;
         upDateInfoShow(ChangeWhole,m_DragScheduleInfo);
+        setPressSelectInfo(m_DragScheduleInfo);
+
     }
 }
 
 void CAllDayEventWeekView::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
+        m_DragScheduleInfo.IsMoveInfo = false;
+        setPressSelectInfo(m_DragScheduleInfo);
         if (event->source()!=this || m_MoveDate !=m_PressDate) {
             updateScheduleInfo(m_DragScheduleInfo);
         } else {
@@ -1214,4 +1235,9 @@ void CAllDayEventWeekView::slotDeleteItem()
         DeleteItem(CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo());
     }
     CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
+}
+
+void CAllDayEventWeekView::slotUpdateScene()
+{
+    this->scene()->update();
 }

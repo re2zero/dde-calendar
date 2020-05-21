@@ -229,12 +229,14 @@ public slots:
     void slotHoverUpdateState(CScheduleItem *item, int state);
     void slotSelectUpdateState(CScheduleItem *item, int state);
     void slotScrollBar();
+    void slotUpdateScene();
 signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     void signalScheduleShow(bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
+    void signalScene();
 private:
     int checkDay(int weekday);
     void DragPressEvent(const QPoint &pos,const CScheduleItem *item);

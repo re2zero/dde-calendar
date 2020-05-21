@@ -63,6 +63,7 @@ public slots:
     void slotCurrentScheduleDate(QDate date);
     void slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
     void slotUpdatePaint(const int topM);
+    void slotUpdateScene();
 protected:
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;

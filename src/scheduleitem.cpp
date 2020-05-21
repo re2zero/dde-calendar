@@ -166,6 +166,7 @@ void CScheduleItem::UpdateHoverState(int state)
 
 void CScheduleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     m_hoverflag = true;
     update();
     emit signalsHoverUpdateState(this, 1);
@@ -173,6 +174,7 @@ void CScheduleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     m_hoverflag = false;
     update();
     emit signalsHoverUpdateState(this, 0);
@@ -180,6 +182,7 @@ void CScheduleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void CScheduleItem::focusOutEvent(QFocusEvent *event)
 {
+    Q_UNUSED(event);
     // m_highflag = false;
     update();
 }
@@ -190,8 +193,16 @@ void CScheduleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
                                   m_scheduleInfo.type.ID);
     m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_scheduleInfo);
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_scheduleInfo) {
-        m_highflag = true;
+
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_scheduleInfo ) {
+        if (m_scheduleInfo.IsMoveInfo ==
+                CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
+            m_highflag = true;
+        } else {
+            painter->setOpacity(0.4);
+            gdcolor.textColor.setAlphaF(0.4);
+            gdcolor.timeColor.setAlphaF(0.4);
+        }
     }
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 

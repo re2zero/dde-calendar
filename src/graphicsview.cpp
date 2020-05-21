@@ -592,7 +592,9 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
     }
     m_DragStatus = NONE;
     update();
+    emit signalScene();
 }
+
 
 
 void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
@@ -681,6 +683,11 @@ void CGraphicsView::slotScrollBar()
     emit signalScheduleShow(false);
 }
 
+void CGraphicsView::slotUpdateScene()
+{
+    this->scene()->update();
+}
+
 void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
 {
     if (m_press) {
@@ -719,9 +726,9 @@ void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
         if (m_isCreate) {
             if (m_MoveDate !=gDate) {
                 m_MoveDate = gDate;
-
                 m_DragScheduleInfo = getScheduleInfo(m_PressDate,m_MoveDate);
                 upDateInfoShow(IsCreate,getScheduleInfo(m_PressDate,m_MoveDate));
+                setPressSelectInfo(m_DragScheduleInfo);
             }
         }
         break;
@@ -1046,13 +1053,17 @@ void CGraphicsView::dragMoveEvent(QDragMoveEvent *event)
             m_DragScheduleInfo.beginDateTime = m_MoveDate;
             m_DragScheduleInfo.endDateTime = m_MoveDate.addSecs(3600);
         }
+        m_DragScheduleInfo.IsMoveInfo = true;
         upDateInfoShow(ChangeWhole,m_DragScheduleInfo);
+        setPressSelectInfo(m_DragScheduleInfo);
     }
 }
 
 void CGraphicsView::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
+        m_DragScheduleInfo.IsMoveInfo = false;
+        setPressSelectInfo(m_DragScheduleInfo);
         if ( event->source() !=this ||m_MoveDate !=m_PressDate) {
             updateScheduleInfo(m_DragScheduleInfo);
         } else {
