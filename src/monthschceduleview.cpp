@@ -203,7 +203,7 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
     if (m_selectflag) {
         color1 = gdcolor.pressgradientFromC;
         color2 = gdcolor.pressgradientToC;
-        textcolor.setAlphaF(0.6);
+        textcolor.setAlphaF(0.4);
     }
 
     linearGradient.setColorAt(0, color1);
