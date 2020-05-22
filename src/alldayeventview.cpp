@@ -423,7 +423,6 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
 {
     setScene(m_Scene);
     m_editType = edittype;
-    m_widgetFlag = false;
     setContentsMargins(0, 0, 0, 0);
     QPalette pal = palette();
     pal.setColor(QPalette::Light, QColor(0, 0, 0, 0));
@@ -458,7 +457,6 @@ CAllDayEventWeekView::~CAllDayEventWeekView()
 void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData)
 {
     m_vlistData = vlistData;
-    m_widgetFlag = false;
     updateDateShow();
 }
 

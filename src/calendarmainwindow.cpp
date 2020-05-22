@@ -922,7 +922,6 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &sched
 {
     int index = m_stackWidget->currentIndex();
     if (index < 0 || index > m_stackWidget->count() - 1) {
-
         return;
     }
     //等界面刷新完成后进行动作

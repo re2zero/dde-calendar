@@ -105,13 +105,11 @@ private:
     QAction                                     *m_createAction;     // 创建日程
     QAction                                     *m_editAction;
     QAction                                     *m_deleteAction;
-    bool                                         m_widgetFlag;
     QVector<QVector<ScheduleDtailInfo> >         m_vlistData;
     QVector<ScheduleDtailInfo>                   m_scheduleInfo;
     QVector<CAllDayEventWidgetItem *>            m_baseShowItem;
     QVector<QDate>                               m_vDate;
     int                                          m_editType = 0;
-    QColor                                       m_soloColor = "#FF7272";
     CScheduleCoorManage                         *m_coorManage;
     QDate                                       m_dianjiDay;
     int                                             m_themetype = 0;
