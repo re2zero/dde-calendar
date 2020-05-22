@@ -51,10 +51,6 @@ public:
     {
         return  m_vlistData;
     }
-    QVector<QDate> getDate()
-    {
-        return  m_vDate;
-    }
     void setTheMe(int type = 0);
     void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
     void setRange(QDate begin, QDate end);
@@ -108,7 +104,6 @@ private:
     QVector<QVector<ScheduleDtailInfo> >         m_vlistData;
     QVector<ScheduleDtailInfo>                   m_scheduleInfo;
     QVector<CAllDayEventWidgetItem *>            m_baseShowItem;
-    QVector<QDate>                               m_vDate;
     int                                          m_editType = 0;
     CScheduleCoorManage                         *m_coorManage;
     QDate                                       m_dianjiDay;

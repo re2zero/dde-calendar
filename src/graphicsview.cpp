@@ -296,7 +296,6 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
 
 void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
 {
-    setCurrentItem(nullptr);
     CScheduleItem *item = new CScheduleItem(m_coorManage, nullptr, m_graphicsScene, type);
     item->setData(info, date, index, totalNum, viewtype, maxnum);
     //用于修改联动bug
@@ -549,8 +548,8 @@ void CGraphicsView::mousePressEvent( QMouseEvent *event )
         if (item != nullptr) {
             if (item->getType() == 1)
                 return;
-            setCurrentItem(item);
             item->setSelectState(true);
+
             setPressSelectInfo(item->getData());
             m_press = true;
 
@@ -565,8 +564,6 @@ void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
 {
     DGraphicsView::mouseReleaseEvent(event);
     m_press = false;
-    if (m_currentItem != nullptr)
-        m_currentItem->setSelectState(false);
 
     switch (m_DragStatus) {
     case IsCreate:
@@ -805,96 +802,6 @@ void CGraphicsView::wheelEvent( QWheelEvent *event )
 }
 #endif
 
-/************************************************************************
-Function:       keyPressEvent()
-Description:    键盘按下事件
-Input:          event 键盘事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::keyPressEvent( QKeyEvent *event )
-{
-    DGraphicsView::keyPressEvent(event);
-}
-
-/************************************************************************
-Function:       keyReleaseEvent()
-Description:    键盘释放事件
-Input:          event 键盘事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::keyReleaseEvent( QKeyEvent *event )
-{
-    DGraphicsView::keyReleaseEvent(event);
-}
-
-/************************************************************************
-Function:       focusInEvent()
-Description:    焦点进入事件
-Input:          event 焦点事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::focusInEvent( QFocusEvent *event )
-{
-    DGraphicsView::focusInEvent(event);
-}
-
-/************************************************************************
-Function:       focusOutEvent()
-Description:    焦点离开事件
-Input:          event 焦点事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::focusOutEvent( QFocusEvent *event )
-{
-    DGraphicsView::focusOutEvent(event);
-}
-
-/************************************************************************
-Function:       enterEvent()
-Description:    进入事件
-Input:          event 事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::enterEvent( QEvent *event )
-{
-    DGraphicsView::enterEvent(event);
-}
-
-/************************************************************************
-Function:       leaveEvent()
-Description:    离开事件
-Input:          event 事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::leaveEvent( QEvent *event )
-{
-    DGraphicsView::leaveEvent(event);
-}
-
-/************************************************************************
-Function:       contextMenuEvent()
-Description:    右键菜单事件
-Input:          event 右键菜单事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::contextMenuEvent( QContextMenuEvent *event )
-{
-    DGraphicsView::contextMenuEvent(event);
-}
 
 /************************************************************************
 Function:       resizeEvent()
@@ -1398,11 +1305,5 @@ void CGraphicsView::setTime(QTime time)
 
     // scene 在 view 的中心点作为锚点
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-
     scrollBarValueChangedSlot();
-}
-
-void CGraphicsView::setCurrentItem(CScheduleItem *item)
-{
-    m_currentItem = item;
 }

@@ -95,76 +95,6 @@ public:
 #endif
 
     /************************************************************************
-    Function:       keyPressEvent()
-    Description:    键盘按下事件
-    Input:          event 键盘事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       keyReleaseEvent()
-    Description:    键盘释放事件
-    Input:          event 键盘事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void keyReleaseEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       focusInEvent()
-    Description:    焦点进入事件
-    Input:          event 焦点事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void focusInEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       focusOutEvent()
-    Description:    焦点离开事件
-    Input:          event 焦点事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       enterEvent()
-    Description:    进入事件
-    Input:          event 事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void enterEvent(QEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       leaveEvent()
-    Description:    离开事件
-    Input:          event 事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
-    Function:       contextMenuEvent()
-    Description:    右键菜单事件
-    Input:          event 右键菜单事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
-
-    /************************************************************************
     Function:       resizeEvent()
     Description:    窗口大小改变事件
     Input:          event 窗口大小改变事件
@@ -215,7 +145,6 @@ public:
     void setLargeScalePen(const QPen &LRPen, const QPen &TBPen);
     void setFirstWeekday(int weekday);
     void setTime(QTime time);
-    void setCurrentItem(CScheduleItem *item);
 protected:
     void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
     void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
@@ -251,7 +180,6 @@ private:
     QGraphicsScene                  *m_graphicsScene;               //绘制Scene
     CScheduleCoorManage             *m_coorManage;
     QVector<CScheduleItem *>        m_vScheduleItem;
-    CScheduleItem                   *m_currentItem;             //当前item
     QMargins                        m_margins;                     //四周空白
     bool                            m_LRFlag;          //水平线
     QPen                            m_LRPen;           //水平线画笔

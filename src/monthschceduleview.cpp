@@ -276,35 +276,6 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
         painter->setPen(Qt::NoPen);
         painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
     }
-//    } else {
-//        QRectF fillRect = QRectF(rect.x()+2,rect.y()+ 2, labelwidth - 2, labelheight - 2 );
-//        //将直线开始点设为0，终点设为1，然后分段设置颜色
-//        painter->setRenderHints(QPainter::HighQualityAntialiasing);
-//        painter->setBrush(m_color1);
-//        painter->setPen(Qt::NoPen);
-//        painter->drawRoundedRect(fillRect, 3, 3);
-
-//        painter->setFont(m_font);
-//        painter->setPen(m_textcolor);
-//        QFontMetrics fm = painter->fontMetrics();
-//        QString str = m_ScheduleInfo.titleName;
-//        if (fm.width(str) >rect.width()) {
-//            int widthT = fm.width(str);
-//            qreal singlecharw = widthT * 1.0 / str.count();
-//            qreal rcharcount = rect.width() * 1.0 / singlecharw;
-//            QString tstr;
-//            for (int i = 0; i < rcharcount - 8; i++) {
-//                tstr.append(str.at(i));
-//            }
-//            str = tstr + "...";
-//        }
-//        painter->drawText(QRectF(rect.x()+m_pos.x(),
-//                                 rect.y()+m_pos.y(),
-//                                 labelwidth - m_pos.x(),
-//                                 labelheight - m_pos.y() + 4),
-//                          Qt::AlignLeft,
-//                          str);
-//    }
 }
 
 void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
