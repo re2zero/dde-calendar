@@ -63,7 +63,7 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
         m_titleLabel->setText(tr("Edit Event"));
     }
     setFocusPolicy(Qt::WheelFocus);
-    setFixedSize(438, 460);
+    setFixedSize(438, 470);
 }
 
 CSchceduleDlg::~CSchceduleDlg()
@@ -436,7 +436,7 @@ void CSchceduleDlg::slotbRpeatactivated(int index)
         // m_gwi->setGeometry(0, 68, 438, 458);
     } else {
         m_endrepeatWidget->setVisible(false);
-        setFixedSize(438, 460);
+        setFixedSize(438, 470);
         // m_gwi->setGeometry(0, 68, 438, 412);
     }
 }
