@@ -796,8 +796,6 @@ void Calendarmainwindow::slotSreturnPressed()
 
 void Calendarmainwindow::slotStextChanged()
 {
-#if 1
-    m_schceduleSearchView->clearSearch();
     if (!m_searchEdit->text().isEmpty()) {
         m_yearwindow->setSearchWFlag(true);
         m_weekWindow->setSearchWFlag(true);
@@ -805,6 +803,7 @@ void Calendarmainwindow::slotStextChanged()
         m_DayWindow->setSearchWFlag(true);
         // m_contentBackground->setVisible(true);
     } else {
+        m_schceduleSearchView->clearSearch();
         m_yearwindow->setSearchWFlag(false);
         m_monthWindow->setSearchWFlag(false);
         m_weekWindow->setSearchWFlag(false);
@@ -820,16 +819,7 @@ void Calendarmainwindow::slotStextChanged()
 //    m_yearwindow->setDate(m_currentdate);
 //    m_yearwindow->slotupdateSchedule(0);
     updateHigh();
-#else
-    if (!m_searchflag) {
-        m_dayButton->click();
-        m_searchflag = true;
-    }
-    m_DayWindow->clearSearch();
-    //m_segmentedControl->setCurrentIndex(3);
-    //m_stackWidget->setCurrentIndex(3);
-    m_DayWindow->setSearchWFlag(!m_searchEdit->text().isEmpty());
-#endif
+
 }
 
 void Calendarmainwindow::slotStextfocusChanged(bool onFocus)
