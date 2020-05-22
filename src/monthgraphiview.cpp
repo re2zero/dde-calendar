@@ -40,16 +40,6 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
             &CMonthGraphiview::slotDeleteItem);
 
     m_MonthSchceduleView = new CMonthSchceduleView(this,m_Scene);
-
-//    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotSchceduleUpdate);
-//    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsUpdateShcedule, this, &CMonthView::slotdelete);
-//    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalsCurrentScheduleDate, this, &CMonthView::signalsCurrentScheduleDate);
-//    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
-//    connect(m_MonthSchceduleView, &CMonthSchceduleView::signalUpdateUI, this, &CMonthView::slotUpdateUI);
-//    connect(m_MonthSchceduleView
-//            , &CMonthSchceduleView::signalPressScheduleShow
-//            , this
-//            , &CMonthView::slotScheduleRemindWidget);
     connect(this,&CMonthGraphiview::signalFontChange,
             m_MonthSchceduleView,&CMonthSchceduleView::slotFontChange);
 
@@ -522,10 +512,19 @@ void CMonthGraphiview::dragMoveEvent(QDragMoveEvent *event)
 
 void CMonthGraphiview::dropEvent(QDropEvent *event)
 {
+//    if (event->mimeData()->hasFormat("Info")) {
+//        updateScheduleInfo(m_DragScheduleInfo);
+//        emit slotSchceduleUpdate(0);
+//        m_DragStatus = NONE;
+//    }
     if (event->mimeData()->hasFormat("Info")) {
-        updateScheduleInfo(m_DragScheduleInfo);
-        emit slotSchceduleUpdate(0);
+        if (event->source()!=this || m_MoveDate !=m_PressDate) {
+            updateScheduleInfo(m_DragScheduleInfo);
+        } else {
+            emit slotSchceduleUpdate(0);
+        }
         m_DragStatus = NONE;
+        m_MoveDate = m_MoveDate.addMonths(2);
     }
 }
 
@@ -585,7 +584,6 @@ void CMonthGraphiview::mousePressEvent(QMouseEvent *event)
         setPressSelectInfo(infoitem->getData());
         m_press = true;
         infoitem->setPressFlag(true);
-        m_MonthSchceduleView->slotupdateItem(infoitem);
         emit signalScheduleShow(true, infoitem->getData());
     } else {
         emit signalScheduleShow(false);

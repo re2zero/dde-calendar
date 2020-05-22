@@ -444,11 +444,6 @@ void CMonthSchceduleView::slotedititem(CMonthSchceduleWidgetItem *item, int type
     emit signalsUpdateShcedule(item->getData().id);
 }
 
-void CMonthSchceduleView::slotupdateItem(CMonthSchceduleWidgetItem *item)
-{
-    m_currentitem = item;
-    return;
-}
 
 void CMonthSchceduleView::slotFontChange()
 {
@@ -496,7 +491,6 @@ void CMonthSchceduleView::updateData()
     QDate enddate = m_data[m_data.count() - 1].date;
     m_beginDate = begindate;
     m_endDate  = enddate;
-    m_currentitem = nullptr;
 
     for (int i = 0 ; i < m_weekSchedule.size(); ++i) {
         m_weekSchedule[i]->clearItem();

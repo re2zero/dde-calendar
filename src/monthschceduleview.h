@@ -67,7 +67,6 @@ signals:
 public slots:
     void slotdeleteitem(CMonthSchceduleWidgetItem *item);
     void slotedititem(CMonthSchceduleWidgetItem *item, int type = 0);
-    void slotupdateItem(CMonthSchceduleWidgetItem *item);
     void slotFontChange();
 private:
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule,QVector<QGraphicsRectItem *> &schudeleShowItem);
@@ -87,7 +86,6 @@ private:
     int                                             m_leftMagin=0;
     int                                             m_topMagin=0;
     int                                             m_buttommagin=0;
-    CMonthSchceduleWidgetItem                       *m_currentitem = nullptr;
     QVector<CWeekScheduleView *>                    m_weekSchedule;
     int                                             m_ItemHeight = 22;
     QGraphicsScene                                  *m_Scene;
