@@ -393,7 +393,7 @@ void CWeekWindow::slotReturnTodayUpdate()
 
 void CWeekWindow::slotupdateSchedule(int id)
 {
-    m_scheduleView->slotupdateSchedule(id);
+    m_scheduleView->slotupdateSchedule();
     //m_scheduleView->setTime(QTime::currentTime());
 }
 

@@ -60,7 +60,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
             this,
             &CMonthView::signalsViewSelectDate);
     connect(m_MonthGraphicsView,
-            &CMonthGraphiview::slotSchceduleUpdate,
+            &CMonthGraphiview::signalsUpdateShcedule,
             this,
             &CMonthView::slotSchceduleUpdate);
     connect(m_MonthGraphicsView,
@@ -110,10 +110,9 @@ CMonthView::~CMonthView()
     }
 }
 
-void CMonthView::slotSchceduleUpdate(int id)
+void CMonthView::slotSchceduleUpdate()
 {
-    Q_UNUSED(id);
-    emit signalsSchceduleUpdate(id);
+    emit signalsSchceduleUpdate(0);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
 }
 

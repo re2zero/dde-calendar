@@ -26,8 +26,6 @@
 #include <QMutex>
 #include <QDrag>
 #include <DMenu>
-#include <QPropertyAnimation>
-#include <QSequentialAnimationGroup>
 DWIDGET_USE_NAMESPACE
 
 typedef struct _tagScheduleclassificationInfo {
@@ -50,10 +48,6 @@ public:
     QMargins getMargins()
     {
         return m_margins;
-    }
-    QGraphicsScene *getSence()
-    {
-        return m_graphicsScene;
     }
     void setTheMe(int type = 0);
     void updateHigh();

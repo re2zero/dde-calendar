@@ -361,7 +361,7 @@ void CMonthWindow::slotScheduleHide()
 
 void CMonthWindow::slotupdateSchedule(int id)
 {
-    m_monthView->slotSchceduleUpdate(id);
+    m_monthView->slotSchceduleUpdate();
 }
 
 void CMonthWindow::slotTransitSchedule(int id)

@@ -53,7 +53,7 @@ signals:
 public slots:
     void setCurrentDate(const QDate date);
     void setLunarVisible(bool visible);
-    void slotSchceduleUpdate(int id = 0);
+    void slotSchceduleUpdate();
     void slotUpdateUI(int type);
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
 public slots:

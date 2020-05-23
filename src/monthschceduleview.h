@@ -29,6 +29,7 @@
 
 #include "schedulestructs.h"
 #include "scheduledatamanage.h"
+#include "draginfoitem.h"
 
 DWIDGET_USE_NAMESPACE
 class CMonthSchceduleWidgetItem;
@@ -174,65 +175,18 @@ private:
     DFontSizeManager::SizeType m_SizeType = DFontSizeManager::T8;
 };
 
-class CMonthSchceduleWidgetItem :public QObject, public QGraphicsRectItem
+class CMonthSchceduleWidgetItem :public DragInfoItem
 {
     Q_OBJECT
-    Q_PROPERTY(int setRectOffset WRITE setRectOffset)
 public:
     explicit CMonthSchceduleWidgetItem(QRect rect,QGraphicsItem  *parent = nullptr, int edittype = 0);
-    ~CMonthSchceduleWidgetItem() Q_DECL_OVERRIDE;
-    void setSizeType(DFontSizeManager::SizeType sizeType);
-    void setText(QColor tcolor, QFont font, QPoint pos);
-    void setTransparentB(bool t, QColor tcolor);
-    void setTransparentB(bool t);
-    void setData(ScheduleDtailInfo  vScheduleInfo);
-    const ScheduleDtailInfo &getData() const
-    {
-        return m_ScheduleInfo;
-    }
-    void setRectOffset(int offset);
-    void startAnimation();
-    void setStartValue(int offset);
-    void setEndValue(int offset);
-    bool isRunning()const
-    {
-        return isAnimation;
-    }
-    void setPressFlag(const bool ispress);
+    ~CMonthSchceduleWidgetItem() override;
     QPixmap getPixmap();
-signals:
-public slots:
-    void animationFinished();
+
 private:
-    void paintBackground(QPainter *painter,const QRectF &rect,const int isPixMap = false);
-protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void paintBackground(QPainter *painter,const QRectF &rect,const int isPixMap = false) override;
 private:
-    ScheduleDtailInfo                       m_ScheduleInfo;
-    int                                     m_widthoffset = 0;
-    QAction                                 *m_editAction;
-    QAction                                 *m_deleteAction;
-    QColor                                  m_textcolor;
-    QFont                                   m_font;
     QPoint                                  m_pos;
-    QColor                                  m_transparentcolor;
-    bool                                    m_transparentf = false; //按下
-    bool                                    m_selectflag = false;
-    bool                                    m_hoverflag = false;
-    bool                                    m_highflag = false;
-    int                                     m_editType = 0;
-    bool                                    m_pressRemindTag = false;
-    bool                                    m_pressMove = false;
-    QPoint                                  m_pressPos;
-    CSchedulesColor                         gdcolor;
-    bool                                    isAnimation = false;
-    QPropertyAnimation                      *m_properAnimationFirst = nullptr;
-    QPropertyAnimation                      *m_properAnimationSecond = nullptr;
-    QSequentialAnimationGroup               *m_Group = nullptr;
-    QRect                                   m_rect;
-    DFontSizeManager::SizeType              m_SizeType = DFontSizeManager::T8;
 };
 
 #endif // CSHCEDULEDAYVIEW_H

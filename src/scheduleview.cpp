@@ -146,7 +146,7 @@ void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
     m_graphicsView->upDateInfoShow();
 
     m_graphicsView->update();
-    m_graphicsView->getSence()->update();
+    m_graphicsView->scene()->update();
     if (m_viewType == 1) {
         if (QDate::currentDate() == m_beginDate) {
             m_graphicsView->setTime(QTime::currentTime());
@@ -203,12 +203,12 @@ void CScheduleView::setDate(QDate date)
     updateAllday();
 }
 
-void CScheduleView::slotupdateSchedule(int id)
+void CScheduleView::slotupdateSchedule()
 {
     updateSchedule();
-    if (id !=1) {
-        emit signalsUpdateShcedule(id);
-    }
+//    if (id !=1) {
+    emit signalsUpdateShcedule(0);
+//    }
 }
 
 void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype)
@@ -612,7 +612,8 @@ void CScheduleView::updateSchedule()
 
 void CScheduleView::updateAllday()
 {
-    m_topMagin = m_alldaylist->upDateInfoShow();
+//    m_topMagin = m_alldaylist->upDateInfoShow();
+    m_alldaylist->updateInfo();
     update();
     m_graphicsView->resize(m_graphicsView->width(),this->height()-m_alldaylist->height());
 }

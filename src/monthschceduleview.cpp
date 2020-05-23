@@ -42,29 +42,9 @@
 
 DGUI_USE_NAMESPACE
 CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem(QRect rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
-    : QGraphicsRectItem(parent),
-      m_rect(rect)
+    : DragInfoItem(rect,parent),
+      m_pos(13,5)
 {
-    setRect(m_rect);
-    m_editType = edittype;
-    setAcceptHoverEvents(true);
-
-    const int duration = 200;
-    m_properAnimationFirst = new QPropertyAnimation( this, "setRectOffset", this);
-    m_properAnimationFirst->setObjectName("First");
-    m_properAnimationSecond = new QPropertyAnimation( this, "setRectOffset", this);
-    m_properAnimationSecond->setObjectName("Second");
-    m_properAnimationFirst->setDuration(duration);
-    m_properAnimationSecond->setDuration(duration);
-    m_properAnimationFirst->setEasingCurve(QEasingCurve::InOutQuad);
-    m_properAnimationSecond->setEasingCurve(QEasingCurve::InOutQuad);
-    m_Group = new QSequentialAnimationGroup(this);
-    m_Group->addAnimation(m_properAnimationFirst);
-    m_Group->addAnimation(m_properAnimationSecond);
-    connect(m_Group
-            , &QPropertyAnimation::finished
-            , this
-            , &CMonthSchceduleWidgetItem::animationFinished);
 }
 
 CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
@@ -72,82 +52,6 @@ CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
 
 }
 
-
-void CMonthSchceduleWidgetItem::setSizeType(DFontSizeManager::SizeType sizeType)
-{
-    m_SizeType = sizeType;
-}
-
-void CMonthSchceduleWidgetItem::setText( QColor tcolor, QFont font, QPoint pos)
-{
-    m_textcolor = tcolor;
-    m_font = font;
-    m_pos = pos;
-}
-
-void CMonthSchceduleWidgetItem::setTransparentB(bool t, QColor tcolor)
-{
-    m_transparentcolor = tcolor;
-    m_transparentf = t;
-}
-
-void CMonthSchceduleWidgetItem::setTransparentB(bool t)
-{
-    m_transparentf = t;
-    update();
-}
-
-void CMonthSchceduleWidgetItem::setData( ScheduleDtailInfo vScheduleInfo )
-{
-    m_ScheduleInfo = vScheduleInfo;
-    update();
-}
-
-
-void CMonthSchceduleWidgetItem::setRectOffset(int offset)
-{
-//    QRect rect(m_rect.x() - offset
-//               , m_rect.y() - offset / 2
-//               , m_rect.width() + offset * 2
-//               , m_rect.height() + offset);
-//    m_widthoffset = offset*2;
-//    this->rect() = rect;
-//    this->setGeometry(rect);
-//    this->setFixedSize(rect.width(), rect.height());
-    setRect(QRect(m_rect.x() - offset,
-                  m_rect.y() - offset / 2,
-                  m_rect.width() + offset * 2,
-                  m_rect.height() + offset));
-    setZValue(offset);
-    update();
-}
-
-void CMonthSchceduleWidgetItem::startAnimation()
-{
-    if (isAnimation)
-        return;
-    m_Group->start();
-    isAnimation = true;
-
-}
-
-void CMonthSchceduleWidgetItem::setStartValue(int offset)
-{
-    m_properAnimationFirst->setStartValue(offset);
-    m_properAnimationSecond->setEndValue(offset);
-}
-
-void CMonthSchceduleWidgetItem::setEndValue(int offset)
-{
-    m_properAnimationFirst->setEndValue(offset);
-    m_properAnimationSecond->setStartValue(offset);
-}
-
-void CMonthSchceduleWidgetItem::setPressFlag(const bool ispress)
-{
-    m_selectflag = ispress;
-    update();
-}
 
 QPixmap CMonthSchceduleWidgetItem::getPixmap()
 {
@@ -160,47 +64,45 @@ QPixmap CMonthSchceduleWidgetItem::getPixmap()
 }
 
 
-void CMonthSchceduleWidgetItem::animationFinished()
-{
-    isAnimation = false;
-}
 
 void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
 {
     qreal labelwidth = rect.width();
     qreal labelheight = rect.height();
-    m_font = DFontSizeManager::instance()->get(m_SizeType, m_font);
+    m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.type.ID);
-    m_highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_ScheduleInfo);
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.type.ID);
+    m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
     QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
     QColor color1 = gdcolor.gradientFromC;
     QColor color2 = gdcolor.gradientToC;
     QColor textcolor = gdcolor.textColor;
 
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_ScheduleInfo ) {
-        if (m_ScheduleInfo.IsMoveInfo ==
+
+
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo ) {
+        if (m_vScheduleInfo.IsMoveInfo ==
                 CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
-            m_highflag = true;
+            m_vHighflag = true;
         } else {
             painter->setOpacity(0.4);
             textcolor.setAlphaF(0.4);
         }
+        m_vSelectflag = m_press;
     }
     if (isPixMap) {
         painter->setOpacity(0.6);
         textcolor.setAlphaF(0.8);
     }
-//    if (m_GradientFlag) {
 
-    if (m_hoverflag) {
+    if (m_vHoverflag) {
         color1 = gdcolor.hovergradientFromC;
         color2 = gdcolor.hovergradientToC;
-    } else if (m_highflag) {
+    } else if (m_vHighflag) {
         color1 = gdcolor.hightlightgradientFromC;
         color2 = gdcolor.hightlightgradientToC;
     }
-    if (m_selectflag) {
+    if (m_vSelectflag) {
         color1 = gdcolor.pressgradientFromC;
         color2 = gdcolor.pressgradientToC;
         textcolor.setAlphaF(0.4);
@@ -225,7 +127,7 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
     painter->setPen(textcolor);
     QFontMetrics fm = painter->fontMetrics();
 
-    QString tStitlename = m_ScheduleInfo.titleName;
+    QString tStitlename = m_vScheduleInfo.titleName;
     tStitlename.replace("\n", "");
     QString str = tStitlename;
     QString tstr;
@@ -243,11 +145,11 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
 
     painter->drawText(QRectF(rect.x()+m_pos.x(),
                              rect.y()+1,
-                             labelwidth - m_pos.x()-m_widthoffset,
+                             labelwidth - m_pos.x(),
                              labelheight - m_pos.y() + 3  ),
                       Qt::AlignLeft | Qt::AlignVCenter, tstr);
 
-    if (m_hoverflag && !m_selectflag) {
+    if (m_vHoverflag && !m_vSelectflag) {
         QRectF trect = QRectF(rect.x()+2.5, rect.y()+2.5, labelwidth - 3, labelheight - 3);
         painter->save();
         painter->setRenderHints(QPainter::Antialiasing);
@@ -269,7 +171,7 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
         painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
         painter->restore();
     }
-    if (m_selectflag) {
+    if (m_vSelectflag) {
         QColor selcolor = "#000000";
         selcolor.setAlphaF(0.05);
         painter->setBrush(selcolor);
@@ -278,27 +180,6 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
     }
 }
 
-void CMonthSchceduleWidgetItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    paintBackground(painter,this->rect());
-}
-
-void CMonthSchceduleWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    Q_UNUSED(event);
-    m_hoverflag = true;
-    update();
-}
-
-void CMonthSchceduleWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    Q_UNUSED(event);
-    m_hoverflag = false;
-    m_selectflag = false;
-    update();
-}
 
 CMonthSchceduleNumButton::CMonthSchceduleNumButton(QGraphicsItem *parent /*= nullptr*/): QGraphicsRectItem (parent)
 {
@@ -611,7 +492,6 @@ void CMonthSchceduleView::splitSchedule(MScheduleDateRangeInfo &old, QVector<MSc
 void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum,QVector<QGraphicsRectItem *> &schudeleShowItem)
 {
     ScheduleDtailInfo gd = info.tData;
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
     QPoint pos;
     int fw;
     int fh;
@@ -620,14 +500,12 @@ void CMonthSchceduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, 
     m_Scene->addItem(gwi);
 
     QFont font;
-    gwi->setSizeType(DFontSizeManager::T8);
+
     gwi->setData(gd);
 
-    gwi->setText(gdcolor.textColor, font, QPoint(13, 3));
 
     QColor TransparentC = "#000000";
     TransparentC.setAlphaF(0.05);
-    gwi->setTransparentB(false, TransparentC);
     schudeleShowItem.append(gwi);
 }
 

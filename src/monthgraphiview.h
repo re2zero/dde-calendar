@@ -11,6 +11,7 @@
 #include <dtkwidget_global.h>
 #include "calendardbus.h"
 #include "schedulestructs.h"
+#include "draginfographicsview.h"
 
 
 
@@ -20,15 +21,13 @@ class CDayGraphicsItem;
 class CMonthSchceduleWidgetItem;
 class CMonthSchceduleView;
 
-class CMonthGraphiview : public DGraphicsView
+class CMonthGraphiview : public DragInfoGraphicsView
 {
     Q_OBJECT
 public:
-    enum PosInItem {LEFT,MIDDLE,RIGHT};
-    enum DragStatus {IsCreate,ChangeBegin,ChangeEnd,ChangeWhole,NONE};
     explicit CMonthGraphiview(QWidget *parent = nullptr);
     ~CMonthGraphiview() override;
-    void setTheMe(int type = 0);
+    void setTheMe(int type = 0) override;
 public:
     void setDate(const QDate date[42]);
     void setFestivalInfo(const QVector<FestivalInfo> &info)
@@ -45,69 +44,43 @@ private:
     void updateInfo();
     char getFestivalInfoByDate(const QDate &date);
     QPointF getItemPos(const QPoint &p, const QRectF &itemRect);
-    void DragPressEvent(const QPoint &pos,QGraphicsItem *item);
-    ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
-    PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect);
-    QDate getPosDate(const QPoint &p);
-    void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo());
     void updateScheduleInfo(const ScheduleDtailInfo &info);
     void DeleteItem(const ScheduleDtailInfo &info);
     void setPressSelectInfo(const ScheduleDtailInfo &info);
 protected:
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    void dragLeaveEvent(QDragLeaveEvent *event) override;
-    void dragMoveEvent(QDragMoveEvent *event) override;
-    void dropEvent(QDropEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void contextMenuEvent(QContextMenuEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     void changeEvent(QEvent *event) override;
     void wheelEvent(QWheelEvent *) override;
+private:
+    void setDragPixmap(QDrag *drag,DragInfoItem *item) override;
+    bool MeetCreationConditions(const QDateTime &date) override;
+    //判断时间是否相等
+    bool IsEqualtime(const QDateTime &timeFirst,const QDateTime &timeSecond) override;
+    //根据鼠标移动的距离判断是否创建日程
+    bool JudgeIsCreate(const QPointF &pos)  override;
+    void RightClickToCreate(QGraphicsItem *listItem,const QPoint &pos) override;
+    void MoveInfoProcess(ScheduleDtailInfo &info,const QPointF &pos) override;
+    QDateTime getDragScheduleInfoBeginTime(const QDateTime &moveDateTime) override;
+    QDateTime getDragScheduleInfoEndTime(const QDateTime &moveDateTime) override;
+    PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect)override;
+    QDateTime getPosDate(const QPoint &p)override;
+    void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo())override;
 signals:
     void signalFontChange();
     void signalsViewSelectDate(QDate date);
-    void slotSchceduleUpdate(const int id =0);
     void signalsSchceduleUpdate(const int id = 0);
-    void signalViewtransparentFrame(const int id = 0);
-    void signalScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 public slots:
-    void slotCreate(const QDate &date);
-    void slotCreate();
+    void slotCreate(const QDateTime &date) override;
     void slotdelete(const int id =0);
     void slotDeleteItem();
 private:
-    QGraphicsScene                      *m_Scene;
     QVector<CDayGraphicsItem *>         m_DayItem;
     QMap<QDate, CaLunarDayInfo>         *m_lunarCache;
     QVector<FestivalInfo>               m_festivallist;
     int                                 m_currentMonth;
-    QDate                               m_createDate;
-    int                                 m_press = false;
-
-    QAction                                     *m_createAction;     // 创建日程
-    QAction                                     *m_editAction;
-    QAction                                     *m_deleteAction;
-    int                                 m_themetype = 0;
-
     CMonthSchceduleView                 *m_MonthSchceduleView;
     QVector<ScheduleDateRangeInfo>      m_shceludelistdata;
-    DMenu                               *m_rightMenu;
-
-
-    DragStatus                      m_DragStatus =NONE;
-    bool                            m_isCreate;
-    QDate                           m_PressDate;
-    QDate                           m_MoveDate;
-    QPoint                          m_PressPos;
-    ScheduleDtailInfo               m_DragScheduleInfo;
-    QDateTime                       m_InfoBeginTime;
-    QDateTime                       m_InfoEndTime;
-    QDrag                           *m_Drag = nullptr;
-    ScheduleDtailInfo               m_PressScheduleInfo;
-    QRectF                          m_PressRect;
 };
 
 
