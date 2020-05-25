@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="th">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>กิจกรรมใหม่</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>แก้ไข</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>ลบ</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>คุณกำลังลบกิจกรรม</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>คุณแน่ใจหรือไม่ว่าคุณต้องการที่จะลบกิจกรรมนี้</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>ยกเลิก</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>คุณต้องการลบกิจกรรมทั้งหมดที่เกิดขึ้นหรือเฉพาะกิจกรรมที่เลือกไว้หรือไม่ ?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>ลบทั้งหมด</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>ลบเฉพาะกิจกรรมนี้</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>คุณต้องการลบกิจกรรมนี้และกิจกรรมที่จะเกิดขึ้นในอนาคตทั้งหมดหรือเฉพาะกิจกรรมที่เลือก ?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>ลบกิจกรรมในอนาคตทั้งหมด</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>กิจกรรมใหม่</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation>แก้ไข</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>ลบ</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>กิจกรรมใหม่</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>กิจกรรมใหม่</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -642,6 +579,57 @@
     <message>
         <source>All Day</source>
         <translation>ทั้งวัน</translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">แก้ไข</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">ลบ</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">เหตุการณ์ใหม่</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished">คุณกำลังลบกิจกรรม</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished">คุณแน่ใจหรือไม่ว่าคุณต้องการที่จะลบกิจกรรมนี้</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">ยกเลิก</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">คุณต้องการลบกิจกรรมทั้งหมดที่เกิดขึ้นหรือเฉพาะกิจกรรมที่เลือกไว้หรือไม่ ?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished">ลบทั้งหมด</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished">ลบเฉพาะกิจกรรมนี้</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">คุณต้องการลบกิจกรรมนี้และกิจกรรมที่จะเกิดขึ้นในอนาคตทั้งหมดหรือเฉพาะกิจกรรมที่เลือก ?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">ลบกิจกรรมในอนาคตทั้งหมด</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">กิจกรรมใหม่</translation>
     </message>
 </context>
 <context>

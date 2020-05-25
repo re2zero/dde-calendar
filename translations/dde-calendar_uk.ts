@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="uk">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Нова подія</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>Редагувати</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Видалити</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Ви вилучаєте запис події.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Ви справді хочете вилучити цей запис події?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Скасувати</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Ви хочете вилучити усі повторення цієї події чи лише позначений запис?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Вилучити всі</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Вилучити лише цей запис</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Ви хочете вилучити усі майбутні повторення цієї події чи лише позначені записи?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Вилучити усі майбутні повторення</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Нова подія</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation>Редагувати</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Видалити</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Нова подія</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Нова подія</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -642,6 +579,57 @@
     <message>
         <source>All Day</source>
         <translation>Весь день</translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Редагувати</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">Нова подія</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished">Ви вилучаєте запис події.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Скасувати</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Ви хочете вилучити усі повторення цієї події чи лише позначений запис?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished">Вилучити всі</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished">Вилучити лише цей запис</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Ви хочете вилучити усі майбутні повторення цієї події чи лише позначені записи?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">Вилучити усі майбутні повторення</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">Нова подія</translation>
     </message>
 </context>
 <context>

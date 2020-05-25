@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="lt">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Naujas įvykis</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>Redaguoti</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Ištrinti</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Ar tikrai norite ištrinti šį įvykį?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Atsisakyti</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation type="unfinished">Redaguoti</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation type="unfinished">Ištrinti</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation type="unfinished">Naujas įvykis</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -641,6 +578,57 @@
     <name>CenterWidget</name>
     <message>
         <source>All Day</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Redaguoti</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Ištrinti</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">Naujas įvykis</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished">Ar tikrai norite ištrinti šį įvykį?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Atsisakyti</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

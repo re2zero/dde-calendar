@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ar">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>حدث جديد</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>تحرير</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>حذف</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>أنت تحذف الآن الحدث</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>هل أنت متأكد من حذف هذا الحدث؟</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>إلغاء</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>هل تريد حذف جميع الفعاليات في هذا الحدث أو الفعاليات المحددة فقط؟</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>حذف الكل</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>حذف هذا الحدث فقط</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>هل تريد حذف جميع الفعاليات المستقبلية لهذا الحدث، أو الفعاليات المحددة فقط؟</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>حذف جميع الأحداث المستقبلية</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>حدث جديد</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation>تحرير</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>حذف</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>حدث جديد</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>حدث جديد</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -642,6 +579,57 @@
     <message>
         <source>All Day</source>
         <translation>طوال اليوم</translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">تحرير</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">حذف</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">حدث جديد</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished">هل أنت متأكد من حذف هذا الحدث؟</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">إلغاء</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished">حذف الكل</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished">حذف هذا الحدث فقط</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">حذف جميع الأحداث المستقبلية</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">حدث جديد</translation>
     </message>
 </context>
 <context>

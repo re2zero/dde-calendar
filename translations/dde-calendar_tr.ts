@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Yeni etkinlik</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>Düzenle</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Sil</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Bir etkinliği siliyorsunuz.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Bu etkinliği silmek istediğinizden emin misiniz?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>İptal</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Bu etkinliğin tüm tekrarlarını mı yoksa yalnızca seçilen etkinliği mi silmek istiyorsunuz?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Tümünü Sil</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Yalnızca Bu Etkinliği Sil</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Bunu ve bu etkinliğin gelecekteki tüm tekrarlarını mı yoksa yalnızca seçilen etkinliği mi silmek istiyorsunuz?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Gelecekteki Tüm Etkinlikleri Sil</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Yeni Etkinlik</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation>Düzenle</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Sil</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Yeni etkinlik</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Yeni Etkinlik</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -642,6 +579,57 @@
     <message>
         <source>All Day</source>
         <translation>Tüm Gün</translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Düzenle</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Sil</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">Yeni etkinlik</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished">Bir etkinliği siliyorsunuz.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished">Bu etkinliği silmek istediğinizden emin misiniz?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Bu etkinliğin tüm tekrarlarını mı yoksa yalnızca seçilen etkinliği mi silmek istiyorsunuz?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished">Tümünü Sil</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished">Yalnızca Bu Etkinliği Sil</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Bunu ve bu etkinliğin gelecekteki tüm tekrarlarını mı yoksa yalnızca seçilen etkinliği mi silmek istiyorsunuz?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">Gelecekteki Tüm Etkinlikleri Sil</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">Yeni Etkinlik</translation>
     </message>
 </context>
 <context>

@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="nl">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Nieuwe gebeurtenis</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>Bewerken</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Verwijderen</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>U verwijdert een gebeurtenis</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Weet u zeker dat u deze gebeurtenis wilt verwijderen?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Dit is een herhalende afspraak. Wil je alle afspraken verwijderen of enkel deze?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Verwijder ze allemaal</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Verwijder enkel deze afspraak</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Wil je deze én toekomstige afspraken verwijderen, of enkel de deze?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Verwijder alle toekomstige afspraken</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Nieuwe afspraak</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation>Bewerken</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Verwijderen</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Nieuwe gebeurtenis</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Nieuwe afspraak</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -642,6 +579,57 @@
     <message>
         <source>All Day</source>
         <translation>Hele dag</translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Bewerken</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">Nieuwe gebeurtenis</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished">Je verwijdert een afspraak</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished">Ben je zeker dat je deze afspraak wil verwijderen?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuleren</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished">Verwijder ze allemaal</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished">Verwijder enkel deze afspraak</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">Verwijder alle toekomstige afspraken</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">Nieuwe afspraak</translation>
     </message>
 </context>
 <context>

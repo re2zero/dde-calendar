@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ca">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Esdeveniment nou</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>Edita</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Elimina</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Elimineu un esdeveniment.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Segur que voleu eliminar aquest esdeveniment?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel·la</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voleu eliminar totes les ocurrències d&apos;aquest esdeveniment o només l&apos;ocurrència seleccionada?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Elimina-les totes</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Elimina només aquest esdeveniment</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voleu eliminar aquesta i totes les futures ocurrències d&apos;aquest esdeveniment, o només l&apos;ocurrència seleccionada?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Elimina tots els esdeveniments futurs</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Esdeveniment nou</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation>Edita</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Elimina</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Esdeveniment nou</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Esdeveniment nou</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -642,6 +579,57 @@
     <message>
         <source>All Day</source>
         <translation>Tot el dia</translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Edita</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Elimina</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">Nou esdeveniment</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel·la</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">Esdeveniment nou</translation>
     </message>
 </context>
 <context>

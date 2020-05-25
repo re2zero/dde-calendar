@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="cs">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Nová událost</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>Upravit</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Smazat</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Mažete událost.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Opravdu chcete tuto událost smazat?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Storno</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Chcete smazat všechny výskyty této události, nebo jen vybraný výskyt?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Smazat vše</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Smazat jen tuto událost</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Chcete smazat tento a všechny výskyty této události, nebo jen vybraný výskyt?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Smazat všechny budoucí události</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Nová událost</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation>Upravit</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Smazat</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Nová událost</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Nová událost</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -642,6 +579,57 @@
     <message>
         <source>All Day</source>
         <translation>Celý den</translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">Nová událost</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished">Mažete událost.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished">Opravdu chcete tuto událost smazat?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Storno</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Chcete smazat všechny výskyty této události, nebo jen vybraný výskyt?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished">Smazat vše</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished">Smazat jen tuto událost</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Chcete smazat tento a všechny výskyty této události, nebo jen vybraný výskyt?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">Smazat všechny budoucí události</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">Nová událost</translation>
     </message>
 </context>
 <context>

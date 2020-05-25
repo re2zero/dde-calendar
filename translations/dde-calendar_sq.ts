@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sq">
 <context>
-    <name>CAllDayEventWeekView</name>
-    <message>
-        <source>New event</source>
-        <translation>Veprimtari e re</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation>Përpunim</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Fshije</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Po fshini një veprimtari.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Jeni i sigurt se doni të fshihet kjo veprimtari?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuloje</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Doni të fshihen krejt përsëritjet e kësaj veprimtarie, apo vetëm përsëritjen e përzgjedhur?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Fshiji Krejt</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Fshi Vetëm Këtë Veprimtari</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Doni të fshihet kjo dhe krejt përsëritjet në të ardhmen të kësaj veprimtarie, apo vetëm përsëritjen e përzgjedhur?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Fshi Krejt Veprimtaritë e Ardhshme</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Veprimtari e Re</translation>
-    </message>
-</context>
-<context>
     <name>CDayMonthView</name>
     <message>
         <source>Monday</source>
@@ -152,20 +101,8 @@
 <context>
     <name>CMonthGraphiview</name>
     <message>
-        <source>Edit</source>
-        <translation>Përpunim</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Fshije</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Veprimtari e re</translation>
-    </message>
-    <message>
-        <source>New Event</source>
-        <translation>Veprimtari e Re</translation>
     </message>
     <message>
         <source>You are deleting an event.</source>
@@ -642,6 +579,57 @@
     <message>
         <source>All Day</source>
         <translation>Tërë Ditën</translation>
+    </message>
+</context>
+<context>
+    <name>DragInfoGraphicsView</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Përpunim</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Fshije</translation>
+    </message>
+    <message>
+        <source>New event</source>
+        <translation type="unfinished">Veprimtari e re</translation>
+    </message>
+    <message>
+        <source>You are deleting an event.</source>
+        <translation type="unfinished">Po fshini një veprimtari.</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished">Jeni i sigurt se doni të fshihet kjo veprimtari?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuloje</translation>
+    </message>
+    <message>
+        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Doni të fshihen krejt përsëritjet e kësaj veprimtarie, apo vetëm përsëritjen e përzgjedhur?</translation>
+    </message>
+    <message>
+        <source>Delete All</source>
+        <translation type="unfinished">Fshiji Krejt</translation>
+    </message>
+    <message>
+        <source>Delete Only This Event</source>
+        <translation type="unfinished">Fshi Vetëm Këtë Veprimtari</translation>
+    </message>
+    <message>
+        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
+        <translation type="unfinished">Doni të fshihet kjo dhe krejt përsëritjet në të ardhmen të kësaj veprimtarie, apo vetëm përsëritjen e përzgjedhur?</translation>
+    </message>
+    <message>
+        <source>Delete All Future Events</source>
+        <translation type="unfinished">Fshi Krejt Veprimtaritë e Ardhshme</translation>
+    </message>
+    <message>
+        <source>New Event</source>
+        <translation type="unfinished">Veprimtari e Re</translation>
     </message>
 </context>
 <context>
