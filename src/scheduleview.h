@@ -100,6 +100,7 @@ private:
     QVBoxLayout              *m_layout;
     SchecduleRemindWidget    *m_ScheduleRemindWidget;
     int                             m_minTime;      //最小高度对应的最小时间
+    QFont                       font;
 };
 
 #endif // SCHEDULEVIEW_H

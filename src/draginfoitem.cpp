@@ -5,6 +5,7 @@
 #include <QDebug>
 
 bool DragInfoItem::m_press = false;
+ScheduleDtailInfo DragInfoItem::m_HoverInfo;
 DragInfoItem::DragInfoItem(QRect rect, QGraphicsItem *parent)
     :QGraphicsRectItem(parent),
      m_rect(rect)
@@ -95,14 +96,14 @@ void DragInfoItem::animationFinished()
 void DragInfoItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
-    m_vHoverflag = true;
+    m_HoverInfo = m_vScheduleInfo;
     update();
 }
 
 void DragInfoItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
-    m_vHoverflag = false;
+    m_HoverInfo = ScheduleDtailInfo();
     update();
 }
 
@@ -111,5 +112,6 @@ void DragInfoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    m_vHoverflag = m_HoverInfo == m_vScheduleInfo;
     paintBackground(painter,this->rect());
 }

@@ -272,7 +272,6 @@ void CAllDayEventWeekView::setMargins(int left, int top, int right, int bottom)
 void CAllDayEventWeekView::updateInfo()
 {
     upDateInfoShow();
-//   return
 }
 
 void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const ScheduleDtailInfo &info)
@@ -493,7 +492,6 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
     Q_UNUSED(average)
     for (int i = 0; i < m_vlistData[index].size(); ++i) {
         const ScheduleDtailInfo &info = m_vlistData[index].at(i);
-
         QRect drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
         drawrect.setY(3 + (itemHeight + 1)*index);
         drawrect.setHeight(itemHeight);
@@ -511,7 +509,7 @@ CAllDayEventWeekView::PosInItem CAllDayEventWeekView::getPosInItem(const QPoint 
     QPointF scenePos = this->mapToScene(p);
     QPointF itemPos = QPointF(scenePos.x()-itemRect.x(),
                               scenePos.y()-itemRect.y());
-    int bottomy = itemRect.width()- itemPos.x();
+    double bottomy = itemRect.width()- itemPos.x();
     if (itemPos.x()<5) {
         return LEFT;
     }

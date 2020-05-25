@@ -40,15 +40,15 @@
 #include <QTimer>
 DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
-    : DGraphicsView(parent),
-      m_viewType(viewType),
-      m_rightMenu(new DMenu(this))
+    : DragInfoGraphicsView(parent),
+      m_viewType(viewType)
 {
-    setContentsMargins(0, 0, 0, 0);
-    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    setAlignment(Qt::AlignLeft | Qt::AlignTop);
     m_coorManage = new CScheduleCoorManage;
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_dayInterval = width();
+    m_timeInterval = height() / 24.0;
 
+    m_Scene->setSceneRect(0, 0, width(), height());
     m_LRPen.setColor(QColor(255, 255, 255));
     m_LRPen.setStyle(Qt::SolidLine);
     m_TBPen.setColor(QColor(255, 255, 255));
@@ -56,15 +56,6 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     m_LRFlag = true;
     m_TBFlag = true;
     m_margins = QMargins(0, 0, 0, 0);
-
-//    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_graphicsScene = new QGraphicsScene(this);
-    m_graphicsScene->setSceneRect(0, 0, width(), height());
-    setScene(m_graphicsScene);
-
-    m_dayInterval = width();
-    m_timeInterval = height() / 24.0;
 
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();
@@ -77,12 +68,6 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     scrollBarValueChangedSlot();
 
-    m_editAction = new QAction(tr("Edit"), this);
-    m_deleteAction = new QAction(tr("Delete"), this);
-    m_createAction = new QAction(tr("New event"), this);
-    setMouseTracking(true);
-    viewport()->setMouseTracking(true);
-
     setLineWidth(0);
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(scrollBarValueChangedSlot()));
@@ -94,8 +79,6 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
             &QScrollBar::sliderPressed,
             this,
             &CGraphicsView::slotScrollBar);
-
-    m_Drag = new QDrag(this);
 }
 
 CGraphicsView::~CGraphicsView()
@@ -138,6 +121,22 @@ void CGraphicsView::setTheMe(int type)
     update();
 }
 
+void CGraphicsView::slotCreate(const QDateTime &date)
+{
+    emit signalViewtransparentFrame(1);
+    CSchceduleDlg dlg(1, this);
+    dlg.setDate(date);
+    if (dlg.exec() == DDialog::Accepted) {
+        emit signalsUpdateShcedule();
+    }
+    emit signalViewtransparentFrame(0);
+}
+
+bool CGraphicsView::MeetCreationConditions(const QDateTime &date)
+{
+    return  qAbs(date.daysTo(m_PressDate)<7);
+}
+
 void CGraphicsView::updateHigh()
 {
     scene()->update();
@@ -149,7 +148,7 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int 
     m_beginDate = begindate;
     m_endDate = enddate;
     w = w - rightmagin;
-    m_graphicsScene->setSceneRect(0, 0, w, h);
+    m_Scene->setSceneRect(0, 0, w, h);
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
     m_rightmagin = rightmagin;
     int totalDay = begindate.daysTo(enddate) + 1;
@@ -294,13 +293,36 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
 
 }
 
+QDateTime CGraphicsView::getPosDate(const QPoint &p)
+{
+    return TimeRounding(m_coorManage->getDate(mapToScene(p)));
+}
+
+void CGraphicsView::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &pos)
+{
+    Q_UNUSED(pos);
+    if (!info.allday) {
+        qint64 offset = m_PressDate.secsTo(m_MoveDate);
+        info.beginDateTime = info.beginDateTime.addSecs(offset);
+        info.endDateTime    = info.endDateTime.addSecs(offset);
+    } else {
+        info.allday = false;
+        info.remind = false;
+        info.beginDateTime = m_MoveDate;
+        info.endDateTime = m_MoveDate.addSecs(3600);
+    }
+    info.IsMoveInfo = true;
+    upDateInfoShow(ChangeWhole,info);
+}
+
 void CGraphicsView::addSchduleItem( const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
 {
-    CScheduleItem *item = new CScheduleItem(m_coorManage, nullptr, m_graphicsScene, type);
-    item->setData(info, date, index, totalNum, viewtype, maxnum);
-    //用于修改联动bug
-    connect(item, &CScheduleItem::signalsHoverUpdateState, this, &CGraphicsView::slotHoverUpdateState);
-    connect(item, &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
+    CScheduleItem *item = new CScheduleItem(
+        m_coorManage->getDrawRegion(date, info.beginDateTime,
+                                    info.endDateTime, index, totalNum, maxnum,
+                                    viewtype), nullptr, type);
+    m_Scene->addItem(item);
+    item->setData(info, date,  totalNum);
     m_vScheduleItem.append(item);
 
 }
@@ -310,11 +332,8 @@ void CGraphicsView::deleteSchduleItem( CScheduleItem *item )
     int id = item->getData().id;
     for (int i = 0; i < m_vScheduleItem.size(); i++) {
         if (m_vScheduleItem[i]->getData().id == id) {
-            disconnect(item, &CScheduleItem::signalsHoverUpdateState, this, &CGraphicsView::slotHoverUpdateState);
-            disconnect(item, &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
-
             m_vScheduleItem.remove(i);
-            m_graphicsScene->removeItem(item);
+            m_Scene->removeItem(item);
             delete m_vScheduleItem[i];
             m_vScheduleItem[i] = nullptr;
             i--;
@@ -340,9 +359,7 @@ void CGraphicsView::setSelectSchedule(const ScheduleDtailInfo &info)
 void CGraphicsView::clearSchdule()
 {
     for (int i = 0; i < m_vScheduleItem.size(); i++) {
-        disconnect(m_vScheduleItem.at(i), &CScheduleItem::signalsHoverUpdateState, this, &CGraphicsView::slotHoverUpdateState);
-        disconnect(m_vScheduleItem.at(i), &CScheduleItem::signalsSelectUpdateState, this, &CGraphicsView::slotSelectUpdateState);
-        m_graphicsScene->removeItem(m_vScheduleItem.at(i));
+        m_Scene->removeItem(m_vScheduleItem.at(i));
         delete m_vScheduleItem[i];
         m_vScheduleItem[i] = nullptr;
     }
@@ -400,202 +417,6 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
     }
 }
 
-void CGraphicsView::updateschedule()
-{
-
-}
-
-///************************************************************************
-//Function:       onViewEvent()
-//Description:    执行父类事件
-//Input:          event 事件
-//Output:         无
-//Return:         无
-//Others:         无
-//************************************************************************/
-//void CGraphicsView::onViewEvent( QEvent *event )
-//{
-//    //防止为空
-//    if (nullptr == event)
-//        return;
-//    switch (event->type()) {
-//    case QEvent::MouseButtonPress: {
-//        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::mousePressEvent(t_event);
-//    }
-//    break;
-//    case QEvent::MouseMove: {
-//        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::mouseMoveEvent(t_event);
-//    }
-//    break;
-//    case QEvent::MouseButtonRelease: {
-//        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::mouseReleaseEvent(t_event);
-//    }
-//    break;
-//    case QEvent::MouseButtonDblClick: {
-//        QMouseEvent *t_event = dynamic_cast<QMouseEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::mouseDoubleClickEvent(t_event);
-//    }
-//    break;
-//    case QEvent::Wheel: {
-//        QWheelEvent *t_event = dynamic_cast<QWheelEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::wheelEvent(t_event);
-//    }
-//    break;
-//    case QEvent::KeyPress: {
-//        QKeyEvent *t_event = dynamic_cast<QKeyEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::keyPressEvent(t_event);
-//    }
-//    break;
-//    case QEvent::KeyRelease: {
-//        QKeyEvent *t_event = dynamic_cast<QKeyEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::keyReleaseEvent(t_event);
-//    }
-//    break;
-//    case QEvent::FocusIn: {
-//        QFocusEvent *t_event = dynamic_cast<QFocusEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::focusInEvent(t_event);
-//    }
-//    break;
-//    case QEvent::FocusOut: {
-//        QFocusEvent *t_event = dynamic_cast<QFocusEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::focusOutEvent(t_event);
-//    }
-//    break;
-//    case QEvent::Enter: {
-//        QGraphicsView::enterEvent(event);
-//    }
-//    break;
-//    case QEvent::Leave: {
-//        QGraphicsView::leaveEvent(event);
-//    }
-//    break;
-//    case QEvent::ContextMenu: {
-//        QContextMenuEvent *t_event = dynamic_cast<QContextMenuEvent *>(event);
-//        if (nullptr != t_event)
-//            QGraphicsView::contextMenuEvent(t_event);
-//    }
-//    break;
-//    default:
-//        break;
-//    }
-//}
-
-/************************************************************************
-Function:       mousePressEvent()
-Description:    鼠标按下事件
-Input:          event 鼠标事件
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::mousePressEvent( QMouseEvent *event )
-{
-    emit signalScheduleShow(false);
-    setPressSelectInfo(ScheduleDtailInfo());
-    if (event->button() == Qt::RightButton) {
-        m_press = false;
-        m_DragStatus =NONE;
-        CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
-        if (item == nullptr) {
-            m_rightMenu->clear();
-            m_rightMenu->addAction(m_createAction);
-            QAction *action_t = m_rightMenu->exec(QCursor::pos());
-            if (action_t == m_createAction) {
-                QPointF senceposs = mapToScene(event->pos());
-                emit signalViewtransparentFrame(1);
-                CSchceduleDlg dlg(1, this);
-                QDateTime tDatatime = m_coorManage->getDate(senceposs);
-                dlg.setDate(tDatatime);
-                if (dlg.exec() == DDialog::Accepted) {
-                    emit signalsUpdateShcedule(0);
-                }
-                emit signalViewtransparentFrame(0);
-            }
-        } else {
-            if (item->getType() == 1) return;
-            m_rightMenu->clear();
-            m_rightMenu->addAction(m_editAction);
-            m_rightMenu->addAction(m_deleteAction);
-            QAction *action_t = m_rightMenu->exec(QCursor::pos());
-            if (action_t == m_editAction) {
-                emit signalViewtransparentFrame(1);
-                CSchceduleDlg dlg(0, this, false);
-                dlg.setData(item->getData());
-                if (dlg.exec() == DDialog::Accepted) {
-                    emit signalsUpdateShcedule(0);
-                }
-                emit signalViewtransparentFrame(0);
-            } else if (action_t == m_deleteAction) {
-                DeleteItem(item->getData());
-            }
-        }
-    } else if (event->button() == Qt::LeftButton) {
-//        QPoint p = event->pos();
-//        QPointF scenePos = this->mapToScene(p);
-        CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
-        if (item != nullptr) {
-            if (item->getType() == 1)
-                return;
-            item->setSelectState(true);
-
-            setPressSelectInfo(item->getData());
-            m_press = true;
-
-            emit signalScheduleShow(true, item->getData());
-        }
-        DragPressEvent(event->pos(),item);
-    }
-    DGraphicsView::mousePressEvent(event);
-}
-
-void CGraphicsView::mouseReleaseEvent( QMouseEvent *event )
-{
-    DGraphicsView::mouseReleaseEvent(event);
-    m_press = false;
-
-    switch (m_DragStatus) {
-    case IsCreate:
-        if (qAbs(m_MoveDate.daysTo(m_PressDate)<7)) {
-            CSchceduleDlg dlg(1, this);
-            dlg.setData(m_DragScheduleInfo);
-            if (dlg.exec() == DDialog::Accepted) {
-            }
-            emit signalsUpdateShcedule(0);
-        }
-        break;
-    case ChangeBegin:
-        if (m_MoveDate != m_InfoBeginTime) {
-            updateScheduleInfo(m_DragScheduleInfo);
-        }
-        emit signalsUpdateShcedule(0);
-        break;
-    case ChangeEnd:
-        if (m_MoveDate != m_InfoEndTime) {
-            updateScheduleInfo(m_DragScheduleInfo);
-        }
-        emit signalsUpdateShcedule(0);
-        break;
-    default:
-        break;
-    }
-    m_DragStatus = NONE;
-    update();
-    emit signalSceneUpdate();
-}
-
-
 
 void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
 {
@@ -609,7 +430,7 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
         QDateTime tDatatime = m_coorManage->getDate(senceposs);
         dlg.setDate(tDatatime);
         if (dlg.exec() == DDialog::Accepted) {
-            emit signalsUpdateShcedule(0);
+            emit signalsUpdateShcedule();
         }
         emit signalViewtransparentFrame(0);
         return;
@@ -629,13 +450,11 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     if (item == nullptr) {
         return;
     }
-    if (!m_updateDflag)
-        item->updateitem();
 }
 void CGraphicsView::slotDoubleEvent(int type)
 {
     m_updateDflag  = true;
-    emit signalsUpdateShcedule(0);
+    emit signalsUpdateShcedule();
 }
 
 void CGraphicsView::slotDeleteItem()
@@ -649,34 +468,6 @@ void CGraphicsView::slotDeleteItem()
     CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
 }
 
-void CGraphicsView::slotHoverUpdateState(CScheduleItem *item, int state)
-{
-    if (item == nullptr) return;
-    if (item->getType() == 1) return;
-    ScheduleDtailInfo baseinfo = item->getData();
-    for (int i = 0; i < m_vScheduleItem.size(); i++) {
-        if (item == m_vScheduleItem.at(i)) continue;
-        ScheduleDtailInfo info = m_vScheduleItem.at(i)->getData();
-        if (baseinfo.id == info.id && baseinfo.RecurID == info.RecurID) {
-            if (m_vScheduleItem.at(i)->getType() == 1) continue;
-            m_vScheduleItem.at(i)->UpdateHoverState(state);
-        }
-    }
-}
-
-void CGraphicsView::slotSelectUpdateState(CScheduleItem *item, int state)
-{
-    if (item == nullptr) return;
-    ScheduleDtailInfo baseinfo = item->getData();
-    for (int i = 0; i < m_vScheduleItem.size(); i++) {
-        if (item == m_vScheduleItem.at(i)) continue;
-        ScheduleDtailInfo info = m_vScheduleItem.at(i)->getData();
-        if (baseinfo.id == info.id && baseinfo.RecurID == info.RecurID) {
-            if (m_vScheduleItem.at(i)->getType() == 1) continue;
-            m_vScheduleItem.at(i)->UpdateSelectState(state);
-        }
-    }
-}
 
 void CGraphicsView::slotScrollBar()
 {
@@ -686,92 +477,6 @@ void CGraphicsView::slotScrollBar()
 void CGraphicsView::slotUpdateScene()
 {
     this->scene()->update();
-}
-
-void CGraphicsView::mouseMoveEvent( QMouseEvent *event )
-{
-    if (m_press) {
-        emit signalScheduleShow(false);
-        m_press = false;
-    }
-    CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
-
-    if (item != nullptr) {
-        if (item->getData().type.ID != 4) {
-            if (m_DragStatus == NONE) {
-                switch (getPosInItem(event->pos(),item->boundingRect())) {
-                case TOP:
-                case BOTTOM:
-                    setCursor(Qt::SplitVCursor);
-                    break;
-                default:
-                    setCursor(Qt::ArrowCursor);
-                    break;
-                }
-            }
-        }
-
-    } else {
-        if (m_DragStatus == NONE) {
-            setCursor(Qt::ArrowCursor);
-        }
-    }
-    QDateTime gDate =  m_coorManage->getDate(mapToScene(event->pos()));
-    gDate = TimeRounding(gDate);
-    switch (m_DragStatus) {
-    case IsCreate:
-        if (qAbs(event->pos().x()-m_PressPos.x())>20 ||qAbs(m_PressDate.secsTo(gDate))>300) {
-            m_isCreate = true;
-        }
-        if (m_isCreate) {
-            if (m_MoveDate !=gDate) {
-                m_MoveDate = gDate;
-                m_DragScheduleInfo = getScheduleInfo(m_PressDate,m_MoveDate);
-                upDateInfoShow(IsCreate,getScheduleInfo(m_PressDate,m_MoveDate));
-                setPressSelectInfo(m_DragScheduleInfo);
-            }
-        }
-        break;
-    case ChangeBegin:
-        if (qAbs(m_MoveDate.secsTo(gDate))>100) {
-            m_MoveDate = gDate;
-            if (m_MoveDate.secsTo(m_InfoEndTime)<1800) {
-                m_DragScheduleInfo.beginDateTime = m_InfoEndTime.addSecs(-1800);
-            } else {
-                m_DragScheduleInfo.beginDateTime = m_MoveDate;
-            }
-            m_DragScheduleInfo.endDateTime = m_InfoEndTime;
-            upDateInfoShow(ChangeBegin,m_DragScheduleInfo);
-        }
-        break;
-    case ChangeEnd:
-        if (qAbs(m_MoveDate.secsTo(gDate))>100) {
-            m_MoveDate = gDate;
-            if (m_InfoBeginTime.secsTo(m_MoveDate)<1800) {
-                m_DragScheduleInfo.endDateTime = m_InfoBeginTime.addSecs(1800);
-            } else {
-                m_DragScheduleInfo.endDateTime = m_MoveDate;
-            }
-            m_DragScheduleInfo.beginDateTime =m_InfoBeginTime;
-            upDateInfoShow(ChangeEnd,m_DragScheduleInfo);
-        }
-        break;
-    case ChangeWhole: {
-        Qt::DropAction dropAciton = m_Drag->exec( Qt::MoveAction);
-        Q_UNUSED(dropAciton);
-        m_Drag = nullptr;
-        m_DragStatus = NONE;
-        m_DragScheduleInfo.IsMoveInfo = false;
-        setPressSelectInfo(m_DragScheduleInfo);
-        emit signalsUpdateShcedule(0);
-    }
-    break;
-
-    default:
-        break;
-    }
-
-    DGraphicsView::mouseMoveEvent(event);
 }
 
 #ifndef QT_NO_WHEELEVENT
@@ -847,31 +552,31 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     //t_painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
     int t_width = viewport()->width()  + 2;
     int t_height = viewport()->height();
-    //绘制垂直线
-    if (m_TBFlag) {
-        t_painter.save();
-        t_painter.setPen(m_TBPen);
-        for (int i = 0; i < m_vTBLarge.size(); ++i)
-            t_painter.drawLine(QPoint(m_vTBLarge[i] - 1, 0), QPoint(m_vTBLarge[i] - 1, t_height));
-        t_painter.restore();
-        if (m_totalDay == 7) {
-            t_painter.save();
-            for (int i = 0; i != 7; ++i) {
+//    //绘制垂直线
+//    if (m_TBFlag) {
+//        t_painter.save();
+//        t_painter.setPen(m_TBPen);
+//        for (int i = 0; i < m_vTBLarge.size(); ++i)
+//            t_painter.drawLine(QPoint(m_vTBLarge[i] - 1, 0), QPoint(m_vTBLarge[i] - 1, t_height));
+//        t_painter.restore();
+//        if (m_totalDay == 7) {
+//            t_painter.save();
+//            for (int i = 0; i != 7; ++i) {
 
-                int d = checkDay(i - m_firstWeekDay);
+//                int d = checkDay(i - m_firstWeekDay);
 
-                t_painter.setBrush(QBrush(m_weekcolor));
-                t_painter.setPen(Qt::NoPen);
-                if ( d == 7) {
-                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 0, t_height));
-                }
-                if (d == 6 ) {
-                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 5, t_height));
-                }
-            }
-            t_painter.restore();
-        }
-    }
+////                t_painter.setBrush(QBrush(m_weekcolor));
+////                t_painter.setPen(Qt::NoPen);
+////                if ( d == 7) {
+////                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 0, t_height));
+////                }
+////                if (d == 6 ) {
+////                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 5, t_height));
+////                }
+//            }
+//            t_painter.restore();
+//        }
+//    }
     //绘制水平线
     if (m_LRFlag) {
         if (m_cuttrnttimetype == 0) {
@@ -901,89 +606,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     QGraphicsView::paintEvent(event);
 }
 
-void CGraphicsView::dragEnterEvent(QDragEnterEvent *event)
-{
-    if (event->mimeData()->hasFormat("Info")) {
-        if (event->source() !=this) {
-            QJsonParseError json_error;
-            QString str = event->mimeData()->data("Info");
-            QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
 
-            if (json_error.error != QJsonParseError::NoError) {
-                event->ignore();
-            }
-            QJsonObject rootobj = jsonDoc.object();
-            ScheduleDtailInfo info =
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
-            if (info.rpeat>0) {
-                event->ignore();
-            } else {
-                event->accept();
-            }
-        } else {
-            event->accept();
-        }
-
-    } else {
-        event->ignore();
-    }
-}
-
-void CGraphicsView::dragLeaveEvent(QDragLeaveEvent *event)
-{
-    upDateInfoShow();
-    m_MoveDate = m_MoveDate.addMonths(2);
-}
-
-void CGraphicsView::dragMoveEvent(QDragMoveEvent *event)
-{
-    QString str = event->mimeData()->data("Info");
-    QDateTime gDate =  m_coorManage->getDate(mapToScene(event->pos()));
-    gDate = TimeRounding(gDate);
-    QJsonParseError json_error;
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
-
-    if (json_error.error != QJsonParseError::NoError) {
-        return;
-    }
-
-    if (m_MoveDate !=gDate) {
-        m_MoveDate = gDate;
-        QJsonObject rootobj = jsonDoc.object();
-        m_DragScheduleInfo =
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
-        if (!m_DragScheduleInfo.allday) {
-            qint64 offset = m_PressDate.secsTo(m_MoveDate);
-            m_DragScheduleInfo.beginDateTime = m_DragScheduleInfo.beginDateTime.addSecs(offset);
-            m_DragScheduleInfo.endDateTime    = m_DragScheduleInfo.endDateTime.addSecs(offset);
-        } else {
-            m_DragScheduleInfo.allday = false;
-            m_DragScheduleInfo.remind = false;
-//            if (m_DragScheduleInfo.remind) {
-////                m_DragScheduleInfo.remindData.time = QTime(9, 0);
-//                m_DragScheduleInfo.remindData.n = 15;
-//            }
-            m_DragScheduleInfo.beginDateTime = m_MoveDate;
-            m_DragScheduleInfo.endDateTime = m_MoveDate.addSecs(3600);
-        }
-        m_DragScheduleInfo.IsMoveInfo = true;
-        upDateInfoShow(ChangeWhole,m_DragScheduleInfo);
-        setPressSelectInfo(m_DragScheduleInfo);
-    }
-}
-
-void CGraphicsView::dropEvent(QDropEvent *event)
-{
-    if (event->mimeData()->hasFormat("Info")) {
-        if ( event->source() !=this ||m_MoveDate !=m_PressDate) {
-            updateScheduleInfo(m_DragScheduleInfo);
-        } else {
-            emit signalsUpdateShcedule(0);
-        }
-        m_DragStatus = NONE;
-        m_MoveDate = m_MoveDate.addMonths(2);
-    }
-}
 
 void CGraphicsView::scrollBarValueChangedSlot()
 {
@@ -1041,56 +664,13 @@ int CGraphicsView::checkDay(int weekday)
     return weekday;
 }
 
-void CGraphicsView::DragPressEvent(const QPoint &pos, const CScheduleItem *item)
-{
-    m_PressPos = pos;
-    m_PressDate = m_coorManage->getDate(mapToScene(pos));
-    m_PressDate = TimeRounding(m_PressDate);
-
-    m_MoveDate = m_PressDate.addMonths(-2);
-    if (item != nullptr) {
-        if (item->getData().type.ID == 4)
-            return;
-        m_DragScheduleInfo = item->getData();
-        m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
-        m_InfoEndTime = m_DragScheduleInfo.endDateTime;
-        switch (getPosInItem(pos,item->boundingRect())) {
-        case TOP:
-            m_DragStatus = ChangeBegin;
-            setCursor(Qt::SplitVCursor);
-            break;
-        case BOTTOM:
-            m_DragStatus = ChangeEnd;
-            setCursor(Qt::SplitVCursor);
-            break;
-        default:
-            m_DragStatus = ChangeWhole;
-            QMimeData *mimeData = new QMimeData();
-            mimeData->setText(m_DragScheduleInfo.titleName);
-            mimeData->setData("Info",
-                              CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->InfoToJson(m_DragScheduleInfo).toUtf8());
-
-            if (m_Drag ==nullptr) {
-                m_Drag = new QDrag(this);
-            }
-            m_Drag->setMimeData(mimeData);
-            QPointF itemPos = QPointF(pos.x()-item->boundingRect().x(),
-                                      pos.y()-item->boundingRect().y());
-            m_Drag->setHotSpot(itemPos.toPoint());
-            break;
-        }
-    } else {
-        m_DragStatus = IsCreate;
-        m_isCreate = false;
-    }
-}
 
 CGraphicsView::PosInItem CGraphicsView::getPosInItem(const QPoint &p, const QRectF &itemRect)
 {
     QPointF scenePos = this->mapToScene(p);
     QPointF itemPos = QPointF(scenePos.x()-itemRect.x(),
                               scenePos.y()-itemRect.y());
-    int bottomy = itemRect.height()- itemPos.y();
+    qreal bottomy = itemRect.height()- itemPos.y();
     if (itemPos.y()<5) {
         return TOP;
     }
@@ -1132,11 +712,40 @@ ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, con
     return info;
 }
 
-void CGraphicsView::updateScheduleInfo(const ScheduleDtailInfo &info)
+bool CGraphicsView::IsEqualtime(const QDateTime &timeFirst, const QDateTime &timeSecond)
 {
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
-        info);
-    emit signalsUpdateShcedule(0);
+    return !(qAbs(timeFirst.secsTo(timeSecond))>100);
+//    return  timeFirst ==timeSecond;
+}
+
+bool CGraphicsView::JudgeIsCreate(const QPointF &pos)
+{
+    return qAbs(pos.x()-m_PressPos.x())>20 ||
+           qAbs(m_PressDate.secsTo(m_coorManage->getDate(mapToScene(pos.toPoint()))))>300;
+}
+
+void CGraphicsView::RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos)
+{
+    Q_UNUSED(listItem);
+    m_rightMenu->clear();
+    m_rightMenu->addAction(m_createAction);
+    QPointF senceposs = mapToScene(pos);
+    m_createDate =m_coorManage->getDate(senceposs);
+    m_rightMenu->exec(QCursor::pos());
+}
+
+QDateTime CGraphicsView::getDragScheduleInfoBeginTime(const QDateTime &moveDateTime)
+{
+    return moveDateTime.secsTo(m_InfoEndTime)<1800?
+           m_InfoEndTime.addSecs(-1800):
+           moveDateTime;
+}
+
+QDateTime CGraphicsView::getDragScheduleInfoEndTime(const QDateTime &moveDateTime)
+{
+    return m_InfoBeginTime.secsTo(moveDateTime)<1800 ?
+           m_InfoBeginTime.addSecs(1800):
+           moveDateTime;
 }
 
 QDateTime CGraphicsView::TimeRounding(const QDateTime &time)
@@ -1148,115 +757,6 @@ QDateTime CGraphicsView::TimeRounding(const QDateTime &time)
     return QDateTime(time.date(),QTime(hours,minnutes*15,0));
 }
 
-void CGraphicsView::setPressSelectInfo(const ScheduleDtailInfo &info)
-{
-    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(info);
-}
-
-void CGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
-{
-    emit signalViewtransparentFrame(1);
-    if (info.rpeat == 0) {
-        CSchceduleCtrlDlg msgBox(this);
-        msgBox.setText(tr("You are deleting an event."));
-        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-        DPushButton *yesButton = msgBox.addPushButton(tr("Delete"), 1);
-        msgBox.updatesize();
-        DPalette pa = yesButton->palette();
-        if (m_themetype == 0 || m_themetype == 1) {
-            pa.setColor(DPalette::ButtonText, Qt::red);
-
-        } else {
-            pa.setColor(DPalette::ButtonText, "#FF5736");
-
-        }
-        yesButton->setPalette(pa);
-        msgBox.exec();
-
-        if (msgBox.clickButton() == noButton) {
-            emit signalViewtransparentFrame(0);
-            return;
-        } else if (msgBox.clickButton() == yesButton) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
-        }
-    } else {
-        if (info.RecurID == 0) {
-            CSchceduleCtrlDlg msgBox(this);
-            msgBox.setText(tr("You are deleting an event."));
-            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All"));
-            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
-            msgBox.updatesize();
-            DPalette pa = yesButton->palette();
-            if (m_themetype == 0 || m_themetype == 1) {
-                pa.setColor(DPalette::ButtonText, Qt::white);
-                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-                pa.setColor(DPalette::Light, QColor("#0098FF"));
-            } else {
-                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-                pa.setColor(DPalette::Light, QColor("#004C9C"));
-            }
-            yesButton->setPalette(pa);
-            msgBox.exec();
-
-            if (msgBox.clickButton() == noButton) {
-                emit signalViewtransparentFrame(0);
-                return;
-            } else if (msgBox.clickButton() == yesallbutton) {
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
-            } else if (msgBox.clickButton() == yesButton) {
-
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.ignore.append(info.beginDateTime);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            }
-        } else {
-            CSchceduleCtrlDlg msgBox(this);
-            msgBox.setText(tr("You are deleting an event."));
-            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            DPushButton *noButton = msgBox.addPushButton(tr("Cancel"));
-            DPushButton *yesallbutton = msgBox.addPushButton(tr("Delete All Future Events"));
-            DPushButton *yesButton = msgBox.addPushButton(tr("Delete Only This Event"));
-            msgBox.updatesize();
-            DPalette pa = yesButton->palette();
-            if (m_themetype == 0 || m_themetype == 1) {
-                pa.setColor(DPalette::ButtonText, Qt::white);
-                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-                pa.setColor(DPalette::Light, QColor("#0098FF"));
-            } else {
-                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-                pa.setColor(DPalette::Light, QColor("#004C9C"));
-            }
-            yesButton->setPalette(pa);
-            msgBox.exec();
-
-            if (msgBox.clickButton() == noButton) {
-                emit signalViewtransparentFrame(0);
-                return;
-            } else if (msgBox.clickButton() == yesallbutton) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.enddata.type = 2;
-                newschedule.enddata.date = info.beginDateTime.addDays(-1);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-
-            } else if (msgBox.clickButton() == yesButton) {
-
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.ignore.append(info.beginDateTime);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            }
-        }
-    }
-    emit signalsUpdateShcedule(info.id);
-    emit signalViewtransparentFrame(0);
-}
 
 /************************************************************************
 Function:       setLargeScaleInfo()
@@ -1306,4 +806,9 @@ void CGraphicsView::setTime(QTime time)
     // scene 在 view 的中心点作为锚点
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     scrollBarValueChangedSlot();
+}
+
+void CGraphicsView::updateInfo()
+{
+    upDateInfoShow();
 }

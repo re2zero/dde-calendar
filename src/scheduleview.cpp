@@ -143,8 +143,7 @@ void CScheduleView::updateHigh()
 void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
 {
     updateAllday();
-    m_graphicsView->upDateInfoShow();
-
+    m_graphicsView->updateInfo();
     m_graphicsView->update();
     m_graphicsView->scene()->update();
     if (m_viewType == 1) {
@@ -221,9 +220,8 @@ void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cut
 
 void CScheduleView::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
     QPainter painter(this);
-    QFont font;
-//    font.setFamily("SourceHanSansSC");
     font.setWeight(QFont::Normal);
     font.setPixelSize(11);
     if (m_vPos.isEmpty())
@@ -243,17 +241,6 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     continue;
                 if (m_topMagin - 8 + m_vPos[i] < m_topMagin)
                     continue;
-//                if (m_vHours[i] > 12) {
-//                    painter.drawText(
-//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-//                              hourTextWidth, hourTextHeight),
-//                        Qt::AlignRight, ("下午 ") + QString::number(m_vHours[i] - 12) + (" 时"));
-//                } else {
-//                    painter.drawText(
-//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-//                              hourTextWidth, hourTextHeight),
-//                        Qt::AlignRight, ("上午 ") + QString::number(m_vHours[i]) + (" 时"));
-//                }
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth, hourTextHeight),
@@ -277,17 +264,6 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                         m_beginDate == QDate::currentDate()) {
                     continue;
                 }
-//                if (m_vHours[i] > 12) {
-//                    painter.drawText(
-//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-//                              hourTextWidth, hourTextHeight),
-//                        Qt::AlignRight, ("下午 ") + QString::number(m_vHours[i] - 12) + (" 时"));
-//                } else {
-//                    painter.drawText(
-//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-//                              hourTextWidth, hourTextHeight),
-//                        Qt::AlignRight, ("上午 ") + QString::number(m_vHours[i]) + (" 时"));
-//                }
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth, hourTextHeight),
@@ -319,17 +295,6 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     continue;
                 if (m_topMagin - 8 + m_vPos[i] < m_topMagin)
                     continue;
-//                if (m_vHours[i] > 12) {
-//                    painter.drawText(
-//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-//                              hourTextWidth, hourTextHeight),
-//                        Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
-//                } else {
-//                    painter.drawText(
-//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-//                              hourTextWidth, hourTextHeight),
-//                        Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
-//                }
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth + 2, hourTextHeight),
@@ -356,17 +321,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 if (rr.intersects(tinrect) && m_viewType == 1 &&
                         m_beginDate == QDate::currentDate())
                     continue;
-//                if (m_vHours[i] > 12) {
-//                    painter.drawText(
-//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-//                              hourTextWidth, hourTextHeight),
-//                        Qt::AlignRight, ("PM ") + QTime(m_vHours[i] - 12, 0).toString("hh:mm"));
-//                } else {
-//                    painter.drawText(
-//                        QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
-//                              hourTextWidth, hourTextHeight),
-//                        Qt::AlignRight, ("AM ") + QTime(m_vHours[i], 0).toString("hh:mm"));
-//                }
+
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth + 2, hourTextHeight),
@@ -398,15 +353,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.setPen(m_ALLDayColor);
     painter.drawText(QRect(0, 0, m_leftMagin - 2, m_topMagin - 2), Qt::AlignCenter, tr("ALL DAY"));
     painter.restore();
-
-    // painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
     int t_width = width();
-//    int t_height = height();
-//    painter.save();
-//    painter.setPen(Qt::SolidLine);
-//    painter.setPen(m_linecolor);
-//    painter.drawLine(QPoint(0, m_topMagin), QPoint(t_width, m_topMagin));
-//    painter.restore();
     float intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
     if (m_TotalDay > 1) {
         painter.save();
@@ -415,13 +362,9 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
         for (float i = intenval; i < width() - m_leftMagin; i = i + intenval) {
             painter.drawLine(QPoint(i + m_leftMagin + 1, 1),
-                             QPoint(i + m_leftMagin + 1, m_topMagin + 1));
+                             QPoint(i + m_leftMagin + 1, this->height() + 1));
         }
 
-        // for (int i = 1; i < m_TotalDay; i++) {
-        //   painter.drawLine(QPoint(m_leftMagin + i * intenval + 1, 1), QPoint(m_leftMagin  + i *
-        //   intenval + 1, m_topMagin + 1));
-        //}
         painter.restore();
         painter.save();
         for (int i = 0; i != 7; ++i) {

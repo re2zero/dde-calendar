@@ -52,7 +52,8 @@ protected:
     QPropertyAnimation                  *m_properAnimationFirst;
     QPropertyAnimation                  *m_properAnimationSecond;
     QSequentialAnimationGroup           *m_Group;
-    static bool                          m_press;
+    static bool                         m_press;
+    static ScheduleDtailInfo            m_HoverInfo;
 };
 
 #endif // DRAGINFOITEM_H

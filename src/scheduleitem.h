@@ -23,18 +23,17 @@
 #include <QDateTime>
 #include <QRectF>
 #include <QPainterPath>
+
 #include "schedulestructs.h"
-class QPropertyAnimation;
-class QSequentialAnimationGroup;
+#include "draginfoitem.h"
 class CScheduleCoorManage;
-class CScheduleItem :  public QObject, public QGraphicsItem
+class CScheduleItem :  public DragInfoItem
 {
     Q_OBJECT
-    Q_PROPERTY(int offset WRITE setOffset)
 public:
-    CScheduleItem(CScheduleCoorManage *coor, QGraphicsItem *parent = nullptr, QGraphicsScene *scene = nullptr, int type = 0);
+    CScheduleItem(QRect rect,QGraphicsItem *parent = nullptr, int type = 0);
     ~CScheduleItem() Q_DECL_OVERRIDE;
-    void setData(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int viewtype, int maxnum);
+    void setData(const ScheduleDtailInfo &info, QDate date,  int totalNum);
     bool hasSelectSchedule(const ScheduleDtailInfo &info);
     int getType()
     {
@@ -42,82 +41,22 @@ public:
     }
     ScheduleDtailInfo getData() const
     {
-        return m_scheduleInfo;
+        return m_vScheduleInfo;
     }
-    QDate getdate()
+    QDate getdate()const
     {
-        return  m_date;
+        return m_date;
     }
-    int getviewtype()
-    {
-        return  m_viewtype;
-    }
-    int getindex()
-    {
-        return m_index;
-    }
-    int gettotalNum()
-    {
-        return  m_totalNum;
-    }
-    int getmaxNum()
-    {
-        return m_sMaxNum;
-    }
-    /*****************************************************************************
-    Function:       boundingRect()
-    Description:     获取边界矩形
-    Input:              无
-    Output:             无
-    Return:             边界矩形
-    Others:             无
-    *******************************************************************************/
-    QRectF boundingRect() const Q_DECL_OVERRIDE;
-    QPainterPath shape () const Q_DECL_OVERRIDE;
-    void updateitem();
-    void UpdateHoverState(int state);
-    void UpdateSelectState(int state);
-    void setSelectState(const bool state);
-    void setOffset(const int size);
-    void setStartValue(const int value);
-    void setEndValue(const int value);
-    void startAnimation();
-signals:
-    void signalsHoverUpdateState(CScheduleItem *item, int state);
-    void signalsSelectUpdateState(CScheduleItem *item, int state);
-protected:
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    void focusOutEvent ( QFocusEvent *event ) Q_DECL_OVERRIDE;
 private:
-    /*****************************************************************************
-    Function:       paint()
-    Description:    绘制
-    Input:              painter 绘制工具，option 绘制参数，widget 窗口
-    Output:             无
-    Return:             无
-    Others:             无
-    *******************************************************************************/
-    void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr )Q_DECL_OVERRIDE;
     void splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm);
 private:
-    ScheduleDtailInfo                   m_scheduleInfo;
-    CScheduleCoorManage                 *m_coorManage;
+    void paintBackground(QPainter *painter,const QRectF &rect,const int isPixMap = false) override;
+private:
     QDate                               m_date;
-    QColor                              m_color;
     int                                 m_type = 0;
-    int                                 m_viewtype;
-    int                                 m_index;
     int                                 m_totalNum;
-    int                                 m_sMaxNum;
-    bool                                m_selectflag = false;
-    bool                                m_hoverflag = false;
-    bool                                m_highflag = false;
     QColor                              m_transparentcolor;
-    int                                 m_offset = 0;
-    QPropertyAnimation                  *m_properAnimationFirst;
-    QPropertyAnimation                  *m_properANimationSecond;
-    QSequentialAnimationGroup           *m_Group;
+
 };
 
 #endif // SCHEDULEITEM_H
