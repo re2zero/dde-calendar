@@ -50,50 +50,6 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <source>Edit</source>
-        <translation>Modifier</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Supprimer</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Nouvel événement</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Vous supprimez un événement.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Voulez-vous vraiment supprimer cet événement ?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuler</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voulez-vous supprimer toutes les occurrences de cet événement, ou seulement l&apos;occurrence sélectionnée?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Supprimer tout</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Supprimer uniquement cet événement</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Voulez-vous supprimer ceci et toutes les occurrences futures de cet événement, ou seulement l&apos;occurrence sélectionnée?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Supprimer tous les événements futurs</translation>
-    </message>
-    <message>
         <source>New Event</source>
         <translation>Nouvel événement</translation>
     </message>

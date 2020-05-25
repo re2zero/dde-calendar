@@ -50,50 +50,6 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <source>Edit</source>
-        <translation>تحرير</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>حذف</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>حدث جديد</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>أنت الآن تحذف الحدث</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>هل أنت متأكد من حذف هذا الحدث؟</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>إلغاء</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>هل تريد حذف جميع الفعاليات لهذا الحدث أو الفعاليات المحددة فقط؟</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>حذف الكل</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>حذف هذا الحدث فقط</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>هل تريد حذف هذه الفعالية لهذا الحدث وجميع الفعاليات المستقبلية أو حذف المحددة فقط؟</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>حذف جميع الأحداث المستقبلية</translation>
-    </message>
-    <message>
         <source>New Event</source>
         <translation>حدث جديد</translation>
     </message>

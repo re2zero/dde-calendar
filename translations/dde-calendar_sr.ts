@@ -50,50 +50,6 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <source>Edit</source>
-        <translation>Уреди</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Обриши</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Нови догађај</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Бришете догађај.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Заиста желите да обришете овај догађај?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Откажи</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете све појаве овог догађаја или само изабрану ставку?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Обриши све</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Обриши само овај догађај</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Желите ли да обришете ову и све будуће појаве овог догађаја или само изабрану ставку?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Обриши све будуће догађаје</translation>
-    </message>
-    <message>
         <source>New Event</source>
         <translation>Нови догађај</translation>
     </message>

@@ -50,50 +50,6 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <source>Edit</source>
-        <translation>Editare</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Ștergeți</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Eveniment nou</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Ştergeţi un eveniment.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Sigur doriţi să ştergeţi acest eveniment?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anulare</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Doriți să ștergeți toate aparițiile acestui eveniment sau doar evenimentul selectat?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Şterge tot</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Şterge doar acest eveniment</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Doriți să ștergeți toate aparițiile acestui eveniment sau doar evenimentul selectat?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Şterge toate evenimentele viitoare</translation>
-    </message>
-    <message>
         <source>New Event</source>
         <translation>Eveniment nou</translation>
     </message>

@@ -50,50 +50,6 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <source>Edit</source>
-        <translation>편집</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>삭제</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>새 이벤트</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>이벤트를 삭제하는 중.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>이 이벤트를 삭제하시겠습니까?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>취소</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>이 이벤트의 모든 발생 항목을 삭제하시겠습니까, 아니면 선택한 발생 항목만 삭제하시겠습니까?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>모두 삭제</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>이 이벤트만 삭제</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>이 이벤트와 이 이벤트의 모든 향후 발생 항목을 삭제하시겠습니까? 아니면 선택한 발생 항목만 삭제하시겠습니까?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>모든 향후 이벤트 삭제</translation>
-    </message>
-    <message>
         <source>New Event</source>
         <translation>새 이벤트</translation>
     </message>

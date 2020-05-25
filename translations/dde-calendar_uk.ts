@@ -50,50 +50,6 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <source>Edit</source>
-        <translation>Редагувати</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Вилучити</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Нова подія</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Ви вилучаєте запис події.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Ви впевнені, що бажаєте вилучити цей запис події?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Скасувати</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Ви хочете вилучити усі повторення цієї події чи лише позначений запис?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Вилучити всі</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Вилучити лише цей запис</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Ви хочете вилучити усі майбутні повторення цієї події чи лише позначені записи?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Вилучити усі майбутні повторення</translation>
-    </message>
-    <message>
         <source>New Event</source>
         <translation>Нова подія</translation>
     </message>

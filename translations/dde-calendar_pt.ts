@@ -50,50 +50,6 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <source>Edit</source>
-        <translation>Editar</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Eliminar</translation>
-    </message>
-    <message>
-        <source>New event</source>
-        <translation>Novo evento</translation>
-    </message>
-    <message>
-        <source>You are deleting an event.</source>
-        <translation>Está a eliminar um evento.</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this event?</source>
-        <translation>Tem a certeza que deseja eliminar este evento?</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
-        <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation>Deseja eliminar todas as ocorrências para este evento ou apenas a ocorrência selecionada?</translation>
-    </message>
-    <message>
-        <source>Delete All</source>
-        <translation>Eliminar tudo</translation>
-    </message>
-    <message>
-        <source>Delete Only This Event</source>
-        <translation>Eliminar apenas este evento</translation>
-    </message>
-    <message>
-        <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation>Deseja eliminar esta e todas as ocorrências futuras deste evento ou apenas a ocorrência selecionada?</translation>
-    </message>
-    <message>
-        <source>Delete All Future Events</source>
-        <translation>Eliminar todos os eventos futuros</translation>
-    </message>
-    <message>
         <source>New Event</source>
         <translation>Novo evento</translation>
     </message>
