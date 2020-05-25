@@ -326,6 +326,7 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
         if (item->getData().type.ID == 4)
             return;
         m_DragScheduleInfo = item->getData();
+        m_PressScheduleInfo = item->getData();
         m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
         m_InfoEndTime = m_DragScheduleInfo.endDateTime;
         switch (getPosInItem(pos,item->boundingRect())) {
