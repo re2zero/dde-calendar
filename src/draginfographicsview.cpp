@@ -82,28 +82,28 @@ void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
             CSchceduleDlg dlg(1, this);
             dlg.setData(m_DragScheduleInfo);
             if (dlg.exec() == DDialog::Accepted) {
+            } else {
+                setPressSelectInfo(ScheduleDtailInfo());
             }
-            m_DragStatus = NONE;
             emit signalViewtransparentFrame(0);
         }
-        emit signalsUpdateShcedule();
         break;
     case ChangeBegin:
         if (!IsEqualtime(m_MoveDate,m_InfoBeginTime)) {
             updateScheduleInfo(m_DragScheduleInfo);
         }
-        emit signalsUpdateShcedule();
+
         break;
     case ChangeEnd:
         if (!IsEqualtime(m_MoveDate,m_InfoEndTime)) {
             updateScheduleInfo(m_DragScheduleInfo);
         }
-        emit signalsUpdateShcedule();
         break;
     default:
         break;
     }
     m_DragStatus = NONE;
+    emit signalsUpdateShcedule();
     update();
 }
 
