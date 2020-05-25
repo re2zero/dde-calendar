@@ -87,7 +87,6 @@ private:
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
-    void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
 private:
     void updateDateShow();
     void createItemWidget(int index, bool average = false);

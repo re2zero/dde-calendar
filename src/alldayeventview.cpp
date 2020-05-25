@@ -465,11 +465,6 @@ void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
     DGraphicsView::wheelEvent(event);
 }
 
-void CAllDayEventWeekView::paintEvent(QPaintEvent *event)
-{
-    DGraphicsView::paintEvent(event);
-}
-
 
 void CAllDayEventWeekView::updateDateShow()
 {

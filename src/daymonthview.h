@@ -146,7 +146,6 @@ private:
     CaHuangLiDayInfo *emptyCaHuangLiDayInfo = nullptr;
     int                   m_themetype  = 1;
     int                      m_radius = 8;
-    QStringList m_monthList;
     bool                 m_searchflag = false;
     QColor m_ceventColor = "#FF5D00";
     QVector<bool>            m_vlineflag; //节假日和日程标识

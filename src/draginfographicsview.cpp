@@ -22,7 +22,6 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     pal.setColor(QPalette::Dark, QColor(0, 0, 0, 0));
     pal.setColor(QPalette::Base, QColor(0, 0, 0, 0));
     setPalette(pal);
-//    m_coorManage = new CScheduleCoorManage;
 
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);

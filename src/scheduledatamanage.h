@@ -68,7 +68,6 @@ public:
     void clear();
     ScheduleDtailInfo getPressSelectInfo() const;
     void setPressSelectInfo(const ScheduleDtailInfo &PressSelectInfo);
-
 private:
     CScheduleDataManage();
     ~CScheduleDataManage();

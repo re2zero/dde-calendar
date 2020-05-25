@@ -56,18 +56,6 @@ CDayMonthView::CDayMonthView(QWidget *parent) : CustomFrame(parent)
     m_weeklist.append(tr("Friday"));
     m_weeklist.append(tr("Saturday"));
     m_weeklist.append(tr("Sunday"));
-    m_monthList.append( "一月" );
-    m_monthList.append( "二月");
-    m_monthList.append( "三月" );
-    m_monthList.append( "四月" );
-    m_monthList.append( "五月" );
-    m_monthList.append( "六月" );
-    m_monthList.append( "七月" );
-    m_monthList.append( "八月");
-    m_monthList.append( "九月" );
-    m_monthList.append( "十月" );
-    m_monthList.append( "十一月");
-    m_monthList.append( "十二月");
     initUI();
     initConnection();
     //setFixedSize(DDEDayCalendar::D_MWindowWidth, DDEDayCalendar::D_MWindowHeight);
@@ -366,12 +354,8 @@ void CDayMonthView::getlineflag()
 {
     QLocale locale;
     CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
-    if (locale.language() == QLocale::Chinese) {
-        m_vlineflag = tdataManage->getHuangliDayDataManage()->getDayFlag(m_currentDate);
-    } else {
-        m_vlineflag.resize(42);
-        m_vlineflag.fill(false);
-    }
+    m_vlineflag.resize(42);
+    m_vlineflag.fill(false);
     QVector<ScheduleDateRangeInfo> out;
     if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[0], m_days[41], out)) {
         if (out.count() == 42)
