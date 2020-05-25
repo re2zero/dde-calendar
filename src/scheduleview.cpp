@@ -57,12 +57,15 @@ void CScheduleView::setviewMagin(int left, int top, int right, int bttom)
 
 void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
 {
+    Q_UNUSED(h);
     if (!(w > 0)) {
         return;
     }
     m_TotalDay = begin.daysTo(end) + 1;
     m_graphicsView->setRange(w, scheduleViewHegith(), begin, end, m_rightmagin);
     m_alldaylist->setRange(w, 22, m_beginDate, m_endDate, m_rightmagin);
+    if (m_viewType ==1)
+        m_currteDate = begin;
     update();
 }
 
@@ -186,6 +189,7 @@ void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
 
 void CScheduleView::slotCreateSchedule()
 {
+    emit signalViewtransparentFrame(1);
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(m_currteDate);
@@ -194,6 +198,7 @@ void CScheduleView::slotCreateSchedule()
     if (dlg.exec() == DDialog::Accepted) {
         slotupdateSchedule();
     }
+    emit signalViewtransparentFrame(0);
 }
 
 void CScheduleView::setDate(QDate date)
