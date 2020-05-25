@@ -411,7 +411,10 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     m_alldaylist->setRange(width() - m_leftMagin, 22, m_beginDate, m_endDate, m_rightmagin);
     update();
     QFrame::resizeEvent(event);
-    updateSchedule();
+    updateAllday();
+    m_graphicsView->updateInfo();
+    m_graphicsView->update();
+    m_graphicsView->scene()->update();
 }
 
 void CScheduleView::initUI()

@@ -78,10 +78,13 @@ void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
     switch (m_DragStatus) {
     case IsCreate:
         if (MeetCreationConditions(m_MoveDate)) {
+            emit signalViewtransparentFrame(1);
             CSchceduleDlg dlg(1, this);
             dlg.setData(m_DragScheduleInfo);
             if (dlg.exec() == DDialog::Accepted) {
             }
+            m_DragStatus = NONE;
+            emit signalViewtransparentFrame(0);
         }
         emit signalsUpdateShcedule();
         break;
@@ -274,9 +277,6 @@ void DragInfoGraphicsView::dragMoveEvent(QDragMoveEvent *event)
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
 
         MoveInfoProcess(m_DragScheduleInfo,event->posF());
-
-//        m_DragScheduleInfo.IsMoveInfo = true;
-//        upDateInfoShow(ChangeWhole,m_DragScheduleInfo);
         setPressSelectInfo(m_DragScheduleInfo);
     }
 }
@@ -306,6 +306,7 @@ void DragInfoGraphicsView::setPressSelectInfo(const ScheduleDtailInfo &info)
 
 void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDtailInfo &info)
 {
+    emit signalViewtransparentFrame(1);
     if (info.rpeat >0) {
         CSchceduleDlg::ChangeRecurInfo(this,info,
                                        m_PressScheduleInfo,m_themetype);
@@ -313,6 +314,7 @@ void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDtailInfo &info)
         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
             info);
     }
+    emit signalViewtransparentFrame(0);
 }
 
 void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)

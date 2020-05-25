@@ -271,7 +271,14 @@ void CAllDayEventWeekView::setMargins(int left, int top, int right, int bottom)
 
 void CAllDayEventWeekView::updateInfo()
 {
-    upDateInfoShow();
+    switch (m_DragStatus) {
+    case IsCreate:
+        upDateInfoShow(IsCreate,m_DragScheduleInfo);
+        break;
+    default:
+        upDateInfoShow();
+        break;
+    }
 }
 
 void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const ScheduleDtailInfo &info)

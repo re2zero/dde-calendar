@@ -810,5 +810,12 @@ void CGraphicsView::setTime(QTime time)
 
 void CGraphicsView::updateInfo()
 {
-    upDateInfoShow();
+    switch (m_DragStatus) {
+    case IsCreate:
+        upDateInfoShow(IsCreate,m_DragScheduleInfo);
+        break;
+    default:
+        upDateInfoShow();
+        break;
+    }
 }

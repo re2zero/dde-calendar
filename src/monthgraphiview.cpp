@@ -162,6 +162,17 @@ void CMonthGraphiview::updateInfo()
                                      this->viewport()->height(),
                                      0, 0, 0, h);
     m_MonthSchceduleView->setData(m_shceludelistdata, 1);
+    switch (m_DragStatus) {
+    case IsCreate:
+        upDateInfoShow(IsCreate,m_DragScheduleInfo);
+        break;
+    case ChangeWhole:
+        upDateInfoShow(ChangeWhole,m_DragScheduleInfo);
+        break;
+    default:
+
+        break;
+    }
     update();
 }
 
@@ -478,7 +489,7 @@ void CMonthGraphiview::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &p
         y = pos.y();
     }
     int yoffset = qFloor(y/(rect.height()/6))%6;
-    m_DragScheduleInfo.IsMoveInfo = true;
+    info.IsMoveInfo = true;
     m_MonthSchceduleView->updateDate(yoffset,info);
 }
 
