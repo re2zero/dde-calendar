@@ -154,9 +154,9 @@ void CWeekView::paintCell(QWidget *cell)
     const int pos = m_cellList.indexOf(cell);
     //计算当前日期周数
     int weekNumber = QDate::currentDate().weekNumber();
-    if (m_weekAddDay == 0) {
-        weekNumber++;
-    }
+//    if (m_weekAddDay == 0) {
+//        weekNumber++;
+//    }
     const bool isCurrentDay = m_days[pos].addDays(3).weekNumber() == weekNumber &&
                               m_days[pos].addDays(3).year() == QDate::currentDate().year();
 

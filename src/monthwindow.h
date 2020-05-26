@@ -29,6 +29,7 @@
 #include "calendardbus.h"
 #include "SchecduleRemindWidget.h"
 
+
 DWIDGET_USE_NAMESPACE
 class CSchceduleSearchView;
 class CMonthView;

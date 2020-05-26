@@ -136,6 +136,7 @@ void CYearView::slotPressClickDate(const QDate &date)
     emit signalcurrentDateChanged(date);
     emit signalHideInfo();
     emit signalSelectInfo(true);
+    m_Scheduleview->setCurrentDate(date);
     for (int i = 0; i < m_DateRangeInfo.size(); ++i) {
         if (m_DateRangeInfo.at(i).date ==date) {
             m_Scheduleview->setData(m_DateRangeInfo[i].vData);
@@ -144,7 +145,6 @@ void CYearView::slotPressClickDate(const QDate &date)
     QPoint pos22 = QCursor::pos();
     QDesktopWidget *w = QApplication::desktop();
     m_Scheduleview->showWindow();
-    m_Scheduleview->setCurrentDate(date);
 
     if (pos22.x() + 10 + m_Scheduleview->width() < w->width()) {
         m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowLeft);
