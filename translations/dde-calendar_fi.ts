@@ -457,7 +457,7 @@
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation>AIKA</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

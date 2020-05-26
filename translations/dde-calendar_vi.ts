@@ -457,7 +457,7 @@
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation>Tất cả các ngày</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

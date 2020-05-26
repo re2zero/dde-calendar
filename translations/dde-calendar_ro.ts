@@ -457,7 +457,7 @@
     <name>CScheduleView</name>
     <message>
         <source>ALL DAY</source>
-        <translation>TOATĂ ZIUA</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
