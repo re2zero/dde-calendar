@@ -185,9 +185,7 @@ void Calendarmainwindow::slotmaxminViewShortcut()
 
 void Calendarmainwindow::slotGetScheduleInfoSuccess()
 {
-    qDebug()<<"getInfo:"<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     m_yearwindow->getScheduleInfo();
-
 }
 void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
 {
