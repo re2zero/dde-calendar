@@ -34,9 +34,13 @@
 #include <DButtonBox>
 #include <QStackedLayout>
 #include <QPropertyAnimation>
+#include <DFrame>
+
+
 #include "scheduledatamanage.h"
 #include "animationstackedwidget.h"
-#include <DFrame>
+#include "dbusdatagetthread.h"
+
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
 class CMonthWindow;
@@ -63,12 +67,15 @@ public slots:
     void RaiseWindow();
     void onViewShortcut();
     void slotmaxminViewShortcut();
+    void slotGetScheduleInfoSuccess();
 private:
     void initUI();
     void initConnection();
     void initLunar();
     void createview();
     DPushButton *createButon(QString name);
+
+    void getScheduleInfo();
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -122,6 +129,9 @@ private:
     QDate                     m_currentdate;
     int                         m_scheduleSearchViewMaxWidth;
     QPropertyAnimation          *m_animation;
+
+    DbusDataGetThread          *m_DataGetThread;
+
 };
 
 #endif // CALENDARMAINWINDOW_H

@@ -55,7 +55,8 @@ static const int WorkViewWidth = 860;
 static const int WorkViewHeight = 584;
 Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
 {
-
+    m_DataGetThread = new DbusDataGetThread(CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getDbus(),
+                                            nullptr);
     m_currentdate = QDate::currentDate();
     setContentsMargins(QMargins(0, 0, 0, 0));
     initUI();
@@ -92,6 +93,7 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
         QDesktopWidget *w = QApplication::desktop();
         move(w->screenGeometry(w->primaryScreen()).center() - geometry().center());
     }
+
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
@@ -179,6 +181,13 @@ void Calendarmainwindow::slotmaxminViewShortcut()
     } else {
         showMaximized();
     }
+}
+
+void Calendarmainwindow::slotGetScheduleInfoSuccess()
+{
+    qDebug()<<"getInfo:"<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    m_yearwindow->getScheduleInfo();
+
 }
 void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
 {
@@ -533,6 +542,11 @@ void Calendarmainwindow::initUI()
 
 void Calendarmainwindow::initConnection()
 {
+    connect(m_DataGetThread,
+            &DbusDataGetThread::signalGetScheduleSuccess,
+            this,
+            &Calendarmainwindow::slotGetScheduleInfoSuccess);
+
     connect(m_stackWidget
             , &AnimationStackedWidget::signalIsFinished
             , this
@@ -580,6 +594,11 @@ void Calendarmainwindow::initConnection()
     connect(m_monthWindow, &CMonthWindow::signalCurrentDate, this, &Calendarmainwindow::slotCurrentDate);
     connect(m_DayWindow, &CDayWindow::signalCurrentDate, this, &Calendarmainwindow::slotCurrentDate);
     connect(m_yearwindow, &CYearWindow::signalCurrentDate, this, &Calendarmainwindow::slotCurrentDate);
+
+    connect(m_yearwindow,
+            &CYearWindow::signalupdateschcedule,
+            this,
+            &Calendarmainwindow::getScheduleInfo);
 }
 
 
@@ -602,6 +621,10 @@ void Calendarmainwindow::initLunar()
 
 void Calendarmainwindow::createview()
 {
+    CScheduleDataManage::getScheduleDataManage()->setFirstWeekDay(0);
+    CScheduleDataManage::getScheduleDataManage()->setCurrentYear(QDate::currentDate().year());
+
+    getScheduleInfo();
     m_yearwindow = new CYearWindow(this);
     m_yearwindow->setDate(QDate::currentDate());
     m_stackWidget->addWidget(m_yearwindow);
@@ -644,6 +667,12 @@ DPushButton *Calendarmainwindow::createButon(QString name)
     //button->setPressIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-choose30.svg")
     //.scaled(50, 40));
     return  button;
+}
+
+void Calendarmainwindow::getScheduleInfo()
+{
+    YearScheduleInfo *info = CScheduleDataManage::getScheduleDataManage()->getGetAllYearScheduleInfo();
+    m_DataGetThread->getScheduleInfo(info);
 }
 
 void Calendarmainwindow::setScheduleHide()
@@ -862,6 +891,7 @@ void Calendarmainwindow::slotSearchEdit()
 
 void Calendarmainwindow::slotTransitSearchSchedule(int id)
 {
+    getScheduleInfo();
     int index = m_stackWidget->currentIndex();
     if (index < 0 || index > m_stackWidget->count() - 1) {
 
@@ -1041,6 +1071,8 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
 void Calendarmainwindow::slotCurrentDate(QDate date)
 {
     m_currentdate = date;
+    CScheduleDataManage::getScheduleDataManage()->setCurrentYear(date.year());
+    getScheduleInfo();
 }
 
 void Calendarmainwindow::slotSetButtonBox()

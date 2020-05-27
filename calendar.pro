@@ -71,7 +71,8 @@ HEADERS += src/calendardbus.h \
     src/animationstackedwidget.h \
     src/monthgraphiview.h \
     src/draginfographicsview.h \
-    src/draginfoitem.h
+    src/draginfoitem.h \
+    src/dbusdatagetthread.h
 SOURCES += src/calendardbus.cpp \
            src/dbuscalendar_adaptor.cpp \
            src/infoview.cpp \
@@ -119,7 +120,8 @@ SOURCES += src/calendardbus.cpp \
     src/animationstackedwidget.cpp \
     src/monthgraphiview.cpp \
     src/draginfographicsview.cpp \
-    src/draginfoitem.cpp
+    src/draginfoitem.cpp \
+    src/dbusdatagetthread.cpp
 RESOURCES += src/resources.qrc
 #TRANSLATIONS += translations/dde-calendar.ts \
 #                translations/desktop/desktop_zh_CN.ts\

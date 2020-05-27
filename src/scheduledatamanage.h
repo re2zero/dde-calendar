@@ -22,7 +22,11 @@
 #include <QThread>
 #include <QDate>
 #include <QMutex>
+
+#include "calendardbus.h"
 #include "schedulestructs.h"
+#include "dbusdatagetthread.h"
+
 
 struct CSchedulesColor {
     int type;
@@ -48,6 +52,8 @@ struct CSchedulesColor {
 class CSchedulesDBus;
 class CScheduleDataCtrl;
 class CHuangliDayDataManage;
+class CaLunarMonthInfo;
+
 class CScheduleDataManage
 {
 public:
@@ -55,8 +61,6 @@ public:
     CScheduleDataCtrl *getscheduleDataCtrl();
     CHuangliDayDataManage *getHuangliDayDataManage();
     CSchedulesColor getScheduleColorByType(int type);
-
-
     void setSearchResult(QVector<ScheduleDateRangeInfo> &vData);
     bool getSearchResult(ScheduleDtailInfo info);//true 高亮
     bool getSearchResult(QDate date);//true 高亮
@@ -68,18 +72,31 @@ public:
     void clear();
     ScheduleDtailInfo getPressSelectInfo() const;
     void setPressSelectInfo(const ScheduleDtailInfo &PressSelectInfo);
+
+    void setCurrentYear(int CurrentYear);
+    QDate getFirstOfMonth(const QDate &date);
+    int getFirstWeekDay() const;
+    void setFirstWeekDay(int firstWeekDay);
+    YearScheduleInfo *getGetAllYearScheduleInfo() const;
+
 private:
     CScheduleDataManage();
     ~CScheduleDataManage();
 private:
-    CScheduleDataCtrl           *m_scheduleDataCtrl;
-    CHuangliDayDataManage       *m_HuangliDayDataManage;
-    QVector<CSchedulesColor>    m_vScheduleColor;
-    QVector<ScheduleDateRangeInfo> m_vScheduleInfo;
-    ScheduleDtailInfo           m_PressSelectInfo;
-    int                         m_theme = 0;
-    static CScheduleDataManage  *m_vscheduleDataManage;
+    CScheduleDataCtrl                               *m_scheduleDataCtrl;
+    CHuangliDayDataManage                           *m_HuangliDayDataManage;
+    QVector<CSchedulesColor>                        m_vScheduleColor;
+    QVector<ScheduleDateRangeInfo>                  m_vScheduleInfo;
+    ScheduleDtailInfo                               m_PressSelectInfo;
+    int                                             m_theme = 0;
+    int                                             m_CurrentYear;
+    int                                             m_firstWeekDay  =0;
+    YearScheduleInfo                                *m_GetAllYearScheduleInfo;
+
+    static CScheduleDataManage                      *m_vscheduleDataManage;
 };
+
+
 class CDataProcessThread : public QThread
 {
     Q_OBJECT
@@ -146,6 +163,8 @@ public:
     bool GetType(qint64 jobId, ScheduleType &out);
     QString InfoToJson(const ScheduleDtailInfo &scheduledate);
     ScheduleDtailInfo JsonObjectToInfo(QJsonObject &obj);
+    CSchedulesDBus *getDbus() const;
+
 public slots:
     void slotupdatescheduleD(QWidget *w, QDate begin, QDate end);
     void slotDataProcess(QVector<ScheduleDateRangeInfo> out);

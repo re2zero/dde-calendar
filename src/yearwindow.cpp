@@ -251,6 +251,11 @@ void CYearWindow::initConnection()
             &YearFrame::signalUpdateYearDate,
             this,
             &CYearWindow::slotUpdateCurrentDate);
+    connect(YearWidget_First,
+            &YearFrame::signalupdateschcedule,
+            this,
+            &CYearWindow::signalupdateschcedule);
+
     connect(m_StackedWidget,
             &AnimationStackedWidget::signalIsFinished,
             this,
@@ -346,6 +351,11 @@ void CYearWindow::setSearchText(QString str)
 {
     m_searchText = str;
     // m_schceduleSearchView->slotsetSearch(str);
+}
+
+void CYearWindow::getScheduleInfo()
+{
+    m_YearWidget->getInfoAndSetLineFlag();
 }
 
 void CYearWindow::slotTransitSearchSchedule(int id)
@@ -477,7 +487,7 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
             connect(view, &CYearView::signalcurrentDateChanged, this, &YearFrame::slotcurrentDateChanged);
             connect(view, &CYearView::signaldoubleclickDate, this, &YearFrame::signaldoubleclickDate);
             connect(view, &CYearView::signalselectWeekwindow, this, &YearFrame::signalselectWeekwindow);
-            connect(view, &CYearView::signalupdateschcedule, this, &YearFrame::slotupdateSchedule);
+            connect(view, &CYearView::signalupdateschcedule, this, &YearFrame::signalupdateschcedule);
             connect(view, &CYearView::signalselectMonth, this, &YearFrame::signalselectMonth);
             connect(view, &CYearView::signalHideInfo, this, &YearFrame::slotHideInfo);
             connect(view, &CYearView::signalSelectInfo, this, &YearFrame::slotSelectInfo);
@@ -485,7 +495,6 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
             m_monthViewList.append(view);
         }
     }
-
 
     m_YearLabel = new QLabel(this);
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
@@ -567,6 +576,13 @@ void YearFrame::setDate(QDate &date)
         }
     }
     getLunarData();
+}
+
+void YearFrame::getInfoAndSetLineFlag()
+{
+    for (int i = 0; i < 12; i++) {
+        m_monthViewList.at(i)->getInfoAndSetLineFlag();
+    }
 }
 
 void YearFrame::setTheMe(int type)

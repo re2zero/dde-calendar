@@ -209,6 +209,25 @@ void CYearView::SchceduleViewHide()
     m_Scheduleview->clearData();
 }
 
+void CYearView::getInfoAndSetLineFlag()
+{
+    CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
+    m_vlineflag.resize(42);
+    m_vlineflag.fill(false);
+    if (tdataManage->getGetAllYearScheduleInfo()->m_monthInfo.size()>0) {
+        m_DateRangeInfo = tdataManage->getGetAllYearScheduleInfo()->m_monthInfo[m_currentDate.month()];
+        if (m_DateRangeInfo.count() == 42) {
+            for (int i = 0; i < 42; i++) {
+                if (!m_DateRangeInfo.at(i).vData.isEmpty()) {
+                    m_vlineflag[i] = true;
+                }
+            }
+        }
+    }
+    m_monthView->setLintFlag(m_vlineflag);
+    m_monthView->update();
+}
+
 void CYearView::setCurrentDate(const QDate date, int type)
 {
     Q_UNUSED(type);
@@ -219,25 +238,11 @@ void CYearView::setCurrentDate(const QDate date, int type)
     // }
 
     m_currentDate = date;
-    CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
     QLocale locale;
-    m_vlineflag.resize(42);
-    m_vlineflag.fill(false);
     m_currentMouth->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
     updateDate();
     m_monthView->setDate(m_days);
-
-    m_DateRangeInfo.clear();
-    if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[0], m_days[41], m_DateRangeInfo)) {
-        if (m_DateRangeInfo.count() == 42) {
-            for (int i = 0; i < 42; i++) {
-                if (!m_DateRangeInfo.at(i).vData.isEmpty()) {
-                    m_vlineflag[i] = true;
-                }
-            }
-        }
-    }
-    m_monthView->setLintFlag(m_vlineflag);
+//    getInfoAndSetLineFlag();
 }
 
 void CYearView::setCellSelectable(bool selectable)

@@ -52,6 +52,7 @@ public:
     void setSearchWFlag(bool flag);
     void clearSearch();
     void setSearchText(QString str);
+    void getScheduleInfo();
 signals:
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
     void signalsReturnTodayUpdate(QMainWindow *w);
@@ -60,6 +61,7 @@ signals:
     void signalselectMonth(QDate date);
     void signalselectWeekwindow(QDate date);
     void signalCurrentDate(QDate date);
+    void signalupdateschcedule();
 private slots:
     void slotprev();
     void slotnext();
@@ -105,6 +107,7 @@ public:
     explicit YearFrame(DWidget *parent = nullptr);
     ~YearFrame() Q_DECL_OVERRIDE;
     void setDate(QDate &date);
+    void getInfoAndSetLineFlag();
     void setTheMe(int type = 0);
     void setSearchWFlag(bool flag);
     QString getLunarYear()const
@@ -123,6 +126,7 @@ signals:
     void signalselectWeekwindow(QDate date);
     void signalselectMonth(QDate date);
     void signalUpdateYearDate(const QDate &date);
+    void signalupdateschcedule();
 public slots:
     void slotHideInfo();
     void slotSelectInfo(bool flag);

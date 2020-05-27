@@ -414,6 +414,8 @@ CScheduleDataManage::CScheduleDataManage ()
 {
     m_scheduleDataCtrl = new CScheduleDataCtrl;
     m_HuangliDayDataManage = new CHuangliDayDataManage;
+
+    m_GetAllYearScheduleInfo = new YearScheduleInfo();
     CSchedulesColor workC;
     workC.type = 1;
     workC.gradientFromC = "#FBCEB7";
@@ -465,6 +467,43 @@ CScheduleDataManage::CScheduleDataManage ()
 
 CScheduleDataManage::~CScheduleDataManage()
 {
+    delete  m_scheduleDataCtrl;
+    delete  m_HuangliDayDataManage;
+    delete  m_GetAllYearScheduleInfo;
+}
+
+YearScheduleInfo *CScheduleDataManage::getGetAllYearScheduleInfo() const
+{
+    return m_GetAllYearScheduleInfo;
+}
+
+int CScheduleDataManage::getFirstWeekDay() const
+{
+    return m_firstWeekDay;
+}
+
+void CScheduleDataManage::setFirstWeekDay(int firstWeekDay)
+{
+    m_firstWeekDay = firstWeekDay;
+}
+
+QDate CScheduleDataManage::getFirstOfMonth(const QDate &date)
+{
+    const QDate firstDay(date.year(), date.month(), 1);
+    int offset = firstDay.dayOfWeek() % 7 - m_firstWeekDay ;
+
+    const int day = offset <0 ?offset +7:offset;
+    return firstDay.addDays(0 - day);
+}
+
+void CScheduleDataManage::setCurrentYear(int CurrentYear)
+{
+    m_CurrentYear = CurrentYear;
+    m_GetAllYearScheduleInfo->m_year = m_CurrentYear;
+    for (int i = 1; i < 13; ++i) {
+        m_GetAllYearScheduleInfo->m_firstDay[i] =
+            getFirstOfMonth(QDate(m_CurrentYear,i,1));
+    }
 
 }
 
@@ -572,6 +611,11 @@ void CScheduleDataCtrl::clearData()
 {
     while (m_thread->isRunning());
     m_scheduleDateCache->clear();
+}
+
+CSchedulesDBus *CScheduleDataCtrl::getDbus() const
+{
+    return m_dbus;
 }
 
 CDataProcessThread::CDataProcessThread(CSchedulesDBus *_DataManage)

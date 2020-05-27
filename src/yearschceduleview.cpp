@@ -1015,7 +1015,7 @@ void CYearSchceduleOutView::mousePressEvent(QMouseEvent *event)
                     CSchceduleDlg dlg(0);
                     dlg.setData(scheduleinfoList.at(i));
                     if (dlg.exec() == DDialog::Accepted)
-                        emit signalupdateschcedule(1);
+                        emit signalupdateschcedule();
                 }
             }
         }

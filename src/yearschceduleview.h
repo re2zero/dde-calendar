@@ -117,7 +117,7 @@ public:
     void adjustPosition(bool ad);
 signals:
     void signalsViewSelectDate(QDate date);
-    void signalupdateschcedule(int i);
+    void signalupdateschcedule();
 private:
     CYearSchceduleView *yearschceduleview;
     QVector<ScheduleDtailInfo> scheduleinfoList;

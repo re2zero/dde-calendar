@@ -48,13 +48,14 @@ public:
     }
     void setTheMe(int type = 0);
     static void SchceduleViewHide();
+    void getInfoAndSetLineFlag();
 signals:
     void signalcurrentDateChanged(QDate date);
     void cellSelectableChanged(bool cellSelectable) const;
     void signaldoubleclickDate(QDate date);
     void signalselectMonth(QDate date);
     void signalselectWeekwindow(QDate date);
-    void signalupdateschcedule(int i);
+    void signalupdateschcedule();
     void signalHideInfo();
     void signalSelectInfo(bool flag);
 public slots:
