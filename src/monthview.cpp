@@ -296,13 +296,14 @@ void CMonthView::getDbusData()
 
     CaLunarDayInfo currentDayInfo;
     bool o1 = true;
+    QDate getDate = m_currentDate;
     for (int i = -1; i < 2; ++i) {
-
-        QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(m_currentDate.year(),
-                                                                                m_currentDate.addMonths(i).month(), false, o1);
+        getDate = m_currentDate.addMonths(i);
+        QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(getDate.year(),
+                                                                                getDate.month(), false, o1);
 
         QDate cacheDate;
-        cacheDate.setDate(m_currentDate.year(), m_currentDate.addMonths(i).month(), 1);
+        cacheDate.setDate(getDate.year(), getDate.month(), 1);
         foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
 //            if (cacheDate == QDate(2020,6,21)) {
 //                qDebug()<<"mGanZhiYear:"<<dayInfo.mGanZhiYear;
