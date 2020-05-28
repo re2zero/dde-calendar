@@ -175,12 +175,6 @@ void CMonthWindow::clearSearch()
     //m_schceduleSearchView->clearSearch();
 }
 
-void CMonthWindow::setSearchText(QString str)
-{
-    m_searchText = str;
-    // m_schceduleSearchView->slotsetSearch(str);
-}
-
 void CMonthWindow::wheelEvent(QWheelEvent *e)
 {
     QPoint numDegrees = e->angleDelta();

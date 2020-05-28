@@ -187,19 +187,6 @@ void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
     setEnabled(true);
 }
 
-void CScheduleView::slotCreateSchedule()
-{
-    emit signalViewtransparentFrame(1);
-    CSchceduleDlg dlg(1, this);
-    QDateTime tDatatime;
-    tDatatime.setDate(m_currteDate);
-    tDatatime.setTime(QTime::currentTime());
-    dlg.setDate(tDatatime);
-    if (dlg.exec() == DDialog::Accepted) {
-        slotupdateSchedule();
-    }
-    emit signalViewtransparentFrame(0);
-}
 
 void CScheduleView::setDate(QDate date)
 {
@@ -467,11 +454,6 @@ void CScheduleView::initConnection()
             this,&CScheduleView::slotUpdateScene);
     connect(m_graphicsView,&CGraphicsView::signalSceneUpdate,
             this,&CScheduleView::slotUpdateScene);
-
-
-    QShortcut *shortcut = new QShortcut(this);
-    shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
-    connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreateSchedule()));
 
     QShortcut *dshortcut = new QShortcut(this);
     dshortcut->setKey(QKeySequence(QLatin1String("Delete")));

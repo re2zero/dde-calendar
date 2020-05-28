@@ -47,7 +47,6 @@ public:
     void updateHigh();
 public slots:
     void slotsupdatescheduleD( QVector<ScheduleDateRangeInfo> &data);
-    void slotCreateSchedule();
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 signals:

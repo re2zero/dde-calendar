@@ -92,10 +92,6 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 
     m_RemindWidget = new SchecduleRemindWidget(this);
 
-    QShortcut *shortcut = new QShortcut(this);
-    shortcut->setKey(QKeySequence(QLatin1String("Ctrl+N")));
-//    connect(shortcut, SIGNAL(activated()), this, SLOT(slotCreate()));
-//    connect(m_createAction, &QAction::triggered, this, &CMonthView::slotCreate);
     connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CMonthView::slotsupdatescheduleD);
     connect(this, &CMonthView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
     setMouseTracking(true);
