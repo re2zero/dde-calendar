@@ -564,10 +564,11 @@ void Calendarmainwindow::initConnection()
     //监听当前应用主题切换事件
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &Calendarmainwindow::slotTheme);
 
-    m_dbus = new __Scheduler("com.deepin.daemon.Calendar",
-                             "/com/deepin/daemon/Calendar/Scheduler",
-                             QDBusConnection::sessionBus(), this);
-    connect(m_dbus, &__Scheduler::JobsUpdated, this, &Calendarmainwindow::slotJobsUpdated);
+    m_dbus = new com::deepin::daemon::calendar::Scheduler("com.deepin.daemon.Calendar",
+                                                          "/com/deepin/daemon/Calendar/Scheduler",
+                                                          QDBusConnection::sessionBus(), this);
+    connect(m_dbus, &com::deepin::daemon::calendar::Scheduler::JobsUpdated,
+            this, &Calendarmainwindow::slotJobsUpdated);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &Calendarmainwindow::slotTransitSearchSchedule);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);
     connect(m_schceduleSearchView, &CSchceduleSearchView::signalSelectSchedule,
