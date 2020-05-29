@@ -260,7 +260,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
                 return;
             painter->drawText(
                 QRect(textRect.topLeft().x() + tmagin,
-                      textRect.topLeft().y() + 20 + timeTextHight + i * (h - 3) - 3,
+                      textRect.topLeft().y() + 20 + timeTextHight + i * (h - 3),
                       textRect.width() - 2,
                       h ),
                 Qt::AlignLeft, liststr.at(i));
