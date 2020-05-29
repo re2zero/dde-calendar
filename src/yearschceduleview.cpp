@@ -1002,7 +1002,10 @@ void CYearSchceduleOutView::mousePressEvent(QMouseEvent *event)
             listShow = 5;
     }
     for (int i = 0; i < listShow; i++) {
-        rect_press.append(QRect(35, 20 + i * 30, width() - 50, 20));
+        if (this->arrowDirection() == DArrowRectangle::ArrowLeft)
+            rect_press.append(QRect(35, 20 + i * 30, width() - 50, 20));
+        else
+            rect_press.append(QRect(20, 20 + i * 30, width() - 50, 20));
     }
     for (int i = 0; i < listShow; i++) {
         if (rect_press.at(i).contains(pos)) {
