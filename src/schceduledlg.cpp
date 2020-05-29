@@ -700,7 +700,7 @@ void CSchceduleDlg::initUI()
     m_beginDateEdit->setFixedSize(175, 36);
 
     m_beginTimeEdit = new CTimeEdit(this);
-    m_beginTimeEdit->setFixedSize(145, 36);
+    m_beginTimeEdit->setFixedSize(141, 36);
     m_beginDateEdit->setCalendarPopup(true);
     m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
     // QHBoxLayout *begintimeelayout  = new QHBoxLayout;
@@ -711,7 +711,7 @@ void CSchceduleDlg::initUI()
     // begintimeelayout->addStretch();
     beginLabellayout->addWidget(m_beginTimeLabel);
     beginLabellayout->addWidget(m_beginDateEdit);
-    beginLabellayout->addSpacing(10);
+    beginLabellayout->addSpacing(8);
     beginLabellayout->addWidget(m_beginTimeEdit);
     beginLabellayout->addStretch();
     // beginLabellayout->addLayout(begintimeelayout);
@@ -733,13 +733,13 @@ void CSchceduleDlg::initUI()
     m_endDateEdit = new QDateEdit(this);
     m_endDateEdit->setFixedSize(175, 36);
     m_endTimeEdit = new CTimeEdit(this);
-    m_endTimeEdit->setFixedSize(145, 36);
+    m_endTimeEdit->setFixedSize(141, 36);
     m_endDateEdit->setCalendarPopup(true);
     m_endDateEdit->setDisplayFormat("yyyy-MM-dd");
 
     enQLabellayout->addWidget(m_endTimeLabel);
     enQLabellayout->addWidget(m_endDateEdit);
-    enQLabellayout->addSpacing(10);
+    enQLabellayout->addSpacing(8);
 
     enQLabellayout->addWidget(m_endTimeEdit);
     enQLabellayout->addStretch();
@@ -814,7 +814,7 @@ void CSchceduleDlg::initUI()
     m_endrepeatCombox->addItem(tr("On"));
     endrepeatLabellayout->addWidget(m_endrepeatLabel);
     endrepeatLabellayout->addWidget(m_endrepeatCombox);
-    endrepeatLabellayout->addSpacing(10);
+    endrepeatLabellayout->addSpacing(8);
 
     QHBoxLayout *endrepeattimeslayout = new QHBoxLayout;
     endrepeattimeslayout->setSpacing(0);
@@ -840,7 +840,7 @@ void CSchceduleDlg::initUI()
 
     m_endRepeatDate = new DDateEdit;
     m_endRepeatDate->setCalendarPopup(true);
-    m_endRepeatDate->setFixedSize(145, 36);
+    m_endRepeatDate->setFixedSize(141, 36);
     m_endRepeatDate->setDate(QDate::currentDate());
     m_endRepeatDate->setDisplayFormat("yyyy-MM-dd");
     m_endRepeatDate->setCurrentSectionIndex(2);
