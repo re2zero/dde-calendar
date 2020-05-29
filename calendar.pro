@@ -123,9 +123,6 @@ SOURCES += src/calendardbus.cpp \
     src/draginfoitem.cpp \
     src/dbusdatagetthread.cpp
 RESOURCES += src/resources.qrc
-#TRANSLATIONS += translations/dde-calendar.ts \
-#                translations/desktop/desktop_zh_CN.ts\
-#                translations/dde-calendar_zh_CN.ts
 isEmpty(BINDIR):BINDIR=/usr/bin
 isEmpty(APPDIR):APPDIR=/usr/share/applications
 isEmpty(DSRDIR):DSRDIR=/usr/share/dde-calendar
@@ -133,8 +130,6 @@ isEmpty(PREFIX){
     PREFIX = /usr
 }
 
-# Automating generation .qm files from .ts files
-!system($$PWD/translate_generation.sh): error("Failed to generate translation")
 
 target.path = $$INSTROOT$$BINDIR
 icon_files.path = $$PREFIX/share/icons/hicolor/scalable/apps/
@@ -154,9 +149,7 @@ dbus_service.path = $$PREFIX/share/dbus-1/services
 
 INSTALLS += target desktop icon_files manual dbus_service
 
-isEmpty(TRANSLATIONS) {
-     include(translations.pri)
-}
+TRANSLATIONS = $$files($$PWD/translations/*.ts)
 
 TRANSLATIONS_COMPILED = $$TRANSLATIONS
 TRANSLATIONS_COMPILED ~= s/\.ts/.qm/g
@@ -177,8 +170,3 @@ CONFIG(release_translations) {
 DSR_LANG_PATH += $$DSRDIR/translations
 DEFINES += "DSR_LANG_PATH=\\\"$$DSR_LANG_PATH\\\""
 
-#DISTFILES += \
-#    image/newUI/focus/close-focus.svg
-
-#DISTFILES += \
-#    translations.pri
