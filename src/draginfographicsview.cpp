@@ -229,21 +229,18 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 void DragInfoGraphicsView::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        if (event->source() !=this) {
-            QJsonParseError json_error;
-            QString str = event->mimeData()->data("Info");
-            QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
-            if (json_error.error != QJsonParseError::NoError) {
-                event->ignore();
-            }
-            QJsonObject rootobj = jsonDoc.object();
-            ScheduleDtailInfo info =
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
-            if (info.rpeat>0) {
-                event->ignore();
-            } else {
-                event->accept();
-            }
+        QJsonParseError json_error;
+        QString str = event->mimeData()->data("Info");
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
+        if (json_error.error != QJsonParseError::NoError) {
+            event->ignore();
+        }
+        QJsonObject rootobj = jsonDoc.object();
+        ScheduleDtailInfo info =
+            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
+        if ((event->source() !=this && info.rpeat >0) ||
+                info.type.ID ==4) {
+            event->ignore();
         } else {
             event->accept();
         }
@@ -324,13 +321,15 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
 
     m_MoveDate = m_PressDate.addMonths(-2);
     if (item != nullptr) {
-        if (item->getData().type.ID == 4)
+        PosInItem mpressstatus = getPosInItem(pos,item->boundingRect());
+        if (mpressstatus != MIDDLE && item->getData().type.ID == 4) {
             return;
+        }
         m_DragScheduleInfo = item->getData();
         m_PressScheduleInfo = item->getData();
         m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
         m_InfoEndTime = m_DragScheduleInfo.endDateTime;
-        switch (getPosInItem(pos,item->boundingRect())) {
+        switch (mpressstatus) {
         case TOP:
             m_DragStatus = ChangeBegin;
             setCursor(Qt::SplitVCursor);
