@@ -168,6 +168,18 @@ bool CAllDayEventWeekView::MeetCreationConditions(const QDateTime &date)
     return  qAbs(date.daysTo(m_PressDate)<7);
 }
 
+void CAllDayEventWeekView::slotCreate(const QDateTime &date)
+{
+    emit signalViewtransparentFrame(1);
+    CSchceduleDlg dlg(1, this);
+    dlg.setDate(date);
+    dlg.setAllDay(true);
+    if (dlg.exec() == DDialog::Accepted) {
+        emit signalsUpdateShcedule();
+    }
+    emit signalViewtransparentFrame(0);
+}
+
 bool CAllDayEventWeekView::IsEqualtime(const QDateTime &timeFirst, const QDateTime &timeSecond)
 {
     return timeFirst.date() == timeSecond.date();
@@ -185,7 +197,9 @@ void CAllDayEventWeekView::RightClickToCreate(QGraphicsItem *listItem, const QPo
     Q_UNUSED(listItem);
     m_rightMenu->clear();
     m_rightMenu->addAction(m_createAction);
-    m_dianjiDay = m_coorManage->getsDate(mapFrom(this, pos));
+
+    m_createDate.setDate(m_coorManage->getsDate(mapFrom(this, pos)));
+    m_createDate.setTime(QTime::currentTime());
     m_rightMenu->exec(QCursor::pos());
 
 }
@@ -440,18 +454,9 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
     DGraphicsView::mouseDoubleClickEvent(event);
     CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
     if (item == nullptr) {
-        m_dianjiDay = m_coorManage->getsDate(mapFrom(this, event->pos()));
-        emit signalViewtransparentFrame(1);
-        CSchceduleDlg dlg(1, this);
-        QDateTime tDatatime;
-        tDatatime.setDate(m_dianjiDay);
-        tDatatime.setTime(QTime::currentTime());
-        dlg.setDate(tDatatime);
-        dlg.setAllDay(true);
-        if (dlg.exec() == DDialog::Accepted) {
-            emit signalsUpdateShcedule();
-        }
-        emit signalViewtransparentFrame(0);
+        m_createDate.setDate(m_coorManage->getsDate(mapFrom(this, event->pos())));
+        m_createDate.setTime(QTime::currentTime());
+        slotCreate(m_createDate);
     } else {
         emit signalViewtransparentFrame(1);
         m_updateDflag  = false;

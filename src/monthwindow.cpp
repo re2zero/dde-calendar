@@ -51,8 +51,11 @@ void CMonthWindow::setFirstWeekday(int weekday)
 
 void CMonthWindow::setDate(QDate date)
 {
-    if (!date.isValid()) return;
-    if (m_currentdate == date) return;
+    if (!date.isValid())
+        return;
+    m_monthDayView->setCurrentDate(date);
+    if (m_currentdate == date)
+        return;
     m_currentdate = date;
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
@@ -60,8 +63,6 @@ void CMonthWindow::setDate(QDate date)
     } else {
         m_YearLabel->setText(QString::number(date.year()));
     }
-    //m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
-    m_monthDayView->setCurrentDate(date);
     m_monthView->setCurrentDate(date);
     emit signalCurrentDate(date);
 }
