@@ -49,6 +49,7 @@ protected:
     virtual void MoveInfoProcess(ScheduleDtailInfo &info,const QPointF &pos) = 0;
     virtual PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect) =0;
     virtual ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate,const QDateTime &endDate);
+    virtual void ShowSchedule(DragInfoItem *infoitem);
     //设置主题
     virtual void setTheMe(int type = 0) =0;
     //判断时间是否相等

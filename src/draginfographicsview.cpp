@@ -61,7 +61,7 @@ void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
         setPressSelectInfo(infoitem->getData());
         m_press = true;
         DragInfoItem::setPressFlag(true);
-        emit signalScheduleShow(true, infoitem->getData());
+        ShowSchedule(infoitem);
     } else {
         emit signalScheduleShow(false);
     }
@@ -519,5 +519,13 @@ ScheduleDtailInfo DragInfoGraphicsView::getScheduleInfo(const QDateTime &beginDa
     info.rpeat = 0;
 
     return info;
+}
+
+void DragInfoGraphicsView::ShowSchedule(DragInfoItem *infoitem)
+{
+    if (infoitem ==nullptr)
+        return;
+    emit signalScheduleShow(true, infoitem->getData());
+
 }
 

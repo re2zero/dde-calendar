@@ -155,6 +155,7 @@ protected:
     bool MeetCreationConditions(const QDateTime &date) override;
     void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo())override;
     QDateTime getPosDate(const QPoint &p) override;
+    void ShowSchedule(DragInfoItem *infoitem) override;
     void MoveInfoProcess(ScheduleDtailInfo &info,const QPointF &pos) override;
     PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect) override;
     ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate,const QDateTime &endDate) override;

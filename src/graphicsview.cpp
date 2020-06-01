@@ -298,6 +298,14 @@ QDateTime CGraphicsView::getPosDate(const QPoint &p)
     return TimeRounding(m_coorManage->getDate(mapToScene(p)));
 }
 
+void CGraphicsView::ShowSchedule(DragInfoItem *infoitem)
+{
+    CScheduleItem *scheduleitem = dynamic_cast<CScheduleItem *>(infoitem);
+    if (scheduleitem->getType() == 1)
+        return;
+    DragInfoGraphicsView::ShowSchedule(infoitem);
+}
+
 void CGraphicsView::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &pos)
 {
     Q_UNUSED(pos);
