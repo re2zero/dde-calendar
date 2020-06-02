@@ -61,7 +61,6 @@ void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
         setPressSelectInfo(infoitem->getData());
         m_press = true;
         DragInfoItem::setPressFlag(true);
-        ShowSchedule(infoitem);
     } else {
         emit signalScheduleShow(false);
     }
@@ -349,6 +348,7 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
             setCursor(Qt::SplitHCursor);
             break;
         default:
+            ShowSchedule(item);
             m_DragStatus = ChangeWhole;
             QMimeData *mimeData = new QMimeData();
             mimeData->setText(m_DragScheduleInfo.titleName);
