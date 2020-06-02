@@ -74,6 +74,7 @@ void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
     setCursor(Qt::ArrowCursor);
     m_press = false;
     DragInfoItem::setPressFlag(false);
+    bool isUpdateInfo = false;
     switch (m_DragStatus) {
     case IsCreate:
         if (MeetCreationConditions(m_MoveDate)) {
@@ -85,26 +86,28 @@ void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
                 setPressSelectInfo(ScheduleDtailInfo());
             }
             emit signalViewtransparentFrame(0);
+            isUpdateInfo = true;
         }
         break;
     case ChangeBegin:
         if (!IsEqualtime(m_MoveDate,m_InfoBeginTime)) {
             updateScheduleInfo(m_DragScheduleInfo);
+            isUpdateInfo = true;
         }
-
         break;
     case ChangeEnd:
         if (!IsEqualtime(m_MoveDate,m_InfoEndTime)) {
             updateScheduleInfo(m_DragScheduleInfo);
+            isUpdateInfo = true;
         }
         break;
     default:
-        m_DragStatus = NONE;
-        update();
-        return;
+        break;
     }
     m_DragStatus = NONE;
-    emit signalsUpdateShcedule();
+    if (isUpdateInfo) {
+        emit signalsUpdateShcedule();
+    }
     update();
 }
 
