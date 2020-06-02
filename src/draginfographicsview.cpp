@@ -100,7 +100,9 @@ void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
         }
         break;
     default:
-        break;
+        m_DragStatus = NONE;
+        update();
+        return;
     }
     m_DragStatus = NONE;
     emit signalsUpdateShcedule();
