@@ -75,6 +75,8 @@ public:
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
                                     QVector<ScheduleclassificationInfo> &info);
     void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;

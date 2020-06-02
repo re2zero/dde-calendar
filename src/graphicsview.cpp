@@ -459,8 +459,30 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
         return;
     }
 }
+
+void CGraphicsView::mousePressEvent(QMouseEvent *event)
+{
+    CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
+    if (item !=nullptr &&item->getType() ==1) {
+        emit signalScheduleShow(false);
+        return;
+    }
+    DragInfoGraphicsView::mousePressEvent(event);
+}
+
+void CGraphicsView::mouseMoveEvent(QMouseEvent *event)
+{
+    CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
+    if (item !=nullptr &&item->getType() ==1) {
+        setCursor(Qt::ArrowCursor);
+        DGraphicsView::mouseMoveEvent(event);
+        return;
+    }
+    DragInfoGraphicsView::mouseMoveEvent(event);
+}
 void CGraphicsView::slotDoubleEvent(int type)
 {
+    Q_UNUSED(type);
     m_updateDflag  = true;
     emit signalsUpdateShcedule();
 }
