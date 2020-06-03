@@ -415,6 +415,7 @@ void CScheduleView::initUI()
     m_layout->addWidget(m_alldaylist);
     m_layout->addWidget(m_hline);
     m_graphicsView = new CGraphicsView(this, m_viewType);
+    m_graphicsView->setMinimumHeight(480);
 //    m_layout->setContentsMargins(0, m_space, 0, 0);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this,
             SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
@@ -573,6 +574,7 @@ int CScheduleView::scheduleViewHegith()
         mheight = 24 * (0.083 * height() + 0.5);
     }
     //现在最小高度为20;
+    mheight = mheight <500? 1035:mheight;
     int m_minTime = (20.0/mheight)*86400;
     m_graphicsView->setMinTime(m_minTime);
     return  mheight;

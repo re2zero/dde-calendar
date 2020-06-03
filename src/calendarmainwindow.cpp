@@ -224,7 +224,7 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
         m_dayButton->setFocus();
         m_dayButton->setChecked(true);
         m_DayWindow->setDate(datetime.date());
-        m_DayWindow->setTime(datetime.time());
+//        m_DayWindow->setTime(datetime.time());
         m_DayWindow->slotupdateSchedule(0);
         m_searchflag = true;
     }
@@ -641,7 +641,9 @@ void Calendarmainwindow::createview()
     m_stackWidget->addWidget(m_weekWindow);
 
     m_DayWindow = new CDayWindow;
-    m_DayWindow->setDate(QDate::currentDate());
+    QTimer::singleShot(500,[=] {
+        m_DayWindow->setDate(QDate::currentDate());
+    });
     m_stackWidget->addWidget(m_DayWindow);
 #else
     CYearWindow *yearwindow1 = new CYearWindow;
