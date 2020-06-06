@@ -240,6 +240,7 @@ QDateTime CAllDayEventWeekView::getDragScheduleInfoEndTime(const QDateTime &move
 
 void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
+    m_MoveDate.setDate(begindate.addMonths(-2));
     m_beginDate = begindate;
     m_endDate = enddate;
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
@@ -251,6 +252,7 @@ void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate
 
 void CAllDayEventWeekView::setRange(QDate begin, QDate end)
 {
+    m_MoveDate.setDate(begin.addMonths(-2));
     m_beginDate = begin;
     m_endDate = end;
     getCoorManage()->setDateRange(begin, end);

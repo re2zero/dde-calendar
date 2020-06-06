@@ -12,7 +12,8 @@
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     :DGraphicsView (parent),
      m_Scene(new QGraphicsScene(this)),
-     m_rightMenu(new DMenu(this))
+     m_rightMenu(new DMenu(this)),
+     m_MoveDate(QDateTime::currentDateTime())
 {
     setFrameShape(QFrame::NoFrame);
     setScene(m_Scene);
@@ -252,13 +253,14 @@ void DragInfoGraphicsView::dragEnterEvent(QDragEnterEvent *event)
     } else {
         event->ignore();
     }
+
 }
 
 void DragInfoGraphicsView::dragLeaveEvent(QDragLeaveEvent *event)
 {
     Q_UNUSED(event);
     upDateInfoShow();
-    m_MoveDate = m_MoveDate.addMonths(2);
+    m_MoveDate = m_MoveDate.addMonths(-2);
 }
 
 void DragInfoGraphicsView::dragMoveEvent(QDragMoveEvent *event)
@@ -291,7 +293,7 @@ void DragInfoGraphicsView::dropEvent(QDropEvent *event)
             emit signalsUpdateShcedule();
         }
         m_DragStatus = NONE;
-        m_MoveDate = m_MoveDate.addMonths(2);
+        m_MoveDate = m_MoveDate.addMonths(-2);
     }
 }
 

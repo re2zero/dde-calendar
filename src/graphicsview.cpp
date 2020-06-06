@@ -145,6 +145,7 @@ void CGraphicsView::updateHigh()
 
 void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int rightmagin)
 {
+    m_MoveDate.setDate(begindate.addMonths(-2));
     m_beginDate = begindate;
     m_endDate = enddate;
     w = w - rightmagin;
@@ -173,6 +174,7 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int 
 
 void CGraphicsView::setRange(QDate begin, QDate end)
 {
+    m_MoveDate.setDate(begin.addMonths(-2));
     m_beginDate = begin;
     m_endDate = end;
     getCoorManage()->setDateRange(begin, end);
