@@ -122,7 +122,7 @@ SOURCES += src/calendardbus.cpp \
     src/draginfographicsview.cpp \
     src/draginfoitem.cpp \
     src/dbusdatagetthread.cpp
-RESOURCES += src/resources.qrc
+RESOURCES += assets/resources.qrc
 isEmpty(BINDIR):BINDIR=/usr/bin
 isEmpty(APPDIR):APPDIR=/usr/share/applications
 isEmpty(DSRDIR):DSRDIR=/usr/share/dde-calendar
