@@ -262,7 +262,7 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
         qSort(currentInfo.begin(), currentInfo.end(), MScheduleTimeThan);
         if (currentInfo.size()>0) {
             m_InfoMap[currentDate] = currentInfo;
-            QVector<ScheduleclassificationInfo> info;
+            QList<ScheduleclassificationInfo> info;
             scheduleClassificationType(currentInfo,info);
 
             for (int m = 0; m < info.count(); m++) {
@@ -381,7 +381,7 @@ void CGraphicsView::clearSchdule()
     m_updateDflag = true;
 }
 
-void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QVector<ScheduleclassificationInfo> &info)
+void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QList<ScheduleclassificationInfo> &info)
 {
     QVector<ScheduleDtailInfo> schedulelist = scheduleInfolist;
     if (schedulelist.isEmpty())
@@ -389,8 +389,10 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
 
     info.clear();
     qSort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
+    QVector<int> containIndex;
+
+
     for (int k = 0; k < schedulelist.count(); k++) {
-        int i = 0;
         QDateTime endTime = schedulelist.at(k).endDateTime;
         QDateTime begTime = schedulelist.at(k).beginDateTime;
         if (begTime.date().daysTo(endTime.date())==0 && begTime.time().secsTo(endTime.time())<m_minTime) {
@@ -400,33 +402,41 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
                 endTime.time().second()==0) {
             endTime = endTime.addSecs(-1);
         }
+        containIndex.clear();
 
-        for (; i < info.count(); i++) {
+        for (int i = 0; i < info.count(); i++) {
             if ((schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
                     schedulelist.at(k).beginDateTime <= info.at(i).enddate) ||
                     (endTime >= info.at(i).begindate &&
-                     endTime <= info.at(i).enddate) ||
-                    (schedulelist.at(k).beginDateTime >= info.at(i).begindate &&
-                     endTime <= info.at(i).enddate) ||
-                    (schedulelist.at(k).beginDateTime <= info.at(i).begindate &&
-                     endTime >= info.at(i).enddate)) {
-                break;
+                     endTime <= info.at(i).enddate) ) {
+                containIndex.append(i);
             }
         }
-        if (i == info.count()) {
+        if (containIndex.count()==0) {
             ScheduleclassificationInfo firstschedule;
             firstschedule.begindate = schedulelist.at(k).beginDateTime;
             firstschedule.enddate = endTime;
             firstschedule.vData.append(schedulelist.at(k));
             info.append(firstschedule);
         } else {
-            if (schedulelist.at(k).beginDateTime < info.at(i).begindate) {
-                info[i].begindate = schedulelist.at(k).beginDateTime;
+            ScheduleclassificationInfo &scheduleInfo = info[containIndex.at(0)];
+            int index = 0;
+            for (int i = 1; i < containIndex.count(); ++i) {
+                index = containIndex.at(i);
+                if (info.at(index).begindate < scheduleInfo.begindate)
+                    scheduleInfo.begindate = info.at(index).begindate;
+                if (info.at(index).enddate>scheduleInfo.enddate)
+                    scheduleInfo.enddate = info.at(index).enddate;
+                scheduleInfo.vData.append(info.at(index).vData);
             }
-            if (endTime > info.at(i).enddate) {
-                info[i].enddate = endTime;
+            for (int i = containIndex.count() -1; i >0; --i) {
+                info.removeAt(containIndex.at(i));
             }
-            info[i].vData.append(schedulelist.at(k));
+            if (schedulelist.at(k).beginDateTime < scheduleInfo.begindate)
+                scheduleInfo.begindate = schedulelist.at(k).beginDateTime;
+            if (endTime>scheduleInfo.enddate)
+                scheduleInfo.enddate = endTime;
+            scheduleInfo.vData.append(schedulelist.at(k));
         }
     }
 }

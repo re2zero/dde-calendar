@@ -34,6 +34,7 @@ typedef struct _tagScheduleclassificationInfo {
     QDateTime begindate;
     QDateTime enddate;
     QVector<ScheduleDtailInfo> vData;
+
 } ScheduleclassificationInfo;
 
 class CScheduleCoorManage;
@@ -73,7 +74,7 @@ public:
     }
 
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
-                                    QVector<ScheduleclassificationInfo> &info);
+                                    QList<ScheduleclassificationInfo> &info);
     void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
