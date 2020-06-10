@@ -57,11 +57,6 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     m_TBFlag = true;
     m_margins = QMargins(0, 0, 0, 0);
 
-    int viewWidth = viewport()->width();
-    int viewHeight = viewport()->height();
-    QPointF newCenter(viewWidth / 2,  viewHeight / 2 - 1000);
-    centerOnScene(mapToScene(newCenter.toPoint()));
-
     setLineWidth(0);
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(scrollBarValueChangedSlot()));
@@ -87,6 +82,7 @@ CGraphicsView::~CGraphicsView()
 
 void CGraphicsView::setMargins(int left, int top, int right, int bottom)
 {
+    Q_UNUSED(top)
     m_margins = QMargins(left, 0, right, bottom);
     setViewportMargins(m_margins);
 }
@@ -146,7 +142,7 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int 
     m_Scene->setSceneRect(0, 0, w, h);
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
     m_rightmagin = rightmagin;
-    int totalDay = begindate.daysTo(enddate) + 1;
+    qint64 totalDay = begindate.daysTo(enddate) + 1;
     m_dayInterval = w * 1.0 / totalDay;
     m_timeInterval = h / 24.0;
     m_totalDay = totalDay;
@@ -349,7 +345,6 @@ void CGraphicsView::setSelectSchedule(const ScheduleDtailInfo &info)
         if (m_vScheduleItem.at(i)->getType() == 1)
             continue;
         if (m_vScheduleItem.at(i)->hasSelectSchedule(info)) {
-
             m_vScheduleItem.at(i)->setStartValue(0);
             m_vScheduleItem.at(i)->setEndValue(10);
             m_vScheduleItem.at(i)->startAnimation();
@@ -530,7 +525,6 @@ void CGraphicsView::wheelEvent( QWheelEvent *event )
     QPoint newCenter(viewWidth / 2,  viewHeight / 2 - test);
     QPointF centerpos = mapToScene(newCenter);
     centerOnScene(centerpos);
-
 }
 #endif
 
@@ -578,7 +572,6 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     QPainter t_painter(viewport());
     //t_painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
     int t_width = viewport()->width()  + 2;
-    int t_height = viewport()->height();
 //    //绘制垂直线
 //    if (m_TBFlag) {
 //        t_painter.save();
@@ -639,7 +632,6 @@ void CGraphicsView::scrollBarValueChangedSlot()
 {
     emit signalScheduleShow(false);
     QMutexLocker locker(&m_Mutex);
-    int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();
     //QPoint newCenter(viewWidth / 2,  viewHeight / 2 );
     //QPointF centerpos = mapToScene(newCenter);
@@ -651,7 +643,7 @@ void CGraphicsView::scrollBarValueChangedSlot()
     QPointF leftToprealPos = mapToScene(QPoint(0, 0));
     QPointF leftBttomrealPos = mapToScene(QPoint(0, viewHeight));
 
-    for (float i = m_dayInterval; i < scene()->width(); i = i + m_dayInterval) {
+    for (qreal i = m_dayInterval; i < scene()->width(); i = i + m_dayInterval) {
         m_vTBLarge.append(i);
     }
     float beginpos = (int)(leftToprealPos.y() / m_timeInterval) * m_timeInterval;
@@ -803,7 +795,7 @@ void CGraphicsView::setSceneHeightScale(const QPointF &pos)
 void CGraphicsView::keepCenterOnScene()
 {
     QPointF pos;
-    pos.setX(this->scene()->width()/2);
+    pos.setX(this->viewport()->width()/2);
     pos.setY(this->scene()->height()*m_sceneHeightScale);
     centerOnScene(pos);
 }
