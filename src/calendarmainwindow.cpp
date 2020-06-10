@@ -22,37 +22,39 @@
 #include <QWidget>
 #include <DAboutDialog>
 #include <DHiDPIHelper>
-#include "yearwindow.h"
-#include "monthwindow.h"
-#include "dbuscalendar_adaptor.h"
 #include <QSizePolicy>
-#include "weekwindow.h"
-#include "daywindow.h"
 #include <DPalette>
-#include "scheduledatamanage.h"
-#include "myschceduleview.h"
-#include "creatorparschedule.h"
 #include <QMenuBar>
 #include <com_deepin_daemon_calendar_scheduler.h>
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QMessageBox>
-#include "configsettings.h"
 #include <QShortcut>
-#include "shortcut.h"
-#include "schcedulesearchview.h"
 #include <QDesktopWidget>
 #include <QApplication>
 #include <DFontSizeManager>
+#include <DApplicationHelper>
+#include <DWidgetUtil>
+
+#include "yearwindow.h"
+#include "monthwindow.h"
+#include "dbuscalendar_adaptor.h"
+#include "weekwindow.h"
+#include "daywindow.h"
+#include "scheduledatamanage.h"
+#include "myschceduleview.h"
+#include "creatorparschedule.h"
+#include "configsettings.h"
+#include "shortcut.h"
+#include "schcedulesearchview.h"
+
 DGUI_USE_NAMESPACE
-static const int CalendarMTitleHeight = 50;
+DWIDGET_USE_NAMESPACE
 
 static const int CalendarMWidth = 860;
 static const int CalendarMHeight = 634;
 
-static const int WorkViewWidth = 860;
-static const int WorkViewHeight = 584;
 Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
 {
     m_DataGetThread = new DbusDataGetThread(CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getDbus(),
@@ -90,10 +92,8 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
         restoreGeometry(arrybyte);
         setWindowState(static_cast<Qt::WindowStates >(state));
     } else {
-        QDesktopWidget *w = QApplication::desktop();
-        move(w->screenGeometry(w->primaryScreen()).center() - geometry().center());
+        Dtk::Widget::moveToCenter(this);
     }
-
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
@@ -687,7 +687,7 @@ void Calendarmainwindow::setScheduleHide()
 void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
     m_transparentFrame->resize(width(), height() - 50);
-    m_scheduleSearchViewMaxWidth = 0.2325 * width() + 0.5;
+    m_scheduleSearchViewMaxWidth = qRound(0.2325 * width() + 0.5);
     m_schceduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
 //    if (m_opensearchflag) {
     setSearchWidth(m_scheduleSearchViewMaxWidth);
@@ -861,6 +861,7 @@ void Calendarmainwindow::slotStextfocusChanged(bool onFocus)
 
 void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
 {
+    Q_UNUSED(Ids);
     int index = m_stackWidget->currentIndex();
     if (index < 0 || index > m_stackWidget->count() - 1) {
 
@@ -892,6 +893,7 @@ void Calendarmainwindow::slotSearchEdit()
 
 void Calendarmainwindow::slotTransitSearchSchedule(int id)
 {
+    Q_UNUSED(id);
     getScheduleInfo();
     int index = m_stackWidget->currentIndex();
     if (index < 0 || index > m_stackWidget->count() - 1) {
@@ -1103,6 +1105,7 @@ void Calendarmainwindow::changeEvent(QEvent *event)
 
 void Calendarmainwindow::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     setScheduleHide();
 }
 

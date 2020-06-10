@@ -356,6 +356,7 @@ void CMonthWindow::slotScheduleHide()
 
 void CMonthWindow::slotupdateSchedule(int id)
 {
+    Q_UNUSED(id);
     m_monthView->slotSchceduleUpdate();
 }
 
@@ -371,24 +372,19 @@ void CMonthWindow::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 
 void CMonthWindow::resizeEvent(QResizeEvent *event)
 {
-    int tw = width() ;
-    int th = height() - 66;
-    int dw = width() * 0.5023 + 0.5;
+    qreal dw = width() * 0.5023 + 0.5;
     int dh = 36;
-    int space = (width() - dw) / 2 - 184;
-    int winframe = 10;
     if (m_searchfalg) {
         m_tmainLayout->setContentsMargins(0, 0, 0, 0);
     } else {
-        winframe = 20;
         m_tmainLayout->setContentsMargins(0, 0, 10, 0);
     }
     if (!m_searchfalg) {
-        m_monthDayView->setFixedSize(dw, dh);
+        m_monthDayView->setFixedSize(qRound(dw), dh);
         //m_monthDayView->setwindowFixw(dw, width());
     } else {
         //m_monthDayView->setwindowFixw(dw, width() - 0.2325 * width() + 0.5 - 260);
-        m_monthDayView->setFixedSize(dw, dh);
+        m_monthDayView->setFixedSize(qRound(dw), dh);
     }
     //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     QMainWindow::resizeEvent(event);

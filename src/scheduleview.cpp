@@ -120,6 +120,7 @@ void CScheduleView::setTheMe(int type)
 
 void CScheduleView::setLunarVisible(bool state)
 {
+    Q_UNUSED(state);
 //    m_alldaylist->setLunarVisible(state);
 }
 
@@ -346,15 +347,15 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.drawText(QRect(0, 0, m_leftMagin - 2, m_topMagin - 2), Qt::AlignCenter, tr("ALL DAY"));
     painter.restore();
     int t_width = width();
-    float intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
+    qreal intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
     if (m_TotalDay > 1) {
         painter.save();
         painter.setPen(Qt::SolidLine);
         painter.setPen(m_linecolor);
 
-        for (float i = intenval; i < width() - m_leftMagin; i = i + intenval) {
-            painter.drawLine(QPoint(i + m_leftMagin + 1, 1),
-                             QPoint(i + m_leftMagin + 1, this->height() + 1));
+        for (qreal i = intenval; i < width() - m_leftMagin; i = i + intenval) {
+            painter.drawLine(QPointF(i + m_leftMagin + 1, 1),
+                             QPointF(i + m_leftMagin + 1, this->height() + 1));
         }
 
         painter.restore();
@@ -364,12 +365,12 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             painter.setBrush(m_weekColor);
             painter.setPen(Qt::NoPen);
             if (d == 6) {
-                painter.drawRect(QRect(m_leftMagin + i * intenval + 1, 0,
-                                       width() - m_leftMagin - i * intenval, this->height()));
+                painter.drawRect(QRectF(m_leftMagin + i * intenval + 1, 0,
+                                        width() - m_leftMagin - i * intenval, this->height()));
             }
             if (d == 7) {
                 painter.drawRect(
-                    QRect(m_leftMagin + i * intenval + 2, 0, intenval, this->height()));
+                    QRectF(m_leftMagin + i * intenval + 2, 0, intenval, this->height()));
             }
         }
         painter.restore();
@@ -464,6 +465,8 @@ void CScheduleView::initConnection()
 }
 void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
 {
+    Q_UNUSED(date);
+    Q_UNUSED(type);
     updateSchedule();
 }
 
@@ -566,7 +569,7 @@ int CScheduleView::scheduleViewHegith()
 {
 //    rHeight = m_height * ((ScheduleET - ScheduleBT) / 86400.0)
 
-    int mheight = 0;
+    qreal mheight = 0;
     if (m_viewType == 0) {
         mheight = 24 * (0.0968 * height() + 0.5);
     } else {
@@ -574,7 +577,7 @@ int CScheduleView::scheduleViewHegith()
     }
     //现在最小高度为20;
     mheight = mheight <500? 1035:mheight;
-    int m_minTime = (20.0/mheight)*86400;
+    int m_minTime = qRound((20.0/mheight)*86400);
     m_graphicsView->setMinTime(m_minTime);
-    return  mheight;
+    return  qRound(mheight);
 }

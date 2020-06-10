@@ -179,6 +179,7 @@ void CMonthView::resizeEvent(QResizeEvent *event)
 
 void CMonthView::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     slotScheduleRemindWidget(false);
 }
 
@@ -195,13 +196,11 @@ void CMonthView::setCurrentDate(const QDate date)
     slotScheduleRemindWidget(false);
     qDebug() << "set current date " << date;
     if (date.year() < 1900) return;
-    bool flag = false;
     if (date.month() != m_currentDate.month()) {
         m_festivallist.clear();
         m_DBusInter->GetFestivalMonth(date.addMonths(-1).year(), date.addMonths(-1).month(), m_festivallist);
         m_DBusInter->GetFestivalMonth(date.year(), date.month(), m_festivallist);
         m_DBusInter->GetFestivalMonth(date.addMonths(1).year(), date.addMonths(1).month(), m_festivallist);
-        flag = true;
     }
     m_currentDate = date;
     m_MonthGraphicsView->setFestivalInfo(m_festivallist);

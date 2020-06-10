@@ -393,6 +393,7 @@ void CWeekWindow::slotReturnTodayUpdate()
 
 void CWeekWindow::slotupdateSchedule(int id)
 {
+    Q_UNUSED(id);
     m_scheduleView->slotupdateSchedule();
     //m_scheduleView->setTime(QTime::currentTime());
 }
@@ -516,15 +517,10 @@ void CWeekWindow::slotScheduleHide()
 
 void CWeekWindow::resizeEvent(QResizeEvent *event)
 {
-    int sleftMagin = 0.093 * width() + 0.5;
-    int stopMagin = 0.1797 * height() + 0.5;
-
-    int headh = height() * 0.0924 + 0.5;
-    int sh = height() - headh - 78;
-    int topmagin = height() * 0.0193 + 0.5;
-    int buttonmagin = topmagin;
-
-    int dw = width() * 0.4186 + 0.5;
+    qreal sleftMagin = 0.093 * width() + 0.5;
+    qreal headh = height() * 0.0924 + 0.5;
+    qreal sh = height() - headh - 78;
+    qreal dw = width() * 0.4186 + 0.5;
     int dh = 36;
 //    int space = (width() - dw) / 2 - 220;
 
@@ -543,29 +539,30 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
 
     //m_spaceitem->changeSize(space, 36, QSizePolicy::Fixed, QSizePolicy::Fixed);
     if (!m_searchfalg) {
-        m_weekview->setFixedSize(dw, dh);
+        m_weekview->setFixedSize(qRound(dw), dh);
     } else {
         //m_weekview->setwindowFixw(dw, width() - 0.2325 * width() + 0.5 - 220 - 260);
-        m_weekview->setFixedSize(dw - 100, dh);
+        m_weekview->setFixedSize(qRound(dw - 100), dh);
     }
     //m_weekview->setFixedHeight(dh);
 
     // m_weekview->setFixedSize(dw, dh);
 
     //m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
-    m_weekHeadView->setMounthLabelWidth(sleftMagin + 1, width() * 0.9802 + 0.5);
+    m_weekHeadView->setMounthLabelWidth(qRound(sleftMagin + 1), qRound(width() * 0.9802 + 0.5));
     // m_weekHeadView->setFixedHeight(headh);
     //m_weekHeadView->setFixedSize(width() * 0.9802 + 0.5, headh);
-    m_weekHeadView->setFixedSize(width() - winframe, headh);
+    m_weekHeadView->setFixedSize(width() - winframe, qRound(headh));
 //    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
     //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
-    m_scheduleView->setFixedSize(width() - winframe, sh - 10);
+    m_scheduleView->setFixedSize(width() - winframe, qRound(sh - 10));
     QMainWindow::resizeEvent(event);
 }
 
 void CWeekWindow::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     slotScheduleHide();
 }
 
