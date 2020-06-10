@@ -72,6 +72,7 @@ public:
     {
         m_sMaxNum = maxnum;
     }
+    void keepCenterOnScene();
 
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
                                     QList<ScheduleclassificationInfo> &info);
@@ -151,6 +152,8 @@ private:
     int checkDay(int weekday);
     void TimeRound(QDateTime &dtime);
     QDateTime TimeRounding(const QDateTime &time);
+    void centerOnScene(const QPointF &pos);
+    void setSceneHeightScale(const QPointF &pos);
 public:
     void setTheMe(int type = 0) override;
 protected:
@@ -181,6 +184,7 @@ private:
     float                           m_timeInterval;
     int                             m_firstWeekDay;
     int                             m_totalDay;
+    qreal                           m_sceneHeightScale =0;
 
     QColor                          m_weekcolor = "#4F9BFF";
     QColor                          m_currenttimecolor = "#F74444";

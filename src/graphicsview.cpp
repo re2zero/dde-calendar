@@ -59,14 +59,8 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
 
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();
-    // view 根据鼠标下的点作为锚点来定位 scene
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    QPoint newCenter(viewWidth / 2,  viewHeight / 2 - 1000);
-    centerOn(mapToScene(newCenter));
-
-    // scene 在 view 的中心点作为锚点
-    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-    scrollBarValueChangedSlot();
+    QPointF newCenter(viewWidth / 2,  viewHeight / 2 - 1000);
+    centerOnScene(mapToScene(newCenter.toPoint()));
 
     setLineWidth(0);
     m_timer = new QTimer(this);
@@ -159,17 +153,10 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int 
     if (m_viewType ==0) {
         int viewWidth = viewport()->width();
         int viewHeight = viewport()->height();
-        // view 根据鼠标下的点作为锚点来定位 scene
-        setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
         QPoint newCenter(viewWidth / 2,  viewHeight / 2 - 2000);
-        centerOn(mapToScene(newCenter));
 
-        // scene 在 view 的中心点作为锚点
-        setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-
+        centerOnScene(mapToScene(newCenter));
     }
-
-    scrollBarValueChangedSlot();
 }
 
 void CGraphicsView::setRange(QDate begin, QDate end)
@@ -542,14 +529,8 @@ void CGraphicsView::wheelEvent( QWheelEvent *event )
     int viewHeight = viewport()->height();
     QPoint newCenter(viewWidth / 2,  viewHeight / 2 - test);
     QPointF centerpos = mapToScene(newCenter);
-    // view 根据鼠标下的点作为锚点来定位 scene
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    centerOn(centerpos.x(), centerpos.y());
-    // scene 在 view 的中心点作为锚点
-    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    centerOnScene(centerpos);
 
-    scrollBarValueChangedSlot();
-//    //DGraphicsView::wheelEvent(event);
 }
 #endif
 
@@ -803,6 +784,30 @@ QDateTime CGraphicsView::TimeRounding(const QDateTime &time)
     return QDateTime(time.date(),QTime(hours,minnutes*15,0));
 }
 
+void CGraphicsView::centerOnScene(const QPointF &pos)
+{
+    // view 根据鼠标下的点作为锚点来定位 scene
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    centerOn(pos);
+    // scene 在 view 的中心点作为锚点
+    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    scrollBarValueChangedSlot();
+    setSceneHeightScale(pos);
+}
+
+void CGraphicsView::setSceneHeightScale(const QPointF &pos)
+{
+    m_sceneHeightScale = pos.y()/this->scene()->height();
+}
+
+void CGraphicsView::keepCenterOnScene()
+{
+    QPointF pos;
+    pos.setX(this->scene()->width()/2);
+    pos.setY(this->scene()->height()*m_sceneHeightScale);
+    centerOnScene(pos);
+}
+
 
 /************************************************************************
 Function:       setLargeScaleInfo()
@@ -841,17 +846,11 @@ void CGraphicsView::setTime(QTime time)
 {
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();
-    // view 根据鼠标下的点作为锚点来定位 scene
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
     QPoint newCenter(viewWidth / 2,  viewHeight / 2);
     QPointF centerpos = mapToScene(newCenter);
     centerpos = QPointF(centerpos.x(), m_coorManage->getHeight(time));
-    centerOn(centerpos.x(), centerpos.y());
-
-    // scene 在 view 的中心点作为锚点
-    setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-    scrollBarValueChangedSlot();
+    centerOnScene(centerpos);
 }
 
 void CGraphicsView::updateInfo()

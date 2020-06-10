@@ -400,8 +400,7 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
     QFrame::resizeEvent(event);
     updateAllday();
     m_graphicsView->updateInfo();
-    m_graphicsView->update();
-    m_graphicsView->scene()->update();
+    m_graphicsView->keepCenterOnScene();
 }
 
 void CScheduleView::initUI()
