@@ -445,7 +445,6 @@ void CWeekHeadView::paintCell(QWidget *cell)
     const QRect rect(0, 0, cell->width(), cell->height());
 
     const int pos = m_cellList.indexOf(cell);
-    const int type = getDateType(m_days[pos]);
 
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
     // const bool isSelectedCell = pos == m_selectedCell;
@@ -671,5 +670,6 @@ int CWeekHeadView::checkDay(int weekday)
 
 void CWeekHeadView::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     emit signaleSchedulHide();
 }

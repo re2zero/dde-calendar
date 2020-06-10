@@ -247,16 +247,16 @@ void CSchceduleSearchItem::slotDelete()
 
 void CSchceduleSearchItem::slotDoubleEvent(int type)
 {
+    Q_UNUSED(type);
     emit signalsDelete(this);
 }
 
 void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 {
+    Q_UNUSED(e);
     int labelwidth = width();
     int labelheight = height();
-
     QPainter painter(this);
-    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
     QColor bcolor = m_Backgroundcolor;
     QColor textcolor = m_ttextcolor;
     QColor timecolor = m_timecolor;
@@ -388,6 +388,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 }
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
+    Q_UNUSED(event);
     if (m_ScheduleInfo.type.ID == 4)
         return;
     m_rightMenu->clear();
@@ -398,6 +399,7 @@ void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 
 void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     emit signalViewtransparentFrame(1);
     CMySchceduleView dlg(m_ScheduleInfo, this);
 //    dlg.setSchedules(m_ScheduleInfo);
@@ -428,18 +430,21 @@ void CSchceduleSearchItem::mouseReleaseEvent(QMouseEvent *event)
 
 void CSchceduleSearchItem::enterEvent(QEvent *event)
 {
+    Q_UNUSED(event);
     m_mouseStatus = M_HOVER;
     update();
 }
 
 void CSchceduleSearchItem::leaveEvent(QEvent *event)
 {
+    Q_UNUSED(event);
     m_mouseStatus = M_NONE;
     update();
 }
 
 bool CSchceduleSearchItem::eventFilter(QObject *o, QEvent *e)
 {
+    Q_UNUSED(o);
     if (e->type() == QEvent::MouseButtonPress) {
         QMouseEvent *m_press = dynamic_cast<QMouseEvent *>(e);
         if (m_press->button() == Qt::LeftButton) {
@@ -772,8 +777,8 @@ void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
     }
     if (m_gradientItemList->count() == 1) {
         QListWidgetItem *item11 = m_gradientItemList->item(0);
-        item11->setSizeHint(QSize(m_maxWidth, height() * 0.7978)); //每次改变Item的高度
-        m_labellist.at(0)->setFixedSize(m_maxWidth, height() * 0.7978);
+        item11->setSizeHint(QSize(m_maxWidth, qRound(height() * 0.7978))); //每次改变Item的高度
+        m_labellist.at(0)->setFixedSize(m_maxWidth, qRound(height() * 0.7978));
         m_labellist.at(0)->update();
     }
     if (m_gradientItemList->count() >1) {
@@ -812,6 +817,7 @@ void CSchceduleSearchDateItem::setDate(QDate date)
 
 void CSchceduleSearchDateItem::paintEvent(QPaintEvent *e)
 {
+    Q_UNUSED(e);
     int labelwidth = width();
     int labelheight = height();
 
@@ -838,6 +844,7 @@ void CSchceduleSearchDateItem::paintEvent(QPaintEvent *e)
 
 void CSchceduleSearchDateItem::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     emit signalLabelScheduleHide();
 }
 

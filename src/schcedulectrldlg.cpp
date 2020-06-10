@@ -154,6 +154,7 @@ void CSchceduleCtrlDlg::initConnection()
 
 void CSchceduleCtrlDlg::changeEvent(QEvent *event)
 {
+    Q_UNUSED(event)
     QFont font;
 
     QFontMetrics font_firstLabel(font);
@@ -199,9 +200,6 @@ void CSchceduleCtrlDlg::updatesize()
         int rw = w * m_buttonlist.count() + (m_buttonlist.count() - 1) * 23 + 20;
         setFixedWidth(rw);
     }
-
-
-    QRect rect = m_firstLabel->geometry();
     //rect.setHeight(rect.height());
     //m_firstLabel->setGeometry(rect); //
     m_firstLabel->adjustSize();
@@ -319,7 +317,7 @@ void CSchceduleCtrlDlg::setInformativeText(QString str)
 
 DPushButton *CSchceduleCtrlDlg::clickButton()
 {
-    if (m_id < 0 || m_id > m_buttonlist.count() - 1) return  NULL;
+    if (m_id < 0 || m_id > m_buttonlist.count() - 1) return  nullptr;
     return m_buttonlist[m_id];
 }
 

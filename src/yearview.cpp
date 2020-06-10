@@ -325,7 +325,7 @@ void CYearView::mousePressEvent(QMouseEvent *event)
 
 void CYearView::paintEvent(QPaintEvent *e)
 {
-
+    Q_UNUSED(e);
     int labelwidth = width() - 2 * m_borderframew;
     int labelheight = height() - 2 * m_borderframew;
 

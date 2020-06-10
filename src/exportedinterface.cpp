@@ -28,7 +28,7 @@ QVariant ExportedInterface::invoke(const QString &action, const QString &paramet
         dynamic_cast<Calendarmainwindow *>(m_object)->viewWindow(para.viewType, para.viewTime);
     } else if (action == "QUERY") {
         QString qstr;
-        bool flag =  CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(para.ADTitleName, para.ADStartTime, para.ADEndTime, qstr);
+//        bool flag =  CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(para.ADTitleName, para.ADStartTime, para.ADEndTime, qstr);
         return QVariant(qstr);
     } else if (action == "CANCEL") {
         QVector<ScheduleDateRangeInfo> out;

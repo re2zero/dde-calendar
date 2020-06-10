@@ -98,11 +98,6 @@ QString GetStyleSheetContent()
     }
 }
 
-QRect PrimaryRect()
-{
-    QDesktopWidget *w = QApplication::desktop();
-    return w->screenGeometry(w->primaryScreen());
-}
 #include "schedulesdbus.h"
 int main(int argc, char *argv[])
 {
@@ -164,7 +159,6 @@ int main(int argc, char *argv[])
     //ww.setDate(QDate::currentDate());
     ww.slotTheme(getThemeTypeSetting());
     ww.viewWindow(viewtype, QDateTime::currentDateTime());
-    //ww.move(PrimaryRect().center() - ww.geometry().center());
     ww.show();
 
     //QDBusConnection dbus = QDBusConnection::sessionBus();

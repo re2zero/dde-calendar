@@ -278,6 +278,7 @@ void CDayMonthView::updateFlag()
 }
 void CDayMonthView::setCurrentDate(const QDate date, int type)
 {
+    Q_UNUSED(type);
     if (date.year() < 1900) return;
     if (date == m_currentDate) {
         return;
@@ -811,27 +812,11 @@ void CDayMonthView::getDbusData()
 
     CaHuangLiDayInfo currentDayInfo;
     if (!lunarCache->contains(date)) {
-        bool o1 = false;
-#if 0
-        CaHuangLiMonthInfo currentMonth;
-        if (m_DBusInter->GetHuangLiMonthCalendar(date.year(), date.month(), o1, currentMonth)) {
-            QDate cacheDate;
-            cacheDate.setDate(date.year(), date.month(), 1);
-            foreach (const CaHuangLiDayInfo &dayInfo, currentMonth.mCaLunarDayInfo) {
-                lunarCache->insert(cacheDate, dayInfo);
-                if (date == m_currentDate) {
-                    currentDayInfo = dayInfo;
-                }
-                cacheDate = cacheDate.addDays(1);
-            }
-        }
-#else
         CaHuangLiDayInfo scurrentDayinfo;
         if (m_DBusInter->GetHuangLiDayCalendar(date.year(), date.month(), date.day(), scurrentDayinfo)) {
             lunarCache->insert(date, scurrentDayinfo);
             currentDayInfo = scurrentDayinfo;
         }
-#endif
 
 
     } else {
@@ -848,31 +833,31 @@ void CDayMonthView::getDbusData()
 
 void CDayMonthView::resizeEvent(QResizeEvent *event)
 {
-    cellwidth = width() * 0.1005 + 0.5;
-    cellheight = height() * 0.0496 + 0.5;
-    m_gridLayout->setHorizontalSpacing(width() * 0.0287 + 0.5);
+    Q_UNUSED(event);
+    cellwidth = qRound(width() * 0.1005 + 0.5);
+    cellheight = qRound(height() * 0.0496 + 0.5);
+    m_gridLayout->setHorizontalSpacing(qRound(width() * 0.0287 + 0.5));
     m_gridLayout->setVerticalSpacing(0);
-    int leftmagin = width() * 0.0332 + 0.5;
+    int leftmagin = qRound(width() * 0.0332 + 0.5);
     int rightmagin = leftmagin;
-    int topmagin = height() * 0.0164 + 0.5;
+    int topmagin = qRound(height() * 0.0164 + 0.5);
     int buttonmagin = topmagin;
     m_upLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
-    int tt = 12 + (width() - 347) / 71.66;
-    m_dayNumFont.setPixelSize(12 + (width() - 347) / 71.66);
+    m_dayNumFont.setPixelSize(qRound(12 + (width() - 347) / 71.66));
     for (int i(0); i != 42; ++i) {
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
         m_cellList.at(i)->update();
     }
-    m_splitline->setFixedWidth(0.6925 * width() + 0.5);
+    m_splitline->setFixedWidth(qRound(0.6925 * width() + 0.5));
 
-    int hleftmagin = width() * 0.026 + 0.5;
+    int hleftmagin = qRound(width() * 0.026 + 0.5);
     int hrightmagin = hleftmagin;
-    int htopmagin = height() * 0.01773 + 0.5;
+    int htopmagin = qRound(height() * 0.01773 + 0.5);
     int hbuttonmagin = htopmagin;
     int lw = width() - hleftmagin * 2;
-    int lh = height() * 0.0992;
+    int lh = qRound(height() * 0.0992);
     m_yiLabel->setFixedSize(lw, lh);
-    m_yidownLayout->setContentsMargins(hleftmagin, htopmagin * 0.5, hrightmagin, 0);
+    m_yidownLayout->setContentsMargins(hleftmagin, qRound(htopmagin * 0.5), hrightmagin, 0);
     m_jiLabel->setFixedSize(lw, lh);
     m_jidownLayout->setContentsMargins(hleftmagin, htopmagin, hrightmagin, hbuttonmagin);
 }
@@ -909,11 +894,11 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
 
 void CDayMonthView::paintEvent(QPaintEvent *e)
 {
+    Q_UNUSED(e);
     int labelwidth = width();
     int labelheight = height();
     DPalette anipa = this->palette();
     QPainter painter(this);
-    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
     painter.setBrush(anipa.background());

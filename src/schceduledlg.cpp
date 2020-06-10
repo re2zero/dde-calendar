@@ -495,6 +495,7 @@ void CSchceduleDlg::showEvent(QShowEvent *event)
 
 void CSchceduleDlg::changeEvent(QEvent *event)
 {
+    Q_UNUSED(event);
     QFont mlabelF;
     mlabelF.setWeight(QFont::Medium);
 
@@ -1114,6 +1115,7 @@ void CSchceduleDlg::initRmindRpeatUI()
 
 void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &newinfo, const ScheduleDtailInfo &oldinfo, int m_themetype)
 {
+    Q_UNUSED(m_themetype);
     if (newinfo.RecurID == 0) {
         CSchceduleCtrlDlg msgBox(parent);
         msgBox.setText(tr("You are changing a repeating event."));

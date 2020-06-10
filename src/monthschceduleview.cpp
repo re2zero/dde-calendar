@@ -45,6 +45,7 @@ CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem(QRect rect, QGraphicsItem *
     : DragInfoItem(rect,parent),
       m_pos(13,5)
 {
+    Q_UNUSED(edittype);
 }
 
 CMonthSchceduleWidgetItem::~CMonthSchceduleWidgetItem()
@@ -200,6 +201,7 @@ void CMonthSchceduleNumButton::setColor( QColor color1, QColor color2, bool Grad
 
 void CMonthSchceduleNumButton::setText( QColor tcolor, QFont font, QPoint pos)
 {
+    Q_UNUSED(pos);
     m_textcolor = tcolor;
     m_font = font;
 //    m_pos = pos;
@@ -278,6 +280,7 @@ void CMonthSchceduleNumButton::paint(QPainter *painter, const QStyleOptionGraphi
 
 void CMonthSchceduleView::setTheMe(int type)
 {
+    Q_UNUSED(type);
     updateData();
 }
 
@@ -322,6 +325,7 @@ void CMonthSchceduleView::slotdeleteitem( CMonthSchceduleWidgetItem *item)
 
 void CMonthSchceduleView::slotedititem(CMonthSchceduleWidgetItem *item, int type)
 {
+    Q_UNUSED(type);
     emit signalsUpdateShcedule(item->getData().id);
 }
 

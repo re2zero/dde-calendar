@@ -74,6 +74,7 @@ void CYearSchceduleItem::setData( ScheduleDtailInfo vScheduleInfo)
 
 void CYearSchceduleItem::paintEvent( QPaintEvent *e )
 {
+    Q_UNUSED(e);
     int labelwidth = width();
     int labelheight = height();
 
@@ -481,6 +482,7 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
 
 void CYearSchceduleView::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
 #if 0
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialia if (!m_soloDay.isEmpty()) {
@@ -904,8 +906,8 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 
 void CYearSchceduleView::paintItem()
 {
-    int labelwidth = width() - 40;
-    int labelheight = 45;
+//    int labelwidth = width() - 40;
+//    int labelheight = 45;
 
     QFont font/*(fontfamily)*/;
     font.setPixelSize(fontsize);
@@ -990,6 +992,7 @@ void CYearSchceduleOutView::adjustPosition(bool ad)
 
 void CYearSchceduleOutView::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     QPoint pos = QCursor::pos();
     pos = this->mapFromGlobal(pos);
     QVector<QRect> rect_press;

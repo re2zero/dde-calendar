@@ -163,7 +163,7 @@ void CTimeEditCtrl::slotcurrentValueChanged(int value)
 
 void CTimeEditCtrl::slotcurrentValueChanged(const QString &text)
 {
-
+    Q_UNUSED(text);
 }
 
 void CTimeEditCtrl::slotcurrentValueChangedClose(int value)

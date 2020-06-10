@@ -160,7 +160,6 @@ void VerticalScrollText::paintEvent(QPaintEvent *)
     emit currentValueChanged(m_vTextstr[m_currentValue]);
     paintNum(painter, m_currentValue, m_deviation);
 
-    int out = -1;
     //两侧数字1
     if (m_currentValue != m_minRange) {
         paintNum(painter, m_currentValue - interval, m_deviation + Height / devide);

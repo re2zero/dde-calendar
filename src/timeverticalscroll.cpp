@@ -79,7 +79,6 @@ void CTimeVerticalScroll::setCurrValue(int value)
 {
     m_currentValue = value;
     homing();
-    int w = width();
     repaint();
 }
 

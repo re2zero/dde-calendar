@@ -24,8 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += src/calendardbus.h \
            src/constants.h \
            src/dbuscalendar_adaptor.h \
-           src/infoview.h \
-           src/spinner.h \
            src/weekindicator.h \
            src/environments.h \
            src/yearview.h \
@@ -75,9 +73,7 @@ HEADERS += src/calendardbus.h \
     src/dbusdatagetthread.h
 SOURCES += src/calendardbus.cpp \
            src/dbuscalendar_adaptor.cpp \
-           src/infoview.cpp \
            src/main.cpp \
-           src/spinner.cpp \
            src/weekindicator.cpp \
            src/yearview.cpp \
            src/yearwindow.cpp \

@@ -194,6 +194,7 @@ bool CMySchceduleView::eventFilter(QObject *o, QEvent *e)
 //    if (cell == w && e->type() == QEvent::Paint) {
 //        paintLabel(cell);
 //    }
+    Q_UNUSED(o);
     if (e->type() == QEvent::FontChange) {
         AutoFeed(m_scheduleInfo.titleName);
     }
@@ -279,7 +280,6 @@ void CMySchceduleView::slotEditBt()
 
 void CMySchceduleView::slotDeleteBt()
 {
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     if (m_scheduleInfo.rpeat == 0) {
         CSchceduleCtrlDlg msgBox;

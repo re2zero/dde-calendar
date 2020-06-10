@@ -59,6 +59,7 @@ void CDayHuangLiLabel::setHuangLiText(QStringList vhuangli, int type)
 }
 void CDayHuangLiLabel::paintEvent( QPaintEvent *e )
 {
+    Q_UNUSED(e);
     int labelwidth = width();
     int labelheight = height();
 

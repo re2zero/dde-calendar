@@ -46,6 +46,7 @@ DGUI_USE_NAMESPACE
 CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
     : DragInfoItem (rect,parent)
 {
+    Q_UNUSED(edittype);
 
 }
 

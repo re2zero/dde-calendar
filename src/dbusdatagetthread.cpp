@@ -63,11 +63,12 @@ void DataGetWork::getScheduleInfo(YearScheduleInfo *ScheduleInfo)
 
 void DataGetWork::getLunarInfo(YearLunar *lunarInfo)
 {
+    Q_UNUSED(lunarInfo);
 
 }
 
 void DataGetWork::getFestivalInfo(YearFestival *festivalInfo)
 {
-
+    Q_UNUSED(festivalInfo);
 }
 

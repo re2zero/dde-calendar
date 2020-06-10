@@ -253,7 +253,6 @@ void CWeekView::setSelectedCell(int index)
 
 void CWeekView::updateDate()
 {
-    int  weekNum = m_selectDate.weekNumber();
     m_weekAddDay = (m_selectDate.dayOfWeek() + m_firstWeekDay) % 7;
     QDate weekfirstDay = m_selectDate.addDays(-m_weekAddDay);
     m_days[4] = weekfirstDay;

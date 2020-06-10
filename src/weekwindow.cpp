@@ -519,7 +519,6 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
 {
     qreal sleftMagin = 0.093 * width() + 0.5;
     qreal headh = height() * 0.0924 + 0.5;
-    qreal sh = height() - headh - 78;
     qreal dw = width() * 0.4186 + 0.5;
     int dh = 36;
 //    int space = (width() - dw) / 2 - 220;
@@ -556,7 +555,7 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
 //    m_scheduleView->setviewMagin(sleftMagin, stopMagin, 0, 0);
     //m_schceduleSearchView->setFixedWidth(0.2325 * width() + 0.5);
     //m_scheduleView->setFixedSize(width() * 0.9802 + 0.5, sh);
-    m_scheduleView->setFixedSize(width() - winframe, qRound(sh - 10));
+//    m_scheduleView->setFixedSize(width() - winframe, qRound(sh - 10));
     QMainWindow::resizeEvent(event);
 }
 
