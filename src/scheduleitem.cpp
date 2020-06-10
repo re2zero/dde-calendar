@@ -33,7 +33,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-CScheduleItem::CScheduleItem(QRect rect, QGraphicsItem *parent, int type)
+CScheduleItem::CScheduleItem(QRectF rect, QGraphicsItem *parent, int type)
     : DragInfoItem (rect,parent)
     , m_type(type)
 {

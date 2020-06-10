@@ -16,7 +16,7 @@ class DragInfoItem : public QObject, public QGraphicsRectItem
     Q_OBJECT
     Q_PROPERTY(int offset WRITE setOffset)
 public:
-    explicit DragInfoItem(QRect rect, QGraphicsItem *parent = nullptr);
+    explicit DragInfoItem(QRectF rect, QGraphicsItem *parent = nullptr);
     ~DragInfoItem() override;
     void setData(const ScheduleDtailInfo  &vScheduleInfo);
     ScheduleDtailInfo getData() const;
@@ -46,7 +46,7 @@ protected:
     bool                                m_vSelectflag =false;
     bool                                m_vHoverflag = false;
     bool                                m_vHighflag = false;
-    QRect                               m_rect;
+    QRectF                              m_rect;
     bool                                m_isAnimation = false;
     DFontSizeManager::SizeType          m_sizeType  = DFontSizeManager::T8;
     QPropertyAnimation                  *m_properAnimationFirst;

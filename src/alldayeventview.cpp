@@ -43,7 +43,7 @@
 
 DGUI_USE_NAMESPACE
 
-CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRect rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
+CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
     : DragInfoItem (rect,parent)
 {
 
@@ -501,7 +501,7 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
     Q_UNUSED(average)
     for (int i = 0; i < m_vlistData[index].size(); ++i) {
         const ScheduleDtailInfo &info = m_vlistData[index].at(i);
-        QRect drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
+        QRectF drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
         drawrect.setY(3 + (itemHeight + 1)*index);
         drawrect.setHeight(itemHeight);
 

@@ -114,7 +114,7 @@ class CAllDayEventWidgetItem : public DragInfoItem
 {
     Q_OBJECT
 public:
-    explicit CAllDayEventWidgetItem(QRect rect, QGraphicsItem *parent = nullptr, int edittype = 0);
+    explicit CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *parent = nullptr, int edittype = 0);
     bool hasSelectSchedule(const ScheduleDtailInfo &info);
 protected:
     void paintBackground(QPainter *painter,const QRectF &rect,const int isPixMap = false) override;

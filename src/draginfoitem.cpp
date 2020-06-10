@@ -6,7 +6,7 @@
 
 bool DragInfoItem::m_press = false;
 ScheduleDtailInfo DragInfoItem::m_HoverInfo;
-DragInfoItem::DragInfoItem(QRect rect, QGraphicsItem *parent)
+DragInfoItem::DragInfoItem(QRectF rect, QGraphicsItem *parent)
     :QGraphicsRectItem(parent),
      m_rect(rect)
 {

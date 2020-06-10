@@ -180,10 +180,10 @@ private:
     QPen                            m_TBPen;           //垂直线画笔
     QVector<int>                    m_vLRLarge;        //大刻度像素位置
     QVector<int>                    m_vTBLarge;        //大刻度像素位置
-    float                           m_dayInterval;
-    float                           m_timeInterval;
+    qreal                           m_dayInterval;
+    qreal                           m_timeInterval;
     int                             m_firstWeekDay;
-    int                             m_totalDay;
+    qint64                             m_totalDay;
     qreal                           m_sceneHeightScale =0;
 
     QColor                          m_weekcolor = "#4F9BFF";
