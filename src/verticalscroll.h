@@ -27,7 +27,7 @@
 class VerticalScroll : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(int deviation WRITE setDeviation)
+    Q_PROPERTY(int deviation READ readDeviation WRITE setDeviation)
 public:
 
     explicit VerticalScroll(QWidget *parent = nullptr);
@@ -54,7 +54,7 @@ protected:
     //使选中的数字回到屏幕中间
     void homing();
     //鼠标移动偏移量，默认为0
-    int readDeviation();
+    int readDeviation() const;
     //设置偏移量
     void setDeviation(int n);
 

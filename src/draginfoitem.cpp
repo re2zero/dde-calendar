@@ -60,10 +60,11 @@ void DragInfoItem::setFont(DFontSizeManager::SizeType type)
 
 void DragInfoItem::setOffset(const int &offset)
 {
-    setRect(QRect(m_rect.x() - offset,
-                  m_rect.y() - offset / 2,
-                  m_rect.width() + offset * 2,
-                  m_rect.height() + offset));
+    m_offset = offset;
+    setRect(QRectF(m_rect.x() - offset,
+                   m_rect.y() - offset / 2,
+                   m_rect.width() + offset * 2,
+                   m_rect.height() + offset));
     setZValue(offset);
 }
 

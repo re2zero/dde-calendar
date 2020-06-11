@@ -51,7 +51,7 @@ class CSchceduleSearchView;
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
-    Q_PROPERTY(int schedulesearchWidth WRITE setSearchWidth)
+//    Q_PROPERTY(int schedulesearchWidth WRITE setSearchWidth)
 public:
     Calendarmainwindow(QWidget *w = nullptr);
     //void Invoke(const QString &mothodName, const QString &content);

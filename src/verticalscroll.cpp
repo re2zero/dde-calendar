@@ -310,7 +310,7 @@ void VerticalScroll::homing()
     homingAni->start();
 }
 
-int VerticalScroll::readDeviation()
+int VerticalScroll::readDeviation() const
 {
     return m_deviation;
 }

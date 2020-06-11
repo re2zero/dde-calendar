@@ -353,7 +353,7 @@ void CTimeVerticalScroll::homing()
     homingAni->start();
 }
 
-int CTimeVerticalScroll::readDeviation()
+int CTimeVerticalScroll::readDeviation() const
 {
     return m_deviation;
 }

@@ -14,7 +14,7 @@ class QSequentialAnimationGroup;
 class DragInfoItem : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
-    Q_PROPERTY(int offset WRITE setOffset)
+    Q_PROPERTY(int offset READ readOffset WRITE setOffset)
 public:
     explicit DragInfoItem(QRectF rect, QGraphicsItem *parent = nullptr);
     ~DragInfoItem() override;
@@ -23,6 +23,10 @@ public:
 
     void setFont(DFontSizeManager::SizeType type);
     void setOffset(const int &offset);
+    int readOffset() const
+    {
+        return m_offset;
+    };
     void setStartValue(const int value);
     void setEndValue(const int value);
     void startAnimation();
@@ -48,6 +52,7 @@ protected:
     bool                                m_vHighflag = false;
     QRectF                              m_rect;
     bool                                m_isAnimation = false;
+    int                                 m_offset = 0;
     DFontSizeManager::SizeType          m_sizeType  = DFontSizeManager::T8;
     QPropertyAnimation                  *m_properAnimationFirst;
     QPropertyAnimation                  *m_properAnimationSecond;
