@@ -379,9 +379,8 @@ void CMonthSchceduleView::updateData()
 
     for (int i = 0 ; i < m_weekSchedule.size(); ++i) {
         m_weekSchedule[i]->clearItem();
+        m_weekSchedule[i]->setHeight(m_ItemHeight,qRound((m_height - m_topMagin - m_buttommagin) / 6.0-27));
         m_weekSchedule[i]->setData(m_data,i*7,7);
-        m_weekSchedule[i]->setHeight(m_ItemHeight,(m_height - m_topMagin - m_buttommagin) / 6.0-27);
-        m_weekSchedule[i]->updateSchedule(true);
         QVector<QVector<MScheduleDateRangeInfo> > mSchedule = m_weekSchedule[i]->getMScheduleInfo();
         updateDateShow(mSchedule,m_weekSchedule[i]->getScheduleShowItem());
     }
@@ -628,11 +627,12 @@ void CWeekScheduleView::setHeight(const int ScheduleHeight, const int DayHeigth)
     setMaxNum();
 }
 
-void CWeekScheduleView::updateSchedule(const bool isCreate, const ScheduleDtailInfo &info)
+void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const ScheduleDtailInfo &info)
 {
     QVector<ScheduleDtailInfo> schedulev;
+    schedulev.clear();
     schedulev = m_ScheduleInfo;
-    if (isCreate) {
+    if (isNormalDisplay) {
         Q_UNUSED(info);
     } else {
         schedulev.append(info);
