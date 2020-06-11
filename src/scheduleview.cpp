@@ -415,7 +415,8 @@ void CScheduleView::initUI()
     m_layout->addWidget(m_alldaylist);
     m_layout->addWidget(m_hline);
     m_graphicsView = new CGraphicsView(this, m_viewType);
-    m_graphicsView->setMinimumHeight(480);
+    const int miniHeight = m_viewType ==0 ? 416 : 486;
+    m_graphicsView->setMinimumHeight(miniHeight);
 //    m_layout->setContentsMargins(0, m_space, 0, 0);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this,
             SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
