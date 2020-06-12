@@ -375,6 +375,7 @@ void Calendarmainwindow::OpenSchedule(QString job)
 //        dlg.setSchedules(out);
         dlg.exec();
         m_DayWindow->slotupdateSchedule(0);
+        slotWUpdateShcedule(nullptr,0);
     }
 }
 
