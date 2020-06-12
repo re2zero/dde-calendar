@@ -26,7 +26,7 @@ public:
     int readOffset() const
     {
         return m_offset;
-    };
+    }
     void setStartValue(const int value);
     void setEndValue(const int value);
     void startAnimation();

@@ -864,7 +864,6 @@ void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
     Q_UNUSED(Ids);
     int index = m_stackWidget->currentIndex();
     if (index < 0 || index > m_stackWidget->count() - 1) {
-
         return;
     }
     switch (index) {

@@ -129,7 +129,7 @@ isEmpty(PREFIX){
 
 target.path = $$INSTROOT$$BINDIR
 icon_files.path = $$PREFIX/share/icons/hicolor/scalable/apps/
-icon_files.files = $$PWD/src/resources/icon/dde-calendar.svg
+icon_files.files = $$PWD/assets/resources/icon/dde-calendar.svg
 
 desktop.path = $$INSTROOT$$APPDIR
 desktop.files = dde-calendar.desktop
@@ -140,7 +140,7 @@ manual.files = $$PWD/dman/*
 translations.path = $$INSTROOT$$DSRDIR/translations
 translations.files = translations/*.qm
 
-dbus_service.files = $$PWD/src/dbus/com.deepin.Calendar.service
+dbus_service.files = $$PWD/assets/dbus/com.deepin.Calendar.service
 dbus_service.path = $$PREFIX/share/dbus-1/services
 
 INSTALLS += target desktop icon_files manual dbus_service
