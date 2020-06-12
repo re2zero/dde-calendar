@@ -91,9 +91,8 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
     if (!arrybyte.isEmpty() && isOk) {
         restoreGeometry(arrybyte);
         setWindowState(static_cast<Qt::WindowStates >(state));
-    } else {
-        Dtk::Widget::moveToCenter(this);
     }
+    Dtk::Widget::moveToCenter(this);
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
@@ -486,6 +485,8 @@ void Calendarmainwindow::initUI()
     titlebar->setFixedHeight(50);
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
     titlebar->setCustomWidget(m_searchEdit, true);
+
+
 //    titlebar->move(36, 3);
     m_stackWidget = new AnimationStackedWidget();
     m_stackWidget->setContentsMargins(0, 0, 0, 0);
@@ -694,6 +695,8 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 //    }
     setScheduleHide();
     DMainWindow::resizeEvent(event);
+    CConfigSettings::setOption("base.geometry", saveGeometry());
+    CConfigSettings::setOption("base.state", int(windowState()));
 }
 
 void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
@@ -1083,8 +1086,8 @@ void Calendarmainwindow::slotSetButtonBox()
 }
 void Calendarmainwindow::closeEvent(QCloseEvent *event)
 {
-    CConfigSettings::setOption("base.geometry", saveGeometry());
-    CConfigSettings::setOption("base.state", int(windowState()));
+//    CConfigSettings::setOption("base.geometry", saveGeometry());
+//    CConfigSettings::setOption("base.state", int(windowState()));
     QWidget::closeEvent(event);
 }
 
