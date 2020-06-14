@@ -131,11 +131,12 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
     QString tStitlename = m_vScheduleInfo.titleName;
     tStitlename.replace("\n", "");
     QString str = tStitlename;
+    qreal textWidth = labelwidth - m_pos.x() - m_offset*2;
     QString tstr;
     for (int i = 0; i < str.count(); i++) {
         tstr.append(str.at(i));
         int widthT = fm.width(tstr) + 5;
-        if (widthT >= labelwidth - m_pos.x()) {
+        if (widthT >= textWidth) {
             tstr.chop(2);
             break;
         }
@@ -146,7 +147,7 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
 
     painter->drawText(QRectF(rect.x()+m_pos.x(),
                              rect.y()+1,
-                             labelwidth - m_pos.x(),
+                             textWidth,
                              labelheight - m_pos.y() + 3  ),
                       Qt::AlignLeft | Qt::AlignVCenter, tstr);
 

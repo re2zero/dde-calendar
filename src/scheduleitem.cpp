@@ -205,6 +205,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
 
         font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
 
+        //绘制日程起始时间
         if (m_vScheduleInfo.beginDateTime.date() == m_date) {
             painter->save();
             painter->setFont(font);
@@ -213,12 +214,13 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
             QString str = stime.toString("AP h:mm");
 
             QFontMetrics fontmetris(font);
-            if (fm.width(str) > rect.width() - 5) {
+            qreal drawTextWidth = rect.width() - m_offset*2;
+            if (fm.width(str) > drawTextWidth -5) {
                 QString tstr;
                 for (int i = 0; i < str.count(); i++) {
                     tstr.append(str.at(i));
                     int widthT = fm.width(tstr) - 5;
-                    if (widthT >= rect.width()) {
+                    if (widthT >= drawTextWidth) {
                         if (i < 1) {
                             tstr.chop(1);
                         } else {
@@ -228,15 +230,14 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
                         break;
                     }
                 }
-
-                QString tstrs = fontmetris.elidedText(str,Qt::ElideRight,rect.width() - 5);
+                QString tstrs = fontmetris.elidedText(str,Qt::ElideRight,qRound(drawTextWidth - 5));
                 painter->drawText(
-                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, rect.width() - 5, h),
+                    QRectF(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, drawTextWidth- 5, h),
                     Qt::AlignLeft, tstrs);
 
             } else {
                 painter->drawText(
-                    QRect(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, rect.width() - 5, h),
+                    QRectF(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, drawTextWidth - 5, h),
                     Qt::AlignLeft, str);
             }
 
@@ -246,6 +247,8 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
             timeTextHight = -20;
         }
         painter->save();
+
+        //绘制日程标题
         font = DFontSizeManager::instance()->get(DFontSizeManager::T6, font);
         font.setLetterSpacing(QFont::PercentageSpacing, 105);
         painter->setFont(font);
@@ -253,7 +256,11 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         QStringList liststr;
 
         QRect textRect = rect.toRect();
-        splitText(font, textRect.width() - tmagin - 8, textRect.height() - 20, m_vScheduleInfo.titleName,
+        textRect.setWidth(textRect.width() -m_offset*2);
+        splitText(font,
+                  textRect.width() - tmagin - 8,
+                  textRect.height() - 20,
+                  m_vScheduleInfo.titleName,
                   liststr, fm);
         for (int i = 0; i < liststr.count(); i++) {
             if ((20 + timeTextHight + (i + 1) * (h - 3)) > rect.height())
