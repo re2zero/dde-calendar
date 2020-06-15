@@ -49,9 +49,9 @@ DragInfoGraphicsView::~DragInfoGraphicsView()
 void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton) {
-        m_press = false;
-        m_DragStatus =NONE;
-        emit signalScheduleShow(false);
+//        m_press = false;
+//        m_DragStatus =NONE;
+//        emit signalScheduleShow(false);
         return;
     }
 
@@ -192,7 +192,6 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     default:
         break;
     }
-
 }
 
 void DragInfoGraphicsView::wheelEvent(QWheelEvent *event)
@@ -202,6 +201,9 @@ void DragInfoGraphicsView::wheelEvent(QWheelEvent *event)
 
 void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 {
+    if (m_DragStatus ==IsCreate) {
+        return;
+    }
     emit signalScheduleShow(false);
     m_press = false;
     m_DragStatus =NONE;
