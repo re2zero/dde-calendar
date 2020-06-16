@@ -471,12 +471,14 @@ void Calendarmainwindow::initUI()
     //titleLayout->addWidget(m_icon);
     //titleLayout->addSpacing(18);
     titleLayout->addWidget(m_buttonBox);
+    titleLayout->addSpacing(52);
     // QSpacerItem *lspaceitem = new QSpacerItem(30, CalendarMTitleHeight, QSizePolicy::Expanding, QSizePolicy::Fixed);
     //titleLayout->addSpacerItem(lspaceitem);
     m_searchEdit = new DSearchEdit(this);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
     m_searchEdit->setFixedHeight(36);
-    m_searchEdit->setFixedWidth(240);
+    m_searchEdit->setMinimumWidth(240);
+    m_searchEdit->setMaximumWidth(356);
     m_searchEdit->setFont(viewfont);
     titleLayout->addStretch();
     //QWidget *buttonW = new QWidget;
