@@ -26,6 +26,7 @@ AnimationStackedWidget::~AnimationStackedWidget()
 void AnimationStackedWidget::setDuration(int duration)
 {
     this->duration = duration;
+    animation->setEasingCurve(QEasingCurve::InOutQuad);
 }
 
 

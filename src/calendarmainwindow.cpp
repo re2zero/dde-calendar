@@ -493,7 +493,7 @@ void Calendarmainwindow::initUI()
 //    titlebar->move(36, 3);
     m_stackWidget = new AnimationStackedWidget();
     m_stackWidget->setContentsMargins(0, 0, 0, 0);
-    m_stackWidget->setDuration(350);
+    m_stackWidget->setDuration(250);
 //    m_stackWidget->setMargin(0);
 //    m_stackWidget->setSpacing(0);
     //m_stackWidget->setFixedSize(WorkViewWidth, WorkViewHeight);
