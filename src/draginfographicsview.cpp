@@ -71,7 +71,9 @@ void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
 
 void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event);
+    if (event->button() ==Qt::RightButton) {
+        return;
+    }
     setCursor(Qt::ArrowCursor);
     m_press = false;
     DragInfoItem::setPressFlag(false);
@@ -201,6 +203,7 @@ void DragInfoGraphicsView::wheelEvent(QWheelEvent *event)
 
 void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 {
+    DGraphicsView::contextMenuEvent(event);
     if (m_DragStatus ==IsCreate) {
         return;
     }
