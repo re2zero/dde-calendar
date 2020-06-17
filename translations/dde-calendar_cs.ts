@@ -589,13 +589,6 @@
     </message>
 </context>
 <context>
-    <name>InfoView</name>
-    <message>
-        <source>Today</source>
-        <translation>Dnes</translation>
-    </message>
-</context>
-<context>
     <name>Return</name>
     <message>
         <source>Today</source>

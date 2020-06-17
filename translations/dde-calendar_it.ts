@@ -590,13 +590,6 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     </message>
 </context>
 <context>
-    <name>InfoView</name>
-    <message>
-        <source>Today</source>
-        <translation>Oggi</translation>
-    </message>
-</context>
-<context>
     <name>Return</name>
     <message>
         <source>Today</source>

@@ -47,6 +47,10 @@ CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
 
 void CSchceduleCtrlDlg::initUI()
 {
+
+    //在点击任何对话框上的按钮后不关闭对话框，保证关闭子窗口时不被一起关掉
+    setOnButtonClickedClose(false);
+
     // m_icon = new QLabel(this);
     // m_icon->setFixedSize(32, 32);
     //m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
@@ -125,13 +129,13 @@ void CSchceduleCtrlDlg::initUI()
 //    m_seconLabel->adjustSize();
     m_mainBoxLayout->addSpacing(3);
     m_mainBoxLayout->addWidget(m_seconLabel);
-    m_mainBoxLayout->addSpacing(10);
-    m_btBoxLayout = new QHBoxLayout;
-    m_btBoxLayout->setMargin(0);
-    m_btBoxLayout->setSpacing(0);
-    m_btBoxLayout->setContentsMargins(0, 0, 0, 0);
-    m_Buttongroup = new QButtonGroup(this);
-    m_mainBoxLayout->addLayout(m_btBoxLayout);
+//    m_mainBoxLayout->addSpacing(10);
+//    m_btBoxLayout = new QHBoxLayout;
+//    m_btBoxLayout->setMargin(0);
+//    m_btBoxLayout->setSpacing(0);
+//    m_btBoxLayout->setContentsMargins(0, 0, 0, 0);
+//    m_Buttongroup = new QButtonGroup(this);
+//    m_mainBoxLayout->addLayout(m_btBoxLayout);
     DFrame *gwi = new DFrame(this);
     gwi->setContentsMargins(0, 0, 0, 0);
     gwi->setLayout(m_mainBoxLayout);
@@ -149,7 +153,8 @@ void CSchceduleCtrlDlg::initUI()
 
 void CSchceduleCtrlDlg::initConnection()
 {
-    connect( m_Buttongroup, SIGNAL(buttonClicked (int)), this, SLOT(buttonJudge(int)) );//连接信号和槽
+    connect(this, &DDialog::buttonClicked, this, &CSchceduleCtrlDlg::buttonJudge);
+//    connect( m_Buttongroup, SIGNAL(buttonClicked (int)), this, SLOT(buttonJudge(int)) );//连接信号和槽
 }
 
 void CSchceduleCtrlDlg::changeEvent(QEvent *event)
@@ -162,52 +167,56 @@ void CSchceduleCtrlDlg::changeEvent(QEvent *event)
     QFontMetrics font_seconLabel(font);
 
     QFontMetrics font_button(font);
-    for (int i = 0; i < m_Buttongroup->buttons().count(); i++) {
+    for (int i = 0; i < buttonCount(); i++) {
+        QAbstractButton *button = getButton(i);
         QString str = str_btName.at(i);
         QString text_button = font_button.elidedText(str, Qt::ElideRight, 112);
-        m_Buttongroup->buttons().at(i)->setText(text_button);
+        if (str.count() == 2) {
+            button->setText(QString().append(str.at(0)).append(QChar::Nbsp).append(str.at(1)));
+        } else {
+            button->setText(text_button);
+        }
     }
     setFixedHeight(36 + 48 + font_firstLabel.height() + font_seconLabel.height() *2 + 30);
 }
+//void CSchceduleCtrlDlg::updatesize()
+//{
+//    if (m_buttonlist.count() == 2) {
 
-void CSchceduleCtrlDlg::updatesize()
-{
-    if (m_buttonlist.count() == 2) {
+//        int w = 0;
+//        for (int i = 0; i < m_buttonlist.count(); i++) {
+//            if (m_buttonlist.at(i)->width() > w) {
+//                w = m_buttonlist.at(i)->width();
+//            }
+//        }
+//        if (w < 170) w = 170;
+//        for (int i = 0; i < m_buttonlist.count(); i++) {
+//            m_buttonlist.at(i)->setFixedWidth(w);
+//        }
+//        int rw = w * m_buttonlist.count() + (m_buttonlist.count()) * 23 + 20;
+//        setFixedWidth(rw);
 
-        int w = 0;
-        for (int i = 0; i < m_buttonlist.count(); i++) {
-            if (m_buttonlist.at(i)->width() > w) {
-                w = m_buttonlist.at(i)->width();
-            }
-        }
-        if (w < 170) w = 170;
-        for (int i = 0; i < m_buttonlist.count(); i++) {
-            m_buttonlist.at(i)->setFixedWidth(w);
-        }
-        int rw = w * m_buttonlist.count() + (m_buttonlist.count()) * 23 + 20;
-        setFixedWidth(rw);
-
-    } else {
-        int w = 0;
-        for (int i = 0; i < m_buttonlist.count(); i++) {
-            if (m_buttonlist.at(i)->width() > w) {
-                w = m_buttonlist.at(i)->width();
-            }
-        }
-        for (int i = 0; i < m_buttonlist.count(); i++) {
-            m_buttonlist.at(i)->setFixedWidth(w);
-        }
-        int rw = w * m_buttonlist.count() + (m_buttonlist.count() - 1) * 23 + 20;
-        setFixedWidth(rw);
-    }
-    //rect.setHeight(rect.height());
-    //m_firstLabel->setGeometry(rect); //
-    m_firstLabel->adjustSize();
-    //rect = m_seconLabel->geometry();
-    //rect.setHeight(rect.height() * 2);
-    // m_seconLabel->setGeometry(rect); //
-    m_seconLabel->adjustSize();
-}
+//    } else {
+//        int w = 0;
+//        for (int i = 0; i < m_buttonlist.count(); i++) {
+//            if (m_buttonlist.at(i)->width() > w) {
+//                w = m_buttonlist.at(i)->width();
+//            }
+//        }
+//        for (int i = 0; i < m_buttonlist.count(); i++) {
+//            m_buttonlist.at(i)->setFixedWidth(w);
+//        }
+//        int rw = w * m_buttonlist.count() + (m_buttonlist.count() - 1) * 23 + 20;
+//        setFixedWidth(rw);
+//    }
+//    //rect.setHeight(rect.height());
+//    //m_firstLabel->setGeometry(rect); //
+//    m_firstLabel->adjustSize();
+//    //rect = m_seconLabel->geometry();
+//    //rect.setHeight(rect.height() * 2);
+//    // m_seconLabel->setGeometry(rect); //
+//    m_seconLabel->adjustSize();
+//}
 
 void CSchceduleCtrlDlg::buttonJudge(int id)
 {
@@ -215,88 +224,118 @@ void CSchceduleCtrlDlg::buttonJudge(int id)
     accept();
 }
 
-DPushButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
+QAbstractButton *CSchceduleCtrlDlg::addPushButton(QString btName, int type)
 {
-    QFont labelTitle;
-//    labelTitle.setFamily("SourceHanSansSC");
-    labelTitle.setWeight(QFont::Medium);
-    labelTitle = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelTitle);
-//    labelTitle.setPixelSize(14);
-    QFontMetrics fm(labelTitle);
-    int w = fm.width(btName);
-    if (w > 109) w = w + 18;
-    else {
-        w = 109;
-    }
-    button  = new DPushButton(btName);
-    DFontSizeManager::instance()->bind(button,DFontSizeManager::T6);
-    QFontMetrics font_button(labelTitle);
-    QString text_button = font_button.elidedText(btName,Qt::ElideRight,112);
-    button->setText(text_button);
-    button->setToolTip(btName);
-    button->setFixedWidth(129);
+    Q_UNUSED(type)
+//    QFont labelTitle;
+////    labelTitle.setFamily("SourceHanSansSC");
+//    labelTitle.setWeight(QFont::Medium);
+//    labelTitle = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelTitle);
+////    labelTitle.setPixelSize(14);
+//    QFontMetrics fm(labelTitle);
+//    int w = fm.width(btName);
+//    if (w > 109) w = w + 18;
+//    else {
+//        w = 109;
+//    }
+//    button  = new DPushButton(btName);
+//    DFontSizeManager::instance()->bind(button,DFontSizeManager::T6);
+//    QFontMetrics font_button(labelTitle);
+//    QString text_button = font_button.elidedText(btName,Qt::ElideRight,112);
+//    button->setText(text_button);
+//    button->setToolTip(btName);
+//    button->setFixedWidth(129);
+//    button->setFixedHeight(36);
+//    button->setFont(labelTitle);
+//    m_Buttongroup->addButton(button, m_Buttongroup->buttons().count());
+//    if (m_Buttongroup->buttons().count() > 1) {
+//        DVerticalLine *btframe = new DVerticalLine(this);
+//        m_btBoxLayout->addSpacing(4);
+//        btframe->setFixedSize(3, 28);
+//        m_btBoxLayout->addWidget(btframe, 0, Qt::AlignCenter);
+//        if (type == 1) {
+//            m_btBoxLayout->addSpacing(4);
+//        } else {
+//            m_btBoxLayout->addSpacing(4);
+//        }
+
+//    }
+
+//    m_btBoxLayout->addWidget(button, 0, Qt::AlignCenter);
+//    m_buttonlist.append(button);
+
+    addButton(btName, false, DDialog::ButtonNormal);
+    int button_index = getButtonIndexByText(btName);
+    QAbstractButton *button = getButton(button_index);
     button->setFixedHeight(36);
-    button->setFont(labelTitle);
-    m_Buttongroup->addButton(button, m_Buttongroup->buttons().count());
-    if (m_Buttongroup->buttons().count() > 1) {
-        DVerticalLine *btframe = new DVerticalLine(this);
-        m_btBoxLayout->addSpacing(4);
-        btframe->setFixedSize(3, 28);
-        m_btBoxLayout->addWidget(btframe, 0, Qt::AlignCenter);
-        if (type == 1) {
-            m_btBoxLayout->addSpacing(4);
-        } else {
-            m_btBoxLayout->addSpacing(4);
-        }
-
-    }
-
-    m_btBoxLayout->addWidget(button, 0, Qt::AlignCenter);
-    m_buttonlist.append(button);
+    button->setFixedWidth(129);
+    button->setToolTip(btName);
 
     str_btName.append(btName);
 
     return button;
 }
 
-DSuggestButton *CSchceduleCtrlDlg::addsuggestButton(QString btName, int type)
+QAbstractButton *CSchceduleCtrlDlg::addsuggestButton(QString btName)
 {
-    QFont labelTitle;
-//    labelTitle.setFamily("SourceHanSansSC");
-    labelTitle.setWeight(QFont::Medium);
-    labelTitle = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelTitle);
-//    labelTitle.setPixelSize(14);
-    QFontMetrics fm(labelTitle);
-    int w = fm.width(btName);
-    if (w > 109) w = w + 18;
-    else {
-        w = 109;
-    }
-    suggestButton  = new DSuggestButton(btName);
-    DFontSizeManager::instance()->bind(suggestButton,DFontSizeManager::T6);
-    QFontMetrics font_button(labelTitle);
-    QString text_button = font_button.elidedText(btName,Qt::ElideRight,112);
-    suggestButton->setText(text_button);
-    suggestButton->setToolTip(btName);
-    suggestButton->setFixedWidth(129);
+//    QFont labelTitle;
+////    labelTitle.setFamily("SourceHanSansSC");
+//    labelTitle.setWeight(QFont::Medium);
+//    labelTitle = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelTitle);
+////    labelTitle.setPixelSize(14);
+//    QFontMetrics fm(labelTitle);
+//    int w = fm.width(btName);
+//    if (w > 109) w = w + 18;
+//    else {
+//        w = 109;
+//    }
+//    suggestButton  = new DSuggestButton(btName);
+//    DFontSizeManager::instance()->bind(suggestButton,DFontSizeManager::T6);
+//    QFontMetrics font_button(labelTitle);
+//    QString text_button = font_button.elidedText(btName,Qt::ElideRight,112);
+//    suggestButton->setText(text_button);
+//    suggestButton->setToolTip(btName);
+//    suggestButton->setFixedWidth(129);
+//    suggestButton->setFixedHeight(36);
+//    suggestButton->setFont(labelTitle);
+//    m_Buttongroup->addButton(suggestButton, m_Buttongroup->buttons().count());
+//    if (m_Buttongroup->buttons().count() > 1) {
+//        DVerticalLine *btframe = new DVerticalLine(this);
+//        m_btBoxLayout->addSpacing(4);
+//        btframe->setFixedSize(3, 28);
+//        m_btBoxLayout->addWidget(btframe, 0, Qt::AlignCenter);
+//        if (type == 1) {
+//            m_btBoxLayout->addSpacing(4);
+//        } else {
+//            m_btBoxLayout->addSpacing(4);
+//        }
+
+//    }
+
+//    m_btBoxLayout->addWidget(suggestButton, 0, Qt::AlignCenter);
+//    m_buttonlist.append(suggestButton);
+
+    addButton(btName,false,DDialog::ButtonRecommend);
+    int button_index = getButtonIndexByText(btName);
+    QAbstractButton *suggestButton = getButton(button_index);
     suggestButton->setFixedHeight(36);
-    suggestButton->setFont(labelTitle);
-    m_Buttongroup->addButton(suggestButton, m_Buttongroup->buttons().count());
-    if (m_Buttongroup->buttons().count() > 1) {
-        DVerticalLine *btframe = new DVerticalLine(this);
-        m_btBoxLayout->addSpacing(4);
-        btframe->setFixedSize(3, 28);
-        m_btBoxLayout->addWidget(btframe, 0, Qt::AlignCenter);
-        if (type == 1) {
-            m_btBoxLayout->addSpacing(4);
-        } else {
-            m_btBoxLayout->addSpacing(4);
-        }
+    suggestButton->setFixedWidth(129);
+    suggestButton->setToolTip(btName);
 
-    }
+    str_btName.append(btName);
 
-    m_btBoxLayout->addWidget(suggestButton, 0, Qt::AlignCenter);
-    m_buttonlist.append(suggestButton);
+    return suggestButton;
+}
+
+QAbstractButton *CSchceduleCtrlDlg::addWaringButton(QString btName)
+{
+    m_firstLabel->setFixedWidth(300);
+    addButton(btName,false,DDialog::ButtonWarning);
+    int button_index = getButtonIndexByText(btName);
+    QAbstractButton *suggestButton = getButton(button_index);
+    suggestButton->setFixedHeight(36);
+    suggestButton->setFixedWidth(129);
+    suggestButton->setToolTip(btName);
 
     str_btName.append(btName);
 
@@ -315,9 +354,11 @@ void CSchceduleCtrlDlg::setInformativeText(QString str)
     m_seconLabel->setToolTip(str);
 }
 
-DPushButton *CSchceduleCtrlDlg::clickButton()
+int CSchceduleCtrlDlg::clickButton()
 {
-    if (m_id < 0 || m_id > m_buttonlist.count() - 1) return  nullptr;
-    return m_buttonlist[m_id];
+//    if (m_id < 0 || m_id > m_buttonlist.count() - 1) return  nullptr;
+//    return m_buttonlist[m_id];
+    if (m_id < 0 || m_id > buttonCount() - 1) return buttonCount();
+    return  m_id;
 }
 
