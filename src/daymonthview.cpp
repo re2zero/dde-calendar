@@ -655,13 +655,13 @@ void CDayMonthView::paintCell(QWidget *cell)
     // draw selected cell background circle
     if (isSelectedCell) {
         int hh = 0;
-        QRect fillRect;
+        QRectF fillRect;
         if (cell->width() > cell->height()) {
             hh = cell->height();
-            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, hh * 0.1271, hh, hh);
+            fillRect = QRectF((cell->width() - hh) / 2.0 + 0.5, hh * 0.1271, hh, hh);
         } else {
             hh = cell->width();
-            fillRect = QRect(0, (cell->height() - hh) / 2.0  + hh * 0.1271, hh, hh);
+            fillRect = QRectF(0, (cell->height() - hh) / 2.0  + hh * 0.1271, hh, hh);
         }
         QPixmap pixmap;
         if (m_themetype == 2)
@@ -678,7 +678,7 @@ void CDayMonthView::paintCell(QWidget *cell)
         //painter.setRenderHints(QPainter::HighQualityAntialiasing);
         //painter.setBrush(QBrush(m_backgroundCircleColor));
         //painter.setPen(Qt::NoPen);
-        painter.drawPixmap(fillRect, pixmap);
+        painter.drawPixmap(fillRect.toRect(), pixmap);
         painter.restore();
     }
 
