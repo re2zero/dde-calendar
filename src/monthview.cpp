@@ -168,12 +168,12 @@ void CMonthView::resizeEvent(QResizeEvent *event)
 {
     DWidget::resizeEvent(event);
     int leftmagin = 10;
-    int topmagin = height() * 0.0193 + 0.5;
+    int topmagin = static_cast<int>(height() * 0.0193 + 0.5);
     topmagin = 10;
     m_leftmaagin = leftmagin;
     m_topmagin = topmagin;
     m_mainLayout->setContentsMargins(leftmagin, topmagin, 0, 10);
-    m_weekIndicator->setFixedSize(width()-leftmagin, height() * 0.1042 + 0.5);
+    m_weekIndicator->setFixedSize(width()-leftmagin, static_cast<int>(height() * 0.1042 + 0.5));
 }
 
 

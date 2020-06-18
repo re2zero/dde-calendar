@@ -198,7 +198,7 @@ int CMonthWeekView::checkDay(int weekday)
 
 void CMonthWeekView::resizeEvent(QResizeEvent *event)
 {
-    int tw = width() / 7.0 + 0.5;
+    int tw = static_cast<int>(width() / 7.0 + 0.5);
     int th = height();
     for (int i = 0; i < m_weekData.count(); i++) {
         if (m_weekData.at(i).second == 1) {
