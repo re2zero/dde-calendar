@@ -103,7 +103,7 @@ void CDayHuangLiLabel::paintEvent( QPaintEvent *e )
 
 void CDayHuangLiLabel::resizeEvent(QResizeEvent *event)
 {
-    m_leftMagin = 0.0424 * width() + 0.5;
+    m_leftMagin = static_cast<int>(0.0424 * width() + 0.5);
     m_topMagin = (height() - 20) / 2;
     DLabel::resizeEvent(event);
 }

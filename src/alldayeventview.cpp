@@ -342,7 +342,7 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
     }
     QVector<QVector<int> > vCfillSchedule;
     vCfillSchedule.resize(vListData.count());
-    qint64 tNum = m_beginDate.daysTo(m_endDate) + 1;
+    int tNum = static_cast<int>(m_beginDate.daysTo(m_endDate) + 1);
     for (int i = 0; i < vListData.count(); i++) {
         vCfillSchedule[i].resize(tNum);
         vCfillSchedule[i].fill(-1);
@@ -351,8 +351,8 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
     for (int i = 0; i < vMDaySchedule.count(); i++) {
         if (vMDaySchedule[i].state)
             continue;
-        int bindex = m_beginDate.daysTo(vMDaySchedule[i].bdate);
-        int eindex = m_beginDate.daysTo(vMDaySchedule[i].edate);
+        int bindex = static_cast<int>(m_beginDate.daysTo(vMDaySchedule[i].bdate));
+        int eindex = static_cast<int>(m_beginDate.daysTo(vMDaySchedule[i].edate));
         int c = -1;
         for (int k = 0; k < vListData.count(); k++) {
             int t = 0;
