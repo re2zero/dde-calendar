@@ -32,11 +32,13 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+    bool event(QEvent *e) override;
 private:
     void slotCreate();
     void setPressSelectInfo(const ScheduleDtailInfo &info);
     void updateScheduleInfo(const ScheduleDtailInfo &info);
     void DragPressEvent(const QPoint &pos,DragInfoItem *item);
+    void mouseReleaseScheduleUpdate();
 protected:
     void DeleteItem(const ScheduleDtailInfo &info);
 protected:

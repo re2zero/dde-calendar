@@ -51,8 +51,10 @@ void CScheduleView::setviewMagin(int left, int top, int right, int bttom)
     m_leftMagin = left;
     m_topMagin = top;
     m_rightmagin = right;
-    m_graphicsView->setMargins(left, 0, right, bttom);
-    m_alldaylist->setMargins(left, 0, 0, 0);
+    m_layout->setContentsMargins(left,0,0,0);
+//    m_layout->setMargins(left,0,0,0);
+    m_graphicsView->setMargins(0, 0, right, bttom);
+    m_alldaylist->setMargins(0, 0, 0, 0);
 }
 
 void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
@@ -346,6 +348,11 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.setPen(m_ALLDayColor);
     painter.drawText(QRect(0, 0, m_leftMagin - 2, m_topMagin - 2), Qt::AlignCenter, tr("ALL DAY"));
     painter.restore();
+
+    //绘制全天与非全天之间的直线
+    painter.setPen(m_linecolor);
+    painter.drawLine(0,m_topMagin,this->width(),m_topMagin);
+
     int t_width = width();
     qreal intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
     if (m_TotalDay > 1) {
@@ -406,14 +413,15 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
 
 void CScheduleView::initUI()
 {
-    DHorizontalLine *m_hline = new DHorizontalLine;
+//    DHorizontalLine *m_hline = new DHorizontalLine;
     m_layout = new QVBoxLayout;
     m_layout->setSpacing(0);
     m_layout->setMargin(0);
     m_alldaylist = new CAllDayEventWeekView(this, 1);
 //    m_alldaylist->move(72, 5);
     m_layout->addWidget(m_alldaylist);
-    m_layout->addWidget(m_hline);
+    m_layout->addSpacing(1);
+//    m_layout->addWidget(m_hline);
     m_graphicsView = new CGraphicsView(this, m_viewType);
     const int miniHeight = m_viewType ==0 ? 300 : 380;
     m_graphicsView->setMinimumHeight(miniHeight);

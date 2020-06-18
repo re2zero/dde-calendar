@@ -309,7 +309,8 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
     case ChangeBegin:
     case ChangeEnd: {
         int index = vListData.indexOf(info);
-        vListData[index] = info;
+        if (index >=0)
+            vListData[index] = info;
     }
     break;
     case ChangeWhole:

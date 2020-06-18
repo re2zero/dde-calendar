@@ -8,6 +8,7 @@
 
 #include "schceduledlg.h"
 #include "schcedulectrldlg.h"
+#include "myschceduleview.h"
 
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     :DGraphicsView (parent),
@@ -74,44 +75,7 @@ void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() ==Qt::RightButton) {
         return;
     }
-    setCursor(Qt::ArrowCursor);
-    m_press = false;
-    DragInfoItem::setPressFlag(false);
-    bool isUpdateInfo = false;
-    switch (m_DragStatus) {
-    case IsCreate:
-        if (MeetCreationConditions(m_MoveDate)) {
-            emit signalViewtransparentFrame(1);
-            CSchceduleDlg dlg(1, this);
-            dlg.setData(m_DragScheduleInfo);
-            if (dlg.exec() == DDialog::Accepted) {
-            } else {
-                setPressSelectInfo(ScheduleDtailInfo());
-            }
-            emit signalViewtransparentFrame(0);
-            isUpdateInfo = true;
-        }
-        break;
-    case ChangeBegin:
-        if (!IsEqualtime(m_MoveDate,m_InfoBeginTime)) {
-            updateScheduleInfo(m_DragScheduleInfo);
-            isUpdateInfo = true;
-        }
-        break;
-    case ChangeEnd:
-        if (!IsEqualtime(m_MoveDate,m_InfoEndTime)) {
-            updateScheduleInfo(m_DragScheduleInfo);
-            isUpdateInfo = true;
-        }
-        break;
-    default:
-        break;
-    }
-    m_DragStatus = NONE;
-    if (isUpdateInfo) {
-        emit signalsUpdateShcedule();
-    }
-    update();
+    mouseReleaseScheduleUpdate();
 }
 
 
@@ -230,6 +194,15 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
             } else if (action_t == m_deleteAction) {
                 DeleteItem(infoitem->getData());
             }
+        } else {
+            emit signalViewtransparentFrame(1);
+            CMySchceduleView dlg(infoitem->getData(), this);
+            dlg.exec();
+            emit signalViewtransparentFrame(0);
+
+//            qDebug()<<"setFocus";
+//            emit signalViewtransparentFrame(1);
+//            this->setFocus(Qt::MouseFocusReason);
         }
     } else {
         RightClickToCreate(listItem,event->pos());
@@ -300,6 +273,17 @@ void DragInfoGraphicsView::dropEvent(QDropEvent *event)
         m_DragStatus = NONE;
         m_MoveDate = m_MoveDate.addMonths(-2);
     }
+}
+
+bool DragInfoGraphicsView::event(QEvent *e)
+{
+    if (e->type() ==QEvent::Leave) {
+        if (m_DragStatus ==IsCreate ||
+                m_DragStatus == ChangeBegin ||
+                m_DragStatus == ChangeEnd)
+            mouseReleaseScheduleUpdate();
+    }
+    return DGraphicsView::event(e);
 }
 
 void DragInfoGraphicsView::slotCreate()
@@ -379,6 +363,55 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
         m_DragStatus = IsCreate;
         m_isCreate = false;
     }
+}
+
+void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
+{
+    setCursor(Qt::ArrowCursor);
+    m_press = false;
+    DragInfoItem::setPressFlag(false);
+    bool isUpdateInfo = false;
+    switch (m_DragStatus) {
+    case IsCreate:
+        if (MeetCreationConditions(m_MoveDate)) {
+            //如果不添加会进入leaveEvent事件内的条件
+            m_DragStatus = NONE;
+
+            emit signalViewtransparentFrame(1);
+            CSchceduleDlg dlg(1, this);
+            dlg.setData(m_DragScheduleInfo);
+            if (dlg.exec() == DDialog::Accepted) {
+            } else {
+                setPressSelectInfo(ScheduleDtailInfo());
+            }
+            emit signalViewtransparentFrame(0);
+            isUpdateInfo = true;
+        }
+        break;
+    case ChangeBegin:
+        if (!IsEqualtime(m_MoveDate,m_InfoBeginTime)) {
+            //如果不添加会进入leaveEvent事件内的条件
+            m_DragStatus = NONE;
+            updateScheduleInfo(m_DragScheduleInfo);
+            isUpdateInfo = true;
+        }
+        break;
+    case ChangeEnd:
+        if (!IsEqualtime(m_MoveDate,m_InfoEndTime)) {
+            //如果不添加会进入leaveEvent事件内的条件
+            m_DragStatus = NONE;
+            updateScheduleInfo(m_DragScheduleInfo);
+            isUpdateInfo = true;
+        }
+        break;
+    default:
+        break;
+    }
+    m_DragStatus = NONE;
+    if (isUpdateInfo) {
+        emit signalsUpdateShcedule();
+    }
+    update();
 }
 
 void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
