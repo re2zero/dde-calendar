@@ -96,37 +96,37 @@ void CWeekView::setTheMe(int type)
     }
 }
 
-void CWeekView::setwindowFixw(int w, int rw)
-{
-    m_fixwidth = w;
-    m_realwidth = rw;
-    return;
-    int w2 = m_fixwidth * 0.1 + 0.5;
-    int h = height();
-    for (int c = 0; c != 10; ++c) {
-        m_cellList[c]->setFixedSize(w2, h);
-        m_cellList[c]->update();
-    }
-    if ((m_realwidth < m_fixwidth) && m_searchfalg) {
-        int t_num = qRound((m_fixwidth - m_realwidth) / w2 / 2.0);
-        QVector<bool> vindex;
-        vindex.resize(10);
-        vindex.fill(true);
-        for (int i = 0; i < t_num; i++) {
-            vindex[i] = false;
-            vindex[9 - i] = false;
-        }
-        for (int i = 0; i < 10; i++) {
-            m_cellList[i]->setVisible(vindex[i]);
-            m_cellList[i]->update();
-        }
-    } else {
-        for (int i = 0; i < 10; i++) {
-            m_cellList[i]->setVisible(true);
-            m_cellList[i]->update();
-        }
-    }
-}
+//void CWeekView::setwindowFixw(int w, int rw)
+//{
+//    m_fixwidth = w;
+//    m_realwidth = rw;
+//    return;
+//    int w2 = m_fixwidth * 0.1 + 0.5;
+//    int h = height();
+//    for (int c = 0; c != 10; ++c) {
+//        m_cellList[c]->setFixedSize(w2, h);
+//        m_cellList[c]->update();
+//    }
+//    if ((m_realwidth < m_fixwidth) && m_searchfalg) {
+//        int t_num = qRound((m_fixwidth - m_realwidth) / w2 / 2.0);
+//        QVector<bool> vindex;
+//        vindex.resize(10);
+//        vindex.fill(true);
+//        for (int i = 0; i < t_num; i++) {
+//            vindex[i] = false;
+//            vindex[9 - i] = false;
+//        }
+//        for (int i = 0; i < 10; i++) {
+//            m_cellList[i]->setVisible(vindex[i]);
+//            m_cellList[i]->update();
+//        }
+//    } else {
+//        for (int i = 0; i < 10; i++) {
+//            m_cellList[i]->setVisible(true);
+//            m_cellList[i]->update();
+//        }
+//    }
+//}
 
 void CWeekView::setsearchfalg(bool flag)
 {

@@ -45,18 +45,18 @@ HEADERS += src/calendardbus.h \
     src/schcedulesearchview.h \
     src/dayhuangliview.h \
     src/daywindow.h \
-    src/verticalscroll.h \
-    src/verticalscrolltext.h \
+   # src/verticalscroll.h \
+   # src/verticalscrolltext.h \
     src/schceduledlg.h \
     src/myschceduleview.h \
     src/timeedit.h \
-    src/timeverticalscroll.h \
+   # src/timeverticalscroll.h \
     src/schedulesdbus.h \
     src/scheduledatamanage.h \
     src/creatorparschedule.h \
     src/monthschceduleview.h \
     src/schcedulectrldlg.h \
-    src/timeeditctrl.h \
+   # src/timeeditctrl.h \
     src/exportedinterface.h \
     src/configsettings.h \
     src/singleton.h \
@@ -94,17 +94,17 @@ SOURCES += src/calendardbus.cpp \
     src/schcedulesearchview.cpp \
     src/dayhuangliview.cpp \
     src/daywindow.cpp \
-    src/verticalscrolltext.cpp \
-    src/verticalscroll.cpp \
+   # src/verticalscrolltext.cpp \
+   # src/verticalscroll.cpp \
     src/myschceduleview.cpp \
-    src/timeverticalscroll.cpp \
+   # src/timeverticalscroll.cpp \
     src/timeedit.cpp \
     src/schedulesdbus.cpp \
     src/scheduledatamanage.cpp \
     src/creatorparschedule.cpp \
     src/monthschceduleview.cpp \
     src/schcedulectrldlg.cpp \
-    src/timeeditctrl.cpp \
+  #  src/timeeditctrl.cpp \
     src/exportedinterface.cpp \
     src/configsettings.cpp \
     src/shortcut.cpp \
