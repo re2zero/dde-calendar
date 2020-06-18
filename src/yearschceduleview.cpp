@@ -286,13 +286,6 @@ void CYearSchceduleView::clearData()
     m_vlistData.clear();
     m_soloDay.clear();
     return;
-    //remove
-    for (int i = 0; i < m_gradientItemList->count(); i++) {
-        QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
-        m_gradientItemList->removeItemWidget(item11);
-    }
-    m_labellist.clear();
-    m_gradientItemList->clear();
 }
 
 int CYearSchceduleView::showWindow()
