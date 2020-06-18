@@ -647,25 +647,25 @@ void CGraphicsView::scrollBarValueChangedSlot()
     QPointF leftBttomrealPos = mapToScene(QPoint(0, viewHeight));
 
     for (qreal i = m_dayInterval; i < scene()->width(); i = i + m_dayInterval) {
-        m_vTBLarge.append(i);
+        m_vTBLarge.append(qFloor(i));
     }
-    float beginpos = (int)(leftToprealPos.y() / m_timeInterval) * m_timeInterval;
+    qreal beginpos = static_cast<qreal>(qFloor(leftToprealPos.y() / m_timeInterval) * m_timeInterval);
     if (beginpos < leftToprealPos.y()) {
         beginpos = (beginpos / m_timeInterval + 1) * m_timeInterval ;
     }
     QVector<int> vHours;
-    for (float i = beginpos; i < leftBttomrealPos.y(); i = i + m_timeInterval) {
+    for (qreal i = beginpos; i < leftBttomrealPos.y(); i = i + m_timeInterval) {
         QPoint point = mapFromScene(leftBttomrealPos.x(), i);
         m_vLRLarge.append(point.y());
-        vHours.append(i / m_timeInterval + 0.5);
+        vHours.append(qFloor(i / m_timeInterval + 0.5));
     }
-    float currentTime =  m_coorManage->getHeight(QTime::currentTime());
-    if (currentTime >= beginpos && currentTime <= leftBttomrealPos.y()) {
+    qreal currentTime =  static_cast<qreal>(m_coorManage->getHeight(QTime::currentTime()));
+    if (currentTime > beginpos && currentTime < leftBttomrealPos.y()) {
         //if (0) {
         m_cuttrnttimetype = 1;
         QPoint point = mapFromScene(leftBttomrealPos.x(), currentTime);
         m_vLRLarge.append(point.y());
-        vHours.append(currentTime / m_timeInterval + 0.5);
+        vHours.append(qFloor(currentTime / m_timeInterval + 0.5));
         emit signalsPosHours(m_vLRLarge, vHours, m_cuttrnttimetype);
     } else {
         m_cuttrnttimetype = 0;
@@ -844,7 +844,7 @@ void CGraphicsView::setTime(QTime time)
 
     QPoint newCenter(viewWidth / 2,  viewHeight / 2);
     QPointF centerpos = mapToScene(newCenter);
-    centerpos = QPointF(centerpos.x(), m_coorManage->getHeight(time));
+    centerpos = QPointF(centerpos.x(), static_cast<qreal>(m_coorManage->getHeight(time)));
     centerOnScene(centerpos);
 }
 
