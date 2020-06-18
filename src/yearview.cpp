@@ -298,14 +298,14 @@ void CYearView::createYearSchceduleView(QWidget *parent)
 
 void CYearView::resizeEvent(QResizeEvent *event)
 {
-    int leftmagin = width() * 0.06435 + 0.5;
+    int leftmagin = qFloor(width() * 0.06435 + 0.5);
     int rightmagin = leftmagin;
-    int topmagin = height() * 0.02955 + 0.5;
-    int buttonmagin = height() * 0.044 + 0.5;
+    int topmagin = qFloor(height() * 0.02955 + 0.5);
+    int buttonmagin = qFloor(height() * 0.044 + 0.5);
 
     m_hhLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
 
-    m_momthFont.setPixelSize(16 + (height() - 159) / 16.75);
+    m_momthFont.setPixelSize(qFloor(16 + (height() - 159) / 16.75));
     m_currentMouth->setTextFont(m_momthFont);
     m_currentMouth->setFixedHeight(24 + (height() - 159) / 12);
     m_currentMouth->update();
