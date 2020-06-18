@@ -222,13 +222,13 @@ QRectF CScheduleCoorManage::getAllDayDrawRegion(QDate begin, QDate end)
 QDateTime CScheduleCoorManage::getDate(QPointF pos)
 {
     QDateTime begintime;
-    int day = (1.0 * pos.x() / m_width) * m_totalDay;
+    qint64 day = static_cast<qint64>((1.0 * pos.x() / m_width) * m_totalDay);
     if (day <0) {
         day = 0;
     } else if (day >=m_totalDay) {
         day = m_totalDay-1;
     }
-    int time = (1.0 * pos.y() / m_height) * 86400.0;
+    int time =static_cast<int>((1.0 * pos.y() / m_height) * 86400.0);
     int hours = time / 3600;
     int minutes = (time - 3600 * hours) / 60;
     int secss = time - 3600 * hours - 60 * minutes;
@@ -240,7 +240,7 @@ QDateTime CScheduleCoorManage::getDate(QPointF pos)
 
 QDate CScheduleCoorManage::getsDate(QPointF pos)
 {
-    int day = (1.0 * pos.x() / m_width) * m_totalDay;
+    qint64 day = static_cast<qint64>((1.0 * pos.x() / m_width) * m_totalDay);
     if (day <0) {
         day = 0;
     } else if (day >=m_totalDay) {
@@ -254,6 +254,6 @@ float CScheduleCoorManage::getHeight(QTime time)
 {
     QTime beginzero(0, 0, 0);
     int ScheduleBT = beginzero.secsTo(time);
-    float posY = m_height * (ScheduleBT / 86400.0);
+    float posY = static_cast<float>(m_height * (ScheduleBT / 86400.0));
     return posY;
 }
