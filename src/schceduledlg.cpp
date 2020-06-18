@@ -961,6 +961,7 @@ void CSchceduleDlg::initDateEdit()
     // m_eCustomDateW->disconnect(SIGNAL(selectionChanged()));
     // m_eCustomDateW->disconnect(SIGNAL(clicked(QDate)));
     return;
+#if 0
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     QWidget *view1 =
@@ -1071,6 +1072,7 @@ void CSchceduleDlg::initDateEdit()
         }
         yearbutton3->setPalette(anipa);
     }
+#endif
 }
 
 void CSchceduleDlg::initRmindRpeatUI()
