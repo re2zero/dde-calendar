@@ -309,7 +309,7 @@ void CMonthSchceduleView::setallsize(int w, int h, int left, int top, int buttom
     m_leftMagin = left;
     m_topMagin = top;
 
-    m_cNum = ((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (itemHeight + 1);
+    m_cNum = static_cast<int>(((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5  - 27) / (itemHeight + 1));
 }
 
 void CMonthSchceduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
@@ -334,7 +334,8 @@ void CMonthSchceduleView::slotedititem(CMonthSchceduleWidgetItem *item, int type
 void CMonthSchceduleView::slotFontChange()
 {
     QFont font;
-    DFontSizeManager::instance()->setFontGenericPixelSize(DFontSizeManager::instance()->fontPixelSize(qGuiApp->font()));
+    DFontSizeManager::instance()->setFontGenericPixelSize(
+        static_cast<quint16>(DFontSizeManager::instance()->fontPixelSize(qGuiApp->font())));
     font= DFontSizeManager::instance()->t8(font);
     QFontMetrics fm(font);
     int h = fm.height();
@@ -460,8 +461,8 @@ void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>
 
 void CMonthSchceduleView::splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData)
 {
-    int brow = (m_beginDate.daysTo(old.bdate) + 1) / 7;
-    int erow = (m_beginDate.daysTo(old.edate) + 1) / 7;
+    int brow = static_cast<int>((m_beginDate.daysTo(old.bdate) + 1) / 7);
+    int erow = static_cast<int>((m_beginDate.daysTo(old.edate) + 1) / 7);
     int bcol = (m_beginDate.daysTo(old.bdate) + 1) % 7;
     int ecol = (m_beginDate.daysTo(old.edate) + 1) % 7;
     if (bcol != 0) brow = brow + 1;
@@ -555,14 +556,14 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
 
 void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh)
 {
-    int brow = (m_beginDate.daysTo(bgeindate)) / 7;
+    int brow = static_cast<int>((m_beginDate.daysTo(bgeindate)) / 7);
     int bcol = (m_beginDate.daysTo(bgeindate) ) % 7;
     int ecol = (m_beginDate.daysTo(enddate) ) % 7;
 
-    fw = (ecol - bcol + 1) * ((m_width - m_leftMagin ) / 7.0) - 11;
+    fw = static_cast<int>((ecol - bcol + 1) * ((m_width - m_leftMagin ) / 7.0) - 11);
     fh = m_ItemHeight;
-    int x = m_leftMagin + bcol * ((m_width - m_leftMagin )  / 7.0) + 5;
-    int y = m_topMagin + ((m_height - m_topMagin - m_buttommagin) * brow / 6.0 + 0.5)  + 27 + (cnum - 1) * fh + 2.9;
+    int x =static_cast<int>(m_leftMagin + bcol * ((m_width - m_leftMagin )  / 7.0) + 5);
+    int y = static_cast<int>(m_topMagin + ((m_height - m_topMagin - m_buttommagin) * brow / 6.0 + 0.5)  + 27 + (cnum - 1) * fh + 2.9);
     pos = QPoint(x, y);
 }
 
@@ -663,7 +664,7 @@ void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const Schedul
         vMDaySchedule.append(info);
         qint64 pos = beginDate.daysTo(info.bdate);
         qint64 count = info.bdate.daysTo(info.edate);
-        qint64 j = pos;
+        int j = static_cast<int>(pos);
         for (; j < (pos+ count+1); ++j) {
             ++m_ColumnScheduleCount[j];
         }
@@ -706,8 +707,8 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
     mScheduleClear();
 
     for (int i = 0 ; i < vMDaySchedule.size(); ++i) {
-        postion = beginDate.daysTo(vMDaySchedule.at(i).bdate);
-        end     = beginDate.daysTo(vMDaySchedule.at(i).edate);
+        postion = static_cast<int>(beginDate.daysTo(vMDaySchedule.at(i).bdate));
+        end     = static_cast<int>(beginDate.daysTo(vMDaySchedule.at(i).edate));
         int row = 0;
         int pos = postion;
         int count = 0;
