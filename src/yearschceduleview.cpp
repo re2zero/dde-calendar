@@ -218,10 +218,14 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
         }
     }
 
-    qSort(valldayListData.begin(), valldayListData.end(), YScheduleDaysThan);
-    qSort(valldayListData.begin(), valldayListData.end(), YScheduleDateThan);
-    qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDaysThan);
-    qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDateThan);
+    std::sort(valldayListData.begin(), valldayListData.end(), YScheduleDaysThan);
+    std::sort(valldayListData.begin(), valldayListData.end(), YScheduleDateThan);
+    std::sort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDaysThan);
+    std::sort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDateThan);
+//    qSort(valldayListData.begin(), valldayListData.end(), YScheduleDaysThan);
+//    qSort(valldayListData.begin(), valldayListData.end(), YScheduleDateThan);
+//    qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDaysThan);
+//    qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDateThan);
 
     for (int i = 0; i < valldayListData.count(); i++) {
         QVector<ScheduleDtailInfo>::iterator iter = valldayListData.begin();

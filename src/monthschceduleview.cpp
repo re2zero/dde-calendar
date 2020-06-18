@@ -668,7 +668,8 @@ void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const Schedul
             ++m_ColumnScheduleCount[j];
         }
     }
-    qSort(vMDaySchedule.begin(),vMDaySchedule.end());
+    std::sort(vMDaySchedule.begin(),vMDaySchedule.end());
+//    qSort(vMDaySchedule.begin(),vMDaySchedule.end());
     sortAndFilter(vMDaySchedule);
 }
 

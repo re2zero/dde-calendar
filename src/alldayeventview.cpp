@@ -322,7 +322,8 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
     }
 
 
-    qSort(vListData.begin(), vListData.end());
+    std::sort(vListData.begin(), vListData.end());
+//    qSort(vListData.begin(), vListData.end());
 
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
     for (int i = 0; i < vListData.count(); i++) {
@@ -341,7 +342,7 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
     }
     QVector<QVector<int> > vCfillSchedule;
     vCfillSchedule.resize(vListData.count());
-    int tNum = m_beginDate.daysTo(m_endDate) + 1;
+    qint64 tNum = m_beginDate.daysTo(m_endDate) + 1;
     for (int i = 0; i < vListData.count(); i++) {
         vCfillSchedule[i].resize(tNum);
         vCfillSchedule[i].fill(-1);

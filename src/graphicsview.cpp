@@ -243,7 +243,8 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
 //            }
             currentInfo.append(vListData.at(j));
         }
-        qSort(currentInfo.begin(), currentInfo.end(), MScheduleTimeThan);
+        std::sort(currentInfo.begin(), currentInfo.end(), MScheduleTimeThan);
+//        qSort(currentInfo.begin(), currentInfo.end(), MScheduleTimeThan);
         if (currentInfo.size()>0) {
             m_InfoMap[currentDate] = currentInfo;
             QList<ScheduleclassificationInfo> info;
@@ -371,7 +372,8 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
         return;
 
     info.clear();
-    qSort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
+    std::sort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
+//    qSort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
     QVector<int> containIndex;
 
 

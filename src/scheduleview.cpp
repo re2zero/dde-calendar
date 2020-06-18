@@ -169,7 +169,11 @@ void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
                 if (scheduleInfolist.isEmpty()) {
                     m_graphicsView->setTime(QTime(13, 0));
                 } else {
-                    qSort(scheduleInfolist.begin(),scheduleInfolist.end(),
+//                    qSort(scheduleInfolist.begin(),scheduleInfolist.end(),
+//                    [](const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2) ->bool {
+//                        return s1.beginDateTime < s2.beginDateTime;
+//                    });
+                    std::sort(scheduleInfolist.begin(),scheduleInfolist.end(),
                     [](const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2) ->bool {
                         return s1.beginDateTime < s2.beginDateTime;
                     });
