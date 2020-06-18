@@ -1043,12 +1043,16 @@ void Calendarmainwindow::slotViewSelectDate(QDate date)
 
 void Calendarmainwindow::slotViewtransparentFrame(int type)
 {
+    static int showFrameCount =0;
     if (type) {
         m_transparentFrame->resize(width(), height() - 50);
         m_transparentFrame->move(0, 50);
         m_transparentFrame->show();
+        ++showFrameCount;
     } else {
-        m_transparentFrame->hide();
+        if (showFrameCount==1)
+            m_transparentFrame->hide();
+        --showFrameCount;
     }
 
     int index = m_stackWidget->currentIndex();
