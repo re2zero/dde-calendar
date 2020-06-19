@@ -478,7 +478,7 @@ void Calendarmainwindow::initUI()
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
     m_searchEdit->setFixedHeight(36);
     m_searchEdit->setMinimumWidth(240);
-    m_searchEdit->setMaximumWidth(356);
+    m_searchEdit->setMaximumWidth(354);
     m_searchEdit->setFont(viewfont);
     titleLayout->addStretch();
     //QWidget *buttonW = new QWidget;
