@@ -244,6 +244,7 @@ void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate
     m_MoveDate.setDate(begindate.addMonths(-2));
     m_beginDate = begindate;
     m_endDate = enddate;
+    w -=2;
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
     m_Scene->setSceneRect(0, 0, w, h);
     m_rightmagin = rightmagin;

@@ -138,7 +138,7 @@ void CGraphicsView::setRange( int w, int h, QDate begindate, QDate enddate, int 
     m_MoveDate.setDate(begindate.addMonths(-2));
     m_beginDate = begindate;
     m_endDate = enddate;
-    w = w - rightmagin;
+    w = w - rightmagin -2;
     m_Scene->setSceneRect(0, 0, w, h);
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
     m_rightmagin = rightmagin;
