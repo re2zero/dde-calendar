@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="vi">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi" version="2.1">
 <context>
     <name>CDayMonthView</name>
     <message>
@@ -586,6 +584,13 @@
     <message>
         <source>New Event</source>
         <translation>Sự kiện mới</translation>
+    </message>
+</context>
+<context>
+    <name>InfoView</name>
+    <message>
+        <source>Today</source>
+        <translation>Hôm nay</translation>
     </message>
 </context>
 <context>

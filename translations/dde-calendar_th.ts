@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="th">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="th" version="2.1">
 <context>
     <name>CDayMonthView</name>
     <message>
@@ -305,7 +303,7 @@
     </message>
     <message>
         <source>On</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>time(s)</source>
@@ -523,7 +521,7 @@
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>D</source>
@@ -586,6 +584,13 @@
     <message>
         <source>New Event</source>
         <translation>กิจกรรมใหม่</translation>
+    </message>
+</context>
+<context>
+    <name>InfoView</name>
+    <message>
+        <source>Today</source>
+        <translation>วันนี้</translation>
     </message>
 </context>
 <context>

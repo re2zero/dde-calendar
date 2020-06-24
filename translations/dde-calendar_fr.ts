@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name>CDayMonthView</name>
     <message>
@@ -586,6 +584,13 @@
     <message>
         <source>New Event</source>
         <translation>Nouvel événement</translation>
+    </message>
+</context>
+<context>
+    <name>InfoView</name>
+    <message>
+        <source>Today</source>
+        <translation>Aujourd&apos;hui</translation>
     </message>
 </context>
 <context>

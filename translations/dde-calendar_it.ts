@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
 <context>
     <name>CDayMonthView</name>
     <message>
@@ -587,6 +585,13 @@ Localizzazione italiana a cura di Massimo A. Carofano.</translation>
     <message>
         <source>New Event</source>
         <translation>Nuovo evento</translation>
+    </message>
+</context>
+<context>
+    <name>InfoView</name>
+    <message>
+        <source>Today</source>
+        <translation>Oggi</translation>
     </message>
 </context>
 <context>
