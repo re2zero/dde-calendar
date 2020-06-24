@@ -51,7 +51,7 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     connect(m_createAction, &QAction::triggered, this,
             static_cast<void (DragInfoGraphicsView::*)()>(&DragInfoGraphicsView::slotCreate));
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     this->setViewportMargins(0, 0, 0, 0);
     setMouseTracking(true);
     viewport()->setMouseTracking(true);
@@ -304,6 +304,13 @@ bool DragInfoGraphicsView::event(QEvent *e)
             mouseReleaseScheduleUpdate();
     }
     return DGraphicsView::event(e);
+}
+
+void DragInfoGraphicsView::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Left || event->key() ==Qt::Key_Right)
+        return;
+    DGraphicsView::keyPressEvent(event);
 }
 
 void DragInfoGraphicsView::slotCreate()

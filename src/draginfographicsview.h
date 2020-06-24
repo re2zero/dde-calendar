@@ -53,6 +53,7 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     bool event(QEvent *e) override;
+    void keyPressEvent(QKeyEvent *event) override;
 private:
     void slotCreate();
     void setPressSelectInfo(const ScheduleDtailInfo &info);
