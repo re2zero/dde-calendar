@@ -357,7 +357,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.setPen(m_linecolor);
     painter.drawLine(0,m_topMagin,this->width(),m_topMagin);
 
-    int t_width = width();
+    int t_width = width()-2;
     qreal intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
     if (m_TotalDay > 1) {
         painter.save();
