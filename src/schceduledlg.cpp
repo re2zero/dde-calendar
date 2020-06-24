@@ -33,7 +33,6 @@
 #include "schcedulectrldlg.h"
 #include "scheduledatamanage.h"
 #include "timeedit.h"
-#include "timeeditctrl.h"
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
     : DDialog(parent), m_createAllDay(isAllDay)
