@@ -26,6 +26,7 @@
 #include <DPalette>
 #include "schcedulesearchview.h"
 #include "todybutton.h"
+#include "scheduledatamanage.h"
 DGUI_USE_NAMESPACE
 CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
 {
@@ -81,8 +82,10 @@ void CMonthWindow::setTheMe(int type)
         m_contentBackground->setPalette(anipa);
         m_contentBackground->setBackgroundRole(DPalette::Background);
 
+        QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
+//        todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
+        todaypa.setColor(DPalette::ButtonText, todayColor);
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         QColor sbcolor("#002A57");
@@ -94,7 +97,8 @@ void CMonthWindow::setTheMe(int type)
         QColor todaypress = "#000000";
         todaypress.setAlphaF(0.2);
         m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
-        m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
+//        m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
+        m_today->setTColor(todayColor, "#001A2E", "#0081FF");
         m_today->setshadowColor(sbcolor);
 
         DPalette pa = m_YearLabel->palette();
@@ -113,8 +117,10 @@ void CMonthWindow::setTheMe(int type)
         m_gridWidget->setBackgroundRole(DPalette::Background);
 
     } else if (type == 2) {
+        QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
+//        todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
+        todaypa.setColor(DPalette::ButtonText, todayColor);
         todaypa.setColor(DPalette::Light, "#484848");
         todaypa.setColor(DPalette::Dark, "#414141");
         QColor sbcolor("#000000");
@@ -123,7 +129,8 @@ void CMonthWindow::setTheMe(int type)
         m_today->setPalette(todaypa);
 
         m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
-        m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
+//        m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
+        m_today->setTColor(todayColor, "#FFFFFF", "#0081FF");
         m_today->setshadowColor(sbcolor);
 
         DPalette pa = m_YearLabel->palette();
@@ -198,8 +205,10 @@ void CMonthWindow::initUI()
     m_today = new CTodyButton;
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedSize(DDEMonthCalendar::MTodayWindth, DDEMonthCalendar::MTodayHeight);
+    QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
     DPalette todaypa = m_today->palette();
-    todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
+//    todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
+    todaypa.setColor(DPalette::ButtonText, todayColor);
     todaypa.setColor(DPalette::Dark, Qt::white);
     todaypa.setColor(DPalette::Light, Qt::white);
 

@@ -112,7 +112,9 @@ void CDayMonthView::setTheMe(int type)
         setBColor(tbcolor);
 
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
+        QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+        todaypa.setColor(DPalette::ButtonText, todayColor);
+//        todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         QColor sbcolor("#002A57");
@@ -124,7 +126,8 @@ void CDayMonthView::setTheMe(int type)
         QColor todaypress = "#000000";
         todaypress.setAlphaF(0.2);
         m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
-        m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
+//        m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
+        m_today->setTColor(todayColor, "#001A2E", "#0081FF");
         m_today->setshadowColor(sbcolor);
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
@@ -140,7 +143,8 @@ void CDayMonthView::setTheMe(int type)
         //m_currentMouth->setBColor(tbcolor);
 
 
-        m_currentDay->setTextColor(QColor("#2CA7F8"));
+//        m_currentDay->setTextColor(QColor("#2CA7F8"));
+        m_currentDay->setTextColor(todayColor);
         //m_currentDay->setBColor(tbcolor);
 
         m_currentWeek->setTextColor(QColor("#414D68"));
@@ -173,7 +177,8 @@ void CDayMonthView::setTheMe(int type)
         m_backgroundCircleColor = "#0081FF";
 
         m_defaultTextColor = Qt::black;
-        m_currentDayTextColor = "#0081FF";
+//        m_currentDayTextColor = "#0081FF";
+        m_currentDayTextColor = todayColor;
         m_weekendsTextColor = Qt::black;
         m_selectedTextColor = Qt::white;
         m_festivalTextColor = Qt::black;
@@ -191,7 +196,9 @@ void CDayMonthView::setTheMe(int type)
         setBColor(tbcolor);
 
         DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
+        QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+        todaypa.setColor(DPalette::ButtonText, todayColor);
+//        todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
         todaypa.setColor(DPalette::Light, "#484848");
         todaypa.setColor(DPalette::Dark, "#414141");
         QColor sbcolor("#000000");
@@ -199,7 +206,8 @@ void CDayMonthView::setTheMe(int type)
         todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
         m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
-        m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
+//        m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
+        m_today->setTColor(todayColor, "#FFFFFF", "#0081FF");
         m_today->setshadowColor(sbcolor);
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#484848"));
@@ -219,7 +227,8 @@ void CDayMonthView::setTheMe(int type)
         //m_currentMouth->setBColor(tbcolor);
 
 
-        m_currentDay->setTextColor(QColor("#0081FF"));
+//        m_currentDay->setTextColor(QColor("#0081FF"));
+        m_currentDay->setTextColor(todayColor);
         //m_currentDay->setBColor(tbcolor);
 
         m_currentWeek->setTextColor(QColor("#C0C6D4"));
@@ -251,7 +260,8 @@ void CDayMonthView::setTheMe(int type)
         m_backgroundCircleColor = "#0059D2";
 
         m_defaultTextColor = "#C0C6D4";
-        m_currentDayTextColor = "#0081FF";
+//        m_currentDayTextColor = "#0081FF";
+        m_currentDayTextColor = todayColor;
         m_weekendsTextColor = Qt::black;
         m_selectedTextColor = "#B8D3FF";
         m_festivalTextColor = Qt::black;
@@ -381,7 +391,9 @@ void CDayMonthView::initUI()
     //m_today->setText(tr("Today"));
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
     DPalette todaypa = m_today->palette();
-    todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
+    QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+    todaypa.setColor(DPalette::ButtonText, todayColor);
+//    todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
     todaypa.setColor(DPalette::Dark, Qt::white);
     todaypa.setColor(DPalette::Light, Qt::white);
     QColor sbcolor("#002A57");
@@ -656,30 +668,34 @@ void CDayMonthView::paintCell(QWidget *cell)
     if (isSelectedCell) {
         int hh = 0;
         QRectF fillRect;
-        if (cell->width() > cell->height()) {
-            hh = cell->height();
-            fillRect = QRectF((cell->width() - hh) / 2.0 + 0.5, hh * 0.1271, hh, hh);
-        } else {
-            hh = cell->width();
-            fillRect = QRectF(0, (cell->height() - hh) / 2.0  + hh * 0.1271, hh, hh);
-        }
-        QPixmap pixmap;
-        if (m_themetype == 2)
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-        else {
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-        }
+//        if (cell->width() > cell->height()) {
+        hh = cell->height();
+        fillRect = QRectF((cell->width() - hh) / 2.0 + 4, hh * 0.1271 + 0.5, hh - 8, hh - 8);
+//        } else {
+//            hh = cell->width();
+//            fillRect = QRectF(0, (cell->height() - hh) / 2.0  + hh * 0.1271, hh - 8, hh - 8);
+//        }
+//        QPixmap pixmap;
+//        if (m_themetype == 2)
+//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+//        else {
+//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+//        }
 
-        pixmap.setDevicePixelRatio(devicePixelRatioF());
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        //painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        //painter.setBrush(QBrush(m_backgroundCircleColor));
-        //painter.setPen(Qt::NoPen);
-        painter.drawPixmap(fillRect.toRect(), pixmap);
-        painter.restore();
+//        pixmap.setDevicePixelRatio(devicePixelRatioF());
+//        painter.save();
+//        painter.setRenderHint(QPainter::Antialiasing);
+//        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+//        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+//        //painter.setRenderHints(QPainter::HighQualityAntialiasing);
+//        //painter.setBrush(QBrush(m_backgroundCircleColor));
+//        //painter.setPen(Qt::NoPen);
+//        painter.drawPixmap(fillRect.toRect(), pixmap);
+//        painter.restore();
+
+        painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(fillRect);
     }
 
     painter.setPen(Qt::SolidLine);

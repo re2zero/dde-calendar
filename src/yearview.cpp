@@ -589,6 +589,7 @@ void CMonthDayRect::setRect(qreal x, qreal y, qreal w, qreal h)
 
 void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
 {
+    m_highColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
     if (m_date.year()<1900)
         return;
     const bool isCurrentDay = m_date == QDate::currentDate() && m_isCurrentMonth;
@@ -640,23 +641,26 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
     } else {
         // draw selected cell background circle
         if (isSelectedCell) {
-            QRectF pixmapRect(QRectF(fillRect.x()-3,
-                                     fillRect.y(),
-                                     fillRect.width()+6,
-                                     fillRect.height()+6));
-            QPixmap pixmap;
-            if (m_themetype == 2)
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-            else {
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-            }
-            pixmap.setDevicePixelRatio(m_DevicePixelRatio);
-            painter->save();
-            painter->setRenderHint(QPainter::Antialiasing);
-            painter->setRenderHint(QPainter::HighQualityAntialiasing);
-            painter->setRenderHint(QPainter::SmoothPixmapTransform);
-            painter->drawPixmap(pixmapRect.toRect(), pixmap);
-            painter->restore();
+//            QRectF pixmapRect(QRectF(fillRect.x()-3,
+//                                     fillRect.y(),
+//                                     fillRect.width()+6,
+//                                     fillRect.height()+6));
+//            QPixmap pixmap;
+//            if (m_themetype == 2)
+//                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+//            else {
+//                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+//            }
+//            pixmap.setDevicePixelRatio(m_DevicePixelRatio);
+//            painter->save();
+//            painter->setRenderHint(QPainter::Antialiasing);
+//            painter->setRenderHint(QPainter::HighQualityAntialiasing);
+//            painter->setRenderHint(QPainter::SmoothPixmapTransform);
+//            painter->drawPixmap(pixmapRect.toRect(), pixmap);
+//            painter->restore();
+            painter->setBrush(QBrush(m_highColor));
+            painter->setPen(Qt::NoPen);
+            painter->drawEllipse(fillRect);
         }
         painter->setPen(Qt::SolidLine);
 

@@ -140,6 +140,7 @@ private:
     QColor                  m_banColor = "#FBE9B7";
     QColor                  m_xiuColor = "#D4FFB3";
     int                     m_themetype = 0;
+    QColor                  m_currentColor;
 public:
     static bool             m_LunarVisible;
 };

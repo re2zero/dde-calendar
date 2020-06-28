@@ -31,6 +31,7 @@
 #include <DPalette>
 #include <DHiDPIHelper>
 #include "customframe.h"
+#include "scheduledatamanage.h"
 DGUI_USE_NAMESPACE
 CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
 {
@@ -171,7 +172,8 @@ void CWeekHeadView::setTheMe(int type)
         m_defaultTextColor = "#6F6F6F";
         m_currentDayTextColor = "#FFFFFF";
         m_defaultLunarColor = "#898989";
-        m_weekendsTextColor = "#0887FF";
+//        m_weekendsTextColor = "#0887FF";
+        m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_currentMonthColor = "#000000";
         m_backgroudColor = "#E6EEF2";
         m_solofestivalLunarColor = "#4DFF7272";
@@ -196,7 +198,8 @@ void CWeekHeadView::setTheMe(int type)
         m_defaultTextColor = "#C0C6D4";
         m_currentDayTextColor = "#C0C6D4";
         m_defaultLunarColor = "#6886BA";
-        m_weekendsTextColor = "#0887FF";
+//        m_weekendsTextColor = "#0887FF";
+        m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_currentMonthColor = "#000000";
         m_backgroudColor = "#82AEC1";
         m_backgroudColor.setAlphaF(0.1);
@@ -442,6 +445,8 @@ void CWeekHeadView::getDbusData()
 
 void CWeekHeadView::paintCell(QWidget *cell)
 {
+    m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+
     const QRect rect(0, 0, cell->width(), cell->height());
 
     const int pos = m_cellList.indexOf(cell);
@@ -503,35 +508,41 @@ void CWeekHeadView::paintCell(QWidget *cell)
     }
     if (isSelectedCell) {
         if (m_showState & ShowLunar) {
-            QRect fillRect(bw - 7, bh - 2, 36, 36);
-            QPixmap pixmap;
-            if (m_themetype == 2)
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-            else {
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-            }
-            pixmap.setDevicePixelRatio(devicePixelRatioF());
-            painter.save();
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setRenderHint(QPainter::HighQualityAntialiasing);
-            painter.setRenderHint(QPainter::SmoothPixmapTransform);
-            painter.drawPixmap(fillRect, pixmap);
-            painter.restore();
+            QRect fillRect(bw - 2, bh, 26, 26);
+//            QPixmap pixmap;
+//            if (m_themetype == 2)
+//                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+//            else {
+//                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+//            }
+//            pixmap.setDevicePixelRatio(devicePixelRatioF());
+//            painter.save();
+//            painter.setRenderHint(QPainter::Antialiasing);
+//            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+//            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+//            painter.drawPixmap(fillRect, pixmap);
+//            painter.restore();
+            painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
         } else {
-            QRect fillRect(cell->width() - (cell->width()/2) - 4, bh - 1, 36, 36);
-            QPixmap pixmap;
-            if (m_themetype == 2)
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-            else {
-                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-            }
-            pixmap.setDevicePixelRatio(devicePixelRatioF());
-            painter.save();
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setRenderHint(QPainter::HighQualityAntialiasing);
-            painter.setRenderHint(QPainter::SmoothPixmapTransform);
-            painter.drawPixmap(fillRect, pixmap);
-            painter.restore();
+            QRect fillRect(cell->width() - (cell->width()/2) + 1, bh - 1, 26, 26);
+//            QPixmap pixmap;
+//            if (m_themetype == 2)
+//                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+//            else {
+//                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+//            }
+//            pixmap.setDevicePixelRatio(devicePixelRatioF());
+//            painter.save();
+//            painter.setRenderHint(QPainter::Antialiasing);
+//            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+//            painter.setRenderHint(QPainter::SmoothPixmapTransform);
+//            painter.drawPixmap(fillRect, pixmap);
+//            painter.restore();
+            painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(fillRect);
         }
 
     }

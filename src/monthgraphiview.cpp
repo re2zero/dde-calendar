@@ -696,6 +696,7 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(option);
     Q_UNUSED(widget);
     const int hh = 36;
+    m_currentColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
     painter->setRenderHints(QPainter::Antialiasing);
     //绘制背景
     if (m_LunarVisible) {
@@ -738,17 +739,22 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         tfont.setPixelSize(20);
         painter->setFont(tfont);
         painter->setPen(m_dayNumCurrentColor);
-        QPixmap pixmap;
-        if (m_themetype == 2)
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-        else {
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-        }
+
+//        QPixmap pixmap;
+//        if (m_themetype == 2)
+//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+//        else {
+//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+//        }
 //        pixmap.setDevicePixelRatio(devicePixelRatioF());
+
+        painter->setBrush(QBrush(m_currentColor));
         if (m_LunarVisible)
-            painter->drawPixmap(fillRect.toRect(),pixmap);
+            painter->drawEllipse(QRectF(this->rect().x() + 6, this->rect().y() + 4, hh - 8, hh - 8));
+//            painter->drawPixmap(fillRect.toRect(),pixmap);
         else
-            painter->drawPixmap(QPointF((this->rect().width() - pixmap.width()) / 2 + this->rect().x(), this->rect().y()), pixmap);
+//            painter->drawPixmap(QPointF((this->rect().width() - pixmap.width()) / 2 + this->rect().x(), this->rect().y()), pixmap);
+            painter->drawEllipse(QRectF((this->rect().width() - hh + 8) / 2 + this->rect().x(), this->rect().y() + 4, hh - 8, hh - 8));
     } else {
         painter->setPen(m_dayNumColor);
     }

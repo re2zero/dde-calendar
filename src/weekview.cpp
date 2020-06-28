@@ -28,6 +28,7 @@
 #include <DHiDPIHelper>
 #include <QtGlobal>
 #include <DWidget>
+#include "scheduledatamanage.h"
 DWIDGET_USE_NAMESPACE
 
 CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
@@ -83,14 +84,16 @@ void CWeekView::setTheMe(int type)
         m_defaultTextColor = Qt::black;
         m_backgrounddefaultColor = Qt::white;
         m_currentDayTextColor = Qt::white;
-        m_backgroundcurrentDayColor = "#0081FF";
+//        m_backgroundcurrentDayColor = "#0081FF";
+        m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_fillColor = "#FFFFFF";
     } else if (type == 2) {
         m_defaultTextColor = "#C0C6D4";
         m_backgrounddefaultColor = "#FFFFFF";
         m_backgrounddefaultColor.setAlphaF(0.05);
         m_currentDayTextColor = "#B8D3FF";
-        m_backgroundcurrentDayColor = "#0059D2";
+//        m_backgroundcurrentDayColor = "#0059D2";
+        m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
     }
@@ -181,19 +184,23 @@ void CWeekView::paintCell(QWidget *cell)
     if (m_days[pos].year() < 1900 && dayNum != "1") return;
     if (isSelectDay) {
 
-        QRect fillRect((cell->width() - 36) / 2, (cell->height() - 36) / 2 + 4, 36, 36);
-        QPixmap pixmap;
-        if (m_themetype == 2)
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-        else {
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-        }
-        pixmap.setDevicePixelRatio(devicePixelRatioF());
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        painter.drawPixmap(fillRect, pixmap);
+        QRect fillRect((cell->width() - 24) / 2, (cell->height() - 32) / 2 + 4, 24, 24);
+//        QPixmap pixmap;
+//        if (m_themetype == 2)
+//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
+//        else {
+//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
+//        }
+//        pixmap.setDevicePixelRatio(devicePixelRatioF());
+//        painter.save();
+//        painter.setRenderHint(QPainter::Antialiasing);
+//        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+//        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+//        painter.drawPixmap(fillRect, pixmap);
+
+        painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(fillRect);
         painter.restore();
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
         painter.setPen(m_currentDayTextColor);

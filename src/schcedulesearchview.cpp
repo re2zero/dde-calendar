@@ -93,7 +93,8 @@ void CSchceduleSearchItem::setRoundtype(int rtype)
 void CSchceduleSearchItem::setTheMe(int type)
 {
     if (type == 2) {
-        m_presscolor.background = "#0059D2";
+//        m_presscolor.background = "#0059D2";
+        m_presscolor.background = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_presscolor.background.setAlphaF(1);
         m_presscolor.timeColor = "#FFFFFF";
         m_presscolor.timeColor.setAlphaF(1);
@@ -107,7 +108,8 @@ void CSchceduleSearchItem::setTheMe(int type)
         m_hovercolor.textColor = "#C0C6D4";
         m_hovercolor.textColor.setAlphaF(1);
     } else {
-        m_presscolor.background = "#0081FF";
+//        m_presscolor.background = "#0081FF";
+        m_presscolor.background = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_presscolor.background.setAlphaF(1);
         m_presscolor.timeColor = "#FFFFFF";
         m_presscolor.timeColor.setAlphaF(1);
@@ -677,9 +679,11 @@ QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
     if (date == QDate::currentDate()) {
         int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
         if (themtype == 2) {
-            gwi->setText("#0059D2", font);
+//            gwi->setText("#0059D2", font);
+            gwi->setText(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor(), font);
         } else {
-            gwi->setText("#0081FF", font);
+//            gwi->setText("#0081FF", font);
+            gwi->setText(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor(), font);
         }
 
     }
