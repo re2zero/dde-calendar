@@ -587,13 +587,6 @@
     </message>
 </context>
 <context>
-    <name>InfoView</name>
-    <message>
-        <source>Today</source>
-        <translation>Aujourd&apos;hui</translation>
-    </message>
-</context>
-<context>
     <name>Return</name>
     <message>
         <source>Today</source>
