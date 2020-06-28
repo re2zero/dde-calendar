@@ -38,7 +38,6 @@ QVariant ExportedInterface::invoke(const QString &action, const QString &paramet
     if (!analysispara(tstr, info, para)) {
         return QVariant(false);
     }
-
     if (action == "CREATE") {
         qint64 tindex = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(info);
         if (tindex < 0) {
@@ -48,7 +47,8 @@ QVariant ExportedInterface::invoke(const QString &action, const QString &paramet
         dynamic_cast<Calendarmainwindow *>(m_object)->viewWindow(para.viewType, para.viewTime);
     } else if (action == "QUERY") {
         QString qstr;
-//        bool flag =  CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(para.ADTitleName, para.ADStartTime, para.ADEndTime, qstr);
+        bool flag =  CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(para.ADTitleName, para.ADStartTime, para.ADEndTime, qstr);
+        Q_UNUSED(flag);
         return QVariant(qstr);
     } else if (action == "CANCEL") {
         QVector<ScheduleDateRangeInfo> out;
