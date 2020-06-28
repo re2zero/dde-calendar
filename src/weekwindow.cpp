@@ -453,10 +453,12 @@ void CWeekWindow::slotCurrentWeek(QDate date, QDate currentDate)
 
 void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type)
 {
-    int i = 0;
-    for (; i < vdate.count(); i++) {
-        if (vdate.at(i) == QDate::currentDate())
+    int offset = 0;
+    for (int i = 0; i < vdate.count(); ++i) {
+        if (vdate.at(i) == m_currentdate) {
+            offset =i;
             break;
+        }
     }
     if (m_currentdate == QDate::currentDate()) {
         m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
@@ -470,7 +472,7 @@ void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLu
     //     m_today->setEnabled(false);
     // }
     if (!vdate.isEmpty()) {
-        CaLunarDayInfo detail = vdetail.at(0);
+        CaLunarDayInfo detail = vdetail.at(offset);
         if (type == 1) {
             int yearnum = vdate.at(0).year();
             if (yearnum < 1900) yearnum = 1900;
