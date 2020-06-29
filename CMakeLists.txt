@@ -54,6 +54,8 @@ execute_process(COMMAND bash ${APP_TRANS_SCRIPT}
     set(${result} ${dirlist})
 endmacro()
 
+configure_file(${APP_RES_DIR}/environments.h.in environments.h @ONLY)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 SUBDIRLIST(all_src ${CMAKE_CURRENT_SOURCE_DIR}/src)

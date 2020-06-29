@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     a.setApplicationName("dde-calendar");
     a.loadTranslator();
     //QLocale::setDefault(QLocale(QLocale::C, QLocale::UnitedStates));
-    a.setApplicationVersion(DApplication::buildVersion("1.1"));
+    a.setApplicationVersion(VERSION);
     //QList<QLocale> localeFallback = QList<QLocale>() << QLocale::system();
     // meta information that necessary to create the about dialog.
     a.setProductName(QApplication::translate("CalendarWindow", "Calendar"));
@@ -120,12 +120,7 @@ int main(int argc, char *argv[])
     a.setProductIcon(t_icon);
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. "));
     a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
-    //a.setTheme("light");
-    //a.setStyle("chameleon");
-    static const QDate buildDate = QDate::currentDate();
-    QString t_date = buildDate.toString("MMdd");
-    // Version Time
-    a.setApplicationVersion(DApplication::buildVersion(t_date));
+
 
     DGuiApplicationHelper::setSingelInstanceInterval(-1);
     if (!DGuiApplicationHelper::instance()->setSingleInstance(
