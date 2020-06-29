@@ -69,6 +69,7 @@ find_package(PkgConfig REQUIRED)
 find_package(DtkCore REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Svg REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(Qt5Svg REQUIRED)
 find_package(DtkWidget REQUIRED)
@@ -87,6 +88,7 @@ target_link_libraries(${PROJECT_NAME}
     ${DtkCore_LIBRARIES}
     ${DtkGui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
+    ${Qt5Svg_LIBRARIES}
     ${Qt5DBus_LIBRARIES}
     ${DFrameworkdbus_LIBRARIES}
 )

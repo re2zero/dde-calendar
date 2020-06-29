@@ -49,13 +49,17 @@
 #include "shortcut.h"
 #include "schcedulesearchview.h"
 
+#include "cdynamicicon.h"
+
+
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
 static const int CalendarMWidth = 860;
 static const int CalendarMHeight = 634;
 
-Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
+Calendarmainwindow::Calendarmainwindow(QWidget *w)
+    : DMainWindow (w)
 {
     m_DataGetThread = new DbusDataGetThread(CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getDbus(),
                                             nullptr);
@@ -93,6 +97,11 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w): DMainWindow (w)
         setWindowState(static_cast<Qt::WindowStates >(state));
     }
     Dtk::Widget::moveToCenter(this);
+}
+
+Calendarmainwindow::~Calendarmainwindow()
+{
+    CDynamicIcon::releaseInstance();
 }
 
 /*void Calendarmainwindow::Invoke(const QString &mothodName, const QString &content)
@@ -185,6 +194,15 @@ void Calendarmainwindow::slotmaxminViewShortcut()
 void Calendarmainwindow::slotGetScheduleInfoSuccess()
 {
     m_yearwindow->getScheduleInfo();
+}
+
+void Calendarmainwindow::slotDynamicIconUpdate()
+{
+    if (QDate::currentDate() !=CDynamicIcon::getInstance()->getDate()) {
+        CDynamicIcon::getInstance()->setDate(QDate::currentDate());
+        CDynamicIcon::getInstance()->setIcon();
+    }
+
 }
 void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
 {
@@ -390,18 +408,19 @@ void Calendarmainwindow::RaiseWindow()
 }
 void Calendarmainwindow::initUI()
 {
+    m_DynamicIconUpdateTimer = new QTimer(this);
+    m_DynamicIconUpdateTimer->start(3000);
+
     QFrame *titleframe = new QFrame(this);
     titleframe->setObjectName("TitleBar");
     titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    //m_icon = new DLabel(this);
-    // m_icon->setFixedSize(32, 32);
-    //m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
-    //.scaled(m_icon->size() * devicePixelRatioF()));
-    //m_icon->move(10, 9);
-    //titlebar()->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
-    //   .scaled(QSize(32, 32) * devicePixelRatioF()));
-    QIcon t_icon = QIcon::fromTheme("dde-calendar");
-    titlebar()->setIcon(t_icon);
+    CDynamicIcon::getInstance()->setTitlebar(this->titlebar());
+    CDynamicIcon::getInstance()->setIcon();
+
+
+
+
+
     QStringList titlelist;
     titlelist << tr("Y") << tr("M") << tr("W") << tr("D");
     m_buttonBox = new DButtonBox(this);
@@ -602,6 +621,11 @@ void Calendarmainwindow::initConnection()
             &CYearWindow::signalupdateschcedule,
             this,
             &Calendarmainwindow::getScheduleInfo);
+
+    connect(m_DynamicIconUpdateTimer,
+            &QTimer::timeout,
+            this,
+            &Calendarmainwindow::slotDynamicIconUpdate);
 }
 
 
