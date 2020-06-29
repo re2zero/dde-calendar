@@ -197,7 +197,8 @@ void CWeekView::paintCell(QWidget *cell)
 //        painter.setRenderHint(QPainter::HighQualityAntialiasing);
 //        painter.setRenderHint(QPainter::SmoothPixmapTransform);
 //        painter.drawPixmap(fillRect, pixmap);
-
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);

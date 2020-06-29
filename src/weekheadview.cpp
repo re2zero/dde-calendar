@@ -522,9 +522,12 @@ void CWeekHeadView::paintCell(QWidget *cell)
 //            painter.setRenderHint(QPainter::SmoothPixmapTransform);
 //            painter.drawPixmap(fillRect, pixmap);
 //            painter.restore();
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
             painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
             painter.setPen(Qt::NoPen);
             painter.drawEllipse(fillRect);
+            painter.restore();
         } else {
             QRect fillRect(cell->width() - (cell->width()/2) + 1, bh - 1, 26, 26);
 //            QPixmap pixmap;

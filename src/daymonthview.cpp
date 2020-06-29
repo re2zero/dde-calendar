@@ -692,10 +692,12 @@ void CDayMonthView::paintCell(QWidget *cell)
 //        //painter.setPen(Qt::NoPen);
 //        painter.drawPixmap(fillRect.toRect(), pixmap);
 //        painter.restore();
-
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);
+        painter.restore();
     }
 
     painter.setPen(Qt::SolidLine);
