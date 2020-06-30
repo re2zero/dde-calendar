@@ -748,13 +748,17 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 //        }
 //        pixmap.setDevicePixelRatio(devicePixelRatioF());
 
+        painter->save();
+        painter->setRenderHint(QPainter::Antialiasing);
         painter->setBrush(QBrush(m_currentColor));
+        painter->setPen(Qt::NoPen);
         if (m_LunarVisible)
             painter->drawEllipse(QRectF(this->rect().x() + 6, this->rect().y() + 4, hh - 8, hh - 8));
 //            painter->drawPixmap(fillRect.toRect(),pixmap);
         else
 //            painter->drawPixmap(QPointF((this->rect().width() - pixmap.width()) / 2 + this->rect().x(), this->rect().y()), pixmap);
             painter->drawEllipse(QRectF((this->rect().width() - hh + 8) / 2 + this->rect().x(), this->rect().y() + 4, hh - 8, hh - 8));
+        painter->restore();
     } else {
         painter->setPen(m_dayNumColor);
     }
