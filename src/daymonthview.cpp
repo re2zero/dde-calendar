@@ -740,7 +740,7 @@ void CDayMonthView::paintCell(QWidget *cell)
             } else if ( r > 7) {
                 r = 7;
             }
-            painter.drawEllipse(cell->width() - r, 0, r, r);
+            painter.drawEllipse(cell->width() - r - 6, 4, r, r);
             painter.restore();
         }
     }
