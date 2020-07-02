@@ -458,6 +458,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
 
     QPainter painter(cell);
+    painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
     painter.setBrush(QBrush(m_backgroudColor));
     if (d != 6) {
@@ -543,9 +544,12 @@ void CWeekHeadView::paintCell(QWidget *cell)
 //            painter.setRenderHint(QPainter::SmoothPixmapTransform);
 //            painter.drawPixmap(fillRect, pixmap);
 //            painter.restore();
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing);
             painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
             painter.setPen(Qt::NoPen);
             painter.drawEllipse(fillRect);
+            painter.restore();
         }
 
     }
