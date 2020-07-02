@@ -302,14 +302,19 @@ QAbstractButton *CSchceduleCtrlDlg::addsuggestButton(QString btName, bool type)
     return suggestButton;
 }
 
-QAbstractButton *CSchceduleCtrlDlg::addWaringButton(QString btName)
+QAbstractButton *CSchceduleCtrlDlg::addWaringButton(QString btName, bool type)
 {
 //    m_firstLabel->setFixedWidth(300);
     addButton(btName,false,DDialog::ButtonWarning);
     int button_index = getButtonIndexByText(btName);
     QAbstractButton *suggestButton = getButton(button_index);
-    suggestButton->setFixedHeight(36);
-    suggestButton->setFixedWidth(129);
+    if (type) {
+        suggestButton->setFixedHeight(36);
+        suggestButton->setFixedWidth(165);
+    } else {
+        suggestButton->setFixedHeight(36);
+        suggestButton->setFixedWidth(129);
+    }
     suggestButton->setToolTip(btName);
 
     str_btName.append(btName);

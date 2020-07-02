@@ -36,7 +36,7 @@ public:
     explicit CSchceduleCtrlDlg(QWidget *parent = nullptr);
     QAbstractButton *addPushButton(QString btName, bool type = false);
     QAbstractButton *addsuggestButton(QString btName, bool type = false);
-    QAbstractButton *addWaringButton(QString btName);
+    QAbstractButton *addWaringButton(QString btName, bool type = false);
     void setTitleName(QString tileName);
     void setText(QString str);
     void setInformativeText(QString str);

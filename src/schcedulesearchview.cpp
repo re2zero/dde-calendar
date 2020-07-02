@@ -145,8 +145,8 @@ void CSchceduleSearchItem::slotDelete()
 
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-        /*QAbstractButton *yesButton = */msgBox.addPushButton(tr("Delete"), 1);
+        /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
+        /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Delete"), true);
 //        msgBox.updatesize();
 //        DPalette pa = yesButton->palette();
 //        if (themetype == 0 || themetype == 1) {
@@ -173,7 +173,7 @@ void CSchceduleSearchItem::slotDelete()
             msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
             /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
             /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All"));
-            /*QAbstractButton *yesButton = */msgBox.addPushButton(tr("Delete Only This Event"));
+            /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete Only This Event"));
 
 
 //            msgBox.updatesize();
@@ -208,7 +208,7 @@ void CSchceduleSearchItem::slotDelete()
             msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
             /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
             /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All Future Events"));
-            /*QAbstractButton *yesButton =*/ msgBox.addPushButton(tr("Delete Only This Event"));
+            /*QAbstractButton *yesButton =*/ msgBox.addsuggestButton(tr("Delete Only This Event"));
 //            msgBox.updatesize();
 //            DPalette pa = yesButton->palette();
 //            if (themetype == 0 || themetype == 1) {

@@ -262,8 +262,8 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
                 msgBox.setText(
                     tr("All occurrences of a repeating event must have the same all-day status."));
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
-                /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-                /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Change All"));
+                /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
+                /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Change All"), true);
 //                msgBox.updatesize();
 //                DPalette pa = yesButton->palette();
 //                if (themetype == 0 || themetype == 1) {
@@ -294,8 +294,8 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
                 CSchceduleCtrlDlg msgBox/*(this)*/;
                 msgBox.setText(tr("You are changing the repeating rule of this event."));
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
-                /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-                /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Change All"));
+                /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
+                /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Change All"), true);
 //                msgBox.updatesize();
 //                DPalette pa = yesButton->palette();
 //                if (themetype == 0 || themetype == 1) {

@@ -302,8 +302,8 @@ void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
         CSchceduleCtrlDlg msgBox(this);
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        /* QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-        /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete"));
+        /* QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
+        /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Delete"), true);
 //        msgBox.updatesize();
 //        DPalette pa = yesButton->palette();
 //        if (m_themetype == 0 || m_themetype == 1) {

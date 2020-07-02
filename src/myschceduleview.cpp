@@ -294,8 +294,8 @@ void CMySchceduleView::slotDeleteBt(int buttonIndex, QString buttonName)
         // msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"),true);
-        /* QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete"),true);
+        /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
+        /* QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Delete"), true);
 //        DPalette pa = yesButton->palette();
 
 //        if (themetype == 0 || themetype == 1) {
