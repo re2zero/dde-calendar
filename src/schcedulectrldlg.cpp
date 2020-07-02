@@ -18,13 +18,16 @@
  */
 #include "schcedulectrldlg.h"
 #include <QVBoxLayout>
-#include "schceduledlg.h"
-#include "scheduledatamanage.h"
 #include <DMessageBox>
 #include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
 #include <DFontSizeManager>
+
+#include "schceduledlg.h"
+#include "scheduledatamanage.h"
+#include "cdynamicicon.h"
+
 DGUI_USE_NAMESPACE
 CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
 {
@@ -56,7 +59,7 @@ void CSchceduleCtrlDlg::initUI()
     //m_icon->setPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg")
     //.scaled(m_icon->size() * devicePixelRatioF()));
     //m_icon->move(10, 9);
-    QIcon t_icon = QIcon::fromTheme("dde-calendar");
+    QIcon t_icon(CDynamicIcon::getInstance()->getPixmap());// = QIcon::fromTheme("dde-calendar");
     setIcon(t_icon);
     m_Title = new QLabel(this);
     m_Title->setFixedHeight(48);

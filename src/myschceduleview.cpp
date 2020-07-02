@@ -25,6 +25,8 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 #include "schcedulectrldlg.h"
+#include "cdynamicicon.h"
+
 #include <QShortcut>
 #include <DFontSizeManager>
 #include <QPainter>
@@ -416,7 +418,7 @@ void CMySchceduleView::initUI()
     m_Title->setFixedSize(108, 51);
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
     DFontSizeManager::instance()->bind(m_Title,DFontSizeManager::T5);
-    QIcon t_icon = QIcon::fromTheme("dde-calendar");
+    QIcon t_icon(CDynamicIcon::getInstance()->getPixmap()); //= QIcon::fromTheme("dde-calendar");
     setIcon(t_icon);
     QFont labelTitle;
 //    labelTitle.setFamily("SourceHanSansSC");
