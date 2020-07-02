@@ -93,8 +93,11 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w)
     bool isOk = false;
     int state = CConfigSettings::value("base.state").toInt(&isOk);
     if (!arrybyte.isEmpty() && isOk) {
-        restoreGeometry(arrybyte);
-        setWindowState(static_cast<Qt::WindowStates >(state));
+        Qt::WindowStates winStates = static_cast<Qt::WindowStates >(state);
+        setWindowState(winStates);
+        if (winStates !=Qt::WindowState::WindowMaximized) {
+            restoreGeometry(arrybyte);
+        }
     }
     Dtk::Widget::moveToCenter(this);
 }
