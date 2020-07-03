@@ -38,7 +38,7 @@ void CTimeEdit::setTime(QTime time)
 
 QTime CTimeEdit::getTime()
 {
-//    m_timeEdit->lineEdit()->setInputMask("00:00;#");
+    m_timeEdit->lineEdit()->setInputMask("00:00;#");
     QString timetext = m_timeEdit->text();
 
     if (timetext.count() == 1) {
