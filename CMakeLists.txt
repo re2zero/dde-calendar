@@ -43,7 +43,7 @@ endif()
 execute_process(COMMAND bash ${APP_TRANS_SCRIPT}
                     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/")
 
-                    macro(SUBDIRLIST result curdir)
+macro(SUBDIRLIST result curdir)
     file(GLOB children RELATIVE ${curdir} ${curdir}/*)
     set(dirlist "")
     foreach(child ${children})
@@ -101,6 +101,9 @@ set(CMAKE_INSTALL_PREFIX /usr)
 install(TARGETS dde-calendar DESTINATION bin)
 
 file(GLOB APP_QM_FILES "translations/*.qm")
+
+install(FILES /usr/share/icons/bloom/apps/96/dde-calendar.svg
+        DESTINATION /share/icons/hicolor/scalable/apps/)
 install(FILES ${APP_QM_FILES} DESTINATION share/dde-calendar/translations)
 install(FILES ${APP_DESKTOP} DESTINATION share/applications)
 install(FILES ${APP_SERVICE} DESTINATION share/dbus-1/services)
