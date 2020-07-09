@@ -600,3 +600,8 @@ void DragInfoGraphicsView::ShowSchedule(DragInfoItem *infoitem)
 
 }
 
+int DragInfoGraphicsView::getDragStatus() const
+{
+    return m_DragStatus;
+}
+
