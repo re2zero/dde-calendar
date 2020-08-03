@@ -324,21 +324,10 @@ void CMySchceduleView::slotDeleteBt(int buttonIndex, QString buttonName)
 
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-            /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All"));
-            /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (themetype == 0 || themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
+            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Delete All"));
+            msgBox.addWaringButton(tr("Delete Only This Event"));
+
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -360,21 +349,9 @@ void CMySchceduleView::slotDeleteBt(int buttonIndex, QString buttonName)
             //msgBox.setIconPixmap(DHiDPIHelper::loadNxPixmap(":/resources/icon/dde-logo.svg").scaled(QSize(34, 34) * devicePixelRatioF()));
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-            /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All Future Events"));
-            /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (themetype == 0 || themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
+            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Delete All Future Events"));
+            msgBox.addWaringButton(tr("Delete Only This Event"));
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
