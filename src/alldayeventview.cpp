@@ -47,7 +47,6 @@ CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *paren
     : DragInfoItem (rect,parent)
 {
     Q_UNUSED(edittype);
-
 }
 
 bool CAllDayEventWidgetItem::hasSelectSchedule(const ScheduleDtailInfo &info)
@@ -96,11 +95,14 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
     }
     linearGradient.setColorAt(0, color1);
     linearGradient.setColorAt(1, color2);
-    QRectF fillRect = drawrect;
+    QRectF fillRect = QRectF(drawrect.x(),
+                             drawrect.y(),
+                             drawrect.width(),
+                             drawrect.height() - 2);
     //将直线开始点设为0，终点设为1，然后分段设置颜色
     painter->setBrush(linearGradient);
     painter->setPen(Qt::NoPen);
-    painter->drawRoundedRect(fillRect, 8, 8);
+    painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
 
     painter->setFont(m_font);
     painter->setPen(textcolor);
@@ -143,7 +145,7 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
         pen.setStyle(Qt::SolidLine);
         painter->setBrush(Qt::NoBrush);
         painter->setPen(pen);
-        painter->drawRoundedRect(trect, 8, 8);
+        painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
         painter->restore();
     }
     if (m_vSelectflag) {
@@ -151,7 +153,7 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
         selcolor.setAlphaF(0.05);
         painter->setBrush(selcolor);
         painter->setPen(Qt::NoPen);
-        painter->drawRoundedRect(fillRect, 8, 8);
+        painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
     }
 }
 
@@ -162,6 +164,14 @@ void CAllDayEventWeekView::setTheMe(int type)
 {
     m_themetype=type;
     updateDateShow();
+}
+
+void CAllDayEventWeekView::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::FontChange) {
+        updateItemHeightByFontSize();
+        updateInfo();
+    }
 }
 
 bool CAllDayEventWeekView::MeetCreationConditions(const QDateTime &date)
@@ -404,7 +414,7 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
 
     int m_topMagin;
     if (vResultData.count() < 2) {
-        m_topMagin = 31;
+        m_topMagin = 32;
     } else if (vResultData.count()  < 6) {
         m_topMagin = 31 + (vResultData.count()  - 1) * (itemHeight+1);
 
@@ -422,7 +432,7 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
     : DragInfoGraphicsView (parent)
 {
     m_editType = edittype;
-
+    updateItemHeightByFontSize();
     m_coorManage = new CScheduleCoorManage;
 }
 
@@ -506,7 +516,7 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
     for (int i = 0; i < m_vlistData[index].size(); ++i) {
         const ScheduleDtailInfo &info = m_vlistData[index].at(i);
         QRectF drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
-        drawrect.setY(3 + (itemHeight + 1)*index);
+        drawrect.setY(2 + (itemHeight + 1) * index);
         drawrect.setHeight(itemHeight);
 
         CAllDayEventWidgetItem *gwi = new CAllDayEventWidgetItem(drawrect, nullptr, m_editType);
@@ -516,6 +526,18 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
     }
 }
 
+void CAllDayEventWeekView::updateItemHeightByFontSize()
+{
+    QFont font;
+    DFontSizeManager::instance()->setFontGenericPixelSize(
+        static_cast<quint16>(DFontSizeManager::instance()->fontPixelSize(qGuiApp->font())));
+    font = DFontSizeManager::instance()->t8(font);
+    QFontMetrics fm(font);
+    int h = fm.height();
+    if (itemHeight != h) {
+        itemHeight = h;
+    }
+}
 
 CAllDayEventWeekView::PosInItem CAllDayEventWeekView::getPosInItem(const QPoint &p, const QRectF &itemRect)
 {

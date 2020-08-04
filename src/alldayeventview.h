@@ -71,6 +71,7 @@ private slots:
 public:
     void setTheMe(int type = 0) override;
 private:
+    void changeEvent(QEvent *event) override;
 
     bool MeetCreationConditions(const QDateTime &date) override;
     void slotCreate(const QDateTime &date) override;
@@ -91,6 +92,8 @@ protected:
 private:
     void updateDateShow();
     void createItemWidget(int index, bool average = false);
+    void updateItemHeightByFontSize();
+
 private:
     int                     itemHeight = 22;
 
