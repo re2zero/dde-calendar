@@ -493,7 +493,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
         painterPath.lineTo(m_radius, 0);
         painterPath.closeSubpath();
         painter.drawPath(painterPath);
-        painter.drawPath(painterPath);
+        //        painter.drawPath(painterPath);
         painter.restore();
     }
 

@@ -151,7 +151,7 @@ void CDayWindow::initUI()
     DPalette anipa = m_contentBackground->palette();
     anipa.setColor(DPalette::Background, "#F8F8F8");
     m_contentBackground->setPalette(anipa);
-    m_contentBackground->setFrameRounded(false);
+    m_contentBackground->setFrameRounded(true);
     m_contentBackground->setLineWidth(0);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;

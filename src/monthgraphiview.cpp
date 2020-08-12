@@ -50,6 +50,7 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
         item->setZValue(-1);
         m_DayItem.append(item);
         m_Scene->addItem(item);
+        item->setitemnum(i);
     }
     updateSize();
 }
@@ -691,6 +692,11 @@ void CDayGraphicsItem::setTheMe(int type)
     update();
 }
 
+void CDayGraphicsItem::setitemnum(int num)
+{
+    m_itemnum = num;
+}
+
 void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
@@ -722,7 +728,35 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     pen.setWidth(1);
     pen.setColor(m_BorderColor);
     painter->setPen(pen);
-    painter->drawRect(this->rect());
+    if (m_itemnum == 35) {
+        QPainterPath painterpath;
+        painterpath.moveTo(0, this->rect().y());
+        painterpath.lineTo(0, this->rect().y() + this->rect().height() - m_radius);
+        painterpath.arcTo(QRectF(0,
+                                 this->rect().y() + this->rect().height() - m_radius * 2,
+                                 m_radius * 2,
+                                 m_radius * 2),
+                          180, 90);
+        painterpath.lineTo(this->rect().width(), this->rect().y() + this->rect().height());
+        painterpath.lineTo(this->rect().width(), this->rect().y());
+        painterpath.lineTo(0, this->rect().y());
+        painter->drawPath(painterpath);
+    } else if (m_itemnum == 41) {
+        QPainterPath painterpath;
+        painterpath.moveTo(this->rect().x(), this->rect().y());
+        painterpath.lineTo(this->rect().x(), this->rect().y() + this->rect().height());
+        painterpath.lineTo(this->rect().x() + this->rect().width() - m_radius, this->rect().y() + this->rect().height());
+        painterpath.arcTo(QRectF(this->rect().x() + this->rect().width() - m_radius * 2,
+                                 this->rect().y() + this->rect().height() - m_radius * 2,
+                                 m_radius * 2,
+                                 m_radius * 2),
+                          270, 90);
+        painterpath.lineTo(this->rect().x() + this->rect().width(), this->rect().y());
+        painterpath.lineTo(this->rect().y() + this->rect().height(), this->rect().y());
+        painter->drawPath(painterpath);
+    } else {
+        painter->drawRect(this->rect());
+    }
 
     painter->save();
     painter->restore();

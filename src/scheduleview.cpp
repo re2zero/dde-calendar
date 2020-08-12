@@ -36,11 +36,11 @@ CScheduleView::CScheduleView(QWidget *parent, int viewType)
     : DFrame(parent)
     , m_viewType(viewType)
 {
-    setAutoFillBackground(true);
+    //    setAutoFillBackground(true);
     initUI();
     initConnection();
     setFrameRounded(true);
-    // setFrameShape(QFrame::NoFrame);
+    //    setFrameShape(QFrame::NoFrame);
     setLineWidth(0);
 }
 
@@ -230,6 +230,20 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     font.setPixelSize(11);
     if (m_vPos.isEmpty())
         return;
+
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(Qt::white);
+    QPainterPath painterpath;
+    painterpath.lineTo(1, this->height() - m_radius);
+    painterpath.arcTo(QRectF(1, this->height() - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
+    painterpath.lineTo(75, this->height());
+    painterpath.lineTo(75, 0);
+    painterpath.lineTo(1, 0);
+    painter.drawPath(painterpath);
+    painter.restore();
+
     QLocale locale;
     if (locale.language() == QLocale::Chinese) {
         QRect tinrect((m_leftMagin - hourTextWidth) / 2 - 5,
@@ -370,8 +384,16 @@ void CScheduleView::paintEvent(QPaintEvent *event)
         painter.setPen(m_linecolor);
 
         for (qreal i = intenval; i < width() - m_leftMagin; i = i + intenval) {
-            painter.drawLine(QPointF(i + m_leftMagin + 1, 1),
-                             QPointF(i + m_leftMagin + 1, this->height() + 1));
+            if (i > intenval * (m_TotalDay - 1)) {
+                QPainterPath painterpath;
+                painterpath.moveTo(i + m_leftMagin + 1 - 8, this->height() + 1);
+                painterpath.arcTo(QRectF(i + m_leftMagin + 1 - 16, this->height() + 1 - 16, 16, 16), 270, 90);
+                painterpath.lineTo(i + m_leftMagin + 1, 1);
+                painter.drawPath(painterpath);
+            } else {
+                painter.drawLine(QPointF(i + m_leftMagin + 1, 1),
+                                 QPointF(i + m_leftMagin + 1, this->height() + 1));
+            }
         }
 
         painter.restore();
@@ -380,9 +402,36 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             int d = checkDay(i - m_firstWeekDay);
             painter.setBrush(m_weekColor);
             painter.setPen(Qt::NoPen);
+            painter.setRenderHint(QPainter::Antialiasing);
             if (d == 6) {
-                painter.drawRect(QRectF(m_leftMagin + i * intenval + 1, 0,
-                                        width() - m_leftMagin - i * intenval, this->height()));
+                QPainterPath painterpath;
+                painterpath.moveTo(m_leftMagin + i * intenval + m_radius, 0);
+
+                painterpath.lineTo(m_leftMagin + i * intenval, 0);
+                painterpath.lineTo(m_leftMagin + i * intenval, m_radius);
+
+                painterpath.lineTo(m_leftMagin + i * intenval, this->height() - m_radius);
+
+                painterpath.lineTo(m_leftMagin + i * intenval, this->height());
+                painterpath.lineTo(m_leftMagin + i * intenval + m_radius, this->height());
+
+                painterpath.lineTo(this->width() - m_radius, this->height());
+
+                painterpath.arcTo(QRectF(width() - m_radius * 2,
+                                         this->height() - m_radius * 2,
+                                         m_radius * 2, m_radius * 2),
+                                  270, 90);
+
+                painterpath.lineTo(this->width(), m_radius);
+                painterpath.lineTo(this->width(), 0);
+
+                painterpath.lineTo(m_leftMagin + i * intenval + m_radius, 0);
+
+                painterpath.closeSubpath();
+                painter.drawPath(painterpath);
+
+                //                painter.drawRect(QRectF(m_leftMagin + i * intenval + 1, 0,
+                //                                        width() - m_leftMagin - i * intenval, this->height()));
             }
             if (d == 7) {
                 painter.drawRect(

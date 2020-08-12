@@ -123,6 +123,8 @@ public:
     {
         return m_Date;
     }
+    void setitemnum(int num);
+
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 private:
@@ -141,6 +143,9 @@ private:
     QColor                  m_xiuColor = "#D4FFB3";
     int                     m_themetype = 0;
     QColor                  m_currentColor;
+    int m_itemnum = 0;
+    const int m_radius = 18;
+
 public:
     static bool             m_LunarVisible;
 };

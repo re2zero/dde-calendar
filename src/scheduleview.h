@@ -101,6 +101,7 @@ private:
     SchecduleRemindWidget    *m_ScheduleRemindWidget;
     int                             m_minTime;      //最小高度对应的最小时间
     QFont                       font;
+    int m_radius = 8;
 };
 
 #endif // SCHEDULEVIEW_H
