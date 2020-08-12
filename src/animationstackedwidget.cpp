@@ -23,8 +23,8 @@
 #include <QPainter>
 
 AnimationStackedWidget::AnimationStackedWidget(const AnimationOri ori, QWidget *parent)
-    : QStackedWidget(parent),
-      m_animationOri(ori)
+    : QStackedWidget(parent)
+    , m_animationOri(ori)
     , animation(new QPropertyAnimation(this, QByteArray()))
 {
     setDuration(1000);
@@ -48,7 +48,6 @@ void AnimationStackedWidget::setDuration(int duration)
     this->duration = duration;
     animation->setEasingCurve(QEasingCurve::InOutQuad);
 }
-
 
 void AnimationStackedWidget::paintEvent(QPaintEvent *e)
 {
@@ -81,7 +80,6 @@ void AnimationStackedWidget::setCurrent(int index)
     if ( isAnimation ) {
         return;
     }
-
     //开始动画并设置间隔和开始、结束值
     QRect g = geometry();
     int value = 0;
@@ -134,7 +132,6 @@ void AnimationStackedWidget::setPre()
     if ( isAnimation ) {
         return;
     }
-
     //开始动画并设置间隔和开始、结束值
     QRect g = geometry();
     int value = 0;
