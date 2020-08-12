@@ -80,25 +80,23 @@ private slots:
     void getDbusData();
 
 private:
-    CMonthGraphiview        *m_MonthGraphicsView;
-    CalendarDBus            *m_DBusInter;
+    CMonthGraphiview *m_MonthGraphicsView = nullptr;
+    CalendarDBus *m_DBusInter = nullptr;
     QDate                   m_days[42];
     QDate                   m_currentDate;
 
-
     QDate                               m_createDate;
-    QMap<QDate, CaLunarDayInfo>         *lunarCache = nullptr;
+    QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
     QVector<FestivalInfo>               m_festivallist;
 
-
-    CMonthWeekView          *m_weekIndicator;
+    CMonthWeekView *m_weekIndicator = nullptr;
     int                     m_firstWeekDay =0;
-    QAction                 *m_createAction;     // 创建日程
-    QVBoxLayout             *m_mainLayout;
+    QAction *m_createAction = nullptr; // 创建日程
+    QVBoxLayout *m_mainLayout = nullptr;
     int                     m_leftmaagin = 0;
     int                     m_topmagin = 0;
     bool                    m_sflag = true;
-    SchecduleRemindWidget   *m_RemindWidget;
+    SchecduleRemindWidget *m_RemindWidget = nullptr;
 
     QPoint                  m_PressPoint;
     bool                    isCreate;

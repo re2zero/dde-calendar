@@ -57,15 +57,14 @@ private:
     void paintPrevious(QPainter &, int);
     void paintNext(QPainter &, int);
 private:
-    AnimationOri     m_animationOri;
-    QPropertyAnimation *animation;
+    AnimationOri m_animationOri;
+    QPropertyAnimation *animation = nullptr;
     int duration;
     bool isAnimation = false;
-    QVariant       currentValue;
-    int         widgetCount;
-    int         nextIndex;
-    MoveOrientation  m_moveOri = MoveOrientation::LeftToRight;
-
+    QVariant currentValue;
+    int widgetCount;
+    int nextIndex;
+    MoveOrientation m_moveOri = MoveOrientation::LeftToRight;
 };
 
 #endif // AnimationStackedWidget_H

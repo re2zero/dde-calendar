@@ -101,7 +101,6 @@ QString GetStyleSheetContent()
 #include "schedulesdbus.h"
 int main(int argc, char *argv[])
 {
-    //DApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     DApplication::loadDXcbPlugin();
     DApplication a(argc, argv);
@@ -111,9 +110,7 @@ int main(int argc, char *argv[])
     a.setOrganizationName("deepin");
     a.setApplicationName("dde-calendar");
     a.loadTranslator();
-    //QLocale::setDefault(QLocale(QLocale::C, QLocale::UnitedStates));
     a.setApplicationVersion(VERSION);
-    //QList<QLocale> localeFallback = QList<QLocale>() << QLocale::system();
     // meta information that necessary to create the about dialog.
     a.setProductName(QApplication::translate("CalendarWindow", "Calendar"));
     QIcon t_icon = QIcon::fromTheme("dde-calendar");
@@ -153,14 +150,10 @@ int main(int argc, char *argv[])
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerService("com.deepin.Calendar");
     dbus.registerObject("/com/deepin/Calendar", &ww);
-    //ww.setDate(QDate::currentDate());
     ww.slotTheme(getThemeTypeSetting());
     ww.viewWindow(viewtype, QDateTime::currentDateTime());
     ww.show();
 
-    //QDBusConnection dbus = QDBusConnection::sessionBus();
-    //dbus.registerService("com.deepin.Calendar");
-    //dbus.registerObject("/com/deepin/Calendar", &ww);
     //监听当前应用主题切换事件
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
     [] (DGuiApplicationHelper::ColorType type) {
@@ -169,10 +162,5 @@ int main(int argc, char *argv[])
         saveThemeTypeSetting(type);
         DGuiApplicationHelper::instance()->setPaletteType(type);
     });
-//    if (dbus.registerService("com.deepin.Calendar"), QDBusConnectionInterface::ReplaceExistingService, QDBusConnectionInterface::AllowReplacement) {
-
-
-//        return a.exec();
-//    }
     return a.exec();
 }

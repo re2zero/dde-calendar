@@ -36,7 +36,7 @@ private:
     int checkDay(int weekday);
 
 private:
-    QHBoxLayout *m_mainLayout;
+    QHBoxLayout *m_mainLayout = nullptr;
 };
 
 #endif // WEEKINDICATOR_H

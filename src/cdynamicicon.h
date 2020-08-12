@@ -56,13 +56,13 @@ public:
 private:
     void paintPixmap(QPixmap *pixmap);
 private:
-    QPixmap         *m_pixmap;
-    QDate           m_Date;
+    QPixmap *m_pixmap = nullptr;
+    QDate m_Date;
 
-    QSvgRenderer    *m_Dayrenderer;
-    QSvgRenderer    *m_Weekrenderer;
-    QSvgRenderer    *m_Monthrenderer;
-    QSvgRenderer    *m_backgroundrenderer;
+    QSvgRenderer *m_Dayrenderer = nullptr;
+    QSvgRenderer *m_Weekrenderer = nullptr;
+    QSvgRenderer *m_Monthrenderer = nullptr;
+    QSvgRenderer *m_backgroundrenderer = nullptr;
 
     DTitlebar       *m_Titlebar {nullptr};
 

@@ -85,15 +85,15 @@ private:
     CScheduleDataManage();
     ~CScheduleDataManage();
 private:
-    CScheduleDataCtrl                               *m_scheduleDataCtrl;
-    CHuangliDayDataManage                           *m_HuangliDayDataManage;
+    CScheduleDataCtrl *m_scheduleDataCtrl = nullptr;
+    CHuangliDayDataManage *m_HuangliDayDataManage = nullptr;
     QVector<CSchedulesColor>                        m_vScheduleColor;
     QVector<ScheduleDateRangeInfo>                  m_vScheduleInfo;
     ScheduleDtailInfo                               m_PressSelectInfo;
     int                                             m_theme = 0;
     int                                             m_CurrentYear;
     int                                             m_firstWeekDay  =0;
-    YearScheduleInfo                                *m_GetAllYearScheduleInfo;
+    YearScheduleInfo *m_GetAllYearScheduleInfo = nullptr;
 
     static CScheduleDataManage                      *m_vscheduleDataManage;
 };

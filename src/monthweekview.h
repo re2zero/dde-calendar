@@ -40,8 +40,8 @@ private:
 protected:
     void resizeEvent(QResizeEvent *event);
 private:
-    QHBoxLayout *m_mainLayout;
-    QVector<QPair<CustomFrame *, int> >        m_weekData;
+    QHBoxLayout *m_mainLayout = nullptr;
+    QVector<QPair<CustomFrame *, int>> m_weekData;
     QVector<DHorizontalLine *>             m_vline;
 };
 

@@ -51,8 +51,6 @@ QString CreatOrParSchedule::createScheduleDtailInfojson(const ScheduleDtailInfo 
     json.insert("Type", info.type.ID);
     json.insert("Start", toconvertData(info.beginDateTime));
     json.insert("End", toconvertData(info.endDateTime));
-    //json.insert("Start", "2006-01-02T15:04:05+07:00");
-    //json.insert("End", "2006-01-02T17:04:05+07:00");
     json.insert("RecurID", info.RecurID);
     QJsonArray jsonarry;
     for (int i = 0; i < info.ignore.count(); i++) {
@@ -151,7 +149,6 @@ ScheduleDtailInfo CreatOrParSchedule::parsingScheduleDtailInfojsonID(QJsonObject
 QString CreatOrParSchedule::createScheduleRRule(const ScheduleDtailInfo &info)
 {
     if (info.rpeat == 0) return QString();
-    // QString str = "'";
     QString str;
     switch (info.rpeat) {
     case 1: {
@@ -182,13 +179,10 @@ QString CreatOrParSchedule::createScheduleRRule(const ScheduleDtailInfo &info)
     break;
     case 2: {
         QDateTime datetime = info.enddata.date.addDays(-1);
-        //datetime.setDate(datetime);
         str += ";UNTIL=" + datetime.toString("yyyyMMddThhmmss") + "Z";
-        // str += ";UNTIL=" + toconvertData(datetime);
     }
     break;
     }
-    //str += "'";
     return str;
 }
 
@@ -223,7 +217,6 @@ void CreatOrParSchedule::parsingScheduleRRule(QString str, ScheduleDtailInfo &in
                 QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
                 info.enddata.type = 2;
                 info.enddata.date = QDateTime::fromString(liststr.at(1).left(liststr.at(1).count() - 1), "yyyyMMddThhmmss");
-                //info.enddata.date = fromconvertData(liststr.at(1));
                 info.enddata.date = info.enddata.date.addDays(1);
             }
         }
@@ -267,7 +260,6 @@ QString CreatOrParSchedule::toconvertData(QDateTime date)
     strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "+" + datetimeutc.toString("hh:mm");
-    //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
     return  str;
 }
 
@@ -286,7 +278,6 @@ QString CreatOrParSchedule::toconvertIGData(QDateTime date)
     strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z" + datetimeutc.toString("hh:mm");
-    //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
     return  str;
 }
 

@@ -44,7 +44,7 @@ signals:
 
 public slots:
 private:
-    CenterWidget *m_centerWidget;
+    CenterWidget *m_centerWidget = nullptr;
     ScheduleDtailInfo     m_ScheduleInfo;
     CSchedulesColor gdcolor;
 };
@@ -64,9 +64,9 @@ protected:
     void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
 private:
     QStringList testList;
-    QFont     textfont;
-    int  textwidth;
-    int  textheight;
+    QFont textfont;
+    int textwidth;
+    int textheight;
     const int textRectWidth = 165;
     ScheduleDtailInfo     m_ScheduleInfo;
     CSchedulesColor gdcolor;

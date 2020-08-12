@@ -48,13 +48,13 @@ public slots:
 #endif
 
 private:
-    DLineEdit *m_timeEdit;
+    DLineEdit *m_timeEdit = nullptr;
 #if 0
     CTimeVerticalScroll       *m_verticalScroll;
     DListWidget               *m_pListWidget;
     QListWidgetItem           *m_pitem;
 #endif
-    int m_type = 0;  // 0 h,1 m
+    int m_type = 0; // 0 h,1 m
     int m_pos = 0;
     QTime m_time;
 };

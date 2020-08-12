@@ -78,7 +78,7 @@ private:
 private:
     QVector<ScheduleDateRangeInfo>                  m_data;
     int                                             m_cNum = 2;//日程层数
-    QWidget                                         *m_parernt;
+    QWidget *m_parernt = nullptr;
     int                                             m_currentMonth=0;
     QDate                                           m_beginDate;
     QDate                                           m_endDate;
@@ -89,8 +89,7 @@ private:
     int                                             m_buttommagin=0;
     QVector<CWeekScheduleView *>                    m_weekSchedule;
     int                                             m_ItemHeight = 22;
-    QGraphicsScene                                  *m_Scene;
-
+    QGraphicsScene *m_Scene = nullptr;
 };
 
 class CWeekScheduleView :public QObject

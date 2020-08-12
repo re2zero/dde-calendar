@@ -101,8 +101,8 @@ private:
     QVector<ScheduleDtailInfo>                   m_scheduleInfo;
     QVector<CAllDayEventWidgetItem *>            m_baseShowItem;
     int                                          m_editType = 0;
-    CScheduleCoorManage                         *m_coorManage;
-    QDate                                       m_dianjiDay;
+    CScheduleCoorManage *m_coorManage = nullptr;
+    QDate m_dianjiDay;
 
     int m_rightmagin = 0;
     bool                            m_updateDflag  = false;

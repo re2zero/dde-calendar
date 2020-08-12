@@ -72,19 +72,19 @@ private slots:
     void slotsearchDateSelect(QDate date);
     void slotIsDragging(bool &isDragging);
 private:
-    CDayMonthView     *m_daymonthView;
+    CDayMonthView *m_daymonthView = nullptr;
     DFrame *m_contentBackground = nullptr;
     CustomFrame *m_leftground = nullptr;
-    DVerticalLine *m_verline;
+    DVerticalLine *m_verline = nullptr;
     QDate              m_currentdate;
-    QLabel            *m_YearLabel;
-    QLabel            *m_LunarLabel;
-    QLabel            *m_SolarDay;
-    CScheduleView     *m_scheduleView;
+    QLabel *m_YearLabel = nullptr;
+    QLabel *m_LunarLabel = nullptr;
+    QLabel *m_SolarDay = nullptr;
+    CScheduleView *m_scheduleView = nullptr;
     // CSchceduleSearchView *m_schceduleSearchView;
-    QString           m_searchText;
+    QString m_searchText;
     bool m_searchfalg = false;
-    QHBoxLayout *m_mainLayout;
+    QHBoxLayout *m_mainLayout = nullptr;
 };
 
 #endif // YEARWINDOW_H

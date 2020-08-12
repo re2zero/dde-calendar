@@ -171,7 +171,7 @@ protected:
     QDateTime getDragScheduleInfoBeginTime(const QDateTime &moveDateTime) override;
     QDateTime getDragScheduleInfoEndTime(const QDateTime &moveDateTime) override;
 private:
-    CScheduleCoorManage             *m_coorManage;
+    CScheduleCoorManage *m_coorManage = nullptr;
     QVector<CScheduleItem *>        m_vScheduleItem;
     QMargins                        m_margins;                     //四周空白
     bool                            m_LRFlag;          //水平线
@@ -183,18 +183,17 @@ private:
     qreal                           m_dayInterval;
     qreal                           m_timeInterval;
     int                             m_firstWeekDay;
-    qint64                             m_totalDay;
+    qint64 m_totalDay;
     qreal                           m_sceneHeightScale =0;
 
     QColor                          m_weekcolor = "#4F9BFF";
     QColor                          m_currenttimecolor = "#F74444";
     int                             m_cuttrnttimetype = 0;
-    QTimer                          *m_timer;
+    QTimer *m_timer = nullptr;
     QMutex                          m_Mutex;
     int                             m_viewType = 0;
     bool                            m_updateDflag  = false;
     int                             m_rightmagin = 0;
-
 
     QVector<ScheduleDtailInfo>      m_scheduleInfo;
     QDate                           m_beginDate;

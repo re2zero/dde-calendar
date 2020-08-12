@@ -117,7 +117,6 @@ bool ExportedInterface::analysispara( QString &parameters, ScheduleDtailInfo &in
         }
     }
     if (rootObj.contains("ViewName")) {
-        //  para.viewType = rootObj.value("ViewName").toString().toInt();
         para.viewType = rootObj.value("ViewName").toInt();
     }
     if (rootObj.contains("ViewTime")) {
@@ -180,7 +179,6 @@ void ExportedInterface::parsingScheduleRRule(QString str, ScheduleDtailInfo &inf
                 QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
                 info.enddata.type = 2;
                 info.enddata.date = QDateTime::fromString(liststr.at(1).left(liststr.at(1).count() - 1), "yyyyMMddThhmmss");
-                //info.enddata.date = fromconvertData(liststr.at(1));
                 info.enddata.date = info.enddata.date.addDays(1);
             }
         }

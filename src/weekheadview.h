@@ -98,8 +98,8 @@ private slots:
     void getDbusData();
 private:
     QList<QWidget *> m_cellList;
-    CustomFrame        *m_monthLabel;
-    CalendarDBus *m_DBusInter;
+    CustomFrame *m_monthLabel = nullptr;
+    CalendarDBus *m_DBusInter = nullptr;
     QDate m_days[7];
     QDate m_currentDate;
     QStringList m_monthList;
@@ -110,10 +110,8 @@ private:
     QFont m_dayNumFont;
     QFont m_monthFont;
 
-
     QColor m_backgroundCircleColor = "#2ca7f8";
     QColor m_backgroundShowColor = "#2CA7F8";
-
     QColor m_defaultTextColor = "#6F6F6F";
     QColor m_currentDayTextColor = "#FFFFFF";
     QColor m_defaultLunarColor = "#898989";
@@ -128,7 +126,7 @@ private:
     int m_themetype = 1;
     int m_monthW = 80;
     int m_fixwidth = 200;
-    int m_radius = 8;
+    const int m_radius = 8;
 };
 
 #endif // MYCALENDARWIDGET_H

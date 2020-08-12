@@ -64,9 +64,9 @@ private:
     int m_firstWeekDay;
     int m_weekAddDay = 0;
     int m_themetype = 1;
-    int m_fixwidth = 200;
-    int m_realwidth = 100;
     bool m_searchfalg = false;
+    //    int m_fixwidth = 200;
+    //    int m_realwidth = 100;
 };
 
 #endif // MONTDAYVIEW_H

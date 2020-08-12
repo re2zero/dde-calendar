@@ -80,24 +80,24 @@ protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 private:
-    DFrame                      *m_contentBackground = nullptr;
-    DIconButton                 *m_prevButton = nullptr;
-    DIconButton                 *m_nextButton = nullptr;
-    QLabel                      *m_today = nullptr;
+    DFrame *m_contentBackground = nullptr;
+    DIconButton *m_prevButton = nullptr;
+    DIconButton *m_nextButton = nullptr;
+    QLabel *m_today = nullptr;
     QDate                       m_currentdate;
-    QLabel                      *m_YearLabel;
-    QLabel                      *m_YearLunarLabel;
-    QLabel                      *m_YearLunarDayLabel;
-    YearFrame                   *m_YearWidget;
-    YearFrame                   *YearWidget_First;
-    YearFrame                   *YearWidget_Second;
-    CustomFrame                 *m_todayframe;
-    AnimationStackedWidget      *m_StackedWidget;
+    QLabel *m_YearLabel = nullptr;
+    QLabel *m_YearLunarLabel = nullptr;
+    QLabel *m_YearLunarDayLabel = nullptr;
+    YearFrame *m_YearWidget = nullptr;
+    YearFrame *YearWidget_First = nullptr;
+    YearFrame *YearWidget_Second = nullptr;
+    CustomFrame *m_todayframe = nullptr;
+    AnimationStackedWidget *m_StackedWidget = nullptr;
     //CSchceduleSearchView *m_schceduleSearchView;
-    QHBoxLayout                 *m_tmainLayout;
+    QHBoxLayout *m_tmainLayout = nullptr;
     QString                     m_searchText;
     bool                        m_searchfalg = false;
-    DWidget                     *m_topWidget;
+    DWidget *m_topWidget = nullptr;
 };
 
 class YearFrame : public DFrame
@@ -135,15 +135,15 @@ public slots:
     void slotcurrentDateChanged(QDate date);
 private:
     QList<CYearView *>          m_monthViewList;
-    QLabel                      *m_YearLabel;
-    QLabel                      *m_YearLunarLabel;
-    CalendarDBus                *m_DBusInter;
+    QLabel *m_YearLabel = nullptr;
+    QLabel *m_YearLunarLabel = nullptr;
+    CalendarDBus *m_DBusInter = nullptr;
     QDate                       m_currentdate;
     bool                        m_searchfalg = false;
     bool                        m_selectFlag = false;
     QString                     m_LunarYear;
     QString                     m_LunarDay;
-    DWidget                     *m_topWidget;
+    DWidget *m_topWidget = nullptr;
 };
 
 #endif // YEARWINDOW_H

@@ -96,10 +96,10 @@ public slots:
     void slotDeleteItem();
 private:
     QVector<CDayGraphicsItem *>         m_DayItem;
-    QMap<QDate, CaLunarDayInfo>         *m_lunarCache;
+    QMap<QDate, CaLunarDayInfo> *m_lunarCache = nullptr;
     QVector<FestivalInfo>               m_festivallist;
     int                                 m_currentMonth;
-    CMonthSchceduleView                 *m_MonthSchceduleView;
+    CMonthSchceduleView *m_MonthSchceduleView = nullptr;
     QVector<ScheduleDateRangeInfo>      m_shceludelistdata;
 };
 

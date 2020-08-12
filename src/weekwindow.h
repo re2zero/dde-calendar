@@ -87,23 +87,23 @@ protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
-    CWeekHeadView     *m_weekHeadView; //周视图头
+    CWeekHeadView *m_weekHeadView = nullptr; //周视图头
     DFrame *m_contentBackground = nullptr;
-    DIconButton      *m_prevButton = nullptr;
-    DIconButton      *m_nextButton = nullptr;
+    DIconButton *m_prevButton = nullptr;
+    DIconButton *m_nextButton = nullptr;
     CTodyButton       *m_today = nullptr;
     QDate              m_currentdate;
-    QLabel            *m_YearLabel;
-    QLabel            *m_YearLunarLabel;
-    QLabel            *m_weekLabel;
+    QLabel *m_YearLabel = nullptr;
+    QLabel *m_YearLunarLabel = nullptr;
+    QLabel *m_weekLabel = nullptr;
     CWeekView         *m_weekview = nullptr;
-    CustomFrame            *m_todayframe;
-    CScheduleView     *m_scheduleView;
-    QSpacerItem       *m_spaceitem;
-    QVBoxLayout       *m_mainhLayout;
+    CustomFrame *m_todayframe = nullptr;
+    CScheduleView *m_scheduleView = nullptr;
+    QSpacerItem *m_spaceitem = nullptr;
+    QVBoxLayout *m_mainhLayout = nullptr;
     // CSchceduleSearchView *m_schceduleSearchView;
-    QString           m_searchText;
-    QHBoxLayout *m_tmainLayout;
+    QString m_searchText;
+    QHBoxLayout *m_tmainLayout = nullptr;
     bool m_searchfalg = false;
 };
 

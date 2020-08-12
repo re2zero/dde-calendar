@@ -170,11 +170,6 @@ void CGraphicsView::setInfo(const QVector<ScheduleDtailInfo> &info)
 
 bool MScheduleTimeThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
 {
-//    if (s1.beginDateTime.secsTo(s1.endDateTime) == s2.beginDateTime.secsTo(s2.endDateTime)) {
-//        return s1.beginDateTime < s2.beginDateTime;
-//    } else {
-//        return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
-//    }
     if (s1.beginDateTime.date().daysTo(s1.endDateTime.date())==
             s2.beginDateTime.date().daysTo(s2.endDateTime.date())) {
         if (s1.beginDateTime == s2.beginDateTime) {
@@ -230,21 +225,9 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
                     vListData.at(j).endDateTime.time() ==QTime(0,0,0)) {
                 continue;
             }
-//            if (beginoffset>0) {
-//                currentInfo.begindate = QDateTime(currentDate,QTime(0,0,0));
-//            } else {
-//                currentInfo.begindate = vListData.at(j).beginDateTime;
-//            }
-
-//            if(endoffset>0){
-//                currentInfo.enddate = QDateTime(currentDate,QTime(23,59,59));
-//            } else {
-//                currentInfo.enddate = vListData.at(j).endDateTime;
-//            }
             currentInfo.append(vListData.at(j));
         }
         std::sort(currentInfo.begin(), currentInfo.end(), MScheduleTimeThan);
-//        qSort(currentInfo.begin(), currentInfo.end(), MScheduleTimeThan);
         if (currentInfo.size()>0) {
             m_InfoMap[currentDate] = currentInfo;
             QList<ScheduleclassificationInfo> info;
@@ -373,7 +356,6 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
 
     info.clear();
     std::sort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
-//    qSort(schedulelist.begin(), schedulelist.end(), MScheduleTimeThan);
     QVector<int> containIndex;
 
 
@@ -451,7 +433,6 @@ void CGraphicsView::mouseDoubleClickEvent( QMouseEvent *event )
     emit signalViewtransparentFrame(1);
     m_updateDflag  = false;
     CMySchceduleView dlg(item->getData(), this);
-//    dlg.setSchedules(item->getData());
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
     dlg.exec();
     emit signalViewtransparentFrame(0);
@@ -573,33 +554,7 @@ Others:         无
 void CGraphicsView::paintEvent(QPaintEvent *event)
 {
     QPainter t_painter(viewport());
-    //t_painter.setCompositionMode(QPainter::CompositionMode_Difference  ); //设置混合模式
     int t_width = viewport()->width()  + 2;
-//    //绘制垂直线
-//    if (m_TBFlag) {
-//        t_painter.save();
-//        t_painter.setPen(m_TBPen);
-//        for (int i = 0; i < m_vTBLarge.size(); ++i)
-//            t_painter.drawLine(QPoint(m_vTBLarge[i] - 1, 0), QPoint(m_vTBLarge[i] - 1, t_height));
-//        t_painter.restore();
-//        if (m_totalDay == 7) {
-//            t_painter.save();
-//            for (int i = 0; i != 7; ++i) {
-
-//                int d = checkDay(i - m_firstWeekDay);
-
-////                t_painter.setBrush(QBrush(m_weekcolor));
-////                t_painter.setPen(Qt::NoPen);
-////                if ( d == 7) {
-////                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 0, t_height));
-////                }
-////                if (d == 6 ) {
-////                    t_painter.drawRect(QRect(0 + i * m_dayInterval, 0, m_dayInterval + 5, t_height));
-////                }
-//            }
-//            t_painter.restore();
-//        }
-//    }
     //绘制水平线
     if (m_LRFlag) {
         if (m_cuttrnttimetype == 0) {
@@ -636,11 +591,6 @@ void CGraphicsView::scrollBarValueChangedSlot()
     emit signalScheduleShow(false);
     QMutexLocker locker(&m_Mutex);
     int viewHeight = viewport()->height();
-    //QPoint newCenter(viewWidth / 2,  viewHeight / 2 );
-    //QPointF centerpos = mapToScene(newCenter);
-    //setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    //centerOn(centerpos.x(), centerpos.y());
-    //setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     m_vLRLarge.clear();
     m_vTBLarge.clear();
     QPointF leftToprealPos = mapToScene(QPoint(0, 0));
@@ -661,7 +611,6 @@ void CGraphicsView::scrollBarValueChangedSlot()
     }
     qreal currentTime =  static_cast<qreal>(m_coorManage->getHeight(QTime::currentTime()));
     if (currentTime > beginpos && currentTime < leftBttomrealPos.y()) {
-        //if (0) {
         m_cuttrnttimetype = 1;
         QPoint point = mapFromScene(leftBttomrealPos.x(), currentTime);
         m_vLRLarge.append(point.y());
@@ -737,7 +686,6 @@ ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, con
 bool CGraphicsView::IsEqualtime(const QDateTime &timeFirst, const QDateTime &timeSecond)
 {
     return !(qAbs(timeFirst.secsTo(timeSecond))>100);
-//    return  timeFirst ==timeSecond;
 }
 
 bool CGraphicsView::JudgeIsCreate(const QPointF &pos)

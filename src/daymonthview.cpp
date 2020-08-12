@@ -58,7 +58,6 @@ CDayMonthView::CDayMonthView(QWidget *parent) : CustomFrame(parent)
     m_weeklist.append(tr("Sunday"));
     initUI();
     initConnection();
-    //setFixedSize(DDEDayCalendar::D_MWindowWidth, DDEDayCalendar::D_MWindowHeight);
 }
 
 CDayMonthView::~CDayMonthView()
@@ -105,7 +104,6 @@ void CDayMonthView::setTheMe(int type)
     if (type == 0 || type == 1) {
         DPalette anipa = this->palette();
         QColor tbcolor = "#FFFFFF";
-        //tbcolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, tbcolor);
         setPalette(anipa);
         setBackgroundRole(DPalette::Background);
@@ -114,7 +112,6 @@ void CDayMonthView::setTheMe(int type)
         DPalette todaypa = m_today->palette();
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         todaypa.setColor(DPalette::ButtonText, todayColor);
-//        todaypa.setColor(DPalette::ButtonText, QColor("#1D81EC"));
         todaypa.setColor(DPalette::Dark, Qt::white);
         todaypa.setColor(DPalette::Light, Qt::white);
         QColor sbcolor("#002A57");
@@ -126,39 +123,28 @@ void CDayMonthView::setTheMe(int type)
         QColor todaypress = "#000000";
         todaypress.setAlphaF(0.2);
         m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
-//        m_today->setTColor("#1D81EC", "#001A2E", "#0081FF");
         m_today->setTColor(todayColor, "#001A2E", "#0081FF");
         m_today->setshadowColor(sbcolor);
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
         prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
-        //m_prevButton->setPalette(prevpa);
 
         DPalette nextvpa = m_nextButton->palette();
         nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
         nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
-        //m_nextButton->setPalette(nextvpa);
 
         m_currentMouth->setTextColor(QColor("#3B3B3B"));
-        //m_currentMouth->setBColor(tbcolor);
 
-
-//        m_currentDay->setTextColor(QColor("#2CA7F8"));
         m_currentDay->setTextColor(todayColor);
-        //m_currentDay->setBColor(tbcolor);
 
         m_currentWeek->setTextColor(QColor("#414D68"));
-        //m_currentWeek->setBColor(tbcolor);
 
         m_currentLuna->setTextColor(QColor("#414D68"));
-        //m_currentLuna->setBColor(tbcolor);
 
         m_currentYear->setTextColor(QColor("#414D68"));
-        //m_currentYear->setBColor(tbcolor);
 
 
         QFont hlabelF;
-//        hlabelF.setFamily("PingFangSC-Semibold");
         hlabelF.setPixelSize(14);
 
         QColor yicolor = QColor("#75C18E");
@@ -177,7 +163,6 @@ void CDayMonthView::setTheMe(int type)
         m_backgroundCircleColor = "#0081FF";
 
         m_defaultTextColor = Qt::black;
-//        m_currentDayTextColor = "#0081FF";
         m_currentDayTextColor = todayColor;
         m_weekendsTextColor = Qt::black;
         m_selectedTextColor = Qt::white;
@@ -189,7 +174,6 @@ void CDayMonthView::setTheMe(int type)
     } else if (type == 2) {
         DPalette anipa = this->palette();
         QColor tbcolor = "#282828";
-        //tbcolor.setAlphaF(0.05);
         anipa.setColor(DPalette::Background, tbcolor);
         setPalette(anipa);
         setBackgroundRole(DPalette::Background);
@@ -198,7 +182,6 @@ void CDayMonthView::setTheMe(int type)
         DPalette todaypa = m_today->palette();
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         todaypa.setColor(DPalette::ButtonText, todayColor);
-//        todaypa.setColor(DPalette::ButtonText, QColor("#0081FF"));
         todaypa.setColor(DPalette::Light, "#484848");
         todaypa.setColor(DPalette::Dark, "#414141");
         QColor sbcolor("#000000");
@@ -206,42 +189,27 @@ void CDayMonthView::setTheMe(int type)
         todaypa.setColor(DPalette::Shadow, sbcolor);
         m_today->setPalette(todaypa);
         m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
-//        m_today->setTColor("#0081FF", "#FFFFFF", "#0081FF");
         m_today->setTColor(todayColor, "#FFFFFF", "#0081FF");
         m_today->setshadowColor(sbcolor);
         DPalette prevpa = m_prevButton->palette();
         prevpa.setColor(DPalette::Dark, QColor("#484848"));
         prevpa.setColor(DPalette::Light, QColor("#414141"));
-        //prevpa.setColor(DPalette::Dark, Qt::black);
-        //prevpa.setColor(DPalette::Light, Qt::black);
-        //m_prevButton->setPalette(prevpa);
-
         DPalette nextvpa = m_nextButton->palette();
         nextvpa.setColor(DPalette::Dark, QColor("#484848"));
         nextvpa.setColor(DPalette::Light, QColor("#414141"));
-        //m_nextButton->setPalette(nextvpa);
 
 
 
         m_currentMouth->setTextColor(QColor("#C0C6D4"));
-        //m_currentMouth->setBColor(tbcolor);
 
-
-//        m_currentDay->setTextColor(QColor("#0081FF"));
         m_currentDay->setTextColor(todayColor);
-        //m_currentDay->setBColor(tbcolor);
 
         m_currentWeek->setTextColor(QColor("#C0C6D4"));
-        //m_currentWeek->setBColor(tbcolor);
 
         m_currentLuna->setTextColor(QColor("#C0C6D4"));
-        //m_currentLuna->setBColor(tbcolor);
 
         m_currentYear->setTextColor(QColor("#C0C6D4"));
-        //m_currentYear->setBColor(tbcolor);
-
         QFont hlabelF;
-//        hlabelF.setFamily("PingFangSC-Semibold");
         hlabelF.setPixelSize(14);
 
         QColor yicolor = QColor("#2F8C4D");
@@ -260,7 +228,6 @@ void CDayMonthView::setTheMe(int type)
         m_backgroundCircleColor = "#0059D2";
 
         m_defaultTextColor = "#C0C6D4";
-//        m_currentDayTextColor = "#0081FF";
         m_currentDayTextColor = todayColor;
         m_weekendsTextColor = Qt::black;
         m_selectedTextColor = "#B8D3FF";
@@ -298,15 +265,7 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     } else {
         m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
     }
-    //if (date == QDate::currentDate()) {
-    //     m_today->setEnabled(false);
-    // } else {
-    //     m_today->setEnabled(true);
-    // }
     m_currentDate = date;
-    // to refresh lunar calendar
-    //updateDate();
-//    emit signalcurrentDateChanged(date);
     updateCurrentLunar();
 }
 
@@ -383,40 +342,30 @@ void CDayMonthView::getlineflag()
 
 void CDayMonthView::initUI()
 {
-//    m_dayNumFont.setFamily("Helvetica");
     m_dayNumFont.setPixelSize(12);
-    //m_dayNumFont.setWeight(QFont::Light);
 
     m_today = new CTodyButton;
 
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
 
-    //m_today->setText(tr("Today"));
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
     DPalette todaypa = m_today->palette();
     QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
     todaypa.setColor(DPalette::ButtonText, todayColor);
-//    todaypa.setColor(DPalette::ButtonText, QColor("#0098FF"));
     todaypa.setColor(DPalette::Dark, Qt::white);
     todaypa.setColor(DPalette::Light, Qt::white);
     QColor sbcolor("#002A57");
     sbcolor.setAlphaF(0.05);
     todaypa.setColor(DPalette::Shadow, sbcolor);
     QFont todayfont;
-//    todayfont.setFamily("SourceHanSansSC-Medium");
     todayfont.setPixelSize(14);
     m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     m_prevButton->setFixedSize(36, 36);
-    // m_prevButton->setIconSize(QSize(36, 36));
-    // m_prevButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/previous_normal.svg")));
 
     m_nextButton = new DIconButton(DStyle::SP_ArrowRight, this);
-    //m_nextButton->setFixedSize(DDEDayCalendar::D_MLableHeight, DDEDayCalendar::D_MLableHeight);
     m_nextButton->setFixedSize(36, 36);
-    //m_nextButton->setIconSize(QSize(36, 36));
-    //m_nextButton->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/next_normal.svg")));
 
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
@@ -427,7 +376,6 @@ void CDayMonthView::initUI()
     m_currentMouth = new CustomFrame(this);
     m_currentMouth->setFixedSize(74, DDEDayCalendar::D_MLableHeight);
     QFont mlabelF;
-//    mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(24);
     m_currentMouth->setTextFont(mlabelF);
@@ -470,7 +418,6 @@ void CDayMonthView::initUI()
     m_currentDay->setMinimumWidth(width());
     m_currentDay->setTextAlign(Qt::AlignCenter);
     QFont daylabelF;
-//    daylabelF.setFamily("DINAlternate");
     daylabelF.setWeight(QFont::Medium);
     daylabelF.setPixelSize(100);
     m_currentDay->setTextFont(daylabelF);
@@ -481,7 +428,6 @@ void CDayMonthView::initUI()
     m_currentWeek->setFixedHeight(DDEDayCalendar::DWLableHeight);
     m_currentWeek->setTextAlign(Qt::AlignCenter);
     QFont wlabelF;
-//    wlabelF.setFamily("PingFangSC-Semibold");
     wlabelF.setPixelSize(16);
     m_currentWeek->setTextFont(wlabelF);
     midLayout->addWidget(m_currentWeek);
@@ -498,7 +444,6 @@ void CDayMonthView::initUI()
     m_currentLuna->setFixedHeight(DDEDayCalendar::DHualiInfoLableHeight);
     m_currentLuna->setTextAlign(Qt::AlignCenter);
     QFont hlabelF;
-//    hlabelF.setFamily("PingFangSC-Semibold");
     hlabelF.setPixelSize(12);
     m_currentLuna->setTextFont(hlabelF);
     midLayout->addWidget(m_currentLuna);
@@ -527,7 +472,6 @@ void CDayMonthView::initUI()
     m_jidownLayout->addWidget(m_jiLabel);
 
     m_hhLayout = new QVBoxLayout;
-    // mainLayout->addWidget(m_weekIndicator, 0, Qt::AlignHCenter);
     m_hhLayout->setMargin(0);
     m_hhLayout->setSpacing(0);
     m_hhLayout->addLayout(m_upLayout);
@@ -535,11 +479,6 @@ void CDayMonthView::initUI()
 
     m_splitline = new DHorizontalLine;
 
-    //QFrame *frame = new QFrame(this);
-    //frame->setFrameShape(QFrame::HLine);
-    //frame->setFrameShadow(QFrame::Plain);
-    //frame->setLineWidth(2);
-    //frame->setFixedSize(241, 2);
     m_splitline->setFixedSize(241, 2);
     QHBoxLayout *hlineLayout = new QHBoxLayout;
     hlineLayout->setMargin(0);
@@ -567,15 +506,7 @@ void CDayMonthView::initConnection()
 void CDayMonthView::updateDateShow()
 {
     QLocale locale;
-    // if (locale.language() == QLocale::Chinese) {
-    //  m_currentMouth->setTextStr(m_monthList.at(m_currentDate.month() - 1));
-    //} else {
     m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
-    //}
-    //QLocale locale;
-    //QString monthName(int month, QLocale::FormatType type = LongFormat)
-    //m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
-    // m_currentMouth->setText(QString::number(m_currentDate.month()) + tr("mon"));
     m_currentDay->setTextStr(QString::number(m_currentDate.day()));
     if (m_currentDate.dayOfWeek() > 0)
         m_currentWeek->setTextStr(m_weeklist.at(m_currentDate.dayOfWeek() - 1));
@@ -611,90 +542,12 @@ void CDayMonthView::paintCell(QWidget *cell)
 
     QPainter painter(cell);
 
-//    painter.drawRoundedRect(cell->rect(), 4, 4);
-#if 0
-    // draw selected cell background circle
-    if (isSelectedCell) {
-        int hh = 0;
-        QRect fillRect;
-        if (cell->width() > cell->height()) {
-            hh = cell->height();
-            fillRect = QRect((cell->width() - hh) / 2.0 + 0.5, hh * 0.1071, hh, hh);
-        } else {
-            hh = cell->width();
-            fillRect = QRect(0, (cell->height() - hh) / 2.0  + hh * 0.1071, hh, hh);
-        }
-        QPixmap pixmap;
-        if (m_themetype == 2)
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg").scaled(hh, hh, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        else {
-            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg").scaled(hh, hh, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        }
-
-        pixmap.setDevicePixelRatio(devicePixelRatioF());
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        //painter.setRenderHints(QPainter::HighQualityAntialiasing);
-        //painter.setBrush(QBrush(m_backgroundCircleColor));
-        //painter.setPen(Qt::NoPen);
-        painter.drawPixmap(fillRect, pixmap);
-        painter.restore();
-    }
-
-    painter.setPen(Qt::SolidLine);
-
-    const QString dayNum = getCellDayNum(pos);
-
-    // draw text of day
-    if (isSelectedCell) {
-        painter.setPen(m_selectedTextColor);
-    } else if (isCurrentDay) {
-        painter.setPen(m_currentDayTextColor);
-    } else {
-        if (m_currentDate.month() == getCellDate(pos).month())
-            painter.setPen(m_defaultTextColor);
-        else
-            painter.setPen(m_notCurrentTextColor);
-    }
-
-//    painter.drawRect(rect);
-    QRect test;
-    painter.setFont(m_dayNumFont);
-
-    painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
-
-    painter.end();
-#else
     // draw selected cell background circle
     if (isSelectedCell) {
         int hh = 0;
         QRectF fillRect;
-//        if (cell->width() > cell->height()) {
         hh = cell->height();
         fillRect = QRectF((cell->width() - hh) / 2.0 + 4, hh * 0.1271 + 0.5, hh - 8, hh - 8);
-//        } else {
-//            hh = cell->width();
-//            fillRect = QRectF(0, (cell->height() - hh) / 2.0  + hh * 0.1271, hh - 8, hh - 8);
-//        }
-//        QPixmap pixmap;
-//        if (m_themetype == 2)
-//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-//        else {
-//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-//        }
-
-//        pixmap.setDevicePixelRatio(devicePixelRatioF());
-//        painter.save();
-//        painter.setRenderHint(QPainter::Antialiasing);
-//        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-//        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-//        //painter.setRenderHints(QPainter::HighQualityAntialiasing);
-//        //painter.setBrush(QBrush(m_backgroundCircleColor));
-//        //painter.setPen(Qt::NoPen);
-//        painter.drawPixmap(fillRect.toRect(), pixmap);
-//        painter.restore();
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
@@ -719,7 +572,6 @@ void CDayMonthView::paintCell(QWidget *cell)
             painter.setPen(m_notCurrentTextColor);
     }
 
-//    painter.drawRect(rect);
     QRect test;
     painter.setFont(m_dayNumFont);
 
@@ -749,7 +601,6 @@ void CDayMonthView::paintCell(QWidget *cell)
     }
 
     painter.end();
-#endif
 }
 
 void CDayMonthView::cellClicked(QWidget *cell)
@@ -777,7 +628,6 @@ void CDayMonthView::setSelectedCell(int index)
     m_cellList.at(index)->update();
     if (m_currentDate.year() < 1900) return;
     emit signalcurrentDateChanged(m_days[index]);
-//    emit dateSelected(m_days[index], getCaHuangLiDayInfo(getDateIndex(m_currentDate)));
 }
 void CDayMonthView::updateCurrentLunar()
 {
@@ -811,7 +661,6 @@ const CaHuangLiDayInfo CDayMonthView::getCaHuangLiDayInfo(int pos)
     if (lunarCache->size() > 40)
         lunarCache->clear();
 
-//    QTimer::singleShot(500, [this, pos] {getDbusData(pos);});
     queue->push_back(pos);
 
     QTimer::singleShot(300, this, SLOT(getDbusData()));
@@ -903,7 +752,6 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
         QDate t_curret = m_currentDate.addDays(-1);
         if (t_curret.year() < 1900) return;
         if (m_currentDate.year() >= 1900) {
-            //if (m_currentDate.year() == 1900 && m_currentDate.month() == 1) return;
             m_currentDate = t_curret;
             if (m_currentDate == QDate::currentDate()) {
                 m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
@@ -913,7 +761,6 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
             emit signalcurrentDateChanged(m_currentDate);
             updateCurrentLunar();
         } else {
-            //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
         }
     }
 }
@@ -961,7 +808,6 @@ void CDayMonthView::paintEvent(QPaintEvent *e)
     painterPath.closeSubpath();
     painter.drawPath(painterPath);
     painter.restore();
-    //QFrame::paintEvent(e);
 }
 void CDayMonthView::slotprev()
 {
@@ -977,7 +823,6 @@ void CDayMonthView::slotprev()
         emit signalcurrentDateChanged(m_currentDate);
         updateCurrentLunar();
     } else {
-        //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
 }
 

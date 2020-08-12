@@ -58,11 +58,11 @@ protected:
     void paintItem(ScheduleDtailInfo info, int index, int type = 0);
     void paintItem();
 private:
-    DListWidget                                 *m_gradientItemList; //下拉列表窗
+    DListWidget *m_gradientItemList = nullptr; //下拉列表窗
     bool                                         m_widgetFlag;
     QVector<ScheduleDtailInfo>                   m_vlistData;
     QString                                      m_soloDay;
-    QVector<DLabel *>                             m_labellist;
+    QVector<DLabel *> m_labellist;
     int                                          m_type;
     QDate                                        m_currentDate;
     QColor                m_bBackgroundcolor = "#000000";
@@ -92,7 +92,7 @@ public:
 protected:
     void paintEvent ( QPaintEvent *e);
 private:
-    ScheduleDtailInfo          m_ScheduleInfo;
+    ScheduleDtailInfo m_ScheduleInfo;
     QColor                m_Backgroundcolor;
     QColor                m_timecolor;
     QColor                m_Statecolor;
@@ -119,10 +119,11 @@ signals:
     void signalsViewSelectDate(QDate date);
     void signalupdateschcedule();
 private:
-    CYearSchceduleView *yearschceduleview;
+    CYearSchceduleView *yearschceduleview = nullptr;
     QVector<ScheduleDtailInfo> scheduleinfoList;
     QDate currentdate;
     int list_count = 0;
+
 protected:
     void mousePressEvent(QMouseEvent *event);
 };

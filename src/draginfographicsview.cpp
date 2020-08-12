@@ -70,9 +70,6 @@ DragInfoGraphicsView::~DragInfoGraphicsView()
 void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton) {
-//        m_press = false;
-//        m_DragStatus =NONE;
-//        emit signalScheduleShow(false);
         return;
     }
 
@@ -219,10 +216,6 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
             CMySchceduleView dlg(infoitem->getData(), this);
             dlg.exec();
             emit signalViewtransparentFrame(0);
-
-//            qDebug()<<"setFocus";
-//            emit signalViewtransparentFrame(1);
-//            this->setFocus(Qt::MouseFocusReason);
         }
     } else {
         RightClickToCreate(listItem,event->pos());
@@ -448,16 +441,9 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
         CSchceduleCtrlDlg msgBox(this);
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
-        /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Delete"), true);
-//        msgBox.updatesize();
-//        DPalette pa = yesButton->palette();
-//        if (m_themetype == 0 || m_themetype == 1) {
-//            pa.setColor(DPalette::ButtonText, Qt::red);
-//        } else {
-//            pa.setColor(DPalette::ButtonText, "#FF5736");
-//        }
-//        yesButton->setPalette(pa);
+        msgBox.addPushButton(tr("Cancel"), true);
+        msgBox.addWaringButton(tr("Delete"), true);
+
         msgBox.exec();
 
         if (msgBox.clickButton() == 0) {
@@ -471,21 +457,10 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
             CSchceduleCtrlDlg msgBox(this);
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-            /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All"));
-            /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (m_themetype == 0 || m_themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
+            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Delete All"));
+            msgBox.addsuggestButton(tr("Delete Only This Event"));
+
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -504,21 +479,10 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
             CSchceduleCtrlDlg msgBox(this);
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-            /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All Future Events"));
-            /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (m_themetype == 0 || m_themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
+            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Delete All Future Events"));
+            msgBox.addsuggestButton(tr("Delete Only This Event"));
+
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {

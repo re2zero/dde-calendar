@@ -93,13 +93,13 @@ signals:
     void signalScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 protected:
     int                                 m_themetype = 0;
-    QGraphicsScene                      *m_Scene;
+    QGraphicsScene *m_Scene = nullptr;
     bool                                m_press = false;
 
-    QAction                             *m_createAction;     // 创建日程
-    QAction                             *m_editAction;
-    QAction                             *m_deleteAction;
-    DMenu                               *m_rightMenu;
+    QAction *m_createAction = nullptr; // 创建日程
+    QAction *m_editAction = nullptr;
+    QAction *m_deleteAction = nullptr;
+    DMenu *m_rightMenu = nullptr;
 
     QDateTime                           m_createDate;
     DragStatus                          m_DragStatus =NONE;
@@ -110,7 +110,7 @@ protected:
     ScheduleDtailInfo                   m_DragScheduleInfo;
     QDateTime                           m_InfoBeginTime;
     QDateTime                           m_InfoEndTime;
-    QDrag                               *m_Drag;
+    QDrag *m_Drag = nullptr;
     //点击的原始info
     ScheduleDtailInfo                   m_PressScheduleInfo;
     QRectF                              m_PressRect;

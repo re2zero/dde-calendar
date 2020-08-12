@@ -75,15 +75,15 @@ private:
     int checkDay(int weekday);
     int  scheduleViewHegith();
 private:
-    CGraphicsView            *m_graphicsView;
+    CGraphicsView *m_graphicsView = nullptr;
     QVector<int>              m_vPos;
     QVector<int>              m_vHours;
-    CAllDayEventWeekView     *m_alldaylist;
+    CAllDayEventWeekView *m_alldaylist = nullptr;
     QVector<ScheduleDateRangeInfo> m_vListSchedule;
     int                       m_leftMagin;
     int                       m_topMagin;
     int                       m_rightmagin = 0;
-    qint64                       m_TotalDay;
+    qint64 m_TotalDay;
     QDate                     m_currteDate;
     int                       m_firstWeekDay;
     QDate                     m_beginDate;
@@ -97,11 +97,11 @@ private:
     QColor                    m_currenttimecolor = "#F74444";
     int                       m_cuttrnttimetype = 0;
 //    int                       m_space = 30;
-    QVBoxLayout              *m_layout;
-    SchecduleRemindWidget    *m_ScheduleRemindWidget;
-    int                             m_minTime;      //最小高度对应的最小时间
-    QFont                       font;
-    int m_radius = 8;
+    QVBoxLayout *m_layout = nullptr;
+    SchecduleRemindWidget *m_ScheduleRemindWidget = nullptr;
+    int m_minTime; //最小高度对应的最小时间
+    QFont font;
+    const int m_radius = 8;
 };
 
 #endif // SCHEDULEVIEW_H

@@ -74,9 +74,9 @@ protected:
     bool                                m_isAnimation = false;
     int                                 m_offset = 0;
     DFontSizeManager::SizeType          m_sizeType  = DFontSizeManager::T8;
-    QPropertyAnimation                  *m_properAnimationFirst;
-    QPropertyAnimation                  *m_properAnimationSecond;
-    QSequentialAnimationGroup           *m_Group;
+    QPropertyAnimation *m_properAnimationFirst = nullptr;
+    QPropertyAnimation *m_properAnimationSecond = nullptr;
+    QSequentialAnimationGroup *m_Group = nullptr;
     static bool                         m_press;
     static ScheduleDtailInfo            m_HoverInfo;
 };

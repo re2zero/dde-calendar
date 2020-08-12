@@ -76,7 +76,7 @@ protected:
 protected:
     void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
 private:
-    CustomFrame *m_currentMouth;
+    CustomFrame *m_currentMouth = nullptr;
     QDate m_days[42];
     QDate m_currentDate;
     QStringList m_monthList;
@@ -84,33 +84,27 @@ private:
     bool m_cellSelectable = true;
 
     QFont  m_momthFont;
-
     QColor m_topBorderColor = Qt::red;
     QColor m_backgroundCircleColor = "#2ca7f8";
-
-
     QColor m_currentDayTextColor = "#2ca7f8";
     QColor m_weekendsTextColor = Qt::black;
     QColor m_festivalTextColor = Qt::black;
-
     QColor m_cellBackgroundColor = "#FFFFFF" ;
+
     int m_firstWeekDay = 0;
-    int cellwidth = 20;
-    int cellheight = 20;
-    QVBoxLayout *m_hhLayout;
-    int                   m_themetype  = 1;
-
-    QColor                   m_bnormalColor = "#FFFFFF";
-    int                      m_radius = 8;
-    int                      m_borderframew = 0;
-    static CYearSchceduleOutView      *m_Scheduleview;
-    bool                     m_selectFlag = false;
-    QDate                    m_selectDate;
-
-    QVector<bool>            m_vlineflag; //节假日和日程标识
-
-    CYearMonthView           *m_monthView;
+    QVBoxLayout *m_hhLayout = nullptr;
+    int m_themetype = 1;
+    QColor m_bnormalColor = "#FFFFFF";
+    const int m_radius = 8;
+    const int m_borderframew = 0;
+    static CYearSchceduleOutView *m_Scheduleview;
+    bool m_selectFlag = false;
+    QDate m_selectDate;
+    QVector<bool> m_vlineflag; //节假日和日程标识
+    CYearMonthView *m_monthView = nullptr;
     QVector<ScheduleDateRangeInfo> m_DateRangeInfo;
+    //    int cellwidth = 20;
+    //    int cellheight = 20;
 };
 
 class CMonthDayRect;

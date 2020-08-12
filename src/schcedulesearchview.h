@@ -58,10 +58,10 @@ private:
     void createItemWidget(ScheduleDtailInfo info, QDate date, int rtype);
     QListWidgetItem *createItemWidget(QDate date);
 private:
-    CScheduleListWidget                                 *m_gradientItemList; //下拉列表窗
+    CScheduleListWidget *m_gradientItemList = nullptr; //下拉列表窗
     bool                                         m_widgetFlag;
     QVector<ScheduleDateRangeInfo>               m_vlistData;
-    QVector<DLabel *>                             m_labellist;
+    QVector<DLabel *> m_labellist;
     int                                          m_type;
     QDate                                        m_currentDate;
     QColor                m_bBackgroundcolor = "#000000";
@@ -69,8 +69,8 @@ private:
     QColor                m_bttextcolor = "#414D68";
     QColor                m_lBackgroundcolor = Qt::white;
     QColor                m_ltextcolor = "#001A2E";
-    QListWidgetItem      *m_currentItem;
-    int                                             m_maxWidth =200;
+    QListWidgetItem *m_currentItem = nullptr;
+    int m_maxWidth = 200;
 };
 
 class CScheduleListWidget : public DListWidget
@@ -127,25 +127,25 @@ private:
         QColor   timeColor;
         QColor   textColor;
     };
-    ScheduleDtailInfo          m_ScheduleInfo;
-    QAction              *m_editAction;
-    QAction              *m_deleteAction;
+    ScheduleDtailInfo m_ScheduleInfo;
+    QAction *m_editAction = nullptr;
+    QAction *m_deleteAction = nullptr;
     QColor                m_Backgroundcolor;
-    ColorStatus                m_presscolor;
-    ColorStatus                m_hovercolor;
+    ColorStatus m_presscolor;
+    ColorStatus m_hovercolor;
     QColor                m_timecolor;
     QColor                m_splitlinecolor;
     QFont                 m_timefont;
     QColor                m_ttextcolor;
     QFont                 m_tfont;
     QDate                 m_date;
-    MouseStatus             m_mouseStatus;
-    DMenu                   *m_rightMenu;
-//    bool                  m_selectflag = false;
-//    bool                  m_hoverflag = false;
+    MouseStatus m_mouseStatus;
+    DMenu *m_rightMenu = nullptr;
+    //    bool                  m_selectflag = false;
+    //    bool                  m_hoverflag = false;
     int m_roundtype = 1;
-    int                      m_radius = 8;
-    int                      m_borderframew = 0;
+    const int m_radius = 8;
+    const int m_borderframew = 0;
 };
 class CSchceduleSearchDateItem : public DLabel
 {

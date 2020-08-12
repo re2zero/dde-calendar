@@ -59,15 +59,15 @@ protected:
 private:
     QLabel                           *m_schceduleLabel = nullptr;
     QLabel                           *m_timeLabel = nullptr;
-    DSuggestButton                      *m_editBt = nullptr;
+    DSuggestButton *m_editBt = nullptr;
     DPushButton                      *m_deleteBt = nullptr;
     DPushButton                      *m_okBt = nullptr;
-    QLabel                           *m_icon;
-    QLabel                           *m_Title;
-    ScheduleDtailInfo                     m_scheduleInfo;//日程
-    QScrollArea                      *area;
+    QLabel *m_icon = nullptr;
+    QLabel *m_Title = nullptr;
+    ScheduleDtailInfo m_scheduleInfo; //日程
+    QScrollArea *area = nullptr;
     QFont labelF;
-    QWidget                          *w;
+    //    QWidget                          *w = nullptr;
 private:
 //    void paintLabel(QWidget *label);
 };

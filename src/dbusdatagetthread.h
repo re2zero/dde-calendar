@@ -39,7 +39,7 @@ struct YearScheduleInfo {
 Q_DECLARE_METATYPE(YearScheduleInfo);
 
 struct YearLunar {
-    int                 m_year;
+    int m_year;
     QMap<int,CaLunarMonthInfo *>          m_monthLunar;
 };
 
@@ -71,7 +71,7 @@ signals:
 public slots:
 private:
     QThread                 workerThread;
-    DataGetWork             *m_work;
+    DataGetWork *m_work = nullptr;
 };
 
 
@@ -93,8 +93,7 @@ signals:
     void signalGetScheduleSuccess();
 
 private:
-    CSchedulesDBus       *m_DataManage;
-
+    CSchedulesDBus *m_DataManage = nullptr;
 };
 
 #endif // DBUSDATAGETTHREAD_H

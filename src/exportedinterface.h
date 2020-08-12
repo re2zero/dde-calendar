@@ -26,9 +26,9 @@
 #include "schedulestructs.h"
 DCORE_USE_NAMESPACE
 struct Exportpara {
-    int   viewType; //视图名称:year,month,week,day对应年、月、周、日视图类型
+    int viewType; //视图名称:year,month,week,day对应年、月、周、日视图类型
     QDateTime  viewTime; //表示需要查看视图上某个时间
-    QString  ADTitleName;
+    QString ADTitleName;
     QDateTime  ADStartTime;
     QDateTime  ADEndTime;
 };
@@ -43,7 +43,7 @@ private:
     void parsingScheduleRemind(QString str, ScheduleDtailInfo &info) const;
     QDateTime fromconvertData(QString str) const;
 private:
-    QObject                *m_object;
+    QObject *m_object = nullptr;
 };
 
 #endif // EXPORTEDINTERFACE_H

@@ -50,7 +50,7 @@ private:
     int                  m_height;
     QDate                m_begindate;
     QDate                m_enddate;
-    qint64                  m_totalDay;
+    qint64 m_totalDay;
     int                  m_rightmagin = 0;
 };
 

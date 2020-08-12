@@ -334,7 +334,6 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
 
 
     std::sort(vListData.begin(), vListData.end());
-//    qSort(vListData.begin(), vListData.end());
 
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
     for (int i = 0; i < vListData.count(); i++) {
@@ -425,7 +424,6 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
     setDayData(vResultData);
     update();
     emit signalUpdatePaint(m_topMagin);
-//    return m_topMagin;
 }
 
 CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)

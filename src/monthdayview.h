@@ -41,14 +41,14 @@ signals:
     void signalsSelectDate(QDate date);
     void signalsCurrentDate(QDate date);
 private:
-    CMonthWidget                *m_monthWidget;
+    CMonthWidget *m_monthWidget = nullptr;
     QDate                       m_selectDate;
     QDate                       m_days[12];
 
     int                         m_fixwidth = 200;
     int                         m_realwidth = 100;
     bool                        m_searchfalg = false;
-    int                         m_radius = 8;
+    //    int                         m_radius = 8;
 };
 
 class CMonthRect;
@@ -69,7 +69,7 @@ private:
 signals:
     void signalsSelectDate(QDate date);
 private:
-    QVector<CMonthRect *>  m_MonthItem;
+    QVector<CMonthRect *> m_MonthItem;
     QDate                       m_days[12];
 
 };

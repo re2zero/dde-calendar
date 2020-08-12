@@ -103,53 +103,51 @@ protected:
 private:
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
-    CTodyButton       *m_today = nullptr;
-    CustomFrame *m_currentMouth;
-    CustomFrame *m_currentDay;
-    CustomFrame *m_currentYear;
-    CustomFrame *m_currentWeek;
-    CustomFrame *m_currentLuna;
-    CDayHuangLiLabel *m_yiLabel;
-    CDayHuangLiLabel *m_jiLabel;
+    CTodyButton *m_today = nullptr;
+    CustomFrame *m_currentMouth = nullptr;
+    CustomFrame *m_currentDay = nullptr;
+    CustomFrame *m_currentYear = nullptr;
+    CustomFrame *m_currentWeek = nullptr;
+    CustomFrame *m_currentLuna = nullptr;
+    CDayHuangLiLabel *m_yiLabel = nullptr;
+    CDayHuangLiLabel *m_jiLabel = nullptr;
     QList<QWidget *> m_cellList;
     QDate m_days[42];
     QDate m_currentDate;
-
-    CalendarDBus *m_DBusInter;
+    CalendarDBus *m_DBusInter = nullptr;
     int m_selectedCell = 0;
     bool m_cellSelectable = true;
-
     QFont m_dayNumFont;
 
     QColor m_topBorderColor = Qt::red;
     QColor m_backgroundCircleColor = "#2ca7f8";
-
     QColor m_defaultTextColor = Qt::black;
     QColor m_currentDayTextColor = "#2ca7f8";
     QColor m_weekendsTextColor = Qt::black;
     QColor m_selectedTextColor = Qt::white;
     QColor m_festivalTextColor = Qt::black;
     QColor m_notCurrentTextColor = "#b2b2b2";
+
     int m_firstWeekDay;
     bool m_huanglistate = true;
-    QGridLayout *m_gridLayout;
+    QGridLayout *m_gridLayout = nullptr;
     int cellwidth = 20;
     int cellheight = 20;
-    QVBoxLayout *m_hhLayout;
-    QVBoxLayout *m_upLayout;
-    DHorizontalLine *m_splitline;
-    QVBoxLayout *m_yidownLayout;
-    QVBoxLayout *m_jidownLayout;
-
-    QStringList     m_weeklist;
+    QVBoxLayout *m_hhLayout = nullptr;
+    QVBoxLayout *m_upLayout = nullptr;
+    DHorizontalLine *m_splitline = nullptr;
+    QVBoxLayout *m_yidownLayout = nullptr;
+    QVBoxLayout *m_jidownLayout = nullptr;
+    QStringList m_weeklist;
     QQueue<int> *queue = nullptr;
+
     QMap<QDate, CaHuangLiDayInfo> *lunarCache = nullptr;
     CaHuangLiDayInfo *emptyCaHuangLiDayInfo = nullptr;
     int                   m_themetype  = 1;
-    int                      m_radius = 8;
-    bool                 m_searchflag = false;
+    const int m_radius = 8;
+    bool m_searchflag = false;
     QColor m_ceventColor = "#FF5D00";
-    QVector<bool>            m_vlineflag; //节假日和日程标识
+    QVector<bool> m_vlineflag; //节假日和日程标识
 };
 
 #endif // YEARVIEW_H

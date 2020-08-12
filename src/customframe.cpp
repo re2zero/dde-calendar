@@ -25,7 +25,6 @@
 DGUI_USE_NAMESPACE
 CustomFrame::CustomFrame(QWidget *parent): QFrame (parent)
 {
-//    m_font.setFamily("SourceHanSansSC");
     m_font.setWeight(QFont::Medium);
     m_font.setPixelSize(14);
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
@@ -139,7 +138,6 @@ void CustomFrame::paintEvent(QPaintEvent *e)
             painterPath.lineTo(labelwidth, labelheight - m_radius);
         }
         painterPath.lineTo(labelwidth, m_radius);
-        //painterPath.moveTo(labelwidth, m_radius);
         if (m_tstate) {
 
             painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
@@ -160,7 +158,6 @@ void CustomFrame::paintEvent(QPaintEvent *e)
         painter.setRenderHints(QPainter::HighQualityAntialiasing);
         painter.setFont(m_font);
         painter.setPen(m_tnormalColor);
-        //painter.setPen(Qt::NoPen);
         painter.drawText(fillRect, m_textflag, m_text);
         painter.restore();
     }

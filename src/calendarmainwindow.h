@@ -107,34 +107,31 @@ private slots:
     void slotCurrentDate(QDate date);
     void slotSetButtonBox();
 private:
-    DLabel                    *m_icon;
-    AnimationStackedWidget              *m_stackWidget;
+    DLabel *m_icon = nullptr;
+    AnimationStackedWidget *m_stackWidget = nullptr;
     //DSegmentedControl         *m_segmentedControl;
-    DButtonBox                *m_buttonBox;
-    DButtonBoxButton          *m_yearButton;
-    DButtonBoxButton          *m_monthButton;
-    DButtonBoxButton          *m_weekButton;
-    DButtonBoxButton          *m_dayButton;
-    DSearchEdit               *m_searchEdit;
-    CYearWindow               *m_yearwindow;
-    CMonthWindow              *m_monthWindow;
-    CWeekWindow               *m_weekWindow;
-    CDayWindow                *m_DayWindow;
-    __Scheduler               *m_dbus;
-    bool                      m_searchflag = false;
-    CSchceduleSearchView *m_schceduleSearchView;
+    DButtonBox *m_buttonBox = nullptr;
+    DButtonBoxButton *m_yearButton = nullptr;
+    DButtonBoxButton *m_monthButton = nullptr;
+    DButtonBoxButton *m_weekButton = nullptr;
+    DButtonBoxButton *m_dayButton = nullptr;
+    DSearchEdit *m_searchEdit = nullptr;
+    CYearWindow *m_yearwindow = nullptr;
+    CMonthWindow *m_monthWindow = nullptr;
+    CWeekWindow *m_weekWindow = nullptr;
+    CDayWindow *m_DayWindow = nullptr;
+    __Scheduler *m_dbus = nullptr;
+    bool m_searchflag = false;
+    CSchceduleSearchView *m_schceduleSearchView = nullptr;
     DFrame *m_contentBackground = nullptr;
-    int                       m_priindex = 3; //默认打开日视图双击
-    DFrame                    *m_transparentFrame;
-    bool                      m_opensearchflag = false;
-    QDate                     m_currentdate;
-    int                         m_scheduleSearchViewMaxWidth;
-    QPropertyAnimation          *m_animation;
-
-    DbusDataGetThread          *m_DataGetThread;
-
-    QTimer                      *m_DynamicIconUpdateTimer;
-
+    int m_priindex = 3; //默认打开日视图双击
+    DFrame *m_transparentFrame = nullptr;
+    bool m_opensearchflag = false;
+    QDate m_currentdate;
+    int m_scheduleSearchViewMaxWidth;
+    QPropertyAnimation *m_animation = nullptr;
+    DbusDataGetThread *m_DataGetThread = nullptr;
+    QTimer *m_DynamicIconUpdateTimer = nullptr;
 };
 
 #endif // CALENDARMAINWINDOW_H

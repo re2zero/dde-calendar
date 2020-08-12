@@ -102,27 +102,27 @@ private:
     DComboBox *m_beginrepeatCombox = nullptr;
     QLabel *m_endrepeatLabel = nullptr;
     DComboBox *m_endrepeatCombox = nullptr;
-    DLineEdit *m_endrepeattimes;
+    DLineEdit *m_endrepeattimes = nullptr;
     QLabel *m_endrepeattimesLabel = nullptr;
     DWidget *m_endrepeattimesWidget;
     DDateEdit *m_endRepeatDate = nullptr;
-    DWidget *m_endrepeatWidget;
-//    DPushButton *m_cancelBt = nullptr;
-//    DSuggestButton *m_OkBt = nullptr;
+    DWidget *m_endrepeatWidget = nullptr;
+    //    DPushButton *m_cancelBt = nullptr;
+    //    DSuggestButton *m_OkBt = nullptr;
     // CCalendarTimeEidt                *m_bCalendarTimeEidt;
     // CCalendarTimeEidt                *m_eCalendarTimeEidt;
     // CCustomCalendarWidget            *m_bCustomDateW;
     // CCustomCalendarWidget            *m_eCustomDateW;
-    DFrame *m_gwi;
-    QLabel *m_titleLabel;
+    DFrame *m_gwi = nullptr;
+    QLabel *m_titleLabel = nullptr;
 
     QString m_context;
-    const bool                        m_createAllDay;
+    const bool m_createAllDay;
 
 private:
 //日程
     ScheduleDtailInfo m_scheduleDtailInfo;
-    int m_type;  // 1新建 0 编辑日程
+    int m_type; // 1新建 0 编辑日程
     QDateTime m_currentDate;
     QDateTime m_EndDate;
 };
