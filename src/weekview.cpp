@@ -33,14 +33,12 @@ DWIDGET_USE_NAMESPACE
 
 CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
 {
-//    m_dayNumFont.setFamily("Avenir-Light");
     m_dayNumFont.setPixelSize(16);
     m_dayNumFont.setWeight(QFont::Light);
     // cells grid
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
-    //hboxLayout->setContentsMargins(4, 0, 4, 0);
     for (int c = 0; c != 10; ++c) {
         QWidget *cell = new QWidget;
         cell->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
@@ -73,7 +71,6 @@ void CWeekView::setCurrentDate(const QDate date)
     m_selectDate = date;
     m_selectedCell = 0;
     updateDate();
-    //setSelectedCell(m_selectDate.month() - 1);
     update();
 }
 
@@ -84,7 +81,6 @@ void CWeekView::setTheMe(int type)
         m_defaultTextColor = Qt::black;
         m_backgrounddefaultColor = Qt::white;
         m_currentDayTextColor = Qt::white;
-//        m_backgroundcurrentDayColor = "#0081FF";
         m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_fillColor = "#FFFFFF";
     } else if (type == 2) {
@@ -92,44 +88,11 @@ void CWeekView::setTheMe(int type)
         m_backgrounddefaultColor = "#FFFFFF";
         m_backgrounddefaultColor.setAlphaF(0.05);
         m_currentDayTextColor = "#B8D3FF";
-//        m_backgroundcurrentDayColor = "#0059D2";
         m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_fillColor = "#000000";
         m_fillColor.setAlphaF(0.05);
     }
 }
-
-//void CWeekView::setwindowFixw(int w, int rw)
-//{
-//    m_fixwidth = w;
-//    m_realwidth = rw;
-//    return;
-//    int w2 = m_fixwidth * 0.1 + 0.5;
-//    int h = height();
-//    for (int c = 0; c != 10; ++c) {
-//        m_cellList[c]->setFixedSize(w2, h);
-//        m_cellList[c]->update();
-//    }
-//    if ((m_realwidth < m_fixwidth) && m_searchfalg) {
-//        int t_num = qRound((m_fixwidth - m_realwidth) / w2 / 2.0);
-//        QVector<bool> vindex;
-//        vindex.resize(10);
-//        vindex.fill(true);
-//        for (int i = 0; i < t_num; i++) {
-//            vindex[i] = false;
-//            vindex[9 - i] = false;
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            m_cellList[i]->setVisible(vindex[i]);
-//            m_cellList[i]->update();
-//        }
-//    } else {
-//        for (int i = 0; i < 10; i++) {
-//            m_cellList[i]->setVisible(true);
-//            m_cellList[i]->update();
-//        }
-//    }
-//}
 
 void CWeekView::setsearchfalg(bool flag)
 {
@@ -141,7 +104,6 @@ void CWeekView::slotprev()
         QDate date = m_selectDate.addDays(-6);
         setCurrentDate(date);
     } else {
-        //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
 }
 
@@ -185,18 +147,6 @@ void CWeekView::paintCell(QWidget *cell)
     if (isSelectDay) {
 
         QRect fillRect((cell->width() - 24) / 2, (cell->height() - 32) / 2 + 4, 24, 24);
-//        QPixmap pixmap;
-//        if (m_themetype == 2)
-//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-//        else {
-//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-//        }
-//        pixmap.setDevicePixelRatio(devicePixelRatioF());
-//        painter.save();
-//        painter.setRenderHint(QPainter::Antialiasing);
-//        painter.setRenderHint(QPainter::HighQualityAntialiasing);
-//        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-//        painter.drawPixmap(fillRect, pixmap);
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
@@ -282,34 +232,6 @@ void CWeekView::updateDate()
 }
 void CWeekView::resizeEvent(QResizeEvent *event)
 {
-#if 0
-    int w = m_fixwidth * 0.1 + 0.5;
-    int h = height();
-    for (int c = 0; c != 10; ++c) {
-        m_cellList[c]->setFixedSize(w, h);
-        //m_cellList[c]->setVisible(true);
-        m_cellList[c]->update();
-    }
-    if ((m_realwidth   < m_fixwidth) && m_searchfalg) {
-        int t_num = qRound((m_fixwidth - m_realwidth ) / w / 2.0);
-        QVector<bool> vindex;
-        vindex.resize(10);
-        vindex.fill(true);
-        for (int i = 0; i < t_num; i++) {
-            vindex[i] = false;
-            vindex[9 - i] = false;
-        }
-        for (int i = 0; i < 10; i++) {
-            m_cellList[i]->setVisible(vindex[i]);
-            m_cellList[i]->update();
-        }
-    } else {
-        for (int i = 0; i < 10; i++) {
-            m_cellList[i]->setVisible(true);
-            m_cellList[i]->update();
-        }
-    }
-#else
     int w = width() / 10;
     int h = height();
 
@@ -317,7 +239,6 @@ void CWeekView::resizeEvent(QResizeEvent *event)
     if (w >= ww) {
         for (int c = 0; c != 10; ++c) {
             m_cellList[c]->setFixedSize(w, h);
-            //m_cellList[c]->setVisible(true);
             m_cellList[c]->update();
         }
         for (int i = 0; i < 10; i++) {
@@ -327,7 +248,6 @@ void CWeekView::resizeEvent(QResizeEvent *event)
     } else {
         for (int c = 0; c != 10; ++c) {
             m_cellList[c]->setFixedSize(ww, h);
-            //m_cellList[c]->setVisible(true);
             m_cellList[c]->update();
         }
         int t_num = qRound((ww * 10 - width() ) / ww / 2.0);
@@ -344,7 +264,6 @@ void CWeekView::resizeEvent(QResizeEvent *event)
         }
     }
     QWidget::resizeEvent(event);
-#endif
 }
 void CWeekView::wheelEvent(QWheelEvent *event)
 {

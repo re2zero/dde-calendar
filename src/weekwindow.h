@@ -101,7 +101,6 @@ private:
     CScheduleView *m_scheduleView = nullptr;
     QSpacerItem *m_spaceitem = nullptr;
     QVBoxLayout *m_mainhLayout = nullptr;
-    // CSchceduleSearchView *m_schceduleSearchView;
     QString m_searchText;
     QHBoxLayout *m_tmainLayout = nullptr;
     bool m_searchfalg = false;

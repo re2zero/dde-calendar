@@ -31,7 +31,6 @@ public:
     void setFirstWeekDay(int weekday);
     void setCurrentDate(const QDate date);
     void setTheMe(int type = 0);
-//    void setwindowFixw(int w, int rw);
     void setsearchfalg(bool flag);
 public slots:
     void cellClicked(QWidget *cell);
@@ -65,8 +64,6 @@ private:
     int m_weekAddDay = 0;
     int m_themetype = 1;
     bool m_searchfalg = false;
-    //    int m_fixwidth = 200;
-    //    int m_realwidth = 100;
 };
 
 #endif // MONTDAYVIEW_H
