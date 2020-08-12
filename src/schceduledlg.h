@@ -37,7 +37,6 @@
 #include <QRadioButton>
 #include <QTimeEdit>
 #include <QWidget>
-//#include <DDateEdit>
 #include <DComboBox>
 #include "schedulestructs.h"
 DWIDGET_USE_NAMESPACE
@@ -67,7 +66,6 @@ public slots:
     void sloteRpeatactivated(int index);
 
 protected:
-//     void focusInEvent(QFocusEvent *event);
     bool eventFilter(QObject *obj, QEvent *pEvent) Q_DECL_OVERRIDE;
     void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
     void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
@@ -107,12 +105,6 @@ private:
     DWidget *m_endrepeattimesWidget;
     DDateEdit *m_endRepeatDate = nullptr;
     DWidget *m_endrepeatWidget = nullptr;
-    //    DPushButton *m_cancelBt = nullptr;
-    //    DSuggestButton *m_OkBt = nullptr;
-    // CCalendarTimeEidt                *m_bCalendarTimeEidt;
-    // CCalendarTimeEidt                *m_eCalendarTimeEidt;
-    // CCustomCalendarWidget            *m_bCustomDateW;
-    // CCustomCalendarWidget            *m_eCustomDateW;
     DFrame *m_gwi = nullptr;
     QLabel *m_titleLabel = nullptr;
 

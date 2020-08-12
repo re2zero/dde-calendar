@@ -40,11 +40,6 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
     setContentsMargins(0, 0, 0, 0);
     m_type = type;
     initUI();
-//    if (m_type == 0 && isAllDay) {
-//        m_allDayCheckbox->setChecked(true);
-//        m_beginTimeEdit->setVisible(false);
-//        m_endTimeEdit->setVisible(false);
-//    }
     initConnection();
     if (type == 1) {
         m_titleLabel->setText(tr("New Event"));
@@ -57,7 +52,6 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
         m_beginTimeEdit->setTime(QTime(hours, minnutes));
         m_endDateEdit->setDate(QDate::currentDate());
         m_endTimeEdit->setTime(QTime(hours, minnutes).addSecs(3600));
-        // m_endRepeatDate->setMinimumDate(QDate::currentDate());
     } else {
         m_titleLabel->setText(tr("Edit Event"));
     }
@@ -87,8 +81,6 @@ void CSchceduleDlg::setData(const ScheduleDtailInfo &info)
 
     slotallDayStateChanged(info.allday);
     initRmindRpeatUI();
-
-    // m_textEdit->setTextCursor()
 }
 
 void CSchceduleDlg::setDate(const QDateTime &date)
@@ -98,11 +90,7 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     int minnutes = 0;
     if (date.date() == QDate::currentDate()) {
         minnutes = date.time().minute() % 15;
-//    if (minnutes != 0) {
         minnutes = (date.time().minute() / 15 + 1) * 15;
-//    }else {
-
-//    }
     } else {
         int minnutes = date.time().minute() % 15;
         if (minnutes != 0) {
@@ -167,12 +155,9 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
     }
 
     if (scheduleDtailInfo.titleName.isEmpty()) {
-        // QMessageBox::warning(this, tr("error"), tr("The event is empty!"));
         return;
     }
     if (beginDateTime > endDateTime) {
-        //        QMessageBox::information(this, ("    "), tr("End time must be greater than start
-        //        time"));
         DDialog *prompt = new DDialog(this);
         prompt->setIcon(QIcon(":/resources/icon/warning.svg"));
         prompt->setMessage(tr("End time must be greater than start time"));
@@ -226,7 +211,6 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
         scheduleDtailInfo.enddata.type = m_endrepeatCombox->currentIndex();
         if (m_endrepeatCombox->currentIndex() == 1) {
             if (m_endrepeattimes->text().isEmpty()) {
-                // QMessageBox::warning(this, tr("error"), tr("The end repeat times is null!"));
                 return;
             }
             scheduleDtailInfo.enddata.tcount = m_endrepeattimes->text().toInt();
@@ -234,8 +218,6 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
             QDateTime endrpeattime = beginDateTime;
             endrpeattime.setDate(m_endRepeatDate->date());
             if (beginDateTime > endrpeattime) {
-                // QMessageBox::warning(this, tr("error"), tr("The end repeat time less than begin
-                // time!"));
                 return;
             }
             scheduleDtailInfo.enddata.date = endrpeattime;
@@ -258,53 +240,30 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
 
         } else {
             if (m_scheduleDtailInfo.allday != scheduleDtailInfo.allday) {
-                CSchceduleCtrlDlg msgBox/*(this)*/;
+                CSchceduleCtrlDlg msgBox;
                 msgBox.setText(
                     tr("All occurrences of a repeating event must have the same all-day status."));
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
-                /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
-                /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Change All"), true);
-//                msgBox.updatesize();
-//                DPalette pa = yesButton->palette();
-//                if (themetype == 0 || themetype == 1) {
-//                    pa.setColor(DPalette::ButtonText, Qt::red);
+                msgBox.addPushButton(tr("Cancel"), true);
+                msgBox.addWaringButton(tr("Change All"), true);
 
-//                } else {
-//                    pa.setColor(DPalette::ButtonText, "#FF5736");
-//                }
-//                yesButton->setPalette(pa);
                 msgBox.exec();
 
                 if (msgBox.clickButton() == 0) {
                     return;
                 } else if (msgBox.clickButton() == 1) {
-//                    ScheduleDtailInfo updatescheduleData;
-//                    CScheduleDataManage::getScheduleDataManage()
-//                    ->getscheduleDataCtrl()
-//                    ->getScheduleInfoById(scheduleDtailInfo.id, updatescheduleData);
-//                    scheduleDtailInfo.beginDateTime = updatescheduleData.beginDateTime;
-//                    scheduleDtailInfo.endDateTime = updatescheduleData.endDateTime;
-//                    scheduleDtailInfo.RecurID = updatescheduleData.RecurID;
                     CScheduleDataManage::getScheduleDataManage()
                     ->getscheduleDataCtrl()
                     ->updateScheduleInfo(scheduleDtailInfo);
                 }
 
             } else if (m_scheduleDtailInfo.rpeat != scheduleDtailInfo.rpeat) {
-                CSchceduleCtrlDlg msgBox/*(this)*/;
+                CSchceduleCtrlDlg msgBox;
                 msgBox.setText(tr("You are changing the repeating rule of this event."));
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
-                /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
-                /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Change All"), true);
-//                msgBox.updatesize();
-//                DPalette pa = yesButton->palette();
-//                if (themetype == 0 || themetype == 1) {
-//                    pa.setColor(DPalette::ButtonText, Qt::red);
+                msgBox.addPushButton(tr("Cancel"), true);
+                msgBox.addWaringButton(tr("Change All"), true);
 
-//                } else {
-//                    pa.setColor(DPalette::ButtonText, "#FF5736");
-//                }
-//                yesButton->setPalette(pa);
                 msgBox.exec();
 
                 if (msgBox.clickButton() == 0) {
@@ -338,19 +297,9 @@ void CSchceduleDlg::slotTextChange()
     }
     int maxLength = 256;  // 最大字符数
     if (length > maxLength) {
-        // QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
         m_textEdit->setText(m_context);
         cursor.movePosition(QTextCursor::End);
         m_textEdit->setTextCursor(cursor);
-        /*textContent = textContent.mid(0, 256);
-        m_textEdit->setText(textContent);
-        cursor.movePosition(QTextCursor::End);
-        //if (cursor.hasSelection()) {
-        //  cursor.clearSelection();
-        //}
-        //cursor.deletePreviousChar();
-        //设置当前的光标为更改后的光标
-        m_textEdit->setTextCursor(cursor);*/
     }
     m_context = m_textEdit->toPlainText();
 }
@@ -439,11 +388,9 @@ void CSchceduleDlg::slotbRpeatactivated(int index)
     if (index > 0) {
         m_endrepeatWidget->setVisible(true);
         setFixedSize(438, 506);
-        // m_gwi->setGeometry(0, 68, 438, 458);
     } else {
         m_endrepeatWidget->setVisible(false);
         setFixedSize(438, 470);
-        // m_gwi->setGeometry(0, 68, 438, 412);
     }
 }
 
@@ -471,14 +418,6 @@ bool CSchceduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
             }
             if (keyEvent->key() == Qt::Key_Tab)
                 return true;
-            /*QString textContent = m_textEdit->toPlainText();
-            int length = textContent.count();
-            int maxLength = 255; // 最大字符数
-            if (length > maxLength) {
-
-                QMessageBox::information(this, tr("infomation"), tr("Max length is 256!"));
-                return true;
-            }*/
         }
         if (m_type == 1) {
             if (pEvent->type() == QEvent::FocusIn) {
@@ -545,7 +484,6 @@ void CSchceduleDlg::initUI()
 
     m_titleLabel = new QLabel(this);
     QFont titlelabelF;
-//    titlelabelF.setFamily("SourceHanSansSC");
     titlelabelF.setWeight(QFont::DemiBold);
     titlelabelF.setPixelSize(17);
     QColor btitleColor = "#000000";
@@ -562,22 +500,18 @@ void CSchceduleDlg::initUI()
     m_titleLabel->setPalette(titlepa);
     m_titleLabel->setFixedSize(148, 51);
     m_titleLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-    // m_titleLabel->setGeometry(165, 0, 108, 51);
     m_titleLabel->move(145, 0);
     m_titleLabel->setFont(titlelabelF);
 
     setSpacing(0);
     QFont mlabelF;
-//    mlabelF.setFamily("SourceHanSansSC");
     mlabelF.setWeight(QFont::Medium);
-//    mlabelF.setPixelSize(14);
     DPalette pa = m_titleLabel->palette();
     if (themetype == 0 || themetype == 1) {
         pa.setColor(DPalette::WindowText, QColor("#414D68"));
     } else {
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
     }
-    // pa.setColor(DPalette::WindowText, QColor("#414D68"));
 
     QVBoxLayout *maintlayout = new QVBoxLayout;
     maintlayout->setMargin(0);
@@ -585,7 +519,6 @@ void CSchceduleDlg::initUI()
     QHBoxLayout *typelayout = new QHBoxLayout;
     typelayout->setSpacing(0);
     typelayout->setMargin(0);
-    // maintlayout->setContentsMargins(20, 0, 20, 10);
     m_typeLabel = new QLabel();
     m_typeLabel->setToolTip(tr("Type"));
     DFontSizeManager::instance()->bind(m_typeLabel,DFontSizeManager::T6);
@@ -638,38 +571,12 @@ void CSchceduleDlg::initUI()
     m_textEdit->setFixedSize(319, 86);
     m_textEdit->setAcceptRichText(false);
 
-#if 0
-    m_textEdit->setTextBackgroundColor(Qt::white);
-    DPalette tpa = m_textEdit->palette();
-    if (themetype == 0 || themetype == 1) {
-        QColor conttelc("#000000");
-        conttelc.setAlphaF(0.08);
-        tpa.setColor(DPalette::Background, conttelc);
-    } else {
-        QColor conttelc("#FFFFFF");
-        conttelc.setAlphaF(0.15);
-        tpa.setColor(DPalette::Background, conttelc);
-        QTextCharFormat fmt;
-        conttelc.setAlphaF(0.0);
-
-        QTextCursor textcursor = m_textEdit->textCursor();
-        fmt = textcursor.charFormat();
-        fmt.setBackground(conttelc);
-        textcursor.setCharFormat(fmt);
-        m_textEdit->setTextCursor(textcursor);
-    }
-
-    m_textEdit->setPalette(tpa);
-#endif
-
-    // if (m_type == 1) {
     m_textEdit->setPlaceholderText(tr("New Event"));
     //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
     QWidget *mpContentWidget = m_textEdit->viewport();
     //设置事件过滤器
     m_textEdit->installEventFilter(this);
     mpContentWidget->installEventFilter(this);
-    //}
 
     contentLabellayout->addLayout(conttelabellayout);
     contentLabellayout->addWidget(m_textEdit);
@@ -713,18 +620,11 @@ void CSchceduleDlg::initUI()
     m_beginTimeEdit->setFixedSize(141, 36);
     m_beginDateEdit->setCalendarPopup(true);
     m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
-    // QHBoxLayout *begintimeelayout  = new QHBoxLayout;
-    // begintimeelayout->addWidget(m_beginDateEdit, 1);
-    // begintimeelayout->addWidget(m_beginTimeEdit, 1);
-    // begintimeelayout->setMargin(0);
-    // begintimeelayout->setSpacing(0);
-    // begintimeelayout->addStretch();
     beginLabellayout->addWidget(m_beginTimeLabel);
     beginLabellayout->addWidget(m_beginDateEdit);
     beginLabellayout->addSpacing(8);
     beginLabellayout->addWidget(m_beginTimeEdit);
     beginLabellayout->addStretch();
-    // beginLabellayout->addLayout(begintimeelayout);
     maintlayout->addLayout(beginLabellayout);
 
     QHBoxLayout *enQLabellayout = new QHBoxLayout;
@@ -753,7 +653,6 @@ void CSchceduleDlg::initUI()
 
     enQLabellayout->addWidget(m_endTimeEdit);
     enQLabellayout->addStretch();
-    // enQLabellayout->addLayout(endtimeelayout);
     maintlayout->addLayout(enQLabellayout);
 
     QHBoxLayout *rminQLabellayout = new QHBoxLayout;
@@ -855,12 +754,8 @@ void CSchceduleDlg::initUI()
     m_endRepeatDate->setDisplayFormat("yyyy-MM-dd");
     m_endRepeatDate->setCurrentSectionIndex(2);
     QFont enddatefont;
-//    enddatefont.setFamily("SourceHanSansSC");
     enddatefont.setWeight(QFont::Medium);
-//    enddatefont.setPixelSize(11);
     m_endRepeatDate->setFont(enddatefont);
-    // m_endRepeatDate->setMinimumWidth(150);
-    // m_endRepeatDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     endrepeatLabellayout->addWidget(m_endRepeatDate);
     endrepeatLabellayout->addStretch();
     m_endRepeatDate->setVisible(false);
@@ -875,44 +770,14 @@ void CSchceduleDlg::initUI()
         QAbstractButton *button = getButton(i);
         button->setFixedSize(189, 36);
     }
-//    QHBoxLayout *downlayout = new QHBoxLayout;
-//    downlayout->setContentsMargins(0, 0, 0, 0);
-//    m_cancelBt = new DPushButton(tr("Cancel"));
-//    m_cancelBt->setFixedSize(189, 36);
-//    m_OkBt = new DSuggestButton(tr("Save"));
-//    m_OkBt->setFixedSize(189, 36);
-////    DPalette okpa = m_OkBt->palette();
-////    if (themetype == 0 || themetype == 1) {
-////        okpa.setColor(DPalette::ButtonText, Qt::white);
-////        okpa.setColor(DPalette::Dark, QColor("#25B7FF"));
-////        okpa.setColor(DPalette::Light, QColor("#0098FF"));
-////    } else {
-////        okpa.setColor(DPalette::ButtonText, "#B8D3FF");
-////        okpa.setColor(DPalette::Dark, QColor("#0056C1"));
-////        okpa.setColor(DPalette::Light, QColor("#004C9C"));
-////    }
-
-////    m_OkBt->setPalette(okpa);
-//    downlayout->addWidget(m_cancelBt);
-//    DVerticalLine *verline = new DVerticalLine(this);
-//    verline->setFixedSize(3, 28);
-//    downlayout->addWidget(verline);
-//    downlayout->addWidget(m_OkBt);
     m_gwi = new DFrame(this);
     m_gwi->setFrameShape(QFrame::NoFrame);
-//    maintlayout->addLayout(downlayout);
-    // maintlayout->addStretch();
     m_gwi->setLayout(maintlayout);
-    // m_gwi->setGeometry(0, 68, 438, 412);
     DPalette anipa = m_gwi->palette();
     QColor color = "#F8F8F8";
     color.setAlphaF(0.0);
     anipa.setColor(DPalette::Background, color);
-    // m_gwi->setAutoFillBackground(true);
-    // m_gwi->setPalette(anipa);
-    // m_gwi->setBackgroundRole(DPalette::Background);
     addContent(m_gwi, Qt::AlignCenter);
-    // setLayout(maintlayout);
     initDateEdit();
     if (m_type == 1)
         slotallDayStateChanged(0);
@@ -934,9 +799,6 @@ void CSchceduleDlg::initConnection()
             &CSchceduleDlg::sloteRpeatactivated);
     connect(m_beginDateEdit, &DDateEdit::userDateChanged, this, &CSchceduleDlg::slotBDateEidtInfo);
 
-    // connect(m_eCustomDateW, &CCustomCalendarWidget::signalSetCalendarTime, this,
-    // &CSchceduleDlg::slotEDateEidtInfo);
-
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("ESC")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(close()));
@@ -944,134 +806,11 @@ void CSchceduleDlg::initConnection()
 
 void CSchceduleDlg::initDateEdit()
 {
-    // m_bCustomDateW = new CCustomCalendarWidget(0);
-    // m_beginDateEdit->setCalendarWidget(m_bCustomDateW);
     m_beginDateEdit->setMinimumDate(QDate(1900, 1, 1));    // 0天
-    m_beginDateEdit->setMaximumDate(QDate(9999, 12, 31));  //
-    // m_beginDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
-    // m_bCustomDateW->disconnect(SIGNAL(selectionChanged()));
-    // m_bCustomDateW->disconnect(SIGNAL(clicked(QDate)));
-
-    // m_eCustomDateW = new CCustomCalendarWidget(0);
-    // m_endDateEdit->setCalendarWidget(m_eCustomDateW);
+    m_beginDateEdit->setMaximumDate(QDate(9999, 12, 31));
     m_endDateEdit->setMinimumDate(QDate(1900, 1, 1));    // 0天
-    m_endDateEdit->setMaximumDate(QDate(9999, 12, 31));  //
-    // m_endDateEdit->setContextMenuPolicy(Qt::NoContextMenu);
-    // m_eCustomDateW->disconnect(SIGNAL(selectionChanged()));
-    // m_eCustomDateW->disconnect(SIGNAL(clicked(QDate)));
+    m_endDateEdit->setMaximumDate(QDate(9999, 12, 31));
     return;
-#if 0
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
-    QWidget *view1 =
-        m_beginDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
-    if (view1) {
-        DPalette anipa = view1->palette();
-        if (themetype == 2) {
-            QColor cc = "#FFFFFF";
-            cc.setAlphaF(0.1);
-            anipa.setColor(DPalette::Background, cc);
-        } else {
-            anipa.setColor(DPalette::Background, "#FFFFFF");
-        }
-        view1->setPalette(anipa);
-        view1->setBackgroundRole(DPalette::Background);
-    }
-    QToolButton *monthbutton1 =
-        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
-    if (monthbutton1) {
-        DPalette anipa = monthbutton1->palette();
-        if (themetype == 2) {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        } else {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        }
-        monthbutton1->setPalette(anipa);
-        // monthbutton1->setBackgroundRole(DPalette::ButtonText);
-    }
-    QToolButton *yearbutton1 =
-        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
-    if (yearbutton1) {
-        DPalette anipa = yearbutton1->palette();
-        if (themetype == 2) {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        } else {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        }
-        yearbutton1->setPalette(anipa);
-    }
-
-    QWidget *view2 =
-        m_endDateEdit->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
-    if (view2) {
-        DPalette anipa = view2->palette();
-        if (themetype == 2) {
-            anipa.setColor(DPalette::Background, "#252525");
-        } else {
-            anipa.setColor(DPalette::Background, "#FFFFFF");
-        }
-        view2->setPalette(anipa);
-        view2->setBackgroundRole(DPalette::Background);
-    }
-    QToolButton *monthbutton2 =
-        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
-    if (monthbutton2) {
-        DPalette anipa = monthbutton2->palette();
-        if (themetype == 2) {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        } else {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        }
-        monthbutton2->setPalette(anipa);
-    }
-    QToolButton *yearbutton2 =
-        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
-    if (yearbutton2) {
-        DPalette anipa = yearbutton2->palette();
-        if (themetype == 2) {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        } else {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        }
-        yearbutton2->setPalette(anipa);
-    }
-
-    QWidget *view3 =
-        m_endRepeatDate->calendarWidget()->findChild<QWidget *>("qt_calendar_navigationbar");
-    if (view3) {
-        DPalette anipa = view3->palette();
-        if (themetype == 2) {
-            anipa.setColor(DPalette::Background, "#252525");
-        } else {
-            anipa.setColor(DPalette::Background, "#FFFFFF");
-        }
-        view3->setPalette(anipa);
-        view3->setBackgroundRole(DPalette::Background);
-    }
-
-    QToolButton *monthbutton3 =
-        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_monthbutton");
-    if (monthbutton3) {
-        DPalette anipa = monthbutton3->palette();
-        if (themetype == 2) {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        } else {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        }
-        monthbutton3->setPalette(anipa);
-    }
-    QToolButton *yearbutton3 =
-        m_beginDateEdit->calendarWidget()->findChild<QToolButton *>("qt_calendar_yearbutton");
-    if (yearbutton2) {
-        DPalette anipa = yearbutton3->palette();
-        if (themetype == 2) {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        } else {
-            anipa.setColor(QPalette::ButtonText, QPalette::Highlight);
-        }
-        yearbutton3->setPalette(anipa);
-    }
-#endif
 }
 
 void CSchceduleDlg::initRmindRpeatUI()
@@ -1136,21 +875,20 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
     Q_UNUSED(m_themetype);
     Q_UNUSED(parent);
     if (newinfo.RecurID == 0) {
-        CSchceduleCtrlDlg msgBox/*(parent)*/;
+        CSchceduleCtrlDlg msgBox;
         msgBox.setText(tr("You are changing a repeating event."));
         msgBox.setInformativeText(
             tr("Do you want to change only this occurrence of the event, or all "
                "occurrences?"));
-        /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-        /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("All"));
-        /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Only This Event"));
-//        msgBox.updatesize();
+        msgBox.addPushButton(tr("Cancel"));
+        msgBox.addPushButton(tr("All"));
+        msgBox.addsuggestButton(tr("Only This Event"));
+
         msgBox.exec();
         if (msgBox.clickButton() == 0) {
             return;
         } else if (msgBox.clickButton() == 1) {
             ScheduleDtailInfo scheduleDtailInfo = newinfo;
-//            scheduleDtailInfo.ignore.clear();
             if (scheduleDtailInfo.enddata.type ==1 &&scheduleDtailInfo.enddata.tcount<1) {
                 scheduleDtailInfo.enddata.type =0;
             } else if (scheduleDtailInfo.enddata.type ==2 &&
@@ -1166,15 +904,14 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
             ChangeOnlyInfo(newinfo,oldinfo);
         }
     } else {
-        CSchceduleCtrlDlg msgBox/*(parent)*/;
+        CSchceduleCtrlDlg msgBox;
         msgBox.setText(tr("You are changing a repeating event."));
         msgBox.setInformativeText(
             tr("Do you want to change only this occurrence of the event, or this and "
                "all future occurrences?"));
-        /* QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-        /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("All Future Events"));
-        /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Only This Event"));
-//        msgBox.updatesize();
+        msgBox.addPushButton(tr("Cancel"));
+        msgBox.addPushButton(tr("All Future Events"));
+        msgBox.addsuggestButton(tr("Only This Event"));
         msgBox.exec();
 
         if (msgBox.clickButton() == 0) {
