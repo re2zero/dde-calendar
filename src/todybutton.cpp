@@ -24,7 +24,6 @@
 DGUI_USE_NAMESPACE
 CTodyButton::CTodyButton(QWidget *parent): DPushButton(parent)
 {
-//    m_font.setFamily("SourceHanSansSC");
     m_font.setWeight(QFont::Medium);
     m_font.setPixelSize(14);
 }
@@ -51,62 +50,7 @@ void CTodyButton::setshadowColor(QColor sc)
 {
     m_shadowColor = sc;
 }
-/*
-void CTodyButton::paintEvent(QPaintEvent *e)
-{
-    int labelwidth = width();
-    int labelheight = height();
 
-    QPainter painter(this);
-    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
-
-    QRect trect = fillRect;
-    trect.setHeight(fillRect.height());
-    painter.save();
-    painter.setRenderHints(QPainter::Antialiasing);
-    QPen pen;
-    pen.setColor(m_shadowColor);
-    pen.setWidth(1);
-    painter.setBrush(Qt::NoBrush);
-    painter.setPen(pen);
-    painter.drawRoundedRect(trect, 8, 8);
-    painter.restore();
-
-
-    painter.save();
-    QLinearGradient linearGradient(0, 0, labelwidth, 0);
-
-    painter.setRenderHints(QPainter::HighQualityAntialiasing);
-    if (m_hovertate) {
-        linearGradient.setColorAt(0, m_bhoverColor);
-        linearGradient.setColorAt(1, m_dbhoverColor);
-    } else if (m_pressstate) {
-        linearGradient.setColorAt(0, m_bPressColor);
-        linearGradient.setColorAt(1, m_dbPressColor);
-    } else {
-        linearGradient.setColorAt(0, m_bnormalColor);
-        linearGradient.setColorAt(1, m_dbnormalColor);
-    }
-    painter.setBrush(linearGradient);
-    painter.setPen(Qt::NoPen);
-    painter.drawRoundedRect(fillRect, 8, 8);
-    painter.restore();
-
-    painter.save();
-    painter.setRenderHints(QPainter::HighQualityAntialiasing);
-    painter.setFont(m_font);
-    if (m_hovertate) {
-        painter.setPen(m_thoverColor);
-    } else if (m_pressstate) {
-        painter.setPen(m_tPressColor);
-    } else {
-        painter.setPen(m_tnormalColor);
-    }
-    painter.setPen(Qt::NoPen);
-    painter.drawText(fillRect, Qt::AlignCenter, text());
-    painter.restore();
-}
-*/
 void CTodyButton::mousePressEvent(QMouseEvent *event)
 {
     DPalette todaypa = palette();

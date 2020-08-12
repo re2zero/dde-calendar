@@ -32,7 +32,6 @@ public:
     void setTColor(QColor normalC, QColor hoverC, QColor pressc);
     void setshadowColor(QColor sc);
 protected:
-    // void paintEvent ( QPaintEvent *e);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void focusOutEvent(QFocusEvent *event);

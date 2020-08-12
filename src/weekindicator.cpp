@@ -62,9 +62,7 @@ void WeekIndicator::setList(int weekday)
 
 int WeekIndicator::checkDay(int weekday)
 {
-
     // check the week, calculate the correct order in the custom.
-
     if (weekday <= 0)
         return weekday += 7;
 
