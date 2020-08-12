@@ -59,7 +59,6 @@ void CMonthWeekView::setList(int weekday)
         label->setTextStr(locale.dayName(d ? d : 7, QLocale::ShortFormat));
         label->setContentsMargins(0, 0, 0, 0);
         QFont weekfont;
-//        weekfont.setFamily("SourceHanSansSC");
         weekfont.setWeight(QFont::Medium);
         weekfont.setPixelSize(16);
         label->setTextFont(weekfont);
@@ -71,26 +70,12 @@ void CMonthWeekView::setList(int weekday)
         if (d == 0) {
             QColor textbC(0, 66, 154);
             QColor colorSeven = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-//            label->setTextColor("#0887FF");
             label->setTextColor(colorSeven);
             label->setBColor(textbC);
             m_weekData.append(qMakePair(label, 1));
-#if 0
-            DPalette monthpa = label->palette();
-            QColor textC = "#0887FF";
-            QColor textbC(0, 66, 154);
-            textbC.setAlphaF(0.05);
-            monthpa.setColor(DPalette::WindowText, textC);
-            monthpa.setColor(DPalette::Background, textbC);
-            label->setAutoFillBackground(true);
-            label->setPalette(monthpa);
-            m_weekData.append(qMakePair(label, 1));
-            //label->setStyleSheet("color:#0887FF;background: rgba(0,66,154,0.05);");
-#endif
         } else if (d == 6) {
             QColor textbC(0, 66, 154);
             QColor colorSix = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-//            label->setTextColor("#0887FF");
             label->setTextColor(colorSix);
             label->setBColor(textbC);
             m_weekData.append(qMakePair(label, 1));
@@ -101,7 +86,6 @@ void CMonthWeekView::setList(int weekday)
             label->setTextColor(textC);
             label->setBColor(textbC);
             m_weekData.append(qMakePair(label, 0));
-            //label->setStyleSheet("color:black;background: rgba(0,66,154,0.05);");
         }
         if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
             label->setObjectName("MonthHeaderWeekend");
@@ -109,7 +93,6 @@ void CMonthWeekView::setList(int weekday)
             label->setObjectName("MonthHeaderWeekday");
         }
 
-        // label->setAlignment(Qt::AlignCenter);
         DHorizontalLine *splitline = new DHorizontalLine;
         if (i == 0 || i == 6) {
             label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, DDEMonthCalendar::MWeekCellHeight);
@@ -132,11 +115,9 @@ void CMonthWeekView::setTheMe(int type)
     if (type == 0 || type == 1) {
         for (int i = 0; i < m_weekData.count(); i++) {
             if (m_weekData.at(i).second == 1) {
-//                QColor textC = "#0887FF";
                 QColor color = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
                 QColor textbC("#75C18E");
                 textbC.setAlphaF(0.1);
-//                m_weekData.at(i).first->setTextColor(textC);
                 m_weekData.at(i).first->setTextColor(color);
                 m_weekData.at(i).first->setBColor(textbC);
             } else {
@@ -152,11 +133,9 @@ void CMonthWeekView::setTheMe(int type)
     } else if (type == 2) {
         for (int i = 0; i < m_weekData.count(); i++) {
             if (m_weekData.at(i).second == 1) {
-//                QColor textC = "#0887FF";
                 QColor color = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
                 QColor textbC = "#82AEC1";
                 textbC.setAlphaF(0.10);
-//                m_weekData.at(i).first->setTextColor(textC);
                 m_weekData.at(i).first->setTextColor(color);
                 m_weekData.at(i).first->setBColor(textbC);
             } else {
@@ -166,9 +145,6 @@ void CMonthWeekView::setTheMe(int type)
                 m_weekData.at(i).first->setTextColor(textC);
                 m_weekData.at(i).first->setBColor(textbC);
             }
-            //DPalette monthpa = m_vline.at(i)->palette();
-            //monthpa.setColor(DPalette::Background, "#0059D2");
-            //m_vline.at(i)->setPalette(monthpa);
             m_vline.at(i)->setBackgroundRole(DPalette::Highlight);
         }
     }
@@ -193,15 +169,7 @@ void CMonthWeekView::updateWeek()
 
 int CMonthWeekView::checkDay(int weekday)
 {
-
     // check the week, calculate the correct order in the custom.
-
-//    if (weekday <= 0)
-//        return weekday += 7;
-
-//    if (weekday > 7)
-//        return weekday -= 7;
-
     return weekday % 7;
 }
 

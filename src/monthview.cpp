@@ -300,19 +300,6 @@ void CMonthView::getDbusData()
         QDate cacheDate;
         cacheDate.setDate(getDate.year(), getDate.month(), 1);
         foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
-//            if (cacheDate == QDate(2020,6,21)) {
-//                qDebug()<<"mGanZhiYear:"<<dayInfo.mGanZhiYear;
-//                qDebug()<<"mGanZhiMonth:"<<dayInfo.mGanZhiMonth;
-//                qDebug()<<"mGanZhiDay:"<<dayInfo.mGanZhiDay;
-//                qDebug()<<"mLunarMonthName:"<<dayInfo.mLunarMonthName;
-//                qDebug()<<"mLunarDayName:"<<dayInfo.mLunarDayName;
-//                qDebug()<<"mLunarLeapMonth:"<<dayInfo.mLunarLeapMonth;
-//                qDebug()<<"mZodiac:"<<dayInfo.mZodiac;
-//                qDebug()<<"mTerm:"<<dayInfo.mTerm;
-//                qDebug()<<"mSolarFestival:"<<dayInfo.mSolarFestival;
-//                qDebug()<<"mLunarFestival:"<<dayInfo.mLunarFestival;
-//                qDebug()<<"mWorktime:"<<dayInfo.mWorktime;
-//            }
             lunarCache->insert(cacheDate, dayInfo);
             cacheDate = cacheDate.addDays(1);
         }

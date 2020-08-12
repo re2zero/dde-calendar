@@ -205,7 +205,6 @@ void CMonthSchceduleNumButton::setText( QColor tcolor, QFont font, QPoint pos)
     Q_UNUSED(pos);
     m_textcolor = tcolor;
     m_font = font;
-//    m_pos = pos;
 }
 
 void CMonthSchceduleNumButton::setSizeType(DFontSizeManager::SizeType sizeType)
@@ -647,10 +646,6 @@ void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const Schedul
         //日程时间重新标定
         tbegindate = schedulev.at(i).beginDateTime.date();
         tenddate = schedulev.at(i).endDateTime.date();
-//        if (tbegindate.daysTo(tenddate)>0 &&
-//                schedulev.at(i).endDateTime.time().hour()<1 &&
-//                schedulev.at(i).endDateTime.time().second()<1)
-//            tenddate = tenddate.addDays(-1);
         if (tenddate<beginDate ||tbegindate>endDate)
             continue;
         if (tbegindate <  beginDate) tbegindate = beginDate;
@@ -670,7 +665,6 @@ void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const Schedul
         }
     }
     std::sort(vMDaySchedule.begin(),vMDaySchedule.end());
-//    qSort(vMDaySchedule.begin(),vMDaySchedule.end());
     sortAndFilter(vMDaySchedule);
 }
 
