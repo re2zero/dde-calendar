@@ -17,26 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "calendarmainwindow.h"
-#include <QHBoxLayout>
-#include <QSpacerItem>
-#include <QWidget>
-#include <DAboutDialog>
-#include <DHiDPIHelper>
-#include <QSizePolicy>
-#include <DPalette>
-#include <QMenuBar>
-#include <com_deepin_daemon_calendar_scheduler.h>
-#include <QJsonDocument>
-#include <QJsonParseError>
-#include <QJsonObject>
-#include <QMessageBox>
-#include <QShortcut>
-#include <QDesktopWidget>
-#include <QApplication>
-#include <DFontSizeManager>
-#include <DApplicationHelper>
-#include <DWidgetUtil>
-
 #include "yearwindow.h"
 #include "monthwindow.h"
 #include "dbuscalendar_adaptor.h"
@@ -48,9 +28,29 @@
 #include "configsettings.h"
 #include "shortcut.h"
 #include "schcedulesearchview.h"
-
 #include "cdynamicicon.h"
 
+#include <DAboutDialog>
+#include <DHiDPIHelper>
+#include <DPalette>
+#include <DFontSizeManager>
+#include <DApplicationHelper>
+#include <DWidgetUtil>
+
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QMessageBox>
+#include <QShortcut>
+#include <QDesktopWidget>
+#include <QApplication>
+#include <QSizePolicy>
+#include <QHBoxLayout>
+#include <QSpacerItem>
+#include <QWidget>
+#include <QMenuBar>
+
+#include <com_deepin_daemon_calendar_scheduler.h>
 
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE

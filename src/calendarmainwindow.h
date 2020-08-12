@@ -20,25 +20,24 @@
 #ifndef CALENDARMAINWINDOW_H
 #define CALENDARMAINWINDOW_H
 
+#include "dbusdatagetthread.h"
+
+#include <DPushButton>
+#include <DTitlebar>
+#include <DLabel>
+#include <DButtonBox>
+#include <DFrame>
+
+#include <QStackedLayout>
+#include <QPropertyAnimation>
+#include <QStackedWidget>
+#include <QButtonGroup>
 #include <QMainWindow>
 #include <QObject>
 #include <DMainWindow>
+
 #include <dstackwidget.h>
-#include <DPushButton>
 #include <dsearchedit.h>
-#include <QButtonGroup>
-#include <DTitlebar>
-#include <DLabel>
-#include <QStackedWidget>
-#include <DButtonBox>
-#include <QStackedLayout>
-#include <QPropertyAnimation>
-#include <DFrame>
-
-
-#include "scheduledatamanage.h"
-#include "animationstackedwidget.h"
-#include "dbusdatagetthread.h"
 
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
@@ -47,6 +46,8 @@ class CWeekWindow;
 class CDayWindow;
 class __Scheduler;
 class CSchceduleSearchView;
+class AnimationStackedWidget;
+class CScheduleDataManage;
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
