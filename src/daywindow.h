@@ -81,7 +81,6 @@ private:
     QLabel *m_LunarLabel = nullptr;
     QLabel *m_SolarDay = nullptr;
     CScheduleView *m_scheduleView = nullptr;
-    // CSchceduleSearchView *m_schceduleSearchView;
     QString m_searchText;
     bool m_searchfalg = false;
     QHBoxLayout *m_mainLayout = nullptr;

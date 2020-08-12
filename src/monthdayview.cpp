@@ -242,34 +242,15 @@ void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
     const bool isCurrentDay = (m_Date.month() == QDate::currentDate().month()
                                && m_Date.year() == QDate::currentDate().year());
 
-
     painter->setPen(Qt::SolidLine);
 
     const QString dayNum = QString::number(m_Date.month());
-
-//    const qreal r = rect.width() > rect.height() ? rect.height() * 0.9 : rect.width() * 0.9 ;
-//    const qreal x = rect.x()+(rect.width() - r) / 2;
-//    const qreal y = rect.y()+(rect.height() - r) / 2;
-//    QRectF fillRect = QRectF(x, y, r, r);
 
     if (m_SelectRect ==this) {
         QRectF fillRect((rect.width() - 36) / 2 +rect.x() + 6,
                         (rect.height() - 36) / 2 + 7 +rect.y(),
                         24,
                         24);
-//        QPixmap pixmap;
-//        if (m_themetype == 2)
-//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-//        else {
-//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-//        }
-//        pixmap.setDevicePixelRatio(m_DevicePixelRatio);
-//        painter->save();
-//        painter->setRenderHint(QPainter::Antialiasing);
-//        painter->setRenderHint(QPainter::HighQualityAntialiasing);
-//        painter->setRenderHint(QPainter::SmoothPixmapTransform);
-//        painter->drawPixmap(fillRect.toRect(), pixmap);
-//        painter->restore();
         painter->setBrush(QBrush(m_selectColor));
         painter->setPen(Qt::NoPen);
         painter->drawEllipse(fillRect);
@@ -302,7 +283,6 @@ void CMonthRect::setTheMe(int type)
         m_defaultTextColor = Qt::black;
         m_backgrounddefaultColor = Qt::white;
         m_currentDayTextColor = Qt::white;
-//        m_backgroundcurrentDayColor = "#0081FF";
         m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_fillColor = "#FFFFFF";
         frameclor = m_fillColor;

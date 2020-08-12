@@ -48,7 +48,6 @@ private:
     int                         m_fixwidth = 200;
     int                         m_realwidth = 100;
     bool                        m_searchfalg = false;
-    //    int                         m_radius = 8;
 };
 
 class CMonthRect;

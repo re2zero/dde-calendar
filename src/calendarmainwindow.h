@@ -50,11 +50,9 @@ class CSchceduleSearchView;
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
-//    Q_PROPERTY(int schedulesearchWidth WRITE setSearchWidth)
 public:
     Calendarmainwindow(QWidget *w = nullptr);
     ~Calendarmainwindow() override;
-    //void Invoke(const QString &mothodName, const QString &content);
     bool analysisCreate(const QString &content, ScheduleDtailInfo &info);
     void viewWindow(int type, QDateTime datetime);
     void UpdateJob();
@@ -109,7 +107,6 @@ private slots:
 private:
     DLabel *m_icon = nullptr;
     AnimationStackedWidget *m_stackWidget = nullptr;
-    //DSegmentedControl         *m_segmentedControl;
     DButtonBox *m_buttonBox = nullptr;
     DButtonBoxButton *m_yearButton = nullptr;
     DButtonBoxButton *m_monthButton = nullptr;
