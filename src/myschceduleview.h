@@ -53,9 +53,7 @@ private:
     void AutoFeed(QString text);
 protected:
     void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-//    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
     bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
-//    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
 private:
     QLabel                           *m_schceduleLabel = nullptr;
     QLabel                           *m_timeLabel = nullptr;
@@ -67,9 +65,6 @@ private:
     ScheduleDtailInfo m_scheduleInfo; //日程
     QScrollArea *area = nullptr;
     QFont labelF;
-    //    QWidget                          *w = nullptr;
-private:
-//    void paintLabel(QWidget *label);
 };
 
 #endif // MYSCHCEDULEVIEW_H
