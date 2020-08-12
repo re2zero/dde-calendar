@@ -93,7 +93,6 @@ private:
     YearFrame *YearWidget_Second = nullptr;
     CustomFrame *m_todayframe = nullptr;
     AnimationStackedWidget *m_StackedWidget = nullptr;
-    //CSchceduleSearchView *m_schceduleSearchView;
     QHBoxLayout *m_tmainLayout = nullptr;
     QString                     m_searchText;
     bool                        m_searchfalg = false;

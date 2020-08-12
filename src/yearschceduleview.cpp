@@ -38,7 +38,8 @@ DGUI_USE_NAMESPACE
 const int fontsize = 12;
 const QString fontfamily = QStringLiteral("SourceHanSansSC-Medium");
 
-CYearSchceduleItem::CYearSchceduleItem( QWidget *parent /*= nullptr*/ ): DLabel(parent)
+CYearSchceduleItem::CYearSchceduleItem(QWidget *parent)
+    : DLabel(parent)
 {
 
 }
@@ -68,7 +69,6 @@ void CYearSchceduleItem::setTimeC(QColor tcolor, QFont font)
 void CYearSchceduleItem::setData( ScheduleDtailInfo vScheduleInfo)
 {
     m_ScheduleInfo = vScheduleInfo;
-    //setToolTip(m_ScheduleInfo.titleName);
     update();
 }
 
@@ -151,24 +151,6 @@ CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
 {
     setContentsMargins(10, 10, 10, 10);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    /*QVBoxLayout *layout = new QVBoxLayout;
-    layout->setMargin(0);
-    layout->setSpacing(0);
-    m_gradientItemList = new DListWidget(parent);
-    m_gradientItemList->setAutoFillBackground(true);
-    // m_gradientItemList->setAlternatingRowColors(true);
-    //layout->setContentsMargins(10, 10, 10, 10);
-    layout->addWidget(m_gradientItemList);
-    //m_gradientItemList->setSpacing(1);
-    // set default row
-    m_gradientItemList->setCurrentRow(0);
-    setLayout(layout);
-    setMouseTracking(true);
-    setFocusPolicy(Qt::StrongFocus);
-    m_bBackgroundcolor.setAlphaF(0.03);
-    // m_gradientItemList->setLineWidth(0);
-    m_gradientItemList->setFrameShape(QListWidget::NoFrame);
-    m_labellist.clear();*/
     setAttribute(Qt::WA_TranslucentBackground);
 }
 
@@ -222,10 +204,6 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
     std::sort(valldayListData.begin(), valldayListData.end(), YScheduleDateThan);
     std::sort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDaysThan);
     std::sort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDateThan);
-//    qSort(valldayListData.begin(), valldayListData.end(), YScheduleDaysThan);
-//    qSort(valldayListData.begin(), valldayListData.end(), YScheduleDateThan);
-//    qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDaysThan);
-//    qSort(vDaylistdata.begin(), vDaylistdata.end(), YScheduleDateThan);
 
     for (int i = 0; i < valldayListData.count(); i++) {
         QVector<ScheduleDtailInfo>::iterator iter = valldayListData.begin();
@@ -242,25 +220,7 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
     m_vlistData.clear();
     m_vlistData.append(valldayListData);
     m_vlistData.append(vDaylistdata);
-//    if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty()) {
-//        if (!m_soloDay.isEmpty()) {
-//            if (m_vlistData.size() > 4) {
-//                QVector<ScheduleDtailInfo> vTlistData;
-//                for (int i = 0; i < 3; i++) {
-//                    if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
-//                        if (m_vlistData.at(i).beginDateTime.date() != m_currentDate) {
-//                            m_vlistData[i].allday = true;
-//                        }
-//                    }
-//                    vTlistData.append(m_vlistData.at(i));
-//                }
-//                ScheduleDtailInfo info;
-//                info.titleName = "......";
-//                info.id = -1;
-//                vTlistData.append(info);
-//                m_vlistData = vTlistData;
-//            }
-//        } else {
+
     if (m_vlistData.size() > 5) {
         QVector<ScheduleDtailInfo> vTlistData;
         for (int i = 0; i < 4; i++) {
@@ -277,8 +237,6 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
         vTlistData.append(info);
         m_vlistData = vTlistData;
     }
-//        }
-//    }
 }
 
 void CYearSchceduleView::clearData()
@@ -292,12 +250,9 @@ int CYearSchceduleView::showWindow()
 {
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
         setFixedSize(130, 45);
-        //m_gradientItemList->setFixedSize(110, 60);
     } else {
         setFixedSize(240, 180);
-        //m_gradientItemList->setFixedSize(220, 160);
     }
-    //show();
     updateDateShow();
     return this->width();
 }
@@ -315,7 +270,6 @@ void CYearSchceduleView::setTheMe(int type)
         m_ltextcolor = "#001A2E";
         m_solocolor = "#FF7272";
         m_TBcolor = "#EBEBEB";
-        // m_TBcolor.setAlphaF(0.7);
         m_borderColor = "#000000";
         m_borderColor.setAlphaF(0.05);
 
@@ -334,9 +288,6 @@ void CYearSchceduleView::setTheMe(int type)
         m_borderColor = "#FFFFFF";
         m_borderColor.setAlphaF(0.05);
     }
-    // DPalette bpa = m_gradientItemList->palette();
-    // bpa.setColor(DPalette::Base, m_TBcolor);
-    // m_gradientItemList->setPalette(bpa);
 }
 
 void CYearSchceduleView::setDtype(int type, int arrowheight)
@@ -383,65 +334,6 @@ void CYearSchceduleView::updateDateShow()
         setFixedSize(240, 45 + (sviewNum - 1) * 29);
     update();
     return;
-    //remove
-//    for (int i = 0; i < m_gradientItemList->count(); i++) {
-//        QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
-//        m_gradientItemList->removeItemWidget(item11);
-//    }
-//    m_gradientItemList->clear();
-//    m_labellist.clear();
-
-////    if (!m_soloDay.isEmpty()) {
-////        ScheduleDtailInfo info;
-////        info.titleName = m_soloDay;
-////        info.allday = true;
-////        createItemWidget(info, 1);
-////    }
-//    sviewNum = 0;
-////    if (!m_soloDay.isEmpty()) {
-////        if (m_vlistData.size() > 5) {
-////            sviewNum = 5;
-////            setFixedSize(240, 180);
-////        } else {
-////            sviewNum = m_vlistData.size();
-////            setFixedSize(95 + (sviewNum + 1) * 29, 180);
-////        }
-////    } else {
-//    if (m_vlistData.size() > 6) {
-//        sviewNum = 6;
-//        setFixedSize(240, 180);
-//    } else {
-//        sviewNum = m_vlistData.size();
-//        setFixedSize(95 + sviewNum * 29, 180);
-//    }
-////    }
-
-//    for (int i = 0; i < sviewNum; ++i) {
-//        createItemWidget(m_vlistData.at(i), 0);
-//    }
-
-//    if (m_gradientItemList->count() == 0) {
-//        QListWidgetItem *listItem = new QListWidgetItem;
-//        DLabel *gwi = new DLabel();
-//        QFont font("SourceHanSansSC-Normal");
-//        font.setPixelSize(12);
-//        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-//        DPalette daypa = gwi->palette();
-//        daypa.setColor(DPalette::WindowText, m_bttextcolor);
-//        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
-//        gwi->setPalette(daypa);
-//        gwi->setForegroundRole(DPalette::WindowText);
-//        gwi->setBackgroundRole(DPalette::Window);
-//        gwi->setFont(font);
-//        gwi->setText(tr("No event"));
-//        gwi->setFixedSize(m_gradientItemList->width(), 48);
-//        listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
-//        //listItem->setBackgroundColor(Qt::white);
-//        listItem->setFlags(Qt::ItemIsTristate );
-//        m_gradientItemList->addItem(listItem);
-//        m_gradientItemList->setItemWidget(listItem, gwi);
-//        m_labellist.append(gwi);
-//    }
 }
 
 void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
@@ -450,11 +342,10 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
 
     CYearSchceduleItem *gwi = new CYearSchceduleItem();
-    QFont font/*("SourceHanSansSC")*/;
+    QFont font;
     font.setWeight(QFont::Medium);
     font.setPixelSize(14);
     gwi->setBackgroundColor(m_bBackgroundcolor);
-    //gwi->setBackgroundColor(Qt::white);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
     if (type == 0)
@@ -470,7 +361,6 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
 
     QListWidgetItem *listItem = new QListWidgetItem;
     listItem->setSizeHint(QSize(m_gradientItemList->width() - 2, 29)); //每次改变Item的高度
-    //listItem->setBackgroundColor(Qt::white);
     listItem->setFlags(Qt::ItemIsTristate );
     m_gradientItemList->addItem(listItem);
     m_gradientItemList->setItemWidget(listItem, gwi);
@@ -480,296 +370,10 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
 void CYearSchceduleView::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-#if 0
-    QPainter painter(this);
-    painter.setRenderHints(QPainter::Antialia if (!m_soloDay.isEmpty()) {
-    ScheduleDtailInfo info;
-    info.titleName = m_soloDay;
-    info.allday = true;
-    createItemWidget(info, 1);
-    }
-    int sviewNum = 0;
-    if (!m_soloDay.isEmpty()) {
-    if (m_vlistData.size() > 5) {
-            sviewNum = 5;
-        } else {
-            sviewNum = m_vlistData.size();
-        }
-    } else {
-        if (m_vlistData.size() > 6) {
-            sviewNum = 6;
-        } else {
-            sviewNum = m_vlistData.size();
-        }
-    }
 
-    for (int i = 0; i < sviewNum; ++i) {
-    createItemWidget(m_vlistData.at(i), 0);
-    }
-
-    if (m_gradientItemList->count() == 0) {
-    QListWidgetItem *listItem = new QListWidgetItem;
-    DLabel *gwi = new DLabel();
-        QFont font("SourceHanSansSC-Normal");
-        font.setPixelSize(12);
-        gwi->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-        DPalette daypa = gwi->palette();
-        daypa.setColor(DPalette::WindowText, m_bttextcolor);
-        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
-        gwi->setPalette(daypa);
-        gwi->setForegroundRole(DPalette::WindowText);
-        gwi->setBackgroundRole(DPalette::Window);
-        gwi->setFont(font);
-        gwi->setText(tr("No event"));
-        gwi->setFixedSize(m_gradientItemList->width(), 48);
-        listItem->setSizeHint(QSize(m_gradientItemList->width(), 49)); //每次改变Item的高度
-        //listItem->setBackgroundColor(Qt::white);
-        listItem->setFlags(Qt::ItemIsTristate );
-        m_gradientItemList->addItem(listItem);
-        m_gradientItemList->setItemWidget(listItem, gwi);
-        m_labellist.append(gwi);
-    }
-    sing | QPainter::HighQualityAntialiasing);
-    QPainterPath path;
-
-    auto palette = this->palette();
-
-    auto penWidthf = 1.0;
-    auto background =  m_TBcolor;
-    auto borderColor = m_TBcolor;
-
-    const qreal radius = 10;
-
-
-    switch (m_dtype) {
-    case 0: {
-        const qreal triHeight = 12;
-        const qreal triWidth = 16;
-        const qreal height = this->height() - triHeight;
-        const qreal width = this->width();
-        QRectF topRightRect(QPointF(0, 0),
-                            QPointF(2 * radius, 2 * radius));
-        QRectF bottomRightRect(QPointF(0, height - 2 * tr("No event")radius),
-                               QPointF(2 * radius, height));
-        QRectF topLeftRect(QPointF(width, 0),
-                           QPointF(width - 2 * radius, 2 * radius));
-        QRectF bottomLeftRect(QPointF(width, height),
-                              QPointF(width - 2 * radius, height - 2 * radius));
-        path.moveTo(radius, 0.0);
-        path.lineTo(width - radius, 0.0);
-        path.arcTo(topLeftRect, 90.0, 90.0);
-        path.lineTo(width, height - radius);
-        path.arcTo(bottomLeftRect, 180.0, -90.0);
-        path.lineTo(width / 2 + triWidth / 2, height);
-        path.lineTo(width / 2, height + triHeight);
-        path.lineTo(width / 2 - triWidth / 2, height);
-        path.lineTo(radius, height);
-
-        path.arcTo(bottomRightRect, 270.0, -90.0);
-        path.lineTo(0.0, radius);
-
-        path.arcTo(topRightRect, 180.0, -90.0);
-        path.lineTo(radius, 0.0);
-    }
-    break;
-    case 1: {
-        const qreal triHeight = 12;
-        const qreal triWidth = 16;
-        const qreal height = this->height() - triHeight;
-        const qreal width = this->width();
-
-        QRectF topRightRect(QPointF(0, triHeight),
-                            QPointF(2 * radius, 2 * radius + triHeight));
-        QRectF bottomRightRect(QPointF(0, this->height() - 2 * radius),
-                               QPointF(2 * radius, this->height()));
-        QRectF topLeftRect(QPointF(width, triHeight),
-                           QPointF(width - 2 * radius, 2 * radius + triHeight));
-        QRectF bottomLeftRect(QPointF(width, this->height()),
-                              QPointF(width - 2 * radius, this->height() - 2 * radius));
-        path.moveTo(radius, triHeight);
-        path.lineTo(width / 2 - triWidth / 2, triHeight);
-        path.lineTo(width / 2, 0);
-        path.lineTo(width / 2 + triWidth / 2, triHeight);
-        path.lineTo(width - radius, triHeight);
-        path.arcTo(topLeftRect, 90.0, 90.0);
-        tr("No event")
-        path.lineTo(width, this->height() - radius);
-        path.arcTo(bottomLeftRect, 180.0, -90.0);
-        path.lineTo(radius, this->height());
-        path.arcTo(bottomRightRect, 270.0, -90.0);
-        path.lineTo(0.0, radius);
-        path.arcTo(topRightRect, 180.0, -90.0);
-        path.lineTo(radius, 0.0);
-    }
-    break;
-    case 2: {
-        const qreal triHeight = 16;
-        const qreal triWidth = 12;
-        const qreal height = this->height();
-        const qreal width = this->width() - triWidth;
-
-        QRectF topRightRect(QPointF(triWidth, 0),
-                            QPointF(2 * radius + triWidth, 2 * radius));
-        QRectF bottomRightRect(QPointF(triWidth, this->height() - 2 * radius),
-                               QPointF(2 * radius + triWidth, this->height()));
-        QRectF topLeftRect(QPointF(this->width(), 0),
-                           QPointF(this->width() - 2 * radius, 2 * radius));
-        QRectF bottomLeftRect(QPointF(this->width(), this->height()),
-                              QPointF(this->width() - 2 * radius, this->height() - 2 * radius));
-
-        path.moveTo(radius + triWidth, 0);
-        path.lineTo(this->width() - radius, 0.0);
-        m_bttextcolor
-        path.arcTo(topLeftRect, 90.0, 90.0);
-        path.lineTo(this->width(), height - radius);
-        path.arcTo(bottomLeftRect, 180.0, -90.0);
-        path.lineTo(radius, this->height());
-        path.arcTo(bottomRightRect, 270.0, -90.0);
-        path.lineTo(triWidth, height / 2 + triHeight / 2);
-        path.lineTo(0, height / 2 );
-        path.lineTo(triWidth, height / 2 - triHeight / 2);
-        path.lineTo(triWidth, radius);
-        path.arcTo(topRightRect, 180.0, -90.0);
-        path.lineTo(radius + triWidth, 0.0);
-    }
-    break;
-    case 3: {
-        const qreal triHeight = 16;
-        const qreal triWidth = 12;
-        const qreal height = this->height();
-        const qreal width = this->width();
-
-        QRectF topRightRect(QPointF(0, 0),
-                            QPointF(2 * radius, 2 * radius));
-        QRectF bottomRightRect(QPointF(0, this->height() - 2 * radius),
-                               QPointF(2 * radius, this->height()));
-        QRectF topLeftRect(QPointF(width - triWidth, 0),
-                           QPointF(width - triWidth - 2 * radius, 2 * radius));
-        QRectF bottomLeftRect(QPointF(width - triWidth, this->height()),
-                              QPointF(width - triWidth - 2 * radius, this->height() - 2 * radius));
-
-        path.moveTo(radius, 0);
-        path.lineTo(this->width() - triWidth - radius, 0.0);
-        path.arcTo(topLeftRect, 90.0, 90.0);
-        path.lineTo(width - triWidth, height / 2 - triHeight / 2);
-        path.lineTo(width, height / 2 );
-        path.lineTo(width - triWidth, height / 2 + triHeight / 2);
-        path.lineTo(width - triWidth, height - radius);
-        path.arcTo(bottomLeftRect, 180.0, -90.0);
-        path.lineTo(radius, this->height());
-        path.arcTo(bottomRightRect, 270.0, -90.0);
-        path.lineTo(0.0, radius);
-        path.arcTo(topRightRect, 180.0, -90.0);
-        path.lineTo(radius, 0.0);
-    }
-    break;
-    }
-
-    painter.fillPath(path, background);
-
-    QPainter painter(this);
-    painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
-    QPainterPath path;
-
-    //auto palette = m_gradientItemList->palette();
-
-    auto penWidthf = 1.0;
-    auto background =  m_TBcolor;
-    auto borderColor = m_TBcolor;
-
-    const qreal radius = 10;
-
-
-    switch (m_dtype) {
-    case 0: {
-        const qreal triHeight = 16;
-        const qreal triWidth = 12;
-        const qreal height = this->height();
-        const qreal width = this->width() - triWidth;
-
-        QRectF topRightRect(QPointF(triWidth, 0),
-                            QPointF(2 * radius + triWidth, 2 * radius));
-        QRectF bottomRightRect(QPointF(triWidth, this->height() - 2 * radius),
-                               QPointF(2 * radius + triWidth, this->height()));
-        QRectF topLeftRect(QPointF(this->width(), 0),
-                           QPointF(this->width() - 2 * radius, 2 * radius));
-        QRectF bottomLeftRect(QPointF(this->width(), this->height()),
-                              QPointF(this->width() - 2 * radius, this->height() - 2 * radius));
-
-        path.moveTo(radius + triWidth, 0);
-        path.lineTo(this->width() - radius, 0.0);
-        path.arcTo(topLeftRect, 90.0, 90.0);
-        path.lineTo(this->width(), height - radius);
-        path.arcTo(bottomLeftRect, 180.0, -90.0);
-        path.lineTo(radius, this->height());
-        path.arcTo(bottomRightRect, 270.0, -90.0);
-        path.lineTo(triWidth, m_arrowheight + triHeight / 2);
-        path.lineTo(0, m_arrowheight );
-        path.lineTo(triWidth, m_arrowheight - triHeight / 2);
-        path.lineTo(triWidth, radius);
-        path.arcTo(topRightRect, 180.0, -90.0);
-        path.lineTo(radius + triWidth, 0.0);
-    }
-    break;
-    case 1: {
-        const qreal triHeight = 16;
-        const qreal triWidth = 12;
-        const qreal height = this->height();
-        const qreal width = this->width();
-
-        QRectF topRightRect(QPointF(0, 0),
-                            QPointF(2 * radius, 2 * radius));
-        QRectF bottomRightRect(QPointF(0, this->height() - 2 * radius),
-                               QPointF(2 * radius, this->height()));
-        QRectF topLeftRect(QPointF(width - triWidth, 0),
-                           QPointF(width - triWidth - 2 * radius, 2 * radius));
-        QRectF bottomLeftRect(QPointF(width - triWidth, this->height()),
-                              QPointF(width - triWidth - 2 * radius, this->height() - 2 * radius));
-
-        path.moveTo(radius, 0);
-        path.lineTo(this->width() - triWidth - radius, 0.0);
-        path.arcTo(topLeftRect, 90.0, 90.0);
-        path.lineTo(width - triWidth, m_arrowheight - triHeight / 2);
-        path.lineTo(width, m_arrowheight );
-        path.lineTo(width - triWidth, m_arrowheight + triHeight / 2);
-        path.lineTo(width - triWidth, height - radius);
-        path.arcTo(bottomLeftRect, 180.0, -90.0);
-        path.lineTo(radius, this->height());
-        path.arcTo(bottomRightRect, 270.0, -90.0);
-        path.lineTo(0.0, radius);
-        path.arcTo(topRightRect, 180.0, -90.0);
-        path.lineTo(radius, 0.0);
-    }
-    break;
-    }
-
-    painter.fillPath(path, background);
-
-    painter.save();
-    painter.setRenderHints(QPainter::Antialiasing);
-    QPen pen;
-    pen.setColor(m_borderColor);
-    pen.setWidthF(1);
-    pen.setStyle(Qt::SolidLine);
-    painter.setBrush(Qt::NoBrush);
-    painter.setPen(pen);
-    painter.drawPath(path);
-    painter.restore();
-#endif
-//    if (!m_soloDay.isEmpty()) {
-//        ScheduleDtailInfo info;
-//        info.titleName = m_soloDay;
-//        info.allday = true;
-//        info.id = 4;
-//        paintItem(info, 0, 1);
-//    }
 
     for (int i = 0; i < m_vlistData.size(); ++i) {
-//        if (!m_soloDay.isEmpty()) {
-//            paintItem(m_vlistData.at(i), i + 1, 0);
-//        } else {
         paintItem(m_vlistData.at(i), i, 0);
-//        }
     }
     if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
         paintItem();
@@ -785,10 +389,9 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
     ScheduleDtailInfo &gd = info;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
 
-    QFont font/*(fontfamily)*/;
+    QFont font;
     font.setWeight(QFont::Medium);
     font.setPixelSize(fontsize);
-    //gwi->setBackgroundColor(Qt::white);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
 
@@ -836,7 +439,6 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
             } else {
                 painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
             }
-//            painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
             painter.restore();
         }
 
@@ -869,7 +471,6 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
         } else {
             painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
         }
-//        painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
         painter.restore();
         if (info.id != -1) {
             //右边时间
@@ -895,7 +496,6 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
             } else {
                 painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
             }
-//            painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
             painter.restore();
         }
     }
@@ -903,10 +503,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 
 void CYearSchceduleView::paintItem()
 {
-//    int labelwidth = width() - 40;
-//    int labelheight = 45;
-
-    QFont font/*(fontfamily)*/;
+    QFont font;
     font.setPixelSize(fontsize);
     QPainter painter(this);
     QRect fillRect = QRect(0, 0, width(), height());

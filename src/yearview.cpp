@@ -54,20 +54,14 @@ QColor                      CMonthDayRect::m_selectedTextColor;
 
 CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
 {
-//    m_dayNumFont.setFamily("Helvetica");
-
     setMouseTracking(true);
-    //m_dayNumFont.setWeight(QFont::Light);
 
     //add separator line
     m_currentMouth = new CustomFrame();
     m_currentMouth->setFixedHeight(24);
     m_currentMouth->setContentsMargins(0, 0, 0, 0);
-    //m_currentMouth->setMinimumWidth(100);
     m_currentMouth->setTextAlign(Qt::AlignLeft);
-    //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
-//    m_momthFont.setFamily("SourceHanSansSC");
     m_momthFont.setWeight(QFont::Medium);
     m_momthFont.setPixelSize(16);
     m_currentMouth->setTextFont(m_momthFont);
@@ -76,15 +70,11 @@ CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
     separatorLineLayout->setMargin(0);
     separatorLineLayout->setSpacing(0);
     separatorLineLayout->setContentsMargins(0, 0, 0, 0);
-    //separatorLineLayout->addSpacing(13);
     separatorLineLayout->addWidget(m_currentMouth);
     separatorLineLayout->addStretch();
-    // QSpacerItem *t_spaceitem = new QSpacerItem(30, 32, QSizePolicy::Expanding, QSizePolicy::Fixed);
-    //separatorLineLayout->addSpacerItem(t_spaceitem);
 
     m_currentMouth->show();
     m_currentMouth->installEventFilter(this);
-
 
     m_monthView = new CYearMonthView(this);
     connect(m_monthView,
@@ -162,7 +152,6 @@ void CYearView::setFirstWeekday(int weekday)
     updateDate();
 }
 
-
 void CYearView::setTheMe(int type)
 {
     m_themetype = type;
@@ -188,7 +177,6 @@ void CYearView::setTheMe(int type)
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0059D2";
 
-
         m_currentDayTextColor = "#0059D2";
         m_weekendsTextColor = Qt::black;
 
@@ -201,7 +189,6 @@ void CYearView::setTheMe(int type)
     m_currentMouth->setBColor(monthcolor);
     m_Scheduleview->setTheMe(type);
 }
-
 
 void CYearView::SchceduleViewHide()
 {
@@ -233,16 +220,11 @@ void CYearView::setCurrentDate(const QDate date, int type)
     Q_UNUSED(type);
     qDebug() << "set current date " << date;
 
-    //if (date == m_currentDate) {
-    //   return;
-    // }
-
     m_currentDate = date;
     QLocale locale;
     m_currentMouth->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
     updateDate();
     m_monthView->setDate(m_days);
-//    getInfoAndSetLineFlag();
 }
 
 void CYearView::setCellSelectable(bool selectable)
@@ -542,8 +524,6 @@ void CMonthDayRect::setTheMe(int type)
         m_defaultTextColor = Qt::black;
         m_notCurrentTextColor = "#b2b2b2";
     }
-
-
 }
 
 CMonthDayRect::~CMonthDayRect()
@@ -598,7 +578,6 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
         isSelectedCell = true;
     }
 
-
     const qreal r = rect.width() > rect.height() ? rect.height() * 0.9 : rect.width() * 0.9 ;
     int fontsize =  qRound(12 + (r - 18) *6/ 17);
     if (fontsize <12) {
@@ -641,23 +620,6 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
     } else {
         // draw selected cell background circle
         if (isSelectedCell) {
-//            QRectF pixmapRect(QRectF(fillRect.x()-3,
-//                                     fillRect.y(),
-//                                     fillRect.width()+6,
-//                                     fillRect.height()+6));
-//            QPixmap pixmap;
-//            if (m_themetype == 2)
-//                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-//            else {
-//                pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-//            }
-//            pixmap.setDevicePixelRatio(m_DevicePixelRatio);
-//            painter->save();
-//            painter->setRenderHint(QPainter::Antialiasing);
-//            painter->setRenderHint(QPainter::HighQualityAntialiasing);
-//            painter->setRenderHint(QPainter::SmoothPixmapTransform);
-//            painter->drawPixmap(pixmapRect.toRect(), pixmap);
-//            painter->restore();
             painter->setBrush(QBrush(m_highColor));
             painter->setPen(Qt::NoPen);
             painter->drawEllipse(fillRect);

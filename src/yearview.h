@@ -103,8 +103,6 @@ private:
     QVector<bool> m_vlineflag; //节假日和日程标识
     CYearMonthView *m_monthView = nullptr;
     QVector<ScheduleDateRangeInfo> m_DateRangeInfo;
-    //    int cellwidth = 20;
-    //    int cellheight = 20;
 };
 
 class CMonthDayRect;

@@ -89,7 +89,7 @@ void CYearWindow::initUI()
     m_today = new QLabel(this);
     m_today->installEventFilter(this);
 
-    QFont todayfont/*("SourceHanSansSC-Normal")*/;
+    QFont todayfont;
     todayfont.setPixelSize(16);
     m_today->setFont(todayfont);
     m_today->setAlignment(Qt::AlignCenter);
@@ -109,10 +109,8 @@ void CYearWindow::initUI()
 
     m_YearLabel = new QLabel(this);
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
-    //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     QFont t_labelF;
-//    t_labelF.setFamily("SourceHanSansSC");
     t_labelF.setWeight(QFont::Medium);
     t_labelF.setPixelSize(24);
     m_YearLabel->setFont(t_labelF);
@@ -124,14 +122,12 @@ void CYearWindow::initUI()
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;
-//    ylabelF.setFamily("SourceHanSansSC");
     ylabelF.setWeight(QFont::Medium);
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
     DPalette Lunapa = m_YearLunarLabel->palette();
     Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_YearLunarLabel->setPalette(Lunapa);
-    //m_YearLunarLabel->move(116, 27);
 
     m_YearLunarDayLabel = new QLabel(m_contentBackground);
     m_YearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunatLabelHeight);
@@ -143,14 +139,12 @@ void CYearWindow::initUI()
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    //yeartitleLayout->setContentsMargins(2, 10, 2, 0);
     yeartitleLayout->setContentsMargins(11, 12, 8, 10);
     yeartitleLayout->addWidget(m_YearLabel);
 
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
     yeartitleLayout1->setMargin(0);
     yeartitleLayout1->setSpacing(0);
-    //yeartitleLayout1->setContentsMargins(0, 10, 8, 5);
     yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
     yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout1->addSpacing(390);
@@ -204,7 +198,6 @@ void CYearWindow::initUI()
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
     m_contentBackground->setLayout(m_tmainLayout);
 
-    //menuBar()->hide();
     setCentralWidget(m_contentBackground);
 
 }
@@ -212,10 +205,7 @@ void CYearWindow::initUI()
 void CYearWindow::initConnection()
 {
     connect(m_prevButton, &DIconButton::clicked, this, &CYearWindow::slotprev);
-    //connect(m_today, &DPushButton::clicked, this, &CYearWindow::slottoday);
     connect(m_nextButton, &DIconButton::clicked, this, &CYearWindow::slotnext);
-    //connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &CYearWindow::slotTransitSearchSchedule);
-    // connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &CYearWindow::slotsearchDateSelect);
     connect(YearWidget_First,
             &YearFrame::signaldoubleclickDate,
             this,
@@ -280,7 +270,6 @@ void CYearWindow::setTheMe(int type)
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::WindowText, QColor("#000000"));
         todaypa.setColor(DPalette::Background, Qt::white);
-        //todaypa.setColor(DPalette::Light, Qt::white);
         m_today->setPalette(todaypa);
         m_today->setForegroundRole(DPalette::WindowText);
         m_today->setBackgroundRole(DPalette::Background);
@@ -308,7 +297,6 @@ void CYearWindow::setTheMe(int type)
 
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-        //todaypa.setColor(DPalette::Dark, "#414141");
         QColor tbcolor = "#414141";
         tbcolor.setAlphaF(0.0);
         todaypa.setColor(DPalette::Background, tbcolor);
@@ -345,13 +333,11 @@ void CYearWindow::setSearchWFlag(bool flag)
 
 void CYearWindow::clearSearch()
 {
-    //m_schceduleSearchView->clearSearch();
 }
 
 void CYearWindow::setSearchText(QString str)
 {
     m_searchText = str;
-    // m_schceduleSearchView->slotsetSearch(str);
 }
 
 void CYearWindow::getScheduleInfo()
@@ -361,7 +347,6 @@ void CYearWindow::getScheduleInfo()
 
 void CYearWindow::slotTransitSearchSchedule(int id)
 {
-    // m_schceduleSearchView->slotsetSearch(m_searchText);
     emit signalsWUpdateShcedule(this, id);
 }
 
@@ -383,7 +368,6 @@ void CYearWindow::slotprev()
         m_currentdate = tcurrent;
     }
     if (m_currentdate.year() >= 1900) {
-        //m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
         int index = m_StackedWidget->currentIndex();
         index = qAbs(index - 1) % 2;
         m_YearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(index));
@@ -391,7 +375,6 @@ void CYearWindow::slotprev()
         m_StackedWidget->setPre();
         emit signalCurrentDate(m_currentdate);
     } else {
-        //QMessageBox::information(this, tr("infomation"), tr("Year less than 1900!"));
     }
 }
 
@@ -461,9 +444,6 @@ void CYearWindow::slotsearchDateSelect(QDate date)
 
 void CYearWindow::wheelEvent(QWheelEvent *event)
 {
-//    for (int i = 0; i < 12; i++) {
-//        m_monthViewList.at(i)->updateInfoWIndow(false);
-//    }
     if (event->delta() < 0) {
         slotnext();
     } else {
@@ -499,10 +479,8 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
 
     m_YearLabel = new QLabel(this);
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
-    //m_currentMouth->setStyleSheet("border: 1px solid rgba(0, 0, 0, 0.05);");
 
     QFont t_labelF;
-//    t_labelF.setFamily("SourceHanSansSC");
     t_labelF.setWeight(QFont::Medium);
     t_labelF.setPixelSize(24);
     m_YearLabel->setFont(t_labelF);
@@ -514,7 +492,6 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;
-//    ylabelF.setFamily("SourceHanSansSC");
     ylabelF.setWeight(QFont::Medium);
     ylabelF.setPixelSize(14);
     m_YearLunarLabel->setFont(ylabelF);
@@ -526,14 +503,12 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
-    //yeartitleLayout->setContentsMargins(2, 10, 2, 0);
     yeartitleLayout->setContentsMargins(11, 12, 8, 10);
     yeartitleLayout->addWidget(m_YearLabel);
 
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
     yeartitleLayout1->setMargin(0);
     yeartitleLayout1->setSpacing(0);
-    //yeartitleLayout1->setContentsMargins(0, 10, 8, 5);
     yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
     yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout1->addSpacing(390);
@@ -553,7 +528,6 @@ YearFrame::YearFrame(DWidget *parent): DFrame (parent)
     this->setLayout(hhLayout);
     setContentsMargins(0, 0, 0, 10);
     setFrameRounded(true);
-//    m_topWidget->hide();
 }
 
 YearFrame::~YearFrame()
