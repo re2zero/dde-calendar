@@ -141,8 +141,6 @@ private:
     QDate                 m_date;
     MouseStatus m_mouseStatus;
     DMenu *m_rightMenu = nullptr;
-    //    bool                  m_selectflag = false;
-    //    bool                  m_hoverflag = false;
     int m_roundtype = 1;
     const int m_radius = 8;
     const int m_borderframew = 0;

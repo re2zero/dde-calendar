@@ -39,7 +39,6 @@ CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent):
     DLabel(parent),
     m_rightMenu(new DMenu(this))
 {
-    //setMargin(0);
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
@@ -50,8 +49,6 @@ CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent):
                      &CSchceduleSearchItem::setTheMe);
     m_mouseStatus = M_NONE;
     installEventFilter(this);
-    //setFlat(true);
-
 }
 
 void CSchceduleSearchItem::setBackgroundColor(QColor color1)
@@ -80,7 +77,6 @@ void CSchceduleSearchItem::setData( ScheduleDtailInfo vScheduleInfo, QDate date)
 {
     m_ScheduleInfo = vScheduleInfo;
     m_date = date;
-    //setToolTip(m_ScheduleInfo.titleName);
     update();
 }
 
@@ -93,7 +89,6 @@ void CSchceduleSearchItem::setRoundtype(int rtype)
 void CSchceduleSearchItem::setTheMe(int type)
 {
     if (type == 2) {
-//        m_presscolor.background = "#0059D2";
         m_presscolor.background = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_presscolor.background.setAlphaF(1);
         m_presscolor.timeColor = "#FFFFFF";
@@ -108,7 +103,6 @@ void CSchceduleSearchItem::setTheMe(int type)
         m_hovercolor.textColor = "#C0C6D4";
         m_hovercolor.textColor.setAlphaF(1);
     } else {
-//        m_presscolor.background = "#0081FF";
         m_presscolor.background = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_presscolor.background.setAlphaF(1);
         m_presscolor.timeColor = "#FFFFFF";
@@ -138,25 +132,15 @@ void CSchceduleSearchItem::slotEdit()
 void CSchceduleSearchItem::slotDelete()
 {
     emit signalViewtransparentFrame(1);
-//    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     if (m_ScheduleInfo.rpeat == 0) {
         CSchceduleCtrlDlg msgBox;
 
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
-        /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Delete"), true);
-//        msgBox.updatesize();
-//        DPalette pa = yesButton->palette();
-//        if (themetype == 0 || themetype == 1) {
-//            pa.setColor(DPalette::ButtonText, Qt::red);
+        msgBox.addPushButton(tr("Cancel"), true);
+        msgBox.addWaringButton(tr("Delete"), true);
 
-//        } else {
-//            pa.setColor(DPalette::ButtonText, "#FF5736");
-
-//        }
-//        yesButton->setPalette(pa);
         msgBox.exec();
 
         if (msgBox.clickButton() == 0) {
@@ -171,23 +155,9 @@ void CSchceduleSearchItem::slotDelete()
 
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-            /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All"));
-            /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete Only This Event"));
-
-
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (themetype == 0 || themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
+            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Delete All"));
+            msgBox.addsuggestButton(tr("Delete Only This Event"));
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -206,21 +176,9 @@ void CSchceduleSearchItem::slotDelete()
             CSchceduleCtrlDlg msgBox;
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-            /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All Future Events"));
-            /*QAbstractButton *yesButton =*/ msgBox.addsuggestButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (themetype == 0 || themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
+            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Delete All Future Events"));
+            msgBox.addsuggestButton(tr("Delete Only This Event"));
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -244,7 +202,6 @@ void CSchceduleSearchItem::slotDelete()
     }
     emit signalViewtransparentFrame(0);
     emit signalsDelete(this);
-    //ScheduleDbManager::deleteScheduleInfoById(m_ScheduleInfo.id);
 }
 
 void CSchceduleSearchItem::slotDoubleEvent(int type)
@@ -309,7 +266,6 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
         painterPath.lineTo(labelwidth, labelheight - m_radius);
     }
     painterPath.lineTo(labelwidth, m_radius);
-    //painterPath.moveTo(labelwidth, m_radius);
     if (m_roundtype == 1 || m_roundtype == 3) {
 
         painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
@@ -323,9 +279,6 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
     painter.drawPath(painterPath);
     painter.restore();
 
-//    if (m_selectflag) {
-//        bcolor.setAlphaF(0.6);
-//    }
     painter.setFont(m_timefont);
     painter.setPen(timecolor);
 
@@ -352,9 +305,6 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 
     painter.save();
     bcolor = m_splitlinecolor;
-//    if (m_selectflag) {
-//        bcolor.setAlphaF(0.6);
-//    }
     QPen pen(bcolor);
     pen.setWidth(2);
     painter.setPen(pen);
@@ -363,9 +313,6 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 
     painter.setFont(m_tfont);
 
-//    if (m_selectflag) {
-//        bcolor.setAlphaF(0.6);
-//    }
     painter.setPen(textcolor);
     int tilenameW = labelwidth - 91;
     QFontMetrics fm = painter.fontMetrics();
@@ -404,7 +351,6 @@ void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
     Q_UNUSED(event);
     emit signalViewtransparentFrame(1);
     CMySchceduleView dlg(m_ScheduleInfo, this);
-//    dlg.setSchedules(m_ScheduleInfo);
     connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
     dlg.exec();
     disconnect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CSchceduleSearchItem::slotDoubleEvent);
@@ -415,8 +361,6 @@ void CSchceduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 void CSchceduleSearchItem::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-//        m_mouseStatus = M_PRESS;
-//        update();
         emit signalSelectDate(m_date);
         emit signalSelectSchedule(m_ScheduleInfo);
     }
@@ -465,7 +409,6 @@ CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
     m_gradientItemList->setAlternatingRowColors(true);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(m_gradientItemList);
-    //m_gradientItemList->setSpacing(1);
     // set default row
     m_gradientItemList->setCurrentRow(0);
     setLayout(layout);
@@ -517,7 +460,6 @@ void CSchceduleSearchView::clearSearch()
 {
     m_vlistData.clear();
 
-    //remove
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
         m_gradientItemList->removeItemWidget(item11);
@@ -538,7 +480,6 @@ void CSchceduleSearchView::setMaxWidth(const int w)
 void CSchceduleSearchView::updateDateShow()
 {
     m_currentItem = nullptr;
-    //remove
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
         m_gradientItemList->removeItemWidget(item11);
@@ -595,7 +536,7 @@ void CSchceduleSearchView::updateDateShow()
     if (m_gradientItemList->count() == 0) {
         QListWidgetItem *listItem = new QListWidgetItem(m_gradientItemList);
         DLabel *gwi = new DLabel();
-        QFont font/*("SourceHanSansSC-Normal")*/;
+        QFont font;
         font.setPixelSize(20);
         gwi->setAlignment(Qt::AlignCenter );
         DPalette daypa = gwi->palette();
@@ -612,13 +553,11 @@ void CSchceduleSearchView::updateDateShow()
         daypa.setColor(DPalette::Window, m_lBackgroundcolor);
         gwi->setPalette(daypa);
         gwi->setForegroundRole(DPalette::WindowText);
-        //gwi->setForegroundRole(DPalette::Window);
         gwi->setFont(font);
         gwi->move(this->width() - 70, this->height() - 196);
         gwi->setText(tr("No search results"));
         gwi->setFixedSize(m_maxWidth - 20, 450);
         listItem->setSizeHint(QSize(m_maxWidth, 450)); //每次改变Item的高度
-        //listItem->setBackgroundColor(Qt::white);
         listItem->setFlags(Qt::ItemIsTristate );
         m_gradientItemList->addItem(listItem);
         m_gradientItemList->setItemWidget(listItem, gwi);
@@ -636,11 +575,10 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.type.ID);
 
     CSchceduleSearchItem *gwi = new CSchceduleSearchItem();
-    QFont font/*("SourceHanSansSC-Normal")*/;
+    QFont font;
     font.setPixelSize(14);
     font.setWeight(QFont::Normal);
     gwi->setBackgroundColor(m_bBackgroundcolor);
-    //gwi->setBackgroundColor(Qt::white);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
     gwi->setSplitLineColor(gdcolor.splitColor);
@@ -657,11 +595,8 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
     connect(gwi, &CSchceduleSearchItem::signalSelectSchedule, this, &CSchceduleSearchView::slotSelectSchedule);
     connect(gwi, &CSchceduleSearchItem::signalViewtransparentFrame, this, &CSchceduleSearchView::signalViewtransparentFrame);
 
-    //connect(gwi, SIGNAL(signalsDelete(QDate )), this, SIGNAL(signalDate(QDate )));
-
     QListWidgetItem *listItem = new QListWidgetItem;
     listItem->setSizeHint(QSize(m_maxWidth - 5, 36)); //每次改变Item的高度
-    //listItem->setBackgroundColor(Qt::white);
     listItem->setFlags(Qt::ItemIsTristate );
     m_gradientItemList->addItem(listItem);
     m_gradientItemList->setItemWidget(listItem, gwi);
@@ -671,7 +606,7 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
 QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
 {
     CSchceduleSearchDateItem *gwi = new CSchceduleSearchDateItem();
-    QFont font/*("SourceHanSansSC")*/;
+    QFont font;
     font.setWeight(QFont::Medium);
     font.setPixelSize(16);
     gwi->setBackgroundColor(m_lBackgroundcolor);
@@ -679,10 +614,8 @@ QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
     if (date == QDate::currentDate()) {
         int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
         if (themtype == 2) {
-//            gwi->setText("#0059D2", font);
             gwi->setText(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor(), font);
         } else {
-//            gwi->setText("#0081FF", font);
             gwi->setText(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor(), font);
         }
 
@@ -695,7 +628,6 @@ QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
             &CSchceduleSearchView::signalScheduleHide);
     QListWidgetItem *listItem = new QListWidgetItem;
     listItem->setSizeHint(QSize(m_maxWidth - 5, 36)); //每次改变Item的高度
-    //listItem->setBackgroundColor(Qt::white);
     listItem->setFlags(Qt::ItemIsTristate );
     m_gradientItemList->addItem(listItem);
     m_gradientItemList->setItemWidget(listItem, gwi);
@@ -735,26 +667,10 @@ void CSchceduleSearchView::slotsetSearch(QString str)
     }
     QVector<ScheduleDateRangeInfo> vScheduleInfo;
     m_vlistData.clear();
-#if 0
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfo(bdate.date(), edate.date(), vScheduleInfo);
-    for (int i = 0; i < vScheduleInfo.count(); i++) {
-        QVector<ScheduleDtailInfo> vData;
-        for (int j = 0; j < vScheduleInfo.at(i).vData.count(); j++) {
-            if (vScheduleInfo.at(i).vData.at(j).titleName.contains(str))
-                vData.append(vScheduleInfo.at(i).vData.at(j));
-        }
-        if (!vData.isEmpty()) {
-            ScheduleDateRangeInfo sinfo;
-            sinfo.date = vScheduleInfo.at(i).date;
-            sinfo.vData = vData;
-            m_vlistData.append(sinfo);
-        }
-    }
-#else
+
     CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(str, bdate, edate, vScheduleInfo);
     m_vlistData = vScheduleInfo;
     CScheduleDataManage::getScheduleDataManage()->setSearchResult(vScheduleInfo);
-#endif
     updateDateShow();
 }
 
@@ -774,7 +690,6 @@ void CSchceduleSearchView::resizeEvent(QResizeEvent *event)
         QListWidgetItem *item11 = m_gradientItemList->item(i);
         item11->setSizeHint(QSize(m_maxWidth - 5, 36)); //每次改变Item的高度
     }
-    //remove
     for (int i = 0; i < m_labellist.count(); i++) {
         m_labellist.at(i)->setFixedSize(m_maxWidth - 20, 35);
         m_labellist.at(i)->update();
