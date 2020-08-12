@@ -17,6 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "alldayeventview.h"
+#include "schedulecoormanage.h"
+#include "schcedulectrldlg.h"
+#include "schceduledlg.h"
+#include "myschceduleview.h"
+#include "scheduledatamanage.h"
+
+#include <DMessageBox>
+#include <DPushButton>
+#include <DHiDPIHelper>
+#include <DPalette>
+
 #include <QAction>
 #include <QListWidget>
 #include <QLabel>
@@ -25,26 +36,16 @@
 #include <QStylePainter>
 #include <QRect>
 #include <QMimeData>
-#include "schceduledlg.h"
-#include "myschceduleview.h"
-#include "scheduledatamanage.h"
-#include <DMessageBox>
-#include <DPushButton>
-#include <DHiDPIHelper>
-#include <DPalette>
 #include <QDrag>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
-
 #include <QGraphicsOpacityEffect>
-#include "schedulecoormanage.h"
-#include "schcedulectrldlg.h"
 
 DGUI_USE_NAMESPACE
 
-CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
-    : DragInfoItem (rect,parent)
+CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *parent, int edittype)
+    : DragInfoItem(rect, parent)
 {
     Q_UNUSED(edittype);
 }

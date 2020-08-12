@@ -19,25 +19,26 @@
 #ifndef ALLDAYEVENTVIEW_H
 #define ALLDAYEVENTVIEW_H
 
-#include <DComboBox>
-#include <DLabel>
-#include <QMouseEvent>
-#include <DPushButton>
-#include "schedulestructs.h"
-#include <DGraphicsView>
-#include <QGraphicsScene>
-#include <DFontSizeManager>
-
-#include <DMenu>
-
-
-#include "SchecduleRemindWidget.h"
 #include "draginfoitem.h"
 #include "draginfographicsview.h"
+#include "schedulestructs.h"
+
+#include <DComboBox>
+#include <DLabel>
+#include <DPushButton>
+#include <DGraphicsView>
+#include <DFontSizeManager>
+#include <DMenu>
+
+#include <QGraphicsScene>
+#include <QMouseEvent>
+
 DWIDGET_USE_NAMESPACE
 class QDrag;
 class CAllDayEventWidgetItem;
 class CScheduleCoorManage;
+class SchecduleRemindWidget;
+
 class CAllDayEventWeekView : public DragInfoGraphicsView
 {
     Q_OBJECT
@@ -72,7 +73,6 @@ public:
     void setTheMe(int type = 0) override;
 private:
     void changeEvent(QEvent *event) override;
-
     bool MeetCreationConditions(const QDateTime &date) override;
     void slotCreate(const QDateTime &date) override;
     //判断时间是否相等
@@ -93,24 +93,18 @@ private:
     void updateDateShow();
     void createItemWidget(int index, bool average = false);
     void updateItemHeightByFontSize();
-
 private:
-    int                     itemHeight = 22;
-
+    int itemHeight = 22;
     QVector<QVector<ScheduleDtailInfo> >         m_vlistData;
     QVector<ScheduleDtailInfo>                   m_scheduleInfo;
     QVector<CAllDayEventWidgetItem *>            m_baseShowItem;
     int                                          m_editType = 0;
     CScheduleCoorManage *m_coorManage = nullptr;
     QDate m_dianjiDay;
-
     int m_rightmagin = 0;
-    bool                            m_updateDflag  = false;
-
-    QDate                           m_beginDate;
-    QDate                           m_endDate;
-
-
+    bool m_updateDflag = false;
+    QDate m_beginDate;
+    QDate m_endDate;
 };
 
 class CAllDayEventWidgetItem : public DragInfoItem
