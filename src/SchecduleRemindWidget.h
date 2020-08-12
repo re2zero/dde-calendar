@@ -74,6 +74,4 @@ private:
     QColor timeColor;
 };
 
-
-
 #endif // SchecduleRemindWidget_H

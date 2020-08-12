@@ -60,8 +60,6 @@ QString CSchedulesDBus::createScheduleDtailInfojson(const ScheduleDtailInfo &inf
     json.insert("Type", info.type.ID);
     json.insert("Start", toconvertData(info.beginDateTime));
     json.insert("End", toconvertData(info.endDateTime));
-    //json.insert("Start", "2006-01-02T15:04:05+07:00");
-    //json.insert("End", "2006-01-02T17:04:05+07:00");
     json.insert("RecurID", info.RecurID);
     QJsonArray jsonarry;
     for (int i = 0; i < info.ignore.count(); i++) {
@@ -160,7 +158,6 @@ ScheduleDtailInfo CSchedulesDBus::parsingScheduleDtailInfojsonID(QJsonObject &ob
 QString CSchedulesDBus::createScheduleRRule(const ScheduleDtailInfo &info)
 {
     if (info.rpeat == 0) return QString();
-    // QString str = "'";
     QString str;
     switch (info.rpeat) {
     case 1: {
@@ -191,13 +188,10 @@ QString CSchedulesDBus::createScheduleRRule(const ScheduleDtailInfo &info)
     break;
     case 2: {
         QDateTime datetime = info.enddata.date;
-        //datetime.setDate(datetime);
         str += ";UNTIL=" + datetime.toString("yyyyMMddThhmmss") + "Z";
-        // str += ";UNTIL=" + toconvertData(datetime);
     }
     break;
     }
-    //str += "'";
     return str;
 }
 
@@ -232,7 +226,6 @@ void CSchedulesDBus::parsingScheduleRRule(QString str, ScheduleDtailInfo &info)
                 QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
                 info.enddata.type = 2;
                 info.enddata.date = QDateTime::fromString(liststr.at(1).left(liststr.at(1).count() - 1), "yyyyMMddThhmmss");
-                //info.enddata.date = fromconvertData(liststr.at(1));
                 info.enddata.date = info.enddata.date;
             }
         }
@@ -276,7 +269,6 @@ QString CSchedulesDBus::toconvertData(QDateTime date)
     strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "+" + datetimeutc.toString("hh:mm");
-    //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
     return  str;
 }
 
@@ -295,7 +287,6 @@ QString CSchedulesDBus::toconvertIGData(QDateTime date)
     strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z" + datetimeutc.toString("hh:mm");
-    //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
     return  str;
 }
 
@@ -394,9 +385,6 @@ bool CSchedulesDBus::UpdateJob(const ScheduleDtailInfo &info)
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
-    //QDBusReply<QString> jobs =  reply;
-
-    //if (!jobs.isValid()) return false;
 
     return true;
 }
@@ -491,7 +479,6 @@ bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endti
 bool CSchedulesDBus::GetTypes(QVector<ScheduleType> &out)
 {
     QList<QVariant> argumentList;
-    //argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetTypes"), argumentList);
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;

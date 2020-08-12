@@ -117,7 +117,6 @@ void CScheduleDataManage::setTheMe(int type)
         workC.hightlightgradientFromC = "#FFD0B8";
         workC.hightlightgradientToC = "#FF908D";
         QColor workP("#F9AEB8");
-        //workP.setAlphaF(0.8);
         workC.hightlightPurecolor = workP;
         workC.splitColor = "#FB2525";
         workC.splitColor.setAlphaF(0.5);
@@ -154,7 +153,6 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.hightlightgradientFromC = "#9AE5FF";
         lifeC.hightlightgradientToC = "#C7FF94";
         QColor lifeP("#C7FF94");
-        //lifeP.setAlphaF(0.8);
         lifeC.hightlightPurecolor = lifeP;
 
         lifeC.hovergradientFromC = "#A8E9FF";
@@ -189,7 +187,6 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.hightlightgradientFromC = "#FFE8AC";
         otherC.hightlightgradientToC = "#FBA5FF";
         QColor otherP("#EAC4FF");
-        //otherP.setAlphaF(0.8);
         otherC.hightlightPurecolor = otherP;
 
         otherC.hovergradientFromC = "#FFE8AC";
@@ -259,7 +256,6 @@ void CScheduleDataManage::setTheMe(int type)
         workC.shadowcolor = "#FB2525";
         workC.shadowcolor.setAlphaF(0.5);
         workC.textColor = "#C0C6D4";
-//        workC.textColor.setAlphaF(1);
         workC.timeColor = "#B54A4B";
         workC.hightlightgradientToC = "#992D2A";
         workC.hightlightgradientToC.setAlphaF(0.8);
@@ -299,7 +295,6 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.shadowcolor = "#25FA6B";
         lifeC.shadowcolor.setAlphaF(0.5);
         lifeC.textColor = "#C0C6D4";
-//        lifeC.textColor.setAlphaF(1);
         lifeC.timeColor = "#38A35B";
         lifeC.hightlightgradientFromC = "#2D6883";
         lifeC.hightlightgradientFromC.setAlphaF(0.8);
@@ -338,7 +333,6 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.shadowcolor = "#BE3DFF";
         otherC.shadowcolor.setAlphaF(0.5);
         otherC.textColor = "#C0C6D4";
-//        otherC.textColor.setAlphaF(1);
         otherC.timeColor = "#9857C8";
         otherC.hightlightgradientFromC = "#8C4E2C";
         otherC.hightlightgradientFromC.setAlphaF(0.8);
@@ -394,8 +388,6 @@ void CScheduleDataManage::setTheMe(int type)
         solar.pressgradientFromC = "#FF7272";
         solar.pressgradientFromC.setAlphaF(0.3);
         solar.pressgradientToC = solar.pressgradientFromC;
-//        solar.pressgradientToC = "#000000";
-//        solar.pressgradientToC.setAlphaF(0.05);
 
         solar.pressPurecolor = solar.Purecolor;
         solar.pressgradientToC.setAlphaF(0.4);

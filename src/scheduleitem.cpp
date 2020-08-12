@@ -94,11 +94,7 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
                 while (f_st.width(s) > w && f_st.width(s) >24) {
                     s.chop(1);
                 }
-//                if (wi > 72) {
-//                    liststr.append("...");
-//                } else {
                 liststr.append(s);
-//                }
             }
         }
     } else {
@@ -200,7 +196,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         tmagin = 5;
     if (m_type == 0) {
         int timeTextHight = 0;
-        QFont font/*("SourceHanSansSC")*/;
+        QFont font;
         font.setWeight(QFont::Normal);
 
         font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
@@ -275,10 +271,9 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         painter->restore();
     } else {
         painter->save();
-        QFont font/*("SourceHanSansSC")*/;
+        QFont font;
         font.setWeight(QFont::Normal);
         font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
-//        font.setPixelSize(12);
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         painter->drawText(rect, Qt::AlignCenter | Qt::AlignVCenter, "...");
