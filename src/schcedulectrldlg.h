@@ -41,7 +41,6 @@ public:
     void setText(QString str);
     void setInformativeText(QString str);
     int clickButton();
-//    void updatesize();
 private:
     void initUI();
     void initConnection();
