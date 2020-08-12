@@ -18,8 +18,6 @@
  */
 #ifndef SCHEDULEVIEW_H
 #define SCHEDULEVIEW_H
-
-
 #include <QDate>
 #include "schedulestructs.h"
 #include "SchecduleRemindWidget.h"
@@ -96,7 +94,6 @@ private:
     QColor                    m_timeColor = "#7D7D7D";
     QColor                    m_currenttimecolor = "#F74444";
     int                       m_cuttrnttimetype = 0;
-//    int                       m_space = 30;
     QVBoxLayout *m_layout = nullptr;
     SchecduleRemindWidget *m_ScheduleRemindWidget = nullptr;
     int m_minTime; //最小高度对应的最小时间
