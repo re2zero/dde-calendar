@@ -104,17 +104,6 @@ void CMonthGraphiview::setLunarVisible(bool visible)
 
 void CMonthGraphiview::setScheduleInfo(const QVector<ScheduleDateRangeInfo> &info)
 {
-//    qDebug()<<Q_FUNC_INFO<<"=======Begin=====";
-//    for (int i = 0; i <info.size(); ++i) {
-//        qDebug()<<info.at(i).date;
-//        for (int j = 0; j < info.at(i).vData.size(); ++j) {
-//            qDebug()<<"beginDateTime:"<<info.at(i).vData.at(j).beginDateTime;
-//            qDebug()<<"endDateTime:"<<info.at(i).vData.at(j).endDateTime;
-//            qDebug()<<"titleName:"<<info.at(i).vData.at(j).titleName;
-//            qDebug()<<"allday:"<<info.at(i).vData.at(j).allday;
-//        }
-//    }
-//    qDebug()<<Q_FUNC_INFO<<"=======End=====";
     m_shceludelistdata = info;
     updateInfo();
 }
@@ -275,8 +264,6 @@ void CMonthGraphiview::upDateInfoShow(const CMonthGraphiview::DragStatus &status
     }
     break;
     case ChangeWhole: {
-//        int index = vListData.indexOf(info);
-//        vListData[index] = info;
     }
     break;
     case IsCreate:
@@ -303,16 +290,9 @@ void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
         CSchceduleCtrlDlg msgBox(this);
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        /* QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"), true);
-        /*QAbstractButton *yesButton = */msgBox.addWaringButton(tr("Delete"), true);
-//        msgBox.updatesize();
-//        DPalette pa = yesButton->palette();
-//        if (m_themetype == 0 || m_themetype == 1) {
-//            pa.setColor(DPalette::ButtonText, Qt::red);
-//        } else {
-//            pa.setColor(DPalette::ButtonText, "#FF5736");
-//        }
-//        yesButton->setPalette(pa);
+        msgBox.addPushButton(tr("Cancel"), true);
+        msgBox.addWaringButton(tr("Delete"), true);
+
         msgBox.exec();
 
         if (msgBox.clickButton() == 0) {
@@ -326,21 +306,10 @@ void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
             CSchceduleCtrlDlg msgBox(this);
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            /*QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-            /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All"));
-            /*QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (m_themetype == 0 || m_themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
+            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Delete All"));
+            msgBox.addsuggestButton(tr("Delete Only This Event"));
+
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -359,21 +328,10 @@ void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
             CSchceduleCtrlDlg msgBox(this);
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            /* QAbstractButton *noButton = */msgBox.addPushButton(tr("Cancel"));
-            /*QAbstractButton *yesallbutton = */msgBox.addPushButton(tr("Delete All Future Events"));
-            /* QAbstractButton *yesButton = */msgBox.addsuggestButton(tr("Delete Only This Event"));
-//            msgBox.updatesize();
-//            DPalette pa = yesButton->palette();
-//            if (m_themetype == 0 || m_themetype == 1) {
-//                pa.setColor(DPalette::ButtonText, Qt::white);
-//                pa.setColor(DPalette::Dark, QColor("#25B7FF"));
-//                pa.setColor(DPalette::Light, QColor("#0098FF"));
-//            } else {
-//                pa.setColor(DPalette::ButtonText, "#B8D3FF");
-//                pa.setColor(DPalette::Dark, QColor("#0056C1"));
-//                pa.setColor(DPalette::Light, QColor("#004C9C"));
-//            }
-//            yesButton->setPalette(pa);
+            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Delete All Future Events"));
+            msgBox.addsuggestButton(tr("Delete Only This Event"));
+
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -421,7 +379,6 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
     if (infoitem != nullptr) {
         CMySchceduleView dlg(infoitem->getData(), this);
         connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthGraphiview::signalsUpdateShcedule);
-//        connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthGraphiview::slotdelete);
         connect(&dlg, &CMySchceduleView::signalViewtransparentFrame,
                 this, &CMonthGraphiview::signalViewtransparentFrame);
         dlg.exec();
@@ -604,32 +561,6 @@ void CDayGraphicsItem::setTheMe(int type)
 {
     m_themetype = type;
     if (type == 0 || type == 1) {
-//        m_topBorderColor = Qt::red;
-//        m_backgroundCircleColor = "#0081FF";
-//        m_backgroundShowColor = "#2CA7F8";
-//        m_backgroundShowColor.setAlphaF(0.4);
-
-//        m_defaultTextColor = Qt::black;
-//        m_currentDayTextColor = "#FFFFFF";
-//        m_weekendsTextColor = Qt::black;
-//        m_selectedTextColor = Qt::white;
-//        m_festivalTextColor = Qt::black;
-//        m_notCurrentTextColor = "#b2b2b2";
-
-
-//        m_defaultLunarColor = "#5E5E5E";
-//        m_defaultLunarColor.setAlphaF(0.5);
-//        m_currentDayLunarColor = m_currentDayTextColor;
-//        m_weekendsLunarColor = m_defaultLunarColor;
-//        m_selectedLunarColor = Qt::white;
-//        m_festivalLunarColor = m_defaultLunarColor;
-//        m_notCurrentLunarColor = "#dfdfdf";
-//        m_solofestivalLunarColor = "#FF7272";
-//        m_solofestivalLunarColor.setAlphaF(0.3);
-//        m_wrectColor = "#000000";
-//        m_wrectColor.setAlphaF(0.05);
-
-
         m_dayNumColor = "#000000";
         m_dayNumCurrentColor = "#FFFFFF";
 
@@ -646,33 +577,6 @@ void CDayGraphicsItem::setTheMe(int type)
         m_BorderColor.setAlphaF(0.05);
 
     } else if (type == 2) {
-
-//        m_topBorderColor = Qt::red;
-//        m_backgroundCircleColor = "#0059D2";
-//        m_backgroundShowColor = "#002AAF";
-//        m_backgroundShowColor.setAlphaF(0.4);
-
-//        m_defaultTextColor = "#C0C6D4";
-//        m_currentDayTextColor = "#C0C6D4";
-//        m_weekendsTextColor = m_defaultTextColor;
-//        m_selectedTextColor = "#B8D3FF";
-//        m_festivalTextColor = "#C0C6D4";
-//        m_notCurrentTextColor = "#C0C6D4";
-//        m_notCurrentTextColor.setAlphaF(0.6);
-
-//        m_defaultLunarColor = "#ABDAFF";
-//        m_defaultLunarColor.setAlphaF(0.5);
-//        m_currentDayLunarColor = m_currentDayTextColor;
-//        m_weekendsLunarColor = m_defaultLunarColor;
-//        m_selectedLunarColor = Qt::white;
-//        m_festivalLunarColor = m_defaultLunarColor;
-//        m_notCurrentLunarColor = "#ABDAFF";
-//        m_notCurrentLunarColor.setAlphaF(0.3);
-//        m_solofestivalLunarColor = "#4DFF7272";
-//        QColor wcolor = "#282828";
-//        //wcolor.setAlphaF(0.5);
-//        m_wrectColor = wcolor;
-
         m_dayNumColor = "#C0C6D4";
         m_dayNumCurrentColor = "#B8D3FF";
 
@@ -774,13 +678,6 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         painter->setFont(tfont);
         painter->setPen(m_dayNumCurrentColor);
 
-//        QPixmap pixmap;
-//        if (m_themetype == 2)
-//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/darkchoose30X30_checked .svg");
-//        else {
-//            pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/choose30X30_checked .svg");
-//        }
-//        pixmap.setDevicePixelRatio(devicePixelRatioF());
 
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing);
@@ -788,9 +685,7 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         painter->setPen(Qt::NoPen);
         if (m_LunarVisible)
             painter->drawEllipse(QRectF(this->rect().x() + 6, this->rect().y() + 4, hh - 8, hh - 8));
-//            painter->drawPixmap(fillRect.toRect(),pixmap);
         else
-//            painter->drawPixmap(QPointF((this->rect().width() - pixmap.width()) / 2 + this->rect().x(), this->rect().y()), pixmap);
             painter->drawEllipse(QRectF((this->rect().width() - hh + 8) / 2 + this->rect().x(), this->rect().y() + 4, hh - 8, hh - 8));
         painter->restore();
     } else {
