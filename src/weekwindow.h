@@ -19,19 +19,22 @@
 #ifndef WEEKWINDOW_H
 #define WEEKWINDOW_H
 
-#include <QWidget>
-#include <DMainWindow>
-#include <QDate>
-#include <QLabel>
-#include <DImageButton>
-#include <DPushButton>
-#include <QLabel>
-#include <DFrame>
-#include "calendardbus.h"
-#include <DIconButton>
-#include <QHBoxLayout>
 #include "customframe.h"
 #include "schedulestructs.h"
+#include "calendardbus.h"
+
+#include <DFrame>
+#include <DIconButton>
+#include <DImageButton>
+#include <DPushButton>
+#include <DMainWindow>
+
+#include <QWidget>
+#include <QDate>
+#include <QLabel>
+#include <QLabel>
+#include <QHBoxLayout>
+
 DWIDGET_USE_NAMESPACE
 
 class CWeekHeadView;

@@ -22,14 +22,16 @@
 #include "calendardbus.h"
 #include "weekheadview.h"
 #include "weekview.h"
-#include <QMessageBox>
-#include <QDate>
-#include <QHBoxLayout>
-#include <DPalette>
-#include <DHiDPIHelper>
 #include "schcedulesearchview.h"
 #include "todybutton.h"
 #include <scheduledatamanage.h>
+
+#include <DPalette>
+#include <DHiDPIHelper>
+
+#include <QMessageBox>
+#include <QDate>
+#include <QHBoxLayout>
 
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
