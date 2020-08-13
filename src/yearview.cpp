@@ -51,8 +51,8 @@ CMonthDayRect::CellColor    CMonthDayRect::m_currentColor;
 QColor                      CMonthDayRect::m_defaultTextColor;
 QColor                      CMonthDayRect::m_selectedTextColor;
 
-
-CYearView::CYearView(QWidget *parent) : CustomFrame(parent)
+CYearView::CYearView(QWidget *parent)
+    : CustomFrame(parent)
 {
     setMouseTracking(true);
 
