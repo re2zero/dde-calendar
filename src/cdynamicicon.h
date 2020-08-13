@@ -21,13 +21,14 @@
 #ifndef CDYNAMICICON_H
 #define CDYNAMICICON_H
 
+#include <DApplication>
+#include <DTitlebar>
+
 #include <QPixmap>
 #include <QDate>
 #include <QIcon>
 #include <QSvgRenderer>
 
-#include <DApplication>
-#include <DTitlebar>
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 

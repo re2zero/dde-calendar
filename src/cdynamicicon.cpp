@@ -20,14 +20,12 @@
 */
 #include "cdynamicicon.h"
 
-#include <QSize>
-#include <QPainter>
-
-
 #include <DHiDPIHelper>
 #include <DAboutDialog>
 #include <DLog>
 
+#include <QSize>
+#include <QPainter>
 
 #define  BackgroundRatio     0.9394
 
@@ -49,12 +47,12 @@
 
 CDynamicIcon *CDynamicIcon::m_Icon = nullptr;
 CDynamicIcon::CDynamicIcon(int width, int height)
-    :m_pixmap(new QPixmap(QSize(width,height))),
-     m_Date(),
-     m_Dayrenderer(new QSvgRenderer()),
-     m_Weekrenderer(new QSvgRenderer()),
-     m_Monthrenderer(new QSvgRenderer()),
-     m_backgroundrenderer(new QSvgRenderer())
+    : m_pixmap(new QPixmap(QSize(width, height)))
+    , m_Date()
+    , m_Dayrenderer(new QSvgRenderer())
+    , m_Weekrenderer(new QSvgRenderer())
+    , m_Monthrenderer(new QSvgRenderer())
+    , m_backgroundrenderer(new QSvgRenderer())
 
 {
     m_pixmap->fill(Qt::transparent);
