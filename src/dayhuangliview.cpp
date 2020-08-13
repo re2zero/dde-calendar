@@ -17,6 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "dayhuangliview.h"
+#include "schceduledlg.h"
+
+#include <DHiDPIHelper>
+
 #include <QAction>
 #include <QListWidget>
 #include <QLabel>
@@ -24,9 +28,8 @@
 #include <QHBoxLayout>
 #include <QStylePainter>
 #include <QRect>
-#include "schceduledlg.h"
-#include <DHiDPIHelper>
-CDayHuangLiLabel::CDayHuangLiLabel( QWidget *parent /*= nullptr*/ ): DLabel (parent)
+CDayHuangLiLabel::CDayHuangLiLabel(QWidget *parent)
+    : DLabel(parent)
 {
     setMargin(0);
 }
