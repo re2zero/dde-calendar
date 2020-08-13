@@ -20,7 +20,6 @@
 */
 #ifndef DRAGINFOGRAPHICSVIEW_H
 #define DRAGINFOGRAPHICSVIEW_H
-#include "scheduledatamanage.h"
 #include "draginfoitem.h"
 
 #include <DGraphicsView>
@@ -30,6 +29,7 @@
 
 DWIDGET_USE_NAMESPACE
 
+class CScheduleDataManage;
 class DragInfoGraphicsView : public DGraphicsView
 {
     Q_OBJECT
