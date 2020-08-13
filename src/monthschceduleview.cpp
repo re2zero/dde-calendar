@@ -42,9 +42,9 @@
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
-CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem(QRect rect, QGraphicsItem *parent /*= nullptr*/, int edittype)
-    : DragInfoItem(rect,parent),
-      m_pos(13,5)
+CMonthSchceduleWidgetItem::CMonthSchceduleWidgetItem(QRect rect, QGraphicsItem *parent, int edittype)
+    : DragInfoItem(rect, parent)
+    , m_pos(13, 5)
 {
     Q_UNUSED(edittype);
 }
@@ -183,8 +183,8 @@ void CMonthSchceduleWidgetItem::paintBackground(QPainter *painter, const QRectF 
     }
 }
 
-
-CMonthSchceduleNumButton::CMonthSchceduleNumButton(QGraphicsItem *parent /*= nullptr*/): QGraphicsRectItem (parent)
+CMonthSchceduleNumButton::CMonthSchceduleNumButton(QGraphicsItem *parent)
+    : QGraphicsRectItem(parent)
 {
 
 }
@@ -285,9 +285,9 @@ void CMonthSchceduleView::setTheMe(int type)
     updateData();
 }
 
-CMonthSchceduleView::CMonthSchceduleView(QWidget *parent,QGraphicsScene *scene)
-    : QObject (parent),
-      m_Scene(scene)
+CMonthSchceduleView::CMonthSchceduleView(QWidget *parent, QGraphicsScene *scene)
+    : QObject(parent)
+    , m_Scene(scene)
 {
     for (int i = 0; i < 6; ++i) {
         CWeekScheduleView *weekSchedule = new CWeekScheduleView(this);
@@ -567,12 +567,10 @@ void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, Q
     pos = QPoint(x, y);
 }
 
-
-
 CWeekScheduleView::CWeekScheduleView(QObject *parent)
-    :QObject (parent),
-     m_ScheduleHeight(22),
-     m_DayHeight(47)
+    : QObject(parent)
+    , m_ScheduleHeight(22)
+    , m_DayHeight(47)
 {
     setMaxNum();
 }
