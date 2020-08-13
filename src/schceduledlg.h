@@ -19,6 +19,8 @@
 #ifndef SCHCEDULEDLG_H
 #define SCHCEDULEDLG_H
 
+#include "schedulestructs.h"
+
 #include <DArrowButton>
 #include <DCheckBox>
 #include <DDateEdit>
@@ -29,6 +31,8 @@
 #include <DSuggestButton>
 #include <DTextEdit>
 #include <DTimeEdit>
+#include <DComboBox>
+
 #include <QButtonGroup>
 #include <QComboBox>
 #include <QDateEdit>
@@ -37,8 +41,7 @@
 #include <QRadioButton>
 #include <QTimeEdit>
 #include <QWidget>
-#include <DComboBox>
-#include "schedulestructs.h"
+
 DWIDGET_USE_NAMESPACE
 class CTimeEdit;
 class CSchceduleDlg : public DDialog

@@ -17,9 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "schceduledlg.h"
+#include "schcedulectrldlg.h"
+#include "scheduledatamanage.h"
+#include "timeedit.h"
+
 #include <DHiDPIHelper>
 #include <DMessageBox>
 #include <DPalette>
+#include <DFontSizeManager>
+
 #include <QCalendarWidget>
 #include <QHBoxLayout>
 #include <QIcon>
@@ -29,10 +35,7 @@
 #include <QTextBlock>
 #include <QToolButton>
 #include <QVBoxLayout>
-#include <DFontSizeManager>
-#include "schcedulectrldlg.h"
-#include "scheduledatamanage.h"
-#include "timeedit.h"
+
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
     : DDialog(parent), m_createAllDay(isAllDay)
