@@ -18,9 +18,11 @@
  */
 #ifndef SCHEDULECOORMANAGE_H
 #define SCHEDULECOORMANAGE_H
+
 #include <QDate>
 #include <QDateTime>
 #include <QRect>
+
 class CScheduleCoorManage
 {
 public:
