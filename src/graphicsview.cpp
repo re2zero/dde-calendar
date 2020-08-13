@@ -17,27 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "graphicsview.h"
-#include <QEvent>
-#include <QMouseEvent>
-#include <QScrollBar>
-
 #include "scheduleitem.h"
 #include "schedulecoormanage.h"
 #include "schceduledlg.h"
 #include "scheduledatamanage.h"
+#include "schcedulectrldlg.h"
+#include "myschceduleview.h"
+
 #include <DMessageBox>
 #include <DPushButton>
 #include <DHiDPIHelper>
-#include <QMimeData>
 #include <DPalette>
+
+#include <QMimeData>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
-
-#include "schcedulectrldlg.h"
-#include "myschceduleview.h"
 #include <QShortcut>
 #include <QTimer>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QScrollBar>
+
 DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     : DragInfoGraphicsView(parent),

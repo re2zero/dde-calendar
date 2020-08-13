@@ -19,15 +19,17 @@
 #ifndef GRAPHICSVIEW_H
 #define GRAPHICSVIEW_H
 
+#include "schedulestructs.h"
+#include "draginfographicsview.h"
+
 #include <DGraphicsView>
+#include <DMenu>
+
 #include <QGraphicsScene>
 #include <QAction>
 #include <QMutex>
 #include <QDrag>
-#include <DMenu>
 
-#include "schedulestructs.h"
-#include "draginfographicsview.h"
 DWIDGET_USE_NAMESPACE
 
 typedef struct _tagScheduleclassificationInfo {
