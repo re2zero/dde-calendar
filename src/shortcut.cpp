@@ -19,7 +19,8 @@
 
 #include "shortcut.h"
 
-Shortcut::Shortcut(QObject *parent) : QObject(parent)
+Shortcut::Shortcut(QObject *parent)
+    : QObject(parent)
 {
     ShortcutGroup group1;
     ShortcutGroup group2;
