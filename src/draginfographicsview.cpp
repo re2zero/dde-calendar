@@ -19,16 +19,16 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "draginfographicsview.h"
+#include "schceduledlg.h"
+#include "schcedulectrldlg.h"
+#include "myschceduleview.h"
 
 #include <DMenu>
+
 #include <QMimeData>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
-
-#include "schceduledlg.h"
-#include "schcedulectrldlg.h"
-#include "myschceduleview.h"
 
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     :DGraphicsView (parent),

@@ -20,13 +20,13 @@
 */
 #ifndef DRAGINFOGRAPHICSVIEW_H
 #define DRAGINFOGRAPHICSVIEW_H
-#include <DGraphicsView>
-#include <QDate>
-#include <QDrag>
-
-
 #include "scheduledatamanage.h"
 #include "draginfoitem.h"
+
+#include <DGraphicsView>
+
+#include <QDate>
+#include <QDrag>
 
 DWIDGET_USE_NAMESPACE
 
