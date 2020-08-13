@@ -150,7 +150,8 @@ void CYearSchceduleItem::paintEvent( QPaintEvent *e )
     painter.restore();
 }
 
-CYearSchceduleView::CYearSchceduleView(QWidget *parent) : DWidget(parent)
+CYearSchceduleView::CYearSchceduleView(QWidget *parent)
+    : DWidget(parent)
 {
     setContentsMargins(10, 10, 10, 10);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
