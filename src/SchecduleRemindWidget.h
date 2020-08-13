@@ -21,16 +21,16 @@
 #ifndef SchecduleRemindWidget_H
 #define SchecduleRemindWidget_H
 
+#include "schedulestructs.h"
+#include "scheduledatamanage.h"
+
 #include <DWidget>
 #include <DArrowRectangle>
 #include <DFrame>
-#include "schedulestructs.h"
-#include "scheduledatamanage.h"
 
 DWIDGET_USE_NAMESPACE
 
 class CenterWidget;
-
 class SchecduleRemindWidget : public DArrowRectangle
 {
     Q_OBJECT

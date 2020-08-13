@@ -19,9 +19,12 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "SchecduleRemindWidget.h"
+
+#include <DGuiApplicationHelper>
+
 #include <QPainter>
 #include <QtMath>
-#include <DGuiApplicationHelper>
+
 DGUI_USE_NAMESPACE
 SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWindow, parent)
