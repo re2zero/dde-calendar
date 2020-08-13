@@ -22,8 +22,8 @@
 #include "schedulesdbus.h"
 
 DbusDataGetThread::DbusDataGetThread(CSchedulesDBus *_DataManage, QObject *parent)
-    :QObject (parent),
-     m_work(new DataGetWork(_DataManage))
+    : QObject(parent)
+    , m_work(new DataGetWork(_DataManage))
 {
     m_work->moveToThread(&workerThread);
     connect(&workerThread, &QThread::finished, m_work, &QObject::deleteLater);
