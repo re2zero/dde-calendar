@@ -12,6 +12,7 @@
 #include <QStyleOption>
 #include <QLabel>
 #include <QSignalMapper>
+#include <QVBoxLayout>
 
 DWIDGET_USE_NAMESPACE
 class CalendarDBus;
