@@ -1,8 +1,6 @@
 #ifndef YEARVIEW_H
 #define YEARVIEW_H
-#include "weekindicator.h"
-#include "constants.h"
-#include "calendardbus.h"
+
 #include "schedulestructs.h"
 #include "customframe.h"
 
@@ -21,6 +19,7 @@ class CaLunarDayInfo;
 class QLabel;
 class CYearSchceduleView;
 class CYearSchceduleOutView;
+class WeekIndicator;
 enum CalendarYearDayType {
     SO_YFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_YWeekends = QStyleOption::SO_CustomBase + 0x02,
