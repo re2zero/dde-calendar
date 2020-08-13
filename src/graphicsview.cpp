@@ -41,8 +41,8 @@
 
 DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
-    : DragInfoGraphicsView(parent),
-      m_viewType(viewType)
+    : DragInfoGraphicsView(parent)
+    , m_viewType(viewType)
 {
     m_coorManage = new CScheduleCoorManage;
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
