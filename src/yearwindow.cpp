@@ -19,12 +19,15 @@
 #include "yearwindow.h"
 #include "yearview.h"
 #include "constants.h"
+#include "schcedulesearchview.h"
 #include "calendardbus.h"
-#include <QMessageBox>
+
 #include <DPalette>
 #include <DHiDPIHelper>
+
+#include <QMessageBox>
 #include <QMenuBar>
-#include "schcedulesearchview.h"
+
 DGUI_USE_NAMESPACE
 CYearWindow::CYearWindow(QWidget *parent): QMainWindow (parent)
 {

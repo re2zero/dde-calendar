@@ -19,19 +19,22 @@
 #ifndef YEARWINDOW_H
 #define YEARWINDOW_H
 
-#include <QWidget>
-#include <DMainWindow>
-#include <QDate>
-#include <QLabel>
+#include "customframe.h"
+#include "animationstackedwidget.h"
+#include "calendardbus.h"
+
 #include <DImageButton>
 #include <DPushButton>
 #include <DFrame>
-#include "calendardbus.h"
 #include <DIconButton>
-#include <QHBoxLayout>
 #include <DLabel>
-#include "customframe.h"
-#include "animationstackedwidget.h"
+#include <DMainWindow>
+
+#include <QWidget>
+#include <QDate>
+#include <QLabel>
+#include <QHBoxLayout>
+
 DWIDGET_USE_NAMESPACE
 
 class CYearView;
