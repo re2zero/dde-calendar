@@ -19,7 +19,6 @@
 #ifndef YEARWINDOW_H
 #define YEARWINDOW_H
 
-//#include "customframe.h"
 #include "animationstackedwidget.h"
 #include "calendardbus.h"
 
