@@ -20,20 +20,19 @@
 */
 #ifndef MONTHGRAPHIVIEW_H
 #define MONTHGRAPHIVIEW_H
-
-#include <DGraphicsView>
-#include <QGraphicsRectItem>
-#include <QGraphicsScene>
-#include <QDate>
-#include <QDrag>
-#include <DMenu>
-
-#include <dtkwidget_global.h>
 #include "calendardbus.h"
 #include "schedulestructs.h"
 #include "draginfographicsview.h"
 
+#include <DGraphicsView>
+#include <DMenu>
 
+#include <QGraphicsRectItem>
+#include <QGraphicsScene>
+#include <QDate>
+#include <QDrag>
+
+#include <dtkwidget_global.h>
 
 DWIDGET_USE_NAMESPACE
 

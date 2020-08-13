@@ -19,16 +19,16 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "monthgraphiview.h"
-#include <DHiDPIHelper>
-#include <QAction>
-#include <QMimeData>
-#include <QShortcut>
-
 #include "monthschceduleview.h"
 #include "schceduledlg.h"
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
 
+#include <DHiDPIHelper>
+
+#include <QAction>
+#include <QMimeData>
+#include <QShortcut>
 
 bool CDayGraphicsItem::m_LunarVisible = false;
 
