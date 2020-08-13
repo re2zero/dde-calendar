@@ -21,7 +21,6 @@
 #define MONTHVIEW_H
 
 #include "monthweekview.h"
-#include "constants.h"
 #include "calendardbus.h"
 #include "SchecduleRemindWidget.h"
 #include "monthgraphiview.h"
@@ -88,12 +87,12 @@ private:
     QDate                   m_days[42];
     QDate                   m_currentDate;
 
-    QDate                               m_createDate;
+    QDate m_createDate;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
-    QVector<FestivalInfo>               m_festivallist;
+    QVector<FestivalInfo> m_festivallist;
 
     CMonthWeekView *m_weekIndicator = nullptr;
-    int                     m_firstWeekDay =0;
+    int m_firstWeekDay = 0;
     QAction *m_createAction = nullptr; // 创建日程
     QVBoxLayout *m_mainLayout = nullptr;
     int                     m_leftmaagin = 0;
