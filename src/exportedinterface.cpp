@@ -19,12 +19,16 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "exportedinterface.h"
+#include "scheduledatamanage.h"
+#include "calendarmainwindow.h"
+#include "scheduledatamanage.h"
+#include "calendarmainwindow.h"
+
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QJsonArray>
-#include "scheduledatamanage.h"
-#include "calendarmainwindow.h"
+
 ExportedInterface::ExportedInterface(QObject *parent): Dtk::Core::DUtil::DExportedInterface(parent)
 {
     m_object = parent;

@@ -21,9 +21,12 @@
 #ifndef EXPORTEDINTERFACE_H
 #define EXPORTEDINTERFACE_H
 
-#include <QObject>
-#include <DExportedInterface>
 #include "schedulestructs.h"
+
+#include <DExportedInterface>
+
+#include <QObject>
+
 DCORE_USE_NAMESPACE
 struct Exportpara {
     int viewType; //视图名称:year,month,week,day对应年、月、周、日视图类型
