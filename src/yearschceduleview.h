@@ -19,7 +19,6 @@
 #ifndef YEARSCHCEDULEVIEW_H
 #define YEARSCHCEDULEVIEW_H
 
-#include "yearwindow.h"
 #include "schedulestructs.h"
 
 #include <DLabel>
