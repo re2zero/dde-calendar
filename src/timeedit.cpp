@@ -17,8 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "timeedit.h"
+
 #include <QRegExpValidator>
 #include <QDebug>
+
 CTimeEdit::CTimeEdit(QWidget *parent)
     : DComboBox(parent)
 {
