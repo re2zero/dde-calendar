@@ -31,7 +31,8 @@
 #include <QPainter>
 
 DGUI_USE_NAMESPACE
-CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
+CMonthWindow::CMonthWindow(QWidget *parent)
+    : QMainWindow(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     initUI();
