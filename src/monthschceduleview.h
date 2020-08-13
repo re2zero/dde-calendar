@@ -19,17 +19,18 @@
 #ifndef MONTHSCHCEDULEVIEW_H
 #define MONTHSCHCEDULEVIEW_H
 
-#include <DLabel>
-#include <QMouseEvent>
-#include <DPushButton>
-#include <DListWidget>
-#include <DFontSizeManager>
-#include <QGraphicsRectItem>
-#include <QGraphicsScene>
-
 #include "schedulestructs.h"
 #include "scheduledatamanage.h"
 #include "draginfoitem.h"
+
+#include <DLabel>
+#include <DPushButton>
+#include <DListWidget>
+#include <DFontSizeManager>
+
+#include <QMouseEvent>
+#include <QGraphicsRectItem>
+#include <QGraphicsScene>
 
 DWIDGET_USE_NAMESPACE
 class CMonthSchceduleWidgetItem;

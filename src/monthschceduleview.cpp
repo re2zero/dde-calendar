@@ -17,6 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "monthschceduleview.h"
+#include "SchecduleRemindWidget.h"
+#include "monthview.h"
+#include "schcedulectrldlg.h"
+#include "schceduledlg.h"
+#include "myschceduleview.h"
+
+#include <DMessageBox>
+#include <DPushButton>
+#include <DHiDPIHelper>
+#include <DPalette>
+
 #include <QAction>
 #include <QListWidget>
 #include <QLabel>
@@ -24,20 +35,10 @@
 #include <QHBoxLayout>
 #include <QStylePainter>
 #include <QRect>
-#include "schceduledlg.h"
-#include "myschceduleview.h"
-#include <DMessageBox>
-#include <DPushButton>
-#include <DHiDPIHelper>
-#include <DPalette>
-#include "schcedulectrldlg.h"
 #include <QShortcut>
 #include <QPropertyAnimation>
 #include <QGuiApplication>
 #include <QSequentialAnimationGroup>
-#include "SchecduleRemindWidget.h"
-#include "monthview.h"
-
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
@@ -193,7 +194,7 @@ CMonthSchceduleNumButton::~CMonthSchceduleNumButton()
 
 }
 
-void CMonthSchceduleNumButton::setColor( QColor color1, QColor color2, bool GradientFlag /*= false*/ )
+void CMonthSchceduleNumButton::setColor(QColor color1, QColor color2, bool GradientFlag)
 {
     m_color1 = color1;
     m_color2 = color2;
