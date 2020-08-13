@@ -31,10 +31,10 @@
 #include <QJsonObject>
 
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
-    :DGraphicsView (parent),
-     m_Scene(new QGraphicsScene(this)),
-     m_rightMenu(new DMenu(this)),
-     m_MoveDate(QDateTime::currentDateTime())
+    : DGraphicsView(parent)
+    , m_Scene(new QGraphicsScene(this))
+    , m_rightMenu(new DMenu(this))
+    , m_MoveDate(QDateTime::currentDateTime())
 {
     setFrameShape(QFrame::NoFrame);
     setScene(m_Scene);
