@@ -19,13 +19,15 @@
 #ifndef YEARSCHCEDULEVIEW_H
 #define YEARSCHCEDULEVIEW_H
 
+#include "yearwindow.h"
+#include "schedulestructs.h"
+
 #include <DLabel>
 #include <DPushButton>
-#include "schedulestructs.h"
 #include <DListWidget>
 #include <DWidget>
 #include <DArrowRectangle>
-#include "yearwindow.h"
+
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CYearSchceduleItem;

@@ -17,6 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "yearschceduleview.h"
+#include "schcedulectrldlg.h"
+#include "myschceduleview.h"
+#include "schceduledlg.h"
+#include "scheduledatamanage.h"
+
+#include <DMessageBox>
+#include <DPushButton>
+#include <DHiDPIHelper>
+#include <DPalette>
+
 #include <QAction>
 #include <QMenu>
 #include <QListWidget>
@@ -25,14 +35,7 @@
 #include <QHBoxLayout>
 #include <QStylePainter>
 #include <QRect>
-#include "schceduledlg.h"
-#include "scheduledatamanage.h"
-#include <DMessageBox>
-#include <DPushButton>
-#include <DHiDPIHelper>
-#include <DPalette>
-#include "schcedulectrldlg.h"
-#include "myschceduleview.h"
+
 DGUI_USE_NAMESPACE
 
 const int fontsize = 12;
