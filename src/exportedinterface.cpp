@@ -21,15 +21,14 @@
 #include "exportedinterface.h"
 #include "scheduledatamanage.h"
 #include "calendarmainwindow.h"
-#include "scheduledatamanage.h"
-#include "calendarmainwindow.h"
 
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QJsonArray>
 
-ExportedInterface::ExportedInterface(QObject *parent): Dtk::Core::DUtil::DExportedInterface(parent)
+ExportedInterface::ExportedInterface(QObject *parent)
+    : Dtk::Core::DUtil::DExportedInterface(parent)
 {
     m_object = parent;
 }
