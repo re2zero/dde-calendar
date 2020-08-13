@@ -30,7 +30,8 @@
 #include <QVBoxLayout>
 
 DGUI_USE_NAMESPACE
-CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)
+CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent)
+    : DDialog(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     initUI();
