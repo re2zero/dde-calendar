@@ -29,7 +29,8 @@
 #include <QMenuBar>
 
 DGUI_USE_NAMESPACE
-CYearWindow::CYearWindow(QWidget *parent): QMainWindow (parent)
+CYearWindow::CYearWindow(QWidget *parent)
+    : QMainWindow(parent)
 {
     initUI();
     initConnection();
@@ -454,7 +455,8 @@ void CYearWindow::wheelEvent(QWheelEvent *event)
     }
 }
 
-YearFrame::YearFrame(DWidget *parent): DFrame (parent)
+YearFrame::YearFrame(DWidget *parent)
+    : DFrame(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
                                    "/com/deepin/api/LunarCalendar",
