@@ -19,6 +19,14 @@
  */
 
 #include "calendardbus.h"
+#include "scheduledatamanage.h"
+#include "yearschceduleview.h"
+#include "yearview.h"
+
+#include <DArrowRectangle>
+#include <DApplication>
+#include <DHiDPIHelper>
+#include <DPalette>
 
 #include <QGridLayout>
 #include <QLabel>
@@ -28,19 +36,11 @@
 #include <QMessageBox>
 #include <QTime>
 #include <QQueue>
-#include "yearview.h"
 #include <QSpacerItem>
-#include <DPalette>
 #include <QLocale>
-#include <DHiDPIHelper>
-#include "scheduledatamanage.h"
-#include "yearschceduleview.h"
 #include <QDesktopWidget>
-#include <DApplication>
-
 #include <QMouseEvent>
 
-#include <DArrowRectangle>
 DGUI_USE_NAMESPACE
 CYearSchceduleOutView      *CYearView::m_Scheduleview = nullptr;
 CMonthDayRect               *CMonthDayRect::m_CurrentRect =nullptr;

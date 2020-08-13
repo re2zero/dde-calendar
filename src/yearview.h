@@ -2,17 +2,19 @@
 #define YEARVIEW_H
 #include "weekindicator.h"
 #include "constants.h"
+#include "calendardbus.h"
+#include "schedulestructs.h"
+#include "customframe.h"
+
 #include <DWidget>
+#include <DFrame>
+
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
 #include <QLabel>
 #include <QSignalMapper>
-#include <DFrame>
 
-#include "calendardbus.h"
-#include "schedulestructs.h"
-#include "customframe.h"
 DWIDGET_USE_NAMESPACE
 class CalendarDBus;
 class CaLunarDayInfo;
