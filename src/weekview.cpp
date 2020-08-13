@@ -34,7 +34,8 @@
 
 DWIDGET_USE_NAMESPACE
 
-CWeekView::CWeekView(QWidget *parent) : QWidget(parent)
+CWeekView::CWeekView(QWidget *parent)
+    : QWidget(parent)
 {
     m_dayNumFont.setPixelSize(16);
     m_dayNumFont.setWeight(QFont::Light);
