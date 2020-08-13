@@ -17,19 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scheduleitem.h"
+#include "schedulecoormanage.h"
+#include "scheduledatamanage.h"
+#include "SchecduleRemindWidget.h"
+
+#include <DFontSizeManager>
+#include <DGraphicsView>
+
 #include <QDebug>
 #include <QFontMetricsF>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
-#include <DGraphicsView>
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
+
 #include <dtkwidget_global.h>
-#include "schedulecoormanage.h"
-#include "scheduledatamanage.h"
-#include "SchecduleRemindWidget.h"
-#include <DFontSizeManager>
 
 DWIDGET_USE_NAMESPACE
 

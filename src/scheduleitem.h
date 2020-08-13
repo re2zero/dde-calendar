@@ -19,13 +19,14 @@
 #ifndef SCHEDULEITEM_H
 #define SCHEDULEITEM_H
 
+#include "schedulestructs.h"
+#include "draginfoitem.h"
+
 #include <QGraphicsItem>
 #include <QDateTime>
 #include <QRectF>
 #include <QPainterPath>
 
-#include "schedulestructs.h"
-#include "draginfoitem.h"
 class CScheduleCoorManage;
 class CScheduleItem :  public DragInfoItem
 {
