@@ -18,6 +18,15 @@
  */
 
 #include "calendardbus.h"
+#include "todybutton.h"
+#include "scheduledatamanage.h"
+#include "daymonthview.h"
+#include "constants.h"
+#include "dayhuangliview.h"
+
+#include <DPalette>
+#include <DHorizontalLine>
+#include <DHiDPIHelper>
 
 #include <QGridLayout>
 #include <QLabel>
@@ -27,17 +36,11 @@
 #include <QMessageBox>
 #include <QTime>
 #include <QQueue>
-#include "daymonthview.h"
 #include <QSpacerItem>
-#include "constants.h"
-#include "dayhuangliview.h"
-#include <DPalette>
-#include <DHorizontalLine>
-#include <DHiDPIHelper>
-#include "todybutton.h"
-#include "scheduledatamanage.h"
+
 DGUI_USE_NAMESPACE
-CDayMonthView::CDayMonthView(QWidget *parent) : CustomFrame(parent)
+CDayMonthView::CDayMonthView(QWidget *parent)
+    : CustomFrame(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
                                    "/com/deepin/api/LunarCalendar",

@@ -18,20 +18,22 @@
  */
 #ifndef DAYMONTHVIEW_H
 #define DAYMONTHVIEW_H
-#include "constants.h"
+#include "customframe.h"
+#include "calendardbus.h"
+
 #include <DWidget>
+#include <DImageButton>
+#include <DPushButton>
+#include <DFrame>
+#include <DIconButton>
+
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
-#include <DImageButton>
-#include <DPushButton>
-#include "calendardbus.h"
-#include <DFrame>
-#include <DIconButton>
 #include <QGridLayout>
 #include <QVBoxLayout>
-#include "customframe.h"
+
 DWIDGET_USE_NAMESPACE
 class QLabel;
 class CDayHuangLiLabel;
