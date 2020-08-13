@@ -18,17 +18,20 @@
  */
 
 #include "weekview.h"
-#include <QHBoxLayout>
+#include "scheduledatamanage.h"
 #include "constants.h"
+
+#include <DWidget>
+#include <DHiDPIHelper>
+
+#include <QHBoxLayout>
 #include <QPainter>
 #include <QBrush>
 #include <QEvent>
 #include <QMessageBox>
 #include <QWheelEvent>
-#include <DHiDPIHelper>
 #include <QtGlobal>
-#include <DWidget>
-#include "scheduledatamanage.h"
+
 DWIDGET_USE_NAMESPACE
 
 CWeekView::CWeekView(QWidget *parent) : QWidget(parent)

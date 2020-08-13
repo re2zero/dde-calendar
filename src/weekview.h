@@ -22,6 +22,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QDate>
+
 class CWeekView : public QWidget
 {
     Q_OBJECT
