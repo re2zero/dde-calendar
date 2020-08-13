@@ -9,6 +9,9 @@
  */
 
 #include "dbuscalendar_adaptor.h"
+#include "calendarmainwindow.h"
+#include "scheduledatamanage.h"
+
 #include <QtCore/QMetaObject>
 #include <QtCore/QByteArray>
 #include <QtCore/QList>
@@ -17,8 +20,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QWidget>
-#include "calendarmainwindow.h"
-#include "scheduledatamanage.h"
+
 /*
  * Implementation of adaptor class CalendarAdaptor
  */

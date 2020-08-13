@@ -12,9 +12,10 @@
 #ifndef DBUSCALENDAR_ADAPTOR_H
 #define DBUSCALENDAR_ADAPTOR_H
 
+#include "schedulestructs.h"
+
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
-#include "schedulestructs.h"
 QT_BEGIN_NAMESPACE
 class QByteArray;
 template<class T> class QList;
