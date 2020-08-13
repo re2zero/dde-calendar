@@ -30,6 +30,8 @@
 #ifndef SCHEDULESDBUS_H
 #define SCHEDULESDBUS_H
 
+#include "schedulestructs.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
 #include <QtCore/QDebug>
@@ -43,7 +45,6 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QJsonArray>
-#include "schedulestructs.h"
 
 /*
  * Proxy class for interface com.deepin.api.LunarCalendar
