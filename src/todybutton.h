@@ -22,6 +22,7 @@
 #define TODYBUTTON_H
 
 #include <DPushButton>
+
 DWIDGET_USE_NAMESPACE
 class CTodyButton : public DPushButton
 {

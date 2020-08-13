@@ -19,8 +19,11 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "todybutton.h"
-#include <QPainter>
+
 #include <DPalette>
+
+#include <QPainter>
+
 DGUI_USE_NAMESPACE
 CTodyButton::CTodyButton(QWidget *parent): DPushButton(parent)
 {
