@@ -29,7 +29,8 @@
 #include <QDate>
 
 DGUI_USE_NAMESPACE
-CMonthWeekView::CMonthWeekView(QWidget *parent) : DWidget(parent)
+CMonthWeekView::CMonthWeekView(QWidget *parent)
+    : DWidget(parent)
 {
     m_mainLayout = new QHBoxLayout;
     m_mainLayout->setMargin(0);
