@@ -18,10 +18,12 @@
  */
 #ifndef SCHEDULEVIEW_H
 #define SCHEDULEVIEW_H
-#include <QDate>
 #include "schedulestructs.h"
 #include "SchecduleRemindWidget.h"
+
 #include <DFrame>
+
+#include <QDate>
 
 DWIDGET_USE_NAMESPACE
 

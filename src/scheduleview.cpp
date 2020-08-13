@@ -17,17 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scheduleview.h"
-#include <DPalette>
-#include <QGridLayout>
-#include <QShortcut>
-#include <DHorizontalLine>
-#include <QVBoxLayout>
-#include <QApplication>
 #include "alldayeventview.h"
 #include "graphicsview.h"
 #include "schceduledlg.h"
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
+
+#include <DPalette>
+#include <DHorizontalLine>
+
+#include <QGridLayout>
+#include <QShortcut>
+#include <QVBoxLayout>
+#include <QApplication>
+
 DGUI_USE_NAMESPACE
 
 static int hourTextWidth = 50;
