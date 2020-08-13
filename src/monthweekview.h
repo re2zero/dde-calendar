@@ -21,11 +21,14 @@
 #define MONTHWEEKVIEW_H
 
 #include "constants.h"
+#include "customframe.h"
+
 #include <DWidget>
-#include <QHBoxLayout>
 #include <DLabel>
 #include <DHorizontalLine>
-#include "customframe.h"
+
+#include <QHBoxLayout>
+
 DWIDGET_USE_NAMESPACE
 class CMonthWeekView : public DWidget
 {

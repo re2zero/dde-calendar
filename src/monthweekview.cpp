@@ -18,14 +18,16 @@
  */
 
 #include "monthweekview.h"
+#include "scheduledatamanage.h"
+
+#include <DPalette>
+#include <DApplicationHelper>
+#include <DPalette>
 
 #include <QLabel>
 #include <QDebug>
 #include <QDate>
-#include <DPalette>
-#include <DApplicationHelper>
-#include <DPalette>
-#include "scheduledatamanage.h"
+
 DGUI_USE_NAMESPACE
 CMonthWeekView::CMonthWeekView(QWidget *parent) : DWidget(parent)
 {
