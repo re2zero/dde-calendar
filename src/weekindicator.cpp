@@ -19,11 +19,11 @@
 
 #include "weekindicator.h"
 
-
 #include <QDebug>
 #include <QDate>
 
-WeekIndicator::WeekIndicator(QWidget *parent) : DWidget(parent)
+WeekIndicator::WeekIndicator(QWidget *parent)
+    : DWidget(parent)
 {
     m_mainLayout = new QHBoxLayout;
     m_mainLayout->setMargin(0);

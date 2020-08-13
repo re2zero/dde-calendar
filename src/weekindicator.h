@@ -21,9 +21,11 @@
 #define WEEKINDICATOR_H
 
 #include "constants.h"
+
 #include <DWidget>
-#include <QHBoxLayout>
 #include <DLabel>
+
+#include <QHBoxLayout>
 DWIDGET_USE_NAMESPACE
 class WeekIndicator : public DWidget
 {
