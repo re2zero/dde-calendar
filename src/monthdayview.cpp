@@ -32,7 +32,8 @@
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
-CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
+CMonthDayView::CMonthDayView(QWidget *parent)
+    : DFrame(parent)
 {
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
