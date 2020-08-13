@@ -19,6 +19,12 @@
 
 #include "monthview.h"
 #include "calendardbus.h"
+#include "schceduledlg.h"
+#include "scheduledatamanage.h"
+
+#include <DHiDPIHelper>
+#include <DHiDPIHelper>
+#include <DPalette>
 
 #include <QGridLayout>
 #include <QLabel>
@@ -28,12 +34,7 @@
 #include <QMessageBox>
 #include <QTime>
 #include <QQueue>
-#include "schceduledlg.h"
-#include "scheduledatamanage.h"
-#include <DHiDPIHelper>
-#include <DPalette>
 #include <QShortcut>
-#include <DHiDPIHelper>
 #include <QApplication>
 
 DGUI_USE_NAMESPACE

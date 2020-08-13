@@ -22,16 +22,19 @@
 
 #include "monthweekview.h"
 #include "constants.h"
+#include "calendardbus.h"
+#include "SchecduleRemindWidget.h"
+#include "monthgraphiview.h"
+
 #include <DWidget>
+
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
 #include <QAction>
 #include <QGraphicsView>
-#include "calendardbus.h"
-#include "SchecduleRemindWidget.h"
-#include "monthgraphiview.h"
+
 DWIDGET_USE_NAMESPACE
 
 class CMonthView: public DWidget
