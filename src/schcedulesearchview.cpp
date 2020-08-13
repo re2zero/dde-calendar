@@ -17,6 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "schcedulesearchview.h"
+#include "schcedulectrldlg.h"
+#include "myschceduleview.h"
+#include "schceduledlg.h"
+#include "scheduledatamanage.h"
+
+#include <DMessageBox>
+#include <DPushButton>
+#include <DHiDPIHelper>
+#include <DPalette>
+#include <DGuiApplicationHelper>
+
 #include <QAction>
 #include <QMenu>
 #include <QListWidget>
@@ -25,15 +36,7 @@
 #include <QHBoxLayout>
 #include <QStylePainter>
 #include <QRect>
-#include "schceduledlg.h"
-#include "scheduledatamanage.h"
-#include <DMessageBox>
-#include <DPushButton>
-#include <DHiDPIHelper>
-#include <DPalette>
-#include <DGuiApplicationHelper>
-#include "schcedulectrldlg.h"
-#include "myschceduleview.h"
+
 DGUI_USE_NAMESPACE
 CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent):
     DLabel(parent),
@@ -713,7 +716,8 @@ void CSchceduleSearchView::mousePressEvent(QMouseEvent *event)
     DWidget::mousePressEvent(event);
 }
 
-CSchceduleSearchDateItem::CSchceduleSearchDateItem(QWidget *parent): DLabel(parent)
+CSchceduleSearchDateItem::CSchceduleSearchDateItem(QWidget *parent)
+    : DLabel(parent)
 {
     setAutoFillBackground(true);
 }

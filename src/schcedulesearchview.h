@@ -19,11 +19,13 @@
 #ifndef SCHCEDULESEARCHVIEW_H
 #define SCHCEDULESEARCHVIEW_H
 
+#include "schedulestructs.h"
+
 #include <DLabel>
 #include <DPushButton>
 #include <DMenu>
-#include "schedulestructs.h"
 #include <DListWidget>
+
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CScheduleListWidget;
