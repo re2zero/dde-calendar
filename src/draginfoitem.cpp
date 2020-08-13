@@ -26,9 +26,10 @@
 
 bool DragInfoItem::m_press = false;
 ScheduleDtailInfo DragInfoItem::m_HoverInfo;
+
 DragInfoItem::DragInfoItem(QRectF rect, QGraphicsItem *parent)
-    :QGraphicsRectItem(parent),
-     m_rect(rect)
+    : QGraphicsRectItem(parent)
+    , m_rect(rect)
 {
     setRect(m_rect);
     setAcceptHoverEvents(true);
