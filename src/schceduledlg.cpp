@@ -38,7 +38,8 @@
 
 DGUI_USE_NAMESPACE
 CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
-    : DDialog(parent), m_createAllDay(isAllDay)
+    : DDialog(parent)
+    , m_createAllDay(isAllDay)
 {
     setContentsMargins(0, 0, 0, 0);
     m_type = type;
