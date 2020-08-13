@@ -19,7 +19,7 @@
 #ifndef YEARWINDOW_H
 #define YEARWINDOW_H
 
-#include "customframe.h"
+//#include "customframe.h"
 #include "animationstackedwidget.h"
 #include "calendardbus.h"
 
@@ -41,6 +41,7 @@ class CYearView;
 class CaLunarDayInfo;
 class CSchceduleSearchView;
 class YearFrame;
+class CustomFrame;
 class CYearWindow: public QMainWindow
 {
     Q_OBJECT
