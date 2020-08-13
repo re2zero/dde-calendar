@@ -19,11 +19,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "customframe.h"
-#include <QPainter>
+
 #include <DPalette>
+
+#include <QPainter>
 #include <QFontMetrics>
+
 DGUI_USE_NAMESPACE
-CustomFrame::CustomFrame(QWidget *parent): QFrame (parent)
+CustomFrame::CustomFrame(QWidget *parent)
+    : QFrame(parent)
 {
     m_font.setWeight(QFont::Medium);
     m_font.setPixelSize(14);
