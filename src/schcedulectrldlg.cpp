@@ -17,16 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "schcedulectrldlg.h"
-#include <QVBoxLayout>
+#include "schceduledlg.h"
+#include "scheduledatamanage.h"
+#include "cdynamicicon.h"
+
 #include <DMessageBox>
 #include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
 #include <DFontSizeManager>
 
-#include "schceduledlg.h"
-#include "scheduledatamanage.h"
-#include "cdynamicicon.h"
+#include <QVBoxLayout>
 
 DGUI_USE_NAMESPACE
 CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent) : DDialog(parent)

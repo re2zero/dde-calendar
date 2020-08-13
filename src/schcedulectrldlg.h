@@ -19,14 +19,16 @@
 #ifndef CSCHCEDULECTRLDLG_H
 #define CSCHCEDULECTRLDLG_H
 
-#include <QObject>
-#include <QLabel>
 #include <DDialog>
 #include <DPushButton>
 #include <DSuggestButton>
+
+#include <QObject>
+#include <QLabel>
 #include <QButtonGroup>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
 DWIDGET_USE_NAMESPACE
 
 class CSchceduleCtrlDlg : public DDialog
