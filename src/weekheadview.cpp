@@ -35,7 +35,8 @@
 #include <QMenu>
 
 DGUI_USE_NAMESPACE
-CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
+CWeekHeadView::CWeekHeadView(QWidget *parent)
+    : DFrame(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
