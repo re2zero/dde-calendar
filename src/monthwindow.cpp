@@ -21,12 +21,15 @@
 #include "monthdayview.h"
 #include "constants.h"
 #include "calendardbus.h"
-#include <QMessageBox>
-#include <QPainter>
-#include <DPalette>
 #include "schcedulesearchview.h"
 #include "todybutton.h"
 #include "scheduledatamanage.h"
+
+#include <DPalette>
+
+#include <QMessageBox>
+#include <QPainter>
+
 DGUI_USE_NAMESPACE
 CMonthWindow::CMonthWindow(QWidget *parent): QMainWindow (parent)
 {
