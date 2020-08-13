@@ -38,9 +38,9 @@
 #include <QRect>
 
 DGUI_USE_NAMESPACE
-CSchceduleSearchItem::CSchceduleSearchItem( QWidget *parent):
-    DLabel(parent),
-    m_rightMenu(new DMenu(this))
+CSchceduleSearchItem::CSchceduleSearchItem(QWidget *parent)
+    : DLabel(parent)
+    , m_rightMenu(new DMenu(this))
 {
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
@@ -403,7 +403,8 @@ bool CSchceduleSearchItem::eventFilter(QObject *o, QEvent *e)
     update();
     return false;
 }
-CSchceduleSearchView::CSchceduleSearchView(QWidget *parent) : DWidget(parent)
+CSchceduleSearchView::CSchceduleSearchView(QWidget *parent)
+    : DWidget(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(0);
