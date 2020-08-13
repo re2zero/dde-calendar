@@ -19,14 +19,16 @@
 #ifndef SCHEDULEDATAMANAGE_H
 #define SCHEDULEDATAMANAGE_H
 
-#include <QThread>
-#include <QDate>
-#include <QMutex>
-#include <DGuiApplicationHelper>
-
 #include "calendardbus.h"
 #include "schedulestructs.h"
 #include "dbusdatagetthread.h"
+
+#include <DGuiApplicationHelper>
+
+#include <QThread>
+#include <QDate>
+#include <QMutex>
+
 
 DGUI_USE_NAMESPACE
 struct CSchedulesColor {

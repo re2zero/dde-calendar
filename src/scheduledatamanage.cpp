@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scheduledatamanage.h"
-
 #include "schedulesdbus.h"
 #include "calendardbus.h"
+
 CScheduleDataManage *CScheduleDataManage::m_vscheduleDataManage = new CScheduleDataManage;
 CScheduleDataCtrl *CScheduleDataManage::getscheduleDataCtrl()
 {
