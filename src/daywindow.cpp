@@ -17,14 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "daywindow.h"
-#include <DPalette>
-#include <QHBoxLayout>
-#include <QMessageBox>
 #include "constants.h"
 #include "customframe.h"
 #include "daymonthview.h"
 #include "schcedulesearchview.h"
 #include "scheduleview.h"
+
+#include <DPalette>
+
+#include <QHBoxLayout>
+#include <QMessageBox>
+
 DGUI_USE_NAMESPACE
 CDayWindow::CDayWindow(QWidget *parent)
     : QMainWindow(parent)

@@ -19,13 +19,15 @@
 #ifndef DAYWINDOW_H
 #define DAYWINDOW_H
 
-#include <QWidget>
-#include <DMainWindow>
-#include <QDate>
-#include <QLabel>
-#include <DFrame>
 #include "calendardbus.h"
 #include "schedulestructs.h"
+
+#include <DMainWindow>
+#include <DFrame>
+
+#include <QWidget>
+#include <QDate>
+#include <QLabel>
 DWIDGET_USE_NAMESPACE
 
 class CDayMonthView;
