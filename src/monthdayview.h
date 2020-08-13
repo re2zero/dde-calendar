@@ -19,8 +19,9 @@
 #ifndef MONTHDAYVIEW_H
 #define MONTHDAYVIEW_H
 
-#include <QObject>
 #include <DFrame>
+
+#include <QObject>
 #include <QDate>
 
 DWIDGET_USE_NAMESPACE

@@ -18,16 +18,19 @@
  */
 
 #include "monthdayview.h"
-#include <QHBoxLayout>
+#include "scheduledatamanage.h"
 #include "constants.h"
+
+#include <DPalette>
+#include <DHiDPIHelper>
+
+#include <QHBoxLayout>
 #include <QPainter>
 #include <QBrush>
 #include <QEvent>
-#include <DPalette>
 #include <QMouseEvent>
-#include <DHiDPIHelper>
 #include <QDebug>
-#include "scheduledatamanage.h"
+
 DGUI_USE_NAMESPACE
 CMonthDayView::CMonthDayView(QWidget *parent) : DFrame(parent)
 {
