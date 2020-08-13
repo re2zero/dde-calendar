@@ -21,11 +21,11 @@
 #ifndef DBUSDATAGETTHREAD_H
 #define DBUSDATAGETTHREAD_H
 
-#include <QObject>
-#include <QThread>
-
 #include "calendardbus.h"
 #include "schedulestructs.h"
+
+#include <QObject>
+#include <QThread>
 
 class CSchedulesDBus;
 class DataGetWork;

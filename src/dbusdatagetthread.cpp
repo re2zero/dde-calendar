@@ -19,7 +19,6 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "dbusdatagetthread.h"
-
 #include "schedulesdbus.h"
 
 DbusDataGetThread::DbusDataGetThread(CSchedulesDBus *_DataManage, QObject *parent)
