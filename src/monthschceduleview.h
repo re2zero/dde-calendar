@@ -20,7 +20,6 @@
 #define MONTHSCHCEDULEVIEW_H
 
 #include "schedulestructs.h"
-#include "scheduledatamanage.h"
 #include "draginfoitem.h"
 
 #include <DLabel>
@@ -40,6 +39,7 @@ class SchecduleRemindWidget;
 class QPropertyAnimation;
 class QSequentialAnimationGroup;
 class CWeekScheduleView;
+class CScheduleDataManage;
 class CMonthSchceduleView : public QObject
 {
     Q_OBJECT
