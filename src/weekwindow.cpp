@@ -34,7 +34,8 @@
 #include <QHBoxLayout>
 
 DGUI_USE_NAMESPACE
-CWeekWindow::CWeekWindow(QWidget *parent): QMainWindow (parent)
+CWeekWindow::CWeekWindow(QWidget *parent)
+    : QMainWindow(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     initUI();
