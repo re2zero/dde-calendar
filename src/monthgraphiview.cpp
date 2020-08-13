@@ -524,10 +524,10 @@ void CMonthGraphiview::slotDeleteItem()
 }
 
 CDayGraphicsItem::CDayGraphicsItem(QGraphicsItem *parent)
-    :QGraphicsRectItem(parent),
-     m_Date(QDate::currentDate()),
-     m_DayLunar(""),
-     m_DayStatus(H_NONE)
+    : QGraphicsRectItem(parent)
+    , m_Date(QDate::currentDate())
+    , m_DayLunar("")
+    , m_DayStatus(H_NONE)
 {
     m_dayNumFont.setPixelSize(24);
     m_dayNumFont.setWeight(QFont::Light);
