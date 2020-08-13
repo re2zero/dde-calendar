@@ -19,6 +19,11 @@
 
 #include "weekheadview.h"
 #include "calendardbus.h"
+#include "customframe.h"
+#include "scheduledatamanage.h"
+
+#include <DPalette>
+#include <DHiDPIHelper>
 
 #include <QHBoxLayout>
 #include <QPainter>
@@ -28,10 +33,7 @@
 #include <QTime>
 #include <QQueue>
 #include <QMenu>
-#include <DPalette>
-#include <DHiDPIHelper>
-#include "customframe.h"
-#include "scheduledatamanage.h"
+
 DGUI_USE_NAMESPACE
 CWeekHeadView::CWeekHeadView(QWidget *parent) : DFrame(parent)
 {

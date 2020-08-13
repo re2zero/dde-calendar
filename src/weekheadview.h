@@ -21,14 +21,17 @@
 #define WEEKHEADVIEW_H
 
 #include "constants.h"
+#include "calendardbus.h"
+
+#include <DLabel>
+#include <DFrame>
+
 #include <QWidget>
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
 #include <QSignalMapper>
-#include <DLabel>
-#include <DFrame>
-#include "calendardbus.h"
+
 DWIDGET_USE_NAMESPACE
 
 enum CalendarWeekDayType {
