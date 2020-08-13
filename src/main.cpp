@@ -18,19 +18,20 @@
  */
 
 #include "environments.h"
+#include "calendarmainwindow.h"
+#include "yearwindow.h"
+#include "exportedinterface.h"
+#include "configsettings.h"
+
+#include <DApplication>
+#include <DLog>
+#include <DHiDPIHelper>
 
 #include <QFile>
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QDBusConnection>
-#include <DApplication>
-#include <DLog>
-#include <DHiDPIHelper>
-#include "calendarmainwindow.h"
-//#include "monthwindow.h"
-#include "yearwindow.h"
-#include "exportedinterface.h"
-#include "configsettings.h"
+
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 /**********************复制部分**************************/
