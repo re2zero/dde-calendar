@@ -17,20 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "myschceduleview.h"
-#include <QVBoxLayout>
 #include "schceduledlg.h"
 #include "scheduledatamanage.h"
+#include "schcedulectrldlg.h"
+#include "cdynamicicon.h"
+
 #include <DMessageBox>
 #include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
-#include "schcedulectrldlg.h"
-#include "cdynamicicon.h"
+#include <DFontSizeManager>
 
 #include <QShortcut>
-#include <DFontSizeManager>
+#include <QVBoxLayout>
 #include <QPainter>
 #include <QtMath>
+
 DGUI_USE_NAMESPACE
 CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget *parent)
     : DDialog(parent)

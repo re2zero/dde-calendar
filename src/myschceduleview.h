@@ -19,16 +19,19 @@
 #ifndef MYSCHCEDULEVIEW_H
 #define MYSCHCEDULEVIEW_H
 
-#include <QObject>
-#include <QWidget>
-#include <QLabel>
+#include "schedulestructs.h"
+
 #include <DDialog>
 #include <DPushButton>
 #include <DSuggestButton>
-#include "schedulestructs.h"
+#include <DTextEdit>
+
+#include <QObject>
+#include <QWidget>
+#include <QLabel>
 #include <QScrollArea>
 #include <QScrollBar>
-#include <DTextEdit>
+
 DWIDGET_USE_NAMESPACE
 
 class CMySchceduleView : public DDialog
