@@ -20,16 +20,16 @@
 */
 #ifndef DRAGINFOITEM_H
 #define DRAGINFOITEM_H
-#include <QGraphicsRectItem>
+#include "scheduledatamanage.h"
+
 #include <DFontSizeManager>
 
-#include "scheduledatamanage.h"
+#include <QGraphicsRectItem>
 
 DWIDGET_USE_NAMESPACE
 
 class QPropertyAnimation;
 class QSequentialAnimationGroup;
-
 
 class DragInfoItem : public QObject, public QGraphicsRectItem
 {
