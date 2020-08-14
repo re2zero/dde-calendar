@@ -33,7 +33,7 @@ class CScheduleItem :  public DragInfoItem
     Q_OBJECT
 public:
     CScheduleItem(QRectF rect,QGraphicsItem *parent = nullptr, int type = 0);
-    ~CScheduleItem() Q_DECL_OVERRIDE;
+    ~CScheduleItem() override;
     void setData(const ScheduleDtailInfo &info, QDate date,  int totalNum);
     bool hasSelectSchedule(const ScheduleDtailInfo &info);
     int getType()
