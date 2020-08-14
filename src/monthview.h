@@ -47,7 +47,7 @@ public:
     }
 public:
     explicit CMonthView(QWidget *parent = nullptr);
-    ~CMonthView() Q_DECL_OVERRIDE;
+    ~CMonthView() override;
     void setFirstWeekday(int weekday);
 signals:
     void signalcurrentLunarDateChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
@@ -69,8 +69,9 @@ public slots:
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
 private:
     int getDateIndex(const QDate &date) const;
     const QDate getCellDate(int pos);
