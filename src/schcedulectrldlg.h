@@ -48,7 +48,7 @@ private:
     void initConnection();
 
 protected:
-    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *event) override;
 private slots:
     void buttonJudge(int id);
 private:
