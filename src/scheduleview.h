@@ -35,7 +35,7 @@ class CScheduleView : public DFrame
     Q_OBJECT
 public:
     CScheduleView(QWidget *parent = nullptr, int viewType = 0);
-    ~CScheduleView() Q_DECL_OVERRIDE;
+    ~CScheduleView() override;
     void setviewMagin(int left, int top, int right, int bttom);
     void setRange(int w, int h, QDate begin, QDate end);
     void setRange(QDate begin, QDate end);
@@ -65,8 +65,9 @@ public slots:
     void slotUpdatePaint(const int topM);
     void slotUpdateScene();
 protected:
-    void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     void initUI();
     void initConnection();
