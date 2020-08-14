@@ -67,7 +67,7 @@ public slots:
     void slotCurrentReturnDay();
     void slotScheduleHide();
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 private slots:
     void slotcurrentDateLunarChanged(QDate date,  CaHuangLiDayInfo detail, int type = 0);
     void slotcurrentDateChanged(QDate date);
