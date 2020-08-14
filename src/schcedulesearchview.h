@@ -36,7 +36,7 @@ class CSchceduleSearchView : public DWidget
     Q_OBJECT
 public:
     CSchceduleSearchView(QWidget *parent = nullptr);
-    ~CSchceduleSearchView() Q_DECL_OVERRIDE;
+    ~CSchceduleSearchView() override;
     void setTheMe(int type = 0);
     void clearSearch();
     void setMaxWidth(const int w);
@@ -53,8 +53,9 @@ public slots:
     void slotSelectDate(QDate date);
     void slotSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
 protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info, QDate date, int rtype);
@@ -80,11 +81,11 @@ class CScheduleListWidget : public DListWidget
     Q_OBJECT
 public:
     CScheduleListWidget(QWidget *parent = nullptr);
-    ~CScheduleListWidget() Q_DECL_OVERRIDE;
+    ~CScheduleListWidget() override;
 signals:
     void signalListWidgetScheduleHide();
 protected:
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) override;
 };
 
 class CSchceduleSearchItem : public DLabel
@@ -115,14 +116,15 @@ public slots:
     void slotDelete();
     void slotDoubleEvent(int type = 0);
 protected:
-    void paintEvent ( QPaintEvent *e);
-    void contextMenuEvent(QContextMenuEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent (QMouseEvent *event );
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
-    bool eventFilter(QObject *o, QEvent *e);
+    void paintEvent(QPaintEvent *e) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void enterEvent(QEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+    bool eventFilter(QObject *o, QEvent *e) override;
+
 private:
     struct ColorStatus {
         QColor   background;
@@ -159,8 +161,9 @@ public:
 signals:
     void signalLabelScheduleHide();
 protected:
-    void paintEvent ( QPaintEvent *e);
-    void mousePressEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *e) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
 private:
     QColor                m_Backgroundcolor;
     QColor                m_textcolor;
