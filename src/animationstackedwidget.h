@@ -33,7 +33,7 @@ public:
     enum AnimationOri {LR, TB}; //LR:Left Right  ,TB:Top  Bottom
 public:
     explicit AnimationStackedWidget(const AnimationOri ori = LR, QWidget *parent = nullptr);
-    ~AnimationStackedWidget() Q_DECL_OVERRIDE;
+    ~AnimationStackedWidget() override;
     //设置动画持续的间隔
     void setDuration(int duration = 500);
     bool IsRunning()const
@@ -41,7 +41,7 @@ public:
         return isAnimation;
     }
 protected:
-    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *e) override;
 signals:
     void signalIsFinished();
 public slots:
