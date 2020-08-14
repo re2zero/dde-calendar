@@ -37,7 +37,7 @@ class SchecduleRemindWidget : public DArrowRectangle
     Q_DISABLE_COPY(SchecduleRemindWidget)
 public:
     explicit SchecduleRemindWidget(QWidget *parent = nullptr);
-    ~SchecduleRemindWidget() Q_DECL_OVERRIDE;
+    ~SchecduleRemindWidget() override;
     void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
 
 signals:
@@ -55,13 +55,14 @@ class CenterWidget : public DFrame
     Q_DISABLE_COPY(CenterWidget)
 public:
     CenterWidget(DWidget *parent = nullptr);
-    ~CenterWidget() Q_DECL_OVERRIDE;
+    ~CenterWidget() override;
     void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
     void setTheMe(const int type = 0);
 private:
     void UpdateTextList();
 protected:
-    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *e) override;
+
 private:
     QStringList testList;
     QFont textfont;
