@@ -32,8 +32,9 @@ public:
     void setTextInfo(QColor tcolor, QFont font);
     void setHuangLiText(QStringList vhuangli, int type = 0);
 protected:
-    void paintEvent ( QPaintEvent *e);
-    void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *e) override;
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     QStringList           m_vHuangli;
     QColor                m_backgroundColor;
