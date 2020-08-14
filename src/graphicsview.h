@@ -46,7 +46,7 @@ class CGraphicsView : public DragInfoGraphicsView
     Q_OBJECT
 public:
     CGraphicsView(QWidget *parent, int viewType = 0);
-    ~CGraphicsView() Q_DECL_OVERRIDE;
+    ~CGraphicsView() override;
     void setMargins(int left, int top, int right, int bottom);
     QMargins getMargins()
     {
@@ -78,12 +78,12 @@ public:
 
     void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
                                     QList<ScheduleclassificationInfo> &info);
-    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
 
 #ifndef QT_NO_WHEELEVENT
-    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *event) override;
 #endif
 
     /************************************************************************
@@ -94,7 +94,7 @@ public:
     Return:         无
     Others:         无
     ************************************************************************/
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) override;
 
     /************************************************************************
     Function:       setLargeScale()
@@ -139,7 +139,7 @@ public:
     void setTime(QTime time);
     void updateInfo();
 protected:
-    void paintEvent( QPaintEvent *event ) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) override;
 public slots:
     void scrollBarValueChangedSlot();
     void slotDoubleEvent(int type);
