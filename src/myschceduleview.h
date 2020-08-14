@@ -39,7 +39,7 @@ class CMySchceduleView : public DDialog
     Q_OBJECT
 public:
     explicit CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget *parent = nullptr);
-    ~CMySchceduleView() Q_DECL_OVERRIDE;
+    ~CMySchceduleView() override;
     ScheduleDtailInfo getSchedules()
     {
         return  m_scheduleInfo;
@@ -55,8 +55,9 @@ private:
     void initConnection();
     void AutoFeed(QString text);
 protected:
-    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
+    void showEvent(QShowEvent *event) override;
+    bool eventFilter(QObject *o, QEvent *e) override;
+
 private:
     QLabel                           *m_schceduleLabel = nullptr;
     QLabel                           *m_timeLabel = nullptr;
