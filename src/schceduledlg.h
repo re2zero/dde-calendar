@@ -49,7 +49,7 @@ class CSchceduleDlg : public DDialog
     Q_OBJECT
 public:
     CSchceduleDlg(int type, QWidget *parent = nullptr, const bool isAllDay = true);
-    ~CSchceduleDlg() Q_DECL_OVERRIDE;
+    ~CSchceduleDlg() override;
     void setData(const ScheduleDtailInfo &info);
     void setDate(const QDateTime &date);
     ScheduleDtailInfo getScheduleData();
@@ -69,9 +69,10 @@ public slots:
     void sloteRpeatactivated(int index);
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *pEvent) Q_DECL_OVERRIDE;
-    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *obj, QEvent *pEvent) override;
+    void showEvent(QShowEvent *event) override;
+    void changeEvent(QEvent *event) override;
+
 private:
     void initUI();
     void initConnection();
