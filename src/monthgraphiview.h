@@ -109,7 +109,7 @@ class CDayGraphicsItem :public QObject, public QGraphicsRectItem
 public:
     enum HolidayStatus {H_NONE = 0x00,H_REST = 0x01,H_WORK = 0x02};
     explicit CDayGraphicsItem( QGraphicsItem *parent = nullptr);
-    ~CDayGraphicsItem() Q_DECL_OVERRIDE;
+    ~CDayGraphicsItem() override;
     void setData(const QDate &date);
     void setLunar(const QString &lunar);
     void setStatus(const HolidayStatus &status);
