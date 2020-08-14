@@ -139,7 +139,8 @@ protected:
     参数:无
     返回值:无
     ******/
-    void run();
+    void run() override;
+
 private:
     CSchedulesDBus       *m_DataManage;
     //锁
@@ -156,7 +157,7 @@ class CScheduleDataCtrl: public QObject
     Q_OBJECT
 public:
     CScheduleDataCtrl();
-    ~CScheduleDataCtrl();
+    ~CScheduleDataCtrl() override;
     qint64 addSchedule(const ScheduleDtailInfo &scheduledate);
     bool getScheduleInfoById(int id, ScheduleDtailInfo &out);
     bool getScheduleInfo(const QDate bdate, const QDate edate, QVector<ScheduleDateRangeInfo> &out);
@@ -189,7 +190,7 @@ class CHuangliDayDataManage: public QObject
 {
 public:
     CHuangliDayDataManage();
-    ~CHuangliDayDataManage();
+    ~CHuangliDayDataManage() override;
     bool getSoloDay(QDate date, QString &str);
     //获取节日状态
     QVector<bool> getDayFlag(QDate date);
