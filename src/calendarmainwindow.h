@@ -77,11 +77,11 @@ private:
 
     void getScheduleInfo();
 protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void changeEvent(QEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 private slots:
     void setScheduleHide();
     void slotstackWClicked(QAbstractButton *bt);
