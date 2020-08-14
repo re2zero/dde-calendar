@@ -39,7 +39,8 @@ class ExportedInterface : public Dtk::Core::DUtil::DExportedInterface
 {
 public:
     explicit ExportedInterface(QObject *parent = nullptr);
-    QVariant invoke(const QString &action, const QString &parameters) const;
+    QVariant invoke(const QString &action, const QString &parameters) const override;
+
 private:
     bool analysispara( QString &parameters, ScheduleDtailInfo &info, Exportpara &para) const;
     void parsingScheduleRRule(QString str, ScheduleDtailInfo &info) const;
