@@ -41,7 +41,8 @@ public:
 private:
     int checkDay(int weekday);
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     QHBoxLayout *m_mainLayout = nullptr;
     QVector<QPair<CustomFrame *, int>> m_weekData;
