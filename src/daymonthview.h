@@ -79,7 +79,7 @@ private:
     const QString getCellDayNum(int pos);
     const QDate getCellDate(int pos);
     void paintCell(QWidget *cell);
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) override;
     void updateDate();
     void getlineflag();
 
@@ -99,9 +99,10 @@ private slots:
     void slotnext();
     void getDbusData();
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    void paintEvent ( QPaintEvent *e);
+    void resizeEvent(QResizeEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
+    void paintEvent(QPaintEvent *e) override;
+
 private:
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
