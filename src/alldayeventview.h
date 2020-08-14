@@ -44,7 +44,7 @@ class CAllDayEventWeekView : public DragInfoGraphicsView
     Q_OBJECT
 public:
     CAllDayEventWeekView(QWidget *parent = nullptr, int edittype = 0);
-    ~CAllDayEventWeekView() Q_DECL_OVERRIDE;
+    ~CAllDayEventWeekView() override;
     void setDayData(const QVector<QVector<ScheduleDtailInfo> > &vlistData);
     void setInfo(const QVector<ScheduleDtailInfo> &info);
     QVector<QVector<ScheduleDtailInfo> > &getListData()
@@ -88,7 +88,8 @@ private:
     void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo())override;
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
-    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *event) override;
+
 private:
     void updateDateShow();
     void createItemWidget(int index, bool average = false);
