@@ -104,7 +104,7 @@ void CWeekView::setsearchfalg(bool flag)
 }
 void CWeekView::slotprev()
 {
-    if (m_selectDate.year() >= 1900) {
+    if (m_selectDate.year() >= DDECalendar::QueryEarliestYear) {
         QDate date = m_selectDate.addDays(-6);
         setCurrentDate(date);
     } else {
@@ -147,7 +147,8 @@ void CWeekView::paintCell(QWidget *cell)
     painter.setPen(Qt::SolidLine);
 
     const QString dayNum = QString::number(m_days[pos].addDays(3).weekNumber());
-    if (m_days[pos].year() < 1900 && dayNum != "1") return;
+    if (m_days[pos].year() < DDECalendar::QueryEarliestYear && dayNum != "1")
+        return;
     if (isSelectDay) {
 
         QRect fillRect((cell->width() - 24) / 2, (cell->height() - 32) / 2 + 4, 24, 24);
@@ -215,7 +216,8 @@ void CWeekView::setSelectedCell(int index)
     m_cellList.at(index)->update();
     m_selectDate = m_days[index];
     const QString dayNum = QString::number(m_days[index].addDays(3).weekNumber());
-    if (m_days[index].year() < 1900 && dayNum != "1") return;
+    if (m_days[index].year() < DDECalendar::QueryEarliestYear && dayNum != "1")
+        return;
     emit signalsSelectDate(m_days[index], m_days[index].addDays(m_weekAddDay));
 }
 
