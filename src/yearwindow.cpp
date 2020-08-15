@@ -363,7 +363,8 @@ void CYearWindow::slotSetSchceduleHide()
 void CYearWindow::slotprev()
 {
     m_YearWidget->slotHideInfo();
-    if (m_currentdate.year() == 1900) return;
+    if (m_currentdate.year() == DDECalendar::QueryEarliestYear)
+        return;
     if (m_StackedWidget->IsRunning()) return;
     QDate tcurrent = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
     if (!tcurrent.isValid()) {
@@ -371,7 +372,7 @@ void CYearWindow::slotprev()
     } else {
         m_currentdate = tcurrent;
     }
-    if (m_currentdate.year() >= 1900) {
+    if (m_currentdate.year() >= DDECalendar::QueryEarliestYear) {
         int index = m_StackedWidget->currentIndex();
         index = qAbs(index - 1) % 2;
         m_YearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(index));
