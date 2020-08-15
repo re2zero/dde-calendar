@@ -55,7 +55,7 @@ private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info, int type = 0);
 protected:
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
     void paintItem(ScheduleDtailInfo info, int index, int type = 0);
     void paintItem();
 private:
@@ -91,7 +91,8 @@ public:
     void setTimeC(QColor tcolor, QFont font);
     void setData(ScheduleDtailInfo  vScheduleInfo);
 protected:
-    void paintEvent ( QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
+
 private:
     ScheduleDtailInfo m_ScheduleInfo;
     QColor                m_Backgroundcolor;
@@ -126,7 +127,7 @@ private:
     int list_count = 0;
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
 };
 #endif // CSHCEDULEDAYVIEW_H
 
