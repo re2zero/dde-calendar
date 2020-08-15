@@ -29,6 +29,7 @@
 #include "shortcut.h"
 #include "schcedulesearchview.h"
 #include "cdynamicicon.h"
+#include "constants.h"
 
 #include <DAboutDialog>
 #include <DHiDPIHelper>
@@ -649,7 +650,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     if (index != 0) {
         m_priindex = index;
     }
-    if (m_currentdate.year() < 1900)
+    if (m_currentdate.year() < DDECalendar::QueryEarliestYear)
         return;
     switch (index) {
     case 0: {
@@ -906,7 +907,8 @@ void Calendarmainwindow::slotCurrentScheduleDate(QDate date)
 
 void Calendarmainwindow::slotViewSelectDate(QDate date)
 {
-    if (date.year() < 1900) return;
+    if (date.year() < DDECalendar::QueryEarliestYear)
+        return;
     viewWindow(4, QDateTime(date));
 }
 
