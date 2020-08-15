@@ -225,7 +225,7 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
     m_vlistData.append(valldayListData);
     m_vlistData.append(vDaylistdata);
 
-    if (m_vlistData.size() > 5) {
+    if (m_vlistData.size() > DDEYearCalendar::YearScheduleListMaxcount) {
         QVector<ScheduleDtailInfo> vTlistData;
         for (int i = 0; i < 4; i++) {
             if (m_vlistData.at(i).beginDateTime.date() != m_vlistData.at(i).endDateTime.date() && !m_vlistData.at(i).allday) {
@@ -322,13 +322,13 @@ void CYearSchceduleView::updateDateShow()
     if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty()) {
         if (!m_soloDay.isEmpty()) {
             if (m_vlistData.size() > 4) {
-                sviewNum = 5;
+                sviewNum = DDEYearCalendar::YearScheduleListMaxcount;
             } else {
                 sviewNum = m_vlistData.size() + 1;
             }
         } else {
-            if (m_vlistData.size() > 5) {
-                sviewNum = 5;
+            if (m_vlistData.size() > DDEYearCalendar::YearScheduleListMaxcount) {
+                sviewNum = DDEYearCalendar::YearScheduleListMaxcount;
             } else {
                 sviewNum = m_vlistData.size();
             }
@@ -597,10 +597,10 @@ void CYearSchceduleOutView::mousePressEvent(QMouseEvent *event)
     QRect rect(35,50,width() - 50,20);
     int listShow = 0;
     if (!scheduleinfoList.isEmpty()) {
-        if (scheduleinfoList.size() < 5)
+        if (scheduleinfoList.size() < DDEYearCalendar::YearScheduleListMaxcount)
             listShow = scheduleinfoList.size();
         else
-            listShow = 5;
+            listShow = DDEYearCalendar::YearScheduleListMaxcount;
     }
     for (int i = 0; i < listShow; i++) {
         if (this->arrowDirection() == DArrowRectangle::ArrowLeft)
@@ -610,7 +610,7 @@ void CYearSchceduleOutView::mousePressEvent(QMouseEvent *event)
     }
     for (int i = 0; i < listShow; i++) {
         if (rect_press.at(i).contains(pos)) {
-            if (i > 3 && list_count > 5) {
+            if (i > 3 && list_count > DDEYearCalendar::YearScheduleListMaxcount) {
                 emit signalsViewSelectDate(currentdate);
                 this->hide();
                 //跳转到周视图
