@@ -32,6 +32,8 @@ static const int CellHighlightHeight = 70;
 
 static const int QueryEarliestYear = 1900;
 static const int QueryLatestYear = 9999;
+
+static const int FestivalTypeID = 4;
 }
 namespace DDEYearCalendar {
 static const int FontSizeTwelve = 12;
