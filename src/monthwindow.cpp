@@ -318,7 +318,8 @@ void CMonthWindow::slideMonth(bool next)
 {
     QDate currentDate;
     if (next) {
-        if (m_currentdate.year() == 1900 && m_currentdate.month() == 1) return;
+        if (m_currentdate.year() == DDECalendar::QueryEarliestYear && m_currentdate.month() == 1)
+            return;
         currentDate = m_currentdate.addMonths(-1);
     } else {
         currentDate = m_currentdate.addMonths(1);
