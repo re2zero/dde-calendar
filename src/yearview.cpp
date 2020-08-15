@@ -22,6 +22,7 @@
 #include "scheduledatamanage.h"
 #include "yearschceduleview.h"
 #include "yearview.h"
+#include "constants.h"
 
 #include <DArrowRectangle>
 #include <DApplication>
@@ -113,7 +114,7 @@ void CYearView::slotupdateSchedule(const int id)
 
 void CYearView::slotDoubleClickDate(const QDate &date)
 {
-    if (date.year()<1900)
+    if (date.year() < DDECalendar::QueryEarliestYear)
         return;
     SchceduleViewHide();
     emit signaldoubleclickDate(date);
@@ -121,7 +122,7 @@ void CYearView::slotDoubleClickDate(const QDate &date)
 
 void CYearView::slotPressClickDate(const QDate &date)
 {
-    if (date.year()<1900)
+    if (date.year() < DDECalendar::QueryEarliestYear)
         return;
     emit signalcurrentDateChanged(date);
     emit signalHideInfo();
@@ -570,7 +571,7 @@ void CMonthDayRect::setRect(qreal x, qreal y, qreal w, qreal h)
 void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
 {
     m_highColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-    if (m_date.year()<1900)
+    if (m_date.year() < DDECalendar::QueryEarliestYear)
         return;
     const bool isCurrentDay = m_date == QDate::currentDate() && m_isCurrentMonth;
     bool isSelectedCell  = false;
