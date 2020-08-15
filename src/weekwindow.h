@@ -48,7 +48,7 @@ class CWeekWindow: public QMainWindow
     Q_OBJECT
 public:
     CWeekWindow(QWidget *parent = nullptr);
-    ~CWeekWindow() Q_DECL_OVERRIDE;
+    ~CWeekWindow() override;
     void setDate(QDate date);
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
     void setFirstWeekday(int weekday);
@@ -87,8 +87,9 @@ private slots:
     void slotsearchDateSelect(QDate date);
 
 protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
 private:
     CWeekHeadView *m_weekHeadView = nullptr; //周视图头
     DFrame *m_contentBackground = nullptr;
