@@ -374,8 +374,9 @@ void CWeekWindow::slotprev()
 {
     slotScheduleHide();
     QDate tcurrent = m_currentdate.addDays(-7);
-    if (tcurrent.year() < 1900) return;
-    if (m_currentdate.year() >= 1900) {
+    if (tcurrent.year() < DDECalendar::QueryEarliestYear)
+        return;
+    if (m_currentdate.year() >= DDECalendar::QueryEarliestYear) {
         m_currentdate = tcurrent;
         setDate(m_currentdate);
     } else {
@@ -426,7 +427,8 @@ void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLu
         CaLunarDayInfo detail = vdetail.at(offset);
         if (type == 1) {
             int yearnum = vdate.at(0).year();
-            if (yearnum < 1900) yearnum = 1900;
+            if (yearnum < DDECalendar::QueryEarliestYear)
+                yearnum = DDECalendar::QueryEarliestYear;
             QLocale locale;
             if (locale.language() == QLocale::Chinese) {
 
