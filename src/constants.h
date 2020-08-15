@@ -41,6 +41,8 @@ static const int FontSizeTwentyfour = 24;
 
 static const int RectSizeofEveyMonth = 42;
 static const int FrameSizeofEveryYear = 12;
+
+static const int YearScheduleListMaxcount = 5;
 //static const int YHeaderItemWidth = 20;
 //static const int YHeaderItemHeight = 16;
 
