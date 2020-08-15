@@ -259,7 +259,8 @@ void CDayMonthView::updateFlag()
 void CDayMonthView::setCurrentDate(const QDate date, int type)
 {
     Q_UNUSED(type);
-    if (date.year() < 1900) return;
+    if (date.year() < DDECalendar::QueryEarliestYear)
+        return;
     if (date == m_currentDate) {
         return;
     }
@@ -294,7 +295,8 @@ bool CDayMonthView::eventFilter(QObject *o, QEvent *e)
     if (cell && m_cellList.contains(cell)) {
         const int pos = m_cellList.indexOf(cell);
         QDate date = m_days[pos];
-        if (date.year() < 1900) return false;
+        if (date.year() < DDECalendar::QueryEarliestYear)
+            return false;
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
@@ -629,7 +631,8 @@ void CDayMonthView::setSelectedCell(int index)
     updateDate();
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
-    if (m_currentDate.year() < 1900) return;
+    if (m_currentDate.year() < DDECalendar::QueryEarliestYear)
+        return;
     emit signalcurrentDateChanged(m_days[index]);
 }
 void CDayMonthView::updateCurrentLunar()
@@ -753,8 +756,9 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
         updateCurrentLunar();
     } else {
         QDate t_curret = m_currentDate.addDays(-1);
-        if (t_curret.year() < 1900) return;
-        if (m_currentDate.year() >= 1900) {
+        if (t_curret.year() < DDECalendar::QueryEarliestYear)
+            return;
+        if (m_currentDate.year() >= DDECalendar::QueryEarliestYear) {
             m_currentDate = t_curret;
             if (m_currentDate == QDate::currentDate()) {
                 m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
@@ -815,8 +819,9 @@ void CDayMonthView::paintEvent(QPaintEvent *e)
 void CDayMonthView::slotprev()
 {
     emit signalSchedulHide();
-    if (m_currentDate.year() == 1900 && m_currentDate.month() == 1) return;
-    if (m_currentDate.year() >= 1900) {
+    if (m_currentDate.year() == DDECalendar::QueryEarliestYear && m_currentDate.month() == 1)
+        return;
+    if (m_currentDate.year() >= DDECalendar::QueryEarliestYear) {
         m_currentDate = m_currentDate.addMonths(-1);
         if (m_currentDate == QDate::currentDate()) {
             m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
