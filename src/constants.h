@@ -34,18 +34,19 @@ static const int QueryEarliestYear = 1900;
 static const int QueryLatestYear = 9999;
 }
 namespace DDEYearCalendar {
-static const int YHeaderItemWidth = 20;
-static const int YHeaderItemHeight = 16;
+static const int fontsize = 12;
+//static const int YHeaderItemWidth = 20;
+//static const int YHeaderItemHeight = 16;
 
-static const int YCellWidth = 26;
-static const int YCellHeight = 20;
+//static const int YCellWidth = 26;
+//static const int YCellHeight = 20;
 
-static const int YCellHighlightWidth = 26;
-static const int YCellHighlightHeight = 20;
+//static const int YCellHighlightWidth = 26;
+//static const int YCellHighlightHeight = 20;
 static const int Y_MLableHeight = 36;
 static const int Y_YLableHeight = 45;
-static const int Y_MWindowWidth = 202;
-static const int Y_MWindowHeight = 159;
+//static const int Y_MWindowWidth = 202;
+//static const int Y_MWindowHeight = 159;
 }
 namespace DDEMonthCalendar {
 static const int MHeaderItemWidth = 60;
