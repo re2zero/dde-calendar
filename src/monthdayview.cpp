@@ -153,7 +153,7 @@ void CMonthWidget::mousePressEvent(QMouseEvent *event)
         return;
     int itemindex = getMousePosItem(event->pos());
     if (!(itemindex<0)) {
-        if (m_MonthItem.at(itemindex)->getDate().year()<1900) {
+        if (m_MonthItem.at(itemindex)->getDate().year() < DDECalendar::QueryEarliestYear) {
             return;
         }
         CMonthRect::setSelectRect(m_MonthItem.at(itemindex));
@@ -241,7 +241,7 @@ void CMonthRect::setRect(qreal x, qreal y, qreal w, qreal h)
 void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
 {
     m_selectColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-    if (m_Date.year()<1900)
+    if (m_Date.year() < DDECalendar::QueryEarliestYear)
         return;
     const bool isCurrentDay = (m_Date.month() == QDate::currentDate().month()
                                && m_Date.year() == QDate::currentDate().year());
