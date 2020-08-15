@@ -211,7 +211,7 @@ void CYearSchceduleView::setData(QVector<ScheduleDtailInfo> &vListData)
 
     for (int i = 0; i < valldayListData.count(); i++) {
         QVector<ScheduleDtailInfo>::iterator iter = valldayListData.begin();
-        if (valldayListData.at(i).type.ID == 4) {
+        if (valldayListData.at(i).type.ID == DDECalendar::FestivalTypeID) {
             ScheduleDtailInfo moveDate;
             moveDate = valldayListData.at(i);
             valldayListData.removeAt(i);
@@ -615,7 +615,7 @@ void CYearSchceduleOutView::mousePressEvent(QMouseEvent *event)
                 this->hide();
                 //跳转到周视图
             } else {
-                if (scheduleinfoList.at(i).type.ID != 4) {
+                if (scheduleinfoList.at(i).type.ID != DDECalendar::FestivalTypeID) {
                     CSchceduleDlg dlg(0);
                     dlg.setData(scheduleinfoList.at(i));
                     if (dlg.exec() == DDialog::Accepted)
