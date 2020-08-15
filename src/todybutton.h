@@ -33,11 +33,12 @@ public:
     void setTColor(QColor normalC, QColor hoverC, QColor pressc);
     void setshadowColor(QColor sc);
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void focusOutEvent(QFocusEvent *event);
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
+    void enterEvent(QEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+
 private:
     QColor                   m_bnormalColor = "#FFFFFF";
     QColor                   m_bhoverColor = "#FFFFFF";
