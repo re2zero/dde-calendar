@@ -69,14 +69,16 @@ public slots:
     void slotPressClickDate(const QDate &date);
 private:
     int getDateIndex(const QDate &date) const;
-    bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *o, QEvent *e) override;
     void updateDate();
     void createYearSchceduleView(QWidget *parent = nullptr);
 protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
 protected:
-    void paintEvent ( QPaintEvent *e) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *e) override;
+
 private:
     CustomFrame *m_currentMouth = nullptr;
     QDate m_days[42];
