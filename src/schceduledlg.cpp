@@ -20,6 +20,7 @@
 #include "schcedulectrldlg.h"
 #include "scheduledatamanage.h"
 #include "timeedit.h"
+#include "constants.h"
 
 #include <DHiDPIHelper>
 #include <DMessageBox>
@@ -810,9 +811,9 @@ void CSchceduleDlg::initConnection()
 
 void CSchceduleDlg::initDateEdit()
 {
-    m_beginDateEdit->setMinimumDate(QDate(1900, 1, 1));    // 0天
+    m_beginDateEdit->setMinimumDate(QDate(DDECalendar::QueryEarliestYear, 1, 1)); // 0天
     m_beginDateEdit->setMaximumDate(QDate(9999, 12, 31));
-    m_endDateEdit->setMinimumDate(QDate(1900, 1, 1));    // 0天
+    m_endDateEdit->setMinimumDate(QDate(DDECalendar::QueryEarliestYear, 1, 1)); // 0天
     m_endDateEdit->setMaximumDate(QDate(9999, 12, 31));
     return;
 }
