@@ -812,9 +812,9 @@ void CSchceduleDlg::initConnection()
 void CSchceduleDlg::initDateEdit()
 {
     m_beginDateEdit->setMinimumDate(QDate(DDECalendar::QueryEarliestYear, 1, 1)); // 0天
-    m_beginDateEdit->setMaximumDate(QDate(9999, 12, 31));
+    m_beginDateEdit->setMaximumDate(QDate(DDECalendar::QueryLatestYear, 12, 31));
     m_endDateEdit->setMinimumDate(QDate(DDECalendar::QueryEarliestYear, 1, 1)); // 0天
-    m_endDateEdit->setMaximumDate(QDate(9999, 12, 31));
+    m_endDateEdit->setMaximumDate(QDate(DDECalendar::QueryLatestYear, 12, 31));
     return;
 }
 
