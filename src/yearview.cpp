@@ -204,8 +204,8 @@ void CYearView::getInfoAndSetLineFlag()
     m_vlineflag.fill(false);
     if (tdataManage->getGetAllYearScheduleInfo()->m_monthInfo.size()>0) {
         m_DateRangeInfo = tdataManage->getGetAllYearScheduleInfo()->m_monthInfo[m_currentDate.month()];
-        if (m_DateRangeInfo.count() == 42) {
-            for (int i = 0; i < 42; i++) {
+        if (m_DateRangeInfo.count() == DDEYearCalendar::RectSizeofEveyMonth) {
+            for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; i++) {
                 if (!m_DateRangeInfo.at(i).vData.isEmpty()) {
                     m_vlineflag[i] = true;
                 }
@@ -237,7 +237,7 @@ void CYearView::setCellSelectable(bool selectable)
 
 int CYearView::getDateIndex(const QDate &date) const
 {
-    for (int i = 0; i != 42; ++i)
+    for (int i = 0; i != DDEYearCalendar::RectSizeofEveyMonth; ++i)
         if (m_days[i] == date)
             return i;
 
@@ -264,7 +264,7 @@ void CYearView::updateDate()
     if (currentIndex < 0) {
         return;
     }
-    for (int i(0); i != 42; ++i) {
+    for (int i(0); i != DDEYearCalendar::RectSizeofEveyMonth; ++i) {
         m_days[i] = firstDay.addDays(i - day);
     }
     update();
@@ -342,7 +342,7 @@ void CYearView::paintEvent(QPaintEvent *e)
 CYearMonthView::CYearMonthView(DWidget *parent)
     :DWidget (parent)
 {
-    for (int i = 0; i < 42; ++i) {
+    for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; ++i) {
         CMonthDayRect *item = new CMonthDayRect();
         m_DayItem.append(item);
     }
@@ -380,8 +380,8 @@ void CYearMonthView::setTheMe(int type)
 void CYearMonthView::setLintFlag(const QVector<bool> &lineFlag)
 {
     m_vlineflag = lineFlag;
-    if (m_vlineflag.size() == 42) {
-        for (int i = 0; i < 42; i++) {
+    if (m_vlineflag.size() == DDEYearCalendar::RectSizeofEveyMonth) {
+        for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; i++) {
             m_DayItem.at(i)->setLineFlag(m_vlineflag.at(i));
         }
     }
