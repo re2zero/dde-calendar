@@ -196,7 +196,8 @@ void CMonthView::setCurrentDate(const QDate date)
 {
     slotScheduleRemindWidget(false);
     qDebug() << "set current date " << date;
-    if (date.year() < 1900) return;
+    if (date.year() < DDECalendar::QueryEarliestYear)
+        return;
     if (date.month() != m_currentDate.month()) {
         m_festivallist.clear();
         m_DBusInter->GetFestivalMonth(date.addMonths(-1).year(), date.addMonths(-1).month(), m_festivallist);
