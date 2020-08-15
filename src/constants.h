@@ -38,6 +38,9 @@ static const int FontSizeTwelve = 12;
 static const int FontSizeFourteen = 14;
 static const int FontSizeSixteen = 16;
 static const int FontSizeTwentyfour = 24;
+
+static const int RectSizeofEveyMonth = 42;
+static const int FrameSizeofEveryYear = 12;
 //static const int YHeaderItemWidth = 20;
 //static const int YHeaderItemHeight = 16;
 
