@@ -34,7 +34,10 @@ static const int QueryEarliestYear = 1900;
 static const int QueryLatestYear = 9999;
 }
 namespace DDEYearCalendar {
-static const int fontsize = 12;
+static const int FontSizeTwelve = 12;
+static const int FontSizeFourteen = 14;
+static const int FontSizeSixteen = 16;
+static const int FontSizeTwentyfour = 24;
 //static const int YHeaderItemWidth = 20;
 //static const int YHeaderItemHeight = 16;
 
