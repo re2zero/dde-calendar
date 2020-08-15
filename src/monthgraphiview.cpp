@@ -23,6 +23,7 @@
 #include "schceduledlg.h"
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
+#include "constants.h"
 
 #include <DHiDPIHelper>
 
@@ -370,7 +371,7 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
     CMonthSchceduleNumButton *item = dynamic_cast<CMonthSchceduleNumButton *>(listItem);
     if (item!= nullptr) {
         //双击切换视图
-        if (item->getDate().year()>1900) {
+        if (item->getDate().year() > DDECalendar::QueryEarliestYear) {
             emit signalsViewSelectDate(item->getDate());
         }
         return;
@@ -389,7 +390,7 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
         QPointF point = getItemPos(event->pos(),Dayitem->rect());
         if (point.y()<38) {
             //双击切换视图
-            if (Dayitem->getDate().year()>1900) {
+            if (Dayitem->getDate().year() > DDECalendar::QueryEarliestYear) {
                 emit signalsViewSelectDate(Dayitem->getDate());
             }
         } else {
