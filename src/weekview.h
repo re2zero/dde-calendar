@@ -41,11 +41,12 @@ signals:
     void signalsSelectDate(QDate date, QDate currentDate);
     void signalIsDragging(bool &isDragging);
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void wheelEvent(QWheelEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
+
 private:
     void paintCell(QWidget *cell);
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) override;
     void setSelectedCell(int index);
     void updateDate();
 private:
