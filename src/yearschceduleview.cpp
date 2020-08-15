@@ -21,6 +21,7 @@
 #include "myschceduleview.h"
 #include "schceduledlg.h"
 #include "scheduledatamanage.h"
+#include "constants.h"
 
 #include <DMessageBox>
 #include <DPushButton>
@@ -38,7 +39,6 @@
 
 DGUI_USE_NAMESPACE
 
-const int fontsize = 12;
 const QString fontfamily = QStringLiteral("SourceHanSansSC-Medium");
 
 CYearSchceduleItem::CYearSchceduleItem(QWidget *parent)
@@ -348,7 +348,7 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
     CYearSchceduleItem *gwi = new CYearSchceduleItem();
     QFont font;
     font.setWeight(QFont::Medium);
-    font.setPixelSize(14);
+    font.setPixelSize(DDEYearCalendar::FontSizeFourteen);
     gwi->setBackgroundColor(m_bBackgroundcolor);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
@@ -358,7 +358,7 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
         gwi->setStateColor(m_solocolor);
     }
     gwi->setText(m_bttextcolor, font);
-    font.setPixelSize(12);
+    font.setPixelSize(DDEYearCalendar::FontSizeTwelve);
     gwi->setTimeC(m_btimecolor, font);
     gwi->setFixedSize(m_gradientItemList->width() - 3, 28);
     gwi->setData(gd);
@@ -395,7 +395,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 
     QFont font;
     font.setWeight(QFont::Medium);
-    font.setPixelSize(fontsize);
+    font.setPixelSize(DDEYearCalendar::FontSizeTwelve);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
 
@@ -508,7 +508,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 void CYearSchceduleView::paintItem()
 {
     QFont font;
-    font.setPixelSize(fontsize);
+    font.setPixelSize(DDEYearCalendar::FontSizeTwelve);
     QPainter painter(this);
     QRect fillRect = QRect(0, 0, width(), height());
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
