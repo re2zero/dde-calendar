@@ -46,7 +46,7 @@ class CYearWindow: public QMainWindow
     Q_OBJECT
 public:
     CYearWindow(QWidget *parent = nullptr);
-    ~CYearWindow() Q_DECL_OVERRIDE;
+    ~CYearWindow() override;
     void setDate(QDate date);
     void initUI();
     void initConnection();
@@ -78,10 +78,11 @@ public slots:
     void setYearData();
     void slotUpdateCurrentDate(const QDate &date);
 protected:
-    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
-    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     DFrame *m_contentBackground = nullptr;
     DIconButton *m_prevButton = nullptr;
@@ -107,7 +108,7 @@ class YearFrame : public DFrame
     Q_OBJECT
 public:
     explicit YearFrame(DWidget *parent = nullptr);
-    ~YearFrame() Q_DECL_OVERRIDE;
+    ~YearFrame() override;
     void setDate(QDate &date);
     void getInfoAndSetLineFlag();
     void setTheMe(int type = 0);
@@ -122,7 +123,7 @@ public:
     }
     void getLunarData();
 protected:
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) override;
 signals:
     void signaldoubleclickDate(QDate date);
     void signalselectWeekwindow(QDate date);
