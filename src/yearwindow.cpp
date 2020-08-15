@@ -545,11 +545,11 @@ void YearFrame::setDate(QDate &date)
 {
     if (!date.isValid()) return;
     m_currentdate = date;
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
         QDate tdate(m_currentdate.year(), i + 1, 1);
         m_monthViewList.at(i)->setCurrentDate(tdate, 0);
     }
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
         QDate tdate(m_currentdate.year(), i + 1, 1);
         if (date.year() == tdate.year() && date.month() == tdate.month()) {
             m_monthViewList.at(i)->setCurrentDate(date, 1);
@@ -561,7 +561,7 @@ void YearFrame::setDate(QDate &date)
 
 void YearFrame::getInfoAndSetLineFlag()
 {
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
         m_monthViewList.at(i)->getInfoAndSetLineFlag();
     }
 }
@@ -599,10 +599,9 @@ void YearFrame::setTheMe(int type)
         m_YearLunarLabel->setPalette(Lunapa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
     }
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
         m_monthViewList.at(i)->setTheMe(type);
     }
-
 }
 
 void YearFrame::setSearchWFlag(bool flag)
