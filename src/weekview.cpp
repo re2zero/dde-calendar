@@ -124,10 +124,9 @@ void CWeekView::paintCell(QWidget *cell)
     //计算当前日期周数
     int weekNumber = QDate::currentDate().weekNumber();
     //In accordance with ISO 8601, weeks start on Monday and the first
-    if (QDate::currentDate().dayOfWeek()==7) {
+    if (QDate::currentDate().dayOfWeek() == DDEWeekCalendar::AFewDaysofWeek) {
         ++weekNumber;
     }
-
 
     const bool isCurrentDay = m_days[pos].addDays(3).weekNumber() == weekNumber &&
                               m_days[pos].addDays(3).year() == QDate::currentDate().year();
@@ -223,14 +222,14 @@ void CWeekView::setSelectedCell(int index)
 
 void CWeekView::updateDate()
 {
-    m_weekAddDay = (m_selectDate.dayOfWeek() + m_firstWeekDay) % 7;
+    m_weekAddDay = (m_selectDate.dayOfWeek() + m_firstWeekDay) % DDEWeekCalendar::AFewDaysofWeek;
     QDate weekfirstDay = m_selectDate.addDays(-m_weekAddDay);
     m_days[4] = weekfirstDay;
     for (int i(0); i < 4; ++i) {
-        m_days[i] = weekfirstDay.addDays(-(4 - i) * 7);
+        m_days[i] = weekfirstDay.addDays(-(4 - i) * DDEWeekCalendar::AFewDaysofWeek);
     }
     for (int i(5); i != 10; ++i) {
-        m_days[i] = weekfirstDay.addDays((i - 4) * 7);
+        m_days[i] = weekfirstDay.addDays((i - 4) * DDEWeekCalendar::AFewDaysofWeek);
     }
 
     setSelectedCell(4);
