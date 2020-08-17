@@ -126,14 +126,14 @@ void CMonthGraphiview::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 void CMonthGraphiview::updateSize()
 {
     m_Scene->setSceneRect(this->viewport()->rect());
-    qreal w = m_Scene->width()/7;
-    qreal h = m_Scene->height()/6;
+    qreal w = m_Scene->width() / DDEMonthCalendar::AFewDaysofWeek;
+    qreal h = m_Scene->height() / DDEMonthCalendar::LinesNumofMonth;
     QRectF rect ;
     int w_offset = 0;
     int h_offset = 0;
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
-        h_offset = i / 7;
-        w_offset = i % 7;
+        h_offset = i / DDEMonthCalendar::AFewDaysofWeek;
+        w_offset = i % DDEMonthCalendar::AFewDaysofWeek;
         rect.setRect(w*w_offset,
                      h*h_offset,
                      w,
@@ -247,8 +247,8 @@ QDateTime CMonthGraphiview::getPosDate(const QPoint &p)
     } else {
         y = p.y();
     }
-    int xoffset = qFloor(x/(rect.width()/7))%7;
-    int yoffset = qFloor(y/(rect.height()/6))%6;
+    int xoffset = qFloor(x / (rect.width() / DDEMonthCalendar::AFewDaysofWeek)) % DDEMonthCalendar::AFewDaysofWeek;
+    int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumofMonth)) % DDEMonthCalendar::LinesNumofMonth;
     return  QDateTime(m_DayItem[xoffset+yoffset*7]->getDate(),
                       QTime(0,0,0));
 }
@@ -467,7 +467,7 @@ void CMonthGraphiview::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &p
     } else {
         y = pos.y();
     }
-    int yoffset = qFloor(y/(rect.height()/6))%6;
+    int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumofMonth)) % DDEMonthCalendar::LinesNumofMonth;
     info.IsMoveInfo = true;
     m_MonthSchceduleView->updateDate(yoffset,info);
 }
