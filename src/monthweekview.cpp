@@ -49,8 +49,7 @@ void CMonthWeekView::setList(int weekday)
     }
     m_weekData.clear();
     QLocale locale;
-    for (int i = 0; i != 7; ++i) {
-
+    for (int i = 0; i != DDEMonthCalendar::AFewDaysofWeek; ++i) {
         int d = checkDay(i + weekday);
 
         QVBoxLayout *hhLayout = new QVBoxLayout;
@@ -59,7 +58,7 @@ void CMonthWeekView::setList(int weekday)
         hhLayout->setContentsMargins(0, 0, 0, 0);
 
         CustomFrame *label = new CustomFrame();
-        label->setTextStr(locale.dayName(d ? d : 7, QLocale::ShortFormat));
+        label->setTextStr(locale.dayName(d ? d : DDEMonthCalendar::AFewDaysofWeek, QLocale::ShortFormat));
         label->setContentsMargins(0, 0, 0, 0);
         QFont weekfont;
         weekfont.setWeight(QFont::Medium);
@@ -67,7 +66,7 @@ void CMonthWeekView::setList(int weekday)
         label->setTextFont(weekfont);
         if (i ==0) {
             label->setRoundState(true, false, false, false);
-        } else if (i==6) {
+        } else if (i == DDEMonthCalendar::AFewDaysofWeek - 1) {
             label->setRoundState(false, true, false, false);
         }
         if (d == 0) {
@@ -76,7 +75,7 @@ void CMonthWeekView::setList(int weekday)
             label->setTextColor(colorSeven);
             label->setBColor(textbC);
             m_weekData.append(qMakePair(label, 1));
-        } else if (d == 6) {
+        } else if (d == DDEMonthCalendar::AFewDaysofWeek - 1) {
             QColor textbC(0, 66, 154);
             QColor colorSix = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
             label->setTextColor(colorSix);
@@ -97,7 +96,7 @@ void CMonthWeekView::setList(int weekday)
         }
 
         DHorizontalLine *splitline = new DHorizontalLine;
-        if (i == 0 || i == 6) {
+        if (i == 0 || i == DDEMonthCalendar::AFewDaysofWeek - 1) {
             label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, DDEMonthCalendar::MWeekCellHeight);
             splitline->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, 2);
         } else {
@@ -161,7 +160,7 @@ void CMonthWeekView::updateWeek()
     QDate date = QDate::currentDate();
     int d = date.dayOfWeek();
     QLocale locale;
-    QString str = locale.dayName(d ? d : 7, QLocale::ShortFormat);
+    QString str = locale.dayName(d ? d : DDEMonthCalendar::AFewDaysofWeek, QLocale::ShortFormat);
     for (int i = 0; i < m_vline.count(); ++i) {
 
         if (m_weekData.at(i).first->getTextStr() == str) {
@@ -173,7 +172,7 @@ void CMonthWeekView::updateWeek()
 int CMonthWeekView::checkDay(int weekday)
 {
     // check the week, calculate the correct order in the custom.
-    return weekday % 7;
+    return weekday % DDEMonthCalendar::AFewDaysofWeek;
 }
 
 void CMonthWeekView::resizeEvent(QResizeEvent *event)
