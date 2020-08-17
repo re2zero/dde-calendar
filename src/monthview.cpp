@@ -222,7 +222,7 @@ void CMonthView::setLunarVisible(bool visible)
 
 int CMonthView::getDateIndex(const QDate &date) const
 {
-    for (int i = 0; i != 42; ++i)
+    for (int i = 0; i != DDEMonthCalendar::ItemSizeofMonthDay; ++i)
         if (m_days[i] == date)
             return i;
 
@@ -240,7 +240,7 @@ void CMonthView::updateDate()
     if (currentIndex < 0) {
         return;
     }
-    for (int i(0); i != 42; ++i) {
+    for (int i(0); i != DDEMonthCalendar::ItemSizeofMonthDay; ++i) {
         m_days[i] = firstDay.addDays(i - day);
     }
     m_MonthGraphicsView->setDate(m_days);
