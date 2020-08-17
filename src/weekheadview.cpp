@@ -68,7 +68,7 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     hboxLayout->addWidget(m_monthLabel);
     hboxLayout->setStretch(0, 0);
     hboxLayout->setSpacing(0);
-    for (int c = 0; c != 7; ++c) {
+    for (int c = 0; c != DDEWeekCalendar::AFewDaysofWeek; ++c) {
         QWidget *cell = new QWidget(this);
         cell->installEventFilter(this);
         cell->setFocusPolicy(Qt::ClickFocus);
@@ -132,7 +132,7 @@ int CWeekHeadView::getDateType(const QDate &date)
     const CaLunarDayInfo info = getCaLunarDayInfo(currentIndex);
 
     const int dayOfWeek = date.dayOfWeek();
-    bool weekends = dayOfWeek == 6 || dayOfWeek == 7;
+    bool weekends = dayOfWeek == DDEWeekCalendar::FirstDayofWeekend || dayOfWeek == DDEWeekCalendar::AFewDaysofWeek;
     bool isCurrentMonth = m_currentDate.month() == date.month();
     bool isFestival = !info.mSolarFestival.isEmpty() || !info.mLunarFestival.isEmpty();
 
@@ -188,14 +188,15 @@ void CWeekHeadView::setTheMe(int type)
         m_backgroudColor.setAlphaF(0.1);
         m_solofestivalLunarColor = "#4DFF7272";
     }
-    for (int i = 0; i != 7; ++i)
+    for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i)
         m_cellList.at(i)->update();
 }
 
 void CWeekHeadView::setWeekDay(QVector<QDate> vDays)
 {
-    if (vDays.count() != 7) return;
-    for (int i = 0; i != 7; ++i)
+    if (vDays.count() != DDEWeekCalendar::AFewDaysofWeek)
+        return;
+    for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i)
         m_days[i] = vDays[i];
 }
 
@@ -261,7 +262,7 @@ void CWeekHeadView::setCellSelectable(bool selectable)
 
 int CWeekHeadView::getDateIndex(const QDate &date) const
 {
-    for (int i = 0; i != 7; ++i)
+    for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i)
         if (m_days[i] == date)
             return i;
 
@@ -311,7 +312,7 @@ void CWeekHeadView::updateCurrentLunar(const CaLunarDayInfo &info)
     }
     QVector<QDate> vdate;
     QVector<CaLunarDayInfo> vdetail;
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < DDEWeekCalendar::AFewDaysofWeek; i++) {
         vdate.append(m_days[i]);
         vdetail.append(getCaLunarDayInfo(getDateIndex(m_days[i])));
     }
@@ -418,7 +419,8 @@ void CWeekHeadView::paintCell(QWidget *cell)
     painter.setBrush(QBrush(m_backgroudColor));
     if (d != 6) {
         painter.drawRect(rect);//画矩形
-        if (d == 6 || d == 7)  painter.drawRect(rect); //画矩形
+        if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
+            painter.drawRect(rect); //画矩形
     } else {
         int labelwidth = cell->width();
         int labelheight = cell->height();
@@ -482,7 +484,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     QLocale locale;
     const QString dayNum = getCellDayNum(pos);
     const QString dayLunar = getLunar(pos);
-    QString dayWeek = locale.dayName(d ? d : 7, QLocale::ShortFormat);
+    QString dayWeek = locale.dayName(d ? d : DDEWeekCalendar::AFewDaysofWeek, QLocale::ShortFormat);
 
     painter.save();
     painter.setPen(Qt::SolidLine);
@@ -492,7 +494,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     } else if (isCurrentDay) {
         painter.setPen(m_weekendsTextColor);
     } else {
-        if (d == 6 || d == 7)
+        if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
@@ -501,7 +503,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     painter.setFont(m_dayNumFont);
     if (m_showState & ShowLunar) {
         painter.drawText(QRect(bw - 1, bh, 24, 24), Qt::AlignCenter, dayNum);
-        if (d == 6 || d == 7)
+        if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
@@ -510,7 +512,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     } else {
         QFontMetrics fm1 = painter.fontMetrics();
         painter.drawText(QRect(cell->width() - (cell->width()/2) - 4, bh - 1, 36, 26), Qt::AlignCenter, dayNum);
-        if (d == 6 || d == 7)
+        if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
@@ -523,7 +525,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     // draw text of day type
     if (m_showState & ShowLunar) {
         if (cell->width() > 100) {
-            if (d == 6 || d == 7)
+            if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
                 painter.setPen(m_weekendsTextColor);
             else
                 painter.setPen(m_defaultLunarColor);
@@ -584,10 +586,10 @@ int CWeekHeadView::checkDay(int weekday)
 {
     // check the week, calculate the correct order in the custom.
     if (weekday <= 0)
-        return weekday += 7;
+        return weekday += DDEWeekCalendar::AFewDaysofWeek;
 
-    if (weekday > 7)
-        return weekday -= 7;
+    if (weekday > DDEWeekCalendar::AFewDaysofWeek)
+        return weekday -= DDEWeekCalendar::AFewDaysofWeek;
 
     return weekday;
 }
