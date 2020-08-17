@@ -373,7 +373,7 @@ void CWeekWindow::slotTransitSearchSchedule(int id)
 void CWeekWindow::slotprev()
 {
     slotScheduleHide();
-    QDate tcurrent = m_currentdate.addDays(-7);
+    QDate tcurrent = m_currentdate.addDays(-DDEWeekCalendar::AFewDaysofWeek);
     if (tcurrent.year() < DDECalendar::QueryEarliestYear)
         return;
     if (m_currentdate.year() >= DDECalendar::QueryEarliestYear) {
@@ -386,7 +386,8 @@ void CWeekWindow::slotprev()
 void CWeekWindow::slotnext()
 {
     slotScheduleHide();
-    m_currentdate = m_currentdate.addDays(7);;
+    m_currentdate = m_currentdate.addDays(DDEWeekCalendar::AFewDaysofWeek);
+    ;
     setDate(m_currentdate);
 }
 
@@ -400,7 +401,7 @@ void CWeekWindow::slottoday()
 void CWeekWindow::slotCurrentWeek(QDate date, QDate currentDate)
 {
     QVector<QDate> vDate;
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < DDEWeekCalendar::AFewDaysofWeek; i++)
         vDate.append(date.addDays(i));
     emit signalCurrentDate(vDate[0]);
     m_currentdate = currentDate;
