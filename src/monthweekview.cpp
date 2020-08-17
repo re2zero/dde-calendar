@@ -62,7 +62,7 @@ void CMonthWeekView::setList(int weekday)
         label->setContentsMargins(0, 0, 0, 0);
         QFont weekfont;
         weekfont.setWeight(QFont::Medium);
-        weekfont.setPixelSize(16);
+        weekfont.setPixelSize(DDECalendar::FontSizeSixteen);
         label->setTextFont(weekfont);
         if (i ==0) {
             label->setRoundState(true, false, false, false);
