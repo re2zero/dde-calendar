@@ -209,7 +209,7 @@ CMonthRect         *CMonthRect::m_SelectRect = nullptr;
 
 CMonthRect::CMonthRect()
 {
-    m_dayNumFont.setPixelSize(16);
+    m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_dayNumFont.setWeight(QFont::Light);
 }
 
