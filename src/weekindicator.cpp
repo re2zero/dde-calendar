@@ -42,11 +42,10 @@ void WeekIndicator::setList(int weekday)
     }
 
     QLocale locale;
-    for (int i = 0; i != 7; ++i) {
-
+    for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i) {
         int d = checkDay(i - weekday);
 
-        DLabel *label = new DLabel(locale.dayName(d ? d : 7, QLocale::ShortFormat));
+        DLabel *label = new DLabel(locale.dayName(d ? d : DDEWeekCalendar::AFewDaysofWeek, QLocale::ShortFormat));
 
         if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
             label->setObjectName("CalendarHeaderWeekend");
@@ -64,10 +63,10 @@ int WeekIndicator::checkDay(int weekday)
 {
     // check the week, calculate the correct order in the custom.
     if (weekday <= 0)
-        return weekday += 7;
+        return weekday += DDEWeekCalendar::AFewDaysofWeek;
 
-    if (weekday > 7)
-        return weekday -= 7;
+    if (weekday > DDEWeekCalendar::AFewDaysofWeek)
+        return weekday -= DDEWeekCalendar::AFewDaysofWeek;
 
     return weekday;
 }
