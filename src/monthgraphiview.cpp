@@ -46,7 +46,7 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
     connect(this,&CMonthGraphiview::signalFontChange,
             m_MonthSchceduleView,&CMonthSchceduleView::slotFontChange);
 
-    for (int i = 0; i < 42; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::ItemSizeofMonthDay; ++i) {
         CDayGraphicsItem *item = new CDayGraphicsItem();
         item->setZValue(-1);
         m_DayItem.append(item);
