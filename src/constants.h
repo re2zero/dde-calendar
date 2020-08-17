@@ -95,12 +95,15 @@ static const int MTodayHeight = 36;
 //static const int M_MWindowHeight = 162;
 }
 namespace DDEWeekCalendar {
-static const int WCellHeaderItemWidth = 109;
-static const int WCellHeaderItemHeight = 54;
+static const int FirstDayofWeekend = 6;
+static const int AFewDaysofWeek = 7;
+
+//static const int WCellHeaderItemWidth = 109;
+//static const int WCellHeaderItemHeight = 54;
 static const int WMCellHeadrWidth = 80;
 
-static const int MCellHighlightWidth = 120;
-static const int MCellHighlightHeight = 74;
+//static const int MCellHighlightWidth = 120;
+//static const int MCellHighlightHeight = 74;
 
 static const int WWeekCellWidth = 36;
 static const int WWeekCellHeight = 36;
