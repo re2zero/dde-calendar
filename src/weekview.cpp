@@ -37,7 +37,7 @@ DWIDGET_USE_NAMESPACE
 CWeekView::CWeekView(QWidget *parent)
     : QWidget(parent)
 {
-    m_dayNumFont.setPixelSize(16);
+    m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_dayNumFont.setWeight(QFont::Light);
     // cells grid
     QHBoxLayout *hboxLayout = new QHBoxLayout;
