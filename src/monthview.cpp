@@ -232,9 +232,9 @@ int CMonthView::getDateIndex(const QDate &date) const
 void CMonthView::updateDate()
 {
     const QDate firstDay(m_currentDate.year(), m_currentDate.month(), 1);
-    int offset = firstDay.dayOfWeek() % 7 - m_firstWeekDay ;
+    int offset = firstDay.dayOfWeek() % DDEMonthCalendar::AFewDaysofWeek - m_firstWeekDay;
 
-    const int day = offset <0 ?offset +7:offset;
+    const int day = offset < 0 ? offset + DDEMonthCalendar::AFewDaysofWeek : offset;
     const int currentIndex = day + m_currentDate.day() - 1;
 
     if (currentIndex < 0) {
