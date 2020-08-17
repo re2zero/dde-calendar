@@ -49,9 +49,9 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     if (!emptyCaLunarDayInfo)
         emptyCaLunarDayInfo = new CaLunarDayInfo;
     m_dayNumFont.setWeight(QFont::Medium);
-    m_dayNumFont.setPixelSize(16);
+    m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_monthFont.setWeight(QFont::Medium);
-    m_monthFont.setPixelSize(20);
+    m_monthFont.setPixelSize(DDECalendar::FontSizeTwenty);
 
     // cells grid
     QHBoxLayout *hboxLayout = new QHBoxLayout;
@@ -63,7 +63,7 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     m_monthLabel->setRoundState(true, false, false, false);
     QFont mlabelF;
     mlabelF.setWeight(QFont::Medium);
-    mlabelF.setPixelSize(20);
+    mlabelF.setPixelSize(DDECalendar::FontSizeTwenty);
     m_monthLabel->setTextFont(mlabelF);
     hboxLayout->addWidget(m_monthLabel);
     hboxLayout->setStretch(0, 0);
