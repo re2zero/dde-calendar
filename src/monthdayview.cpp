@@ -63,7 +63,7 @@ void CMonthDayView::setCurrentDate(const QDate date)
     for (int i(4); i >= 0; i--) {
         m_days[4 - i] = m_selectDate.addMonths(-i - 1);
     }
-    for (int i(6); i != 12; ++i) {
+    for (int i(6); i != DDEMonthCalendar::MonthNumofYear; ++i) {
         m_days[i] = m_selectDate.addMonths(i - 5);
     }
     update();
@@ -79,7 +79,7 @@ void CMonthDayView::setRCurrentDate(const QDate date)
     for (int i(4); i >= 0; i--) {
         m_days[4 - i] = m_selectDate.addMonths(-i - 1);
     }
-    for (int i(6); i != 12; ++i) {
+    for (int i(6); i != DDEMonthCalendar::MonthNumofYear; ++i) {
         m_days[i] = m_selectDate.addMonths(i - 5);
     }
     m_monthWidget->setDate(m_days);
@@ -117,7 +117,7 @@ void CMonthDayView::setsearchfalg(bool flag)
 CMonthWidget::CMonthWidget(QWidget *parent)
     :QWidget(parent)
 {
-    for (int i = 0; i < 12; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         CMonthRect *monthrect = new CMonthRect();
         m_MonthItem.append(monthrect);
     }
@@ -125,7 +125,7 @@ CMonthWidget::CMonthWidget(QWidget *parent)
 
 CMonthWidget::~CMonthWidget()
 {
-    for (int i = 0; i < 12; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         CMonthRect *monthrect = m_MonthItem.at(i);
         delete  monthrect;
     }
@@ -134,7 +134,7 @@ CMonthWidget::~CMonthWidget()
 
 void CMonthWidget::setDate(const QDate date[12])
 {
-    for (int i = 0 ; i <12; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         m_MonthItem.at(i)->setDate(date[i]);
     }
     CMonthRect::setSelectRect(m_MonthItem.at(5));
