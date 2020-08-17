@@ -60,6 +60,9 @@ static const int Y_YLableHeight = 45;
 }
 namespace DDEMonthCalendar {
 static const int ItemSizeofMonthDay = 42;
+
+static const int AFewDaysofWeek = 7;
+static const int LinesNumofMonth = 6;
 //static const int MHeaderItemWidth = 60;
 //static const int MHeaderItemHeight = 33;
 //static const int MEventsItemHeight = 36;
