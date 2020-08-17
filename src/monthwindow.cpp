@@ -218,7 +218,7 @@ void CMonthWindow::initUI()
     todaypa.setColor(DPalette::Shadow, sbcolor);
     QFont todayfont;
     todayfont.setWeight(QFont::Medium);
-    todayfont.setPixelSize(14);
+    todayfont.setPixelSize(DDECalendar::FontSizeFourteen);
     m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
     m_YearLabel = new QLabel();
@@ -228,13 +228,13 @@ void CMonthWindow::initUI()
 
     QFont ylabelF;
     ylabelF.setWeight(QFont::Medium);
-    ylabelF.setPixelSize(24);
+    ylabelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
     m_YearLabel->setFont(ylabelF);
     DPalette pa = m_YearLabel->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_YearLabel->setPalette(pa);
 
-    ylabelF.setPixelSize(14);
+    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_YearLunarLabel->setFont(ylabelF);
     DPalette Lunarpa = m_YearLunarLabel->palette();
     Lunarpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
