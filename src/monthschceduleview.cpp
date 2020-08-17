@@ -462,10 +462,10 @@ void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>
 
 void CMonthSchceduleView::splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData)
 {
-    int brow = static_cast<int>((m_beginDate.daysTo(old.bdate) + 1) / 7);
-    int erow = static_cast<int>((m_beginDate.daysTo(old.edate) + 1) / 7);
-    int bcol = (m_beginDate.daysTo(old.bdate) + 1) % 7;
-    int ecol = (m_beginDate.daysTo(old.edate) + 1) % 7;
+    int brow = static_cast<int>((m_beginDate.daysTo(old.bdate) + 1) / DDEMonthCalendar::AFewDaysofWeek);
+    int erow = static_cast<int>((m_beginDate.daysTo(old.edate) + 1) / DDEMonthCalendar::AFewDaysofWeek);
+    int bcol = (m_beginDate.daysTo(old.bdate) + 1) % DDEMonthCalendar::AFewDaysofWeek;
+    int ecol = (m_beginDate.daysTo(old.edate) + 1) % DDEMonthCalendar::AFewDaysofWeek;
     if (bcol != 0) brow = brow + 1;
     if (ecol != 0) erow = erow + 1;
     if (brow > erow) {
@@ -474,17 +474,17 @@ void CMonthSchceduleView::splitSchedule(MScheduleDateRangeInfo &old, QVector<MSc
     if (brow == erow) {
         newData.append(old);
     } else {
-        bcol =  bcol ? bcol : 7;
-        ecol =  ecol ? ecol : 7;
+        bcol = bcol ? bcol : DDEMonthCalendar::AFewDaysofWeek;
+        ecol = ecol ? ecol : DDEMonthCalendar::AFewDaysofWeek;
         //处理开始
         MScheduleDateRangeInfo bfirst = old;
-        bfirst.edate = bfirst.bdate.addDays(7 - bcol);
+        bfirst.edate = bfirst.bdate.addDays(DDEMonthCalendar::AFewDaysofWeek - bcol);
         newData.append(bfirst);
         //处理中间数据
         for (int i = brow + 1; i < erow; i++) {
             MScheduleDateRangeInfo info = old;
-            info.bdate = m_beginDate.addDays((i - 1) * 7);
-            info.edate = m_beginDate.addDays((i - 1) * 7 + 6);
+            info.bdate = m_beginDate.addDays((i - 1) * DDEMonthCalendar::AFewDaysofWeek);
+            info.edate = m_beginDate.addDays((i - 1) * DDEMonthCalendar::AFewDaysofWeek + 6);
             newData.append(info);
         }
 
@@ -557,9 +557,9 @@ void CMonthSchceduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, i
 
 void CMonthSchceduleView::computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh)
 {
-    int brow = static_cast<int>((m_beginDate.daysTo(bgeindate)) / 7);
-    int bcol = (m_beginDate.daysTo(bgeindate) ) % 7;
-    int ecol = (m_beginDate.daysTo(enddate) ) % 7;
+    int brow = static_cast<int>((m_beginDate.daysTo(bgeindate)) / DDEMonthCalendar::AFewDaysofWeek);
+    int bcol = (m_beginDate.daysTo(bgeindate)) % DDEMonthCalendar::AFewDaysofWeek;
+    int ecol = (m_beginDate.daysTo(enddate)) % DDEMonthCalendar::AFewDaysofWeek;
 
     fw = static_cast<int>((ecol - bcol + 1) * ((m_width - m_leftMagin ) / 7.0) - 11);
     fh = m_ItemHeight;
