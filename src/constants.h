@@ -34,12 +34,14 @@ static const int QueryEarliestYear = 1900;
 static const int QueryLatestYear = 9999;
 
 static const int FestivalTypeID = 4;
-}
-namespace DDEYearCalendar {
+
 static const int FontSizeTwelve = 12;
 static const int FontSizeFourteen = 14;
 static const int FontSizeSixteen = 16;
 static const int FontSizeTwentyfour = 24;
+static const int FontSizeTwenty = 20;
+} // namespace DDECalendar
+namespace DDEYearCalendar {
 
 static const int RectSizeofEveyMonth = 42;
 static const int FrameSizeofEveryYear = 12;
@@ -57,7 +59,7 @@ static const int Y_MLableHeight = 36;
 static const int Y_YLableHeight = 45;
 //static const int Y_MWindowWidth = 202;
 //static const int Y_MWindowHeight = 159;
-}
+} // namespace DDEYearCalendar
 namespace DDEMonthCalendar {
 static const int ItemSizeofMonthDay = 42;
 
