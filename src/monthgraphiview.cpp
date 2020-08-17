@@ -530,10 +530,10 @@ CDayGraphicsItem::CDayGraphicsItem(QGraphicsItem *parent)
     , m_DayLunar("")
     , m_DayStatus(H_NONE)
 {
-    m_dayNumFont.setPixelSize(24);
+    m_dayNumFont.setPixelSize(DDECalendar::FontSizeTwentyfour);
     m_dayNumFont.setWeight(QFont::Light);
 
-    m_LunerFont.setPixelSize(12);
+    m_LunerFont.setPixelSize(DDECalendar::FontSizeTwelve);
     m_LunerFont.setWeight(QFont::Normal);
 }
 
@@ -675,7 +675,7 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     }
     if (m_Date ==QDate::currentDate()) {
         QFont tfont = m_dayNumFont;
-        tfont.setPixelSize(20);
+        tfont.setPixelSize(DDECalendar::FontSizeTwenty);
         painter->setFont(tfont);
         painter->setPen(m_dayNumCurrentColor);
 
