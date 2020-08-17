@@ -64,7 +64,7 @@ CYearView::CYearView(QWidget *parent)
     m_currentMouth->setTextAlign(Qt::AlignLeft);
 
     m_momthFont.setWeight(QFont::Medium);
-    m_momthFont.setPixelSize(DDEYearCalendar::FontSizeSixteen);
+    m_momthFont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_currentMouth->setTextFont(m_momthFont);
 
     QHBoxLayout *separatorLineLayout = new QHBoxLayout;
@@ -492,8 +492,8 @@ void CYearMonthView::leaveEvent(QEvent *event)
 CMonthDayRect::CMonthDayRect()
     :m_rect(0,0,0,0)
 {
-    m_dayNumFont.setPixelSize(DDEYearCalendar::FontSizeTwelve);
-    m_hightFont.setPixelSize(DDEYearCalendar::FontSizeTwelve);
+    m_dayNumFont.setPixelSize(DDECalendar::FontSizeTwelve);
+    m_hightFont.setPixelSize(DDECalendar::FontSizeTwelve);
 }
 
 void CMonthDayRect::setTheMe(int type)
@@ -580,9 +580,9 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
     }
 
     const qreal r = rect.width() > rect.height() ? rect.height() * 0.9 : rect.width() * 0.9 ;
-    int fontsize = qRound(DDEYearCalendar::FontSizeTwelve + (r - 18) * 6 / 17);
-    if (fontsize < DDEYearCalendar::FontSizeTwelve) {
-        fontsize = DDEYearCalendar::FontSizeTwelve;
+    int fontsize = qRound(DDECalendar::FontSizeTwelve + (r - 18) * 6 / 17);
+    if (fontsize < DDECalendar::FontSizeTwelve) {
+        fontsize = DDECalendar::FontSizeTwelve;
     }
     m_dayNumFont.setPixelSize(fontsize);
     m_hightFont.setPixelSize(fontsize);
