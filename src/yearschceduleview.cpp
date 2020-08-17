@@ -348,7 +348,7 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
     CYearSchceduleItem *gwi = new CYearSchceduleItem();
     QFont font;
     font.setWeight(QFont::Medium);
-    font.setPixelSize(DDEYearCalendar::FontSizeFourteen);
+    font.setPixelSize(DDECalendar::FontSizeFourteen);
     gwi->setBackgroundColor(m_bBackgroundcolor);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
@@ -358,7 +358,7 @@ void CYearSchceduleView::createItemWidget(ScheduleDtailInfo info, int type)
         gwi->setStateColor(m_solocolor);
     }
     gwi->setText(m_bttextcolor, font);
-    font.setPixelSize(DDEYearCalendar::FontSizeTwelve);
+    font.setPixelSize(DDECalendar::FontSizeTwelve);
     gwi->setTimeC(m_btimecolor, font);
     gwi->setFixedSize(m_gradientItemList->width() - 3, 28);
     gwi->setData(gd);
@@ -395,7 +395,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 
     QFont font;
     font.setWeight(QFont::Medium);
-    font.setPixelSize(DDEYearCalendar::FontSizeTwelve);
+    font.setPixelSize(DDECalendar::FontSizeTwelve);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
 
@@ -508,7 +508,7 @@ void CYearSchceduleView::paintItem(ScheduleDtailInfo info, int index, int type)
 void CYearSchceduleView::paintItem()
 {
     QFont font;
-    font.setPixelSize(DDEYearCalendar::FontSizeTwelve);
+    font.setPixelSize(DDECalendar::FontSizeTwelve);
     QPainter painter(this);
     QRect fillRect = QRect(0, 0, width(), height());
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
