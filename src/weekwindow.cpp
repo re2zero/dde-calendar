@@ -98,7 +98,7 @@ void CWeekWindow::initUI()
     todaypa.setColor(DPalette::Shadow, sbcolor);
     QFont todayfont;
     todayfont.setWeight(QFont::Medium);
-    todayfont.setPixelSize(14);
+    todayfont.setPixelSize(DDECalendar::FontSizeFourteen);
     m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
@@ -110,7 +110,7 @@ void CWeekWindow::initUI()
 
     QFont t_labelF;
     t_labelF.setWeight(QFont::Medium);
-    t_labelF.setPixelSize(24);
+    t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
     m_YearLabel->setFont(t_labelF);
     DPalette Lunadpa = m_YearLabel->palette();
     Lunadpa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -125,7 +125,7 @@ void CWeekWindow::initUI()
     m_weekLabel->setFixedHeight(DDEWeekCalendar::W_YLableHeight);
     QFont weeklabelF;
     weeklabelF.setWeight(QFont::Medium);
-    weeklabelF.setPixelSize(14);
+    weeklabelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_weekLabel->setFont(weeklabelF);
     DPalette wpa = m_weekLabel->palette();
     wpa.setColor(DPalette::WindowText, QColor("#717171"));
@@ -134,7 +134,7 @@ void CWeekWindow::initUI()
 
     QFont ylabelF;
     ylabelF.setWeight(QFont::Medium);
-    ylabelF.setPixelSize(14);
+    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_YearLunarLabel->setFont(ylabelF);
     DPalette YearLpa = m_YearLunarLabel->palette();
     YearLpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
