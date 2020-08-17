@@ -372,7 +372,8 @@ bool MScheduleDaysThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRang
 void CMonthSchceduleView::updateData()
 {
     //保护数据防止越界
-    if (m_data.count() != 42 || m_cNum < 1) return;
+    if (m_data.count() != DDEMonthCalendar::ItemSizeofMonthDay || m_cNum < 1)
+        return;
     //开始结束时间
     QDate begindate = m_data.begin()->date;
     QDate enddate = m_data[m_data.count() - 1].date;
