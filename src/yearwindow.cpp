@@ -94,7 +94,7 @@ void CYearWindow::initUI()
     m_today->installEventFilter(this);
 
     QFont todayfont;
-    todayfont.setPixelSize(DDEYearCalendar::FontSizeSixteen);
+    todayfont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_today->setFont(todayfont);
     m_today->setAlignment(Qt::AlignCenter);
 
@@ -116,7 +116,7 @@ void CYearWindow::initUI()
 
     QFont t_labelF;
     t_labelF.setWeight(QFont::Medium);
-    t_labelF.setPixelSize(DDEYearCalendar::FontSizeTwentyfour);
+    t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
     m_YearLabel->setFont(t_labelF);
     DPalette pa = m_YearLabel->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -127,7 +127,7 @@ void CYearWindow::initUI()
 
     QFont ylabelF;
     ylabelF.setWeight(QFont::Medium);
-    ylabelF.setPixelSize(DDEYearCalendar::FontSizeFourteen);
+    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_YearLunarLabel->setFont(ylabelF);
     DPalette Lunapa = m_YearLunarLabel->palette();
     Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
@@ -488,7 +488,7 @@ YearFrame::YearFrame(DWidget *parent)
 
     QFont t_labelF;
     t_labelF.setWeight(QFont::Medium);
-    t_labelF.setPixelSize(DDEYearCalendar::FontSizeTwentyfour);
+    t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
     m_YearLabel->setFont(t_labelF);
     DPalette pa = m_YearLabel->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -499,7 +499,7 @@ YearFrame::YearFrame(DWidget *parent)
 
     QFont ylabelF;
     ylabelF.setWeight(QFont::Medium);
-    ylabelF.setPixelSize(DDEYearCalendar::FontSizeFourteen);
+    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_YearLunarLabel->setFont(ylabelF);
     DPalette Lunapa = m_YearLunarLabel->palette();
     Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
