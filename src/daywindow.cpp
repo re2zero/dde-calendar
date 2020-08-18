@@ -153,7 +153,7 @@ void CDayWindow::initUI()
     m_YearLabel->setMinimumHeight(DDEDayCalendar::D_YLableHeight);
     QFont labelF;
     labelF.setWeight(QFont::Medium);
-    labelF.setPixelSize(24);
+    labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
     m_YearLabel->setFont(labelF);
     DPalette ypa = m_YearLabel->palette();
     ypa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
@@ -162,7 +162,7 @@ void CDayWindow::initUI()
     m_LunarLabel = new QLabel();
     titleLayout->addSpacing(15);
     m_LunarLabel->setFixedHeight(DDEDayCalendar::D_YLableHeight);
-    labelF.setPixelSize(14);
+    labelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_LunarLabel->setFont(labelF);
     m_LunarLabel->setAlignment(Qt::AlignCenter);
     DPalette lpa = m_LunarLabel->palette();
@@ -170,7 +170,7 @@ void CDayWindow::initUI()
     m_LunarLabel->setPalette(lpa);
     titleLayout->addWidget(m_LunarLabel);
     m_SolarDay = new QLabel();
-    labelF.setPixelSize(10);
+    labelF.setPixelSize(DDECalendar::FontSizeTen);
     m_SolarDay->setFixedHeight(DDEDayCalendar::D_YLableHeight);
     m_SolarDay->setFont(labelF);
     m_SolarDay->setAlignment(Qt::AlignCenter);
