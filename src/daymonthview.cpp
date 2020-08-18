@@ -240,7 +240,7 @@ void CDayMonthView::setTheMe(int type)
         m_ceventColor = QColor(204, 77, 3);
     }
 
-    for (int i(0); i != 42; ++i) {
+    for (int i(0); i != DDEDayCalendar::PainterCellNum; ++i) {
         m_cellList.at(i)->update();
     }
 }
@@ -282,7 +282,7 @@ void CDayMonthView::setCellSelectable(bool selectable)
 
 int CDayMonthView::getDateIndex(const QDate &date) const
 {
-    for (int i = 0; i != 42; ++i)
+    for (int i = 0; i != DDEDayCalendar::PainterCellNum; ++i)
         if (m_days[i] == date)
             return i;
 
@@ -319,7 +319,7 @@ void CDayMonthView::updateDate()
         return;
     }
 
-    for (int i(0); i != 42; ++i) {
+    for (int i(0); i != DDEDayCalendar::PainterCellNum; ++i) {
         m_days[i] = firstDay.addDays(i - day);
     }
 
@@ -332,12 +332,12 @@ void CDayMonthView::getlineflag()
 {
     QLocale locale;
     CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
-    m_vlineflag.resize(42);
+    m_vlineflag.resize(DDEDayCalendar::PainterCellNum);
     m_vlineflag.fill(false);
     QVector<ScheduleDateRangeInfo> out;
     if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[0], m_days[41], out)) {
-        if (out.count() == 42)
-            for (int i = 0; i < 42; i++) {
+        if (out.count() == DDEDayCalendar::PainterCellNum)
+            for (int i = 0; i < DDEDayCalendar::PainterCellNum; i++) {
                 if (!out.at(i).vData.isEmpty()) {
                     m_vlineflag[i] = true;
                 }
@@ -582,7 +582,7 @@ void CDayMonthView::paintCell(QWidget *cell)
 
     painter.drawText(rect, Qt::AlignCenter, dayNum, &test);
 
-    if (m_vlineflag.count() == 42) {
+    if (m_vlineflag.count() == DDEDayCalendar::PainterCellNum) {
         if (m_vlineflag[pos]) {
             painter.save();
             painter.setRenderHint(QPainter::Antialiasing);
@@ -720,7 +720,7 @@ void CDayMonthView::resizeEvent(QResizeEvent *event)
     int buttonmagin = topmagin;
     m_upLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
     m_dayNumFont.setPixelSize(qRound(12 + (width() - 347) / 71.66));
-    for (int i(0); i != 42; ++i) {
+    for (int i(0); i != DDEDayCalendar::PainterCellNum; ++i) {
         m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
         m_cellList.at(i)->update();
     }
