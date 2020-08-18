@@ -148,7 +148,7 @@ void CDayMonthView::setTheMe(int type)
 
 
         QFont hlabelF;
-        hlabelF.setPixelSize(14);
+        hlabelF.setPixelSize(DDECalendar::FontSizeFourteen);
 
         QColor yicolor = QColor("#75C18E");
         yicolor.setAlphaF(0.1);
@@ -213,7 +213,7 @@ void CDayMonthView::setTheMe(int type)
 
         m_currentYear->setTextColor(QColor("#C0C6D4"));
         QFont hlabelF;
-        hlabelF.setPixelSize(14);
+        hlabelF.setPixelSize(DDECalendar::FontSizeFourteen);
 
         QColor yicolor = QColor("#2F8C4D");
         yicolor.setAlphaF(0.2);
@@ -347,7 +347,7 @@ void CDayMonthView::getlineflag()
 
 void CDayMonthView::initUI()
 {
-    m_dayNumFont.setPixelSize(12);
+    m_dayNumFont.setPixelSize(DDECalendar::FontSizeTwelve);
 
     m_today = new CTodyButton;
 
@@ -363,7 +363,7 @@ void CDayMonthView::initUI()
     sbcolor.setAlphaF(0.05);
     todaypa.setColor(DPalette::Shadow, sbcolor);
     QFont todayfont;
-    todayfont.setPixelSize(14);
+    todayfont.setPixelSize(DDECalendar::FontSizeFourteen);
     m_today->setFont(todayfont);
     m_today->setPalette(todaypa);
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
@@ -382,7 +382,7 @@ void CDayMonthView::initUI()
     m_currentMouth->setFixedSize(74, DDEDayCalendar::D_MLableHeight);
     QFont mlabelF;
     mlabelF.setWeight(QFont::Medium);
-    mlabelF.setPixelSize(24);
+    mlabelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
     m_currentMouth->setTextFont(mlabelF);
     m_currentMouth->setTextAlign(Qt::AlignCenter);
     titleLayout->addWidget(m_prevButton);
@@ -424,7 +424,7 @@ void CDayMonthView::initUI()
     m_currentDay->setTextAlign(Qt::AlignCenter);
     QFont daylabelF;
     daylabelF.setWeight(QFont::Medium);
-    daylabelF.setPixelSize(100);
+    daylabelF.setPixelSize(DDECalendar::FontSizeOneHundred);
     m_currentDay->setTextFont(daylabelF);
     midLayout->addWidget(m_currentDay);
 
@@ -433,7 +433,7 @@ void CDayMonthView::initUI()
     m_currentWeek->setFixedHeight(DDEDayCalendar::DWLableHeight);
     m_currentWeek->setTextAlign(Qt::AlignCenter);
     QFont wlabelF;
-    wlabelF.setPixelSize(16);
+    wlabelF.setPixelSize(DDECalendar::FontSizeSixteen);
     m_currentWeek->setTextFont(wlabelF);
     midLayout->addWidget(m_currentWeek);
     midLayout->addSpacing(2);
@@ -449,7 +449,7 @@ void CDayMonthView::initUI()
     m_currentLuna->setFixedHeight(DDEDayCalendar::DHualiInfoLableHeight);
     m_currentLuna->setTextAlign(Qt::AlignCenter);
     QFont hlabelF;
-    hlabelF.setPixelSize(12);
+    hlabelF.setPixelSize(DDECalendar::FontSizeTwelve);
     m_currentLuna->setTextFont(hlabelF);
     midLayout->addWidget(m_currentLuna);
 
@@ -458,7 +458,7 @@ void CDayMonthView::initUI()
     m_yidownLayout->setMargin(0);
     m_yidownLayout->setSpacing(0);
     m_yidownLayout->setContentsMargins(10, 5, 10, 0);
-    hlabelF.setPixelSize(14);
+    hlabelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_yiLabel = new CDayHuangLiLabel(this);
     m_yiLabel->setbackgroundColor(QColor("#75C18E"));
     m_yiLabel->setTextInfo(QColor("#7B7B7B "), hlabelF);
