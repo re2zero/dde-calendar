@@ -123,6 +123,8 @@ static const int W_MWindowWidth = 202;
 static const int W_MWindowHeight = 162;
 }
 namespace DDEDayCalendar {
+static const int PainterCellNum = 42;
+
 static const int DCellWidth = 35;
 static const int DCellHeight = 28;
 
