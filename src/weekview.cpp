@@ -43,7 +43,7 @@ CWeekView::CWeekView(QWidget *parent)
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
-    for (int c = 0; c != 10; ++c) {
+    for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
         QWidget *cell = new QWidget;
         cell->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
         cell->installEventFilter(this);
@@ -57,7 +57,7 @@ CWeekView::CWeekView(QWidget *parent)
 
 CWeekView::~CWeekView()
 {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < DDEWeekCalendar::NumWeeksDisplayed; i++) {
         m_cellList.at(i)->removeEventFilter(this);
         delete m_cellList.at(i);
     }
@@ -228,7 +228,7 @@ void CWeekView::updateDate()
     for (int i(0); i < 4; ++i) {
         m_days[i] = weekfirstDay.addDays(-(4 - i) * DDEWeekCalendar::AFewDaysofWeek);
     }
-    for (int i(5); i != 10; ++i) {
+    for (int i(5); i != DDEWeekCalendar::NumWeeksDisplayed; ++i) {
         m_days[i] = weekfirstDay.addDays((i - 4) * DDEWeekCalendar::AFewDaysofWeek);
     }
 
@@ -237,25 +237,25 @@ void CWeekView::updateDate()
 }
 void CWeekView::resizeEvent(QResizeEvent *event)
 {
-    int w = width() / 10;
+    int w = width() / DDEWeekCalendar::NumWeeksDisplayed;
     int h = height();
 
     int ww = 36;
     if (w >= ww) {
-        for (int c = 0; c != 10; ++c) {
+        for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
             m_cellList[c]->setFixedSize(w, h);
             m_cellList[c]->update();
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < DDEWeekCalendar::NumWeeksDisplayed; i++) {
             m_cellList[i]->setVisible(true);
             m_cellList[i]->update();
         }
     } else {
-        for (int c = 0; c != 10; ++c) {
+        for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
             m_cellList[c]->setFixedSize(ww, h);
             m_cellList[c]->update();
         }
-        int t_num = qRound((ww * 10 - width() ) / ww / 2.0);
+        int t_num = qRound((ww * DDEWeekCalendar::NumWeeksDisplayed - width()) / ww / 2.0);
         QVector<bool> vindex;
         vindex.resize(10);
         vindex.fill(true);
@@ -263,7 +263,7 @@ void CWeekView::resizeEvent(QResizeEvent *event)
             vindex[i] = false;
             vindex[9 - i] = false;
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < DDEWeekCalendar::NumWeeksDisplayed; i++) {
             m_cellList[i]->setVisible(vindex[i]);
             m_cellList[i]->update();
         }
