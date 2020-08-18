@@ -40,6 +40,8 @@ static const int FontSizeFourteen = 14;
 static const int FontSizeSixteen = 16;
 static const int FontSizeTwentyfour = 24;
 static const int FontSizeTwenty = 20;
+static const int FontSizeTen = 10;
+static const int FontSizeOneHundred = 100;
 } // namespace DDECalendar
 namespace DDEYearCalendar {
 
