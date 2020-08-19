@@ -21,6 +21,7 @@
 #include "scheduledatamanage.h"
 #include "schcedulectrldlg.h"
 #include "cdynamicicon.h"
+#include "constants.h"
 
 #include <DMessageBox>
 #include <DPushButton>
@@ -52,7 +53,7 @@ CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget 
     }
 
     AutoFeed(m_scheduleInfo.titleName);
-    if (m_scheduleInfo.type.ID == 4) {
+    if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
         m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString(("yyyy-MM-dd")));
     } else {
         m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString("yyyy-MM-dd hh:mm") + " ~ " + m_scheduleInfo.endDateTime.toString("yyyy-MM-dd hh:mm"));
@@ -303,7 +304,7 @@ void CMySchceduleView::initUI()
     mainLayout->addSpacing(6);
     mainLayout->addWidget(m_timeLabel);
 
-    if (m_scheduleInfo.type.ID == 4) {
+    if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
         addButton(tr("OK"), false, DDialog::ButtonNormal);
         QAbstractButton *button_ok = getButton(0);
         button_ok->setFixedSize(360,36);
@@ -330,7 +331,7 @@ void CMySchceduleView::initUI()
 
 void CMySchceduleView::initConnection()
 {
-    if (m_scheduleInfo.type.ID == 4) {
+    if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
         connect(this, &DDialog::buttonClicked, this, &CMySchceduleView::close);
     } else {
         connect(this, &DDialog::buttonClicked, this, &CMySchceduleView::slotEditBt);
