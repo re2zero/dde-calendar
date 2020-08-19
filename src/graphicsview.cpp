@@ -658,14 +658,14 @@ ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, con
     ScheduleDtailInfo info;
     if (beginDate.secsTo(endDate)>0) {
         info.beginDateTime = beginDate;
-        if (beginDate.secsTo(endDate)<1800) {
-            info.endDateTime = beginDate.addSecs(1800);
+        if (beginDate.secsTo(endDate) < DDECalendar::ThirtyMinutes) {
+            info.endDateTime = beginDate.addSecs(DDECalendar::ThirtyMinutes);
         } else {
             info.endDateTime = endDate;
         }
     } else {
-        if (endDate.secsTo(beginDate)<1800) {
-            info.beginDateTime = beginDate.addSecs(-1800);
+        if (endDate.secsTo(beginDate) < DDECalendar::ThirtyMinutes) {
+            info.beginDateTime = beginDate.addSecs(-DDECalendar::ThirtyMinutes);
         } else {
             info.beginDateTime = endDate;
         }
@@ -708,16 +708,12 @@ void CGraphicsView::RightClickToCreate(QGraphicsItem *listItem, const QPoint &po
 
 QDateTime CGraphicsView::getDragScheduleInfoBeginTime(const QDateTime &moveDateTime)
 {
-    return moveDateTime.secsTo(m_InfoEndTime)<1800?
-           m_InfoEndTime.addSecs(-1800):
-           moveDateTime;
+    return moveDateTime.secsTo(m_InfoEndTime) < DDECalendar::ThirtyMinutes ? m_InfoEndTime.addSecs(-DDECalendar::ThirtyMinutes) : moveDateTime;
 }
 
 QDateTime CGraphicsView::getDragScheduleInfoEndTime(const QDateTime &moveDateTime)
 {
-    return m_InfoBeginTime.secsTo(moveDateTime)<1800 ?
-           m_InfoBeginTime.addSecs(1800):
-           moveDateTime;
+    return m_InfoBeginTime.secsTo(moveDateTime) < DDECalendar::ThirtyMinutes ? m_InfoBeginTime.addSecs(DDECalendar::ThirtyMinutes) : moveDateTime;
 }
 
 QDateTime CGraphicsView::TimeRounding(const QDateTime &time)
