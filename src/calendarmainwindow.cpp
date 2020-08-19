@@ -63,7 +63,7 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w)
     : DMainWindow (w)
 {
     m_DataGetThread = new DbusDataGetThread(CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getDbus(),
-                                            nullptr);
+                                            this);
     m_currentdate = QDate::currentDate();
     setContentsMargins(QMargins(0, 0, 0, 0));
     initUI();
@@ -191,36 +191,32 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
     if (type - 1 != 0) {
         m_priindex = type - 1;
     }
-    switch (type) {
-    case 1: {
+    switch (type - 1) {
+    case DDECalendar::CalendarYearWindow: {
         m_yearButton->setFocus();
         m_yearButton->setChecked(true);
         m_yearwindow->setDate(datetime.date());
-    }
-    break;
-    case 2: {
+    } break;
+    case DDECalendar::CalendarMonthWindow: {
         m_monthButton->setFocus();
         m_monthButton->setChecked(true);
         m_monthWindow->setDate(datetime.date());
         m_monthWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekButton->setFocus();
         m_weekButton->setChecked(true);
         m_weekWindow->setDate(datetime.date());
         m_weekWindow->setTime(datetime.time());
         m_weekWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 4: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_dayButton->setFocus();
         m_dayButton->setChecked(true);
         m_DayWindow->setDate(datetime.date());
         m_DayWindow->slotupdateSchedule(0);
         m_searchflag = true;
-    }
-    break;
+    } break;
     }
     CConfigSettings::setOption("base.view", type);
 }
@@ -233,18 +229,15 @@ void Calendarmainwindow::UpdateJob()
         return;
     }
     switch (index) {
-    case 1: {
+    case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 2: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_DayWindow->slotupdateSchedule(0);
-    }
-    break;
+    } break;
     }
 }
 
@@ -256,21 +249,16 @@ void Calendarmainwindow::updateHigh()
         return;
     }
     switch (index) {
-    case 0: {
-    }
-    break;
-    case 1: {
-
-    }
-    break;
-    case 2: {
+    case DDECalendar::CalendarYearWindow: {
+    } break;
+    case DDECalendar::CalendarMonthWindow: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->updateHigh();
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_DayWindow->updateHigh();
-    }
-    break;
+    } break;
     }
 }
 
@@ -349,7 +337,7 @@ void Calendarmainwindow::OpenSchedule(QString job)
     if (CreatOrParSchedule::GetJob(job, out)) {
         m_dayButton->setFocus();
         m_dayButton->setChecked(true);
-        m_stackWidget->setCurrentIndex(3);
+        m_stackWidget->setCurrentIndex(DDECalendar::CalendarDayWindow);
         m_DayWindow->setDate(out.beginDateTime.date());
         m_DayWindow->slotupdateSchedule(0);
         CMySchceduleView dlg(out, this);
@@ -424,10 +412,10 @@ void Calendarmainwindow::initUI()
     btlist.append(m_dayButton);
     m_buttonBox->setButtonList(btlist, true);
 
-    m_buttonBox->setId(m_yearButton, 0);
-    m_buttonBox->setId(m_monthButton, 1);
-    m_buttonBox->setId(m_weekButton, 2);
-    m_buttonBox->setId(m_dayButton, 3);
+    m_buttonBox->setId(m_yearButton, DDECalendar::CalendarYearWindow);
+    m_buttonBox->setId(m_monthButton, DDECalendar::CalendarMonthWindow);
+    m_buttonBox->setId(m_weekButton, DDECalendar::CalendarWeekWindow);
+    m_buttonBox->setId(m_dayButton, DDECalendar::CalendarDayWindow);
     m_buttonBox->setFixedSize(200, 36);
 
     QHBoxLayout *titleLayout = new QHBoxLayout;
@@ -653,26 +641,22 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     if (m_currentdate.year() < DDECalendar::QueryEarliestYear)
         return;
     switch (index) {
-    case 0: {
+    case DDECalendar::CalendarYearWindow: {
         m_yearwindow->setDate(m_currentdate);
-    }
-    break;
-    case 1: {
+    } break;
+    case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->setDate(m_currentdate);
         m_monthWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 2: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->setDate(m_currentdate);
         m_weekWindow->slotupdateSchedule(1);
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_DayWindow->setDate(m_currentdate);
         m_DayWindow->slotupdateSchedule(1);
         m_searchflag = true;
-    }
-    break;
+    } break;
     }
     CConfigSettings::setOption("base.view", index + 1);
 }
@@ -749,18 +733,15 @@ void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
         return;
     }
     switch (index) {
-    case 1: {
+    case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 2: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_DayWindow->slotupdateSchedule(0);
-    }
-    break;
+    } break;
     }
 }
 
@@ -779,22 +760,18 @@ void Calendarmainwindow::slotTransitSearchSchedule(int id)
         return;
     }
     switch (index) {
-    case 0: {
+    case DDECalendar::CalendarYearWindow: {
         m_yearwindow->slotupdateSchedule(0);
-    }
-    break;
-    case 1: {
+    } break;
+    case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 2: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_DayWindow->slotupdateSchedule(0);
-    }
-    break;
+    } break;
     }
     m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
 }
@@ -807,22 +784,18 @@ void Calendarmainwindow::slotsearchDateSelect(QDate date)
         return;
     }
     switch (index) {
-    case 0: {
+    case DDECalendar::CalendarYearWindow: {
         m_yearwindow->setDate(date);
-    }
-    break;
-    case 1: {
+    } break;
+    case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->setDate(date);
-    }
-    break;
-    case 2: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->setDate(date);
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_DayWindow->setDate(date);
-    }
-    break;
+    } break;
     }
 }
 
@@ -836,21 +809,17 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &sched
     QTimer::singleShot(50, [this, index,scheduleInfo] {
         switch (index)
         {
-        case 0: {
-        }
-        break;
-        case 1: {
+        case DDECalendar::CalendarYearWindow: {
+        } break;
+        case DDECalendar::CalendarMonthWindow: {
             m_monthWindow->setSelectSchedule(scheduleInfo);
-        }
-        break;
-        case 2: {
+        } break;
+        case DDECalendar::CalendarWeekWindow: {
             m_weekWindow->setSelectSchedule(scheduleInfo);
-        }
-        break;
-        case 3: {
+        } break;
+        case DDECalendar::CalendarDayWindow: {
             m_DayWindow->setSelectSchedule(scheduleInfo);
-        }
-        break;
+        } break;
         }
     });
 
@@ -860,29 +829,26 @@ void Calendarmainwindow::slotdoubleclickDate(QDate date)
 {
     m_stackWidget->setCurrentIndex(m_priindex);
     switch (m_priindex) {
-    case 1: {
+    case DDECalendar::CalendarMonthWindow: {
         m_monthButton->setFocus();
         m_monthButton->setChecked(true);
         m_monthWindow->setDate(date);
         m_monthWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 2: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekButton->setFocus();
         m_weekButton->setChecked(true);
         m_weekWindow->setDate(date);
         m_weekWindow->setTime(QTime::currentTime());
         m_weekWindow->slotupdateSchedule(0);
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_dayButton->setFocus();
         m_dayButton->setChecked(true);
         m_DayWindow->setDate(date);
         m_DayWindow->setTime(QTime::currentTime());
         m_DayWindow->slotupdateSchedule(0);
-    }
-    break;
+    } break;
     }
     CConfigSettings::setOption("base.view", m_priindex+1);
 }
@@ -890,26 +856,26 @@ void Calendarmainwindow::slotdoubleclickDate(QDate date)
 void Calendarmainwindow::slotselectMonth(QDate date)
 {
     qDebug() << date;
-    viewWindow(2, QDateTime(date));
+    viewWindow(DDECalendar::CalendarMonthWindow + 1, QDateTime(date));
 }
 
 void Calendarmainwindow::slotselectWeek(QDate date)
 {
     qDebug() << date;
-    viewWindow(3, QDateTime(date));
+    viewWindow(DDECalendar::CalendarWeekWindow + 1, QDateTime(date));
     CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotCurrentScheduleDate(QDate date)
 {
-    viewWindow(4, QDateTime(date));
+    viewWindow(DDECalendar::CalendarDayWindow + 1, QDateTime(date));
 }
 
 void Calendarmainwindow::slotViewSelectDate(QDate date)
 {
     if (date.year() < DDECalendar::QueryEarliestYear)
         return;
-    viewWindow(4, QDateTime(date));
+    viewWindow(DDECalendar::CalendarDayWindow + 1, QDateTime(date));
 }
 
 void Calendarmainwindow::slotViewtransparentFrame(int type)
@@ -932,22 +898,18 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
         return;
     }
     switch (index) {
-    case 0: {
+    case DDECalendar::CalendarYearWindow: {
         m_yearwindow->setFocus();
-    }
-    break;
-    case 1: {
+    } break;
+    case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->setFocus();
-    }
-    break;
-    case 2: {
+    } break;
+    case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->setFocus();
-    }
-    break;
-    case 3: {
+    } break;
+    case DDECalendar::CalendarDayWindow: {
         m_DayWindow->setFocus();
-    }
-    break;
+    } break;
     }
 }
 
