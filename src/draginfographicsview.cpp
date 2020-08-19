@@ -22,6 +22,7 @@
 #include "schceduledlg.h"
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
+#include "constants.h"
 
 #include <DMenu>
 
@@ -106,7 +107,7 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     }
     DragInfoItem *item = dynamic_cast<DragInfoItem *>(itemAt(event->pos()));
     if (item != nullptr) {
-        if (item->getData().type.ID != 4) {
+        if (item->getData().type.ID != DDECalendar::FestivalTypeID) {
             if (m_DragStatus == NONE) {
                 switch (getPosInItem(event->pos(),item->rect())) {
                 case LEFT:
@@ -195,7 +196,7 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
     if (infoitem !=nullptr) {
-        if (infoitem->getData().type.ID !=4) {
+        if (infoitem->getData().type.ID != DDECalendar::FestivalTypeID) {
             m_rightMenu->clear();
             m_rightMenu->addAction(m_editAction);
             m_rightMenu->addAction(m_deleteAction);
@@ -234,8 +235,7 @@ void DragInfoGraphicsView::dragEnterEvent(QDragEnterEvent *event)
         QJsonObject rootobj = jsonDoc.object();
         ScheduleDtailInfo info =
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
-        if ((event->source() !=this && info.rpeat >0) ||
-                info.type.ID ==4) {
+        if ((event->source() != this && info.rpeat > 0) || info.type.ID == DDECalendar::FestivalTypeID) {
             event->ignore();
         } else {
             event->accept();
