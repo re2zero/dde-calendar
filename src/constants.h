@@ -42,6 +42,11 @@ static const int FontSizeTwentyfour = 24;
 static const int FontSizeTwenty = 20;
 static const int FontSizeTen = 10;
 static const int FontSizeOneHundred = 100;
+
+static const int CalendarYearWindow = 0;
+static const int CalendarMonthWindow = 1;
+static const int CalendarWeekWindow = 2;
+static const int CalendarDayWindow = 3;
 } // namespace DDECalendar
 namespace DDEYearCalendar {
 
