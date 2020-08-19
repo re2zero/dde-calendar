@@ -19,6 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "customframe.h"
+#include "constants.h"
 
 #include <DPalette>
 
@@ -30,7 +31,7 @@ CustomFrame::CustomFrame(QWidget *parent)
     : QFrame(parent)
 {
     m_font.setWeight(QFont::Medium);
-    m_font.setPixelSize(14);
+    m_font.setPixelSize(DDECalendar::FontSizeFourteen);
     this->setAttribute(Qt::WA_TranslucentBackground);//设置窗口背景透明
     this->setWindowFlags(Qt::FramelessWindowHint);   //设置无边框窗口
     setContentsMargins(0, 0, 0, 0);
