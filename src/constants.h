@@ -47,6 +47,8 @@ static const int CalendarYearWindow = 0;
 static const int CalendarMonthWindow = 1;
 static const int CalendarWeekWindow = 2;
 static const int CalendarDayWindow = 3;
+
+static const int ThirtyMinutes = 1800;
 } // namespace DDECalendar
 namespace DDEYearCalendar {
 
