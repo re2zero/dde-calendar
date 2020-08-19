@@ -386,8 +386,7 @@ void Calendarmainwindow::initUI()
 
     QFont viewfont;
     viewfont.setWeight(QFont::Medium);
-    viewfont.setPixelSize(14);
-
+    viewfont.setPixelSize(DDECalendar::FontSizeFourteen);
 
     m_yearButton->setFixedSize(50, 36);
     m_monthButton = new DButtonBoxButton(tr("M"), this);
