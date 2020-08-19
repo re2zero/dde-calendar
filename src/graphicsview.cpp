@@ -23,6 +23,7 @@
 #include "scheduledatamanage.h"
 #include "schcedulectrldlg.h"
 #include "myschceduleview.h"
+#include "constants.h"
 
 #include <DMessageBox>
 #include <DPushButton>
@@ -475,7 +476,7 @@ void CGraphicsView::slotDeleteItem()
     if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID <0) {
         return;
     }
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID !=4) {
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID != DDECalendar::FestivalTypeID) {
         DeleteItem(CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo());
     }
     CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
