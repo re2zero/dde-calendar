@@ -90,6 +90,7 @@ QString GetStyleSheetContent()
 {
     QFile file(":/resources/dde-calendar.qss");
     bool result = file.open(QFile::ReadOnly);
+
     if (result) {
         QString content(file.readAll());
         file.close();
@@ -119,8 +120,8 @@ int main(int argc, char *argv[])
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. "));
     a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
 
-
     DGuiApplicationHelper::setSingelInstanceInterval(-1);
+
     if (!DGuiApplicationHelper::instance()->setSingleInstance(
                 a.applicationName(),
                 DGuiApplicationHelper::UserScope)) {
@@ -135,6 +136,7 @@ int main(int argc, char *argv[])
     // set theme
     bool isOk = false;
     int viewtype = CConfigSettings::value("base.view").toInt(&isOk);
+
     if (!isOk)
         viewtype = 2;
     DLogManager::registerConsoleAppender();
