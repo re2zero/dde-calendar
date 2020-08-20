@@ -46,11 +46,13 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
     m_type = type;
     initUI();
     initConnection();
+
     if (type == 1) {
         m_titleLabel->setText(tr("New Event"));
         m_beginDateEdit->setDate(QDate::currentDate());
         int hours = QTime::currentTime().hour();
         int minnutes = QTime::currentTime().minute() % DDECalendar::QuarterOfAnhourWithMinute;
+
         if (minnutes != 0) {
             minnutes = QTime::currentTime().minute() / DDECalendar::QuarterOfAnhourWithMinute * DDECalendar::QuarterOfAnhourWithMinute + DDECalendar::QuarterOfAnhourWithMinute;
         }
@@ -60,6 +62,7 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
     } else {
         m_titleLabel->setText(tr("Edit Event"));
     }
+
     setFocusPolicy(Qt::WheelFocus);
     setFixedSize(438, 470);
 }
@@ -93,6 +96,7 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     m_currentDate = date;
     int hours = date.time().hour();
     int minnutes = 0;
+
     if (date.date() == QDate::currentDate()) {
         minnutes = date.time().minute() % DDECalendar::QuarterOfAnhourWithMinute;
         minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
@@ -102,6 +106,7 @@ void CSchceduleDlg::setDate(const QDateTime &date)
             minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
         }
     }
+
     if (minnutes == 60) {
         if (hours + 1 == 24) {
             m_currentDate.setTime(QTime(0, 0));
@@ -153,6 +158,7 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
     beginDateTime.setTime(m_beginTimeEdit->getTime());
     endDateTime.setDate(m_endDateEdit->date());
     endDateTime.setTime(m_endTimeEdit->getTime());
+
     if (m_textEdit->toPlainText().isEmpty()) {
         scheduleDtailInfo.titleName = m_textEdit->placeholderText();
     } else {
@@ -162,6 +168,7 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
     if (scheduleDtailInfo.titleName.isEmpty()) {
         return;
     }
+
     if (beginDateTime > endDateTime) {
         DDialog *prompt = new DDialog(this);
         prompt->setIcon(QIcon(":/resources/icon/warning.svg"));
@@ -171,14 +178,17 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
         prompt->exec();
         return;
     }
+
     if (m_type == 1)
         scheduleDtailInfo.id = 0;
     scheduleDtailInfo.allday = m_allDayCheckbox->isChecked();
+
     if (m_rmindCombox->currentIndex() == 0)
         scheduleDtailInfo.remind = false;
     else {
         scheduleDtailInfo.remind = true;
     }
+
     if (scheduleDtailInfo.allday) {
         if (scheduleDtailInfo.remind) {
             scheduleDtailInfo.remindData.time = QTime(9, 0);
@@ -211,9 +221,12 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
             }
         }
     }
+
     scheduleDtailInfo.rpeat = m_beginrepeatCombox->currentIndex();
+
     if (scheduleDtailInfo.rpeat != 0) {
         scheduleDtailInfo.enddata.type = m_endrepeatCombox->currentIndex();
+
         if (m_endrepeatCombox->currentIndex() == 1) {
             if (m_endrepeattimes->text().isEmpty()) {
                 return;
@@ -222,6 +235,7 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
         } else if (m_endrepeatCombox->currentIndex() == 2) {
             QDateTime endrpeattime = beginDateTime;
             endrpeattime.setDate(m_endRepeatDate->date());
+
             if (beginDateTime > endrpeattime) {
                 return;
             }
@@ -242,7 +256,6 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
                 m_scheduleDtailInfo.rpeat == scheduleDtailInfo.rpeat) {
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
                 scheduleDtailInfo);
-
         } else {
             if (m_scheduleDtailInfo.allday != scheduleDtailInfo.allday) {
                 CSchceduleCtrlDlg msgBox;
@@ -251,7 +264,6 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 msgBox.addPushButton(tr("Cancel"), true);
                 msgBox.addWaringButton(tr("Change All"), true);
-
                 msgBox.exec();
 
                 if (msgBox.clickButton() == 0) {
@@ -261,14 +273,12 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
                     ->getscheduleDataCtrl()
                     ->updateScheduleInfo(scheduleDtailInfo);
                 }
-
             } else if (m_scheduleDtailInfo.rpeat != scheduleDtailInfo.rpeat) {
                 CSchceduleCtrlDlg msgBox;
                 msgBox.setText(tr("You are changing the repeating rule of this event."));
                 msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
                 msgBox.addPushButton(tr("Cancel"), true);
                 msgBox.addWaringButton(tr("Change All"), true);
-
                 msgBox.exec();
 
                 if (msgBox.clickButton() == 0) {
@@ -293,6 +303,7 @@ void CSchceduleDlg::slotTextChange()
     QString textContent = m_textEdit->toPlainText();
     int length = textContent.count();
     QString tStitlename = textContent;
+
     if (tStitlename.contains("\n")) {
         tStitlename.replace("\n", "");
         m_textEdit->setText(tStitlename);
@@ -300,7 +311,9 @@ void CSchceduleDlg::slotTextChange()
         m_textEdit->setTextCursor(cursor);
         return;
     }
+
     int maxLength = 256;  // 最大字符数
+
     if (length > maxLength) {
         m_textEdit->setText(m_context);
         cursor.movePosition(QTextCursor::End);
@@ -312,6 +325,7 @@ void CSchceduleDlg::slotTextChange()
 void CSchceduleDlg::slotendrepeatTextchange()
 {
     QAbstractButton *m_OkBt = getButton(1);
+
     if (m_endrepeattimes->text().isEmpty())
         m_OkBt->setEnabled(false);
     else
@@ -343,6 +357,7 @@ void CSchceduleDlg::slotEDateEidtInfo(const QDate &date)
 void CSchceduleDlg::slotallDayStateChanged(int state)
 {
     m_rmindCombox->clear();
+
     if (!state) {
         m_rmindCombox->addItem(tr("Never"));
         m_rmindCombox->addItem(tr("At time of event"));
@@ -354,6 +369,7 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
         m_rmindCombox->addItem(tr("1 week before"));
         m_beginTimeEdit->setVisible(true);
         m_endTimeEdit->setVisible(true);
+
         if (m_type == 0) {
             m_beginDateEdit->setDate(m_scheduleDtailInfo.beginDateTime.date());
             m_beginTimeEdit->setTime(m_scheduleDtailInfo.beginDateTime.time());
@@ -373,6 +389,7 @@ void CSchceduleDlg::slotallDayStateChanged(int state)
         m_rmindCombox->addItem(tr("1 week before"));
         m_beginTimeEdit->setVisible(false);
         m_endTimeEdit->setVisible(false);
+
         if (m_type == 0) {
             m_beginDateEdit->setDate(m_scheduleDtailInfo.beginDateTime.date());
             m_beginTimeEdit->setTime(QTime(0, 0));
@@ -495,6 +512,7 @@ void CSchceduleDlg::initUI()
     btitleColor.setAlphaF(0.01);
     DPalette titlepa = m_titleLabel->palette();
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
     if (themetype == 0 || themetype == 1) {
         titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
         titlepa.setColor(DPalette::Window, btitleColor);
@@ -512,6 +530,7 @@ void CSchceduleDlg::initUI()
     QFont mlabelF;
     mlabelF.setWeight(QFont::Medium);
     DPalette pa = m_titleLabel->palette();
+
     if (themetype == 0 || themetype == 1) {
         pa.setColor(DPalette::WindowText, QColor("#414D68"));
     } else {
@@ -771,6 +790,7 @@ void CSchceduleDlg::initUI()
 
     addButton(tr("Cancel"));
     addButton(tr("Save"), false, DDialog::ButtonRecommend);
+
     for (int i = 0; i < buttonCount(); i++) {
         QAbstractButton *button = getButton(i);
         button->setFixedSize(189, 36);
@@ -784,6 +804,7 @@ void CSchceduleDlg::initUI()
     anipa.setColor(DPalette::Background, color);
     addContent(m_gwi, Qt::AlignCenter);
     initDateEdit();
+
     if (m_type == 1)
         slotallDayStateChanged(0);
     setFocus();
@@ -834,7 +855,6 @@ void CSchceduleDlg::initRmindRpeatUI()
         } else {
             m_rmindCombox->setCurrentIndex(0);
         }
-
     } else {
         if (m_scheduleDtailInfo.remind) {
             if (m_scheduleDtailInfo.remindData.n == DDECalendar::AtTimeOfEvent) {
@@ -858,6 +878,7 @@ void CSchceduleDlg::initRmindRpeatUI()
     }
     slotbRpeatactivated(m_scheduleDtailInfo.rpeat);
     m_beginrepeatCombox->setCurrentIndex(m_scheduleDtailInfo.rpeat);
+
     if (m_scheduleDtailInfo.rpeat != 0) {
         if (m_scheduleDtailInfo.enddata.type == 0) {
             m_endrepeatCombox->setCurrentIndex(0);
@@ -879,6 +900,7 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
 {
     Q_UNUSED(m_themetype);
     Q_UNUSED(parent);
+
     if (newinfo.RecurID == 0) {
         CSchceduleCtrlDlg msgBox;
         msgBox.setText(tr("You are changing a repeating event."));
@@ -888,8 +910,8 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
         msgBox.addPushButton(tr("Cancel"));
         msgBox.addPushButton(tr("All"));
         msgBox.addsuggestButton(tr("Only This Event"));
-
         msgBox.exec();
+
         if (msgBox.clickButton() == 0) {
             return;
         } else if (msgBox.clickButton() == 1) {
