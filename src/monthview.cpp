@@ -44,7 +44,6 @@ void CMonthView::setTheMe(int type)
     m_MonthGraphicsView->setTheMe(type);
 }
 
-
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
@@ -76,9 +75,6 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
             &CMonthGraphiview::signalScheduleShow,
             this,
             &CMonthView::slotScheduleRemindWidget);
-
-
-
 
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->setMargin(0);
@@ -152,6 +148,7 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDtail
         m_RemindWidget->setData(out, gdcolor);
         m_RemindWidget->show(pos22.x() + 10, pos22.y());
         QDesktopWidget *w = QApplication::desktop();
+
         if ((pos22.x() + m_RemindWidget->width() + 10) > w->width()) {
             m_RemindWidget->setArrowDirection(DArrowRectangle::ArrowRight);
             m_RemindWidget->show(pos22.x() - 10, pos22.y());
@@ -159,7 +156,6 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDtail
             m_RemindWidget->setArrowDirection(DArrowRectangle::ArrowLeft);
             m_RemindWidget->show(pos22.x() + 10, pos22.y());
         }
-
     } else {
         m_RemindWidget->hide();
     }
@@ -196,8 +192,10 @@ void CMonthView::setCurrentDate(const QDate date)
 {
     slotScheduleRemindWidget(false);
     qDebug() << "set current date " << date;
+
     if (date.year() < DDECalendar::QueryEarliestYear)
         return;
+
     if (date.month() != m_currentDate.month()) {
         m_festivallist.clear();
         m_DBusInter->GetFestivalMonth(date.addMonths(-1).year(), date.addMonths(-1).month(), m_festivallist);
@@ -233,13 +231,13 @@ void CMonthView::updateDate()
 {
     const QDate firstDay(m_currentDate.year(), m_currentDate.month(), 1);
     int offset = firstDay.dayOfWeek() % DDEMonthCalendar::AFewDaysofWeek - m_firstWeekDay;
-
     const int day = offset < 0 ? offset + DDEMonthCalendar::AFewDaysofWeek : offset;
     const int currentIndex = day + m_currentDate.day() - 1;
 
     if (currentIndex < 0) {
         return;
     }
+
     for (int i(0); i != DDEMonthCalendar::ItemSizeofMonthDay; ++i) {
         m_days[i] = firstDay.addDays(i - day);
     }
@@ -252,10 +250,10 @@ void CMonthView::updateCurrentLunar(const CaLunarDayInfo &info)
     emit signalcurrentLunarDateChanged(m_currentDate, info, 1);
 }
 
-
 ScheduleDtailInfo CMonthView::getScheduleInfo(const QDate &beginDate, const QDate &endDate)
 {
     ScheduleDtailInfo info;
+
     if (beginDate.daysTo(endDate)>0) {
         info.beginDateTime = QDateTime(beginDate,QTime(0,0,0));
         info.endDateTime = QDateTime(endDate,QTime(23,59,59));
@@ -294,6 +292,7 @@ void CMonthView::getDbusData()
     CaLunarDayInfo currentDayInfo;
     bool o1 = true;
     QDate getDate = m_currentDate;
+
     for (int i = -1; i < 2; ++i) {
         getDate = m_currentDate.addMonths(i);
         QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(getDate.year(),
