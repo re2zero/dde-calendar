@@ -542,7 +542,7 @@ void CSchceduleSearchView::updateDateShow()
         QListWidgetItem *listItem = new QListWidgetItem(m_gradientItemList);
         DLabel *gwi = new DLabel();
         QFont font;
-        font.setPixelSize(20);
+        font.setPixelSize(DDECalendar::FontSizeTwenty);
         gwi->setAlignment(Qt::AlignCenter );
         DPalette daypa = gwi->palette();
         QColor textcolor = DPalette::ToolTipText;
@@ -581,14 +581,14 @@ void CSchceduleSearchView::createItemWidget(ScheduleDtailInfo info, QDate date, 
 
     CSchceduleSearchItem *gwi = new CSchceduleSearchItem();
     QFont font;
-    font.setPixelSize(14);
+    font.setPixelSize(DDECalendar::FontSizeFourteen);
     font.setWeight(QFont::Normal);
     gwi->setBackgroundColor(m_bBackgroundcolor);
     QColor scolor = gdcolor.Purecolor;
     scolor.setAlphaF(1.0);
     gwi->setSplitLineColor(gdcolor.splitColor);
     gwi->setText(m_bttextcolor, font);
-    font.setPixelSize(12);
+    font.setPixelSize(DDECalendar::FontSizeTwelve);
 
     gwi->setTimeC(m_btimecolor, font);
     gwi->setFixedSize(m_maxWidth - 20, 35);
@@ -613,7 +613,7 @@ QListWidgetItem *CSchceduleSearchView::createItemWidget(QDate date)
     CSchceduleSearchDateItem *gwi = new CSchceduleSearchDateItem();
     QFont font;
     font.setWeight(QFont::Medium);
-    font.setPixelSize(16);
+    font.setPixelSize(DDECalendar::FontSizeSixteen);
     gwi->setBackgroundColor(m_lBackgroundcolor);
     gwi->setText(m_ltextcolor, font);
     if (date == QDate::currentDate()) {
