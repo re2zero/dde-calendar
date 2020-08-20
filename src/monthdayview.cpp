@@ -60,6 +60,7 @@ void CMonthDayView::setCurrentDate(const QDate date)
 {
     m_selectDate = date;
     m_days[5] = m_selectDate;
+
     for (int i(4); i >= 0; i--) {
         m_days[4 - i] = m_selectDate.addMonths(-i - 1);
     }
@@ -76,12 +77,15 @@ void CMonthDayView::setRCurrentDate(const QDate date)
 
     m_selectDate = date;
     m_days[5] = m_selectDate;
+
     for (int i(4); i >= 0; i--) {
         m_days[4 - i] = m_selectDate.addMonths(-i - 1);
     }
+
     for (int i(6); i != DDEMonthCalendar::MonthNumofYear; ++i) {
         m_days[i] = m_selectDate.addMonths(i - 5);
     }
+
     m_monthWidget->setDate(m_days);
     update();
 }
@@ -89,6 +93,7 @@ void CMonthDayView::setRCurrentDate(const QDate date)
 void CMonthDayView::setTheMe(int type)
 {
     QColor frameclor;
+
     if (type == 0 || type == 1) {
         frameclor = "#FFFFFF";
     } else if (type == 2) {
@@ -129,6 +134,7 @@ CMonthWidget::~CMonthWidget()
         CMonthRect *monthrect = m_MonthItem.at(i);
         delete  monthrect;
     }
+
     m_MonthItem.clear();
 }
 
@@ -137,6 +143,7 @@ void CMonthWidget::setDate(const QDate date[12])
     for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         m_MonthItem.at(i)->setDate(date[i]);
     }
+
     CMonthRect::setSelectRect(m_MonthItem.at(5));
     update();
 }
@@ -151,7 +158,9 @@ void CMonthWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() ==Qt::RightButton)
         return;
+
     int itemindex = getMousePosItem(event->pos());
+
     if (!(itemindex<0)) {
         if (m_MonthItem.at(itemindex)->getDate().year() < DDECalendar::QueryEarliestYear) {
             return;
@@ -167,6 +176,7 @@ void CMonthWidget::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+
     for (int i = 0; i < m_MonthItem.size(); ++i) {
         m_MonthItem.at(i)->paintItem(&painter,
                                      m_MonthItem.at(i)->rect());
@@ -177,6 +187,7 @@ void CMonthWidget::paintEvent(QPaintEvent *event)
 void CMonthWidget::updateSize()
 {
     qreal w= this->width()/m_MonthItem.size();
+
     for (int i = 0; i < m_MonthItem.size(); ++i) {
         m_MonthItem.at(i)->setRect(i*w,0,w,this->height());
     }
@@ -186,12 +197,14 @@ void CMonthWidget::updateSize()
 int CMonthWidget::getMousePosItem(const QPointF &pos)
 {
     int res =-1;
+
     for (int i = 0 ; i < m_MonthItem.size(); ++i) {
         if (m_MonthItem.at(i)->rect().contains(pos)) {
             res = i;
             break;
         }
     }
+
     return res;
 }
 
@@ -241,6 +254,7 @@ void CMonthRect::setRect(qreal x, qreal y, qreal w, qreal h)
 void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
 {
     m_selectColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+
     if (m_Date.year() < DDECalendar::QueryEarliestYear)
         return;
     const bool isCurrentDay = (m_Date.month() == QDate::currentDate().month()
@@ -283,6 +297,7 @@ void CMonthRect::setTheMe(int type)
 {
     m_themetype = type;
     QColor frameclor;
+
     if (type == 0 || type == 1) {
         m_defaultTextColor = Qt::black;
         m_backgrounddefaultColor = Qt::white;
