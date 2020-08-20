@@ -62,6 +62,8 @@ static const int TwoDayBeforeWithMinutes = 2880;
 static const int OneWeekBeforeWithDay = 7;
 static const int OneWeekBeforeWithMinutes = 10080;
 
+static const int NewSchceduleLabelWidth = 70;
+
 } // namespace DDECalendar
 namespace DDEYearCalendar {
 
