@@ -63,6 +63,7 @@ void CustomFrame::setTextStr(QFont font, QColor tc, QString strc, int flag)
 void CustomFrame::setTextStr(QString strc)
 {
     m_text = strc;
+
     if (!m_fixsizeflag) {
         QFontMetrics fm(m_font);
         int w = fm.width(m_text);
@@ -80,6 +81,7 @@ void CustomFrame::setTextColor(QColor tc)
 void CustomFrame::setTextFont(QFont font)
 {
     m_font = font;
+
     if (!m_fixsizeflag) {
         QFontMetrics fm(m_font);
         int w = fm.width(m_text);
@@ -115,6 +117,7 @@ void CustomFrame::paintEvent(QPaintEvent *e)
 
     QPainter painter(this);
     QRect fillRect = QRect(m_borderframew, m_borderframew, labelwidth, labelheight);
+
     if (m_bflag) {
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
@@ -122,6 +125,7 @@ void CustomFrame::paintEvent(QPaintEvent *e)
         painter.setPen(Qt::NoPen);
         QPainterPath painterPath;
         painterPath.moveTo(m_radius, m_borderframew);
+
         if (m_lstate) {
             painterPath.arcTo(QRect(m_borderframew, m_borderframew, m_radius * 2, m_radius * 2), 90, 90);
         } else {
@@ -129,6 +133,7 @@ void CustomFrame::paintEvent(QPaintEvent *e)
             painterPath.lineTo(m_borderframew, m_radius);
         }
         painterPath.lineTo(0, labelheight - m_radius);
+
         if (m_bstate) {
             painterPath.arcTo(QRect(m_borderframew, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
         } else {
@@ -136,6 +141,7 @@ void CustomFrame::paintEvent(QPaintEvent *e)
             painterPath.lineTo(m_radius, labelheight);
         }
         painterPath.lineTo(labelwidth - m_radius, labelheight);
+
         if (m_rstate) {
             painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
         } else {
@@ -143,10 +149,9 @@ void CustomFrame::paintEvent(QPaintEvent *e)
             painterPath.lineTo(labelwidth, labelheight - m_radius);
         }
         painterPath.lineTo(labelwidth, m_radius);
+
         if (m_tstate) {
-
             painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
-
         } else {
             painterPath.lineTo(labelwidth, m_borderframew);
             painterPath.lineTo(labelwidth - m_radius, m_borderframew);
@@ -156,7 +161,6 @@ void CustomFrame::paintEvent(QPaintEvent *e)
         painter.drawPath(painterPath);
         painter.restore();
     }
-
 
     if (!m_text.isEmpty()) {
         painter.save();
