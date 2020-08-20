@@ -105,14 +105,12 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
     painter->setBrush(linearGradient);
     painter->setPen(Qt::NoPen);
     painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
-
     painter->setFont(m_font);
     painter->setPen(textcolor);
     QFontMetrics fm = painter->fontMetrics();
     QString tStitlename = m_vScheduleInfo.titleName;
     tStitlename.replace("\n", "");
     QString str = tStitlename;
-
     QString tstr;
     for (int i = 0; i < str.count(); i++) {
         tstr.append(str.at(i));
@@ -125,7 +123,6 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
     if (tstr != str) {
         tstr = tstr + "...";
     }
-
     painter->drawText(QRectF(fillRect.topLeft().x() + 13, fillRect.y(), fillRect.width(), fillRect.height()),
                       Qt::AlignLeft | Qt::AlignVCenter, tstr);
     if (m_vHoverflag && !m_vSelectflag) {
@@ -141,7 +138,6 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
             selcolor = "#000000";
         }
         selcolor.setAlphaF(0.08);
-
         pen.setColor(selcolor);
         pen.setWidthF(1);
         pen.setStyle(Qt::SolidLine);
@@ -158,9 +154,6 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
         painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
     }
 }
-
-
-
 
 void CAllDayEventWeekView::setTheMe(int type)
 {
@@ -202,7 +195,6 @@ bool CAllDayEventWeekView::JudgeIsCreate(const QPointF &pos)
 {
     return  qAbs(pos.x()-m_PressPos.x())>20 ||
             qAbs(m_PressDate.date().daysTo(m_coorManage->getsDate(mapFrom(this,pos.toPoint()))))>0;
-
 }
 
 void CAllDayEventWeekView::RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos)
@@ -261,7 +253,6 @@ void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate
     m_Scene->setSceneRect(0, 0, w, h);
     m_rightmagin = rightmagin;
     updateDateShow();
-
 }
 
 void CAllDayEventWeekView::setRange(QDate begin, QDate end)
@@ -333,7 +324,6 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
         vListData.append(info);
         break;
     }
-
 
     std::sort(vListData.begin(), vListData.end());
 
@@ -451,7 +441,6 @@ void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo> >
 void CAllDayEventWeekView::setInfo(const QVector<ScheduleDtailInfo> &info)
 {
     m_scheduleInfo = info;
-
 }
 
 void CAllDayEventWeekView::slotDoubleEvent()
@@ -459,7 +448,6 @@ void CAllDayEventWeekView::slotDoubleEvent()
     m_updateDflag  = true;
     emit signalsUpdateShcedule();
 }
-
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
 {
@@ -492,7 +480,6 @@ void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
     emit signalScheduleShow(false);
     DGraphicsView::wheelEvent(event);
 }
-
 
 void CAllDayEventWeekView::updateDateShow()
 {
@@ -559,7 +546,6 @@ QDateTime CAllDayEventWeekView::getPosDate(const QPoint &p)
     return QDateTime(m_coorManage->getsDate(mapFrom(this, p)),
                      QTime(0,0,0));
 }
-
 
 void CAllDayEventWeekView::slotDeleteItem()
 {
