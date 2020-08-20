@@ -22,6 +22,7 @@
 #include "schceduledlg.h"
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
+#include "constants.h"
 
 #include <DPalette>
 #include <DHorizontalLine>
@@ -219,7 +220,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     QPainter painter(this);
     font.setWeight(QFont::Normal);
-    font.setPixelSize(11);
+    font.setPixelSize(DDECalendar::FontSizeEleven);
     if (m_vPos.isEmpty())
         return;
 
@@ -355,7 +356,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.save();
     QFont alldayfont;
     alldayfont.setWeight(QFont::Medium);
-    alldayfont.setPixelSize(14);
+    alldayfont.setPixelSize(DDECalendar::FontSizeFourteen);
     painter.setFont(alldayfont);
     painter.setPen(m_ALLDayColor);
     painter.drawText(QRect(0, 0, m_leftMagin - 2, m_topMagin - 2), Qt::AlignCenter, tr("ALL DAY"));
