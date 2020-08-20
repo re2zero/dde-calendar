@@ -50,9 +50,9 @@ CSchceduleDlg::CSchceduleDlg(int type, QWidget *parent, const bool isAllDay)
         m_titleLabel->setText(tr("New Event"));
         m_beginDateEdit->setDate(QDate::currentDate());
         int hours = QTime::currentTime().hour();
-        int minnutes = QTime::currentTime().minute() % 15;
+        int minnutes = QTime::currentTime().minute() % DDECalendar::QuarterOfAnhourWithMinute;
         if (minnutes != 0) {
-            minnutes = QTime::currentTime().minute() / 15 * 15 + 15;
+            minnutes = QTime::currentTime().minute() / DDECalendar::QuarterOfAnhourWithMinute * DDECalendar::QuarterOfAnhourWithMinute + DDECalendar::QuarterOfAnhourWithMinute;
         }
         m_beginTimeEdit->setTime(QTime(hours, minnutes));
         m_endDateEdit->setDate(QDate::currentDate());
@@ -94,12 +94,12 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     int hours = date.time().hour();
     int minnutes = 0;
     if (date.date() == QDate::currentDate()) {
-        minnutes = date.time().minute() % 15;
-        minnutes = (date.time().minute() / 15 + 1) * 15;
+        minnutes = date.time().minute() % DDECalendar::QuarterOfAnhourWithMinute;
+        minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
     } else {
-        int minnutes = date.time().minute() % 15;
+        int minnutes = date.time().minute() % DDECalendar::QuarterOfAnhourWithMinute;
         if (minnutes != 0) {
-            minnutes = (date.time().minute() / 15 + 1) * 15;
+            minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
         }
     }
     if (minnutes == 60) {
