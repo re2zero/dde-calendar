@@ -450,35 +450,35 @@ void CSchceduleDlg::changeEvent(QEvent *event)
     mlabelF.setWeight(QFont::Medium);
 
     QFontMetrics fontWidth_typeLabel(mlabelF);
-    QString str_typelabel = fontWidth_typeLabel.elidedText(tr("Type:"),Qt::ElideRight,70);
+    QString str_typelabel = fontWidth_typeLabel.elidedText(tr("Type:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_typeLabel->setText(str_typelabel);
 
     QFontMetrics fontWidth_contentlabel(mlabelF);
-    QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"),Qt::ElideRight,70);
+    QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_contentLabel->setText(str_contentlabel);
 
     QFontMetrics fontWidth_allDayLabel(mlabelF);
-    QString str_allDayLabel = fontWidth_allDayLabel.elidedText(tr("All Day:"), Qt::ElideRight, 70);
+    QString str_allDayLabel = fontWidth_allDayLabel.elidedText(tr("All Day:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_adllDayLabel->setText(str_allDayLabel);
 
     QFontMetrics fontWidth_beginTimeLabel(mlabelF);
-    QString str_beginTimeLabel = fontWidth_beginTimeLabel.elidedText(tr("Starts:"), Qt::ElideRight, 70);
+    QString str_beginTimeLabel = fontWidth_beginTimeLabel.elidedText(tr("Starts:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_beginTimeLabel->setText(str_beginTimeLabel);
 
     QFontMetrics fontWidth_endTimeLabel(mlabelF);
-    QString str_endTimeLabel = fontWidth_endTimeLabel.elidedText(tr("Ends:"), Qt::ElideRight, 70);
+    QString str_endTimeLabel = fontWidth_endTimeLabel.elidedText(tr("Ends:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_endTimeLabel->setText(str_endTimeLabel);
 
     QFontMetrics fontWidth_remindSetLabel(mlabelF);
-    QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"),Qt::ElideRight,70);
+    QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_remindSetLabel->setText(str_remindSetLabel);
 
     QFontMetrics fontWidth_beginRepeatLabel(mlabelF);
-    QString str_beginRepeatLabel = fontWidth_beginRepeatLabel.elidedText(tr("Repeat:"), Qt::ElideRight, 70);
+    QString str_beginRepeatLabel = fontWidth_beginRepeatLabel.elidedText(tr("Repeat:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_beginrepeatLabel->setText(str_beginRepeatLabel);
 
     QFontMetrics fontWidth_endrepeatLabel(mlabelF);
-    QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"),Qt::ElideRight,70);
+    QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_endrepeatLabel->setText(str_endrepeatLabel);
 }
 
@@ -528,7 +528,7 @@ void CSchceduleDlg::initUI()
     m_typeLabel->setToolTip(tr("Type"));
     DFontSizeManager::instance()->bind(m_typeLabel,DFontSizeManager::T6);
     QFontMetrics fontWidth_typeLabel(mlabelF);
-    QString str_typelabel = fontWidth_typeLabel.elidedText(tr("Type:"),Qt::ElideRight,70);
+    QString str_typelabel = fontWidth_typeLabel.elidedText(tr("Type:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_typeLabel->setText(str_typelabel);
     m_typeLabel->setFont(mlabelF);
     m_typeLabel->setPalette(pa);
@@ -563,7 +563,7 @@ void CSchceduleDlg::initUI()
     m_contentLabel = new QLabel();
     DFontSizeManager::instance()->bind(m_contentLabel,DFontSizeManager::T6);
     QFontMetrics fontWidth_contentlabel(mlabelF);
-    QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"),Qt::ElideRight,70);
+    QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_contentLabel->setText(str_contentlabel);
     m_contentLabel->setFont(mlabelF);
     m_contentLabel->setPalette(pa);
@@ -594,7 +594,7 @@ void CSchceduleDlg::initUI()
     m_adllDayLabel->setToolTip(tr("All Day"));
     DFontSizeManager::instance()->bind(m_adllDayLabel,DFontSizeManager::T6);
     QFontMetrics fontWidth_allDayLabel(mlabelF);
-    QString str_allDayLabel = fontWidth_allDayLabel.elidedText(tr("All Day:"), Qt::ElideRight, 70);
+    QString str_allDayLabel = fontWidth_allDayLabel.elidedText(tr("All Day:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_adllDayLabel->setText(str_allDayLabel);
     m_adllDayLabel->setFont(mlabelF);
     m_adllDayLabel->setPalette(pa);
@@ -612,7 +612,7 @@ void CSchceduleDlg::initUI()
     m_beginTimeLabel->setToolTip(tr("Starts"));
     DFontSizeManager::instance()->bind(m_beginTimeLabel,DFontSizeManager::T6);
     QFontMetrics fontWidth_beginTimeLabel(mlabelF);
-    QString str_beginTimeLabel = fontWidth_beginTimeLabel.elidedText(tr("Starts:"), Qt::ElideRight, 70);
+    QString str_beginTimeLabel = fontWidth_beginTimeLabel.elidedText(tr("Starts:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_beginTimeLabel->setText(str_beginTimeLabel);
     m_beginTimeLabel->setFont(mlabelF);
     m_beginTimeLabel->setPalette(pa);
@@ -639,7 +639,7 @@ void CSchceduleDlg::initUI()
     m_endTimeLabel->setToolTip(tr("Ends"));
     DFontSizeManager::instance()->bind(m_endTimeLabel,DFontSizeManager::T6);
     QFontMetrics fontWidth_endTimeLabel(mlabelF);
-    QString str_endTimeLabel = fontWidth_endTimeLabel.elidedText(tr("Ends:"), Qt::ElideRight, 70);
+    QString str_endTimeLabel = fontWidth_endTimeLabel.elidedText(tr("Ends:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_endTimeLabel->setText(str_endTimeLabel);
     m_endTimeLabel->setFont(mlabelF);
     m_endTimeLabel->setPalette(pa);
@@ -666,7 +666,7 @@ void CSchceduleDlg::initUI()
     m_remindSetLabel = new QLabel();
     DFontSizeManager::instance()->bind(m_remindSetLabel,DFontSizeManager::T6);
     QFontMetrics fontWidth_remindSetLabel(mlabelF);
-    QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"),Qt::ElideRight,70);
+    QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_remindSetLabel->setToolTip(tr("Remind Me"));
     m_remindSetLabel->setText(str_remindSetLabel);
     m_remindSetLabel->setFont(mlabelF);
@@ -689,7 +689,7 @@ void CSchceduleDlg::initUI()
     m_beginrepeatLabel->setToolTip(tr("Repeat"));
     DFontSizeManager::instance()->bind(m_beginrepeatLabel,DFontSizeManager::T6);
     QFontMetrics fontWidth_beginRepeatLabel(mlabelF);
-    QString str_beginRepeatLabel = fontWidth_beginRepeatLabel.elidedText(tr("Repeat:"), Qt::ElideRight, 70);
+    QString str_beginRepeatLabel = fontWidth_beginRepeatLabel.elidedText(tr("Repeat:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_beginrepeatLabel->setText(str_beginRepeatLabel);
     m_beginrepeatLabel->setFont(mlabelF);
     m_beginrepeatLabel->setPalette(pa);
@@ -714,7 +714,7 @@ void CSchceduleDlg::initUI()
     m_endrepeatLabel = new QLabel();
     DFontSizeManager::instance()->bind(m_endrepeatLabel,DFontSizeManager::T6);
     QFontMetrics fontWidth_endrepeatLabel(mlabelF);
-    QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"),Qt::ElideRight,70);
+    QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_endrepeatLabel->setToolTip(tr("End Repeat"));
     m_endrepeatLabel->setText(str_endrepeatLabel);
     m_endrepeatLabel->setFont(mlabelF);
