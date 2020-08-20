@@ -73,7 +73,6 @@ void AnimationStackedWidget::animationFinished()
     emit signalIsFinished();
 }
 
-
 void AnimationStackedWidget::setCurrent(int index)
 {
     //如果正在动画，那么return
@@ -83,6 +82,7 @@ void AnimationStackedWidget::setCurrent(int index)
     //开始动画并设置间隔和开始、结束值
     QRect g = geometry();
     int value = 0;
+
     if (index < currentIndex()) {
         switch (m_animationOri) {
         case LR: {
@@ -117,7 +117,6 @@ void AnimationStackedWidget::setCurrent(int index)
     widgetCount = count();
     int c = currentIndex();
     nextIndex = index;
-
     //隐藏当前的widget
     widget(c)->hide();
     animation->setStartValue(value);
@@ -137,6 +136,7 @@ void AnimationStackedWidget::setPre()
     int value = 0;
     int index = currentIndex();
     index = qAbs(index - 1);
+
     switch (m_animationOri) {
     case LR: {
         m_moveOri = LeftToRight;
@@ -215,6 +215,7 @@ void AnimationStackedWidget::paintPrevious(QPainter &paint, int currentIndex)
     double value = currentValue.toDouble();
     QRectF r1(0.0, 0.0, value, r.height());
     QRectF r2(r.width() - value, 0, value, r.height());
+
     switch (m_moveOri) {
     case LeftToRight:
         paint.drawPixmap(QRectF(r.width() - value, 0, value, r.height()),
@@ -248,6 +249,7 @@ void AnimationStackedWidget::paintNext(QPainter &paint, int nextIndex)
     QPixmap nextPixmap(nextWidget->size());
     nextWidget->render(&nextPixmap);
     double value = currentValue.toDouble();
+
     switch (m_moveOri) {
     case LeftToRight:
         paint.drawPixmap(QRectF(0.0, 0.0, r.width() - value, r.height()),
