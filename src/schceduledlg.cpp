@@ -183,31 +183,31 @@ void CSchceduleDlg::slotOkBt(int buttonIndex, QString buttonName)
         if (scheduleDtailInfo.remind) {
             scheduleDtailInfo.remindData.time = QTime(9, 0);
             if (m_rmindCombox->currentIndex() == 1) {
-                scheduleDtailInfo.remindData.n = 0;
+                scheduleDtailInfo.remindData.n = DDECalendar::OnStartDay;
             } else if (m_rmindCombox->currentIndex() == 2) {
-                scheduleDtailInfo.remindData.n = 1;
+                scheduleDtailInfo.remindData.n = DDECalendar::OneDayBeforeWithDay;
             } else if (m_rmindCombox->currentIndex() == 3) {
-                scheduleDtailInfo.remindData.n = 2;
+                scheduleDtailInfo.remindData.n = DDECalendar::TwoDayBeforeWithDay;
             } else if (m_rmindCombox->currentIndex() == 4) {
-                scheduleDtailInfo.remindData.n = 7;
+                scheduleDtailInfo.remindData.n = DDECalendar::OneWeekBeforeWithDay;
             }
         }
     } else {
         if (scheduleDtailInfo.remind) {
             if (m_rmindCombox->currentIndex() == 1) {
-                scheduleDtailInfo.remindData.n = 0;
+                scheduleDtailInfo.remindData.n = DDECalendar::AtTimeOfEvent;
             } else if (m_rmindCombox->currentIndex() == 2) {
-                scheduleDtailInfo.remindData.n = 15;
+                scheduleDtailInfo.remindData.n = DDECalendar::FifteenMinutesBefore;
             } else if (m_rmindCombox->currentIndex() == 3) {
-                scheduleDtailInfo.remindData.n = 30;
+                scheduleDtailInfo.remindData.n = DDECalendar::ThirtyMinutesBefore;
             } else if (m_rmindCombox->currentIndex() == 4) {
-                scheduleDtailInfo.remindData.n = 60;
+                scheduleDtailInfo.remindData.n = DDECalendar::OneHourBefore;
             } else if (m_rmindCombox->currentIndex() == 5) {
-                scheduleDtailInfo.remindData.n = 1440;
+                scheduleDtailInfo.remindData.n = DDECalendar::OneDayBeforeWithMinutes;
             } else if (m_rmindCombox->currentIndex() == 6) {
-                scheduleDtailInfo.remindData.n = 2880;
+                scheduleDtailInfo.remindData.n = DDECalendar::TwoDayBeforeWithMinutes;
             } else if (m_rmindCombox->currentIndex() == 7) {
-                scheduleDtailInfo.remindData.n = 10080;
+                scheduleDtailInfo.remindData.n = DDECalendar::OneWeekBeforeWithMinutes;
             }
         }
     }
@@ -822,13 +822,13 @@ void CSchceduleDlg::initRmindRpeatUI()
 {
     if (m_scheduleDtailInfo.allday) {
         if (m_scheduleDtailInfo.remind) {
-            if (m_scheduleDtailInfo.remindData.n == 0) {
+            if (m_scheduleDtailInfo.remindData.n == DDECalendar::OnStartDay) {
                 m_rmindCombox->setCurrentIndex(1);
-            } else if (m_scheduleDtailInfo.remindData.n == 1) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneDayBeforeWithDay) {
                 m_rmindCombox->setCurrentIndex(2);
-            } else if (m_scheduleDtailInfo.remindData.n == 2) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::TwoDayBeforeWithDay) {
                 m_rmindCombox->setCurrentIndex(3);
-            } else if (m_scheduleDtailInfo.remindData.n == 7) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneWeekBeforeWithDay) {
                 m_rmindCombox->setCurrentIndex(4);
             }
         } else {
@@ -837,19 +837,19 @@ void CSchceduleDlg::initRmindRpeatUI()
 
     } else {
         if (m_scheduleDtailInfo.remind) {
-            if (m_scheduleDtailInfo.remindData.n == 0) {
+            if (m_scheduleDtailInfo.remindData.n == DDECalendar::AtTimeOfEvent) {
                 m_rmindCombox->setCurrentIndex(1);
-            } else if (m_scheduleDtailInfo.remindData.n == 15) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::FifteenMinutesBefore) {
                 m_rmindCombox->setCurrentIndex(2);
-            } else if (m_scheduleDtailInfo.remindData.n == 30) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::ThirtyMinutesBefore) {
                 m_rmindCombox->setCurrentIndex(3);
-            } else if (m_scheduleDtailInfo.remindData.n == 60) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneHourBefore) {
                 m_rmindCombox->setCurrentIndex(4);
-            } else if (m_scheduleDtailInfo.remindData.n == 1440) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneDayBeforeWithMinutes) {
                 m_rmindCombox->setCurrentIndex(5);
-            } else if (m_scheduleDtailInfo.remindData.n == 2880) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::TwoDayBeforeWithMinutes) {
                 m_rmindCombox->setCurrentIndex(6);
-            } else if (m_scheduleDtailInfo.remindData.n == 10080) {
+            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneWeekBeforeWithMinutes) {
                 m_rmindCombox->setCurrentIndex(7);
             }
         } else {
