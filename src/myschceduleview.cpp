@@ -44,6 +44,7 @@ CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget 
     initConnection();
     setFixedSize(380, 160);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+
     if (themetype == 2) {
         DPalette anipa = palette();
         QColor color = "#191919";
@@ -53,6 +54,7 @@ CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget 
     }
 
     AutoFeed(m_scheduleInfo.titleName);
+
     if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
         m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString(("yyyy-MM-dd")));
     } else {
@@ -77,12 +79,14 @@ void CMySchceduleView::AutoFeed(QString text)
     QString str;
     int h = fm.height();
     strList.clear();
+
     if (titlewidth < 330) {
         strList.append(strText);
         resultStr += strText;
     } else {
         for (int i = 0; i < strText.count(); i++) {
             str += strText.at(i);
+
             if (fm.width(str) > 330) {
                 str.remove(str.count() - 1,1);
                 strList.append(str);
@@ -115,9 +119,11 @@ void CMySchceduleView::showEvent(QShowEvent *event)
 bool CMySchceduleView::eventFilter(QObject *o, QEvent *e)
 {
     Q_UNUSED(o);
+
     if (e->type() == QEvent::FontChange) {
         AutoFeed(m_scheduleInfo.titleName);
     }
+
     return false;
 }
 
@@ -128,6 +134,7 @@ void CMySchceduleView::slotEditBt(int buttonIndex, QString buttonName)
 
     CSchceduleDlg dlg(0, this);
     dlg.setData(m_scheduleInfo);
+
     if (dlg.exec() == DDialog::Accepted) {
         accept();
         emit signalsEditorDelete(1);
@@ -145,7 +152,6 @@ void CMySchceduleView::slotDeleteBt(int buttonIndex, QString buttonName)
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
         msgBox.addPushButton(tr("Cancel"), true);
         msgBox.addWaringButton(tr("Delete"), true);
-
         msgBox.exec();
 
         if (msgBox.clickButton() == 0) {
@@ -164,7 +170,6 @@ void CMySchceduleView::slotDeleteBt(int buttonIndex, QString buttonName)
             msgBox.addPushButton(tr("Cancel"));
             msgBox.addPushButton(tr("Delete All"));
             msgBox.addWaringButton(tr("Delete Only This Event"));
-
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -172,7 +177,6 @@ void CMySchceduleView::slotDeleteBt(int buttonIndex, QString buttonName)
             } else if (msgBox.clickButton() == 1) {
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_scheduleInfo.id);
             } else if (msgBox.clickButton() == 2) {
-
                 ScheduleDtailInfo newschedule;
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleInfo.id, newschedule);
                 newschedule.ignore.append(m_scheduleInfo.beginDateTime);
@@ -229,8 +233,8 @@ void CMySchceduleView::initUI()
     QFont labelTitle;
     labelTitle.setWeight(QFont::DemiBold);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
     DPalette titlepa = m_Title->palette();
+
     if (themetype == 0 || themetype == 1) {
         titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
 
@@ -243,8 +247,6 @@ void CMySchceduleView::initUI()
     m_Title->setText(tr("My Event"));
     m_Title->move(137, 0);
 
-
-
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
@@ -253,6 +255,7 @@ void CMySchceduleView::initUI()
     area->setFrameShape(QFrame::NoFrame);
     area->setFixedWidth(363);
     DPalette pa = area->palette();
+
     if (themetype == 0 || themetype == 1) {
         pa.setColor(DPalette::WindowText, QColor("#2C4767"));
 
@@ -273,6 +276,7 @@ void CMySchceduleView::initUI()
     DFontSizeManager::instance()->bind(m_schceduleLabel,DFontSizeManager::T6);
     labelF.setWeight(QFont::Medium);
     DPalette wpa = m_schceduleLabel->palette();
+
     if (themetype == 0 || themetype == 1) {
         wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
 
