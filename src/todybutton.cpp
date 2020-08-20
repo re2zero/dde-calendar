@@ -19,6 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "todybutton.h"
+#include "constants.h"
 
 #include <DPalette>
 
@@ -29,7 +30,7 @@ CTodyButton::CTodyButton(QWidget *parent)
     : DPushButton(parent)
 {
     m_font.setWeight(QFont::Medium);
-    m_font.setPixelSize(14);
+    m_font.setPixelSize(DDECalendar::FontSizeFourteen);
 }
 
 void CTodyButton::setBColor(QColor normalC, QColor hoverC, QColor pressc, QColor normalC1, QColor hoverC1, QColor pressc1)
