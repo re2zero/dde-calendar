@@ -180,17 +180,19 @@ void Calendarmainwindow::slotDynamicIconUpdate()
         CDynamicIcon::getInstance()->setDate(QDate::currentDate());
         CDynamicIcon::getInstance()->setIcon();
     }
-
 }
 void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
 {
     if (type < 0 || type > m_stackWidget->count()) {
         return;
     }
+
     m_stackWidget->setCurrentIndex(type - 1);
+
     if (type - 1 != 0) {
         m_priindex = type - 1;
     }
+
     switch (type - 1) {
     case DDECalendar::CalendarYearWindow: {
         m_yearButton->setFocus();
@@ -224,10 +226,12 @@ void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
 void Calendarmainwindow::UpdateJob()
 {
     int index = m_stackWidget->currentIndex();
+
     if (index < 0 || index > m_stackWidget->count() - 1) {
 
         return;
     }
+
     switch (index) {
     case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->slotupdateSchedule(0);
@@ -244,10 +248,12 @@ void Calendarmainwindow::UpdateJob()
 void Calendarmainwindow::updateHigh()
 {
     int index = m_stackWidget->currentIndex();
+
     if (index < 0 || index > m_stackWidget->count() - 1) {
 
         return;
     }
+
     switch (index) {
     case DDECalendar::CalendarYearWindow: {
     } break;
@@ -272,6 +278,7 @@ void Calendarmainwindow::slotTheme(int type)
     if (type == 0) {
         type = DGuiApplicationHelper::instance()->themeType();
     }
+
     if (type == 1) {
 
         DPalette pl = m_yearButton->palette();
@@ -333,7 +340,9 @@ void Calendarmainwindow::slotTheme(int type)
 void Calendarmainwindow::OpenSchedule(QString job)
 {
     if (job.isEmpty()) return;
+
     ScheduleDtailInfo out;
+
     if (CreatOrParSchedule::GetJob(job, out)) {
         m_dayButton->setFocus();
         m_dayButton->setChecked(true);
@@ -366,10 +375,6 @@ void Calendarmainwindow::initUI()
     titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     CDynamicIcon::getInstance()->setTitlebar(this->titlebar());
     CDynamicIcon::getInstance()->setIcon();
-
-
-
-
 
     QStringList titlelist;
     titlelist << tr("Y") << tr("M") << tr("W") << tr("D");
@@ -476,7 +481,6 @@ void Calendarmainwindow::initUI()
     m_transparentFrame->hide();
 
     m_animation = new QPropertyAnimation(this);
-
 }
 
 void Calendarmainwindow::initConnection()
@@ -545,14 +549,15 @@ void Calendarmainwindow::initConnection()
             &Calendarmainwindow::slotDynamicIconUpdate);
 }
 
-
 void Calendarmainwindow::initLunar()
 {
     QLocale locale;
     bool flag = false;
+
     if (locale.language() == QLocale::Chinese) {
         flag = true;
     }
+
     m_yearwindow->setLunarVisible(flag);
     m_monthWindow->setLunarVisible(flag);
     m_weekWindow->setLunarVisible(flag);
@@ -594,6 +599,7 @@ DPushButton *Calendarmainwindow::createButon(QString name)
     DPushButton *button = new DPushButton();
     button->setText(name);
     button->setFixedSize(50, 40);
+
     return  button;
 }
 
@@ -628,15 +634,18 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     m_buttonBox->setEnabled(false);
     setScheduleHide();
     int index = m_buttonBox->id(bt);
+
     if (index < 0 || index > m_stackWidget->count() - 1) {
 
         return;
     }
     m_searchflag = false;
     m_stackWidget->setCurrent(index);
+
     if (index != 0) {
         m_priindex = index;
     }
+
     if (m_currentdate.year() < DDECalendar::QueryEarliestYear)
         return;
     switch (index) {
@@ -664,6 +673,7 @@ void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
 {
     Q_UNUSED(w);
     Q_UNUSED(id);
+
     if (m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
         m_yearwindow->slotupdateSchedule(0);
@@ -728,9 +738,11 @@ void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
 {
     Q_UNUSED(Ids);
     int index = m_stackWidget->currentIndex();
+
     if (index < 0 || index > m_stackWidget->count() - 1) {
         return;
     }
+
     switch (index) {
     case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->slotupdateSchedule(0);
@@ -753,11 +765,13 @@ void Calendarmainwindow::slotTransitSearchSchedule(int id)
 {
     Q_UNUSED(id);
     getScheduleInfo();
+
     int index = m_stackWidget->currentIndex();
     if (index < 0 || index > m_stackWidget->count() - 1) {
 
         return;
     }
+
     switch (index) {
     case DDECalendar::CalendarYearWindow: {
         m_yearwindow->slotupdateSchedule(0);
@@ -779,9 +793,11 @@ void Calendarmainwindow::slotsearchDateSelect(QDate date)
 {
     setScheduleHide();
     int index = m_stackWidget->currentIndex();
+
     if (index < 0 || index > m_stackWidget->count() - 1) {
         return;
     }
+
     switch (index) {
     case DDECalendar::CalendarYearWindow: {
         m_yearwindow->setDate(date);
@@ -801,6 +817,7 @@ void Calendarmainwindow::slotsearchDateSelect(QDate date)
 void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
     int index = m_stackWidget->currentIndex();
+
     if (index < 0 || index > m_stackWidget->count() - 1) {
         return;
     }
@@ -827,6 +844,7 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &sched
 void Calendarmainwindow::slotdoubleclickDate(QDate date)
 {
     m_stackWidget->setCurrentIndex(m_priindex);
+
     switch (m_priindex) {
     case DDECalendar::CalendarMonthWindow: {
         m_monthButton->setFocus();
@@ -880,6 +898,7 @@ void Calendarmainwindow::slotViewSelectDate(QDate date)
 void Calendarmainwindow::slotViewtransparentFrame(int type)
 {
     static int showFrameCount =0;
+
     if (type) {
         m_transparentFrame->resize(width(), height() - 50);
         m_transparentFrame->move(0, 50);
@@ -896,6 +915,7 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
 
         return;
     }
+
     switch (index) {
     case DDECalendar::CalendarYearWindow: {
         m_yearwindow->setFocus();
@@ -937,6 +957,7 @@ void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)
 void Calendarmainwindow::changeEvent(QEvent *event)
 {
     DMainWindow::changeEvent(event);
+
     if (event->type() == QEvent::ActivationChange) {
         setScheduleHide();
     }
