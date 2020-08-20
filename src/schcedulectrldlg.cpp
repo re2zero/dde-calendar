@@ -50,7 +50,6 @@ CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent)
 
 void CSchceduleCtrlDlg::initUI()
 {
-
     //在点击任何对话框上的按钮后不关闭对话框，保证关闭子窗口时不被一起关掉
     setOnButtonClickedClose(false);
     QIcon t_icon(CDynamicIcon::getInstance()->getPixmap());// = QIcon::fromTheme("dde-calendar");
@@ -63,8 +62,8 @@ void CSchceduleCtrlDlg::initUI()
     labelTitle.setWeight(QFont::Bold);
     labelTitle.setPixelSize(17);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
     DPalette titlepa = m_Title->palette();
+
     if (themetype == 0 || themetype == 1) {
         titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
 
@@ -86,6 +85,7 @@ void CSchceduleCtrlDlg::initUI()
     labelF.setWeight(QFont::Medium);
     DFontSizeManager::instance()->bind(m_firstLabel,DFontSizeManager::T6);
     DPalette wpa = m_firstLabel->palette();
+
     if (themetype == 0 || themetype == 1) {
         wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
 
@@ -97,18 +97,19 @@ void CSchceduleCtrlDlg::initUI()
     m_firstLabel->setFont(labelF);
     m_mainBoxLayout->addWidget(m_firstLabel);
 
-
     m_seconLabel = new QLabel(this);
     m_seconLabel->setFixedWidth(350);
     m_seconLabel->setAlignment(Qt::AlignCenter);
     labelTitle.setWeight(QFont::Bold);
     DFontSizeManager::instance()->bind(m_seconLabel,DFontSizeManager::T6);
     DPalette tpa = m_seconLabel->palette();
+
     if (themetype == 0 || themetype == 1) {
         tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
     } else {
         tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
     }
+
     m_seconLabel->setPalette(tpa);
     m_seconLabel->setForegroundRole(DPalette::WindowText);
     m_seconLabel->setFont(labelT);
@@ -138,9 +139,7 @@ void CSchceduleCtrlDlg::changeEvent(QEvent *event)
 {
     Q_UNUSED(event)
     QFont font;
-
     QFontMetrics font_button(font);
-
     QFontMetrics font_firstLabel(font);
     QFontMetrics font_seconLabel(font);
     int height_firstLabel = (font_firstLabel.width(m_firstLabel->text()) / 300 + 1) * font_firstLabel.height();
@@ -150,15 +149,14 @@ void CSchceduleCtrlDlg::changeEvent(QEvent *event)
         QAbstractButton *button = getButton(i);
         QString str = str_btName.at(i);
         QString text_button = font_button.elidedText(str, Qt::ElideRight, 112);
+
         if (str.count() == 2) {
             button->setText(QString().append(str.at(0)).append(QChar::Nbsp).append(str.at(1)));
         } else {
             button->setText(text_button);
         }
     }
-
     setFixedHeight(36 + 48 + height_firstLabel + height_seconLabel + 30);
-
 }
 
 void CSchceduleCtrlDlg::buttonJudge(int id)
@@ -172,6 +170,7 @@ QAbstractButton *CSchceduleCtrlDlg::addPushButton(QString btName, bool type)
     addButton(btName, false, DDialog::ButtonNormal);
     int button_index = getButtonIndexByText(btName);
     QAbstractButton *button = getButton(button_index);
+
     if (type) {
         button->setFixedHeight(36);
         button->setFixedWidth(165);
@@ -181,7 +180,6 @@ QAbstractButton *CSchceduleCtrlDlg::addPushButton(QString btName, bool type)
     }
 
     button->setToolTip(btName);
-
     str_btName.append(btName);
 
     return button;
@@ -192,6 +190,7 @@ QAbstractButton *CSchceduleCtrlDlg::addsuggestButton(QString btName, bool type)
     addButton(btName,false,DDialog::ButtonRecommend);
     int button_index = getButtonIndexByText(btName);
     QAbstractButton *suggestButton = getButton(button_index);
+
     if (type) {
         suggestButton->setFixedHeight(36);
         suggestButton->setFixedWidth(165);
@@ -199,8 +198,8 @@ QAbstractButton *CSchceduleCtrlDlg::addsuggestButton(QString btName, bool type)
         suggestButton->setFixedHeight(36);
         suggestButton->setFixedWidth(129);
     }
-    suggestButton->setToolTip(btName);
 
+    suggestButton->setToolTip(btName);
     str_btName.append(btName);
 
     return suggestButton;
@@ -211,6 +210,7 @@ QAbstractButton *CSchceduleCtrlDlg::addWaringButton(QString btName, bool type)
     addButton(btName,false,DDialog::ButtonWarning);
     int button_index = getButtonIndexByText(btName);
     QAbstractButton *suggestButton = getButton(button_index);
+
     if (type) {
         suggestButton->setFixedHeight(36);
         suggestButton->setFixedWidth(165);
@@ -218,8 +218,8 @@ QAbstractButton *CSchceduleCtrlDlg::addWaringButton(QString btName, bool type)
         suggestButton->setFixedHeight(36);
         suggestButton->setFixedWidth(129);
     }
-    suggestButton->setToolTip(btName);
 
+    suggestButton->setToolTip(btName);
     str_btName.append(btName);
 
     return suggestButton;
