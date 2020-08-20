@@ -52,7 +52,6 @@ void SchecduleRemindWidget::setData(const ScheduleDtailInfo &vScheduleInfo, cons
     m_ScheduleInfo = vScheduleInfo;
     gdcolor = gcolor;
     this->setHeight(m_centerWidget->height() + 10);
-
 }
 
 CenterWidget::CenterWidget(DWidget *parent)
@@ -98,19 +97,21 @@ void CenterWidget::UpdateTextList()
     textwidth = metrics.width(m_ScheduleInfo.titleName);
     textheight = metrics.height();
     const int  h_count = qCeil(textwidth / textRectWidth);
-
     QString text;
+
     if (h_count < 1) {
         testList.append(m_ScheduleInfo.titleName);
     } else {
         const int text_Max_Height = 108;
         const int text_HeightMaxCount = qFloor(text_Max_Height / textheight);
+
         for (int i = 0; i < m_ScheduleInfo.titleName.count(); ++i) {
             text += m_ScheduleInfo.titleName.at(i);
             if (metrics.width(text) > textRectWidth) {
                 text.remove(text.count() - 1, 1);
                 testList.append(text);
                 text = "";
+
                 if (testList.count() == (text_HeightMaxCount - 1)) {
                     text = m_ScheduleInfo.titleName.right( m_ScheduleInfo.titleName.count() - i );
                     testList.append(metrics.elidedText(text, Qt::ElideRight, textRectWidth));
@@ -124,6 +125,7 @@ void CenterWidget::UpdateTextList()
             }
         }
     }
+
     this->setFixedHeight(testList.count() * textheight + 30 + 8);
 }
 
@@ -135,16 +137,15 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     QFont timeFont;
     timeFont.setPixelSize(DDECalendar::FontSizeTwelve);
     QPainter painter(this);
-
     //draw time
     QPen pen;
     pen.setColor(timeColor);
     painter.setPen(pen);
     painter.setFont(timeFont);
     QString timestr;
-
     QLocale locale;
     timestr = m_ScheduleInfo.beginDateTime.time().toString("AP h:mm");
+
     QFontMetrics metrics(timeFont);
     if (m_ScheduleInfo.allday)
         timestr = tr("All Day");
@@ -152,15 +153,14 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     int timeheight = metrics.height();
 
     painter.drawText(QRect( x + 13, 7, timewidth, timeheight), Qt::AlignLeft | Qt::AlignTop, timestr);
-
     painter.setRenderHints(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
     painter.setBrush(QBrush(gdcolor.dotColor));
     painter.drawEllipse(x, 7 + (timeheight - diam) / 2, diam, diam);
-
     pen.setColor(textColor);
     painter.setPen(pen);
     painter.setFont(textfont);
+
     for (int i = 0; i < testList.count(); i++) {
         painter.drawText(
             QRect(x, 30 + i * textheight, textRectWidth, textheight),
