@@ -35,6 +35,7 @@ static const int QueryLatestYear = 9999;
 
 static const int FestivalTypeID = 4;
 
+static const int FontSizeEleven = 11;
 static const int FontSizeTwelve = 12;
 static const int FontSizeFourteen = 14;
 static const int FontSizeSixteen = 16;
