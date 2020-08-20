@@ -35,12 +35,14 @@ CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
 {
     CSchedulesColor color;
     color.type = -1;
+
     for (int i = 0; i < m_vScheduleColor.count(); i++) {
         if (m_vScheduleColor.at(i).type == type) {
             color = m_vScheduleColor.at(i);
             break;
         }
     }
+
     return color;
 }
 
@@ -57,14 +59,16 @@ void CScheduleDataManage::setSearchResult(QVector<ScheduleDateRangeInfo> &vData)
 bool CScheduleDataManage::getSearchResult(ScheduleDtailInfo info)
 {
     QDateTime date = QDateTime::currentDateTime();
-
     QDateTime bdate = date.addMonths(-6);
+
     if (!bdate.isValid()) {
         QDateTime tdate = date;
         tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
         bdate = tdate.addMonths(-6);
     }
+
     QDateTime edate = date.addMonths(6);
+
     if (!edate.isValid()) {
         QDateTime tdate = date;
         tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
@@ -81,6 +85,7 @@ bool CScheduleDataManage::getSearchResult(ScheduleDtailInfo info)
             }
         }
     }
+
     return false;
 }
 
@@ -88,6 +93,7 @@ bool CScheduleDataManage::getSearchResult(QDate date)
 {
     for (int i = 0; i < m_vScheduleInfo.size(); i++) {
         QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
+
         if (m_vScheduleInfo[i].date == date && !scheduleInfolist.isEmpty()) {
             return true;
         }
@@ -99,6 +105,7 @@ void CScheduleDataManage::setTheMe(int type)
 {
     m_theme = type;
     m_vScheduleColor.clear();
+
     if (type == 0 || type == 1) {
         CSchedulesColor workC;
         workC.type = 1;
@@ -116,19 +123,19 @@ void CScheduleDataManage::setTheMe(int type)
         workC.timeColor = "#B54A4B";
         workC.hightlightgradientFromC = "#FFD0B8";
         workC.hightlightgradientToC = "#FF908D";
+
         QColor workP("#F9AEB8");
         workC.hightlightPurecolor = workP;
         workC.splitColor = "#FB2525";
         workC.splitColor.setAlphaF(0.5);
-
         workC.hovergradientFromC = "#FFD0B8";
         workC.hovergradientFromC.setAlphaF(0.95);
         workC.hovergradientToC = "#FF9D9A";
         workC.hovergradientToC.setAlphaF(0.95);
+
         QColor workhP("#FFB6BD");
         workhP.setAlphaF(0.8);
         workC.hoverPurecolor = workhP;
-
         workC.pressgradientToC = workC.gradientToC;
         workC.pressgradientFromC = workC.gradientFromC;
         workC.pressPurecolor = workC.Purecolor;
@@ -152,13 +159,14 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.timeColor = "#53A316";
         lifeC.hightlightgradientFromC = "#9AE5FF";
         lifeC.hightlightgradientToC = "#C7FF94";
+
         QColor lifeP("#C7FF94");
         lifeC.hightlightPurecolor = lifeP;
-
         lifeC.hovergradientFromC = "#A8E9FF";
         lifeC.hovergradientToC = "#D5FFAF";
         lifeC.hovergradientFromC.setAlphaF(0.95);
         lifeC.hovergradientToC.setAlphaF(0.95);
+
         QColor lifehP("#C4FF98");
         lifehP.setAlphaF(0.8);
         lifeC.hoverPurecolor = lifehP;
@@ -186,13 +194,14 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.timeColor = "#8548B1";
         otherC.hightlightgradientFromC = "#FFE8AC";
         otherC.hightlightgradientToC = "#FBA5FF";
+
         QColor otherP("#EAC4FF");
         otherC.hightlightPurecolor = otherP;
-
         otherC.hovergradientFromC = "#FFE8AC";
         otherC.hovergradientToC = "#E2A5FF";
         otherC.hovergradientFromC.setAlphaF(0.95);
         otherC.hovergradientToC.setAlphaF(0.95);
+
         QColor otherhP("#E6C5FF");
         otherhP.setAlphaF(0.8);
         otherC.hoverPurecolor = otherhP;
@@ -224,7 +233,6 @@ void CScheduleDataManage::setTheMe(int type)
         solar.hightlightgradientToC.setAlphaF(1);
         solar.hightlightPurecolor = "#F9AAAA";
         solar.hightlightPurecolor.setAlphaF(1);
-
         solar.hovergradientFromC = "#FFB0B1";
         solar.hovergradientToC = "#FFB0B1";
         solar.hovergradientFromC.setAlphaF(0.95);
@@ -235,13 +243,11 @@ void CScheduleDataManage::setTheMe(int type)
         solar.pressgradientFromC.setAlphaF(0.3);
         solar.pressgradientToC = "#FF7272";
         solar.pressgradientToC.setAlphaF(0.3);
-
         solar.pressPurecolor = solar.Purecolor;
         solar.pressgradientToC.setAlphaF(0.4);
         solar.pressgradientFromC.setAlphaF(0.4);
         solar.pressPurecolor.setAlphaF(0.1);
         m_vScheduleColor.append(solar);
-
     } else if (type == 2) {
         CSchedulesColor workC;
         workC.type = 1;
@@ -261,14 +267,15 @@ void CScheduleDataManage::setTheMe(int type)
         workC.hightlightgradientToC.setAlphaF(0.8);
         workC.hightlightgradientFromC = "#8B521F";
         workC.hightlightgradientFromC.setAlphaF(0.8);
+
         QColor workP("#77373E");
         workP.setAlphaF(0.8);
         workC.hightlightPurecolor = workP;
-
         workC.hovergradientFromC = "#965A26";
         workC.hovergradientToC = "#8B2521";
         workC.hovergradientFromC.setAlphaF(0.65);
         workC.hovergradientToC.setAlphaF(0.65);
+
         QColor workhP("#F85566");
         workhP.setAlphaF(0.2);
         workC.hoverPurecolor = workhP;
@@ -300,6 +307,7 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.hightlightgradientFromC.setAlphaF(0.8);
         lifeC.hightlightgradientToC = "#5D7D44";
         lifeC.hightlightgradientToC.setAlphaF(0.8);
+
         QColor lifeP("#337044");
         lifeP.setAlphaF(0.8);
         lifeC.hightlightPurecolor = lifeP;
@@ -309,6 +317,7 @@ void CScheduleDataManage::setTheMe(int type)
         lifeC.hovergradientToC = "#5D7D44";
         lifeC.hovergradientFromC.setAlphaF(0.65);
         lifeC.hovergradientToC.setAlphaF(0.65);
+
         QColor lifehP("#59F88D");
         lifehP.setAlphaF(0.2);
         lifeC.hoverPurecolor = lifehP;
@@ -338,14 +347,15 @@ void CScheduleDataManage::setTheMe(int type)
         otherC.hightlightgradientFromC.setAlphaF(0.8);
         otherC.hightlightgradientToC = "#803BAE";
         otherC.hightlightgradientToC.setAlphaF(0.8);
+
         QColor otherP("#613776");
         otherP.setAlphaF(0.8);
         otherC.hightlightPurecolor = otherP;
-
         otherC.hovergradientFromC = "#8C4E2C";
         otherC.hovergradientToC = "#7D37AF";
         otherC.hovergradientFromC.setAlphaF(0.65);
         otherC.hovergradientToC.setAlphaF(0.65);
+
         QColor otherhP("#C155F8");
         otherhP.setAlphaF(0.2);
         otherC.hoverPurecolor = otherhP;
@@ -378,7 +388,6 @@ void CScheduleDataManage::setTheMe(int type)
         solar.hightlightgradientToC.setAlphaF(0.8);
         solar.hightlightPurecolor = "#A24545";
         solar.hightlightPurecolor.setAlphaF(0.8);
-
         solar.hovergradientFromC = "#E56464";
         solar.hovergradientToC = "#E56464";
         solar.hovergradientFromC.setAlphaF(0.35);
@@ -388,7 +397,6 @@ void CScheduleDataManage::setTheMe(int type)
         solar.pressgradientFromC = "#FF7272";
         solar.pressgradientFromC.setAlphaF(0.3);
         solar.pressgradientToC = solar.pressgradientFromC;
-
         solar.pressPurecolor = solar.Purecolor;
         solar.pressgradientToC.setAlphaF(0.4);
         solar.pressgradientFromC.setAlphaF(0.4);
@@ -446,6 +454,7 @@ CScheduleDataManage::CScheduleDataManage ()
     otherC.textColor = "#000000";
     otherC.timeColor = "#8548B1";
     m_vScheduleColor.append(otherC);
+
     CSchedulesColor solar;
     solar.type = 4;
     solar.dotColor = "#FF7272";
@@ -497,6 +506,7 @@ void CScheduleDataManage::setCurrentYear(int CurrentYear)
 {
     m_CurrentYear = CurrentYear;
     m_GetAllYearScheduleInfo->m_year = m_CurrentYear;
+
     for (int i = 1; i < 13; ++i) {
         m_GetAllYearScheduleInfo->m_firstDay[i] =
             getFirstOfMonth(QDate(m_CurrentYear,i,1));
@@ -682,6 +692,7 @@ CHuangliDayDataManage::~CHuangliDayDataManage()
 bool CHuangliDayDataManage::getSoloDay(QDate date, QString &str)
 {
     CaHuangLiDayInfo scurrentDayinfo;
+
     if (m_DBusInter->GetHuangLiDayCalendar(date.year(), date.month(), date.day(), scurrentDayinfo)) {
         if (scurrentDayinfo.mSolarFestival.isEmpty() && scurrentDayinfo.mLunarFestival.isEmpty()) {
             str = QString();
@@ -703,6 +714,7 @@ QVector<bool> CHuangliDayDataManage::getDayFlag(QDate date)
     vflag.resize(42);
     vflag.fill(false);
     CaHuangLiMonthInfo out;
+
     if (m_DBusInter->GetHuangLiMonthCalendar(date.year(), date.month(), true, out)) {
         if (out.mCaLunarDayInfo.count() == 42) {
             for (int i = 0; i < 42; i++) {
