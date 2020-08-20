@@ -95,7 +95,6 @@ void CDynamicIcon::releaseInstance()
     }
 }
 
-
 void CDynamicIcon::setDate(const QDate &date)
 {
     m_Date = date;
@@ -112,7 +111,6 @@ void CDynamicIcon::setDate(const QDate &date)
     QString backgroundfile(":/resources/DynamicIcon/calendar_bg.svg");
     m_backgroundrenderer->load(backgroundfile);
 
-
     //draw pixmap
     paintPixmap(m_pixmap);
 
@@ -122,6 +120,7 @@ void CDynamicIcon::setIcon()
 {
     QIcon icon(this->getPixmap());
     qApp->setProductIcon(icon);
+
     if (qApp->aboutDialog() != nullptr)
         qApp->aboutDialog()->setProductIcon(icon);
 
