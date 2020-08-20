@@ -58,11 +58,15 @@ void CMonthWindow::setDate(QDate date)
 {
     if (!date.isValid())
         return;
+
     m_monthDayView->setCurrentDate(date);
+
     if (m_currentdate == date)
         return;
+
     m_currentdate = date;
     QLocale locale;
+
     if (locale.language() == QLocale::Chinese) {
         m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
     } else {
@@ -117,7 +121,6 @@ void CMonthWindow::setTheMe(int type)
         gpa.setColor(DPalette::Background, "#F8F8F8");
         m_gridWidget->setPalette(gpa);
         m_gridWidget->setBackgroundRole(DPalette::Background);
-
     } else if (type == 2) {
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         DPalette todaypa = m_today->palette();
@@ -186,13 +189,13 @@ void CMonthWindow::wheelEvent(QWheelEvent *e)
     //拖拽时禁用
     if (!m_monthView->isDragging()) {
         QPoint numDegrees = e->angleDelta();
+
         if (numDegrees.y()>0) {
             nextMonth();
         } else {
             previousMonth();
         }
     }
-
 }
 
 void CMonthWindow::initUI()
@@ -306,7 +309,6 @@ void CMonthWindow::initConnection()
     connect(m_monthView, &CMonthView::signalsCurrentScheduleDate, this, &CMonthWindow::signalsCurrentScheduleDate);
     connect(m_monthView, &CMonthView::signalViewtransparentFrame, this, &CMonthWindow::signalViewtransparentFrame);
     connect(m_monthView, &CMonthView::signalsViewSelectDate, this, &CMonthWindow::signalsViewSelectDate);
-
 }
 
 void CMonthWindow::initLunar()
@@ -317,6 +319,7 @@ void CMonthWindow::initLunar()
 void CMonthWindow::slideMonth(bool next)
 {
     QDate currentDate;
+
     if (next) {
         if (m_currentdate.year() == DDECalendar::QueryEarliestYear && m_currentdate.month() == 1)
             return;
@@ -324,6 +327,7 @@ void CMonthWindow::slideMonth(bool next)
     } else {
         currentDate = m_currentdate.addMonths(1);
     }
+
     setDate(currentDate);
     QDate tdate = QDate(m_currentdate.year(), m_currentdate.month(), 1);
     emit signalCurrentDate(tdate);
@@ -359,16 +363,19 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
 {
     qreal dw = width() * 0.5023 + 0.5;
     int dh = 36;
+
     if (m_searchfalg) {
         m_tmainLayout->setContentsMargins(0, 0, 0, 0);
     } else {
         m_tmainLayout->setContentsMargins(0, 0, 10, 0);
     }
+
     if (!m_searchfalg) {
         m_monthDayView->setFixedSize(qRound(dw), dh);
     } else {
         m_monthDayView->setFixedSize(qRound(dw), dh);
     }
+
     QMainWindow::resizeEvent(event);
 }
 
@@ -382,8 +389,10 @@ void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail
 {
     QDate currentdate = m_currentdate;
     m_currentdate = date;
+
     if (type == 1) {
         QLocale locale;
+
         if (locale.language() == QLocale::Chinese) {
             m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
         } else {
@@ -400,6 +409,7 @@ void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail
 void CMonthWindow::slotcurrentDateChanged(QDate date)
 {
     m_currentdate = date;
+
     if (m_currentdate == QDate::currentDate()) {
         m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     } else {
