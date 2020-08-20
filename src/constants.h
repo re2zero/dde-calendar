@@ -64,6 +64,8 @@ static const int OneWeekBeforeWithMinutes = 10080;
 
 static const int NewSchceduleLabelWidth = 70;
 
+static const int QuarterOfAnhourWithMinute = 15;
+
 } // namespace DDECalendar
 namespace DDEYearCalendar {
 
