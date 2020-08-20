@@ -59,20 +59,24 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
 CMonthGraphiview::~CMonthGraphiview()
 {
     delete m_MonthSchceduleView;
+
     for (int i = 0; i < m_DayItem.size(); ++i) {
         CDayGraphicsItem *item = m_DayItem.at(i);
         delete item;
         item = nullptr;
     }
+
     m_DayItem.clear();
 }
 
 void CMonthGraphiview::setTheMe(int type)
 {
     m_themetype = type;
+
     for (int i = 0; i < m_DayItem.size(); ++i) {
         m_DayItem.at(i)->setTheMe(type);
     }
+
     m_MonthSchceduleView->setTheMe(type);
 }
 
@@ -83,11 +87,13 @@ void CMonthGraphiview::setDate(const QDate date[42])
     } else {
         m_currentMonth = date[0].month();
     }
+
     for (int i = 0; i < m_DayItem.size(); ++i) {
         m_DayItem.at(i)->setData(date[i]);
         m_DayItem.at(i)->setCurrentMonth(date[i].month() == m_currentMonth);
         m_DayItem.at(i)->setStatus(CDayGraphicsItem::HolidayStatus(getFestivalInfoByDate(date[i])));
     }
+
     this->scene()->update();
 }
 
@@ -112,9 +118,12 @@ void CMonthGraphiview::setScheduleInfo(const QVector<ScheduleDateRangeInfo> &inf
 void CMonthGraphiview::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
 {
     QVector<QGraphicsRectItem *> mscheduleShowBtn = m_MonthSchceduleView->getScheduleShowItem();
+
     for (int i = 0; i < mscheduleShowBtn.size(); ++i) {
         CMonthSchceduleWidgetItem *item = dynamic_cast<CMonthSchceduleWidgetItem *>(mscheduleShowBtn.at(i));
+
         if (item == nullptr) continue;
+
         if (scheduleInfo == item->getData()) {
             item->setStartValue(0);
             item->setEndValue(4);
@@ -131,6 +140,7 @@ void CMonthGraphiview::updateSize()
     QRectF rect ;
     int w_offset = 0;
     int h_offset = 0;
+
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
         h_offset = i / DDEMonthCalendar::AFewDaysofWeek;
         w_offset = i % DDEMonthCalendar::AFewDaysofWeek;
@@ -147,13 +157,16 @@ void CMonthGraphiview::updateLunar()
     QDate date;
     CaLunarDayInfo info;
     QString lunarStr("");
+
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
         date = m_DayItem.at(i)->getDate();
         if (m_lunarCache->contains(date)) {
             info = m_lunarCache->value(date);
+
             if (info.mLunarDayName == "初一") {
                 info.mLunarDayName = info.mLunarMonthName + info.mLunarDayName;
             }
+
             if (info.mTerm.isEmpty()) {
                 lunarStr = info.mLunarDayName;
             } else {
@@ -173,6 +186,7 @@ void CMonthGraphiview::updateInfo()
                                      this->viewport()->height(),
                                      0, 0, 0, h);
     m_MonthSchceduleView->setData(m_shceludelistdata, 1);
+
     switch (m_DragStatus) {
     case IsCreate:
         upDateInfoShow(IsCreate,m_DragScheduleInfo);
@@ -191,7 +205,6 @@ char CMonthGraphiview::getFestivalInfoByDate(const QDate &date)
 {
     for (int i = 0; i < m_festivallist.count(); i++) {
         for (int j = 0; j < m_festivallist[i].listHoliday.count(); j++) {
-
             if (m_festivallist[i].listHoliday[j].date == date) {
                 return m_festivallist[i].listHoliday[j].status;
             }
@@ -205,10 +218,7 @@ QPointF CMonthGraphiview::getItemPos(const QPoint &p, const QRectF &itemRect)
     QPointF scenePos = this->mapToScene(p);
     return  QPointF(scenePos.x()-itemRect.x(),
                     scenePos.y()-itemRect.y());
-
 }
-
-
 
 CMonthGraphiview::PosInItem CMonthGraphiview::getPosInItem(const QPoint &p, const QRectF &itemRect)
 {
@@ -220,9 +230,11 @@ CMonthGraphiview::PosInItem CMonthGraphiview::getPosInItem(const QPoint &p, cons
     if (itemPos.x()<5) {
         return LEFT;
     }
+
     if (bottomy <5) {
         return RIGHT;
     }
+
     return MIDDLE;
 }
 
@@ -233,6 +245,7 @@ QDateTime CMonthGraphiview::getPosDate(const QPoint &p)
     QRectF rect = this->sceneRect();
     qreal x =0;
     qreal y = 0;
+
     if (p.x()<0) {
         x =0;
     } else if (p.x()>(rect.width()-10)) {
@@ -240,6 +253,7 @@ QDateTime CMonthGraphiview::getPosDate(const QPoint &p)
     } else {
         x = p.x();
     }
+
     if (p.y()<0) {
         y =0;
     } else if (p.y()>(rect.height()-10)) {
@@ -247,8 +261,10 @@ QDateTime CMonthGraphiview::getPosDate(const QPoint &p)
     } else {
         y = p.y();
     }
+
     int xoffset = qFloor(x / (rect.width() / DDEMonthCalendar::AFewDaysofWeek)) % DDEMonthCalendar::AFewDaysofWeek;
     int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumofMonth)) % DDEMonthCalendar::LinesNumofMonth;
+
     return  QDateTime(m_DayItem[xoffset+yoffset*7]->getDate(),
                       QTime(0,0,0));
 }
@@ -287,13 +303,13 @@ void CMonthGraphiview::updateScheduleInfo(const ScheduleDtailInfo &info)
 void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
 {
     emit signalViewtransparentFrame(1);
+
     if (info.rpeat == 0) {
         CSchceduleCtrlDlg msgBox(this);
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
         msgBox.addPushButton(tr("Cancel"), true);
         msgBox.addWaringButton(tr("Delete"), true);
-
         msgBox.exec();
 
         if (msgBox.clickButton() == 0) {
@@ -310,7 +326,6 @@ void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
             msgBox.addPushButton(tr("Cancel"));
             msgBox.addPushButton(tr("Delete All"));
             msgBox.addsuggestButton(tr("Delete Only This Event"));
-
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -332,7 +347,6 @@ void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
             msgBox.addPushButton(tr("Cancel"));
             msgBox.addPushButton(tr("Delete All Future Events"));
             msgBox.addsuggestButton(tr("Delete Only This Event"));
-
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -367,8 +381,10 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
     if (event->button() != Qt::LeftButton) {
         return;
     }
+
     QGraphicsItem *listItem =itemAt(event->pos());
     CMonthSchceduleNumButton *item = dynamic_cast<CMonthSchceduleNumButton *>(listItem);
+
     if (item!= nullptr) {
         //双击切换视图
         if (item->getDate().year() > DDECalendar::QueryEarliestYear) {
@@ -376,7 +392,9 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
         }
         return;
     }
+
     CMonthSchceduleWidgetItem *infoitem = dynamic_cast<CMonthSchceduleWidgetItem *>(listItem);
+
     if (infoitem != nullptr) {
         CMySchceduleView dlg(infoitem->getData(), this);
         connect(&dlg, &CMySchceduleView::signalsEditorDelete, this, &CMonthGraphiview::signalsUpdateShcedule);
@@ -385,7 +403,9 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
         dlg.exec();
         return;
     }
+
     CDayGraphicsItem *Dayitem = dynamic_cast<CDayGraphicsItem *>(listItem);
+
     if (Dayitem !=nullptr) {
         QPointF point = getItemPos(event->pos(),Dayitem->rect());
         if (point.y()<38) {
@@ -398,9 +418,7 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
             slotCreate(QDateTime(Dayitem->getDate(),QTime(0,0,0)));
         }
     }
-
 }
-
 
 void CMonthGraphiview::resizeEvent(QResizeEvent *event)
 {
@@ -445,6 +463,7 @@ void CMonthGraphiview::RightClickToCreate(QGraphicsItem *listItem,const QPoint &
 {
     Q_UNUSED(pos);
     CDayGraphicsItem *Dayitem = dynamic_cast<CDayGraphicsItem *>(listItem);
+
     if (Dayitem != nullptr) {
         m_rightMenu->clear();
         m_rightMenu->addAction(m_createAction);
@@ -460,6 +479,7 @@ void CMonthGraphiview::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &p
     info.endDateTime    = info.endDateTime.addDays(offset);
     qreal y = 0;
     QRectF rect = this->sceneRect();
+
     if (pos.y()<0) {
         y =0;
     } else if (pos.y()>rect.height()) {
@@ -467,6 +487,7 @@ void CMonthGraphiview::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &p
     } else {
         y = pos.y();
     }
+
     int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumofMonth)) % DDEMonthCalendar::LinesNumofMonth;
     info.IsMoveInfo = true;
     m_MonthSchceduleView->updateDate(yoffset,info);
@@ -492,13 +513,16 @@ void CMonthGraphiview::slotCreate(const QDateTime &date)
     CSchceduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(date.date());
+
     if (date.date() == QDate::currentDate()) {
         tDatatime.setTime(QTime::currentTime());
     } else {
         tDatatime.setTime(QTime(8, 0));
     }
+
     dlg.setDate(tDatatime);
     dlg.setAllDay(true);
+
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsUpdateShcedule();
         emit signalsSchceduleUpdate(0);
@@ -518,9 +542,11 @@ void CMonthGraphiview::slotDeleteItem()
     if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID <0) {
         return;
     }
+
     if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID != DDECalendar::FestivalTypeID) {
         DeleteItem(CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo());
     }
+
     CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
 }
 
@@ -561,6 +587,7 @@ void CDayGraphicsItem::setStatus(const CDayGraphicsItem::HolidayStatus &status)
 void CDayGraphicsItem::setTheMe(int type)
 {
     m_themetype = type;
+
     if (type == 0 || type == 1) {
         m_dayNumColor = "#000000";
         m_dayNumCurrentColor = "#FFFFFF";
@@ -576,7 +603,6 @@ void CDayGraphicsItem::setTheMe(int type)
 
         m_BorderColor = "#000000";
         m_BorderColor.setAlphaF(0.05);
-
     } else if (type == 2) {
         m_dayNumColor = "#C0C6D4";
         m_dayNumCurrentColor = "#B8D3FF";
@@ -633,6 +659,7 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     pen.setWidth(1);
     pen.setColor(m_BorderColor);
     painter->setPen(pen);
+
     if (m_itemnum == 35) {
         QPainterPath painterpath;
         painterpath.moveTo(0, this->rect().y());
@@ -668,17 +695,18 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     //绘制日期
     painter->setFont(m_dayNumFont);
     QRectF fillRect;
+
     if (m_LunarVisible) {
         fillRect.setRect(this->rect().x()+3,this->rect().y()+4, hh, hh);
     } else {
         fillRect.setRect(this->rect().x(),this->rect().y()+4, this->rect().width(), hh);
     }
+
     if (m_Date ==QDate::currentDate()) {
         QFont tfont = m_dayNumFont;
         tfont.setPixelSize(DDECalendar::FontSizeTwenty);
         painter->setFont(tfont);
         painter->setPen(m_dayNumCurrentColor);
-
 
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing);
@@ -692,6 +720,7 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     } else {
         painter->setPen(m_dayNumColor);
     }
+
     fillRect.setY(fillRect.y()-10);
     fillRect.setX(fillRect.x()-1);
     painter->drawText(fillRect,
@@ -700,7 +729,6 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
     painter->save();
     painter->restore();
-
     //绘制农历
     if (m_LunarVisible) {
         QFontMetrics metrics(m_LunerFont);
@@ -710,6 +738,7 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
                         this->rect().y()+9,
                         12,
                         12);
+
         if (filleRectX>hh) {
             painter->setRenderHint(QPainter::Antialiasing);
             painter->setRenderHint(QPainter::HighQualityAntialiasing);
@@ -719,7 +748,6 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
                 QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
                 painter->drawPixmap(fillRect.toRect(), pixmap);
             }
-
             break;
             case H_REST: {
                 QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
@@ -734,7 +762,5 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         painter->setPen(m_LunerColor);
         painter->drawText(QRectF(this->rect().x()+this->rect().width() - 58,
                                  this->rect().y()+6, 58, 18), Qt::AlignCenter, m_DayLunar);
-
     }
-
 }
