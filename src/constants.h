@@ -48,7 +48,20 @@ static const int CalendarMonthWindow = 1;
 static const int CalendarWeekWindow = 2;
 static const int CalendarDayWindow = 3;
 
-static const int ThirtyMinutes = 1800;
+static const int ThirtyMinutesWithSec = 1800;
+
+static const int AtTimeOfEvent = 0;
+static const int OnStartDay = 0;
+static const int FifteenMinutesBefore = 15;
+static const int ThirtyMinutesBefore = 30;
+static const int OneHourBefore = 60;
+static const int OneDayBeforeWithDay = 1;
+static const int OneDayBeforeWithMinutes = 1440;
+static const int TwoDayBeforeWithDay = 2;
+static const int TwoDayBeforeWithMinutes = 2880;
+static const int OneWeekBeforeWithDay = 7;
+static const int OneWeekBeforeWithMinutes = 10080;
+
 } // namespace DDECalendar
 namespace DDEYearCalendar {
 
