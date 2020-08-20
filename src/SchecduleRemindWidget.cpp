@@ -19,6 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "SchecduleRemindWidget.h"
+#include "constants.h"
 
 #include <DGuiApplicationHelper>
 
@@ -69,7 +70,7 @@ void CenterWidget::setData(const ScheduleDtailInfo &vScheduleInfo, const CSchedu
 {
     m_ScheduleInfo = vScheduleInfo;
     gdcolor = gcolor;
-    textfont.setPixelSize(12);
+    textfont.setPixelSize(DDECalendar::FontSizeTwelve);
     UpdateTextList();
     update();
 }
@@ -132,7 +133,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     int diam = 8;
     int x = 40 - 13;
     QFont timeFont;
-    timeFont.setPixelSize(12);
+    timeFont.setPixelSize(DDECalendar::FontSizeTwelve);
     QPainter painter(this);
 
     //draw time
