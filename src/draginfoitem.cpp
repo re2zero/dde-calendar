@@ -50,8 +50,6 @@ DragInfoItem::DragInfoItem(QRectF rect, QGraphicsItem *parent)
             , &QPropertyAnimation::finished
             , this
             , &DragInfoItem::animationFinished);
-
-
 }
 
 DragInfoItem::~DragInfoItem()
@@ -88,7 +86,6 @@ void DragInfoItem::setOffset(const int &offset)
                    m_rect.height() + offset));
     setZValue(offset);
 }
-
 
 void DragInfoItem::setStartValue(const int value)
 {
@@ -128,7 +125,6 @@ void DragInfoItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     m_HoverInfo = ScheduleDtailInfo();
     update();
 }
-
 
 void DragInfoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
