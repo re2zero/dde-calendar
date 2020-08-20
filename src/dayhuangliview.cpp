@@ -86,7 +86,6 @@ void CDayHuangLiLabel::paintEvent( QPaintEvent *e )
     painter.drawPixmap(QRect(m_leftMagin, m_topMagin + 1, 22, 22), pixmap);
     painter.restore();
 
-
     painter.setFont(m_font);
     painter.setPen(m_textcolor);
     int bw = m_leftMagin + 34;
