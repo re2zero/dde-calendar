@@ -38,11 +38,14 @@ QVariant ExportedInterface::invoke(const QString &action, const QString &paramet
     ScheduleDtailInfo info;
     Exportpara para;
     QString tstr = parameters;
+
     if (!analysispara(tstr, info, para)) {
         return QVariant(false);
     }
+
     if (action == "CREATE") {
         qint64 tindex = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(info);
+
         if (tindex < 0) {
             return QVariant(false);
         }
@@ -52,10 +55,12 @@ QVariant ExportedInterface::invoke(const QString &action, const QString &paramet
         QString qstr;
         bool flag =  CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(para.ADTitleName, para.ADStartTime, para.ADEndTime, qstr);
         Q_UNUSED(flag);
+
         return QVariant(qstr);
     } else if (action == "CANCEL") {
         QVector<ScheduleDateRangeInfo> out;
         bool flag =  CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->queryScheduleInfo(para.ADTitleName, para.ADStartTime, para.ADEndTime, out);
+
         if (!flag) return QVariant(false);
 
         for (int j = 0; j < out.size(); j++) {
@@ -143,6 +148,7 @@ void ExportedInterface::parsingScheduleRemind(QString str, ScheduleDtailInfo &in
         return;
     }
     info.remind = true;
+
     if (info.allday) {
         QStringList liststr = str.split(";", QString::SkipEmptyParts);
         info.remindData.n = liststr.at(0).toInt();
@@ -159,6 +165,7 @@ void ExportedInterface::parsingScheduleRRule(QString str, ScheduleDtailInfo &inf
     }
     QString rrulestrs = str;
     QStringList rruleslist = rrulestrs.split(";", QString::SkipEmptyParts);
+
     if (rruleslist.count() > 0) {
         if (rruleslist.contains("FREQ=DAILY") && rruleslist.contains("BYDAY=MO,TU,WE,TH,FR")) info.rpeat = 2;
         else if (rruleslist.contains("FREQ=DAILY") ) {
@@ -171,13 +178,13 @@ void ExportedInterface::parsingScheduleRRule(QString str, ScheduleDtailInfo &inf
             info.rpeat = 5;
         }
         info.enddata.type = 0;
+
         for (int i = 0; i < rruleslist.count(); i++) {
             if (rruleslist.at(i).contains("COUNT=")) {
                 QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
                 info.enddata.type = 1;
                 info.enddata.tcount = liststr.at(1).toInt() - 1;
             }
-
             if (rruleslist.at(i).contains("UNTIL=")) {
                 QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
                 info.enddata.type = 2;
