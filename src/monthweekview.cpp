@@ -41,6 +41,7 @@ CMonthWeekView::CMonthWeekView(QWidget *parent)
 void CMonthWeekView::setList(int weekday)
 {
     QLayoutItem *child;
+
     while ((child = m_mainLayout->takeAt(0)) != nullptr) {
         if (child->widget() != nullptr) {
             delete child->widget();
@@ -49,6 +50,7 @@ void CMonthWeekView::setList(int weekday)
     }
     m_weekData.clear();
     QLocale locale;
+
     for (int i = 0; i != DDEMonthCalendar::AFewDaysofWeek; ++i) {
         int d = checkDay(i + weekday);
 
@@ -64,11 +66,13 @@ void CMonthWeekView::setList(int weekday)
         weekfont.setWeight(QFont::Medium);
         weekfont.setPixelSize(DDECalendar::FontSizeSixteen);
         label->setTextFont(weekfont);
+
         if (i ==0) {
             label->setRoundState(true, false, false, false);
         } else if (i == DDEMonthCalendar::AFewDaysofWeek - 1) {
             label->setRoundState(false, true, false, false);
         }
+
         if (d == 0) {
             QColor textbC(0, 66, 154);
             QColor colorSeven = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
@@ -89,6 +93,7 @@ void CMonthWeekView::setList(int weekday)
             label->setBColor(textbC);
             m_weekData.append(qMakePair(label, 0));
         }
+
         if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
             label->setObjectName("MonthHeaderWeekend");
         } else {
@@ -96,6 +101,7 @@ void CMonthWeekView::setList(int weekday)
         }
 
         DHorizontalLine *splitline = new DHorizontalLine;
+
         if (i == 0 || i == DDEMonthCalendar::AFewDaysofWeek - 1) {
             label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, DDEMonthCalendar::MWeekCellHeight);
             splitline->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, 2);
@@ -161,8 +167,8 @@ void CMonthWeekView::updateWeek()
     int d = date.dayOfWeek();
     QLocale locale;
     QString str = locale.dayName(d ? d : DDEMonthCalendar::AFewDaysofWeek, QLocale::ShortFormat);
-    for (int i = 0; i < m_vline.count(); ++i) {
 
+    for (int i = 0; i < m_vline.count(); ++i) {
         if (m_weekData.at(i).first->getTextStr() == str) {
             m_vline.at(i)->setVisible(true);
         }
@@ -179,9 +185,9 @@ void CMonthWeekView::resizeEvent(QResizeEvent *event)
 {
     int tw = static_cast<int>(width() / 7.0 + 0.5);
     int th = height();
+
     for (int i = 0; i < m_weekData.count(); i++) {
         if (m_weekData.at(i).second == 1) {
-
             m_weekData.at(i).first->setFixedSize(tw, th);
         } else {
             m_weekData.at(i).first->setFixedSize(tw, th);
