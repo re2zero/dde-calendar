@@ -97,6 +97,7 @@ void CDayWindow::setDate(QDate date)
 {
     if (!date.isValid())
         return;
+
     m_currentdate = date;
     m_daymonthView->setFirstWeekday(0);
     m_daymonthView->setCurrentDate(date);
@@ -278,11 +279,13 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
     qreal dw = 0.4046 * width();
     int dh = height() - 20;
+
     if (m_searchfalg) {
         m_mainLayout->setContentsMargins(10, 10, 0, 10);
     } else {
         m_mainLayout->setContentsMargins(10, 10, 10, 10);
     }
+
     if (dw < 350)
         dw = 350;
     m_daymonthView->setFixedSize(qRound(dw), dh);
@@ -291,8 +294,10 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
 void CDayWindow::slotcurrentDateLunarChanged(QDate date, CaHuangLiDayInfo detail, int type)
 {
     m_currentdate = date;
+
     if (type == 1) {
         QLocale locale;
+
         if (locale.language() == QLocale::Chinese) {
             m_YearLabel->setText(QString::number(date.year()) + tr("Y") +
                                  QString::number(date.month()) + tr("M") +
