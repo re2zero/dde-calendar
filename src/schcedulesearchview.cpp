@@ -21,6 +21,7 @@
 #include "myschceduleview.h"
 #include "schceduledlg.h"
 #include "scheduledatamanage.h"
+#include "constants.h"
 
 #include <DMessageBox>
 #include <DPushButton>
@@ -341,7 +342,7 @@ void CSchceduleSearchItem::paintEvent( QPaintEvent *e )
 void CSchceduleSearchItem::contextMenuEvent( QContextMenuEvent *event )
 {
     Q_UNUSED(event);
-    if (m_ScheduleInfo.type.ID == 4)
+    if (m_ScheduleInfo.type.ID == DDECalendar::FestivalTypeID)
         return;
     m_rightMenu->clear();
     m_rightMenu->addAction(m_editAction);
