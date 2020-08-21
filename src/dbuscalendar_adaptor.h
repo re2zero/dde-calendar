@@ -46,7 +46,6 @@ class CalendarAdaptor: public QDBusAbstractAdaptor
 public:
     CalendarAdaptor(QObject *parent);
     virtual ~CalendarAdaptor();
-
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void ActiveWindow();
