@@ -85,11 +85,9 @@ private slots:
     void slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type = 0);
     void slotcurrentDateChanged(QDate date);
     void slotsearchDateSelect(QDate date);
-
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-
 private:
     CWeekHeadView *m_weekHeadView = nullptr; //周视图头
     DFrame *m_contentBackground = nullptr;
