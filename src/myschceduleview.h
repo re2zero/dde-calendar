@@ -57,7 +57,6 @@ private:
 protected:
     void showEvent(QShowEvent *event) override;
     bool eventFilter(QObject *o, QEvent *e) override;
-
 private:
     QLabel                           *m_schceduleLabel = nullptr;
     QLabel                           *m_timeLabel = nullptr;
