@@ -46,7 +46,6 @@ public:
 private:
     void initUI();
     void initConnection();
-
 protected:
     void changeEvent(QEvent *event) override;
 private slots:
