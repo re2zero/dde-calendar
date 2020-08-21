@@ -63,6 +63,7 @@ QString CSchedulesDBus::createScheduleDtailInfojson(const ScheduleDtailInfo &inf
     json.insert("End", toconvertData(info.endDateTime));
     json.insert("RecurID", info.RecurID);
     QJsonArray jsonarry;
+
     for (int i = 0; i < info.ignore.count(); i++) {
         jsonarry.append(toconvertData(info.ignore.at(i)));
     }
@@ -72,6 +73,7 @@ QString CSchedulesDBus::createScheduleDtailInfojson(const ScheduleDtailInfo &inf
     document.setObject(json);
     QByteArray byteArray = document.toJson(QJsonDocument::Compact);
     QString strJson(byteArray);
+
     return strJson;
 }
 
@@ -87,6 +89,7 @@ QString CSchedulesDBus::createScheduleTypejson(const ScheduleType &info)
     document.setObject(json);
     QByteArray byteArray = document.toJson(QJsonDocument::Compact);
     QString strJson(byteArray);
+
     return strJson;
 }
 
@@ -106,6 +109,7 @@ ScheduleType CSchedulesDBus::parsingScheduleTypejson(QJsonObject &object)
         QString str = rootObj.value("Color").toString();
         type.color = QColor(rootObj.value("Color").toString());
     }
+
     return type;
 }
 
@@ -160,6 +164,7 @@ QString CSchedulesDBus::createScheduleRRule(const ScheduleDtailInfo &info)
 {
     if (info.rpeat == 0) return QString();
     QString str;
+
     switch (info.rpeat) {
     case 1: {
         str += "FREQ=DAILY";
@@ -204,6 +209,7 @@ void CSchedulesDBus::parsingScheduleRRule(QString str, ScheduleDtailInfo &info)
     }
     QString rrulestrs = str;
     QStringList rruleslist = rrulestrs.split(";", QString::SkipEmptyParts);
+
     if (rruleslist.count() > 0) {
         if (rruleslist.contains("FREQ=DAILY") && rruleslist.contains("BYDAY=MO,TU,WE,TH,FR")) info.rpeat = 2;
         else if (rruleslist.contains("FREQ=DAILY") ) {
@@ -216,6 +222,7 @@ void CSchedulesDBus::parsingScheduleRRule(QString str, ScheduleDtailInfo &info)
             info.rpeat = 5;
         }
         info.enddata.type = 0;
+
         for (int i = 0; i < rruleslist.count(); i++) {
             if (rruleslist.at(i).contains("COUNT=")) {
                 QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
@@ -237,6 +244,7 @@ QString CSchedulesDBus::createScheduleRemind(const ScheduleDtailInfo &info)
 {
     if (!info.remind) return QString();
     QString str;
+
     if (info.allday) {
         str = QString::number(info.remindData.n) + ";" + info.remindData.time.toString("hh:mm");
     } else {
@@ -252,6 +260,7 @@ void CSchedulesDBus::parsingScheduleRemind(QString str, ScheduleDtailInfo &info)
         return;
     }
     info.remind = true;
+
     if (info.allday) {
         QStringList liststr = str.split(";", QString::SkipEmptyParts);
         info.remindData.n = liststr.at(0).toInt();
@@ -270,12 +279,14 @@ QString CSchedulesDBus::toconvertData(QDateTime date)
     strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "+" + datetimeutc.toString("hh:mm");
+
     return  str;
 }
 
 QDateTime CSchedulesDBus::fromconvertData(QString str)
 {
     QStringList liststr = str.split("+", QString::SkipEmptyParts);
+
     return QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
 }
 
@@ -288,6 +299,7 @@ QString CSchedulesDBus::toconvertIGData(QDateTime date)
     strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z" + datetimeutc.toString("hh:mm");
+
     return  str;
 }
 
@@ -303,6 +315,7 @@ qint64 CSchedulesDBus::CreateJob(const ScheduleDtailInfo &info)
     argumentList << QVariant::fromValue(createScheduleDtailInfojson(info)) ;
     qDebug() << argumentList.at(0);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("CreateJob"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         qDebug() << reply;
         return  -1;
@@ -318,6 +331,7 @@ bool CSchedulesDBus::GetJobs(int startYear, int startMonth, int startDay, int en
     argumentList << QVariant::fromValue(startYear) << QVariant::fromValue(startMonth) << QVariant::fromValue(startDay);
     argumentList << QVariant::fromValue(endYear) << QVariant::fromValue(endMonth) << QVariant::fromValue(endDay);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetJobs"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -332,6 +346,7 @@ bool CSchedulesDBus::GetJobs(int startYear, int startMonth, int startDay, int en
     }
 
     QJsonArray rootarry = jsonDoc.array();
+
     for (int i = 0; i < rootarry.size(); i++) {
 
         QJsonObject subObj = rootarry.at(i).toObject();
@@ -359,6 +374,7 @@ bool CSchedulesDBus::GetJob(qint64 jobId, ScheduleDtailInfo &out)
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetJob"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -383,6 +399,7 @@ bool CSchedulesDBus::UpdateJob(const ScheduleDtailInfo &info)
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(createScheduleDtailInfojson(info));
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("UpdateJob"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -395,6 +412,7 @@ bool CSchedulesDBus::DeleteJob(qint64 jobId)
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("DeleteJob"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -417,6 +435,7 @@ bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endti
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(strJson);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("QueryJobs"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -431,6 +450,7 @@ bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endti
     }
 
     QJsonArray rootarry = jsonDoc.array();
+
     for (int i = 0; i < rootarry.size(); i++) {
 
         QJsonObject subObj = rootarry.at(i).toObject();
@@ -467,6 +487,7 @@ bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endti
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(strJson);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("QueryJobs"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -474,6 +495,7 @@ bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endti
 
     if (!jobs.isValid()) return false;
     out = jobs.value().toLocal8Bit();
+
     return true;
 }
 
@@ -481,6 +503,7 @@ bool CSchedulesDBus::GetTypes(QVector<ScheduleType> &out)
 {
     QList<QVariant> argumentList;
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetTypes"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -500,6 +523,7 @@ bool CSchedulesDBus::GetTypes(QVector<ScheduleType> &out)
         QJsonObject subObj = rootarry.at(i).toObject();
         out.append(parsingScheduleTypejson(subObj));
     }
+
     return true;
 }
 
@@ -508,6 +532,7 @@ bool  CSchedulesDBus::GetType(qint64 jobId, ScheduleType &out)
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetType"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -523,6 +548,7 @@ bool  CSchedulesDBus::GetType(qint64 jobId, ScheduleType &out)
 
     QJsonObject subObj = jsonDoc.object();
     out = parsingScheduleTypejson(subObj);
+
     return true;
 }
 
@@ -531,6 +557,7 @@ qint64 CSchedulesDBus::CreateType(const ScheduleType &info)
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(createScheduleTypejson(info)) ;
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("CreateType"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return  -1;
     }
@@ -544,6 +571,7 @@ bool CSchedulesDBus::DeleteType(qint64 jobId)
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("DeleteType"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return false;
     }
@@ -555,9 +583,11 @@ bool CSchedulesDBus::UpdateType(const ScheduleType &info)
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(createScheduleTypejson(info)) ;
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("UpdateType"), argumentList);
+
     if (reply.type() != QDBusMessage::ReplyMessage ) {
         return  false;
     }
+
     return true;
 }
 
