@@ -44,10 +44,13 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
                                    QDBusConnection::sessionBus(), this);
     if (!queue)
         queue = new QQueue<int>;
+
     if (!lunarCache)
         lunarCache = new QMap<QDate, CaLunarDayInfo>;
+
     if (!emptyCaLunarDayInfo)
         emptyCaLunarDayInfo = new CaLunarDayInfo;
+
     m_dayNumFont.setWeight(QFont::Medium);
     m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_monthFont.setWeight(QFont::Medium);
@@ -68,6 +71,7 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     hboxLayout->addWidget(m_monthLabel);
     hboxLayout->setStretch(0, 0);
     hboxLayout->setSpacing(0);
+
     for (int c = 0; c != DDEWeekCalendar::AFewDaysofWeek; ++c) {
         QWidget *cell = new QWidget(this);
         cell->installEventFilter(this);
@@ -80,6 +84,7 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
 
     connect(this, &CWeekHeadView::dateSelected, this, &CWeekHeadView::handleCurrentDateChanged);
     setFrameRounded(true);
+
     m_monthList.append( "一月" );
     m_monthList.append( "二月");
     m_monthList.append( "三月" );
@@ -130,13 +135,12 @@ int CWeekHeadView::getDateType(const QDate &date)
 {
     const int currentIndex = getDateIndex(date);
     const CaLunarDayInfo info = getCaLunarDayInfo(currentIndex);
-
     const int dayOfWeek = date.dayOfWeek();
     bool weekends = dayOfWeek == DDEWeekCalendar::FirstDayofWeekend || dayOfWeek == DDEWeekCalendar::AFewDaysofWeek;
     bool isCurrentMonth = m_currentDate.month() == date.month();
     bool isFestival = !info.mSolarFestival.isEmpty() || !info.mLunarFestival.isEmpty();
-
     int resultFlag = 0;
+
     if (!isCurrentMonth)
         resultFlag |= SO_MNotCurrentMonth;
     if (isFestival)
@@ -150,6 +154,7 @@ int CWeekHeadView::getDateType(const QDate &date)
 void CWeekHeadView::setTheMe(int type)
 {
     m_themetype = type;
+
     if (type == 0 || type == 1) {
         QColor textC = "#000000";
         QColor textbC(230, 238, 242);
@@ -168,8 +173,6 @@ void CWeekHeadView::setTheMe(int type)
         m_currentMonthColor = "#000000";
         m_backgroudColor = "#E6EEF2";
         m_solofestivalLunarColor = "#4DFF7272";
-
-
     } else if (type == 2) {
         QColor textbC = "#82AEC1";
         textbC.setAlphaF(0.1);
@@ -188,6 +191,7 @@ void CWeekHeadView::setTheMe(int type)
         m_backgroudColor.setAlphaF(0.1);
         m_solofestivalLunarColor = "#4DFF7272";
     }
+
     for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i)
         m_cellList.at(i)->update();
 }
@@ -196,6 +200,7 @@ void CWeekHeadView::setWeekDay(QVector<QDate> vDays)
 {
     if (vDays.count() != DDEWeekCalendar::AFewDaysofWeek)
         return;
+
     for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i)
         m_days[i] = vDays[i];
 }
@@ -214,7 +219,6 @@ void CWeekHeadView::setCurrentDate(const QDate date)
         return;
     }
     m_currentDate = date;
-
 
     emit signalcurrentDateChanged(m_currentDate);
     // to refresh lunar calendar
@@ -240,7 +244,6 @@ void CWeekHeadView::setLunarFestivalHighlight(bool highlight)
 {
     highlight = true;
     int state = int(m_showState);
-    //
 
     if (highlight)
         state |= ShowLunarFestivalHighlight;
@@ -255,6 +258,7 @@ void CWeekHeadView::setCellSelectable(bool selectable)
 {
     if (selectable == m_cellSelectable)
         return;
+
     m_cellSelectable = selectable;
 
     emit cellSelectableChanged(m_cellSelectable);
@@ -310,12 +314,15 @@ void CWeekHeadView::updateCurrentLunar(const CaLunarDayInfo &info)
     } else {
         emit currentFestivalChanged("");
     }
+
     QVector<QDate> vdate;
     QVector<CaLunarDayInfo> vdetail;
+
     for (int i = 0; i < DDEWeekCalendar::AFewDaysofWeek; i++) {
         vdate.append(m_days[i]);
         vdetail.append(getCaLunarDayInfo(getDateIndex(m_days[i])));
     }
+
     emit signalcurrentLunarDateChanged(vdate, vdetail, 1);
     updateDate();
 }
@@ -370,11 +377,13 @@ void CWeekHeadView::getDbusData()
     const int pos = queue->head();
     queue->pop_front();
     const QDate date = m_days[pos];
+
     if (!date.isValid()) {
         return;
     }
 
     CaLunarDayInfo currentDayInfo;
+
     if (!lunarCache->contains(date)) {
         bool o1 = true;
         QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(date.year(), date.month(), false, o1);
@@ -383,6 +392,7 @@ void CWeekHeadView::getDbusData()
         cacheDate.setDate(date.year(), date.month(), 1);
         foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
             lunarCache->insert(cacheDate, dayInfo);
+
             if (date == m_currentDate) {
                 currentDayInfo = dayInfo;
             }
@@ -403,15 +413,11 @@ void CWeekHeadView::getDbusData()
 void CWeekHeadView::paintCell(QWidget *cell)
 {
     m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-
     const QRect rect(0, 0, cell->width(), cell->height());
-
     const int pos = m_cellList.indexOf(cell);
-
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
     const bool isSelectedCell = isCurrentDay;
     int d = checkDay(pos - m_firstWeekDay);
-
 
     QPainter painter(cell);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -419,6 +425,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     painter.setBrush(QBrush(m_backgroudColor));
     if (d != 6) {
         painter.drawRect(rect);//画矩形
+
         if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
             painter.drawRect(rect); //画矩形
     } else {
@@ -433,17 +440,12 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
         painterPath.lineTo(0, 0);
         painterPath.lineTo(0, m_radius);
-
         painterPath.lineTo(0, labelheight - m_radius);
-
         painterPath.lineTo(0, labelheight);
         painterPath.lineTo(m_radius, labelheight);
-
         painterPath.lineTo(labelwidth - m_radius, labelheight);
-
         painterPath.lineTo(labelwidth, labelheight);
         painterPath.lineTo(labelwidth, labelheight - m_radius);
-
         painterPath.lineTo(labelwidth, m_radius);
         painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
         painterPath.lineTo(m_radius, 0);
@@ -501,6 +503,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     }
 
     painter.setFont(m_dayNumFont);
+
     if (m_showState & ShowLunar) {
         painter.drawText(QRect(bw - 1, bh, 24, 24), Qt::AlignCenter, dayNum);
         if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
@@ -508,7 +511,6 @@ void CWeekHeadView::paintCell(QWidget *cell)
         else
             painter.setPen(m_defaultTextColor);
         painter.drawText(QRect(bw + 24, bh, 30, 25), Qt::AlignCenter, dayWeek);
-
     } else {
         QFontMetrics fm1 = painter.fontMetrics();
         painter.drawText(QRect(cell->width() - (cell->width()/2) - 4, bh - 1, 36, 26), Qt::AlignCenter, dayNum);
@@ -518,8 +520,10 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.setPen(m_defaultTextColor);
 
         QFontMetrics fm = painter.fontMetrics();
+
         while (fm.width(dayWeek) > cell->width()/2)
             dayWeek.chop(1);
+
         painter.drawText(QRect(0, bh, (cell->width()/2), 26), Qt::AlignRight, dayWeek);
     }
     // draw text of day type
@@ -529,7 +533,6 @@ void CWeekHeadView::paintCell(QWidget *cell)
                 painter.setPen(m_weekendsTextColor);
             else
                 painter.setPen(m_defaultLunarColor);
-
 
             if (cell->width() < 132) {
                 QString str_dayLunar = nullptr;
@@ -565,6 +568,7 @@ void CWeekHeadView::cellClicked(QWidget *cell)
 
     // my gift eggs
     static int gift = 0;
+
     if (m_days[pos] == QDate(1993, 7, 28))
         if (++gift == 10)
             QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
