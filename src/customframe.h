@@ -44,7 +44,6 @@ public:
     void setFixedSize(int w, int h);
 protected:
     void paintEvent(QPaintEvent *e) override;
-
 private:
     QColor                   m_bnormalColor = "#FFFFFF";
     QColor                   m_tnormalColor = "#000000";
