@@ -82,7 +82,6 @@ public:
     int getFirstWeekDay() const;
     void setFirstWeekDay(int firstWeekDay);
     YearScheduleInfo *getGetAllYearScheduleInfo() const;
-
 private:
     CScheduleDataManage();
     ~CScheduleDataManage();
@@ -100,11 +99,9 @@ private:
     static CScheduleDataManage                      *m_vscheduleDataManage;
 };
 
-
 class CDataProcessThread : public QThread
 {
     Q_OBJECT
-
 public:
     /******
     功能:构造函数
@@ -118,21 +115,18 @@ public:
     返回值:无
     ******/
     ~CDataProcessThread();
-
 public:
     /******
     功能:处理数据函数外部调用
     返回值:无
     ******/
     void DataProcessStart(QDate begin, QDate end);
-
 signals:
     /******
     功能:发送信号函数
     返回值:无
     ******/
     void signalsDataProcess(QVector<ScheduleDateRangeInfo> out);
-
 protected:
     /******
     功能:多线程处理函数
@@ -140,7 +134,6 @@ protected:
     返回值:无
     ******/
     void run() override;
-
 private:
     CSchedulesDBus       *m_DataManage;
     //锁
@@ -169,7 +162,6 @@ public:
     QString InfoToJson(const ScheduleDtailInfo &scheduledate);
     ScheduleDtailInfo JsonObjectToInfo(QJsonObject &obj);
     CSchedulesDBus *getDbus() const;
-
 public slots:
     void slotupdatescheduleD(QWidget *w, QDate begin, QDate end);
     void slotDataProcess(QVector<ScheduleDateRangeInfo> out);
