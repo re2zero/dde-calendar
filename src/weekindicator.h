@@ -33,7 +33,6 @@ class WeekIndicator : public DWidget
 public:
     explicit WeekIndicator(QWidget *parent = nullptr);
     void setList(int weekday);
-
 private:
     int checkDay(int weekday);
 
