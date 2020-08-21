@@ -62,7 +62,6 @@ private:
     void UpdateTextList();
 protected:
     void paintEvent(QPaintEvent *e) override;
-
 private:
     QStringList testList;
     QFont textfont;
