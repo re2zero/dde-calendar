@@ -76,6 +76,7 @@ void CYearWindow::resizeEvent(QResizeEvent *event)
 void CYearWindow::setDate(QDate date)
 {
     if (!date.isValid()) return;
+
     m_YearWidget->setDate(date);
     m_YearWidget->slotcurrentDateChanged(date);
     emit signalCurrentDate(date);
@@ -97,7 +98,6 @@ void CYearWindow::initUI()
     todayfont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_today->setFont(todayfont);
     m_today->setAlignment(Qt::AlignCenter);
-
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedWidth(88);
     m_today->setAutoFillBackground(true);
@@ -105,7 +105,6 @@ void CYearWindow::initUI()
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-
 
     m_nextButton = new DIconButton(DStyle::SP_ArrowRight, this);
     m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
@@ -138,7 +137,6 @@ void CYearWindow::initUI()
     m_YearLunarDayLabel->setFont(ylabelF);
     m_YearLunarDayLabel->setPalette(Lunapa);
     m_YearLunarDayLabel->setAlignment(Qt::AlignRight);
-
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
@@ -175,7 +173,6 @@ void CYearWindow::initUI()
     m_topWidget = new DWidget(this);
     m_topWidget->setLayout(yeartitleLayout);
 
-
     YearWidget_First = new YearFrame();
     YearWidget_Second = new YearFrame();
 
@@ -192,7 +189,6 @@ void CYearWindow::initUI()
     hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addWidget(m_StackedWidget);
 
-
     m_tmainLayout = new QHBoxLayout;
     m_tmainLayout->setMargin(0);
     m_tmainLayout->setSpacing(0);
@@ -203,7 +199,6 @@ void CYearWindow::initUI()
     m_contentBackground->setLayout(m_tmainLayout);
 
     setCentralWidget(m_contentBackground);
-
 }
 
 void CYearWindow::initConnection()
@@ -292,7 +287,6 @@ void CYearWindow::setTheMe(int type)
 
         m_YearLunarDayLabel->setPalette(Lunapa);
         m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);
-
     } else if (type == 2) {
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#252525");
@@ -363,10 +357,14 @@ void CYearWindow::slotSetSchceduleHide()
 void CYearWindow::slotprev()
 {
     m_YearWidget->slotHideInfo();
+
     if (m_currentdate.year() == DDECalendar::QueryEarliestYear)
         return;
+
     if (m_StackedWidget->IsRunning()) return;
+
     QDate tcurrent = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
+
     if (!tcurrent.isValid()) {
         m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), 1);
     } else {
@@ -386,8 +384,10 @@ void CYearWindow::slotprev()
 void CYearWindow::slotnext()
 {
     m_YearWidget->slotHideInfo();
+
     if (m_StackedWidget->IsRunning()) return;
     QDate tcurrent = QDate(m_currentdate.year() + 1, m_currentdate.month(), m_currentdate.day());
+
     if (!tcurrent.isValid()) {
         m_currentdate = QDate(m_currentdate.year() + 1, m_currentdate.month(), 1);
     } else {
@@ -399,7 +399,6 @@ void CYearWindow::slotnext()
     m_YearWidget->setDate(m_currentdate);
     m_StackedWidget->setNext();
     emit signalCurrentDate(m_currentdate);
-
 }
 
 void CYearWindow::slottoday()
@@ -426,13 +425,13 @@ void CYearWindow::slotUpdateCurrentDate(const QDate &date)
 
 void CYearWindow::setYearData()
 {
-
     if (m_currentdate == QDate::currentDate()) {
         m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     } else {
         m_today->setText(QCoreApplication::translate("Return", "Today", "Return"));
     }
     QLocale locale;
+
     if (locale.language() == QLocale::Chinese) {
         m_YearLabel->setText(QString::number(m_currentdate.year()) + tr("Y"));
     } else {
@@ -462,12 +461,11 @@ YearFrame::YearFrame(DWidget *parent)
     m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
                                    "/com/deepin/api/LunarCalendar",
                                    QDBusConnection::sessionBus(), this);
-
-
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setMargin(0);
     gridLayout->setSpacing(8);
     gridLayout->setContentsMargins(0, 0, 0, 0);
+
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 4; j++) {
             CYearView *view = new CYearView(this);
@@ -504,7 +502,6 @@ YearFrame::YearFrame(DWidget *parent)
     DPalette Lunapa = m_YearLunarLabel->palette();
     Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_YearLunarLabel->setPalette(Lunapa);
-
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
@@ -545,6 +542,7 @@ void YearFrame::setDate(QDate &date)
 {
     if (!date.isValid()) return;
     m_currentdate = date;
+
     for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
         QDate tdate(m_currentdate.year(), i + 1, 1);
         m_monthViewList.at(i)->setCurrentDate(tdate, 0);
@@ -583,7 +581,6 @@ void YearFrame::setTheMe(int type)
         Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
         m_YearLunarLabel->setPalette(Lunapa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
-
     } else if (type == 2) {
         DPalette gpa = palette();
         gpa.setColor(DPalette::Background, "#252525");
@@ -599,6 +596,7 @@ void YearFrame::setTheMe(int type)
         m_YearLunarLabel->setPalette(Lunapa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
     }
+
     for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
         m_monthViewList.at(i)->setTheMe(type);
     }
@@ -617,6 +615,7 @@ void YearFrame::getLunarData()
     m_LunarYear = QString("-%0%1年-").arg(currentDayInfo.mGanZhiYear).arg(currentDayInfo.mZodiac);
     m_LunarDay = QString("-农历%0%1-").arg(currentDayInfo.mLunarMonthName).arg(currentDayInfo.mLunarDayName);
     QLocale locale;
+
     if (locale.language() == QLocale::Chinese) {
         m_YearLabel->setText(QString::number(m_currentdate.year()) + tr("Y"));
         m_YearLunarLabel->setText(m_LunarYear);
