@@ -102,7 +102,6 @@ private:
     QVector<ScheduleDateRangeInfo>      m_shceludelistdata;
 };
 
-
 class CDayGraphicsItem :public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
@@ -123,7 +122,6 @@ public:
         return m_Date;
     }
     void setitemnum(int num);
-
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 private:
