@@ -75,10 +75,8 @@ private:
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-
 protected:
     void paintEvent(QPaintEvent *e) override;
-
 private:
     CustomFrame *m_currentMouth = nullptr;
     QDate m_days[42];
