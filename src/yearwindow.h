@@ -82,7 +82,6 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
-
 private:
     DFrame *m_contentBackground = nullptr;
     DIconButton *m_prevButton = nullptr;
