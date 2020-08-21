@@ -65,12 +65,13 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
         return;
     QFontMetrics fontmetris(font);
     int heightT = fontm.height();
-
     QString tstr;
     QStringList tliststr;
+
     for (int i = 0; i < str.count(); i++) {
         tstr.append(str.at(i));
         int widthT = fontmetris.width(tstr) + 5;
+
         if (widthT >= w) {
             tstr.chop(1);
             if (tstr.isEmpty())
@@ -81,10 +82,12 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
         }
     }
     tliststr.append(tstr);
+
     if (w < 30) {
         QFontMetrics fm_s(fontm);
         QFontMetrics f_st(font);
         QString s = tliststr.at(0) + "...";
+
         if (h < 23) {
             tliststr.append("");
         } else {
@@ -110,6 +113,7 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
                 } else {
                     QString s;
                     QFontMetrics fm_str(fontm);
+
                     if (i == tliststr.count())
                         s = fontm.elidedText(tliststr.at(i - 1), Qt::ElideRight, w);
                     else {
@@ -142,12 +146,12 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         }
         m_vSelectflag = m_press;
     }
+
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
     QColor bcolor = gdcolor.Purecolor;
-
     QFontMetrics fm = painter->fontMetrics();
     int h = fm.height();
+
     if (m_vHoverflag) {
         bcolor = gdcolor.hoverPurecolor;
     } else if (m_vHighflag) {
@@ -159,6 +163,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
     painter->setBrush(bcolor);
     painter->setPen(Qt::NoPen);
     painter->drawRect(rect);
+
     if (m_vHoverflag && !m_vSelectflag) {
         painter->save();
         QRectF trect = QRectF(rect.x() + 0.5, rect.y() + 0.5, rect.width() - 1, rect.height() - 1);
@@ -187,16 +192,18 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
             gdcolor.timeColor.setAlphaF(0.6);
         }
     }
-    painter->save();
 
+    painter->save();
     QPen pen(gdcolor.shadowcolor);
     pen.setWidth(2);
     painter->setPen(pen);
     painter->drawLine(rect.topLeft(), rect.bottomLeft());
     painter->restore();
     int tmagin = 10;
+
     if (m_totalNum > 1)
         tmagin = 5;
+
     if (m_type == 0) {
         int timeTextHight = 0;
         QFont font;
@@ -209,16 +216,18 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
             painter->save();
             painter->setFont(font);
             painter->setPen(gdcolor.timeColor);
+
             QTime stime = m_vScheduleInfo.beginDateTime.time();
             QString str = stime.toString("AP h:mm");
-
             QFontMetrics fontmetris(font);
             qreal drawTextWidth = rect.width() - m_offset*2;
+
             if (fm.width(str) > drawTextWidth -5) {
                 QString tstr;
                 for (int i = 0; i < str.count(); i++) {
                     tstr.append(str.at(i));
                     int widthT = fm.width(tstr) - 5;
+
                     if (widthT >= drawTextWidth) {
                         if (i < 1) {
                             tstr.chop(1);
@@ -239,9 +248,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
                     QRectF(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, drawTextWidth - 5, h),
                     Qt::AlignLeft, str);
             }
-
             painter->restore();
-
         } else {
             timeTextHight = -20;
         }
@@ -253,7 +260,6 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         painter->setFont(font);
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
-
         QRect textRect = rect.toRect();
         textRect.setWidth(textRect.width() -m_offset*2);
         splitText(font,
@@ -261,6 +267,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
                   textRect.height() - 20,
                   m_vScheduleInfo.titleName,
                   liststr, fm);
+
         for (int i = 0; i < liststr.count(); i++) {
             if ((20 + timeTextHight + (i + 1) * (h - 3)) > rect.height())
                 return;
