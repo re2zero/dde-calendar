@@ -67,7 +67,6 @@ public slots:
 protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
-
 private:
     void initUI();
     void initConnection();
