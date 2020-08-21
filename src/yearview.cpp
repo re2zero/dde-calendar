@@ -56,7 +56,6 @@ CYearView::CYearView(QWidget *parent)
     : CustomFrame(parent)
 {
     setMouseTracking(true);
-
     //add separator line
     m_currentMouth = new CustomFrame();
     m_currentMouth->setFixedHeight(24);
@@ -128,6 +127,7 @@ void CYearView::slotPressClickDate(const QDate &date)
     emit signalHideInfo();
     emit signalSelectInfo(true);
     m_Scheduleview->setCurrentDate(date);
+
     for (int i = 0; i < m_DateRangeInfo.size(); ++i) {
         if (m_DateRangeInfo.at(i).date ==date) {
             m_Scheduleview->setData(m_DateRangeInfo[i].vData);
@@ -156,6 +156,7 @@ void CYearView::setFirstWeekday(int weekday)
 void CYearView::setTheMe(int type)
 {
     m_themetype = type;
+
     if (type == 0 || type == 1) {
         DPalette bpa = palette();
         bpa.setColor(DPalette::Background, Qt::white);
@@ -169,7 +170,6 @@ void CYearView::setTheMe(int type)
         m_currentDayTextColor = "#0081FF";
         m_weekendsTextColor = Qt::black;
         m_festivalTextColor = Qt::black;
-
     } else if (type == 2) {
         m_bnormalColor = "#FFFFFF";
         m_bnormalColor.setAlphaF(0.05);
@@ -177,12 +177,9 @@ void CYearView::setTheMe(int type)
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0059D2";
-
         m_currentDayTextColor = "#0059D2";
         m_weekendsTextColor = Qt::black;
-
         m_festivalTextColor = Qt::black;
-
     }
     m_monthView->setTheMe(type);
     QColor monthcolor = Qt::white;
@@ -202,6 +199,7 @@ void CYearView::getInfoAndSetLineFlag()
     CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
     m_vlineflag.resize(42);
     m_vlineflag.fill(false);
+
     if (tdataManage->getGetAllYearScheduleInfo()->m_monthInfo.size()>0) {
         m_DateRangeInfo = tdataManage->getGetAllYearScheduleInfo()->m_monthInfo[m_currentDate.month()];
         if (m_DateRangeInfo.count() == DDEYearCalendar::RectSizeofEveyMonth) {
@@ -246,6 +244,7 @@ int CYearView::getDateIndex(const QDate &date) const
 bool CYearView::eventFilter(QObject *o, QEvent *e)
 {
     QWidget *cell = qobject_cast<QWidget *>(o);
+
     if (cell == m_currentMouth) {
         if (e->type() == QEvent::MouseButtonDblClick) {
             emit signalselectMonth(m_currentDate);
@@ -257,7 +256,6 @@ void CYearView::updateDate()
 {
     const QDate firstDay(m_currentDate.year(), m_currentDate.month(), 1);
     int offset = firstDay.dayOfWeek() % 7 - m_firstWeekDay ;
-
     const int day = offset <0 ?offset +7:offset;
     const int currentIndex = day + m_currentDate.day() - 1;
 
@@ -287,7 +285,6 @@ void CYearView::resizeEvent(QResizeEvent *event)
     int buttonmagin = qFloor(height() * 0.044 + 0.5);
 
     m_hhLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
-
     m_momthFont.setPixelSize(qFloor(16 + (height() - 159) / 16.75));
     m_currentMouth->setTextFont(m_momthFont);
     m_currentMouth->setFixedHeight(24 + (height() - 159) / 12);
@@ -299,6 +296,7 @@ void CYearView::resizeEvent(QResizeEvent *event)
 void CYearView::mousePressEvent(QMouseEvent *event)
 {
     if (m_selectFlag) return;
+
     if (event->button() == Qt::LeftButton) {
         emit signalHideInfo();
     }
@@ -380,6 +378,7 @@ void CYearMonthView::setTheMe(int type)
 void CYearMonthView::setLintFlag(const QVector<bool> &lineFlag)
 {
     m_vlineflag = lineFlag;
+
     if (m_vlineflag.size() == DDEYearCalendar::RectSizeofEveyMonth) {
         for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; i++) {
             m_DayItem.at(i)->setLineFlag(m_vlineflag.at(i));
@@ -394,6 +393,7 @@ void CYearMonthView::updateSize()
     QRectF rect ;
     int w_offset = 0;
     int h_offset = 0;
+
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
         h_offset = i / 7;
         w_offset = i % 7;
@@ -409,6 +409,7 @@ void CYearMonthView::updateSize()
 int CYearMonthView::getMousePosItem(const QPointF &pos)
 {
     int res =-1;
+
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
         if (m_DayItem.at(i)->rect().contains(pos)) {
             res = i;
@@ -427,6 +428,7 @@ void CYearMonthView::resizeEvent(QResizeEvent *event)
 void CYearMonthView::mousePressEvent(QMouseEvent *event)
 {
     int itemindex = getMousePosItem(event->pos());
+
     if (!(itemindex<0)) {
         m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
         m_press = true;
@@ -441,6 +443,7 @@ void CYearMonthView::mousePressEvent(QMouseEvent *event)
 void CYearMonthView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     int itemindex = getMousePosItem(event->pos());
+
     if (!(itemindex<0)) {
         if (m_pressIndex == itemindex) {
             m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
@@ -467,7 +470,6 @@ void CYearMonthView::mouseMoveEvent(QMouseEvent *event)
         }
         update();
     }
-
 }
 
 void CYearMonthView::paintEvent(QPaintEvent *event)
@@ -475,6 +477,7 @@ void CYearMonthView::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing |QPainter::SmoothPixmapTransform);
+
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
         m_DayItem[i]->paintItem(&painter,m_DayItem[i]->rect());
     }
@@ -511,7 +514,6 @@ void CMonthDayRect::setTheMe(int type)
         m_notCurrentTextColor.setAlphaF(0.5);
         m_defaultTextColor = "#C0C6D4";
         m_selectedTextColor = Qt::white;
-
     } else if (type == 0 || type == 1) {
         m_currentColor.hoverColor = "#000000";
         m_currentColor.hoverColor.setAlphaF(0.05);
@@ -571,6 +573,7 @@ void CMonthDayRect::setRect(qreal x, qreal y, qreal w, qreal h)
 void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
 {
     m_highColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+
     if (m_date.year() < DDECalendar::QueryEarliestYear)
         return;
     const bool isCurrentDay = m_date == QDate::currentDate() && m_isCurrentMonth;
@@ -581,6 +584,7 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
 
     const qreal r = rect.width() > rect.height() ? rect.height() * 0.9 : rect.width() * 0.9 ;
     int fontsize = qRound(DDECalendar::FontSizeTwelve + (r - 18) * 6 / 17);
+
     if (fontsize < DDECalendar::FontSizeTwelve) {
         fontsize = DDECalendar::FontSizeTwelve;
     }
@@ -589,8 +593,8 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
     const qreal x = rect.x()+(rect.width() - r) / 2;
     const qreal y = rect.y()+(rect.height() - r) / 2;
     QRectF fillRect = QRectF(x, y, r, r);
-
     QColor m_cellBackgroundColor;
+
     if (m_CurrentRect !=this) {
         m_cellEventType = CellNormal;
     }
@@ -606,6 +610,7 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
     painter->drawEllipse(fillRect);
 
     bool highflag = false;
+
     if (m_isCurrentMonth) {
         highflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_date);
     }
@@ -617,7 +622,6 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
         painter->setPen(m_highTextColor);
         painter->setFont(m_hightFont);
         painter->drawText(fillRect, Qt::AlignCenter, QString::number(m_date.day()));
-
     } else {
         // draw selected cell background circle
         if (isSelectedCell) {
@@ -640,6 +644,7 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
         }
         painter->setFont(m_dayNumFont);
         painter->drawText(fillRect, Qt::AlignCenter, QString::number(m_date.day()));
+
         if (m_vlineflag) {
             painter->save();
             painter->setRenderHint(QPainter::Antialiasing);
