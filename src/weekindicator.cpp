@@ -34,6 +34,7 @@ WeekIndicator::WeekIndicator(QWidget *parent)
 void WeekIndicator::setList(int weekday)
 {
     QLayoutItem *child;
+
     while ((child = m_mainLayout->takeAt(0)) != nullptr) {
         if (child->widget() != nullptr) {
             delete child->widget();
@@ -42,9 +43,9 @@ void WeekIndicator::setList(int weekday)
     }
 
     QLocale locale;
+
     for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i) {
         int d = checkDay(i - weekday);
-
         DLabel *label = new DLabel(locale.dayName(d ? d : DDEWeekCalendar::AFewDaysofWeek, QLocale::ShortFormat));
 
         if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
