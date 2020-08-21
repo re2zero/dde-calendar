@@ -40,7 +40,6 @@ CWeekWindow::CWeekWindow(QWidget *parent)
     setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
-
 }
 
 CWeekWindow::~CWeekWindow()
@@ -51,6 +50,7 @@ CWeekWindow::~CWeekWindow()
 void CWeekWindow::setDate(QDate date)
 {
     if (!date.isValid()) return;
+
     m_currentdate = date;
     m_weekview->setCurrentDate(date);
     update();
@@ -374,6 +374,7 @@ void CWeekWindow::slotprev()
 {
     slotScheduleHide();
     QDate tcurrent = m_currentdate.addDays(-DDEWeekCalendar::AFewDaysofWeek);
+
     if (tcurrent.year() < DDECalendar::QueryEarliestYear)
         return;
     if (m_currentdate.year() >= DDECalendar::QueryEarliestYear) {
@@ -387,7 +388,6 @@ void CWeekWindow::slotnext()
 {
     slotScheduleHide();
     m_currentdate = m_currentdate.addDays(DDEWeekCalendar::AFewDaysofWeek);
-    ;
     setDate(m_currentdate);
 }
 
@@ -401,6 +401,7 @@ void CWeekWindow::slottoday()
 void CWeekWindow::slotCurrentWeek(QDate date, QDate currentDate)
 {
     QVector<QDate> vDate;
+
     for (int i = 0; i < DDEWeekCalendar::AFewDaysofWeek; i++)
         vDate.append(date.addDays(i));
     emit signalCurrentDate(vDate[0]);
@@ -413,6 +414,7 @@ void CWeekWindow::slotCurrentWeek(QDate date, QDate currentDate)
 void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type)
 {
     int offset = 0;
+
     for (int i = 0; i < vdate.count(); ++i) {
         if (vdate.at(i) == m_currentdate) {
             offset =i;
@@ -470,21 +472,22 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
     qreal headh = height() * 0.0924 + 0.5;
     qreal dw = width() * 0.4186 + 0.5;
     int dh = 36;
-
     int winframe = 10;
     m_mainhLayout->setContentsMargins(10, 20, 0, 10);
-    if (m_searchfalg) {
 
+    if (m_searchfalg) {
         m_tmainLayout->setContentsMargins(0, 0, 0, 0);
     } else {
         winframe += 10;
         m_tmainLayout->setContentsMargins(0, 0, 10, 0);
     }
+
     if (!m_searchfalg) {
         m_weekview->setFixedSize(qRound(dw), dh);
     } else {
         m_weekview->setFixedSize(qRound(dw - 100), dh);
     }
+
     m_weekHeadView->setMounthLabelWidth(qRound(sleftMagin + 1), qRound(width() * 0.9802 + 0.5));
     m_weekHeadView->setFixedSize(width() - winframe, qRound(headh));
     QMainWindow::resizeEvent(event);
