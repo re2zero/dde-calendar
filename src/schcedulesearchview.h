@@ -55,7 +55,6 @@ public slots:
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDtailInfo info, QDate date, int rtype);
