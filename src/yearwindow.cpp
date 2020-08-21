@@ -641,7 +641,6 @@ void YearFrame::slotcurrentDateChanged(QDate date)
     emit signalUpdateYearDate(date);
 }
 
-
 void YearFrame::slotHideInfo()
 {
     CYearView::SchceduleViewHide();
