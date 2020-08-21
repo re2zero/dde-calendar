@@ -73,7 +73,6 @@ public slots:
     void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaHuangLiDayInfo &detail);
     void slottoday();
-
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
@@ -85,11 +84,10 @@ private:
 
     const QString getLunar(int pos);
     const CaHuangLiDayInfo getCaHuangLiDayInfo(int pos);
-    void updateCurrentLunar();
 
+    void updateCurrentLunar();
     void initUI();
     void initConnection();
-
     void updateDateShow();
     void updateDateLunarDay();
 private slots:
@@ -102,7 +100,6 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
     void paintEvent(QPaintEvent *e) override;
-
 private:
     DIconButton      *m_prevButton = nullptr;
     DIconButton      *m_nextButton = nullptr;
