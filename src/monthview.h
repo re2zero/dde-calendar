@@ -71,7 +71,6 @@ signals:
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-
 private:
     int getDateIndex(const QDate &date) const;
     const QDate getCellDate(int pos);
@@ -81,7 +80,6 @@ private:
     ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
 private slots:
     void getDbusData();
-
 private:
     CMonthGraphiview *m_MonthGraphicsView = nullptr;
     CalendarDBus *m_DBusInter = nullptr;
