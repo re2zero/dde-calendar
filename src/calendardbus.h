@@ -112,8 +112,6 @@ public:
     friend QDebug operator<<(QDebug argument, const CaSolarMonthInfo &what);
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaSolarMonthInfo &what);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaSolarMonthInfo &what);
-
-
 public:
     qint32 mFirstDayWeek;
     qint32 mDays;
@@ -209,7 +207,6 @@ public:
 
 public:
     CalendarDBus(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
-
     ~CalendarDBus();
 
 public Q_SLOTS: // METHODS
@@ -217,17 +214,21 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
+
         return asyncCallWithArgumentList(QStringLiteral("GetLunarDateBySolar"), argumentList);
     }
+
     inline QDBusReply<CaYearInfo> GetLunarDateBySolar(int in0, int in1, int in2, bool &out1, bool &out2)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetLunarDateBySolar"), argumentList);
+
         if (reply.type() == QDBusMessage::ReplyMessage && reply.arguments().count() == 3) {
             out1 = qdbus_cast<bool>(reply.arguments().at(1));
             out2 = qdbus_cast<bool>(reply.arguments().at(2));
         }
+
         return reply;
     }
 
@@ -235,16 +236,20 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
+
         return asyncCallWithArgumentList(QStringLiteral("GetLunarInfoBySolar"), argumentList);
     }
+
     inline QDBusReply<CaLunarDayInfo> GetLunarInfoBySolar(qint32 in0, qint32 in1, qint32 in2, bool &out1)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetLunarInfoBySolar"), argumentList);
+
         if (reply.type() == QDBusMessage::ReplyMessage && reply.arguments().count() == 2) {
             out1 = qdbus_cast<bool>(reply.arguments().at(1));
         }
+
         return reply;
     }
 
@@ -252,16 +257,20 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
+
         return asyncCallWithArgumentList(QStringLiteral("GetLunarMonthCalendar"), argumentList);
     }
+
     inline QDBusReply<CaLunarMonthInfo> GetLunarMonthCalendar(int in0, int in1, bool in2, bool &out1)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetLunarMonthCalendar"), argumentList);
+
         if (reply.type() == QDBusMessage::ReplyMessage && reply.arguments().count() == 2) {
             out1 = qdbus_cast<bool>(reply.arguments().at(1));
         }
+
         return reply;
     }
 
@@ -269,16 +278,20 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2) << QVariant::fromValue(in3);
+
         return asyncCallWithArgumentList(QStringLiteral("GetSolarDateByLunar"), argumentList);
     }
+
     inline QDBusReply<CaYearInfo> GetSolarDateByLunar(int in0, int in1, int in2, bool in3, bool &out1)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2) << QVariant::fromValue(in3);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetSolarDateByLunar"), argumentList);
+
         if (reply.type() == QDBusMessage::ReplyMessage && reply.arguments().count() == 2) {
             out1 = qdbus_cast<bool>(reply.arguments().at(1));
         }
+
         return reply;
     }
 
@@ -286,27 +299,35 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
+
         return asyncCallWithArgumentList(QStringLiteral("GetSolarMonthCalendar"), argumentList);
     }
+
     inline QDBusReply<CaSolarMonthInfo> GetSolarMonthCalendar(int in0, int in1, bool in2, bool &out1)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetSolarMonthCalendar"), argumentList);
+
         if (reply.type() == QDBusMessage::ReplyMessage && reply.arguments().count() == 2) {
             out1 = qdbus_cast<bool>(reply.arguments().at(1));
         }
+
         return reply;
     }
+
     inline bool GetHuangLiMonthCalendar(int in0, int in1, bool in2, CaHuangLiMonthInfo &out)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetHuangLiMonth"), argumentList);
+
         if (reply.type() != QDBusMessage::ReplyMessage ) {
             return false;
         }
+
         QDBusReply<QString> huanglimonth =  reply;
+
         if (!huanglimonth.isValid()) return false;
         QJsonParseError json_error;
         QJsonDocument jsonDoc(QJsonDocument::fromJson(huanglimonth.value().toLocal8Bit(), &json_error));
@@ -329,7 +350,6 @@ public Q_SLOTS: // METHODS
             for (int i = 0; i < subArray.size(); i++) {
 
                 QJsonObject subObj = subArray.at(i).toObject();
-
                 CaHuangLiDayInfo huangliday;
 
                 //因为是预先定义好的JSON数据格式，所以这里可以这样读取
@@ -384,11 +404,15 @@ public Q_SLOTS: // METHODS
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetHuangLiDay"), argumentList);
+
         if (reply.type() != QDBusMessage::ReplyMessage ) {
             return  false;
         }
+
         QDBusReply<QString> huangliday =  reply;
+
         if (!huangliday.isValid()) return false;
+
         QJsonParseError json_error;
         QJsonDocument jsonDoc(QJsonDocument::fromJson(huangliday.value().toLocal8Bit(), &json_error));
 
@@ -438,30 +462,36 @@ public Q_SLOTS: // METHODS
         if (rootObj.contains("GanZhiYear")) {
             out.mGanZhiYear = rootObj.value("GanZhiYear").toString();
         }
+
         return true;
     }
+
     inline bool GetFestivalMonth(int in0, int in1, QVector<FestivalInfo> &out)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetFestivalMonth"), argumentList);
+
         if (reply.type() != QDBusMessage::ReplyMessage ) {
             return false;
         }
+
         QDBusReply<QString> festivalMonthinfo =  reply;
+
         if (!festivalMonthinfo.isValid()) return false;
+
         QJsonParseError json_error;
         QJsonDocument jsonDoc(QJsonDocument::fromJson(festivalMonthinfo.value().toLocal8Bit(), &json_error));
 
         if (json_error.error != QJsonParseError::NoError) {
             return false;
         }
+
         QJsonArray rootarry = jsonDoc.array();
 
         for (int i = 0; i < rootarry.size(); i++) {
 
             QJsonObject subObj = rootarry.at(i).toObject();
-
             FestivalInfo festivalInfoday;
 
             //因为是预先定义好的JSON数据格式，所以这里可以这样读取
@@ -487,6 +517,7 @@ public Q_SLOTS: // METHODS
 
                     QJsonObject hsubObj = sublistArray.at(j).toObject();
                     HolidayInfo dayinfo;
+
                     if (hsubObj.contains("status")) {
                         dayinfo.status = hsubObj.value("status").toInt();
                     }
