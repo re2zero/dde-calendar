@@ -43,6 +43,7 @@ CWeekView::CWeekView(QWidget *parent)
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
+
     for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
         QWidget *cell = new QWidget;
         cell->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
@@ -81,6 +82,7 @@ void CWeekView::setCurrentDate(const QDate date)
 void CWeekView::setTheMe(int type)
 {
     m_themetype = type;
+
     if (type == 0 || type == 1) {
         m_defaultTextColor = Qt::black;
         m_backgrounddefaultColor = Qt::white;
@@ -119,7 +121,6 @@ void CWeekView::slotnext()
 void CWeekView::paintCell(QWidget *cell)
 {
     const QRect rect(0, 0, cell->width(), cell->height());
-
     const int pos = m_cellList.indexOf(cell);
     //计算当前日期周数
     int weekNumber = QDate::currentDate().weekNumber();
@@ -130,14 +131,11 @@ void CWeekView::paintCell(QWidget *cell)
 
     const bool isCurrentDay = m_days[pos].addDays(3).weekNumber() == weekNumber &&
                               m_days[pos].addDays(3).year() == QDate::currentDate().year();
-
     const bool isSelectDay = m_days[pos].addDays(m_weekAddDay).weekNumber() == m_selectDate.addDays(m_weekAddDay).weekNumber();
 
-
-
     QPainter painter(cell);
-    painter.save();
 
+    painter.save();
     painter.setRenderHints(QPainter::HighQualityAntialiasing);
     painter.setBrush(QBrush(m_fillColor));
     painter.setPen(Qt::NoPen);
@@ -146,10 +144,11 @@ void CWeekView::paintCell(QWidget *cell)
     painter.setPen(Qt::SolidLine);
 
     const QString dayNum = QString::number(m_days[pos].addDays(3).weekNumber());
+
     if (m_days[pos].year() < DDECalendar::QueryEarliestYear && dayNum != "1")
         return;
-    if (isSelectDay) {
 
+    if (isSelectDay) {
         QRect fillRect((cell->width() - 24) / 2, (cell->height() - 32) / 2 + 4, 24, 24);
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing);
@@ -187,6 +186,7 @@ bool CWeekView::eventFilter(QObject *o, QEvent *e)
             }
         }
     }
+
     return false;
 }
 
@@ -196,6 +196,7 @@ void CWeekView::cellClicked(QWidget *cell)
         return;
 
     const int pos = m_cellList.indexOf(cell);
+
     if (pos == -1)
         return;
 
@@ -215,8 +216,10 @@ void CWeekView::setSelectedCell(int index)
     m_cellList.at(index)->update();
     m_selectDate = m_days[index];
     const QString dayNum = QString::number(m_days[index].addDays(3).weekNumber());
+
     if (m_days[index].year() < DDECalendar::QueryEarliestYear && dayNum != "1")
         return;
+
     emit signalsSelectDate(m_days[index], m_days[index].addDays(m_weekAddDay));
 }
 
@@ -225,6 +228,7 @@ void CWeekView::updateDate()
     m_weekAddDay = (m_selectDate.dayOfWeek() + m_firstWeekDay) % DDEWeekCalendar::AFewDaysofWeek;
     QDate weekfirstDay = m_selectDate.addDays(-m_weekAddDay);
     m_days[4] = weekfirstDay;
+
     for (int i(0); i < 4; ++i) {
         m_days[i] = weekfirstDay.addDays(-(4 - i) * DDEWeekCalendar::AFewDaysofWeek);
     }
@@ -239,8 +243,8 @@ void CWeekView::resizeEvent(QResizeEvent *event)
 {
     int w = width() / DDEWeekCalendar::NumWeeksDisplayed;
     int h = height();
-
     int ww = 36;
+
     if (w >= ww) {
         for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
             m_cellList[c]->setFixedSize(w, h);
@@ -259,6 +263,7 @@ void CWeekView::resizeEvent(QResizeEvent *event)
         QVector<bool> vindex;
         vindex.resize(10);
         vindex.fill(true);
+
         for (int i = 0; i < t_num; i++) {
             vindex[i] = false;
             vindex[9 - i] = false;
