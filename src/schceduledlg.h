@@ -67,12 +67,10 @@ public slots:
     void slotallDayStateChanged(int state);
     void slotbRpeatactivated(int index);
     void sloteRpeatactivated(int index);
-
 protected:
     bool eventFilter(QObject *obj, QEvent *pEvent) override;
     void showEvent(QShowEvent *event) override;
     void changeEvent(QEvent *event) override;
-
 private:
     void initUI();
     void initConnection();
@@ -83,7 +81,6 @@ public:
                                 const ScheduleDtailInfo &oldinfo,int m_themetype);
     static void ChangeOnlyInfo(const ScheduleDtailInfo &newinfo,
                                const ScheduleDtailInfo &oldinfo);
-
 private:
     QLabel *m_typeLabel = nullptr;
     DComboBox *m_typeComBox = nullptr;
@@ -114,7 +111,6 @@ private:
 
     QString m_context;
     const bool m_createAllDay;
-
 private:
 //日程
     ScheduleDtailInfo m_scheduleDtailInfo;
