@@ -34,7 +34,6 @@ public:
 protected:
     void paintEvent(QPaintEvent *e) override;
     void resizeEvent(QResizeEvent *event) override;
-
 private:
     QStringList           m_vHuangli;
     QColor                m_backgroundColor;
