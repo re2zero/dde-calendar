@@ -54,7 +54,6 @@ public slots:
     void slotsearchDateSelect(QDate date);
 protected:
     void wheelEvent(QWheelEvent *) override;
-
 private:
     void initUI();
     void initConnection();
