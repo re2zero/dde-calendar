@@ -51,18 +51,21 @@ QTime CTimeEdit::getTime()
     if (timetext.left(1) == ":") {
         timetext = "00" + timetext;
     }
+
     QStringList t_list = timetext.split(":");
     QString firststr = t_list.at(0);
     QString secondstr = t_list.at(1);
+
     if (firststr.count() == 1) {
         firststr = "0" + firststr;
     }
     if (secondstr.count() == 1) {
         secondstr = "0" + secondstr;
     }
-    timetext = firststr + ":" + secondstr;
 
+    timetext = firststr + ":" + secondstr;
     m_time = QTime::fromString(timetext, "hh:mm");
+
     return m_time;
 }
 
@@ -78,6 +81,7 @@ void CTimeEdit::initUI()
     setLineEdit(m_timeEdit->lineEdit());
 
     QStringList list;
+
     for (int i = 0; i < 24; i++) {
         list << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(0, 2, 10, QLatin1Char('0'));
         list << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(30);
