@@ -43,7 +43,6 @@ class CYearView: public CustomFrame
 public:
     explicit CYearView(QWidget *parent = nullptr);
     void setFirstWeekday(int weekday);
-    int getDateType(const QDate &date);
     inline bool cellSelectable() const
     {
         return m_cellSelectable;
