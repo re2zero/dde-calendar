@@ -367,7 +367,6 @@ void CYearMonthView::setDate(const QDate date[42])
         m_DayItem.at(i)->setDate(date[i]);
         m_DayItem.at(i)->setIsCurrentMonth(date[i].month() == m_currentMonth);
     }
-
 }
 
 void CYearMonthView::setTheMe(int type)
