@@ -353,7 +353,6 @@ void CYearWindow::slotSetSchceduleHide()
     m_YearWidget->slotHideInfo();
 }
 
-
 void CYearWindow::slotprev()
 {
     m_YearWidget->slotHideInfo();
@@ -444,7 +443,6 @@ void CYearWindow::slotsearchDateSelect(QDate date)
 {
     setDate(date);
 }
-
 
 void CYearWindow::wheelEvent(QWheelEvent *event)
 {
