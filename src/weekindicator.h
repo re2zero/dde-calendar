@@ -31,9 +31,22 @@ class WeekIndicator : public DWidget
 {
     Q_OBJECT
 public:
+    /**
+     * @brief WeekIndicator 构造函数
+     * @param parent 父类
+     */
     explicit WeekIndicator(QWidget *parent = nullptr);
+    /**
+     * @brief setList 设置周数
+     * @param weekday 周数
+     */
     void setList(int weekday);
 private:
+    /**
+     * @brief checkDay 检查周数
+     * @param weekday 周数
+     * @return 周数
+     */
     int checkDay(int weekday);
 
 private:

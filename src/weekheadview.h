@@ -54,10 +54,30 @@ public:
     };
 
 public:
+    /**
+     * @brief CWeekHeadView 构造函数
+     * @param parent 父类
+     */
     explicit CWeekHeadView(QWidget *parent = nullptr);
+    /**
+      * @brief CWeekHeadView 析构函数
+      */
     ~CWeekHeadView() override;
+    /**
+     * @brief setFirstWeekday 设置每周的第一天是周几
+     * @param weekday 周几
+     */
     void setFirstWeekday(int weekday);
+    /**
+     * @brief getDateType 获取所给日期的类型CalendarWeekDayType
+     * @param date 日期
+     * @return 类型
+     */
     int getDateType(const QDate &date);
+    /**
+     * @brief cellSelectable
+     * @return
+     */
     inline bool cellSelectable() const
     {
         return m_cellSelectable;
