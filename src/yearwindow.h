@@ -185,7 +185,7 @@ protected:
     /**
      * @brief eventFilter 过滤器，过滤返回今天的按钮事件
      * @param watched 事件对象
-     * @param event 时间类型
+     * @param event 事件类型
      * @return false
      */
     bool eventFilter(QObject *watched, QEvent *event) override;
