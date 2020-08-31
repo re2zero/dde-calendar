@@ -7,6 +7,7 @@
 #include "../data/schedulestructs.h"
 #include "icondframe.h"
 #include "scheduleitemwidget.h"
+#include "../dbus/schedulesdbus.h"
 
 DWIDGET_USE_NAMESPACE
 
@@ -18,17 +19,18 @@ public:
 
 public:
     ScheduleDtailInfo &getScheduleDtailInfo();
-    QVector<ScheduleDtailInfo> getScheduleInfo();
     void setTitleName(QString titleName);
     void setDateTime(QDateTime begintime, QDateTime endtime);
     void setRpeat(int rpeat);
     void setschedule();
     void scheduleEmpty(bool isEmpty);
     void updateUI();
+    void setScheduleDbus(CSchedulesDBus *dbus);
     bool buttonclicked();
 public slots:
     void slotsbuttonchance(int index, const QString &text);
     void slotItemPress(const ScheduleDtailInfo &info);
+    QVector<ScheduleDtailInfo> getCreatScheduleFromDbus();
 
 private:
     ScheduleDtailInfo m_scheduleDtailInfo;
@@ -39,7 +41,7 @@ private:
     bool m_scheduleEmpty = false;
     scheduleitemwidget *m_scheduleitemwidget;
     QVector<ScheduleDtailInfo> m_scheduleInfo;
-
+    CSchedulesDBus *m_dbus = nullptr;
     bool m_buttonclicked = false;
 
 signals:

@@ -287,10 +287,13 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                     m_widget->setRpeat(3);
                 } break;
                 }
-                m_widget->setschedule();
-                m_widget->scheduleEmpty(true);
-                m_widget->updateUI();
-                m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+                if (createJsonData->ShouldEndSession()) {
+                    m_widget->setScheduleDbus(m_dbus);
+                    m_widget->setschedule();
+                    m_widget->scheduleEmpty(true);
+                    m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+                    m_widget->updateUI();
+                }
             }
         }
     }

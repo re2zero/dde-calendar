@@ -6,7 +6,6 @@
 
 #include "buttonwidget.h"
 #include "../globaldef.h"
-#include "../dbus/schedulesdbus.h"
 
 createSchedulewidget::createSchedulewidget(QWidget *parent)
     : IconDFrame(parent)
@@ -20,13 +19,6 @@ createSchedulewidget::createSchedulewidget(QWidget *parent)
 ScheduleDtailInfo &createSchedulewidget::getScheduleDtailInfo()
 {
     return m_scheduleDtailInfo;
-}
-
-QVector<ScheduleDtailInfo> createSchedulewidget::getScheduleInfo()
-{
-    setschedule();
-    m_scheduleInfo.append(m_scheduleDtailInfo);
-    return m_scheduleInfo;
 }
 
 void createSchedulewidget::setTitleName(QString titleName)
@@ -76,12 +68,14 @@ void createSchedulewidget::updateUI()
 {
     if (m_scheduleEmpty) {
         //创建日程
-        QVector<ScheduleDtailInfo> scheduleInfo = getScheduleInfo();
-        QVBoxLayout *mainlayout = new QVBoxLayout();
-        m_scheduleitemwidget->setScheduleDtailInfo(scheduleInfo);
-        m_scheduleitemwidget->addscheduleitem();
-        mainlayout->addWidget(m_scheduleitemwidget);
-        setCenterLayout(mainlayout);
+        QVector<ScheduleDtailInfo> scheduleInfo = getCreatScheduleFromDbus();
+        if (!scheduleInfo.isEmpty()) {
+            QVBoxLayout *mainlayout = new QVBoxLayout();
+            m_scheduleitemwidget->setScheduleDtailInfo(scheduleInfo);
+            m_scheduleitemwidget->addscheduleitem();
+            mainlayout->addWidget(m_scheduleitemwidget);
+            setCenterLayout(mainlayout);
+        }
     } else {
         //是否创建日程
         QVBoxLayout *mainlayout = new QVBoxLayout();
@@ -96,6 +90,11 @@ void createSchedulewidget::updateUI()
         mainlayout->addWidget(button);
         setCenterLayout(mainlayout);
     }
+}
+
+void createSchedulewidget::setScheduleDbus(CSchedulesDBus *dbus)
+{
+    m_dbus = dbus;
 }
 
 bool createSchedulewidget::buttonclicked()
@@ -127,4 +126,26 @@ void createSchedulewidget::slotItemPress(const ScheduleDtailInfo &info)
     message << schedulestr;
     //发送消息
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
+}
+
+QVector<ScheduleDtailInfo> createSchedulewidget::getCreatScheduleFromDbus()
+{
+    QVector<ScheduleDtailInfo> scheduleInfo;
+    QVector<ScheduleDateRangeInfo> CScheduleInfo;
+    scheduleInfo.clear();
+    CScheduleInfo.clear();
+
+    m_dbus->QueryJobs(m_scheduleDtailInfo.titleName, m_scheduleDtailInfo.beginDateTime, m_scheduleDtailInfo.endDateTime, CScheduleInfo);
+
+    for (int i = 0; i < CScheduleInfo.count(); i++) {
+        for (int j = 0; j < CScheduleInfo.at(i).vData.count(); i++) {
+            if (CScheduleInfo.at(i).vData.at(j).titleName == m_scheduleDtailInfo.titleName
+                && CScheduleInfo.at(i).vData.at(j).beginDateTime == m_scheduleDtailInfo.beginDateTime
+                && CScheduleInfo.at(i).vData.at(j).endDateTime == m_scheduleDtailInfo.endDateTime) {
+                scheduleInfo.append(CScheduleInfo.at(i).vData.at(j));
+                return scheduleInfo;
+            }
+        }
+    }
+    return scheduleInfo;
 }
