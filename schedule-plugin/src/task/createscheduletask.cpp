@@ -53,6 +53,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     createSchedulewidget *m_widget = new createSchedulewidget();
     QDateTime m_begintime;
     QDateTime m_endtime;
+
     if (createJsonData->getDateTime().size() > 0) {
         m_begintime = createJsonData->DateTime().at(0).datetime;
     } else {
@@ -62,6 +63,9 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         m_endtime = m_begintime.addSecs(60 * 60);
     } else if (createJsonData->DateTime().size() == 2) {
         m_endtime = createJsonData->DateTime().at(1).datetime;
+        if (!createJsonData->getDateTime().at(1).hasTime) {
+            m_endtime.setTime(QTime(23, 59, 59));
+        }
     }
 
     if (createJsonData->DateTime().size() > 0) {
@@ -91,7 +95,11 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                         m_widget->setRpeat(3);
                     } else if (getDayNum.size() == 1) {
                         if (getDayNum[0] >= w) {
-                            m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - w));
+                            if (getDayNum[0] == w && m_begintime.time() < currentdatetime.time()) {
+                                m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] + 7 - w));
+                            } else {
+                                m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - w));
+                            }
                         } else {
                             m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] + 7 - w));
                         }
