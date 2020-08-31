@@ -294,7 +294,8 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     } else {
         m_reply.setReplyType(Reply::RT_INNER_WIDGET | Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
         m_reply.setReplyWidget(m_widget);
-        if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD) {
+        if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD
+            && createJsonData->getDateTime().at(0).hasTime) {
             QString str = QString("好的，每周六到周日的%1点我都会提醒您。").arg(m_begintime.time().hour());
             m_reply.ttsMessage(str);
             m_reply.displayMessage(str);
