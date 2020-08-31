@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. "));
     a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
 
-    DGuiApplicationHelper::setSingelInstanceInterval(-1);
+    DGuiApplicationHelper::setSingleInstanceInterval(-1);
 
     if (!DGuiApplicationHelper::instance()->setSingleInstance(
                 a.applicationName(),
