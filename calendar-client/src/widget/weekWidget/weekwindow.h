@@ -50,18 +50,67 @@ class CWeekWindow: public QMainWindow
 {
     Q_OBJECT
 public:
+    /**
+     * @brief CWeekWindow 构造函数
+     * @param parent 父类
+     */
     CWeekWindow(QWidget *parent = nullptr);
+    /**
+      *@brief ~CWeekWindow 析构函数
+      */
     ~CWeekWindow() override;
+    /**
+     * @brief setDate 设置今天的日期
+     * @param date 日期
+     */
     void setDate(QDate date);
+    /**
+     * @brief setSelectSchedule 设置选择的日程
+     * @param scheduleInfo 日程信息
+     */
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
+    /**
+     * @brief setFirstWeekday 设置每周以周几开始
+     * @param weekday 周几
+     */
     void setFirstWeekday(int weekday);
+    /**
+     * @brief setLunarVisible 设置是否显示阴历信息
+     * @param state 是否显示阴历信息
+     */
     void setLunarVisible(bool state);
+    /**
+     * @brief initUI 初始化界面设置
+     */
     void initUI();
+    /**
+     * @brief initConnection 初始化信号和槽的连接
+     */
     void initConnection();
+    /**
+     * @brief setTheMe 根据系统主题类型设置颜色
+     * @param type 系统主题类型
+     */
     void setTheMe(int type = 0);
+    /**
+     * @brief setTime 设置CScheduleView的时间
+     * @param time 时间
+     */
     void setTime(QTime time);
+    /**
+     * @brief setSearchWFlag 设置搜索标志
+     * @param flag 是否进行了搜索
+     */
     void setSearchWFlag(bool flag);
+    /**
+     * @brief clearSearch
+     */
     void clearSearch();
+    /**
+     * @brief setSearchText
+     * @param str
+     */
+    void setSearchText(QString str);
     /**
      * @brief updateHigh CScheduleView updateHigh
      */
@@ -105,23 +154,81 @@ signals:
      */
     void signalsViewSelectDate(QDate date);
 public slots:
+    /**
+     * @brief slotReturnTodayUpdate 返回今天按钮，设置当前时间
+     */
     void slotReturnTodayUpdate();
+    /**
+     * @brief slotIsDragging CScheduleView IsDragging,判断是否可以拖拽
+     * @param isDragging 是否可以拖拽
+     */
     void slotIsDragging(bool &isDragging);
 public slots:
+    /**
+     * @brief slotupdateSchedule 更新日程
+     * @param id
+     */
     void slotupdateSchedule(int id = 0);
+    /**
+     * @brief slotTransitSchedule 发送更新日程的信号
+     * @param id
+     */
     void slotTransitSchedule(int id = 0);
+    /**
+     * @brief slotTransitSearchSchedule 更新日程并发送信号
+     * @param id
+     */
     void slotTransitSearchSchedule(int id = 0);
+    /**
+     * @brief slotScheduleHide 隐藏日程浮框
+     */
     void slotScheduleHide();
 private slots:
+    /**
+     * @brief slotprev 切换到上一周，隐藏日程浮框
+     */
     void slotprev();
+    /**
+     * @brief slotnext 切换到下一周，隐藏日程浮框
+     */
     void slotnext();
+    /**
+     * @brief slottoday 返回到今天，隐藏日程浮框
+     */
     void slottoday();
+    /**
+     * @brief slotCurrentWeek 设置每周开始的日期和今天的日期
+     * @param date 每周开始的日期
+     * @param currentDate 今天的日期
+     */
     void slotCurrentWeek(QDate date, QDate currentDate);
+    /**
+     * @brief slotcurrentDateLunarChanged 切换显示当天的阴历信息
+     * @param vdate 一周的时间
+     * @param vdetail 阴历信息
+     * @param type 是否显示阴历信息
+     */
     void slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type = 0);
+    /**
+     * @brief slotcurrentDateChanged 切换显示当天的时间，并改变返回今天按钮显示的文字
+     * @param date 时间
+     */
     void slotcurrentDateChanged(QDate date);
+    /**
+     * @brief slotsearchDateSelect 选择选中的日期
+     * @param date 日期
+     */
     void slotsearchDateSelect(QDate date);
 protected:
+    /**
+     * @brief resizeEvent 调整周视图窗口
+     * @param event 窗口大小调整事件
+     */
     void resizeEvent(QResizeEvent *event) override;
+    /**
+     * @brief mousePressEvent 鼠标单击隐藏日程浮框
+     * @param event 鼠标事件
+     */
     void mousePressEvent(QMouseEvent *event) override;
 private:
     //周视图头weekheadview
