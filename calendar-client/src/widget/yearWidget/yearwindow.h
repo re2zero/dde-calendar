@@ -114,6 +114,12 @@ public slots:
     void slotUpdateCurrentDate(const QDate &date);
 protected:
     void wheelEvent(QWheelEvent *event) override;
+    /**
+     * @brief eventFilter 过滤器，过滤返回今天的按钮事件
+     * @param watched 事件对象
+     * @param event 事件类型
+     * @return false
+     */
     bool eventFilter(QObject *watched, QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
