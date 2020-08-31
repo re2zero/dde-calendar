@@ -25,31 +25,33 @@ void viewschedulewidget::viewScheduleInfoShow(QVector<ScheduleDateRangeInfo> m_s
     QVBoxLayout *mainlayout = new QVBoxLayout();
     mainlayout->setSpacing(10);
     int scheduleNum = 0;
-
+    QVector<ScheduleDtailInfo> scheduleInfo;
     for (int i = 0; i < m_showdate.count(); i++) {
+        for (int j = 0; j < m_showdate.at(i).vData.count(); j++) {
+            scheduleInfo.append(m_showdate.at(i).vData.at(j));
+
+            scheduleNum++;
+            if (scheduleNum == 10)
+                break;
+        }
+
         scheduleitemwidget *item = new scheduleitemwidget();
         connect(item, &scheduleitemwidget::signalItemPress, this, &viewschedulewidget::slotItemPress);
-        QVector<ScheduleDtailInfo> scheduleDtailInfo;
-        scheduleDtailInfo = m_showdate.at(i).vData;
-        scheduleNum += scheduleDtailInfo.count();
-
-        if (scheduleNum > 10) {
-            for (int j = 0; j < scheduleNum - 10; j++) {
-                scheduleDtailInfo.removeLast();
-            }
-            item->setScheduleDtailInfo(scheduleDtailInfo);
-            item->addscheduleitem();
-            mainlayout->addWidget(item);
-            OpenCalendarWidget *openWidget = new OpenCalendarWidget();
-            openWidget->setScheduleCount(getScheduleNum(m_showdate));
-            //    mainlayout->addSpacing(6);
-            mainlayout->addWidget(openWidget);
-            break;
-        }
-        item->setScheduleDtailInfo(scheduleDtailInfo);
+        item->setScheduleDtailInfo(scheduleInfo);
         item->addscheduleitem();
         mainlayout->addWidget(item);
+        scheduleInfo.clear();
+
+        if (scheduleNum == 10)
+            break;
     }
+
+    if (getScheduleNum(m_showdate) > 10) {
+        OpenCalendarWidget *openWidget = new OpenCalendarWidget();
+        openWidget->setScheduleCount(getScheduleNum(m_showdate));
+        mainlayout->addWidget(openWidget);
+    }
+
     setCenterLayout(mainlayout);
 }
 
