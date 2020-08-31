@@ -29,15 +29,48 @@ class CWeekView : public QWidget
 {
     Q_OBJECT
 public:
+    /**
+     * @brief CWeekView 构造函数
+     * @param parent 父类
+     */
     explicit CWeekView(QWidget *parent = nullptr);
+    /**
+      * @brief ~CWeekView 析构函数
+      */
     ~CWeekView();
+    /**
+     * @brief setFirstWeekDay 设置每周的第一天是周几，并更新
+     * @param weekday 周几
+     */
     void setFirstWeekDay(int weekday);
+    /**
+     * @brief setCurrentDate 设置当天时间，并更新
+     * @param date 时间
+     */
     void setCurrentDate(const QDate date);
+    /**
+     * @brief setTheMe 根据系统主题类型设置颜色
+     * @param type 系统主题类型
+     */
     void setTheMe(int type = 0);
+    /**
+     * @brief setsearchfalg
+     * @param flag
+     */
     void setsearchfalg(bool flag);
 public slots:
+    /**
+     * @brief cellClicked 选择点击的日期
+     * @param cell 周数所在的widget
+     */
     void cellClicked(QWidget *cell);
+    /**
+     * @brief slotprev 选择上一周
+     */
     void slotprev();
+    /**
+     * @brief slotnext 选择下一周
+     */
     void slotnext();
 signals:
     /**
@@ -52,12 +85,37 @@ signals:
      */
     void signalIsDragging(bool &isDragging);
 protected:
+    /**
+     * @brief resizeEvent 调整窗口大小
+     * @param event 窗口大小调整事件
+     */
     void resizeEvent(QResizeEvent *event) override;
+    /**
+     * @brief wheelEvent 鼠标滚轮切换上一周下一周
+     * @param event 鼠标滚轮事件
+     */
     void wheelEvent(QWheelEvent *event) override;
 private:
+    /**
+     * @brief paintCell 绘制周数
+     * @param cell 周数所在的widget
+     */
     void paintCell(QWidget *cell);
+    /**
+     * @brief eventFilter 过滤器
+     * @param o 事件对象
+     * @param e 事件类型
+     * @return  false
+     */
     bool eventFilter(QObject *o, QEvent *e) override;
+    /**
+     * @brief setSelectedCell 设置被选择的周数
+     * @param index 周数所在的索引
+     */
     void setSelectedCell(int index);
+    /**
+     * @brief updateDate 更新数据
+     */
     void updateDate();
 private:
     /**
