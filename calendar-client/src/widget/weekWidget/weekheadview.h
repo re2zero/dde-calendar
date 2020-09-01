@@ -87,8 +87,21 @@ public:
     {
         return m_cellSelectable;
     }
+    /**
+     * @brief setTheMe 根据系统主题类型设置颜色
+     * @param type 系统主题类型
+     */
     void setTheMe(int type = 0);
+    /**
+     * @brief setWeekDay 设置一周的时间
+     * @param vDays 一周代表的时间
+     */
     void setWeekDay(QVector<QDate> vDays);
+    /**
+     * @brief setMounthLabelWidth  设置
+     * @param w
+     * @param rw
+     */
     void setMounthLabelWidth(int w, int rw);
 signals:
     /**
@@ -135,30 +148,105 @@ signals:
      */
     void signaleSchedulHide();
 public slots:
+    /**
+     * @brief setCurrentDate 设置当前的时间
+     * @param date 日期
+     */
     void setCurrentDate(const QDate date);
+    /**
+     * @brief setLunarVisible 设置是否显示阴历信息
+     * @param visible 是否显示阴历信息
+     */
     void setLunarVisible(bool visible);
     /**
      * @brief setCellSelectable
      * @param selectable
      */
     void setCellSelectable(bool selectable);
+    /**
+     * @brief handleCurrentDateChanged 当前日期改变的信号
+     * @param date 日期
+     * @param detail unused
+     */
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
 private:
+    /**
+     * @brief getDateIndex 根据日期返回当天的索引
+     * @param date 日期
+     * @return 日期所在的索引
+     */
     int getDateIndex(const QDate &date) const;
+    /**
+     * @brief getCellDayNum 根据索引值获取当天是在一个月中的第几天
+     * @param pos 索引
+     * @return 日期的字符串
+     */
     const QString getCellDayNum(int pos);
+    /**
+     * @brief getCellDate 根据索引获取当天的日期
+     * @param pos 索引值
+     * @return 日期
+     */
     const QDate getCellDate(int pos);
+    /**
+     * @brief getLunar 根据索引值获取当天的阴历信息
+     * @param pos 索引值
+     * @return 阴历信息字符串
+     */
     const QString getLunar(int pos);
+    /**
+     * @brief getCaLunarDayInfo 根据索引值获取阴历信息
+     * @param pos 索引值
+     * @return 阴历信息
+     */
     const CaLunarDayInfo getCaLunarDayInfo(int pos);
+    /**
+     * @brief paintCell 绘制周信息
+     * @param cell 每天所在的widget
+     */
     void paintCell(QWidget *cell);
+    /**
+     * @brief eventFilter 过滤器
+     * @param o 事件对象
+     * @param e 时间类型
+     * @return false
+     */
     bool eventFilter(QObject *o, QEvent *e) override;
+    /**
+     * @brief updateDate 更新数据
+     */
     void updateDate();
+    /**
+     * @brief updateCurrentLunar 更新当前的阴历信息
+     * @param info 阴历信息
+     */
     void updateCurrentLunar(const CaLunarDayInfo &info);
+    /**
+     * @brief checkDay 检查周数，在定制中计算正确的顺序。
+     * @param weekday 周数
+     * @return 周数
+     */
     int checkDay(int weekday);
 protected:
+    /**
+     * @brief mousePressEvent 鼠标单击事件
+     * @param event 鼠标事件
+     */
     void mousePressEvent(QMouseEvent *event) override;
 private slots:
+    /**
+     * @brief cellClicked
+     * @param cell
+     */
     void cellClicked(QWidget *cell);
+    /**
+     * @brief setSelectedCell 设置选择的时间
+     * @param index 索引值
+     */
     void setSelectedCell(int index);
+    /**
+     * @brief getDbusData 获取dbus日期
+     */
     void getDbusData();
 private:
     //放置cell的列表
