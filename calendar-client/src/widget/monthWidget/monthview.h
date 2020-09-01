@@ -42,6 +42,10 @@ class CMonthView: public DWidget
 {
     Q_OBJECT
 public:
+    /**
+     * @brief setTheMe 根据系统主题类型设置颜色
+     * @param type  系统主题类型
+     */
     void setTheMe(int type = 0);
     /**
      * @brief isDragging 是否可以拖拽
@@ -49,11 +53,22 @@ public:
      */
     bool isDragging()const
     {
-        return m_MonthGraphicsView->getDragStatus() !=4;
+        return m_MonthGraphicsView->getDragStatus() != 4;
     }
 public:
+    /**
+     * @brief CMonthView 构造函数
+     * @param parent 父类
+     */
     explicit CMonthView(QWidget *parent = nullptr);
+    /**
+      * @brief ~CMonthView 析构函数
+      */
     ~CMonthView() override;
+    /**
+     * @brief setFirstWeekday 设置每周的第一天是周几
+     * @param weekday 周几
+     */
     void setFirstWeekday(int weekday);
 signals:
     /**
@@ -89,8 +104,19 @@ signals:
      */
     void signalsViewSelectDate(QDate date);
 public slots:
+    /**
+     * @brief setCurrentDate 设置当前的日程
+     * @param date 日期
+     */
     void setCurrentDate(const QDate date);
+    /**
+     * @brief setLunarVisible 设置是否显示阴历信息
+     * @param visible 是否显示阴历信息
+     */
     void setLunarVisible(bool visible);
+    /**
+     * @brief slotSchceduleUpdate 更新日程信息
+     */
     void slotSchceduleUpdate();
     /**
      * @brief setSelectSchedule 设置选择的日程
@@ -98,8 +124,22 @@ public slots:
      */
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
 public slots:
+    /**
+     * @brief slotsupdatescheduleD 更新日程
+     * @param w 判断是否是当前的widget
+     * @param data 日程信息
+     */
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
+    /**
+     * @brief slotdelete 发送更新日程的信号
+     * @param id
+     */
     void slotdelete(int id);
+    /**
+     * @brief slotScheduleRemindWidget 日程浮框
+     * @param isShow 是否显示日程浮框
+     * @param out 日程信息
+     */
     void slotScheduleRemindWidget(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
 signals:
     /**
@@ -110,15 +150,29 @@ signals:
      */
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 protected:
+    /**
+     * @brief resizeEvent 窗口大小调整
+     * @param event 窗口大小调整事件
+     */
     void resizeEvent(QResizeEvent *event) override;
+    /**
+     * @brief mousePressEvent 鼠标单击
+     * @param event 鼠标事件
+     */
     void mousePressEvent(QMouseEvent *event) override;
 private:
+    /**
+     * @brief getDateIndex 获取日期的索引值
+     * @param date 日期
+     * @return 索引值
+     */
     int getDateIndex(const QDate &date) const;
+
     const QDate getCellDate(int pos);
     const CaLunarDayInfo getCaLunarDayInfo(const QDate &date);
     void updateDate();
     void updateCurrentLunar(const CaLunarDayInfo &info);
-    ScheduleDtailInfo getScheduleInfo(const QDate &beginDate,const QDate &endDate);
+    ScheduleDtailInfo getScheduleInfo(const QDate &beginDate, const QDate &endDate);
 private slots:
     void getDbusData();
 private:
