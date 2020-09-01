@@ -232,26 +232,8 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                 case CreateJsonData::EVEY:
                     m_widget->setRpeat(5);
                     break;
-                case CreateJsonData::WORKD: /*{
-                    if (w >= 1 && w <= 5) {
-                        if (m_begintime.time() > currentdatetime.time()) {
-                            m_begintime.setDate(currentdatetime.date());
-                            m_widget->setDateTime(m_begintime, m_endtime);
-                        } else {
-                            if (w == 5) {
-                                m_begintime.setDate(currentdatetime.date().addDays(3));
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            } else {
-                                m_begintime.setDate(currentdatetime.date().addDays(1));
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            }
-                        }
-                    } else if (w > 5) {
-                        m_begintime.setDate(currentdatetime.date().addDays(1 - w + 7));
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                    }*/
+                case CreateJsonData::WORKD:
                     m_widget->setRpeat(2);
-                    //                }
                     break;
                 case CreateJsonData::RESTD: {
                     if (w < 6) {
