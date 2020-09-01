@@ -40,46 +40,171 @@ class CMonthWindow: public QMainWindow
 {
     Q_OBJECT
 public:
+    /**
+     * @brief CMonthWindow 构造函数
+     * @param parent 父类
+     */
     CMonthWindow(QWidget *parent = nullptr);
+    /**
+      * @brief ~CMonthWindow 析构函数
+      */
     ~CMonthWindow() override;
+    /**
+     * @brief setFirstWeekday 设置每周第一天是周几
+     * @param weekday 周几
+     */
     void setFirstWeekday(int weekday);
+    /**
+     * @brief setDate 设置时间
+     * @param date 日期
+     */
     void setDate(QDate date);
+    /**
+     * @brief setLunarVisible 设置是否显示阴历信息
+     * @param state 是否显示阴历信息
+     */
     void setLunarVisible(bool state);
+    /**
+     * @brief setTheMe 根据系统主题类型设置颜色
+     * @param type 系统主题类型
+     */
     void setTheMe(int type = 0);
+    /**
+     * @brief setSearchWFlag 设置是否选择的标志
+     * @param flag 是否选择的标志
+     */
     void setSearchWFlag(bool flag);
+    /**
+     * @brief clearSearch
+     */
     void clearSearch();
 public slots:
+    /**
+     * @brief previousMonth 选择上一个月份
+     */
     void previousMonth();
+    /**
+     * @brief nextMonth 选择下一个月份
+     */
     void nextMonth();
+    /**
+     * @brief slotsearchDateSelect 选择搜索到的日期
+     * @param date 日期
+     */
     void slotsearchDateSelect(QDate date);
 protected:
+    /**
+     * @brief wheelEvent 鼠标滚轮事件
+     */
     void wheelEvent(QWheelEvent *) override;
 private:
+    /**
+     * @brief initUI 初始化界面
+     */
     void initUI();
+    /**
+     * @brief initConnection 初始化信号和槽的连接
+     */
     void initConnection();
+    /**
+     * @brief initLunar 初始化阴历信息
+     */
     void initLunar();
+    /**
+     * @brief slideMonth 切换月份，并更新信息
+     * @param next 是否切换到下一个月
+     */
     void slideMonth(bool next);
 signals:
+    /**
+     * @brief dateSelected
+     * @param date
+     * @param detail
+     */
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
+    /**
+     * @brief signalsWUpdateShcedule 更新日程的信号
+     * @param w unused
+     * @param id unused
+     */
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
+    /**
+     * @brief signalsReturnTodayUpdate 返回今天的按钮的信号
+     * @param w 视图
+     */
     void signalsReturnTodayUpdate(QMainWindow *w);
+    /**
+     * @brief signalsCurrentScheduleDate
+     * @param date
+     */
     void signalsCurrentScheduleDate(QDate date);
+    /**
+     * @brief signalsViewSelectDate 切换视图的信号
+     * @param date 日期
+     */
     void signalsViewSelectDate(QDate date);
+    /**
+     * @brief signalViewtransparentFrame 获取视图的焦点
+     * @param type
+     */
     void signalViewtransparentFrame(int type);
+    /**
+     * @brief signalCurrentDate 设置时间的信号
+     * @param date 日期
+     */
     void signalCurrentDate(QDate date);
 public slots:
+    /**
+     * @brief slotReturnTodayUpdate 返回今天
+     */
     void slotReturnTodayUpdate();
+    /**
+     * @brief slotScheduleHide 隐藏日程浮框
+     */
     void slotScheduleHide();
 public slots:
+    /**
+     * @brief slotupdateSchedule 更新日程
+     * @param id
+     */
     void slotupdateSchedule(int id = 0);
+    /**
+     * @brief slotTransitSchedule 发送更新日程的信号
+     * @param id
+     */
     void slotTransitSchedule(int id = 0);
+    /**
+     * @brief setSelectSchedule 设置选择的日程
+     * @param scheduleInfo 选择日程的信息
+     */
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
 protected:
+    /**
+     * @brief resizeEvent 窗口大小调整
+     * @param event 窗口大小调整事件
+     */
     void resizeEvent(QResizeEvent *event) override;
 private slots:
+    /**
+     * @brief slottoday 返回今天
+     */
     void slottoday();
+    /**
+     * @brief slotcurrentDateLunarChanged 当前时间改变，更新信息
+     * @param date 时间
+     * @param detail 阴历信息
+     * @param type 是否显示阴历信息
+     */
     void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
+    /**
+     * @brief slotcurrentDateChanged 根据时间变化，返回今天按钮状态变化
+     * @param date 时间
+     */
     void slotcurrentDateChanged(QDate date);
+    /**
+     * @brief slotSelectedMonth 设置选择的月份
+     * @param date 日期
+     */
     void slotSelectedMonth(QDate date);
 private:
     CMonthView *m_monthView = nullptr;
