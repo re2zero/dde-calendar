@@ -100,25 +100,25 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     connect(this, &CWeekHeadView::dateSelected, this, &CWeekHeadView::handleCurrentDateChanged);
     setFrameRounded(false);
 
-    m_monthList.append( "一月" );
-    m_monthList.append( "二月");
-    m_monthList.append( "三月" );
-    m_monthList.append( "四月" );
-    m_monthList.append( "五月" );
-    m_monthList.append( "六月" );
-    m_monthList.append( "七月" );
-    m_monthList.append( "八月");
-    m_monthList.append( "九月" );
-    m_monthList.append( "十月" );
-    m_monthList.append( "十一月");
-    m_monthList.append( "十二月");
+    m_monthList.append("一月");
+    m_monthList.append("二月");
+    m_monthList.append("三月");
+    m_monthList.append("四月");
+    m_monthList.append("五月");
+    m_monthList.append("六月");
+    m_monthList.append("七月");
+    m_monthList.append("八月");
+    m_monthList.append("九月");
+    m_monthList.append("十月");
+    m_monthList.append("十一月");
+    m_monthList.append("十二月");
 }
 /**
   * @brief CWeekHeadView 析构函数
   */
 CWeekHeadView::~CWeekHeadView()
 {
-    if (lunarCache !=nullptr) {
+    if (lunarCache != nullptr) {
         delete lunarCache;
         lunarCache = nullptr;
     }
@@ -592,7 +592,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
             painter.restore();
         } else {
             //绘制没有阴历信息的当天背景圆
-            QRect fillRect(cell->width() - (cell->width()/2) + 1, bh - 1, 26, 26);
+            QRect fillRect(cell->width() - (cell->width() / 2) + 1, bh - 1, 26, 26);
             painter.save();
             painter.setRenderHint(QPainter::Antialiasing);
             //设置颜色为系统活动色
@@ -641,7 +641,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     } else {
         QFontMetrics fm1 = painter.fontMetrics();
         //绘制day
-        painter.drawText(QRect(cell->width() - (cell->width()/2) - 4, bh - 1, 36, 26), Qt::AlignCenter, dayNum);
+        painter.drawText(QRect(cell->width() - (cell->width() / 2) - 4, bh - 1, 36, 26), Qt::AlignCenter, dayNum);
         //设置不同的颜色
         if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
             painter.setPen(m_weekendsTextColor);
@@ -650,10 +650,10 @@ void CWeekHeadView::paintCell(QWidget *cell)
         //查看字体度量
         QFontMetrics fm = painter.fontMetrics();
         //文字太宽，减少显示的文字
-        while (fm.width(dayWeek) > cell->width()/2)
+        while (fm.width(dayWeek) > cell->width() / 2)
             dayWeek.chop(1);
         //绘制周几
-        painter.drawText(QRect(0, bh, (cell->width()/2), 26), Qt::AlignRight, dayWeek);
+        painter.drawText(QRect(0, bh, (cell->width() / 2), 26), Qt::AlignRight, dayWeek);
     }
     // draw text of day type
     if (m_showState & ShowLunar) {
@@ -725,6 +725,7 @@ void CWeekHeadView::setSelectedCell(int index)
     m_cellList.at(index)->update();
     emit dateSelected(m_days[index], getCaLunarDayInfo(index));
 }
+
 /**
  * @brief checkDay 检查周数，在定制中计算正确的顺序。
  * @param weekday 周数
@@ -741,6 +742,7 @@ int CWeekHeadView::checkDay(int weekday)
 
     return weekday;
 }
+
 /**
  * @brief mousePressEvent 鼠标单击事件
  * @param event 鼠标事件
