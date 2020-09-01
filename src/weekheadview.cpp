@@ -586,6 +586,7 @@ void CWeekHeadView::setSelectedCell(int index)
     m_cellList.at(index)->update();
     emit dateSelected(m_days[index], getCaLunarDayInfo(index));
 }
+
 int CWeekHeadView::checkDay(int weekday)
 {
     // check the week, calculate the correct order in the custom.
@@ -597,7 +598,6 @@ int CWeekHeadView::checkDay(int weekday)
 
     return weekday;
 }
-
 
 void CWeekHeadView::mousePressEvent(QMouseEvent *event)
 {
