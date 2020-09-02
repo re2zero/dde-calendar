@@ -231,7 +231,10 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
-    painter.setBrush(Qt::white);
+    DPalette backgroundPal;
+    backgroundPal = this->palette();
+    QBrush backgroundBrush = backgroundPal.background();
+    painter.setBrush(backgroundBrush);
     QPainterPath painterpath;
     painterpath.lineTo(1, this->height() - m_radius);
     painterpath.arcTo(QRectF(1, this->height() - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
