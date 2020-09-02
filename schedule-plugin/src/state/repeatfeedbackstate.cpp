@@ -47,6 +47,9 @@ scheduleState::Filter_Flag repeatfeedbackstate::eventFilter(const JsonData *json
         || jsonData->getPropertyStatus() == JsonData::PRO_THIS) {
         return Fileter_Normal;
     }
+    if (jsonData->getPropertyStatus() == JsonData::NEXT) {
+        return Fileter_Init;
+    }
 
     JsonData *queryData = const_cast<JsonData *>(jsonData);
     changejsondata *mchangeJsonData = dynamic_cast<changejsondata *>(queryData);

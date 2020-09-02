@@ -37,6 +37,9 @@ Reply confirwFeedbackState::getReplyByIntent(bool isOK)
 
 scheduleState::Filter_Flag confirwFeedbackState::eventFilter(const JsonData *jsonData)
 {
+    if (jsonData->getPropertyStatus() == JsonData::NEXT) {
+        return Fileter_Init;
+    }
     if (jsonData->getPropertyStatus() == JsonData::LAST
         || jsonData->offset() > 0) {
         return Fileter_Err;
