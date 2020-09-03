@@ -550,10 +550,17 @@ void CDayMonthView::paintCell(QWidget *cell)
 
     // draw selected cell background circle
     if (isSelectedCell) {
-        int hh = 0;
+        int min = 0;
+        //高度和宽度最小的一个
+        min = cell->height() < cell->width() ? cell->height():cell->width();
+        //最终rect
         QRectF fillRect;
-        hh = cell->height();
-        fillRect = QRectF((cell->width() - hh) / 2.0 + 4, hh * 0.1271 + 0.5, hh - 8, hh - 8);
+        //宽度小于高度时的rect
+        QRectF rectByWidth = QRectF(cell->width() * 0.15, (cell->height() - cell->width() * 0.75) / 2.0, min * 0.7, min * 0.7);
+        //高度小于宽度时的rect
+        QRectF rectByHeight = QRectF((cell->width() - cell->height() * 0.75) / 2.0, cell->height() * 0.15, min * 0.7, min * 0.7);
+        //判断最终rect是哪一个
+        fillRect = cell->height() < cell->width() ? rectByHeight : rectByWidth;
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing);
         painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
