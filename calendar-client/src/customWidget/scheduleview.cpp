@@ -54,7 +54,7 @@ void CScheduleView::setviewMagin(int left, int top, int right, int bttom)
     m_leftMagin = left;
     m_topMagin = top;
     m_rightmagin = right;
-    m_layout->setContentsMargins(left,0,0,0);
+    m_layout->setContentsMargins(left, 0, 0, 0);
     m_graphicsView->setMargins(0, 0, right, bttom);
     m_alldaylist->setMargins(0, 0, 0, 0);
 }
@@ -70,7 +70,7 @@ void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
     m_graphicsView->setRange(w, scheduleViewHegith(), begin, end, m_rightmagin);
     m_alldaylist->setRange(w, 22, m_beginDate, m_endDate, m_rightmagin);
 
-    if (m_viewType ==1)
+    if (m_viewType == 1)
         m_currteDate = begin;
     update();
 }
@@ -78,8 +78,8 @@ void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
 void CScheduleView::setRange(QDate begin, QDate end)
 {
     m_TotalDay = begin.daysTo(end) + 1;
-    m_graphicsView->setRange(begin,end);
-    m_alldaylist->setRange(begin,end);
+    m_graphicsView->setRange(begin, end);
+    m_alldaylist->setRange(begin, end);
     m_beginDate = begin;
     m_endDate = end;
     updateSchedule();
@@ -145,7 +145,7 @@ void CScheduleView::updateHigh()
 
 bool CScheduleView::IsDragging()
 {
-    return (m_graphicsView->getDragStatus()!=4) || (m_alldaylist->getDragStatus()!=4);
+    return (m_graphicsView->getDragStatus() != 4) || (m_alldaylist->getDragStatus() != 4);
 }
 
 void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
@@ -172,8 +172,8 @@ void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
                 if (scheduleInfolist.isEmpty()) {
                     m_graphicsView->setTime(QTime(13, 0));
                 } else {
-                    std::sort(scheduleInfolist.begin(),scheduleInfolist.end(),
-                    [](const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2) ->bool {
+                    std::sort(scheduleInfolist.begin(), scheduleInfolist.end(),
+                    [](const ScheduleDtailInfo & s1, const ScheduleDtailInfo & s2) ->bool {
                         return s1.beginDateTime < s2.beginDateTime;
                     });
                     QTime time = scheduleInfolist.at(0).beginDateTime.time();
@@ -408,7 +408,7 @@ void CScheduleView::initUI()
     m_layout->addWidget(m_alldaylist);
     m_layout->addSpacing(1);
     m_graphicsView = new CGraphicsView(this, m_viewType);
-    const int miniHeight = m_viewType ==0 ? 300 : 380;
+    const int miniHeight = m_viewType == 0 ? 300 : 380;
     m_graphicsView->setMinimumHeight(miniHeight);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this,
             SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
@@ -440,12 +440,12 @@ void CScheduleView::initConnection()
     connect(m_alldaylist, &CAllDayEventWeekView::signalScheduleShow
             , this, &CScheduleView::slotScheduleShow);
 
-    connect(m_alldaylist,&CAllDayEventWeekView::signalUpdatePaint,
-            this,&CScheduleView::slotUpdatePaint);
-    connect(m_alldaylist,&CAllDayEventWeekView::signalSceneUpdate,
-            this,&CScheduleView::slotUpdateScene);
-    connect(m_graphicsView,&CGraphicsView::signalSceneUpdate,
-            this,&CScheduleView::slotUpdateScene);
+    connect(m_alldaylist, &CAllDayEventWeekView::signalUpdatePaint,
+            this, &CScheduleView::slotUpdatePaint);
+    connect(m_alldaylist, &CAllDayEventWeekView::signalSceneUpdate,
+            this, &CScheduleView::slotUpdateScene);
+    connect(m_graphicsView, &CGraphicsView::signalSceneUpdate,
+            this, &CScheduleView::slotUpdateScene);
 
     QShortcut *dshortcut = new QShortcut(this);
     dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
@@ -515,7 +515,7 @@ void CScheduleView::updateSchedule()
     QVector<ScheduleDtailInfo> nonAllInfo;
 
     for (int i = 0; i < data.size(); ++i) {
-        for (int j = 0; j< data.at(i).vData.size(); ++j) {
+        for (int j = 0; j < data.at(i).vData.size(); ++j) {
             if (data.at(i).vData.at(j).allday) {
                 if (!allInfo.contains(data.at(i).vData.at(j))) {
                     allInfo.append(data.at(i).vData.at(j));
@@ -536,7 +536,7 @@ void CScheduleView::updateAllday()
 {
     m_alldaylist->updateInfo();
     update();
-    m_graphicsView->resize(m_graphicsView->width(),this->height()-m_alldaylist->height());
+    m_graphicsView->resize(m_graphicsView->width(), this->height() - m_alldaylist->height());
 }
 
 int CScheduleView::checkDay(int weekday)
@@ -560,8 +560,8 @@ int CScheduleView::scheduleViewHegith()
         mheight = 24 * (0.083 * height() + 0.5);
     }
     //现在最小高度为20;
-    mheight = mheight <500? 1035:mheight;
-    int m_minTime = qRound((20.0/mheight)*86400);
+    mheight = mheight < 500 ? 1035 : mheight;
+    int m_minTime = qRound((20.0 / mheight) * 86400);
     m_graphicsView->setMinTime(m_minTime);
     return  qRound(mheight);
 }
