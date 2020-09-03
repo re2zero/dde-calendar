@@ -37,7 +37,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     //查询日程
 
     if (createJsonData->getPropertyStatus() != JsonData::PRO_NONE
-        || createJsonData->offset() > -1) {
+            || createJsonData->offset() > -1) {
         Reply m_reply;
         m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
         m_reply.ttsMessage(CREATE_ERR_TTS);
@@ -153,7 +153,8 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                             m_widget->setRpeat(3);
                         }
                     }
-                } break;
+                }
+                break;
                 case CreateJsonData::EVEM: {
                     if (getDayNum.size() == 0) {
                         if (m_begintime.time() > currentdatetime.time()) {
@@ -228,7 +229,8 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                             m_widget->setRpeat(4);
                         }
                     }
-                } break;
+                }
+                break;
                 case CreateJsonData::EVEY:
                     m_widget->setRpeat(5);
                     break;
@@ -267,13 +269,14 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                         }
                     }
                     m_widget->setRpeat(3);
-                } break;
+                }
+                break;
                 }
                 if (createJsonData->ShouldEndSession()) {
-                    m_widget->setScheduleDbus(m_dbus);
                     m_widget->setschedule();
-                    m_widget->scheduleEmpty(true);
                     m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+                    m_widget->setScheduleDbus(m_dbus);
+                    m_widget->scheduleEmpty(true);
                     m_widget->updateUI();
                 }
             }
@@ -288,7 +291,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         m_reply.setReplyType(Reply::RT_INNER_WIDGET | Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
         m_reply.setReplyWidget(m_widget);
         if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD
-            && createJsonData->getDateTime().at(0).hasTime) {
+                && createJsonData->getDateTime().at(0).hasTime) {
             QString str = QString("好的，每周六到周日的%1点我都会提醒您。").arg(m_begintime.time().hour());
             m_reply.ttsMessage(str);
             m_reply.displayMessage(str);

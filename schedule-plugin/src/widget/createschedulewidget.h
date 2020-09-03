@@ -30,7 +30,10 @@ public:
 public slots:
     void slotsbuttonchance(int index, const QString &text);
     void slotItemPress(const ScheduleDtailInfo &info);
-    QVector<ScheduleDtailInfo> getCreatScheduleFromDbus();
+    /**
+     * @brief getCreatScheduleFromDbus 通过dbus获取新建的日程信息
+     */
+    void getCreatScheduleFromDbus();
 
 private:
     ScheduleDtailInfo m_scheduleDtailInfo;

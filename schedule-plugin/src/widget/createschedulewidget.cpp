@@ -67,11 +67,12 @@ void createSchedulewidget::scheduleEmpty(bool isEmpty)
 void createSchedulewidget::updateUI()
 {
     if (m_scheduleEmpty) {
-        //创建日程
-        QVector<ScheduleDtailInfo> scheduleInfo = getCreatScheduleFromDbus();
-        if (!scheduleInfo.isEmpty()) {
+        //获取筛选到的日程信息
+        getCreatScheduleFromDbus();
+        //如果筛选到的日程不为空，则展示日程插件
+        if (!m_scheduleInfo.isEmpty()) {
             QVBoxLayout *mainlayout = new QVBoxLayout();
-            m_scheduleitemwidget->setScheduleDtailInfo(scheduleInfo);
+            m_scheduleitemwidget->setScheduleDtailInfo(m_scheduleInfo);
             m_scheduleitemwidget->addscheduleitem();
             mainlayout->addWidget(m_scheduleitemwidget);
             setCenterLayout(mainlayout);
@@ -128,24 +129,45 @@ void createSchedulewidget::slotItemPress(const ScheduleDtailInfo &info)
     QDBusMessage response = QDBusConnection::sessionBus().call(message);
 }
 
-QVector<ScheduleDtailInfo> createSchedulewidget::getCreatScheduleFromDbus()
+void createSchedulewidget::getCreatScheduleFromDbus()
 {
-    QVector<ScheduleDtailInfo> scheduleInfo;
-    QVector<ScheduleDateRangeInfo> CScheduleInfo;
-    scheduleInfo.clear();
-    CScheduleInfo.clear();
-
-    m_dbus->QueryJobs(m_scheduleDtailInfo.titleName, m_scheduleDtailInfo.beginDateTime, m_scheduleDtailInfo.endDateTime, CScheduleInfo);
-
-    for (int i = 0; i < CScheduleInfo.count(); i++) {
-        for (int j = 0; j < CScheduleInfo.at(i).vData.count(); i++) {
-            if (CScheduleInfo.at(i).vData.at(j).titleName == m_scheduleDtailInfo.titleName
-                && CScheduleInfo.at(i).vData.at(j).beginDateTime == m_scheduleDtailInfo.beginDateTime
-                && CScheduleInfo.at(i).vData.at(j).endDateTime == m_scheduleDtailInfo.endDateTime) {
-                scheduleInfo.append(CScheduleInfo.at(i).vData.at(j));
-                return scheduleInfo;
+    //存放查询的日程信息
+    QVector<ScheduleDateRangeInfo> out;
+    //存放符合筛选条件的日程信息
+    QVector<ScheduleDtailInfo> scheduleinfo;
+    //清空容器
+    scheduleinfo.clear();
+    out.clear();
+    //通过dbus获取和新建的日程具有相同titlename，beginDateTime，endDateTime的日程
+    m_dbus->QueryJobs(m_scheduleDtailInfo.titleName, m_scheduleDtailInfo.beginDateTime, m_scheduleDtailInfo.endDateTime, out);
+    //筛选具体日程
+    for (int i = 0; i < out.count(); i++) {
+        for (int j = 0; j < out.at(i).vData.count(); j++) {
+            //筛选条件
+            if (out.at(i).vData.at(j).titleName == m_scheduleDtailInfo.titleName
+                    && out.at(i).vData.at(j).beginDateTime == m_scheduleDtailInfo.beginDateTime
+                    && out.at(i).vData.at(j).endDateTime == m_scheduleDtailInfo.endDateTime
+                    && out.at(i).vData.at(j).rpeat == m_scheduleDtailInfo.rpeat
+                    && out.at(i).vData.at(j).allday == m_scheduleDtailInfo.allday
+                    && out.at(i).vData.at(j).type.ID == m_scheduleDtailInfo.type.ID
+                    && out.at(i).vData.at(j).remind == m_scheduleDtailInfo.remind
+                    && out.at(i).vData.at(j).remindData.n == m_scheduleDtailInfo.remindData.n) {
+                scheduleinfo.append(out.at(i).vData.at(j));
             }
         }
     }
-    return scheduleInfo;
+    //如果和新建日程具有相同信息的日程有多个，则取id最大的那一个
+    if (scheduleinfo.count() > 1) {
+        for (int i = 0; i < scheduleinfo.count() - 1; i++) {
+            if (scheduleinfo.at(i).id < scheduleinfo.at(i + 1).id) {
+                m_scheduleInfo.clear();
+                m_scheduleInfo.append(scheduleinfo.at(i + 1));
+            } else {
+                m_scheduleInfo.clear();
+                m_scheduleInfo.append(scheduleinfo.at(i));
+            }
+        }
+    } else {
+        m_scheduleInfo = scheduleinfo;
+    }
 }
