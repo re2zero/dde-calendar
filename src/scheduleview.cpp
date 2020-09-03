@@ -99,8 +99,6 @@ void CScheduleView::setTheMe(int type)
         setBackgroundRole(DPalette::Background);
         m_linecolor = "#000000";
         m_linecolor.setAlphaF(0.1);
-        m_weekColor = "#00429A";
-        m_weekColor.setAlphaF(0.05);
         m_ALLDayColor = "#303030";
         m_timeColor = "#7D7D7D";
     } else if (type == 2) {
@@ -111,8 +109,6 @@ void CScheduleView::setTheMe(int type)
         setBackgroundRole(DPalette::Background);
         m_linecolor = "#000000";
         m_linecolor.setAlphaF(0.1);
-        m_weekColor = "#4F9BFF";
-        m_weekColor.setAlphaF(0.1);
         m_ALLDayColor = "#7D7D7D";
         m_timeColor = "#7D7D7D";
     }
@@ -380,61 +376,6 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     //绘制全天与非全天之间的直线
     painter.setPen(m_linecolor);
     painter.drawLine(0,m_topMagin,this->width(),m_topMagin);
-
-    int t_width = width()-2;
-    qreal intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
-
-    if (m_TotalDay > 1) {
-        painter.save();
-        painter.setPen(Qt::SolidLine);
-        painter.setPen(m_linecolor);
-
-        for (qreal i = intenval; i < width() - m_leftMagin; i = i + intenval) {
-            if (i > intenval * (m_TotalDay - 1)) {
-                QPainterPath painterpath;
-                painterpath.moveTo(i + m_leftMagin + 1 - 8, this->height() + 1);
-                painterpath.arcTo(QRectF(i + m_leftMagin + 1 - 16, this->height() + 1 - 16, 16, 16), 270, 90);
-                painterpath.lineTo(i + m_leftMagin + 1, 1);
-                painter.drawPath(painterpath);
-            } else {
-                painter.drawLine(QPointF(i + m_leftMagin + 1, 1),
-                                 QPointF(i + m_leftMagin + 1, this->height() + 1));
-            }
-        }
-        painter.restore();
-
-        painter.save();
-        for (int i = 0; i != 7; ++i) {
-            int d = checkDay(i - m_firstWeekDay);
-            painter.setBrush(m_weekColor);
-            painter.setPen(Qt::NoPen);
-            painter.setRenderHint(QPainter::Antialiasing);
-            if (d == 6) {
-                QPainterPath painterpath;
-                painterpath.moveTo(m_leftMagin + i * intenval + m_radius, 0);
-                painterpath.lineTo(m_leftMagin + i * intenval, 0);
-                painterpath.lineTo(m_leftMagin + i * intenval, m_radius);
-                painterpath.lineTo(m_leftMagin + i * intenval, this->height() - m_radius);
-                painterpath.lineTo(m_leftMagin + i * intenval, this->height());
-                painterpath.lineTo(m_leftMagin + i * intenval + m_radius, this->height());
-                painterpath.lineTo(this->width() - m_radius, this->height());
-                painterpath.arcTo(QRectF(width() - m_radius * 2,
-                                         this->height() - m_radius * 2,
-                                         m_radius * 2, m_radius * 2),
-                                  270, 90);
-                painterpath.lineTo(this->width(), m_radius);
-                painterpath.lineTo(this->width(), 0);
-                painterpath.lineTo(m_leftMagin + i * intenval + m_radius, 0);
-                painterpath.closeSubpath();
-                painter.drawPath(painterpath);
-            }
-            if (d == 7) {
-                painter.drawRect(
-                    QRectF(m_leftMagin + i * intenval + 2, 0, intenval, this->height()));
-            }
-        }
-        painter.restore();
-    }
     painter.end();
 }
 

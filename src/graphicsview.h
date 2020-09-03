@@ -140,6 +140,12 @@ public:
     void updateInfo();
 protected:
     void paintEvent(QPaintEvent *event) override;
+private:
+    /**
+     * @brief paintBackground 绘制背景--周试图周六周天的背景色和每天的分割线
+     * @param painter painter对象
+     */
+    void paintBackground(QPainter &painter);
 public slots:
     void scrollBarValueChangedSlot();
     void slotDoubleEvent(int type);

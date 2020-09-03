@@ -89,10 +89,20 @@ private:
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
+    /**
+     * @brief paintEvent 绘制事件
+     * @param event 绘制事件的事件参数
+     */
+    void paintEvent(QPaintEvent *event) override;
 private:
     void updateDateShow();
     void createItemWidget(int index, bool average = false);
     void updateItemHeightByFontSize();
+    /**
+     * @brief paintBackground 绘制背景--周试图周六周天的背景色和每天的分割线
+     * @param painter painter对象
+     */
+    void paintBackground(QPainter &painter);
 private:
     int itemHeight = 22;
     QVector<QVector<ScheduleDtailInfo> >         m_vlistData;
@@ -105,6 +115,10 @@ private:
     bool m_updateDflag = false;
     QDate m_beginDate;
     QDate m_endDate;
+    /**
+     * @brief m_weekColor   周六周日背景色
+     */
+    QColor m_weekColor = "#E6EEF2";
 };
 
 class CAllDayEventWidgetItem : public DragInfoItem

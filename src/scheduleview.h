@@ -91,7 +91,6 @@ private:
     int                       m_viewType = 0;
     int                       m_sMaxNum = 4;
     QColor                    m_linecolor = Qt::lightGray;
-    QColor                    m_weekColor = "#E6EEF2";
     QColor                    m_ALLDayColor = "#303030";
     QColor                    m_timeColor = "#7D7D7D";
     QColor                    m_currenttimecolor = "#F74444";

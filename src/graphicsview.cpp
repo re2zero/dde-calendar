@@ -565,6 +565,8 @@ Others:         无
 void CGraphicsView::paintEvent(QPaintEvent *event)
 {
     QPainter t_painter(viewport());
+    //绘制背景
+    paintBackground(t_painter);
     int t_width = viewport()->width()  + 2;
     //绘制水平线
     if (m_LRFlag) {
@@ -596,6 +598,47 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
         }
     }
     QGraphicsView::paintEvent(event);
+}
+
+void CGraphicsView::paintBackground(QPainter &painter)
+{
+    // 绘制Rect的宽度
+    const int t_width = viewport()->width() - 2;
+    // 需要处理的天数
+    const qint64 m_TotalDay = m_beginDate.daysTo(m_endDate) + 1;
+    // 左边距
+    const int m_leftMagin = 0;
+    // 每天的宽度
+    const qreal intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
+    // 每天X坐标点偏移
+    const qreal XPointOffset = 1.5;
+    // 分割线颜色
+    QColor m_linecolor = "#000000";
+    m_linecolor.setAlphaF(0.1);
+    if (m_TotalDay > 1) {
+        painter.save();
+        painter.setPen(Qt::SolidLine);
+        painter.setPen(m_linecolor);
+        //绘制分割线
+        for (int i = 1; i < 7; ++i) {
+            painter.drawLine(QPointF(i * intenval + m_leftMagin + XPointOffset, 1),
+                             QPointF(i * intenval + m_leftMagin + XPointOffset, this->height()));
+        }
+        painter.restore();
+        painter.save();
+        //绘制周六周日背景色
+        painter.setBrush(m_weekcolor);
+        painter.setPen(Qt::NoPen);
+        painter.setRenderHint(QPainter::Antialiasing);
+        for (int i = 0; i != 7; ++i) {
+            int d = m_beginDate.addDays(i).dayOfWeek();
+            if (d == 7 || d == 6) {
+                painter.drawRect(
+                    QRectF(m_leftMagin + i * intenval + XPointOffset, 0, intenval, this->height()));
+            }
+        }
+        painter.restore();
+    }
 }
 
 void CGraphicsView::scrollBarValueChangedSlot()
