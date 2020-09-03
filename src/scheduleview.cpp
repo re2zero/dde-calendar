@@ -375,7 +375,9 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
     //绘制全天与非全天之间的直线
     painter.setPen(m_linecolor);
-    painter.drawLine(0,m_topMagin,this->width(),m_topMagin);
+    //分割线y坐标点
+    const int point_y = m_topMagin - 2;
+    painter.drawLine(0, point_y, this->width() - m_rightmagin - 2, point_y);
     painter.end();
 }
 
