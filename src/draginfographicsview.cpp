@@ -40,11 +40,6 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     setFrameShape(QFrame::NoFrame);
     setScene(m_Scene);
     setContentsMargins(0, 0, 0, 0);
-    QPalette pal = palette();
-    pal.setColor(QPalette::Light, QColor(0, 0, 0, 0));
-    pal.setColor(QPalette::Dark, QColor(0, 0, 0, 0));
-    pal.setColor(QPalette::Base, QColor(0, 0, 0, 0));
-    setPalette(pal);
 
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
