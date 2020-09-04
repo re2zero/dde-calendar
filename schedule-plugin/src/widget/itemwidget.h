@@ -102,6 +102,10 @@ private:
     QColor m_TitleColor;
     QFont m_DateTimeFont;
     QColor m_DateTimeColor;
+    /**
+     * @brief m_BackgroundColor  绘制背景色
+     */
+    QColor m_BackgroundColor{"#000000"};
 
     ScheduleColourManage m_scheduleColor;
     ScheduleDtailInfo m_scheduleInfo;

@@ -91,8 +91,7 @@ void ItemWidget::drawBackground(QPainter &painter)
 
 QColor ItemWidget::getBackgroundColor()
 {
-    DPalette palette;
-    return palette.color(DPalette::Normal, DPalette::AlternateBase);
+    return m_BackgroundColor;
 }
 
 void ItemWidget::setTheMe(const int type)
@@ -106,12 +105,18 @@ void ItemWidget::setTheMe(const int type)
 
         datetimeColor.setRgb(0, 0, 0);
         datetimeColor.setAlphaF(0.6);
+        //设置浅色背景色
+        m_BackgroundColor = "#000000";
+        m_BackgroundColor.setAlphaF(0.05);
     } else {
         titleColor.setRgb(255, 255, 255);
         titleColor.setAlphaF(1);
 
         datetimeColor.setRgb(255, 255, 255);
         datetimeColor.setAlphaF(0.6);
+        //设置深色背景色
+        m_BackgroundColor = "#FFFFFF";
+        m_BackgroundColor.setAlphaF(0.05);
     }
     //    DPalette palette;
     //    setTitleColor(palette.color(DPalette::Normal, DPalette::BrightText));
