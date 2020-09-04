@@ -83,7 +83,7 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     setLayout(hboxLayout);
 
     connect(this, &CWeekHeadView::dateSelected, this, &CWeekHeadView::handleCurrentDateChanged);
-    setFrameRounded(true);
+    setFrameRounded(false);
 
     m_monthList.append( "一月" );
     m_monthList.append( "二月");
@@ -165,6 +165,7 @@ void CWeekHeadView::setTheMe(int type)
         m_backgroundCircleColor = "#0081FF";
         m_backgroundShowColor = "#2CA7F8";
         m_backgroundShowColor.setAlphaF(0.4);
+        m_Background_Weekend_Color = "#DAE4ED";
 
         m_defaultTextColor = "#6F6F6F";
         m_currentDayTextColor = "#FFFFFF";
@@ -181,6 +182,7 @@ void CWeekHeadView::setTheMe(int type)
         m_backgroundCircleColor = "#0059D2";
         m_backgroundShowColor = "#002AAF";
         m_backgroundShowColor.setAlphaF(0.4);
+        m_Background_Weekend_Color = "#333D4A";
 
         m_defaultTextColor = "#C0C6D4";
         m_currentDayTextColor = "#C0C6D4";
@@ -417,24 +419,22 @@ void CWeekHeadView::paintCell(QWidget *cell)
     const int pos = m_cellList.indexOf(cell);
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
     const bool isSelectedCell = isCurrentDay;
-    int d = checkDay(pos - m_firstWeekDay);
+    int d = m_days[pos].dayOfWeek();
 
     QPainter painter(cell);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QBrush(m_backgroudColor));
+    //根据周几设置不一样的背景色
+    if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek) {
+        painter.setBrush(QBrush(m_Background_Weekend_Color));
+    } else {
+        painter.setBrush(QBrush(m_backgroudColor));
+    }
     if (d != 6) {
         painter.drawRect(rect);//画矩形
-
-        if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
-            painter.drawRect(rect); //画矩形
     } else {
         int labelwidth = cell->width();
         int labelheight = cell->height();
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-        painter.setBrush(QBrush(m_backgroudColor));
-        painter.setPen(Qt::NoPen);
         QPainterPath painterPath;
         painterPath.moveTo(m_radius, 0);
 
@@ -451,6 +451,16 @@ void CWeekHeadView::paintCell(QWidget *cell)
         painterPath.lineTo(m_radius, 0);
         painterPath.closeSubpath();
         painter.drawPath(painterPath);
+    }
+    //绘制分割线
+    if (d != DDEWeekCalendar::FirstDayofWeekend && d != DDEWeekCalendar::AFewDaysofWeek) {
+        QPoint point_begin(cell->width(), 0);
+        QPoint point_end(cell->width(), cell->height());
+        painter.save();
+        QColor m_linecolor = "#000000";
+        m_linecolor.setAlphaF(0.1);
+        painter.setPen(m_linecolor);
+        painter.drawLine(point_begin, point_end);
         painter.restore();
     }
 

@@ -270,6 +270,10 @@ private:
     QColor m_weekendsTextColor = "#0887FF";
     QColor m_currentMonthColor = "#000000";
     QColor m_backgroudColor = "#E6EEF2";
+    /**
+     * @brief m_Background_Weekend_Color 周六周日背景色
+     */
+    QColor m_Background_Weekend_Color = "#00429A";
     QColor m_solofestivalLunarColor = "#4DFF7272";
     QQueue<int> *queue = nullptr;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
