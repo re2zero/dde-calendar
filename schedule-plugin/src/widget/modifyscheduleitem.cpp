@@ -149,8 +149,9 @@ void modifyScheduleItem::setTheMe(const int type)
         lineColor = QColor("#000000");
         lineColor.setAlphaF(0.1);
     } else {
-        lineColor = QColor("#000000");
-        lineColor.setAlphaF(0.3);
+        //设置深色主题分割线颜色
+        lineColor = QColor("#FFFFFF");
+        lineColor.setAlphaF(0.1);
     }
     setLineColor(lineColor);
 }
