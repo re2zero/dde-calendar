@@ -292,7 +292,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         m_reply.setReplyWidget(m_widget);
         if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD
                 && createJsonData->getDateTime().at(0).hasTime) {
-            QString str = QString("好的，每周六到周日的%1点我都会提醒您。").arg(m_begintime.time().hour());
+            QString str = QString("好的，每周六到周日的%1我都会提醒您。").arg(m_begintime.toString("hh:mm"));
             m_reply.ttsMessage(str);
             m_reply.displayMessage(str);
         } else {
