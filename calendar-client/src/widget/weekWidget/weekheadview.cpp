@@ -208,6 +208,7 @@ void CWeekHeadView::setTheMe(int type)
         m_backgroundShowColor = "#2CA7F8";
         m_backgroundShowColor.setAlphaF(0.4);
         m_Background_Weekend_Color = "#DAE4ED";
+
         //默认字体颜色
         m_defaultTextColor = "#6F6F6F";
         //今天字体颜色
@@ -517,6 +518,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
     //是否是选择的cell
     const bool isSelectedCell = isCurrentDay;
+
     //周几
     int d = m_days[pos].dayOfWeek();
     //painter cell
@@ -530,12 +532,15 @@ void CWeekHeadView::paintCell(QWidget *cell)
         painter.setBrush(QBrush(m_backgroudColor));
     }
     if (d != 6) {
+
         //画矩形
         painter.drawRect(rect);
+
     } else {
         //绘制带圆角的矩形
         int labelwidth = cell->width();
         int labelheight = cell->height();
+
         //绘制路径
         QPainterPath painterPath;
         painterPath.moveTo(m_radius, 0);
@@ -563,6 +568,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
         QColor m_linecolor = "#000000";
         m_linecolor.setAlphaF(0.1);
         painter.setPen(m_linecolor);
+
         //绘制直线
         painter.drawLine(point_begin, point_end);
         painter.restore();
