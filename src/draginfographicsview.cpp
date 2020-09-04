@@ -466,7 +466,7 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
             msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
             msgBox.addPushButton(tr("Cancel"));
             msgBox.addPushButton(tr("Delete All"));
-            msgBox.addsuggestButton(tr("Delete Only This Event"));
+            msgBox.addWaringButton(tr("Delete Only This Event"));
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
@@ -487,7 +487,7 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
             msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
             msgBox.addPushButton(tr("Cancel"));
             msgBox.addPushButton(tr("Delete All Future Events"));
-            msgBox.addsuggestButton(tr("Delete Only This Event"));
+            msgBox.addWaringButton(tr("Delete Only This Event"));
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
