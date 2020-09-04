@@ -93,6 +93,43 @@ QVector<ScheduleDateRangeInfo> viewschedulewidget::getAllRpeatScheduleInfo(int r
     return scheduleInfo;
 }
 
+QVector<ScheduleDateRangeInfo> viewschedulewidget::getNextScheduleInfo()
+{
+    //返回的日程信息
+    QVector<ScheduleDateRangeInfo> showdate;
+    //下一个日程当天的所有日程
+    ScheduleDateRangeInfo scheduleinfo;
+    //当天最早的日程
+    ScheduleDateRangeInfo viewScheduleInfo;
+    //下一个日程的时间
+    QTime earlyTime;
+    //下一个日程的索引
+    int index = 0;
+    //下一个日程的id
+    int scheduleid = 0;
+
+    scheduleinfo = getAllScheduleInfo().first();
+    earlyTime = scheduleinfo.vData.at(0).beginDateTime.time();
+    scheduleid = scheduleinfo.vData.at(0).id;
+    //在一天的日程中筛选时间最早(如果时间最早有多个，取id最小的)的日程
+    for (int i = 1; i < scheduleinfo.vData.count(); i++) {
+        QTime viewTime = scheduleinfo.vData.at(i).beginDateTime.time();
+        int viewScheduleid = scheduleinfo.vData.at(i).id;
+        if (earlyTime > viewTime) {
+            earlyTime = viewTime;
+            index = i;
+        } else if (earlyTime == viewTime) {
+            if (scheduleid > viewScheduleid) {
+                index = i;
+            }
+        }
+    }
+    //将筛选到的日程信息添加到当天最早的日程容器中
+    viewScheduleInfo.vData.append(scheduleinfo.vData.at(index));
+    showdate.append(viewScheduleInfo);
+    return showdate;
+}
+
 void viewschedulewidget::slotItemPress(const ScheduleDtailInfo &info)
 {
     QProcess proc;
@@ -116,7 +153,7 @@ QVector<ScheduleDateRangeInfo> viewschedulewidget::queryScheduleWithTime(QVector
     for (int i = 0; i < scheduleinfo.count(); i++) {
         for (int j = 0; j < scheduleinfo.at(i).vData.count(); j++) {
             if (scheduleinfo.at(i).vData.at(j).beginDateTime.time() <= endT
-                && scheduleinfo.at(i).vData.at(j).endDateTime.time() >= beginT) {
+                    && scheduleinfo.at(i).vData.at(j).endDateTime.time() >= beginT) {
                 scheduleDInfo.vData.append(scheduleinfo.at(i).vData.at(j));
             }
         }
@@ -135,7 +172,7 @@ QVector<ScheduleDateRangeInfo> viewschedulewidget::queryScheduleWithDate(QVector
     for (int i = 0; i < scheduleinfo.count(); i++) {
         for (int j = 0; j < scheduleinfo.at(i).vData.count(); j++) {
             if (scheduleinfo.at(i).vData.at(j).beginDateTime.date() <= endD
-                && scheduleinfo.at(i).vData.at(j).endDateTime.date() >= beginD) {
+                    && scheduleinfo.at(i).vData.at(j).endDateTime.date() >= beginD) {
                 scheduleDInfo.vData.append(scheduleinfo.at(i).vData.at(j));
             }
         }
@@ -157,7 +194,7 @@ QVector<ScheduleDateRangeInfo> viewschedulewidget::queryScheduleWithWeek(QVector
                 if (scheduleinfo.at(i).vData.at(j).beginDateTime.date().dayOfWeek() == weekDay[k]) {
                     if (weekDay[k] == dayofweek) {
                         if (scheduleinfo.at(i).vData.at(j).beginDateTime.time() <= endT
-                            && scheduleinfo.at(i).vData.at(j).endDateTime.time() >= beginT) {
+                                && scheduleinfo.at(i).vData.at(j).endDateTime.time() >= beginT) {
                             scheduleDInfo.vData.append(scheduleinfo.at(i).vData.at(j));
                         }
                     } else {
@@ -186,7 +223,7 @@ QVector<ScheduleDateRangeInfo> viewschedulewidget::queryScheduleWithMonth(QVecto
                 if (scheduleinfo.at(i).vData.at(j).beginDateTime.date().day() == monthDay[k]) {
                     if (monthDay[k] == dayofmonth) {
                         if (scheduleinfo.at(i).vData.at(j).beginDateTime.time() <= endT
-                            && scheduleinfo.at(i).vData.at(j).endDateTime.time() >= beginT) {
+                                && scheduleinfo.at(i).vData.at(j).endDateTime.time() >= beginT) {
                             scheduleDInfo.vData.append(scheduleinfo.at(i).vData.at(j));
                         }
                     } else {
@@ -215,7 +252,7 @@ QVector<ScheduleDateRangeInfo> viewschedulewidget::getAllScheduleInfo()
             if (!(m_scheduleDateInfo.at(i).vData.at(j).type.ID == 4)) {
                 if (m_scheduleDateInfo.at(i).vData.at(j).beginDateTime.date() == m_scheduleDateInfo.at(i).date /*||
                                 !showdate.vData.contains(m_scheduleDateInfo.at(i).vData.at(j))*/
-                )
+                   )
                     showdate.vData.append(m_scheduleDateInfo.at(i).vData.at(j));
             }
         }

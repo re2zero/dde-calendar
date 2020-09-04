@@ -35,7 +35,7 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     //查询日程
 
     if (queryJsonData->offset() > -1
-        && queryJsonData->getPropertyStatus() == JsonData::PRO_NONE) {
+            && queryJsonData->getPropertyStatus() == JsonData::PRO_NONE) {
         Reply m_reply;
         m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
         m_reply.ttsMessage(CANCEL_ERR_TTS);
@@ -71,7 +71,8 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             m_ETime = queryJsonData->getDateTime().at(0).datetime.time();
             showdate = viewWidget->queryScheduleWithTime(showdate, m_BTime, m_ETime);
         }
-    } break;
+    }
+    break;
     case QueryJsonData::RepeatStatus::WORKD: {
         showdate = viewWidget->getAllRpeatScheduleInfo(2);
         if (queryJsonData->getDateTime().at(0).hasTime) {
@@ -79,7 +80,8 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             m_ETime = m_BTime;
             showdate = viewWidget->queryScheduleWithTime(showdate, m_BTime, m_ETime);
         }
-    } break;
+    }
+    break;
     case QueryJsonData::RepeatStatus::RESTD: {
         showdate = viewWidget->getAllRpeatScheduleInfo(3);
 
@@ -94,7 +96,8 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             showdate = viewWidget->queryScheduleWithTime(showdate, m_BTime, m_ETime);
         }
 
-    } break;
+    }
+    break;
     case QueryJsonData::RepeatStatus::EVEW: {
         showdate = viewWidget->getAllRpeatScheduleInfo(3);
 
@@ -163,7 +166,8 @@ CLOG(INFO, TitleName.toStdString());
 
 }
 }*/
-    } break;
+    }
+    break;
     case QueryJsonData::RepeatStatus::EVEM: {
         showdate = viewWidget->getAllRpeatScheduleInfo(4);
 
@@ -212,7 +216,8 @@ CLOG(INFO, TitleName.toStdString());
                 showdate = viewWidget->queryScheduleWithTime(showdate, m_BTime, m_ETime);
             }
         }
-    } break;
+    }
+    break;
     case QueryJsonData::RepeatStatus::EVEY: {
         showdate = viewWidget->getAllRpeatScheduleInfo(5);
 
@@ -221,25 +226,25 @@ CLOG(INFO, TitleName.toStdString());
         //            QDate m_endD = m_beginD;
         //            showdate = viewWidget->queryScheduleWithDate(showdate, m_beginD, m_endD);
         //        }
-    } break;
+    }
+    break;
     default: {
         switch (queryJsonData->getPropertyStatus()) {
         case QueryJsonData::PropertyStatus::ALL:
             break;
         case QueryJsonData::PropertyStatus::NEXT: {
-            ScheduleDateRangeInfo scheduleDinfo;
             if (showdate.isEmpty()) {
                 break;
             } else {
-                scheduleDinfo.vData.append(showdate.at(0).vData.at(0));
                 showdate.clear();
-                showdate.append(scheduleDinfo);
+                showdate = viewWidget->getNextScheduleInfo();
             }
             //            QVector<ScheduleDateRangeInfo> out1;
             //            m_dbus->GetJobsWithLimit(m_currentDateTime, m_halfAYearDateTime, 1, out1);
             //            viewWidget->setScheduleDateRangeInfo(out1);
             //            showdate = viewWidget->getAllScheduleInfo();
-        } break;
+        }
+        break;
         case QueryJsonData::PropertyStatus::LAST:
             break;
         default: {
@@ -292,7 +297,8 @@ CLOG(INFO, TitleName.toStdString());
             }
         }
         }
-    } break;
+    }
+    break;
     }
 
     viewWidget->viewScheduleInfoShow(showdate);

@@ -25,6 +25,11 @@ public:
 
     QVector<ScheduleDateRangeInfo> getAllScheduleInfo();
     QVector<ScheduleDateRangeInfo> getAllRpeatScheduleInfo(int rpeat);
+    /**
+     * @brief getNextScheduleInfo 获取下一个日程
+     * @return 下一个日程信息
+     */
+    QVector<ScheduleDateRangeInfo> getNextScheduleInfo();
 public slots:
     void slotItemPress(const ScheduleDtailInfo &info);
 
