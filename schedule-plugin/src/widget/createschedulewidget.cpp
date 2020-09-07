@@ -49,7 +49,7 @@ void createSchedulewidget::setschedule()
     m_scheduleDtailInfo.titleName = m_titleName;
     m_scheduleDtailInfo.type.ID = 3;
     m_scheduleDtailInfo.id = 0;
-    //    m_scheduleDtailInfo.RecurID = 0;
+    m_scheduleDtailInfo.RecurID = 0;
     m_scheduleDtailInfo.allday = false;
     m_scheduleDtailInfo.remind = true;
     m_scheduleDtailInfo.remindData.n = 0;
@@ -150,6 +150,7 @@ void createSchedulewidget::getCreatScheduleFromDbus()
                     && out.at(i).vData.at(j).rpeat == m_scheduleDtailInfo.rpeat
                     && out.at(i).vData.at(j).allday == m_scheduleDtailInfo.allday
                     && out.at(i).vData.at(j).type.ID == m_scheduleDtailInfo.type.ID
+                    && out.at(i).vData.at(j).RecurID == m_scheduleDtailInfo.RecurID
                     && out.at(i).vData.at(j).remind == m_scheduleDtailInfo.remind
                     && out.at(i).vData.at(j).remindData.n == m_scheduleDtailInfo.remindData.n) {
                 scheduleinfo.append(out.at(i).vData.at(j));
