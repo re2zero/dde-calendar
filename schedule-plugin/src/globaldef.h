@@ -105,14 +105,14 @@
 #define NO_SCHEDULE_TTS "您还没有日程提醒"
 #define REPEST_SCHEDULE_CANCEL_TTS "该日程是循环的日程，请问是删除当前日程还是所有日程？"
 #define REPEST_SCHEDULE_OFFSET_ERR_TTS "没有找到对应的日程"
-#define CONFIRM_SCHEDULE_CANCEL_TTS "我要帮您取消这个日程吗？操作后将在“日历”中同步删除。"
+#define CONFIRM_SCHEDULE_CANCEL_TTS "我要帮您取消这个日程吗？操作后将在日历中同步删除。"
 #define CANCEL_SELECT_TTS "这是您的所有日程，您要删除哪一个?"
 
 #define SELECT_INQUIRY_CHANGE_TTS "这是您的所有日程，您要将哪个日程修改到到什么时间或修改到什么内容？"
 #define SELECT_CHANGE_TTS "这是您的所有日程，您要修改哪一个日程？"
 #define INQUIRY_CHANGE_TTS "您要将该日程修改到到什么时间或修改到什么内容？"
 #define REPEST_SCHEDULE_CHANGE_TTS "该日程是循环的日程，请问是修改当前日程还是所有日程？"
-#define CONFIRM_SCHEDULE_CHANGE_TTS "我要帮您修改这个日程吗？操作后将在“日历”中同步修改。"
+#define CONFIRM_SCHEDULE_CHANGE_TTS "我要帮您修改这个日程吗？操作后将在日历中同步修改。"
 #define ALL_DAY "全天"
 #define OVERTIME_TTS "只能取消或修改未来半年的日程"
 
