@@ -311,8 +311,22 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getEveryYearSchedule(QueryJson
 {
     Q_UNUSED(queryJsonData)
     QVector<ScheduleDateRangeInfo> schedule;
-    //查询所有年重复的日程
-    schedule = viewWidget->getAllRpeatScheduleInfo(5);
+
+    if (queryJsonData->getDateTime().size() == 1) {
+        //查询所有年重复的日程
+        schedule = viewWidget->getAllRpeatScheduleInfo(5);
+        //设置查询的开始结束日期
+        QDate m_beginD = queryJsonData->getDateTime().at(0).datetime.date();
+        QDate m_endD = m_beginD;
+        //按照日期查询日程
+        schedule = viewWidget->queryScheduleWithDate(schedule, m_beginD, m_endD);
+        //如果有时间，则按照时间查询
+        if (queryJsonData->getDateTime().at(0).hasTime) {
+            QTime m_beginT = queryJsonData->getDateTime().at(0).datetime.time();
+            QTime m_endT = m_beginT;
+            schedule = viewWidget->queryScheduleWithTime(schedule, m_beginT, m_endT);
+        }
+    }
 
     return schedule;
 }
