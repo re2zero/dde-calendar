@@ -30,8 +30,6 @@ createScheduleTask::createScheduleTask(CSchedulesDBus *dbus)
 
 Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 {
-    // 如果大于当前时间推出
-
     //创建
     CreateJsonData *createJsonData = dynamic_cast<CreateJsonData *>(semanticTask.getJsonData());
     //查询日程
@@ -69,216 +67,217 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     }
 
     if (createJsonData->DateTime().size() > 0) {
-        if (m_begintime > QDateTime::currentDateTime()) {
-            if (createJsonData->DateTime().begin()->hasTime) {
-                m_widget->setDateTime(m_begintime, m_endtime);
-                if (createJsonData->TitleName().isEmpty())
-                    m_widget->setTitleName(NEW_SCHEDULE);
-                else
-                    m_widget->setTitleName(createJsonData->TitleName());
-                switch (createJsonData->getRepeatStatus()) {
-                case CreateJsonData::NONE:
+        if (createJsonData->DateTime().begin()->hasTime) {
+            m_widget->setDateTime(m_begintime, m_endtime);
+            if (createJsonData->TitleName().isEmpty())
+                m_widget->setTitleName(NEW_SCHEDULE);
+            else
+                m_widget->setTitleName(createJsonData->TitleName());
+            switch (createJsonData->getRepeatStatus()) {
+            case CreateJsonData::NONE: {
+                //非重复日程，不能创建过期日程
+                if (m_begintime > QDateTime::currentDateTime())
                     m_widget->setRpeat(0);
-                    break;
-                case CreateJsonData::EVED:
-                    m_widget->setRpeat(1);
-                    break;
-                case CreateJsonData::EVEW: {
-                    if (getDayNum.size() == 0) {
-                        if (m_begintime.time() > currentdatetime.time()) {
-                            m_begintime.setDate(currentdatetime.date());
-                        } else {
-                            m_begintime.setDate(currentdatetime.date().addDays(1));
-                        }
-                        m_endtime.setDate(m_begintime.date());
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                        m_widget->setRpeat(3);
-                    } else if (getDayNum.size() == 1) {
-                        if (getDayNum[0] >= w) {
-                            if (getDayNum[0] == w && m_begintime.time() < currentdatetime.time()) {
-                                m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] + 7 - w));
-                            } else {
-                                m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - w));
-                            }
-                        } else {
+            }
+            break;
+            case CreateJsonData::EVED:
+                m_widget->setRpeat(1);
+                break;
+            case CreateJsonData::EVEW: {
+                if (getDayNum.size() == 0) {
+                    if (m_begintime.time() > currentdatetime.time()) {
+                        m_begintime.setDate(currentdatetime.date());
+                    } else {
+                        m_begintime.setDate(currentdatetime.date().addDays(1));
+                    }
+                    m_endtime.setDate(m_begintime.date());
+                    m_widget->setDateTime(m_begintime, m_endtime);
+                    m_widget->setRpeat(3);
+                } else if (getDayNum.size() == 1) {
+                    if (getDayNum[0] >= w) {
+                        if (getDayNum[0] == w && m_begintime.time() < currentdatetime.time()) {
                             m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] + 7 - w));
-                        }
-                        m_endtime.setDate(m_begintime.date());
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                        m_widget->setRpeat(3);
-                    } else if (getDayNum.size() == 2) {
-                        int startweekday = getDayNum[0];
-                        int endweekday = getDayNum[1];
-
-                        if (startweekday == endweekday) {
-                            m_widget->setRpeat(1);
                         } else {
-                            if (w < startweekday) {
-                                setWeekBehindPartSchedule(m_begintime, m_endtime, w, startweekday + 1, endweekday + 1, m_widget);
-                                m_begintime.setDate(currentdatetime.date().addDays(startweekday - w));
+                            m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - w));
+                        }
+                    } else {
+                        m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] + 7 - w));
+                    }
+                    m_endtime.setDate(m_begintime.date());
+                    m_widget->setDateTime(m_begintime, m_endtime);
+                    m_widget->setRpeat(3);
+                } else if (getDayNum.size() == 2) {
+                    int startweekday = getDayNum[0];
+                    int endweekday = getDayNum[1];
+
+                    if (startweekday == endweekday) {
+                        m_widget->setRpeat(1);
+                    } else {
+                        if (w < startweekday) {
+                            setWeekBehindPartSchedule(m_begintime, m_endtime, w, startweekday + 1, endweekday + 1, m_widget);
+                            m_begintime.setDate(currentdatetime.date().addDays(startweekday - w));
+                            m_endtime.setDate(m_begintime.date());
+                            m_widget->setDateTime(m_begintime, m_endtime);
+                        } else if (w >= startweekday && w < endweekday) {
+                            if (m_begintime.time() > currentdatetime.time()) {
+                                setWeekBehindPartSchedule(m_begintime, m_endtime, w, w + 1, endweekday + 1, m_widget);
+                                setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, w + 1, m_widget);
+                                m_begintime.setDate(currentdatetime.date());
                                 m_endtime.setDate(m_begintime.date());
                                 m_widget->setDateTime(m_begintime, m_endtime);
-                            } else if (w >= startweekday && w < endweekday) {
-                                if (m_begintime.time() > currentdatetime.time()) {
-                                    setWeekBehindPartSchedule(m_begintime, m_endtime, w, w + 1, endweekday + 1, m_widget);
-                                    setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, w + 1, m_widget);
-                                    m_begintime.setDate(currentdatetime.date());
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                } else {
-                                    setWeekBehindPartSchedule(m_begintime, m_endtime, w, w + 2, endweekday + 1, m_widget);
-                                    setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, w + 1, m_widget);
-                                    m_begintime.setDate(currentdatetime.date().addDays(1));
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                }
-                            } else if (w > endweekday) {
+                            } else {
+                                setWeekBehindPartSchedule(m_begintime, m_endtime, w, w + 2, endweekday + 1, m_widget);
+                                setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, w + 1, m_widget);
+                                m_begintime.setDate(currentdatetime.date().addDays(1));
+                                m_endtime.setDate(m_begintime.date());
+                                m_widget->setDateTime(m_begintime, m_endtime);
+                            }
+                        } else if (w > endweekday) {
+                            setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday + 1, endweekday + 1, m_widget);
+                            m_begintime.setDate(currentdatetime.date().addDays(startweekday - w + 7));
+                            m_endtime.setDate(m_begintime.date());
+                            m_widget->setDateTime(m_begintime, m_endtime);
+                        } else if (w == endweekday) {
+                            if (m_begintime.time() > currentdatetime.time()) {
+                                setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, endweekday, m_widget);
+                                m_begintime.setDate(currentdatetime.date());
+                                m_endtime.setDate(m_begintime.date());
+                                m_widget->setDateTime(m_begintime, m_endtime);
+                            } else {
                                 setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday + 1, endweekday + 1, m_widget);
                                 m_begintime.setDate(currentdatetime.date().addDays(startweekday - w + 7));
                                 m_endtime.setDate(m_begintime.date());
                                 m_widget->setDateTime(m_begintime, m_endtime);
-                            } else if (w == endweekday) {
-                                if (m_begintime.time() > currentdatetime.time()) {
-                                    setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, endweekday, m_widget);
-                                    m_begintime.setDate(currentdatetime.date());
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                } else {
-                                    setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday + 1, endweekday + 1, m_widget);
-                                    m_begintime.setDate(currentdatetime.date().addDays(startweekday - w + 7));
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                }
                             }
-                            m_widget->setRpeat(3);
                         }
+                        m_widget->setRpeat(3);
                     }
                 }
-                break;
-                case CreateJsonData::EVEM: {
-                    if (getDayNum.size() == 0) {
+            }
+            break;
+            case CreateJsonData::EVEM: {
+                if (getDayNum.size() == 0) {
+                    if (m_begintime.time() > currentdatetime.time()) {
+                        m_begintime.setDate(currentdatetime.date());
+                    } else {
+                        m_begintime.setDate(currentdatetime.date().addDays(1));
+                    }
+                    m_endtime.setDate(m_begintime.date());
+                    m_widget->setDateTime(m_begintime, m_endtime);
+                    m_widget->setRpeat(4);
+                } else if (getDayNum.size() == 1) {
+                    if (d > getDayNum[0]) {
+                        m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - d));
+                    } else if (d < getDayNum[0]) {
+                        m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - d));
+                    } else {
                         if (m_begintime.time() > currentdatetime.time()) {
                             m_begintime.setDate(currentdatetime.date());
                         } else {
-                            m_begintime.setDate(currentdatetime.date().addDays(1));
-                        }
-                        m_endtime.setDate(m_begintime.date());
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                        m_widget->setRpeat(4);
-                    } else if (getDayNum.size() == 1) {
-                        if (d > getDayNum[0]) {
-                            m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - d));
-                        } else if (d < getDayNum[0]) {
-                            m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - d));
-                        } else {
-                            if (m_begintime.time() > currentdatetime.time()) {
-                                m_begintime.setDate(currentdatetime.date());
-                            } else {
-                                m_begintime.setDate(currentdatetime.date().addMonths(1));
-                            }
-                        }
-                        m_endtime.setDate(m_begintime.date());
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                        m_widget->setRpeat(4);
-                    } else if (getDayNum.size() == 2) {
-                        int startday = getDayNum[0];
-                        int endday = getDayNum[1];
-
-                        if (startday == endday) {
-                            m_widget->setRpeat(1);
-                        } else {
-                            if (d >= endday) {
-                                if (m_begintime.time() > currentdatetime.time()) {
-                                    setMonthBehindPartSchedule(m_begintime, m_endtime, startday, endday, true, m_widget);
-                                    m_begintime.setDate(currentdatetime.date());
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                } else {
-                                    setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 1, endday, true, m_widget);
-                                    m_begintime.setDate(currentdatetime.date().addDays(startday - d).addMonths(1));
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                }
-                            } else if (d > startday && d < endday) {
-                                if (m_begintime.time() > currentdatetime.time()) {
-                                    setMonthBehindPartSchedule(m_begintime, m_endtime, startday, d, true, m_widget);
-                                    setMonthBehindPartSchedule(m_begintime, m_endtime, d + 1, endday + 1, false, m_widget);
-                                    m_begintime.setDate(currentdatetime.date());
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                } else {
-                                    setMonthBehindPartSchedule(m_begintime, m_endtime, startday, d + 1, true, m_widget);
-                                    setMonthBehindPartSchedule(m_begintime, m_endtime, d + 2, endday + 1, false, m_widget);
-                                    m_begintime.setDate(currentdatetime.date().addDays(1));
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                }
-                            } else {
-                                if (m_begintime.time() > currentdatetime.time()) {
-                                    setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 1, endday + 1, false, m_widget);
-                                    m_begintime.setDate(currentdatetime.date().addDays(startday - d));
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                } else {
-                                    setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 2, endday + 1, false, m_widget);
-                                    m_begintime.setDate(currentdatetime.date().addDays(startday + 1 - d));
-                                    m_endtime.setDate(m_begintime.date());
-                                    m_widget->setDateTime(m_begintime, m_endtime);
-                                }
-                            }
-                            m_widget->setRpeat(4);
+                            m_begintime.setDate(currentdatetime.date().addMonths(1));
                         }
                     }
+                    m_endtime.setDate(m_begintime.date());
+                    m_widget->setDateTime(m_begintime, m_endtime);
+                    m_widget->setRpeat(4);
+                } else if (getDayNum.size() == 2) {
+                    int startday = getDayNum[0];
+                    int endday = getDayNum[1];
+
+                    if (startday == endday) {
+                        m_widget->setRpeat(1);
+                    } else {
+                        if (d >= endday) {
+                            if (m_begintime.time() > currentdatetime.time()) {
+                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday, endday, true, m_widget);
+                                m_begintime.setDate(currentdatetime.date());
+                                m_endtime.setDate(m_begintime.date());
+                                m_widget->setDateTime(m_begintime, m_endtime);
+                            } else {
+                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 1, endday, true, m_widget);
+                                m_begintime.setDate(currentdatetime.date().addDays(startday - d).addMonths(1));
+                                m_endtime.setDate(m_begintime.date());
+                                m_widget->setDateTime(m_begintime, m_endtime);
+                            }
+                        } else if (d > startday && d < endday) {
+                            if (m_begintime.time() > currentdatetime.time()) {
+                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday, d, true, m_widget);
+                                setMonthBehindPartSchedule(m_begintime, m_endtime, d + 1, endday + 1, false, m_widget);
+                                m_begintime.setDate(currentdatetime.date());
+                                m_endtime.setDate(m_begintime.date());
+                                m_widget->setDateTime(m_begintime, m_endtime);
+                            } else {
+                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday, d + 1, true, m_widget);
+                                setMonthBehindPartSchedule(m_begintime, m_endtime, d + 2, endday + 1, false, m_widget);
+                                m_begintime.setDate(currentdatetime.date().addDays(1));
+                                m_endtime.setDate(m_begintime.date());
+                                m_widget->setDateTime(m_begintime, m_endtime);
+                            }
+                        } else {
+                            if (m_begintime.time() > currentdatetime.time()) {
+                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 1, endday + 1, false, m_widget);
+                                m_begintime.setDate(currentdatetime.date().addDays(startday - d));
+                                m_endtime.setDate(m_begintime.date());
+                                m_widget->setDateTime(m_begintime, m_endtime);
+                            } else {
+                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 2, endday + 1, false, m_widget);
+                                m_begintime.setDate(currentdatetime.date().addDays(startday + 1 - d));
+                                m_endtime.setDate(m_begintime.date());
+                                m_widget->setDateTime(m_begintime, m_endtime);
+                            }
+                        }
+                        m_widget->setRpeat(4);
+                    }
                 }
+            }
+            break;
+            case CreateJsonData::EVEY:
+                m_widget->setRpeat(5);
                 break;
-                case CreateJsonData::EVEY:
-                    m_widget->setRpeat(5);
-                    break;
-                case CreateJsonData::WORKD:
-                    m_widget->setRpeat(2);
-                    break;
-                case CreateJsonData::RESTD: {
-                    if (w < 6) {
+            case CreateJsonData::WORKD:
+                m_widget->setRpeat(2);
+                break;
+            case CreateJsonData::RESTD: {
+                if (w < 6) {
+                    setWeekBehindPartSchedule(m_begintime, m_endtime, w, 7, 8, m_widget);
+                    m_begintime.setDate(currentdatetime.date().addDays(6 - w));
+                    m_endtime.setDate(m_begintime.date());
+                    m_widget->setDateTime(m_begintime, m_endtime);
+                } else if (w == 6) {
+                    if (m_begintime.time() > currentdatetime.time()) {
                         setWeekBehindPartSchedule(m_begintime, m_endtime, w, 7, 8, m_widget);
                         m_begintime.setDate(currentdatetime.date().addDays(6 - w));
                         m_endtime.setDate(m_begintime.date());
                         m_widget->setDateTime(m_begintime, m_endtime);
-                    } else if (w == 6) {
-                        if (m_begintime.time() > currentdatetime.time()) {
-                            setWeekBehindPartSchedule(m_begintime, m_endtime, w, 7, 8, m_widget);
-                            m_begintime.setDate(currentdatetime.date().addDays(6 - w));
-                            m_endtime.setDate(m_begintime.date());
-                            m_widget->setDateTime(m_begintime, m_endtime);
-                        } else {
-                            setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 6, 8, m_widget);
-                            m_begintime.setDate(currentdatetime.date().addDays(1));
-                            m_endtime.setDate(m_begintime.date());
-                            m_widget->setDateTime(m_begintime, m_endtime);
-                        }
                     } else {
-                        if (m_begintime.time() > currentdatetime.time()) {
-                            setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 6, 8, m_widget);
-                            m_begintime.setDate(currentdatetime.date());
-                            m_endtime.setDate(m_begintime.date());
-                            m_widget->setDateTime(m_begintime, m_endtime);
-                        } else {
-                            setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 7, 8, m_widget);
-                            m_begintime.setDate(currentdatetime.date().addDays(6 - w + 7));
-                            m_endtime.setDate(m_begintime.date());
-                            m_widget->setDateTime(m_begintime, m_endtime);
-                        }
+                        setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 6, 8, m_widget);
+                        m_begintime.setDate(currentdatetime.date().addDays(1));
+                        m_endtime.setDate(m_begintime.date());
+                        m_widget->setDateTime(m_begintime, m_endtime);
                     }
-                    m_widget->setRpeat(3);
+                } else {
+                    if (m_begintime.time() > currentdatetime.time()) {
+                        setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 6, 8, m_widget);
+                        m_begintime.setDate(currentdatetime.date());
+                        m_endtime.setDate(m_begintime.date());
+                        m_widget->setDateTime(m_begintime, m_endtime);
+                    } else {
+                        setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 7, 8, m_widget);
+                        m_begintime.setDate(currentdatetime.date().addDays(6 - w + 7));
+                        m_endtime.setDate(m_begintime.date());
+                        m_widget->setDateTime(m_begintime, m_endtime);
+                    }
                 }
-                break;
-                }
-                if (createJsonData->ShouldEndSession()) {
-                    m_widget->setschedule();
-                    m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
-                    m_widget->setScheduleDbus(m_dbus);
-                    m_widget->scheduleEmpty(true);
-                    m_widget->updateUI();
-                }
+                m_widget->setRpeat(3);
+            }
+            break;
+            }
+            if (createJsonData->ShouldEndSession()) {
+                m_widget->setschedule();
+                m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+                m_widget->setScheduleDbus(m_dbus);
+                m_widget->scheduleEmpty(true);
+                m_widget->updateUI();
             }
         }
     }
