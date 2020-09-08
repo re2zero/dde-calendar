@@ -336,14 +336,10 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getNonePropertyStatusSchedule(
     case QueryJsonData::PropertyStatus::LAST:
         break;
     default: {
-        if (queryJsonData->getDateTime().size() == 1) {
-            m_dbus->QueryJobs(queryJsonData->TitleName(), m_BeginDateTime, m_EndDateTime, outdefault);
-            viewWidget->setScheduleDateRangeInfo(outdefault);
-            showdate = viewWidget->getAllScheduleInfo();
-        } else if (queryJsonData->getDateTime().size() == 2) {
-            showdate = viewWidget->queryScheduleWithDate(showdate, m_BeginDateTime.date(), m_EndDateTime.date());
-            showdate = viewWidget->queryScheduleWithTime(showdate, m_BeginDateTime.time(), m_EndDateTime.time());
-        }
+        //按照处理过的日期进行查询
+        showdate = viewWidget->queryScheduleWithDate(showdate, m_BeginDateTime.date(), m_EndDateTime.date());
+        //按照处理过的时间进行查询
+        showdate = viewWidget->queryScheduleWithTime(showdate, m_BeginDateTime.time(), m_EndDateTime.time());
     }
     }
     return showdate;
