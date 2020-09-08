@@ -378,10 +378,10 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
                 m_Drag = new QDrag(this);
             }
             m_Drag->setMimeData(mimeData);
+            setDragPixmap(m_Drag,item);
             QPointF itemPos = QPointF(pos.x()-item->boundingRect().x(),
                                       pos.y()-item->boundingRect().y());
             m_Drag->setHotSpot(itemPos.toPoint());
-            setDragPixmap(m_Drag,item);
             break;
         }
     } else {
@@ -513,13 +513,8 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
 
 void DragInfoGraphicsView::setDragPixmap(QDrag *drag, DragInfoItem *item)
 {
+    Q_UNUSED(drag);
     Q_UNUSED(item);
-    //设置一个1*1的透明图片，要不然关闭窗口特效会有一个小黑点
-    QPixmap pixmap(1,1);
-    pixmap.fill(Qt::transparent);
-    drag->setPixmap(pixmap);
-    //设置图标位置为鼠标位置
-    drag->setHotSpot(QPoint(0,0));
 }
 
 void DragInfoGraphicsView::slotCreate(const QDateTime &date)
