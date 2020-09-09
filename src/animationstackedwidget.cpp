@@ -25,14 +25,10 @@
 AnimationStackedWidget::AnimationStackedWidget(const AnimationOri ori, QWidget *parent)
     : QStackedWidget(parent)
     , m_animationOri(ori)
-    , animation(new QPropertyAnimation(this, QByteArray()))
+    , m_Animation(new QPropertyAnimation(this,"offset"))
 {
     setDuration(1000);
-    connect(animation
-            , &QPropertyAnimation::valueChanged
-            , this
-            , &AnimationStackedWidget::valueChanged_slot);
-    connect(animation
+    connect(m_Animation
             , &QPropertyAnimation::finished
             , this
             , &AnimationStackedWidget::animationFinished);
@@ -40,236 +36,241 @@ AnimationStackedWidget::AnimationStackedWidget(const AnimationOri ori, QWidget *
 
 AnimationStackedWidget::~AnimationStackedWidget()
 {
-    delete animation;
+    delete m_Animation;
 }
 
 void AnimationStackedWidget::setDuration(int duration)
 {
-    this->duration = duration;
-    animation->setEasingCurve(QEasingCurve::InOutQuad);
+    m_Duration = duration;
+    m_Animation->setEasingCurve(QEasingCurve::InOutQuad);
 }
 
 void AnimationStackedWidget::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e);
-    if ( isAnimation ) {
+    if ( m_IsAnimation ) {
         QPainter paint(this);
-        paintPrevious(paint, currentIndex());
-        paintNext(paint, nextIndex);
+        paintCurrentWidget(paint, currentIndex());
+        paintNextWidget(paint, m_NextIndex);
     }
-}
-
-void AnimationStackedWidget::valueChanged_slot(QVariant value)
-{
-    currentValue = value;
-    update();
 }
 
 void AnimationStackedWidget::animationFinished()
 {
-    isAnimation = false;
-    widget(currentIndex())->show();
-    setCurrentIndex(nextIndex);
+    m_IsAnimation = false;
+    this->widget(currentIndex())->show();
+    setCurrentIndex(m_NextIndex);
     emit signalIsFinished();
 }
 
 void AnimationStackedWidget::setCurrent(int index)
 {
-    //如果正在动画，那么return
-    if ( isAnimation ) {
-        return;
-    }
-    //开始动画并设置间隔和开始、结束值
-    QRect g = geometry();
-    int value = 0;
-
-    if (index < currentIndex()) {
-        switch (m_animationOri) {
-        case LR: {
-            m_moveOri = LeftToRight;
-            value = g.width();
-        }
-        break;
-        case TB: {
-            m_moveOri = TopToBottom;
-            value = g.height();
-        }
-        break;
-        }
-    } else if (index > currentIndex()) {
-        switch (m_animationOri) {
-        case LR: {
-            m_moveOri = RightToLeft;
-            value = g.width();
-        }
-        break;
-        case TB: {
-            m_moveOri = BottomToTop;
-            value = g.height();
-        }
-        break;
-        }
-    } else {
-        emit signalIsFinished();
-        return;
-    }
-    isAnimation = true;
-    widgetCount = count();
-    int c = currentIndex();
-    nextIndex = index;
-    //隐藏当前的widget
-    widget(c)->hide();
-    animation->setStartValue(value);
-    animation->setEndValue(0);
-    animation->setDuration(duration);
-    animation->start();
+    //设置移动方向
+    m_moveOri = getMoveOrientation(currentIndex(),index);
+    setCurrentWidget(index,getBeginValue());
 }
 
 void AnimationStackedWidget::setPre()
 {
-    //如果正在动画，那么return
-    if ( isAnimation ) {
-        return;
-    }
-    //开始动画并设置间隔和开始、结束值
-    QRect g = geometry();
-    int value = 0;
-    int index = currentIndex();
-    index = qAbs(index - 1);
-
+    //获取堆窗口数
+    const int count = this->count();
     switch (m_animationOri) {
     case LR: {
         m_moveOri = LeftToRight;
-        value = g.width();
     }
     break;
     case TB: {
         m_moveOri = TopToBottom;
-        value = g.height();
     }
     break;
     }
-
-    isAnimation = true;
-    widgetCount = count();
-    int c = currentIndex();
-    nextIndex = index;
-
-    //隐藏当前的widget
-    widget(c)->hide();
-    animation->setStartValue(value);
-    animation->setEndValue(0);
-    animation->setDuration(duration);
-    animation->start();
+    //获取下一个窗口编号
+    int nextIndex = currentIndex() - 1;
+    if(nextIndex < 0){
+        nextIndex = nextIndex + count;
+    }
+    setCurrentWidget(nextIndex,getBeginValue());
 }
 
 void AnimationStackedWidget::setNext()
 {
-    //如果正在动画，那么return
-    if ( isAnimation ) {
-        return;
-    }
-
-    //开始动画并设置间隔和开始、结束值
-    QRect g = geometry();
-    int value = 0;
-    int index = currentIndex();
-    index = (index + 1) % 2;
-
+    //获取堆窗口数
+    const int count = this->count();
     switch (m_animationOri) {
     case LR: {
         m_moveOri = RightToLeft;
-        value = g.width();
     }
     break;
     case TB: {
         m_moveOri = BottomToTop;
-        value = g.height();
     }
     break;
     }
-
-
-    isAnimation = true;
-    widgetCount = count();
-    int c = currentIndex();
-    nextIndex = index;
-
-    //隐藏当前的widget
-    widget(c)->hide();
-    animation->setStartValue(value);
-    animation->setEndValue(0);
-    animation->setDuration(duration);
-    animation->start();
+    //获取下一个窗口编号
+    int nextIndex = (currentIndex() + 1) % count;
+    setCurrentWidget(nextIndex,getBeginValue());
 }
 
-void AnimationStackedWidget::paintPrevious(QPainter &paint, int currentIndex)
+void AnimationStackedWidget::setCurrentWidget(int &index,int beginWidth)
+{
+    //如果正在动画，那么退出
+    if ( m_IsAnimation ) {
+        return;
+    }
+    //如果索引为当前索引则退出
+    if(index == currentIndex()){
+        emit signalIsFinished();
+        return;
+    }
+    m_IsAnimation = true;
+    m_NextIndex = index;
+    //隐藏当前的widget
+    this->widget(currentIndex())->hide();
+    m_Animation->setStartValue(beginWidth);
+    m_Animation->setEndValue(0);
+    m_Animation->setDuration(m_Duration);
+    m_Animation->start();
+}
+
+int AnimationStackedWidget::getBeginValue()
+{
+    //存储窗口高度或宽度
+    int value {0};
+    //获取窗口矩阵
+    QRect widgetRect = this->rect();
+    switch (m_animationOri) {
+    case LR: {
+        value = widgetRect.width();
+    }
+    break;
+    case TB: {
+        value = widgetRect.height();
+    }
+    }
+    return value;
+}
+
+AnimationStackedWidget::MoveOrientation AnimationStackedWidget::getMoveOrientation(const int currIndex, const int nextIndex)
+{
+    MoveOrientation moveOri{LeftToRight};
+    if (nextIndex < currIndex) {
+        switch (m_animationOri) {
+        case LR: {
+            moveOri = LeftToRight;
+        }
+        break;
+        case TB: {
+            moveOri = TopToBottom;
+        }
+        break;
+        }
+    } else if (nextIndex > currIndex) {
+        switch (m_animationOri) {
+        case LR: {
+            moveOri = RightToLeft;
+        }
+        break;
+        case TB: {
+            moveOri = BottomToTop;
+        }
+        break;
+        }
+    }
+    return moveOri;
+}
+
+void AnimationStackedWidget::paintCurrentWidget(QPainter &paint, int currentIndex)
 {
     //获得当前页面的Widget
-    QWidget *w = widget(currentIndex);
-    QPixmap pixmap(w->size());
-    //将Widget的内容渲染到QPixmap对象中，即将Widget变成一张图片
-    w->render(&pixmap);
-    QRect r = w->geometry();
+    QWidget *currentWidget = widget(currentIndex);
+    QPixmap currentPixmap(currentWidget->size());
+    //将当前窗口绘制到pixmap中
+    currentWidget->render(&currentPixmap);
+    QRect widgetRect = this->rect();
     //绘制当前的Widget
-    double value = currentValue.toDouble();
-    QRectF r1(0.0, 0.0, value, r.height());
-    QRectF r2(r.width() - value, 0, value, r.height());
-
+    double value = m_offset;
+    //窗口宽度
+    const int widgetWidth = widgetRect.width();
+    //窗口高度
+    const int widgetHeigth = widgetRect.height();
+    QRectF targetRect;
+    QRectF sourceRect;
     switch (m_moveOri) {
-    case LeftToRight:
-        paint.drawPixmap(QRectF(r.width() - value, 0, value, r.height()),
-                         pixmap,
-                         QRectF(0.0, 0.0, value, r.height()));
+    case LeftToRight:{
+        targetRect = QRectF(widgetWidth - value, 0, value, widgetHeigth);
+        sourceRect = QRectF(0.0, 0.0, value, widgetHeigth);
+    }
         break;
-    case RightToLeft:
-        paint.drawPixmap(QRectF(0.0, 0.0, value, r.height()),
-                         pixmap,
-                         QRectF(r.width() - value, 0, value, r.height()));
+    case RightToLeft:{
+        targetRect = QRectF(0.0, 0.0, value, widgetHeigth);
+        sourceRect = QRectF(widgetWidth - value, 0, value, widgetHeigth);
+    }
         break;
-    case TopToBottom:
-        paint.drawPixmap(QRectF(0.0, r.height() - value, r.width(), value),
-                         pixmap,
-                         QRectF(0.0, 0.0, r.width(), value));
+    case TopToBottom:{
+        targetRect = QRectF(0.0, widgetHeigth - value, widgetWidth, value);
+        sourceRect = QRectF(0.0, 0.0, widgetWidth, value);
+    }
         break;
-    case BottomToTop:
-        paint.drawPixmap(QRectF(0.0, 0.0, r.width(), value),
-                         pixmap,
-                         QRectF( 0, r.height() - value, r.width(), value));
+    case BottomToTop:{
+        targetRect = QRectF(0.0, 0.0, widgetWidth, value);
+        sourceRect = QRectF( 0, widgetHeigth - value, widgetWidth, value);
+    }
         break;
     }
+    paint.drawPixmap(targetRect,
+                     currentPixmap,
+                     sourceRect);
 }
 
-void AnimationStackedWidget::paintNext(QPainter &paint, int nextIndex)
+void AnimationStackedWidget::paintNextWidget(QPainter &paint, int nextIndex)
 {
     QWidget *nextWidget = widget(nextIndex);
-    QRect r = geometry();
-    //这行代码不加会有bug，第一次切换的时候，QStackedWidget并没有为child分配大小
-    nextWidget->resize(r.width(), r.height());
+    QRect widgetRect = this->rect();
+    //设置下一个窗口的大小
+    nextWidget->resize(widgetRect.width(), widgetRect.height());
     QPixmap nextPixmap(nextWidget->size());
     nextWidget->render(&nextPixmap);
-    double value = currentValue.toDouble();
-
+    double value = m_offset;
+    //窗口宽度
+    const int widgetWidth = widgetRect.width();
+    //窗口高度
+    const int widgetHeigth = widgetRect.height();
+    QRectF targetRect;
+    QRectF sourceRect;
     switch (m_moveOri) {
-    case LeftToRight:
-        paint.drawPixmap(QRectF(0.0, 0.0, r.width() - value, r.height()),
-                         nextPixmap,
-                         QRectF(value, 0.0, r.width() - value, r.height()));
+    case LeftToRight:{
+        targetRect = QRectF(0.0, 0.0, widgetWidth - value, widgetHeigth);
+        sourceRect = QRectF(value, 0.0, widgetWidth - value, widgetHeigth);
+    }
         break;
-    case RightToLeft:
-        paint.drawPixmap(QRectF(value, 0.0, r.width() - value, r.height()),
-                         nextPixmap,
-                         QRectF(0.0, 0.0, r.width() - value, r.height()));
+    case RightToLeft:{
+            targetRect = QRectF(value, 0.0, widgetWidth - value, widgetHeigth);
+            sourceRect = QRectF(0.0, 0.0, widgetWidth - value, widgetHeigth);
+        }
         break;
-    case TopToBottom:
-        paint.drawPixmap(QRectF(0.0, 0.0, r.width(), r.height() - value),
-                         nextPixmap,
-                         QRectF(0.0, value,  r.width(), r.height() - value));
+    case TopToBottom:{
+        targetRect = QRectF(0.0, 0.0, widgetWidth, widgetHeigth - value);
+        sourceRect = QRectF(0.0, value,  widgetWidth, widgetHeigth - value);
+    }
         break;
-    case BottomToTop:
-        paint.drawPixmap(QRectF(0.0, value,  r.width(), r.height() - value),
-                         nextPixmap,
-                         QRectF(0.0, 0.0, r.width(), r.height() - value));
+    case BottomToTop:{
+        targetRect = QRectF(0.0, value,  widgetWidth, widgetHeigth - value);
+        sourceRect = QRectF(0.0, 0.0, widgetWidth, widgetHeigth - value);
+    }
         break;
     }
+    paint.drawPixmap(targetRect,
+                     nextPixmap,
+                     sourceRect);
+}
+
+double AnimationStackedWidget::offset() const
+{
+    return m_offset;
+}
+
+void AnimationStackedWidget::setOffset(double offset)
+{
+    m_offset = offset;
+    update();
 }
