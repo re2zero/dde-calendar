@@ -28,19 +28,30 @@ void scheduleitemwidget::addscheduleitem()
     mainlayout->addSpacing(10);
     mainlayout->setSpacing(1);
 
-    for (int i = 0; i < m_scheduleInfo.count(); i++) {
+    if (m_scheduleInfo.count() == 1) {
+        //单个日程
         scheduleitem *m_scheduleitem = new scheduleitem();
         connect(m_scheduleitem, &scheduleitem::signalItemPress, this, &scheduleitemwidget::signalItemPress);
-        if (i == 0) {
-            m_scheduleitem->setPositon(ItemWidget::ItemTop);
-        } else if (i == m_scheduleInfo.count() - 1) {
-            m_scheduleitem->setPositon(ItemWidget::ItemBottom);
-        } else {
-            m_scheduleitem->setPositon(ItemWidget::ItemMiddle);
-        }
-        m_scheduleitemdate->setScheduleDtailInfo(m_scheduleInfo[i]);
-        m_scheduleitem->setScheduleInfo(m_scheduleInfo[i]);
+        m_scheduleitem->setPositon(ItemWidget::ItemOnly);
+        m_scheduleitemdate->setScheduleDtailInfo(m_scheduleInfo.first());
+        m_scheduleitem->setScheduleInfo(m_scheduleInfo.first());
         mainlayout->addWidget(m_scheduleitem);
+    } else if (m_scheduleInfo.count() > 1) {
+        //多个日程
+        for (int i = 0; i < m_scheduleInfo.count(); i++) {
+            scheduleitem *m_scheduleitem = new scheduleitem();
+            connect(m_scheduleitem, &scheduleitem::signalItemPress, this, &scheduleitemwidget::signalItemPress);
+            if (i == 0) {
+                m_scheduleitem->setPositon(ItemWidget::ItemTop);
+            } else if (i == m_scheduleInfo.count() - 1) {
+                m_scheduleitem->setPositon(ItemWidget::ItemBottom);
+            } else {
+                m_scheduleitem->setPositon(ItemWidget::ItemMiddle);
+            }
+            m_scheduleitemdate->setScheduleDtailInfo(m_scheduleInfo[i]);
+            m_scheduleitem->setScheduleInfo(m_scheduleInfo[i]);
+            mainlayout->addWidget(m_scheduleitem);
+        }
     }
 
     this->setLayout(mainlayout);
