@@ -20,7 +20,6 @@
 */
 #include "createscheduletask.h"
 
-#include "../data/createjsondata.h"
 #include "../globaldef.h"
 
 createScheduleTask::createScheduleTask(CSchedulesDBus *dbus)
@@ -43,238 +42,55 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         return m_reply;
     }
 
-    QDateTime currentdatetime = QDateTime::currentDateTime();
-    int w = currentdatetime.date().dayOfWeek();
-    int d = currentdatetime.date().day();
-
     QVector<int> getDayNum = createJsonData->getRepeatNum();
-    createSchedulewidget *m_widget = new createSchedulewidget();
-    QDateTime m_begintime;
-    QDateTime m_endtime;
-
-    if (createJsonData->getDateTime().size() > 0) {
-        m_begintime = createJsonData->DateTime().at(0).datetime;
-    } else {
-        m_begintime = currentdatetime;
-    }
-    if (createJsonData->DateTime().size() == 1) {
-        m_endtime = m_begintime.addSecs(60 * 60);
-    } else if (createJsonData->DateTime().size() == 2) {
-        m_endtime = createJsonData->DateTime().at(1).datetime;
-        if (!createJsonData->getDateTime().at(1).hasTime) {
-            m_endtime.setTime(QTime(23, 59, 59));
-        }
-    }
+    QVector<ScheduleDtailInfo> schedule;
+    m_widget = new createSchedulewidget();
+    //设置日程时间
+    setDateTime(createJsonData);
 
     if (createJsonData->DateTime().size() > 0) {
         if (createJsonData->DateTime().begin()->hasTime) {
-            m_widget->setDateTime(m_begintime, m_endtime);
-            if (createJsonData->TitleName().isEmpty())
-                m_widget->setTitleName(NEW_SCHEDULE);
-            else
-                m_widget->setTitleName(createJsonData->TitleName());
+            //设置日程titlename
+            setScheduleTitleName(createJsonData);
             switch (createJsonData->getRepeatStatus()) {
             case CreateJsonData::NONE: {
                 //非重复日程，不能创建过期日程
-                if (m_begintime > QDateTime::currentDateTime())
-                    m_widget->setRpeat(0);
+                if (m_begintime > QDateTime::currentDateTime()/* && m_begintime < QDateTime::currentDateTime().addMonths(6)*/)
+                    schedule = getNotRepeatDaySchedule();
             }
             break;
             case CreateJsonData::EVED:
-                m_widget->setRpeat(1);
+                //每天重复日程
+                schedule = getEveryDaySchedule();
                 break;
             case CreateJsonData::EVEW: {
-                if (getDayNum.size() == 0) {
-                    if (m_begintime.time() > currentdatetime.time()) {
-                        m_begintime.setDate(currentdatetime.date());
-                    } else {
-                        m_begintime.setDate(currentdatetime.date().addDays(1));
-                    }
-                    m_endtime.setDate(m_begintime.date());
-                    m_widget->setDateTime(m_begintime, m_endtime);
-                    m_widget->setRpeat(3);
-                } else if (getDayNum.size() == 1) {
-                    if (getDayNum[0] >= w) {
-                        if (getDayNum[0] == w && m_begintime.time() < currentdatetime.time()) {
-                            m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] + 7 - w));
-                        } else {
-                            m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - w));
-                        }
-                    } else {
-                        m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] + 7 - w));
-                    }
-                    m_endtime.setDate(m_begintime.date());
-                    m_widget->setDateTime(m_begintime, m_endtime);
-                    m_widget->setRpeat(3);
-                } else if (getDayNum.size() == 2) {
-                    int startweekday = getDayNum[0];
-                    int endweekday = getDayNum[1];
-
-                    if (startweekday == endweekday) {
-                        m_widget->setRpeat(1);
-                    } else {
-                        if (w < startweekday) {
-                            setWeekBehindPartSchedule(m_begintime, m_endtime, w, startweekday + 1, endweekday + 1, m_widget);
-                            m_begintime.setDate(currentdatetime.date().addDays(startweekday - w));
-                            m_endtime.setDate(m_begintime.date());
-                            m_widget->setDateTime(m_begintime, m_endtime);
-                        } else if (w >= startweekday && w < endweekday) {
-                            if (m_begintime.time() > currentdatetime.time()) {
-                                setWeekBehindPartSchedule(m_begintime, m_endtime, w, w + 1, endweekday + 1, m_widget);
-                                setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, w + 1, m_widget);
-                                m_begintime.setDate(currentdatetime.date());
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            } else {
-                                setWeekBehindPartSchedule(m_begintime, m_endtime, w, w + 2, endweekday + 1, m_widget);
-                                setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, w + 1, m_widget);
-                                m_begintime.setDate(currentdatetime.date().addDays(1));
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            }
-                        } else if (w > endweekday) {
-                            setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday + 1, endweekday + 1, m_widget);
-                            m_begintime.setDate(currentdatetime.date().addDays(startweekday - w + 7));
-                            m_endtime.setDate(m_begintime.date());
-                            m_widget->setDateTime(m_begintime, m_endtime);
-                        } else if (w == endweekday) {
-                            if (m_begintime.time() > currentdatetime.time()) {
-                                setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday, endweekday, m_widget);
-                                m_begintime.setDate(currentdatetime.date());
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            } else {
-                                setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, startweekday + 1, endweekday + 1, m_widget);
-                                m_begintime.setDate(currentdatetime.date().addDays(startweekday - w + 7));
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            }
-                        }
-                        m_widget->setRpeat(3);
-                    }
-                }
+                //每周重复日程
+                schedule = getEveryWeekSchedule(getDayNum);
             }
             break;
             case CreateJsonData::EVEM: {
-                if (getDayNum.size() == 0) {
-                    if (m_begintime.time() > currentdatetime.time()) {
-                        m_begintime.setDate(currentdatetime.date());
-                    } else {
-                        m_begintime.setDate(currentdatetime.date().addDays(1));
-                    }
-                    m_endtime.setDate(m_begintime.date());
-                    m_widget->setDateTime(m_begintime, m_endtime);
-                    m_widget->setRpeat(4);
-                } else if (getDayNum.size() == 1) {
-                    if (d > getDayNum[0]) {
-                        m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - d));
-                    } else if (d < getDayNum[0]) {
-                        m_begintime.setDate(currentdatetime.date().addDays(getDayNum[0] - d));
-                    } else {
-                        if (m_begintime.time() > currentdatetime.time()) {
-                            m_begintime.setDate(currentdatetime.date());
-                        } else {
-                            m_begintime.setDate(currentdatetime.date().addMonths(1));
-                        }
-                    }
-                    m_endtime.setDate(m_begintime.date());
-                    m_widget->setDateTime(m_begintime, m_endtime);
-                    m_widget->setRpeat(4);
-                } else if (getDayNum.size() == 2) {
-                    int startday = getDayNum[0];
-                    int endday = getDayNum[1];
-
-                    if (startday == endday) {
-                        m_widget->setRpeat(1);
-                    } else {
-                        if (d >= endday) {
-                            if (m_begintime.time() > currentdatetime.time()) {
-                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday, endday, true, m_widget);
-                                m_begintime.setDate(currentdatetime.date());
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            } else {
-                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 1, endday, true, m_widget);
-                                m_begintime.setDate(currentdatetime.date().addDays(startday - d).addMonths(1));
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            }
-                        } else if (d > startday && d < endday) {
-                            if (m_begintime.time() > currentdatetime.time()) {
-                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday, d, true, m_widget);
-                                setMonthBehindPartSchedule(m_begintime, m_endtime, d + 1, endday + 1, false, m_widget);
-                                m_begintime.setDate(currentdatetime.date());
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            } else {
-                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday, d + 1, true, m_widget);
-                                setMonthBehindPartSchedule(m_begintime, m_endtime, d + 2, endday + 1, false, m_widget);
-                                m_begintime.setDate(currentdatetime.date().addDays(1));
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            }
-                        } else {
-                            if (m_begintime.time() > currentdatetime.time()) {
-                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 1, endday + 1, false, m_widget);
-                                m_begintime.setDate(currentdatetime.date().addDays(startday - d));
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            } else {
-                                setMonthBehindPartSchedule(m_begintime, m_endtime, startday + 2, endday + 1, false, m_widget);
-                                m_begintime.setDate(currentdatetime.date().addDays(startday + 1 - d));
-                                m_endtime.setDate(m_begintime.date());
-                                m_widget->setDateTime(m_begintime, m_endtime);
-                            }
-                        }
-                        m_widget->setRpeat(4);
-                    }
-                }
+                //每月重复日程
+                schedule = getEveryMonthSchedule(getDayNum);
             }
             break;
             case CreateJsonData::EVEY:
-                m_widget->setRpeat(5);
+                //每年重复日程
+                schedule = getEveryDYearSchedule();
                 break;
             case CreateJsonData::WORKD:
-                m_widget->setRpeat(2);
+                //工作日
+                schedule = getEveryWorkDaySchedule();
                 break;
             case CreateJsonData::RESTD: {
-                if (w < 6) {
-                    setWeekBehindPartSchedule(m_begintime, m_endtime, w, 7, 8, m_widget);
-                    m_begintime.setDate(currentdatetime.date().addDays(6 - w));
-                    m_endtime.setDate(m_begintime.date());
-                    m_widget->setDateTime(m_begintime, m_endtime);
-                } else if (w == 6) {
-                    if (m_begintime.time() > currentdatetime.time()) {
-                        setWeekBehindPartSchedule(m_begintime, m_endtime, w, 7, 8, m_widget);
-                        m_begintime.setDate(currentdatetime.date().addDays(6 - w));
-                        m_endtime.setDate(m_begintime.date());
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                    } else {
-                        setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 6, 8, m_widget);
-                        m_begintime.setDate(currentdatetime.date().addDays(1));
-                        m_endtime.setDate(m_begintime.date());
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                    }
-                } else {
-                    if (m_begintime.time() > currentdatetime.time()) {
-                        setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 6, 8, m_widget);
-                        m_begintime.setDate(currentdatetime.date());
-                        m_endtime.setDate(m_begintime.date());
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                    } else {
-                        setWeekBehindPartSchedule(m_begintime, m_endtime, w - 7, 7, 8, m_widget);
-                        m_begintime.setDate(currentdatetime.date().addDays(6 - w + 7));
-                        m_endtime.setDate(m_begintime.date());
-                        m_widget->setDateTime(m_begintime, m_endtime);
-                    }
-                }
-                m_widget->setRpeat(3);
+                //休息日
+                schedule = getEveryRestDaySchedule();
             }
             break;
             }
-            if (createJsonData->ShouldEndSession()) {
-                m_widget->setschedule();
-                m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+            if (createJsonData->ShouldEndSession() && !schedule.isEmpty()) {
+//                m_widget->setschedule();
+//                m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+                setDateTimeAndGetSchedule(getFirstSchedule(schedule).beginDateTime, getFirstSchedule(schedule).endDateTime);
                 m_widget->setScheduleDbus(m_dbus);
                 m_widget->scheduleEmpty(true);
                 m_widget->updateUI();
@@ -291,6 +107,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         m_reply.setReplyWidget(m_widget);
         if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD
                 && createJsonData->getDateTime().at(0).hasTime) {
+            //如果为休息日，并且有开始时间，拼接回复语
             QString str = QString("好的，每周六到周日的%1我都会提醒您。").arg(m_begintime.toString("hh:mm"));
             m_reply.ttsMessage(str);
             m_reply.displayMessage(str);
@@ -302,44 +119,626 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     return m_reply;
 }
 
-void createScheduleTask::setWeekBehindPartSchedule(QDateTime begintime, QDateTime endtime, int isSameWeek, int startDay, int endDay, createSchedulewidget *m_widget)
+void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
 {
-    QDateTime currentdatetime = QDateTime::currentDateTime();
-    QVector<QDateTime> datetime;
-
-    for (int i = startDay; i < endDay; i++) {
-        begintime.setDate(currentdatetime.date().addDays(i - isSameWeek));
-        endtime.setDate(begintime.date());
-        m_widget->setDateTime(begintime, endtime);
-        m_widget->setRpeat(3);
-        m_widget->setschedule();
-        m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+    if (createJsonData->getDateTime().size() > 0) {
+        //用户有输入时间，则设置开始时间
+        m_begintime = createJsonData->DateTime().at(0).datetime;
+    } else {
+        //用户没有输入时间，则日程开始时间设置为当前时间
+        m_begintime = QDateTime::currentDateTime();
+    }
+    if (createJsonData->DateTime().size() == 1) {
+        //如果只有开始时间，则结束时间默认为开始时间后一个小时
+        m_endtime = m_begintime.addSecs(60 * 60);
+    } else if (createJsonData->DateTime().size() == 2) {
+        //如果有结束时间，则设置结束时间
+        m_endtime = createJsonData->DateTime().at(1).datetime;
+        if (!createJsonData->getDateTime().at(1).hasTime) {
+            //如果用户没有输入结束时间，则默认为当天23：59：59
+            m_endtime.setTime(QTime(23, 59, 59));
+        }
     }
 }
 
-void createScheduleTask::setMonthBehindPartSchedule(QDateTime begintime, QDateTime endtime, int startDay, int endDay, bool nextMonth, createSchedulewidget *m_widget)
+void createScheduleTask::setScheduleTitleName(CreateJsonData *createJsonData)
 {
-    QDateTime currentdatetime = QDateTime::currentDateTime();
-    int d = currentdatetime.date().day();
-    QVector<QDateTime> datetime;
+    if (createJsonData->TitleName().isEmpty())
+        //如果没有titlename，默认为：新建日程
+        m_widget->setTitleName(NEW_SCHEDULE);
+    else
+        //设置日程titlename
+        m_widget->setTitleName(createJsonData->TitleName());
+}
 
-    if (nextMonth) {
-        for (int i = startDay; i < endDay + 1; i++) {
-            begintime.setDate(currentdatetime.date().addDays(i - d).addMonths(1));
-            endtime.setDate(begintime.date());
-            m_widget->setDateTime(begintime, endtime);
-            m_widget->setRpeat(4);
-            m_widget->setschedule();
-            m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
-        }
-    } else {
-        for (int i = startDay; i < endDay + 1; i++) {
-            begintime.setDate(currentdatetime.date().addDays(i - d));
-            endtime.setDate(begintime.date());
-            m_widget->setDateTime(begintime, endtime);
-            m_widget->setRpeat(4);
-            m_widget->setschedule();
-            m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+QVector<ScheduleDtailInfo> createScheduleTask::getNotRepeatDaySchedule()
+{
+    QVector<ScheduleDtailInfo> schedule;
+    //设置重复类型
+    m_widget->setRpeat(0);
+    //创建日程
+    m_dbus->CreateJob(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+    //将所有日程添加到日程容器中
+    schedule.append(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+
+    return schedule;
+}
+
+QVector<ScheduleDtailInfo> createScheduleTask::getEveryDaySchedule()
+{
+    QVector<ScheduleDtailInfo> schedule;
+    //设置重复类型
+    m_widget->setRpeat(1);
+    //创建日程
+    m_dbus->CreateJob(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+    //将所有日程添加到日程容器中
+    schedule.append(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+    //设置完成后，将everyDayState设置为false
+    everyDayState = false;
+
+    return schedule;
+}
+
+QVector<ScheduleDtailInfo> createScheduleTask::getEveryWeekSchedule(QVector<int> dateRange)
+{
+    QVector<QDateTime> beginDateTime {};
+    QVector<ScheduleDtailInfo> schedule;
+    //每天重复
+    if (everyDayState)
+        return getEveryDaySchedule();
+    //设置重复类型
+    m_widget->setRpeat(3);
+    //获取解析时间
+    beginDateTime = analysisEveryWeekDate(dateRange);
+
+    for (int i = 0; i < beginDateTime.count(); i++) {
+        //设置日程结束时间
+        m_endtime.setDate(beginDateTime.at(i).date());
+        //创建日程
+        m_dbus->CreateJob(setDateTimeAndGetSchedule(beginDateTime.at(i), m_endtime));
+        //将所有日程添加到日程容器中
+        schedule.append(setDateTimeAndGetSchedule(beginDateTime.at(i), m_endtime));
+    }
+
+    return schedule;
+}
+
+QVector<ScheduleDtailInfo> createScheduleTask::getEveryMonthSchedule(QVector<int> dateRange)
+{
+    QVector<QDateTime> beginDateTime {};
+    QVector<ScheduleDtailInfo> schedule;
+    //每天重复
+    if (everyDayState)
+        return getEveryDaySchedule();
+    //设置重复类型
+    m_widget->setRpeat(4);
+    //获取解析日期
+    beginDateTime = analysisEveryMonthDate(dateRange);
+
+    for (int i = 0; i < beginDateTime.count(); i++) {
+        //设置日程结束时间
+        m_endtime.setDate(beginDateTime.at(i).date());
+        //创建日程
+        m_dbus->CreateJob(setDateTimeAndGetSchedule(beginDateTime.at(i), m_endtime));
+        //将所有日程添加到日程容器中
+        schedule.append(setDateTimeAndGetSchedule(beginDateTime.at(i), m_endtime));
+    }
+
+    return schedule;
+}
+
+QVector<ScheduleDtailInfo> createScheduleTask::getEveryDYearSchedule()
+{
+    QVector<ScheduleDtailInfo> schedule;
+    //设置重复类型
+    m_widget->setRpeat(5);
+    //创建日程
+    m_dbus->CreateJob(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+    //将多有日程添加到日程容器中
+    schedule.append(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+
+    return schedule;
+}
+
+QVector<ScheduleDtailInfo> createScheduleTask::getEveryWorkDaySchedule()
+{
+    QVector<ScheduleDtailInfo> schedule;
+    //设置重复类型
+    m_widget->setRpeat(2);
+    //创建日程
+    m_dbus->CreateJob(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+    //将所有日程添加到日程容器中
+    schedule.append(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+
+    return schedule;
+}
+
+QVector<ScheduleDtailInfo> createScheduleTask::getEveryRestDaySchedule()
+{
+    QVector<QDateTime> beginDateTime {};
+    QVector<ScheduleDtailInfo> schedule;
+    //设置重复类型
+    m_widget->setRpeat(3);
+    //获取解析的时间
+    beginDateTime = analysisRestDayDate();
+
+    for (int i = 0; i < beginDateTime.count(); i++) {
+        //设置日程结束时间
+        m_endtime.setDate(beginDateTime.at(i).date());
+        //创建日程
+        m_dbus->CreateJob(setDateTimeAndGetSchedule(beginDateTime.at(i), m_endtime));
+        //将所有日程添加到日程容器中
+        schedule.append(setDateTimeAndGetSchedule(beginDateTime.at(i), m_endtime));
+    }
+
+    return schedule;
+}
+
+ScheduleDtailInfo createScheduleTask::getFirstSchedule(QVector<ScheduleDtailInfo> scheduleInfo)
+{
+    //第一个日程的时间
+    QDate earlyDate = scheduleInfo.at(0).beginDateTime.date();
+    //第一个日程的索引
+    int index = 0;
+    for (int i = 1; i < scheduleInfo.count(); i++) {
+        if (earlyDate > scheduleInfo.at(i).beginDateTime.date()) {
+            earlyDate = scheduleInfo.at(i).beginDateTime.date();
+            index = i;
         }
     }
+    return scheduleInfo.at(index);
+}
+
+int createScheduleTask::getCreatesDays(int firstDay, int secondday, bool containsToday)
+{
+    if (containsToday)
+        //如果包含今天+1
+        return secondday - firstDay + 1;
+    else
+        //不包含今天
+        return secondday - firstDay;
+}
+
+QVector<QDateTime> createScheduleTask::getNoneWeekNumDate()
+{
+    QVector<QDateTime> beginDateTime {};
+
+    if (m_begintime.time() > QTime::currentTime()) {
+        //日程开始时间大于当天时间
+        m_begintime.setDate(QDate::currentDate());
+    } else {
+        //日程开始时间小于等于当天时间
+        m_begintime.setDate(QDate::currentDate().addDays(1));
+    }
+    beginDateTime.append(m_begintime);
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getOneWeekNumDate(int firstWeekNum)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofWeek = QDate::currentDate().dayOfWeek();
+
+    if (firstWeekNum >= currentDayofWeek) {
+        //开始周数大于等于今天所在周数
+        if (firstWeekNum == currentDayofWeek && m_begintime.time() <= QTime::currentTime()) {
+            //开始周数等于今天所在周数，并且日程开始时间小于等于当前时间
+            m_begintime.setDate(QDate::currentDate().addDays(firstWeekNum + 7 - currentDayofWeek));
+        } else {
+            //日程开始时间大于当前时间
+            m_begintime.setDate(QDate::currentDate().addDays(firstWeekNum - currentDayofWeek));
+        }
+    } else {
+        //开始周数小于今天所在周数
+        m_begintime.setDate(QDate::currentDate().addDays(firstWeekNum + 7 - currentDayofWeek));
+    }
+    beginDateTime.append(m_begintime);
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getTwoWeekNumDate(int firstWeekNum, int secondWeekNum)
+{
+    QVector<QDateTime> beginDateTime {};
+
+    if (firstWeekNum == secondWeekNum || secondWeekNum - firstWeekNum == 6) {
+        //开始周数等于结束周数，或者结束周数是7开始周数是1,为每天
+        everyDayState = true;
+        return beginDateTime;
+    } else if (firstWeekNum < secondWeekNum) {
+        //开始周数小于结束周数
+        beginDateTime = firstWeekNumLessThanSecond(firstWeekNum, secondWeekNum);
+    } else {
+        //开始周数大于结束周数
+        if (firstWeekNum - secondWeekNum == 1) {
+            //开始周数比结束周数大1,为每天
+            everyDayState = true;
+            return beginDateTime;
+        } else {
+            //除去每天的其他情况
+            firstWeekNumGreaterThanSecondButEveryDay(firstWeekNum, secondWeekNum);
+        }
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::firstWeekNumLessThanSecond(int firstWeekNum, int secondWeekNum)
+{
+    //对于工作日和休息日的情况，助手已自动区分，此处不再讨论
+    //对获取到的时间范围分情况讨论
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofWeek = QDate::currentDate().dayOfWeek();
+
+    //当前日期所在周数小于开始的周数
+    if (currentDayofWeek < firstWeekNum) {
+        beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(firstWeekNum - currentDayofWeek), firstWeekNum, secondWeekNum));
+    } else if (currentDayofWeek >= firstWeekNum && currentDayofWeek <= secondWeekNum) {
+        if (m_begintime.time() > QTime::currentTime()) {
+            //开始时间大于当前时间
+            beginDateTime.append(getWeekBackPartDateTime(QDate::currentDate(), secondWeekNum, true));
+            beginDateTime.append(getWeekFrontPartDateTime(QDate::currentDate(), firstWeekNum, false));
+        } else {
+            //开始时间小于等于当前时间
+            beginDateTime.append(getWeekBackPartDateTime(QDate::currentDate().addDays(1), secondWeekNum, false));
+            beginDateTime.append(getWeekFrontPartDateTime(QDate::currentDate(), firstWeekNum, true));
+        }
+    } else if (currentDayofWeek > secondWeekNum) {
+        beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(firstWeekNum + 7 - currentDayofWeek), firstWeekNum, secondWeekNum));
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::firstWeekNumGreaterThanSecondButEveryDay(int firstWeekNum, int secondWeekNum)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofWeek = QDate::currentDate().dayOfWeek();
+
+    if (currentDayofWeek >= firstWeekNum) {
+        //今天所在周数大于等于开始周数
+        if (m_begintime.time() > QTime::currentTime()) {
+            //日程开始时间大于当前时间
+            beginDateTime.append(getWeekBackPartDateTime(QDate::currentDate(), 7, true));
+            beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(1 + 7 - currentDayofWeek), 1, secondWeekNum));
+            beginDateTime.append(getWeekFrontPartDateTime(QDate::currentDate(), firstWeekNum, false));
+        } else {
+            //日程开始时间小于等于当前时间
+            beginDateTime.append(getWeekBackPartDateTime(QDate::currentDate().addDays(1), 7, false));
+            beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(1 + 7 - currentDayofWeek), 1, secondWeekNum));
+            beginDateTime.append(getWeekFrontPartDateTime(QDate::currentDate(), firstWeekNum, true));
+        }
+    } else if (currentDayofWeek < firstWeekNum && currentDayofWeek > secondWeekNum) {
+        //今天所在周数小于开始周数，大于结束周数
+        beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(firstWeekNum - currentDayofWeek),firstWeekNum, 7));
+        beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(1 + 7 - currentDayofWeek), 1, secondWeekNum));
+    } else if (currentDayofWeek <= secondWeekNum) {
+        //今天所在周数小于等于结束周数
+        if (m_begintime.time() > QTime::currentTime()) {
+            //日程开始时间大于当前时间
+            beginDateTime.append(getWeekBackPartDateTime(QDate::currentDate(), secondWeekNum, true));
+            beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(firstWeekNum - currentDayofWeek), firstWeekNum, 7));
+            beginDateTime.append(getWeekFrontPartDateTime(QDate::currentDate(), 1, false));
+        } else {
+            //日程开始时间小于等于当前时间
+            beginDateTime.append(getWeekBackPartDateTime(QDate::currentDate().addDays(1), secondWeekNum, false));
+            beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(firstWeekNum - currentDayofWeek), firstWeekNum, 7));
+            beginDateTime.append(getWeekFrontPartDateTime(QDate::currentDate(), 1, true));
+        }
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getWeekAllDateTime(QDate BeginDate, int firstWeekNum, int secondWeekNum)
+{
+    QVector<QDateTime> beginDateTime;
+
+    for (int i = 0; i < secondWeekNum - firstWeekNum + 1; i ++) {
+        m_begintime.setDate(BeginDate.addDays(i));
+        beginDateTime.append(m_begintime);
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getWeekFrontPartDateTime(QDate BeginDate, int firstWeekNum, bool containsToday)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofWeek = QDate::currentDate().dayOfWeek();
+    int addDays = getCreatesDays(firstWeekNum, currentDayofWeek, containsToday);
+
+    for (int i = 0; i < addDays; i++) {
+        m_begintime.setDate(BeginDate.addDays(firstWeekNum + 7 - currentDayofWeek + i));
+        beginDateTime.append(m_begintime);
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getWeekBackPartDateTime(QDate BeginDate, int secondWeekNum, bool containsToday)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofWeek = QDate::currentDate().dayOfWeek();
+    int addDays = getCreatesDays(currentDayofWeek, secondWeekNum, containsToday);
+
+    for (int i = 0; i < addDays; i++) {
+        m_begintime.setDate(BeginDate.addDays(i));
+        beginDateTime.append(m_begintime);
+    }
+
+    return beginDateTime;
+}
+
+ScheduleDtailInfo createScheduleTask::setDateTimeAndGetSchedule(QDateTime beginDateTime, QDateTime endDateTime)
+{
+    m_widget->setDateTime(beginDateTime, endDateTime);
+    m_widget->setschedule();
+
+    return m_widget->getScheduleDtailInfo();
+}
+
+QVector<QDateTime> createScheduleTask::analysisEveryWeekDate(QVector<int> dateRange)
+{
+    QVector<QDateTime> beginDateTime {};
+
+    switch (dateRange.size()) {
+    case 0: {
+        //每周重复日程，没有具体周数
+        beginDateTime = getNoneWeekNumDate();
+    }
+    break;
+    case 1: {
+        //每周重复日程，只有一个周数
+        beginDateTime = getOneWeekNumDate(dateRange[0]);
+    }
+    break;
+    case 2: {
+        //每周重复日程，有两个周数
+        beginDateTime = getTwoWeekNumDate(dateRange[0], dateRange[1]);
+    }
+    break;
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::analysisEveryMonthDate(QVector<int> dateRange)
+{
+    QVector<QDateTime> beginDateTime {};
+
+    switch (dateRange.size()) {
+    case 0: {
+        //每月重复日程，没有具体日期
+        beginDateTime = getNoneMonthNumDate();
+    }
+    break;
+    case 1: {
+        //每月重复日程，只有一个日期
+        beginDateTime = getOneMonthNumDate(dateRange[0]);
+    }
+    break;
+    case 2: {
+        //每月重复日程，有两个日期
+        beginDateTime = getTwoMonthNumDate(dateRange[0], dateRange[1]);
+    }
+    break;
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getNoneMonthNumDate()
+{
+    QVector<QDateTime> beginDateTime {};
+
+    if (m_begintime.time() > QTime::currentTime()) {
+        //日程开始时间大于当前时间
+        m_begintime.setDate(QDate::currentDate());
+    } else {
+        //日程开始时间小于等于当前时间
+        m_begintime.setDate(QDate::currentDate().addDays(1));
+    }
+    beginDateTime.append(m_begintime);
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getOneMonthNumDate(int firstMonthNum)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofMonth = QDate::currentDate().day();
+
+    if (currentDayofMonth < firstMonthNum) {
+        //当天日期小于开始日期
+        m_begintime.setDate(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth));
+    } else if (currentDayofMonth > firstMonthNum) {
+        //当前日期大于开始日期
+        m_begintime.setDate(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth).addMonths(1));
+    } else {
+        //当前日期等于开始日期
+        if (m_begintime.time() > QTime::currentTime()) {
+            //日程开始时间大于当前时间
+            m_begintime.setDate(QDate::currentDate());
+        } else {
+            //日程开始时间小于等于当前时间
+            m_begintime.setDate(QDate::currentDate().addMonths(1));
+        }
+    }
+    beginDateTime.append(m_begintime);
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getTwoMonthNumDate(int firstMonthNum, int secondMonthNum)
+{
+    QVector<QDateTime> beginDateTime {};
+
+    if (firstMonthNum == secondMonthNum) {
+        //开始日期等于结束日期，为每天
+        getEveryDaySchedule();
+        return beginDateTime;
+    } else if (firstMonthNum < secondMonthNum) {
+        //开始日期小于结束日期
+        beginDateTime.append(firstMonthNumLessThanSecond(firstMonthNum, secondMonthNum));
+    } else {
+        //开始日期大于结束日期
+        if (firstMonthNum - secondMonthNum == 1) {
+            //开始日期和结束日期差一天，为每天
+            getEveryDaySchedule();
+            return beginDateTime;
+        } else {
+            //开始日期大于结束日期的其他情况
+            beginDateTime.append(firstMonthNumGreaterThanSecondButEveryDay(firstMonthNum, secondMonthNum));
+        }
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::firstMonthNumLessThanSecond(int firstMonthNum, int secondWMonthNum)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofMonth = QDate::currentDate().day();
+
+    if (currentDayofMonth < firstMonthNum) {
+        //今天的日期小于开始日期
+        beginDateTime.append(getMonthAllDateTime(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth), firstMonthNum, secondWMonthNum));
+    } else if (currentDayofMonth >= firstMonthNum && currentDayofMonth <= secondWMonthNum) {
+        //今天的日期大于等于开始日期，小于等于结束日期
+        if (m_begintime.time() > QTime::currentTime()) {
+            //日程开始时间大于当前时间
+            beginDateTime.append(getMonthBackPartDateTime(QDate::currentDate(), secondWMonthNum, true));
+            beginDateTime.append(getMonthFrontPartDateTime(QDate::currentDate(), firstMonthNum, false));
+        } else {
+            //日程开始时间小于等于当前时间
+            beginDateTime.append(getMonthBackPartDateTime(QDate::currentDate().addDays(1), secondWMonthNum, false));
+            beginDateTime.append(getMonthFrontPartDateTime(QDate::currentDate(), firstMonthNum, true));
+        }
+    } else if (currentDayofMonth > secondWMonthNum) {
+        //今天的日程大于结束日期
+        beginDateTime.append(getMonthAllDateTime(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth).addMonths(1), firstMonthNum, secondWMonthNum));
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getMonthAllDateTime(QDate BeginDate, int firstMonthNum, int secondMonthNum)
+{
+    QVector<QDateTime> beginDateTime;
+
+    for (int i = 0; i < secondMonthNum - firstMonthNum + 1; i++) {
+        m_begintime.setDate(BeginDate.addDays(i));
+        beginDateTime.append(m_begintime);
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getMonthFrontPartDateTime(QDate BeginDate, int firstMonthNum, bool containsToday)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofMonth = QDate::currentDate().day();
+    //新建日程的天数
+    int addDays = getCreatesDays(firstMonthNum, currentDayofMonth, containsToday);
+
+    for (int i = 0; i < addDays; i++) {
+        m_begintime.setDate(BeginDate.addDays(firstMonthNum - currentDayofMonth).addMonths(1).addDays(i));
+        beginDateTime.append(m_begintime);
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::getMonthBackPartDateTime(QDate BeginDate, int secondMonthNum, bool containsToday)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofMonth = QDate::currentDate().day();
+    //新建日程的天数
+    int addDays = getCreatesDays(currentDayofMonth, secondMonthNum, containsToday);
+
+    for (int i = 0; i < addDays; i++) {
+        m_begintime.setDate(BeginDate.addDays(i));
+        beginDateTime.append(m_begintime);
+    }
+
+    return beginDateTime;
+
+}
+
+QVector<QDateTime> createScheduleTask::firstMonthNumGreaterThanSecondButEveryDay(int firstMonthNum, int secondMonthNum)
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofMonth = QDate::currentDate().day();
+
+    if (currentDayofMonth >= firstMonthNum) {
+        //今天的日期大于等于开始的日期
+        if (m_begintime.time() > QTime::currentTime()) {
+            //日程开始时间大于当前时间
+            beginDateTime.append(getMonthBackPartDateTime(QDate::currentDate(), QDate::currentDate().daysInMonth(), true));
+            beginDateTime.append(getMonthAllDateTime(QDate::currentDate().addDays(1 - currentDayofMonth), 1, secondMonthNum));
+            beginDateTime.append(getMonthFrontPartDateTime(QDate::currentDate(), firstMonthNum, false));
+        } else {
+            //日程开始时间小于等于当前时间
+            beginDateTime.append(getMonthBackPartDateTime(QDate::currentDate().addDays(1), QDate::currentDate().daysInMonth(), false));
+            beginDateTime.append(getMonthAllDateTime(QDate::currentDate().addDays(1 - currentDayofMonth), 1, secondMonthNum));
+            beginDateTime.append(getMonthFrontPartDateTime(QDate::currentDate(), firstMonthNum, true));
+        }
+    } else if (currentDayofMonth < firstMonthNum && currentDayofMonth > secondMonthNum) {
+        //今天的日期小于开始日期，大于结束日期
+        beginDateTime.append(getMonthAllDateTime(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth), firstMonthNum, QDate::currentDate().daysInMonth()));
+        beginDateTime.append(getMonthAllDateTime(QDate::currentDate().addDays(1 - currentDayofMonth).addMonths(1), 1, secondMonthNum));
+    } else if (currentDayofMonth <= secondMonthNum) {
+        //今天的日期小于等于结束日期
+        if (m_begintime.time() > QTime::currentTime()) {
+            //日程开始时间大于当前时间
+            beginDateTime.append(getMonthBackPartDateTime(QDate::currentDate(), secondMonthNum, true));
+            beginDateTime.append(getMonthAllDateTime(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth), firstMonthNum, QDate::currentDate().daysInMonth()));
+            beginDateTime.append(getMonthFrontPartDateTime(QDate::currentDate(), 1, false));
+        } else {
+            //日程开始时间小于等于当前时间
+            beginDateTime.append(getMonthBackPartDateTime(QDate::currentDate().addDays(1), secondMonthNum, false));
+            beginDateTime.append(getMonthAllDateTime(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth), firstMonthNum, QDate::currentDate().daysInMonth()));
+            beginDateTime.append(getMonthFrontPartDateTime(QDate::currentDate(), 1, true));
+        }
+    }
+
+    return beginDateTime;
+}
+
+QVector<QDateTime> createScheduleTask::analysisRestDayDate()
+{
+    QVector<QDateTime> beginDateTime {};
+    int currentDayofWeek = QDate::currentDate().dayOfWeek();
+
+    if (currentDayofWeek < 6) {
+        //今天不是周末
+        m_begintime.setDate(QDate::currentDate().addDays(6 - currentDayofWeek));
+        m_begintime.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
+    } else if (currentDayofWeek == 6) {
+        //今天是周六
+        if (m_begintime.time() > QTime::currentTime()) {
+            //日程开始时间大于当前时间
+            m_begintime.setDate(QDate::currentDate().addDays(6 - currentDayofWeek));
+            m_begintime.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
+        } else {
+            //日程开始时间小于等于当前时间
+            m_begintime.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
+            m_begintime.setDate(QDate::currentDate().addDays(6 + 7 - currentDayofWeek));
+        }
+    } else if (currentDayofWeek > 6) {
+        //今天是周日
+        if (m_begintime.time() > QTime::currentTime()) {
+            //日程开始时间大于当前时间
+            m_begintime.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
+            m_begintime.setDate(QDate::currentDate().addDays(6 + 7 - currentDayofWeek));
+        } else {
+            //日程开始时间小于等于当前时间
+            m_begintime.setDate(QDate::currentDate().addDays(6 + 7 - currentDayofWeek));
+            m_begintime.setDate(QDate::currentDate().addDays(7 + 7 - currentDayofWeek));
+        }
+    }
+
+    return beginDateTime;
 }
