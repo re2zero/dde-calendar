@@ -230,6 +230,11 @@ private:
      * @return 日程信息
      */
     ScheduleDtailInfo setDateTimeAndGetSchedule(QDateTime beginDateTime, QDateTime endDateTime);
+    /**
+     * @brief analysisWorkDayDate 解析工作日的日程的日期
+     * @return 日期容器
+     */
+    QVector<QDateTime> analysisWorkDayDate();
 private:
     QDateTime       m_begintime;
     QDateTime       m_endtime;

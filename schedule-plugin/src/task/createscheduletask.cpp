@@ -258,13 +258,22 @@ QVector<ScheduleDtailInfo> createScheduleTask::getEveryDYearSchedule()
 
 QVector<ScheduleDtailInfo> createScheduleTask::getEveryWorkDaySchedule()
 {
+    QVector<QDateTime> beginDateTime {};
     QVector<ScheduleDtailInfo> schedule;
+
+    //获取解析日期
+    beginDateTime = analysisWorkDayDate();
     //设置重复类型
     m_widget->setRpeat(2);
-    //创建日程
-    m_dbus->CreateJob(setDateTimeAndGetSchedule(m_begintime, m_endtime));
-    //将所有日程添加到日程容器中
-    schedule.append(setDateTimeAndGetSchedule(m_begintime, m_endtime));
+
+    for (int i = 0; i < beginDateTime.count(); i++) {
+        //设置日程结束时间
+        m_endtime.setDate(beginDateTime.at(i).date());
+        //创建日程
+        m_dbus->CreateJob(setDateTimeAndGetSchedule(beginDateTime.at(i), m_endtime));
+        //将所有日程添加到日程容器中
+        schedule.append(setDateTimeAndGetSchedule(beginDateTime.at(i), m_endtime));
+    }
 
     return schedule;
 }
@@ -493,6 +502,19 @@ ScheduleDtailInfo createScheduleTask::setDateTimeAndGetSchedule(QDateTime beginD
     m_widget->setschedule();
 
     return m_widget->getScheduleDtailInfo();
+}
+
+QVector<QDateTime> createScheduleTask::analysisWorkDayDate()
+{
+    QVector<QDateTime> beginDateTime {};
+
+    if (m_begintime.date().dayOfWeek() == 6)
+        m_begintime.setDate(m_begintime.date().addDays(2));
+    if (m_begintime.date().dayOfWeek() == 7)
+        m_begintime.setDate(m_begintime.date().addDays(1));
+    beginDateTime.append(m_begintime);
+
+    return beginDateTime;
 }
 
 QVector<QDateTime> createScheduleTask::analysisEveryWeekDate(QVector<int> dateRange)
