@@ -379,7 +379,7 @@
     </message>
     <message>
         <source>Other</source>
-        <translation>其它</translation>
+        <translation>其他</translation>
     </message>
 </context>
 <context>
