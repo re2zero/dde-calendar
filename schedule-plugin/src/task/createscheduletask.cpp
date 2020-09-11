@@ -111,6 +111,13 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             QString str = QString("好的，每周六到周日的%1我都会提醒您。").arg(m_begintime.toString("hh:mm"));
             m_reply.ttsMessage(str);
             m_reply.displayMessage(str);
+        } else if (createJsonData->getRepeatStatus() == CreateJsonData::NONE
+                   && createJsonData->getDateTime().at(0).hasTime
+                   && createJsonData->getDateTime().at(0).datetime < QDateTime::currentDateTime()
+                   && createJsonData->getDateTime().size() == 2) {
+            QString str = QString("好的，%1我会提醒您。").arg(m_begintime.toString("hh:mm"));
+            m_reply.ttsMessage(str);
+            m_reply.displayMessage(str);
         } else {
             m_reply.ttsMessage(createJsonData->SuggestMsg());
             m_reply.displayMessage(createJsonData->SuggestMsg());
@@ -124,6 +131,15 @@ void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
     if (createJsonData->getDateTime().size() > 0) {
         //用户有输入时间，则设置开始时间
         m_begintime = createJsonData->DateTime().at(0).datetime;
+        if (createJsonData->getDateTime().size() == 2 && m_begintime < QDateTime::currentDateTime()) {
+            if (m_begintime.time() > QTime::currentTime()) {
+                //跨天日程，如果日程开始时间大于当前时间，则开始时间为当天
+                m_begintime.setDate(m_begintime.date().addDays(m_begintime.date().daysTo(QDate::currentDate())));
+            } else {
+                //跨天日程，如果日程开始时间小于等于当前时间，则开始时间加一天
+                m_begintime.setDate(m_begintime.date().addDays(m_begintime.date().daysTo(QDate::currentDate()) + 1));
+            }
+        }
     } else {
         //用户没有输入时间，则日程开始时间设置为当前时间
         m_begintime = QDateTime::currentDateTime();
