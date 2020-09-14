@@ -50,50 +50,53 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 
     if (createJsonData->DateTime().size() > 0) {
         if (createJsonData->DateTime().begin()->hasTime) {
-            //设置日程titlename
-            setScheduleTitleName(createJsonData);
-            switch (createJsonData->getRepeatStatus()) {
-            case CreateJsonData::NONE: {
-                //非重复日程，不能创建过期日程
-                if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6))
-                    schedule = getNotRepeatDaySchedule();
-            }
-            break;
-            case CreateJsonData::EVED:
-                //每天重复日程
-                schedule = getEveryDaySchedule();
+            //判断多伦标志
+            if (createJsonData->ShouldEndSession()) {
+                //设置日程titlename
+                setScheduleTitleName(createJsonData);
+                switch (createJsonData->getRepeatStatus()) {
+                case CreateJsonData::NONE: {
+                    //非重复日程，不能创建过期日程
+                    if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6))
+                        schedule = getNotRepeatDaySchedule();
+                }
                 break;
-            case CreateJsonData::EVEW: {
-                //每周重复日程
-                schedule = getEveryWeekSchedule(getDayNum);
-            }
-            break;
-            case CreateJsonData::EVEM: {
-                //每月重复日程
-                schedule = getEveryMonthSchedule(getDayNum);
-            }
-            break;
-            case CreateJsonData::EVEY:
-                //每年重复日程
-                schedule = getEveryDYearSchedule();
+                case CreateJsonData::EVED:
+                    //每天重复日程
+                    schedule = getEveryDaySchedule();
+                    break;
+                case CreateJsonData::EVEW: {
+                    //每周重复日程
+                    schedule = getEveryWeekSchedule(getDayNum);
+                }
                 break;
-            case CreateJsonData::WORKD:
-                //工作日
-                schedule = getEveryWorkDaySchedule();
+                case CreateJsonData::EVEM: {
+                    //每月重复日程
+                    schedule = getEveryMonthSchedule(getDayNum);
+                }
                 break;
-            case CreateJsonData::RESTD: {
-                //休息日
-                schedule = getEveryRestDaySchedule();
-            }
-            break;
-            }
-            if (createJsonData->ShouldEndSession() && !schedule.isEmpty()) {
+                case CreateJsonData::EVEY:
+                    //每年重复日程
+                    schedule = getEveryDYearSchedule();
+                    break;
+                case CreateJsonData::WORKD:
+                    //工作日
+                    schedule = getEveryWorkDaySchedule();
+                    break;
+                case CreateJsonData::RESTD: {
+                    //休息日
+                    schedule = getEveryRestDaySchedule();
+                }
+                break;
+                }
+                if (!schedule.isEmpty()) {
 //                m_widget->setschedule();
 //                m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
-                setDateTimeAndGetSchedule(getFirstSchedule(schedule).beginDateTime, getFirstSchedule(schedule).endDateTime);
-                m_widget->setScheduleDbus(m_dbus);
-                m_widget->scheduleEmpty(true);
-                m_widget->updateUI();
+                    setDateTimeAndGetSchedule(getFirstSchedule(schedule).beginDateTime, getFirstSchedule(schedule).endDateTime);
+                    m_widget->setScheduleDbus(m_dbus);
+                    m_widget->scheduleEmpty(true);
+                    m_widget->updateUI();
+                }
             }
         }
     }
