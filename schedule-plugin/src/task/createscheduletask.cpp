@@ -55,7 +55,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             switch (createJsonData->getRepeatStatus()) {
             case CreateJsonData::NONE: {
                 //非重复日程，不能创建过期日程
-                if (m_begintime > QDateTime::currentDateTime()/* && m_begintime < QDateTime::currentDateTime().addMonths(6)*/)
+                if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6))
                     schedule = getNotRepeatDaySchedule();
             }
             break;
@@ -124,10 +124,10 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                 m_reply.ttsMessage(str);
                 m_reply.displayMessage(str);
             } else {
-            m_reply.ttsMessage(createJsonData->SuggestMsg());
-            m_reply.displayMessage(createJsonData->SuggestMsg());
+                m_reply.ttsMessage(createJsonData->SuggestMsg());
+                m_reply.displayMessage(createJsonData->SuggestMsg());
+            }
         }
-    }
     }
     return m_reply;
 }
