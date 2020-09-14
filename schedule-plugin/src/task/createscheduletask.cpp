@@ -119,7 +119,9 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             m_reply.ttsMessage(str);
             m_reply.displayMessage(str);
         } else {
-            if (m_begintime < QDateTime::currentDateTime() || m_begintime > QDateTime::currentDateTime().addMonths(6)) {
+            if ((m_begintime < QDateTime::currentDateTime() && createJsonData->getRepeatStatus() == CreateJsonData::NONE)
+                    || m_begintime > QDateTime::currentDateTime().addMonths(6)) {
+                //"只能创建未来半年的日程"只针对非重复日程
                 QString str = "只能创建未来半年的日程";
                 m_reply.ttsMessage(str);
                 m_reply.displayMessage(str);
