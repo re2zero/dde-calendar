@@ -967,7 +967,8 @@ void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &ne
                     updatescheduleData.enddata.type =0;
                     updatescheduleData.rpeat = 0;
                 }
-            } else if (updatescheduleData.enddata.type == 2) {
+            } else {
+                //如果结束类型为永不或结束于日期
                 updatescheduleData.enddata.type = 2;
                 updatescheduleData.enddata.date =
                     oldinfo.beginDateTime.addDays(-1);
