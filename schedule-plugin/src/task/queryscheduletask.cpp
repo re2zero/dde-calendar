@@ -90,6 +90,10 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
         m_reply.ttsMessage("抱歉，不能查询过期的提醒");
         m_reply.displayMessage("抱歉，不能查询过期的提醒");
+    } else if (queryJsonData->getDateTime().at(0).datetime > QDateTime::currentDateTime().addMonths(6)) {
+        m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
+        m_reply.ttsMessage("只能查询未来半年的日程");
+        m_reply.displayMessage("只能查询未来半年的日程");
     } else {
         if (viewWidget->getScheduleNum(showdate) == 0) {
             m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);

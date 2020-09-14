@@ -119,9 +119,15 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             m_reply.ttsMessage(str);
             m_reply.displayMessage(str);
         } else {
+            if (m_begintime < QDateTime::currentDateTime() || m_begintime > QDateTime::currentDateTime().addMonths(6)) {
+                QString str = "只能创建未来半年的日程";
+                m_reply.ttsMessage(str);
+                m_reply.displayMessage(str);
+            } else {
             m_reply.ttsMessage(createJsonData->SuggestMsg());
             m_reply.displayMessage(createJsonData->SuggestMsg());
         }
+    }
     }
     return m_reply;
 }
