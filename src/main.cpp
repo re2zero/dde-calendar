@@ -22,6 +22,7 @@
 #include "yearwindow.h"
 #include "exportedinterface.h"
 #include "configsettings.h"
+#include "accessible.h"
 
 #include <DApplication>
 #include <DLog>
@@ -105,6 +106,7 @@ int main(int argc, char *argv[])
 {
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     DApplication a(argc, argv);
+    QAccessible::installFactory(accessibleFactory);
     g_appPath = QDir::homePath() + QDir::separator() + "." + qApp->applicationName();
     QDir t_appDir;
     t_appDir.mkpath(g_appPath);

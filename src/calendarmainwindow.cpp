@@ -367,11 +367,16 @@ void Calendarmainwindow::RaiseWindow()
 }
 void Calendarmainwindow::initUI()
 {
+    //设置主窗口辅助技术显示名称和描述
+    this->setObjectName("MainWindow");
+    this->setAccessibleName("MainWindow");
+    this->setAccessibleDescription("This is the main window");
     m_DynamicIconUpdateTimer = new QTimer(this);
     m_DynamicIconUpdateTimer->start(3000);
 
     QFrame *titleframe = new QFrame(this);
-    titleframe->setObjectName("TitleBar");
+    titleframe->setAccessibleName("TitleFrame");
+    titleframe->setObjectName("titleframe");
     titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     CDynamicIcon::getInstance()->setTitlebar(this->titlebar());
     CDynamicIcon::getInstance()->setIcon();
@@ -379,8 +384,14 @@ void Calendarmainwindow::initUI()
     QStringList titlelist;
     titlelist << tr("Y") << tr("M") << tr("W") << tr("D");
     m_buttonBox = new DButtonBox(this);
+    m_buttonBox->setObjectName("ButtonBox");
+    m_buttonBox->setAccessibleName("ButtonBox");
+    m_buttonBox->setAccessibleDescription("Year, month, week, day button box");
 
     m_yearButton = new DButtonBoxButton(tr("Y"), this);
+    //设置年辅助技术显示名称
+    m_yearButton->setObjectName("YearButton");
+    m_yearButton->setAccessibleName("YearButton");
     DPalette pl = m_yearButton->palette();
     pl.setColor(DPalette::ButtonText, QColor("#414D68"));
     pl.setColor(DPalette::Light, QColor("#E6E6E6"));
@@ -395,10 +406,19 @@ void Calendarmainwindow::initUI()
 
     m_yearButton->setFixedSize(50, 36);
     m_monthButton = new DButtonBoxButton(tr("M"), this);
+    //设置月辅助技术显示名称
+    m_monthButton->setObjectName("MonthButton");
+    m_monthButton->setAccessibleName("MonthButton");
     m_monthButton->setFixedSize(50, 36);
     m_weekButton = new DButtonBoxButton(tr("W"), this);
+    //设置周辅助技术显示名称
+    m_weekButton->setObjectName("WeekButton");
+    m_weekButton->setAccessibleName("WeekButton");
     m_weekButton->setFixedSize(50, 36);
     m_dayButton = new DButtonBoxButton(tr("D"), this);
+    //设置日辅助技术显示名称
+    m_dayButton->setObjectName("DayButton");
+    m_dayButton->setAccessibleName("DayButton");
     m_dayButton->setFixedSize(50, 36);
     m_yearButton->setPalette(pl);
     m_monthButton->setPalette(pl);
@@ -429,6 +449,9 @@ void Calendarmainwindow::initUI()
     titleLayout->addWidget(m_buttonBox);
     titleLayout->addSpacing(52);
     m_searchEdit = new DSearchEdit(this);
+    //设置搜索框辅助技术显示名称
+    m_searchEdit->setObjectName("SearchEdit");
+    m_searchEdit->setAccessibleName("SearchEdit");
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
     m_searchEdit->setFixedHeight(36);
     m_searchEdit->setMinimumWidth(240);
@@ -438,11 +461,16 @@ void Calendarmainwindow::initUI()
     titleframe->setLayout(titleLayout);
 
     DTitlebar *titlebar = this->titlebar();
+    titlebar->setObjectName("TitleBar");
+    titlebar->setAccessibleName("TitleBar");
     titlebar->setFixedHeight(50);
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
     titlebar->setCustomWidget(m_searchEdit, true);
 
     m_stackWidget = new AnimationStackedWidget();
+    m_stackWidget->setObjectName("StackedWidget");
+    m_stackWidget->setAccessibleName("StackedWidget");
+    m_stackWidget->setAccessibleDescription("Container for year window, month window, week window and day window");
     m_stackWidget->setContentsMargins(0, 0, 0, 0);
     m_stackWidget->setDuration(250);
     createview();
@@ -452,6 +480,8 @@ void Calendarmainwindow::initUI()
     tmainLayout->setContentsMargins(0, 0, 0, 0);
     tmainLayout->addWidget(m_stackWidget);
     m_contentBackground = new DFrame;
+    m_contentBackground->setAccessibleName("ScheduleSearchWidgetBackgroundFrame");
+    m_contentBackground->setObjectName("ScheduleSearchWidgetBackgroundFrame");
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
     DPalette anipa = m_contentBackground->palette();
     anipa.setColor(DPalette::Background, "#F8F8F8");
@@ -459,6 +489,9 @@ void Calendarmainwindow::initUI()
     m_contentBackground->setPalette(anipa);
 
     m_schceduleSearchView = new CSchceduleSearchView(this);
+    m_schceduleSearchView->setObjectName("ScheduleSearchWidget");
+    m_schceduleSearchView->setAccessibleName("ScheduleSearchWidget");
+    m_schceduleSearchView->setAccessibleDescription("Window showing search results");
 
     QVBoxLayout *ssLayout = new QVBoxLayout;
     ssLayout->setMargin(0);
@@ -470,6 +503,7 @@ void Calendarmainwindow::initUI()
     m_contentBackground->setVisible(false);
 
     DWidget *maincentralWidget = new DWidget(this);
+    maincentralWidget->setAccessibleName("mainCentralWidget");
 
     maincentralWidget->setLayout(tmainLayout);
 
