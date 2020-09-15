@@ -81,9 +81,10 @@ private:
     /**
      * @brief getNonePropertyStatusSchedule 查询不是重复类型的日程
      * @param queryJsonData jsondata句柄
+     * @param schedule 获取到的半年的日程信息
      * @return 日程信息
      */
-    QVector<ScheduleDateRangeInfo> getNonePropertyStatusSchedule(QueryJsonData *queryJsonData);
+    QVector<ScheduleDateRangeInfo> getNonePropertyStatusSchedule(QueryJsonData *queryJsonData, QVector<ScheduleDateRangeInfo> schedule);
     /**
      * @brief queryOverDueDate 是否查询的是过去的日程
      * @param queryJsonData jsondata句柄
@@ -95,7 +96,6 @@ private:
     QDateTime       m_BeginDateTime;
     QDateTime       m_EndDateTime;
     viewschedulewidget      *viewWidget = nullptr;
-    QVector<ScheduleDateRangeInfo>      showdate {};
 
 
 protected:

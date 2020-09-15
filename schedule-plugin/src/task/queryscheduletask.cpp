@@ -42,7 +42,9 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     QString m_queryTitleName = queryJsonData->TitleName();
     QVector<int> getDayNum = queryJsonData->getRepeatNum();
     viewWidget = new viewschedulewidget();
-    showdate = getHalfAYearSchedule(m_queryTitleName);
+
+    QVector<ScheduleDateRangeInfo> showdate;
+    QVector<ScheduleDateRangeInfo> schedule = getHalfAYearSchedule(m_queryTitleName);
 
     setDateTime(queryJsonData);
 
@@ -76,7 +78,7 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     }
     break;
     default: {
-        showdate = getNonePropertyStatusSchedule(queryJsonData);
+        showdate = getNonePropertyStatusSchedule(queryJsonData, schedule);
     }
     break;
     }
@@ -90,7 +92,8 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
         m_reply.ttsMessage("抱歉，不能查询过期的提醒");
         m_reply.displayMessage("抱歉，不能查询过期的提醒");
-    } else if (queryJsonData->getDateTime().at(0).datetime > QDateTime::currentDateTime().addMonths(6)) {
+    } else if (queryJsonData->getDateTime().size() > 0
+               && queryJsonData->getDateTime().at(0).datetime > QDateTime::currentDateTime().addMonths(6)) {
         m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
         m_reply.ttsMessage("只能查询未来半年的日程");
         m_reply.displayMessage("只能查询未来半年的日程");
@@ -140,7 +143,6 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
         if (queryJsonData->getDateTime().at(1).datetime.date() < QDate::currentDate()) {
             break;
         }
-        showdate = viewWidget->queryScheduleWithDate(showdate, m_BeginDateTime.date(), m_EndDateTime.date());
         //时间处理
         if (queryJsonData->getDateTime().at(0).hasTime) {
             if (queryJsonData->getDateTime().at(0).datetime.time() <= QTime::currentTime())
@@ -157,8 +159,13 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
         }
     }
     break;
-    default:
-        break;
+    default: {
+        //查询日程，如果没有时间则默认查询今天的日程
+        m_BeginDateTime = QDateTime::currentDateTime();
+        m_EndDateTime.setDate(m_BeginDateTime.date());
+        m_EndDateTime.setTime(QTime(23, 59, 59));
+    }
+    break;
     }
 }
 
@@ -335,32 +342,36 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getEveryYearSchedule(QueryJson
     return schedule;
 }
 
-QVector<ScheduleDateRangeInfo> queryScheduleTask::getNonePropertyStatusSchedule(QueryJsonData *queryJsonData)
+QVector<ScheduleDateRangeInfo> queryScheduleTask::getNonePropertyStatusSchedule(QueryJsonData *queryJsonData, QVector<ScheduleDateRangeInfo> schedule)
 {
-    QVector<ScheduleDateRangeInfo> outdefault;
+    QVector<ScheduleDateRangeInfo> scheduleInfo;
+    scheduleInfo.clear();
 
     switch (queryJsonData->getPropertyStatus()) {
     case QueryJsonData::PropertyStatus::ALL:
         break;
     case QueryJsonData::PropertyStatus::NEXT: {
-        if (showdate.isEmpty()) {
+        if (schedule.isEmpty()) {
             break;
         } else {
-            showdate.clear();
-            showdate = viewWidget->getNextScheduleInfo();
+            schedule.clear();
+            scheduleInfo = viewWidget->getNextScheduleInfo();
         }
     }
     break;
     case QueryJsonData::PropertyStatus::LAST:
         break;
     default: {
-        //按照处理过的日期进行查询
-        showdate = viewWidget->queryScheduleWithDate(showdate, m_BeginDateTime.date(), m_EndDateTime.date());
-        //按照处理过的时间进行查询
-        showdate = viewWidget->queryScheduleWithTime(showdate, m_BeginDateTime.time(), m_EndDateTime.time());
+        if (m_BeginDateTime.isValid()) {
+            qDebug() << m_BeginDateTime << m_EndDateTime;
+            //按照处理过的日期进行查询
+            scheduleInfo = viewWidget->queryScheduleWithDate(schedule, m_BeginDateTime.date(), m_EndDateTime.date());
+            //按照处理过的时间进行查询
+            scheduleInfo = viewWidget->queryScheduleWithTime(scheduleInfo, m_BeginDateTime.time(), m_EndDateTime.time());
+        }
     }
     }
-    return showdate;
+    return scheduleInfo;
 }
 
 bool queryScheduleTask::queryOverDueDate(QueryJsonData *queryJsonData)
