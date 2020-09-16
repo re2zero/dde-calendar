@@ -778,6 +778,12 @@ void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
     }
 
     switch (index) {
+    //年窗口截面刷新
+    case DDECalendar::CalendarYearWindow: {
+        //获取数据
+        getScheduleInfo();
+        m_yearwindow->slotupdateSchedule(0);
+    }break;
     case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->slotupdateSchedule(0);
     } break;
