@@ -103,10 +103,16 @@ void CYearWindow::initUI()
     m_today->setAutoFillBackground(true);
     m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight - 4);
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
+    //设置对象名称和辅助显示名称
+    m_prevButton->setObjectName("PrevButton");
+    m_prevButton->setAccessibleName("PrevButton");
     m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
 
     m_nextButton = new DIconButton(DStyle::SP_ArrowRight, this);
+    //设置对象名称和辅助显示名称
+    m_nextButton->setObjectName("NextButton");
+    m_nextButton->setAccessibleName("NextButton");
     m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
 

@@ -43,6 +43,9 @@ CSchceduleSearchItem::CSchceduleSearchItem(QWidget *parent)
     : DLabel(parent)
     , m_rightMenu(new DMenu(this))
 {
+    //设置对象名称和辅助显示名称
+    this->setObjectName("CScheduleDataItem");
+    this->setAccessibleName("CScheduleDataItem");
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
@@ -738,6 +741,9 @@ void CSchceduleSearchView::mousePressEvent(QMouseEvent *event)
 CSchceduleSearchDateItem::CSchceduleSearchDateItem(QWidget *parent)
     : DLabel(parent)
 {
+    //设置对象名称和辅助显示名称
+    this->setObjectName("CScheduleDateItem");
+    this->setAccessibleName("CScheduleDateItem");
     setAutoFillBackground(true);
 }
 
@@ -794,7 +800,9 @@ void CSchceduleSearchDateItem::mousePressEvent(QMouseEvent *event)
 CScheduleListWidget::CScheduleListWidget(QWidget *parent)
     : DListWidget (parent)
 {
-
+    //设置对象名称和辅助显示名称
+    this->setObjectName("CScheduleListWidget");
+    this->setAccessibleName("CScheduleListWidget");
 }
 
 CScheduleListWidget::~CScheduleListWidget()

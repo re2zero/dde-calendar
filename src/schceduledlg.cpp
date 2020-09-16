@@ -501,6 +501,9 @@ void CSchceduleDlg::changeEvent(QEvent *event)
 
 void CSchceduleDlg::initUI()
 {
+    //设置对象名称和辅助显示名称
+    this->setObjectName("ScheduleEditDialog");
+    this->setAccessibleName("ScheduleEditDialog");
     //在点击任何对话框上的按钮后不关闭对话框，保证关闭子窗口时不被一起关掉
     setOnButtonClickedClose(false);
 
@@ -554,6 +557,9 @@ void CSchceduleDlg::initUI()
     m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_typeLabel->setFixedSize(78, 36);
     m_typeComBox = new DComboBox();
+    //设置对象名称和辅助显示名称
+    m_typeComBox->setObjectName("ScheduleTypeCombobox");
+    m_typeComBox->setAccessibleName("ScheduleTypeCombobox");
     m_typeComBox->setFixedSize(319, 36);
     m_typeComBox->setIconSize(QSize(24,24));
     m_typeComBox->insertItem(0,
@@ -592,6 +598,9 @@ void CSchceduleDlg::initUI()
     conttelabellayout->addWidget(m_contentLabel);
     conttelabellayout->addStretch();
     m_textEdit = new DTextEdit(this);
+    //设置对象名称和辅助显示名称
+    m_textEdit->setObjectName("ScheduleTitleEdit");
+    m_textEdit->setAccessibleName("ScheduleTitleEdit");
     m_textEdit->setFixedSize(319, 86);
     m_textEdit->setAcceptRichText(false);
 
@@ -620,6 +629,9 @@ void CSchceduleDlg::initUI()
     m_adllDayLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_adllDayLabel->setFixedWidth(78);
     m_allDayCheckbox = new DCheckBox(this);
+    //设置对象名称和辅助显示名称
+    m_allDayCheckbox->setObjectName("AllDayCheckBox");
+    m_allDayCheckbox->setAccessibleName("AllDayCheckBox");
     alldayLabellayout->addWidget(m_adllDayLabel);
     alldayLabellayout->addWidget(m_allDayCheckbox);
     maintlayout->addLayout(alldayLabellayout);
@@ -638,9 +650,15 @@ void CSchceduleDlg::initUI()
     m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_beginTimeLabel->setFixedSize(78, 36);
     m_beginDateEdit = new QDateEdit(this);
+    //设置对象名称和辅助显示名称
+    m_beginDateEdit->setObjectName("ScheduleBeginDateEdit");
+    m_beginDateEdit->setAccessibleName("ScheduleBeginDateEdit");
     m_beginDateEdit->setFixedSize(175, 36);
 
     m_beginTimeEdit = new CTimeEdit(this);
+    //设置对象名称和辅助显示名称
+    m_beginTimeEdit->setObjectName("ScheduleBeginTimeEdit");
+    m_beginTimeEdit->setAccessibleName("ScheduleBeginTimeEdit");
     m_beginTimeEdit->setFixedSize(141, 36);
     m_beginDateEdit->setCalendarPopup(true);
     m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
@@ -665,8 +683,14 @@ void CSchceduleDlg::initUI()
     m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_endTimeLabel->setFixedSize(78, 36);
     m_endDateEdit = new QDateEdit(this);
+    //设置对象名称和辅助显示名称
+    m_endDateEdit->setObjectName("ScheduleEndDateEdit");
+    m_endDateEdit->setAccessibleName("ScheduleEndDateEdit");
     m_endDateEdit->setFixedSize(175, 36);
     m_endTimeEdit = new CTimeEdit(this);
+    //设置对象名称和辅助显示名称
+    m_endTimeEdit->setObjectName("ScheduleEndTimeEdit");
+    m_endTimeEdit->setAccessibleName("ScheduleEndTimeEdit");
     m_endTimeEdit->setFixedSize(141, 36);
     m_endDateEdit->setCalendarPopup(true);
     m_endDateEdit->setDisplayFormat("yyyy-MM-dd");
@@ -694,6 +718,9 @@ void CSchceduleDlg::initUI()
     m_remindSetLabel->setFixedWidth(78);
 
     m_rmindCombox = new DComboBox();
+    //设置对象名称和辅助显示名称
+    m_rmindCombox->setObjectName("RmindComboBox");
+    m_rmindCombox->setAccessibleName("RmindComboBox");
     m_rmindCombox->setFixedSize(175, 36);
     m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     rminQLabellayout->addWidget(m_remindSetLabel);
@@ -715,6 +742,9 @@ void CSchceduleDlg::initUI()
     m_beginrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_beginrepeatLabel->setFixedWidth(78);
     m_beginrepeatCombox = new DComboBox();
+    //设置对象名称和辅助显示名称
+    m_beginrepeatCombox->setObjectName("BeginRepeatComboBox");
+    m_beginrepeatCombox->setAccessibleName("BeginRepeatComboBox");
     m_beginrepeatCombox->setFixedSize(175, 36);
     m_beginrepeatCombox->addItem(tr("Never"));
     m_beginrepeatCombox->addItem(tr("Daily"));
@@ -741,6 +771,9 @@ void CSchceduleDlg::initUI()
     m_endrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_endrepeatLabel->setFixedWidth(78);
     m_endrepeatCombox = new DComboBox();
+    //设置对象名称和辅助显示名称
+    m_endrepeatCombox->setObjectName("EndRepeatComboBox");
+    m_endrepeatCombox->setAccessibleName("EndRepeatComboBox");
     m_endrepeatCombox->setFixedSize(175, 36);
     m_endrepeatCombox->addItem(tr("Never"));
     m_endrepeatCombox->addItem(tr("After"));
@@ -754,6 +787,9 @@ void CSchceduleDlg::initUI()
     endrepeattimeslayout->setMargin(0);
     endrepeattimeslayout->setContentsMargins(10, 0, 0, 0);
     m_endrepeattimes = new DLineEdit(this);
+    //设置对象名称和辅助显示名称
+    m_endrepeattimes->setObjectName("EndRepeatTimeEidt");
+    m_endrepeattimes->setAccessibleName("EndRepeatTimeEidt");
     m_endrepeattimes->setFixedSize(71, 36);
     m_endrepeattimes->setText(QString::number(10));
     m_endrepeattimes->setClearButtonEnabled(false);
@@ -767,11 +803,17 @@ void CSchceduleDlg::initUI()
     endrepeattimeslayout->addWidget(m_endrepeattimes);
     endrepeattimeslayout->addWidget(m_endrepeattimesLabel);
     m_endrepeattimesWidget = new DWidget;
+    //设置对象名称和辅助显示名称
+    m_endrepeattimesWidget->setObjectName("EndRepeatTimeWidget");
+    m_endrepeattimesWidget->setAccessibleName("EndRepeatTimeWidget");
     m_endrepeattimesWidget->setLayout(endrepeattimeslayout);
     m_endrepeattimesWidget->setVisible(false);
     endrepeatLabellayout->addWidget(m_endrepeattimesWidget);
 
     m_endRepeatDate = new DDateEdit;
+    //设置对象名称和辅助显示名称
+    m_endRepeatDate->setObjectName("EndRepeatDateEdit");
+    m_endRepeatDate->setAccessibleName("EndRepeatDateEdit");
     m_endRepeatDate->setCalendarPopup(true);
     m_endRepeatDate->setFixedSize(141, 36);
     m_endRepeatDate->setDate(QDate::currentDate());
@@ -784,6 +826,9 @@ void CSchceduleDlg::initUI()
     endrepeatLabellayout->addStretch();
     m_endRepeatDate->setVisible(false);
     m_endrepeatWidget = new DWidget;
+    //设置对象名称和辅助显示名称
+    m_endrepeatWidget->setObjectName("EndRepeatDateWidget");
+    m_endrepeatWidget->setAccessibleName("EndRepeatDateWidget");
     m_endrepeatWidget->setLayout(endrepeatLabellayout);
     maintlayout->addWidget(m_endrepeatWidget);
     m_endrepeatWidget->setVisible(false);
