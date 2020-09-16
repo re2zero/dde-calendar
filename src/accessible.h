@@ -7,6 +7,12 @@
 #include "monthwindow.h"
 #include "weekwindow.h"
 #include "daywindow.h"
+#include "SchecduleRemindWidget.h"
+#include "alldayeventview.h"
+#include "monthgraphiview.h"
+#include "graphicsview.h"
+#include "customframe.h"
+#include "animationstackedwidget.h"
 
 #include <DSwitchButton>
 #include <DBackgroundGroup>
@@ -36,6 +42,12 @@ SET_FORM_ACCESSIBLE(CYearWindow,"YearWidget");
 SET_FORM_ACCESSIBLE(CMonthWindow,"MonthWidget");
 SET_FORM_ACCESSIBLE(CWeekWindow,"WeekWidget");
 SET_FORM_ACCESSIBLE(CDayWindow,"DayWidget");
+SET_FORM_ACCESSIBLE(SchecduleRemindWidget,"ScheduleRemindWidget");
+SET_FORM_ACCESSIBLE(CAllDayEventWeekView,"AllDayGraphiview");
+SET_FORM_ACCESSIBLE(CMonthGraphiview,"MonthGraphiview");
+SET_FORM_ACCESSIBLE(CGraphicsView,"PartTimeGraphiview");
+SET_FORM_ACCESSIBLE(CustomFrame,"CustomFrame");
+SET_FORM_ACCESSIBLE(AnimationStackedWidget,"AnimationStackedWidget");
 
 // Qt控件
 SET_FORM_ACCESSIBLE(QFrame, m_w->objectName().isEmpty() ? "frame" : m_w->objectName())
@@ -70,7 +82,12 @@ QAccessibleInterface *accessibleFactory(const QString &classname, QObject *objec
     USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CMonthWindow);
     USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CWeekWindow);
     USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CDayWindow);
-
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),SchecduleRemindWidget);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CAllDayEventWeekView);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CMonthGraphiview);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CGraphicsView);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CustomFrame);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),AnimationStackedWidget);
 
 //      Qt 控件
     USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), QFrame);

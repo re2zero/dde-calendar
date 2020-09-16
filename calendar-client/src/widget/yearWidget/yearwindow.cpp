@@ -959,7 +959,7 @@ void YearFrame::slotSelectInfo(bool flag)
 void YearFrame::slotupdateSchedule(const int id)
 {
     //设置每个月的时间
-    for (int i =0; i < m_monthViewList.size(); ++i) {
+    for (int i = 0; i < m_monthViewList.size(); ++i) {
         m_monthViewList.at(i)->slotupdateSchedule(id);
     }
 }
