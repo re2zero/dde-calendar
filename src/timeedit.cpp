@@ -39,33 +39,10 @@ void CTimeEdit::setTime(QTime time)
 
 QTime CTimeEdit::getTime()
 {
-    m_timeEdit->lineEdit()->setInputMask("00:00;#");
-    QString timetext = m_timeEdit->text();
-
-    if (timetext.count() == 1) {
-        timetext = "00:00";
-    }
-    if (timetext.right(1) == ":") {
-        timetext = timetext + "00";
-    }
-    if (timetext.left(1) == ":") {
-        timetext = "00" + timetext;
-    }
-
-    QStringList t_list = timetext.split(":");
-    QString firststr = t_list.at(0);
-    QString secondstr = t_list.at(1);
-
-    if (firststr.count() == 1) {
-        firststr = "0" + firststr;
-    }
-    if (secondstr.count() == 1) {
-        secondstr = "0" + secondstr;
-    }
-
-    timetext = firststr + ":" + secondstr;
+    //获取显示的text
+    QString timetext = m_timeEdit->lineEdit()->displayText();
+    //将text转换为时间
     m_time = QTime::fromString(timetext, "hh:mm");
-
     return m_time;
 }
 
