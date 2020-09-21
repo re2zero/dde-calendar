@@ -47,46 +47,14 @@ class CYearWindow: public QMainWindow
 public:
     CYearWindow(QWidget *parent = nullptr);
     ~CYearWindow() override;
-    /**
-     * @brief setDate 设置年视图当前显示的时间
-     * @param date 年视图当前显示的时间
-     */
     void setDate(QDate date);
-    /**
-     * @brief initUI 初始化年视图的界面显示
-     */
     void initUI();
-    /**
-     * @brief initConnection 初始化信号和槽的连接
-     */
     void initConnection();
-    /**
-     * @brief setLunarVisible 设置年视图是否显示阴历信息
-     * @param state 是否显示阴历信息
-     */
     void setLunarVisible(bool state);
-    /**
-     * @brief setTheMe 设置系统主题
-     * @param type 主题类型
-     */
     void setTheMe(int type = 0);
-    /**
-     * @brief setSearchWFlag 设置是否在进行搜索
-     * @param flag 是否所搜的标志
-     */
     void setSearchWFlag(bool flag);
-    /**
-     * @brief clearSearch
-     */
     void clearSearch();
-    /**
-     * @brief setSearchText
-     * @param str
-     */
     void setSearchText(QString str);
-    /**
-     * @brief getScheduleInfo 判断一年中每一天是否有日程信息
-     */
     void getScheduleInfo();
 signals:
     /**
@@ -131,75 +99,24 @@ signals:
      */
     void signalupdateschcedule();
 private slots:
-    /**
-     * @brief slotprev 通过鼠标点击左箭头切换到上一年，刷新年视图下的所有内容，并隐藏日程展示浮窗。
-     */
     void slotprev();
-    /**
-     * @brief slotnext 通过鼠标点击右箭头切换到下一年，并刷新年视图下的所有内容，并隐藏日程展示浮窗。
-     */
     void slotnext();
-    /**
-     * @brief slottoday 通过鼠标点击返回今天按钮返回到今天，并刷新年视图下的所有内容，并隐藏日程展示浮窗。
-     */
     void slottoday();
-    /**
-     * @brief slotsearchDateSelect 设置选择的时间
-     * @param date 时间
-     */
     void slotsearchDateSelect(QDate date);
-    /**
-     * @brief slotTransitSearchSchedule
-     * @param id
-     */
     void slotTransitSearchSchedule(int id = 0);
 public slots:
-    /**
-     * @brief slotSetSchceduleHide 隐藏日程浮框
-     */
     void slotSetSchceduleHide();
-    /**
-     * @brief slotReturnTodayUpdate
-     */
     void slotReturnTodayUpdate();
-    /**
-     * @brief slotupdateSchedule 更新当前时间
-     * @param id
-     */
     void slotupdateSchedule(const int id);
-    /**
-     * @brief setYearData 设置年视图阴历和按钮信息
-     */
     void setYearData();
-    /**
-     * @brief slotUpdateCurrentDate 设置年视图当前时间的信息
-     * @param date 时间
-     */
     void slotUpdateCurrentDate(const QDate &date);
 protected:
-    /**
-     * @brief wheelEvent 通过鼠标中间的滚轮滚动切换年份，并刷新年视图下的所有内容。
-     * @param event 鼠标滚轮事件
-     */
     void wheelEvent(QWheelEvent *event) override;
-    /**
-     * @brief eventFilter 过滤器，过滤返回今天的按钮事件
-     * @param watched 事件对象
-     * @param event 事件类型
-     * @return false
-     */
     bool eventFilter(QObject *watched, QEvent *event) override;
-    /**
-     * @brief mousePressEvent 鼠标单击事件
-     * @param event 鼠标事件
-     */
     void mousePressEvent(QMouseEvent *event) override;
-    /**
-     * @brief resizeEvent 窗口大小调整事件，搜索时，调整边框大小
-     * @param event 窗口大小调整事件
-     */
     void resizeEvent(QResizeEvent *event) override;
 private:
+    //年视图页面框架
     DFrame *m_contentBackground = nullptr;
     DIconButton *m_prevButton = nullptr;
     DIconButton *m_nextButton = nullptr;
@@ -212,7 +129,9 @@ private:
     YearFrame *YearWidget_First = nullptr;
     YearFrame *YearWidget_Second = nullptr;
     CustomFrame *m_todayframe = nullptr;
+    //动画widget
     AnimationStackedWidget *m_StackedWidget = nullptr;
+    //年视图布局
     QHBoxLayout *m_tmainLayout = nullptr;
     QString                     m_searchText;
     bool                        m_searchfalg = false;
@@ -223,33 +142,11 @@ class YearFrame : public DFrame
 {
     Q_OBJECT
 public:
-    /**
-     * @brief YearFrame 构造函数
-     * @param parent 父类
-     */
     explicit YearFrame(DWidget *parent = nullptr);
-    /**
-      *@brief ~YearFrame 析构函数
-      */
     ~YearFrame() override;
-    /**
-     * @brief setDate 设置当前时间
-     * @param date 时间
-     */
     void setDate(QDate &date);
-    /**
-     * @brief getInfoAndSetLineFlag 获取日程信息，设置是否有日程的标志
-     */
     void getInfoAndSetLineFlag();
-    /**
-     * @brief setTheMe 根据系统主题类型设置颜色
-     * @param type 系统主题类型
-     */
     void setTheMe(int type = 0);
-    /**
-     * @brief setSearchWFlag 设置搜索的标志
-     * @param flag 是否进行了搜索
-     */
     void setSearchWFlag(bool flag);
     /**
      * @brief getLunarYear 获取阴历年信息
@@ -267,15 +164,8 @@ public:
     {
         return m_LunarDay;
     }
-    /**
-     * @brief getLunarData 更新当天的农历年份数据。
-     */
     void getLunarData();
 protected:
-    /**
-     * @brief mousePressEvent 鼠标单击日期区域外隐藏日程浮框
-     * @param event 鼠标单击事件
-     */
     void mousePressEvent(QMouseEvent *event) override;
 signals:
     /**
@@ -303,30 +193,13 @@ signals:
      */
     void signalupdateschcedule();
 public slots:
-    /**
-     * @brief slotHideInfo 隐藏日程浮框
-     */
     void slotHideInfo();
-    /**
-     * @brief slotSelectInfo 设置是否选择了日期的标志
-     * @param flag 是否选择了如期
-     */
     void slotSelectInfo(bool flag);
-    /**
-     * @brief slotupdateSchedule 更新日程
-     * @param id
-     */
     void slotupdateSchedule(const int id);
-    /**
-     * @brief slotSetSchceduleHide 隐藏日程浮框
-     */
     void slotSetSchceduleHide();
-    /**
-     * @brief slotcurrentDateChanged 设置当前时间
-     * @param date 时间
-     */
     void slotcurrentDateChanged(QDate date);
 private:
+    //12个月份
     QList<CYearView *>          m_monthViewList;
     QLabel *m_YearLabel = nullptr;
     QLabel *m_YearLunarLabel = nullptr;

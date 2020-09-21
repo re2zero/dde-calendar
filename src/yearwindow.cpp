@@ -53,6 +53,12 @@ CYearWindow::~CYearWindow()
 
 }
 
+/**
+ * @brief eventFilter 过滤器，过滤返回今天的按钮事件
+ * @param watched 事件对象
+ * @param event 事件类型
+ * @return false
+ */
 bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
 {
     //事件对象为：返回今天的按钮
@@ -66,6 +72,10 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
     return QMainWindow::eventFilter(watched, event);
 }
 
+/**
+ * @brief mousePressEvent 鼠标单击事件
+ * @param event 鼠标事件
+ */
 void CYearWindow::mousePressEvent(QMouseEvent *event)
 {
     //单击日期区域外，隐藏日程浮框
@@ -73,20 +83,30 @@ void CYearWindow::mousePressEvent(QMouseEvent *event)
     QMainWindow::mousePressEvent(event);
 }
 
+/**
+ * @brief resizeEvent 窗口大小调整事件，搜索时，调整边框大小
+ * @param event 窗口大小调整事件
+ */
 void CYearWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
     m_topWidget->setGeometry(0, 0, this->width(), DDEMonthCalendar::M_YTopHeight);
 
-    if (m_searchfalg) {//展示搜索结果时的边距
+    if (m_searchfalg) {
+        //展示搜索结果时的边距
         m_tmainLayout->setContentsMargins(10, 0, 2, 0);
         m_topWidget->setContentsMargins(10, 0, 2, 0);
-    } else {//没有搜索结果时的边距
+    } else {
+        //没有搜索结果时的边距
         m_tmainLayout->setContentsMargins(10, 0, 10, 0);
         m_topWidget->setContentsMargins(10, 0, 10, 0);
     }
 }
 
+/**
+ * @brief setDate 设置年视图当前显示的时间
+ * @param date 年视图当前显示的时间
+ */
 void CYearWindow::setDate(QDate date)
 {
     //无效数据
@@ -101,128 +121,185 @@ void CYearWindow::setDate(QDate date)
     slotUpdateCurrentDate(date);
 }
 
+/**
+ * @brief initUI 初始化年视图的界面显示
+ */
 void CYearWindow::initUI()
 {
     //设置背景色
-    m_contentBackground = new DFrame(this);//创建背景Frame
+    //创建背景Frame
+    m_contentBackground = new DFrame(this);
     DPalette anipa = m_contentBackground->palette();
     anipa.setColor(DPalette::Background, "#F8F8F8");
-    m_contentBackground->setAutoFillBackground(true);//是否可以设置背景色
+    //是否可以设置背景色
+    m_contentBackground->setAutoFillBackground(true);
     m_contentBackground->setPalette(anipa);
     //新建“返回今天”的label
     m_today = new QLabel(this);
-    m_today->installEventFilter(this);//设置过滤器
+    //设置过滤器
+    m_today->installEventFilter(this);
     QFont todayfont;
-    todayfont.setPixelSize(DDECalendar::FontSizeSixteen);//设置字体大小
-    m_today->setFont(todayfont);//“返回今天”的字体
-    m_today->setAlignment(Qt::AlignCenter);//设置对齐方式
-    m_today->setText(QCoreApplication::translate("today", "Today", "Today"));//设置问题
-    m_today->setFixedWidth(88);//设置宽度
-    m_today->setAutoFillBackground(true);//是否可以设置背景色
-    m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight - 4);//设置高度
+    //设置字体大小
+    todayfont.setPixelSize(DDECalendar::FontSizeSixteen);
+    //“返回今天”的字体
+    m_today->setFont(todayfont);
+    //设置对齐方式
+    m_today->setAlignment(Qt::AlignCenter);
+    //设置字体
+    m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
+    //设置宽度
+    m_today->setFixedWidth(88);
+    //是否可以设置背景色
+    m_today->setAutoFillBackground(true);
+    //设置高度
+    m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight - 4);
     //新建上一年按钮
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     //设置对象名称和辅助显示名称
     m_prevButton->setObjectName("PrevButton");
     m_prevButton->setAccessibleName("PrevButton");
-    m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);//设置按钮宽度
-    m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);//设置按钮高度
+    //设置按钮宽度
+    m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
+    //设置按钮高度
+    m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
 
     m_nextButton = new DIconButton(DStyle::SP_ArrowRight, this);
     //设置对象名称和辅助显示名称
     m_nextButton->setObjectName("NextButton");
     m_nextButton->setAccessibleName("NextButton");
-    m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);//设置按钮宽度
-    m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);//设置按钮高度
+    //设置按钮宽度
+    m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
+    //设置按钮高度
+    m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     //新建年份的label
     m_YearLabel = new QLabel(this);
-    m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);//设置高度
+    //设置高度
+    m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
     QFont t_labelF;
     t_labelF.setWeight(QFont::Medium);//设置字体权重
-    t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);//设置字体大小
-    m_YearLabel->setFont(t_labelF);//为年份label设置字体
+    //设置字体大小
+    t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
+    //为年份label设置字体
+    m_YearLabel->setFont(t_labelF);
     DPalette pa = m_YearLabel->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
-    m_YearLabel->setPalette(pa);//设置颜色
+    //设置颜色
+    m_YearLabel->setPalette(pa);
     //新建阴历年label
     m_YearLunarLabel = new QLabel(m_contentBackground);
-    m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);//设置大小
+    //设置大小
+    m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
     QFont ylabelF;
-    ylabelF.setWeight(QFont::Medium);//设置字体权重
-    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);//设置字体大小
-    m_YearLunarLabel->setFont(ylabelF);//为阴历年label设置字体
+    //设置字体权重
+    ylabelF.setWeight(QFont::Medium);
+    //设置字体大小
+    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+    //为阴历年label设置字体
+    m_YearLunarLabel->setFont(ylabelF);
     DPalette Lunapa = m_YearLunarLabel->palette();
     Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-    m_YearLunarLabel->setPalette(Lunapa);//设置颜色
+    //设置颜色
+    m_YearLunarLabel->setPalette(Lunapa);
     //新建阴历日label
     m_YearLunarDayLabel = new QLabel(m_contentBackground);
-    m_YearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunatLabelHeight);//设置阴历日的大小
-    m_YearLunarDayLabel->setFont(ylabelF);//设置字体
-    m_YearLunarDayLabel->setPalette(Lunapa);//设置颜色
-    m_YearLunarDayLabel->setAlignment(Qt::AlignRight);//设置对齐方式
+    //设置阴历日的大小
+    m_YearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunatLabelHeight);
+    //设置字体
+    m_YearLunarDayLabel->setFont(ylabelF);
+    //设置颜色
+    m_YearLunarDayLabel->setPalette(Lunapa);
+    //设置对齐方式
+    m_YearLunarDayLabel->setAlignment(Qt::AlignRight);
     //新建title布局
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
     yeartitleLayout->setContentsMargins(11, 12, 8, 10);
-    yeartitleLayout->addWidget(m_YearLabel);//将年份label添加到布局中
+    //将年份label添加到布局中
+    yeartitleLayout->addWidget(m_YearLabel);
     //新建title1布局
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
     yeartitleLayout1->setMargin(0);
     yeartitleLayout1->setSpacing(0);
     yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
-    yeartitleLayout1->addWidget(m_YearLunarLabel);//将阴历年label添加到title1布局中
+    //将阴历年label添加到title1布局中
+    yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout1->addSpacing(390);
     yeartitleLayout1->addStretch();
-    yeartitleLayout1->addWidget(m_YearLunarDayLabel, 0, Qt::AlignVCenter);//将阴历日label添加到布局中，并设置对齐方式
+    //将阴历日label添加到布局中，并设置对齐方式
+    yeartitleLayout1->addWidget(m_YearLunarDayLabel, 0, Qt::AlignVCenter);
     //新建返回今天的Frame
     m_todayframe = new CustomFrame(this);
     m_todayframe->setContentsMargins(0, 0, 0, 0);
     m_todayframe->setRoundState(true, true, true, true);
-    m_todayframe->setBColor(Qt::white);//设置颜色
-    m_todayframe->setFixedHeight(DDEYearCalendar::Y_MLableHeight);//设置高度
+    //设置颜色
+    m_todayframe->setBColor(Qt::white);
+    //设置高度
+    m_todayframe->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
     m_todayframe->setboreder(1);
-    QHBoxLayout *todaylayout = new QHBoxLayout;//新建返回今天的布局
+    //新建返回今天的布局
+    QHBoxLayout *todaylayout = new QHBoxLayout;
     todaylayout->setMargin(0);
     todaylayout->setSpacing(0);
-    todaylayout->addWidget(m_prevButton);//将上一年添加到布局中
-    todaylayout->addWidget(m_today, 0, Qt::AlignCenter);//将返回今天label添加到布局中，并设置对齐方式
-    todaylayout->addWidget(m_nextButton);//将下一年添加到布局中
-    m_todayframe->setLayout(todaylayout);//设置为Frame布局
+    //将上一年添加到布局中
+    todaylayout->addWidget(m_prevButton);
+    //将返回今天label添加到布局中，并设置对齐方式
+    todaylayout->addWidget(m_today, 0, Qt::AlignCenter);
+    //将下一年添加到布局中
+    todaylayout->addWidget(m_nextButton);
+    //设置为Frame布局
+    m_todayframe->setLayout(todaylayout);
     yeartitleLayout1->addSpacing(10);
-    yeartitleLayout1->addWidget(m_todayframe);//将Frame添加到title1布局中
-    yeartitleLayout->addLayout(yeartitleLayout1);//将title1布局添加到title布局中
+    //将Frame添加到title1布局中
+    yeartitleLayout1->addWidget(m_todayframe);
+    //将title1布局添加到title布局中
+    yeartitleLayout->addLayout(yeartitleLayout1);
     //为title新建一个widget
     m_topWidget = new DWidget(this);
-    m_topWidget->setLayout(yeartitleLayout);//设置布局为title布局
+    //设置布局为title布局
+    m_topWidget->setLayout(yeartitleLayout);
     //新建两个YearFrame
-    YearWidget_First = new YearFrame();//第一个YearFrame
-    YearWidget_Second = new YearFrame();//第二个YearFrame
+    //第一个YearFrame
+    YearWidget_First = new YearFrame();
+    //第二个YearFrame
+    YearWidget_Second = new YearFrame();
     //新建动画
     m_StackedWidget = new  AnimationStackedWidget(AnimationStackedWidget::TB);
-    m_StackedWidget->addWidget(YearWidget_First);//将第一个YearFrame添加到动画中
-    m_StackedWidget->addWidget(YearWidget_Second);//将第二个YearFrame添加到动画中
+    //将第一个YearFrame添加到动画中
+    m_StackedWidget->addWidget(YearWidget_First);
+    //将第二个YearFrame添加到动画中
+    m_StackedWidget->addWidget(YearWidget_Second);
     m_StackedWidget->setContentsMargins(0, 0, 0, 0);
-    m_StackedWidget->setDuration(600);//设置动画时间
-    m_YearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(0));//获得初始的页面
-    QVBoxLayout *hhLayout = new QVBoxLayout;//设置动画的布局
+    //设置动画时间
+    m_StackedWidget->setDuration(600);
+    //获得初始的页面
+    m_YearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(0));
+    //设置动画的布局
+    QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->setMargin(0);
     hhLayout->setSpacing(0);
     hhLayout->setContentsMargins(0, 0, 0, 0);
-    hhLayout->addWidget(m_StackedWidget);//将动画添加到动画的布局总
+    //将动画添加到动画的布局总
+    hhLayout->addWidget(m_StackedWidget);
     //设置最终的布局
     m_tmainLayout = new QHBoxLayout;
     m_tmainLayout->setMargin(0);
     m_tmainLayout->setSpacing(0);
     m_tmainLayout->setContentsMargins(10, 0, 10, 0);
-    m_tmainLayout->addLayout(hhLayout);//将动画的布局添加到最终布局中
+    //将动画的布局添加到最终布局中
+    m_tmainLayout->addLayout(hhLayout);
 
     m_contentBackground->setContentsMargins(0, 0, 0, 0);
-    m_contentBackground->setLayout(m_tmainLayout);//设置布局为最终布局
+    //设置布局为最终布局
+    m_contentBackground->setLayout(m_tmainLayout);
 
-    setCentralWidget(m_contentBackground);//将Frame设置为中心部件
+    //将Frame设置为中心部件
+    setCentralWidget(m_contentBackground);
 }
 
+/**
+ * @brief initConnection 初始化信号和槽的连接
+ */
 void CYearWindow::initConnection()
 {
     //上/下一年clicked的信号和槽连接
@@ -276,12 +353,22 @@ void CYearWindow::initConnection()
             &CYearWindow::setYearData);
 }
 
+/**
+ * @brief setLunarVisible 设置年视图是否显示阴历信息
+ * @param state 是否显示阴历信息
+ */
 void CYearWindow::setLunarVisible(bool state)
 {
-    m_YearLunarLabel->setVisible(state);//设置年份label是否可见
-    m_YearLunarDayLabel->setVisible(state);//设置阴历年label是否可见
+    //设置年份label是否可见
+    m_YearLunarLabel->setVisible(state);
+    //设置阴历年label是否可见
+    m_YearLunarDayLabel->setVisible(state);
 }
 
+/**
+ * @brief setTheMe 设置系统主题
+ * @param type 主题类型
+ */
 void CYearWindow::setTheMe(int type)
 {
     //系统类型为浅色或者跟随系统
@@ -290,70 +377,72 @@ void CYearWindow::setTheMe(int type)
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#F8F8F8");
         m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);//设置背景色
+        //设置背景色
+        m_contentBackground->setBackgroundRole(DPalette::Background);
         //设置返回今天的背景和字体颜色
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::WindowText, QColor("#000000"));
         todaypa.setColor(DPalette::Background, Qt::white);
         m_today->setPalette(todaypa);
-        m_today->setForegroundRole(DPalette::WindowText);//设置字体颜色
-        m_today->setBackgroundRole(DPalette::Background);//设置背景颜色
-
+        m_today->setForegroundRole(DPalette::WindowText);
+        m_today->setBackgroundRole(DPalette::Background);
         m_todayframe->setBColor(Qt::white);
         //设置年份的字体颜色
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(pa);
-        m_YearLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
-        //设置阴历年份的字体颜色
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
         m_YearLunarLabel->setPalette(Lunapa);
-        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
-        //设置阴历日的字体颜色
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
         m_YearLunarDayLabel->setPalette(Lunapa);
-        m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
-    } else if (type == 2) {//系统类型为深色
-        //设置背景颜色
+        m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);
+    } else if (type == 2) {
+        //系统类型为深色
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#252525");
         m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);//设置背景颜色
+        m_contentBackground->setBackgroundRole(DPalette::Background);
         //设置返回今天按钮的背景和字体颜色
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         QColor tbcolor = "#414141";
-        tbcolor.setAlphaF(0.0);//设置背景色
+        tbcolor.setAlphaF(0.0);
         todaypa.setColor(DPalette::Background, tbcolor);
         m_today->setPalette(todaypa);
-        m_today->setForegroundRole(DPalette::WindowText);//设置字体颜色
-        m_today->setBackgroundRole(DPalette::Background);//设置背景颜色
+        m_today->setForegroundRole(DPalette::WindowText);
+        m_today->setBackgroundRole(DPalette::Background);
         QColor tbcolor2 = "#414141";
-        tbcolor2.setAlphaF(0.3);//设置透明度
+        tbcolor2.setAlphaF(0.3);
         m_todayframe->setBColor(tbcolor2);
         //设置年份字体颜色
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(pa);
-        m_YearLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         //设置阴历年字体颜色
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
         m_YearLunarLabel->setPalette(Lunapa);
-        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
         //设置阴历日的颜色
         m_YearLunarDayLabel->setPalette(Lunapa);
-        m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
+        m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);
     }
     //设置YearFrame的系统类型
-    YearWidget_First->setTheMe(type);//设置第一个YearFrame的系统类型
-    YearWidget_Second->setTheMe(type);//设置第二个YearFrame的系统类型
+    YearWidget_First->setTheMe(type);
+    YearWidget_Second->setTheMe(type);
     //设置title部分的背景颜色
     DPalette palette = m_topWidget->palette();
     palette.setBrush(DPalette::WindowText, palette.color(DPalette::Window));
-    m_topWidget->setAutoFillBackground(true);//是否可以设置背景色
+    m_topWidget->setAutoFillBackground(true);
     m_topWidget->setPalette(palette);
 }
+/**
+ * @brief setSearchWFlag 设置是否在进行搜索
+ * @param flag 是否所搜的标志
+ */
 void CYearWindow::setSearchWFlag(bool flag)
 {
     //是否在查询日程的标志
@@ -362,32 +451,52 @@ void CYearWindow::setSearchWFlag(bool flag)
     m_YearWidget->setSearchWFlag(flag);
 }
 
+/**
+ * @brief clearSearch
+ */
 void CYearWindow::clearSearch()
 {
 }
 
+/**
+ * @brief setSearchText
+ * @param str
+ */
 void CYearWindow::setSearchText(QString str)
 {
     m_searchText = str;
 }
 
+/**
+ * @brief getScheduleInfo 判断一年中每一天是否有日程信息
+ */
 void CYearWindow::getScheduleInfo()
 {
     //获取信息并设置日程标志
     m_YearWidget->getInfoAndSetLineFlag();
 }
 
+/**
+ * @brief slotTransitSearchSchedule
+ * @param id
+ */
 void CYearWindow::slotTransitSearchSchedule(int id)
 {
     emit signalsWUpdateShcedule(this, id);
 }
 
+/**
+ * @brief slotSetSchceduleHide 隐藏日程浮框
+ */
 void CYearWindow::slotSetSchceduleHide()
 {
     //隐藏日程浮框
     m_YearWidget->slotHideInfo();
 }
 
+/**
+ * @brief slotprev 通过鼠标点击左箭头切换到上一年，刷新年视图下的所有内容，并隐藏日程展示浮窗。
+ */
 void CYearWindow::slotprev()
 {
     //隐藏日程浮框
@@ -400,10 +509,12 @@ void CYearWindow::slotprev()
     //上一年的日期
     QDate tcurrent = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
 
-    if (!tcurrent.isValid()) {//如果日期无效，
+    if (!tcurrent.isValid()) {
+        //如果日期无效，
         //设置为上一年这个月的1号
         m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), 1);
-    } else {//日期有效
+    } else {
+        //日期有效
         m_currentdate = tcurrent;
     }
     if (m_currentdate.year() >= DDECalendar::QueryEarliestYear) {
@@ -423,6 +534,9 @@ void CYearWindow::slotprev()
     }
 }
 
+/**
+ * @brief slotnext 通过鼠标点击右箭头切换到下一年，并刷新年视图下的所有内容，并隐藏日程展示浮窗。
+ */
 void CYearWindow::slotnext()
 {
     //隐藏日程浮框
@@ -432,10 +546,12 @@ void CYearWindow::slotnext()
     //明年的今天
     QDate tcurrent = QDate(m_currentdate.year() + 1, m_currentdate.month(), m_currentdate.day());
 
-    if (!tcurrent.isValid()) {//如果日期无效，
+    if (!tcurrent.isValid()) {
+        //如果日期无效，
         //设置为明年这个月的1号
         m_currentdate = QDate(m_currentdate.year() + 1, m_currentdate.month(), 1);
-    } else {//日期有效
+    } else {
+        //日期有效
         m_currentdate = tcurrent;
     }
     //当前页面的索引
@@ -448,9 +564,12 @@ void CYearWindow::slotnext()
     m_YearWidget->setDate(m_currentdate);
     //开始翻页动画
     m_StackedWidget->setNext();
-    emit signalCurrentDate(m_currentdate);//发送当前日期的信号
+    emit signalCurrentDate(m_currentdate);
 }
 
+/**
+ * @brief slottoday 通过鼠标点击返回今天按钮返回到今天，并刷新年视图下的所有内容，并隐藏日程展示浮窗。
+ */
 void CYearWindow::slottoday()
 {
     //隐藏日程浮框
@@ -461,16 +580,27 @@ void CYearWindow::slottoday()
     setDate(QDate::currentDate());
 }
 
+/**
+ * @brief slotReturnTodayUpdate
+ */
 void CYearWindow::slotReturnTodayUpdate()
 {
 }
 
+/**
+ * @brief slotupdateSchedule 更新当前时间
+ * @param id
+ */
 void CYearWindow::slotupdateSchedule(const int id)
 {
     //更新日期
     m_YearWidget->slotupdateSchedule(id);
 }
 
+/**
+ * @brief slotUpdateCurrentDate 设置年视图当前时间的信息
+ * @param date 时间
+ */
 void CYearWindow::slotUpdateCurrentDate(const QDate &date)
 {
     //设置日期
@@ -479,39 +609,67 @@ void CYearWindow::slotUpdateCurrentDate(const QDate &date)
     setYearData();
 }
 
+/**
+ * @brief setYearData 设置年视图阴历和按钮信息
+ */
 void CYearWindow::setYearData()
 {
-    if (m_currentdate == QDate::currentDate()) {//如果当天日期是今天，
-        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));//按钮现实“今天”
-    } else {//如果当前日期不是今天，
-        m_today->setText(QCoreApplication::translate("Return", "Today", "Return"));//按钮现实“返回今天”
+    if (m_currentdate == QDate::currentDate()) {
+        //如果当天日期是今天，
+        //按钮现实“今天”
+        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
+    } else {
+        //如果当前日期不是今天，
+        //按钮现实“返回今天”
+        m_today->setText(QCoreApplication::translate("Return", "Today", "Return"));
     }
     QLocale locale;
 
-    if (locale.language() == QLocale::Chinese) {//如果系统语言为中文
-        m_YearLabel->setText(QString::number(m_currentdate.year()) + tr("Y"));//显示XXXX年
-    } else {//如果系统语言为其他语言，
-        m_YearLabel->setText(QString::number(m_currentdate.year()));//只显示XXXX
+    if (locale.language() == QLocale::Chinese) {
+        //如果系统语言为中文
+        //显示XXXX年
+        m_YearLabel->setText(QString::number(m_currentdate.year()) + tr("Y"));
+    } else {
+        //如果系统语言为其他语言，
+        //只显示XXXX
+        m_YearLabel->setText(QString::number(m_currentdate.year()));
     }
 
-    m_YearLunarLabel->setText(m_YearWidget->getLunarYear());//设置阴历年
-    m_YearLunarDayLabel->setText(m_YearWidget->getLunarDay());//设置阴历日
+    //设置阴历年
+    m_YearLunarLabel->setText(m_YearWidget->getLunarYear());
+    //设置阴历日
+    m_YearLunarDayLabel->setText(m_YearWidget->getLunarDay());
 }
+
+/**
+ * @brief slotsearchDateSelect 设置选择的时间
+ * @param date 时间
+ */
 void CYearWindow::slotsearchDateSelect(QDate date)
 {
     //设置日期
     setDate(date);
 }
 
+/**
+ * @brief wheelEvent 通过鼠标中间的滚轮滚动切换年份，并刷新年视图下的所有内容。
+ * @param event 鼠标滚轮事件
+ */
 void CYearWindow::wheelEvent(QWheelEvent *event)
 {
     if (event->delta() < 0) {
-        slotnext();//下一年
+        //下一年
+        slotnext();
     } else {
-        slotprev();//上一年
+        //上一年
+        slotprev();
     }
 }
 
+/**
+ * @brief YearFrame 构造函数
+ * @param parent 父类
+ */
 YearFrame::YearFrame(DWidget *parent)
     : DFrame(parent)
 {
@@ -548,62 +706,88 @@ YearFrame::YearFrame(DWidget *parent)
     //设置年份label的高度
     m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
     QFont t_labelF;
-    t_labelF.setWeight(QFont::Medium);//设置字体的权重
-    t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);//设置字体的大小
-    m_YearLabel->setFont(t_labelF);//设置年份label的字体
+    //设置字体的权重
+    t_labelF.setWeight(QFont::Medium);
+    //设置字体的大小
+    t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
+    //设置年份label的字体
+    m_YearLabel->setFont(t_labelF);
     DPalette pa = m_YearLabel->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
-    m_YearLabel->setPalette(pa);//设置年份label的颜色
+    //设置年份label的颜色
+    m_YearLabel->setPalette(pa);
 
     //新建显示阴历年份的label
     m_YearLunarLabel = new QLabel();
     //设置阴历年份label的大小
     m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
     QFont ylabelF;
-    ylabelF.setWeight(QFont::Medium);//设置字体的权重
-    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);//设置字体的大小
-    m_YearLunarLabel->setFont(ylabelF);//设置年份label的字体
+    //设置字体的权重
+    ylabelF.setWeight(QFont::Medium);
+    //设置字体的大小
+    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+    //设置年份label的字体
+    m_YearLunarLabel->setFont(ylabelF);
     DPalette Lunapa = m_YearLunarLabel->palette();
     Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-    m_YearLunarLabel->setPalette(Lunapa);//设置年份label的颜色
+    //设置年份label的颜色
+    m_YearLunarLabel->setPalette(Lunapa);
 
     //设置title部分的布局
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
     yeartitleLayout->setContentsMargins(11, 12, 8, 10);
-    yeartitleLayout->addWidget(m_YearLabel);//将年份label添加到布局中
+    //将年份label添加到布局中
+    yeartitleLayout->addWidget(m_YearLabel);
     //设置阴历年份的布局
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
     yeartitleLayout1->setMargin(0);
     yeartitleLayout1->setSpacing(0);
     yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
-    yeartitleLayout1->addWidget(m_YearLunarLabel);//将阴历年label添加到布局中
+    //将阴历年label添加到布局中
+    yeartitleLayout1->addWidget(m_YearLunarLabel);
     yeartitleLayout1->addSpacing(390);
     yeartitleLayout1->addStretch();
     yeartitleLayout1->addSpacing(10);
-    yeartitleLayout->addLayout(yeartitleLayout1);//将阴历年份的布局添加到title的布局中
+    //将阴历年份的布局添加到title的布局中
+    yeartitleLayout->addLayout(yeartitleLayout1);
 
     //为title部分新建一个widget
     m_topWidget = new DWidget();
-    m_topWidget->setLayout(yeartitleLayout);//widget设置布局为title的布局
-    m_topWidget->setFixedHeight(DDEMonthCalendar::M_YTopHeight);//设置widget的高度
-    QVBoxLayout *hhLayout = new QVBoxLayout;//总体布局
+    //widget设置布局为title的布局
+    m_topWidget->setLayout(yeartitleLayout);
+    //设置widget的高度
+    m_topWidget->setFixedHeight(DDEMonthCalendar::M_YTopHeight);
+    //总体布局
+    QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->setMargin(0);
     hhLayout->setSpacing(0);
     hhLayout->setContentsMargins(0, 0, 0, 0);
-    hhLayout->addWidget(m_topWidget);//将title的widget添加到总体布局中
-    hhLayout->addLayout(gridLayout);//将12个月份的布局添加到总体布局中
-    this->setLayout(hhLayout);//YearFrame设置布局为总体布局
+    hhLayout->addWidget(m_topWidget);
+    //将title的widget添加到总体布局中
+    //将12个月份的布局添加到总体布局中
+
+    hhLayout->addLayout(gridLayout);
+    //YearFrame设置布局为总体布局
+    this->setLayout(hhLayout);
     setContentsMargins(0, 0, 0, 10);
-    setFrameRounded(true);//设置圆角
+    //设置圆角
+    setFrameRounded(true);
 }
 
+/**
+  *@brief ~YearFrame 析构函数
+  */
 YearFrame::~YearFrame()
 {
 
 }
 
+/**
+ * @brief setDate 设置当前时间
+ * @param date 时间
+ */
 void YearFrame::setDate(QDate &date)
 {
     //日期无效，return
@@ -631,6 +815,9 @@ void YearFrame::setDate(QDate &date)
     getLunarData();
 }
 
+/**
+ * @brief getInfoAndSetLineFlag 获取日程信息，设置是否有日程的标志
+ */
 void YearFrame::getInfoAndSetLineFlag()
 {
     for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
@@ -639,40 +826,46 @@ void YearFrame::getInfoAndSetLineFlag()
     }
 }
 
+/**
+ * @brief setTheMe 根据系统主题类型设置颜色
+ * @param type 系统主题类型
+ */
 void YearFrame::setTheMe(int type)
 {
-    if (type == 0 || type == 1) {//系统类型为浅色或自适应
+    if (type == 0 || type == 1) {
+        //系统类型为浅色或自适应
         //设置背景颜色
         DPalette gpa = palette();
         gpa.setColor(DPalette::Background, "#F8F8F8");
         setPalette(gpa);
-        setBackgroundRole(DPalette::Background);//设置背景颜色
+        setBackgroundRole(DPalette::Background);
         //设置阳历年的字体颜色
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(pa);
-        m_YearLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         //设置阴历年的字体颜色
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
         m_YearLunarLabel->setPalette(Lunapa);
-        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
-    } else if (type == 2) {//系统类型为深色
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
+    } else if (type == 2) {
+        //系统类型为深色
         //设置背景颜色
         DPalette gpa = palette();
         gpa.setColor(DPalette::Background, "#252525");
         setPalette(gpa);
-        setBackgroundRole(DPalette::Background);//设置背景颜色
+        setBackgroundRole(DPalette::Background);
         //设置阳历年的字体颜色
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(pa);
-        m_YearLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
+        m_YearLabel->setForegroundRole(DPalette::WindowText);
         //设置阴历年的字体颜色
         DPalette Lunapa = m_YearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
         m_YearLunarLabel->setPalette(Lunapa);
-        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);//设置字体颜色
+        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
     }
     //设置每个月的系统类型
     for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
@@ -680,12 +873,19 @@ void YearFrame::setTheMe(int type)
     }
 }
 
+/**
+ * @brief setSearchWFlag 设置搜索的标志
+ * @param flag 是否进行了搜索
+ */
 void YearFrame::setSearchWFlag(bool flag)
 {
     //搜索标志
     m_searchfalg = flag;
 }
 
+/**
+ * @brief getLunarData 更新当天的农历年份数据。
+ */
 void YearFrame::getLunarData()
 {
     bool o1 = true;
@@ -699,12 +899,14 @@ void YearFrame::getLunarData()
     m_LunarDay = QString("-农历%0%1-").arg(currentDayInfo.mLunarMonthName).arg(currentDayInfo.mLunarDayName);
     QLocale locale;
 
-    if (locale.language() == QLocale::Chinese) {//如果系统语言为中文
+    if (locale.language() == QLocale::Chinese) {
+        //如果系统语言为中文
         //显示XXXX年
         m_YearLabel->setText(QString::number(m_currentdate.year()) + tr("Y"));
         //显示阴历年
         m_YearLunarLabel->setText(m_LunarYear);
-    } else {//如果系统语言不是中文
+    } else {
+        //如果系统语言不是中文
         //显示XXXX
         m_YearLabel->setText(QString::number(m_currentdate.year()));
         //不显示阴历年
@@ -713,15 +915,24 @@ void YearFrame::getLunarData()
 
 }
 
+/**
+ * @brief mousePressEvent 鼠标单击日期区域外隐藏日程浮框
+ * @param event 鼠标单击事件
+ */
 void YearFrame::mousePressEvent(QMouseEvent *event)
 {
     if (m_selectFlag) return;
     //鼠标左键
     if (event->button() == Qt::LeftButton) {
-        slotHideInfo();//隐藏日程浮框
+        //隐藏日程浮框
+        slotHideInfo();
     }
 }
 
+/**
+ * @brief slotcurrentDateChanged 设置当前时间
+ * @param date 时间
+ */
 void YearFrame::slotcurrentDateChanged(QDate date)
 {
     //设置当前时间
@@ -732,18 +943,29 @@ void YearFrame::slotcurrentDateChanged(QDate date)
     emit signalUpdateYearDate(date);
 }
 
+/**
+ * @brief slotHideInfo 隐藏日程浮框
+ */
 void YearFrame::slotHideInfo()
 {
     //隐藏日程信息
     CYearView::SchceduleViewHide();
 }
 
+/**
+ * @brief slotSelectInfo 设置是否选择了日期的标志
+ * @param flag 是否选择了如期
+ */
 void YearFrame::slotSelectInfo(bool flag)
 {
     //搜索标志
     m_selectFlag = flag;
 }
 
+/**
+ * @brief slotupdateSchedule 更新日程
+ * @param id
+ */
 void YearFrame::slotupdateSchedule(const int id)
 {
     //设置每个月的时间
@@ -752,6 +974,9 @@ void YearFrame::slotupdateSchedule(const int id)
     }
 }
 
+/**
+ * @brief slotSetSchceduleHide 隐藏日程浮框
+ */
 void YearFrame::slotSetSchceduleHide()
 {
     //隐藏日程浮框
