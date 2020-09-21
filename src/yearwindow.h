@@ -190,7 +190,7 @@ protected:
      */
     bool eventFilter(QObject *watched, QEvent *event) override;
     /**
-     * @brief mousePressEvent 鼠标单击事件，单击日期区域外，隐藏日程浮框
+     * @brief mousePressEvent 鼠标单击事件
      * @param event 鼠标事件
      */
     void mousePressEvent(QMouseEvent *event) override;
