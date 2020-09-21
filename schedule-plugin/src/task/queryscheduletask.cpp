@@ -348,8 +348,11 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getNonePropertyStatusSchedule(
     scheduleInfo.clear();
 
     switch (queryJsonData->getPropertyStatus()) {
-    case QueryJsonData::PropertyStatus::ALL:
+    case QueryJsonData::PropertyStatus::ALL: {
+        //查询所有的日程，因此不需要对已查询到的日程进行过滤操作
+        scheduleInfo = schedule;
         break;
+    }
     case QueryJsonData::PropertyStatus::NEXT: {
         if (schedule.isEmpty()) {
             break;
