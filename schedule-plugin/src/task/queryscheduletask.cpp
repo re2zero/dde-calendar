@@ -29,6 +29,9 @@ queryScheduleTask::queryScheduleTask(CSchedulesDBus *dbus)
 Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 {
     QueryJsonData *queryJsonData = dynamic_cast<QueryJsonData *>(semanticTask.getJsonData());
+    //如果转换失败则返回错误消息
+    if(queryJsonData == nullptr)
+        return errorMessage();
     //查询日程
     if (queryJsonData->offset() > -1
             && queryJsonData->getPropertyStatus() == JsonData::PRO_NONE) {

@@ -118,3 +118,14 @@ void scheduleBaseTask::updateState()
         }
     } while (1);
 }
+/**
+ * @brief scheduleBaseTask::errorMessage   用户输入无法匹配返回错误消息提示
+ * @return 关于无法处理该关键字的答复
+ */
+Reply scheduleBaseTask::errorMessage()
+{
+    //答复
+    Reply reply;
+    REPLY_ONLY_TTS(reply, G_ERR_TTS, G_ERR_TTS, true)
+    return reply;
+}

@@ -31,6 +31,9 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 {
     //创建
     CreateJsonData *createJsonData = dynamic_cast<CreateJsonData *>(semanticTask.getJsonData());
+    //如果转换失败则返回错误消息
+    if(createJsonData == nullptr)
+        return errorMessage();
     //查询日程
 
     if (createJsonData->getPropertyStatus() != JsonData::PRO_NONE
