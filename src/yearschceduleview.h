@@ -31,29 +31,19 @@ DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
 class CYearSchceduleItem;
 class CYearSchceduleOutView;
+/**
+ * @brief The CYearSchceduleView class
+ * 对日程进行排序
+ * 绘制日程信息
+ */
 class CYearSchceduleView : public DWidget
 {
     Q_OBJECT
 
 public:
-    /**
-     * @brief CYearSchceduleView 构造函数
-     * @param parent 父类
-     */
     CYearSchceduleView(QWidget *parent = nullptr);
-    /**
-      * @brief ~CYearSchceduleView 析构函数
-      */
     ~CYearSchceduleView();
-    /**
-     * @brief setSoloDay
-     * @param soloday
-     */
     void setSoloDay(QString soloday);
-    /**
-     * @brief setData 设置日程信息，并全天日程置于非全天日程之前
-     * @param vListData 日程信息
-     */
     void setData(QVector<ScheduleDtailInfo> &vListData);
     /**
      * @brief getlistdate 获取日程信息
@@ -63,79 +53,42 @@ public:
     {
         return m_vlistData;
     }
-    /**
-     * @brief clearData 清除日程信息
-     */
     void clearData();
-    /**
-     * @brief showWindow 设置日程浮框的大小
-     * @return 日程浮框的宽度
-     */
     int showWindow();
-    /**
-     * @brief setTheMe 根据系统主题类型设置颜色
-     * @param type 系统主题类型
-     */
     void setTheMe(int type = 0);
-    /**
-     * @brief setDtype
-     * @param type
-     * @param arrowheight
-     */
     void setDtype(int type, int arrowheight);
-    /**
-     * @brief setCurrentDate 设置日程所在当天的日期
-     * @param cdate 日期
-     */
     void setCurrentDate(QDate cdate);
-    /**
-     * @brief getCurrentDate 获取日程所在当天的日期
-     * @return 日期
-     */
     QDate getCurrentDate();
-    /**
-     * @brief adjustPosition 根据日程浮框左右朝向不同，日程显示位置不同
-     * @param ad 是否调整显示位置
-     */
     void adjustPosition(bool ad);
 private:
-    /**
-     * @brief updateDateShow 调整最多展示日程为五个，并设置浮框大小
-     */
     void updateDateShow();
-    /**
-     * @brief createItemWidget 设置每条日程的具体信息
-     * @param info 日程信息
-     * @param type 系统主题类型
-     */
     void createItemWidget(ScheduleDtailInfo info, int type = 0);
 protected:
-    /**
-     * @brief paintEvent 绘制日程
-     * @param event 绘图事件
-     */
     void paintEvent(QPaintEvent *event) override;
-    /**
-     * @brief paintItem 绘制日程
-     * @param info 日程信息
-     * @param index 日程的索引
-     * @param type 系统主题类型
-     */
     void paintItem(ScheduleDtailInfo info, int index, int type = 0);
-    /**
-     * @brief paintItem
-     */
     void paintItem();
 private:
-    DListWidget *m_gradientItemList = nullptr; //下拉列表窗
+    //下拉列表窗
+    DListWidget *m_gradientItemList = nullptr;
     bool                                         m_widgetFlag;
+    /**
+     * @brief m_vlistData 日程信息容器
+     *
+     * 将所有日程的信息放到容器中，以方便其他类调用
+     */
     QVector<ScheduleDtailInfo>                   m_vlistData;
     QString                                      m_soloDay;
+    //日程容器
     QVector<DLabel *> m_labellist;
+    //系统主题类型
     int                                          m_type;
+    //当天日期
     QDate                                        m_currentDate;
+    //背景色
     QColor                m_bBackgroundcolor = "#000000";
+    //时间颜色
     QColor                m_btimecolor = "#526A7F";
+    //文字颜色
     QColor                m_bttextcolor = "#414D68";
     QColor                m_lBackgroundcolor = Qt::white;
     QColor                m_ltextcolor = "#001A2E";
@@ -144,110 +97,58 @@ private:
     int                   m_dtype = 3;
     int                   m_arrowheight = 0;
     QColor                m_borderColor = "#000000";
+    //日程浮框朝向
     bool                  adjustPos = false;
 };
-
+/**
+ * @brief The CYearSchceduleItem class
+ */
 class CYearSchceduleItem : public DLabel
 {
     Q_OBJECT
 
 public:
-    /**
-     * @brief CYearSchceduleItem 构造函数
-     * @param parent 父类
-     */
     explicit CYearSchceduleItem(QWidget *parent = nullptr);
-    /**
-     * @brief setBackgroundColor 设置背景颜色
-     * @param color1 背景颜色
-     */
     void setBackgroundColor(QColor color1);
-    /**
-     * @brief setStateColor 设置圆点的颜色
-     * @param color1 圆点颜色
-     */
     void setStateColor(QColor color1);
-    /**
-     * @brief setText 设置文字颜色和字体
-     * @param tcolor 文字颜色
-     * @param font 文字字体
-     */
     void setText(QColor tcolor, QFont font);
-    /**
-     * @brief setTimeC 设置时间的颜色和字体
-     * @param tcolor 时间的颜色
-     * @param font 时间的字体
-     */
     void setTimeC(QColor tcolor, QFont font);
-    /**
-     * @brief setData 设置日程信息
-     * @param vScheduleInfo 日程信息
-     */
     void setData(ScheduleDtailInfo  vScheduleInfo);
 protected:
-    /**
-     * @brief paintEvent
-     * @param e
-     */
     void paintEvent(QPaintEvent *e) override;
 private:
+    //日程信息
     ScheduleDtailInfo m_ScheduleInfo;
+    //背景颜色
     QColor                m_Backgroundcolor;
+    //时间颜色
     QColor                m_timecolor;
     QColor                m_Statecolor;
+    //时间字体
     QFont                 m_timefont;
+    //文字的颜色
     QColor                m_ttextcolor;
+    //文字的字体
     QFont                 m_tfont;
 };
-
+/**
+ * @brief The CYearSchceduleOutView class
+ * DTK的浮框
+ * 将yearschceduleview绘制完成的日程信息放到浮框中
+ */
 class CYearSchceduleOutView : public DArrowRectangle
 {
     Q_OBJECT
 
 public:
-    /**
-     * @brief CYearSchceduleOutView 构造函数
-     * @param parent 父类
-     */
     explicit CYearSchceduleOutView(QWidget *parent = nullptr);
-    /**
-     * @brief setSoloDay
-     * @param soloday
-     */
     void setSoloDay(QString soloday);
-    /**
-     * @brief setData 设置日程信息
-     * @param vListData 日程信息
-     */
     void setData(QVector<ScheduleDtailInfo> &vListData);
-    /**
-     * @brief clearData 清楚数据
-     */
     void clearData();
-    /**
-     * @brief showWindow 设置日程浮框外边框大小
-     */
     void showWindow();
-    /**
-     * @brief setTheMe 设置系统主题颜色
-     * @param type 系统主题
-     */
     void setTheMe(int type = 0);
-    /**
-     * @brief setDtype
-     * @param type
-     * @param arrowheight
-     */
     void setDtype(int type, int arrowheight);
-    /**
-     * @brief setCurrentDate 设置日程所在当天的日期
-     * @param cdate 日期
-     */
     void setCurrentDate(QDate cdate);
-    /**
-     * @brief adjustPosition 根据日程浮框左右朝向不同，日程显示位置不同
-     * @param ad 是否调整显示位置
-     */
     void adjustPosition(bool ad);
 signals:
     /**
@@ -260,16 +161,24 @@ signals:
      */
     void signalupdateschcedule();
 private:
+    /**
+     * @brief yearschceduleview 年视图日程
+     *
+     * 将年视图的日程信息放到DTK的浮框中，构成整体的日程浮框
+     */
     CYearSchceduleView *yearschceduleview = nullptr;
+    /**
+     * @brief scheduleinfoList 日程信息
+     *
+     * 将需要展示的日程信息放到容器中，再对每个日程进行分析
+     */
     QVector<ScheduleDtailInfo> scheduleinfoList;
+    //当天时间
     QDate currentdate;
+    //日程数量
     int list_count = 0;
 
 protected:
-    /**
-     * @brief mousePressEvent 鼠标单击事件，单击非节日日程进行编辑，单击”...”区域跳转到周视图。
-     * @param event 鼠标事件
-     */
     void mousePressEvent(QMouseEvent *event) override;
 };
 #endif // CSHCEDULEDAYVIEW_H
