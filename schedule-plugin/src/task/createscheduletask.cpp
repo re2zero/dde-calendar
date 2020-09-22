@@ -90,8 +90,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                 break;
                 }
                 if (!schedule.isEmpty()) {
-//                m_widget->setschedule();
-//                m_dbus->CreateJob(m_widget->getScheduleDtailInfo());
+                    qDebug() << "creatUI"<< getFirstSchedule(schedule).beginDateTime;
                     setDateTimeAndGetSchedule(getFirstSchedule(schedule).beginDateTime, getFirstSchedule(schedule).endDateTime);
                     m_widget->setScheduleDbus(m_dbus);
                     m_widget->scheduleEmpty(true);
@@ -759,35 +758,24 @@ QVector<QDateTime> createScheduleTask::firstMonthNumGreaterThanSecondButEveryDay
 QVector<QDateTime> createScheduleTask::analysisRestDayDate()
 {
     QVector<QDateTime> beginDateTime {};
+    //周六的日程开始时间
+    QDateTime beginDateTimeSat = m_begintime;
+    //周日的日程开始时间
+    QDateTime beginDateTimeSun = m_begintime;
     int currentDayofWeek = QDate::currentDate().dayOfWeek();
-
-    if (currentDayofWeek < 6) {
-        //今天不是周末
-        m_begintime.setDate(QDate::currentDate().addDays(6 - currentDayofWeek));
-        m_begintime.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
-    } else if (currentDayofWeek == 6) {
-        //今天是周六
-        if (m_begintime.time() > QTime::currentTime()) {
-            //日程开始时间大于当前时间
-            m_begintime.setDate(QDate::currentDate().addDays(6 - currentDayofWeek));
-            m_begintime.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
-        } else {
-            //日程开始时间小于等于当前时间
-            m_begintime.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
-            m_begintime.setDate(QDate::currentDate().addDays(6 + 7 - currentDayofWeek));
-        }
-    } else if (currentDayofWeek > 6) {
-        //今天是周日
-        if (m_begintime.time() > QTime::currentTime()) {
-            //日程开始时间大于当前时间
-            m_begintime.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
-            m_begintime.setDate(QDate::currentDate().addDays(6 + 7 - currentDayofWeek));
-        } else {
-            //日程开始时间小于等于当前时间
-            m_begintime.setDate(QDate::currentDate().addDays(6 + 7 - currentDayofWeek));
-            m_begintime.setDate(QDate::currentDate().addDays(7 + 7 - currentDayofWeek));
-        }
-    }
+    //设置周六的时间
+    beginDateTimeSat.setDate(QDate::currentDate().addDays(6 - currentDayofWeek));
+    //设置周日的时间
+    beginDateTimeSun.setDate(QDate::currentDate().addDays(7 - currentDayofWeek));
+    //如果周六的时间小于当前时间，设置日程开始时间为下一周的周六
+    if (beginDateTimeSat < QDateTime::currentDateTime())
+        beginDateTimeSat.setDate(beginDateTimeSat.date().addDays(7));
+    //如果周日的时间小于当前时间，设置日程开始时间为下一周的周日
+    if (beginDateTimeSun < QDateTime::currentDateTime())
+        beginDateTimeSun.setDate(beginDateTimeSun.date().addDays(7));
+    //将周末的日程开始时间放到时间容器里面
+    beginDateTime.append(beginDateTimeSat);
+    beginDateTime.append(beginDateTimeSun);
 
     return beginDateTime;
 }
