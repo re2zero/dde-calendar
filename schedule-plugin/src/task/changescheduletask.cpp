@@ -275,18 +275,29 @@ void changeScheduleTask::getNewInfo()
     QVector<DateTimeInfo> m_ToTime = currentState->getLocalData()->getToTime();
     if (m_ToTime.size() > 0) {
         if (m_ToTime.size() == 1) {
-            m_NewInfo.beginDateTime = m_ToTime.at(0).datetime;
-            if (!m_ToTime.at(0).hasTime)
-                m_NewInfo.beginDateTime.setTime(QTime(9, 0, 0));
-            m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);
+            //设置修改的开始日期
+            m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).datetime.date());
+            //设置修改的结束日期
+            m_NewInfo.endDateTime.setDate(m_ToTime.at(0).datetime.date());
+            //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
+            if(m_ToTime.at(0).hasTime){
+                m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).datetime.time());
+                m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);
+            }
         }
         if (m_ToTime.size() == 2) {
-            m_NewInfo.beginDateTime = m_ToTime.at(0).datetime;
-            if (!m_ToTime.at(0).hasTime)
-                m_NewInfo.beginDateTime.setTime(QTime(9, 0, 0));
-            m_NewInfo.endDateTime = m_ToTime.at(1).datetime;
-            if (!m_ToTime.at(1).hasTime)
-                m_NewInfo.endDateTime.setTime(QTime(9, 0, 0));
+            //设置修改的开始日期
+            m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).datetime.date());
+            //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
+            if(m_ToTime.at(0).hasTime){
+                m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).datetime.time());
+            }
+            //设置修改的结束日期
+            m_NewInfo.endDateTime.setDate(m_ToTime.at(1).datetime.date());
+            //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
+            if (m_ToTime.at(1).hasTime)
+                m_NewInfo.endDateTime.setTime(m_ToTime.at(1).datetime.time());
+            //如果开始时间大于结束时间则设置结束时间为开始时间往后一小时
             if (m_NewInfo.endDateTime < m_NewInfo.beginDateTime) {
                 m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);
             }
