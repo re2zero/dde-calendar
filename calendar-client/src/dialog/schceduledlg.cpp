@@ -1164,6 +1164,7 @@ void CSchceduleDlg::initRmindRpeatUI()
         m_endrepeatWidget->hide();
     }
 }
+
 /**
  * @brief CSchceduleDlg::setTheMe 设置系统主题类型
  * @param type 系统主题类型
@@ -1182,6 +1183,7 @@ void CSchceduleDlg::setTheMe(const int type)
     pa.setColor(DPalette::Text, titleColor);
     m_textEdit->setPalette(pa);
 }
+
 /**
  * @brief CSchceduleDlg::ChangeRecurInfo 修改重复日程
  * @param parent 父类

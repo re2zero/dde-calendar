@@ -41,7 +41,7 @@ DGUI_USE_NAMESPACE
  * @param schduleInfo 日程信息
  * @param parent 父类
  */
-CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget *parent)
+CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo, QWidget *parent)
     : DDialog(parent)
 {
     //设置边距
@@ -83,7 +83,7 @@ void CMySchceduleView::AutoFeed(QString text)
     QString resultStr = nullptr;
     QFont labelF;
     labelF.setWeight(QFont::Medium);
-    labelF = DFontSizeManager::instance()->get(DFontSizeManager::T6,labelF);
+    labelF = DFontSizeManager::instance()->get(DFontSizeManager::T6, labelF);
     QFontMetrics fm(labelF);
     int titlewidth = fm.width(strText);
     QStringList strList;
@@ -99,7 +99,7 @@ void CMySchceduleView::AutoFeed(QString text)
             str += strText.at(i);
             //字符串的宽度超过文本框的宽度，进行换行处理
             if (fm.width(str) > 330) {
-                str.remove(str.count() - 1,1);
+                str.remove(str.count() - 1, 1);
                 strList.append(str);
                 resultStr += str + "\n";
                 str.clear();
@@ -120,6 +120,7 @@ void CMySchceduleView::AutoFeed(QString text)
     //设置text
     m_schceduleLabel->setText(resultStr);
 }
+
 /**
  * @brief setLabelTextColor     设置label文字颜色
  * @param type  主题type
@@ -148,10 +149,11 @@ void CMySchceduleView::setLabelTextColor(const int type)
         timeColor.setAlphaF(0.7);
     }
     //设置颜色
-    setPaletteTextColor(m_Title,titleColor);
-    setPaletteTextColor(m_schceduleLabel,scheduleTitleColor);
-    setPaletteTextColor(m_timeLabel,timeColor);
+    setPaletteTextColor(m_Title, titleColor);
+    setPaletteTextColor(m_schceduleLabel, scheduleTitleColor);
+    setPaletteTextColor(m_timeLabel, timeColor);
 }
+
 /**
  * @brief setPaletteTextColor   设置调色板颜色
  * @param widget    需要设置的widget
@@ -164,9 +166,10 @@ void CMySchceduleView::setPaletteTextColor(QWidget *widget, QColor textColor)
         return;
     DPalette palette = widget->palette();
     //设置文字显示颜色
-    palette.setColor(DPalette::WindowText,textColor);
+    palette.setColor(DPalette::WindowText, textColor);
     widget->setPalette(palette);
 }
+
 /**
  * @brief CMySchceduleView::showEvent 展示
  * @param event
@@ -329,7 +332,7 @@ void CMySchceduleView::initUI()
     //设置字重
     titleFont.setWeight(QFont::Bold);
     m_Title->setFont(titleFont);
-    DFontSizeManager::instance()->bind(m_Title,DFontSizeManager::T5);
+    DFontSizeManager::instance()->bind(m_Title, DFontSizeManager::T5);
     //设置日期图标
     QIcon t_icon(CDynamicIcon::getInstance()->getPixmap());
     setIcon(t_icon);
@@ -343,7 +346,7 @@ void CMySchceduleView::initUI()
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
     //带滚动条的区域
-    area = new QScrollArea (this);
+    area = new QScrollArea(this);
     area->setFrameShape(QFrame::NoFrame);
     area->setFixedWidth(363);
     area->setBackgroundRole(QPalette::Background);
@@ -359,7 +362,7 @@ void CMySchceduleView::initUI()
     m_schceduleLabel->setFixedWidth(330);
     m_schceduleLabel->setAlignment(Qt::AlignCenter);
     //设置字体大小
-    DFontSizeManager::instance()->bind(m_schceduleLabel,DFontSizeManager::T6);
+    DFontSizeManager::instance()->bind(m_schceduleLabel, DFontSizeManager::T6);
     labelF.setWeight(QFont::Medium);
     m_schceduleLabel->setFont(labelF);
     //将日程label添加到area
@@ -382,7 +385,7 @@ void CMySchceduleView::initUI()
         addButton(tr("OK"), false, DDialog::ButtonNormal);
         //添加ok按钮
         QAbstractButton *button_ok = getButton(0);
-        button_ok->setFixedSize(360,36);
+        button_ok->setFixedSize(360, 36);
     } else {
         //非节假日，添加“删除”和“编辑”按钮
         addButton(tr("Delete"), false, DDialog::ButtonNormal);
@@ -390,7 +393,7 @@ void CMySchceduleView::initUI()
         //设置按钮大小
         for (int i = 0; i < buttonCount(); i++) {
             QAbstractButton *button = getButton(i);
-            button->setFixedSize(165,36);
+            button->setFixedSize(165, 36);
         }
     }
 

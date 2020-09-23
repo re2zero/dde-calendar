@@ -78,6 +78,10 @@ private:
     void initConnection();
     void initDateEdit();
     void initRmindRpeatUI();
+    /**
+     * @brief setTheMe  根据主题type设置颜色
+     * @param type  主题type
+     */
     void setTheMe(const int type);
 public:
     static void ChangeRecurInfo(QWidget *parent,const ScheduleDtailInfo &newinfo,

@@ -60,7 +60,16 @@ private:
     void initUI();
     void initConnection();
     void AutoFeed(QString text);
+    /**
+     * @brief setLabelTextColor     设置label文字颜色
+     * @param type  主题type
+     */
     void setLabelTextColor(const int type);
+    /**
+     * @brief setPaletteTextColor   设置调色板颜色
+     * @param widget    需要设置的widget
+     * @param textColor     显示颜色
+     */
     void setPaletteTextColor(QWidget *widget,QColor textColor);
 protected:
     void showEvent(QShowEvent *event) override;
