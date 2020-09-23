@@ -27,6 +27,10 @@
 DWIDGET_USE_NAMESPACE
 
 class CMonthWidget;
+/**
+ * @brief The CMonthDayView class
+ * 新建frame，放置年份widget
+ */
 class CMonthDayView : public DFrame
 {
     Q_OBJECT
@@ -39,19 +43,38 @@ public:
     void setwindowFixw(int w, int rw);
     void setsearchfalg(bool flag);
 signals:
+    /**
+     * @brief signalsSelectDate 选择日期的信号
+     * @param date 日期
+     */
     void signalsSelectDate(QDate date);
+    /**
+     * @brief signalsCurrentDate 当前时间的信号
+     * @param date 日期
+     */
     void signalsCurrentDate(QDate date);
 private:
+    /**
+     * @brief m_monthWidget widget
+     *
+     * 月份所在的widget，用于显示12个月份
+     */
     CMonthWidget *m_monthWidget = nullptr;
+    //选择的日期
     QDate                       m_selectDate;
+    //12个月份
     QDate                       m_days[12];
-
     int                         m_fixwidth = 200;
     int                         m_realwidth = 100;
+    //搜索标志
     bool                        m_searchfalg = false;
 };
 
 class CMonthRect;
+/**
+ * @brief The CMonthWidget class
+ * 年份所在的widget
+ */
 class CMonthWidget : public QWidget
 {
     Q_OBJECT
@@ -67,13 +90,20 @@ private:
     void updateSize();
     int getMousePosItem(const QPointF &pos);
 signals:
+    /**
+     * @brief signalsSelectDate 选择日期的信号
+     * @param date 选择的日期
+     */
     void signalsSelectDate(QDate date);
 private:
     QVector<CMonthRect *> m_MonthItem;
     QDate                       m_days[12];
 
 };
-
+/**
+ * @brief The CMonthRect class
+ * 将月份放在矩形中
+ */
 class CMonthRect
 {
 public:
@@ -88,18 +118,28 @@ public:
     static void setTheMe(int type);
     static void setSelectRect(CMonthRect *selectRect);
 private:
+    //月份所在矩形
     QRectF                              m_rect;
+    //日期
     QDate                               m_Date;
+    //系统主题类型
     static int                          m_themetype ;
     static qreal                        m_DevicePixelRatio;
-
+    //默认字体颜色
     static QColor                       m_defaultTextColor;
+    //默认背景色
     static QColor                       m_backgrounddefaultColor;
+    //当前月的字体颜色
     static QColor                       m_currentDayTextColor;
+    //当前月的背景色
     static QColor                       m_backgroundcurrentDayColor;
+    //填充色
     static QColor                       m_fillColor;
+    //月份字体
     static QFont                        m_dayNumFont;
+    //选择的矩形
     static CMonthRect                  *m_SelectRect;
+    //选择的颜色
     QColor                              m_selectColor;
 };
 
