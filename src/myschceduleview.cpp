@@ -28,6 +28,7 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 #include <DFontSizeManager>
+#include <DLabel>
 
 #include <QShortcut>
 #include <QVBoxLayout>
@@ -42,17 +43,9 @@ CMySchceduleView::CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget 
     m_scheduleInfo = schduleInfo;
     initUI();
     initConnection();
+    //根据主题type设置颜色
+    setLabelTextColor(DGuiApplicationHelper::instance()->themeType());
     setFixedSize(380, 160);
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
-    if (themetype == 2) {
-        DPalette anipa = palette();
-        QColor color = "#191919";
-        color.setAlphaF(0.8);
-        anipa.setColor(DPalette::Background, color);
-        setPalette(anipa);
-    }
-
     AutoFeed(m_scheduleInfo.titleName);
 
     if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
@@ -108,6 +101,43 @@ void CMySchceduleView::AutoFeed(QString text)
     }
 
     m_schceduleLabel->setText(resultStr);
+}
+
+void CMySchceduleView::setLabelTextColor(const int type)
+{
+    //标题显示颜色
+    QColor titleColor;
+    //日程显示颜色
+    QColor scheduleTitleColor;
+    //时间显示颜色
+    QColor timeColor;
+    if (type == 2) {
+        titleColor = "#C0C6D4";
+        scheduleTitleColor = "#FFFFFF";
+        timeColor = "#FFFFFF";
+        timeColor.setAlphaF(0.7);
+    } else {
+        titleColor = "#001A2E";
+        scheduleTitleColor = "#000000";
+        scheduleTitleColor.setAlphaF(0.9);
+        timeColor = "#000000";
+        timeColor.setAlphaF(0.7);
+    }
+    //设置颜色
+    setPaletteTextColor(m_Title,titleColor);
+    setPaletteTextColor(m_schceduleLabel,scheduleTitleColor);
+    setPaletteTextColor(m_timeLabel,timeColor);
+}
+
+void CMySchceduleView::setPaletteTextColor(QWidget *widget, QColor textColor)
+{
+    //如果为空指针则退出
+    if(nullptr == widget)
+        return;
+    DPalette palette = widget->palette();
+    //设置文字显示颜色
+    palette.setColor(DPalette::WindowText,textColor);
+    widget->setPalette(palette);
 }
 
 void CMySchceduleView::showEvent(QShowEvent *event)
@@ -226,23 +256,17 @@ void CMySchceduleView::initUI()
 
     m_Title = new QLabel(this);
     m_Title->setFixedSize(108, 51);
-    m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+    m_Title->setAlignment(Qt::AlignCenter);
+    QFont titleFont;
+    //设置字重
+    titleFont.setWeight(QFont::Bold);
+    m_Title->setFont(titleFont);
     DFontSizeManager::instance()->bind(m_Title,DFontSizeManager::T5);
-    QIcon t_icon(CDynamicIcon::getInstance()->getPixmap()); //= QIcon::fromTheme("dde-calendar");
+    //设置日期图标
+    QIcon t_icon(CDynamicIcon::getInstance()->getPixmap());
     setIcon(t_icon);
     QFont labelTitle;
     labelTitle.setWeight(QFont::DemiBold);
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    DPalette titlepa = m_Title->palette();
-
-    if (themetype == 0 || themetype == 1) {
-        titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
-
-    } else {
-        titlepa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-    }
-
-    m_Title->setPalette(titlepa);
     m_Title->setFont(labelTitle);
     m_Title->setText(tr("My Event"));
     m_Title->move(137, 0);
@@ -254,16 +278,7 @@ void CMySchceduleView::initUI()
     area = new QScrollArea (this);
     area->setFrameShape(QFrame::NoFrame);
     area->setFixedWidth(363);
-    DPalette pa = area->palette();
-
-    if (themetype == 0 || themetype == 1) {
-        pa.setColor(DPalette::WindowText, QColor("#2C4767"));
-
-    } else {
-        pa.setColor(DPalette::WindowText, QColor("#A8B7D1"));
-    }
     area->setBackgroundRole(QPalette::Background);
-    area->setPalette(pa);
     area->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
     area->setWidgetResizable(true);
     area->setAlignment(Qt::AlignCenter);
@@ -275,36 +290,17 @@ void CMySchceduleView::initUI()
     m_schceduleLabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_schceduleLabel,DFontSizeManager::T6);
     labelF.setWeight(QFont::Medium);
-    DPalette wpa = m_schceduleLabel->palette();
-
-    if (themetype == 0 || themetype == 1) {
-        wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
-
-    } else {
-        wpa.setColor(DPalette::WindowText, QColor("#A8B7D1"));
-    }
-    m_schceduleLabel->setPalette(wpa);
     m_schceduleLabel->setFont(labelF);
 
     area->setWidget(m_schceduleLabel);
     mainLayout->addWidget(area);
 
-    m_timeLabel = new QLabel(this);
+    m_timeLabel = new DLabel(this);
     m_timeLabel->setFixedHeight(26);
     m_timeLabel->setAlignment(Qt::AlignCenter);
-    DFontSizeManager::instance()->bind(m_timeLabel,DFontSizeManager::T6);
-    QFont labelT;
-    labelT.setWeight(QFont::Bold);
-    DPalette tpa = m_timeLabel->palette();
-
-    if (themetype == 0 || themetype == 1) {
-        tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
-    } else {
-        tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
-    }
-
-    m_timeLabel->setPalette(tpa);
-    m_timeLabel->setFont(labelT);
+    QFont timeFont;
+    timeFont.setWeight(QFont::Normal);
+    m_timeLabel->setFont(timeFont);
     mainLayout->addSpacing(6);
     mainLayout->addWidget(m_timeLabel);
 
@@ -320,21 +316,25 @@ void CMySchceduleView::initUI()
             button->setFixedSize(165,36);
         }
     }
-    DFrame *gwi = new DFrame(this);
-    gwi->setContentsMargins(0, 0, 0, 0);
-    gwi->setLayout(mainLayout);
-    DPalette anipa = gwi->palette();
-    QColor color = "#F8F8F8";
-    color.setAlphaF(0.0);
-    anipa.setColor(DPalette::Background, color);
-    gwi->setAutoFillBackground(true);
-    gwi->setPalette(anipa);
-    gwi->setBackgroundRole(DPalette::Background);
-    addContent(gwi, Qt::AlignCenter);
+
+    //这种中心铺满的weiget，显示日程标题和时间的控件
+    DWidget *centerWidget = new DWidget(this);
+    centerWidget->setLayout(mainLayout);
+    //获取widget的调色板
+    DPalette centerWidgetPalette = centerWidget->palette();
+    //设置背景色为透明
+    centerWidgetPalette.setColor(DPalette::Background, Qt::transparent);
+    centerWidget->setPalette(centerWidgetPalette);
+    //添加窗口为剧中对齐
+    addContent(centerWidget, Qt::AlignCenter);
 }
 
 void CMySchceduleView::initConnection()
 {
+    //关联主题改变事件
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
+                     this,
+                     &CMySchceduleView::setLabelTextColor);
     if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
         connect(this, &DDialog::buttonClicked, this, &CMySchceduleView::close);
     } else {

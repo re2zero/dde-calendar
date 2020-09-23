@@ -512,19 +512,6 @@ void CSchceduleDlg::initUI()
     QFont titlelabelF;
     titlelabelF.setWeight(QFont::DemiBold);
     titlelabelF.setPixelSize(17);
-    QColor btitleColor = "#000000";
-    btitleColor.setAlphaF(0.01);
-    DPalette titlepa = m_titleLabel->palette();
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
-    if (themetype == 0 || themetype == 1) {
-        titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
-        titlepa.setColor(DPalette::Window, btitleColor);
-    } else {
-        titlepa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-        titlepa.setColor(DPalette::Window, btitleColor);
-    }
-    m_titleLabel->setPalette(titlepa);
     m_titleLabel->setFixedSize(148, 51);
     m_titleLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
     m_titleLabel->move(145, 0);
@@ -533,13 +520,6 @@ void CSchceduleDlg::initUI()
     setSpacing(0);
     QFont mlabelF;
     mlabelF.setWeight(QFont::Medium);
-    DPalette pa = m_titleLabel->palette();
-
-    if (themetype == 0 || themetype == 1) {
-        pa.setColor(DPalette::WindowText, QColor("#414D68"));
-    } else {
-        pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-    }
 
     QVBoxLayout *maintlayout = new QVBoxLayout;
     maintlayout->setMargin(0);
@@ -554,7 +534,6 @@ void CSchceduleDlg::initUI()
     QString str_typelabel = fontWidth_typeLabel.elidedText(tr("Type:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_typeLabel->setText(str_typelabel);
     m_typeLabel->setFont(mlabelF);
-    m_typeLabel->setPalette(pa);
     m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_typeLabel->setFixedSize(78, 36);
     m_typeComBox = new DComboBox();
@@ -592,7 +571,6 @@ void CSchceduleDlg::initUI()
     QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_contentLabel->setText(str_contentlabel);
     m_contentLabel->setFont(mlabelF);
-    m_contentLabel->setPalette(pa);
     m_contentLabel->setToolTip(tr("Description"));
     m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_contentLabel->setFixedWidth(78);
@@ -626,7 +604,6 @@ void CSchceduleDlg::initUI()
     QString str_allDayLabel = fontWidth_allDayLabel.elidedText(tr("All Day:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_adllDayLabel->setText(str_allDayLabel);
     m_adllDayLabel->setFont(mlabelF);
-    m_adllDayLabel->setPalette(pa);
     m_adllDayLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_adllDayLabel->setFixedWidth(78);
     m_allDayCheckbox = new DCheckBox(this);
@@ -647,7 +624,6 @@ void CSchceduleDlg::initUI()
     QString str_beginTimeLabel = fontWidth_beginTimeLabel.elidedText(tr("Starts:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_beginTimeLabel->setText(str_beginTimeLabel);
     m_beginTimeLabel->setFont(mlabelF);
-    m_beginTimeLabel->setPalette(pa);
     m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_beginTimeLabel->setFixedSize(78, 36);
     m_beginDateEdit = new QDateEdit(this);
@@ -680,7 +656,6 @@ void CSchceduleDlg::initUI()
     QString str_endTimeLabel = fontWidth_endTimeLabel.elidedText(tr("Ends:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_endTimeLabel->setText(str_endTimeLabel);
     m_endTimeLabel->setFont(mlabelF);
-    m_endTimeLabel->setPalette(pa);
     m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_endTimeLabel->setFixedSize(78, 36);
     m_endDateEdit = new QDateEdit(this);
@@ -714,7 +689,6 @@ void CSchceduleDlg::initUI()
     m_remindSetLabel->setToolTip(tr("Remind Me"));
     m_remindSetLabel->setText(str_remindSetLabel);
     m_remindSetLabel->setFont(mlabelF);
-    m_remindSetLabel->setPalette(pa);
     m_remindSetLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_remindSetLabel->setFixedWidth(78);
 
@@ -739,7 +713,6 @@ void CSchceduleDlg::initUI()
     QString str_beginRepeatLabel = fontWidth_beginRepeatLabel.elidedText(tr("Repeat:"), Qt::ElideRight, DDECalendar::NewSchceduleLabelWidth);
     m_beginrepeatLabel->setText(str_beginRepeatLabel);
     m_beginrepeatLabel->setFont(mlabelF);
-    m_beginrepeatLabel->setPalette(pa);
     m_beginrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_beginrepeatLabel->setFixedWidth(78);
     m_beginrepeatCombox = new DComboBox();
@@ -768,7 +741,6 @@ void CSchceduleDlg::initUI()
     m_endrepeatLabel->setToolTip(tr("End Repeat"));
     m_endrepeatLabel->setText(str_endrepeatLabel);
     m_endrepeatLabel->setFont(mlabelF);
-    m_endrepeatLabel->setPalette(pa);
     m_endrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_endrepeatLabel->setFixedWidth(78);
     m_endrepeatCombox = new DComboBox();
@@ -799,7 +771,6 @@ void CSchceduleDlg::initUI()
     m_endrepeattimes->lineEdit()->setValidator(validator);
     m_endrepeattimesLabel = new QLabel(tr("time(s)"));
     m_endrepeattimesLabel->setFont(mlabelF);
-    m_endrepeattimesLabel->setPalette(pa);
     m_endrepeattimesLabel->setFixedHeight(36);
     endrepeattimeslayout->addWidget(m_endrepeattimes);
     endrepeattimeslayout->addWidget(m_endrepeattimesLabel);
@@ -858,6 +829,9 @@ void CSchceduleDlg::initUI()
 
 void CSchceduleDlg::initConnection()
 {
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
+                     this,
+                     &CSchceduleDlg::setTheMe);
     connect(this, &DDialog::buttonClicked, this, &CSchceduleDlg::slotCancelBt);
     connect(this, &DDialog::buttonClicked, this, &CSchceduleDlg::slotOkBt);
     connect(m_textEdit, &DTextEdit::textChanged, this, &CSchceduleDlg::slotTextChange);
@@ -940,6 +914,21 @@ void CSchceduleDlg::initRmindRpeatUI()
     } else {
         m_endrepeatWidget->hide();
     }
+}
+
+void CSchceduleDlg::setTheMe(const int type)
+{
+    //日程标题编辑框文字颜色
+    QColor titleColor;
+    if (type == 2) {
+        titleColor = "#C0C6D4";
+    } else {
+        titleColor = "#414D68";
+    }
+    DPalette pa = m_textEdit->palette();
+    //设置颜色
+    pa.setColor(DPalette::Text,titleColor);
+    m_textEdit->setPalette(pa);
 }
 
 void CSchceduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &newinfo, const ScheduleDtailInfo &oldinfo, int m_themetype)
