@@ -192,6 +192,10 @@ QVector<ScheduleDtailInfo> queryScheduleProxy::queryNonRepeatingSchedule()
     QVector<ScheduleDtailInfo> mScheduleInfoVector {};
     mScheduleInfoVector.clear();
     QVector<DateTimeInfo> queryDatetime = getQueryDateTime(m_queryJsonData);
+    //如果开始时间大于结束时间则退出
+    if(!timeFrameIsValid(queryDatetime)){
+        return mScheduleInfoVector;
+    }
     switch (m_queryJsonData->getPropertyStatus()) {
     case JsonData::PropertyStatus::ALL: {
         DateTimeLimit timeLimit = getTimeLimitByTimeInfo(queryDatetime);
@@ -460,4 +464,13 @@ bool queryScheduleProxy::getTimeIsExpired() const
 void queryScheduleProxy::setTimeIsExpired(const bool timeisExp)
 {
     m_TimeIsExpired = timeisExp;
+}
+
+bool queryScheduleProxy::timeFrameIsValid(const QVector<DateTimeInfo> &timeInfoVect)
+{
+    //如果开始时间大于结束时间则返回false
+    if(timeInfoVect.size()>1 && timeInfoVect.at(0).datetime>timeInfoVect.at(1).datetime){
+        return false;
+    }
+    return true;
 }
