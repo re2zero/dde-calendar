@@ -30,7 +30,7 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 {
     QueryJsonData *queryJsonData = dynamic_cast<QueryJsonData *>(semanticTask.getJsonData());
     //如果转换失败则返回错误消息
-    if(queryJsonData == nullptr)
+    if (queryJsonData == nullptr)
         return errorMessage();
     //查询日程
     if (queryJsonData->offset() > -1
@@ -90,29 +90,42 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 
     Reply m_reply;
 
-
-    if (queryOverDueDate(queryJsonData)) {
-        m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-        m_reply.ttsMessage("抱歉，不能查询过期的提醒");
-        m_reply.displayMessage("抱歉，不能查询过期的提醒");
-    } else if (queryJsonData->getDateTime().size() > 0
-               && queryJsonData->getDateTime().at(0).datetime > QDateTime::currentDateTime().addMonths(6)) {
-        m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-        m_reply.ttsMessage("只能查询未来半年的日程");
-        m_reply.displayMessage("只能查询未来半年的日程");
-    } else {
-        if (viewWidget->getScheduleNum(showdate) == 0) {
+    if (queryJsonData->ShouldEndSession()) {
+        //不进行多轮
+        if (queryOverDueDate(queryJsonData)) {
+            //过期时间
             m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-            m_reply.ttsMessage("没有找到对应的日程");
-            m_reply.displayMessage("没有找到对应的日程");
+            m_reply.ttsMessage("抱歉，不能查询过期的提醒");
+            m_reply.displayMessage("抱歉，不能查询过期的提醒");
+        } else if (queryJsonData->getDateTime().size() > 0
+                   && queryJsonData->getDateTime().at(0).datetime > QDateTime::currentDateTime().addMonths(6)) {
+            //超过半年的时间
+            m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
+            m_reply.ttsMessage("只能查询未来半年的日程");
+            m_reply.displayMessage("只能查询未来半年的日程");
         } else {
-            QString str = QString("找到%1个日程").arg(viewWidget->getScheduleNum(showdate));
-            m_reply.setReplyType(Reply::RT_INNER_WIDGET | Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-            m_reply.setReplyWidget(viewWidget);
-            m_reply.ttsMessage(str);
-            m_reply.displayMessage(str);
+            if (viewWidget->getScheduleNum(showdate) == 0) {
+                //没有查询的日程
+                m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
+                m_reply.ttsMessage("没有找到对应的日程");
+                m_reply.displayMessage("没有找到对应的日程");
+            } else {
+                //查询到日程
+                QString str = QString("找到%1个日程").arg(viewWidget->getScheduleNum(showdate));
+                m_reply.setReplyType(Reply::RT_INNER_WIDGET | Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
+                m_reply.setReplyWidget(viewWidget);
+                m_reply.ttsMessage(str);
+                m_reply.displayMessage(str);
+            }
         }
+    } else {
+        //多轮的情况
+        m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
+        //使用建议回复语
+        m_reply.ttsMessage(queryJsonData->SuggestMsg());
+        m_reply.displayMessage(queryJsonData->SuggestMsg());
     }
+
     return m_reply;
 }
 
@@ -162,13 +175,8 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
         }
     }
     break;
-    default: {
-        //查询日程，如果没有时间则默认查询今天的日程
-        m_BeginDateTime = QDateTime::currentDateTime();
-        m_EndDateTime.setDate(m_BeginDateTime.date());
-        m_EndDateTime.setTime(QTime(23, 59, 59));
-    }
-    break;
+    default:
+        break;
     }
 }
 
