@@ -39,13 +39,23 @@ public:
     QAbstractButton *addPushButton(QString btName, bool type = false);
     QAbstractButton *addsuggestButton(QString btName, bool type = false);
     QAbstractButton *addWaringButton(QString btName, bool type = false);
-    void setTitleName(QString tileName);
     void setText(QString str);
     void setInformativeText(QString str);
     int clickButton();
 private:
     void initUI();
     void initConnection();
+    /**
+     * @brief setTheMe  根据主题type设置颜色
+     * @param type  主题type
+     */
+    void setTheMe(const int type);
+    /**
+     * @brief setPaletteTextColor   设置调色板颜色
+     * @param widget    需要设置的widget
+     * @param textColor     显示颜色
+     */
+    void setPaletteTextColor(QWidget *widget,QColor textColor);
 protected:
     void changeEvent(QEvent *event) override;
 private slots:

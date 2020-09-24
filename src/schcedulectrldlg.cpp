@@ -36,14 +36,6 @@ CSchceduleCtrlDlg::CSchceduleCtrlDlg(QWidget *parent)
     setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    if (themetype == 2) {
-        DPalette anipa = palette();
-        QColor color = "#191919";
-        color.setAlphaF(0.8);
-        anipa.setColor(DPalette::Background, color);
-        setPalette(anipa);
-    }
     resize(380, 260);
     setFocusPolicy(Qt::ClickFocus);
 }
@@ -61,17 +53,6 @@ void CSchceduleCtrlDlg::initUI()
     QFont labelTitle;
     labelTitle.setWeight(QFont::Bold);
     labelTitle.setPixelSize(17);
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    DPalette titlepa = m_Title->palette();
-
-    if (themetype == 0 || themetype == 1) {
-        titlepa.setColor(DPalette::WindowText, QColor("#001A2E"));
-
-    } else {
-        titlepa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-    }
-
-    m_Title->setPalette(titlepa);
     m_Title->setFont(labelTitle);
 
     m_mainBoxLayout = new QVBoxLayout();
@@ -84,15 +65,6 @@ void CSchceduleCtrlDlg::initUI()
     m_firstLabel->setWordWrap(true);
     labelF.setWeight(QFont::Medium);
     DFontSizeManager::instance()->bind(m_firstLabel,DFontSizeManager::T6);
-    DPalette wpa = m_firstLabel->palette();
-
-    if (themetype == 0 || themetype == 1) {
-        wpa.setColor(DPalette::WindowText, QColor("#2C4767"));
-
-    } else {
-        wpa.setColor(DPalette::WindowText, QColor("#A8B7D1"));
-    }
-    m_firstLabel->setPalette(wpa);
     m_firstLabel->setForegroundRole(DPalette::WindowText);
     m_firstLabel->setFont(labelF);
     m_mainBoxLayout->addWidget(m_firstLabel);
@@ -102,16 +74,9 @@ void CSchceduleCtrlDlg::initUI()
     m_seconLabel->setAlignment(Qt::AlignCenter);
     labelTitle.setWeight(QFont::Bold);
     DFontSizeManager::instance()->bind(m_seconLabel,DFontSizeManager::T6);
-    DPalette tpa = m_seconLabel->palette();
-
-    if (themetype == 0 || themetype == 1) {
-        tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
-    } else {
-        tpa.setColor(DPalette::WindowText, QColor("#6A829F"));
-    }
-
-    m_seconLabel->setPalette(tpa);
     m_seconLabel->setForegroundRole(DPalette::WindowText);
+    //设置字重
+    labelT.setWeight(QFont::Normal);
     m_seconLabel->setFont(labelT);
     m_seconLabel->setWordWrap(true);
     m_mainBoxLayout->addSpacing(3);
@@ -132,7 +97,42 @@ void CSchceduleCtrlDlg::initUI()
 
 void CSchceduleCtrlDlg::initConnection()
 {
+    //关联主题信号
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
+                     this,
+                     &CSchceduleCtrlDlg::setTheMe);
     connect(this, &DDialog::buttonClicked, this, &CSchceduleCtrlDlg::buttonJudge); //连接信号和槽
+}
+
+void CSchceduleCtrlDlg::setTheMe(const int type)
+{
+    //标题文字颜色
+    QColor titleColor;
+    //提示内容文字颜色
+    QColor contentColor;
+    if (type == 2) {
+        titleColor = "#FFFFFF";
+        contentColor = "#FFFFFF";
+        contentColor.setAlphaF(0.7);
+    } else {
+        titleColor = "#000000";
+        titleColor.setAlphaF(0.9);
+        contentColor = "#000000";
+        contentColor.setAlphaF(0.7);
+    }
+    setPaletteTextColor(m_firstLabel,titleColor);
+    setPaletteTextColor(m_seconLabel,contentColor);
+}
+
+void CSchceduleCtrlDlg::setPaletteTextColor(QWidget *widget, QColor textColor)
+{
+    //如果为空指针则退出
+    if(nullptr == widget)
+        return;
+    DPalette palette = widget->palette();
+    //设置文字显示颜色
+    palette.setColor(DPalette::WindowText,textColor);
+    widget->setPalette(palette);
 }
 
 void CSchceduleCtrlDlg::changeEvent(QEvent *event)
