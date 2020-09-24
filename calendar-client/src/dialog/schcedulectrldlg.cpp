@@ -76,7 +76,7 @@ void CSchceduleCtrlDlg::initUI()
     //自动换行
     m_firstLabel->setWordWrap(true);
     labelF.setWeight(QFont::Medium);
-    DFontSizeManager::instance()->bind(m_firstLabel,DFontSizeManager::T6);
+    DFontSizeManager::instance()->bind(m_firstLabel, DFontSizeManager::T6);
     m_firstLabel->setForegroundRole(DPalette::WindowText);
     m_firstLabel->setFont(labelF);
     //将第一行文字添加到main布局中
@@ -86,7 +86,7 @@ void CSchceduleCtrlDlg::initUI()
     m_seconLabel->setFixedWidth(350);
     m_seconLabel->setAlignment(Qt::AlignCenter);
     labelTitle.setWeight(QFont::Bold);
-    DFontSizeManager::instance()->bind(m_seconLabel,DFontSizeManager::T6);
+    DFontSizeManager::instance()->bind(m_seconLabel, DFontSizeManager::T6);
     m_seconLabel->setForegroundRole(DPalette::WindowText);
     //设置字重
     labelT.setWeight(QFont::Normal);
@@ -121,6 +121,7 @@ void CSchceduleCtrlDlg::initConnection()
                      &CSchceduleCtrlDlg::setTheMe);
     connect(this, &DDialog::buttonClicked, this, &CSchceduleCtrlDlg::buttonJudge); //连接信号和槽
 }
+
 /**
  * @brief setTheMe  根据主题type设置颜色
  * @param type  主题type
@@ -144,9 +145,10 @@ void CSchceduleCtrlDlg::setTheMe(const int type)
         contentColor = "#000000";
         contentColor.setAlphaF(0.7);
     }
+
     //设置颜色
-    setPaletteTextColor(m_firstLabel,titleColor);
-    setPaletteTextColor(m_seconLabel,contentColor);
+    setPaletteTextColor(m_firstLabel, titleColor);
+    setPaletteTextColor(m_seconLabel, contentColor);
 }
 /**
  * @brief setPaletteTextColor   设置调色板颜色
@@ -160,9 +162,10 @@ void CSchceduleCtrlDlg::setPaletteTextColor(QWidget *widget, QColor textColor)
         return;
     DPalette palette = widget->palette();
     //设置文字显示颜色
-    palette.setColor(DPalette::WindowText,textColor);
+    palette.setColor(DPalette::WindowText, textColor);
     widget->setPalette(palette);
 }
+
 /**
  * @brief CSchceduleCtrlDlg::changeEvent 调整文字显示
  * @param event 字体改变
@@ -232,7 +235,7 @@ QAbstractButton *CSchceduleCtrlDlg::addPushButton(QString btName, bool type)
  */
 QAbstractButton *CSchceduleCtrlDlg::addsuggestButton(QString btName, bool type)
 {
-    addButton(btName,false,DDialog::ButtonRecommend);
+    addButton(btName, false, DDialog::ButtonRecommend);
     int button_index = getButtonIndexByText(btName);
     QAbstractButton *suggestButton = getButton(button_index);
     //根据type设置按钮大小
@@ -257,7 +260,7 @@ QAbstractButton *CSchceduleCtrlDlg::addsuggestButton(QString btName, bool type)
  */
 QAbstractButton *CSchceduleCtrlDlg::addWaringButton(QString btName, bool type)
 {
-    addButton(btName,false,DDialog::ButtonWarning);
+    addButton(btName, false, DDialog::ButtonWarning);
     int button_index = getButtonIndexByText(btName);
     QAbstractButton *suggestButton = getButton(button_index);
     //根据type设置按钮大小
