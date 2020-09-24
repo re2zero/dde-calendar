@@ -38,9 +38,16 @@ Reply SelectAndQueryState::getReplyByIntent(bool isOK)
 
 scheduleState::Filter_Flag SelectAndQueryState::eventFilter(const JsonData *jsonData)
 {
+    //如果语义包含全部关键字则为修改初始状态
     if (jsonData->getPropertyStatus() == JsonData::ALL
+    //如果语义包含下一个关键字则为修改初始状态
         || jsonData->getPropertyStatus() == JsonData::NEXT
         || jsonData->isVaild()
+        //如果语义包含时间则为修改初始状态
+            || jsonData->DateTime().size()>0
+           // 如果语义包含内容则为修改初始状态
+            || !jsonData->TitleName().isEmpty()
+            //如果语义包含重复类型则为修改初始状态
         || jsonData->getRepeatStatus() != JsonData::NONE) {
         return Filter_Flag::Fileter_Init;
     }
