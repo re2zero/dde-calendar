@@ -175,8 +175,14 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
         }
     }
     break;
-    default:
-        break;
+    default: {
+        //如果没有时间，设置开始结束时间为无效时间
+        m_BeginDateTime.setDate(QDate(0,0,0));
+        m_BeginDateTime.setTime(QTime(0,0,0));
+        m_EndDateTime.setDate(QDate(0,0,0));
+        m_EndDateTime.setTime(QTime(0,0,0));
+    }
+    break;
     }
 }
 
@@ -361,18 +367,19 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getNonePropertyStatusSchedule(
     switch (queryJsonData->getPropertyStatus()) {
     case QueryJsonData::PropertyStatus::ALL: {
         //查询所有的日程，因此不需要对已查询到的日程进行过滤操作
-        scheduleInfo = schedule;
-        break;
+        return schedule;
     }
     case QueryJsonData::PropertyStatus::NEXT: {
         if (schedule.isEmpty()) {
-            break;
+            //如果半年内没有日程，返回空容器
+            return scheduleInfo;
         } else {
             schedule.clear();
             scheduleInfo = viewWidget->getNextScheduleInfo();
         }
+        //返回下一个日程信息
+        return scheduleInfo;
     }
-    break;
     case QueryJsonData::PropertyStatus::LAST:
         break;
     default: {
@@ -382,10 +389,13 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getNonePropertyStatusSchedule(
             scheduleInfo = viewWidget->queryScheduleWithDate(schedule, m_BeginDateTime.date(), m_EndDateTime.date());
             //按照处理过的时间进行查询
             scheduleInfo = viewWidget->queryScheduleWithTime(scheduleInfo, m_BeginDateTime.time(), m_EndDateTime.time());
+            //返回过滤的日程
+            return scheduleInfo;
         }
     }
     }
-    return scheduleInfo;
+    //如果以上情况都没有返回半年所有日程
+    return schedule;
 }
 
 bool queryScheduleTask::queryOverDueDate(QueryJsonData *queryJsonData)
