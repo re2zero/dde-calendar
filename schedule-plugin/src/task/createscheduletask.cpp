@@ -32,7 +32,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     //创建
     CreateJsonData *createJsonData = dynamic_cast<CreateJsonData *>(semanticTask.getJsonData());
     //如果转换失败则返回错误消息
-    if(createJsonData == nullptr)
+    if (createJsonData == nullptr)
         return errorMessage();
     //查询日程
 
@@ -80,7 +80,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
                 break;
                 case CreateJsonData::EVEY:
                     //每年重复日程
-                    schedule = getEveryDYearSchedule();
+                    schedule = getEveryYearSchedule();
                     break;
                 case CreateJsonData::WORKD:
                     //工作日
@@ -256,7 +256,7 @@ QVector<ScheduleDtailInfo> createScheduleTask::getEveryMonthSchedule(QVector<int
     return schedule;
 }
 
-QVector<ScheduleDtailInfo> createScheduleTask::getEveryDYearSchedule()
+QVector<ScheduleDtailInfo> createScheduleTask::getEveryYearSchedule()
 {
     QVector<ScheduleDtailInfo> schedule;
     //设置重复类型
@@ -530,6 +530,26 @@ QVector<QDateTime> createScheduleTask::analysisWorkDayDate()
     return beginDateTime;
 }
 
+QDate createScheduleTask::getValidDate(QDate viewDate, int viewDateDay)
+{
+    //设置一个无效时间
+    QDate validDate(QDate(0,0,0));
+    //初始化年
+    int month = viewDate.month();
+    //判断未来半年的时间是否合法
+    for (int i = month; i <= month + 6; i++) {
+        //设置月
+        validDate = viewDate.addMonths(i - month);
+        //设置时间
+        validDate.setDate(validDate.year(), validDate.month(), viewDateDay);
+        //判断日期是否合法
+        if (validDate.isValid())
+            return validDate;
+    }
+    //返回判断时间
+    return validDate;
+}
+
 QVector<QDateTime> createScheduleTask::analysisEveryWeekDate(QVector<int> dateRange)
 {
     QVector<QDateTime> beginDateTime {};
@@ -599,14 +619,22 @@ QVector<QDateTime> createScheduleTask::getNoneMonthNumDate()
 QVector<QDateTime> createScheduleTask::getOneMonthNumDate(int firstMonthNum)
 {
     QVector<QDateTime> beginDateTime {};
+    //今天
     int currentDayofMonth = QDate::currentDate().day();
 
     if (currentDayofMonth < firstMonthNum) {
-        //当天日期小于开始日期
-        m_begintime.setDate(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth));
+        //今天小于开始日期
+        //获取合法日期
+        QDate validDate = getValidDate(QDate::currentDate(),firstMonthNum);
+        //日期合法，设置日期
+        if (validDate.isValid())
+            m_begintime.setDate(validDate);
     } else if (currentDayofMonth > firstMonthNum) {
-        //当前日期大于开始日期
-        m_begintime.setDate(QDate::currentDate().addDays(firstMonthNum - currentDayofMonth).addMonths(1));
+        //获取合法日期
+        QDate validDate = getValidDate(QDate::currentDate().addMonths(1),firstMonthNum);
+        //日期合法，设置日期
+        if (validDate.isValid())
+            m_begintime.setDate(validDate);
     } else {
         //当前日期等于开始日期
         if (m_begintime.time() > QTime::currentTime()) {
@@ -678,10 +706,15 @@ QVector<QDateTime> createScheduleTask::firstMonthNumLessThanSecond(int firstMont
 QVector<QDateTime> createScheduleTask::getMonthAllDateTime(QDate BeginDate, int firstMonthNum, int secondMonthNum)
 {
     QVector<QDateTime> beginDateTime;
-
-    for (int i = 0; i < secondMonthNum - firstMonthNum + 1; i++) {
-        m_begintime.setDate(BeginDate.addDays(i));
-        beginDateTime.append(m_begintime);
+    //设置日期
+    for (int i = firstMonthNum; i <= secondMonthNum; i++) {
+        //日期是否合法
+        QDate validDate = getValidDate(BeginDate, i);
+        //合法日期，设置日期
+        if (validDate.isValid()) {
+            m_begintime.setDate(validDate);
+            beginDateTime.append(m_begintime);
+        }
     }
 
     return beginDateTime;
@@ -691,12 +724,18 @@ QVector<QDateTime> createScheduleTask::getMonthFrontPartDateTime(QDate BeginDate
 {
     QVector<QDateTime> beginDateTime {};
     int currentDayofMonth = QDate::currentDate().day();
-    //新建日程的天数
-    int addDays = getCreatesDays(firstMonthNum, currentDayofMonth, containsToday);
-
-    for (int i = 0; i < addDays; i++) {
-        m_begintime.setDate(BeginDate.addDays(firstMonthNum - currentDayofMonth).addMonths(1).addDays(i));
-        beginDateTime.append(m_begintime);
+    //包含今天
+    if (containsToday)
+        currentDayofMonth +=1;
+    //设置日期
+    for (int i = firstMonthNum; i < currentDayofMonth; i++) {
+        //获取合法日期
+        QDate validDate = getValidDate(BeginDate.addDays(firstMonthNum - currentDayofMonth).addMonths(1), i);
+        //合法日期
+        if (validDate.isValid()) {
+            m_begintime.setDate(validDate);
+            beginDateTime.append(m_begintime);
+        }
     }
 
     return beginDateTime;
@@ -706,12 +745,18 @@ QVector<QDateTime> createScheduleTask::getMonthBackPartDateTime(QDate BeginDate,
 {
     QVector<QDateTime> beginDateTime {};
     int currentDayofMonth = QDate::currentDate().day();
-    //新建日程的天数
-    int addDays = getCreatesDays(currentDayofMonth, secondMonthNum, containsToday);
-
-    for (int i = 0; i < addDays; i++) {
-        m_begintime.setDate(BeginDate.addDays(i));
-        beginDateTime.append(m_begintime);
+    //不包含今天
+    if (!containsToday)
+        currentDayofMonth +=1;
+    //设置日期
+    for (int i = currentDayofMonth; i < secondMonthNum + 1; i++) {
+        //获取合法日期
+        QDate validDate = getValidDate(BeginDate, i);
+        //日期合法
+        if (validDate.isValid()) {
+            m_begintime.setDate(validDate);
+            beginDateTime.append(m_begintime);
+        }
     }
 
     return beginDateTime;

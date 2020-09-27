@@ -69,7 +69,7 @@ private:
      * @brief getEveryDYearSchedule 获取每年重复的日程
      * @return 日程信息
      */
-    QVector<ScheduleDtailInfo> getEveryDYearSchedule();
+    QVector<ScheduleDtailInfo> getEveryYearSchedule();
     /**
      * @brief getEveryWorkDaySchedule 获取工作日的日程
      * @return 日程信息
@@ -235,6 +235,13 @@ private:
      * @return 日期容器
      */
     QVector<QDateTime> analysisWorkDayDate();
+    /**
+     * @brief getValidDate 判断是否是合法日期
+     * @param viewDate 判断的日期
+     * @param viewDateDay 判断哪一天
+     * @return 日期
+     */
+    QDate getValidDate(QDate viewDate, int viewDateDay);
 private:
     QDateTime       m_begintime;
     QDateTime       m_endtime;
