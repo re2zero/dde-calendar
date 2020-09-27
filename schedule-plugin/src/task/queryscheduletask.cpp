@@ -47,7 +47,8 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     viewWidget = new viewschedulewidget();
 
     QVector<ScheduleDateRangeInfo> showdate;
-    QVector<ScheduleDateRangeInfo> schedule = getHalfAYearSchedule(m_queryTitleName);
+    TIME_FRAME_IN_THE_NEXT_SIX_MONTHT
+    QVector<ScheduleDateRangeInfo> schedule = getSchedule(m_queryTitleName, beginTime, endTime);
 
     setDateTime(queryJsonData);
 
@@ -149,29 +150,38 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
     case 2: {
         m_BeginDateTime = queryJsonData->getDateTime().at(0).datetime;
         m_EndDateTime = queryJsonData->getDateTime().at(1).datetime;
-        //日期处理
-        if (queryJsonData->getDateTime().at(0).datetime.date() < QDate::currentDate()) {
-            m_BeginDateTime.setDate(QDate::currentDate());
-        }
-        if (queryJsonData->getDateTime().at(1).datetime.date() > QDate::currentDate().addMonths(6)) {
-            m_EndDateTime.setDate(QDate::currentDate().addMonths(6));
-        }
-        if (queryJsonData->getDateTime().at(1).datetime.date() < QDate::currentDate()) {
+
+        if (queryJsonData->getDateTime().at(1).datetime < QDateTime::currentDateTime()) {
+            //如果查询结束时间小于当前时间，设置开始结束时间为无效时间
+            m_BeginDateTime.setDate(QDate(0,0,0));
+            m_BeginDateTime.setTime(QTime(0,0,0));
+            m_EndDateTime.setDate(QDate(0,0,0));
+            m_EndDateTime.setTime(QTime(0,0,0));
             break;
-        }
-        //时间处理
-        if (queryJsonData->getDateTime().at(0).hasTime) {
-            if (queryJsonData->getDateTime().at(0).datetime.time() <= QTime::currentTime())
-                m_BeginDateTime.setTime(QTime::currentTime());
         } else {
-            if (queryJsonData->getDateTime().at(0).datetime.date() > QDate::currentDate()) {
-                m_BeginDateTime.setTime(QTime(0, 0, 0));
-            } else {
-                m_BeginDateTime.setTime(QTime::currentTime());
+            //最多查询半年的日程
+            if (queryJsonData->getDateTime().at(1).datetime.date() > QDate::currentDate().addMonths(6)) {
+                m_EndDateTime.setDate(QDate::currentDate().addMonths(6));
+            }
+            //如果没有时间，设置为一天最后的时间
+            if (!queryJsonData->getDateTime().at(1).hasTime) {
+                m_EndDateTime.setTime(QTime(23, 59, 59));
             }
         }
-        if (!queryJsonData->getDateTime().at(1).hasTime) {
-            m_EndDateTime.setTime(QTime(23, 59, 59));
+
+        if (queryJsonData->getDateTime().at(0).datetime <= QDateTime::currentDateTime()) {
+            //开始时间小于当前时间，设置当前时间
+            m_BeginDateTime = QDateTime::currentDateTime();
+        } else {
+            if (!queryJsonData->getDateTime().at(0).hasTime) {
+                //没有time
+                if (queryJsonData->getDateTime().at(0).datetime.date() == QDate::currentDate())
+                    //如果是今天，设置当前时间
+                    m_BeginDateTime.setTime(QTime::currentTime());
+                else
+                    //不是今天，设置一天最初的时间
+                    m_BeginDateTime.setTime(QTime(0,0,0));
+            }
         }
     }
     break;
@@ -186,12 +196,14 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
     }
 }
 
-QVector<ScheduleDateRangeInfo> queryScheduleTask::getHalfAYearSchedule(QString titleName)
+QVector<ScheduleDateRangeInfo> queryScheduleTask::getSchedule(QString titleName, QDateTime beginDatetime, QDateTime endDateTime)
 {
     QVector<ScheduleDateRangeInfo> schedule;
-    TIME_FRAME_IN_THE_NEXT_SIX_MONTHT
-    m_dbus->QueryJobs(titleName, beginTime, endTime, schedule);
+    //使用dbus查询日程
+    m_dbus->QueryJobs(titleName, beginDatetime, endDateTime, schedule);
+    //设置查询的日程
     viewWidget->setScheduleDateRangeInfo(schedule);
+    //返回过滤后的日程
     return viewWidget->getAllScheduleInfo();
 }
 
@@ -385,12 +397,8 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getNonePropertyStatusSchedule(
     default: {
         if (m_BeginDateTime.isValid()) {
             qDebug() << m_BeginDateTime << m_EndDateTime;
-            //按照处理过的日期进行查询
-            scheduleInfo = viewWidget->queryScheduleWithDate(schedule, m_BeginDateTime.date(), m_EndDateTime.date());
-            //按照处理过的时间进行查询
-            scheduleInfo = viewWidget->queryScheduleWithTime(scheduleInfo, m_BeginDateTime.time(), m_EndDateTime.time());
             //返回过滤的日程
-            return scheduleInfo;
+            return getSchedule(queryJsonData->TitleName(), m_BeginDateTime, m_EndDateTime);
         }
     }
     }

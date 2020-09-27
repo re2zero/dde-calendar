@@ -41,9 +41,11 @@ private:
     /**
      * @brief getHalfAYearSchedule 获取半年的日程信息
      * @param titleName 日程titlename
+     * @param beginDatetime 查询开始时间
+     * @param endDateTime 查询结束时间
      * @return 日程信息
      */
-    QVector<ScheduleDateRangeInfo> getHalfAYearSchedule(QString titleName);
+    QVector<ScheduleDateRangeInfo> getSchedule(QString titleName, QDateTime beginDatetime, QDateTime endDateTime);
     /**
      * @brief getEveryDayOrWorkDaySchedule 获取每天或者工作日的日程信息
      * @param queryJsonData jsondatajubing
