@@ -33,7 +33,9 @@
 #include <QSignalMapper>
 
 DWIDGET_USE_NAMESPACE
-
+/**
+ * @brief The CalendarWeekDayType enum
+ */
 enum CalendarWeekDayType {
     SO_MFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_MWeekends = QStyleOption::SO_CustomBase + 0x02,
@@ -47,6 +49,9 @@ class CWeekHeadView: public DFrame
 {
     Q_OBJECT
 public:
+    /**
+     * @brief The ShowState enum
+     */
     enum ShowState {
         ShowLunar = 0x01,
         ShowLunarFestivalHighlight = 0x02,
@@ -54,25 +59,9 @@ public:
     };
 
 public:
-    /**
-     * @brief CWeekHeadView 构造函数
-     * @param parent 父类
-     */
     explicit CWeekHeadView(QWidget *parent = nullptr);
-    /**
-      * @brief CWeekHeadView 析构函数
-      */
     ~CWeekHeadView() override;
-    /**
-     * @brief setFirstWeekday 设置每周的第一天是周几
-     * @param weekday 周几
-     */
     void setFirstWeekday(int weekday);
-    /**
-     * @brief getDateType 获取所给日期的类型CalendarWeekDayType
-     * @param date 日期
-     * @return 类型
-     */
     int getDateType(const QDate &date);
     /**
      * @brief cellSelectable
@@ -82,21 +71,8 @@ public:
     {
         return m_cellSelectable;
     }
-    /**
-     * @brief setTheMe 根据系统主题类型设置颜色
-     * @param type 系统主题类型
-     */
     void setTheMe(int type = 0);
-    /**
-     * @brief setWeekDay 设置一周的时间
-     * @param vDays 一周代表的时间
-     */
     void setWeekDay(QVector<QDate> vDays);
-    /**
-     * @brief setMounthLabelWidth  设置
-     * @param w
-     * @param rw
-     */
     void setMounthLabelWidth(int w, int rw);
 signals:
     /**
@@ -143,123 +119,50 @@ signals:
      */
     void signaleSchedulHide();
 public slots:
-    /**
-     * @brief setCurrentDate 设置当前的时间
-     * @param date 日期
-     */
     void setCurrentDate(const QDate date);
-    /**
-     * @brief setLunarVisible 设置是否显示阴历信息
-     * @param visible 是否显示阴历信息
-     */
     void setLunarVisible(bool visible);
-    /**
-     * @brief setLunarFestivalHighlight
-     * @param highlight
-     */
     void setLunarFestivalHighlight(bool highlight);
-    /**
-     * @brief setCellSelectable
-     * @param selectable
-     */
     void setCellSelectable(bool selectable);
-    /**
-     * @brief handleCurrentDateChanged 当前日期改变的信号
-     * @param date 日期
-     * @param detail unused
-     */
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
 private:
-    /**
-     * @brief getDateIndex 根据日期返回当天的索引
-     * @param date 日期
-     * @return 日期所在的索引
-     */
     int getDateIndex(const QDate &date) const;
-    /**
-     * @brief getCellDayNum 根据索引值获取当天是在一个月中的第几天
-     * @param pos 索引
-     * @return 日期的字符串
-     */
     const QString getCellDayNum(int pos);
-    /**
-     * @brief getCellDate 根据索引获取当天的日期
-     * @param pos 索引值
-     * @return 日期
-     */
     const QDate getCellDate(int pos);
-    /**
-     * @brief getLunar 根据索引值获取当天的阴历信息
-     * @param pos 索引值
-     * @return 阴历信息字符串
-     */
     const QString getLunar(int pos);
-    /**
-     * @brief getCaLunarDayInfo 根据索引值获取阴历信息
-     * @param pos 索引值
-     * @return 阴历信息
-     */
     const CaLunarDayInfo getCaLunarDayInfo(int pos);
-    /**
-     * @brief paintCell 绘制周信息
-     * @param cell 每天所在的widget
-     */
     void paintCell(QWidget *cell);
-    /**
-     * @brief eventFilter 过滤器
-     * @param o 事件对象
-     * @param e 时间类型
-     * @return false
-     */
     bool eventFilter(QObject *o, QEvent *e) override;
-    /**
-     * @brief updateDate 更新数据
-     */
     void updateDate();
-    /**
-     * @brief updateCurrentLunar 更新当前的阴历信息
-     * @param info 阴历信息
-     */
     void updateCurrentLunar(const CaLunarDayInfo &info);
-    /**
-     * @brief checkDay 检查周数，在定制中计算正确的顺序。
-     * @param weekday 周数
-     * @return 周数
-     */
     int checkDay(int weekday);
 protected:
-    /**
-     * @brief mousePressEvent 鼠标单击事件
-     * @param event 鼠标事件
-     */
     void mousePressEvent(QMouseEvent *event) override;
 private slots:
-    /**
-     * @brief cellClicked
-     * @param cell
-     */
     void cellClicked(QWidget *cell);
-    /**
-     * @brief setSelectedCell 设置选择的时间
-     * @param index 索引值
-     */
     void setSelectedCell(int index);
-    /**
-     * @brief getDbusData 获取dbus日期
-     */
     void getDbusData();
 private:
+    //放置cell的列表
     QList<QWidget *> m_cellList;
+    //月份frame
     CustomFrame *m_monthLabel = nullptr;
+    //dbus
     CalendarDBus *m_DBusInter = nullptr;
+    //一周的时间
     QDate m_days[7];
+    //当前时间
     QDate m_currentDate;
+    //月份列表
     QStringList m_monthList;
+    //显示状态
     ShowState m_showState = Normal;
+    //选择cell的索引
     int m_selectedCell = 0;
+    //是否选择
     bool m_cellSelectable = true;
-
+    //daynum字体
     QFont m_dayNumFont;
+    //月份字体
     QFont m_monthFont;
 
     QColor m_backgroundCircleColor = "#2ca7f8";
@@ -272,16 +175,25 @@ private:
     QColor m_backgroudColor = "#E6EEF2";
     /**
      * @brief m_Background_Weekend_Color 周六周日背景色
+     *
+     * 周末背景色不同于工作日背景色
      */
     QColor m_Background_Weekend_Color = "#00429A";
+    //节假日和阴历颜色
     QColor m_solofestivalLunarColor = "#4DFF7272";
+    //队列
     QQueue<int> *queue = nullptr;
+    //日期和阴历节日对应字典
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
+    //阴历信息
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
+    //每周以周几开始
     int m_firstWeekDay;
+    //系统主题类型
     int m_themetype = 1;
     int m_monthW = 80;
     int m_fixwidth = 200;
+    //圆角半径
     const int m_radius = 8;
 };
 
