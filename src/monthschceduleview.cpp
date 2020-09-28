@@ -932,26 +932,30 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
     QVector<QVector<bool> > scheduleFill;
     QVector<bool> scheduf;
     //初始化
+    //m_colum列
     scheduf.fill(false,m_colum);
+    //m_MaxNum 行
     scheduleFill.fill(scheduf,m_MaxNum);
+    //标签起始位置
     int postion = 0;
+    //标签结束位置
     int end = 0;
     mScheduleClear();
-
     for (int i = 0 ; i < vMDaySchedule.size(); ++i) {
         postion = static_cast<int>(beginDate.daysTo(vMDaySchedule.at(i).bdate));
         end     = static_cast<int>(beginDate.daysTo(vMDaySchedule.at(i).edate));
+        //初始化当前行
         int row = 0;
         int pos = postion;
         int count = 0;
         int scheduleRow = row;
 
         for (; postion<end+1; ++postion) {
+            //如果当前行等于最大显示行
             if (row == m_MaxNum) {
-                if (m_ColumnScheduleCount[postion] >m_MaxNum) {
-                    continue;
-                }
+                //初始化当前行
                 row =0;
+                //初始化当前位置
                 pos = postion;
             }
             while (row<m_MaxNum) {
@@ -959,9 +963,13 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
                     RowScheduleInfo ms;
                     m_MScheduleInfo.append(ms);
                 }
+                //如果该位置没有被占用
                 if (!scheduleFill[row][postion]) {
+                    //如果该列日程总数大于最大显m_MScheduleInfo示数且该显示行没有超过最大显示行
                     if ((m_ColumnScheduleCount[postion]>m_MaxNum) &&(row>=m_MaxNum-1)) {
+                        //占用该位置
                         scheduleFill[row][postion] = true;
+                        //如果该位置不为起始位置
                         if (pos !=postion) {
                             MScheduleDateRangeInfo scheduleInfo;
                             scheduleInfo.bdate = beginDate.addDays(pos);
@@ -970,22 +978,15 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
                             scheduleInfo.tData = vMDaySchedule.at(i).tData;
                             m_MScheduleInfo[row].append(scheduleInfo);
                         }
-
+                        //设置还有xxx项
                         MScheduleDateRangeInfo info;
                         info.bdate = beginDate.addDays(postion);
                         info.edate = info.bdate;
                         info.num = m_ColumnScheduleCount[postion] -m_MaxNum +1;
                         info.state = true;
                         m_MScheduleInfo[row].append(info);
-
                         pos = postion +1;
-                        if (pos<7 && pos <end +1) {
-                            if (m_ColumnScheduleCount[pos]<row+1) {
-                                row =m_ColumnScheduleCount[pos]-1;
-                            }
-                        } else {
-                            row = 0;
-                        }
+                        row = 0;
                         count = 0;
                     } else {
                         scheduleFill[row][postion] = true;
