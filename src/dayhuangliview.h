@@ -22,10 +22,14 @@
 #include <DLabel>
 
 DWIDGET_USE_NAMESPACE
+/**
+ * @brief The CDayHuangLiLabel class
+ *
+ * 黄历类
+ */
 class CDayHuangLiLabel : public DLabel
 {
     Q_OBJECT
-
 public:
     explicit CDayHuangLiLabel(QWidget *parent = nullptr);
     void setbackgroundColor(QColor backgroundColor);
@@ -35,12 +39,27 @@ protected:
     void paintEvent(QPaintEvent *e) override;
     void resizeEvent(QResizeEvent *event) override;
 private:
+    /**
+     * @brief m_vHuangli
+     *
+     * 黄历字符列表
+     */
     QStringList           m_vHuangli;
+    /**
+     * @brief m_backgroundColor
+     *
+     * 背景色
+     */
     QColor                m_backgroundColor;
+    //字体颜色
     QColor                m_textcolor;
+    //字体
     QFont                 m_font;
+    //宜忌
     int                   m_type  = 0;
+    //左边距
     int                   m_leftMagin = 14;
+    //上边距
     int                   m_topMagin = 18;
 };
 
