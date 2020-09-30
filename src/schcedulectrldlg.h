@@ -30,7 +30,9 @@
 #include <QVBoxLayout>
 
 DWIDGET_USE_NAMESPACE
-
+/**
+ * @brief The CSchceduleCtrlDlg class
+ */
 class CSchceduleCtrlDlg : public DDialog
 {
     Q_OBJECT
@@ -45,33 +47,49 @@ public:
 private:
     void initUI();
     void initConnection();
-    /**
-     * @brief setTheMe  根据主题type设置颜色
-     * @param type  主题type
-     */
     void setTheMe(const int type);
-    /**
-     * @brief setPaletteTextColor   设置调色板颜色
-     * @param widget    需要设置的widget
-     * @param textColor     显示颜色
-     */
     void setPaletteTextColor(QWidget *widget,QColor textColor);
 protected:
     void changeEvent(QEvent *event) override;
 private slots:
     void buttonJudge(int id);
 private:
+    /**
+     * @brief m_firstLabel
+     *
+     * 标题下面的第一行label
+     */
     QLabel                           *m_firstLabel = nullptr;
+    /**
+     * @brief m_seconLabel
+     *
+     * 标题下面的第二行label
+     */
     QLabel                           *m_seconLabel = nullptr;
+    //图表
     QLabel *m_icon = nullptr;
+    //title label
     QLabel *m_Title = nullptr;
+    /**
+     * @brief m_id
+     *
+     * 按钮id
+     *
+     * 根据id，判断点击的按钮
+     */
     int                              m_id = -1;
+    //buttongroup
     QButtonGroup *m_Buttongroup = nullptr;
+    //button list
     QVector<QPushButton *> m_buttonlist;
+    //main布局
     QVBoxLayout *m_mainBoxLayout = nullptr;
+    //button布局
     QHBoxLayout *m_btBoxLayout = nullptr;
+    //字体
     QFont labelF;
     QFont labelT;
+    //按钮文字
     QVector<QString> str_btName;
 };
 
