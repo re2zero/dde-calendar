@@ -17,11 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "calendarmainwindow.h"
-#include "yearwindow.h"
-#include "monthwindow.h"
+#include "widget/yearWidget/yearwindow.h"
+#include "widget/monthWidget/monthwindow.h"
 #include "dbuscalendar_adaptor.h"
-#include "weekwindow.h"
-#include "daywindow.h"
+#include "widget/weekWidget/weekwindow.h"
+#include "widget/dayWidget/daywindow.h"
 #include "scheduledatamanage.h"
 #include "myschceduleview.h"
 #include "creatorparschedule.h"

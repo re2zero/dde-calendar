@@ -3,16 +3,16 @@
 
 #include "accessibledefine.h"
 
-#include "yearwindow.h"
-#include "monthwindow.h"
-#include "weekwindow.h"
-#include "daywindow.h"
-#include "SchecduleRemindWidget.h"
-#include "alldayeventview.h"
-#include "monthgraphiview.h"
-#include "graphicsview.h"
-#include "customframe.h"
-#include "animationstackedwidget.h"
+#include "../widget/yearWidget/yearwindow.h"
+#include "../widget/monthWidget/monthwindow.h"
+#include "../widget/weekWidget/weekwindow.h"
+#include "../widget/dayWidget/daywindow.h"
+#include "../customWidget/SchecduleRemindWidget.h"
+#include "../view/alldayeventview.h"
+#include "../view/monthgraphiview.h"
+#include "../view/graphicsview.h"
+#include "../customWidget/customframe.h"
+#include "../customWidget/animationstackedwidget.h"
 
 #include <DSwitchButton>
 #include <DBackgroundGroup>

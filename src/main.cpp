@@ -19,10 +19,9 @@
 
 #include "environments.h"
 #include "calendarmainwindow.h"
-#include "yearwindow.h"
 #include "exportedinterface.h"
 #include "configsettings.h"
-#include "accessible.h"
+#include "accessible/accessible.h"
 
 #include <DApplication>
 #include <DLog>

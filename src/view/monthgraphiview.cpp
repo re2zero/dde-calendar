@@ -19,10 +19,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "monthgraphiview.h"
-#include "monthschceduleview.h"
-#include "schceduledlg.h"
-#include "schcedulectrldlg.h"
-#include "myschceduleview.h"
+#include "../widget/monthWidget/monthschceduleview.h"
+#include "../dialog/schceduledlg.h"
+#include "../dialog/schcedulectrldlg.h"
+#include "../dialog/myschceduleview.h"
 #include "constants.h"
 
 #include <DHiDPIHelper>
