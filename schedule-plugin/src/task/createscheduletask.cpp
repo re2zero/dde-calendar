@@ -95,7 +95,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             break;
             }
             if (!schedule.isEmpty()) {
-                qDebug() << "creatUI"<< getFirstSchedule(schedule).beginDateTime;
+                qDebug() << "creatUI"<< getFirstSchedule(schedule).beginDateTime << m_begintime.daysTo(m_endtime);
                 setDateTimeAndGetSchedule(getFirstSchedule(schedule).beginDateTime, getFirstSchedule(schedule).endDateTime);
                 m_widget->setScheduleDbus(m_dbus);
                 m_widget->scheduleEmpty(true);
@@ -134,7 +134,8 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             } else if (createJsonData->getRepeatStatus() == CreateJsonData::NONE
                        && createJsonData->getDateTime().at(0).hasTime
                        && createJsonData->getDateTime().at(0).datetime < QDateTime::currentDateTime()
-                       && createJsonData->getDateTime().size() == 2) {
+                       && createJsonData->getDateTime().size() == 2
+                       && createJsonData->ShouldEndSession()) {
                 //对于跨天日程，开始datetime小于当前datetime，则开始date增加一天，为其拼接回复语
                 QString str = QString("好的，%1我会提醒您。").arg(m_begintime.toString("hh:mm"));
                 m_reply.ttsMessage(str);
