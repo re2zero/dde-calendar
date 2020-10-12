@@ -107,11 +107,6 @@ public:
      */
     void clearSearch();
     /**
-     * @brief setSearchText
-     * @param str
-     */
-    void setSearchText(QString str);
-    /**
      * @brief updateHigh CScheduleView updateHigh
      */
     void updateHigh();

@@ -112,7 +112,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
   */
 CMonthView::~CMonthView()
 {
-    if (lunarCache !=nullptr) {
+    if (lunarCache != nullptr) {
         delete lunarCache;
         lunarCache  = nullptr;
     }
@@ -125,6 +125,7 @@ void CMonthView::slotSchceduleUpdate()
     emit signalsSchceduleUpdate(0);
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
 }
+
 /**
  * @brief setSelectSchedule 设置选择的日程
  * @param scheduleInfo 日程信息
@@ -202,7 +203,7 @@ void CMonthView::resizeEvent(QResizeEvent *event)
     m_topmagin = topmagin;
     //设置布局显示边距
     m_mainLayout->setContentsMargins(leftmagin, topmagin, 0, 10);
-    m_weekIndicator->setFixedSize(width()-leftmagin, static_cast<int>(height() * 0.1042 + 0.5));
+    m_weekIndicator->setFixedSize(width() - leftmagin, static_cast<int>(height() * 0.1042 + 0.5));
 }
 /**
  * @brief mousePressEvent 鼠标单击
@@ -319,12 +320,12 @@ ScheduleDtailInfo CMonthView::getScheduleInfo(const QDate &beginDate, const QDat
 {
     ScheduleDtailInfo info;
     //设置日程的默认信息
-    if (beginDate.daysTo(endDate)>0) {
-        info.beginDateTime = QDateTime(beginDate,QTime(0,0,0));
-        info.endDateTime = QDateTime(endDate,QTime(23,59,59));
+    if (beginDate.daysTo(endDate) > 0) {
+        info.beginDateTime = QDateTime(beginDate, QTime(0, 0, 0));
+        info.endDateTime = QDateTime(endDate, QTime(23, 59, 59));
     } else {
-        info.beginDateTime = QDateTime(endDate,QTime(0,0,0));
-        info.endDateTime = QDateTime(beginDate,QTime(23,59,00));
+        info.beginDateTime = QDateTime(endDate, QTime(0, 0, 0));
+        info.endDateTime = QDateTime(beginDate, QTime(23, 59, 00));
     }
     info.titleName = tr("New Event");
     info.allday = true;

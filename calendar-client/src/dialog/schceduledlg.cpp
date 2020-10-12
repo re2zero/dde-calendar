@@ -477,6 +477,7 @@ void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)
         m_endTimeEdit->setTime(m_beginTimeEdit->getTime().addSecs(3600));
     }
 }
+
 /**
  * @brief CSchceduleDlg::slotallDayStateChanged 全天状态改变
  * @param state 状态

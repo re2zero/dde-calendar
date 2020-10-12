@@ -457,6 +457,7 @@ void CYearWindow::setSearchWFlag(bool flag)
 void CYearWindow::clearSearch()
 {
 }
+
 /**
  * @brief getScheduleInfo 判断一年中每一天是否有日程信息
  */

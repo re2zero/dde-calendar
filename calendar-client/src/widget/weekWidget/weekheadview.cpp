@@ -302,10 +302,12 @@ void CWeekHeadView::setLunarVisible(bool visible)
         state |= ShowLunar;
     else
         state &= ~ShowLunar;
+
     //显示状态
     m_showState = ShowState(state);
     update();
 }
+
 /**
  * @brief setCellSelectable
  * @param selectable

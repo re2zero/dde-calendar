@@ -133,6 +133,7 @@ void CMonthDayView::setTheMe(int type)
     setBackgroundRole(DPalette::Background);
     CMonthRect::setTheMe(type);
 }
+
 /**
  * @brief setsearchfalg
  * @param flag
@@ -146,7 +147,7 @@ void CMonthDayView::setsearchfalg(bool flag)
  * @param parent 父类
  */
 CMonthWidget::CMonthWidget(QWidget *parent)
-    :QWidget(parent)
+    : QWidget(parent)
 {
     //新建12个月份的rect
     for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
@@ -196,12 +197,12 @@ void CMonthWidget::resizeEvent(QResizeEvent *event)
  */
 void CMonthWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() ==Qt::RightButton)
+    if (event->button() == Qt::RightButton)
         return;
 
     int itemindex = getMousePosItem(event->pos());
 
-    if (!(itemindex<0)) {
+    if (!(itemindex < 0)) {
         if (m_MonthItem.at(itemindex)->getDate().year() < DDECalendar::QueryEarliestYear) {
             return;
         }
@@ -232,10 +233,10 @@ void CMonthWidget::paintEvent(QPaintEvent *event)
  */
 void CMonthWidget::updateSize()
 {
-    qreal w= this->width()/m_MonthItem.size();
+    qreal w = this->width() / m_MonthItem.size();
     //更新每个rect的大小
     for (int i = 0; i < m_MonthItem.size(); ++i) {
-        m_MonthItem.at(i)->setRect(i*w,0,w,this->height());
+        m_MonthItem.at(i)->setRect(i * w, 0, w, this->height());
     }
     update();
 }
@@ -246,7 +247,7 @@ void CMonthWidget::updateSize()
  */
 int CMonthWidget::getMousePosItem(const QPointF &pos)
 {
-    int res =-1;
+    int res = -1;
     //获取点击rect的索引
     for (int i = 0 ; i < m_MonthItem.size(); ++i) {
         if (m_MonthItem.at(i)->rect().contains(pos)) {
@@ -319,7 +320,7 @@ void CMonthRect::setRect(const QRectF &rect)
  */
 void CMonthRect::setRect(qreal x, qreal y, qreal w, qreal h)
 {
-    m_rect.setRect(x,y,w,h);
+    m_rect.setRect(x, y, w, h);
 }
 /**
  * @brief paintItem 绘制item
@@ -341,10 +342,10 @@ void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
     //月份数字
     const QString dayNum = QString::number(m_Date.month());
     //被选中的月份
-    if (m_SelectRect ==this) {
+    if (m_SelectRect == this) {
         //设置矩形
-        QRectF fillRect((rect.width() - 36) / 2 +rect.x() + 6,
-                        (rect.height() - 36) / 2 + 7 +rect.y(),
+        QRectF fillRect((rect.width() - 36) / 2 + rect.x() + 6,
+                        (rect.height() - 36) / 2 + 7 + rect.y(),
                         24,
                         24);
         painter->setBrush(QBrush(m_selectColor));
@@ -417,5 +418,5 @@ void CMonthRect::setTheMe(int type)
  */
 void CMonthRect::setSelectRect(CMonthRect *selectRect)
 {
-    m_SelectRect =selectRect;
+    m_SelectRect = selectRect;
 }

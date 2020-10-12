@@ -80,12 +80,12 @@ CDayMonthView::CDayMonthView(QWidget *parent)
 CDayMonthView::~CDayMonthView()
 {
     //删除map，并置空
-    if (lunarCache !=nullptr) {
+    if (lunarCache != nullptr) {
         delete lunarCache;
         lunarCache = nullptr;
     }
     //删除队列并置空
-    if ( queue !=nullptr) {
+    if (queue != nullptr) {
         delete queue;
         queue = nullptr;
     }
@@ -330,6 +330,7 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     //更新阴历
     updateCurrentLunar();
 }
+
 /**
  * @brief CDayMonthView::getDateIndex 获取日期的索引
  * @param date 日期
@@ -367,7 +368,7 @@ bool CDayMonthView::eventFilter(QObject *o, QEvent *e)
         } else if (e->type() == QEvent::MouseButtonPress) {
             //鼠标点击事件
             QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(e);
-            if (mouseEvent->button() ==Qt::LeftButton) {
+            if (mouseEvent->button() == Qt::LeftButton) {
                 //左击cell
                 cellClicked(cell);
             }
@@ -676,7 +677,7 @@ void CDayMonthView::paintCell(QWidget *cell)
     if (isSelectedCell) {
         int min = 0;
         //高度和宽度最小的一个
-        min = cell->height() < cell->width() ? cell->height():cell->width();
+        min = cell->height() < cell->width() ? cell->height() : cell->width();
         //最终rect
         QRectF fillRect;
         //宽度小于高度时的rect
@@ -737,7 +738,7 @@ void CDayMonthView::paintCell(QWidget *cell)
             //设置半径
             if (r < 4) {
                 r = 4;
-            } else if ( r > 7) {
+            } else if (r > 7) {
                 r = 7;
             }
             //绘制圆

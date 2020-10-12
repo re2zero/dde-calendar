@@ -268,7 +268,7 @@ void CWeekWindow::initConnection()
     connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CWeekWindow::signalViewtransparentFrame);
     connect(m_weekHeadView, &CWeekHeadView::signalsViewSelectDate, this, &CWeekWindow::signalsViewSelectDate);
     connect(m_weekHeadView, &CWeekHeadView::signaleSchedulHide, this, &CWeekWindow::slotScheduleHide);
-    connect(m_weekview,&CWeekView::signalIsDragging,this,&CWeekWindow::slotIsDragging);
+    connect(m_weekview, &CWeekView::signalIsDragging, this, &CWeekWindow::slotIsDragging);
 }
 /**
  * @brief setTheMe 根据系统主题类型设置颜色
@@ -406,6 +406,7 @@ void CWeekWindow::setSearchWFlag(bool flag)
 void CWeekWindow::clearSearch()
 {
 }
+
 /**
  * @brief updateHigh CScheduleView updateHigh
  */
@@ -529,7 +530,7 @@ void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLu
     //获取当天在容器中的索引值
     for (int i = 0; i < vdate.count(); ++i) {
         if (vdate.at(i) == m_currentdate) {
-            offset =i;
+            offset = i;
             break;
         }
     }

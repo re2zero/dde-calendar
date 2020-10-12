@@ -166,6 +166,7 @@ void CDayWindow::setSearchWFlag(bool flag)
 void CDayWindow::clearSearch()
 {
 }
+
 /**
  * @brief CDayWindow::setLunarVisible 阴历使能
  * @param state 是否设置阴历信息
@@ -296,8 +297,8 @@ void CDayWindow::initConnection()
     //daymonthview
     connect(m_daymonthView, &CDayMonthView::signalSchedulHide
             , this, &CDayWindow::slotScheduleHide);
-    connect(m_daymonthView,&CDayMonthView::signalIsDragging,
-            this,&CDayWindow::slotIsDragging);
+    connect(m_daymonthView, &CDayMonthView::signalIsDragging,
+            this, &CDayWindow::slotIsDragging);
 }
 /**
  * @brief CDayWindow::slotupdateSchedule 更新日程

@@ -45,7 +45,7 @@
 
 DGUI_USE_NAMESPACE
 CYearSchceduleOutView      *CYearView::m_Scheduleview = nullptr;
-CMonthDayRect               *CMonthDayRect::m_CurrentRect =nullptr;
+CMonthDayRect               *CMonthDayRect::m_CurrentRect = nullptr;
 qreal                       CMonthDayRect::m_DevicePixelRatio = 0;
 QColor                      CMonthDayRect::m_ceventColor("#FF5D00");
 QColor                      CMonthDayRect::m_notCurrentTextColor = "#b2b2b2";
@@ -106,6 +106,7 @@ CYearView::CYearView(QWidget *parent)
     setLayout(m_hhLayout);
     createYearSchceduleView(parent);
 }
+
 /**
  * @brief slotupdateSchedule 设置当前时间
  * @param id
@@ -146,7 +147,7 @@ void CYearView::slotPressClickDate(const QDate &date)
     m_Scheduleview->setCurrentDate(date);
     //设置当天的日程信息
     for (int i = 0; i < m_DateRangeInfo.size(); ++i) {
-        if (m_DateRangeInfo.at(i).date ==date) {
+        if (m_DateRangeInfo.at(i).date == date) {
             m_Scheduleview->setData(m_DateRangeInfo[i].vData);
         }
     }
@@ -195,7 +196,7 @@ void CYearView::setTheMe(int type)
         setPalette(bpa);
         setBackgroundRole(DPalette::Background);
         //设置月份的颜色
-        m_currentMouth->setTextColor( QColor("#CF0059"));
+        m_currentMouth->setTextColor(QColor("#CF0059"));
 
         m_bnormalColor = "#FFFFFF";
         m_topBorderColor = Qt::red;
@@ -209,7 +210,7 @@ void CYearView::setTheMe(int type)
         m_bnormalColor = "#FFFFFF";
         m_bnormalColor.setAlphaF(0.05);
         //设置月份的颜色
-        m_currentMouth->setTextColor( QColor("#BF1D63"));
+        m_currentMouth->setTextColor(QColor("#BF1D63"));
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0059D2";
@@ -247,7 +248,7 @@ void CYearView::getInfoAndSetLineFlag()
     //设置初始值
     m_vlineflag.fill(false);
     //如果这一天有节假日或日程，设置标志
-    if (tdataManage->getGetAllYearScheduleInfo()->m_monthInfo.size()>0) {
+    if (tdataManage->getGetAllYearScheduleInfo()->m_monthInfo.size() > 0) {
         m_DateRangeInfo = tdataManage->getGetAllYearScheduleInfo()->m_monthInfo[m_currentDate.month()];
         if (m_DateRangeInfo.count() == DDEYearCalendar::RectSizeofEveyMonth) {
             for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; i++) {
@@ -335,7 +336,7 @@ void CYearView::updateDate()
 {
     const QDate firstDay(m_currentDate.year(), m_currentDate.month(), 1);
     int offset = firstDay.dayOfWeek() % 7 - m_firstWeekDay ;
-    const int day = offset <0 ?offset +7:offset;
+    const int day = offset < 0 ? offset + 7 : offset;
     const int currentIndex = day + m_currentDate.day() - 1;
 
     if (currentIndex < 0) {
@@ -438,7 +439,7 @@ void CYearView::paintEvent(QPaintEvent *e)
  * @param parent 父类
  */
 CYearMonthView::CYearMonthView(DWidget *parent)
-    :DWidget (parent)
+    : DWidget(parent)
 {
     //一个月添加42个rect，代表一个月的日期
     for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; ++i) {
@@ -454,7 +455,7 @@ CYearMonthView::CYearMonthView(DWidget *parent)
   */
 CYearMonthView::~CYearMonthView()
 {
-    for (int i = 0; i <m_DayItem.size(); ++i) {
+    for (int i = 0; i < m_DayItem.size(); ++i) {
         delete m_DayItem[i];
     }
     m_DayItem.clear();
@@ -466,7 +467,7 @@ CYearMonthView::~CYearMonthView()
  */
 void CYearMonthView::setDate(const QDate date[42])
 {
-    if (date[0].day() !=1) {
+    if (date[0].day() != 1) {
         //如果第一个日期不是1号，那就是上个月的日期，这个月的月份就要+1
         m_currentMonth = date[0].addMonths(1).month();
     } else {
@@ -509,8 +510,8 @@ void CYearMonthView::setLintFlag(const QVector<bool> &lineFlag)
  */
 void CYearMonthView::updateSize()
 {
-    qreal w = width()/7;
-    qreal h = height()/6;
+    qreal w = width() / 7;
+    qreal h = height() / 6;
     QRectF rect ;
     int w_offset = 0;
     int h_offset = 0;
@@ -518,8 +519,8 @@ void CYearMonthView::updateSize()
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
         h_offset = i / 7;
         w_offset = i % 7;
-        rect.setRect(w*w_offset,
-                     h*h_offset,
+        rect.setRect(w * w_offset,
+                     h * h_offset,
                      w,
                      h);
         m_DayItem.at(i)->setRect(rect);
@@ -534,7 +535,7 @@ void CYearMonthView::updateSize()
  */
 int CYearMonthView::getMousePosItem(const QPointF &pos)
 {
-    int res =-1;
+    int res = -1;
 
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
         if (m_DayItem.at(i)->rect().contains(pos)) {
@@ -563,11 +564,11 @@ void CYearMonthView::mousePressEvent(QMouseEvent *event)
 {
     int itemindex = getMousePosItem(event->pos());
 
-    if (!(itemindex<0)) {
+    if (!(itemindex < 0)) {
         //设置日期的点击状态
         m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
         m_press = true;
-        if ( event->button() ==Qt::LeftButton) {
+        if (event->button() == Qt::LeftButton) {
             m_pressIndex = itemindex;
             emit signalPressDate(m_DayItem.at(itemindex)->getDate());
         }
@@ -583,12 +584,12 @@ void CYearMonthView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     int itemindex = getMousePosItem(event->pos());
 
-    if (!(itemindex<0)) {
+    if (!(itemindex < 0)) {
         if (m_pressIndex == itemindex) {
             //设置日期的点击状态
             m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
             m_press = true;
-            if ( event->button() ==Qt::LeftButton) {
+            if (event->button() == Qt::LeftButton) {
                 emit signalDoubleClickDate(m_DayItem.at(itemindex)->getDate());
             }
         }
@@ -613,7 +614,7 @@ void CYearMonthView::mouseMoveEvent(QMouseEvent *event)
 {
     if (!m_press) {
         int itemindex = getMousePosItem(event->pos());
-        if (!(itemindex<0)) {
+        if (!(itemindex < 0)) {
             //设置日期的hover状态
             m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::Cellhover);
         }
@@ -629,10 +630,10 @@ void CYearMonthView::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     QPainter painter(this);
-    painter.setRenderHints(QPainter::Antialiasing |QPainter::SmoothPixmapTransform);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     //绘制每天的日期
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
-        m_DayItem[i]->paintItem(&painter,m_DayItem[i]->rect());
+        m_DayItem[i]->paintItem(&painter, m_DayItem[i]->rect());
     }
     painter.end();
 }
@@ -653,7 +654,7 @@ void CYearMonthView::leaveEvent(QEvent *event)
  * @brief CMonthDayRect 构造函数
  */
 CMonthDayRect::CMonthDayRect()
-    :m_rect(0,0,0,0)
+    : m_rect(0, 0, 0, 0)
 {
     //设置字体大小
     m_dayNumFont.setPixelSize(DDECalendar::FontSizeTwelve);
@@ -666,7 +667,7 @@ CMonthDayRect::CMonthDayRect()
  */
 void CMonthDayRect::setTheMe(int type)
 {
-    if (type ==2) {
+    if (type == 2) {
         //深色主题
         m_currentColor.hoverColor = "#FFFFFF";
         m_currentColor.hoverColor.setAlphaF(0.1);
@@ -770,7 +771,7 @@ void CMonthDayRect::setRect(const QRectF &rect)
  */
 void CMonthDayRect::setRect(qreal x, qreal y, qreal w, qreal h)
 {
-    m_rect.setRect(x,y,w,h);
+    m_rect.setRect(x, y, w, h);
 }
 
 /**
@@ -803,13 +804,13 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
     m_dayNumFont.setPixelSize(fontsize);
     m_hightFont.setPixelSize(fontsize);
     //设置矩形左上角的位置
-    const qreal x = rect.x()+(rect.width() - r) / 2;
-    const qreal y = rect.y()+(rect.height() - r) / 2;
+    const qreal x = rect.x() + (rect.width() - r) / 2;
+    const qreal y = rect.y() + (rect.height() - r) / 2;
     //日期所在矩形
     QRectF fillRect = QRectF(x, y, r, r);
     QColor m_cellBackgroundColor;
 
-    if (m_CurrentRect !=this) {
+    if (m_CurrentRect != this) {
         m_cellEventType = CellNormal;
     }
     if (m_cellEventType == CellPress) {
@@ -883,11 +884,11 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
             qreal r = rect.width() * (4 / 25);
             if (r < 4) {
                 r = 4;
-            } else if ( r > 7) {
+            } else if (r > 7) {
                 r = 7;
             }
             //绘制节假日或日程标志
-            painter->drawEllipse(QRectF(rect.width() - r+rect.x(),
+            painter->drawEllipse(QRectF(rect.width() - r + rect.x(),
                                         rect.y(),
                                         r,
                                         r));
