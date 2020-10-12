@@ -243,17 +243,19 @@ QVector<ScheduleDateRangeInfo> viewschedulewidget::queryScheduleWithMonth(QVecto
 
 QVector<ScheduleDateRangeInfo> viewschedulewidget::getAllScheduleInfo()
 {
+    //查询到的一天的日程
     ScheduleDateRangeInfo showdate;
+    //查询到的所有日程
     QVector<ScheduleDateRangeInfo> showDate;
+    //判断查询到的日程是否有重复的
+    QVector<ScheduleDtailInfo> allScheduleInfo;
 
     for (int i = 0; i < m_scheduleDateInfo.count(); i++) {
-        showdate.date = m_scheduleDateInfo.at(i).date;
         for (int j = 0; j < m_scheduleDateInfo.at(i).vData.count(); j++) {
-            if (!(m_scheduleDateInfo.at(i).vData.at(j).type.ID == 4)) {
-                if (m_scheduleDateInfo.at(i).vData.at(j).beginDateTime.date() == m_scheduleDateInfo.at(i).date /*||
-                                !showdate.vData.contains(m_scheduleDateInfo.at(i).vData.at(j))*/
-                   )
-                    showdate.vData.append(m_scheduleDateInfo.at(i).vData.at(j));
+            if (!(m_scheduleDateInfo[i].vData[j].type.ID == 4 || allScheduleInfo.contains(m_scheduleDateInfo[i].vData[j]))) {
+                //不是节假日并且allScheduleInfo中没有该日程
+                allScheduleInfo.append(m_scheduleDateInfo.at(i).vData.at(j));
+                showdate.vData.append(m_scheduleDateInfo.at(i).vData.at(j));
             }
         }
         if (showdate.vData.count() > 0) {
