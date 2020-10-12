@@ -161,15 +161,6 @@ void Calendarmainwindow::onViewShortcut()
     connect(shortcutViewProc, SIGNAL(finished(int)), shortcutViewProc, SLOT(deleteLater()));
 }
 
-void Calendarmainwindow::slotmaxminViewShortcut()
-{
-    if (windowState() == Qt::WindowMaximized) {
-        showNormal();
-    } else {
-        showMaximized();
-    }
-}
-
 void Calendarmainwindow::slotGetScheduleInfoSuccess()
 {
     m_yearwindow->getScheduleInfo();

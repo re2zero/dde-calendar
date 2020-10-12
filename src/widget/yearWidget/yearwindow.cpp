@@ -457,16 +457,6 @@ void CYearWindow::setSearchWFlag(bool flag)
 void CYearWindow::clearSearch()
 {
 }
-
-/**
- * @brief setSearchText
- * @param str
- */
-void CYearWindow::setSearchText(QString str)
-{
-    m_searchText = str;
-}
-
 /**
  * @brief getScheduleInfo 判断一年中每一天是否有日程信息
  */

@@ -92,7 +92,10 @@ public slots:
     void setCurrentDate(const QDate date);
     void setLunarVisible(bool visible);
     void slotSchceduleUpdate();
-    void slotUpdateUI(int type);
+    /**
+     * @brief setSelectSchedule 设置选择的日程
+     * @param scheduleInfo 日程信息
+     */
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
 public slots:
     void slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);

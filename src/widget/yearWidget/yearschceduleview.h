@@ -41,7 +41,14 @@ class CYearSchceduleView : public DWidget
     Q_OBJECT
 
 public:
-    CYearSchceduleView(QWidget *parent = nullptr);
+    /**
+     * @brief CYearSchceduleView 构造函数
+     * @param parent 父类
+     */
+    explicit CYearSchceduleView(QWidget *parent = nullptr);
+    /**
+      * @brief ~CYearSchceduleView 析构函数
+      */
     ~CYearSchceduleView();
     void setSoloDay(QString soloday);
     void setData(QVector<ScheduleDtailInfo> &vListData);

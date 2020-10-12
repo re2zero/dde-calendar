@@ -106,20 +106,6 @@ CYearView::CYearView(QWidget *parent)
     setLayout(m_hhLayout);
     createYearSchceduleView(parent);
 }
-
-/**
- * @brief updateInfoWIndow
- * @param flag
- */
-void CYearView::updateInfoWIndow(bool flag)
-{
-    if (flag) {
-        m_Scheduleview->show(0, 0);
-    } else {
-        m_Scheduleview->hide();
-    }
-}
-
 /**
  * @brief slotupdateSchedule 设置当前时间
  * @param id

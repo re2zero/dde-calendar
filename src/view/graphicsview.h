@@ -97,26 +97,6 @@ public:
     void resizeEvent(QResizeEvent *event) override;
 
     /************************************************************************
-    Function:       setLargeScale()
-    Description:    设置大刻度
-    Input:          vLRLarge 左右刻度，vTBLarge 上下刻度
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void setLargeScale(const QVector<int> &vLRLarge, const QVector<int> &vTBLarge);
-
-    /************************************************************************
-    Function:       setLargeScaleInfo()
-    Description:    设置大刻度显示
-    Input:          LRFlag 水平刻度，TBFlag 垂直刻度
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void setLargeScaleFlag(const bool &LRFlag, const bool &TBFlag);
-
-    /************************************************************************
     Function:       getLargeScaleFlag()
     Description:    获取大刻度显示
     Input:          LRFlag 水平刻度，TBFlag 垂直刻度
@@ -125,16 +105,6 @@ public:
     Others:         无
     ************************************************************************/
     void getLargeScaleFlag(bool &LRFlag, bool &TBFlag);
-
-    /************************************************************************
-    Function:       setLargeScaleInfo()
-    Description:    设置大刻度画笔
-    Input:          LRPen 水平画笔，TBPen 垂直画笔
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
-    void setLargeScalePen(const QPen &LRPen, const QPen &TBPen);
     void setFirstWeekday(int weekday);
     void setTime(QTime time);
     void updateInfo();

@@ -52,7 +52,7 @@ class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
 public:
-    Calendarmainwindow(QWidget *w = nullptr);
+    explicit Calendarmainwindow(QWidget *w = nullptr);
     ~Calendarmainwindow() override;
     bool analysisCreate(const QString &content, ScheduleDtailInfo &info);
     void viewWindow(int type, QDateTime datetime);
@@ -65,7 +65,6 @@ public slots:
     void ActiveWindow();
     void RaiseWindow();
     void onViewShortcut();
-    void slotmaxminViewShortcut();
     void slotGetScheduleInfoSuccess();
     void slotDynamicIconUpdate();
 private:

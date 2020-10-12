@@ -99,7 +99,6 @@ void CSchceduleDlg::setDate(const QDateTime &date)
     int minnutes = 0;
 
     if (date.date() == QDate::currentDate()) {
-        minnutes = date.time().minute() % DDECalendar::QuarterOfAnhourWithMinute;
         minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
     } else {
         int minnutes = date.time().minute() % DDECalendar::QuarterOfAnhourWithMinute;
@@ -348,11 +347,6 @@ void CSchceduleDlg::slotBDateEidtInfo(const QDate &date)
     if (endDateTime < beginDateTime) {
         m_endTimeEdit->setTime(m_beginTimeEdit->getTime().addSecs(3600));
     }
-}
-
-void CSchceduleDlg::slotEDateEidtInfo(const QDate &date)
-{
-    m_endDateEdit->setDate(date);
 }
 
 void CSchceduleDlg::slotallDayStateChanged(int state)

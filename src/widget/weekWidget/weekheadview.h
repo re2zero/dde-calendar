@@ -121,7 +121,10 @@ signals:
 public slots:
     void setCurrentDate(const QDate date);
     void setLunarVisible(bool visible);
-    void setLunarFestivalHighlight(bool highlight);
+    /**
+     * @brief setCellSelectable
+     * @param selectable
+     */
     void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail);
 private:

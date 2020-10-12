@@ -126,19 +126,6 @@ void CMonthView::slotSchceduleUpdate()
     emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
 }
 /**
- * @brief slotUpdateUI
- * @param type
- */
-void CMonthView::slotUpdateUI(int type)
-{
-    if (type == 0) {
-        m_sflag = false;
-    } else {
-        m_sflag = true;
-        slotSchceduleUpdate();
-    }
-}
-/**
  * @brief setSelectSchedule 设置选择的日程
  * @param scheduleInfo 日程信息
  */

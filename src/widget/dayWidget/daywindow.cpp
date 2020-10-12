@@ -167,14 +167,6 @@ void CDayWindow::clearSearch()
 {
 }
 /**
- * @brief CDayWindow::setSearchText
- * @param str
- */
-void CDayWindow::setSearchText(QString str)
-{
-    m_searchText = str;
-}
-/**
  * @brief CDayWindow::setLunarVisible 阴历使能
  * @param state 是否设置阴历信息
  */

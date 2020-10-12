@@ -108,7 +108,7 @@ public:
     参数:_DataManage 原始数据管理类
     返回值:无
     ******/
-    CDataProcessThread(CSchedulesDBus *_DataManage);
+    explicit CDataProcessThread(CSchedulesDBus *_DataManage=nullptr);
     /******
     功能:析构函数
     参数:无

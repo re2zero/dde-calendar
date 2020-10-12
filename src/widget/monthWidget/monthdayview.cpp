@@ -134,16 +134,6 @@ void CMonthDayView::setTheMe(int type)
     CMonthRect::setTheMe(type);
 }
 /**
- * @brief setwindowFixw
- * @param w
- * @param rw
- */
-void CMonthDayView::setwindowFixw(int w, int rw)
-{
-    m_fixwidth = w;
-    m_realwidth = rw;
-}
-/**
  * @brief setsearchfalg
  * @param flag
  */

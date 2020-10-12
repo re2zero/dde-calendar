@@ -99,7 +99,10 @@ signals:
 public slots:
     void setCurrentDate(const QDate date, int type = 0);
     void setCellSelectable(bool selectable);
-    void updateInfoWIndow(bool flag);
+    /**
+     * @brief slotupdateSchedule 设置当前时间
+     * @param id
+     */
     void slotupdateSchedule(const int id);
     void slotDoubleClickDate(const QDate &date);
     void slotPressClickDate(const QDate &date);
@@ -160,7 +163,14 @@ class CYearMonthView : public DWidget
 {
     Q_OBJECT
 public:
-    CYearMonthView(DWidget *parent = nullptr);
+    /**
+     * @brief CYearMonthView 构造函数
+     * @param parent 父类
+     */
+    explicit CYearMonthView(DWidget *parent = nullptr);
+    /**
+      *@brief ~CYearMonthView 析构函数
+      */
     ~CYearMonthView() override;
     void setDate(const QDate date[42]);
     void setTheMe(int type = 0);

@@ -101,7 +101,6 @@ signals:
     void signalIsDragging(bool &isDragging);
 public slots:
     void setCurrentDate(const QDate date, int type = 0);
-    void setCellSelectable(bool selectable);
     void handleCurrentDateChanged(const QDate date, const CaHuangLiDayInfo &detail);
     void slottoday();
 private:

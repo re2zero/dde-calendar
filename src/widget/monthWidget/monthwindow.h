@@ -40,7 +40,14 @@ class CMonthWindow: public QMainWindow
 {
     Q_OBJECT
 public:
-    CMonthWindow(QWidget *parent = nullptr);
+    /**
+     * @brief CMonthWindow 构造函数
+     * @param parent 父类
+     */
+    explicit CMonthWindow(QWidget *parent = nullptr);
+    /**
+      * @brief ~CMonthWindow 析构函数
+      */
     ~CMonthWindow() override;
     void setFirstWeekday(int weekday);
     void setDate(QDate date);

@@ -51,7 +51,6 @@ public:
     void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
     void setSearchWFlag(bool flag);
     void clearSearch();
-    void setSearchText(QString str);
     void setLunarVisible(bool state);
     void setTheMe(int type = 0);
     void setTime(QTime time);

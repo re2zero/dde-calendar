@@ -540,20 +540,6 @@ void CGraphicsView::resizeEvent( QResizeEvent *event )
     viewport()->update();
     update();
 }
-/************************************************************************
-Function:       setLargeScale()
-Description:    设置大刻度
-Input:          vLRLarge 左右刻度，vTBLarge 上下刻度
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::setLargeScale(const QVector<int> &vLRLarge, const QVector<int> &vTBLarge)
-{
-    m_vLRLarge = vLRLarge;
-    m_vTBLarge = vTBLarge;
-    update();
-}
 
 /************************************************************************
 Function:       paintEvent()
@@ -813,33 +799,10 @@ void CGraphicsView::keepCenterOnScene()
     centerOnScene(pos);
 }
 
-
-/************************************************************************
-Function:       setLargeScaleInfo()
-Description:    设置大刻度显示
-Input:          LRFlag 水平刻度，TBFlag 垂直刻度
-Output:         无
-Return:         无
-Others:         无
-************************************************************************/
-void CGraphicsView::setLargeScaleFlag(const bool &LRFlag, const bool &TBFlag)
-{
-    m_LRFlag = LRFlag;
-    m_TBFlag = TBFlag;
-    scene()->update();
-}
-
 void CGraphicsView::getLargeScaleFlag(bool &LRFlag, bool &TBFlag)
 {
     LRFlag = m_LRFlag;
     TBFlag = m_TBFlag;
-}
-
-void CGraphicsView::setLargeScalePen(const QPen &LRPen, const QPen &TBPen)
-{
-    m_LRPen = LRPen;
-    m_TBPen = TBPen;
-    update();
 }
 
 void CGraphicsView::setFirstWeekday(int weekday)

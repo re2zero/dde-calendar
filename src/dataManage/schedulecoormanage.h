@@ -29,7 +29,6 @@ public:
     CScheduleCoorManage();
     ~CScheduleCoorManage();
     void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
-    void setSenceRange(int w, int h);
     void setDateRange(QDate begindate, QDate enddate);
     int getRightMagin()const
     {

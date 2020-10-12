@@ -454,13 +454,6 @@ void CScheduleView::initConnection()
 
 
 }
-void CScheduleView::slotCtrlSchceduleUpdate(QDate date, int type)
-{
-    Q_UNUSED(date);
-    Q_UNUSED(type);
-    updateSchedule();
-}
-
 
 void CScheduleView::slotDeleteitem()
 {

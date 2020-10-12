@@ -331,16 +331,6 @@ void CDayMonthView::setCurrentDate(const QDate date, int type)
     updateCurrentLunar();
 }
 /**
- * @brief CDayMonthView::setCellSelectable 选择时间cell
- * @param selectable 是否选择
- */
-void CDayMonthView::setCellSelectable(bool selectable)
-{
-    if (selectable == m_cellSelectable)
-        return;
-    m_cellSelectable = selectable;
-}
-/**
  * @brief CDayMonthView::getDateIndex 获取日期的索引
  * @param date 日期
  * @return 索引

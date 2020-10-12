@@ -620,44 +620,6 @@ void CMonthSchceduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>
     }
 }
 /**
- * @brief splitSchedule 处理跨天日程
- * @param old 旧的日程数据
- * @param newData 新的日程数据
- */
-void CMonthSchceduleView::splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData)
-{
-    int brow = static_cast<int>((m_beginDate.daysTo(old.bdate) + 1) / DDEMonthCalendar::AFewDaysofWeek);
-    int erow = static_cast<int>((m_beginDate.daysTo(old.edate) + 1) / DDEMonthCalendar::AFewDaysofWeek);
-    int bcol = (m_beginDate.daysTo(old.bdate) + 1) % DDEMonthCalendar::AFewDaysofWeek;
-    int ecol = (m_beginDate.daysTo(old.edate) + 1) % DDEMonthCalendar::AFewDaysofWeek;
-    if (bcol != 0) brow = brow + 1;
-    if (ecol != 0) erow = erow + 1;
-    if (brow > erow) {
-        return;
-    }
-    if (brow == erow) {
-        newData.append(old);
-    } else {
-        bcol = bcol ? bcol : DDEMonthCalendar::AFewDaysofWeek;
-        ecol = ecol ? ecol : DDEMonthCalendar::AFewDaysofWeek;
-        //处理开始
-        MScheduleDateRangeInfo bfirst = old;
-        bfirst.edate = bfirst.bdate.addDays(DDEMonthCalendar::AFewDaysofWeek - bcol);
-        newData.append(bfirst);
-        //处理中间数据
-        for (int i = brow + 1; i < erow; i++) {
-            MScheduleDateRangeInfo info = old;
-            info.bdate = m_beginDate.addDays((i - 1) * DDEMonthCalendar::AFewDaysofWeek);
-            info.edate = m_beginDate.addDays((i - 1) * DDEMonthCalendar::AFewDaysofWeek + 6);
-            newData.append(info);
-        }
-        //处理结束
-        MScheduleDateRangeInfo second = old;
-        second.bdate = second.edate.addDays(-ecol + 1);
-        newData.append(second);
-    }
-}
-/**
  * @brief createScheduleItemWidget 新建日程item
  * @param info 日程信息
  * @param cnum 日程个数

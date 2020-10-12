@@ -97,7 +97,6 @@ public slots:
     void slotFontChange();
 private:
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo> > &vCMDaySchedule,QVector<QGraphicsRectItem *> &schudeleShowItem);
-    void splitSchedule(MScheduleDateRangeInfo &old, QVector<MScheduleDateRangeInfo> &newData);
     void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum,QVector<QGraphicsRectItem *> &schudeleShowItem);
     void createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum,QVector<QGraphicsRectItem *> &schudeleShowItem);
     void computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh);

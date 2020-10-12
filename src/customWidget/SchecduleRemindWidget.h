@@ -54,7 +54,7 @@ class CenterWidget : public DFrame
     Q_OBJECT
     Q_DISABLE_COPY(CenterWidget)
 public:
-    CenterWidget(DWidget *parent = nullptr);
+    explicit CenterWidget(DWidget *parent = nullptr);
     ~CenterWidget() override;
     void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
     void setTheMe(const int type = 0);

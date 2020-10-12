@@ -40,12 +40,6 @@ void CScheduleCoorManage::setRange( int w, int h, QDate begindate, QDate enddate
     m_totalDay = begindate.daysTo(enddate) + 1;
 }
 
-void CScheduleCoorManage::setSenceRange( int w, int h )
-{
-    m_width = w;
-    m_height = h;
-}
-
 void CScheduleCoorManage::setDateRange( QDate begindate, QDate enddate )
 {
     m_begindate = begindate;

@@ -62,7 +62,9 @@ public:
     void setTime(QTime time);
     void setSearchWFlag(bool flag);
     void clearSearch();
-    void setSearchText(QString str);
+    /**
+     * @brief updateHigh CScheduleView updateHigh
+     */
     void updateHigh();
 signals:
     /**

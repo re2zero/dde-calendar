@@ -45,7 +45,7 @@ class CYearWindow: public QMainWindow
 {
     Q_OBJECT
 public:
-    CYearWindow(QWidget *parent = nullptr);
+    explicit CYearWindow(QWidget *parent = nullptr);
     ~CYearWindow() override;
     void setDate(QDate date);
     void initUI();
@@ -54,7 +54,9 @@ public:
     void setTheMe(int type = 0);
     void setSearchWFlag(bool flag);
     void clearSearch();
-    void setSearchText(QString str);
+    /**
+     * @brief getScheduleInfo 判断一年中每一天是否有日程信息
+     */
     void getScheduleInfo();
 signals:
     /**

@@ -63,7 +63,6 @@ public slots:
     void slotTextChange();
     void slotendrepeatTextchange();
     void slotBDateEidtInfo(const QDate &date);
-    void slotEDateEidtInfo(const QDate &date);
     void slotallDayStateChanged(int state);
     void slotbRpeatactivated(int index);
     void sloteRpeatactivated(int index);

@@ -407,14 +407,6 @@ void CWeekWindow::clearSearch()
 {
 }
 /**
- * @brief setSearchText
- * @param str
- */
-void CWeekWindow::setSearchText(QString str)
-{
-    m_searchText = str;
-}
-/**
  * @brief updateHigh CScheduleView updateHigh
  */
 void CWeekWindow::updateHigh()
