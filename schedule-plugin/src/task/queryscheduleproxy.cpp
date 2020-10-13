@@ -68,7 +68,7 @@ QVector<ScheduleDtailInfo> queryScheduleProxy::querySchedule()
             endW = m_queryJsonData->getRepeatNum().at(1);
         }
         scheduleInfo = queryWeeklySchedule(beginTime, endTime, beginW, endW);
-        QVector<DateTimeInfo> queryDatetime = getQueryDateTime(m_queryJsonData);
+        SemanticsDateTime queryDatetime = getQueryDateTime(m_queryJsonData);
         TimeLimit fileterTime = getTimeFileterByTimeInfo(queryDatetime);
         if (!fileterTime.isInvalid) {
             scheduleInfo = scheduleFileterByTime(scheduleInfo, fileterTime.beginTime, fileterTime.endTime);
@@ -191,7 +191,7 @@ QVector<ScheduleDtailInfo> queryScheduleProxy::queryNonRepeatingSchedule()
 {
     QVector<ScheduleDtailInfo> mScheduleInfoVector {};
     mScheduleInfoVector.clear();
-    QVector<DateTimeInfo> queryDatetime = getQueryDateTime(m_queryJsonData);
+    SemanticsDateTime queryDatetime = getQueryDateTime(m_queryJsonData);
     //如果开始时间大于结束时间则退出
     if(!timeFrameIsValid(queryDatetime)){
         return mScheduleInfoVector;
@@ -370,63 +370,63 @@ bool queryScheduleProxy::weeklyIsIntersections(QDateTime &beginTime, QDateTime &
     return returnValue;
 }
 
-QVector<DateTimeInfo> queryScheduleProxy::getQueryDateTime(JsonData *jsonData)
+SemanticsDateTime queryScheduleProxy::getQueryDateTime(JsonData *jsonData)
 {
     changejsondata *changedata = dynamic_cast<changejsondata *>(jsonData);
-    if (changedata != nullptr && changedata->fromDateTime().size() > 0) {
+    if (changedata != nullptr && changedata->fromDateTime().suggestDatetime.size() > 0) {
         return changedata->fromDateTime();
     }
     return jsonData->getDateTime();
 }
 
-queryScheduleProxy::DateTimeLimit queryScheduleProxy::getTimeLimitByTimeInfo(const QVector<DateTimeInfo> &timeInfoVect)
+queryScheduleProxy::DateTimeLimit queryScheduleProxy::getTimeLimitByTimeInfo(const SemanticsDateTime &timeInfoVect)
 {
     DateTimeLimit timeLimit;
     setTimeIsExpired(false);
-    if (timeInfoVect.size() == 0) {
+    if (timeInfoVect.suggestDatetime.size() == 0) {
         TIME_FRAME_IN_THE_NEXT_SIX_MONTHT
         timeLimit.beginTime = beginTime;
         timeLimit.endTime = endTime;
-    } else if (timeInfoVect.size() == 1) {
-        if (timeInfoVect.at(0).datetime.date() < QDateTime::currentDateTime().date()
-            || timeInfoVect.at(0).datetime.date() > QDateTime::currentDateTime().addDays(MAXIMUM_DAYS_IN_THE_FUTURE).date()) {
+    } else if (timeInfoVect.suggestDatetime.size() == 1) {
+        if (timeInfoVect.suggestDatetime.at(0).datetime.date() < QDateTime::currentDateTime().date()
+            || timeInfoVect.suggestDatetime.at(0).datetime.date() > QDateTime::currentDateTime().addDays(MAXIMUM_DAYS_IN_THE_FUTURE).date()) {
             setTimeIsExpired(true);
             return timeLimit;
         }
-        if (timeInfoVect.at(0).hasTime) {
-            if (timeInfoVect.at(0).datetime < QDateTime::currentDateTime()) {
+        if (timeInfoVect.suggestDatetime.at(0).hasTime) {
+            if (timeInfoVect.suggestDatetime.at(0).datetime < QDateTime::currentDateTime()) {
                 setTimeIsExpired(true);
             } else {
-                timeLimit.beginTime = timeInfoVect.at(0).datetime;
-                timeLimit.endTime = timeInfoVect.at(0).datetime;
+                timeLimit.beginTime = timeInfoVect.suggestDatetime.at(0).datetime;
+                timeLimit.endTime = timeInfoVect.suggestDatetime.at(0).datetime;
             }
         } else {
-            if (timeInfoVect.at(0).datetime.date() == QDateTime::currentDateTime().date()) {
+            if (timeInfoVect.suggestDatetime.at(0).datetime.date() == QDateTime::currentDateTime().date()) {
                 timeLimit.beginTime = QDateTime::currentDateTime();
                 timeLimit.endTime.setDate(timeLimit.beginTime.date());
                 timeLimit.endTime.setTime(QTime(23, 59, 59));
             } else {
-                timeLimit.beginTime = timeInfoVect.at(0).datetime;
+                timeLimit.beginTime = timeInfoVect.suggestDatetime.at(0).datetime;
                 timeLimit.endTime.setDate(timeLimit.beginTime.date());
                 timeLimit.endTime.setTime(QTime(23, 59, 59));
             }
         }
     } else {
         QDateTime maxDay = QDateTime::currentDateTime().addDays(MAXIMUM_DAYS_IN_THE_FUTURE);
-        if (timeInfoVect.at(1).datetime.date() < QDateTime::currentDateTime().date()
-            || timeInfoVect.at(0).datetime.date() > maxDay.date()) {
+        if (timeInfoVect.suggestDatetime.at(1).datetime.date() < QDateTime::currentDateTime().date()
+            || timeInfoVect.suggestDatetime.at(0).datetime.date() > maxDay.date()) {
             setTimeIsExpired(true);
             return timeLimit;
         }
-        if (timeInfoVect.at(0).datetime < QDateTime::currentDateTime()) {
+        if (timeInfoVect.suggestDatetime.at(0).datetime < QDateTime::currentDateTime()) {
             timeLimit.beginTime = QDateTime::currentDateTime();
         } else {
-            timeLimit.beginTime = timeInfoVect.at(0).datetime;
+            timeLimit.beginTime = timeInfoVect.suggestDatetime.at(0).datetime;
         }
-        if (timeInfoVect.at(1).hasTime) {
-            timeLimit.endTime = timeInfoVect.at(1).datetime;
+        if (timeInfoVect.suggestDatetime.at(1).hasTime) {
+            timeLimit.endTime = timeInfoVect.suggestDatetime.at(1).datetime;
         } else {
-            timeLimit.endTime.setDate(timeInfoVect.at(1).datetime.date());
+            timeLimit.endTime.setDate(timeInfoVect.suggestDatetime.at(1).datetime.date());
             timeLimit.endTime.setTime(QTime(23, 59, 59));
         }
         if (timeLimit.endTime.date() > maxDay.date()) {
@@ -437,20 +437,20 @@ queryScheduleProxy::DateTimeLimit queryScheduleProxy::getTimeLimitByTimeInfo(con
     return timeLimit;
 }
 
-queryScheduleProxy::TimeLimit queryScheduleProxy::getTimeFileterByTimeInfo(const QVector<DateTimeInfo> &timeInfoVect)
+queryScheduleProxy::TimeLimit queryScheduleProxy::getTimeFileterByTimeInfo(const SemanticsDateTime &timeInfoVect)
 {
     TimeLimit fileterTime;
     fileterTime.isInvalid = true;
-    if (timeInfoVect.size() == 0) {
-    } else if (timeInfoVect.size() == 1) {
-        if (timeInfoVect.at(0).hasTime) {
-            fileterTime.beginTime = timeInfoVect.at(0).datetime.time();
+    if (timeInfoVect.suggestDatetime.size() == 0) {
+    } else if (timeInfoVect.suggestDatetime.size() == 1) {
+        if (timeInfoVect.suggestDatetime.at(0).hasTime) {
+            fileterTime.beginTime = timeInfoVect.suggestDatetime.at(0).datetime.time();
             fileterTime.endTime = fileterTime.beginTime;
             fileterTime.isInvalid = false;
         }
     } else {
-        fileterTime.beginTime = timeInfoVect.at(0).datetime.time();
-        fileterTime.endTime = timeInfoVect.at(1).datetime.time();
+        fileterTime.beginTime = timeInfoVect.suggestDatetime.at(0).datetime.time();
+        fileterTime.endTime = timeInfoVect.suggestDatetime.at(1).datetime.time();
         fileterTime.isInvalid = false;
     }
     return fileterTime;
@@ -466,10 +466,10 @@ void queryScheduleProxy::setTimeIsExpired(const bool timeisExp)
     m_TimeIsExpired = timeisExp;
 }
 
-bool queryScheduleProxy::timeFrameIsValid(const QVector<DateTimeInfo> &timeInfoVect)
+bool queryScheduleProxy::timeFrameIsValid(const SemanticsDateTime &timeInfoVect)
 {
     //如果开始时间大于结束时间则返回false
-    if(timeInfoVect.size()>1 && timeInfoVect.at(0).datetime>timeInfoVect.at(1).datetime){
+    if(timeInfoVect.suggestDatetime.size()>1 && timeInfoVect.suggestDatetime.at(0).datetime>timeInfoVect.suggestDatetime.at(1).datetime){
         return false;
     }
     return true;

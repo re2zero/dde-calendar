@@ -78,22 +78,29 @@ void changejsondata::setToPlaceStr(const QString &toPlaceStr)
     m_toPlaceStr = toPlaceStr;
 }
 
-QVector<DateTimeInfo> changejsondata::toDateTime() const
+bool changejsondata::isVaild() const
+{
+    return  this->m_toDateTime.suggestDatetime.size() ==0 
+            && this->m_fromDateTime.suggestDatetime.size()==0 && this->toPlaceStr().isEmpty()
+            && JsonData::isVaild();
+}
+
+SemanticsDateTime changejsondata::toDateTime() const
 {
     return m_toDateTime;
 }
 
-void changejsondata::setToDateTime(const QVector<DateTimeInfo> &toDateTime)
+void changejsondata::setToDateTime(const SemanticsDateTime &toDateTime)
 {
     m_toDateTime = toDateTime;
 }
 
-QVector<DateTimeInfo> changejsondata::fromDateTime() const
+SemanticsDateTime changejsondata::fromDateTime() const
 {
     return m_fromDateTime;
 }
 
-void changejsondata::setFromDateTime(const QVector<DateTimeInfo> &fromDateTime)
+void changejsondata::setFromDateTime(const SemanticsDateTime &fromDateTime)
 {
     m_fromDateTime = fromDateTime;
 }

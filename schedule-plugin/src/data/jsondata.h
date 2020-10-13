@@ -64,15 +64,13 @@ public:
 
     void setDateTimeStatus(const DateTimeStatus &DateTimeStatus);
 
-    QVector<DateTimeInfo> DateTime() const;
-
     RepeatStatus getRepeatStatus() const;
 
     QVector<int> getRepeatNum() const;
     void setRepeatNum(const QVector<int> &RepeatNum);
 
-    QVector<DateTimeInfo> getDateTime() const;
-    void setDateTime(const QVector<DateTimeInfo> &DateTime);
+    SemanticsDateTime getDateTime() const;
+    void setDateTime(const SemanticsDateTime &DateTime);
 
     PropertyStatus getPropertyStatus() const;
     void setPropertyStatus(const PropertyStatus &propertyStatus);
@@ -80,16 +78,39 @@ public:
     int offset() const;
     void setOffset(int offset);
 
-    bool isVaild() const;
+    /**
+     * @brief isVaild   判断json是否为原始数据
+     * @return  true为原始数据
+     */
+    virtual bool isVaild() const;
 
 protected:
     void contentJsonResolve(const QJsonObject &jsobj);
     void repeatJsonResolve(const QJsonObject &jsobj);
+    /**
+     * @brief datetimeJsonResolve       时间关键字解析
+     * @param jsobj     json对象
+     */
     void datetimeJsonResolve(const QJsonObject &jsobj);
     void propertyJsonResolve(const QJsonObject &jsobj);
+    /**
+     * @brief posRankOffsetResolve      偏移关键字解析
+     * @param jsobj     json对象
+     */
     void posRankOffsetResolve(const QJsonObject &jsobj);
-    QVector<DateTimeInfo> suggestDatetimeResolve(const QJsonObject &jsobj);
-    DateTimeInfo resolveNormValue(const QString &str);
+    SemanticsDateTime suggestDatetimeResolve(const QJsonObject &jsobj);
+    /**
+     * @brief resolveNormValue      解析建议时间数据
+     * @param str       string格式的建议时间
+     * @return      建议时间
+     */
+    SuggestDatetimeInfo resolveNormValue(const QString &str);
+    /**
+     * @brief resolveDateTimeValeu      解析模糊时间数据
+     * @param dateTimeStr      string格式的模糊时间
+     * @return          模糊时间
+     */
+    DateTimeInfo resolveDateTimeValeu(const QString &dateTimeStr);
     virtual void setDefaultValue();
     virtual void jsonObjResolve(const QJsonObject &jsobj);
 
@@ -101,7 +122,7 @@ private:
     DateTimeStatus m_DateTimeStatus {NODATE};
     PropertyStatus m_propertyStatus {PRO_NONE};
     QString m_TitleName {""};
-    QVector<DateTimeInfo> m_DateTime {};
+    SemanticsDateTime m_DateTime {};
     int m_offset {-1};
 };
 

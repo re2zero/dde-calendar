@@ -98,8 +98,8 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
             m_reply.ttsMessage("抱歉，不能查询过期的提醒");
             m_reply.displayMessage("抱歉，不能查询过期的提醒");
-        } else if (queryJsonData->getDateTime().size() > 0
-                   && queryJsonData->getDateTime().at(0).datetime > QDateTime::currentDateTime().addMonths(6)) {
+        } else if (queryJsonData->getDateTime().suggestDatetime.size() > 0
+                   && queryJsonData->getDateTime().suggestDatetime.at(0).datetime > QDateTime::currentDateTime().addMonths(6)) {
             //超过半年的时间
             m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
             m_reply.ttsMessage("只能查询未来半年的日程");
@@ -132,12 +132,12 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 
 void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
 {
-    switch (queryJsonData->getDateTime().size()) {
+    switch (queryJsonData->getDateTime().suggestDatetime.size()) {
     case 1: {
-        m_BeginDateTime = queryJsonData->getDateTime().at(0).datetime;
+        m_BeginDateTime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime;
         m_EndDateTime = m_BeginDateTime;
         //时间处理
-        if (!queryJsonData->getDateTime().at(0).hasTime) {
+        if (!queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
             if (m_BeginDateTime.date() == QDate::currentDate()) {
                 m_BeginDateTime.setTime(QTime::currentTime());
             } else {
@@ -148,10 +148,10 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
     }
     break;
     case 2: {
-        m_BeginDateTime = queryJsonData->getDateTime().at(0).datetime;
-        m_EndDateTime = queryJsonData->getDateTime().at(1).datetime;
+        m_BeginDateTime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime;
+        m_EndDateTime = queryJsonData->getDateTime().suggestDatetime.at(1).datetime;
 
-        if (queryJsonData->getDateTime().at(1).datetime < QDateTime::currentDateTime()) {
+        if (queryJsonData->getDateTime().suggestDatetime.at(1).datetime < QDateTime::currentDateTime()) {
             //如果查询结束时间小于当前时间，设置开始结束时间为无效时间
             m_BeginDateTime.setDate(QDate(0,0,0));
             m_BeginDateTime.setTime(QTime(0,0,0));
@@ -160,22 +160,22 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
             break;
         } else {
             //最多查询半年的日程
-            if (queryJsonData->getDateTime().at(1).datetime.date() > QDate::currentDate().addMonths(6)) {
+            if (queryJsonData->getDateTime().suggestDatetime.at(1).datetime.date() > QDate::currentDate().addMonths(6)) {
                 m_EndDateTime.setDate(QDate::currentDate().addMonths(6));
             }
             //如果没有时间，设置为一天最后的时间
-            if (!queryJsonData->getDateTime().at(1).hasTime) {
+            if (!queryJsonData->getDateTime().suggestDatetime.at(1).hasTime) {
                 m_EndDateTime.setTime(QTime(23, 59, 59));
             }
         }
 
-        if (queryJsonData->getDateTime().at(0).datetime <= QDateTime::currentDateTime()) {
+        if (queryJsonData->getDateTime().suggestDatetime.at(0).datetime <= QDateTime::currentDateTime()) {
             //开始时间小于当前时间，设置当前时间
             m_BeginDateTime = QDateTime::currentDateTime();
         } else {
-            if (!queryJsonData->getDateTime().at(0).hasTime) {
+            if (!queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
                 //没有time
-                if (queryJsonData->getDateTime().at(0).datetime.date() == QDate::currentDate())
+                if (queryJsonData->getDateTime().suggestDatetime.at(0).datetime.date() == QDate::currentDate())
                     //如果是今天，设置当前时间
                     m_BeginDateTime.setTime(QTime::currentTime());
                 else
@@ -213,7 +213,7 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getEveryDayOrWorkDaySchedule(Q
     QTime m_ETime;
     QVector<ScheduleDateRangeInfo> schedule;
     schedule = viewWidget->getAllRpeatScheduleInfo(repeat);
-    if (queryJsonData->getDateTime().at(0).hasTime) {
+    if (queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
         m_BTime = m_BeginDateTime.time();
         m_ETime = m_EndDateTime.time();
         schedule = viewWidget->queryScheduleWithTime(schedule, m_BTime, m_ETime);
@@ -231,8 +231,8 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getRestDaySchedule(QueryJsonDa
     //查询周几-周几的重复日程
     schedule = viewWidget->queryScheduleWithWeek(schedule, queryWeek);
     //如果有时间，则再按照时间进行过滤
-    if (queryJsonData->getDateTime().at(0).hasTime) {
-        m_BTime = queryJsonData->getDateTime().at(0).datetime.time();
+    if (queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
+        m_BTime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime.time();
         m_ETime = m_BTime;
         schedule = viewWidget->queryScheduleWithTime(schedule, m_BTime, m_ETime);
     }
@@ -252,8 +252,8 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getEveryWeekSchedule(QueryJson
         queryWeek.append(repeatNum[0]);
 
         schedule = viewWidget->queryScheduleWithWeek(schedule, queryWeek);
-        if (queryJsonData->getDateTime().at(0).hasTime) {
-            m_BTime = queryJsonData->getDateTime().at(0).datetime.time();
+        if (queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
+            m_BTime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime.time();
             m_ETime = m_BTime;
             schedule = viewWidget->queryScheduleWithTime(schedule, m_BTime, m_ETime);
         }
@@ -288,10 +288,10 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getEveryWeekSchedule(QueryJson
         }
         //查询周几-周几的重复日程
         schedule = viewWidget->queryScheduleWithWeek(schedule, queryWeek);
-        if (queryJsonData->getDateTime().size() == 1) {
-            if (queryJsonData->getDateTime().at(0).hasTime) {
+        if (queryJsonData->getDateTime().suggestDatetime.size() == 1) {
+            if (queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
                 m_BTime = QTime(0, 0, 0);
-                m_ETime = queryJsonData->getDateTime().at(0).datetime.time();
+                m_ETime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime.time();
                 schedule = viewWidget->queryScheduleWithWeek(schedule, queryWeek, end, m_BTime, m_ETime);
             }
         }
@@ -312,15 +312,15 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getEveryMonthSchedule(QueryJso
         queryMonth.append(repeatNum[0]);
 
         schedule = viewWidget->queryScheduleWithMonth(schedule, queryMonth);
-        if (queryJsonData->getDateTime().size() == 1) {
-            if (queryJsonData->getDateTime().at(0).hasTime) {
-                m_BTime = queryJsonData->getDateTime().at(0).datetime.time();
+        if (queryJsonData->getDateTime().suggestDatetime.size() == 1) {
+            if (queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
+                m_BTime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime.time();
                 m_ETime = m_BTime;
                 schedule = viewWidget->queryScheduleWithTime(schedule, m_BTime, m_ETime);
             }
-        } else if (queryJsonData->getDateTime().size() == 2) {
-            m_BTime = queryJsonData->getDateTime().at(0).datetime.time();
-            m_ETime = queryJsonData->getDateTime().at(1).datetime.time();
+        } else if (queryJsonData->getDateTime().suggestDatetime.size() == 2) {
+            m_BTime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime.time();
+            m_ETime = queryJsonData->getDateTime().suggestDatetime.at(1).datetime.time();
             schedule = viewWidget->queryScheduleWithTime(schedule, m_BTime, m_ETime);
         }
     } else if (repeatNum.size() == 2) {
@@ -338,8 +338,8 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getEveryMonthSchedule(QueryJso
 
         schedule = viewWidget->queryScheduleWithMonth(schedule, queryMonth);
     } else {
-        if (queryJsonData->getDateTime().at(0).hasTime) {
-            m_BTime = queryJsonData->getDateTime().at(0).datetime.time();
+        if (queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
+            m_BTime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime.time();
             m_ETime = m_BTime;
             schedule = viewWidget->queryScheduleWithTime(schedule, m_BTime, m_ETime);
         }
@@ -352,17 +352,17 @@ QVector<ScheduleDateRangeInfo> queryScheduleTask::getEveryYearSchedule(QueryJson
     Q_UNUSED(queryJsonData)
     QVector<ScheduleDateRangeInfo> schedule;
 
-    if (queryJsonData->getDateTime().size() == 1) {
+    if (queryJsonData->getDateTime().suggestDatetime.size() == 1) {
         //查询所有年重复的日程
         schedule = viewWidget->getAllRpeatScheduleInfo(5);
         //设置查询的开始结束日期
-        QDate m_beginD = queryJsonData->getDateTime().at(0).datetime.date();
+        QDate m_beginD = queryJsonData->getDateTime().suggestDatetime.at(0).datetime.date();
         QDate m_endD = m_beginD;
         //按照日期查询日程
         schedule = viewWidget->queryScheduleWithDate(schedule, m_beginD, m_endD);
         //如果有时间，则按照时间查询
-        if (queryJsonData->getDateTime().at(0).hasTime) {
-            QTime m_beginT = queryJsonData->getDateTime().at(0).datetime.time();
+        if (queryJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
+            QTime m_beginT = queryJsonData->getDateTime().suggestDatetime.at(0).datetime.time();
             QTime m_endT = m_beginT;
             schedule = viewWidget->queryScheduleWithTime(schedule, m_beginT, m_endT);
         }
@@ -410,17 +410,17 @@ bool queryScheduleTask::queryOverDueDate(QueryJsonData *queryJsonData)
 {
     bool overduedate = false;
     int datenum;
-    if (queryJsonData->getDateTime().size() > 0) {
-        if (queryJsonData->getDateTime().size() == 1)
+    if (queryJsonData->getDateTime().suggestDatetime.size() > 0) {
+        if (queryJsonData->getDateTime().suggestDatetime.size() == 1)
             datenum = 0;
         else
             datenum = 1;
 
-        if (queryJsonData->getDateTime().at(datenum).datetime.date() < QDate::currentDate()) {
+        if (queryJsonData->getDateTime().suggestDatetime.at(datenum).datetime.date() < QDate::currentDate()) {
             overduedate = true;
-        } else if (queryJsonData->getDateTime().at(datenum).datetime.date() == QDate::currentDate()
-                   && queryJsonData->getDateTime().at(datenum).hasTime
-                   && queryJsonData->getDateTime().at(datenum).datetime.time() < QTime::currentTime()) {
+        } else if (queryJsonData->getDateTime().suggestDatetime.at(datenum).datetime.date() == QDate::currentDate()
+                   && queryJsonData->getDateTime().suggestDatetime.at(datenum).hasTime
+                   && queryJsonData->getDateTime().suggestDatetime.at(datenum).datetime.time() < QTime::currentTime()) {
             overduedate = true;
         } else {
             overduedate = false;

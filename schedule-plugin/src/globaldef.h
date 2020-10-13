@@ -37,6 +37,11 @@
 #define NEW_SCHEDULE "新建日程"
 
 #define DATETIME_FRAME "yyyyMMdd hh:mm:ss"
+//日期格式
+#define DATEFORMAT "yyyy-MM-dd"
+//时间格式
+#define TIMEFORMAT "hh:mm:ss"
+
 
 #define PROCESS_OPEN_CALENDAR "dbus-send --print-reply --dest=com.deepin.Calendar /com/deepin/Calendar com.deepin.Calendar.RaiseWindow"
 
@@ -96,6 +101,8 @@
 #define CANCEL_ERR_TTS "查询功能不支持此说法"
 //没有对应日程的回复语
 #define QUERY_ERR_TTS "您还没有日程提醒，无法寻找对应的日程！"
+//修改日程初始状态错误回复语
+#define CHANGE_INI_ERR_TSS "当前场景不支持这个操作哦。请问您要将什么日程修改到什么时间或修改到什么内容？"
 //修改日程询问回复语
 #define CHANGE_TO_TTS "请问您要将此日程修改到什么时间或修改到什么内容？"
 //错误操作回复语

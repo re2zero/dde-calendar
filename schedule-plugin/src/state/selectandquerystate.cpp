@@ -44,7 +44,7 @@ scheduleState::Filter_Flag SelectAndQueryState::eventFilter(const JsonData *json
         || jsonData->getPropertyStatus() == JsonData::NEXT
         || jsonData->isVaild()
         //如果语义包含时间则为修改初始状态
-            || jsonData->DateTime().size()>0
+            || jsonData->getDateTime().suggestDatetime.size()>0
            // 如果语义包含内容则为修改初始状态
             || !jsonData->TitleName().isEmpty()
             //如果语义包含重复类型则为修改初始状态
@@ -55,11 +55,10 @@ scheduleState::Filter_Flag SelectAndQueryState::eventFilter(const JsonData *json
         return Fileter_Normal;
     JsonData *queryData = const_cast<JsonData *>(jsonData);
     changejsondata *mchangeJsonData = dynamic_cast<changejsondata *>(queryData);
-    if (mchangeJsonData->toDateTime().size() > 0
-        || !mchangeJsonData->toPlaceStr().isEmpty()
-        || mchangeJsonData->fromDateTime().size() > 0) {
+    if (mchangeJsonData->fromDateTime().suggestDatetime.size() > 0) {
         return Filter_Flag::Fileter_Init;
     }
+    //根据列表编号判断
     if (m_localData->getOffet() < 0 && jsonData->offset() < 0) {
         return Fileter_Err;
     }
@@ -93,11 +92,18 @@ Reply SelectAndQueryState::normalEvent(const JsonData *jsonData)
         m_localData->setSelectInfo(m_localData->scheduleInfoVector().at(offset - 1));
         Reply m_reply;
     }
-    if (jsonData->DateTime().size() > 0)
-        m_localData->setToTime(jsonData->DateTime());
-    if (!jsonData->TitleName().isEmpty())
-        m_localData->setToTitleName(jsonData->TitleName());
-
     ScheduleDtailInfo info = m_localData->SelectInfo();
-    return m_Task->getReplyBySelectSchedule(info);
+    //如果语义为“第xx个修改到xxx”，添加对修改信息的获取
+    //类型转换
+    JsonData *queryData = const_cast<JsonData *>(jsonData);
+    changejsondata *mchangeJsonData = dynamic_cast<changejsondata *>(queryData);
+    //如果有修改时间的信息则赋值
+    if(mchangeJsonData->toDateTime().suggestDatetime.size()>0){
+        m_localData->setToTime(mchangeJsonData->toDateTime().dateTime);
+    }
+    //如果有修改内容的信息则获取
+    if(!mchangeJsonData->toPlaceStr().isEmpty()){
+        m_localData->setToTitleName(mchangeJsonData->toPlaceStr());
+    }
+    return m_Task->getReplyBySelectSchedule(m_localData->SelectInfo());
 }

@@ -51,7 +51,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     //设置日程时间
     setDateTime(createJsonData);
 
-    if (createJsonData->DateTime().size() > 0) {
+    if (createJsonData->getDateTime().suggestDatetime.size() > 0) {
         //判断多伦标志
         if (createJsonData->ShouldEndSession()) {
             //设置日程titlename
@@ -126,15 +126,15 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         } else  {
             //为特殊情况拼接回复语
             if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD
-                    && createJsonData->getDateTime().at(0).hasTime) {
+                    && createJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
                 //如果为休息日，并且有开始时间，拼接回复语
                 QString str = QString("好的，每周六到周日的%1我都会提醒您。").arg(m_begintime.toString("hh:mm"));
                 m_reply.ttsMessage(str);
                 m_reply.displayMessage(str);
             } else if (createJsonData->getRepeatStatus() == CreateJsonData::NONE
-                       && createJsonData->getDateTime().at(0).hasTime
-                       && createJsonData->getDateTime().at(0).datetime < QDateTime::currentDateTime()
-                       && createJsonData->getDateTime().size() == 2
+                       && createJsonData->getDateTime().suggestDatetime.at(0).hasTime
+                       && createJsonData->getDateTime().suggestDatetime.at(0).datetime < QDateTime::currentDateTime()
+                       && createJsonData->getDateTime().suggestDatetime.size() == 2
                        && createJsonData->ShouldEndSession()) {
                 //对于跨天日程，开始datetime小于当前datetime，则开始date增加一天，为其拼接回复语
                 QString str = QString("好的，%1我会提醒您。").arg(m_begintime.toString("hh:mm"));
@@ -152,10 +152,10 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 
 void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
 {
-    if (createJsonData->getDateTime().size() > 0) {
+    if (createJsonData->getDateTime().suggestDatetime.size() > 0) {
         //用户有输入时间，则设置开始时间
-        m_begintime = createJsonData->DateTime().at(0).datetime;
-        if (createJsonData->getDateTime().size() == 2 && m_begintime < QDateTime::currentDateTime()) {
+        m_begintime = createJsonData->getDateTime().suggestDatetime.at(0).datetime;
+        if (createJsonData->getDateTime().suggestDatetime.size() == 2 && m_begintime < QDateTime::currentDateTime()) {
             if (m_begintime.time() > QTime::currentTime()) {
                 //跨天日程，如果日程开始时间大于当前时间，则开始时间为当天
                 m_begintime.setDate(m_begintime.date().addDays(m_begintime.date().daysTo(QDate::currentDate())));
@@ -168,13 +168,13 @@ void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
         //用户没有输入时间，则日程开始时间设置为当前时间
         m_begintime = QDateTime::currentDateTime();
     }
-    if (createJsonData->DateTime().size() == 1) {
+    if (createJsonData->getDateTime().suggestDatetime.size() == 1) {
         //如果只有开始时间，则结束时间默认为开始时间后一个小时
         m_endtime = m_begintime.addSecs(60 * 60);
-    } else if (createJsonData->DateTime().size() == 2) {
+    } else if (createJsonData->getDateTime().suggestDatetime.size() == 2) {
         //如果有结束时间，则设置结束时间
-        m_endtime = createJsonData->DateTime().at(1).datetime;
-        if (!createJsonData->getDateTime().at(1).hasTime) {
+        m_endtime = createJsonData->getDateTime().suggestDatetime.at(1).datetime;
+        if (!createJsonData->getDateTime().suggestDatetime.at(1).hasTime) {
             //如果用户没有输入结束时间，则默认为当天23：59：59
             m_endtime.setTime(QTime(23, 59, 59));
         }

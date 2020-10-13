@@ -28,6 +28,7 @@
 #include "../state/confirwfeedbackstate.h"
 #include "../state/queryschedulestate.h"
 #include "../state/repeatfeedbackstate.h"
+#include "../state/getchangedatastate.h"
 
 changeScheduleTask::changeScheduleTask(CSchedulesDBus *dbus)
     : scheduleBaseTask(dbus, new queryScheduleState(dbus, this))
@@ -122,7 +123,8 @@ Reply changeScheduleTask::getReplyBySelectSchedule(const ScheduleDtailInfo &info
     if (m_Data->getToTime().size() == 0 && m_Data->getToTitleName() == "") {
         QWidget *infoWidget = createInquiryWidget(info);
         REPLY_WIDGET_TTS(m_reply, infoWidget, CHANGE_TO_TTS, CHANGE_TO_TTS, false);
-        nextState = new SelectAndQueryState(m_dbus, this);
+        //添加获取修改信息状态
+        nextState = new getChangeDataState(m_dbus, this);
     } else {
         if (info.rpeat == 0) {
             nextState = new confirwFeedbackState(m_dbus, this);
@@ -275,28 +277,37 @@ void changeScheduleTask::getNewInfo()
     QVector<DateTimeInfo> m_ToTime = currentState->getLocalData()->getToTime();
     if (m_ToTime.size() > 0) {
         if (m_ToTime.size() == 1) {
-            //设置修改的开始日期
-            m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).datetime.date());
-            //设置修改的结束日期
-            m_NewInfo.endDateTime.setDate(m_ToTime.at(0).datetime.date());
+            //如果存在日期信息
+            if(m_ToTime.at(0).hasDate){
+                //设置修改的开始日期
+                m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).m_Date);
+                //设置修改的结束日期
+                m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).m_Date);
+            }
             //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
             if(m_ToTime.at(0).hasTime){
-                m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).datetime.time());
+                m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).m_Time);
                 m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);
             }
         }
         if (m_ToTime.size() == 2) {
-            //设置修改的开始日期
-            m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).datetime.date());
+            //如果存在日期信息
+            if(m_ToTime.at(0).hasDate){
+                //设置修改的开始日期
+                m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).m_Date);
+            }
             //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
             if(m_ToTime.at(0).hasTime){
-                m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).datetime.time());
+                m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).m_Time);
             }
-            //设置修改的结束日期
-            m_NewInfo.endDateTime.setDate(m_ToTime.at(1).datetime.date());
+            //如果存在日期信息
+            if(m_ToTime.at(1).hasDate){
+                //设置修改的结束日期
+                m_NewInfo.endDateTime.setDate(m_ToTime.at(1).m_Date);
+            }
             //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
             if (m_ToTime.at(1).hasTime)
-                m_NewInfo.endDateTime.setTime(m_ToTime.at(1).datetime.time());
+                m_NewInfo.endDateTime.setTime(m_ToTime.at(1).m_Time);
             //如果开始时间大于结束时间则设置结束时间为开始时间往后一小时
             if (m_NewInfo.endDateTime < m_NewInfo.beginDateTime) {
                 m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);

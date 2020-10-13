@@ -62,17 +62,17 @@ private:
     QVector<ScheduleDtailInfo> scheduleFileterByTitleName(QVector<ScheduleDtailInfo> &scheduleInfo, const QString &strName);
     bool weeklyIsIntersections(QDateTime &beginTime, QDateTime &endTime, QSet<int> &weeklySet);
 
-    QVector<DateTimeInfo> getQueryDateTime(JsonData *jsonData);
+    SemanticsDateTime getQueryDateTime(JsonData *jsonData);
 
-    DateTimeLimit getTimeLimitByTimeInfo(const QVector<DateTimeInfo> &timeInfoVect);
-    TimeLimit getTimeFileterByTimeInfo(const QVector<DateTimeInfo> &timeInfoVect);
+    DateTimeLimit getTimeLimitByTimeInfo(const SemanticsDateTime &timeInfoVect);
+    TimeLimit getTimeFileterByTimeInfo(const SemanticsDateTime &timeInfoVect);
     void setTimeIsExpired(const bool timeisExp);
     /**
      * @brief timeFrameIsValid    时间范围是否有效，开始时间不能大于结束时间
      * @param timeInfoVect  时间范围
      * @return      返回false表示开始时间大于结束时间
      */
-    bool timeFrameIsValid(const QVector<DateTimeInfo> &timeInfoVect);
+    bool timeFrameIsValid(const SemanticsDateTime &timeInfoVect);
 private:
     JsonData *m_queryJsonData;
     CSchedulesDBus *m_dbus {nullptr};

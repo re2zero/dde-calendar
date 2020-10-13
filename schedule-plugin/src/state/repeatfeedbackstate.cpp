@@ -50,22 +50,12 @@ scheduleState::Filter_Flag repeatfeedbackstate::eventFilter(const JsonData *json
     if (jsonData->getPropertyStatus() == JsonData::NEXT) {
         return Fileter_Init;
     }
-
-    JsonData *queryData = const_cast<JsonData *>(jsonData);
-    changejsondata *mchangeJsonData = dynamic_cast<changejsondata *>(queryData);
-    if (mchangeJsonData != nullptr) {
-        if (mchangeJsonData->toDateTime().size() > 0
-            || !mchangeJsonData->toPlaceStr().isEmpty()
-            || mchangeJsonData->fromDateTime().size() > 0) {
-            return Filter_Flag::Fileter_Init;
-        }
-    }
-
     if (jsonData->getPropertyStatus() == JsonData::LAST
         || jsonData->offset() > 0) {
         return Fileter_Err;
     }
-    return Fileter_Init;
+    Filter_Flag  result = changeDateErrJudge(jsonData,Fileter_Init);
+    return result;
 }
 
 Reply repeatfeedbackstate::ErrEvent()

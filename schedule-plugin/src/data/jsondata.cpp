@@ -109,11 +109,6 @@ void JsonData::setDateTimeStatus(const JsonData::DateTimeStatus &DateTimeStatus)
     m_DateTimeStatus = DateTimeStatus;
 }
 
-QVector<DateTimeInfo> JsonData::DateTime() const
-{
-    return m_DateTime;
-}
-
 JsonData::RepeatStatus JsonData::getRepeatStatus() const
 {
     return m_RepeatStatus;
@@ -129,12 +124,12 @@ void JsonData::setRepeatNum(const QVector<int> &RepeatNum)
     m_RepeatNum = RepeatNum;
 }
 
-QVector<DateTimeInfo> JsonData::getDateTime() const
+SemanticsDateTime JsonData::getDateTime() const
 {
     return m_DateTime;
 }
 
-void JsonData::setDateTime(const QVector<DateTimeInfo> &DateTime)
+void JsonData::setDateTime(const SemanticsDateTime &DateTime)
 {
     m_DateTime = DateTime;
 }
@@ -218,38 +213,84 @@ void JsonData::posRankOffsetResolve(const QJsonObject &jsobj)
     setOffset(jsobj[JSON_VALUE].toString().toInt());
 }
 
-QVector<DateTimeInfo> JsonData::suggestDatetimeResolve(const QJsonObject &jsobj)
+SemanticsDateTime JsonData::suggestDatetimeResolve(const QJsonObject &jsobj)
 {
-    QVector<DateTimeInfo> datetime {};
-    datetime.clear();
+    SemanticsDateTime semdatetime {};
+    semdatetime.clear();
     QString DateTimeJson = jsobj[JSON_NORMVALUE].toString();
     QJsonParseError jsonError;
     QJsonDocument doc = QJsonDocument::fromJson(DateTimeJson.toUtf8(), &jsonError);
-    QString dateTime;
+    //建议时间
+    QString sugdateTimeStr{""};
+    //模糊时间
+    QString dateTimeStr{""};
 
     if (!doc.isNull() && (jsonError.error == QJsonParseError::NoError)) {
         auto rootObject = doc.object();
-        dateTime = (rootObject["suggestDatetime"].toString());
+        sugdateTimeStr = (rootObject["suggestDatetime"].toString());
+        dateTimeStr = rootObject["datetime"].toString();
     }
-    if (dateTime != "") {
-        if (dateTime.contains("/")) {
-            QStringList dateTimeList = dateTime.split("/");
+    //建议时间解析赋值
+    if (sugdateTimeStr != "") {
+        if (sugdateTimeStr.contains("/")) {
+            QStringList dateTimeList = sugdateTimeStr.split("/");
             for (int i = 0; i < dateTimeList.size(); ++i) {
-                datetime.append(resolveNormValue(dateTimeList.at(i)));
+                //如果数据不为空，添加解析数据
+                if(!dateTimeList.at(i).isEmpty()){
+                    semdatetime.suggestDatetime.append(resolveNormValue(dateTimeList.at(i)));
+                }
             }
         } else {
-            datetime.append(resolveNormValue(dateTime));
+            semdatetime.suggestDatetime.append(resolveNormValue(sugdateTimeStr));
         }
     }
-    return datetime;
+    //模糊时间解析赋值
+    if(!dateTimeStr.isEmpty()){
+        if(dateTimeStr.contains("/")){
+            QStringList dateTimeList = dateTimeStr.split("/");
+            for (int i = 0; i < dateTimeList.size(); ++i) {
+                //如果数据不为空，添加解析数据
+                if(!dateTimeList.at(i).isEmpty()){
+                    semdatetime.dateTime.append(resolveDateTimeValeu(dateTimeList.at(i)));
+                }
+            }
+        } else {
+            semdatetime.dateTime.append(resolveDateTimeValeu(dateTimeStr));
+        }
+    }
+    return semdatetime;
 }
 
-DateTimeInfo JsonData::resolveNormValue(const QString &str)
+SuggestDatetimeInfo JsonData::resolveNormValue(const QString &str)
 {
-    DateTimeInfo datetimeInfo;
+    SuggestDatetimeInfo datetimeInfo;
     datetimeInfo.hasTime = str.contains(JSON_DATETIME_DELIMITER);
     datetimeInfo.datetime = QDateTime::fromString(str, Qt::ISODate);
     return datetimeInfo;
+}
+
+DateTimeInfo JsonData::resolveDateTimeValeu(const QString &dateTimeStr)
+{
+    DateTimeInfo dateTimeInfo{};
+    //根据关键符合“T”分割字符
+    QStringList dateList = dateTimeStr.split(JSON_DATETIME_DELIMITER);
+    //如果只有一个表示没有时间信息
+    if(dateList.size() ==1){
+        dateTimeInfo.m_Date = QDate::fromString(dateList.at(0),DATEFORMAT);
+        dateTimeInfo.hasDate = true;
+        dateTimeInfo.hasTime = false;
+    }else if (dateList.size()>1) {
+        //如果第一个数据为空表示没有日期信息
+        if(dateList.at(0).isEmpty()){
+            dateTimeInfo.hasDate = false;
+        }else {
+            dateTimeInfo.m_Date = QDate::fromString(dateList.at(0),DATEFORMAT);
+            dateTimeInfo.hasDate = true;
+        }
+        dateTimeInfo.m_Time = QTime::fromString(dateList.at(1),TIMEFORMAT);
+        dateTimeInfo.hasTime = true;
+    }
+    return dateTimeInfo;
 }
 
 void JsonData::setDefaultValue()
@@ -290,7 +331,6 @@ void JsonData::setOffset(int offset)
 
 bool JsonData::isVaild() const
 {
-    return TitleName() == "" && getDateTime().size() == 0
+    return TitleName() == "" && getDateTime().suggestDatetime.size() == 0
            && m_offset == -1 && m_RepeatStatus == NONE && m_propertyStatus == PRO_NONE;
-    //    return  m_isVaild;
 }

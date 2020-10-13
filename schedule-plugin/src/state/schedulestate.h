@@ -50,7 +50,13 @@ protected:
     virtual Reply ErrEvent() = 0;
     virtual Reply normalEvent(const JsonData *jsonData) = 0;
     Reply initEvent(const JsonData *jsonData);
-
+    /**
+     * @brief changeDateErrJudge        修改数据错误判断，在非获取修改数据状态下，输入“修改到xxx”返回错误信息
+     * @param jsonData          json数据
+     * @param defaultflag       默认返回标志
+     * @return          过滤标志
+     */
+    Filter_Flag changeDateErrJudge(const JsonData *jsonData,const Filter_Flag &defaultflag);
 protected:
     CSchedulesDBus *m_dbus {nullptr};
     scheduleBaseTask *m_Task {nullptr};

@@ -44,7 +44,8 @@ scheduleState::Filter_Flag confirwFeedbackState::eventFilter(const JsonData *jso
         || jsonData->offset() > 0) {
         return Fileter_Err;
     }
-    return Fileter_Init;
+    Filter_Flag  result = changeDateErrJudge(jsonData,Fileter_Init);
+    return result;
 }
 
 Reply confirwFeedbackState::ErrEvent()

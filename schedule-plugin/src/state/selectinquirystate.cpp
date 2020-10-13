@@ -48,7 +48,7 @@ scheduleState::Filter_Flag selectInquiryState::eventFilter(const JsonData *jsonD
     if (jsonData->getPropertyStatus() == JsonData::LAST)
         return Fileter_Normal;
 
-    if (jsonData->DateTime().size() > 0
+    if (jsonData->getDateTime().suggestDatetime.size() > 0
         || !jsonData->TitleName().isEmpty()) {
         return Fileter_Init;
     }
