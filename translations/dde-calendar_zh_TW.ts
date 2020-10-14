@@ -303,7 +303,7 @@
     </message>
     <message>
         <source>On</source>
-        <translation>與日期</translation>
+        <translation>於日期</translation>
     </message>
     <message>
         <source>time(s)</source>

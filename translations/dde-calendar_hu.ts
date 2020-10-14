@@ -34,7 +34,7 @@
     <name>CDayWindow</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>É</translation>
     </message>
     <message>
         <source>M</source>
@@ -60,7 +60,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Töröl egy eseményt.</translation>
+        <translation>Ön töröl egy eseményt.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -113,14 +113,14 @@
     <name>CMonthWindow</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>É</translation>
     </message>
 </context>
 <context>
     <name>CMySchceduleView</name>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Töröl egy eseményt.</translation>
+        <translation>Ön töröl egy eseményt.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -183,7 +183,7 @@
     </message>
     <message>
         <source>Do you want to change all occurrences?</source>
-        <translation>Minden alkalmat módosítani kíván?</translation>
+        <translation>Minden alkalmat módosítani szeretne?</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -307,11 +307,11 @@
     </message>
     <message>
         <source>time(s)</source>
-        <translation>alkalommal</translation>
+        <translation>időpont(ok)</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Ment</translation>
+        <translation>Mentés</translation>
     </message>
     <message>
         <source>New event</source>
@@ -319,7 +319,7 @@
     </message>
     <message>
         <source>End time must be greater than start time</source>
-        <translation>A végzés időpontjának a kezdés időpontjánál későbbre kell esnie</translation>
+        <translation>A befejezés időpontjának a kezdés időpontjánál későbbre kell esnie</translation>
     </message>
     <message>
         <source>OK</source>
@@ -335,11 +335,11 @@
     </message>
     <message>
         <source>Starts</source>
-        <translation>Kezdődik</translation>
+        <translation>Kezdés</translation>
     </message>
     <message>
         <source>Ends</source>
-        <translation>Végződik</translation>
+        <translation>Befejezés</translation>
     </message>
     <message>
         <source>Remind Me</source>
@@ -355,11 +355,11 @@
     </message>
     <message>
         <source>Ends:</source>
-        <translation>Végződik:</translation>
+        <translation>Befejezés:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Leírás</translation>
+        <translation>Leírás:</translation>
     </message>
     <message>
         <source>Description</source>
@@ -367,7 +367,7 @@
     </message>
     <message>
         <source>Starts:</source>
-        <translation>Kezdődik:</translation>
+        <translation>Kezdés:</translation>
     </message>
     <message>
         <source>Work</source>
@@ -386,7 +386,7 @@
     <name>CSchceduleSearchDateItem</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>É</translation>
     </message>
     <message>
         <source>M</source>
@@ -409,7 +409,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Töröl egy eseményt.</translation>
+        <translation>Ön töröl egy eseményt.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -448,7 +448,7 @@
     <name>CSchceduleSearchView</name>
     <message>
         <source>No search results</source>
-        <translation>Nincs találat</translation>
+        <translation>Nincs keresési eredmény</translation>
     </message>
 </context>
 <context>
@@ -466,7 +466,7 @@
     </message>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>É</translation>
     </message>
 </context>
 <context>
@@ -491,7 +491,7 @@
     <name>CYearWindow</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>É</translation>
     </message>
 </context>
 <context>
@@ -513,7 +513,7 @@
     </message>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>É</translation>
     </message>
     <message>
         <source>M</source>
@@ -551,7 +551,7 @@
     </message>
     <message>
         <source>You are deleting an event.</source>
-        <translation>Töröl egy eseményt.</translation>
+        <translation>Ön töröl egy eseményt.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
@@ -606,7 +606,7 @@
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>Súgó</translation>
+        <translation>Segítség</translation>
     </message>
     <message>
         <source>Delete event</source>
@@ -637,7 +637,7 @@
     <name>YearFrame</name>
     <message>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>É</translation>
     </message>
 </context>
 <context>

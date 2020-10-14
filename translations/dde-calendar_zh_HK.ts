@@ -606,7 +606,7 @@
     <name>Shortcut</name>
     <message>
         <source>Help</source>
-        <translation>協助</translation>
+        <translation>幫助</translation>
     </message>
     <message>
         <source>Delete event</source>
