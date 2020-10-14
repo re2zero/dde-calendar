@@ -387,6 +387,9 @@ bool CSchedulesDBus::UpdateJob(const ScheduleDtailInfo &info)
     argumentList << QVariant::fromValue(createScheduleDtailInfojson(info));
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("UpdateJob"), argumentList);
     if (reply.type() != QDBusMessage::ReplyMessage) {
+        //dbus UpdateJob 错误提醒
+        qDebug()<<"UpdateJob Err";
+        qDebug()<<argumentList;
         return false;
     }
     //QDBusReply<QString> jobs =  reply;

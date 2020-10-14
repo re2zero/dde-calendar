@@ -282,7 +282,7 @@ void changeScheduleTask::getNewInfo()
                 //设置修改的开始日期
                 m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).m_Date);
                 //设置修改的结束日期
-                m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).m_Date);
+                m_NewInfo.endDateTime.setDate(m_ToTime.at(0).m_Date);
             }
             //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
             if(m_ToTime.at(0).hasTime){
