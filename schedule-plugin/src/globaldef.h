@@ -129,6 +129,8 @@
 #define REPEST_SCHEDULE_CHANGE_TTS "该日程是循环的日程，请问是修改当前日程还是所有日程？"
 //修改普通日程询问回复语
 #define CONFIRM_SCHEDULE_CHANGE_TTS "我要帮您修改这个日程吗？操作后将在日历中同步修改。"
+//修改到的时间不在规定时间范围内
+#define CHANGE_TIME_OUT_TTS "修改日程的时间范围为未来半年哦。"
 #define ALL_DAY "全天"
 //修改或取消时间不在未来半年的回复语
 #define OVERTIME_TTS "只能取消或修改未来半年的日程！"

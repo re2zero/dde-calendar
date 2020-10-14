@@ -49,12 +49,22 @@ private:
 
     Reply getConfirwScheduleReply(const ScheduleDtailInfo &info);
     Reply getRepeatReply(const ScheduleDtailInfo &info);
-    void getNewInfo();
+    /**
+     * @brief getNewInfo        根据修改信息获取新的日程信息
+     * @return                  在时间范围内返回true
+     */
+    bool getNewInfo();
 
     void changeRepeatSchedule(const ScheduleDtailInfo &info, bool isOnlyOne);
     void changeOnlyInfo(const ScheduleDtailInfo &info);
     void changeAllInfo(const ScheduleDtailInfo &info);
     void changeOrdinarySchedule(const ScheduleDtailInfo &info);
+    /**
+     * @brief changeDateTimeIsInRange   判断修改的日期在正确的时间范围内
+     * @param info          修改过的日程
+     * @return              在正常范围内则返回true
+     */
+    bool changeDateTimeIsInNormalRange(const ScheduleDtailInfo &info);
 
 private:
     QVector<ScheduleDtailInfo> m_scheduleInfo;

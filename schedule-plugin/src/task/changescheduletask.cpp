@@ -243,10 +243,17 @@ Reply changeScheduleTask::getConfirwScheduleReply(const ScheduleDtailInfo &info)
     m_TTSMessage = CONFIRM_SCHEDULE_CHANGE_TTS;
     m_DisplyMessage = CONFIRM_SCHEDULE_CHANGE_TTS;
     scheduleState *currentState = getCurrentState();
-    getNewInfo();
-    QWidget *m_confirwWidget = createConfirmWidget(currentState->getLocalData()->getNewInfo());
     Reply reply;
-    REPLY_WIDGET_TTS(reply, m_confirwWidget, m_TTSMessage, m_DisplyMessage, false);
+    //如果修改的新日程时间在范围内则正常提醒
+    if(getNewInfo()){
+        QWidget *m_confirwWidget = createConfirmWidget(currentState->getLocalData()->getNewInfo());
+        REPLY_WIDGET_TTS(reply, m_confirwWidget, m_TTSMessage, m_DisplyMessage, false);
+    }else {
+        m_TTSMessage = CHANGE_TIME_OUT_TTS;
+        m_DisplyMessage = CHANGE_TIME_OUT_TTS;
+        REPLY_ONLY_TTS(reply,m_TTSMessage,m_DisplyMessage,false);
+
+    };
     return reply;
 }
 
@@ -258,14 +265,20 @@ Reply changeScheduleTask::getRepeatReply(const ScheduleDtailInfo &info)
     m_TTSMessage = REPEST_SCHEDULE_CHANGE_TTS;
     m_DisplyMessage = REPEST_SCHEDULE_CHANGE_TTS;
     scheduleState *currentState = getCurrentState();
-    getNewInfo();
-    QWidget *m_repeatReply = createRepeatWidget(currentState->getLocalData()->getNewInfo());
     Reply reply;
-    REPLY_WIDGET_TTS(reply, m_repeatReply, m_TTSMessage, m_DisplyMessage, false);
+    //如果修改的新日程时间在范围内则正常提醒
+    if(getNewInfo()){
+        QWidget *m_repeatReply = createRepeatWidget(currentState->getLocalData()->getNewInfo());
+        REPLY_WIDGET_TTS(reply, m_repeatReply, m_TTSMessage, m_DisplyMessage, false);
+    }else {
+        m_TTSMessage = CHANGE_TIME_OUT_TTS;
+        m_DisplyMessage = CHANGE_TIME_OUT_TTS;
+        REPLY_ONLY_TTS(reply,m_TTSMessage,m_DisplyMessage,false);
+    };
     return reply;
 }
 
-void changeScheduleTask::getNewInfo()
+bool changeScheduleTask::getNewInfo()
 {
     scheduleState *currentState = getCurrentState();
     ScheduleDtailInfo m_NewInfo = currentState->getLocalData()->SelectInfo();
@@ -315,6 +328,7 @@ void changeScheduleTask::getNewInfo()
         }
     }
     currentState->getLocalData()->setNewInfo(m_NewInfo);
+    return changeDateTimeIsInNormalRange(m_NewInfo);
 }
 
 void changeScheduleTask::changeRepeatSchedule(const ScheduleDtailInfo &info, bool isOnlyOne)
@@ -386,4 +400,23 @@ void changeScheduleTask::changeAllInfo(const ScheduleDtailInfo &info)
 void changeScheduleTask::changeOrdinarySchedule(const ScheduleDtailInfo &info)
 {
     m_dbus->UpdateJob(info);
+}
+
+bool changeScheduleTask::changeDateTimeIsInNormalRange(const ScheduleDtailInfo &info)
+{
+    bool result {true};
+    //当前时间
+    QDateTime currentDateTime {QDateTime::currentDateTime()};
+    //最大时间  
+    QDateTime maxDateTime = currentDateTime.addMonths(6);
+    //如果开始时间为过期时间则为false
+    if(info.beginDateTime<currentDateTime){
+        result = false;
+    };
+    //如果开始时间或结束时间大于最大时间则为false
+    if(info.beginDateTime>maxDateTime
+            ||info.endDateTime > maxDateTime){
+        result = false;
+    }
+    return  result;
 }
