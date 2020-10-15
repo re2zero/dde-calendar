@@ -79,31 +79,36 @@ Reply SelectAndQueryState::ErrEvent()
 
 Reply SelectAndQueryState::normalEvent(const JsonData *jsonData)
 {
-    if (m_localData->getOffet() < 0 && jsonData->offset() > 0) {
-        bool showOpenWidget = m_localData->scheduleInfoVector().size() > ITEM_SHOW_NUM;
-        const int showcount = showOpenWidget ? ITEM_SHOW_NUM : m_localData->scheduleInfoVector().size();
-        int offset = 0;
-        if (jsonData->getPropertyStatus() == JsonData::LAST) {
-            offset = showcount;
-        } else {
-            offset = jsonData->offset();
-        }
+    bool showOpenWidget = m_localData->scheduleInfoVector().size() > ITEM_SHOW_NUM;
+    const int showcount = showOpenWidget ? ITEM_SHOW_NUM : m_localData->scheduleInfoVector().size();
+    int offset = 0;
+    //获取第N个日程
+    if (jsonData->getPropertyStatus() == JsonData::LAST) {
+        offset = showcount;
+    }else {
+        offset = jsonData->offset();
+    }
+    if(offset > 0){
         m_localData->setOffset(offset);
         m_localData->setSelectInfo(m_localData->scheduleInfoVector().at(offset - 1));
-        Reply m_reply;
+        ScheduleDtailInfo info = m_localData->SelectInfo();
+        //如果语义为“第xx个修改到xxx”，添加对修改信息的获取
+        //类型转换
+        JsonData *queryData = const_cast<JsonData *>(jsonData);
+        changejsondata *mchangeJsonData = dynamic_cast<changejsondata *>(queryData);
+        //如果有修改时间的信息则赋值
+        if(mchangeJsonData->toDateTime().suggestDatetime.size()>0){
+            m_localData->setToTime(mchangeJsonData->toDateTime().dateTime);
+        }
+        //如果有修改内容的信息则获取
+        if(!mchangeJsonData->toPlaceStr().isEmpty()){
+            m_localData->setToTitleName(mchangeJsonData->toPlaceStr());
+        }
+        return m_Task->getReplyBySelectSchedule(m_localData->SelectInfo());
+    }else {
+        qDebug()<<"offset <=0";
+        Reply reply;
+        REPLY_ONLY_TTS(reply,G_ERR_TTS,G_ERR_TTS,false);
+        return reply;
     }
-    ScheduleDtailInfo info = m_localData->SelectInfo();
-    //如果语义为“第xx个修改到xxx”，添加对修改信息的获取
-    //类型转换
-    JsonData *queryData = const_cast<JsonData *>(jsonData);
-    changejsondata *mchangeJsonData = dynamic_cast<changejsondata *>(queryData);
-    //如果有修改时间的信息则赋值
-    if(mchangeJsonData->toDateTime().suggestDatetime.size()>0){
-        m_localData->setToTime(mchangeJsonData->toDateTime().dateTime);
-    }
-    //如果有修改内容的信息则获取
-    if(!mchangeJsonData->toPlaceStr().isEmpty()){
-        m_localData->setToTitleName(mchangeJsonData->toPlaceStr());
-    }
-    return m_Task->getReplyBySelectSchedule(m_localData->SelectInfo());
 }
