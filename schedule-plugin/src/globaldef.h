@@ -141,6 +141,7 @@
     reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY); \
     reply.ttsMessage(msgtts); \
     reply.displayMessage(dsptts); \
+    reply.code(0); \
     reply.setShouldEndSession(isEnd); \
 
 //带窗口的回复宏定义
@@ -149,6 +150,7 @@
     reply.setReplyWidget(widget); \
     reply.ttsMessage(msgtts); \
     reply.displayMessage(dsptts); \
+    reply.code(0); \
     reply.setShouldEndSession(isEnd); \
 
 //未来半年开始时间和结束时间

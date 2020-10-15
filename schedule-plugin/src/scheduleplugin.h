@@ -43,6 +43,10 @@ public:
     IService *createService(const QString &service) override;
     void releaseService(IService *service) override;
     bool needRunInDifferentThread() override;
+    /**
+     * @brief isAutoDetectSession   是否自动检测多轮对话
+     * @return          true 检测  false不检测由插件设置
+     */
     bool isAutoDetectSession() override;
 public slots:
     void slotSendMessage(Reply reply);

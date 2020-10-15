@@ -75,7 +75,7 @@ scheduleState::Filter_Flag getChangeDataState::eventFilter(const JsonData *jsonD
 Reply getChangeDataState::ErrEvent()
 {
     Reply reply;
-    //放回错误输入的回复语
+    //返回错误输入的回复语
     REPLY_ONLY_TTS(reply, G_ERR_TTS, G_ERR_TTS, true)
     return reply;
 }

@@ -82,7 +82,8 @@ bool Scheduleplugin::needRunInDifferentThread()
 
 bool Scheduleplugin::isAutoDetectSession()
 {
-    return true;
+    //设置为不自动检测是否多论
+    return false;
 }
 
 void Scheduleplugin::slotSendMessage(Reply reply)

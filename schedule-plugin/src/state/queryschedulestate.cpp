@@ -40,7 +40,7 @@ Reply queryScheduleState::getReplyByIntent(bool isOK)
 Reply queryScheduleState::ErrEvent()
 {
     Reply reply;
-    REPLY_ONLY_TTS(reply, CHANGE_INI_ERR_TSS, CHANGE_INI_ERR_TSS, true)
+    REPLY_ONLY_TTS(reply, CHANGE_INI_ERR_TSS, CHANGE_INI_ERR_TSS, false)
     return reply;
 }
 
