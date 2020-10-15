@@ -55,7 +55,8 @@ void createSchedulewidget::setschedule()
     m_scheduleDtailInfo.remindData.n = 0;
     m_scheduleDtailInfo.rpeat = m_rpeat;
     //    if (m_rpeat != 0) {
-    //    m_scheduleDtailInfo.enddata.type = 0;
+    //结束重复于类型为：永不
+    m_scheduleDtailInfo.enddata.type = 0;
     //    }
 }
 
@@ -152,7 +153,8 @@ void createSchedulewidget::getCreatScheduleFromDbus()
                     && out.at(i).vData.at(j).type.ID == m_scheduleDtailInfo.type.ID
                     && out.at(i).vData.at(j).RecurID == m_scheduleDtailInfo.RecurID
                     && out.at(i).vData.at(j).remind == m_scheduleDtailInfo.remind
-                    && out.at(i).vData.at(j).remindData.n == m_scheduleDtailInfo.remindData.n) {
+                    && out.at(i).vData.at(j).remindData.n == m_scheduleDtailInfo.remindData.n
+                    && out.at(i).vData.at(j).enddata.type == m_scheduleDtailInfo.enddata.type) {
                 scheduleinfo.append(out.at(i).vData.at(j));
             }
         }
