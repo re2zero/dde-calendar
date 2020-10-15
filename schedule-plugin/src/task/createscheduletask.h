@@ -44,6 +44,28 @@ private:
      */
     void setScheduleTitleName(CreateJsonData *createJsonData);
     /**
+     * @brief createScheduleWithRepeatStatus 新建日程
+     * @param createJsonData jsondata句柄
+     * @return 日程信息
+     */
+    QVector<ScheduleDtailInfo> createScheduleWithRepeatStatus(CreateJsonData *createJsonData);
+    /**
+     * @brief creareScheduleUI 新建日程插件
+     * @param schedule 日程信息
+     */
+    void creareScheduleUI(QVector<ScheduleDtailInfo> schedule);
+    /**
+     * @brief getReply 获取回复语
+     * @param createJsonData jsondata句柄
+     * @return 回复语
+     */
+    QString getReply(CreateJsonData *createJsonData);
+    /**
+     * @brief beginDateTimeIsinHalfYear 判断时间是否合法
+     * @return 时间是否合法
+     */
+    bool beginDateTimeIsinHalfYear();
+    /**
      * @brief setNotRepeatDay 获取非重复的日程
      * @return 日程信息
      */

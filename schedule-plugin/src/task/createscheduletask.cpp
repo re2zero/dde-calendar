@@ -35,118 +35,41 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     if (createJsonData == nullptr)
         return errorMessage();
     //查询日程
-
+    Reply m_reply;
     if (createJsonData->getPropertyStatus() != JsonData::PRO_NONE
             || createJsonData->offset() > -1) {
-        Reply m_reply;
-        m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-        m_reply.ttsMessage(CREATE_ERR_TTS);
-        m_reply.displayMessage(CREATE_ERR_TTS);
+        REPLY_ONLY_TTS(m_reply, CREATE_ERR_TTS, CREATE_ERR_TTS, true);
         return m_reply;
     }
 
-    QVector<int> getDayNum = createJsonData->getRepeatNum();
-    QVector<ScheduleDtailInfo> schedule;
     m_widget = new createSchedulewidget();
     //设置日程时间
     setDateTime(createJsonData);
-
+    //有时间才能创建日程
     if (createJsonData->getDateTime().suggestDatetime.size() > 0) {
-        //判断多伦标志
-        if (createJsonData->ShouldEndSession()) {
-            //设置日程titlename
-            setScheduleTitleName(createJsonData);
-            //根据不同类型分别创建日程
-            switch (createJsonData->getRepeatStatus()) {
-            case CreateJsonData::NONE: {
-                //非重复日程，不能创建过期日程
-                if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6))
-                    schedule = getNotRepeatDaySchedule();
-            }
-            break;
-            case CreateJsonData::EVED:
-                //每天重复日程
-                schedule = getEveryDaySchedule();
-                break;
-            case CreateJsonData::EVEW: {
-                //每周重复日程
-                schedule = getEveryWeekSchedule(getDayNum);
-            }
-            break;
-            case CreateJsonData::EVEM: {
-                //每月重复日程
-                schedule = getEveryMonthSchedule(getDayNum);
-            }
-            break;
-            case CreateJsonData::EVEY: {
-                //每年重复日程,不能创建过期或者超过半年的日程
-                if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6))
-                    schedule = getEveryYearSchedule();
-            }
-            break;
-            case CreateJsonData::WORKD:
-                //工作日
-                schedule = getEveryWorkDaySchedule();
-                break;
-            case CreateJsonData::RESTD: {
-                //休息日
-                schedule = getEveryRestDaySchedule();
-            }
-            break;
-            }
-            if (!schedule.isEmpty()) {
-                qDebug() << "creatUI"<< getFirstSchedule(schedule).beginDateTime << m_begintime.daysTo(m_endtime);
-                setDateTimeAndGetSchedule(getFirstSchedule(schedule).beginDateTime, getFirstSchedule(schedule).endDateTime);
-                m_widget->setScheduleDbus(m_dbus);
-                m_widget->scheduleEmpty(true);
-                m_widget->updateUI();
-            }
-        }
-    }
-    Reply m_reply;
-
-    if (m_widget == nullptr) {
-        m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-        m_reply.ttsMessage(createJsonData->SuggestMsg());
-        m_reply.displayMessage(createJsonData->SuggestMsg());
-    } else {
-        m_reply.setReplyType(Reply::RT_INNER_WIDGET | Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-        m_reply.setReplyWidget(m_widget);
-        if (m_begintime < QDateTime::currentDateTime() || m_begintime > QDateTime::currentDateTime().addMonths(6)) {
-            QString str;
-            if (!createJsonData->ShouldEndSession()
-                    && (m_begintime.date() >= QDate::currentDate() && m_begintime.date() <= QDate::currentDate().addMonths(6)))
-                //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
-                str = createJsonData->SuggestMsg();
-            else
-                //"只能创建未来半年的日程"
-                str = "只能创建未来半年的日程";
-            m_reply.ttsMessage(str);
-            m_reply.displayMessage(str);
-        } else  {
-            //为特殊情况拼接回复语
-            if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD
-                    && createJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
-                //如果为休息日，并且有开始时间，拼接回复语
-                QString str = QString("好的，每周六到周日的%1我都会提醒您。").arg(m_begintime.toString("hh:mm"));
-                m_reply.ttsMessage(str);
-                m_reply.displayMessage(str);
-            } else if (createJsonData->getRepeatStatus() == CreateJsonData::NONE
-                       && createJsonData->getDateTime().suggestDatetime.at(0).hasTime
-                       && createJsonData->getDateTime().suggestDatetime.at(0).datetime < QDateTime::currentDateTime()
-                       && createJsonData->getDateTime().suggestDatetime.size() == 2
-                       && createJsonData->ShouldEndSession()) {
-                //对于跨天日程，开始datetime小于当前datetime，则开始date增加一天，为其拼接回复语
-                QString str = QString("好的，%1我会提醒您。").arg(m_begintime.toString("hh:mm"));
-                m_reply.ttsMessage(str);
-                m_reply.displayMessage(str);
+        //判断日程开始时间是否在半年以内
+        if (beginDateTimeIsinHalfYear()) {
+            //判断多伦标志
+            if (createJsonData->ShouldEndSession()) {
+                //设置日程titlename
+                setScheduleTitleName(createJsonData);
+                //创建日程和插件
+                creareScheduleUI(createScheduleWithRepeatStatus(createJsonData));
+                //带有插件的回复语
+                REPLY_WIDGET_TTS(m_reply, m_widget, getReply(createJsonData), getReply(createJsonData), true);
             } else {
-                //没有特殊情况使用默认回复语
-                m_reply.ttsMessage(createJsonData->SuggestMsg());
-                m_reply.displayMessage(createJsonData->SuggestMsg());
+                //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
+                QString str_reply = createJsonData->SuggestMsg();
+                //只有回复语
+                REPLY_ONLY_TTS(m_reply, str_reply, str_reply, false);
             }
+        } else {
+            //"只能创建未来半年的日程"
+            QString str_reply = "只能创建未来半年的日程";
+            REPLY_ONLY_TTS(m_reply, str_reply, str_reply, true);
         }
     }
+
     return m_reply;
 }
 
@@ -190,6 +113,103 @@ void createScheduleTask::setScheduleTitleName(CreateJsonData *createJsonData)
     else
         //设置日程titlename
         m_widget->setTitleName(createJsonData->TitleName());
+}
+
+QVector<ScheduleDtailInfo> createScheduleTask::createScheduleWithRepeatStatus(CreateJsonData *createJsonData)
+{
+    //创建的日程信息
+    QVector<ScheduleDtailInfo> schedule;
+    //重复日程的时间
+    QVector<int> getDayNum = createJsonData->getRepeatNum();
+    //根据不同类型分别创建日程
+    switch (createJsonData->getRepeatStatus()) {
+    case CreateJsonData::NONE: {
+        //非重复日程，不能创建过期日程
+        if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6))
+            schedule = getNotRepeatDaySchedule();
+    }
+    break;
+    case CreateJsonData::EVED:
+        //每天重复日程
+        schedule = getEveryDaySchedule();
+        break;
+    case CreateJsonData::EVEW: {
+        //每周重复日程
+        schedule = getEveryWeekSchedule(getDayNum);
+    }
+    break;
+    case CreateJsonData::EVEM: {
+        //每月重复日程
+        schedule = getEveryMonthSchedule(getDayNum);
+    }
+    break;
+    case CreateJsonData::EVEY: {
+        //每年重复日程,不能创建过期或者超过半年的日程
+        if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6))
+            schedule = getEveryYearSchedule();
+    }
+    break;
+    case CreateJsonData::WORKD:
+        //工作日
+        schedule = getEveryWorkDaySchedule();
+        break;
+    case CreateJsonData::RESTD: {
+        //休息日
+        schedule = getEveryRestDaySchedule();
+    }
+    break;
+    }
+    return schedule;
+}
+
+void createScheduleTask::creareScheduleUI(QVector<ScheduleDtailInfo> schedule)
+{
+    if (!schedule.isEmpty()) {
+        //日程信息不为空，创建插件
+        qDebug() << "creatUI"
+                 << getFirstSchedule(schedule).beginDateTime
+                 << getFirstSchedule(schedule).endDateTime
+                 << m_begintime.daysTo(m_endtime);
+        //设置日程时间
+        setDateTimeAndGetSchedule(getFirstSchedule(schedule).beginDateTime, getFirstSchedule(schedule).endDateTime);
+        //设置dbus
+        m_widget->setScheduleDbus(m_dbus);
+        m_widget->scheduleEmpty(true);
+        //更新界面
+        m_widget->updateUI();
+    }
+}
+
+QString createScheduleTask::getReply(CreateJsonData *createJsonData)
+{
+    QString str_reply;
+    //为特殊情况拼接回复语
+    if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD
+            && createJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
+        //如果为休息日，并且有开始时间，拼接回复语
+        str_reply = QString("好的，每周六到周日的%1我都会提醒您。").arg(m_begintime.toString("hh:mm"));
+    } else if (createJsonData->getRepeatStatus() == CreateJsonData::NONE
+               && createJsonData->getDateTime().suggestDatetime.at(0).hasTime
+               && createJsonData->getDateTime().suggestDatetime.at(0).datetime < QDateTime::currentDateTime()
+               && createJsonData->getDateTime().suggestDatetime.size() == 2
+               && createJsonData->ShouldEndSession()) {
+        //对于跨天日程，开始datetime小于当前datetime，则开始date增加一天，为其拼接回复语
+        str_reply = QString("好的，%1我会提醒您。").arg(m_begintime.toString("hh:mm"));
+    } else {
+        //没有特殊情况使用默认回复语
+        str_reply = createJsonData->SuggestMsg();
+    }
+
+    return str_reply;
+}
+
+bool createScheduleTask::beginDateTimeIsinHalfYear()
+{
+    //判断日程开始时间是否在半年内
+    if (m_begintime < QDateTime::currentDateTime() || m_begintime > QDateTime::currentDateTime().addMonths(6))
+        return false;
+    else
+        return true;
 }
 
 QVector<ScheduleDtailInfo> createScheduleTask::getNotRepeatDaySchedule()
