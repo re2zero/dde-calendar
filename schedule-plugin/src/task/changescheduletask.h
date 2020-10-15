@@ -23,6 +23,7 @@
 
 #include "schedulebasetask.h"
 
+class CLocalData;
 class changeScheduleTask : public scheduleBaseTask
 {
     Q_OBJECT
@@ -46,9 +47,14 @@ private:
     QWidget *createInquiryWidget(const ScheduleDtailInfo &info);
 
     Reply getListScheduleReply(const QVector<ScheduleDtailInfo> &infoVector);
-
-    Reply getConfirwScheduleReply(const ScheduleDtailInfo &info);
-    Reply getRepeatReply(const ScheduleDtailInfo &info);
+    /**
+     * @brief getNextStateBySelectScheduleInfo      根据选择的日程获取下一个修改状态
+     * @param info                                  选择的日程信息
+     * @param localData                             当前状态的存储数据
+     * @param reply                                 修改的回复
+     * @return                                      下一个状态
+     */
+    scheduleState *getNextStateBySelectScheduleInfo(const ScheduleDtailInfo &info,CLocalData *localData,Reply &reply);
     /**
      * @brief getNewInfo        根据修改信息获取新的日程信息
      * @return                  在时间范围内返回true

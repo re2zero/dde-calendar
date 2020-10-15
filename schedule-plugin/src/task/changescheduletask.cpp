@@ -125,17 +125,11 @@ Reply changeScheduleTask::getReplyBySelectSchedule(const ScheduleDtailInfo &info
         REPLY_WIDGET_TTS(m_reply, infoWidget, CHANGE_TO_TTS, CHANGE_TO_TTS, false);
         //添加获取修改信息状态
         nextState = new getChangeDataState(m_dbus, this);
+        nextState->setLocalData(m_Data);
     } else {
-        if (info.rpeat == 0) {
-            nextState = new confirwFeedbackState(m_dbus, this);
-            m_reply = getConfirwScheduleReply(info);
-        } else {
-            nextState = new repeatfeedbackstate(m_dbus, this);
-            m_reply = getRepeatReply(info);
-        }
-        m_Data->setNewInfo(currentState->getLocalData()->getNewInfo());
+        //获取下一个状态
+        nextState = getNextStateBySelectScheduleInfo(info,m_Data,m_reply);
     }
-    nextState->setLocalData(m_Data);
     currentState->setNextState(nextState);
     return m_reply;
 }
@@ -235,47 +229,44 @@ Reply changeScheduleTask::getListScheduleReply(const QVector<ScheduleDtailInfo> 
     return reply;
 }
 
-Reply changeScheduleTask::getConfirwScheduleReply(const ScheduleDtailInfo &info)
+scheduleState *changeScheduleTask::getNextStateBySelectScheduleInfo(const ScheduleDtailInfo &info, CLocalData *localData, Reply &reply)
 {
-    Q_UNUSED(info);
     QString m_TTSMessage;
     QString m_DisplyMessage;
-    m_TTSMessage = CONFIRM_SCHEDULE_CHANGE_TTS;
-    m_DisplyMessage = CONFIRM_SCHEDULE_CHANGE_TTS;
+    //获取当前状态
     scheduleState *currentState = getCurrentState();
-    Reply reply;
+    //下一个状态
+    scheduleState *nextState{nullptr};
     //如果修改的新日程时间在范围内则正常提醒
     if(getNewInfo()){
-        QWidget *m_confirwWidget = createConfirmWidget(currentState->getLocalData()->getNewInfo());
-        REPLY_WIDGET_TTS(reply, m_confirwWidget, m_TTSMessage, m_DisplyMessage, false);
+        //需要显示的窗口
+        QWidget *_showWidget;
+        if (info.rpeat == 0) {
+            m_TTSMessage = CONFIRM_SCHEDULE_CHANGE_TTS;
+            m_DisplyMessage = CONFIRM_SCHEDULE_CHANGE_TTS;
+            _showWidget = createConfirmWidget(currentState->getLocalData()->getNewInfo());
+            //设置下一个状态为普通日程确认状态
+            nextState = new confirwFeedbackState(m_dbus, this);
+        } else {
+            m_TTSMessage = REPEST_SCHEDULE_CHANGE_TTS;
+            m_DisplyMessage = REPEST_SCHEDULE_CHANGE_TTS;
+            _showWidget = createRepeatWidget(currentState->getLocalData()->getNewInfo());
+            //设置下一个状态为重复日程确认状态
+            nextState = new repeatfeedbackstate(m_dbus, this);
+        }
+        //设置修改的日程信息
+        localData->setNewInfo(currentState->getLocalData()->getNewInfo());
+        //设置存储数据
+        nextState->setLocalData(localData);
+        REPLY_WIDGET_TTS(reply, _showWidget, m_TTSMessage, m_DisplyMessage, false);
     }else {
+        //如果修改的日程不在正常范围内则回复错误，并设置下一个状态为询问查询状态
         m_TTSMessage = CHANGE_TIME_OUT_TTS;
         m_DisplyMessage = CHANGE_TIME_OUT_TTS;
-        REPLY_ONLY_TTS(reply,m_TTSMessage,m_DisplyMessage,false);
-
+        REPLY_ONLY_TTS(reply,m_TTSMessage,m_DisplyMessage,true);
+        nextState = new queryScheduleState(m_dbus, this);
     };
-    return reply;
-}
-
-Reply changeScheduleTask::getRepeatReply(const ScheduleDtailInfo &info)
-{
-    Q_UNUSED(info);
-    QString m_TTSMessage;
-    QString m_DisplyMessage;
-    m_TTSMessage = REPEST_SCHEDULE_CHANGE_TTS;
-    m_DisplyMessage = REPEST_SCHEDULE_CHANGE_TTS;
-    scheduleState *currentState = getCurrentState();
-    Reply reply;
-    //如果修改的新日程时间在范围内则正常提醒
-    if(getNewInfo()){
-        QWidget *m_repeatReply = createRepeatWidget(currentState->getLocalData()->getNewInfo());
-        REPLY_WIDGET_TTS(reply, m_repeatReply, m_TTSMessage, m_DisplyMessage, false);
-    }else {
-        m_TTSMessage = CHANGE_TIME_OUT_TTS;
-        m_DisplyMessage = CHANGE_TIME_OUT_TTS;
-        REPLY_ONLY_TTS(reply,m_TTSMessage,m_DisplyMessage,false);
-    };
-    return reply;
+    return nextState;
 }
 
 bool changeScheduleTask::getNewInfo()
