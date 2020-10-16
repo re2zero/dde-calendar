@@ -43,12 +43,18 @@ Reply repeatfeedbackstate::getReplyByIntent(bool isOK)
 
 scheduleState::Filter_Flag repeatfeedbackstate::eventFilter(const JsonData *jsonData)
 {
+    if (jsonData->getPropertyStatus() == JsonData::NEXT
+            //如果语义包含时间则为修改初始状态
+            || jsonData->getDateTime().suggestDatetime.size()>0
+           // 如果语义包含内容则为修改初始状态
+            || !jsonData->TitleName().isEmpty()
+            //如果语义包含重复类型则为修改初始状态
+        || jsonData->getRepeatStatus() != JsonData::NONE) {
+        return Fileter_Init;
+    }
     if (jsonData->getPropertyStatus() == JsonData::ALL
         || jsonData->getPropertyStatus() == JsonData::PRO_THIS) {
         return Fileter_Normal;
-    }
-    if (jsonData->getPropertyStatus() == JsonData::NEXT) {
-        return Fileter_Init;
     }
     if (jsonData->getPropertyStatus() == JsonData::LAST
         || jsonData->offset() > 0) {
