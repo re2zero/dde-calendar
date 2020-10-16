@@ -153,8 +153,9 @@ void createSchedulewidget::getCreatScheduleFromDbus()
                     && out.at(i).vData.at(j).type.ID == m_scheduleDtailInfo.type.ID
                     && out.at(i).vData.at(j).RecurID == m_scheduleDtailInfo.RecurID
                     && out.at(i).vData.at(j).remind == m_scheduleDtailInfo.remind
-                    && out.at(i).vData.at(j).remindData.n == m_scheduleDtailInfo.remindData.n
-                    && out.at(i).vData.at(j).enddata.type == m_scheduleDtailInfo.enddata.type) {
+                    && out.at(i).vData.at(j).remindData.n == m_scheduleDtailInfo.remindData.n) {
+                if (m_scheduleDtailInfo.rpeat > 0 && out.at(i).vData.at(j).enddata.type != m_scheduleDtailInfo.enddata.type)
+                    continue;
                 scheduleinfo.append(out.at(i).vData.at(j));
             }
         }
