@@ -71,6 +71,15 @@ void IconDFrame::paintEvent(QPaintEvent *event)
     paintTitle(painter);
 }
 
+void IconDFrame::hideEvent(QHideEvent *event)
+{
+    Q_UNUSED(event);
+    if(isEnabled()){
+        //如果窗口为启用状态则触发窗口隐藏信号
+        emit widgetIsHide();
+    }
+}
+
 void IconDFrame::setTheMe(const int type)
 {
     QColor titleColor;

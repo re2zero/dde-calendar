@@ -44,7 +44,7 @@ public:
     void process(semanticAnalysisTask &semanticTask);
 
     Reply getReply() const;
-    void setReply(const Reply &Reply);
+    void setReply(const Reply &reply);
 
 private:
     explicit ScheduleManageTask(QObject *parent = nullptr);
@@ -53,10 +53,17 @@ signals:
     void signaleSendMessage(Reply reply);
 public slots:
     void slotReceivce(QVariant data, Reply *reply);
-
+    /**
+     * @brief slotWidgetHideInitState   窗口隐藏时状态初始化
+     */
+    void slotWidgetHideInitState();
 private:
     static ScheduleManageTask *m_scheduleManageTask;
-
+    /**
+     * @brief connectHideEventToInitState       窗口隐藏绑定状态初始化
+     * @param reply         回复
+     */
+    void connectHideEventToInitState(Reply reply);
 private:
     CSchedulesDBus *m_dbus {nullptr};
     QMap<QString, scheduleBaseTask *> m_scheduleTaskMap;

@@ -43,14 +43,17 @@ private:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
-
+    void hideEvent(QHideEvent *event) override;
 private:
     void setTheMe(const int type);
     void paintPixmap(QPainter &painter);
     void paintTitle(QPainter &painter);
 signals:
     void signaleSendMessage(QString text);
-
+    /**
+     * @brief widgetIsHide      窗口隐藏信号
+     */
+    void widgetIsHide();
 public slots:
     virtual void slotReceivce(QVariant data, Reply *reply);
 

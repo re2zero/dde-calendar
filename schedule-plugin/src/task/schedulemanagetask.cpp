@@ -88,13 +88,14 @@ void ScheduleManageTask::process(semanticAnalysisTask &semanticTask)
             m_preScheduleTask = m_scheduleTaskMap[semanticTask.Intent()];
         }
     }
-    if (m_preScheduleTask == nullptr) {
-        Reply reply;
+    Reply reply;
+    if (m_preScheduleTask == nullptr){
         REPLY_ONLY_TTS(reply, G_ERR_TTS, G_ERR_TTS, true);
-        setReply(reply);
     } else {
-        setReply(m_preScheduleTask->SchedulePress(semanticTask));
+        reply =m_preScheduleTask->SchedulePress(semanticTask);
+        connectHideEventToInitState(reply);
     }
+    setReply(reply);
 }
 
 void ScheduleManageTask::slotReceivce(QVariant data, Reply *reply)
@@ -103,12 +104,32 @@ void ScheduleManageTask::slotReceivce(QVariant data, Reply *reply)
     Q_UNUSED(reply);
 }
 
+void ScheduleManageTask::slotWidgetHideInitState()
+{
+    if (m_preScheduleTask != nullptr)
+        m_preScheduleTask->InitState(nullptr, true);
+}
+
+void ScheduleManageTask::connectHideEventToInitState(Reply reply)
+{
+    //判断回复内容是否有回复窗口
+    if(reply.getReplyWidget() !=nullptr){
+        //转换为IconDFrame窗口
+        IconDFrame *_iconWidget = qobject_cast<IconDFrame *>(reply.getReplyWidget());
+        if(_iconWidget != nullptr){
+            //如果转换成功则关联
+            connect(_iconWidget, &IconDFrame::widgetIsHide,
+                    this, &ScheduleManageTask::slotWidgetHideInitState, Qt::UniqueConnection);
+        }
+    }
+}
+
 Reply ScheduleManageTask::getReply() const
 {
     return m_Reply;
 }
 
-void ScheduleManageTask::setReply(const Reply &Reply)
+void ScheduleManageTask::setReply(const Reply &reply)
 {
-    m_Reply = Reply;
+    m_Reply = reply;
 }
