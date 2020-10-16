@@ -45,29 +45,30 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     m_widget = new createSchedulewidget();
     //设置日程时间
     setDateTime(createJsonData);
-    //有时间才能创建日程
-    if (createJsonData->getDateTime().suggestDatetime.size() > 0) {
-        //判断日程开始时间是否在半年以内
-        if (beginDateTimeIsinHalfYear()) {
-            //判断多伦标志
-            if (createJsonData->ShouldEndSession()) {
-                //设置日程titlename
-                setScheduleTitleName(createJsonData);
-                //创建日程和插件
-                creareScheduleUI(createScheduleWithRepeatStatus(createJsonData));
-                //带有插件的回复语
-                REPLY_WIDGET_TTS(m_reply, m_widget, getReply(createJsonData), getReply(createJsonData), true);
-            } else {
-                //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
-                QString str_reply = createJsonData->SuggestMsg();
-                //只有回复语
-                REPLY_ONLY_TTS(m_reply, str_reply, str_reply, false);
-            }
+    qDebug() << "beginDateTimeIsinHalfYear"
+             << beginDateTimeIsinHalfYear()
+             << "ShouldEndSession"
+             << createJsonData->ShouldEndSession();
+    //判断日程开始时间是否在半年以内
+    if (beginDateTimeIsinHalfYear()) {
+        //判断多伦标志
+        if (createJsonData->ShouldEndSession()) {
+            //设置日程titlename
+            setScheduleTitleName(createJsonData);
+            //创建日程和插件
+            creareScheduleUI(createScheduleWithRepeatStatus(createJsonData));
+            //带有插件的回复语
+            REPLY_WIDGET_TTS(m_reply, m_widget, getReply(createJsonData), getReply(createJsonData), true);
         } else {
-            //"只能创建未来半年的日程"
-            QString str_reply = "只能创建未来半年的日程";
-            REPLY_ONLY_TTS(m_reply, str_reply, str_reply, true);
+            //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
+            QString str_reply = createJsonData->SuggestMsg();
+            //只有回复语
+            REPLY_ONLY_TTS(m_reply, str_reply, str_reply, false);
         }
+    } else {
+        //"只能创建未来半年的日程"
+        QString str_reply = "只能创建未来半年的日程";
+        REPLY_ONLY_TTS(m_reply, str_reply, str_reply, true);
     }
 
     return m_reply;
@@ -91,7 +92,7 @@ void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
         //用户没有输入时间，则日程开始时间设置为当前时间
         m_begintime = QDateTime::currentDateTime();
     }
-    if (createJsonData->getDateTime().suggestDatetime.size() == 1) {
+    if (createJsonData->getDateTime().suggestDatetime.size() <= 1) {
         //如果只有开始时间，则结束时间默认为开始时间后一个小时
         m_endtime = m_begintime.addSecs(60 * 60);
     } else if (createJsonData->getDateTime().suggestDatetime.size() == 2) {
