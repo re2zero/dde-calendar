@@ -49,10 +49,10 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
              << beginDateTimeIsinHalfYear()
              << "ShouldEndSession"
              << createJsonData->ShouldEndSession();
-    //判断日程开始时间是否在半年以内
-    if (beginDateTimeIsinHalfYear()) {
-        //判断多伦标志
-        if (createJsonData->ShouldEndSession()) {
+    //判断多伦标志
+    if (createJsonData->ShouldEndSession()) {
+        //判断日程开始时间是否在半年以内
+        if (beginDateTimeIsinHalfYear()) {
             //设置日程titlename
             setScheduleTitleName(createJsonData);
             //创建日程和插件
@@ -60,15 +60,15 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             //带有插件的回复语
             REPLY_WIDGET_TTS(m_reply, m_widget, getReply(createJsonData), getReply(createJsonData), true);
         } else {
-            //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
-            QString str_reply = createJsonData->SuggestMsg();
-            //只有回复语
-            REPLY_ONLY_TTS(m_reply, str_reply, str_reply, false);
+            //"只能创建未来半年的日程"
+            QString str_reply = "只能创建未来半年的日程";
+            REPLY_ONLY_TTS(m_reply, str_reply, str_reply, true);
         }
     } else {
-        //"只能创建未来半年的日程"
-        QString str_reply = "只能创建未来半年的日程";
-        REPLY_ONLY_TTS(m_reply, str_reply, str_reply, true);
+        //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
+        QString str_reply = createJsonData->SuggestMsg();
+        //只有回复语
+        REPLY_ONLY_TTS(m_reply, str_reply, str_reply, false);
     }
 
     return m_reply;
@@ -79,6 +79,10 @@ void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
     if (createJsonData->getDateTime().suggestDatetime.size() > 0) {
         //用户有输入时间，则设置开始时间
         m_begintime = createJsonData->getDateTime().suggestDatetime.at(0).datetime;
+        if (!createJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
+            //如果没有time，设置当前time
+            m_begintime.setTime(QTime::currentTime());
+        }
         if (createJsonData->getDateTime().suggestDatetime.size() == 2 && m_begintime < QDateTime::currentDateTime()) {
             if (m_begintime.time() > QTime::currentTime()) {
                 //跨天日程，如果日程开始时间大于当前时间，则开始时间为当天
