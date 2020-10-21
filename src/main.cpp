@@ -22,6 +22,7 @@
 #include "exportedinterface.h"
 #include "configsettings.h"
 #include "accessible/accessible.h"
+#include "logPrint/DebugTimeManager.h"
 
 #include <DApplication>
 #include <DLog>
@@ -103,6 +104,7 @@ QString GetStyleSheetContent()
 #include "schedulesdbus.h"
 int main(int argc, char *argv[])
 {
+    PERF_PRINT_BEGIN("POINT-01","");
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     DApplication a(argc, argv);
     QAccessible::installFactory(accessibleFactory);
@@ -165,5 +167,6 @@ int main(int argc, char *argv[])
         saveThemeTypeSetting(type);
         DGuiApplicationHelper::instance()->setPaletteType(type);
     });
+    PERF_PRINT_END("POINT-01");
     return a.exec();
 }
