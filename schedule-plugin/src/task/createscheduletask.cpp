@@ -61,8 +61,7 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             REPLY_WIDGET_TTS(m_reply, m_widget, getReply(createJsonData), getReply(createJsonData), true);
         } else {
             //"只能创建未来半年的日程"
-            QString str_reply = "只能创建未来半年的日程";
-            REPLY_ONLY_TTS(m_reply, str_reply, str_reply, true);
+            REPLY_ONLY_TTS(m_reply, CREATE_TIME_OUT_TTS, CREATE_TIME_OUT_TTS, true);
         }
     } else {
         //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
@@ -192,14 +191,14 @@ QString createScheduleTask::getReply(CreateJsonData *createJsonData)
     if (createJsonData->getRepeatStatus() == CreateJsonData::RESTD
             && createJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
         //如果为休息日，并且有开始时间，拼接回复语
-        str_reply = QString("好的，每周六到周日的%1我都会提醒您。").arg(m_begintime.toString("hh:mm"));
+        str_reply = QString(EVERY_WEEKEND_TTS).arg(m_begintime.toString("hh:mm"));
     } else if (createJsonData->getRepeatStatus() == CreateJsonData::NONE
                && createJsonData->getDateTime().suggestDatetime.at(0).hasTime
                && createJsonData->getDateTime().suggestDatetime.at(0).datetime < QDateTime::currentDateTime()
                && createJsonData->getDateTime().suggestDatetime.size() == 2
                && createJsonData->ShouldEndSession()) {
         //对于跨天日程，开始datetime小于当前datetime，则开始date增加一天，为其拼接回复语
-        str_reply = QString("好的，%1我会提醒您。").arg(m_begintime.toString("hh:mm"));
+        str_reply = QString(BEGINDATETIME_LATER_THAN_CURRENTDATETIME_ACROSS_THE_DAY_TTS).arg(m_begintime.toString("hh:mm"));
     } else {
         //没有特殊情况使用默认回复语
         str_reply = createJsonData->SuggestMsg();

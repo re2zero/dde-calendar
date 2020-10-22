@@ -36,9 +36,7 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     if (queryJsonData->offset() > -1
             && queryJsonData->getPropertyStatus() == JsonData::PRO_NONE) {
         Reply m_reply;
-        m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-        m_reply.ttsMessage(CANCEL_ERR_TTS);
-        m_reply.displayMessage(CANCEL_ERR_TTS);
+        REPLY_ONLY_TTS(m_reply, CANCEL_ERR_TTS, CANCEL_ERR_TTS, true);
         return m_reply;
     }
 
@@ -95,36 +93,24 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         //不进行多轮
         if (queryOverDueDate(queryJsonData)) {
             //过期时间
-            m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-            m_reply.ttsMessage("抱歉，不能查询过期的提醒");
-            m_reply.displayMessage("抱歉，不能查询过期的提醒");
+            REPLY_ONLY_TTS(m_reply, VIEW_DATE_IS_OVERDUE_TTS, VIEW_DATE_IS_OVERDUE_TTS, true);
         } else if (queryJsonData->getDateTime().suggestDatetime.size() > 0
                    && queryJsonData->getDateTime().suggestDatetime.at(0).datetime > QDateTime::currentDateTime().addMonths(6)) {
             //超过半年的时间
-            m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-            m_reply.ttsMessage("只能查询未来半年的日程");
-            m_reply.displayMessage("只能查询未来半年的日程");
+            REPLY_ONLY_TTS(m_reply, VIEW_DATETIME_OUT_TTS, VIEW_DATETIME_OUT_TTS, true);
         } else {
             if (viewWidget->getScheduleNum(showdate) == 0) {
                 //没有查询的日程
-                m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-                m_reply.ttsMessage("没有找到对应的日程");
-                m_reply.displayMessage("没有找到对应的日程");
+                REPLY_ONLY_TTS(m_reply, NO_SCHEDULE_VIEWED_TTS, NO_SCHEDULE_VIEWED_TTS, true);
             } else {
                 //查询到日程
-                QString str = QString("找到%1个日程").arg(viewWidget->getScheduleNum(showdate));
-                m_reply.setReplyType(Reply::RT_INNER_WIDGET | Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-                m_reply.setReplyWidget(viewWidget);
-                m_reply.ttsMessage(str);
-                m_reply.displayMessage(str);
+                QString str = QString(VIEW_SCHEDULE_TTS).arg(viewWidget->getScheduleNum(showdate));
+                REPLY_WIDGET_TTS(m_reply, viewWidget, str, str, true);
             }
         }
     } else {
         //多轮的情况
-        m_reply.setReplyType(Reply::RT_STRING_TTS | Reply::RT_STRING_DISPLAY);
-        //使用建议回复语
-        m_reply.ttsMessage(queryJsonData->SuggestMsg());
-        m_reply.displayMessage(queryJsonData->SuggestMsg());
+        REPLY_ONLY_TTS(m_reply, queryJsonData->SuggestMsg(), queryJsonData->SuggestMsg(), false);
     }
 
     return m_reply;

@@ -134,6 +134,20 @@
 #define ALL_DAY "全天"
 //修改或取消时间不在未来半年的回复语
 #define OVERTIME_TTS "只能取消或修改未来半年的日程！"
+//新建日程开始时间不在规定时间范围内
+#define CREATE_TIME_OUT_TTS "只能创建未来半年的日程"
+//新建每周末提醒的日程的回复语
+#define EVERY_WEEKEND_TTS "好的，每周六到周日的%1我都会提醒您。"
+//跨天日程，开始日期小于当前时间的回复语
+#define BEGINDATETIME_LATER_THAN_CURRENTDATETIME_ACROSS_THE_DAY_TTS "好的，%1我会提醒您。"
+//查询日期过期
+#define VIEW_DATE_IS_OVERDUE_TTS "抱歉，不能查询过期的提醒"
+//查询日程时间不再规定范围内
+#define VIEW_DATETIME_OUT_TTS "只能查询未来半年的日程"
+//没有查询到日程
+#define NO_SCHEDULE_VIEWED_TTS "没有找到对应的日程"
+//查找到n个日程
+#define VIEW_SCHEDULE_TTS "找到%1个日程"
 //半年天数
 #define MAXIMUM_DAYS_IN_THE_FUTURE 183
 //不带窗口的回复宏定义
