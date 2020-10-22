@@ -49,10 +49,10 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
              << beginDateTimeIsinHalfYear()
              << "ShouldEndSession"
              << createJsonData->ShouldEndSession();
-    //判断多伦标志
-    if (createJsonData->ShouldEndSession()) {
-        //判断日程开始时间是否在半年以内
-        if (beginDateTimeIsinHalfYear()) {
+    //判断日程开始时间是否在半年以内
+    if (beginDateTimeIsinHalfYear() || m_begintime.date() == QDate::currentDate()) {
+        //判断多伦标志
+        if (createJsonData->ShouldEndSession()) {
             //设置日程titlename
             setScheduleTitleName(createJsonData);
             //创建日程和插件
@@ -60,14 +60,18 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
             //带有插件的回复语
             REPLY_WIDGET_TTS(m_reply, m_widget, getReply(createJsonData), getReply(createJsonData), true);
         } else {
+            //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
+            //只有回复语
+            REPLY_ONLY_TTS(m_reply, createJsonData->SuggestMsg(), createJsonData->SuggestMsg(), false);
+        }
+    } else {
+        if (beginDateTimeBeforeCurrent()) {
+            //"我现在有点慌，因为我还不会制定过去的提醒"
+            REPLY_ONLY_TTS(m_reply, createJsonData->SuggestMsg(), createJsonData->SuggestMsg(), true);
+        } else if (beginDateTimeOutHalfYear()) {
             //"只能创建未来半年的日程"
             REPLY_ONLY_TTS(m_reply, CREATE_TIME_OUT_TTS, CREATE_TIME_OUT_TTS, true);
         }
-    } else {
-        //开始date为今天，没有给time(默认为00：00,小于当前time)，需要进行多轮，设置默认回复语
-        QString str_reply = createJsonData->SuggestMsg();
-        //只有回复语
-        REPLY_ONLY_TTS(m_reply, str_reply, str_reply, false);
     }
 
     return m_reply;
@@ -214,6 +218,24 @@ bool createScheduleTask::beginDateTimeIsinHalfYear()
         return false;
     else
         return true;
+}
+
+bool createScheduleTask::beginDateTimeOutHalfYear()
+{
+    //日程开始时间不在半年范围内
+    if (m_begintime > QDateTime::currentDateTime().addMonths(6))
+        return true;
+    else
+        return false;
+}
+
+bool createScheduleTask::beginDateTimeBeforeCurrent()
+{
+    //日程开始时间早于当前时间
+    if (m_begintime < QDateTime::currentDateTime())
+        return true;
+    else
+        return false;
 }
 
 QVector<ScheduleDtailInfo> createScheduleTask::getNotRepeatDaySchedule()

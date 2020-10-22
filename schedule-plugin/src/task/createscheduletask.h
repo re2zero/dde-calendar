@@ -66,6 +66,16 @@ private:
      */
     bool beginDateTimeIsinHalfYear();
     /**
+     * @brief beginDateTimeOutHalfYear 日程开始时间超过半年范围
+     * @return true or false
+     */
+    bool beginDateTimeOutHalfYear();
+    /**
+     * @brief buginDateTimeBeforeCurrent 日程开始时间早于当前时间
+     * @return true or false
+     */
+    bool beginDateTimeBeforeCurrent();
+    /**
      * @brief setNotRepeatDay 获取非重复的日程
      * @return 日程信息
      */
