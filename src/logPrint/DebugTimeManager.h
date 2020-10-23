@@ -89,7 +89,8 @@ private:
 
 };
 
-
+//默认开启时间打印
+#define PERF_ON
 #ifdef PERF_ON
 #define PERF_PRINT_BEGIN(printStr, Description) \
     DebugTimeManager::getInstance()->beginPointLinux(printStr,Description)
