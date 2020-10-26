@@ -33,13 +33,19 @@
 #include <QScrollBar>
 
 DWIDGET_USE_NAMESPACE
-
+/**
+ * @brief The CMySchceduleView class
+ */
 class CMySchceduleView : public DDialog
 {
     Q_OBJECT
 public:
     explicit CMySchceduleView(const ScheduleDtailInfo &schduleInfo,QWidget *parent = nullptr);
     ~CMySchceduleView() override;
+    /**
+     * @brief getSchedules 获取日程信息
+     * @return 日程信息
+     */
     ScheduleDtailInfo getSchedules()
     {
         return  m_scheduleInfo;
@@ -54,30 +60,67 @@ private:
     void initUI();
     void initConnection();
     void AutoFeed(QString text);
-    /**
-     * @brief setLabelTextColor     设置label文字颜色
-     * @param type  主题type
-     */
     void setLabelTextColor(const int type);
-    /**
-     * @brief setPaletteTextColor   设置调色板颜色
-     * @param widget    需要设置的widget
-     * @param textColor     显示颜色
-     */
     void setPaletteTextColor(QWidget *widget,QColor textColor);
 protected:
     void showEvent(QShowEvent *event) override;
     bool eventFilter(QObject *o, QEvent *e) override;
 private:
-    QLabel                           *m_schceduleLabel = nullptr;
-    QLabel                           *m_timeLabel = nullptr;
+    /**
+     * @brief m_schceduleLabel label
+     *
+     * 日程详情label
+     */
+    QLabel  *m_schceduleLabel = nullptr;
+    /**
+     * @brief m_timeLabel label
+     *
+     * 日程时间label
+     */
+    QLabel  *m_timeLabel = nullptr;
+    /**
+     * @brief m_editBt button
+     *
+     * “编辑”按钮
+     */
     DSuggestButton *m_editBt = nullptr;
-    DPushButton                      *m_deleteBt = nullptr;
-    DPushButton                      *m_okBt = nullptr;
+    /**
+     * @brief m_deleteBt button
+     *
+     * "删除“按钮
+     */
+    DPushButton *m_deleteBt = nullptr;
+    /**
+     * @brief m_okBt button
+     *
+     * ok按钮
+     */
+    DPushButton *m_okBt = nullptr;
+    /**
+     * @brief m_icon label
+     *
+     * 图标
+     */
     QLabel *m_icon = nullptr;
+    /**
+     * @brief m_Title label
+     *
+     * title
+     */
     QLabel *m_Title = nullptr;
-    ScheduleDtailInfo m_scheduleInfo; //日程
+    //日程
+    ScheduleDtailInfo m_scheduleInfo;
+    /**
+     * @brief area 滚动视图区域
+     *
+     * 日程详情区域
+     */
     QScrollArea *area = nullptr;
+    /**
+     * @brief labelF font
+     *
+     * 字体
+     */
     QFont labelF;
 };
 
