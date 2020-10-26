@@ -44,6 +44,9 @@
 
 DWIDGET_USE_NAMESPACE
 class CTimeEdit;
+/**
+ * @brief The CSchceduleDlg class
+ */
 class CSchceduleDlg : public DDialog
 {
     Q_OBJECT
@@ -75,10 +78,6 @@ private:
     void initConnection();
     void initDateEdit();
     void initRmindRpeatUI();
-    /**
-     * @brief setTheMe  根据主题type设置颜色
-     * @param type  主题type
-     */
     void setTheMe(const int type);
 public:
     static void ChangeRecurInfo(QWidget *parent,const ScheduleDtailInfo &newinfo,
@@ -86,40 +85,92 @@ public:
     static void ChangeOnlyInfo(const ScheduleDtailInfo &newinfo,
                                const ScheduleDtailInfo &oldinfo);
 private:
+    //"类型“label
     QLabel *m_typeLabel = nullptr;
+    /**
+     * @brief m_typeComBox ”类型”combox
+     *
+     * 提供下拉框，选择不同的日程类型
+     */
     DComboBox *m_typeComBox = nullptr;
+    //“内容”label
     QLabel *m_contentLabel = nullptr;
+    /**
+     * @brief m_textEdit textedit
+     *
+     * 日程详情
+     */
     DTextEdit *m_textEdit = nullptr;
+    //“开始时间”label
     QLabel *m_beginTimeLabel = nullptr;
+    //“开始时间”dateedit
     DDateEdit *m_beginDateEdit = nullptr;
+    //“开始时间”timeedit
     CTimeEdit *m_beginTimeEdit = nullptr;
+    //“结束时间”label
     QLabel *m_endTimeLabel = nullptr;
+    //“结束时间”dateedit
     DDateEdit *m_endDateEdit = nullptr;
+    //“结束时间”timeedit
     CTimeEdit *m_endTimeEdit = nullptr;
-
+    //“全天”label
     QLabel *m_adllDayLabel = nullptr;
+    /**
+     * @brief m_allDayCheckbox “全天”checkbox
+     *
+     * 根据checkbox状态，判断是否为全天日程
+     */
     DCheckBox *m_allDayCheckbox = nullptr;
+    //“提醒”label
     QLabel *m_remindSetLabel = nullptr;
+    /**
+     * @brief m_rmindCombox “提醒”combox
+     *
+     * 提供下拉框，用来选择提醒的类型
+     */
     DComboBox *m_rmindCombox = nullptr;
+    //“重复”label
     QLabel *m_beginrepeatLabel = nullptr;
+    /**
+     * @brief m_beginrepeatCombox “重复”combox
+     *
+     * 提供下拉框，用来选择重复类型
+     */
     DComboBox *m_beginrepeatCombox = nullptr;
+    //“结束重复”label
     QLabel *m_endrepeatLabel = nullptr;
+    /**
+     * @brief m_endrepeatCombox “结束重复”combox
+     *
+     * 提供下拉框，用来选择结束类型
+     */
     DComboBox *m_endrepeatCombox = nullptr;
+    //结束重复于次数
     DLineEdit *m_endrepeattimes = nullptr;
+    //结束重复于次数label
     QLabel *m_endrepeattimesLabel = nullptr;
+    //结束重复于次数widget
     DWidget *m_endrepeattimesWidget;
+    //结束重复于日期
     DDateEdit *m_endRepeatDate = nullptr;
+    //结束重复于widget
     DWidget *m_endrepeatWidget = nullptr;
+    //frame
     DFrame *m_gwi = nullptr;
+    //title label
     QLabel *m_titleLabel = nullptr;
-
+    //日程内容
     QString m_context;
+    //是否为全天
     const bool m_createAllDay;
 private:
-//日程
+    //日程
     ScheduleDtailInfo m_scheduleDtailInfo;
-    int m_type; // 1新建 0 编辑日程
+    // 1新建 0 编辑日程
+    int m_type;
+    //当前时间
     QDateTime m_currentDate;
+    //结束时间
     QDateTime m_EndDate;
 };
 
