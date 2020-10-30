@@ -162,6 +162,11 @@ public slots:
      * @brief slotScheduleHide 隐藏日程浮框
      */
     void slotScheduleHide();
+    /**
+     * @brief slotAngleDelta    接受滚动事件滚动相对量
+     * @param delta     滚动相对量
+     */
+    void slotAngleDelta(int delta);
 public slots:
     /**
      * @brief slotupdateSchedule 更新日程

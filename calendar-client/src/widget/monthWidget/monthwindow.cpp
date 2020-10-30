@@ -242,7 +242,7 @@ void CMonthWindow::wheelEvent(QWheelEvent *e)
     if (!m_monthView->isDragging()) {
         QPoint numDegrees = e->angleDelta();
 
-        if (numDegrees.y()>0) {
+        if (numDegrees.y() > 0) {
             //下一个月
             nextMonth();
         } else {
@@ -251,6 +251,7 @@ void CMonthWindow::wheelEvent(QWheelEvent *e)
         }
     }
 }
+
 /**
  * @brief initUI 初始化界面
  */
@@ -377,6 +378,7 @@ void CMonthWindow::initConnection()
     connect(m_monthView, &CMonthView::signalsCurrentScheduleDate, this, &CMonthWindow::signalsCurrentScheduleDate);
     connect(m_monthView, &CMonthView::signalViewtransparentFrame, this, &CMonthWindow::signalViewtransparentFrame);
     connect(m_monthView, &CMonthView::signalsViewSelectDate, this, &CMonthWindow::signalsViewSelectDate);
+    connect(m_monthView, &CMonthView::signalAngleDelta, this, &CMonthWindow::slotAngleDelta);
 }
 /**
  * @brief initLunar 初始化阴历信息
@@ -422,6 +424,21 @@ void CMonthWindow::slotScheduleHide()
 {
     m_monthView->slotScheduleRemindWidget(false);
 }
+
+void CMonthWindow::slotAngleDelta(int delta)
+{
+    //拖拽时禁用
+    if (!m_monthView->isDragging()) {
+        if (delta > 0) {
+            //下一个月
+            nextMonth();
+        } else {
+            //上一个月
+            previousMonth();
+        }
+    }
+}
+
 /**
  * @brief slotupdateSchedule 更新日程
  * @param id
