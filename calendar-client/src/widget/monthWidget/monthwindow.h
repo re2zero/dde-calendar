@@ -92,11 +92,6 @@ public slots:
      * @param date 日期
      */
     void slotsearchDateSelect(QDate date);
-protected:
-    /**
-     * @brief wheelEvent 鼠标滚轮事件
-     */
-    void wheelEvent(QWheelEvent *) override;
 private:
     /**
      * @brief initUI 初始化界面
@@ -189,6 +184,7 @@ protected:
      * @param event 窗口大小调整事件
      */
     void resizeEvent(QResizeEvent *event) override;
+    void wheelEvent(QWheelEvent *e) override;
 private slots:
     /**
      * @brief slottoday 返回今天
