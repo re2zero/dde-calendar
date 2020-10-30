@@ -214,6 +214,8 @@ private slots:
      * @param date 日期
      */
     void slotsearchDateSelect(QDate date);
+
+    void slotAngleDelta(int delta);
 protected:
     /**
      * @brief resizeEvent 调整周视图窗口

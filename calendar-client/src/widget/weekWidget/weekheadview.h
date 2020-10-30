@@ -147,6 +147,11 @@ signals:
      * @brief signaleSchedulHide 隐藏日程浮框的信号
      */
     void signaleSchedulHide();
+    /**
+     * @brief signalAngleDelta      发送滚动信号滚动相对量
+     * @param delta     滚动相对量
+     */
+    void signalAngleDelta(int delta);
 public slots:
     /**
      * @brief setCurrentDate 设置当前的时间
@@ -233,6 +238,7 @@ protected:
      * @param event 鼠标事件
      */
     void mousePressEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *e) override;
 private slots:
     /**
      * @brief cellClicked
