@@ -6,7 +6,7 @@ endif ()
 
 #common resource names
 set(APP_RES_DIR "assets")
-set(APP_BIN_NAME "schedulex-plugin")
+set(APP_BIN_NAME "uosschedulex-plugin")
 set(APP_QRC "${APP_RES_DIR}/resources.qrc")
 
 project(${APP_BIN_NAME})
