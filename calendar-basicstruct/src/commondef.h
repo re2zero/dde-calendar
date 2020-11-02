@@ -18,9 +18,16 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "calendarservice.h"
+#ifndef COMMONDEF_H
+#define COMMONDEF_H
 
-CalendarService::CalendarService(QObject *parent)
-    : QObject(parent)
-{
-}
+#include <QString>
+#include <QStandardPaths>
+
+const QString CalendarServiceName = "com.deepin.dataserver.calendar";
+const QString CalendarPath = "/com/deepin/dataserver/calendar";
+
+//db path
+const QString SchedulerDBPath = QStandardPaths::displayName(QStandardPaths::HomeLocation) + "/.config/deepin/dde-daemon/calendar/scheduler.db";
+
+#endif // COMMONDEF_H

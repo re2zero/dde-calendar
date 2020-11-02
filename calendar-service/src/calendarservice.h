@@ -22,16 +22,27 @@
 #define CALENDARSERVICE_H
 
 #include <QObject>
+#include <QDBusContext>
 
 class CalendarService : public QObject
+    , protected QDBusContext
 {
     Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "com.deepin.dataserver.calendar")
 public:
     explicit CalendarService(QObject *parent = nullptr);
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
+    //LunarCalendar
+    Q_SCRIPTABLE QString GetFestivalMonth(int32_t year, int32_t month);
+    Q_SCRIPTABLE QString GetHuangLiDay(int32_t year, int32_t month, int32_t day);
+    Q_SCRIPTABLE QString GetHuangLiMonth(int32_t year, int32_t month, bool fill);
+    Q_SCRIPTABLE QString GetLunarInfoBySolar(int32_t year, int32_t month, int32_t day);
+    Q_SCRIPTABLE QString GetLunarMonthCalendar(int32_t year, int32_t month, bool fill);
+
+    //CalendarScheduler
 };
 
 #endif // CALENDARSERVICE_H

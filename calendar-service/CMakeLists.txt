@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 
 
 set(APP_RES_DIR "assets")
-set(APP_SERVICE "${APP_RES_DIR}/data/com.deepin.calendar.service")
-set(APP_CONFIG "${APP_RES_DIR}/data/com.deepin.calendar.conf")
+set(APP_SERVICE "${APP_RES_DIR}/data/com.deepin.dataserver.calendar.service")
+set(APP_CONFIG "${APP_RES_DIR}/data/com.deepin.dataserver.calendar.conf")
 
 # Find the library
 find_package(PkgConfig REQUIRED)
@@ -26,8 +26,15 @@ set(LINK_LIBS
     Qt5::DBus
     ${DtkCore_LIBRARIES}
 )
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-file(GLOB_RECURSE CALENDARSERVICE_SRCS ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
+SUBDIRLIST(all_src ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+#Include all app own subdirectorys
+foreach(subdir ${all_src})
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/${subdir})
+endforeach()
+file(GLOB_RECURSE CALENDARSERVICE_SRCS ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 
 include_directories(../calendar-basicstruct)
 link_directories(${PROJECT_BINARY_DIR})
