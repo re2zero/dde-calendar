@@ -24,23 +24,90 @@
 #include <QtCore/QDebug>
 #include <QtDBus/QtDBus>
 
-class CaYearInfo
+class CaLunarDayInfo
 {
 public:
-    CaYearInfo() {}
+    CaLunarDayInfo() {}
 
     inline static void registerMetaType();
 
-    friend QDebug operator<<(QDebug argument, const CaYearInfo &what);
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaYearInfo &what);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaYearInfo &what);
+    friend QDebug operator<<(QDebug argument, const CaLunarDayInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaLunarDayInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaLunarDayInfo &what);
 
 public:
-    qint32 mYear;
-    qint32 mMonth;
-    qint32 mDay;
+    QString mGanZhiYear;
+    QString mGanZhiMonth;
+    QString mGanZhiDay;
+    QString mLunarMonthName;
+    QString mLunarDayName;
+    qint32 mLunarLeapMonth;
+    QString mZodiac;
+    QString mTerm;
+    QString mSolarFestival;
+    QString mLunarFestival;
+    qint32 mWorktime;
 };
 
-Q_DECLARE_METATYPE(CaYearInfo)
+class CaLunarMonthInfo
+{
+public:
+    CaLunarMonthInfo() {}
+
+    inline static void registerMetaType();
+
+    friend QDebug operator<<(QDebug argument, const CaLunarMonthInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaLunarMonthInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaLunarMonthInfo &what);
+
+public:
+    qint32 mFirstDayWeek;
+    qint32 mDays;
+    QList<CaLunarDayInfo> mCaLunarDayInfo;
+};
+
+class CaHuangLiDayInfo
+{
+public:
+    CaHuangLiDayInfo() {}
+    inline static void registerMetaType();
+    friend QDebug operator<<(QDebug argument, const CaHuangLiDayInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiDayInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiDayInfo &what);
+public:
+    QString mGanZhiYear;
+    QString mGanZhiMonth;
+    QString mGanZhiDay;
+    QString mLunarMonthName;
+    QString mLunarDayName;
+    qint32 mLunarLeapMonth;
+    QString mZodiac;
+    QString mTerm;
+    QString mSolarFestival;
+    QString mLunarFestival;
+    qint32 mWorktime;
+    QString mSuit;
+    QString mAvoid;
+};
+
+class CaHuangLiMonthInfo
+{
+public:
+    CaHuangLiMonthInfo() {}
+    inline static void registerMetaType();
+
+    friend QDebug operator<<(QDebug argument, const CaHuangLiMonthInfo &what);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiMonthInfo &what);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiMonthInfo &what);
+public:
+    qint32 mFirstDayWeek;
+    qint32 mDays;
+    QList<CaHuangLiDayInfo> mCaLunarDayInfo;
+};
+
+Q_DECLARE_METATYPE(CaLunarDayInfo)
+Q_DECLARE_METATYPE(CaLunarMonthInfo)
+Q_DECLARE_METATYPE(CaHuangLiDayInfo)
+Q_DECLARE_METATYPE(CaHuangLiMonthInfo)
 
 #endif // COMMONDATASTRUCT_H
