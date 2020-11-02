@@ -18,5 +18,32 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "commondatastruct.h"
+#include "calendarscheduler.h"
+#include "src/commondatastruct.h"
 
+#include <QJsonObject>
+#include <QJsonDocument>
+
+CalendarScheduler::CalendarScheduler(QObject *parent)
+    : QObject(parent)
+{
+}
+
+QString CalendarScheduler::GetType(qint64 id)
+{
+    QString strres;
+    foreach (auto var, globalPredefinedTypes) {
+        if (var.ID == id) {
+            //tojson
+            QJsonObject obj;
+            obj.insert("ID", static_cast<int>(var.ID));
+            obj.insert("Name", var.Name);
+            obj.insert("Color", var.Color);
+            QJsonDocument doc;
+            doc.setObject(obj);
+            strres = QString::fromUtf8(doc.toJson());
+            break;
+        }
+    }
+    return strres;
+}

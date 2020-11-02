@@ -18,5 +18,22 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "commondatastruct.h"
+#ifndef CALENDARSCHEDULER_H
+#define CALENDARSCHEDULER_H
 
+#include <QObject>
+
+class CalendarScheduler : public QObject
+{
+    Q_OBJECT
+public:
+    explicit CalendarScheduler(QObject *parent = nullptr);
+
+    QString GetType(qint64 id);
+
+signals:
+
+public slots:
+};
+
+#endif // CALENDARSCHEDULER_H

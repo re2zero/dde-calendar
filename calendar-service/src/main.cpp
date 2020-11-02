@@ -4,6 +4,11 @@
 #include <QDBusError>
 #include "calendarservice.h"
 
+void test(CalendarService &service)
+{
+    qDebug() << service.GetType(4);
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -14,18 +19,21 @@ int main(int argc, char *argv[])
     Dtk::Core::DLogManager::registerFileAppender();
 
     qDebug() << "write log to" << Dtk::Core::DLogManager::getlogFilePath();
-    QDBusConnection sessionBus = QDBusConnection::sessionBus();
-    if (!sessionBus.registerService(CalendarServiceName)) {
-        qCritical() << "registerService failed:" << sessionBus.lastError();
-        exit(0x0001);
-    }
+    //    QDBusConnection sessionBus = QDBusConnection::sessionBus();
+    //    if (!sessionBus.registerService(CalendarServiceName)) {
+    //        qCritical() << "registerService failed:" << sessionBus.lastError();
+    //        exit(0x0001);
+    //    }
     CalendarService service;
-    qDebug() << "sessionBus.registerService success" << Dtk::Core::DLogManager::getlogFilePath();
-    if (!sessionBus.registerObject(CalendarPath,
-                                   &service,
-                                   QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals)) {
-        qCritical() << "registerObject failed:" << sessionBus.lastError();
-        exit(0x0002);
-    }
+    test(service);
+    //    qDebug() << "sessionBus.registerService success" << Dtk::Core::DLogManager::getlogFilePath();
+    //    if (!sessionBus.registerObject(CalendarPath,
+    //                                   &service,
+    //                                   QDBusConnection::ExportAllSlots |
+    //                                   QDBusConnection::ExportAllSignals|
+    //                                   QDBusConnection::ExportAllProperties)) {
+    //        qCritical() << "registerObject failed:" << sessionBus.lastError();
+    //        exit(0x0002);
+    //    }
     return a.exec();
 }

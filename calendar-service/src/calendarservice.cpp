@@ -27,6 +27,7 @@ CalendarService::CalendarService(QObject *parent)
     CaLunarMonthInfo::registerMetaType();
     CaHuangLiDayInfo::registerMetaType();
     CaHuangLiMonthInfo::registerMetaType();
+    m_scheduler = new CalendarScheduler(this);
 }
 
 QString CalendarService::GetFestivalMonth(quint32 year, quint32 month)
@@ -94,7 +95,7 @@ QString CalendarService::GetJobsWithRule(quint32 startYear, quint32 startMonth, 
 
 QString CalendarService::GetType(qint64 id)
 {
-    return "";
+    return m_scheduler->GetType(id);
 }
 
 QString CalendarService::GetTypes()

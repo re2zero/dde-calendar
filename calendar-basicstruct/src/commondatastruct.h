@@ -20,94 +20,42 @@
 */
 #ifndef COMMONDATASTRUCT_H
 #define COMMONDATASTRUCT_H
+#include <QString>
+#include <QVector>
 
-#include <QtCore/QDebug>
-#include <QtDBus/QtDBus>
-
-class CaLunarDayInfo
-{
-public:
-    CaLunarDayInfo() {}
-
-    static void registerMetaType();
-
-    friend QDebug operator<<(QDebug argument, const CaLunarDayInfo &what);
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaLunarDayInfo &what);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaLunarDayInfo &what);
-
-public:
-    QString mGanZhiYear;
-    QString mGanZhiMonth;
-    QString mGanZhiDay;
-    QString mLunarMonthName;
-    QString mLunarDayName;
-    qint32 mLunarLeapMonth;
-    QString mZodiac;
-    QString mTerm;
-    QString mSolarFestival;
-    QString mLunarFestival;
-    qint32 mWorktime;
+enum jobtypes {
+    jobTypeWork = 1,
+    jobTypeLife,
+    jobTypeOther,
+    JobTypeFestival,
 };
 
-class CaLunarMonthInfo
-{
-public:
-    CaLunarMonthInfo() {}
+typedef struct JobTypeJSON {
+    uint ID;
+    QString Name;
+    QString Color;
+} stJobTypeJSON;
 
-    static void registerMetaType();
-
-    friend QDebug operator<<(QDebug argument, const CaLunarMonthInfo &what);
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaLunarMonthInfo &what);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaLunarMonthInfo &what);
-
-public:
-    qint32 mFirstDayWeek;
-    qint32 mDays;
-    QList<CaLunarDayInfo> mCaLunarDayInfo;
-};
-
-class CaHuangLiDayInfo
-{
-public:
-    CaHuangLiDayInfo() {}
-    static void registerMetaType();
-    friend QDebug operator<<(QDebug argument, const CaHuangLiDayInfo &what);
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiDayInfo &what);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiDayInfo &what);
-public:
-    QString mGanZhiYear;
-    QString mGanZhiMonth;
-    QString mGanZhiDay;
-    QString mLunarMonthName;
-    QString mLunarDayName;
-    qint32 mLunarLeapMonth;
-    QString mZodiac;
-    QString mTerm;
-    QString mSolarFestival;
-    QString mLunarFestival;
-    qint32 mWorktime;
-    QString mSuit;
-    QString mAvoid;
-};
-
-class CaHuangLiMonthInfo
-{
-public:
-    CaHuangLiMonthInfo() {}
-    static void registerMetaType();
-
-    friend QDebug operator<<(QDebug argument, const CaHuangLiMonthInfo &what);
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiMonthInfo &what);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiMonthInfo &what);
-public:
-    qint32 mFirstDayWeek;
-    qint32 mDays;
-    QList<CaHuangLiDayInfo> mCaLunarDayInfo;
-};
-
-Q_DECLARE_METATYPE(CaLunarDayInfo)
-Q_DECLARE_METATYPE(CaLunarMonthInfo)
-Q_DECLARE_METATYPE(CaHuangLiDayInfo)
-Q_DECLARE_METATYPE(CaHuangLiMonthInfo)
-
+//关于名字的国际化暂时不做处理，如果后期确认需要国际化的很少则通过client做适配来处理
+static QVector<stJobTypeJSON> globalPredefinedTypes {
+    {
+        jobTypeWork,
+        "Work",
+        "#FF0000" // red
+    },
+    {
+        jobTypeLife,
+        "Life",
+        "#00FF00" // green
+    },
+    {
+        jobTypeOther,
+        "Other",
+        "#800080" // purple
+    },
+    {
+        JobTypeFestival,
+        "Festival",
+        "#FFFF00" // yellow
+    }};
 #endif // COMMONDATASTRUCT_H

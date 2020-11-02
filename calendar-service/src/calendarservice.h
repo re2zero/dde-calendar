@@ -22,7 +22,8 @@
 #define CALENDARSERVICE_H
 
 #include "src/commondef.h"
-#include "src/commondatastruct.h"
+#include "src/dbusdatastruct.h"
+#include "calendarscheduler.h"
 
 #include <QObject>
 #include <QDBusContext>
@@ -59,6 +60,9 @@ public Q_SLOTS:
     Q_SCRIPTABLE QString QueryJobs(const QString &params);
     Q_SCRIPTABLE void UpdateJob(const QString &jobInfo);
     Q_SCRIPTABLE void UpdateType(const QString &typeInfo);
+
+private:
+    CalendarScheduler *m_scheduler;
 };
 
 #endif // CALENDARSERVICE_H
