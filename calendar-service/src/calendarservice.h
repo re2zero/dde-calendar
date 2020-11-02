@@ -21,6 +21,9 @@
 #ifndef CALENDARSERVICE_H
 #define CALENDARSERVICE_H
 
+#include "src/commondef.h"
+#include "src/commondatastruct.h"
+
 #include <QObject>
 #include <QDBusContext>
 
@@ -36,13 +39,26 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     //LunarCalendar
-    Q_SCRIPTABLE QString GetFestivalMonth(int32_t year, int32_t month);
-    Q_SCRIPTABLE QString GetHuangLiDay(int32_t year, int32_t month, int32_t day);
-    Q_SCRIPTABLE QString GetHuangLiMonth(int32_t year, int32_t month, bool fill);
-    Q_SCRIPTABLE QString GetLunarInfoBySolar(int32_t year, int32_t month, int32_t day);
-    Q_SCRIPTABLE QString GetLunarMonthCalendar(int32_t year, int32_t month, bool fill);
+    Q_SCRIPTABLE QString GetFestivalMonth(quint32 year, quint32 month);
+    Q_SCRIPTABLE QString GetHuangLiDay(quint32 year, quint32 month, quint32 day);
+    Q_SCRIPTABLE QString GetHuangLiMonth(quint32 year, quint32 month, bool fill);
+    Q_SCRIPTABLE CaLunarDayInfo GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day);
+    Q_SCRIPTABLE CaLunarMonthInfo GetLunarMonthCalendar(quint32 year, quint32 month, bool fill);
 
     //CalendarScheduler
+    Q_SCRIPTABLE qint64 CreateJob(const QString &jobInfo);
+    Q_SCRIPTABLE qint64 CreateType(const QString &typeInfo);
+    Q_SCRIPTABLE void DeleteJob(qint64 id);
+    Q_SCRIPTABLE void DeleteType(qint64 id);
+    Q_SCRIPTABLE QString GetJob(qint64 id);
+    Q_SCRIPTABLE QString GetJobs(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay);
+    Q_SCRIPTABLE QString GetJobsWithLimit(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, quint32 maxNum);
+    Q_SCRIPTABLE QString GetJobsWithRule(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, const QString &rule);
+    Q_SCRIPTABLE QString GetType(qint64 id);
+    Q_SCRIPTABLE QString GetTypes();
+    Q_SCRIPTABLE QString QueryJobs(const QString &params);
+    Q_SCRIPTABLE void UpdateJob(const QString &jobInfo);
+    Q_SCRIPTABLE void UpdateType(const QString &typeInfo);
 };
 
 #endif // CALENDARSERVICE_H

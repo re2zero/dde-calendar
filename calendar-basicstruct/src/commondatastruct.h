@@ -29,7 +29,7 @@ class CaLunarDayInfo
 public:
     CaLunarDayInfo() {}
 
-    inline static void registerMetaType();
+    static void registerMetaType();
 
     friend QDebug operator<<(QDebug argument, const CaLunarDayInfo &what);
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaLunarDayInfo &what);
@@ -54,7 +54,7 @@ class CaLunarMonthInfo
 public:
     CaLunarMonthInfo() {}
 
-    inline static void registerMetaType();
+    static void registerMetaType();
 
     friend QDebug operator<<(QDebug argument, const CaLunarMonthInfo &what);
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaLunarMonthInfo &what);
@@ -70,7 +70,7 @@ class CaHuangLiDayInfo
 {
 public:
     CaHuangLiDayInfo() {}
-    inline static void registerMetaType();
+    static void registerMetaType();
     friend QDebug operator<<(QDebug argument, const CaHuangLiDayInfo &what);
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiDayInfo &what);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiDayInfo &what);
@@ -94,7 +94,7 @@ class CaHuangLiMonthInfo
 {
 public:
     CaHuangLiMonthInfo() {}
-    inline static void registerMetaType();
+    static void registerMetaType();
 
     friend QDebug operator<<(QDebug argument, const CaHuangLiMonthInfo &what);
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiMonthInfo &what);

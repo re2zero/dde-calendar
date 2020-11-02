@@ -23,29 +23,94 @@
 CalendarService::CalendarService(QObject *parent)
     : QObject(parent)
 {
+    CaLunarDayInfo::registerMetaType();
+    CaLunarMonthInfo::registerMetaType();
+    CaHuangLiDayInfo::registerMetaType();
+    CaHuangLiMonthInfo::registerMetaType();
 }
 
-QString CalendarService::GetFestivalMonth(int32_t year, int32_t month)
+QString CalendarService::GetFestivalMonth(quint32 year, quint32 month)
 {
     return "";
 }
 
-QString CalendarService::GetHuangLiDay(int32_t year, int32_t month, int32_t day)
+QString CalendarService::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
 {
     return "";
 }
 
-QString CalendarService::GetHuangLiMonth(int32_t year, int32_t month, bool fill)
+QString CalendarService::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
 {
     return "";
 }
 
-QString CalendarService::GetLunarInfoBySolar(int32_t year, int32_t month, int32_t day)
+CaLunarDayInfo CalendarService::GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day)
+{
+    return CaLunarDayInfo {};
+}
+
+CaLunarMonthInfo CalendarService::GetLunarMonthCalendar(quint32 year, quint32 month, bool fill)
+{
+    return CaLunarMonthInfo {};
+}
+
+qint64 CalendarService::CreateJob(const QString &jobInfo)
+{
+    return 0;
+}
+
+qint64 CalendarService::CreateType(const QString &typeInfo)
+{
+    return 0;
+}
+
+void CalendarService::DeleteJob(qint64 id)
+{
+}
+
+void CalendarService::DeleteType(qint64 id)
+{
+}
+
+QString CalendarService::GetJob(qint64 id)
 {
     return "";
 }
 
-QString CalendarService::GetLunarMonthCalendar(int32_t year, int32_t month, bool fill)
+QString CalendarService::GetJobs(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay)
 {
     return "";
+}
+
+QString CalendarService::GetJobsWithLimit(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, quint32 maxNum)
+{
+    return "";
+}
+
+QString CalendarService::GetJobsWithRule(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, const QString &rule)
+{
+    return "";
+}
+
+QString CalendarService::GetType(qint64 id)
+{
+    return "";
+}
+
+QString CalendarService::GetTypes()
+{
+    return "";
+}
+
+QString CalendarService::QueryJobs(const QString &params)
+{
+    return "";
+}
+
+void CalendarService::UpdateJob(const QString &jobInfo)
+{
+}
+
+void CalendarService::UpdateType(const QString &typeInfo)
+{
 }

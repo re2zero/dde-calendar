@@ -3,7 +3,6 @@
 #include <QDBusConnection>
 #include <QDBusError>
 #include "calendarservice.h"
-#include "src/commondef.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +20,7 @@ int main(int argc, char *argv[])
         exit(0x0001);
     }
     CalendarService service;
-    qDebug() << "systemBus.registerService success" << Dtk::Core::DLogManager::getlogFilePath();
+    qDebug() << "sessionBus.registerService success" << Dtk::Core::DLogManager::getlogFilePath();
     if (!sessionBus.registerObject(CalendarPath,
                                    &service,
                                    QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals)) {
