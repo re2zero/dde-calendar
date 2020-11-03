@@ -33,7 +33,7 @@ CalendarService::CalendarService(QObject *parent)
 
 QString CalendarService::GetFestivalMonth(quint32 year, quint32 month)
 {
-    return "";
+    return m_huangli->GetFestivalMonth(year, month);
 }
 
 QString CalendarService::GetHuangLiDay(quint32 year, quint32 month, quint32 day)

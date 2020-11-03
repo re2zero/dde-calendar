@@ -21,7 +21,8 @@
 #ifndef LUNARDATASTRUCT_H
 #define LUNARDATASTRUCT_H
 #include <QString>
-#include <QList>
+#include <QVector>
+#include <QDate>
 
 typedef struct HuangLi {
     qint64 ID; //  `json:"id"` // format: ("%s%02s%02s", year, month, day)
@@ -29,25 +30,19 @@ typedef struct HuangLi {
     QString Suit; //`json:"suit"`
 } stHuangLi;
 
-enum HolidayStatus {
-    HolidayStatusLeave = 1,
-    HolidayStatusWork
-};
+typedef struct _tagHolidayInfo {
+    QDate date;
+    char status;
+} HolidayInfo;
 
-typedef struct Holiday {
-    QString Date; //    `json:"date"`
-    HolidayStatus Status; //`json:"status"`
-} stHoliday;
-
-typedef struct Festival {
-    QString ID; //json:"id"
-    QString Name; //json:"name"
-    QString Description; //json:"description"
-    QString Rest; //json:"rest"
-    QString list; //
-    quint8 Month; //json:"month"
-
-    QList<Holiday> HolidayList; //`json:"list"`
-} stFestival;
+typedef struct _tagFestivalInfo {
+    QString ID;
+    QString FestivalName;
+    QString description;
+    QString Rest;
+    int month;
+    int year;
+    QVector<HolidayInfo> listHoliday;
+} FestivalInfo;
 
 #endif // LUNARDATASTRUCT_H

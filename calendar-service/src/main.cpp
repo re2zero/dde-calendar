@@ -7,6 +7,7 @@
 void test(CalendarService &service)
 {
     qDebug() << service.GetType(4);
+    qDebug() << service.GetFestivalMonth(2020, 1);
 }
 
 int main(int argc, char *argv[])

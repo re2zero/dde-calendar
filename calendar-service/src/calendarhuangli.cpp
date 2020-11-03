@@ -19,6 +19,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "calendarhuangli.h"
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 CalendarHuangLi::CalendarHuangLi(QObject *parent)
     : QObject(parent)
@@ -29,5 +32,5 @@ CalendarHuangLi::CalendarHuangLi(QObject *parent)
 //获取指定公历月的假日信息
 QString CalendarHuangLi::GetFestivalMonth(quint32 year, quint32 month)
 {
-    QString strtable = QString("festival_%1").arg(year);
+    return m_database->QueryFestivalList(year, month);
 }

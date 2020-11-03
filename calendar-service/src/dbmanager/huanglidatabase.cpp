@@ -23,6 +23,9 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QJsonParseError>
+#include <QJsonArray>
+#include <QJsonObject>
 
 HuangLiDataBase::HuangLiDataBase(QObject *parent)
     : QObject(parent)
@@ -34,12 +37,38 @@ HuangLiDataBase::HuangLiDataBase(QObject *parent)
     Q_ASSERT(m_database.isOpen());
 }
 
-QList<stFestival> HuangLiDataBase::QueryFestivalList(const QString &table, quint8 month)
+QString HuangLiDataBase::QueryFestivalList(quint32 year, quint8 month)
 {
-    QString strsql = QString("SELECT id,month,name,description,rest,list FROM %1 WHERE month = %2").arg(table, month);
+    QString strtable = QString("festival_%1").arg(year);
+    QString strsql = QString("SELECT id,month,name,description,rest,list FROM %1 WHERE month = %2").arg(strtable).arg(month);
     QSqlQuery query(strsql, m_database);
+    QString strjson;
     if (query.exec()) {
+        QJsonDocument doc;
+        QJsonArray arr;
+        while (query.next()) {
+            QJsonObject obj;
+            obj.insert("id", query.value("id").toString());
+            obj.insert("month", query.value("month").toInt());
+            obj.insert("name", query.value("name").toString());
+            obj.insert("rest", query.value("rest").toString());
+            obj.insert("description", query.value("description").toString());
+            QString strlist = query.value("list").toString();
+            QJsonParseError error;
+            QJsonArray listarr;
+            QJsonDocument doctmp = QJsonDocument::fromJson(strlist.toLocal8Bit(), &error);
+            if (!doctmp.isNull()) {
+                listarr = doctmp.array();
+            } else {
+                qDebug() << __FUNCTION__ << error.errorString();
+            }
+            obj.insert("list", listarr);
+            arr.append(obj);
+        }
+        doc.setArray(arr);
+        strjson = QString::fromUtf8(doc.toJson());
+    } else {
+        qDebug() << query.lastError();
     }
-    while (query.next()) {
-    }
+    return strjson;
 }

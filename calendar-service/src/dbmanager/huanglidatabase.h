@@ -30,7 +30,7 @@ class HuangLiDataBase : public QObject
     Q_OBJECT
 public:
     explicit HuangLiDataBase(QObject *parent = nullptr);
-    QList<stFestival> QueryFestivalList(const QString &table, quint8 month);
+    QString QueryFestivalList(quint32 year, quint8 month);
 
 signals:
 
