@@ -106,26 +106,32 @@ int main(int argc, char *argv[])
 {
     PERF_PRINT_BEGIN("POINT-01", "");
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    DApplication a(argc, argv);
+    //适配deepin-turbo启动加速
+    DApplication *app = nullptr;
+#if(DTK_VERSION < DTK_VERSION_CHECK(5,4,0,0))
+    app = new  DApplication(argc, argv);
+#else
+    app = DApplication::globalApplication(argc, argv);
+#endif
     QAccessible::installFactory(accessibleFactory);
     g_appPath = QDir::homePath() + QDir::separator() + "." + qApp->applicationName();
     QDir t_appDir;
     t_appDir.mkpath(g_appPath);
-    a.setOrganizationName("deepin");
-    a.setApplicationName("dde-calendar");
-    a.loadTranslator();
-    a.setApplicationVersion(VERSION);
+    app->setOrganizationName("deepin");
+    app->setApplicationName("dde-calendar");
+    app->loadTranslator();
+    app->setApplicationVersion(VERSION);
     // meta information that necessary to create the about dialog.
-    a.setProductName(QApplication::translate("CalendarWindow", "Calendar"));
+    app->setProductName(QApplication::translate("CalendarWindow", "Calendar"));
     QIcon t_icon = QIcon::fromTheme("dde-calendar");
-    a.setProductIcon(t_icon);
-    a.setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. "));
-    a.setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
+    app->setProductIcon(t_icon);
+    app->setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. "));
+    app->setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
 
     DGuiApplicationHelper::setSingleInstanceInterval(-1);
 
     if (!DGuiApplicationHelper::instance()->setSingleInstance(
-                a.applicationName(),
+                app->applicationName(),
                 DGuiApplicationHelper::UserScope)) {
         qDebug() << "there's an dde-calendar instance running.";
         QProcess::execute("dbus-send --print-reply --dest=com.deepin.Calendar "
@@ -133,7 +139,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    a.setAutoActivateWindows(true);
+    app->setAutoActivateWindows(true);
     CConfigSettings::init();
     // set theme
     bool isOk = false;
@@ -167,6 +173,7 @@ int main(int argc, char *argv[])
         saveThemeTypeSetting(type);
         DGuiApplicationHelper::instance()->setPaletteType(type);
     });
+
     PERF_PRINT_END("POINT-01");
-    return a.exec();
+    return app->exec();
 }
