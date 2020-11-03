@@ -18,26 +18,16 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef CALENDARSCHEDULER_H
-#define CALENDARSCHEDULER_H
-#include "dbmanager/schedulerdatabase.h"
+#include "calendarhuangli.h"
 
-#include <QObject>
-
-class CalendarScheduler : public QObject
+CalendarHuangLi::CalendarHuangLi(QObject *parent)
+    : QObject(parent)
+    , m_database(new HuangLiDataBase(this))
 {
-    Q_OBJECT
-public:
-    explicit CalendarScheduler(QObject *parent = nullptr);
+}
 
-    QString GetType(qint64 id);
-
-signals:
-
-public slots:
-
-private:
-    SchedulerDatabase *m_database;
-};
-
-#endif // CALENDARSCHEDULER_H
+//获取指定公历月的假日信息
+QString CalendarHuangLi::GetFestivalMonth(quint32 year, quint32 month)
+{
+    QString strtable = QString("festival_%1").arg(year);
+}

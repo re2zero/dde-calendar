@@ -28,6 +28,7 @@ CalendarService::CalendarService(QObject *parent)
     CaHuangLiDayInfo::registerMetaType();
     CaHuangLiMonthInfo::registerMetaType();
     m_scheduler = new CalendarScheduler(this);
+    m_huangli = new CalendarHuangLi(this);
 }
 
 QString CalendarService::GetFestivalMonth(quint32 year, quint32 month)

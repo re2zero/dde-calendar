@@ -19,11 +19,13 @@ find_package(Qt5 COMPONENTS
     Core
     Widgets
     DBus
+    Sql
 REQUIRED)
 
 set(LINK_LIBS
     Qt5::Core
     Qt5::DBus
+    Qt5::Sql
     ${DtkCore_LIBRARIES}
 )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)

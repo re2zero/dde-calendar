@@ -18,26 +18,36 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef CALENDARSCHEDULER_H
-#define CALENDARSCHEDULER_H
-#include "dbmanager/schedulerdatabase.h"
+#ifndef LUNARDATASTRUCT_H
+#define LUNARDATASTRUCT_H
+#include <QString>
+#include <QList>
 
-#include <QObject>
+typedef struct HuangLi {
+    qint64 ID; //  `json:"id"` // format: ("%s%02s%02s", year, month, day)
+    QString Avoid; // `json:"avoid"`
+    QString Suit; //`json:"suit"`
+} stHuangLi;
 
-class CalendarScheduler : public QObject
-{
-    Q_OBJECT
-public:
-    explicit CalendarScheduler(QObject *parent = nullptr);
-
-    QString GetType(qint64 id);
-
-signals:
-
-public slots:
-
-private:
-    SchedulerDatabase *m_database;
+enum HolidayStatus {
+    HolidayStatusLeave = 1,
+    HolidayStatusWork
 };
 
-#endif // CALENDARSCHEDULER_H
+typedef struct Holiday {
+    QString Date; //    `json:"date"`
+    HolidayStatus Status; //`json:"status"`
+} stHoliday;
+
+typedef struct Festival {
+    QString ID; //json:"id"
+    QString Name; //json:"name"
+    QString Description; //json:"description"
+    QString Rest; //json:"rest"
+    QString list; //
+    quint8 Month; //json:"month"
+
+    QList<Holiday> HolidayList; //`json:"list"`
+} stFestival;
+
+#endif // LUNARDATASTRUCT_H

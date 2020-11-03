@@ -24,6 +24,7 @@
 #include "src/commondef.h"
 #include "src/dbusdatastruct.h"
 #include "calendarscheduler.h"
+#include "calendarhuangli.h"
 
 #include <QObject>
 #include <QDBusContext>
@@ -63,6 +64,7 @@ public Q_SLOTS:
 
 private:
     CalendarScheduler *m_scheduler;
+    CalendarHuangLi *m_huangli;
 };
 
 #endif // CALENDARSERVICE_H

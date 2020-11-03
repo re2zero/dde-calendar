@@ -26,6 +26,7 @@
 
 CalendarScheduler::CalendarScheduler(QObject *parent)
     : QObject(parent)
+    , m_database(new SchedulerDatabase(this))
 {
 }
 

@@ -18,26 +18,28 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef CALENDARSCHEDULER_H
-#define CALENDARSCHEDULER_H
-#include "dbmanager/schedulerdatabase.h"
+#include "huanglidatabase.h"
 
-#include <QObject>
+#include <QDebug>
+#include <QSqlError>
+#include <QSqlQuery>
 
-class CalendarScheduler : public QObject
+HuangLiDataBase::HuangLiDataBase(QObject *parent)
+    : QObject(parent)
 {
-    Q_OBJECT
-public:
-    explicit CalendarScheduler(QObject *parent = nullptr);
+    QString dbpath("/usr/share/dde-api/data/huangli.db");
+    m_database = QSqlDatabase::addDatabase("QSQLITE");
+    m_database.setDatabaseName(dbpath);
+    m_database.open();
+    Q_ASSERT(m_database.isOpen());
+}
 
-    QString GetType(qint64 id);
-
-signals:
-
-public slots:
-
-private:
-    SchedulerDatabase *m_database;
-};
-
-#endif // CALENDARSCHEDULER_H
+QList<stFestival> HuangLiDataBase::QueryFestivalList(const QString &table, quint8 month)
+{
+    QString strsql = QString("SELECT id,month,name,description,rest,list FROM %1 WHERE month = %2").arg(table, month);
+    QSqlQuery query(strsql, m_database);
+    if (query.exec()) {
+    }
+    while (query.next()) {
+    }
+}

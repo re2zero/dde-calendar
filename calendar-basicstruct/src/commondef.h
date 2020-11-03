@@ -27,7 +27,4 @@
 const QString CalendarServiceName = "com.deepin.dataserver.calendar";
 const QString CalendarPath = "/com/deepin/dataserver/calendar";
 
-//db path
-const QString SchedulerDBPath = QStandardPaths::displayName(QStandardPaths::HomeLocation) + "/.config/deepin/dde-daemon/calendar/scheduler.db";
-
 #endif // COMMONDEF_H

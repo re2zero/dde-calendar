@@ -18,26 +18,27 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef CALENDARSCHEDULER_H
-#define CALENDARSCHEDULER_H
-#include "dbmanager/schedulerdatabase.h"
+#ifndef SCHEDULERDATABASE_H
+#define SCHEDULERDATABASE_H
 
 #include <QObject>
+#include <QSqlDatabase>
 
-class CalendarScheduler : public QObject
+class SchedulerDatabase : public QObject
 {
     Q_OBJECT
 public:
-    explicit CalendarScheduler(QObject *parent = nullptr);
+    explicit SchedulerDatabase(QObject *parent = nullptr);
 
-    QString GetType(qint64 id);
+private:
+    void CreateTables();
 
 signals:
 
 public slots:
 
 private:
-    SchedulerDatabase *m_database;
+    QSqlDatabase m_database;
 };
 
-#endif // CALENDARSCHEDULER_H
+#endif // SCHEDULERDATABASE_H
