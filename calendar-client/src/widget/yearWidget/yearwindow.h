@@ -33,6 +33,7 @@
 #include <QDate>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QGestureEvent>
 
 DWIDGET_USE_NAMESPACE
 
@@ -41,6 +42,14 @@ class CaLunarDayInfo;
 class CSchceduleSearchView;
 class YearFrame;
 class CustomFrame;
+
+struct TouchGestureData {
+    enum TouchMovingDirection {T_NONE, T_LEFT, T_TOP, T_RIGHT, T_BOTTOM}; //手势移动状态
+    qreal lenght{0};        //手势移动距离
+    qreal angle{0};         //手势移动角度
+    TouchMovingDirection movingDirection{T_NONE};       // 手势移动方向
+};
+
 class CYearWindow: public QMainWindow
 {
     Q_OBJECT
@@ -123,6 +132,34 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
+
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    bool event(QEvent *e) override;
+private:
+    /**
+     * @brief gestureEvent      触摸手势处理
+     * @param event     手势事件
+     * @return
+     */
+    bool gestureEvent(QGestureEvent *event);
+    /**
+     * @brief tapGestureTriggered       轻切手势处理
+     * @param tap       轻切手势事件
+     */
+    void tapGestureTriggered(QTapGesture *tap);
+    /**
+     * @brief panTriggered      多指滑动手势处理
+     * @param pan       多指滑动手势
+     */
+    void panTriggered(QPanGesture *pan);
+    /**
+     * @brief calculateAzimuthAngle     计算方位角
+     * @param startPoint            起始坐标
+     * @param stopPoint            结束坐标
+     * @return      触摸手势数据
+     */
+    TouchGestureData   calculateAzimuthAngle(QPointF &startPoint, QPointF &stopPoint);
 private:
     //年视图页面框架
     DFrame *m_contentBackground = nullptr;
@@ -144,6 +181,10 @@ private:
     QString                     m_searchText;
     bool                        m_searchfalg = false;
     DWidget *m_topWidget = nullptr;
+    //触摸开始坐标
+    QPointF     m_TouchBeginPoint;
+    //触摸状态 0：初始状态 1:点击 2：移动
+    int         m_TouchState{0};
 };
 
 class YearFrame : public DFrame
@@ -173,8 +214,6 @@ public:
         return m_LunarDay;
     }
     void getLunarData();
-protected:
-    void mousePressEvent(QMouseEvent *event) override;
 signals:
     /**
      * @brief signaldoubleclickDate 鼠标双击的信号

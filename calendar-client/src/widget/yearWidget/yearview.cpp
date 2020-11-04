@@ -562,18 +562,15 @@ void CYearMonthView::resizeEvent(QResizeEvent *event)
  */
 void CYearMonthView::mousePressEvent(QMouseEvent *event)
 {
-    int itemindex = getMousePosItem(event->pos());
-
-    if (!(itemindex < 0)) {
-        //设置日期的点击状态
-        m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
-        m_press = true;
-        if (event->button() == Qt::LeftButton) {
-            m_pressIndex = itemindex;
-            emit signalPressDate(m_DayItem.at(itemindex)->getDate());
-        }
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        //如果为触摸转换则设置触摸状态和触摸开始坐标
+        m_touchState = 1;
+        m_touchBeginPoint = event->pos();
+        DWidget::mousePressEvent(event);
+    } else {
+        if (event->button() == Qt::LeftButton)
+            mousePress(event->pos());
     }
-    update();
 }
 
 /**
@@ -602,6 +599,15 @@ void CYearMonthView::mouseDoubleClickEvent(QMouseEvent *event)
  */
 void CYearMonthView::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        if (m_touchState == 1) {
+            //如果为触摸且状态为点击则为触摸点击
+            mousePress(event->pos());
+            m_touchState = 0;
+        }
+        DWidget::mouseReleaseEvent(event);
+    }
+
     m_press = false;
     mouseMoveEvent(event);
 }
@@ -612,6 +618,15 @@ void CYearMonthView::mouseReleaseEvent(QMouseEvent *event)
  */
 void CYearMonthView::mouseMoveEvent(QMouseEvent *event)
 {
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        QPoint currentPoint = event->pos();
+        //如果移动距离大与5则为触摸移动状态
+        if (QLineF(m_touchBeginPoint, currentPoint).length() > 5) {
+            m_touchState = 2;
+        }
+        DWidget::mouseMoveEvent(event);
+    }
+
     if (!m_press) {
         int itemindex = getMousePosItem(event->pos());
         if (!(itemindex < 0)) {
@@ -646,6 +661,20 @@ void CYearMonthView::leaveEvent(QEvent *event)
 {
     Q_UNUSED(event);
     CMonthDayRect::setCurrentRect(nullptr);
+    update();
+}
+
+void CYearMonthView::mousePress(const QPoint &point)
+{
+    //获取当前item编号
+    int itemindex = getMousePosItem(point);
+    if (!(itemindex < 0)) {
+        //设置选中item为press状态
+        m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
+        m_press = true;
+        m_pressIndex = itemindex;
+        emit signalPressDate(m_DayItem.at(itemindex)->getDate());
+    }
     update();
 }
 

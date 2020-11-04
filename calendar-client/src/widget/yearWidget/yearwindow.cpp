@@ -46,6 +46,12 @@ CYearWindow::CYearWindow(QWidget *parent)
     setWindowFlags(Qt::FramelessWindowHint);
     //设置中心边距
     setContentsMargins(0, 0, 0, 0);
+    //设置接受触摸事件
+    this->setAttribute(Qt::WA_AcceptTouchEvents);
+    //截获相应的gesture手势
+    grabGesture(Qt::TapGesture);
+    grabGesture(Qt::TapAndHoldGesture);
+    grabGesture(Qt::PanGesture);
 }
 
 CYearWindow::~CYearWindow()
@@ -78,7 +84,10 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
  */
 void CYearWindow::mousePressEvent(QMouseEvent *event)
 {
-    //单击日期区域外，隐藏日程浮框
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        //如果为触摸点击则记录开始坐标
+        m_TouchBeginPoint = event->pos();
+    }
     m_YearWidget->slotHideInfo();
     QMainWindow::mousePressEvent(event);
 }
@@ -101,6 +110,142 @@ void CYearWindow::resizeEvent(QResizeEvent *event)
         m_tmainLayout->setContentsMargins(10, 0, 10, 0);
         m_topWidget->setContentsMargins(10, 0, 10, 0);
     }
+}
+
+void CYearWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        return;
+    }
+    QMainWindow::mouseMoveEvent(event);
+}
+
+void CYearWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        //如果为触摸移动状态
+        if (m_TouchState == 2) {
+            //获取停止位置
+            QPointF stopPoint = event->pos();
+            //计算出移动状态
+            TouchGestureData touchGData = calculateAzimuthAngle(m_TouchBeginPoint, stopPoint);
+            //如果方向为上下则切换年份
+            switch (touchGData.movingDirection) {
+            case TouchGestureData::T_TOP: {
+                slotnext();
+                break;
+            }
+            case TouchGestureData::T_BOTTOM: {
+                slotprev();
+                break;
+            }
+            default:
+                break;
+            }
+        }
+        m_TouchState = 0;
+    }
+}
+
+bool CYearWindow::event(QEvent *e)
+{
+    if (e->type() == QEvent::Gesture)
+        return gestureEvent(static_cast<QGestureEvent *>(e));
+    return QMainWindow::event(e);
+}
+
+bool CYearWindow::gestureEvent(QGestureEvent *event)
+{
+    if (QGesture *tap = event->gesture(Qt::TapGesture))
+        tapGestureTriggered(static_cast<QTapGesture *>(tap));
+    if (QGesture *pan = event->gesture(Qt::PanGesture))
+        panTriggered(static_cast<QPanGesture *>(pan));
+    return true;
+}
+
+void CYearWindow::tapGestureTriggered(QTapGesture *tap)
+{
+    switch (tap->state()) {
+    case Qt::NoGesture: {
+        break;
+    }
+    case Qt::GestureStarted: {
+        m_TouchState = 1;
+        break;
+    }
+    case Qt::GestureUpdated: {
+        m_TouchState = 2;
+        break;
+    }
+    case Qt::GestureFinished: {
+        break;
+    }
+    default: {
+        //GestureCanceled
+    }
+    }
+}
+
+void CYearWindow::panTriggered(QPanGesture *pan)
+{
+    switch (pan->state()) {
+    case Qt::NoGesture: {
+        break;
+    }
+    case Qt::GestureStarted: {
+        break;
+    }
+    case Qt::GestureUpdated: {
+        break;
+    }
+    case Qt::GestureFinished: {
+        QPointF zeroPoint(0, 0);
+        QPointF offset = pan->offset();
+        TouchGestureData touchGData = calculateAzimuthAngle(zeroPoint, offset);
+        switch (touchGData.movingDirection) {
+        case TouchGestureData::T_TOP: {
+            slotnext();
+            break;
+        }
+        case TouchGestureData::T_BOTTOM: {
+            slotprev();
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    default:
+        //GestureCanceled
+        break;
+    }
+}
+
+TouchGestureData CYearWindow::calculateAzimuthAngle(QPointF &startPoint,  QPointF &stopPoint)
+{
+    TouchGestureData _result{};
+    qreal angle = 0.0000;
+    qreal   dx = stopPoint.rx() - startPoint.rx();
+    qreal   dy = stopPoint.ry() - startPoint.ry();
+    //计算方位角
+    angle = qAtan2(dy, dx) * 180 / M_PI;
+    qreal line = qSqrt(dx * dx + dy * dy);
+    //如果移动距离大于10则有效
+    if (line > 10) {
+        if ((angle <= -45) && (angle >= -135)) {
+            _result.movingDirection = TouchGestureData::T_TOP;
+        } else if ((angle > -45) && (angle < 45)) {
+            _result.movingDirection = TouchGestureData::T_RIGHT;
+        } else if ((angle >= 45) && (angle <= 135)) {
+            _result.movingDirection = TouchGestureData::T_BOTTOM;
+        } else {
+            _result.movingDirection = TouchGestureData::T_LEFT;
+        }
+    }
+    _result.angle = angle;
+    _result.lenght = line;
+    return  _result;
 }
 
 /**
@@ -649,7 +794,7 @@ void CYearWindow::slotsearchDateSelect(QDate date)
 void CYearWindow::wheelEvent(QWheelEvent *event)
 {
     //如果为左右方向则退出
-    if(event->orientation() == Qt::Orientation::Horizontal)
+    if (event->orientation() == Qt::Orientation::Horizontal)
         return;
     if (event->delta() < 0) {
         //下一年
@@ -907,20 +1052,6 @@ void YearFrame::getLunarData()
         m_YearLunarLabel->setText("");
     }
 
-}
-
-/**
- * @brief mousePressEvent 鼠标单击日期区域外隐藏日程浮框
- * @param event 鼠标单击事件
- */
-void YearFrame::mousePressEvent(QMouseEvent *event)
-{
-    if (m_selectFlag) return;
-    //鼠标左键
-    if (event->button() == Qt::LeftButton) {
-        //隐藏日程浮框
-        slotHideInfo();
-    }
 }
 
 /**

@@ -186,6 +186,12 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void leaveEvent(QEvent *event) override;
+private:
+    /**
+     * @brief mousePress 鼠标点击触发事件
+     * @param QPoint 鼠标触发坐标
+     */
+    void mousePress(const QPoint &point);
 signals:
     /**
      * @brief signalPressDate 鼠标点击日期的信号
@@ -200,13 +206,17 @@ signals:
 private:
     //日期容器
     QVector<CMonthDayRect *>        m_DayItem;
-    int                             m_currentMonth =1;
+    int                             m_currentMonth = 1;
     //节假日和日程标识
     QVector<bool>                   m_vlineflag;
     //鼠标点击标志
     bool                            m_press = false;
     //鼠标点击日期的索引
-    int                             m_pressIndex =0;
+    int                             m_pressIndex = 0;
+    //触摸状态 0：原始  1：点击  2：移动
+    int         m_touchState{0};
+    //触摸点击坐标
+    QPoint      m_touchBeginPoint;
 };
 
 
