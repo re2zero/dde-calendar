@@ -72,3 +72,22 @@ QString HuangLiDataBase::QueryFestivalList(quint32 year, quint8 month)
     }
     return strjson;
 }
+
+QList<stHuangLi> HuangLiDataBase::QueryHuangLiByDays(const QList<stDay> &days)
+{
+    QList<stHuangLi> infos;
+    QSqlQuery query(m_database);
+    foreach (stDay d, days) {
+        QString strsql("SELECT id, avoid, suit FROM huangli WHERE id = %1");
+        strsql = strsql.arg(QString().sprintf("%d%02d%02d", d.Year, d.Month, d.Day));
+        qDebug() << strsql;
+        if (query.exec(strsql) && query.next()) {
+            stHuangLi sthuangli;
+            sthuangli.ID = query.value("id").toInt();
+            sthuangli.Avoid = query.value("avoid").toString();
+            sthuangli.Suit = query.value("suit").toString();
+            infos.append(sthuangli);
+        }
+    }
+    return infos;
+}

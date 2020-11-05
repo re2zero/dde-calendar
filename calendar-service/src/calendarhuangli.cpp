@@ -19,6 +19,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "calendarhuangli.h"
+#include "dbmanager/huanglidatabase.h"
+#include "lunarandfestival/lunarmanager.h"
+
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -33,4 +36,39 @@ CalendarHuangLi::CalendarHuangLi(QObject *parent)
 QString CalendarHuangLi::GetFestivalMonth(quint32 year, quint32 month)
 {
     return m_database->QueryFestivalList(year, month);
+}
+
+QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
+{
+    return "";
+}
+
+QString CalendarHuangLi::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
+{
+    CaHuangLiMonthInfo monthinfo;
+    SolarMonthInfo solarmonth = GetSolarMonthCalendar(year, month, fill);
+    LunarMonthInfo lunarmonth = GetLunarMonthCalendar(year, month, fill);
+    monthinfo.mFirstDayWeek = lunarmonth.FirstDayWeek;
+    monthinfo.mDays = lunarmonth.Days;
+    QList<stHuangLi> hllist = m_database->QueryHuangLiByDays(solarmonth.Datas);
+    for (int i = 0; i < lunarmonth.Datas.size(); ++i) {
+        CaHuangLiDayInfo hldayinfo;
+        hldayinfo.mAvoid = hllist.at(i).Avoid;
+        hldayinfo.mSuit = hllist.at(i).Suit;
+        stLunarDayInfo lunardayinfo = lunarmonth.Datas.at(i);
+        hldayinfo.mGanZhiYear = lunardayinfo.GanZhiYear;
+        hldayinfo.mGanZhiMonth = lunardayinfo.GanZhiMonth;
+        hldayinfo.mGanZhiDay = lunardayinfo.GanZhiDay;
+        hldayinfo.mLunarDayName = lunardayinfo.LunarDayName;
+        hldayinfo.mLunarFestival = lunardayinfo.LunarFestival;
+        hldayinfo.mLunarLeapMonth = lunardayinfo.LunarLeapMonth;
+        hldayinfo.mLunarMonthName = lunardayinfo.LunarMonthName;
+        hldayinfo.mSolarFestival = lunardayinfo.SolarFestival;
+        hldayinfo.mTerm = lunardayinfo.Term;
+        hldayinfo.mZodiac = lunardayinfo.Zodiac;
+        hldayinfo.mWorktime = lunardayinfo.Worktime;
+        monthinfo.mCaLunarDayInfo.append(hldayinfo);
+    }
+    qDebug() << monthinfo;
+    return monthinfo.toJson();
 }

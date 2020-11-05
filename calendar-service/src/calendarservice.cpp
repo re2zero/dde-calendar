@@ -31,19 +31,21 @@ CalendarService::CalendarService(QObject *parent)
     m_huangli = new CalendarHuangLi(this);
 }
 
+//获取指定公历月的假日信息
 QString CalendarService::GetFestivalMonth(quint32 year, quint32 month)
 {
     return m_huangli->GetFestivalMonth(year, month);
 }
 
+//获取指定公历日的黄历信息
 QString CalendarService::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
 {
-    return "";
+    return m_huangli->GetHuangLiDay(year, month, day);
 }
 
 QString CalendarService::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
 {
-    return "";
+    return m_huangli->GetHuangLiMonth(year, month, fill);
 }
 
 CaLunarDayInfo CalendarService::GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day)

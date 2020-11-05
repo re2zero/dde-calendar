@@ -18,30 +18,17 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef CALENDARHUANGLI_H
-#define CALENDARHUANGLI_H
+#ifndef LUNARMANAGER_H
+#define LUNARMANAGER_H
+#include "lunarandfestival.h"
+#include "method_interface.h"
 
-#include <QObject>
+stLunarDayInfo SolarToLunar(qint32 year, qint32 month, qint32 day);
+SolarMonthInfo GetSolarMonthCalendar(qint32 year, qint32 month, bool fill);
+LunarMonthInfo GetLunarMonthCalendar(qint32 year, qint32 month, bool fill);
+LunarMonthInfo GetLunarMonthCalendar(const SolarMonthInfo &solarMonth);
+QList<stDay> GetMonthDays(qint32 year, qint32 month, qint32 start, qint32 days);
+QList<int> GetPreMonth(qint32 year, qint32 month);
+QList<int> GetNextMonth(qint32 year, qint32 month);
 
-class HuangLiDataBase;
-
-class CalendarHuangLi : public QObject
-{
-    Q_OBJECT
-public:
-    explicit CalendarHuangLi(QObject *parent = nullptr);
-
-    QString GetFestivalMonth(quint32 year, quint32 month);
-    QString GetHuangLiDay(quint32 year, quint32 month, quint32 day);
-    QString GetHuangLiMonth(quint32 year, quint32 month, bool fill);
-
-private:
-signals:
-
-public slots:
-
-private:
-    HuangLiDataBase *m_database;
-};
-
-#endif // CALENDARHUANGLI_H
+#endif // LUNARMANAGER_H

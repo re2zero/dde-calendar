@@ -36,17 +36,17 @@ public:
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaLunarDayInfo &what);
 
 public:
-    QString mGanZhiYear;
-    QString mGanZhiMonth;
-    QString mGanZhiDay;
-    QString mLunarMonthName;
-    QString mLunarDayName;
-    qint32 mLunarLeapMonth;
-    QString mZodiac;
-    QString mTerm;
-    QString mSolarFestival;
-    QString mLunarFestival;
-    qint32 mWorktime;
+    QString mGanZhiYear; // 农历年的干支
+    QString mGanZhiMonth; // 农历月的干支
+    QString mGanZhiDay; // 农历日的干支
+    QString mLunarMonthName; // 农历月名
+    QString mLunarDayName; // 农历日名
+    qint32 mLunarLeapMonth; // 未使用
+    QString mZodiac; // 农历年的生肖
+    QString mTerm; // 农历节气
+    QString mSolarFestival; // 公历节日
+    QString mLunarFestival; // 农历节日
+    qint32 mWorktime; // 未使用
 };
 
 class CaLunarMonthInfo
@@ -100,11 +100,12 @@ public:
     friend QDebug operator<<(QDebug argument, const CaHuangLiMonthInfo &what);
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiMonthInfo &what);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiMonthInfo &what);
+    QString toJson();
 
 public:
     qint32 mFirstDayWeek;
     qint32 mDays;
-    QList<CaHuangLiDayInfo> mCaLunarDayInfo;
+    QVector<CaHuangLiDayInfo> mCaLunarDayInfo;
 };
 
 Q_DECLARE_METATYPE(CaLunarDayInfo)

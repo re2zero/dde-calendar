@@ -152,6 +152,11 @@ void CaHuangLiMonthInfo::registerMetaType()
     qDBusRegisterMetaType<CaHuangLiMonthInfo>();
 }
 
+QString CaHuangLiMonthInfo::toJson()
+{
+    return "";
+}
+
 QDebug operator<<(QDebug argument, const CaHuangLiMonthInfo &what)
 {
     argument << what.mDays << what.mFirstDayWeek;

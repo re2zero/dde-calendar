@@ -21,6 +21,8 @@
 #ifndef HUANGLIDATABASE_H
 #define HUANGLIDATABASE_H
 #include "src/lunardatastruct.h"
+#include "src/dbusdatastruct.h"
+#include "lunarandfestival.h"
 
 #include <QObject>
 #include <QSqlDatabase>
@@ -31,6 +33,7 @@ class HuangLiDataBase : public QObject
 public:
     explicit HuangLiDataBase(QObject *parent = nullptr);
     QString QueryFestivalList(quint32 year, quint8 month);
+    QList<stHuangLi> QueryHuangLiByDays(const QList<stDay> &days);
 
 signals:
 

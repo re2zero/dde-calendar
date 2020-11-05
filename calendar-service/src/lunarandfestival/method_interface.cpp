@@ -19,39 +19,37 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "method_interface.h"
+
 #include "QtCore/qmath.h"
 
-LunarAndFestivalAlgorithm::LunarAndFestivalAlgorithm()
-{
-}
 /**
- * @brief LunarAndFestivalAlgorithm::GetMonthName 获取当天的农历月名称
+ * @brief  GetMonthName 获取当天的农历月名称
  * @param dayinfo 农历日信息
  * @return 阴历月份
  */
-QString LunarAndFestivalAlgorithm::GetLunarMonthName(lunarDayInfo &dayinfo)
+QString GetLunarMonthName(lunarDayInfo &dayinfo)
 {
-    QString monthName = lunarMonthNames[dayinfo.LunarMonth.Name-1];
+    QString monthName = lunarMonthNames[dayinfo.LunarMonth.Name - 1];
     if (dayinfo.LunarMonth.IsLeap) {
         return "闰" + monthName + "月";
     }
     return monthName + "月";
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetLunarDayName 获取当天的农历日名
+ * @brief  GetLunarDayName 获取当天的农历日名
  * @param dayinfo 农历日信息
  * @return 阴历日
  */
-QString LunarAndFestivalAlgorithm::GetLunarDayName(lunarDayInfo &dayinfo)
+QString GetLunarDayName(lunarDayInfo &dayinfo)
 {
     return lunarDayNames[dayinfo.LunarDay - 1];
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetDayFestival 获取当天的农历节日名,没有则返回空字符串
+ * @brief  GetDayFestival 获取当天的农历节日名,没有则返回空字符串
  * @param dayinfo 农历日信息
  * @return 　农历节日名称
  */
-QString LunarAndFestivalAlgorithm::GetDayFestival(lunarDayInfo &dayinfo)
+QString GetLunarDayFestival(lunarDayInfo &dayinfo)
 {
     int key = dayinfo.LunarMonth.Name * 100 + dayinfo.LunarDay;
     if (lunarFestival.contains(key)) {
@@ -68,11 +66,11 @@ QString LunarAndFestivalAlgorithm::GetDayFestival(lunarDayInfo &dayinfo)
     return "";
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetSolarTermsName 获取二十四节气名,如果没有则返回空
+ * @brief  GetSolarTermsName 获取二十四节气名,如果没有则返回空
  * @param order　节气枚举值
  * @return 节气名称
  */
-QString LunarAndFestivalAlgorithm::GetSolarTermsName(int order)
+QString GetSolarTermsName(int order)
 {
     if (0 <= order && order <= 23) {
         return SolarTermNames[order];
@@ -80,56 +78,55 @@ QString LunarAndFestivalAlgorithm::GetSolarTermsName(int order)
     return "";
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetTianGanDiZhi 获取天干地支，将数字转换为天干地支
+ * @brief  GetTianGanDiZhi 获取天干地支，将数字转换为天干地支
  * @param num　需要转换的数字
  * @return 天干地支
  */
-QString LunarAndFestivalAlgorithm::GetTianGanDiZhi(int num)
+QString GetTianGanDiZhi(int num)
 {
     return TianGan[num % 10] + DiZhi[num % 12];
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetGanZhiMonth 获取当天的月干支
+ * @brief  GetGanZhiMonth 获取当天的月干支
  * @param dayinfo　农历日信息
  * @return 天干地支
  */
-QString LunarAndFestivalAlgorithm::GetGanZhiMonth(lunarDayInfo &dayinfo)
+QString GetGanZhiMonth(lunarDayInfo &dayinfo)
 {
     return GetTianGanDiZhi((dayinfo.Year - 1900) * 12 + dayinfo.MonthZhi + 12);
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetGanZhiYear 获取当天的年干支
+ * @brief  GetGanZhiYear 获取当天的年干支
  * @param dayinfo 农历日信息
  * @return 天干地支
  */
-QString LunarAndFestivalAlgorithm::GetGanZhiYear(lunarDayInfo &dayinfo)
+QString GetGanZhiYear(lunarDayInfo &dayinfo)
 {
     return GetTianGanDiZhi(dayinfo.LunarYear - 1864);
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetGanZhiDay 获取当天的日干支
+ * @brief  GetGanZhiDay 获取当天的日干支
  * @param dayinfo 农历日信息
  * @return 天干地支
  */
-QString LunarAndFestivalAlgorithm::GetGanZhiDay(lunarDayInfo &dayinfo)
+QString GetGanZhiDay(lunarDayInfo &dayinfo)
 {
-    QDateTime unixDateTime = QDateTime(QDate(dayinfo.Year, dayinfo.Month, dayinfo.Day)
-                                       ,QTime(0, 0, 0, 0), Qt::TimeSpec::UTC);
+    QDateTime unixDateTime = QDateTime(QDate(dayinfo.Year, dayinfo.Month, dayinfo.Day), QTime(0, 0, 0, 0), Qt::TimeSpec::UTC);
     qint64 unixTime = unixDateTime.currentSecsSinceEpoch();
     int dayCyclical = int(unixTime / 86400) + 29219 + 18;
     return GetTianGanDiZhi(dayCyclical);
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetYearZodiac 获取当天的生肖，即年份的生肖
+ * @brief  GetYearZodiac 获取当天的生肖，即年份的生肖
  * @param dayinfo 农历日信息
  * @return 年份生肖
  */
-QString LunarAndFestivalAlgorithm::GetYearZodiac(lunarDayInfo &dayinfo)
+QString GetYearZodiac(lunarDayInfo &dayinfo)
 {
     return Animals[(dayinfo.LunarYear - 4) % 12];
 }
 
-QString LunarAndFestivalAlgorithm::GetSolarTermName(int order)
+QString GetSolarTermName(int order)
 {
     if (0 <= order && order <= 23) {
         return SolarTermNames[order];
@@ -137,7 +134,7 @@ QString LunarAndFestivalAlgorithm::GetSolarTermName(int order)
     return "";
 }
 
-QVector<double> LunarAndFestivalAlgorithm::get25SolarTermJDs(int year, int start)
+QVector<double> get25SolarTermJDs(int year, int start)
 {
     // 从某一年的某个节气开始，连续计算25个节气，返回各节气的儒略日
     // year 年份
@@ -157,7 +154,7 @@ QVector<double> LunarAndFestivalAlgorithm::get25SolarTermJDs(int year, int start
     return list;
 }
 
-double LunarAndFestivalAlgorithm::GetEarthEclipticLongitudeForSun(double jd)
+double GetEarthEclipticLongitudeForSun(double jd)
 {
     // 计算地球的日心黄经
     double l = GetSunEclipticLongitudeForEarth(jd);
@@ -173,7 +170,7 @@ double LunarAndFestivalAlgorithm::GetEarthEclipticLongitudeForSun(double jd)
     // 计算日地距离
     double r = GetSunRadiusForEarth(jd);
     // 太阳到地球的光行差参数
-    l -= lightAberration() / r;
+    l -= SecondsToRadians(20.4898) / r;
     return l;
 }
 
@@ -183,7 +180,7 @@ double LunarAndFestivalAlgorithm::GetEarthEclipticLongitudeForSun(double jd)
  * 参数： jd 儒略日
  * 返回 地球的日心黄经，单位是弧度(rad)
  */
-double LunarAndFestivalAlgorithm::GetSunEclipticLongitudeForEarth(double jd)
+double GetSunEclipticLongitudeForEarth(double jd)
 {
     double t = GetJulianThousandYears(jd);
     double L0 = GetEarthL0(t);
@@ -192,11 +189,11 @@ double LunarAndFestivalAlgorithm::GetSunEclipticLongitudeForEarth(double jd)
     double L3 = GetEarthL3(t);
     double L4 = GetEarthL4(t);
     double L5 = GetEarthL5(t);
-    double L = ((((L5*t+L4)*t+L3)*t+L2)*t+L1)*t + L0;
+    double L = ((((L5 * t + L4) * t + L3) * t + L2) * t + L1) * t + L0;
     return Mod2Pi(L);
 }
 
-double LunarAndFestivalAlgorithm::GetJulianThousandYears(double jd)
+double GetJulianThousandYears(double jd)
 {
     //1000年的日数
     const double  DaysOf1000Years = 365250.0;
@@ -209,7 +206,7 @@ double LunarAndFestivalAlgorithm::GetJulianThousandYears(double jd)
  * 参数 jd  儒略日
  * 返回 地球的日心黄纬，单位是弧度(rad)
  */
-double LunarAndFestivalAlgorithm::GetSunEclipticLatitudeForEarth(double jd)
+double GetSunEclipticLatitudeForEarth(double jd)
 {
     double t = GetJulianThousandYears(jd);
     double B0 = GetEarthB0(t);
@@ -217,7 +214,7 @@ double LunarAndFestivalAlgorithm::GetSunEclipticLatitudeForEarth(double jd)
     double B2 = GetEarthB2(t);
     double B3 = GetEarthB3(t);
     double B4 = GetEarthB4(t);
-    double B = ((((B4*t)+B3)*t+B2)*t+B1)*t + B0;
+    double B = ((((B4 * t) + B3) * t + B2) * t + B1) * t + B0;
     return B;
 }
 
@@ -233,7 +230,7 @@ double LunarAndFestivalAlgorithm::GetSunEclipticLatitudeForEarth(double jd)
  *            儒略日
  * 返回 修正量(rad)
  */
-double LunarAndFestivalAlgorithm::Vsop2Fk5LongitudeCorrection(double l, double b, double jd)
+double Vsop2Fk5LongitudeCorrection(double l, double b, double jd)
 {
     double t = GetJulianCentury(jd);
     double lp = l - ToRadians(1.397) * t - ToRadians(0.00031) * t * t;
@@ -246,7 +243,7 @@ double LunarAndFestivalAlgorithm::Vsop2Fk5LongitudeCorrection(double l, double b
  * 参数 jd  儒略日
  * 返回 地球和太阳的距离，单位是天文单位(au)
  */
-double LunarAndFestivalAlgorithm::GetSunRadiusForEarth(double jd)
+double GetSunRadiusForEarth(double jd)
 {
     double t = GetJulianThousandYears(jd);
     double R0 = GetEarthR0(t);
@@ -255,32 +252,45 @@ double LunarAndFestivalAlgorithm::GetSunRadiusForEarth(double jd)
     double R3 = GetEarthR3(t);
     double R4 = GetEarthR4(t);
     double R5 = GetEarthR5(t);
-    double R = ((((R5 * t + R4) * t + R3) * t+ R2) * t + R1) * t + R0;
+    double R = ((((R5 * t + R4) * t + R3) * t + R2) * t + R1) * t + R0;
     return R;
 }
 
-double LunarAndFestivalAlgorithm::NewtonIteration(double angle, double x0, bool IsGetSolarTermJD)
+double NewtonIteration(double angle, double x0, bool IsGetSolarTermJD)
 {
     //此函数原是传入的匿名函数，这里用bool用作区分，后续可以优化
     const double Epsilon = 1e-7;
     const double Delta = 5e-6;
     double x;
+    auto func = [angle](double x) -> double {
+        return ModPi(GetEarthEclipticLongitudeForSun(x) - angle);
+    };
+
+    auto func1 = [](double x) -> double {
+        double earth = GetEarthEclipticLongitudeForSun(x);
+        double moon = GetMoonEclipticLongitudeEC(x);
+        double res = ModPi(earth - moon);
+        return res;
+        // return ModPi(GetEarthEclipticLongitudeForSun(x) - GetMoonEclipticLongitudeEC(x));
+    };
 
     while (1) {
         x = x0;
         double fx, fpx;
         if (IsGetSolarTermJD) {
-            fx = ModPi(GetEarthEclipticLongitudeForSun(x) - angle);
+            fx = func(x);
             // 导数
-            fpx = (ModPi(GetEarthEclipticLongitudeForSun(x + Delta) - angle)
-                   - GetEarthEclipticLongitudeForSun(x - Delta) - angle) / Delta / 2;
+            fpx = (func(x + Delta) - func(x - Delta)) / Delta / 2;
         } else {
-            fx = ModPi(GetEarthEclipticLongitudeForSun(x) - GetMoonEclipticLongitudeEC(x));
+            //            fx = ModPi(GetEarthEclipticLongitudeForSun(x) - GetMoonEclipticLongitudeEC(x));
+            //            // 导数
+            //            fpx = (ModPi(GetEarthEclipticLongitudeForSun(x + Delta) - GetMoonEclipticLongitudeEC(x))
+            //                   - GetEarthEclipticLongitudeForSun(x - Delta) - GetMoonEclipticLongitudeEC(x)) / Delta / 2;
+            fx = func1(x);
             // 导数
-            fpx = (ModPi(GetEarthEclipticLongitudeForSun(x + Delta) - GetMoonEclipticLongitudeEC(x))
-                   - GetEarthEclipticLongitudeForSun(x - Delta) - GetMoonEclipticLongitudeEC(x)) / Delta / 2;
+            fpx = (func1(x + Delta) - func1(x - Delta)) / Delta / 2;
         }
-        x0 = x - fx/fpx;
+        x0 = x - fx / fpx;
         if (qAbs(x0 - x) <= Epsilon) {
             break;
         }
@@ -288,7 +298,7 @@ double LunarAndFestivalAlgorithm::NewtonIteration(double angle, double x0, bool 
     return x;
 }
 
-double LunarAndFestivalAlgorithm::ModPi(double r)
+double ModPi(double r)
 {
     while (r < -M_PI) {
         r += M_PI * 2;
@@ -299,18 +309,18 @@ double LunarAndFestivalAlgorithm::ModPi(double r)
     return r;
 }
 
-double LunarAndFestivalAlgorithm::DmsToDegrees(int degrees, int mintues, double seconds)
+double DmsToDegrees(int degrees, int mintues, double seconds)
 {
-    return double(degrees) + double(mintues)/60 + seconds/3600;
+    return double(degrees) + double(mintues) / 60 + seconds / 3600;
 }
 
-double LunarAndFestivalAlgorithm::DmsToSeconds(int d, int m, double s)
+double DmsToSeconds(int d, int m, double s)
 {
-    return double(d)*3600 + double(m)*60 + s;
+    return double(d) * 3600 + double(m) * 60 + s;
 }
 
 // DmsToRadians 把度分秒表示的角度换算成弧度(rad)
-double LunarAndFestivalAlgorithm::DmsToRadians(int d, int m, int s)
+double DmsToRadians(int d, int m, int s)
 {
     return ToRadians(DmsToDegrees(d, m, s));
 }
@@ -320,15 +330,15 @@ double LunarAndFestivalAlgorithm::DmsToRadians(int d, int m, int s)
 // year 年
 // order 节气序号
 // 返回 节气的儒略日力学时间 TD
-double LunarAndFestivalAlgorithm::GetSolarTermJD(int year, int order)
+double GetSolarTermJD(int year, int order)
 {
     const double RADIANS_PER_TERM = M_PI / 12.0;
     double angle = double(order) * RADIANS_PER_TERM;
-    int month = ((order+1)/2+2)%12 + 1;
+    int month = ((order + 1) / 2 + 2) % 12 + 1;
     // 春分 order 0
     // 3 月 20 号
     int day = 6;
-    if (order%2 == 0) {
+    if (order % 2 == 0) {
         day = 20;
     }
     double jd0 = ToJulianDateHMS(year, month, day, 12, 0, 0.0);
@@ -337,25 +347,25 @@ double LunarAndFestivalAlgorithm::GetSolarTermJD(int year, int order)
 }
 
 // IsLeapYear 公历闰年判断
-bool LunarAndFestivalAlgorithm::IsLeapYear(int year)
+bool IsLeapYear(int year)
 {
-    return ((year&3) == 0 && year%100 != 0) || year%400 == 0;
+    return ((year & 3) == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
 // GetSolarMonthDays 获取公历月份的天数
-int LunarAndFestivalAlgorithm::GetSolarMonthDays(int year, int month)
+int GetSolarMonthDays(int year, int month)
 {
     if (month == 2 && IsLeapYear(year)) {
         return 29;
     } else {
-        return monthDays[month-1];
+        return monthDays[month - 1];
     }
 }
 
 // GetWeekday 计算Gregorian日历的星期几
 // 算法摘自 http://en.wikipedia.org/wiki/Zeller%27s_congruence
 // 返回星期几的数字表示，1-6表示星期一到星期六，0表示星期日
-int LunarAndFestivalAlgorithm::GetWeekday(int y, int m, int d)
+int GetWeekday(int y, int m, int d)
 {
     if (m <= 2) {
         y -= 1;
@@ -363,7 +373,7 @@ int LunarAndFestivalAlgorithm::GetWeekday(int y, int m, int d)
     }
     int c = int(y / 100);
     y = y % 100;
-    int w = (d + 13*(m+1)/5 + y + (y / 4) + (c / 4) - 2*c - 1) % 7;
+    int w = (d + 13 * (m + 1) / 5 + y + (y / 4) + (c / 4) - 2 * c - 1) % 7;
     if (w < 0) {
         w += 7;
     }
@@ -373,13 +383,13 @@ int LunarAndFestivalAlgorithm::GetWeekday(int y, int m, int d)
 // GetDeltaT 计算地球时和UTC的时差，算法摘自
 // http://eclipse.gsfc.nasa.gov/SEhelp/deltatpoly2004.html NASA网站
 // ∆T = TT - UT 此算法在-1999年到3000年有效
-double LunarAndFestivalAlgorithm::GetDeltaT(int year, int month)
+double GetDeltaT(int year, int month)
 {
-    double y = double(year) + (double(month)-0.5)/12;
+    double y = double(year) + (double(month) - 0.5) / 12;
 
     if (year < -500) {
         double u = (double(year) - 1820) / 100;
-        return -20 + 32*u*u;
+        return -20 + 32 * u * u;
     } else if (year < 500) {
         double u = y / 100;
         double u2 = u * u;
@@ -387,7 +397,7 @@ double LunarAndFestivalAlgorithm::GetDeltaT(int year, int month)
         double u4 = u3 * u;
         double u5 = u4 * u;
         double u6 = u5 * u;
-        return 10583.6 - 1014.41*u + 33.78311*u2 - 5.952053*u3 - 0.1798452*u4 + 0.022174192*u5 + 0.0090316521*u6;
+        return 10583.6 - 1014.41 * u + 33.78311 * u2 - 5.952053 * u3 - 0.1798452 * u4 + 0.022174192 * u5 + 0.0090316521 * u6;
     } else if (year < 1600) {
         double u = (y - 1000) / 100;
         double u2 = u * u;
@@ -395,18 +405,18 @@ double LunarAndFestivalAlgorithm::GetDeltaT(int year, int month)
         double u4 = u3 * u;
         double u5 = u4 * u;
         double u6 = u5 * u;
-        return 1574.2 - 556.01*u + 71.23472*u2 + 0.319781*u3 - 0.8503463*u4 - 0.005050998*u5 + 0.0083572073*u6;
+        return 1574.2 - 556.01 * u + 71.23472 * u2 + 0.319781 * u3 - 0.8503463 * u4 - 0.005050998 * u5 + 0.0083572073 * u6;
     } else if (year < 1700) {
         double t = y - 1600;
         double t2 = t * t;
         double t3 = t2 * t;
-        return 120 - 0.9808*t - 0.01532*t2 + t3/7129;
+        return 120 - 0.9808 * t - 0.01532 * t2 + t3 / 7129;
     } else if (year < 1800) {
         double t = y - 1700;
         double t2 = t * t;
         double t3 = t2 * t;
         double t4 = t3 * t;
-        return 8.83 + 0.1603*t - 0.0059285*t2 + 0.00013336*t3 - t4/1174000;
+        return 8.83 + 0.1603 * t - 0.0059285 * t2 + 0.00013336 * t3 - t4 / 1174000;
     } else if (year < 1860) {
         double t = y - 1800;
         double t2 = t * t;
@@ -415,59 +425,59 @@ double LunarAndFestivalAlgorithm::GetDeltaT(int year, int month)
         double t5 = t4 * t;
         double t6 = t5 * t;
         double t7 = t6 * t;
-        return 13.72 - 0.332447*t + 0.0068612*t2 + 0.0041116*t3 - 0.00037436*t4 + 0.0000121272*t5 - 0.0000001699*t6 + 0.000000000875*t7;
+        return 13.72 - 0.332447 * t + 0.0068612 * t2 + 0.0041116 * t3 - 0.00037436 * t4 + 0.0000121272 * t5 - 0.0000001699 * t6 + 0.000000000875 * t7;
     } else if (year < 1900) {
         double t = y - 1860;
         double t2 = t * t;
         double t3 = t2 * t;
         double t4 = t3 * t;
         double t5 = t4 * t;
-        return 7.62 + 0.5737*t - 0.251754*t2 + 0.01680668*t3 - 0.0004473624*t4 + t5/233174;
+        return 7.62 + 0.5737 * t - 0.251754 * t2 + 0.01680668 * t3 - 0.0004473624 * t4 + t5 / 233174;
     } else if (year < 1920) {
         double t = y - 1900;
         double t2 = t * t;
         double t3 = t2 * t;
         double t4 = t3 * t;
-        return -2.79 + 1.494119*t - 0.0598939*t2 + 0.0061966*t3 - 0.000197*t4;
+        return -2.79 + 1.494119 * t - 0.0598939 * t2 + 0.0061966 * t3 - 0.000197 * t4;
     } else if (year < 1941) {
         double t = y - 1920;
         double t2 = t * t;
         double t3 = t2 * t;
-        return 21.20 + 0.84493*t - 0.076100*t2 + 0.0020936*t3;
+        return 21.20 + 0.84493 * t - 0.076100 * t2 + 0.0020936 * t3;
     } else if (year < 1961) {
         double t = y - 1950;
         double t2 = t * t;
         double t3 = t2 * t;
-        return 29.07 + 0.407*t - t2/233 + t3/2547;
+        return 29.07 + 0.407 * t - t2 / 233 + t3 / 2547;
     } else if (year < 1986) {
         double t = y - 1975;
         double t2 = t * t;
         double t3 = t2 * t;
-        return 45.45 + 1.067*t - t2/260 - t3/718;
+        return 45.45 + 1.067 * t - t2 / 260 - t3 / 718;
     } else if (year < 2005) {
         double t = y - 2000;
         double t2 = t * t;
         double t3 = t2 * t;
         double t4 = t3 * t;
         double t5 = t4 * t;
-        return 63.86 + 0.3345*t - 0.060374*t2 + 0.0017275*t3 + 0.000651814*t4 + 0.00002373599*t5;
+        return 63.86 + 0.3345 * t - 0.060374 * t2 + 0.0017275 * t3 + 0.000651814 * t4 + 0.00002373599 * t5;
     } else if (year < 2050) {
         double t = y - 2000;
         double t2 = t * t;
-        return 62.92 + 0.32217*t + 0.005589*t2;
+        return 62.92 + 0.32217 * t + 0.005589 * t2;
     } else if (year < 2150) {
         double u = (y - 1820) / 100;
         double u2 = u * u;
-        return -20 + 32*u2 - 0.5628*(2150-y);
+        return -20 + 32 * u2 - 0.5628 * (2150 - y);
     } else {
         double u = (y - 1820) / 100;
         double u2 = u * u;
-        return -20 + 32*u2;
+        return -20 + 32 * u2;
     }
 }
 
 // GetDateFromJulianDay 从儒略日中获取公历的日期
-void LunarAndFestivalAlgorithm::GetDateFromJulianDay(double jd, int &yy, int &mm, int &dd)
+void GetDateFromJulianDay(double jd, int &yy, int &mm, int &dd)
 {
     /*
      * This algorithm is taken from
@@ -484,24 +494,24 @@ void LunarAndFestivalAlgorithm::GetDateFromJulianDay(double jd, int &yy, int &mm
     int64_t ta, jalpha, tb, tc, td, te;
 
     if (julian >= JD_GREG_CAL) {
-        jalpha = (4*(julian-1867216) - 1) / 146097;
-        ta = int64_t(julian) + 1 + jalpha - jalpha/4;
+        jalpha = (4 * (julian - 1867216) - 1) / 146097;
+        ta = int64_t(julian) + 1 + jalpha - jalpha / 4;
     } else if (julian < 0) {
-        ta = julian + 36525*(1-julian/36525);
+        ta = julian + 36525 * (1 - julian / 36525);
     } else {
         ta = julian;
     }
 
     tb = ta + 1524;
     if (tb <= JB_MAX_WITHOUT_OVERFLOW) {
-        tc = (tb*20 - 2442) / 7305;
+        tc = (tb * 20 - 2442) / 7305;
     } else {
-        tc = int64_t((uint64_t(tb)*20 - 2442) / 7305);
+        tc = int64_t((uint64_t(tb) * 20 - 2442) / 7305);
     }
 
-    td = 365*tc + tc/4;
+    td = 365 * tc + tc / 4;
     te = ((tb - td) * 10000) / 306001;
-    dd = int(tb - td - (306001*te)/10000);
+    dd = int(tb - td - (306001 * te) / 10000);
     mm = int(te - 1);
 
     if (mm > 12) {
@@ -512,12 +522,12 @@ void LunarAndFestivalAlgorithm::GetDateFromJulianDay(double jd, int &yy, int &mm
         yy--;
     }
     if (julian < 0) {
-        yy -= int(100 * (1 - julian/36525));
+        yy -= int(100 * (1 - julian / 36525));
     }
 }
 
 // GetTimeFromJulianDay 从儒略日中获取时间 时分秒
-void LunarAndFestivalAlgorithm::GetTimeFromJulianDay(double jd, int &hour, int &minute, int &second)
+void GetTimeFromJulianDay(double jd, int &hour, int &minute, int &second)
 {
     double frac = jd - qFloor(jd);
     int s = int(qFloor(frac * 24.0 * 60.0 * 60.0));
@@ -529,7 +539,7 @@ void LunarAndFestivalAlgorithm::GetTimeFromJulianDay(double jd, int &hour, int &
 
 // GetDateTimeFromJulianDay 将儒略日转换为 time.Time
 // 其中包含了 TT 到 UTC 的转换
-QDateTime LunarAndFestivalAlgorithm::GetDateTimeFromJulianDay(double jd)
+QDateTime GetDateTimeFromJulianDay(double jd)
 {
     int year, month, day;
     GetDateFromJulianDay(jd, year, month, day);
@@ -539,27 +549,27 @@ QDateTime LunarAndFestivalAlgorithm::GetDateTimeFromJulianDay(double jd)
     int hour, minute, second;
     GetTimeFromJulianDay(jd, hour, minute, second);
 
-    return QDateTime(QDate(year, month, day),QTime(hour, minute,second, 0),Qt::TimeSpec::UTC);
+    return QDateTime(QDate(year, month, day), QTime(hour, minute, second, 0), Qt::TimeSpec::UTC);
 }
 
 // JDUTC2BeijingTime 儒略日 UTC 时间转换到北京时间
-double LunarAndFestivalAlgorithm::JDUTC2BeijingTime(double utcJD)
+double JDUTC2BeijingTime(double utcJD)
 {
-    return utcJD + 8.0/24.0;
+    return utcJD + 8.0 / 24.0;
 }
 
 // JDBeijingTime2UTC 儒略日 北京时间到 UTC 时间
-double LunarAndFestivalAlgorithm::JDBeijingTime2UTC(double bjtJD)
+double JDBeijingTime2UTC(double bjtJD)
 {
-    return bjtJD - 8.0/24.0;
+    return bjtJD - 8.0 / 24.0;
 }
 
-double LunarAndFestivalAlgorithm::getNewMoonJD(double jd0)
+double getNewMoonJD(double jd0)
 {
     return NewtonIteration(0, jd0, false);
 }
 
-QVector<double> LunarAndFestivalAlgorithm::get15NewMoonJDs(double jd)
+QVector<double> get15NewMoonJDs(double jd)
 {
     // 计算从某个时间之后的连续15个朔日
     // 参数: jd 开始时间的 儒略日
@@ -574,24 +584,25 @@ QVector<double> LunarAndFestivalAlgorithm::get15NewMoonJDs(double jd)
     return list;
 }
 
-int LunarAndFestivalAlgorithm::deltaDays(QDateTime t1, QDateTime t2)
+qint64 deltaDays(QDateTime t1, QDateTime t2)
 {
     // 计算两个时间相差的天数
     // t2 > t1 结果为正数
     return int(t1.date().daysTo(t2.date()));
+    // return qint64((t2.toSecsSinceEpoch() - t1.toSecsSinceEpoch()) / 86400);
 }
 
-QString LunarAndFestivalAlgorithm::festivalForFatherAndMother(int year, int month, int day)
+QString festivalForFatherAndMother(int year, int month, int day)
 {
-    int disparityMotherDay,disparityFatherDay,fatherDay,motherDay;
+    int disparityMotherDay, disparityFatherDay, fatherDay, motherDay;
     int leapYear = 0;
     for (int i = 1900; i < year; i++) {
-        if (( i % 400 == 0 ) || (( i % 100 != 0 ) && ( i % 4 == 0 ) ) ) {
+        if ((i % 400 == 0) || ((i % 100 != 0) && (i % 4 == 0))) {
             leapYear += 1;
         }
     }
     if (month == 5) {
-        disparityMotherDay = ((( year - 1899 ) * 365 + leapYear ) -( 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31 ) ) % 7;
+        disparityMotherDay = (((year - 1899) * 365 + leapYear) - (31 + 30 + 31 + 31 + 30 + 31 + 30 + 31)) % 7;
         motherDay = 14 - disparityMotherDay;
         if (day == motherDay) {
             return "母亲节";
@@ -600,7 +611,7 @@ QString LunarAndFestivalAlgorithm::festivalForFatherAndMother(int year, int mont
         }
     }
     if (month == 6) {
-        disparityFatherDay = ( ( ( year - 1899 ) * 365 + leapYear ) -(  30 + 31 + 31 + 30 + 31 + 30 + 31 ) ) % 7;
+        disparityFatherDay = (((year - 1899) * 365 + leapYear) - (30 + 31 + 31 + 30 + 31 + 30 + 31)) % 7;
         fatherDay =  21 - disparityFatherDay;
         if (day == fatherDay) {
             return "父亲节";
@@ -611,11 +622,11 @@ QString LunarAndFestivalAlgorithm::festivalForFatherAndMother(int year, int mont
     return "";
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetMoonEclipticParameter 弧度计算
+ * @brief  GetMoonEclipticParameter 弧度计算
  * @param T 儒略世纪数
  * @return 弧度
  */
-MoonEclipticParameter LunarAndFestivalAlgorithm::GetMoonEclipticParameter(MoonEclipticParameter &moonEclipticParameter, double T)
+MoonEclipticParameter GetMoonEclipticParameter(MoonEclipticParameter &moonEclipticParameter, double T)
 {
     MoonEclipticParameter m_radian = moonEclipticParameter;
     double T2 = T * T;
@@ -623,35 +634,35 @@ MoonEclipticParameter LunarAndFestivalAlgorithm::GetMoonEclipticParameter(MoonEc
     double T4 = T3 * T;
 
     /*月球平黄经*/
-    m_radian.Lp = Mod2Pi(ToRadians(218.3164591 + 481267.88134236*T - 0.0013268*T2 + T3/538841.0 - T4/65194000.0));
+    m_radian.Lp = Mod2Pi(ToRadians(218.3164591 + 481267.88134236 * T - 0.0013268 * T2 + T3 / 538841.0 - T4 / 65194000.0));
     /*月日距角*/
-    m_radian.D = Mod2Pi(ToRadians(297.8502042 + 445267.1115168*T - 0.0016300*T2 + T3/545868.0 - T4/113065000.0));
+    m_radian.D = Mod2Pi(ToRadians(297.8502042 + 445267.1115168 * T - 0.0016300 * T2 + T3 / 545868.0 - T4 / 113065000.0));
     /*太阳平近点角*/
-    m_radian.M = Mod2Pi(ToRadians(357.5291092 + 35999.0502909*T - 0.0001536*T2 + T3/24490000.0));
+    m_radian.M = Mod2Pi(ToRadians(357.5291092 + 35999.0502909 * T - 0.0001536 * T2 + T3 / 24490000.0));
     /*月亮平近点角*/
-    m_radian.Mp = Mod2Pi(ToRadians(134.9634114 + 477198.8676313*T + 0.0089970*T2 + T3/69699.0 - T4/14712000.0));
+    m_radian.Mp = Mod2Pi(ToRadians(134.9634114 + 477198.8676313 * T + 0.0089970 * T2 + T3 / 69699.0 - T4 / 14712000.0));
     /*月球经度参数(到升交点的平角距离)*/
-    m_radian.F = Mod2Pi(ToRadians(93.2720993 + 483202.0175273*T - 0.0034029*T2 - T3/3526000.0 + T4/863310000.0));
+    m_radian.F = Mod2Pi(ToRadians(93.2720993 + 483202.0175273 * T - 0.0034029 * T2 - T3 / 3526000.0 + T4 / 863310000.0));
     /* 反映地球轨道偏心率变化的辅助参量 */
-    m_radian.E = 1 - 0.002516*T - 0.0000074*T2;
+    m_radian.E = 1 - 0.002516 * T - 0.0000074 * T2;
 
     return m_radian;
 }
 /**
- * @brief LunarAndFestivalAlgorithm::ToRadians 角度转换为弧度
+ * @brief  ToRadians 角度转换为弧度
  * @param degrees 角度
  * @return 弧度
  */
-double LunarAndFestivalAlgorithm::ToRadians(double degrees)
+double ToRadians(double degrees)
 {
     return degrees * M_PI / 180;
 }
 /**
- * @brief LunarAndFestivalAlgorithm::Mod2Pi 把角度限制在[0, 2π]之间
+ * @brief  Mod2Pi 把角度限制在[0, 2π]之间
  * @param r 角度
  * @return 角度
  */
-double LunarAndFestivalAlgorithm::Mod2Pi(double r)
+double Mod2Pi(double r)
 {
     while (r < 0) {
         r += M_PI * 2;
@@ -662,39 +673,39 @@ double LunarAndFestivalAlgorithm::Mod2Pi(double r)
     return r;
 }
 /**
- * @brief LunarAndFestivalAlgorithm::CalcMoonECLongitudePeriodic 计算月球地心黄经周期项的和
+ * @brief  CalcMoonECLongitudePeriodic 计算月球地心黄经周期项的和
  * @param raDian 弧度
  * @return 月球地心黄经周期项的和
  */
-double LunarAndFestivalAlgorithm::CalcMoonECLongitudePeriodic(MoonEclipticParameter &moonEclipticParameter)
+double CalcMoonECLongitudePeriodic(MoonEclipticParameter &moonEclipticParameter)
 {
     double EI = 0.0;
     for (int i = 0; i < MoonLongitude.count(); i++) {
         double theta = MoonLongitude[i].D * moonEclipticParameter.D + MoonLongitude[i].M * moonEclipticParameter.M
-                       +MoonLongitude[i].Mp * moonEclipticParameter.Mp + MoonLongitude[i].F * moonEclipticParameter.F;
+                       + MoonLongitude[i].Mp * moonEclipticParameter.Mp + MoonLongitude[i].F * moonEclipticParameter.F;
         EI += MoonLongitude[i].EiA * qSin(theta) * qPow(moonEclipticParameter.E, qAbs(MoonLongitude[i].M));
     }
     return EI;
 }
 /**
- * @brief LunarAndFestivalAlgorithm::CalcMoonLongitudePerturbation 计算金星摄动,木星摄动以及地球扁率摄动对月球地心黄经的影响
+ * @brief  CalcMoonLongitudePerturbation 计算金星摄动,木星摄动以及地球扁率摄动对月球地心黄经的影响
  * @param T 儒略世纪数
  * @param raDian 弧度
  * @return
  */
-double LunarAndFestivalAlgorithm::CalcMoonLongitudePerturbation(double T, MoonEclipticParameter &moonEclipticParameter)
+double CalcMoonLongitudePerturbation(double T, MoonEclipticParameter &moonEclipticParameter)
 {
-    double A1 = Mod2Pi(ToRadians(119.75 + 131.849*T));
-    double A2 = Mod2Pi(ToRadians(53.09 + 479264.290*T));
+    double A1 = Mod2Pi(ToRadians(119.75 + 131.849 * T));
+    double A2 = Mod2Pi(ToRadians(53.09 + 479264.290 * T));
 
     return 3958.0 * qSin(A1) + 1962.0 * qSin(moonEclipticParameter.Lp - moonEclipticParameter.F) + 318.0 * qSin(A2);
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetMoonEclipticLongitudeEC 计算月球地心黄经
+ * @brief  GetMoonEclipticLongitudeEC 计算月球地心黄经
  * @param julianDay 儒略日
  * @return 弧度
  */
-double LunarAndFestivalAlgorithm::GetMoonEclipticLongitudeEC(double julianDay)
+double GetMoonEclipticLongitudeEC(double julianDay)
 {
     MoonEclipticParameter m_radian;
     double T = GetJulianCentury(julianDay);
@@ -706,49 +717,49 @@ double LunarAndFestivalAlgorithm::GetMoonEclipticLongitudeEC(double julianDay)
     EI += CalcMoonLongitudePerturbation(T, m_radian);
     double longitude = m_radian.Lp + ToRadians(EI / 1000000.0);
     /*计算天体章动干扰*/
-    longitude = CalcEarthLongitudeNutation(T);
+    longitude += CalcEarthLongitudeNutation(T);
     return longitude;
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetJulianCentury 计算儒略世纪数
+ * @brief  GetJulianCentury 计算儒略世纪数
  * @param julianDay 儒略日
  * @return 儒略世纪数
  */
-double LunarAndFestivalAlgorithm::GetJulianCentury(double julianDay)
+double GetJulianCentury(double julianDay)
 {
     // 100年的日数
     const double DaysOfCentury = 36525.0;
     return (julianDay - J2000) / DaysOfCentury;
 }
 /**
- * @brief LunarAndFestivalAlgorithm::GetEarthNutationParameter 返回弧度
+ * @brief  GetEarthNutationParameter 返回弧度
  * @param earthNutationParameter 弧度
  * @param T 儒略世纪数
  * @return 弧度
  */
-EarthNutationParameter LunarAndFestivalAlgorithm::GetEarthNutationParameter(EarthNutationParameter &earthNutationParameter, double T)
+EarthNutationParameter GetEarthNutationParameter(EarthNutationParameter &earthNutationParameter, double T)
 {
     EarthNutationParameter m_radian = earthNutationParameter;
     double T2 = T * T;
     double T3 = T2 * T;
 
     /*平距角（如月对地心的角距离）*/
-    m_radian.D = ToRadians(297.85036 + 445267.111480*T - 0.0019142*T2 + T3/189474.0);
+    m_radian.D = ToRadians(297.85036 + 445267.111480 * T - 0.0019142 * T2 + T3 / 189474.0);
     /*太阳（地球）平近点角*/
-    m_radian.M = ToRadians(357.52772 + 35999.050340*T - 0.0001603*T2 - T3/300000.0);
+    m_radian.M = ToRadians(357.52772 + 35999.050340 * T - 0.0001603 * T2 - T3 / 300000.0);
     /*月亮平近点角*/
-    m_radian.Mp = ToRadians(134.96298 + 477198.867398*T + 0.0086972*T2 + T3/56250.0);
+    m_radian.Mp = ToRadians(134.96298 + 477198.867398 * T + 0.0086972 * T2 + T3 / 56250.0);
     /*月亮纬度参数*/
-    m_radian.F = ToRadians(93.27191 + 483202.017538*T - 0.0036825*T2 + T3/327270.0);
+    m_radian.F = ToRadians(93.27191 + 483202.017538 * T - 0.0036825 * T2 + T3 / 327270.0);
     /*黄道与月亮平轨道升交点黄经*/
-    m_radian.Omega = ToRadians(125.04452 - 1934.136261*T + 0.0020708*T2 + T3/450000.0);
+    m_radian.Omega = ToRadians(125.04452 - 1934.136261 * T + 0.0020708 * T2 + T3 / 450000.0);
     return m_radian;
 }
 
-double LunarAndFestivalAlgorithm::CalcEarthLongitudeNutation(double T)
+double CalcEarthLongitudeNutation(double T)
 {
     EarthNutationParameter m_radian;
-    m_radian = GetEarthNutationParameter(m_radian,T);
+    m_radian = GetEarthNutationParameter(m_radian, T);
     double result = 0.0;
     for (int i = 0; i < nuation.count(); i++) {
         double theta = nuation[i].D * m_radian.D + nuation[i].M * m_radian.M + nuation[i].Mp * m_radian.Mp
@@ -759,21 +770,21 @@ double LunarAndFestivalAlgorithm::CalcEarthLongitudeNutation(double T)
     return result * coefficient();
 }
 /**
- * @brief LunarAndFestivalAlgorithm::SecondsToDegrees 把角秒换算成角度
+ * @brief  SecondsToDegrees 把角秒换算成角度
  * @param seconds 角秒
  * @return 角度
  */
-double LunarAndFestivalAlgorithm::SecondsToDegrees(double seconds)
+double SecondsToDegrees(double seconds)
 {
     return seconds / 3600;
 }
 
-double LunarAndFestivalAlgorithm::SecondsToRadians(double seconds)
+double SecondsToRadians(double seconds)
 {
     return ToRadians(SecondsToDegrees(seconds));
 }
 
-double LunarAndFestivalAlgorithm::CalcEarthObliquityNutation(double dt)
+double CalcEarthObliquityNutation(double dt)
 {
     EarthNutationParameter m_radian;
     m_radian = GetEarthNutationParameter(m_radian, dt);
@@ -781,24 +792,60 @@ double LunarAndFestivalAlgorithm::CalcEarthObliquityNutation(double dt)
     for (int i = 0; i < nuation.count(); i++) {
         double theta = nuation[i].D * m_radian.D + nuation[i].M * m_radian.M + nuation[i].Mp * m_radian.Mp
                        + nuation[i].F * m_radian.F + nuation[i].Omega * m_radian.Omega;
-        result += (nuation[i].Cosine1 + nuation[i].Cosine2*dt) * qCos(theta);
+        result += (nuation[i].Cosine1 + nuation[i].Cosine2 * dt) * qCos(theta);
     }
     //乘以章动表的系数 0.0001 角秒
     return result * coefficient();
 }
 
-double LunarAndFestivalAlgorithm::ToJulianDateHMS(int year, int month, int day, int hour, int minute, double second)
+double ToJulianDateHMS(int year, int month, int day, int hour, int minute, double second)
 {
     int jdn = ToJulianDate(year, month, day);
     return double(jdn) + (double(hour) - 12) / 24.0 + double(minute) / 1440.0 + second / 86400.0;
 }
 
-int LunarAndFestivalAlgorithm::ToJulianDate(int year, int month, int day)
+int ToJulianDate(int year, int month, int day)
 {
     int a = (14 - month) / 12;
     int y = year + 4800 - a;
-    int m = month + 12*a - 3;
-    return day + (153 * m + 2) / 5 + 365 * y + y /4  - y / 100 + y / 400 - 32045;
+    int m = month + 12 * a - 3;
+    return day + (153 * m + 2) / 5 + 365 * y + y / 4 - y / 100 + y / 400 - 32045;
 }
 
+double coefficient()
+{
+    return SecondsToRadians(0.0001);
+}
 
+double lightAberration()
+{
+    return SecondsToRadians(20.4898);
+}
+
+//获取阳历节日
+QString GetSolarDayFestival(int year, int month, int day)
+{
+    QString festivals;
+    if ((month == 5) || (month == 6)) {
+        QString name = festivalForFatherAndMother(year, month, day);
+        if (!name.isEmpty()) {
+            festivals.append(name);
+        }
+    }
+    int key = month * 100 + day;
+    QString solarFestival = solarFestivals[key];
+    if (!solarFestival.isEmpty()) {
+        QStringList temlist = solarFestival.split(",");
+        for (int i = 0; i < temlist.size(); ++i) {
+            QString temname = temlist.at(i);
+            auto it = solarFestivalStarYear.find(temname);
+            if (it != solarFestivalStarYear.end() && *it < year) {
+                festivals.append(temname);
+                festivals.append(',');
+            }
+        }
+    }
+    if (festivals.endsWith(','))
+        festivals = festivals.left(festivals.length() - 1);
+    return festivals;
+}
