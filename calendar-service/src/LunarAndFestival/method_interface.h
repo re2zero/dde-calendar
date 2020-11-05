@@ -27,27 +27,11 @@
 #include "celestialbodies.h"
 #include "lunarandfestival.h"
 
-typedef struct _LunarDayInfo {
-    QString GanZhiYear;      // 农历年的干支
-    QString GanZhiMonth;     // 农历月的干支
-    QString GanZhiDay;       // 农历日的干支
-    QString LunarMonthName;  // 农历月名
-    QString LunarDayName;    // 农历日名
-    int32_t LunarLeapMonth;  // 未使用
-    QString Zodiac;          // 农历年的生肖
-    QString Term;            // 农历节气
-    QString SolarFestival;   // 公历节日
-    QString LunarFestival;   // 农历节日
-    int32_t Worktime;        // 未使用
-} LunarDayInfo;
-
 
 class LunarAndFestivalAlgorithm
 {
 public:
     LunarAndFestivalAlgorithm();
-
-    LunarDayInfo SolarToLunar(LunarDayInfo &lunardayinfo, int year, int month, int day);
 
     //获取当天的农历月名称
     QString GetLunarMonthName(lunarDayInfo &dayinfo);
@@ -67,6 +51,10 @@ public:
     QString GetGanZhiDay(lunarDayInfo &dayinfo);
     //获取当天的生肖，即年份的生肖
     QString GetYearZodiac(lunarDayInfo &dayinfo);
+    //获取二十四节气名
+    QString GetSolarTermName(int order);
+
+    QVector<double> get25SolarTermJDs(int year,int start);
 
     //弧度计算
     MoonEclipticParameter GetMoonEclipticParameter(MoonEclipticParameter &moonEclipticParameter, double T);
@@ -109,41 +97,11 @@ public:
     // 算法摘自 http://en.wikipedia.org/wiki/Julian_day
     int ToJulianDate(int year, int month, int day);
     double GetEarthEclipticLongitudeForSun(double jd);
-    /**
-     * 按儒略日计算地球的日心黄经
-     *
-     * 参数： jd 儒略日
-     * 返回 地球的日心黄经，单位是弧度(rad)
-     */
     double GetSunEclipticLongitudeForEarth(double jd);
     //计算儒略千年数
     double GetJulianThousandYears(double jd);
-    /**
-     * 按儒略日计算地球的日心黄纬
-     *
-     * 参数 jd  儒略日
-     * 返回 地球的日心黄纬，单位是弧度(rad)
-     */
     double GetSunEclipticLatitudeForEarth(double jd);
-    /**
-     * 用于把vsop87理论算出来的经度转换成fk5目视系统的经度的修正值，参考 Jean Meeus 的 Astronomical
-     * Algorithms 第二版(1998)第32章219页(32.3)式
-     *
-     * 参数 l
-     *            vsop87经度(rad)
-     * 参数 b
-     *            vsop87纬度(rad)
-     * 参数 jd
-     *            儒略日
-     * 返回 修正量(rad)
-     */
     double Vsop2Fk5LongitudeCorrection(double l, double b, double jd);
-    /**
-     * 按照儒略日计算地球和太阳的距离
-     *
-     * 参数 jd  儒略日
-     * 返回 地球和太阳的距离，单位是天文单位(au)
-     */
     double GetSunRadiusForEarth(double jd);
     /**
      * 计算修正后的太阳的地心视黄经
@@ -158,9 +116,31 @@ public:
         return SecondsToRadians(20.4898);
     }
     // NewtonIteration 牛顿迭代法求解方程的根
-    double NewtonIteration(double angle, double x0);
+    double NewtonIteration(double angle, double x0, bool IsGetSolarTermJD);
     // ModPi 把角度限制在[-π, π]之间
     double ModPi(double r);
+    // DmsToDegrees 把度分秒表示的角度换算成度
+    double DmsToDegrees(int degrees,int mintues,double seconds);
+    // DmsToSeconds 把度分秒表示的角度换算成角秒(arcsecond)
+    double DmsToSeconds(int d,int m,double s);
+    double DmsToRadians(int d,int m,int s);
+    double GetSolarTermJD(int year,int order);
+
+
+    bool IsLeapYear(int year);
+    int GetSolarMonthDays(int year,int month);
+    int GetWeekday(int y,int m,int d);
+    double GetDeltaT(int year,int month);
+    void GetDateFromJulianDay(double jd, int &yy, int &mm, int &dd);
+    void GetTimeFromJulianDay(double jd, int &hour, int &minute, int &second);
+    QDateTime GetDateTimeFromJulianDay(double jd);
+    double JDUTC2BeijingTime(double utcJD);
+    double JDBeijingTime2UTC(double bjtJD);
+    double getNewMoonJD(double jd0);
+    QVector<double> get15NewMoonJDs(double jd);
+    int deltaDays(QDateTime t1, QDateTime t2);
+    QString festivalForFatherAndMother(int year,int month,int day);
+
 };
 
 #endif // LUNARANDFESTIVALALGORITHM_H

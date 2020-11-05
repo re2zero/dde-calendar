@@ -26,7 +26,7 @@
 #include <QDateTime>
 
 // MonthInfo 保存农历月信息
-typedef struct _MonthInfo {
+typedef struct _lunarMonthInfo {
     int         LunarYear;        // 农历年
     int         Name ;            // 农历月名
     int         Days;             // 本月天数
@@ -36,7 +36,7 @@ typedef struct _MonthInfo {
 } lunarMonthInfo;
 
 // DayInfo 保存农历日信息
-typedef struct _DayInfo {
+typedef struct _lunarDayInfo {
     int         Year;              // 公历年
     int         Month;             // 公历月
     int         Day;               // 公历日
@@ -47,11 +47,11 @@ typedef struct _DayInfo {
     int         SolarTerm ;        // 0~23 二十四节气 ，-1 非节气
 } lunarDayInfo;
 
-typedef struct _Day {
+typedef struct _day {
     int Year;
     int Month;
     int Day;
-} dayinfo;
+} day;
 
 // Calendar 保存公历年内计算农历所需的信息
 typedef struct _Calendar {
@@ -67,6 +67,8 @@ static QMap<int, Calendar *> ccCache{};
 
 // 十二月名
 static QVector<QString> lunarMonthNames = {"正", "二", "三", "四", "五", "六", "七", "八", "九", "十", "冬", "腊"};
+
+static QVector<int> monthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 // 农历日名
 // 月份分为大月和小月，大月三十天，小月二十九天
@@ -148,6 +150,29 @@ enum solarTerms {
     LiChun,
     YuShui,
     JingZhe,
+};
+
+static  QMap<int, QString> solarFestival = {
+    {101,  "元旦"}
+    ,{214,  "情人节"}
+    ,{305,  "学雷锋纪念日"}
+    ,{308,  "妇女节"}
+    ,{312,  "植树节"}
+    ,{401,  "愚人节"}
+    ,{415,  "全民国家安全教育日"}
+    ,{501,  "劳动节"}
+    ,{504,  "青年节"}
+    ,{601,  "儿童节"}
+    ,{701,  "建党节,香港回归纪念日"}
+    ,{801,  "建军节"}
+    ,{903,  "抗日战争胜利纪念日"}
+    ,{910,  "教师节"}
+    ,{1001, "国庆节"}
+    ,{1213, "南京大屠杀死难者国家公祭日"}
+    ,{1220, "澳门回归纪念"}
+    ,{1224, "平安夜"}
+    ,{1225, "圣诞节"}
+    ,{1226, "毛泽东诞辰纪念"}
 };
 
 
