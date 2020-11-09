@@ -18,8 +18,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef COMMONDATASTRUCT_H
-#define COMMONDATASTRUCT_H
+#ifndef DBUSDATASTRUCT_H
+#define DBUSDATASTRUCT_H
 
 #include <QtCore/QDebug>
 #include <QtDBus/QtDBus>
@@ -76,19 +76,19 @@ public:
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiDayInfo &what);
 
 public:
-    QString mGanZhiYear;
-    QString mGanZhiMonth;
-    QString mGanZhiDay;
-    QString mLunarMonthName;
-    QString mLunarDayName;
-    qint32 mLunarLeapMonth;
-    QString mZodiac;
-    QString mTerm;
-    QString mSolarFestival;
-    QString mLunarFestival;
-    qint32 mWorktime;
-    QString mSuit;
-    QString mAvoid;
+    QString mGanZhiYear; //年干支
+    QString mGanZhiMonth; //月干支
+    QString mGanZhiDay; //日干支
+    QString mLunarMonthName; //农历月名称
+    QString mLunarDayName; //农历日名称
+    qint32 mLunarLeapMonth; //闰月
+    QString mZodiac; //生肖
+    QString mTerm; //农历节气
+    QString mSolarFestival; //阳历节日
+    QString mLunarFestival; //农历节日
+    qint32 mWorktime; //未使用
+    QString mSuit; //黄历宜
+    QString mAvoid; //黄历忌
 };
 
 class CaHuangLiMonthInfo
@@ -103,8 +103,8 @@ public:
     QString toJson();
 
 public:
-    qint32 mFirstDayWeek;
-    qint32 mDays;
+    qint32 mFirstDayWeek; //第一天所在周
+    qint32 mDays; //每月天数
     QVector<CaHuangLiDayInfo> mCaLunarDayInfo;
 };
 
@@ -113,4 +113,4 @@ Q_DECLARE_METATYPE(CaLunarMonthInfo)
 Q_DECLARE_METATYPE(CaHuangLiDayInfo)
 Q_DECLARE_METATYPE(CaHuangLiMonthInfo)
 
-#endif // COMMONDATASTRUCT_H
+#endif // DBUSDATASTRUCT_H
