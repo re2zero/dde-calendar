@@ -21,6 +21,8 @@
 #ifndef CALENDARHUANGLI_H
 #define CALENDARHUANGLI_H
 
+#include "dbmanager/huanglidatabase.h"
+
 #include <QObject>
 
 class HuangLiDataBase;
@@ -34,6 +36,8 @@ public:
     QString GetFestivalMonth(quint32 year, quint32 month);
     QString GetHuangLiDay(quint32 year, quint32 month, quint32 day);
     QString GetHuangLiMonth(quint32 year, quint32 month, bool fill);
+    CaLunarDayInfo GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day);
+    CaLunarMonthInfo GetLunarCalendarMonth(quint32 year, quint32 month, bool fill);
 
 private:
 signals:

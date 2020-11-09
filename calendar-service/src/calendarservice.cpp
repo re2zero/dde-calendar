@@ -43,19 +43,22 @@ QString CalendarService::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
     return m_huangli->GetHuangLiDay(year, month, day);
 }
 
+//获取指定公历月的黄历信息
 QString CalendarService::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
 {
     return m_huangli->GetHuangLiMonth(year, month, fill);
 }
 
+//通过公历回去阴历信息
 CaLunarDayInfo CalendarService::GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day)
 {
-    return CaLunarDayInfo {};
+    return m_huangli->GetLunarInfoBySolar(year, month, day);
 }
 
+//获取阴历月信息
 CaLunarMonthInfo CalendarService::GetLunarMonthCalendar(quint32 year, quint32 month, bool fill)
 {
-    return CaLunarMonthInfo {};
+    return m_huangli->GetLunarCalendarMonth(year, month, fill);
 }
 
 qint64 CalendarService::CreateJob(const QString &jobInfo)

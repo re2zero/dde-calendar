@@ -69,11 +69,15 @@ public:
 class CaHuangLiDayInfo
 {
 public:
-    CaHuangLiDayInfo() { mWorktime = mLunarLeapMonth = 0; }
+    CaHuangLiDayInfo()
+    {
+        mWorktime = mLunarLeapMonth = 0;
+    }
     static void registerMetaType();
     friend QDebug operator<<(QDebug argument, const CaHuangLiDayInfo &what);
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiDayInfo &what);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiDayInfo &what);
+    QString toJson();
 
 public:
     QString mGanZhiYear; //年干支

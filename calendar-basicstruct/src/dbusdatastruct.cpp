@@ -110,6 +110,30 @@ void CaHuangLiDayInfo::registerMetaType()
     qDBusRegisterMetaType<CaHuangLiDayInfo>();
 }
 
+QString CaHuangLiDayInfo::toJson()
+{
+    QJsonDocument doc;
+    QJsonObject obj;
+
+    obj.insert("Suit", mSuit);
+    obj.insert("Avoid", mAvoid);
+    obj.insert("Worktime", mWorktime);
+    obj.insert("LunarFestival", mLunarFestival);
+    obj.insert("SolarFestival", mSolarFestival);
+    obj.insert("Term", mTerm);
+    obj.insert("Zodiac", mZodiac);
+    obj.insert("LunarLeapMonth", mLunarLeapMonth);
+    obj.insert("LunarDayName", mLunarDayName);
+    obj.insert("LunarMonthName", mLunarMonthName);
+    obj.insert("GanZhiDay", mGanZhiDay);
+    obj.insert("GanZhiMonth", mGanZhiMonth);
+    obj.insert("GanZhiYear", mGanZhiYear);
+
+    doc.setObject(obj);
+    QString strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    return strJson;
+}
+
 QDebug operator<<(QDebug argument, const CaHuangLiDayInfo &what)
 {
     argument << what.mSuit << what.mAvoid;
