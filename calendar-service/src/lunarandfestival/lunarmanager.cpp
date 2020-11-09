@@ -105,7 +105,7 @@ SolarMonthInfo GetSolarMonthCalendar(qint32 year, qint32 month, bool fill)
 QList<stDay> GetMonthDays(qint32 year, qint32 month, qint32 start, qint32 days)
 {
     QList<stDay> DayInfo;
-    for (int day = start; day < days; day++) {
+    for (int day = start; day <= days; day++) {
         stDay stday = {year, month, day};
         DayInfo.append(stday);
     }
@@ -119,9 +119,10 @@ QList<int> GetPreMonth(qint32 year, qint32 month)
     if (month == 1) {
         preYear = year - 1;
         preMonth = 12;
+    } else {
+        preYear = year;
+        preMonth = month - 1;
     }
-    preYear = year;
-    preMonth = month - 1;
     datas.append(preYear);
     datas.append(preMonth);
     return datas;
@@ -134,9 +135,10 @@ QList<int> GetNextMonth(qint32 year, qint32 month)
     if (month == 12) {
         nextYear = year + 1;
         nextMonth = 1;
+    } else {
+        nextYear = year;
+        nextMonth = month + 1;
     }
-    nextYear = year;
-    nextMonth = month + 1;
     datas.append(nextYear);
     datas.append(nextMonth);
     return datas;

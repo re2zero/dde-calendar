@@ -67,6 +67,7 @@ lunarDayInfo LunarCalendar::SolarDayToLunarDay(qint32 month, qint32 day)
             break;
         }
     }
+    dayinfo.MonthZhi = monthZhi;
     // 求农历年、月、日
     foreach (lunarMonthInfo lm, Months) {
         int dd = deltaDays(lm.ShuoTime, dt) + 1;
@@ -163,7 +164,7 @@ void LunarCalendar::calcLeapMonth()
 qint32 LunarCalendar::getSolarTermInfo(qint32 month, qint32 day)
 {
     int index = 2 * month - 1;
-    qint32 SolarTerm = 0;
+    qint32 SolarTerm = -1;
     QDateTime dt1 = SolarTermTimes[index];
     QDateTime dt2 = SolarTermTimes[index + 1];
     if (dt1.date().day() == day) {

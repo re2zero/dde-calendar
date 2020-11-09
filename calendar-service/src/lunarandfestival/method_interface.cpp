@@ -20,8 +20,8 @@
 */
 #include "method_interface.h"
 
-#include "QtCore/qmath.h"
-
+#include <QtMath>
+#include <QDebug>
 /**
  * @brief  GetMonthName 获取当天的农历月名称
  * @param dayinfo 农历日信息
@@ -112,7 +112,7 @@ QString GetGanZhiYear(lunarDayInfo &dayinfo)
 QString GetGanZhiDay(lunarDayInfo &dayinfo)
 {
     QDateTime unixDateTime = QDateTime(QDate(dayinfo.Year, dayinfo.Month, dayinfo.Day), QTime(0, 0, 0, 0), Qt::TimeSpec::UTC);
-    qint64 unixTime = unixDateTime.currentSecsSinceEpoch();
+    qint64 unixTime = unixDateTime.toMSecsSinceEpoch() / 1000;
     int dayCyclical = int(unixTime / 86400) + 29219 + 18;
     return GetTianGanDiZhi(dayCyclical);
 }

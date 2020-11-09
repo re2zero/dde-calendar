@@ -20,6 +20,10 @@
 */
 #include "dbusdatastruct.h"
 
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonArray>
+
 void CaLunarDayInfo::registerMetaType()
 {
     qRegisterMetaType<CaLunarDayInfo>();
@@ -154,7 +158,32 @@ void CaHuangLiMonthInfo::registerMetaType()
 
 QString CaHuangLiMonthInfo::toJson()
 {
-    return "";
+    QJsonArray daysarr;
+    QJsonDocument doc;
+    QJsonObject obj;
+    obj.insert("Days", mDays);
+    obj.insert("FirstDayWeek", mFirstDayWeek);
+    foreach (CaHuangLiDayInfo dayinfo, mCaLunarDayInfo) {
+        QJsonObject dayobj;
+        dayobj.insert("Suit", dayinfo.mSuit);
+        dayobj.insert("Avoid", dayinfo.mAvoid);
+        dayobj.insert("Worktime", dayinfo.mWorktime);
+        dayobj.insert("LunarFestival", dayinfo.mLunarFestival);
+        dayobj.insert("SolarFestival", dayinfo.mSolarFestival);
+        dayobj.insert("Term", dayinfo.mTerm);
+        dayobj.insert("Zodiac", dayinfo.mZodiac);
+        dayobj.insert("LunarLeapMonth", dayinfo.mLunarLeapMonth);
+        dayobj.insert("LunarDayName", dayinfo.mLunarDayName);
+        dayobj.insert("LunarMonthName", dayinfo.mLunarMonthName);
+        dayobj.insert("GanZhiDay", dayinfo.mGanZhiDay);
+        dayobj.insert("GanZhiMonth", dayinfo.mGanZhiMonth);
+        dayobj.insert("GanZhiYear", dayinfo.mGanZhiYear);
+        daysarr.append(dayobj);
+    }
+    obj.insert("Datas", daysarr);
+    doc.setObject(obj);
+    QString strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    return strJson;
 }
 
 QDebug operator<<(QDebug argument, const CaHuangLiMonthInfo &what)

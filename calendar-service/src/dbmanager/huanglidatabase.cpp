@@ -66,7 +66,7 @@ QString HuangLiDataBase::QueryFestivalList(quint32 year, quint8 month)
             arr.append(obj);
         }
         doc.setArray(arr);
-        strjson = QString::fromUtf8(doc.toJson());
+        strjson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
     } else {
         qDebug() << query.lastError();
     }

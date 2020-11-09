@@ -68,7 +68,10 @@ QString CalendarHuangLi::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
         hldayinfo.mZodiac = lunardayinfo.Zodiac;
         hldayinfo.mWorktime = lunardayinfo.Worktime;
         monthinfo.mCaLunarDayInfo.append(hldayinfo);
+        //        qDebug() << hldayinfo.mGanZhiYear << hldayinfo.mGanZhiMonth << hldayinfo.mGanZhiDay
+        //                 << hldayinfo.mLunarDayName << hldayinfo.mLunarFestival << hldayinfo.mLunarFestival
+        //                 << hldayinfo.mLunarLeapMonth << hldayinfo.mLunarMonthName << hldayinfo.mSolarFestival
+        //                 << hldayinfo.mTerm << hldayinfo.mZodiac << hldayinfo.mWorktime;
     }
-    qDebug() << monthinfo;
     return monthinfo.toJson();
 }

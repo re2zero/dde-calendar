@@ -68,6 +68,7 @@ typedef struct _Calendar {
 } Calendar;
 
 typedef struct _LunarDayInfo {
+    _LunarDayInfo() { LunarLeapMonth = 0; }
     QString GanZhiYear; // 农历年的干支
     QString GanZhiMonth; // 农历月的干支
     QString GanZhiDay; // 农历日的干支
