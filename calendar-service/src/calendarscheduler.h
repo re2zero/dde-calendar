@@ -31,6 +31,7 @@ public:
     explicit CalendarScheduler(QObject *parent = nullptr);
 
     QString GetType(qint64 id);
+    QString GetTypes();
 
 signals:
 

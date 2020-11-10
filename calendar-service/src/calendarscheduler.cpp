@@ -23,6 +23,7 @@
 
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonArray>
 
 CalendarScheduler::CalendarScheduler(QObject *parent)
     : QObject(parent)
@@ -46,5 +47,22 @@ QString CalendarScheduler::GetType(qint64 id)
             break;
         }
     }
+    return strres;
+}
+
+QString CalendarScheduler::GetTypes()
+{
+    QString strres;
+    QJsonArray jsonArray;
+    QJsonDocument doc;
+    foreach (auto var, globalPredefinedTypes) {
+        QJsonObject obj;
+        obj.insert("ID", static_cast<int>(var.ID));
+        obj.insert("Name", var.Name);
+        obj.insert("Color", var.Color);
+        jsonArray.append(obj);
+    }
+    doc.setArray(jsonArray);
+    strres = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
     return strres;
 }

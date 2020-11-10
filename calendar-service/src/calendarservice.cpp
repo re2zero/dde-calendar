@@ -106,7 +106,7 @@ QString CalendarService::GetType(qint64 id)
 
 QString CalendarService::GetTypes()
 {
-    return "";
+    return m_scheduler->GetTypes();
 }
 
 QString CalendarService::QueryJobs(const QString &params)
