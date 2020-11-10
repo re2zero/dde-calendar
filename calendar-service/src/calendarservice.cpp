@@ -71,8 +71,10 @@ qint64 CalendarService::CreateType(const QString &typeInfo)
     return 0;
 }
 
+// 根据日程id来删除日程记录
 void CalendarService::DeleteJob(qint64 id)
 {
+    m_scheduler->DeleteJob(id);
 }
 
 void CalendarService::DeleteType(qint64 id)
@@ -99,11 +101,13 @@ QString CalendarService::GetJobsWithRule(quint32 startYear, quint32 startMonth, 
     return "";
 }
 
+//根据id返回指定日程类型
 QString CalendarService::GetType(qint64 id)
 {
     return m_scheduler->GetType(id);
 }
 
+//返回所有日程类型
 QString CalendarService::GetTypes()
 {
     return m_scheduler->GetTypes();

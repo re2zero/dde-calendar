@@ -29,7 +29,8 @@ SchedulerDatabase::SchedulerDatabase(QObject *parent)
     : QObject(parent)
 {
     QString dbpath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/.config/deepin/dde-daemon/calendar/scheduler.db");
-    m_database = QSqlDatabase::addDatabase("QSQLITE");
+    // 重复调用QSQLITE会导致数据库连接覆盖导致失败，需指定每部分的连接名称
+    m_database = QSqlDatabase::addDatabase("QSQLITE", "SchedulerDatabase");
     m_database.setDatabaseName(dbpath);
     m_database.open();
     if (m_database.isOpen()) {
@@ -59,6 +60,20 @@ void SchedulerDatabase::CreateTables()
                            "\"remind\" varchar(255),\"ignore\" varchar(255) , \"title_pinyin\" varchar(255))")
              << query.lastError();
     qDebug() << query.exec("CREATE INDEX idx_jobs_deleted_at ON \"jobs\"(deleted_at)") << query.lastError();
+    if (query.isActive()) {
+        query.finish();
+    }
+    m_database.commit();
+}
+
+// 执行删除日程的数据库SQL命令，以ID为依据
+void SchedulerDatabase::DeleteJob(qint64 id)
+{
+    QString strsql = QString("DELETE FROM jobs WHERE id = %1").arg(id);
+    QSqlQuery query(m_database);
+    if (!query.exec(strsql)) {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
     if (query.isActive()) {
         query.finish();
     }
