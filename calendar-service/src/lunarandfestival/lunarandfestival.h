@@ -25,31 +25,18 @@
 #include <QMap>
 #include <QDateTime>
 
-// MonthInfo 保存农历月信息
-typedef struct _lunarMonthInfo {
-    _lunarMonthInfo()
-    {
-        IsLeap = false;
-    }
-    int         LunarYear;        // 农历年
-    int         Name ;            // 农历月名
-    int         Days;             // 本月天数
-    double      ShuoJD;           // 本月朔日时间 北京时间 儒略日
-    QDateTime   ShuoTime;         // 本月朔日时间 北京时间
-    bool        IsLeap;           // 是否为闰月
-} lunarMonthInfo;
-
-// DayInfo 保存农历日信息
-typedef struct _lunarDayInfo {
-    int         Year;              // 公历年
-    int         Month;             // 公历月
-    int         Day;               // 公历日
-    int         LunarYear;         // 农历年
-    int         LunarDay ;         // 农历日
-    lunarMonthInfo LunarMonth; // 农历月
-    int         MonthZhi;          // 农历日所在的月的地支
-    int         SolarTerm ;        // 0~23 二十四节气 ，-1 非节气
-} lunarDayInfo;
+// MonthInfo 保存农历信息
+typedef struct _lunarInfo {
+    int LunarMonthName; // 农历月名
+    int LunarMonthDays; // 本月天数
+    double ShuoJD; // 本月朔日时间 北京时间 儒略日
+    QDateTime ShuoTime; // 本月朔日时间 北京时间
+    bool IsLeap = false; // 是否为闰月
+    int LunarYear; // 农历年
+    int LunarDay; // 农历日
+    int MonthZhi; // 农历日所在的月的地支
+    int SolarTerm; // 0~23 二十四节气 ，-1 非节气
+} lunarInfo;
 
 typedef struct _day {
     int Year;
@@ -57,18 +44,11 @@ typedef struct _day {
     int Day;
 } stDay;
 
-// Calendar 保存公历年内计算农历所需的信息
-typedef struct _Calendar {
-    int Year;                                  // 公历年份
-    QVector<double> SolarTermJDs;              // 相关的 25 节气 北京时间 儒略日
-    QVector<QDateTime> SolarTermTimes;         // 对应 SolarTermJDs 转换为 time.Time 的时间
-    QVector<double> NewMoonJDs;                // 相关的 15 个朔日 北京时间 儒略日
-    QVector<lunarMonthInfo *> Months;          // 月
-    QVector<int> solarTermYearDays;            // 十二节的 yearDay 列表
-} Calendar;
-
 typedef struct _LunarDayInfo {
-    _LunarDayInfo() { LunarLeapMonth = 0; }
+    _LunarDayInfo()
+    {
+        LunarLeapMonth = 0;
+    }
     QString GanZhiYear; // 农历年的干支
     QString GanZhiMonth; // 农历月的干支
     QString GanZhiDay; // 农历日的干支
@@ -207,7 +187,8 @@ static QMap<int, QString> solarFestivals = {
     {1220, "澳门回归纪念"},
     {1224, "平安夜"},
     {1225, "圣诞节"},
-    {1226, "毛泽东诞辰纪念"}};
+    {1226, "毛泽东诞辰纪念"}
+};
 static QMap<QString, int> solarFestivalStarYear = {
     {"元旦", 1949},
     {"情人节", 0},
@@ -229,6 +210,7 @@ static QMap<QString, int> solarFestivalStarYear = {
     {"澳门回归纪念", 1999},
     {"平安夜", 0},
     {"圣诞节", 0},
-    {"毛泽东诞辰纪念", 1893}};
+    {"毛泽东诞辰纪念", 1893}
+};
 
 #endif // ABOUTLUNARANDFESTIVAL_H

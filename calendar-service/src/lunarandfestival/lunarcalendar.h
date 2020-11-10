@@ -31,7 +31,7 @@ class LunarCalendar
 public:
     static LunarCalendar *GetLunarCalendar(qint32 year);
     SolarMonthInfo GetSolarMonthCalendar(qint32 year, qint32 month, bool fill);
-    lunarDayInfo SolarDayToLunarDay(qint32 month, qint32 day);
+    lunarInfo SolarDayToLunarDay(qint32 month, qint32 day);
 
 private:
     LunarCalendar(qint32 year);
@@ -47,7 +47,7 @@ private:
     QVector<double> SolarTermJDs; // 相关的 25 节气 北京时间 儒略日
     QVector<QDateTime> SolarTermTimes; // 对应 SolarTermJDs 转换为 time.Time 的时间
     QVector<double> NewMoonJDs; // 相关的 15 个朔日 北京时间 儒略日
-    QVector<lunarMonthInfo> Months; // 月
+    QVector<lunarInfo> Months; // 月
     QVector<int> solarTermYearDays; // 十二节的 yearDay 列表
 };
 

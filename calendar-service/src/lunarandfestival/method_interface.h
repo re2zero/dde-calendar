@@ -28,11 +28,11 @@
 #include <QMap>
 
 //获取当天的农历月名称
-QString GetLunarMonthName(lunarDayInfo &dayinfo);
+QString GetLunarMonthName(int lunarmonthname, bool isleap = false);
 //获取当天的农历日名
-QString GetLunarDayName(lunarDayInfo &dayinfo);
+QString GetLunarDayName(int lundayname);
 //获取当天的农历节日名,没有则返回空字符串
-QString GetLunarDayFestival(lunarDayInfo &dayinfo);
+QString GetLunarDayFestival(int monthname, int lunarday, int lunarmonthdays, int solarterm);
 //获取公历节日,没有则返回空字符串
 QString GetSolarDayFestival(int year, int month, int day);
 //获取二十四节气名,如果没有则返回空
@@ -40,18 +40,18 @@ QString GetSolarTermName(int order);
 //获取天干地支，将数字转换为天干地支
 QString GetTianGanDiZhi(int num);
 //获取当天的月干支
-QString GetGanZhiMonth(lunarDayInfo &dayinfo);
+QString GetGanZhiMonth(int year, int monthzhi);
 //获取当天的年干支
-QString GetGanZhiYear(lunarDayInfo &dayinfo);
+QString GetGanZhiYear(int lunaryear);
 //获取当天的日干支
-QString GetGanZhiDay(lunarDayInfo &dayinfo);
+QString GetGanZhiDay(int year, int month, int day);
 //获取当天的生肖，即年份的生肖
-QString GetYearZodiac(lunarDayInfo &dayinfo);
+QString GetYearZodiac(int lunaryear);
 
 QVector<double> get25SolarTermJDs(int year, int start);
 
 //弧度计算
-MoonEclipticParameter GetMoonEclipticParameter(MoonEclipticParameter &moonEclipticParameter, double T);
+void GetMoonEclipticParameter(MoonEclipticParameter &moonEclipticParameter, double T);
 //角度转换为弧度
 double ToRadians(double degrees);
 //把角度限制在[0, 2π]之间
@@ -68,7 +68,7 @@ double GetMoonEclipticLongitudeEC(double julianDay);
 //计算儒略世纪数
 double GetJulianCentury(double julianDay);
 //返回弧度
-EarthNutationParameter GetEarthNutationParameter(EarthNutationParameter &earthNutationParameter, double T);
+void GetEarthNutationParameter(EarthNutationParameter &earthNutationParameter, double T);
 //计算某时刻的黄经章动干扰量
 double CalcEarthLongitudeNutation(double T);
 //把角秒换算成角度

@@ -4,13 +4,6 @@
 #include <QDBusError>
 #include "calendarservice.h"
 
-void test(CalendarService &service)
-{
-    qDebug() << service.GetType(4);
-    qDebug() << service.GetFestivalMonth(2020, 1);
-    qDebug() << service.GetLunarMonthCalendar(2020,11,false);
-}
-
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -27,7 +20,7 @@ int main(int argc, char *argv[])
         exit(0x0001);
     }
     CalendarService service;
-    test(service);
+
     qDebug() << "sessionBus.registerService success" << Dtk::Core::DLogManager::getlogFilePath();
     if (!sessionBus.registerObject(CalendarPath,
                                    &service,

@@ -22,45 +22,52 @@
 
 #include <QtMath>
 #include <QDebug>
+
 /**
- * @brief  GetMonthName 获取当天的农历月名称
- * @param dayinfo 农历日信息
+ * @brief GetLunarMonthName 获取当天的农历月名称
+ * @param lunarmonthname 阴历月份
+ * @param isleap 是否为闰月
  * @return 阴历月份
  */
-QString GetLunarMonthName(lunarDayInfo &dayinfo)
+QString GetLunarMonthName(int lunarmonthname, bool isleap)
 {
-    QString monthName = lunarMonthNames[dayinfo.LunarMonth.Name - 1];
-    if (dayinfo.LunarMonth.IsLeap) {
-        return "闰" + monthName + "月";
+    QString monthname = lunarMonthNames[lunarmonthname - 1];
+    if (isleap) {
+        return "闰" + monthname + "月";
     }
-    return monthName + "月";
+    return monthname + "月";
 }
+
 /**
- * @brief  GetLunarDayName 获取当天的农历日名
- * @param dayinfo 农历日信息
- * @return 阴历日
+ * @brief GetLunarDayName 获取当天的农历日名
+ * @param lundayname 阴历哪一天
+ * @return  阴历日
  */
-QString GetLunarDayName(lunarDayInfo &dayinfo)
+QString GetLunarDayName(int lundayname)
 {
-    return lunarDayNames[dayinfo.LunarDay - 1];
+    return lunarDayNames[lundayname - 1];
 }
+
 /**
- * @brief  GetDayFestival 获取当天的农历节日名,没有则返回空字符串
- * @param dayinfo 农历日信息
- * @return 　农历节日名称
+ * @brief GetLunarDayFestival 获取当天的农历节日名,没有则返回空字符串
+ * @param monthname 公历月份
+ * @param lunarday 阴历日
+ * @param lunarmonthdays 阴历月份
+ * @param solarterm 第几个节气
+ * @return 农历节日名称
  */
-QString GetLunarDayFestival(lunarDayInfo &dayinfo)
+QString GetLunarDayFestival(int monthname, int lunarday, int lunarmonthdays, int solarterm)
 {
-    int key = dayinfo.LunarMonth.Name * 100 + dayinfo.LunarDay;
+    int key = monthname * 100 + lunarday;
     if (lunarFestival.contains(key)) {
         return lunarFestival[key];
     }
 
     // 农历腊月（十二月）的最后个一天
-    if (dayinfo.LunarMonth.Name == 12 && dayinfo.LunarDay == dayinfo.LunarMonth.Days) {
+    if (monthname == 12 && lunarday == lunarmonthdays) {
         return "除夕";
     }
-    if (dayinfo.SolarTerm == QingMing) {
+    if (solarterm == QingMing) {
         return "清明节";
     }
     return "";
@@ -70,7 +77,7 @@ QString GetLunarDayFestival(lunarDayInfo &dayinfo)
  * @param order　节气枚举值
  * @return 节气名称
  */
-QString GetSolarTermsName(int order)
+QString GetSolarTermName(int order)
 {
     if (0 <= order && order <= 23) {
         return SolarTermNames[order];
@@ -86,52 +93,51 @@ QString GetTianGanDiZhi(int num)
 {
     return TianGan[num % 10] + DiZhi[num % 12];
 }
+
 /**
- * @brief  GetGanZhiMonth 获取当天的月干支
- * @param dayinfo　农历日信息
+ * @brief GetGanZhiMonth 获取当天的月干支
+ * @param year 公历年
+ * @param monthzhi 月份的地支
  * @return 天干地支
  */
-QString GetGanZhiMonth(lunarDayInfo &dayinfo)
+QString GetGanZhiMonth(int year, int monthzhi)
 {
-    return GetTianGanDiZhi((dayinfo.Year - 1900) * 12 + dayinfo.MonthZhi + 12);
+    return GetTianGanDiZhi((year - 1900) * 12 + monthzhi + 12);
 }
+
 /**
- * @brief  GetGanZhiYear 获取当天的年干支
- * @param dayinfo 农历日信息
+ * @brief GetGanZhiYear 获取当天的年干支
+ * @param lunaryear 阴历年份
  * @return 天干地支
  */
-QString GetGanZhiYear(lunarDayInfo &dayinfo)
+QString GetGanZhiYear(int lunaryear)
 {
-    return GetTianGanDiZhi(dayinfo.LunarYear - 1864);
+    return GetTianGanDiZhi(lunaryear - 1864);
 }
+
 /**
- * @brief  GetGanZhiDay 获取当天的日干支
- * @param dayinfo 农历日信息
+ * @brief GetGanZhiDay 获取当天的日干支
+ * @param year 公历年
+ * @param month 公历月
+ * @param day 公历日
  * @return 天干地支
  */
-QString GetGanZhiDay(lunarDayInfo &dayinfo)
+QString GetGanZhiDay(int year, int month, int day)
 {
-    QDateTime unixDateTime = QDateTime(QDate(dayinfo.Year, dayinfo.Month, dayinfo.Day), QTime(0, 0, 0, 0), Qt::TimeSpec::UTC);
+    QDateTime unixDateTime = QDateTime(QDate(year, month, day), QTime(0, 0, 0, 0), Qt::TimeSpec::UTC);
     qint64 unixTime = unixDateTime.toMSecsSinceEpoch() / 1000;
     int dayCyclical = int(unixTime / 86400) + 29219 + 18;
     return GetTianGanDiZhi(dayCyclical);
 }
+
 /**
- * @brief  GetYearZodiac 获取当天的生肖，即年份的生肖
- * @param dayinfo 农历日信息
+ * @brief GetYearZodiac 获取当天的生肖，即年份的生肖
+ * @param lunaryear 阴历年份
  * @return 年份生肖
  */
-QString GetYearZodiac(lunarDayInfo &dayinfo)
+QString GetYearZodiac(int lunaryear)
 {
-    return Animals[(dayinfo.LunarYear - 4) % 12];
-}
-
-QString GetSolarTermName(int order)
-{
-    if (0 <= order && order <= 23) {
-        return SolarTermNames[order];
-    }
-    return "";
+    return Animals[(lunaryear - 4) % 12];
 }
 
 QVector<double> get25SolarTermJDs(int year, int start)
@@ -626,27 +632,24 @@ QString festivalForFatherAndMother(int year, int month, int day)
  * @param T 儒略世纪数
  * @return 弧度
  */
-MoonEclipticParameter GetMoonEclipticParameter(MoonEclipticParameter &moonEclipticParameter, double T)
+void GetMoonEclipticParameter(MoonEclipticParameter &moonEclipticParameter, double T)
 {
-    MoonEclipticParameter m_radian = moonEclipticParameter;
     double T2 = T * T;
     double T3 = T2 * T;
     double T4 = T3 * T;
 
     /*月球平黄经*/
-    m_radian.Lp = Mod2Pi(ToRadians(218.3164591 + 481267.88134236 * T - 0.0013268 * T2 + T3 / 538841.0 - T4 / 65194000.0));
+    moonEclipticParameter.Lp = Mod2Pi(ToRadians(218.3164591 + 481267.88134236 * T - 0.0013268 * T2 + T3 / 538841.0 - T4 / 65194000.0));
     /*月日距角*/
-    m_radian.D = Mod2Pi(ToRadians(297.8502042 + 445267.1115168 * T - 0.0016300 * T2 + T3 / 545868.0 - T4 / 113065000.0));
+    moonEclipticParameter.D = Mod2Pi(ToRadians(297.8502042 + 445267.1115168 * T - 0.0016300 * T2 + T3 / 545868.0 - T4 / 113065000.0));
     /*太阳平近点角*/
-    m_radian.M = Mod2Pi(ToRadians(357.5291092 + 35999.0502909 * T - 0.0001536 * T2 + T3 / 24490000.0));
+    moonEclipticParameter.M = Mod2Pi(ToRadians(357.5291092 + 35999.0502909 * T - 0.0001536 * T2 + T3 / 24490000.0));
     /*月亮平近点角*/
-    m_radian.Mp = Mod2Pi(ToRadians(134.9634114 + 477198.8676313 * T + 0.0089970 * T2 + T3 / 69699.0 - T4 / 14712000.0));
+    moonEclipticParameter.Mp = Mod2Pi(ToRadians(134.9634114 + 477198.8676313 * T + 0.0089970 * T2 + T3 / 69699.0 - T4 / 14712000.0));
     /*月球经度参数(到升交点的平角距离)*/
-    m_radian.F = Mod2Pi(ToRadians(93.2720993 + 483202.0175273 * T - 0.0034029 * T2 - T3 / 3526000.0 + T4 / 863310000.0));
+    moonEclipticParameter.F = Mod2Pi(ToRadians(93.2720993 + 483202.0175273 * T - 0.0034029 * T2 - T3 / 3526000.0 + T4 / 863310000.0));
     /* 反映地球轨道偏心率变化的辅助参量 */
-    m_radian.E = 1 - 0.002516 * T - 0.0000074 * T2;
-
-    return m_radian;
+    moonEclipticParameter.E = 1 - 0.002516 * T - 0.0000074 * T2;
 }
 /**
  * @brief  ToRadians 角度转换为弧度
@@ -709,7 +712,7 @@ double GetMoonEclipticLongitudeEC(double julianDay)
 {
     MoonEclipticParameter m_radian;
     double T = GetJulianCentury(julianDay);
-    m_radian = GetMoonEclipticParameter(m_radian, T);
+    GetMoonEclipticParameter(m_radian, T);
     // Lp 计算是正确的
     /*计算月球地心黄经周期项*/
     double EI = CalcMoonECLongitudePeriodic(m_radian);
@@ -737,29 +740,27 @@ double GetJulianCentury(double julianDay)
  * @param T 儒略世纪数
  * @return 弧度
  */
-EarthNutationParameter GetEarthNutationParameter(EarthNutationParameter &earthNutationParameter, double T)
+void GetEarthNutationParameter(EarthNutationParameter &earthNutationParameter, double T)
 {
-    EarthNutationParameter m_radian = earthNutationParameter;
     double T2 = T * T;
     double T3 = T2 * T;
 
     /*平距角（如月对地心的角距离）*/
-    m_radian.D = ToRadians(297.85036 + 445267.111480 * T - 0.0019142 * T2 + T3 / 189474.0);
+    earthNutationParameter.D = ToRadians(297.85036 + 445267.111480 * T - 0.0019142 * T2 + T3 / 189474.0);
     /*太阳（地球）平近点角*/
-    m_radian.M = ToRadians(357.52772 + 35999.050340 * T - 0.0001603 * T2 - T3 / 300000.0);
+    earthNutationParameter.M = ToRadians(357.52772 + 35999.050340 * T - 0.0001603 * T2 - T3 / 300000.0);
     /*月亮平近点角*/
-    m_radian.Mp = ToRadians(134.96298 + 477198.867398 * T + 0.0086972 * T2 + T3 / 56250.0);
+    earthNutationParameter.Mp = ToRadians(134.96298 + 477198.867398 * T + 0.0086972 * T2 + T3 / 56250.0);
     /*月亮纬度参数*/
-    m_radian.F = ToRadians(93.27191 + 483202.017538 * T - 0.0036825 * T2 + T3 / 327270.0);
+    earthNutationParameter.F = ToRadians(93.27191 + 483202.017538 * T - 0.0036825 * T2 + T3 / 327270.0);
     /*黄道与月亮平轨道升交点黄经*/
-    m_radian.Omega = ToRadians(125.04452 - 1934.136261 * T + 0.0020708 * T2 + T3 / 450000.0);
-    return m_radian;
+    earthNutationParameter.Omega = ToRadians(125.04452 - 1934.136261 * T + 0.0020708 * T2 + T3 / 450000.0);
 }
 
 double CalcEarthLongitudeNutation(double T)
 {
     EarthNutationParameter m_radian;
-    m_radian = GetEarthNutationParameter(m_radian, T);
+    GetEarthNutationParameter(m_radian, T);
     double result = 0.0;
     for (int i = 0; i < nuation.count(); i++) {
         double theta = nuation[i].D * m_radian.D + nuation[i].M * m_radian.M + nuation[i].Mp * m_radian.Mp
@@ -787,7 +788,7 @@ double SecondsToRadians(double seconds)
 double CalcEarthObliquityNutation(double dt)
 {
     EarthNutationParameter m_radian;
-    m_radian = GetEarthNutationParameter(m_radian, dt);
+    GetEarthNutationParameter(m_radian, dt);
     double result = 0.0;
     for (int i = 0; i < nuation.count(); i++) {
         double theta = nuation[i].D * m_radian.D + nuation[i].M * m_radian.M + nuation[i].Mp * m_radian.Mp

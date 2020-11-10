@@ -49,12 +49,9 @@ SolarMonthInfo LunarCalendar::GetSolarMonthCalendar(qint32 year, qint32 month, b
 }
 
 //指定年份内公历日期转换为农历日
-lunarDayInfo LunarCalendar::SolarDayToLunarDay(qint32 month, qint32 day)
+lunarInfo LunarCalendar::SolarDayToLunarDay(qint32 month, qint32 day)
 {
-    lunarDayInfo dayinfo;
-    dayinfo.Year = Year;
-    dayinfo.Month = month;
-    dayinfo.Day = day;
+    lunarInfo dayinfo;
     QDateTime dt(QDate(Year, month, day), QTime(0, 0, 0, 0), Qt::TimeSpec::UTC);
     int yd = dt.date().dayOfYear();
 
@@ -69,11 +66,15 @@ lunarDayInfo LunarCalendar::SolarDayToLunarDay(qint32 month, qint32 day)
     }
     dayinfo.MonthZhi = monthZhi;
     // 求农历年、月、日
-    foreach (lunarMonthInfo lm, Months) {
+    foreach (lunarInfo lm, Months) {
         int dd = deltaDays(lm.ShuoTime, dt) + 1;
-        if (1 <= dd && dd <= lm.Days) {
+        if (1 <= dd && dd <= lm.LunarMonthDays) {
             dayinfo.LunarYear = lm.LunarYear;
-            dayinfo.LunarMonth = lm;
+            dayinfo.LunarMonthName = lm.LunarMonthName;
+            dayinfo.LunarMonthDays = lm.LunarMonthDays;
+            dayinfo.ShuoJD = lm.ShuoJD;
+            dayinfo.ShuoTime = lm.ShuoTime;
+            dayinfo.IsLeap = lm.IsLeap;
             dayinfo.LunarDay = dd;
             break;
         }
@@ -115,12 +116,12 @@ void LunarCalendar::fillMonths()
     //采用夏历建寅，冬至所在月份为农历11月(冬月)
     int yuejian = 11;
     for (int i = 0; i < 14; i++) {
-        lunarMonthInfo info;
+        lunarInfo info;
         if (yuejian <= 12) {
-            info.Name = yuejian;
+            info.LunarMonthName = yuejian;
             info.LunarYear = Year - 1;
         } else {
-            info.Name = yuejian - 12;
+            info.LunarMonthName = yuejian - 12;
             info.LunarYear = Year;
         }
 
@@ -128,7 +129,7 @@ void LunarCalendar::fillMonths()
         info.ShuoTime = GetDateTimeFromJulianDay(info.ShuoJD);
         double nextShuoJD = NewMoonJDs[i + 1];
         QDateTime nextShuoTime = GetDateTimeFromJulianDay(nextShuoJD);
-        info.Days = deltaDays(info.ShuoTime, nextShuoTime);
+        info.LunarMonthDays = deltaDays(info.ShuoTime, nextShuoTime);
         Months.append(info);
         yuejian++;
     }
@@ -154,7 +155,7 @@ void LunarCalendar::calcLeapMonth()
             Months[i].IsLeap = true;
             // 对后面的农历月调整月名
             while (i < 14) {
-                Months[i].Name--;
+                Months[i].LunarMonthName--;
                 i++;
             }
         }

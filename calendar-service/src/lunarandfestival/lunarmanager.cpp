@@ -25,16 +25,16 @@ stLunarDayInfo SolarToLunar(qint32 year, qint32 month, qint32 day)
 {
     stLunarDayInfo info;
     LunarCalendar *pcalendar = LunarCalendar::GetLunarCalendar(year);
-    lunarDayInfo lday = pcalendar->SolarDayToLunarDay(month, day);
-    info.GanZhiYear = GetGanZhiYear(lday);
-    info.GanZhiMonth = GetGanZhiMonth(lday);
-    info.GanZhiDay = GetGanZhiDay(lday);
-    info.LunarMonthName = GetLunarMonthName(lday);
-    info.LunarDayName = GetLunarDayName(lday);
+    lunarInfo lday = pcalendar->SolarDayToLunarDay(month, day);
+    info.GanZhiYear = GetGanZhiYear(lday.LunarYear);
+    info.GanZhiMonth = GetGanZhiMonth(year, lday.MonthZhi);
+    info.GanZhiDay = GetGanZhiDay(year, month, day);
+    info.LunarMonthName = GetLunarMonthName(lday.LunarMonthName, lday.IsLeap);
+    info.LunarDayName = GetLunarDayName(lday.LunarDay);
     info.Term = GetSolarTermName(lday.SolarTerm);
     info.SolarFestival = GetSolarDayFestival(year, month, day);
-    info.LunarFestival = GetLunarDayFestival(lday);
-    info.Zodiac = GetYearZodiac(lday);
+    info.LunarFestival = GetLunarDayFestival(lday.LunarMonthName, lday.LunarDay, lday.LunarMonthDays, lday.SolarTerm);
+    info.Zodiac = GetYearZodiac(lday.LunarYear);
     return info;
 }
 
