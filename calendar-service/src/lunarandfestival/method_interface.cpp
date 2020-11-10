@@ -596,7 +596,7 @@ QString festivalForFatherAndMother(int year, int month, int day)
 {
     int disparityMotherDay, disparityFatherDay, fatherDay, motherDay;
     int leapYear = 0;
-    for (int i = 1900; i < year; i++) {
+    for (int i = 1900; i <= year; i++) {
         if ((i % 400 == 0) || ((i % 100 != 0) && (i % 4 == 0))) {
             leapYear += 1;
         }
