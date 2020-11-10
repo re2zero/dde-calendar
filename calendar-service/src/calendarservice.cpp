@@ -83,7 +83,7 @@ void CalendarService::DeleteType(qint64 id)
 
 QString CalendarService::GetJob(qint64 id)
 {
-    return "";
+    return m_scheduler->GetJob(id);
 }
 
 QString CalendarService::GetJobs(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay)

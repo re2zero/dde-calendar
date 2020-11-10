@@ -23,6 +23,9 @@
 
 #include <QDebug>
 #include <QSqlError>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 #include <QSqlQuery>
 
 SchedulerDatabase::SchedulerDatabase(QObject *parent)
@@ -41,6 +44,40 @@ SchedulerDatabase::SchedulerDatabase(QObject *parent)
     } else {
         qDebug() << __FUNCTION__ << m_database.lastError();
     }
+}
+
+//通过id获取日程信息
+QString SchedulerDatabase::GetJob(qint64 id)
+{
+    QString strjson;
+    QSqlQuery query(m_database);
+    QString strsql = QString("SELECT id, type, title, description, "
+                             "all_day, start, end, r_rule, remind, ignore"
+                             " FROM jobs WHERE id = '%1';")
+                         .arg(id);
+    //id唯一因此此处最多只有一条数据
+    if (query.exec(strsql) && query.next()) {
+        QJsonDocument doc;
+        QJsonObject obj;
+        obj.insert("ID", query.value("id").toInt());
+        obj.insert("Type", query.value("type").toInt());
+        obj.insert("Title", query.value("title").toString());
+        obj.insert("Description", query.value("description").toString());
+        obj.insert("AllDay", query.value("all_day").toBool());
+        obj.insert("Start", query.value("start").toString());
+        obj.insert("End", query.value("end").toString());
+        obj.insert("RRule", query.value("r_rule").toString());
+        obj.insert("Remind", query.value("remind").toString());
+        obj.insert("Ignore", query.value("ignore").toString());
+        //RecurID数据库不包含该字段，当前先默认处理
+        obj.insert("RecurID", 0);
+
+        doc.setObject(obj);
+        strjson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    } else {
+        qDebug() << query.lastError();
+    }
+    return strjson;
 }
 
 void SchedulerDatabase::CreateTables()

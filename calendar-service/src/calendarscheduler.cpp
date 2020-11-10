@@ -67,8 +67,12 @@ QString CalendarScheduler::GetTypes()
     return strres;
 }
 
-// 直接给DB传入id执行删除命令 暂无返回值
 void CalendarScheduler::DeleteJob(qint64 id)
 {
     m_database->DeleteJob(id);
+}
+
+QString CalendarScheduler::GetJob(qint64 id)
+{
+    return m_database->GetJob(id);
 }

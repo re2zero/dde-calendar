@@ -33,6 +33,7 @@ public:
     QString GetType(qint64 id);
     QString GetTypes();
     void DeleteJob(qint64 id);
+    QString GetJob(qint64 id);
 
 signals:
 
