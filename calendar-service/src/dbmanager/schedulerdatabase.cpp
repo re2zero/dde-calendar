@@ -116,3 +116,53 @@ void SchedulerDatabase::DeleteJob(qint64 id)
     }
     m_database.commit();
 }
+
+// 执行添加日程的数据库SQL命令，并返回其ID值
+qint64 SchedulerDatabase::CreateJob(const Job &job)
+{
+    QDateTime currentDateTime =QDateTime::currentDateTime();
+
+    QSqlQuery query(m_database);
+    QString strsql = "INSERT INTO jobs (created_at, updated_at, type, title,"
+                     "description, all_day, start, end, r_rule, remind, ignore, title_pinyin)"
+                     "values (:created_at, :updated_at, :type, :title, :description,"
+                     ":all_day, :start, :end, :r_rule, :remind, :ignore, :title_pinyin)";
+    query.prepare(strsql);
+    query.bindValue(0,currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    query.bindValue(1,currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    query.bindValue(2,job.Type);
+    query.bindValue(3,job.Title);
+    query.bindValue(4,job.Description);
+    query.bindValue(5,job.AllDay);
+    query.bindValue(6,job.Start);
+    query.bindValue(7,job.End);
+    query.bindValue(8,job.RRule);
+    query.bindValue(9,job.Remind);
+    query.bindValue(10,job.Ignore);
+    query.bindValue(11,job.Title_pinyin);
+    if (!query.exec()) {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    if (query.isActive()) {
+        query.finish();
+    }
+
+    // 获取最新刚插入日程的ID。由于id为数据库自增，因此插入的日程id一直为最大值。
+    qint64 jobID;
+    QString returnIdsql = "SELECT MAX(id) FROM jobs";
+    if (!query.exec(returnIdsql)) {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    if (query.next()) {
+        jobID = query.value(0).toInt();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+        return -1;
+    }
+    if (query.isActive()) {
+        query.finish();
+    }
+    // 共有两次sql语句执行，commit操作需要置于最后
+    m_database.commit();
+    return jobID;
+}

@@ -22,6 +22,7 @@
 #define COMMONDATASTRUCT_H
 #include <QString>
 #include <QVector>
+#include <QDateTime>
 
 enum jobtypes {
     jobTypeWork = 1,
@@ -58,4 +59,19 @@ static QVector<stJobTypeJSON> globalPredefinedTypes {
         "Festival",
         "#FFFF00" // yellow
     }};
+
+typedef struct _tagJob {
+    qint64 ID;
+    qint64 Type;
+    QString Title;
+    QString Description;
+    bool AllDay;
+    QDateTime Start;
+    QDateTime End;
+    QString RRule;
+    QString Remind;
+    QString Ignore;
+    QString Title_pinyin;
+} Job;
+
 #endif // COMMONDATASTRUCT_H

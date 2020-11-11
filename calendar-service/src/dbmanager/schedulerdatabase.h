@@ -20,7 +20,7 @@
 */
 #ifndef SCHEDULERDATABASE_H
 #define SCHEDULERDATABASE_H
-
+#include "src/commondatastruct.h"
 #include <QObject>
 #include <QSqlDatabase>
 
@@ -31,6 +31,7 @@ public:
     explicit SchedulerDatabase(QObject *parent = nullptr);
     void DeleteJob(qint64 id);
     QString GetJob(qint64 id);
+    qint64 CreateJob(const Job &job);
 
 private:
     void CreateTables();

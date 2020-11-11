@@ -24,6 +24,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QDebug>
 
 CalendarScheduler::CalendarScheduler(QObject *parent)
     : QObject(parent)
@@ -72,7 +73,63 @@ void CalendarScheduler::DeleteJob(qint64 id)
     m_database->DeleteJob(id);
 }
 
+
 QString CalendarScheduler::GetJob(qint64 id)
 {
     return m_database->GetJob(id);
+}
+
+// 给定日程Json信息，解析为job类型传入数据库
+qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
+{
+    // 现将给的Json信息转为Job类型
+    QJsonParseError json_error;
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(jobInfo.toLocal8Bit(), &json_error));
+
+    if (json_error.error != QJsonParseError::NoError) {
+        return false;
+    }
+
+    QJsonObject rootObj = jsonDoc.object();
+    Job job;
+    if(rootObj.contains("ID")) {
+        job.ID = rootObj.value("ID").toInt();
+    }
+    if(rootObj.contains("Type")) {
+        job.Type = rootObj.value("Type").toInt();
+    }
+    if (rootObj.contains("Title")) {
+        job.Title = rootObj.value("Title").toString();
+    }
+    if (rootObj.contains("Description")) {
+        job.Description = rootObj.value("Description").toString();
+    }
+    if (rootObj.contains("AllDay")) {
+        job.AllDay = rootObj.value("AllDay").toBool();
+    }
+    if (rootObj.contains("Start")) {
+        QStringList liststr = rootObj.value("Start").toString().split("+", QString::SkipEmptyParts);
+        // 此处时间转换为与client同样式
+        job.Start = QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
+    }
+    if (rootObj.contains("End")) {
+        QStringList liststr = rootObj.value("End").toString().split("+", QString::SkipEmptyParts);
+        job.End = QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
+    }
+    if (rootObj.contains("RRule")) {
+        job.RRule = rootObj.value("RRule").toString();
+    }
+    if (rootObj.contains("Remind")) {
+        job.Remind = rootObj.value("Remind").toString();
+    }
+    if (rootObj.contains("Ignore")) {
+        QJsonArray subArray = rootObj.value("Ignore").toArray();
+        QJsonDocument doc;
+        doc.setArray(subArray);
+        job.Ignore = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    }
+    // 暂不使用此字段，挂起
+    job.Title_pinyin = "";
+
+    return m_database->CreateJob(job);
 }

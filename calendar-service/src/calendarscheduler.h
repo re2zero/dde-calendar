@@ -34,6 +34,7 @@ public:
     QString GetTypes();
     void DeleteJob(qint64 id);
     QString GetJob(qint64 id);
+    qint64 CreateJob(const QString &jobInfo);
 
 signals:
 

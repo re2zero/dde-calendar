@@ -61,9 +61,10 @@ CaLunarMonthInfo CalendarService::GetLunarMonthCalendar(quint32 year, quint32 mo
     return m_huangli->GetLunarCalendarMonth(year, month, fill);
 }
 
+// 根据日程json创建日程信息，并返回jobID
 qint64 CalendarService::CreateJob(const QString &jobInfo)
 {
-    return 0;
+    return m_scheduler->CreateJob(jobInfo);
 }
 
 qint64 CalendarService::CreateType(const QString &typeInfo)
