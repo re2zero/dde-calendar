@@ -78,8 +78,10 @@ void CalendarService::DeleteJob(qint64 id)
     m_scheduler->DeleteJob(id);
 }
 
+// 根据日程id来删除job类型记录
 void CalendarService::DeleteType(qint64 id)
 {
+    m_scheduler->DeleteType(id);
 }
 
 QString CalendarService::GetJob(qint64 id)

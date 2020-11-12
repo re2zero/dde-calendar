@@ -73,6 +73,11 @@ void CalendarScheduler::DeleteJob(qint64 id)
     m_database->DeleteJob(id);
 }
 
+void CalendarScheduler::DeleteType(qint64 id)
+{
+    m_database->DeleteType(id);
+}
+
 
 QString CalendarScheduler::GetJob(qint64 id)
 {

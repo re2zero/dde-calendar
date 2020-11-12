@@ -117,6 +117,24 @@ void SchedulerDatabase::DeleteJob(qint64 id)
     m_database.commit();
 }
 
+// 执行删除日程类型的数据库SQL命令，以ID为依据
+void SchedulerDatabase::DeleteType(qint64 id)
+{
+    QDateTime currentDateTime =QDateTime::currentDateTime();
+    QString strCurTime = currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz");
+    qDebug() << strCurTime;
+    QString strsql = QString("UPDATE job_types SET deleted_at = '%1' WHERE id = %2").arg(strCurTime).arg(id);
+    qDebug() << strsql;
+    QSqlQuery query(m_database);
+    if (!query.exec(strsql)) {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    if (query.isActive()) {
+        query.finish();
+    }
+    m_database.commit();
+}
+
 // 执行添加日程的数据库SQL命令，并返回其ID值
 qint64 SchedulerDatabase::CreateJob(const Job &job)
 {
