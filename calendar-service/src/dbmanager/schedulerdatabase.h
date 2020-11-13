@@ -33,6 +33,7 @@ public:
     void DeleteType(qint64 id);
     QString GetJob(qint64 id);
     qint64 CreateJob(const Job &job);
+    void UpdateJob(const QString &jobInfo);
 
 private:
     void CreateTables();

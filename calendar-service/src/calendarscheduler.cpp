@@ -138,3 +138,9 @@ qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
 
     return m_database->CreateJob(job);
 }
+
+// 可将要改动的日程信息直接传入数据库操作层中
+void CalendarScheduler::UpdateJob(const QString &jobInfo)
+{
+    m_database->UpdateJob(jobInfo);
+}

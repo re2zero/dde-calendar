@@ -108,13 +108,14 @@ void SchedulerDatabase::DeleteJob(qint64 id)
 {
     QString strsql = QString("DELETE FROM jobs WHERE id = %1").arg(id);
     QSqlQuery query(m_database);
-    if (!query.exec(strsql)) {
+    if (query.exec(strsql)) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
         qDebug() << __FUNCTION__ << query.lastError();
     }
-    if (query.isActive()) {
-        query.finish();
-    }
-    m_database.commit();
 }
 
 // 执行删除日程类型的数据库SQL命令，以ID为依据
@@ -122,17 +123,16 @@ void SchedulerDatabase::DeleteType(qint64 id)
 {
     QDateTime currentDateTime =QDateTime::currentDateTime();
     QString strCurTime = currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz");
-    qDebug() << strCurTime;
     QString strsql = QString("UPDATE job_types SET deleted_at = '%1' WHERE id = %2").arg(strCurTime).arg(id);
-    qDebug() << strsql;
     QSqlQuery query(m_database);
-    if (!query.exec(strsql)) {
+    if (query.exec(strsql)) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
         qDebug() << __FUNCTION__ << query.lastError();
     }
-    if (query.isActive()) {
-        query.finish();
-    }
-    m_database.commit();
 }
 
 // 执行添加日程的数据库SQL命令，并返回其ID值
@@ -146,41 +146,84 @@ qint64 SchedulerDatabase::CreateJob(const Job &job)
                      "values (:created_at, :updated_at, :type, :title, :description,"
                      ":all_day, :start, :end, :r_rule, :remind, :ignore, :title_pinyin)";
     query.prepare(strsql);
-    query.bindValue(0,currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
-    query.bindValue(1,currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
-    query.bindValue(2,job.Type);
-    query.bindValue(3,job.Title);
-    query.bindValue(4,job.Description);
-    query.bindValue(5,job.AllDay);
-    query.bindValue(6,job.Start);
-    query.bindValue(7,job.End);
-    query.bindValue(8,job.RRule);
-    query.bindValue(9,job.Remind);
-    query.bindValue(10,job.Ignore);
-    query.bindValue(11,job.Title_pinyin);
-    if (!query.exec()) {
+    int i = 0;
+    query.bindValue(i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    query.bindValue(++i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    query.bindValue(++i, job.Type);
+    query.bindValue(++i, job.Title);
+    query.bindValue(++i, job.Description);
+    query.bindValue(++i, job.AllDay);
+    query.bindValue(++i, job.Start);
+    query.bindValue(++i, job.End);
+    query.bindValue(++i, job.RRule);
+    query.bindValue(++i, job.Remind);
+    query.bindValue(++i, job.Ignore);
+    query.bindValue(++i, job.Title_pinyin);
+    if (query.exec()) {
+        if (query.isActive()) {
+            query.finish();
+        }
+    } else {
         qDebug() << __FUNCTION__ << query.lastError();
-    }
-    if (query.isActive()) {
-        query.finish();
     }
 
     // 获取最新刚插入日程的ID。由于id为数据库自增，因此插入的日程id一直为最大值。
     qint64 jobID;
     QString returnIdsql = "SELECT MAX(id) FROM jobs";
-    if (!query.exec(returnIdsql)) {
-        qDebug() << __FUNCTION__ << query.lastError();
-    }
-    if (query.next()) {
+    if (query.exec(returnIdsql) && query.next()) {
         jobID = query.value(0).toInt();
+        if (query.isActive()) {
+            query.finish();
+        }
+        // 共有两次sql语句执行，commit操作需要置于最后
+        m_database.commit();
     } else {
         qDebug() << __FUNCTION__ << query.lastError();
         return -1;
     }
-    if (query.isActive()) {
-        query.finish();
-    }
-    // 共有两次sql语句执行，commit操作需要置于最后
-    m_database.commit();
     return jobID;
+}
+
+// 根据传入的jobInfo中的Id来更新数据库中相应的数据
+void SchedulerDatabase::UpdateJob(const QString &jobInfo)
+{
+    // TODO: 对job数据进行合法性检测
+    QJsonParseError json_error;
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(jobInfo.toLocal8Bit(), &json_error));
+    if (json_error.error != QJsonParseError::NoError) {
+        return ;
+    }
+    QJsonObject rootObj = jsonDoc.object();
+    // 此处Ignore参数需要单独解析，后续pinyin参数也可能会单独解析
+    QJsonArray subArray = rootObj.value("Ignore").toArray();
+    QJsonDocument doc;
+    doc.setArray(subArray);
+
+    QDateTime currentDateTime =QDateTime::currentDateTime();
+    QSqlQuery query(m_database);
+    QString strsql = "UPDATE jobs SET updated_at = ?, type = ?, title = ?, "
+                     "description = ?, all_day = ?, start = ?, end = ?, r_rule = ?, "
+                     "remind = ?, ignore = ?, title_pinyin = ? WHERE id = ?";
+    query.prepare(strsql);
+    int i = 0;
+    query.bindValue(i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    query.bindValue(++i, rootObj.value("Type").toInt());
+    query.bindValue(++i, rootObj.value("Title").toString());
+    query.bindValue(++i, rootObj.value("Description").toString());
+    query.bindValue(++i, rootObj.value("AllDay").toBool());
+    query.bindValue(++i, rootObj.value("Start").toString());
+    query.bindValue(++i, rootObj.value("End").toString());
+    query.bindValue(++i, rootObj.value("RRule").toString());
+    query.bindValue(++i, rootObj.value("Remind").toString());
+    query.bindValue(++i, QString::fromUtf8(doc.toJson(QJsonDocument::Compact)));
+    query.bindValue(++i, rootObj.value("Title_pinyin").toString());
+    query.bindValue(++i, rootObj.value("ID").toInt());
+    if (query.exec()) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
 }

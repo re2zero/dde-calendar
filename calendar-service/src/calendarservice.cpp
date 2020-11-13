@@ -121,8 +121,10 @@ QString CalendarService::QueryJobs(const QString &params)
     return "";
 }
 
+// 传入要改动的日程信息来更新数据库
 void CalendarService::UpdateJob(const QString &jobInfo)
 {
+    m_scheduler->UpdateJob(jobInfo);
 }
 
 void CalendarService::UpdateType(const QString &typeInfo)
