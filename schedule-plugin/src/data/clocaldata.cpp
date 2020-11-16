@@ -54,12 +54,12 @@ QString CLocalData::getToTitleName() const
     return m_ToTitleName;
 }
 
-void CLocalData::setToTime(const QVector<DateTimeInfo> &timeInfo)
+void CLocalData::setToTime(const SemanticsDateTime &timeInfo)
 {
     m_ToTime = timeInfo;
 }
 
-QVector<DateTimeInfo> CLocalData::getToTime() const
+SemanticsDateTime CLocalData::getToTime() const
 {
     return m_ToTime;
 }

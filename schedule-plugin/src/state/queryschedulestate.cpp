@@ -58,7 +58,7 @@ Reply queryScheduleState::normalEvent(const JsonData *jsonData)
             if (m_localData == nullptr)
                 m_localData = new CLocalData();
             if (mchangeJsonData->toDateTime().suggestDatetime.size() > 0) {
-               m_localData->setToTime(mchangeJsonData->toDateTime().dateTime);
+               m_localData->setToTime(mchangeJsonData->toDateTime());
             }
             if (!mchangeJsonData->toPlaceStr().isEmpty())
                 m_localData->setToTitleName(mchangeJsonData->toPlaceStr());

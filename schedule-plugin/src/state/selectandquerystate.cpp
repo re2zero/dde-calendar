@@ -98,7 +98,7 @@ Reply SelectAndQueryState::normalEvent(const JsonData *jsonData)
         changejsondata *mchangeJsonData = dynamic_cast<changejsondata *>(queryData);
         //如果有修改时间的信息则赋值
         if(mchangeJsonData->toDateTime().suggestDatetime.size()>0){
-            m_localData->setToTime(mchangeJsonData->toDateTime().dateTime);
+            m_localData->setToTime(mchangeJsonData->toDateTime());
         }
         //如果有修改内容的信息则获取
         if(!mchangeJsonData->toPlaceStr().isEmpty()){

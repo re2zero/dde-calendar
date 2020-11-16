@@ -120,7 +120,7 @@ Reply changeScheduleTask::getReplyBySelectSchedule(const ScheduleDtailInfo &info
     if (m_Data->getOffet() < 0) {
         m_Data->setOffset(1);
     }
-    if (m_Data->getToTime().size() == 0 && m_Data->getToTitleName() == "") {
+    if (m_Data->getToTime().suggestDatetime.size() == 0 && m_Data->getToTitleName() == "") {
         QWidget *infoWidget = createInquiryWidget(info);
         REPLY_WIDGET_TTS(m_reply, infoWidget, CHANGE_TO_TTS, CHANGE_TO_TTS, false);
         //添加获取修改信息状态
@@ -278,7 +278,9 @@ bool changeScheduleTask::getNewInfo()
     m_NewInfo.remindData.n = 0;
     if (!currentState->getLocalData()->getToTitleName().isEmpty())
         m_NewInfo.titleName = currentState->getLocalData()->getToTitleName();
-    QVector<DateTimeInfo> m_ToTime = currentState->getLocalData()->getToTime();
+    QVector<DateTimeInfo> m_ToTime = currentState->getLocalData()->getToTime().dateTime;
+    //获取建议时间
+    QVector<SuggestDatetimeInfo> m_suggestDatetime = currentState->getLocalData()->getToTime().suggestDatetime;
     if (m_ToTime.size() > 0) {
         if (m_ToTime.size() == 1) {
             //如果存在日期信息
@@ -290,7 +292,12 @@ bool changeScheduleTask::getNewInfo()
             }
             //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
             if(m_ToTime.at(0).hasTime){
-                m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).m_Time);
+                //如果修改的日期为当天则取suggestTime时间
+                if(m_NewInfo.beginDateTime.date() == QDate::currentDate()){
+                    m_NewInfo.beginDateTime = m_suggestDatetime.at(0).datetime;
+                }else {
+                    m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).m_Time);
+                }
                 m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);
             }
         }
