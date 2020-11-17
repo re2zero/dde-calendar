@@ -144,3 +144,9 @@ void CalendarScheduler::UpdateJob(const QString &jobInfo)
 {
     m_database->UpdateJob(jobInfo);
 }
+
+// 可将要改动的日程类型信息直接传入数据库操作层中
+void CalendarScheduler::UpdateType(const QString &typeInfo)
+{
+    m_database->UpdateType(typeInfo);
+}

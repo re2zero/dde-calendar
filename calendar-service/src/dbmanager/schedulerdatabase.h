@@ -34,6 +34,7 @@ public:
     QString GetJob(qint64 id);
     qint64 CreateJob(const Job &job);
     void UpdateJob(const QString &jobInfo);
+    void UpdateType(const QString &typeInfo);
 
 private:
     void CreateTables();

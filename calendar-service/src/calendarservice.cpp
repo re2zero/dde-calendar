@@ -127,6 +127,8 @@ void CalendarService::UpdateJob(const QString &jobInfo)
     m_scheduler->UpdateJob(jobInfo);
 }
 
+// 传入要改动的日程类型信息来更新数据库
 void CalendarService::UpdateType(const QString &typeInfo)
 {
+    m_scheduler->UpdateType(typeInfo);
 }

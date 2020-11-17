@@ -37,6 +37,7 @@ public:
     QString GetJob(qint64 id);
     qint64 CreateJob(const QString &jobInfo);
     void UpdateJob(const QString &jobInfo);
+    void UpdateType(const QString &typeInfo);
 
 signals:
 

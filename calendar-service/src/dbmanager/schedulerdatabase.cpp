@@ -227,3 +227,32 @@ void SchedulerDatabase::UpdateJob(const QString &jobInfo)
         qDebug() << __FUNCTION__ << query.lastError();
     }
 }
+
+// 根据传入的typeInfo中的Id来更新数据库中相应的数据
+void SchedulerDatabase::UpdateType(const QString &typeInfo)
+{
+    QJsonParseError json_error;
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(typeInfo.toLocal8Bit(), &json_error));
+    if (json_error.error != QJsonParseError::NoError) {
+        return ;
+    }
+    QJsonObject rootObj = jsonDoc.object();
+
+    QSqlQuery query(m_database);
+    QString strsql = "UPDATE job_types SET updated_at = ?, name = ?, color = ? WHERE id = ?";
+    query.prepare(strsql);
+    QDateTime currentDateTime =QDateTime::currentDateTime();
+    int i = 0;
+    query.bindValue(i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    query.bindValue(++i, rootObj.value("Name").toString());
+    query.bindValue(++i, rootObj.value("Color").toString());
+    query.bindValue(++i, rootObj.value("ID").toInt());
+    if (query.exec()) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+}
