@@ -841,6 +841,9 @@ QString GetSolarDayFestival(int year, int month, int day)
             QString temname = temlist.at(i);
             auto it = solarFestivalStarYear.find(temname);
             if (it != solarFestivalStarYear.end() && *it < year) {
+                if (!festivals.isEmpty()) {
+                    festivals.append(',');
+                }
                 festivals.append(temname);
                 festivals.append(',');
             }

@@ -18,18 +18,18 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef LUNARMANAGER_H
-#define LUNARMANAGER_H
-#include "lunarandfestival.h"
-#include "method_interface.h"
+#ifndef UTILS_H
+#define UTILS_H
+#include <QDateTime>
 
-stLunarDayInfo SolarToLunar(qint32 year, qint32 month, qint32 day);
-SolarMonthInfo GetSolarMonthCalendar(qint32 year, qint32 month, bool fill);
-LunarMonthInfo GetLunarMonthCalendar(qint32 year, qint32 month, bool fill);
-LunarMonthInfo GetLunarMonthCalendar(const SolarMonthInfo &solarMonth);
-QList<stDay> GetMonthDays(qint32 year, qint32 month, qint32 start, qint32 days);
-QList<int> GetPreMonth(qint32 year, qint32 month);
-QList<int> GetNextMonth(qint32 year, qint32 month);
-QList<stDayFestival> GetFestivalsInRange(const QDateTime &start, const QDateTime &end);
+class Utils
+{
+public:
+    Utils();
+    static QString toconvertData(QDateTime date);
+    static QDateTime fromconvertData(QString str);
+    static QString toconvertIGData(QDateTime date);
+    static QDateTime fromconvertiIGData(QString str);
+};
 
-#endif // LUNARMANAGER_H
+#endif // UTILS_H

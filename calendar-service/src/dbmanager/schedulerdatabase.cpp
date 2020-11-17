@@ -54,7 +54,7 @@ QString SchedulerDatabase::GetJob(qint64 id)
     QString strsql = QString("SELECT id, type, title, description, "
                              "all_day, start, end, r_rule, remind, ignore"
                              " FROM jobs WHERE id = '%1';")
-                         .arg(id);
+                     .arg(id);
     //id唯一因此此处最多只有一条数据
     if (query.exec(strsql) && query.next()) {
         QJsonDocument doc;
@@ -69,7 +69,7 @@ QString SchedulerDatabase::GetJob(qint64 id)
         obj.insert("RRule", query.value("r_rule").toString());
         obj.insert("Remind", query.value("remind").toString());
         obj.insert("Ignore", query.value("ignore").toString());
-        //RecurID数据库不包含该字段，当前先默认处理
+        //数据库包含的都是原始数据所以RecurID默认为0
         obj.insert("RecurID", 0);
 
         doc.setObject(obj);
@@ -80,6 +80,40 @@ QString SchedulerDatabase::GetJob(qint64 id)
     return strjson;
 }
 
+/**
+ * @brief  GetAllJobs 获取所有原始日程
+ * @return 返回所有原始日程集合
+ */
+QList<Job> SchedulerDatabase::GetAllOriginJobs()
+{
+    QList<Job> jobs;
+    QSqlQuery query(m_database);
+
+    QString strsql = QString("select * from jobs;");
+    if (query.exec(strsql)) {
+        while (query.next()) {
+            Job jb;
+            jb.ID = query.value("id").toInt();
+            jb.Type = query.value("type").toInt();
+            jb.Title = query.value("title").toString();
+            jb.Description = query.value("description").toString();
+            jb.AllDay = query.value("all_day").toBool();
+            jb.Start = query.value("start").toDateTime();
+            jb.End = query.value("end").toDateTime();
+            jb.RRule = query.value("r_rule").toString();
+            jb.Remind = query.value("remind").toString();
+            jb.Ignore = query.value("ignore").toString();
+            jb.Title_pinyin = query.value("title_pinyin").toString();
+            jobs.append(jb);
+        }
+    }
+
+    return jobs;
+}
+
+/**
+ * @brief  CreateTables 创建日程相关数据表（新用户创建）
+ */
 void SchedulerDatabase::CreateTables()
 {
     QSqlQuery query(m_database);
@@ -121,7 +155,7 @@ void SchedulerDatabase::DeleteJob(qint64 id)
 // 执行删除日程类型的数据库SQL命令，以ID为依据
 void SchedulerDatabase::DeleteType(qint64 id)
 {
-    QDateTime currentDateTime =QDateTime::currentDateTime();
+    QDateTime currentDateTime = QDateTime::currentDateTime();
     QString strCurTime = currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz");
     QString strsql = QString("UPDATE job_types SET deleted_at = '%1' WHERE id = %2").arg(strCurTime).arg(id);
     QSqlQuery query(m_database);
@@ -138,8 +172,7 @@ void SchedulerDatabase::DeleteType(qint64 id)
 // 执行添加日程的数据库SQL命令，并返回其ID值
 qint64 SchedulerDatabase::CreateJob(const Job &job)
 {
-    QDateTime currentDateTime =QDateTime::currentDateTime();
-
+    QDateTime currentDateTime = QDateTime::currentDateTime();
     QSqlQuery query(m_database);
     QString strsql = "INSERT INTO jobs (created_at, updated_at, type, title,"
                      "description, all_day, start, end, r_rule, remind, ignore, title_pinyin)"
@@ -199,7 +232,7 @@ void SchedulerDatabase::UpdateJob(const QString &jobInfo)
     QJsonDocument doc;
     doc.setArray(subArray);
 
-    QDateTime currentDateTime =QDateTime::currentDateTime();
+    QDateTime currentDateTime = QDateTime::currentDateTime();
     QSqlQuery query(m_database);
     QString strsql = "UPDATE jobs SET updated_at = ?, type = ?, title = ?, "
                      "description = ?, all_day = ?, start = ?, end = ?, r_rule = ?, "
@@ -241,7 +274,7 @@ void SchedulerDatabase::UpdateType(const QString &typeInfo)
     QSqlQuery query(m_database);
     QString strsql = "UPDATE job_types SET updated_at = ?, name = ?, color = ? WHERE id = ?";
     query.prepare(strsql);
-    QDateTime currentDateTime =QDateTime::currentDateTime();
+    QDateTime currentDateTime = QDateTime::currentDateTime();
     int i = 0;
     query.bindValue(i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
     query.bindValue(++i, rootObj.value("Name").toString());

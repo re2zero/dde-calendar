@@ -21,6 +21,8 @@
 #include "lunarmanager.h"
 #include "lunarcalendar.h"
 
+#include <QDebug>
+
 stLunarDayInfo SolarToLunar(qint32 year, qint32 month, qint32 day)
 {
     stLunarDayInfo info;
@@ -142,4 +144,36 @@ QList<int> GetNextMonth(qint32 year, qint32 month)
     datas.append(nextYear);
     datas.append(nextMonth);
     return datas;
+}
+
+/**
+ * @brief  GetFestivalsInRange 获取指定范围内的节日信息集合
+ * @param start 起始时间
+ * @param end 结束时间
+ */
+QList<stDayFestival> GetFestivalsInRange(const QDateTime &start, const QDateTime &end)
+{
+    QList<stDayFestival> festivaldays;
+    if (start <= end) {
+        int days = start.daysTo(end);
+        for (int i = 0; i < days; ++i) {
+            stDayFestival stdayfestival;
+            QDateTime tem = start.addDays(i);
+            stdayfestival.date = tem;
+            int year = tem.date().year();
+            int month = tem.date().month();
+            int day = tem.date().day();
+            LunarCalendar *pcalendar = LunarCalendar::GetLunarCalendar(year);
+            lunarInfo lday = pcalendar->SolarDayToLunarDay(month, day);
+            QString festival = GetSolarDayFestival(year, month, day);
+            QStringList strfestivallist = festival.split(",");
+            strfestivallist << GetLunarDayFestival(lday.LunarMonthName, lday.LunarDay, lday.LunarMonthDays, lday.SolarTerm);
+            stdayfestival.Festivals = strfestivallist;
+            festivaldays.append(stdayfestival);
+        }
+    } else {
+        qDebug() << __FUNCTION__ << "start day later than  end day";
+    }
+
+    return festivaldays;
 }

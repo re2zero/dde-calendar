@@ -21,8 +21,10 @@
 #ifndef CALENDARSCHEDULER_H
 #define CALENDARSCHEDULER_H
 #include "dbmanager/schedulerdatabase.h"
+#include "src/commondatastruct.h"
 
 #include <QObject>
+#include <QMutex>
 
 class CalendarScheduler : public QObject
 {
@@ -38,6 +40,20 @@ public:
     qint64 CreateJob(const QString &jobInfo);
     void UpdateJob(const QString &jobInfo);
     void UpdateType(const QString &typeInfo);
+    QString GetJobs(const QDateTime &start, const QDateTime &end);
+
+private:
+    static quint32 GetFestivalId(const QString &name);
+    void IsFestivalJobEnabled();
+    QList<stJobArr> GetJobsBetween(const QDateTime &start, const QDateTime &end, bool bextend = true);
+    QList<stJobTime> GetJobTimesBetween(const QDateTime &start, const QDateTime &end, const Job &job);
+    void FillFestivalJobs(const QDateTime &start, const QDateTime &end, QList<stJobArr> &listjob);
+    QList<QDateTime> GetIgnoreList(const Job &job);
+    bool ContainsInIgnoreList(const QList<QDateTime> ignorelist, const QDateTime &time);
+    bool OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend);
+    QDateTime GetNextJobStartTimeByRule(const stRRuleOptions &options, const QDateTime &datetime);
+    stRRuleOptions ParseRRule(const QString &rule);
+    QJsonObject JobToObject(const Job &job);
 
 signals:
 
@@ -45,6 +61,10 @@ public slots:
 
 private:
     SchedulerDatabase *m_database;
+    bool m_festivalJobEnabled = false; //是否允许节假日日程
+    static QMap<QString, quint32> m_festivalIdMap; //节日对应节日Id
+    static quint32 nextFestivalJobId; //下一个节日id
+    static QMutex m_getJobIdMutex; //节日id获取锁
 };
 
 #endif // CALENDARSCHEDULER_H

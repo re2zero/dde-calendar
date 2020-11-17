@@ -89,9 +89,23 @@ QString CalendarService::GetJob(qint64 id)
     return m_scheduler->GetJob(id);
 }
 
+/**
+ * @brief  GetJobs 获取指定范围内的日程
+ * @param startYear 起始年信息
+ * @param startMonth 起始月信息
+ * @param startDay 起始日信息
+ * @param endYear 结束年信息
+ * @param endMonth 结束月信息
+ * @param endDay 结束日信息
+ * @return 返回指定范围内的日程JSON格式
+ */
 QString CalendarService::GetJobs(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay)
 {
-    return "";
+    QDate startdate(startYear, startMonth, startDay);
+    QDateTime start(startdate);
+    QDate enddate(endYear, endMonth, endDay);
+    QDateTime end(enddate);
+    return m_scheduler->GetJobs(start, end);
 }
 
 QString CalendarService::GetJobsWithLimit(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, quint32 maxNum)

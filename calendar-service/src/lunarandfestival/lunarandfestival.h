@@ -76,6 +76,11 @@ typedef struct _SolarMonthInfo {
     QList<stDay> Datas;
 } SolarMonthInfo;
 
+typedef struct DayFestival {
+    QDateTime date;
+    QStringList Festivals;
+} stDayFestival;
+
 // 十二月名
 static QVector<QString> lunarMonthNames = {"正", "二", "三", "四", "五", "六", "七", "八", "九", "十", "冬", "腊"};
 

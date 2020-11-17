@@ -21,8 +21,10 @@
 #ifndef SCHEDULERDATABASE_H
 #define SCHEDULERDATABASE_H
 #include "src/commondatastruct.h"
+
 #include <QObject>
 #include <QSqlDatabase>
+#include <QDateTime>
 
 class SchedulerDatabase : public QObject
 {
@@ -35,6 +37,7 @@ public:
     qint64 CreateJob(const Job &job);
     void UpdateJob(const QString &jobInfo);
     void UpdateType(const QString &typeInfo);
+    QList<Job> GetAllOriginJobs();
 
 private:
     void CreateTables();

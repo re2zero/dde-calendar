@@ -61,8 +61,13 @@ static QVector<stJobTypeJSON> globalPredefinedTypes {
     }};
 
 typedef struct _tagJob {
+    _tagJob()
+    {
+        ID = Type = RecurID = 0;
+    }
     qint64 ID;
     qint64 Type;
+    qint64 RecurID;
     QString Title;
     QString Description;
     bool AllDay;
@@ -73,5 +78,39 @@ typedef struct _tagJob {
     QString Ignore;
     QString Title_pinyin;
 } Job;
+
+typedef struct JobArr {
+    QDate date;
+    QList<Job> jobs;
+    QList<Job> extends;
+} stJobArr;
+
+typedef struct JobTime {
+    QDateTime start;
+    QDateTime end;
+    qint64 recurID;
+} stJobTime;
+
+enum RepeatType {
+    RepeatNone = 0,
+    RepeatDaily,
+    RepeatWorkDay,
+    RepeatWeekly,
+    RepeatMonthly,
+    RepeatYearly,
+};
+
+enum RepeatOverCondition {
+    RepeatOverNever = 0,
+    RepeatOverCount,
+    RepeatOverUntil,
+};
+
+typedef struct RRuleOptions {
+    RepeatType rpeat; //重复规则 0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
+    RepeatOverCondition type; //结束重复 0 永不 1  多少次结束  2 结束日期
+    int tcount; //多少次结束只有当type=1才会生效
+    QDateTime overdate; //type=2时才有效
+} stRRuleOptions;
 
 #endif // COMMONDATASTRUCT_H
