@@ -35,9 +35,11 @@ public:
     ~CTimeEdit();
     void setTime(QTime time);
     QTime getTime();
+
 private:
     void initUI();
     void initConnection();
+
 private:
     DLineEdit *m_timeEdit = nullptr;
     int m_type = 0; // 0 h,1 m

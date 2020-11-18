@@ -45,7 +45,7 @@ class CMonthWindow;
 class CWeekWindow;
 class CDayWindow;
 class __Scheduler;
-class CSchceduleSearchView;
+class CScheduleSearchView;
 class AnimationStackedWidget;
 class CScheduleDataManage;
 class Calendarmainwindow : public DMainWindow
@@ -119,7 +119,7 @@ private:
     CDayWindow *m_DayWindow = nullptr;
     __Scheduler *m_dbus = nullptr;
     bool m_searchflag = false;
-    CSchceduleSearchView *m_schceduleSearchView = nullptr;
+    CScheduleSearchView *m_scheduleSearchView = nullptr;
     DFrame *m_contentBackground = nullptr;
     int m_priindex = 3; //默认打开日视图双击
     DFrame *m_transparentFrame = nullptr;

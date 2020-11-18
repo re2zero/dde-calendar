@@ -31,11 +31,11 @@
 #include <QSpacerItem>
 
 DWIDGET_USE_NAMESPACE
-class CSchceduleSearchView;
+class CScheduleSearchView;
 class CMonthView;
 class CMonthDayView;
 class QHBoxLayout;
-class CTodyButton;
+class CTodayButton;
 class CMonthWindow: public QMainWindow
 {
     Q_OBJECT
@@ -184,7 +184,6 @@ protected:
      * @param event 窗口大小调整事件
      */
     void resizeEvent(QResizeEvent *event) override;
-    void wheelEvent(QWheelEvent *e) override;
 private slots:
     /**
      * @brief slottoday 返回今天
@@ -208,30 +207,16 @@ private slots:
      */
     void slotSelectedMonth(QDate date);
 private:
-    //一个月的视图
     CMonthView *m_monthView = nullptr;
-    //12个月份视图
     CMonthDayView *m_monthDayView = nullptr;
-    //背景frame
     DFrame *m_contentBackground = nullptr;
-    //返回今天的按钮
-    CTodyButton *m_today = nullptr;
-    //当天日期
+    CTodayButton *m_today = nullptr;
     QDate                   m_currentdate;
-    //年份label
     QLabel *m_YearLabel = nullptr;
-    //阴历年份label
     QLabel *m_YearLunarLabel = nullptr;
     QSpacerItem *m_spaceitem = nullptr;
-    /**
-     * @brief m_gridWidget 月widget
-     *
-     * 将月view放入widget内进行显示
-     */
     DWidget *m_gridWidget = nullptr;
-    //搜索标志
     bool                    m_searchfalg = false;
-    //月视图最终的窗口布局
     QHBoxLayout *m_tmainLayout = nullptr;
 };
 

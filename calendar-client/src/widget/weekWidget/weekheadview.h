@@ -22,6 +22,7 @@
 
 #include "constants.h"
 #include "calendardbus.h"
+#include "../touchgestureoperation.h"
 
 #include <DLabel>
 #include <DFrame>
@@ -33,9 +34,7 @@
 #include <QSignalMapper>
 
 DWIDGET_USE_NAMESPACE
-/**
- * @brief The CalendarWeekDayType enum
- */
+
 enum CalendarWeekDayType {
     SO_MFestival = QStyleOption::SO_CustomBase + 0x01,
     SO_MWeekends = QStyleOption::SO_CustomBase + 0x02,
@@ -49,9 +48,6 @@ class CWeekHeadView: public DFrame
 {
     Q_OBJECT
 public:
-    /**
-     * @brief The ShowState enum
-     */
     enum ShowState {
         ShowLunar = 0x01,
         ShowLunarFestivalHighlight = 0x02,
@@ -239,6 +235,7 @@ protected:
      */
     void mousePressEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *e) override;
+    bool event(QEvent *e) override;
 private slots:
     /**
      * @brief cellClicked
@@ -255,27 +252,17 @@ private slots:
      */
     void getDbusData();
 private:
-    //放置cell的列表
     QList<QWidget *> m_cellList;
-    //月份frame
     CustomFrame *m_monthLabel = nullptr;
-    //dbus
     CalendarDBus *m_DBusInter = nullptr;
-    //一周的时间
     QDate m_days[7];
-    //当前时间
     QDate m_currentDate;
-    //月份列表
     QStringList m_monthList;
-    //显示状态
     ShowState m_showState = Normal;
-    //选择cell的索引
     int m_selectedCell = 0;
-    //是否选择
     bool m_cellSelectable = true;
-    //daynum字体
+
     QFont m_dayNumFont;
-    //月份字体
     QFont m_monthFont;
 
     QColor m_backgroundCircleColor = "#2ca7f8";
@@ -288,26 +275,21 @@ private:
     QColor m_backgroudColor = "#E6EEF2";
     /**
      * @brief m_Background_Weekend_Color 周六周日背景色
-     *
-     * 周末背景色不同于工作日背景色
      */
     QColor m_Background_Weekend_Color = "#00429A";
-    //节假日和阴历颜色
     QColor m_solofestivalLunarColor = "#4DFF7272";
-    //队列
     QQueue<int> *queue = nullptr;
-    //日期和阴历节日对应字典
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
-    //阴历信息
     CaLunarDayInfo *emptyCaLunarDayInfo = nullptr;
-    //每周以周几开始
     int m_firstWeekDay;
-    //系统主题类型
     int m_themetype = 1;
     int m_monthW = 80;
     int m_fixwidth = 200;
-    //圆角半径
     const int m_radius = 8;
+    /**
+     * @brief m_touchGesture        触摸手势处理
+     */
+    touchGestureOperation m_touchGesture;
 };
 
 #endif // MYCALENDARWIDGET_H

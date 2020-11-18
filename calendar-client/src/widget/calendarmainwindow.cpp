@@ -23,11 +23,11 @@
 #include "widget/weekWidget/weekwindow.h"
 #include "widget/dayWidget/daywindow.h"
 #include "scheduledatamanage.h"
-#include "myschceduleview.h"
+#include "myscheduleview.h"
 #include "creatorparschedule.h"
 #include "configsettings.h"
 #include "shortcut.h"
-#include "schcedulesearchview.h"
+#include "schedulesearchview.h"
 #include "cdynamicicon.h"
 #include "constants.h"
 
@@ -50,7 +50,6 @@
 #include <QSpacerItem>
 #include <QWidget>
 #include <QMenuBar>
-#include <QMouseEvent>
 
 #include <com_deepin_daemon_calendar_scheduler.h>
 
@@ -326,7 +325,7 @@ void Calendarmainwindow::slotTheme(int type)
     m_monthWindow->setTheMe(type);
     m_weekWindow->setTheMe(type);
     m_DayWindow->setTheMe(type);
-    m_schceduleSearchView->setTheMe(type);
+    m_scheduleSearchView->setTheMe(type);
 }
 
 void Calendarmainwindow::OpenSchedule(QString job)
@@ -341,7 +340,7 @@ void Calendarmainwindow::OpenSchedule(QString job)
         m_stackWidget->setCurrentIndex(DDECalendar::CalendarDayWindow);
         m_DayWindow->setDate(out.beginDateTime.date());
         m_DayWindow->slotupdateSchedule(0);
-        CMySchceduleView dlg(out, this);
+        CMyScheduleView dlg(out, this);
         dlg.exec();
         m_DayWindow->slotupdateSchedule(0);
         slotWUpdateShcedule(nullptr,0);
@@ -480,16 +479,16 @@ void Calendarmainwindow::initUI()
     m_contentBackground->setAutoFillBackground(true);
     m_contentBackground->setPalette(anipa);
 
-    m_schceduleSearchView = new CSchceduleSearchView(this);
-    m_schceduleSearchView->setObjectName("ScheduleSearchWidget");
-    m_schceduleSearchView->setAccessibleName("ScheduleSearchWidget");
-    m_schceduleSearchView->setAccessibleDescription("Window showing search results");
+    m_scheduleSearchView = new CScheduleSearchView(this);
+    m_scheduleSearchView->setObjectName("ScheduleSearchWidget");
+    m_scheduleSearchView->setAccessibleName("ScheduleSearchWidget");
+    m_scheduleSearchView->setAccessibleDescription("Window showing search results");
 
     QVBoxLayout *ssLayout = new QVBoxLayout;
     ssLayout->setMargin(0);
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 10, 0, 10);
-    ssLayout->addWidget(m_schceduleSearchView);
+    ssLayout->addWidget(m_scheduleSearchView);
     m_contentBackground->setLayout(ssLayout);
     tmainLayout->addWidget(m_contentBackground);
     m_contentBackground->setVisible(false);
@@ -539,11 +538,11 @@ void Calendarmainwindow::initConnection()
                                                           QDBusConnection::sessionBus(), this);
     connect(m_dbus, &com::deepin::daemon::calendar::Scheduler::JobsUpdated,
             this, &Calendarmainwindow::slotJobsUpdated);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalsUpdateShcedule, this, &Calendarmainwindow::slotTransitSearchSchedule);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalSelectSchedule,
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalsUpdateShcedule, this, &Calendarmainwindow::slotTransitSearchSchedule);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectSchedule,
             this, &Calendarmainwindow::slotSearchSelectSchedule);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalScheduleHide,
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide,
             this, &Calendarmainwindow::setScheduleHide);
 
     connect(m_yearwindow, &CYearWindow::signaldoubleclickDate, this, &Calendarmainwindow::slotdoubleclickDate);
@@ -555,7 +554,7 @@ void Calendarmainwindow::initConnection()
     connect(m_weekWindow, &CWeekWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
     connect(m_weekWindow, &CWeekWindow::signalsViewSelectDate, this, &Calendarmainwindow::slotViewSelectDate);
     connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_schceduleSearchView, &CSchceduleSearchView::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
     connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
     connect(m_DayWindow, &CDayWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
 
@@ -565,7 +564,7 @@ void Calendarmainwindow::initConnection()
     connect(m_yearwindow, &CYearWindow::signalCurrentDate, this, &Calendarmainwindow::slotCurrentDate);
 
     connect(m_yearwindow,
-            &CYearWindow::signalupdateschcedule,
+            &CYearWindow::signalupdateschedule,
             this,
             &Calendarmainwindow::getScheduleInfo);
 
@@ -637,7 +636,7 @@ void Calendarmainwindow::getScheduleInfo()
 
 void Calendarmainwindow::setScheduleHide()
 {
-    m_yearwindow->slotSetSchceduleHide();
+    m_yearwindow->slotSetScheduleHide();
     m_monthWindow->slotScheduleHide();
     m_weekWindow->slotScheduleHide();
     m_DayWindow->slotScheduleHide();
@@ -647,7 +646,7 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
     m_transparentFrame->resize(width(), height() - 50);
     m_scheduleSearchViewMaxWidth = qRound(0.2325 * width() + 0.5);
-    m_schceduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
+    m_scheduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
     setSearchWidth(m_scheduleSearchViewMaxWidth);
     setScheduleHide();
     DMainWindow::resizeEvent(event);
@@ -701,7 +700,7 @@ void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
     Q_UNUSED(id);
 
     if (m_opensearchflag && !m_searchEdit->text().isEmpty()) {
-        m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
+        m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
         m_yearwindow->slotupdateSchedule(0);
     }
     updateHigh();
@@ -727,7 +726,7 @@ void Calendarmainwindow::slotSreturnPressed()
         m_opensearchflag = true;
         m_contentBackground->setVisible(true);
     }
-    m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
+    m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
     m_yearwindow->setDate(m_currentdate);
     updateHigh();
 #endif
@@ -741,7 +740,7 @@ void Calendarmainwindow::slotStextChanged()
         m_monthWindow->setSearchWFlag(true);
         m_DayWindow->setSearchWFlag(true);
     } else {
-        m_schceduleSearchView->clearSearch();
+        m_scheduleSearchView->clearSearch();
         m_yearwindow->setSearchWFlag(false);
         m_monthWindow->setSearchWFlag(false);
         m_weekWindow->setSearchWFlag(false);
@@ -818,7 +817,7 @@ void Calendarmainwindow::slotTransitSearchSchedule(int id)
         m_DayWindow->slotupdateSchedule(0);
     } break;
     }
-    m_schceduleSearchView->slotsetSearch(m_searchEdit->text());
+    m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
 }
 
 void Calendarmainwindow::slotsearchDateSelect(QDate date)

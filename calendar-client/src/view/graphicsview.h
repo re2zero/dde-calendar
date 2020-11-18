@@ -61,10 +61,10 @@ public:
         return m_coorManage;
     }
     void setInfo(const QVector<ScheduleDtailInfo> &info);
-    void  addSchduleItem(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
-    void  deleteSchduleItem(CScheduleItem *item);
-    void  setSelectSchedule(const ScheduleDtailInfo &info);
-    void  clearSchdule();
+    void addSchduleItem(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
+    void deleteSchduleItem(CScheduleItem *item);
+    void setSelectSchedule(const ScheduleDtailInfo &info);
+    void clearSchdule();
 
     void setMinTime(const int &minTime)
     {
@@ -108,8 +108,10 @@ public:
     void setFirstWeekday(int weekday);
     void setTime(QTime time);
     void updateInfo();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
+
 private:
     /**
      * @brief paintBackground 绘制背景--周试图周六周天的背景色和每天的分割线
@@ -126,58 +128,62 @@ signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void signalsCurrentScheduleDate(QDate date);
     void signalSceneUpdate();
+
 private:
     int checkDay(int weekday);
     void TimeRound(QDateTime &dtime);
     QDateTime TimeRounding(const QDateTime &time);
     void centerOnScene(const QPointF &pos);
     void setSceneHeightScale(const QPointF &pos);
+
 public:
     void setTheMe(int type = 0) override;
+
 protected:
     void slotCreate(const QDateTime &date) override;
     bool MeetCreationConditions(const QDateTime &date) override;
-    void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo())override;
+    void upDateInfoShow(const DragStatus &status = NONE, const ScheduleDtailInfo &info = ScheduleDtailInfo()) override;
     QDateTime getPosDate(const QPoint &p) override;
     void ShowSchedule(DragInfoItem *infoitem) override;
-    void MoveInfoProcess(ScheduleDtailInfo &info,const QPointF &pos) override;
-    PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect) override;
-    ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate,const QDateTime &endDate) override;
-    bool IsEqualtime(const QDateTime &timeFirst,const QDateTime &timeSecond) override;
+    void MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &pos) override;
+    PosInItem getPosInItem(const QPoint &p, const QRectF &itemRect) override;
+    ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate) override;
+    bool IsEqualtime(const QDateTime &timeFirst, const QDateTime &timeSecond) override;
     bool JudgeIsCreate(const QPointF &pos) override;
-    void RightClickToCreate(QGraphicsItem *listItem,const QPoint &pos) override;
+    void RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos) override;
     QDateTime getDragScheduleInfoBeginTime(const QDateTime &moveDateTime) override;
     QDateTime getDragScheduleInfoEndTime(const QDateTime &moveDateTime) override;
+
 private:
     CScheduleCoorManage *m_coorManage = nullptr;
-    QVector<CScheduleItem *>        m_vScheduleItem;
-    QMargins                        m_margins;                     //四周空白
-    bool                            m_LRFlag;          //水平线
-    QPen                            m_LRPen;           //水平线画笔
-    bool                            m_TBFlag;          //垂直线
-    QPen                            m_TBPen;           //垂直线画笔
-    QVector<int>                    m_vLRLarge;        //大刻度像素位置
-    QVector<int>                    m_vTBLarge;        //大刻度像素位置
-    qreal                           m_dayInterval;
-    qreal                           m_timeInterval;
-    int                             m_firstWeekDay;
+    QVector<CScheduleItem *> m_vScheduleItem;
+    QMargins m_margins; //四周空白
+    bool m_LRFlag; //水平线
+    QPen m_LRPen; //水平线画笔
+    bool m_TBFlag; //垂直线
+    QPen m_TBPen; //垂直线画笔
+    QVector<int> m_vLRLarge; //大刻度像素位置
+    QVector<int> m_vTBLarge; //大刻度像素位置
+    qreal m_dayInterval;
+    qreal m_timeInterval;
+    int m_firstWeekDay;
     qint64 m_totalDay;
-    qreal                           m_sceneHeightScale =0;
+    qreal m_sceneHeightScale = 0;
 
-    QColor                          m_weekcolor = "#4F9BFF";
-    QColor                          m_currenttimecolor = "#F74444";
-    int                             m_cuttrnttimetype = 0;
+    QColor m_weekcolor = "#4F9BFF";
+    QColor m_currenttimecolor = "#F74444";
+    int m_cuttrnttimetype = 0;
     QTimer *m_timer = nullptr;
-    QMutex                          m_Mutex;
-    int                             m_viewType = 0;
-    bool                            m_updateDflag  = false;
-    int                             m_rightmagin = 0;
+    QMutex m_Mutex;
+    int m_viewType = 0;
+    bool m_updateDflag = false;
+    int m_rightmagin = 0;
 
-    QVector<ScheduleDtailInfo>      m_scheduleInfo;
-    QDate                           m_beginDate;
-    QDate                           m_endDate;
-    int                             m_minTime;      //最小高度对应的最小时间
-    int                             m_sMaxNum = 4;
+    QVector<ScheduleDtailInfo> m_scheduleInfo;
+    QDate m_beginDate;
+    QDate m_endDate;
+    int m_minTime; //最小高度对应的最小时间
+    int m_sMaxNum = 4;
 };
 
 #endif // GRAPHICSVIEW_H

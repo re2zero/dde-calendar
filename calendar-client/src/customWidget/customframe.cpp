@@ -25,7 +25,6 @@
 
 #include <QPainter>
 #include <QFontMetrics>
-#include <QPainterPath>
 
 DGUI_USE_NAMESPACE
 CustomFrame::CustomFrame(QWidget *parent)

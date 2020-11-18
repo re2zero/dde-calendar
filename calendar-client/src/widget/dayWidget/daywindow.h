@@ -32,15 +32,9 @@ DWIDGET_USE_NAMESPACE
 
 class CDayMonthView;
 class CScheduleView;
-class CSchceduleSearchView;
+class CScheduleSearchView;
 class QHBoxLayout;
 class CustomFrame;
-/**
- * @brief The CDayWindow class
- *
- * 日视图主窗口
- *
- */
 class CDayWindow: public QMainWindow
 {
     Q_OBJECT
@@ -59,32 +53,10 @@ private:
     void initUI();
     void initConnection();
 signals:
-    /**
-     * @brief dateSelected 选择日期的信号
-     * @param date 日期
-     * @param detail 阴历信息
-     */
     void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
-    /**
-     * @brief signalsWUpdateShcedule 更新日程的信号
-     * @param w 窗口
-     * @param id
-     */
     void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
-    /**
-     * @brief signalsReturnTodayUpdate 返回今天更新
-     * @param w 窗口
-     */
     void signalsReturnTodayUpdate(QMainWindow *w);
-    /**
-     * @brief signalViewtransparentFrame 选择窗口的信号
-     * @param type
-     */
     void signalViewtransparentFrame(int type);
-    /**
-     * @brief signalCurrentDate 当前日期的信号
-     * @param date 日期
-     */
     void signalCurrentDate(QDate date);
 public slots:
     void slotupdateSchedule(int id = 0);
@@ -101,27 +73,17 @@ private slots:
     void slotsearchDateSelect(QDate date);
     void slotIsDragging(bool &isDragging);
 private:
-    //daymonthview
     CDayMonthView *m_daymonthView = nullptr;
-    //背景frame
     DFrame *m_contentBackground = nullptr;
-    //左边的frame
     CustomFrame *m_leftground = nullptr;
-    //中间的线
     DVerticalLine *m_verline = nullptr;
-    //当前时间
     QDate              m_currentdate;
-    //年份label
     QLabel *m_YearLabel = nullptr;
-    //阴历年份label
     QLabel *m_LunarLabel = nullptr;
     QLabel *m_SolarDay = nullptr;
-    //scheduleview
     CScheduleView *m_scheduleView = nullptr;
     QString m_searchText;
-    //搜索标志
     bool m_searchfalg = false;
-    //主要布局
     QHBoxLayout *m_mainLayout = nullptr;
 };
 

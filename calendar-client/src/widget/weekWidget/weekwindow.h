@@ -24,9 +24,6 @@
 #include "calendardbus.h"
 
 #include <DFrame>
-#include <DIconButton>
-#include <DImageButton>
-#include <DPushButton>
 #include <DMainWindow>
 
 #include <QWidget>
@@ -41,11 +38,8 @@ class CWeekHeadView;
 class CaLunarDayInfo;
 class CWeekView;
 class CScheduleView;
-class CSchceduleSearchView;
-class CTodyButton;
-/**
- * @brief The CWeekWindow class
- */
+class CScheduleSearchView;
+class CTodayButton;
 class CWeekWindow: public QMainWindow
 {
     Q_OBJECT
@@ -214,7 +208,10 @@ private slots:
      * @param date 日期
      */
     void slotsearchDateSelect(QDate date);
-
+    /**
+     * @brief slotAngleDelta    接受处理滚动相对量
+     * @param delta 滚动相对量
+     */
     void slotAngleDelta(int delta);
 protected:
     /**
@@ -228,38 +225,20 @@ protected:
      */
     void mousePressEvent(QMouseEvent *event) override;
 private:
-    //周视图头weekheadview
-    CWeekHeadView *m_weekHeadView = nullptr;
-    //背景
+    CWeekHeadView *m_weekHeadView = nullptr; //周视图头
     DFrame *m_contentBackground = nullptr;
-    //上一周按钮
-    DIconButton *m_prevButton = nullptr;
-    //下一周按钮
-    DIconButton *m_nextButton = nullptr;
-    //返回今天按钮
-    CTodyButton       *m_today = nullptr;
-    //当前日期
+    CTodayButton *m_today = nullptr;
     QDate              m_currentdate;
-    //年份label
     QLabel *m_YearLabel = nullptr;
-    //阴历年份label
     QLabel *m_YearLunarLabel = nullptr;
-    //周lable
     QLabel *m_weekLabel = nullptr;
-    //weekview
     CWeekView         *m_weekview = nullptr;
-    //title中间的背景
     CustomFrame *m_todayframe = nullptr;
-    //日程view
     CScheduleView *m_scheduleView = nullptr;
     QSpacerItem *m_spaceitem = nullptr;
-    //周视图布局
     QVBoxLayout *m_mainhLayout = nullptr;
-    //搜索文字
     QString m_searchText;
-    //总体布局
     QHBoxLayout *m_tmainLayout = nullptr;
-    //搜索标志
     bool m_searchfalg = false;
 };
 

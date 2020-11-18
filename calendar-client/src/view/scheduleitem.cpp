@@ -37,16 +37,18 @@
 DWIDGET_USE_NAMESPACE
 
 CScheduleItem::CScheduleItem(QRectF rect, QGraphicsItem *parent, int type)
-    : DragInfoItem (rect,parent)
+    : DragInfoItem(rect, parent)
     , m_type(type)
 {
     m_transparentcolor = "#000000";
     m_transparentcolor.setAlphaF(0.05);
 }
 
-CScheduleItem::~CScheduleItem() {}
+CScheduleItem::~CScheduleItem()
+{
+}
 
-void CScheduleItem::setData(const ScheduleDtailInfo &info, QDate date,  int totalNum)
+void CScheduleItem::setData(const ScheduleDtailInfo &info, QDate date, int totalNum)
 {
     m_vScheduleInfo = info;
     m_totalNum = totalNum;
@@ -97,7 +99,7 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
                 QString c = str.at(0);
                 QString s = c + "...";
                 QFontMetrics fm(font);
-                while (f_st.width(s) > w && f_st.width(s) >24) {
+                while (f_st.width(s) > w && f_st.width(s) > 24) {
                     s.chop(1);
                 }
                 liststr.append(s);
@@ -132,12 +134,11 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
 {
     Q_UNUSED(isPixMap);
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-                                  m_vScheduleInfo.type.ID);
+        m_vScheduleInfo.type.ID);
     m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
 
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo ) {
-        if (m_vScheduleInfo.IsMoveInfo ==
-                CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
+    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo) {
+        if (m_vScheduleInfo.IsMoveInfo == CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
             m_vHighflag = true;
         } else {
             painter->setOpacity(0.4);
@@ -184,10 +185,10 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         painter->restore();
     }
     if (m_vSelectflag) {
-        if (themetype == 0 || themetype ==1) {
+        if (themetype == 0 || themetype == 1) {
             gdcolor.textColor.setAlphaF(0.4);
             gdcolor.timeColor.setAlphaF(0.4);
-        } else if (themetype ==2) {
+        } else if (themetype == 2) {
             gdcolor.textColor.setAlphaF(0.6);
             gdcolor.timeColor.setAlphaF(0.6);
         }
@@ -220,9 +221,9 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
             QTime stime = m_vScheduleInfo.beginDateTime.time();
             QString str = stime.toString("AP h:mm");
             QFontMetrics fontmetris(font);
-            qreal drawTextWidth = rect.width() - m_offset*2;
+            qreal drawTextWidth = rect.width() - m_offset * 2;
 
-            if (fm.width(str) > drawTextWidth -5) {
+            if (fm.width(str) > drawTextWidth - 5) {
                 QString tstr;
                 for (int i = 0; i < str.count(); i++) {
                     tstr.append(str.at(i));
@@ -238,9 +239,9 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
                         break;
                     }
                 }
-                QString tstrs = fontmetris.elidedText(str,Qt::ElideRight,qRound(drawTextWidth - 5));
+                QString tstrs = fontmetris.elidedText(str, Qt::ElideRight, qRound(drawTextWidth - 5));
                 painter->drawText(
-                    QRectF(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, drawTextWidth- 5, h),
+                    QRectF(rect.topLeft().x() + tmagin, rect.topLeft().y() + 3, drawTextWidth - 5, h),
                     Qt::AlignLeft, tstrs);
 
             } else {
@@ -261,7 +262,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         painter->setPen(gdcolor.textColor);
         QStringList liststr;
         QRect textRect = rect.toRect();
-        textRect.setWidth(textRect.width() -m_offset*2);
+        textRect.setWidth(textRect.width() - m_offset * 2);
         splitText(font,
                   textRect.width() - tmagin - 8,
                   textRect.height() - 20,
@@ -275,7 +276,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
                 QRect(textRect.topLeft().x() + tmagin,
                       textRect.topLeft().y() + 20 + timeTextHight + i * (h - 3),
                       textRect.width() - 2,
-                      h ),
+                      h),
                 Qt::AlignLeft, liststr.at(i));
         }
         painter->restore();
@@ -296,5 +297,4 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         painter->setPen(Qt::NoPen);
         painter->drawRect(rect);
     }
-
 }

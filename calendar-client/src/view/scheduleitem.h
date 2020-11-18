@@ -28,36 +28,38 @@
 #include <QPainterPath>
 
 class CScheduleCoorManage;
-class CScheduleItem :  public DragInfoItem
+class CScheduleItem : public DragInfoItem
 {
     Q_OBJECT
 public:
-    CScheduleItem(QRectF rect,QGraphicsItem *parent = nullptr, int type = 0);
+    CScheduleItem(QRectF rect, QGraphicsItem *parent = nullptr, int type = 0);
     ~CScheduleItem() override;
-    void setData(const ScheduleDtailInfo &info, QDate date,  int totalNum);
+    void setData(const ScheduleDtailInfo &info, QDate date, int totalNum);
     bool hasSelectSchedule(const ScheduleDtailInfo &info);
     int getType()
     {
-        return  m_type;
+        return m_type;
     }
     ScheduleDtailInfo getData() const
     {
         return m_vScheduleInfo;
     }
-    QDate getdate()const
+    QDate getdate() const
     {
         return m_date;
     }
+
 private:
     void splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm);
-private:
-    void paintBackground(QPainter *painter,const QRectF &rect,const int isPixMap = false) override;
-private:
-    QDate                               m_date;
-    int                                 m_type = 0;
-    int                                 m_totalNum;
-    QColor                              m_transparentcolor;
 
+private:
+    void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;
+
+private:
+    QDate m_date;
+    int m_type = 0;
+    int m_totalNum;
+    QColor m_transparentcolor;
 };
 
 #endif // SCHEDULEITEM_H

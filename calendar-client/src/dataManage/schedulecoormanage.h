@@ -30,7 +30,7 @@ public:
     ~CScheduleCoorManage();
     void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
     void setDateRange(QDate begindate, QDate enddate);
-    int getRightMagin()const
+    int getRightMagin() const
     {
         return m_rightmagin;
     }
@@ -44,15 +44,16 @@ public:
     float getHeight(QTime time);
     QDate getBegindate()
     {
-        return  m_begindate;
+        return m_begindate;
     }
+
 private:
-    int                  m_width;
-    int                  m_height;
-    QDate                m_begindate;
-    QDate                m_enddate;
+    int m_width;
+    int m_height;
+    QDate m_begindate;
+    QDate m_enddate;
     qint64 m_totalDay;
-    int                  m_rightmagin = 0;
+    int m_rightmagin = 0;
 };
 
 #endif // SCHEDULECOORMANAGE_H

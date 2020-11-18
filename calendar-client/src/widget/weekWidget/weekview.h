@@ -19,6 +19,8 @@
 #ifndef WEEKVIEW_H
 #define WEEKVIEW_H
 
+#include "../widget/touchgestureoperation.h"
+
 #include <DIconButton>
 
 #include <QObject>
@@ -26,7 +28,6 @@
 #include <QDate>
 
 DWIDGET_USE_NAMESPACE
-
 /**
  * @brief The CWeekView class
  */
@@ -103,6 +104,8 @@ protected:
      * @param event 鼠标滚轮事件
      */
     void wheelEvent(QWheelEvent *event) override;
+    bool event(QEvent *e) override;
+
 private:
     /**
      * @brief paintCell 绘制周数
@@ -126,11 +129,6 @@ private:
      */
     void updateDate();
 private:
-    /**
-     * @brief m_cellList list
-     *
-     * 周数list
-     */
     QList<QWidget *> m_cellList;
     //上一周按钮
     DIconButton *m_prevButton = nullptr;
@@ -138,31 +136,24 @@ private:
     DIconButton *m_nextButton = nullptr;
     //选择的日期
     QDate m_selectDate;
-    //周数对应的日期
     QDate m_days[10];
-    //是否被选择
     bool m_cellSelectable = true;
-    //选择的索引
     int m_selectedCell = 0;
-    //字体
     QFont m_dayNumFont;
-    //默认字体颜色
+
     QColor m_defaultTextColor = Qt::black;
-    //默认背景色
     QColor m_backgrounddefaultColor = Qt::white;
-    //当天的字体颜色
     QColor m_currentDayTextColor = Qt::white;
-    //今天的背景色
     QColor m_backgroundcurrentDayColor = "#0081FF";
-    //背景色
     QColor m_fillColor = Qt::white;
-    //每周起始的周数
     int m_firstWeekDay;
     int m_weekAddDay = 0;
-    //系统主题类型
     int m_themetype = 1;
-    //选择标志
     bool m_searchfalg = false;
+    /**
+     * @brief m_touchGesture        触摸手势处理
+     */
+    touchGestureOperation m_touchGesture;
 };
 
 #endif // MONTDAYVIEW_H

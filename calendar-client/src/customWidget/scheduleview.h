@@ -20,6 +20,7 @@
 #define SCHEDULEVIEW_H
 #include "schedulestructs.h"
 #include "SchecduleRemindWidget.h"
+#include "../widget/touchgestureoperation.h"
 
 #include <DFrame>
 
@@ -47,7 +48,7 @@ public:
     void updateHigh();
     bool IsDragging();
 public slots:
-    void slotsupdatescheduleD( QVector<ScheduleDateRangeInfo> &data);
+    void slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data);
 signals:
     void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
 signals:
@@ -68,43 +69,51 @@ public slots:
     void slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
     void slotUpdatePaint(const int topM);
     void slotUpdateScene();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     void wheelEvent(QWheelEvent *e) override;
+    bool event(QEvent *e) override;
+
 private:
     void initUI();
     void initConnection();
     void updateSchedule();
     void updateAllday();
     int checkDay(int weekday);
-    int  scheduleViewHegith();
+    int scheduleViewHegith();
+
 private:
     CGraphicsView *m_graphicsView = nullptr;
-    QVector<int>              m_vPos;
-    QVector<int>              m_vHours;
+    QVector<int> m_vPos;
+    QVector<int> m_vHours;
     CAllDayEventWeekView *m_alldaylist = nullptr;
     QVector<ScheduleDateRangeInfo> m_vListSchedule;
-    int                       m_leftMagin;
-    int                       m_topMagin;
-    int                       m_rightmagin = 0;
+    int m_leftMagin;
+    int m_topMagin;
+    int m_rightmagin = 0;
     qint64 m_TotalDay;
-    QDate                     m_currteDate;
-    int                       m_firstWeekDay;
-    QDate                     m_beginDate;
-    QDate                     m_endDate;
-    int                       m_viewType = 0;
-    int                       m_sMaxNum = 4;
-    QColor                    m_linecolor = Qt::lightGray;
-    QColor                    m_ALLDayColor = "#303030";
-    QColor                    m_timeColor = "#7D7D7D";
-    QColor                    m_currenttimecolor = "#F74444";
-    int                       m_cuttrnttimetype = 0;
+    QDate m_currteDate;
+    int m_firstWeekDay;
+    QDate m_beginDate;
+    QDate m_endDate;
+    int m_viewType = 0;
+    int m_sMaxNum = 4;
+    QColor m_linecolor = Qt::lightGray;
+    QColor m_ALLDayColor = "#303030";
+    QColor m_timeColor = "#7D7D7D";
+    QColor m_currenttimecolor = "#F74444";
+    int m_cuttrnttimetype = 0;
     QVBoxLayout *m_layout = nullptr;
     SchecduleRemindWidget *m_ScheduleRemindWidget = nullptr;
     int m_minTime; //最小高度对应的最小时间
     QFont font;
     const int m_radius = 8;
+    /**
+     * @brief m_touchGesture        触摸手势处理
+     */
+    touchGestureOperation m_touchGesture;
 };
 
 #endif // SCHEDULEVIEW_H

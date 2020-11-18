@@ -29,7 +29,9 @@ CTimeEdit::CTimeEdit(QWidget *parent)
     setFocus(Qt::MouseFocusReason);
 }
 
-CTimeEdit::~CTimeEdit() {}
+CTimeEdit::~CTimeEdit()
+{
+}
 
 void CTimeEdit::setTime(QTime time)
 {

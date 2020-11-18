@@ -28,7 +28,7 @@ CScheduleDataCtrl *CScheduleDataManage::getscheduleDataCtrl()
 
 CHuangliDayDataManage *CScheduleDataManage::getHuangliDayDataManage()
 {
-    return  m_HuangliDayDataManage;
+    return m_HuangliDayDataManage;
 }
 
 CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
@@ -415,7 +415,7 @@ void CScheduleDataManage::clear()
     delete m_scheduleDataCtrl;
 }
 
-CScheduleDataManage::CScheduleDataManage ()
+CScheduleDataManage::CScheduleDataManage()
 {
     m_scheduleDataCtrl = new CScheduleDataCtrl;
     m_HuangliDayDataManage = new CHuangliDayDataManage;
@@ -473,9 +473,9 @@ CScheduleDataManage::CScheduleDataManage ()
 
 CScheduleDataManage::~CScheduleDataManage()
 {
-    delete  m_scheduleDataCtrl;
-    delete  m_HuangliDayDataManage;
-    delete  m_GetAllYearScheduleInfo;
+    delete m_scheduleDataCtrl;
+    delete m_HuangliDayDataManage;
+    delete m_GetAllYearScheduleInfo;
 }
 
 YearScheduleInfo *CScheduleDataManage::getGetAllYearScheduleInfo() const
@@ -496,9 +496,9 @@ void CScheduleDataManage::setFirstWeekDay(int firstWeekDay)
 QDate CScheduleDataManage::getFirstOfMonth(const QDate &date)
 {
     const QDate firstDay(date.year(), date.month(), 1);
-    int offset = firstDay.dayOfWeek() % 7 - m_firstWeekDay ;
+    int offset = firstDay.dayOfWeek() % 7 - m_firstWeekDay;
 
-    const int day = offset <0 ?offset +7:offset;
+    const int day = offset < 0 ? offset + 7 : offset;
     return firstDay.addDays(0 - day);
 }
 
@@ -509,9 +509,8 @@ void CScheduleDataManage::setCurrentYear(int CurrentYear)
 
     for (int i = 1; i < 13; ++i) {
         m_GetAllYearScheduleInfo->m_firstDay[i] =
-            getFirstOfMonth(QDate(m_CurrentYear,i,1));
+            getFirstOfMonth(QDate(m_CurrentYear, i, 1));
     }
-
 }
 
 ScheduleDtailInfo CScheduleDataManage::getPressSelectInfo() const
@@ -540,12 +539,10 @@ CScheduleDataCtrl::CScheduleDataCtrl()
 
 CScheduleDataCtrl::~CScheduleDataCtrl()
 {
-    delete  m_scheduleDateCache;
-    delete  m_dbus;
+    delete m_scheduleDateCache;
+    delete m_dbus;
     delete m_thread;
 }
-
-
 
 qint64 CScheduleDataCtrl::addSchedule(const ScheduleDtailInfo &scheduledate)
 {
@@ -587,7 +584,8 @@ bool CScheduleDataCtrl::deleteScheduleInfoById(int id)
 
 bool CScheduleDataCtrl::GetType(qint64 jobId, ScheduleType &out)
 {
-    while (m_thread->isRunning());
+    while (m_thread->isRunning())
+        ;
     return m_dbus->GetType(jobId, out);
 }
 
@@ -598,7 +596,7 @@ QString CScheduleDataCtrl::InfoToJson(const ScheduleDtailInfo &scheduledate)
 
 ScheduleDtailInfo CScheduleDataCtrl::JsonObjectToInfo(QJsonObject &obj)
 {
-    return  m_dbus->parsingScheduleDtailInfojsonID(obj);
+    return m_dbus->parsingScheduleDtailInfojsonID(obj);
 }
 
 void CScheduleDataCtrl::slotupdatescheduleD(QWidget *w, QDate begin, QDate end)
@@ -616,7 +614,8 @@ void CScheduleDataCtrl::slotDataProcess(QVector<ScheduleDateRangeInfo> out)
 
 void CScheduleDataCtrl::clearData()
 {
-    while (m_thread->isRunning());
+    while (m_thread->isRunning())
+        ;
     m_scheduleDateCache->clear();
 }
 
@@ -660,10 +659,11 @@ void CDataProcessThread::DataProcessStart(QDate begin, QDate end)
 
 void CDataProcessThread::run()
 {
-    forever {
+    forever
+    {
         //运行
         m_mutex.lock();
-        QDate bdate =  m_begindate;
+        QDate bdate = m_begindate;
         QDate edate = m_enddate;
         bool t_stopFlag = m_stopFlag;
         m_mutex.unlock();
@@ -671,7 +671,8 @@ void CDataProcessThread::run()
             return;
         QVector<ScheduleDateRangeInfo> out;
         bool flag = m_DataManage->GetJobs(bdate.year(), bdate.month(), bdate.day(), edate.year(), edate.month(), edate.day(), out);
-        if (!flag) return;
+        if (!flag)
+            return;
         emit signalsDataProcess(out);
         break;
     }
@@ -701,7 +702,7 @@ bool CHuangliDayDataManage::getSoloDay(QDate date, QString &str)
             str = scurrentDayinfo.mSolarFestival + " " + scurrentDayinfo.mLunarFestival;
             return true;
         } else {
-            str = scurrentDayinfo.mSolarFestival  + scurrentDayinfo.mLunarFestival;
+            str = scurrentDayinfo.mSolarFestival + scurrentDayinfo.mLunarFestival;
             return true;
         }
     }

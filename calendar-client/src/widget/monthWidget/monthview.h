@@ -35,9 +35,7 @@
 #include <QGraphicsView>
 
 DWIDGET_USE_NAMESPACE
-/**
- * @brief The CMonthView class
- */
+
 class CMonthView: public DWidget
 {
     Q_OBJECT
@@ -84,10 +82,10 @@ signals:
      */
     void signalcurrentDateChanged(QDate date);
     /**
-     * @brief signalsSchceduleUpdate 更新日程的信号
+     * @brief signalsScheduleUpdate 更新日程的信号
      * @param id
      */
-    void signalsSchceduleUpdate(int id = 0);
+    void signalsScheduleUpdate(int id = 0);
     /**
      * @brief signalsCurrentScheduleDate
      * @param date
@@ -115,9 +113,9 @@ public slots:
      */
     void setLunarVisible(bool visible);
     /**
-     * @brief slotSchceduleUpdate 更新日程信息
+     * @brief slotScheduleUpdate 更新日程信息
      */
-    void slotSchceduleUpdate();
+    void slotScheduleUpdate();
     /**
      * @brief setSelectSchedule 设置选择的日程
      * @param scheduleInfo 日程信息
@@ -181,28 +179,22 @@ private:
 private slots:
     void getDbusData();
 private:
-    //一个月的视图
     CMonthGraphiview *m_MonthGraphicsView = nullptr;
     CalendarDBus *m_DBusInter = nullptr;
-    //一个月的日期
     QDate                   m_days[42];
-    //当天日期
     QDate                   m_currentDate;
-    QDate                   m_createDate;
-    //日期对应的当天阴历信息
+
+    QDate m_createDate;
     QMap<QDate, CaLunarDayInfo> *lunarCache = nullptr;
-    //节日列表
     QVector<FestivalInfo> m_festivallist;
+
     CMonthWeekView *m_weekIndicator = nullptr;
     int m_firstWeekDay = 0;
-    // 创建日程
-    QAction *m_createAction = nullptr;
-    //月视图布局
+    QAction *m_createAction = nullptr; // 创建日程
     QVBoxLayout *m_mainLayout = nullptr;
     int                     m_leftmaagin = 0;
     int                     m_topmagin = 0;
     bool                    m_sflag = true;
-    //日程浮框
     SchecduleRemindWidget *m_RemindWidget = nullptr;
 
     QPoint                  m_PressPoint;

@@ -29,7 +29,6 @@
 #include <QDate>
 #include <QMutex>
 
-
 DGUI_USE_NAMESPACE
 struct CSchedulesColor {
     int type;
@@ -66,8 +65,8 @@ public:
     CSchedulesColor getScheduleColorByType(int type);
     QColor getSystemActiveColor();
     void setSearchResult(QVector<ScheduleDateRangeInfo> &vData);
-    bool getSearchResult(ScheduleDtailInfo info);//true 高亮
-    bool getSearchResult(QDate date);//true 高亮
+    bool getSearchResult(ScheduleDtailInfo info); //true 高亮
+    bool getSearchResult(QDate date); //true 高亮
     void setTheMe(int type = 0);
     int getTheme()
     {
@@ -82,21 +81,23 @@ public:
     int getFirstWeekDay() const;
     void setFirstWeekDay(int firstWeekDay);
     YearScheduleInfo *getGetAllYearScheduleInfo() const;
+
 private:
     CScheduleDataManage();
     ~CScheduleDataManage();
+
 private:
     CScheduleDataCtrl *m_scheduleDataCtrl = nullptr;
     CHuangliDayDataManage *m_HuangliDayDataManage = nullptr;
-    QVector<CSchedulesColor>                        m_vScheduleColor;
-    QVector<ScheduleDateRangeInfo>                  m_vScheduleInfo;
-    ScheduleDtailInfo                               m_PressSelectInfo;
-    int                                             m_theme = 0;
-    int                                             m_CurrentYear;
-    int                                             m_firstWeekDay  =0;
+    QVector<CSchedulesColor> m_vScheduleColor;
+    QVector<ScheduleDateRangeInfo> m_vScheduleInfo;
+    ScheduleDtailInfo m_PressSelectInfo;
+    int m_theme = 0;
+    int m_CurrentYear;
+    int m_firstWeekDay = 0;
     YearScheduleInfo *m_GetAllYearScheduleInfo = nullptr;
 
-    static CScheduleDataManage                      *m_vscheduleDataManage;
+    static CScheduleDataManage *m_vscheduleDataManage;
 };
 
 class CDataProcessThread : public QThread
@@ -108,13 +109,14 @@ public:
     参数:_DataManage 原始数据管理类
     返回值:无
     ******/
-    explicit CDataProcessThread(CSchedulesDBus *_DataManage=nullptr);
+    explicit CDataProcessThread(CSchedulesDBus *_DataManage = nullptr);
     /******
     功能:析构函数
     参数:无
     返回值:无
     ******/
     ~CDataProcessThread();
+
 public:
     /******
     功能:处理数据函数外部调用
@@ -127,6 +129,7 @@ signals:
     返回值:无
     ******/
     void signalsDataProcess(QVector<ScheduleDateRangeInfo> out);
+
 protected:
     /******
     功能:多线程处理函数
@@ -134,18 +137,19 @@ protected:
     返回值:无
     ******/
     void run() override;
+
 private:
-    CSchedulesDBus       *m_DataManage;
+    CSchedulesDBus *m_DataManage;
     //锁
-    QMutex               m_mutex;
+    QMutex m_mutex;
     //更新类型
-    int                  m_type;
-    QDate                m_begindate;
-    QDate                m_enddate;
+    int m_type;
+    QDate m_begindate;
+    QDate m_enddate;
     //停止标志
-    bool                 m_stopFlag;
+    bool m_stopFlag;
 };
-class CScheduleDataCtrl: public QObject
+class CScheduleDataCtrl : public QObject
 {
     Q_OBJECT
 public:
@@ -167,18 +171,20 @@ public slots:
     void slotDataProcess(QVector<ScheduleDateRangeInfo> out);
 signals:
     void signalsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data);
+
 private:
     void clearData();
+
 private:
-    CSchedulesDBus       *m_dbus;
+    CSchedulesDBus *m_dbus;
     QMap<QDate, ScheduleDateRangeInfo> *m_scheduleDateCache;
-    QDate                m_begindate;
-    QDate                m_enddate;
-    QWidget              *m_currentWidget;
-    CDataProcessThread   *m_thread;
+    QDate m_begindate;
+    QDate m_enddate;
+    QWidget *m_currentWidget;
+    CDataProcessThread *m_thread;
 };
 class CalendarDBus;
-class CHuangliDayDataManage: public QObject
+class CHuangliDayDataManage : public QObject
 {
 public:
     CHuangliDayDataManage();
@@ -186,6 +192,7 @@ public:
     bool getSoloDay(QDate date, QString &str);
     //获取节日状态
     QVector<bool> getDayFlag(QDate date);
+
 private:
     CalendarDBus *m_DBusInter;
 };

@@ -19,6 +19,8 @@
 #ifndef MONTHDAYVIEW_H
 #define MONTHDAYVIEW_H
 
+#include "../touchgestureoperation.h"
+
 #include <DFrame>
 
 #include <QObject>
@@ -27,10 +29,6 @@
 DWIDGET_USE_NAMESPACE
 
 class CMonthWidget;
-/**
- * @brief The CMonthDayView class
- * 新建frame，放置年份widget
- */
 class CMonthDayView : public DFrame
 {
     Q_OBJECT
@@ -43,16 +41,9 @@ public:
     void setsearchfalg(bool flag);
 protected:
     void wheelEvent(QWheelEvent *e) override;
+    bool event(QEvent *e) override;
 signals:
-    /**
-     * @brief signalsSelectDate 选择日期的信号
-     * @param date 日期
-     */
     void signalsSelectDate(QDate date);
-    /**
-     * @brief signalsCurrentDate 当前时间的信号
-     * @param date 日期
-     */
     void signalsCurrentDate(QDate date);
     /**
      * @brief signalAngleDelta      发送滚动信号滚动相对量
@@ -61,26 +52,19 @@ signals:
     void signalAngleDelta(int delta);
 private:
     /**
-     * @brief m_monthWidget widget
-     *
-     * 月份所在的widget，用于显示12个月份
+     * @brief m_touchGesture        触摸手势处理
      */
+    touchGestureOperation m_touchGesture;
     CMonthWidget *m_monthWidget = nullptr;
-    //选择的日期
     QDate                       m_selectDate;
-    //12个月份
     QDate                       m_days[12];
+
     int                         m_fixwidth = 200;
     int                         m_realwidth = 100;
-    //搜索标志
     bool                        m_searchfalg = false;
 };
 
 class CMonthRect;
-/**
- * @brief The CMonthWidget class
- * 年份所在的widget
- */
 class CMonthWidget : public QWidget
 {
     Q_OBJECT
@@ -92,24 +76,32 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
+    /**
+     * @brief mouseReleaseEvent 鼠标释放事件
+     * @param event 鼠标事件
+     */
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    /**
+     * @brief mouseMoveEvent 鼠标移动事件，设置hover状态
+     * @param event 鼠标事件
+     */
+    void mouseMoveEvent(QMouseEvent *event) override;
+
 private:
+    void mousePress(const QPoint &point);
     void updateSize();
     int getMousePosItem(const QPointF &pos);
 signals:
-    /**
-     * @brief signalsSelectDate 选择日期的信号
-     * @param date 选择的日期
-     */
     void signalsSelectDate(QDate date);
 private:
     QVector<CMonthRect *> m_MonthItem;
     QDate                       m_days[12];
-
+    //触摸状态 0：原始  1：点击  2：移动
+    int m_touchState {0};
+    //触摸点击坐标
+    QPoint m_touchBeginPoint;
 };
-/**
- * @brief The CMonthRect class
- * 将月份放在矩形中
- */
+
 class CMonthRect
 {
 public:
@@ -124,28 +116,18 @@ public:
     static void setTheMe(int type);
     static void setSelectRect(CMonthRect *selectRect);
 private:
-    //月份所在矩形
     QRectF                              m_rect;
-    //日期
     QDate                               m_Date;
-    //系统主题类型
     static int                          m_themetype ;
     static qreal                        m_DevicePixelRatio;
-    //默认字体颜色
+
     static QColor                       m_defaultTextColor;
-    //默认背景色
     static QColor                       m_backgrounddefaultColor;
-    //当前月的字体颜色
     static QColor                       m_currentDayTextColor;
-    //当前月的背景色
     static QColor                       m_backgroundcurrentDayColor;
-    //填充色
     static QColor                       m_fillColor;
-    //月份字体
     static QFont                        m_dayNumFont;
-    //选择的矩形
     static CMonthRect                  *m_SelectRect;
-    //选择的颜色
     QColor                              m_selectColor;
 };
 

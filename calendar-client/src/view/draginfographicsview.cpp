@@ -19,9 +19,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "draginfographicsview.h"
-#include "schceduledlg.h"
-#include "schcedulectrldlg.h"
-#include "myschceduleview.h"
+#include "scheduledlg.h"
+#include "schedulectrldlg.h"
+#include "myscheduleview.h"
 #include "constants.h"
 
 #include <DMenu>
@@ -30,13 +30,6 @@
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QWheelEvent>
-#include <QContextMenuEvent>
-#include <QDragEnterEvent>
-#include <QDragMoveEvent>
-#include <QDropEvent>
 
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     : DGraphicsView(parent)
@@ -62,6 +55,18 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     setAlignment(Qt::AlignLeft | Qt::AlignTop);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     m_Drag = new QDrag(this);
+    //设置接受触摸事件
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    grabGesture(Qt::TapAndHoldGesture);
+    grabGesture(Qt::PanGesture);
+    grabGesture(Qt::TapGesture);
+    grabGesture(Qt::SwipeGesture);
+
+    m_touchAnimation = new QPropertyAnimation(this, "touchSlidePos");
+    //设置动画时间
+    m_touchAnimation->setDuration(1000);
+    //设置动画曲线
+    m_touchAnimation->setEasingCurve(QEasingCurve::OutQuart);
 }
 
 DragInfoGraphicsView::~DragInfoGraphicsView()
@@ -74,21 +79,16 @@ void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
     if (event->button() != Qt::LeftButton) {
         return;
     }
-
-    setPressSelectInfo(ScheduleDtailInfo());
-    QGraphicsItem *listItem =itemAt(event->localPos().toPoint());
-    DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
-
-    if (infoitem != nullptr) {
-        setPressSelectInfo(infoitem->getData());
-        m_press = true;
-        DragInfoItem::setPressFlag(true);
-    } else {
-        emit signalScheduleShow(false);
+    stopTouchAnimation();
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        //如果为触摸点击则记录相关状态并改变触摸状态
+        DGraphicsView::mousePressEvent(event);
+        m_TouchBeginPoint = event->pos();
+        m_TouchBeginTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+        m_touchState = TS_PRESS;
+        return;
     }
-
-    DragPressEvent(event->pos(),infoitem);
-    update();
+    mousePress(event->pos());
 }
 
 void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
@@ -96,13 +96,99 @@ void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() ==Qt::RightButton) {
         return;
     }
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        //如果为触摸点击状态则调用左击事件处理
+        if (m_touchState == TS_PRESS) {
+            mousePress(m_TouchBeginPoint.toPoint());
+        }
+        if (m_touchState == TS_SLIDE) {
+            stopTouchAnimation();
+            const qint64 timeOffset = QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TouchBeginTime;
+            //如果为快速滑动则开启滑动动画效果
+            if (timeOffset < 150) {
+                m_touchAnimation->setStartValue(verticalScrollBar()->sliderPosition());
+                m_touchAnimation->setEndValue(verticalScrollBar()->minimum());
+                switch (m_touchMovingDir) {
+                case touchGestureOperation::T_TOP: {
+                    //如果手势往上
+                    m_touchAnimation->setStartValue(verticalScrollBar()->sliderPosition());
+                    m_touchAnimation->setEndValue(verticalScrollBar()->maximum());
+                    m_touchAnimation->start();
+                    break;
+                }
+                case touchGestureOperation::T_BOTTOM: {
+                    //如果手势往下
+                    m_touchAnimation->setStartValue(verticalScrollBar()->sliderPosition());
+                    m_touchAnimation->setEndValue(verticalScrollBar()->minimum());
+                    m_touchAnimation->start();
+                    break;
+                }
+                default:
+
+                    break;
+                }
+            }
+        }
+    }
+    m_touchState = TS_NONE;
     mouseReleaseScheduleUpdate();
 }
 
 
 void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
 {
-    DGraphicsView::mouseMoveEvent(event);
+    //移动偏移
+    const int lengthOffset = 5;
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        m_touchMovingDir = touchGestureOperation::T_MOVE_NONE;
+        switch (m_touchState) {
+        case TS_NONE: {
+            break;
+        }
+        case TS_PRESS: {
+            //1 点击
+            qint64 currentTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+            qint64 timeOffset = currentTime - m_TouchBeginTime;
+            //获取移动距离
+            qreal movingLength = QLineF(m_TouchBeginPoint, event->pos()).length();
+            //如果移动距离小于5且点击时间大于250毫秒小于900毫秒则为拖拽移动状态
+            if (movingLength < lengthOffset && (timeOffset > 250 && timeOffset < 900)) {
+                m_touchState = TS_DRAG_MOVE;
+                m_touchDragMoveState = 1;
+            }
+            //如果移动距离大于5则为滑动状态
+            if (movingLength > lengthOffset) {
+                m_touchState = TS_SLIDE;
+            }
+            break;
+        }
+        case TS_DRAG_MOVE: {
+            //2 拖拽移动
+            qint64 currentTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+            qint64 timeOffset = currentTime - m_TouchBeginTime;
+            qreal movingLength = QLineF(m_TouchBeginPoint, event->pos()).length();
+            //如果移动距离小于5且点击时间大于900毫秒则为长按状态
+            if (movingLength < lengthOffset && (timeOffset > 900)) {
+                m_touchState = TS_LONG_PRESS;
+            }
+            if (movingLength > lengthOffset) {
+                if (m_touchDragMoveState == 1) {
+                    mousePress(m_TouchBeginPoint.toPoint());
+                }
+                m_touchDragMoveState = 2;
+            }
+            break;
+        }
+        case TS_SLIDE: {
+            //3 滑动
+            QPointF _currentPoint = event->pos();
+            slideEvent(m_TouchBeginPoint, _currentPoint);
+            break;
+        }
+        default:
+            break;
+        }
+    }
 
     if (m_press) {
         emit signalScheduleShow(false);
@@ -183,10 +269,12 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     default:
         break;
     }
+    DGraphicsView::mouseMoveEvent(event);
 }
 
 void DragInfoGraphicsView::wheelEvent(QWheelEvent *event)
 {
+    stopTouchAnimation();
     DGraphicsView::wheelEvent(event);
 }
 
@@ -212,7 +300,7 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 
             if (action_t == m_editAction) {
                 emit signalViewtransparentFrame(1);
-                CSchceduleDlg dlg(0, this);
+                CScheduleDlg dlg(0, this);
                 dlg.setData(infoitem->getData());
                 if (dlg.exec() == DDialog::Accepted) {
                     emit signalsUpdateShcedule();
@@ -223,7 +311,7 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
             }
         } else {
             emit signalViewtransparentFrame(1);
-            CMySchceduleView dlg(infoitem->getData(), this);
+            CMyScheduleView dlg(infoitem->getData(), this);
             dlg.exec();
             emit signalViewtransparentFrame(0);
         }
@@ -332,8 +420,8 @@ void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDtailInfo &info)
     emit signalViewtransparentFrame(1);
 
     if (info.rpeat >0) {
-        CSchceduleDlg::ChangeRecurInfo(this,info,
-                                       m_PressScheduleInfo,m_themetype);
+        CScheduleDlg::ChangeRecurInfo(this, info,
+                                      m_PressScheduleInfo, m_themetype);
     } else {
         CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
             info);
@@ -411,7 +499,7 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             m_DragStatus = NONE;
 
             emit signalViewtransparentFrame(1);
-            CSchceduleDlg dlg(1, this);
+            CScheduleDlg dlg(1, this);
             dlg.setData(m_DragScheduleInfo);
             if (dlg.exec() == DDialog::Accepted) {
             } else {
@@ -448,12 +536,45 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
     update();
 }
 
+void DragInfoGraphicsView::mousePress(const QPoint &point)
+{
+    setPressSelectInfo(ScheduleDtailInfo());
+    QGraphicsItem *listItem = itemAt(point);
+    DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
+
+    if (infoitem != nullptr) {
+        setPressSelectInfo(infoitem->getData());
+        m_press = true;
+        DragInfoItem::setPressFlag(true);
+    } else {
+        emit signalScheduleShow(false);
+    }
+    DragPressEvent(point, infoitem);
+    update();
+}
+
+int DragInfoGraphicsView::getSlidePos() const
+{
+    return m_touchSlidePos;
+}
+
+void DragInfoGraphicsView::setSlidePos(int pos)
+{
+    m_touchSlidePos = pos;
+    verticalScrollBar()->setValue(m_touchSlidePos);
+}
+
+void DragInfoGraphicsView::stopTouchAnimation()
+{
+    m_touchAnimation->stop();
+}
+
 void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
 {
     emit signalViewtransparentFrame(1);
 
     if (info.rpeat == 0) {
-        CSchceduleCtrlDlg msgBox(this);
+        CScheduleCtrlDlg msgBox(this);
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
         msgBox.addPushButton(tr("Cancel"), true);
@@ -468,7 +589,7 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
         }
     } else {
         if (info.RecurID == 0) {
-            CSchceduleCtrlDlg msgBox(this);
+            CScheduleCtrlDlg msgBox(this);
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
             msgBox.addPushButton(tr("Cancel"));
@@ -489,7 +610,7 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
                 CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
             }
         } else {
-            CSchceduleCtrlDlg msgBox(this);
+            CScheduleCtrlDlg msgBox(this);
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
             msgBox.addPushButton(tr("Cancel"));
@@ -532,7 +653,7 @@ void DragInfoGraphicsView::setDragPixmap(QDrag *drag, DragInfoItem *item)
 void DragInfoGraphicsView::slotCreate(const QDateTime &date)
 {
     emit signalViewtransparentFrame(1);
-    CSchceduleDlg dlg(1, this);
+    CScheduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(date.date());
 
@@ -581,6 +702,47 @@ void DragInfoGraphicsView::ShowSchedule(DragInfoItem *infoitem)
         return;
     emit signalScheduleShow(true, infoitem->getData());
 
+}
+
+void DragInfoGraphicsView::slideEvent(QPointF &startPoint, QPointF &stopPort)
+{
+    qreal _movingLine {0};
+    //获取滑动方向
+    touchGestureOperation::TouchMovingDirection _touchMovingDir =
+        touchGestureOperation::getTouchMovingDir(startPoint, stopPort, _movingLine);
+    m_touchMovingDir = _touchMovingDir;
+    //切换标志 0 不切换  1 下一页  -1 上一页
+    int delta {0};
+    //移动偏移 25则切换
+    const int moveOffset = 25;
+    switch (_touchMovingDir) {
+    case touchGestureOperation::T_TOP:
+    case touchGestureOperation::T_BOTTOM: {
+        const int pos_Diff_Y = qFloor(stopPort.y() - startPoint.y());
+        verticalScrollBar()->setValue(verticalScrollBar()->sliderPosition() - pos_Diff_Y);
+        startPoint = stopPort;
+        break;
+    }
+    case touchGestureOperation::T_LEFT: {
+        if (_movingLine > moveOffset) {
+            delta = 1;
+            startPoint = stopPort;
+        }
+        break;
+    }
+    case touchGestureOperation::T_RIGHT: {
+        if (_movingLine > moveOffset) {
+            delta = -1;
+            startPoint = stopPort;
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    if (delta != 0) {
+        emit signalAngleDelta(delta);
+    }
 }
 
 int DragInfoGraphicsView::getDragStatus() const

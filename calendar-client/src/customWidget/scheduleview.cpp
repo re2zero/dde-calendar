@@ -19,7 +19,7 @@
 #include "scheduleview.h"
 #include "alldayeventview.h"
 #include "graphicsview.h"
-#include "schceduledlg.h"
+#include "scheduledlg.h"
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
 #include "constants.h"
@@ -31,7 +31,6 @@
 #include <QShortcut>
 #include <QVBoxLayout>
 #include <QApplication>
-#include <QPainterPath>
 
 DGUI_USE_NAMESPACE
 
@@ -40,6 +39,7 @@ static int hourTextHeight = 20;
 CScheduleView::CScheduleView(QWidget *parent, int viewType)
     : DFrame(parent)
     , m_viewType(viewType)
+    , m_touchGesture(this)
 {
     initUI();
     initConnection();
@@ -47,7 +47,9 @@ CScheduleView::CScheduleView(QWidget *parent, int viewType)
     setLineWidth(0);
 }
 
-CScheduleView::~CScheduleView() {}
+CScheduleView::~CScheduleView()
+{
+}
 
 void CScheduleView::setviewMagin(int left, int top, int right, int bttom)
 {
@@ -173,9 +175,9 @@ void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
                     m_graphicsView->setTime(QTime(13, 0));
                 } else {
                     std::sort(scheduleInfolist.begin(), scheduleInfolist.end(),
-                    [](const ScheduleDtailInfo & s1, const ScheduleDtailInfo & s2) ->bool {
-                        return s1.beginDateTime < s2.beginDateTime;
-                    });
+                              [](const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2) -> bool {
+                                  return s1.beginDateTime < s2.beginDateTime;
+                              });
                     QTime time = scheduleInfolist.at(0).beginDateTime.time();
 
                     if (scheduleInfolist.at(0).beginDateTime.date() != m_beginDate) {
@@ -193,7 +195,6 @@ void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
     }
     setEnabled(true);
 }
-
 
 void CScheduleView::setDate(QDate date)
 {
@@ -278,8 +279,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     continue;
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                          hourTextWidth, hourTextHeight);
-                if (rr.intersects(tinrect) && m_viewType == 1 &&
-                        m_beginDate == QDate::currentDate()) {
+                if (rr.intersects(tinrect) && m_viewType == 1 && m_beginDate == QDate::currentDate()) {
                     continue;
                 }
                 painter.drawText(
@@ -338,8 +338,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                          hourTextWidth + 2, hourTextHeight);
 
-                if (rr.intersects(tinrect) && m_viewType == 1 &&
-                        m_beginDate == QDate::currentDate())
+                if (rr.intersects(tinrect) && m_viewType == 1 && m_beginDate == QDate::currentDate())
                     continue;
 
                 painter.drawText(
@@ -401,8 +400,39 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
 
 void CScheduleView::wheelEvent(QWheelEvent *e)
 {
-    if(e->orientation() == Qt::Orientation::Horizontal){
+    if (e->orientation() == Qt::Orientation::Horizontal) {
         emit signalAngleDelta(e->angleDelta().x());
+    }
+}
+
+bool CScheduleView::event(QEvent *e)
+{
+    if (m_touchGesture.event(e)) {
+        //获取触摸状态
+        switch (m_touchGesture.getTouchState()) {
+        case touchGestureOperation::T_SLIDE: {
+            //在滑动状态如果可以更新数据则切换月份
+            if (m_touchGesture.isUpdate()) {
+                m_touchGesture.setUpdate(false);
+                switch (m_touchGesture.getMovingDir()) {
+                case touchGestureOperation::T_LEFT:
+                    emit signalAngleDelta(-1);
+                    break;
+                case touchGestureOperation::T_RIGHT:
+                    emit signalAngleDelta(1);
+                    break;
+                default:
+                    break;
+                }
+            }
+            break;
+        }
+        default:
+            break;
+        }
+        return true;
+    } else {
+        return DFrame::event(e);
     }
 }
 
@@ -439,13 +469,13 @@ void CScheduleView::initConnection()
             &CScheduleView::signalViewtransparentFrame);
     connect(m_graphicsView, &CGraphicsView::signalViewtransparentFrame, this,
             &CScheduleView::signalViewtransparentFrame);
+    //切换前后时间信号关联
+    connect(m_graphicsView, &CAllDayEventWeekView::signalAngleDelta, this, &CScheduleView::signalAngleDelta);
+    connect(m_alldaylist, &CAllDayEventWeekView::signalAngleDelta, this, &CScheduleView::signalAngleDelta);
 
-    connect(m_graphicsView
-            , &CGraphicsView::signalScheduleShow
-            , this, &CScheduleView::slotScheduleShow);
+    connect(m_graphicsView, &CGraphicsView::signalScheduleShow, this, &CScheduleView::slotScheduleShow);
 
-    connect(m_alldaylist, &CAllDayEventWeekView::signalScheduleShow
-            , this, &CScheduleView::slotScheduleShow);
+    connect(m_alldaylist, &CAllDayEventWeekView::signalScheduleShow, this, &CScheduleView::slotScheduleShow);
 
     connect(m_alldaylist, &CAllDayEventWeekView::signalUpdatePaint,
             this, &CScheduleView::slotUpdatePaint);
@@ -457,9 +487,6 @@ void CScheduleView::initConnection()
     QShortcut *dshortcut = new QShortcut(this);
     dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(dshortcut, SIGNAL(activated()), this, SLOT(slotDeleteitem()));
-
-
-
 }
 
 void CScheduleView::slotDeleteitem()
@@ -480,7 +507,7 @@ void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo 
     if (isShow) {
         QPoint pos22 = QCursor::pos();
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-                                      out.type.ID);
+            out.type.ID);
         QDesktopWidget *w = QApplication::desktop();
         m_ScheduleRemindWidget->setData(out, gdcolor);
 
@@ -570,5 +597,5 @@ int CScheduleView::scheduleViewHegith()
     mheight = mheight < 500 ? 1035 : mheight;
     int m_minTime = qRound((20.0 / mheight) * 86400);
     m_graphicsView->setMinTime(m_minTime);
-    return  qRound(mheight);
+    return qRound(mheight);
 }

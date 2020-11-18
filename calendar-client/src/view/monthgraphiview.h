@@ -37,12 +37,9 @@
 DWIDGET_USE_NAMESPACE
 
 class CDayGraphicsItem;
-class CMonthSchceduleWidgetItem;
-class CMonthSchceduleView;
-/**
- * @brief The CMonthGraphiview class
- * 月视图显示一个月的日期所在的视图
- */
+class CMonthScheduleWidgetItem;
+class CMonthScheduleView;
+
 class CMonthGraphiview : public DragInfoGraphicsView
 {
     Q_OBJECT
@@ -52,10 +49,6 @@ public:
     void setTheMe(int type = 0) override;
 public:
     void setDate(const QDate date[42]);
-    /**
-     * @brief setFestivalInfo 设置节日信息
-     * @param info 节日信息
-     */
     void setFestivalInfo(const QVector<FestivalInfo> &info)
     {
         m_festivallist = info;
@@ -81,7 +74,9 @@ protected:
 private:
     void setDragPixmap(QDrag *drag,DragInfoItem *item) override;
     bool MeetCreationConditions(const QDateTime &date) override;
+    //判断时间是否相等
     bool IsEqualtime(const QDateTime &timeFirst,const QDateTime &timeSecond) override;
+    //根据鼠标移动的距离判断是否创建日程
     bool JudgeIsCreate(const QPointF &pos)  override;
     void RightClickToCreate(QGraphicsItem *listItem,const QPoint &pos) override;
     void MoveInfoProcess(ScheduleDtailInfo &info,const QPointF &pos) override;
@@ -90,66 +85,29 @@ private:
     PosInItem getPosInItem(const QPoint &p,const QRectF &itemRect)override;
     QDateTime getPosDate(const QPoint &p)override;
     void upDateInfoShow(const DragStatus &status = NONE,const ScheduleDtailInfo &info =ScheduleDtailInfo())override;
+    /**
+     * @brief slideEvent            触摸滑动事件处理
+     * @param startPoint            触摸开始坐标
+     * @param stopPort              触摸结束坐标
+     */
+    void slideEvent(QPointF &startPoint, QPointF &stopPort) override;
 signals:
-    /**
-     * @brief signalFontChange 字体大小改变的信号
-     */
     void signalFontChange();
-    /**
-     * @brief signalsViewSelectDate 选择日程的信号
-     * @param date 选择的日期
-     */
     void signalsViewSelectDate(QDate date);
-    /**
-     * @brief signalsSchceduleUpdate 更新日程的信号
-     * @param id 日程id
-     */
-    void signalsSchceduleUpdate(const int id = 0);
-    /**
-     * @brief signalAngleDelta      发送滚动信号滚动相对量
-     * @param delta     滚动相对量
-     */
-    void signalAngleDelta(int delta);
+    void signalsScheduleUpdate(const int id = 0);
 public slots:
     void slotCreate(const QDateTime &date) override;
     void slotdelete(const int id =0);
     void slotDeleteItem();
 private:
-    /**
-     * @brief m_DayItem item容器
-     *
-     * 存放每天的item
-     * 构成一个月的view
-     */
     QVector<CDayGraphicsItem *>         m_DayItem;
-    /**
-     * @brief m_lunarCache 字典
-     *
-     * 存储日期和阴历信息
-     * 是日期和阴历信息形成一一对应的关系
-     */
     QMap<QDate, CaLunarDayInfo> *m_lunarCache = nullptr;
-    /**
-     * @brief m_festivallist 容器
-     *
-     * 存放节假日的信息
-     */
     QVector<FestivalInfo>               m_festivallist;
-    //当前月
     int                                 m_currentMonth;
-    /**
-     * @brief m_MonthSchceduleView view
-     *
-     * 月视图的日程view
-     */
-    CMonthSchceduleView *m_MonthSchceduleView = nullptr;
-    //日程信息
+    CMonthScheduleView *m_MonthScheduleView = nullptr;
     QVector<ScheduleDateRangeInfo>      m_shceludelistdata;
 };
-/**
- * @brief The CDayGraphicsItem class
- * 每一天所在的item
- */
+
 class CDayGraphicsItem :public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
@@ -160,19 +118,11 @@ public:
     void setData(const QDate &date);
     void setLunar(const QString &lunar);
     void setStatus(const HolidayStatus &status);
-    /**
-     * @brief setCurrentMonth 设置当前月
-     * @param isCurrent 是否是当前月
-     */
     void setCurrentMonth(bool isCurrent)
     {
         m_IsCurrentMonth = isCurrent;
     }
     void setTheMe(int type = 0);
-    /**
-     * @brief getDate 获取日期
-     * @return 日期
-     */
     QDate getDate()const
     {
         return m_Date;
@@ -181,43 +131,25 @@ public:
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 private:
-    //每天日期
     QDate                   m_Date;
-    //阴历
     QString                 m_DayLunar;
-    //每天的类型
     HolidayStatus           m_DayStatus;
-    //日期的文字字体
     QFont                   m_dayNumFont;
-    //日期的文字颜色
     QColor                  m_dayNumColor;
-    //今天的文字颜色
     QColor                  m_dayNumCurrentColor;
-    //农历的字体
     QFont                   m_LunerFont;
-    //农历的颜色
     QColor                  m_LunerColor;
-    //背景色
     QColor                  m_BorderColor;
-    //是否是今天
     bool                    m_IsCurrentMonth = false;
-    //一般日期的背景色
     QColor                  m_fillColor = Qt::white;
-    //补班日期的背景色
     QColor                  m_banColor = "#FBE9B7";
-    //节假日休息的背景色
     QColor                  m_xiuColor = "#D4FFB3";
-    //系统主题类型
     int                     m_themetype = 0;
-    //今天的颜色
     QColor                  m_currentColor;
-    //item数量
     int m_itemnum = 0;
-    //圆角半径
     const int m_radius = 18;
 
 public:
-    //是否显示阴历
     static bool             m_LunarVisible;
 };
 

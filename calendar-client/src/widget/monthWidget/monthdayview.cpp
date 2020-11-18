@@ -32,68 +32,46 @@
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
-/**
- * @brief CMonthDayView 构造函数
- * @param parent 父类
- */
 CMonthDayView::CMonthDayView(QWidget *parent)
     : DFrame(parent)
+    , m_touchGesture(this)
 {
-    //新建水平布局
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
     hboxLayout->setContentsMargins(10, 0, 10, 0);
-    //新建月份的widget
     m_monthWidget = new CMonthWidget(this);
-    //将月份的widget添加到水平布局中
     hboxLayout->addWidget(m_monthWidget);
-    //设置布局为水平布局
     setLayout(hboxLayout);
-    //设置圆角
     setFrameRounded(true);
     setLineWidth(0);
-    //设置windowflags
     setWindowFlags(Qt::FramelessWindowHint);
-    //连接信号
+
     connect(m_monthWidget,
             &CMonthWidget::signalsSelectDate,
             this,
             &CMonthDayView::signalsSelectDate);
 }
-/**
- * @brief ~CMonthDayView 析构函数
- */
+
 CMonthDayView::~CMonthDayView()
 {
 }
-/**
- * @brief setCurrentDate 设置当前月份
- * @param date 日期
- */
+
 void CMonthDayView::setCurrentDate(const QDate date)
 {
-    //选择的日期
     m_selectDate = date;
-    //中间的月份
     m_days[5] = m_selectDate;
-    //设置前面的月份
+
     for (int i(4); i >= 0; i--) {
         m_days[4 - i] = m_selectDate.addMonths(-i - 1);
     }
-    //设置后面的月份
     for (int i(6); i != DDEMonthCalendar::MonthNumofYear; ++i) {
         m_days[i] = m_selectDate.addMonths(i - 5);
     }
-    //更新数据
     update();
-    //设置数据
     m_monthWidget->setDate(m_days);
 }
-/**
- * @brief setRCurrentDate 设置选中的月份
- * @param date 日期
- */
+
 void CMonthDayView::setRCurrentDate(const QDate date)
 {
     if (m_selectDate == date) return;
@@ -112,21 +90,18 @@ void CMonthDayView::setRCurrentDate(const QDate date)
     m_monthWidget->setDate(m_days);
     update();
 }
-/**
- * @brief setTheMe 根据系统类型设置颜色
- * @param type 系统类型
- */
+
 void CMonthDayView::setTheMe(int type)
 {
     QColor frameclor;
-    //根据系统类型设置颜色
+
     if (type == 0 || type == 1) {
         frameclor = "#FFFFFF";
     } else if (type == 2) {
         frameclor = "#FFFFFF";
         frameclor.setAlphaF(0.05);
     }
-    //设置背景色
+
     DPalette anipa = palette();
     anipa.setColor(DPalette::Background, frameclor);
     setPalette(anipa);
@@ -134,10 +109,6 @@ void CMonthDayView::setTheMe(int type)
     CMonthRect::setTheMe(type);
 }
 
-/**
- * @brief setsearchfalg
- * @param flag
- */
 void CMonthDayView::setsearchfalg(bool flag)
 {
     m_searchfalg = flag;
@@ -151,6 +122,36 @@ void CMonthDayView::wheelEvent(QWheelEvent *e)
     }
 }
 
+bool CMonthDayView::event(QEvent *e)
+{
+    if (m_touchGesture.event(e)) {
+        //获取触摸状态
+        switch (m_touchGesture.getTouchState()) {
+        case touchGestureOperation::T_SLIDE: {
+            //在滑动状态如果可以更新数据则切换月份
+            if (m_touchGesture.isUpdate()) {
+                m_touchGesture.setUpdate(false);
+                switch (m_touchGesture.getMovingDir()) {
+                case touchGestureOperation::T_LEFT:
+                    emit signalAngleDelta(-1);
+                    break;
+                case touchGestureOperation::T_RIGHT:
+                    emit signalAngleDelta(1);
+                    break;
+                default:
+                    break;
+                }
+            }
+            break;
+        }
+        default:
+            break;
+        }
+        return true;
+    } else {
+        return DFrame::event(e);
+    }
+}
 /**
  * @brief CMonthWidget 构造函数
  * @param parent 父类
@@ -158,16 +159,12 @@ void CMonthDayView::wheelEvent(QWheelEvent *e)
 CMonthWidget::CMonthWidget(QWidget *parent)
     : QWidget(parent)
 {
-    //新建12个月份的rect
     for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         CMonthRect *monthrect = new CMonthRect();
-        //将每个月份的rect添加到容器中
         m_MonthItem.append(monthrect);
     }
 }
-/**
-  * @brief ~CMonthWidget 析构函数
-  */
+
 CMonthWidget::~CMonthWidget()
 {
     for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
@@ -177,40 +174,78 @@ CMonthWidget::~CMonthWidget()
 
     m_MonthItem.clear();
 }
-/**
- * @brief setDate 设置月份
- * @param date 12个月份
- */
+
 void CMonthWidget::setDate(const QDate date[12])
 {
-    //设置时间
     for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         m_MonthItem.at(i)->setDate(date[i]);
     }
-    //设置选择的rect
+
     CMonthRect::setSelectRect(m_MonthItem.at(5));
     update();
 }
-/**
- * @brief resizeEvent 更新显示
- * @param event 窗口大小调整事件
- */
+
 void CMonthWidget::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
     updateSize();
 }
-/**
- * @brief mousePressEvent 鼠标单击事件
- * @param event 鼠标事件
- */
+
 void CMonthWidget::mousePressEvent(QMouseEvent *event)
 {
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        //如果为触摸转换则设置触摸状态和触摸开始坐标
+        m_touchState = 1;
+        m_touchBeginPoint = event->pos();
+        QWidget::mousePressEvent(event);
+        return;
+    }
     if (event->button() == Qt::RightButton)
         return;
 
-    int itemindex = getMousePosItem(event->pos());
+    mousePress(event->pos());
+}
 
+void CMonthWidget::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
+
+    for (int i = 0; i < m_MonthItem.size(); ++i) {
+        m_MonthItem.at(i)->paintItem(&painter,
+                                     m_MonthItem.at(i)->rect());
+    }
+    painter.end();
+}
+
+void CMonthWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        if (m_touchState == 1) {
+            //如果为触摸且状态为点击则为触摸点击
+            mousePress(event->pos());
+            m_touchState = 0;
+        }
+        QWidget::mouseReleaseEvent(event);
+    }
+}
+
+void CMonthWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if (event->source() == Qt::MouseEventSynthesizedByQt) {
+        QPoint currentPoint = event->pos();
+        //如果移动距离大与5则为触摸移动状态
+        if (QLineF(m_touchBeginPoint, currentPoint).length() > 5) {
+            m_touchState = 2;
+        }
+        QWidget::mouseMoveEvent(event);
+    }
+}
+
+void CMonthWidget::mousePress(const QPoint &point)
+{
+    int itemindex = getMousePosItem(point);
     if (!(itemindex < 0)) {
         if (m_MonthItem.at(itemindex)->getDate().year() < DDECalendar::QueryEarliestYear) {
             return;
@@ -220,44 +255,21 @@ void CMonthWidget::mousePressEvent(QMouseEvent *event)
     }
     update();
 }
-/**
- * @brief paintEvent 绘制item
- * @param event 绘图事件
- */
-void CMonthWidget::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
-    QPainter painter(this);
-    // 反锯齿;
-    painter.setRenderHint(QPainter::Antialiasing);
-    //绘制月份
-    for (int i = 0; i < m_MonthItem.size(); ++i) {
-        m_MonthItem.at(i)->paintItem(&painter,
-                                     m_MonthItem.at(i)->rect());
-    }
-    painter.end();
-}
-/**
- * @brief updateSize 更新item的大小
- */
+
 void CMonthWidget::updateSize()
 {
     qreal w = this->width() / m_MonthItem.size();
-    //更新每个rect的大小
+
     for (int i = 0; i < m_MonthItem.size(); ++i) {
         m_MonthItem.at(i)->setRect(i * w, 0, w, this->height());
     }
     update();
 }
-/**
- * @brief getMousePosItem 获取鼠标点击月份的索引
- * @param pos 鼠标点击的点
- * @return 月份的所在位置的索引
- */
+
 int CMonthWidget::getMousePosItem(const QPointF &pos)
 {
     int res = -1;
-    //获取点击rect的索引
+
     for (int i = 0 ; i < m_MonthItem.size(); ++i) {
         if (m_MonthItem.at(i)->rect().contains(pos)) {
             res = i;
@@ -280,126 +292,84 @@ QColor      CMonthRect::m_fillColor;
 QFont       CMonthRect::m_dayNumFont;
 CMonthRect         *CMonthRect::m_SelectRect = nullptr;
 
-/**
- * @brief CMonthRect 构造函数
- */
 CMonthRect::CMonthRect()
 {
     m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_dayNumFont.setWeight(QFont::Light);
 }
-/**
- * @brief setDate 设置日期
- * @param date 日期
- */
+
 void CMonthRect::setDate(const QDate &date)
 {
     m_Date = date;
 }
-/**
- * @brief getDate 获取日期
- * @return 日期
- */
+
 QDate CMonthRect::getDate() const
 {
     return  m_Date;
 }
-/**
- * @brief rect 月份所在的矩形
- * @return 矩形
- */
+
 QRectF CMonthRect::rect() const
 {
     return  m_rect;
 }
-/**
- * @brief setRect 设置月份所在矩形
- * @param rect 矩形
- */
+
 void CMonthRect::setRect(const QRectF &rect)
 {
     m_rect = rect;
 }
-/**
- * @brief setRect 设置矩形大小
- * @param x 起点x
- * @param y 起点y
- * @param w 宽度w
- * @param h 高度h
- */
+
 void CMonthRect::setRect(qreal x, qreal y, qreal w, qreal h)
 {
     m_rect.setRect(x, y, w, h);
 }
-/**
- * @brief paintItem 绘制item
- * @param painter 绘图函数
- * @param rect 月份所在矩形
- */
+
 void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
 {
-    //选择的rect颜色
     m_selectColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-    //如果时间早于1900年，return
+
     if (m_Date.year() < DDECalendar::QueryEarliestYear)
         return;
-    //是否是今天
     const bool isCurrentDay = (m_Date.month() == QDate::currentDate().month()
                                && m_Date.year() == QDate::currentDate().year());
 
     painter->setPen(Qt::SolidLine);
-    //月份数字
+
     const QString dayNum = QString::number(m_Date.month());
-    //被选中的月份
+
     if (m_SelectRect == this) {
-        //设置矩形
         QRectF fillRect((rect.width() - 36) / 2 + rect.x() + 6,
                         (rect.height() - 36) / 2 + 7 + rect.y(),
                         24,
                         24);
         painter->setBrush(QBrush(m_selectColor));
         painter->setPen(Qt::NoPen);
-        //绘制圆形
         painter->drawEllipse(fillRect);
         painter->setRenderHint(QPainter::HighQualityAntialiasing);
         painter->setPen(m_currentDayTextColor);
         painter->setFont(m_dayNumFont);
-        //绘制月份
         painter->drawText(rect, Qt::AlignCenter, dayNum);
     } else {
-        //没被选中
         if (isCurrentDay) {
-            //设置当前月的字体颜色
             painter->setPen(m_backgroundcurrentDayColor);
         } else {
-            //设置其他月字体颜色
             painter->setPen(m_defaultTextColor);
         }
         painter->setFont(m_dayNumFont);
-        //绘制月份
         painter->drawText(rect, Qt::AlignCenter, dayNum);
     }
-
 }
-/**
- * @brief setDevicePixelRatio
- * @param pixel
- */
+
 void CMonthRect::setDevicePixelRatio(const qreal pixel)
 {
     m_DevicePixelRatio = pixel;
 }
-/**
- * @brief setTheMe 根据系统类型设置颜色
- * @param type 系统类型
- */
+
 void CMonthRect::setTheMe(int type)
 {
     m_themetype = type;
     QColor frameclor;
-    //根据系统主题类型设置颜色
+
     if (type == 0 || type == 1) {
-        //系统主题类型为浅色或跟随系统
         m_defaultTextColor = Qt::black;
         m_backgrounddefaultColor = Qt::white;
         m_currentDayTextColor = Qt::white;
@@ -408,7 +378,6 @@ void CMonthRect::setTheMe(int type)
         frameclor = m_fillColor;
         m_fillColor.setAlphaF(0);
     } else if (type == 2) {
-        //系统主题类型为深色
         m_defaultTextColor = "#C0C6D4";
         QColor framecolor = Qt::black;
         framecolor.setAlphaF(0.5);
@@ -421,10 +390,7 @@ void CMonthRect::setTheMe(int type)
         m_fillColor.setAlphaF(0);
     }
 }
-/**
- * @brief setSelectRect 设置选择的矩形
- * @param selectRect 选择的矩形
- */
+
 void CMonthRect::setSelectRect(CMonthRect *selectRect)
 {
     m_SelectRect = selectRect;

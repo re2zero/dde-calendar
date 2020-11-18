@@ -22,7 +22,6 @@
 #include "exportedinterface.h"
 #include "configsettings.h"
 #include "accessible/accessible.h"
-#include "logPrint/DebugTimeManager.h"
 
 #include <DApplication>
 #include <DLog>
@@ -104,12 +103,11 @@ QString GetStyleSheetContent()
 #include "schedulesdbus.h"
 int main(int argc, char *argv[])
 {
-    PERF_PRINT_BEGIN("POINT-01", "");
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     //适配deepin-turbo启动加速
     DApplication *app = nullptr;
 #if(DTK_VERSION < DTK_VERSION_CHECK(5,4,0,0))
-    app = new  DApplication(argc, argv);
+    app = new DApplication(argc, argv);
 #else
     app = DApplication::globalApplication(argc, argv);
 #endif
@@ -167,13 +165,11 @@ int main(int argc, char *argv[])
 
     //监听当前应用主题切换事件
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
-    [](DGuiApplicationHelper::ColorType type) {
-        qDebug() << type;
-        // 保存程序的主题设置  type : 0,系统主题， 1,浅色主题， 2,深色主题
-        saveThemeTypeSetting(type);
-        DGuiApplicationHelper::instance()->setPaletteType(type);
-    });
-
-    PERF_PRINT_END("POINT-01");
+                     [](DGuiApplicationHelper::ColorType type) {
+                         qDebug() << type;
+                         // 保存程序的主题设置  type : 0,系统主题， 1,浅色主题， 2,深色主题
+                         saveThemeTypeSetting(type);
+                         DGuiApplicationHelper::instance()->setPaletteType(type);
+                     });
     return app->exec();
 }
