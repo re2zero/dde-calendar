@@ -22,6 +22,7 @@
 #include "pinyinsearch.h"
 #include "pinyindict.h"
 
+pinyinsearch *pinyinsearch::m_pinyinsearch = nullptr;
 /**
  * @brief pinyinsearch::pinyinsearch 构造函数，进行初始化
  */
@@ -36,12 +37,19 @@ pinyinsearch::pinyinsearch()
     }
 }
 
+pinyinsearch *pinyinsearch::getPinPinSearch()
+{
+    if (m_pinyinsearch == nullptr)
+        m_pinyinsearch = new pinyinsearch();
+    return m_pinyinsearch;
+}
+
 /**
  * @brief pinyinsearch::canQueryByPinyin 拼音是否与正则表达式匹配
  * @param str 拼音字符串
  * @return bool值
  */
-bool pinyinsearch::canQueryByPinyin(QString str)
+bool pinyinsearch::CanQueryByPinyin(QString str)
 {
     QRegExp regexp("^[a-zA-Z]+$");
     return regexp.exactMatch(str);
@@ -52,7 +60,7 @@ bool pinyinsearch::canQueryByPinyin(QString str)
  * @param zh 汉字字符串
  * @return 拼音字符串
  */
-QString pinyinsearch::createPinyin(QString zh)
+QString pinyinsearch::CreatePinyin(QString zh)
 {
     //返回中文对应的拼音，汉字个数对应QList长度，每个汉字拥有的拼音个数对应QStringList长度
     QList<QStringList> pyList = Pinyin(zh);
@@ -72,7 +80,7 @@ QString pinyinsearch::createPinyin(QString zh)
  * @param pinyin 拼音
  * @return 按照汉字划分好的拼音字符串
  */
-QString pinyinsearch::createPinyinQuery(QString pinyin)
+QString pinyinsearch::CreatePinyinQuery(QString pinyin)
 {
     QString expr;
     //对传入的拼音进行划分，例如：“nihao”->"[%ni%][%hao%]"
@@ -82,12 +90,13 @@ QString pinyinsearch::createPinyinQuery(QString pinyin)
         if (i > pinyin.size()) {
             i = pinyin.size();
         }
-        for (; i > 1; i--) {
+        while (i > 1) {
             //从拼音最大长度，递减截取拼音，是否在字典中
             QString key = pinyin.mid(0, i);
             //如果拼音在字典中，则此拼音代表一个汉字的拼音，break
             if (validPinyinMap[key])
                 break;
+            i--;
         }
         //一个汉字的拼音
         QString key = pinyin.mid(0, i);
@@ -104,7 +113,7 @@ QString pinyinsearch::createPinyinQuery(QString pinyin)
  * @param pinyin 拼音
  * @return 拼音的正则表达式
  */
-QString pinyinsearch::createPinyinRegexp(QString pinyin)
+QString pinyinsearch::CreatePinyinRegexp(QString pinyin)
 {
     QString expr;
     while (pinyin.size() > 0) {
@@ -112,11 +121,12 @@ QString pinyinsearch::createPinyinRegexp(QString pinyin)
         if (i > pinyin.size()) {
             i = pinyin.size();
         }
-        for (; i > 1; i--) {
+        while (i > 1) {
             QString key = pinyin.mid(0, i);
             if (validPinyinMap[key]) {
                 break;
             }
+            i--;
         }
         QString key = pinyin.mid(0, i);
         pinyin = pinyin.mid(i, pinyin.size());
@@ -131,12 +141,12 @@ QString pinyinsearch::createPinyinRegexp(QString pinyin)
  * @param py 汉字对应的拼音
  * @return bool值
  */
-bool pinyinsearch::pinyinMatch(QString zh, QString py)
+bool pinyinsearch::PinyinMatch(QString zh, QString py)
 {
     //获取汉字的拼音
-    QString zhPinyin = createPinyin(zh);
+    QString zhPinyin = CreatePinyin(zh);
     //获取拼音的正则表达式
-    QString expr = createPinyinRegexp(py);
+    QString expr = CreatePinyinRegexp(py);
     QRegExp regexp(expr);
     //拼音是否与正则表达式匹配
     return regexp.exactMatch(zhPinyin);
@@ -156,7 +166,7 @@ QList<QStringList> pinyinsearch::Pinyin(QString str)
         py = SinglePinyin(str.at(i));
         if (py.size() > 0) {
             //将去掉音调的拼音添加到Qlist中
-            pys.append(removeYin(py));
+            pys.append(RemoveYin(py));
         }
     }
     return pys;
@@ -181,7 +191,7 @@ QStringList pinyinsearch::SinglePinyin(QString index)
  * @param pinyin 带有音调的拼音
  * @return 不带音调的拼音
  */
-QStringList pinyinsearch::removeYin(QStringList pinyin)
+QStringList pinyinsearch::RemoveYin(QStringList pinyin)
 {
     QString str;
     QStringList strList;

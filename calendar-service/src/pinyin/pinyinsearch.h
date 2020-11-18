@@ -27,30 +27,32 @@
 class pinyinsearch
 {
 public:
-    /* 初始化合法拼音表 */
-    pinyinsearch();
+    static pinyinsearch *getPinPinSearch();
     /* 判断字符串是否只可以进行拼音查询 */
-    bool canQueryByPinyin(QString str);
+    bool CanQueryByPinyin(QString str);
     /* 创建拼音字符串 */
-    QString createPinyin(QString zh);
+    QString CreatePinyin(QString zh);
     /* 构造拼音查询表达式 */
-    QString createPinyinQuery(QString pinyin);
+    QString CreatePinyinQuery(QString pinyin);
     /* 构造拼音查询正则表达式 */
-    QString createPinyinRegexp(QString pinyin);
+    QString CreatePinyinRegexp(QString pinyin);
     /* 判断汉字和拼音是否匹配 */
-    bool pinyinMatch(QString zh, QString py);
+    bool PinyinMatch(QString zh, QString py);
 
 private:
+    /* 初始化合法拼音表 */
+    pinyinsearch();
     //获取汉字对应的拼音，不带音调
     QList<QStringList> Pinyin(QString str);
     //找到汉字对应的拼音
     QStringList SinglePinyin(QString index);
     //去掉拼音中的音调
-    QStringList removeYin(QStringList pinyin);
+    QStringList RemoveYin(QStringList pinyin);
     /* 单个合法拼音的最大长度 */
     int singlePinyinMaxLength = 0;
     /* 合法单拼音表 */
     QMap<QString, bool> validPinyinMap {};
+    static pinyinsearch *m_pinyinsearch;
 };
 
 #endif
