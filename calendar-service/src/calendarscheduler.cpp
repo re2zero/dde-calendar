@@ -170,31 +170,34 @@ void CalendarScheduler::UpdateType(const QString &typeInfo)
 QString CalendarScheduler::GetJobs(const QDateTime &start, const QDateTime &end)
 {
     QString strJson;
-    QList<stJobArr> jobArrList = GetJobsBetween(start, end); //获取时间范围内所有的Job
+    QList<Job> joblist = m_database->GetAllOriginJobs();
+    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist); //获取时间范围内所有的Job
+    strJson = JobArrListToJsonStr(jobArrList);
+    return strJson;
+}
+
+/**
+ * @brief  QueryJobs 查询指定时间范围日程
+ * @param params 查询条件json字符串
+ * @return 返回指定范围内的日程JSON格式
+ */
+QString CalendarScheduler::QueryJobs(const QString &params)
+{
     QJsonDocument doc;
-    QJsonArray jsonarr;
-    foreach (stJobArr jobarr, jobArrList) {
-        QJsonObject obj;
-        QJsonArray jobsJsonArr;
-        QJsonObject objjob;
-        obj.insert("Date", jobarr.date.toString("yyyy-MM-dd"));
-        foreach (Job job, jobarr.jobs) {
-            objjob = JobToObject(job);
-            jobsJsonArr.append(objjob);
-        }
-        foreach (Job job, jobarr.extends) {
-            objjob = JobToObject(job);
-            jobsJsonArr.append(objjob);
-        }
-        obj.insert("Jobs", jobsJsonArr);
-        jsonarr.append(obj);
-    }
-    doc.setArray(jsonarr);
-    strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    QJsonParseError err;
+    doc = QJsonDocument::fromJson(params.toUtf8(), &err);
+    QJsonObject obj = doc.object();
+    QString strKey = obj.value("Key").toString();
+    QDateTime starttime = Utils::fromconvertData(obj.value("Start").toString());
+    QDateTime endtime = Utils::fromconvertData(obj.value("End").toString());
+    QList<Job> joblist = m_database->GetAllOriginJobs(strKey);
+    QList<stJobArr> jobArrList = GetJobsBetween(starttime, endtime, joblist, strKey);
+    QString strJson = JobArrListToJsonStr(jobArrList);
     qDebug() << strJson;
     return strJson;
 }
 
+//检测当前环境是否为中文环境来决定是否开启获取节日日程开关
 void CalendarScheduler::IsFestivalJobEnabled()
 {
     QString str_lcall(qgetenv("LC_ALL").data());
@@ -206,9 +209,8 @@ void CalendarScheduler::IsFestivalJobEnabled()
     }
 }
 
-QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const QDateTime &end, bool bextend)
+QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, const QString &querykey, bool bextend)
 {
-    QList<Job> joblist = m_database->GetAllOriginJobs();
     QList<stJobArr> jobArrList;
     int days = start.daysTo(end);
     for (int i = 0; i <= days; ++i) {
@@ -515,6 +517,37 @@ QJsonObject CalendarScheduler::JobToObject(const Job &job)
     obj.insert("RecurID", job.RecurID);
 
     return obj;
+}
+
+/**
+ * @brief  JobArrListToJsonStr 将jobArrList转化为json字符串
+ * @param jobArrList jobArrList
+ * @return json字符串
+ */
+QString CalendarScheduler::JobArrListToJsonStr(const QList<stJobArr> &jobArrList)
+{
+    QString strJson;
+    QJsonDocument doc;
+    QJsonArray jsonarr;
+    foreach (stJobArr jobarr, jobArrList) {
+        QJsonObject obj;
+        QJsonArray jobsJsonArr;
+        QJsonObject objjob;
+        obj.insert("Date", jobarr.date.toString("yyyy-MM-dd"));
+        foreach (Job job, jobarr.jobs) {
+            objjob = JobToObject(job);
+            jobsJsonArr.append(objjob);
+        }
+        foreach (Job job, jobarr.extends) {
+            objjob = JobToObject(job);
+            jobsJsonArr.append(objjob);
+        }
+        obj.insert("Jobs", jobsJsonArr);
+        jsonarr.append(obj);
+    }
+    doc.setArray(jsonarr);
+    strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    return strJson;
 }
 
 /**

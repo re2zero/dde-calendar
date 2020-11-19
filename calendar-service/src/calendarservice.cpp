@@ -132,7 +132,7 @@ QString CalendarService::GetTypes()
 
 QString CalendarService::QueryJobs(const QString &params)
 {
-    return "";
+    return m_scheduler->QueryJobs(params);
 }
 
 // 传入要改动的日程信息来更新数据库

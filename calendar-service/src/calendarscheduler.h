@@ -41,11 +41,12 @@ public:
     void UpdateJob(const QString &jobInfo);
     void UpdateType(const QString &typeInfo);
     QString GetJobs(const QDateTime &start, const QDateTime &end);
+    QString QueryJobs(const QString &params);
 
 private:
     static quint32 GetFestivalId(const QString &name);
     void IsFestivalJobEnabled();
-    QList<stJobArr> GetJobsBetween(const QDateTime &start, const QDateTime &end, bool bextend = true);
+    QList<stJobArr> GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, const QString &querykey = QString(), bool bextend = true);
     QList<stJobTime> GetJobTimesBetween(const QDateTime &start, const QDateTime &end, const Job &job);
     void FillFestivalJobs(const QDateTime &start, const QDateTime &end, QList<stJobArr> &listjob);
     QList<QDateTime> GetIgnoreList(const Job &job);
@@ -54,6 +55,7 @@ private:
     QDateTime GetNextJobStartTimeByRule(const stRRuleOptions &options, const QDateTime &datetime);
     stRRuleOptions ParseRRule(const QString &rule);
     QJsonObject JobToObject(const Job &job);
+    QString JobArrListToJsonStr(const QList<stJobArr> &jobArrList);
 
 signals:
 

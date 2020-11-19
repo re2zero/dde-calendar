@@ -212,13 +212,13 @@ void CSchedulesDBus::parsingScheduleRRule(QString str, ScheduleDtailInfo &info)
 
     if (rruleslist.count() > 0) {
         if (rruleslist.contains("FREQ=DAILY") && rruleslist.contains("BYDAY=MO,TU,WE,TH,FR")) info.rpeat = 2;
-        else if (rruleslist.contains("FREQ=DAILY") ) {
+        else if (rruleslist.contains("FREQ=DAILY")) {
             info.rpeat = 1;
-        } else if (rruleslist.contains("FREQ=WEEKLY") ) {
+        } else if (rruleslist.contains("FREQ=WEEKLY")) {
             info.rpeat = 3;
-        } else if (rruleslist.contains("FREQ=MONTHLY") ) {
+        } else if (rruleslist.contains("FREQ=MONTHLY")) {
             info.rpeat = 4;
-        } else if (rruleslist.contains("FREQ=YEARLY") ) {
+        } else if (rruleslist.contains("FREQ=YEARLY")) {
             info.rpeat = 5;
         }
         info.enddata.type = 0;
@@ -316,7 +316,7 @@ qint64 CSchedulesDBus::CreateJob(const ScheduleDtailInfo &info)
     qDebug() << argumentList.at(0);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("CreateJob"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         qDebug() << reply;
         return  -1;
     }
@@ -332,7 +332,7 @@ bool CSchedulesDBus::GetJobs(int startYear, int startMonth, int startDay, int en
     argumentList << QVariant::fromValue(endYear) << QVariant::fromValue(endMonth) << QVariant::fromValue(endDay);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetJobs"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
     QDBusReply<QString> jobs =  reply;
@@ -375,7 +375,7 @@ bool CSchedulesDBus::GetJob(qint64 jobId, ScheduleDtailInfo &out)
     argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetJob"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
     QDBusReply<QString> jobs =  reply;
@@ -400,7 +400,7 @@ bool CSchedulesDBus::UpdateJob(const ScheduleDtailInfo &info)
     argumentList << QVariant::fromValue(createScheduleDtailInfojson(info));
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("UpdateJob"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
 
@@ -413,7 +413,7 @@ bool CSchedulesDBus::DeleteJob(qint64 jobId)
     argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("DeleteJob"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
 
@@ -431,12 +431,12 @@ bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endti
     qdocument.setObject(qjson);
     QByteArray qbyteArray = qdocument.toJson(QJsonDocument::Compact);
     QString strJson(qbyteArray);
-
+    qDebug() << strJson;
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(strJson);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("QueryJobs"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
     QDBusReply<QString> jobs =  reply;
@@ -488,7 +488,7 @@ bool CSchedulesDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endti
     argumentList << QVariant::fromValue(strJson);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("QueryJobs"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
     QDBusReply<QString> jobs =  reply;
@@ -504,7 +504,7 @@ bool CSchedulesDBus::GetTypes(QVector<ScheduleType> &out)
     QList<QVariant> argumentList;
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetTypes"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
     QDBusReply<QString> jobs =  reply;
@@ -533,7 +533,7 @@ bool  CSchedulesDBus::GetType(qint64 jobId, ScheduleType &out)
     argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetType"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
     QDBusReply<QString> jobs =  reply;
@@ -558,7 +558,7 @@ qint64 CSchedulesDBus::CreateType(const ScheduleType &info)
     argumentList << QVariant::fromValue(createScheduleTypejson(info)) ;
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("CreateType"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return  -1;
     }
     QDBusReply<qint64> id =  reply;
@@ -572,7 +572,7 @@ bool CSchedulesDBus::DeleteType(qint64 jobId)
     argumentList << QVariant::fromValue(jobId);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("DeleteType"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return false;
     }
     return true;
@@ -584,7 +584,7 @@ bool CSchedulesDBus::UpdateType(const ScheduleType &info)
     argumentList << QVariant::fromValue(createScheduleTypejson(info)) ;
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("UpdateType"), argumentList);
 
-    if (reply.type() != QDBusMessage::ReplyMessage ) {
+    if (reply.type() != QDBusMessage::ReplyMessage) {
         return  false;
     }
 

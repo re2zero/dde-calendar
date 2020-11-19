@@ -20,6 +20,7 @@
 */
 #include "schedulerdatabase.h"
 #include "src/commondef.h"
+#include "pinyin/pinyinsearch.h"
 
 #include <QDebug>
 #include <QSqlError>
@@ -81,7 +82,7 @@ QString SchedulerDatabase::GetJob(qint64 id)
 }
 
 /**
- * @brief  GetAllJobs 获取所有原始日程
+ * @brief  GetAllOriginJobs 获取所有原始日程
  * @return 返回所有原始日程集合
  */
 QList<Job> SchedulerDatabase::GetAllOriginJobs()
@@ -90,6 +91,46 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs()
     QSqlQuery query(m_database);
 
     QString strsql = QString("select * from jobs;");
+    if (query.exec(strsql)) {
+        while (query.next()) {
+            Job jb;
+            jb.ID = query.value("id").toInt();
+            jb.Type = query.value("type").toInt();
+            jb.Title = query.value("title").toString();
+            jb.Description = query.value("description").toString();
+            jb.AllDay = query.value("all_day").toBool();
+            jb.Start = query.value("start").toDateTime();
+            jb.End = query.value("end").toDateTime();
+            jb.RRule = query.value("r_rule").toString();
+            jb.Remind = query.value("remind").toString();
+            jb.Ignore = query.value("ignore").toString();
+            jb.Title_pinyin = query.value("title_pinyin").toString();
+            jobs.append(jb);
+        }
+    }
+
+    return jobs;
+}
+
+/**
+ * @brief  GetAllOriginJobs 获取所有与key相关的job原始数据
+ * @param  key 搜索词
+ * @return 返回所有原始日程集合
+ */
+QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key)
+{
+    QList<Job> jobs;
+    QSqlQuery query(m_database);
+    QString strKey = key.trimmed();
+    pinyinsearch *psearch = pinyinsearch::getPinPinSearch();
+    QString strsql;
+    if (psearch->CanQueryByPinyin(strKey)) {
+        QString pinyin = psearch->CreatePinyinQuery(strKey.toLower());
+        strsql = QString("select * from jobs where title like '%%1%' or title_pinyin like '%%2%';").arg(key).arg(pinyin);
+    } else if (!key.isEmpty()) {
+        strsql = QString("select * from jobs where title like '%%1%';").arg(key);
+    }
+
     if (query.exec(strsql)) {
         while (query.next()) {
             Job jb;

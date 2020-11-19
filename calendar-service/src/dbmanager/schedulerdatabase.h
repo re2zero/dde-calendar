@@ -38,6 +38,7 @@ public:
     void UpdateJob(const QString &jobInfo);
     void UpdateType(const QString &typeInfo);
     QList<Job> GetAllOriginJobs();
+    QList<Job> GetAllOriginJobs(const QString &key);
 
 private:
     void CreateTables();
