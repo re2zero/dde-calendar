@@ -5,7 +5,7 @@ project(dde-calendar)
 if (CMAKE_BUILD_TYPE MATCHES Debug)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -Wextra")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra")
-  # Enable Qt builtin debug mode
+# Enable Qt builtin debug mode
   add_definitions("-DQT_MESSAGELOGCONTEXT")
 else()
   # -Wl, -O2 Enable linker optimizations
@@ -18,5 +18,5 @@ endif()
 ADD_SUBDIRECTORY(calendar-basicstruct)
 ADD_SUBDIRECTORY(calendar-client)
 ADD_SUBDIRECTORY(calendar-service)
-add_subdirectory(schedule-plugin)
-
+ADD_SUBDIRECTORY(schedule-plugin)
+ADD_SUBDIRECTORY(test)
