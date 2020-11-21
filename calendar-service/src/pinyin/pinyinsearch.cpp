@@ -21,9 +21,6 @@
 
 #include "pinyinsearch.h"
 #include "pinyindict.h"
-#include "pinyindict1.h"
-#include "pinyindict2.h"
-#include "pinyindict3.h"
 
 pinyinsearch *pinyinsearch::m_pinyinsearch = nullptr;
 /**
@@ -183,16 +180,16 @@ QList<QStringList> pinyinsearch::Pinyin(QString str)
 QStringList pinyinsearch::SinglePinyin(QString index)
 {
     //通过汉字的编码找到对应的拼音
-    //因为字典较大，所以拆分为四个，依次查询
     QString value;
-    if (!PinyinDict[index.data()->unicode()].isEmpty()) {
-        value = PinyinDict[index.data()->unicode()];
-    } else if (!PinyinDict1[index.data()->unicode()].isEmpty()) {
-        value = PinyinDict1[index.data()->unicode()];
-    } else if (!PinyinDict2[index.data()->unicode()].isEmpty()) {
-        value = PinyinDict2[index.data()->unicode()];
-    } else if (!PinyinDict3[index.data()->unicode()].isEmpty()) {
-        value = PinyinDict3[index.data()->unicode()];
+    //获取拼音字典
+    const QVector<QMap<int,QString> > pinyinDictVector = getPinYinDictVector();
+    //查找对应的拼音
+    const int unicode = index.data()->unicode();
+    for(int i = 0 ; i < pinyinDictVector.size() ; ++i) {
+        if(pinyinDictVector.at(i).contains(unicode)) {
+            value = pinyinDictVector.at(i)[index.data()->unicode()];
+            break;
+        }
     }
     QStringList pys {};
     pys = value.split(",");
