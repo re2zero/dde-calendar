@@ -526,8 +526,8 @@ void CScheduleDataManage::setPressSelectInfo(const ScheduleDtailInfo &PressSelec
 CScheduleDataCtrl::CScheduleDataCtrl()
 {
     qRegisterMetaType<QVector<ScheduleDateRangeInfo>>("QVector<ScheduleDateRangeInfo>");
-    m_dbus = new CSchedulesDBus("com.deepin.daemon.Calendar",
-                                "/com/deepin/daemon/Calendar/Scheduler",
+    m_dbus = new CSchedulesDBus("com.deepin.dataserver.Calendar",
+                                "/com/deepin/dataserver/Calendar",
                                 QDBusConnection::sessionBus(), this);
     m_scheduleDateCache = nullptr;
 
@@ -680,8 +680,8 @@ void CDataProcessThread::run()
 
 CHuangliDayDataManage::CHuangliDayDataManage()
 {
-    m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
-                                   "/com/deepin/api/LunarCalendar",
+    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
+                                   "/com/deepin/dataserver/Calendar",
                                    QDBusConnection::sessionBus(), this);
 }
 

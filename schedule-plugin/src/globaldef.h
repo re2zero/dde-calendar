@@ -27,8 +27,8 @@
 
 #define SERVICE_NAME "scheduleX"
 
-#define DBUS_SERVICE "com.deepin.daemon.Calendar"
-#define DBUS_PATCH "/com/deepin/daemon/Calendar/Scheduler"
+#define DBUS_SERVICE "com.deepin.dataserver.Calendar"
+#define DBUS_PATCH "/com/deepin/dataserver/Calendar"
 
 #define DBUS_CALENDAR_SERVICE "com.deepin.Calendar"
 #define DBUS_CALENDAR_PATCH "/com/deepin/Calendar"

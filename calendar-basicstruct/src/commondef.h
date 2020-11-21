@@ -24,7 +24,7 @@
 #include <QString>
 #include <QStandardPaths>
 
-const QString CalendarServiceName = "com.deepin.dataserver.calendar";
-const QString CalendarPath = "/com/deepin/dataserver/calendar";
+const QString CalendarServiceName = "com.deepin.dataserver.Calendar";
+const QString CalendarPath = "/com/deepin/dataserver/Calendar";
 
 #endif // COMMONDEF_H

@@ -33,7 +33,7 @@ class CalendarService : public QObject
     , protected QDBusContext
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "com.deepin.dataserver.calendar")
+    Q_CLASSINFO("D-Bus Interface", "com.deepin.dataserver.Calendar")
 public:
     explicit CalendarService(QObject *parent = nullptr);
 

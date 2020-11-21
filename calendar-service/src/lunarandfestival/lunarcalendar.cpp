@@ -39,15 +39,6 @@ LunarCalendar *LunarCalendar::GetLunarCalendar(qint32 year)
     return plcal;
 }
 
-/**
- * 公历某月日历
- * year,month 公历年，月
- * fill 是否用上下月数据补齐首尾空缺，首例数据从周日开始(7*6阵列)
- */
-SolarMonthInfo LunarCalendar::GetSolarMonthCalendar(qint32 year, qint32 month, bool fill)
-{
-}
-
 //指定年份内公历日期转换为农历日
 lunarInfo LunarCalendar::SolarDayToLunarDay(qint32 month, qint32 day)
 {

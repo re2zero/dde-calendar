@@ -30,7 +30,6 @@ class LunarCalendar
 {
 public:
     static LunarCalendar *GetLunarCalendar(qint32 year);
-    SolarMonthInfo GetSolarMonthCalendar(qint32 year, qint32 month, bool fill);
     lunarInfo SolarDayToLunarDay(qint32 month, qint32 day);
 
 private:

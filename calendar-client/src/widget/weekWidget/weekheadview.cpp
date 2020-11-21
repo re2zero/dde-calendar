@@ -40,8 +40,8 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     , m_touchGesture(this)
 {
     setContentsMargins(0, 0, 0, 0);
-    m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
-                                   "/com/deepin/api/LunarCalendar",
+    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
+                                   "/com/deepin/dataserver/Calendar",
                                    QDBusConnection::sessionBus(), this);
     if (!queue)
         queue = new QQueue<int>;
@@ -603,7 +603,7 @@ void CWeekHeadView::mousePressEvent(QMouseEvent *event)
 void CWeekHeadView::wheelEvent(QWheelEvent *e)
 {
     //如果滚轮为左右方向则触发信号
-    if(e->orientation() == Qt::Orientation::Horizontal){
+    if (e->orientation() == Qt::Orientation::Horizontal) {
         emit signalAngleDelta(e->angleDelta().x());
     }
 }

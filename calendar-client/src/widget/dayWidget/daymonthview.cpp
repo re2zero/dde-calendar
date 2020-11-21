@@ -42,8 +42,8 @@ DGUI_USE_NAMESPACE
 CDayMonthView::CDayMonthView(QWidget *parent)
     : CustomFrame(parent)
 {
-    m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
-                                   "/com/deepin/api/LunarCalendar",
+    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
+                                   "/com/deepin/dataserver/Calendar",
                                    QDBusConnection::sessionBus(), this);
     if (!queue)
         queue = new QQueue<int>;
@@ -673,7 +673,7 @@ const CaHuangLiDayInfo CDayMonthView::getCaHuangLiDayInfo(int pos)
 
     queue->push_back(pos);
 
-    QTimer::singleShot(300, this, SLOT(getDbusData()));
+    // QTimer::singleShot(300, this, SLOT(getDbusData()));
 
     return *emptyCaHuangLiDayInfo;
 }

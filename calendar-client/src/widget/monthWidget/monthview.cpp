@@ -46,8 +46,8 @@ void CMonthView::setTheMe(int type)
 
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
-    m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
-                                   "/com/deepin/api/LunarCalendar",
+    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
+                                   "/com/deepin/dataserver/Calendar",
                                    QDBusConnection::sessionBus(), this);
     if (!lunarCache)
         lunarCache = new QMap<QDate, CaLunarDayInfo>;

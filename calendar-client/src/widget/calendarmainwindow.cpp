@@ -60,7 +60,7 @@ static const int CalendarMWidth = 860;
 static const int CalendarMHeight = 634;
 
 Calendarmainwindow::Calendarmainwindow(QWidget *w)
-    : DMainWindow (w)
+    : DMainWindow(w)
 {
     m_DataGetThread = new DbusDataGetThread(CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getDbus(),
                                             this);
@@ -90,7 +90,7 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w)
     if (!arrybyte.isEmpty() && isOk) {
         Qt::WindowStates winStates = static_cast<Qt::WindowStates >(state);
         setWindowState(winStates);
-        if (winStates !=Qt::WindowState::WindowMaximized) {
+        if (winStates != Qt::WindowState::WindowMaximized) {
             restoreGeometry(arrybyte);
         }
     }
@@ -167,7 +167,7 @@ void Calendarmainwindow::slotGetScheduleInfoSuccess()
 
 void Calendarmainwindow::slotDynamicIconUpdate()
 {
-    if (QDate::currentDate() !=CDynamicIcon::getInstance()->getDate()) {
+    if (QDate::currentDate() != CDynamicIcon::getInstance()->getDate()) {
         CDynamicIcon::getInstance()->setDate(QDate::currentDate());
         CDynamicIcon::getInstance()->setIcon();
     }
@@ -343,7 +343,7 @@ void Calendarmainwindow::OpenSchedule(QString job)
         CMyScheduleView dlg(out, this);
         dlg.exec();
         m_DayWindow->slotupdateSchedule(0);
-        slotWUpdateShcedule(nullptr,0);
+        slotWUpdateShcedule(nullptr, 0);
     }
 }
 
@@ -533,8 +533,8 @@ void Calendarmainwindow::initConnection()
     //监听当前应用主题切换事件
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &Calendarmainwindow::slotTheme);
 
-    m_dbus = new com::deepin::daemon::calendar::Scheduler("com.deepin.daemon.Calendar",
-                                                          "/com/deepin/daemon/Calendar/Scheduler",
+    m_dbus = new com::deepin::daemon::calendar::Scheduler("com.deepin.dataserver.Calendar",
+                                                          "/com/deepin/dataserver/Calendar",
                                                           QDBusConnection::sessionBus(), this);
     connect(m_dbus, &com::deepin::daemon::calendar::Scheduler::JobsUpdated,
             this, &Calendarmainwindow::slotJobsUpdated);
@@ -612,7 +612,7 @@ void Calendarmainwindow::createview()
     m_stackWidget->addWidget(m_weekWindow);
 
     m_DayWindow = new CDayWindow;
-    QTimer::singleShot(500,[=] {
+    QTimer::singleShot(500, [=] {
         m_DayWindow->setDate(QDate::currentDate());
     });
     m_stackWidget->addWidget(m_DayWindow);
@@ -774,7 +774,7 @@ void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
         //获取数据
         getScheduleInfo();
         m_yearwindow->slotupdateSchedule(0);
-    }break;
+    } break;
     case DDECalendar::CalendarMonthWindow: {
         m_monthWindow->slotupdateSchedule(0);
     } break;
@@ -853,7 +853,7 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &sched
         return;
     }
     //等界面刷新完成后进行动作
-    QTimer::singleShot(50, [this, index,scheduleInfo] {
+    QTimer::singleShot(50, [this, index, scheduleInfo] {
         switch (index)
         {
         case DDECalendar::CalendarYearWindow: {
@@ -869,7 +869,6 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &sched
         } break;
         }
     });
-
 }
 
 void Calendarmainwindow::slotdoubleclickDate(QDate date)
@@ -898,7 +897,7 @@ void Calendarmainwindow::slotdoubleclickDate(QDate date)
         m_DayWindow->slotupdateSchedule(0);
     } break;
     }
-    CConfigSettings::setOption("base.view", m_priindex+1);
+    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
 void Calendarmainwindow::slotselectMonth(QDate date)
@@ -928,7 +927,7 @@ void Calendarmainwindow::slotViewSelectDate(QDate date)
 
 void Calendarmainwindow::slotViewtransparentFrame(int type)
 {
-    static int showFrameCount =0;
+    static int showFrameCount = 0;
 
     if (type) {
         m_transparentFrame->resize(width(), height() - 50);
@@ -936,7 +935,7 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
         m_transparentFrame->show();
         ++showFrameCount;
     } else {
-        if (showFrameCount==1)
+        if (showFrameCount == 1)
             m_transparentFrame->hide();
         --showFrameCount;
     }

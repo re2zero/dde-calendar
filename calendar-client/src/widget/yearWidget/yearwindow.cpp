@@ -609,8 +609,8 @@ void CYearWindow::wheelEvent(QWheelEvent *event)
 YearFrame::YearFrame(DWidget *parent)
     : DFrame(parent)
 {
-    m_DBusInter = new CalendarDBus("com.deepin.api.LunarCalendar",
-                                   "/com/deepin/api/LunarCalendar",
+    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
+                                   "/com/deepin/dataserver/Calendar",
                                    QDBusConnection::sessionBus(), this);
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setMargin(0);
