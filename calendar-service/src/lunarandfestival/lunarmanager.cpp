@@ -20,6 +20,7 @@
 */
 #include "lunarmanager.h"
 #include "lunarcalendar.h"
+#include "pinyin/pinyinsearch.h"
 
 #include <QDebug>
 
@@ -176,4 +177,36 @@ QList<stDayFestival> GetFestivalsInRange(const QDateTime &start, const QDateTime
     }
 
     return festivaldays;
+}
+/**
+ * @brief FilterDayFestival 过滤节日信息
+ * @param festivaldays 节日信息
+ * @param querykey 拼音
+ * @return 节日信息
+ */
+QList<stDayFestival> FilterDayFestival(QList<stDayFestival> &festivaldays, const QString &querykey)
+{
+    QList<stDayFestival> m_festivaldays;
+    pinyinsearch *search = pinyinsearch::getPinPinSearch();
+
+    for (int i = 0; i < festivaldays.size(); i++) {
+        stDayFestival m_festivals{};
+        QStringList festivals = festivaldays.at(i).Festivals;
+        QDateTime festivalsdate = festivaldays.at(i).date;
+
+        for (int j = 0; j < festivals.size(); j++) {
+            if (festivals.at(j).contains(querykey))
+                m_festivals.Festivals.append(festivals.at(j));
+            if (search->CanQueryByPinyin(querykey) && search->PinyinMatch(festivals.at(j), querykey))
+                m_festivals.Festivals.append(festivals.at(j));
+        }
+
+        if (m_festivals.Festivals.isEmpty())
+            continue;
+
+        m_festivals.date = festivalsdate;
+        m_festivaldays.append(m_festivals);
+    }
+
+    return m_festivaldays;
 }

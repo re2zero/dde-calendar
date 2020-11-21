@@ -31,5 +31,6 @@ QList<stDay> GetMonthDays(qint32 year, qint32 month, qint32 start, qint32 days);
 QList<int> GetPreMonth(qint32 year, qint32 month);
 QList<int> GetNextMonth(qint32 year, qint32 month);
 QList<stDayFestival> GetFestivalsInRange(const QDateTime &start, const QDateTime &end);
+QList<stDayFestival> FilterDayFestival(QList<stDayFestival> &festivaldays, const QString &querykey);
 
 #endif // LUNARMANAGER_H

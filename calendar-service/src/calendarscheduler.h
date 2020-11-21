@@ -48,7 +48,7 @@ private:
     void IsFestivalJobEnabled();
     QList<stJobArr> GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, const QString &querykey = QString(), bool bextend = true);
     QList<stJobTime> GetJobTimesBetween(const QDateTime &start, const QDateTime &end, const Job &job);
-    void FillFestivalJobs(const QDateTime &start, const QDateTime &end, QList<stJobArr> &listjob);
+    void FillFestivalJobs(const QDateTime &start, const QDateTime &end, const QString &querykey, QList<stJobArr> &listjob);
     QList<QDateTime> GetIgnoreList(const Job &job);
     bool ContainsInIgnoreList(const QList<QDateTime> ignorelist, const QDateTime &time);
     bool OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend);

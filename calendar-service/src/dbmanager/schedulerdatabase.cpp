@@ -290,7 +290,7 @@ void SchedulerDatabase::UpdateJob(const QString &jobInfo)
     query.bindValue(++i, rootObj.value("RRule").toString());
     query.bindValue(++i, rootObj.value("Remind").toString());
     query.bindValue(++i, QString::fromUtf8(doc.toJson(QJsonDocument::Compact)));
-    query.bindValue(++i, rootObj.value("Title_pinyin").toString());
+    query.bindValue(++i, pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString()));
     query.bindValue(++i, rootObj.value("ID").toInt());
     if (query.exec()) {
         if (query.isActive()) {

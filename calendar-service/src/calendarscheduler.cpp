@@ -22,6 +22,7 @@
 #include "src/commondatastruct.h"
 #include "src/utils.h"
 #include "lunarmanager.h"
+#include "pinyin/pinyinsearch.h"
 
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -143,8 +144,9 @@ qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
         doc.setArray(subArray);
         job.Ignore = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
     }
-    // 暂不使用此字段，挂起
-    job.Title_pinyin = "";
+    if (rootObj.contains("Title_pinyin")) {
+        job.Title_pinyin = pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString());
+    }
 
     return m_database->CreateJob(job);
 }
@@ -222,8 +224,9 @@ QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const 
     }
     //判断是否需要获取中国节日日程
     if (m_festivalJobEnabled) {
-        FillFestivalJobs(start, end, jobArrList);
+        FillFestivalJobs(start, end, querykey, jobArrList);
     }
+
     foreach (Job jb, joblist) {
         qint64 interval = jb.Start.secsTo(jb.End); //当前job开始结束时间差，单位秒
         QList<stJobTime> jobtimelist = GetJobTimesBetween(start, end, jb);
@@ -311,14 +314,14 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             //当结束重复为按多少次结束判断时，检查重复次数是否达到，达到则退出
             //当重复次数达到最大限制直接返回
             if ((options.type == RepeatOverCount && options.tcount <= count)
-                || count > RECURENCELIMIT) {
+                    || count > RECURENCELIMIT) {
                 break;
             }
             //根据rule获取下一个Job的起始日期
             next = GetNextJobStartTimeByRule(options, copystart);
             //判断next是否有效,时间大于RRule的until
             //判断next是否大于查询的截止时间
-            if ((options.type == RepeatOverUntil && next > options.overdate)
+            if ((options.type == RepeatOverUntil && next >= options.overdate)
                     || next > end) {
                 break;
             }
@@ -336,13 +339,17 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
  * @param start 起始时间
  * @param end 结束时间
  */
-void CalendarScheduler::FillFestivalJobs(const QDateTime &start, const QDateTime &end, QList<stJobArr> &listjob)
+void CalendarScheduler::FillFestivalJobs(const QDateTime &start, const QDateTime &end, const QString &querykey, QList<stJobArr> &listjob)
 {
     QList<stDayFestival> festivaldays = GetFestivalsInRange(start, end);
 
+    if (!querykey.isEmpty()) {
+        FilterDayFestival(festivaldays, querykey);
+    }
+
     foreach (stDayFestival day, festivaldays) {
         int index = start.daysTo(day.date);
-        if (index >= 0 && index <= listjob.size()) {
+        if (index >= 0 && index < listjob.size()) {
             foreach (QString festival, day.Festivals) {
                 if (!festival.isEmpty()) {
                     Job jb;
@@ -368,13 +375,14 @@ void CalendarScheduler::FillFestivalJobs(const QDateTime &start, const QDateTime
 QList<QDateTime> CalendarScheduler::GetIgnoreList(const Job &job)
 {
     QList<QDateTime> list;
-    if (job.Ignore.isEmpty()) {
+    if (!job.Ignore.isEmpty()) {
         QJsonParseError err;
         QJsonDocument doc = QJsonDocument::fromJson(job.Ignore.toLocal8Bit(), &err);
         if (QJsonParseError::NoError == err.error) {
             QJsonArray arr = doc.array();
             for (int i = 0; i < arr.count(); ++i) {
-                QDateTime datetime = QDateTime::fromString(arr.at(i).toString(), "yyyy-MM-dd hh:mm:ss.zzz");
+                QString str = arr.at(i).toString();
+                QDateTime datetime = QDateTime::fromString(str, Qt::ISODate);
                 list.append(datetime);
             }
         }
@@ -390,13 +398,7 @@ QList<QDateTime> CalendarScheduler::GetIgnoreList(const Job &job)
  */
 bool CalendarScheduler::ContainsInIgnoreList(const QList<QDateTime> ignorelist, const QDateTime &time)
 {
-    bool bcontain = false;
-    foreach (QDateTime datetime, ignorelist) {
-        if (time == datetime) {
-            bcontain = true;
-        }
-    }
-    return bcontain;
+    return ignorelist.contains(time);
 }
 
 /**
@@ -540,7 +542,9 @@ QString CalendarScheduler::JobArrListToJsonStr(const QList<stJobArr> &jobArrList
         }
         foreach (Job job, jobarr.extends) {
             objjob = JobToObject(job);
-            jobsJsonArr.append(objjob);
+            if (!jobarr.jobs.isEmpty()) {
+                jobsJsonArr.append(objjob);
+            }
         }
         obj.insert("Jobs", jobsJsonArr);
         jsonarr.append(obj);
