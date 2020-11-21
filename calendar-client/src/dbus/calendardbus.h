@@ -239,7 +239,7 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("GetLunarInfoBySolar"), argumentList);
     }
 
-    inline QDBusReply<CaLunarDayInfo> GetLunarInfoBySolar(qint32 in0, qint32 in1, qint32 in2, bool &out1)
+    inline QDBusReply<CaLunarDayInfo> GetLunarInfoBySolar(quint32 in0, quint32 in1, quint32 in2, bool &out1)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
@@ -398,13 +398,14 @@ public Q_SLOTS: // METHODS
         return true;
     }
 
-    inline bool GetHuangLiDayCalendar(qint32 in0, qint32 in1, qint32 in2, CaHuangLiDayInfo &out)
+    inline bool GetHuangLiDayCalendar(quint32 in0, quint32 in1, quint32 in2, CaHuangLiDayInfo &out)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0) << QVariant::fromValue(in1) << QVariant::fromValue(in2);
         QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("GetHuangLiDay"), argumentList);
 
         if (reply.type() != QDBusMessage::ReplyMessage) {
+            qDebug() << reply.type() << reply.errorName() << reply.errorMessage();
             return  false;
         }
 

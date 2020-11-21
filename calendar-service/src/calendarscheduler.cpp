@@ -310,8 +310,8 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             count++;
             //当结束重复为按多少次结束判断时，检查重复次数是否达到，达到则退出
             //当重复次数达到最大限制直接返回
-            if ((options.type == RepeatOverCount && options.tcount < count)
-                    || count > RECURENCELIMIT) {
+            if ((options.type == RepeatOverCount && options.tcount <= count)
+                || count > RECURENCELIMIT) {
                 break;
             }
             //根据rule获取下一个Job的起始日期

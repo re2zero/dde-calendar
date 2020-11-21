@@ -673,7 +673,7 @@ const CaHuangLiDayInfo CDayMonthView::getCaHuangLiDayInfo(int pos)
 
     queue->push_back(pos);
 
-    // QTimer::singleShot(300, this, SLOT(getDbusData()));
+    QTimer::singleShot(300, this, SLOT(getDbusData()));
 
     return *emptyCaHuangLiDayInfo;
 }
