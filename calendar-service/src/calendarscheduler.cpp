@@ -23,14 +23,18 @@
 #include "src/utils.h"
 #include "lunarmanager.h"
 #include "pinyin/pinyinsearch.h"
+#include "jobremindmanager.h"
 
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QMutexLocker>
+#include <QThread>
+#include <QTimer>
 #include <QDebug>
 
 #define RECURENCELIMIT 3650 //递归次数限制
+#define UPDATEREMINDJOBTIMEINTERVAL 1000 * 60 * 10 //提醒任务更新时间间隔毫秒数（10分钟）
 
 QMap<QString, quint32> CalendarScheduler::m_festivalIdMap;
 quint32 CalendarScheduler::nextFestivalJobId = INT32_MAX;
@@ -40,6 +44,25 @@ CalendarScheduler::CalendarScheduler(QObject *parent)
     , m_database(new SchedulerDatabase(this))
 {
     IsFestivalJobEnabled();
+    //将提醒提醒任务管理放入子线程
+    m_jobremindmanager = new JobRemindManager;
+    QThread *threadremind = new QThread(this);
+    m_jobremindmanager->moveToThread(threadremind);
+    threadremind->start();
+    m_timeUpdateRemindJobs = new QTimer(this);
+    //轮询间隔十分钟
+    m_timeUpdateRemindJobs->setInterval(UPDATEREMINDJOBTIMEINTERVAL);
+    initConnections();
+    UpdateRemindTimeout();
+    m_timeUpdateRemindJobs->start();
+}
+
+void CalendarScheduler::initConnections()
+{
+    connect(m_timeUpdateRemindJobs, &QTimer::timeout, this, &CalendarScheduler::UpdateRemindTimeout);
+    connect(this, &CalendarScheduler::NotifyUpdateRemindJobs, m_jobremindmanager, &JobRemindManager::UpdateRemindJobs);
+    connect(m_jobremindmanager, &JobRemindManager::ModifyJobRemind, this, &CalendarScheduler::OnModifyJobRemind);
+    connect(this, &CalendarScheduler::NotifyJobChange, m_jobremindmanager, &JobRemindManager::NotifyJobsChanged);
 }
 
 QString CalendarScheduler::GetType(qint64 id)
@@ -81,6 +104,9 @@ QString CalendarScheduler::GetTypes()
 void CalendarScheduler::DeleteJob(qint64 id)
 {
     m_database->DeleteJob(id);
+    QList<qlonglong> ids;
+    ids.append(id);
+    AfterJobChanged(ids);
 }
 
 void CalendarScheduler::DeleteType(qint64 id)
@@ -145,14 +171,22 @@ qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
     if (rootObj.contains("Title_pinyin")) {
         job.Title_pinyin = pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString());
     }
-
-    return m_database->CreateJob(job);
+    qint64 id = m_database->CreateJob(job);
+    QList<qlonglong> ids;
+    ids.append(id);
+    AfterJobChanged(ids);
+    return id;
 }
 
 // 可将要改动的日程信息直接传入数据库操作层中
 void CalendarScheduler::UpdateJob(const QString &jobInfo)
 {
-    m_database->UpdateJob(jobInfo);
+    qint64 id = m_database->UpdateJob(jobInfo);
+    if (-1 != id) {
+        QList<qlonglong> ids;
+        ids.append(id);
+        AfterJobChanged(ids);
+    }
 }
 
 // 可将要改动的日程类型信息直接传入数据库操作层中
@@ -498,29 +532,6 @@ stRRuleOptions CalendarScheduler::ParseRRule(const QString &rule)
 }
 
 /**
- * @brief  JobToObject 将Job转换成QJsonObject
- * @param job Job结构体
- * @return QJsonObject
- */
-QJsonObject CalendarScheduler::JobToObject(const Job &job)
-{
-    QJsonObject obj;
-    obj.insert("ID", job.ID);
-    obj.insert("Type", job.Type);
-    obj.insert("Title", job.Title);
-    obj.insert("Description", job.Description);
-    obj.insert("AllDay", job.AllDay);
-    obj.insert("Start", Utils::toconvertData(job.Start));
-    obj.insert("End", Utils::toconvertData(job.End));
-    obj.insert("RRule", job.RRule);
-    obj.insert("Remind", job.Remind);
-    obj.insert("Ignore", job.Ignore);
-    obj.insert("RecurID", job.RecurID);
-
-    return obj;
-}
-
-/**
  * @brief  JobArrListToJsonStr 将jobArrList转化为json字符串
  * @param jobArrList jobArrList
  * @return json字符串
@@ -536,11 +547,11 @@ QString CalendarScheduler::JobArrListToJsonStr(const QList<stJobArr> &jobArrList
         QJsonObject objjob;
         obj.insert("Date", jobarr.date.toString("yyyy-MM-dd"));
         foreach (Job job, jobarr.jobs) {
-            objjob = JobToObject(job);
+            objjob = Utils::JobToObject(job);
             jobsJsonArr.append(objjob);
         }
         foreach (Job job, jobarr.extends) {
-            objjob = JobToObject(job);
+            objjob = Utils::JobToObject(job);
             if (!jobarr.jobs.isEmpty()) {
                 jobsJsonArr.append(objjob);
             }
@@ -551,6 +562,131 @@ QString CalendarScheduler::JobArrListToJsonStr(const QList<stJobArr> &jobArrList
     doc.setArray(jsonarr);
     strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
     return strJson;
+}
+
+QList<Job> CalendarScheduler::GetRemindJobs(const QDateTime &start, const QDateTime &end)
+{
+    m_timeUpdateRemindJobs->stop();
+    QList<Job> jobs;
+    jobs = m_database->GetJobsContainRemind();
+    QDateTime endDate = start.addDays(8);
+    QList<stJobArr> jobArrList = GetJobsBetween(start, endDate, jobs, "", false); //此处获取的数据不需要展开，因此extend为空
+    if (jobArrList.size() > 0) {
+        jobs.clear();
+        foreach (stJobArr jobarr, jobArrList) {
+            foreach (Job job, jobarr.jobs) {
+                QDateTime jbtm = GetJobRemindTime(job);
+                //如果计算出的时间无效则忽略该Job继续
+                if (!jbtm.isValid()) {
+                    continue;
+                }
+                if (jbtm >= start && jbtm <= end) {
+                    job.RemidTime = jbtm;
+                    jobs.append(job);
+                }
+            }
+        }
+    }
+    m_timeUpdateRemindJobs->start();
+    return jobs;
+}
+
+/**
+ * @brief  GetJobRemindTime 计算job的提醒时间
+ * @param job 日程
+ * @return 日程提醒时间，调用方需判断日程时间是否有效
+ */
+QDateTime CalendarScheduler::GetJobRemindTime(const Job &job)
+{
+    QDateTime tm = job.Start;
+    if (job.AllDay) {
+        tm.setTime(QTime(0, 0, 0));
+    }
+    return ParseRemind(tm, job.Remind);
+}
+
+/**
+ * @brief  ParseRemind 根据规则和给定的任务时间计算提醒时间
+ * @param tm 日程开始时间
+ * @param strremind 日程提醒规则
+ * @return 日程提醒时间，调用方需判断日程时间是否有效
+ */
+QDateTime CalendarScheduler::ParseRemind(const QDateTime &tm, const QString &strremind)
+{
+    // 提醒的提前时间最大为 7 天
+    //创建一个无效的时间，如果计算出有效时间则根据计算结果更新否则返回无效结果用于调用方判断
+    QDateTime remindtm(QDate(2020, 13, 31), QTime(24, 24, 100));
+    if (!strremind.isEmpty()) {
+        QRegExp reg("\\d;\\d\\d:\\d\\d");
+        // QRegExp reg("\\d;\\d+?:\\d+?");
+        if (reg.exactMatch(strremind)) {
+            quint32 nDays, hour, min;
+            int ret = sscanf(strremind.toStdString().c_str(), "%d;%d:%d", &nDays, &hour, &min);
+            //判断解析出来的规则是否合法
+            if (-1 != ret && nDays > 0 && nDays < 7 && hour > 0 && hour < 23 && min > 0 && min < 59) {
+                remindtm = tm.addDays(-nDays); //多少天前
+                remindtm.setTime(QTime(hour, min, 0));
+            }
+        } else {
+            bool bsuccess = false;
+            //一天以内的时间单位是分钟
+            qint32 nMinutes = strremind.toInt(&bsuccess);
+            if (bsuccess && (nMinutes > 0 && nMinutes < 60 * 24)) {
+                remindtm = tm.addSecs(-nMinutes * 60); //将分转换成秒进行回退
+            }
+        }
+    }
+
+    return remindtm;
+}
+
+void CalendarScheduler::AfterJobChanged(const QList<qlonglong> &Ids)
+{
+    emit NotifyJobChange(Ids);
+    QDateTime tmstart = QDateTime::currentDateTime();
+    QDateTime tmend = tmstart.addMSecs(UPDATEREMINDJOBTIMEINTERVAL);
+    emit NotifyUpdateRemindJobs(GetRemindJobs(tmstart, tmend));
+}
+
+void CalendarScheduler::UpdateRemindTimeout()
+{
+    QDateTime tmstart = QDateTime::currentDateTime();
+    QDateTime tmend = tmstart.addMSecs(UPDATEREMINDJOBTIMEINTERVAL);
+    emit NotifyUpdateRemindJobs(GetRemindJobs(tmstart, tmend));
+}
+
+void CalendarScheduler::OnModifyJobRemind(const Job &job, const QString &remind)
+{
+    Job newjob = job;
+    QList<qlonglong> ids;
+    //规则不为空则创建一个新的日程
+    if (!newjob.RRule.isEmpty()) {
+        newjob.Remind = remind;
+        QList<QDateTime> ignorelist = GetIgnoreList(job);
+        bool bsuccess = true;
+        //判断是否在忽略列表，如果不在忽略列表则加入忽略列表，后面重新创建新日程替代该旧日程
+        if (!ignorelist.contains(job.Start)) {
+            ignorelist.append(job.Start);
+            QJsonDocument doc;
+            QJsonArray arr;
+            foreach (QDateTime tm, ignorelist) {
+                arr.append(tm.toString(Qt::ISODate));
+            }
+            doc.setArray(arr);
+            QString strignorejson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+            bsuccess = m_database->UpdateJobIgnore(strignorejson, job.ID);
+        }
+        newjob.ID = m_database->CreateJob(newjob);
+        if (bsuccess && -1 != newjob.ID) {
+            ids << job.ID << newjob.ID;
+            AfterJobChanged(ids);
+            emit JobsUpdated(ids);
+        }
+    } else {
+        ids.append(newjob.ID);
+        AfterJobChanged(ids);
+        emit JobsUpdated(ids);
+    }
 }
 
 /**

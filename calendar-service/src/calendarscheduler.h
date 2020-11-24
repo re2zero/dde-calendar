@@ -26,6 +26,9 @@
 #include <QObject>
 #include <QMutex>
 
+class JobRemindManager;
+class QTimer;
+
 class CalendarScheduler : public QObject
 {
     Q_OBJECT
@@ -44,6 +47,7 @@ public:
     QString QueryJobs(const QString &params);
 
 private:
+    void initConnections();
     static quint32 GetFestivalId(const QString &name);
     void IsFestivalJobEnabled();
     QList<stJobArr> GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, const QString &querykey = QString(), bool bextend = true);
@@ -54,15 +58,25 @@ private:
     bool OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend);
     QDateTime GetNextJobStartTimeByRule(const stRRuleOptions &options, const QDateTime &datetime);
     stRRuleOptions ParseRRule(const QString &rule);
-    QJsonObject JobToObject(const Job &job);
     QString JobArrListToJsonStr(const QList<stJobArr> &jobArrList);
+    QList<Job> GetRemindJobs(const QDateTime &start, const QDateTime &end);
+    QDateTime GetJobRemindTime(const Job &job);
+    QDateTime ParseRemind(const QDateTime &tm, const QString &strremind);
+    void AfterJobChanged(const QList<qlonglong> &Ids);
 
 signals:
+    void NotifyJobChange(const QList<qlonglong> &Ids);
+    void NotifyUpdateRemindJobs(const QList<Job> &jobs);
+    void JobsUpdated(const QList<qlonglong> &Ids);
 
-public slots:
+private slots:
+    void UpdateRemindTimeout();
+    void OnModifyJobRemind(const Job &job, const QString &remind);
 
 private:
     SchedulerDatabase *m_database;
+    JobRemindManager *m_jobremindmanager;
+    QTimer *m_timeUpdateRemindJobs;
     bool m_festivalJobEnabled = false; //是否允许节假日日程
     static QMap<QString, quint32> m_festivalIdMap; //节日对应节日Id
     static quint32 nextFestivalJobId; //下一个节日id

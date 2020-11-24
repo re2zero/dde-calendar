@@ -153,6 +153,34 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key)
 }
 
 /**
+ * @brief  GetJobsContainRemind 获取包含提醒规则的jos集合
+ */
+QList<Job> SchedulerDatabase::GetJobsContainRemind()
+{
+    QList<Job> jobs;
+    QSqlQuery query(m_database);
+    QString strSql("select * from jobs where remind is not null and remind !=' ';");
+    if (query.exec(strSql)) {
+        while (query.next()) {
+            Job jb;
+            jb.ID = query.value("id").toInt();
+            jb.Type = query.value("type").toInt();
+            jb.Title = query.value("title").toString();
+            jb.Description = query.value("description").toString();
+            jb.AllDay = query.value("all_day").toBool();
+            jb.Start = query.value("start").toDateTime();
+            jb.End = query.value("end").toDateTime();
+            jb.RRule = query.value("r_rule").toString();
+            jb.Remind = query.value("remind").toString();
+            jb.Ignore = query.value("ignore").toString();
+            jb.Title_pinyin = query.value("title_pinyin").toString();
+            jobs.append(jb);
+        }
+    }
+    return jobs;
+}
+
+/**
  * @brief  CreateTables 创建日程相关数据表（新用户创建）
  */
 void SchedulerDatabase::CreateTables()
@@ -260,13 +288,13 @@ qint64 SchedulerDatabase::CreateJob(const Job &job)
 }
 
 // 根据传入的jobInfo中的Id来更新数据库中相应的数据
-void SchedulerDatabase::UpdateJob(const QString &jobInfo)
+qint64 SchedulerDatabase::UpdateJob(const QString &jobInfo)
 {
     // TODO: 对job数据进行合法性检测
     QJsonParseError json_error;
     QJsonDocument jsonDoc(QJsonDocument::fromJson(jobInfo.toLocal8Bit(), &json_error));
     if (json_error.error != QJsonParseError::NoError) {
-        return ;
+        return -1;
     }
     QJsonObject rootObj = jsonDoc.object();
     // 此处Ignore参数需要单独解析，后续pinyin参数也可能会单独解析
@@ -280,6 +308,7 @@ void SchedulerDatabase::UpdateJob(const QString &jobInfo)
                      "description = ?, all_day = ?, start = ?, end = ?, r_rule = ?, "
                      "remind = ?, ignore = ?, title_pinyin = ? WHERE id = ?";
     query.prepare(strsql);
+    qint64 id = rootObj.value("ID").toInt();
     int i = 0;
     query.bindValue(i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
     query.bindValue(++i, rootObj.value("Type").toInt());
@@ -292,7 +321,7 @@ void SchedulerDatabase::UpdateJob(const QString &jobInfo)
     query.bindValue(++i, rootObj.value("Remind").toString());
     query.bindValue(++i, QString::fromUtf8(doc.toJson(QJsonDocument::Compact)));
     query.bindValue(++i, pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString()));
-    query.bindValue(++i, rootObj.value("ID").toInt());
+    query.bindValue(++i, id);
     if (query.exec()) {
         if (query.isActive()) {
             query.finish();
@@ -301,6 +330,23 @@ void SchedulerDatabase::UpdateJob(const QString &jobInfo)
     } else {
         qDebug() << __FUNCTION__ << query.lastError();
     }
+
+    return id;
+}
+
+bool SchedulerDatabase::UpdateJobIgnore(const QString &strignore, qint64 id)
+{
+    QSqlQuery query(m_database);
+    QString strsql = QString("UPDATE jobs SET ignore='%1' where id=%2;").arg(strignore).arg(id);
+    bool bsuccess = false;
+    if (query.exec(strsql)) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        bsuccess = m_database.commit();
+    }
+
+    return bsuccess;
 }
 
 // 根据传入的typeInfo中的Id来更新数据库中相应的数据

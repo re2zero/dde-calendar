@@ -23,6 +23,7 @@
 #include <QString>
 #include <QVector>
 #include <QDateTime>
+#include <QMetaType>
 
 enum jobtypes {
     jobTypeWork = 1,
@@ -63,7 +64,7 @@ static QVector<stJobTypeJSON> globalPredefinedTypes {
 typedef struct _tagJob {
     _tagJob()
     {
-        ID = Type = RecurID = 0;
+        ID = Type = RecurID = RemindLaterCount = 0;
     }
     qint64 ID;
     qint64 Type;
@@ -77,6 +78,8 @@ typedef struct _tagJob {
     QString Remind;
     QString Ignore;
     QString Title_pinyin;
+    QDateTime RemidTime; //提醒时间
+    qint32 RemindLaterCount; //执行稍后提醒次数
 } Job;
 
 typedef struct JobArr {
@@ -113,4 +116,5 @@ typedef struct RRuleOptions {
     QDateTime overdate; //type=2时才有效
 } stRRuleOptions;
 
+Q_DECLARE_METATYPE(Job)
 #endif // COMMONDATASTRUCT_H

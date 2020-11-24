@@ -37,7 +37,10 @@ class CalendarService : public QObject
 public:
     explicit CalendarService(QObject *parent = nullptr);
 
+private:
+    void initConnections();
 Q_SIGNALS:
+    Q_SCRIPTABLE void JobsUpdated(const QList<qlonglong> &Ids);
 
 public Q_SLOTS:
     //LunarCalendar

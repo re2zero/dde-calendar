@@ -18,39 +18,25 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SCHEDULERDATABASE_H
-#define SCHEDULERDATABASE_H
-#include "src/commondatastruct.h"
+#ifndef DBUSUIOPENSCHEDULE_H
+#define DBUSUIOPENSCHEDULE_H
+#include <QtDBus/QtDBus>
 
-#include <QObject>
-#include <QSqlDatabase>
-#include <QDateTime>
-
-class SchedulerDatabase : public QObject
+class DbusUIOpenSchedule : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
-    explicit SchedulerDatabase(QObject *parent = nullptr);
-    void DeleteJob(qint64 id);
-    void DeleteType(qint64 id);
-    QString GetJob(qint64 id);
-    qint64 CreateJob(const Job &job);
-    qint64 UpdateJob(const QString &jobInfo);
-    bool UpdateJobIgnore(const QString &strignore, qint64 id);
-    void UpdateType(const QString &typeInfo);
-    QList<Job> GetAllOriginJobs();
-    QList<Job> GetAllOriginJobs(const QString &key);
-    QList<Job> GetJobsContainRemind();
-
-private:
-    void CreateTables();
-
-signals:
-
-public slots:
-
-private:
-    QSqlDatabase m_database;
+    static inline const char *staticInterfaceName()
+    {
+        return "com.deepin.Calendar";
+    }
+    explicit DbusUIOpenSchedule(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
+    inline void OpenSchedule(const QString strjson)
+    {
+        QList<QVariant> argumentList;
+        argumentList << strjson;
+        callWithArgumentList(QDBus::Block, QStringLiteral("OpenSchedule"), argumentList);
+    }
 };
 
-#endif // SCHEDULERDATABASE_H
+#endif // DBUSUIOPENSCHEDULE_H

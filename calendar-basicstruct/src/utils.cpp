@@ -62,3 +62,26 @@ QDateTime Utils::fromconvertiIGData(QString str)
     QStringList liststr = str.split("Z", QString::SkipEmptyParts);
     return QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
 }
+
+/**
+ * @brief  JobToObject 将Job转换成QJsonObject
+ * @param job Job结构体
+ * @return QJsonObject
+ */
+QJsonObject Utils::JobToObject(const Job &job)
+{
+    QJsonObject obj;
+    obj.insert("ID", job.ID);
+    obj.insert("Type", job.Type);
+    obj.insert("Title", job.Title);
+    obj.insert("Description", job.Description);
+    obj.insert("AllDay", job.AllDay);
+    obj.insert("Start", Utils::toconvertData(job.Start));
+    obj.insert("End", Utils::toconvertData(job.End));
+    obj.insert("RRule", job.RRule);
+    obj.insert("Remind", job.Remind);
+    obj.insert("Ignore", job.Ignore);
+    obj.insert("RecurID", job.RecurID);
+
+    return obj;
+}

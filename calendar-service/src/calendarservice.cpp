@@ -19,6 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "calendarservice.h"
+#include "src/commondatastruct.h"
 
 CalendarService::CalendarService(QObject *parent)
     : QObject(parent)
@@ -27,8 +28,16 @@ CalendarService::CalendarService(QObject *parent)
     CaLunarMonthInfo::registerMetaType();
     CaHuangLiDayInfo::registerMetaType();
     CaHuangLiMonthInfo::registerMetaType();
+    qRegisterMetaType<Job>("Job");
+    qRegisterMetaType<QList<Job>>("QList<Job>");
     m_scheduler = new CalendarScheduler(this);
     m_huangli = new CalendarHuangLi(this);
+    initConnections();
+}
+
+void CalendarService::initConnections()
+{
+    connect(m_scheduler, &CalendarScheduler::JobsUpdated, this, &CalendarService::JobsUpdated);
 }
 
 //获取指定公历月的假日信息

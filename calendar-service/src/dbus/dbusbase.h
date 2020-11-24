@@ -18,39 +18,20 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SCHEDULERDATABASE_H
-#define SCHEDULERDATABASE_H
-#include "src/commondatastruct.h"
+#ifndef DBUSBASE_H
+#define DBUSBASE_H
 
 #include <QObject>
-#include <QSqlDatabase>
-#include <QDateTime>
 
-class SchedulerDatabase : public QObject
+class DbusBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit SchedulerDatabase(QObject *parent = nullptr);
-    void DeleteJob(qint64 id);
-    void DeleteType(qint64 id);
-    QString GetJob(qint64 id);
-    qint64 CreateJob(const Job &job);
-    qint64 UpdateJob(const QString &jobInfo);
-    bool UpdateJobIgnore(const QString &strignore, qint64 id);
-    void UpdateType(const QString &typeInfo);
-    QList<Job> GetAllOriginJobs();
-    QList<Job> GetAllOriginJobs(const QString &key);
-    QList<Job> GetJobsContainRemind();
-
-private:
-    void CreateTables();
+    explicit DbusBase(QObject *parent = nullptr);
 
 signals:
 
 public slots:
-
-private:
-    QSqlDatabase m_database;
 };
 
-#endif // SCHEDULERDATABASE_H
+#endif // DBUSBASE_H

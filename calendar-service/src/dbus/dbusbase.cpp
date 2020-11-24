@@ -18,22 +18,9 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef UTILS_H
-#define UTILS_H
-#include "commondatastruct.h"
+#include "dbusbase.h"
 
-#include <QDateTime>
-#include <QJsonObject>
-
-class Utils
+DbusBase::DbusBase(QObject *parent)
+    : QObject(parent)
 {
-public:
-    Utils();
-    static QString toconvertData(QDateTime date);
-    static QDateTime fromconvertData(QString str);
-    static QString toconvertIGData(QDateTime date);
-    static QDateTime fromconvertiIGData(QString str);
-    static QJsonObject JobToObject(const Job &job);
-};
-
-#endif // UTILS_H
+}
