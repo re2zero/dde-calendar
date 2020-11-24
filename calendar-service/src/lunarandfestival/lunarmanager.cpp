@@ -156,7 +156,8 @@ QList<stDayFestival> GetFestivalsInRange(const QDateTime &start, const QDateTime
 {
     QList<stDayFestival> festivaldays;
     if (start <= end) {
-        int days = start.daysTo(end);
+        //days为需要查询的天数,而不是两个时间的差值
+        int days = static_cast<int>(start.daysTo(end) + 1);
         for (int i = 0; i < days; ++i) {
             stDayFestival stdayfestival;
             QDateTime tem = start.addDays(i);

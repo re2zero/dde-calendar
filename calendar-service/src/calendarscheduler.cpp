@@ -124,13 +124,11 @@ qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
         job.AllDay = rootObj.value("AllDay").toBool();
     }
     if (rootObj.contains("Start")) {
-        QStringList liststr = rootObj.value("Start").toString().split("+", QString::SkipEmptyParts);
         // 此处时间转换为与client同样式
-        job.Start = QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
+        job.Start = QDateTime::fromString(rootObj.value("Start").toString(), Qt::ISODate);
     }
     if (rootObj.contains("End")) {
-        QStringList liststr = rootObj.value("End").toString().split("+", QString::SkipEmptyParts);
-        job.End = QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
+        job.End = QDateTime::fromString(rootObj.value("End").toString(), Qt::ISODate);
     }
     if (rootObj.contains("RRule")) {
         job.RRule = rootObj.value("RRule").toString();
@@ -274,15 +272,13 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
         QList<QDateTime> igonrelist = GetIgnoreList(job);
         //如果没有规则，则直接判断其开始结束时间就可以了
         if (job.RRule.isEmpty()) {
-            //判断
-            bool bcontain = ContainsInIgnoreList(igonrelist, job.Start);
             //开始时间小于job的结束时间并且结束时间要大于job的开始时间，保证有交集,保证
-            if (start <= job.End && end >= job.Start && !bcontain) {
+            if (start <= job.End && end >= job.Start) {
                 stJobTime jobtime;
                 jobtime.start = job.Start;
                 jobtimelist.append(jobtime);
-                return jobtimelist;
             }
+            return jobtimelist;
         }
 
         int count = 0; //当前为日程的第几次重复
@@ -344,7 +340,7 @@ void CalendarScheduler::FillFestivalJobs(const QDateTime &start, const QDateTime
     QList<stDayFestival> festivaldays = GetFestivalsInRange(start, end);
 
     if (!querykey.isEmpty()) {
-        FilterDayFestival(festivaldays, querykey);
+        festivaldays = FilterDayFestival(festivaldays, querykey);
     }
 
     foreach (stDayFestival day, festivaldays) {

@@ -214,6 +214,7 @@ void SchedulerDatabase::DeleteType(qint64 id)
 qint64 SchedulerDatabase::CreateJob(const Job &job)
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
+    currentDateTime.setOffsetFromUtc(currentDateTime.offsetFromUtc());
     QSqlQuery query(m_database);
     QString strsql = "INSERT INTO jobs (created_at, updated_at, type, title,"
                      "description, all_day, start, end, r_rule, remind, ignore, title_pinyin)"
@@ -221,8 +222,8 @@ qint64 SchedulerDatabase::CreateJob(const Job &job)
                      ":all_day, :start, :end, :r_rule, :remind, :ignore, :title_pinyin)";
     query.prepare(strsql);
     int i = 0;
-    query.bindValue(i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
-    query.bindValue(++i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    query.bindValue(i, currentDateTime);
+    query.bindValue(++i, currentDateTime);
     query.bindValue(++i, job.Type);
     query.bindValue(++i, job.Title);
     query.bindValue(++i, job.Description);

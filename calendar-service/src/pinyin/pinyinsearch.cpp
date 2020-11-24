@@ -22,6 +22,8 @@
 #include "pinyinsearch.h"
 #include "pinyindict.h"
 
+#include <QRegularExpression>
+
 pinyinsearch *pinyinsearch::m_pinyinsearch = nullptr;
 /**
  * @brief pinyinsearch::pinyinsearch 构造函数，进行初始化
@@ -147,9 +149,12 @@ bool pinyinsearch::PinyinMatch(QString zh, QString py)
     QString zhPinyin = CreatePinyin(zh);
     //获取拼音的正则表达式
     QString expr = CreatePinyinRegexp(py);
-    QRegExp regexp(expr);
+    //QRegularExpression类使用正则表达式提供模式匹配。
+    QRegularExpression regexp(expr);
+    //根据给定的主题字符串匹配正则表达式,返回的QRegularExpressionMatch对象包含匹配的结果。
+    QRegularExpressionMatch match = regexp.match(zhPinyin);
     //拼音是否与正则表达式匹配
-    return regexp.exactMatch(zhPinyin);
+    return match.hasMatch();
 }
 
 /**
