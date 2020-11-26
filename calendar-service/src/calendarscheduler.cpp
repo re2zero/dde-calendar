@@ -309,7 +309,8 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             count++;
             //当结束重复为按多少次结束判断时，检查重复次数是否达到，达到则退出
             //当重复次数达到最大限制直接返回
-            if ((options.type == RepeatOverCount && options.tcount <= count)
+            //options.tcount表示重复的次数，而count表示总次数，所以这里不能有“=”
+            if ((options.type == RepeatOverCount && options.tcount < count)
                     || count > RECURENCELIMIT) {
                 break;
             }
@@ -408,7 +409,9 @@ bool CalendarScheduler::ContainsInIgnoreList(const QList<QDateTime> ignorelist, 
 bool CalendarScheduler::OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend)
 {
     bool boverlap = false;
-    if ((start <= jobstart && end >= jobstart) || (start >= jobstart && start <= jobend)) {
+    //只需要判断date即可，不需要比较time
+    if ((start.date() <= jobstart.date() && end.date() >= jobstart.date())
+            || (start.date() >= jobstart.date() && start.date() <= jobend.date())) {
         boverlap = true;
     }
     return boverlap;
