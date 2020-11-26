@@ -246,7 +246,7 @@ void CalendarScheduler::IsFestivalJobEnabled()
 QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, const QString &querykey, bool bextend)
 {
     QList<stJobArr> jobArrList;
-    int days = start.daysTo(end);
+    int days = static_cast<int>(start.daysTo(end));
     for (int i = 0; i <= days; ++i) {
         stJobArr arr;
         QDateTime tem = start.addDays(i);
@@ -272,7 +272,7 @@ QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const 
                 jobtem.End = jobtime.start.addSecs(interval);
                 jobtem.RecurID = jobtime.recurID;
             }
-            int idx = start.daysTo(jobtime.start);
+            int idx = static_cast<int>(start.daysTo(jobtime.start));
             if (idx >= 0 && idx <= days) {
                 jobArrList[idx].jobs.append(jobtem);
             }
@@ -282,8 +282,8 @@ QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const 
             if (!bextend) {
                 continue;
             }
-
-            int extenddays = jobtime.start.daysTo(jobtime.end);
+            //需要扩展的天数
+            int extenddays = static_cast<int>(jobtem.Start.daysTo(jobtem.End));
             for (int i = 0; i < extenddays; ++i) {
                 int tIdx = idx + i + 1;
                 if (tIdx == jobArrList.size()) {
@@ -319,7 +319,7 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
         stRRuleOptions options = ParseRRule(job.RRule);
         QDateTime jobstart = job.Start; //当前原始job的起始时间
         QDateTime jobend = job.End; //当前原始job的结束时间
-        int dateinterval = jobstart.daysTo(jobend); //job的开始结束间隔日期
+        int dateinterval = static_cast<int>(jobstart.daysTo(jobend)); //job的开始结束间隔日期
         QDateTime next = jobstart; //next为下一新建日程起始日期
         //只有当下一个新建日程的起始日期小于查询日期的结束日期才会有交集，否则没有意义
         //注意一定要判断是否有交集，因为Job的创建日期可能远远早于查询日期，查询到的是多次重复后与查询时间有交集的
@@ -552,9 +552,7 @@ QString CalendarScheduler::JobArrListToJsonStr(const QList<stJobArr> &jobArrList
         }
         foreach (Job job, jobarr.extends) {
             objjob = Utils::JobToObject(job);
-            if (!jobarr.jobs.isEmpty()) {
-                jobsJsonArr.append(objjob);
-            }
+            jobsJsonArr.append(objjob);
         }
         obj.insert("Jobs", jobsJsonArr);
         jsonarr.append(obj);
