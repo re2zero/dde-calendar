@@ -310,3 +310,31 @@ bool CWeekView::event(QEvent *e)
         return DWidget::event(e);
     }
 }
+
+void CWeekView::resizeEvent(QResizeEvent *event)
+{
+    //获取当前所有cell的宽度
+    const int _allCellWidth = width() - 36 * 2;
+    //获取当前cell的宽度
+    int w = _allCellWidth / DDEWeekCalendar::NumWeeksDisplayed;
+    //最小显示的宽度
+    const int _minWidget = 36;
+    //默认都显示
+    QVector<bool> vindex(10, true);
+    //cell的宽度小于最小宽度则隐藏部分显示
+    if (w < _minWidget) {
+        //计算前后需要隐藏的个数
+        int t_num = qRound((_minWidget * DDEWeekCalendar::NumWeeksDisplayed - _allCellWidth) / _minWidget / 2.0);
+        for (int i = 0; i < t_num; i++) {
+            vindex[i] = false;
+            vindex[9 - i] = false;
+        }
+    }
+    //设置是否显示
+    for (int i = 0; i < DDEWeekCalendar::NumWeeksDisplayed; i++) {
+        m_cellList[i]->setVisible(vindex[i]);
+    }
+    QWidget::resizeEvent(event);
+    //更新显示
+    update();
+}

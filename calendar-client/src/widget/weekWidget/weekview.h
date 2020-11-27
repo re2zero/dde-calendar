@@ -105,7 +105,7 @@ protected:
      */
     void wheelEvent(QWheelEvent *event) override;
     bool event(QEvent *e) override;
-
+    void resizeEvent(QResizeEvent *event) override;
 private:
     /**
      * @brief paintCell 绘制周数
