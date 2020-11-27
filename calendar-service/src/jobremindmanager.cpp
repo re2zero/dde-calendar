@@ -109,9 +109,9 @@ void JobRemindManager::RemindJob(const Job &job)
             argumentList << appname << replaces_id << appicon << title << body << actionlist << hits << timeout;
             qDebug() << __FUNCTION__ << QString("remind now: %1, title:"
                                                 " %2, body: %3")
-                                            .arg(QDateTime::currentDateTime().toString())
-                                            .arg(title)
-                                            .arg(body);
+                     .arg(QDateTime::currentDateTime().toString())
+                     .arg(title)
+                     .arg(body);
             int notifyid = m_dbusnotify->Notify(argumentList);
             m_notifymap.insert(notifyid, job);
         } else {
@@ -178,21 +178,28 @@ QString JobRemindManager::GetRemindBody(const Job &job, const QDateTime &tm)
     QString msgEnd;
     msgStart = GetBodyTimePart(tm, job.Start, job.AllDay, true);
     msgEnd = GetBodyTimePart(tm, job.End, job.AllDay, false);
-    quint32 startdayofyear = job.Start.date().dayOfYear();
-    quint32 enddayofyear = job.End.date().dayOfYear();
+    quint32 startdayofyear = static_cast<quint32>(job.Start.date().dayOfYear());
+    quint32 enddayofyear = static_cast<quint32>(job.End.date().dayOfYear());
     QString prefix;
     if (job.AllDay) {
+        //全天日程
         if (startdayofyear == enddayofyear) {
+            //非跨天日程，只展示开始时间
             prefix = msgStart;
         } else {
+            //跨天日程，展示整个日程的时间
             prefix = QString(tr("%1 to %2")).arg(msgStart).arg(msgEnd);
         }
     } else {
+        //非全天日程
         if (startdayofyear == enddayofyear) {
-            msgEnd = job.End.toString(Qt::ISODate);
+            //非跨天日程，GetBodyTimePart已经返回了日程的日期，即date，所以，这里只需要日程的结束时间，即time
+            msgEnd = job.End.time().toString("HH:mm");
         }
+        //展示日程的开始结束时间
         prefix = QString(tr("%1 to %2")).arg(msgStart).arg(msgEnd);
     }
+    //日程时间+title
     QString strBody = QString("%1 %2").arg(prefix).arg(job.Title);
 
     return strBody;
@@ -230,7 +237,7 @@ void JobRemindManager::SetJobRemindOneDayBefore(const Job &job)
 }
 
 /**
- * @brief  SetJobRemindOneDayBefore 设置提醒为明天
+ * @brief  SetJobRemindTomorrow 设置提醒为明天
  * @param job 日程信息结构体
  */
 void JobRemindManager::SetJobRemindTomorrow(const Job &job)
@@ -255,21 +262,29 @@ QString JobRemindManager::GetBodyTimePart(const QDateTime &nowtime, const QDateT
 {
     //ToDo 需确认规则，需根据isstart确认是否为开始时间单独处理
     QString strmsg;
-    int diff = nowtime.daysTo(jobtime); //jobtime只可能大于等于当前remind任务执行的当前时间
+    qint64 diff = nowtime.daysTo(jobtime); //jobtime只可能大于等于当前remind任务执行的当前时间
     if (allday) {
+        //全天日程，只展示日期，即date
+        //日程开始时间距离现在超过两天
+        strmsg.append(jobtime.date().toString(Qt::LocalDate));
         if (diff == 0) {
+            //日程开始时间是今天
             strmsg = tr("Today");
         } else if (diff == 1) {
+            //日程开始时间是明天
             strmsg = tr("Tomorrow");
         }
     } else {
-        //strmsg = cFormatTime("%x %H:%M", t)
+        //非全天日程，展示日期和时间，即date time
+        //日程开始时间距离现在超过两天
+        strmsg.append(QString(" %1").arg(jobtime.toString("yyyy/MM/dd HH:mm")));
         if (diff == 0) {
-            strmsg = tr("Today");
+            //日程开始时间是今天，
+            strmsg = tr("Today") + " " + jobtime.time().toString("HH:mm");
         } else if (diff == 1) {
-            strmsg = tr("Tomorrow");
+            //日程开始时间是明天
+            strmsg = tr("Tomorrow") + " " + jobtime.time().toString("HH:mm");
         }
-        strmsg.append(QString(" %1").arg(jobtime.toString("HH:mm")));
     }
 
     return strmsg;

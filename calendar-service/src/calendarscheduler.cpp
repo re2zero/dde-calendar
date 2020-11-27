@@ -618,10 +618,14 @@ QDateTime CalendarScheduler::ParseRemind(const QDateTime &tm, const QString &str
         QRegExp reg("\\d;\\d\\d:\\d\\d");
         // QRegExp reg("\\d;\\d+?:\\d+?");
         if (reg.exactMatch(strremind)) {
-            quint32 nDays, hour, min;
-            int ret = sscanf(strremind.toStdString().c_str(), "%d;%d:%d", &nDays, &hour, &min);
+            //提前多少天
+            qint64 nDays;
+            //提醒时间
+            int hour, min;
+            int ret = sscanf(strremind.toStdString().c_str(), "%lld;%d:%d", &nDays, &hour, &min);
             //判断解析出来的规则是否合法
-            if (-1 != ret && nDays > 0 && nDays < 7 && hour > 0 && hour < 23 && min > 0 && min < 59) {
+            //对ndays，hour，min的判断应该包含边界值
+            if (-1 != ret && nDays >= 0 && nDays <= 7 && hour >= 0 && hour <= 23 && min >= 0 && min <= 59) {
                 remindtm = tm.addDays(-nDays); //多少天前
                 remindtm.setTime(QTime(hour, min, 0));
             }
@@ -629,7 +633,8 @@ QDateTime CalendarScheduler::ParseRemind(const QDateTime &tm, const QString &str
             bool bsuccess = false;
             //一天以内的时间单位是分钟
             qint32 nMinutes = strremind.toInt(&bsuccess);
-            if (bsuccess && (nMinutes > 0 && nMinutes < 60 * 24)) {
+            //nMinutes为非全天日程提醒的分钟数，应该包含边界值
+            if (bsuccess && (nMinutes >= 0 && nMinutes <= 60 * 24 * 7)) {
                 remindtm = tm.addSecs(-nMinutes * 60); //将分转换成秒进行回退
             }
         }
