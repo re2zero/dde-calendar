@@ -125,10 +125,15 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key)
     pinyinsearch *psearch = pinyinsearch::getPinPinSearch();
     QString strsql;
     if (psearch->CanQueryByPinyin(strKey)) {
+        //可以按照拼音查询
         QString pinyin = psearch->CreatePinyinQuery(strKey.toLower());
         strsql = QString("select * from jobs where title like '%%1%' or title_pinyin like '%%2%';").arg(key).arg(pinyin);
     } else if (!key.isEmpty()) {
+        //按照key查询
         strsql = QString("select * from jobs where title like '%%1%';").arg(key);
+    } else {
+        //如果没有key，则搜索所有
+        strsql = QString("select * from jobs;");
     }
 
     if (query.exec(strsql)) {
