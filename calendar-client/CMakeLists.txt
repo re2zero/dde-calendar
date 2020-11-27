@@ -8,7 +8,6 @@ endif ()
 #common resource names
 set(APP_RES_DIR "assets")
 set(APP_BIN_NAME "dde-calendar")
-set(APP_TRANS_SCRIPT "${APP_RES_DIR}/translate_generation.sh")
 set(APP_DESKTOP "${APP_RES_DIR}/dde-calendar.desktop")
 set(APP_QRC "${APP_RES_DIR}/resources.qrc")
 set(APP_SERVICE "${APP_RES_DIR}/dbus/com.deepin.Calendar.service")
@@ -43,21 +42,6 @@ else()
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O2 -Wl,-O1 -Wl,--gc-sections")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -Wl,-O1 -Wl,--gc-sections")
 endif()
-
-#Generate the qm file
-execute_process(COMMAND bash ${APP_TRANS_SCRIPT}
-                    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/")
-
-macro(SUBDIRLIST result curdir)
-    file(GLOB children RELATIVE ${curdir} ${curdir}/*)
-    set(dirlist "")
-    foreach(child ${children})
-        if(IS_DIRECTORY ${curdir}/${child})
-            LIST(APPEND dirlist ${child})
-        endif()
-    endforeach()
-    set(${result} ${dirlist})
-endmacro()
 
 configure_file(${APP_RES_DIR}/environments.h.in environments.h @ONLY)
 
@@ -105,10 +89,5 @@ set(CMAKE_INSTALL_PREFIX /usr)
 # Install files
 install(TARGETS dde-calendar DESTINATION bin)
 
-file(GLOB APP_QM_FILES "translations/*.qm")
-
-#install(FILES /usr/share/icons/bloom/apps/96/dde-calendar.svg
-#        DESTINATION /share/icons/hicolor/scalable/apps/)
-install(FILES ${APP_QM_FILES} DESTINATION share/dde-calendar/translations)
 install(FILES ${APP_DESKTOP} DESTINATION share/applications)
 install(FILES ${APP_SERVICE} DESTINATION share/dbus-1/services)

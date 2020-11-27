@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=/usr/lib/deepin-daemon/dde-calendar-service
+Name=dde-calendar-service
+NoDisplay=true
+Terminal=false
+Type=Application
+X-Deepin-Vendor=user-custom

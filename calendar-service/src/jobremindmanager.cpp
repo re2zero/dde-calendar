@@ -258,16 +258,16 @@ QString JobRemindManager::GetBodyTimePart(const QDateTime &nowtime, const QDateT
     int diff = nowtime.daysTo(jobtime); //jobtime只可能大于等于当前remind任务执行的当前时间
     if (allday) {
         if (diff == 0) {
-            strmsg = tr("today");
+            strmsg = tr("Today");
         } else if (diff == 1) {
-            strmsg = tr("tomorrow");
+            strmsg = tr("Tomorrow");
         }
     } else {
         //strmsg = cFormatTime("%x %H:%M", t)
         if (diff == 0) {
-            strmsg = tr("today");
+            strmsg = tr("Today");
         } else if (diff == 1) {
-            strmsg = tr("tomorrow");
+            strmsg = tr("Tomorrow");
         }
         strmsg.append(QString(" %1").arg(jobtime.toString("HH:mm")));
     }

@@ -5,9 +5,9 @@ project(dde-calendar-service)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-
 set(APP_RES_DIR "assets")
 set(APP_SERVICE "${APP_RES_DIR}/data/com.deepin.dataserver.Calendar.service")
+set(AUTOSTART_DESKTOP "${APP_RES_DIR}/dde-calendar-service.desktop")
 
 
 # Find the library
@@ -36,7 +36,6 @@ foreach(subdir ${all_src})
 endforeach()
 file(GLOB_RECURSE CALENDARSERVICE_SRCS ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 
-#link_libraries(${PROJECT_BINARY_DIR}/../calendar-basicstruct/libbasestruct.a)
 include_directories(../calendar-basicstruct/)
 
 add_executable(${PROJECT_NAME} ${CALENDARSERVICE_SRCS})
@@ -48,5 +47,5 @@ set(CMAKE_INSTALL_PREFIX /usr)
 # Install files
 install(TARGETS ${PROJECT_NAME} DESTINATION lib/deepin-daemon/)
 install(FILES ${APP_SERVICE} DESTINATION share/dbus-1/services/)
-
+install(FILES ${AUTOSTART_DESKTOP} DESTINATION /etc/xdg/autostart/)
 
