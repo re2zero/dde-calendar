@@ -164,6 +164,7 @@ QVector<QString> validPinyinList = {
     "jiong",
     "jiu",
     "ju",
+    "jun",
     "juan",
     "jue",
     "#NAME?",
