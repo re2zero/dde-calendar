@@ -21,6 +21,7 @@
 #include "schedulerdatabase.h"
 #include "src/commondef.h"
 #include "pinyin/pinyinsearch.h"
+#include "src/utils.h"
 
 #include <QDebug>
 #include <QSqlError>
@@ -261,8 +262,9 @@ qint64 SchedulerDatabase::CreateJob(const Job &job)
     query.bindValue(++i, job.Title);
     query.bindValue(++i, job.Description);
     query.bindValue(++i, job.AllDay);
-    query.bindValue(++i, job.Start);
-    query.bindValue(++i, job.End);
+    //修改开始结束时间格式，与前端保持一致
+    query.bindValue(++i, Utils::toconvertData(job.Start));
+    query.bindValue(++i, Utils::toconvertData(job.End));
     query.bindValue(++i, job.RRule);
     query.bindValue(++i, job.Remind);
     query.bindValue(++i, job.Ignore);
