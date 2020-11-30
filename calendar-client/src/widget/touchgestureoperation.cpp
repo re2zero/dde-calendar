@@ -19,9 +19,11 @@
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
 #include "touchgestureoperation.h"
+
 #include <QEvent>
 #include <QGestureEvent>
 #include <QtMath>
+#include <QMouseEvent>
 
 touchGestureOperation::touchGestureOperation(QWidget *parent)
     : m_parentWidget(parent)

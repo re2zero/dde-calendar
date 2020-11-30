@@ -24,6 +24,7 @@
 #include <DPalette>
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QFontMetrics>
 
 DGUI_USE_NAMESPACE

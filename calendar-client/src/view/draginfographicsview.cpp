@@ -30,6 +30,12 @@
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QMouseEvent>
+#include <QContextMenuEvent>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QKeyEvent>
 
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     : DGraphicsView(parent)
@@ -93,7 +99,7 @@ void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
 
 void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() ==Qt::RightButton) {
+    if (event->button() == Qt::RightButton) {
         return;
     }
     if (event->source() == Qt::MouseEventSynthesizedByQt) {
@@ -201,7 +207,7 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     if (item != nullptr) {
         if (item->getData().type.ID != DDECalendar::FestivalTypeID) {
             if (m_DragStatus == NONE) {
-                switch (getPosInItem(event->pos(),item->rect())) {
+                switch (getPosInItem(event->pos(), item->rect())) {
                 case LEFT:
                 case RIGHT:
                     setCursor(Qt::SplitHCursor);
@@ -227,35 +233,35 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     case IsCreate:
         m_isCreate = JudgeIsCreate(event->pos());
         if (m_isCreate) {
-            if (!IsEqualtime(m_MoveDate,gDate)) {
+            if (!IsEqualtime(m_MoveDate, gDate)) {
                 m_MoveDate = gDate;
-                m_DragScheduleInfo = getScheduleInfo(m_PressDate,m_MoveDate);
-                upDateInfoShow(IsCreate,m_DragScheduleInfo);
+                m_DragScheduleInfo = getScheduleInfo(m_PressDate, m_MoveDate);
+                upDateInfoShow(IsCreate, m_DragScheduleInfo);
                 setPressSelectInfo(m_DragScheduleInfo);
             }
         }
         break;
     case ChangeBegin:
-        if (!IsEqualtime(m_MoveDate,gDate)) {
+        if (!IsEqualtime(m_MoveDate, gDate)) {
             m_MoveDate = gDate;
             m_DragScheduleInfo.beginDateTime =
                 getDragScheduleInfoBeginTime(m_MoveDate);
             m_DragScheduleInfo.endDateTime = m_InfoEndTime;
-            upDateInfoShow(ChangeBegin,m_DragScheduleInfo);
+            upDateInfoShow(ChangeBegin, m_DragScheduleInfo);
         }
         break;
     case ChangeEnd:
-        if (!IsEqualtime(m_MoveDate,gDate)) {
+        if (!IsEqualtime(m_MoveDate, gDate)) {
             m_MoveDate = gDate;
             m_DragScheduleInfo.endDateTime =
                 getDragScheduleInfoEndTime(m_MoveDate);
-            m_DragScheduleInfo.beginDateTime =m_InfoBeginTime;
-            upDateInfoShow(ChangeEnd,m_DragScheduleInfo);
+            m_DragScheduleInfo.beginDateTime = m_InfoBeginTime;
+            upDateInfoShow(ChangeEnd, m_DragScheduleInfo);
         }
         break;
     case ChangeWhole: {
         if (!m_PressRect.contains(event->pos())) {
-            Qt::DropAction dropaction = m_Drag->exec( Qt::MoveAction);
+            Qt::DropAction dropaction = m_Drag->exec(Qt::MoveAction);
             Q_UNUSED(dropaction);
             m_Drag = nullptr;
             m_DragStatus = NONE;
@@ -282,16 +288,16 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 {
     DGraphicsView::contextMenuEvent(event);
 
-    if (m_DragStatus ==IsCreate) {
+    if (m_DragStatus == IsCreate) {
         return;
     }
     emit signalScheduleShow(false);
     m_press = false;
-    m_DragStatus =NONE;
+    m_DragStatus = NONE;
     QGraphicsItem *listItem = itemAt(event->pos());
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
-    if (infoitem !=nullptr) {
+    if (infoitem != nullptr) {
         if (infoitem->getData().type.ID != DDECalendar::FestivalTypeID) {
             m_rightMenu->clear();
             m_rightMenu->addAction(m_editAction);
@@ -316,7 +322,7 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
             emit signalViewtransparentFrame(0);
         }
     } else {
-        RightClickToCreate(listItem,event->pos());
+        RightClickToCreate(listItem, event->pos());
     }
 }
 
@@ -363,13 +369,13 @@ void DragInfoGraphicsView::dragMoveEvent(QDragMoveEvent *event)
         return;
     }
 
-    if (!IsEqualtime(m_MoveDate,gDate)) {
+    if (!IsEqualtime(m_MoveDate, gDate)) {
         m_MoveDate = gDate;
         QJsonObject rootobj = jsonDoc.object();
         m_DragScheduleInfo =
             CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
 
-        MoveInfoProcess(m_DragScheduleInfo,event->posF());
+        MoveInfoProcess(m_DragScheduleInfo, event->posF());
         setPressSelectInfo(m_DragScheduleInfo);
     }
 }
@@ -377,7 +383,7 @@ void DragInfoGraphicsView::dragMoveEvent(QDragMoveEvent *event)
 void DragInfoGraphicsView::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat("Info")) {
-        if (event->source()!=this || m_MoveDate !=m_PressDate) {
+        if (event->source() != this || m_MoveDate != m_PressDate) {
             updateScheduleInfo(m_DragScheduleInfo);
         } else {
             emit signalsUpdateShcedule();
@@ -389,8 +395,8 @@ void DragInfoGraphicsView::dropEvent(QDropEvent *event)
 
 bool DragInfoGraphicsView::event(QEvent *e)
 {
-    if (e->type() ==QEvent::Leave) {
-        if (m_DragStatus ==IsCreate ||
+    if (e->type() == QEvent::Leave) {
+        if (m_DragStatus == IsCreate ||
                 m_DragStatus == ChangeBegin ||
                 m_DragStatus == ChangeEnd)
             mouseReleaseScheduleUpdate();
@@ -400,7 +406,7 @@ bool DragInfoGraphicsView::event(QEvent *e)
 
 void DragInfoGraphicsView::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Left || event->key() ==Qt::Key_Right)
+    if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Right)
         return;
     DGraphicsView::keyPressEvent(event);
 }
@@ -419,7 +425,7 @@ void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDtailInfo &info)
 {
     emit signalViewtransparentFrame(1);
 
-    if (info.rpeat >0) {
+    if (info.rpeat > 0) {
         CScheduleDlg::ChangeRecurInfo(this, info,
                                       m_PressScheduleInfo, m_themetype);
     } else {
@@ -436,7 +442,7 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
     m_MoveDate = m_PressDate.addMonths(-2);
 
     if (item != nullptr) {
-        PosInItem mpressstatus = getPosInItem(pos,item->boundingRect());
+        PosInItem mpressstatus = getPosInItem(pos, item->boundingRect());
         if (mpressstatus != MIDDLE && item->getData().type.ID == 4) {
             return;
         }
@@ -469,14 +475,14 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
             mimeData->setData("Info",
                               CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->InfoToJson(m_DragScheduleInfo).toUtf8());
 
-            if (m_Drag ==nullptr) {
+            if (m_Drag == nullptr) {
                 m_Drag = new QDrag(this);
             }
             m_Drag->setMimeData(mimeData);
-            QPointF itemPos = QPointF(pos.x()-item->boundingRect().x(),
-                                      pos.y()-item->boundingRect().y());
+            QPointF itemPos = QPointF(pos.x() - item->boundingRect().x(),
+                                      pos.y() - item->boundingRect().y());
             m_Drag->setHotSpot(itemPos.toPoint());
-            setDragPixmap(m_Drag,item);
+            setDragPixmap(m_Drag, item);
             break;
         }
     } else {
@@ -510,7 +516,7 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
         }
         break;
     case ChangeBegin:
-        if (!IsEqualtime(m_MoveDate,m_InfoBeginTime)) {
+        if (!IsEqualtime(m_MoveDate, m_InfoBeginTime)) {
             //如果不添加会进入leaveEvent事件内的条件
             m_DragStatus = NONE;
             updateScheduleInfo(m_DragScheduleInfo);
@@ -518,7 +524,7 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
         }
         break;
     case ChangeEnd:
-        if (!IsEqualtime(m_MoveDate,m_InfoEndTime)) {
+        if (!IsEqualtime(m_MoveDate, m_InfoEndTime)) {
             //如果不添加会进入leaveEvent事件内的条件
             m_DragStatus = NONE;
             updateScheduleInfo(m_DragScheduleInfo);
@@ -643,11 +649,11 @@ void DragInfoGraphicsView::setDragPixmap(QDrag *drag, DragInfoItem *item)
 {
     Q_UNUSED(item);
     //设置一个1*1的透明图片，要不然关闭窗口特效会有一个小黑点
-    QPixmap pixmap(1,1);
+    QPixmap pixmap(1, 1);
     pixmap.fill(Qt::transparent);
     drag->setPixmap(pixmap);
     //设置图标位置为鼠标位置
-    drag->setHotSpot(QPoint(0,0));
+    drag->setHotSpot(QPoint(0, 0));
 }
 
 void DragInfoGraphicsView::slotCreate(const QDateTime &date)
@@ -675,12 +681,12 @@ ScheduleDtailInfo DragInfoGraphicsView::getScheduleInfo(const QDateTime &beginDa
 {
     ScheduleDtailInfo info;
 
-    if (beginDate.daysTo(endDate)>0) {
-        info.beginDateTime = QDateTime(beginDate.date(),QTime(0,0,0));
-        info.endDateTime = QDateTime(endDate.date(),QTime(23,59,59));
+    if (beginDate.daysTo(endDate) > 0) {
+        info.beginDateTime = QDateTime(beginDate.date(), QTime(0, 0, 0));
+        info.endDateTime = QDateTime(endDate.date(), QTime(23, 59, 59));
     } else {
-        info.beginDateTime = QDateTime(endDate.date(),QTime(0,0,0));
-        info.endDateTime = QDateTime(beginDate.date(),QTime(23,59,00));
+        info.beginDateTime = QDateTime(endDate.date(), QTime(0, 0, 0));
+        info.endDateTime = QDateTime(beginDate.date(), QTime(23, 59, 00));
     }
     info.titleName = tr("New Event");
     info.allday = true;
@@ -698,7 +704,7 @@ ScheduleDtailInfo DragInfoGraphicsView::getScheduleInfo(const QDateTime &beginDa
 
 void DragInfoGraphicsView::ShowSchedule(DragInfoItem *infoitem)
 {
-    if (infoitem ==nullptr)
+    if (infoitem == nullptr)
         return;
     emit signalScheduleShow(true, infoitem->getData());
 

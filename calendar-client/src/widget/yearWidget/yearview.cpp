@@ -41,6 +41,7 @@
 #include <QLocale>
 #include <QDesktopWidget>
 #include <QMouseEvent>
+#include <QPainterPath>
 
 DGUI_USE_NAMESPACE
 CYearScheduleOutView *CYearView::m_Scheduleview = nullptr;

@@ -19,7 +19,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "modifyscheduleitem.h"
+
 #include "../globaldef.h"
+
+#include <QMouseEvent>
 
 modifyScheduleItem::modifyScheduleItem(QWidget *parent)
     : ItemWidget(parent)

@@ -26,6 +26,7 @@
 
 #include <DPalette>
 #include <DHorizontalLine>
+#include <QPainterPath>
 
 #include <QGridLayout>
 #include <QShortcut>
@@ -175,9 +176,9 @@ void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
                     m_graphicsView->setTime(QTime(13, 0));
                 } else {
                     std::sort(scheduleInfolist.begin(), scheduleInfolist.end(),
-                              [](const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2) -> bool {
-                                  return s1.beginDateTime < s2.beginDateTime;
-                              });
+                    [](const ScheduleDtailInfo & s1, const ScheduleDtailInfo & s2) -> bool {
+                        return s1.beginDateTime < s2.beginDateTime;
+                    });
                     QTime time = scheduleInfolist.at(0).beginDateTime.time();
 
                     if (scheduleInfolist.at(0).beginDateTime.date() != m_beginDate) {
@@ -507,7 +508,7 @@ void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo 
     if (isShow) {
         QPoint pos22 = QCursor::pos();
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-            out.type.ID);
+                                      out.type.ID);
         QDesktopWidget *w = QApplication::desktop();
         m_ScheduleRemindWidget->setData(out, gdcolor);
 

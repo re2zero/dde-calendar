@@ -50,6 +50,7 @@
 #include <QSpacerItem>
 #include <QWidget>
 #include <QMenuBar>
+#include <QMouseEvent>
 
 #include <com_deepin_daemon_calendar_scheduler.h>
 
@@ -612,7 +613,7 @@ void Calendarmainwindow::createview()
     m_stackWidget->addWidget(m_weekWindow);
 
     m_DayWindow = new CDayWindow;
-    QTimer::singleShot(500, [=] {
+    QTimer::singleShot(500, [ = ] {
         m_DayWindow->setDate(QDate::currentDate());
     });
     m_stackWidget->addWidget(m_DayWindow);

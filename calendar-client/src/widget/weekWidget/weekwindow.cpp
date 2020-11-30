@@ -32,6 +32,7 @@
 #include <QMessageBox>
 #include <QDate>
 #include <QHBoxLayout>
+#include <QMouseEvent>
 
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent)

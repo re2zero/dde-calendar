@@ -1,8 +1,11 @@
 #include "scheduleitemwidget.h"
+
+#include "../globaldef.h"
+
 #include <DApplicationHelper>
 #include <DPushButton>
 
-#include "../globaldef.h"
+#include <QMouseEvent>
 
 scheduleitemwidget::scheduleitemwidget(QWidget *parent)
     : DWidget(parent)
