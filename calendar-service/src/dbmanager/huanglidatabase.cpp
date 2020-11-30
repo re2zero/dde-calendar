@@ -31,6 +31,10 @@ HuangLiDataBase::HuangLiDataBase(QObject *parent)
     : QObject(parent)
 {
     QString dbpath("/usr/share/dde-api/data/huangli.db");
+    //临时添加为了方便安装线上版本后使用新后台仍可测试，后期删除
+    if (!QFile(dbpath).exists()) {
+        dbpath = "/usr/share/dde-calendar/data/huangli.db";
+    }
     m_database = QSqlDatabase::addDatabase("QSQLITE");
     m_database.setDatabaseName(dbpath);
     m_database.open();

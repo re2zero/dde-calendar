@@ -8,6 +8,7 @@ set(CMAKE_AUTOMOC ON)
 set(APP_RES_DIR "assets")
 set(APP_SERVICE "${APP_RES_DIR}/data/com.deepin.dataserver.Calendar.service")
 set(AUTOSTART_DESKTOP "${APP_RES_DIR}/dde-calendar-service.desktop")
+set(HUANGLIDB "${APP_RES_DIR}/data/huangli.db")
 
 
 # Find the library
@@ -48,4 +49,4 @@ set(CMAKE_INSTALL_PREFIX /usr)
 install(TARGETS ${PROJECT_NAME} DESTINATION lib/deepin-daemon/)
 install(FILES ${APP_SERVICE} DESTINATION share/dbus-1/services/)
 install(FILES ${AUTOSTART_DESKTOP} DESTINATION /etc/xdg/autostart/)
-
+install(FILES ${HUANGLIDB} DESTINATION share/dde-calendar/data/)
