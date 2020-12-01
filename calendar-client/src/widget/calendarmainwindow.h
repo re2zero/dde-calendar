@@ -44,7 +44,7 @@ class CYearWindow;
 class CMonthWindow;
 class CWeekWindow;
 class CDayWindow;
-class __Scheduler;
+class CSchedulesDBus;
 class CScheduleSearchView;
 class AnimationStackedWidget;
 class CScheduleDataManage;
@@ -117,7 +117,7 @@ private:
     CMonthWindow *m_monthWindow = nullptr;
     CWeekWindow *m_weekWindow = nullptr;
     CDayWindow *m_DayWindow = nullptr;
-    __Scheduler *m_dbus = nullptr;
+    CSchedulesDBus *m_dbus = nullptr;
     bool m_searchflag = false;
     CScheduleSearchView *m_scheduleSearchView = nullptr;
     DFrame *m_contentBackground = nullptr;

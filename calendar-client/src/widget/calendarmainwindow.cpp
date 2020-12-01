@@ -30,6 +30,7 @@
 #include "schedulesearchview.h"
 #include "cdynamicicon.h"
 #include "constants.h"
+#include "dbus/schedulesdbus.h"
 
 #include <DAboutDialog>
 #include <DHiDPIHelper>
@@ -51,8 +52,6 @@
 #include <QWidget>
 #include <QMenuBar>
 #include <QMouseEvent>
-
-#include <com_deepin_daemon_calendar_scheduler.h>
 
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
@@ -534,10 +533,10 @@ void Calendarmainwindow::initConnection()
     //监听当前应用主题切换事件
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &Calendarmainwindow::slotTheme);
 
-    m_dbus = new com::deepin::daemon::calendar::Scheduler("com.deepin.dataserver.Calendar",
-                                                          "/com/deepin/dataserver/Calendar",
-                                                          QDBusConnection::sessionBus(), this);
-    connect(m_dbus, &com::deepin::daemon::calendar::Scheduler::JobsUpdated,
+    m_dbus = new CSchedulesDBus("com.deepin.dataserver.Calendar",
+                                "/com/deepin/dataserver/Calendar",
+                                QDBusConnection::sessionBus(), this);
+    connect(m_dbus, &CSchedulesDBus::JobsUpdated,
             this, &Calendarmainwindow::slotJobsUpdated);
     connect(m_scheduleSearchView, &CScheduleSearchView::signalsUpdateShcedule, this, &Calendarmainwindow::slotTransitSearchSchedule);
     connect(m_scheduleSearchView, &CScheduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);

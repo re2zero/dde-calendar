@@ -112,6 +112,6 @@ public Q_SLOTS: // METHODS
     bool UpdateType(const ScheduleType &info);
 
 Q_SIGNALS: // SIGNALS
-// begin property changed signals
+    Q_SCRIPTABLE void JobsUpdated(const QList<qlonglong> &Ids);
 };
 #endif
