@@ -66,8 +66,9 @@ QString SchedulerDatabase::GetJob(qint64 id)
         obj.insert("Title", query.value("title").toString());
         obj.insert("Description", query.value("description").toString());
         obj.insert("AllDay", query.value("all_day").toBool());
-        obj.insert("Start", query.value("start").toString());
-        obj.insert("End", query.value("end").toString());
+        //调整时间格式，方便前端解析
+        obj.insert("Start", Utils::toconvertData(query.value("start").toDateTime()));
+        obj.insert("End", Utils::toconvertData(query.value("end").toDateTime()));
         obj.insert("RRule", query.value("r_rule").toString());
         obj.insert("Remind", query.value("remind").toString());
         //将QString类型转换为QJsonArray类型，方便前端解析
