@@ -70,7 +70,8 @@ QString SchedulerDatabase::GetJob(qint64 id)
         obj.insert("End", query.value("end").toString());
         obj.insert("RRule", query.value("r_rule").toString());
         obj.insert("Remind", query.value("remind").toString());
-        obj.insert("Ignore", query.value("ignore").toString());
+        //将QString类型转换为QJsonArray类型，方便前端解析
+        obj.insert("Ignore", QJsonDocument::fromJson(query.value("ignore").toString().toUtf8()).array());
         //数据库包含的都是原始数据所以RecurID默认为0
         obj.insert("RecurID", 0);
 

@@ -20,6 +20,9 @@
 */
 #include "utils.h"
 
+#include <QJsonDocument>
+#include <QJsonArray>
+
 Utils::Utils()
 {
 }
@@ -80,7 +83,8 @@ QJsonObject Utils::JobToObject(const Job &job)
     obj.insert("End", Utils::toconvertData(job.End));
     obj.insert("RRule", job.RRule);
     obj.insert("Remind", job.Remind);
-    obj.insert("Ignore", job.Ignore);
+    //将QString类型转换为QJsonArray类型，方便前端解析
+    obj.insert("Ignore", QJsonDocument::fromJson(job.Ignore.toUtf8()).array());
     obj.insert("RecurID", job.RecurID);
 
     return obj;
