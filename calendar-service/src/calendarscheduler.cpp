@@ -379,7 +379,8 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
         //注意一定要判断是否有交集，因为Job的创建日期可能远远早于查询日期，查询到的是多次重复后与查询时间有交集的
         while (true) {
             QDateTime copystart = next;
-            if (copystart > end) {
+            //这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
+            if (copystart.date() > end.date()) {
                 //起始日期超出查询结束日期直接退出
                 break;
             }
@@ -405,9 +406,9 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             //根据rule获取下一个Job的起始日期
             next = GetNextJobStartTimeByRule(options, copystart);
             //判断next是否有效,时间大于RRule的until
-            //判断next是否大于查询的截止时间
+            //判断next是否大于查询的截止时间,这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
             if ((options.type == RepeatOverUntil && next >= options.overdate)
-                    || next > end) {
+                || next.date() > end.date()) {
                 break;
             }
             copystart = next;
@@ -708,6 +709,8 @@ QDateTime CalendarScheduler::ParseRemind(const QDateTime &tm, const QString &str
 
 void CalendarScheduler::AfterJobChanged(const QList<qlonglong> &Ids)
 {
+    //发送更新jobs信号
+    emit JobsUpdated(Ids);
     emit NotifyJobChange(Ids);
     QDateTime tmstart = QDateTime::currentDateTime();
     QDateTime tmend = tmstart.addMSecs(UPDATEREMINDJOBTIMEINTERVAL);
