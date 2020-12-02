@@ -128,7 +128,7 @@ Reply changeScheduleTask::getReplyBySelectSchedule(const ScheduleDtailInfo &info
         nextState->setLocalData(m_Data);
     } else {
         //获取下一个状态
-        nextState = getNextStateBySelectScheduleInfo(info,m_Data,m_reply);
+        nextState = getNextStateBySelectScheduleInfo(info, m_Data, m_reply);
     }
     currentState->setNextState(nextState);
     return m_reply;
@@ -238,7 +238,7 @@ scheduleState *changeScheduleTask::getNextStateBySelectScheduleInfo(const Schedu
     //下一个状态
     scheduleState *nextState{nullptr};
     //如果修改的新日程时间在范围内则正常提醒
-    if(getNewInfo()){
+    if (getNewInfo()) {
         //需要显示的窗口
         QWidget *_showWidget;
         if (info.rpeat == 0) {
@@ -259,11 +259,11 @@ scheduleState *changeScheduleTask::getNextStateBySelectScheduleInfo(const Schedu
         //设置存储数据
         nextState->setLocalData(localData);
         REPLY_WIDGET_TTS(reply, _showWidget, m_TTSMessage, m_DisplyMessage, false);
-    }else {
+    } else {
         //如果修改的日程不在正常范围内则回复错误，并设置下一个状态为询问查询状态
         m_TTSMessage = CHANGE_TIME_OUT_TTS;
         m_DisplyMessage = CHANGE_TIME_OUT_TTS;
-        REPLY_ONLY_TTS(reply,m_TTSMessage,m_DisplyMessage,true);
+        REPLY_ONLY_TTS(reply, m_TTSMessage, m_DisplyMessage, true);
         nextState = new queryScheduleState(m_dbus, this);
     };
     return nextState;
@@ -284,18 +284,18 @@ bool changeScheduleTask::getNewInfo()
     if (m_ToTime.size() > 0) {
         if (m_ToTime.size() == 1) {
             //如果存在日期信息
-            if(m_ToTime.at(0).hasDate){
+            if (m_ToTime.at(0).hasDate) {
                 //设置修改的开始日期
                 m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).m_Date);
                 //设置修改的结束日期
                 m_NewInfo.endDateTime.setDate(m_ToTime.at(0).m_Date);
             }
             //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
-            if(m_ToTime.at(0).hasTime){
+            if (m_ToTime.at(0).hasTime) {
                 //如果修改的日期为当天则取suggestTime时间
-                if(m_NewInfo.beginDateTime.date() == QDate::currentDate()){
+                if (m_NewInfo.beginDateTime.date() == QDate::currentDate()) {
                     m_NewInfo.beginDateTime = m_suggestDatetime.at(0).datetime;
-                }else {
+                } else {
                     m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).m_Time);
                 }
                 m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);
@@ -303,16 +303,16 @@ bool changeScheduleTask::getNewInfo()
         }
         if (m_ToTime.size() == 2) {
             //如果存在日期信息
-            if(m_ToTime.at(0).hasDate){
+            if (m_ToTime.at(0).hasDate) {
                 //设置修改的开始日期
                 m_NewInfo.beginDateTime.setDate(m_ToTime.at(0).m_Date);
             }
             //如果修改的DateTime带时间则设置该时间，否则保持原来的时间点
-            if(m_ToTime.at(0).hasTime){
+            if (m_ToTime.at(0).hasTime) {
                 m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).m_Time);
             }
             //如果存在日期信息
-            if(m_ToTime.at(1).hasDate){
+            if (m_ToTime.at(1).hasDate) {
                 //设置修改的结束日期
                 m_NewInfo.endDateTime.setDate(m_ToTime.at(1).m_Date);
             }
@@ -386,7 +386,8 @@ void changeScheduleTask::changeAllInfo(const ScheduleDtailInfo &info)
                 updatescheduleData.enddata.type = 0;
                 updatescheduleData.rpeat = 0;
             }
-        } else if (updatescheduleData.enddata.type == 2) {
+        } else {
+            //如果为结束与日期或永不,则都修改为结束语日期并修改结束日期
             updatescheduleData.enddata.type = 2;
             updatescheduleData.enddata.date =
                 info.beginDateTime.addDays(-1);
@@ -405,15 +406,15 @@ bool changeScheduleTask::changeDateTimeIsInNormalRange(const ScheduleDtailInfo &
     bool result {true};
     //当前时间
     QDateTime currentDateTime {QDateTime::currentDateTime()};
-    //最大时间  
+    //最大时间
     QDateTime maxDateTime = currentDateTime.addMonths(6);
     //如果开始时间为过期时间则为false
-    if(info.beginDateTime<currentDateTime){
+    if (info.beginDateTime < currentDateTime) {
         result = false;
     };
     //如果开始时间或结束时间大于最大时间则为false
-    if(info.beginDateTime>maxDateTime
-            ||info.endDateTime > maxDateTime){
+    if (info.beginDateTime > maxDateTime
+            || info.endDateTime > maxDateTime) {
         result = false;
     }
     return  result;
