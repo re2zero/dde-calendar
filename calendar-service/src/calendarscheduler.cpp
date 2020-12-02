@@ -168,9 +168,9 @@ qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
         doc.setArray(subArray);
         job.Ignore = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
     }
-    if (rootObj.contains("Title_pinyin")) {
-        job.Title_pinyin = pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString());
-    }
+    //添加title拼音
+    job.Title_pinyin = pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString());
+
     qint64 id = m_database->CreateJob(job);
     QList<qlonglong> ids;
     ids.append(id);

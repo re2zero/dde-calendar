@@ -312,6 +312,7 @@ qint64 SchedulerDatabase::UpdateJob(const QString &jobInfo)
     doc.setArray(subArray);
 
     QDateTime currentDateTime = QDateTime::currentDateTime();
+    currentDateTime.setOffsetFromUtc(currentDateTime.offsetFromUtc());
     QSqlQuery query(m_database);
     QString strsql = "UPDATE jobs SET updated_at = ?, type = ?, title = ?, "
                      "description = ?, all_day = ?, start = ?, end = ?, r_rule = ?, "
@@ -319,7 +320,8 @@ qint64 SchedulerDatabase::UpdateJob(const QString &jobInfo)
     query.prepare(strsql);
     qint64 id = rootObj.value("ID").toInt();
     int i = 0;
-    query.bindValue(i, currentDateTime.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    //修改updatetime时间格式
+    query.bindValue(i, currentDateTime);
     query.bindValue(++i, rootObj.value("Type").toInt());
     query.bindValue(++i, rootObj.value("Title").toString());
     query.bindValue(++i, rootObj.value("Description").toString());
