@@ -57,13 +57,13 @@ public Q_SLOTS:
     Q_SCRIPTABLE void DeleteType(qint64 id);
     Q_SCRIPTABLE QString GetJob(qint64 id);
     Q_SCRIPTABLE QString GetJobs(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay);
-    Q_SCRIPTABLE QString GetJobsWithLimit(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, quint32 maxNum);
-    Q_SCRIPTABLE QString GetJobsWithRule(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, const QString &rule);
     Q_SCRIPTABLE QString GetType(qint64 id);
     Q_SCRIPTABLE QString GetTypes();
     Q_SCRIPTABLE QString QueryJobs(const QString &params);
     Q_SCRIPTABLE void UpdateJob(const QString &jobInfo);
     Q_SCRIPTABLE void UpdateType(const QString &typeInfo);
+    Q_SCRIPTABLE QString QueryJobsWithLimit(const QString &params, qint32 maxNum);
+    Q_SCRIPTABLE QString QueryJobsWithRule(const QString &params, const QString &rules);
 
 private:
     CalendarScheduler *m_scheduler;

@@ -117,16 +117,6 @@ QString CalendarService::GetJobs(quint32 startYear, quint32 startMonth, quint32 
     return m_scheduler->GetJobs(start, end);
 }
 
-QString CalendarService::GetJobsWithLimit(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, quint32 maxNum)
-{
-    return "";
-}
-
-QString CalendarService::GetJobsWithRule(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay, const QString &rule)
-{
-    return "";
-}
-
 //根据id返回指定日程类型
 QString CalendarService::GetType(qint64 id)
 {
@@ -154,4 +144,14 @@ void CalendarService::UpdateJob(const QString &jobInfo)
 void CalendarService::UpdateType(const QString &typeInfo)
 {
     m_scheduler->UpdateType(typeInfo);
+}
+
+QString CalendarService::QueryJobsWithLimit(const QString &params, qint32 maxNum)
+{
+    return m_scheduler->QueryJobsWithLimit(params, maxNum);
+}
+
+QString CalendarService::QueryJobsWithRule(const QString &params, const QString &rules)
+{
+    return m_scheduler->QueryJobsWithRule(params, rules);
 }

@@ -118,9 +118,10 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs()
 /**
  * @brief  GetAllOriginJobs 获取所有与key相关的job原始数据
  * @param  key 搜索词
+ * @param  strsort 查询排序条件
  * @return 返回所有原始日程集合
  */
-QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key)
+QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString &strsort)
 {
     QList<Job> jobs;
     QSqlQuery query(m_database);
@@ -130,14 +131,70 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key)
     if (psearch->CanQueryByPinyin(strKey)) {
         //可以按照拼音查询
         QString pinyin = psearch->CreatePinyinQuery(strKey.toLower());
-        strsql = QString("select * from jobs where title like '%%1%' or title_pinyin like '%%2%';").arg(key).arg(pinyin);
+        strsql = QString("select * from jobs where title like '%%1%' or title_pinyin like '%%2%' ").arg(key).arg(pinyin);
     } else if (!key.isEmpty()) {
         //按照key查询
-        strsql = QString("select * from jobs where title like '%%1%';").arg(key);
+        strsql = QString("select * from jobs where title like '%%1%' ").arg(key);
     } else {
         //如果没有key，则搜索所有
-        strsql = QString("select * from jobs;");
+        strsql = QString("select * from jobs ");
     }
+
+    //排序条件不为空
+    if (!strsort.isEmpty()) {
+        strsql.append(QString("order by %1").arg(strsort));
+    }
+
+    if (query.exec(strsql)) {
+        while (query.next()) {
+            Job jb;
+            jb.ID = query.value("id").toInt();
+            jb.Type = query.value("type").toInt();
+            jb.Title = query.value("title").toString();
+            jb.Description = query.value("description").toString();
+            jb.AllDay = query.value("all_day").toBool();
+            jb.Start = query.value("start").toDateTime();
+            jb.End = query.value("end").toDateTime();
+            jb.RRule = query.value("r_rule").toString();
+            jb.Remind = query.value("remind").toString();
+            jb.Ignore = query.value("ignore").toString();
+            jb.Title_pinyin = query.value("title_pinyin").toString();
+            jobs.append(jb);
+        }
+    }
+
+    return jobs;
+}
+
+QList<Job> SchedulerDatabase::GetAllOriginJobsWithRule(const QString &key, const QString &rules)
+{
+    QList<Job> jobs;
+    QSqlQuery query(m_database);
+    QString strKey = key.trimmed();
+    QString strrule;
+    if (!rules.contains("BYDAY") && rules.contains("DAILY")) {
+        // 每日
+        strrule = QString("r_rule LIKE '%%1%' AND r_rule NOT LIKE '%BYDAY%' ").arg(rules);
+    } else {
+        // 工作日 每周 每月 每年
+        strrule = QString("r_rule LIKE '%%1%'").arg(rules);
+    }
+
+    pinyinsearch *psearch = pinyinsearch::getPinPinSearch();
+    QString strsql;
+    if (psearch->CanQueryByPinyin(strKey)) {
+        //可以按照拼音查询
+        QString pinyin = psearch->CreatePinyinQuery(strKey.toLower());
+        strsql = QString("select id from jobs where title like '%%1%' or title_pinyin like '%%2%' ").arg(key).arg(pinyin);
+    } else if (!key.isEmpty()) {
+        //按照key查询
+        strsql = QString("select id from jobs where title like '%%1%' ").arg(key);
+    } else {
+        //如果没有key，则搜索所有
+        strsql = QString("select id from jobs ");
+    }
+
+    strsql = QString("select * from jobs where id in(%1) and %2").arg(strsql).arg(strrule);
 
     if (query.exec(strsql)) {
         while (query.next()) {

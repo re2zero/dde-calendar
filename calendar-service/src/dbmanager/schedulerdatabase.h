@@ -39,7 +39,8 @@ public:
     bool UpdateJobIgnore(const QString &strignore, qint64 id);
     void UpdateType(const QString &typeInfo);
     QList<Job> GetAllOriginJobs();
-    QList<Job> GetAllOriginJobs(const QString &key);
+    QList<Job> GetAllOriginJobs(const QString &key, const QString &strsort = QString());
+    QList<Job> GetAllOriginJobsWithRule(const QString &key, const QString &rules);
     QList<Job> GetJobsContainRemind();
 
 private:

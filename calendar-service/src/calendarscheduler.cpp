@@ -231,6 +231,60 @@ QString CalendarScheduler::QueryJobs(const QString &params)
     return strJson;
 }
 
+QString CalendarScheduler::QueryJobsWithLimit(const QString &params, qint32 maxNum)
+{
+    QJsonParseError err;
+    QJsonDocument doc = QJsonDocument::fromJson(params.toUtf8(), &err);
+    QJsonObject obj = doc.object();
+    QDateTime start = Utils::fromconvertData(obj.value("Start").toString());
+    QDateTime end = Utils::fromconvertData(obj.value("End").toString());
+    QString strKey = obj.value("key").toString();
+
+    QList<Job> joblist = m_database->GetAllOriginJobs(strKey, QString("start asc"));
+    //获取时间范围内符合条件的Job，不扩展
+    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist, strKey, false);
+    jobArrList = FilterDateJobsWrap(jobArrList, start, end);
+    //根据manNum获取指定数量的Job多余的直接丢弃
+    int jobCount = 0;
+    QList<stJobArr> resArr;
+    foreach (stJobArr jobarr, jobArrList) {
+        if (jobarr.jobs.size() > 0) {
+            int jobsLength = jobarr.jobs.size();
+            jobCount += jobsLength;
+            if (jobCount >= maxNum) {
+                int edge = jobsLength - (jobCount - maxNum);
+                QList<Job> jobs;
+                for (int i = 0; i < edge; ++i) {
+                    jobs.append(jobarr.jobs.at(i));
+                }
+                jobarr.jobs = jobs;
+                resArr.append(jobarr);
+                break;
+            }
+            resArr.append(jobarr);
+        }
+    }
+    QString strJson = JobArrListToJsonStr(resArr);
+
+    return strJson;
+}
+
+QString CalendarScheduler::QueryJobsWithRule(const QString &params, const QString &rules)
+{
+    QJsonParseError err;
+    QJsonDocument doc = QJsonDocument::fromJson(params.toUtf8(), &err);
+    QJsonObject obj = doc.object();
+    QDateTime start = Utils::fromconvertData(obj.value("Start").toString());
+    QDateTime end = Utils::fromconvertData(obj.value("End").toString());
+    QString strKey = obj.value("key").toString();
+    QList<Job> joblist = m_database->GetAllOriginJobsWithRule(strKey, rules);
+    //获取时间范围内符合条件的Job，不扩展
+    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist, strKey, false);
+    jobArrList = FilterDateJobsWrap(jobArrList, start, end);
+    QString strJson = JobArrListToJsonStr(jobArrList);
+    return strJson;
+}
+
 //检测当前环境是否为中文环境来决定是否开启获取节日日程开关
 void CalendarScheduler::IsFestivalJobEnabled()
 {
@@ -438,16 +492,25 @@ bool CalendarScheduler::ContainsInIgnoreList(const QList<QDateTime> ignorelist, 
  * @param end 第一个时间范围的结束时间
  * @param jobstart 第二个时间范围的开始时间
  * @param jobend 第二个时间范围的结束时间
+ * @param bonleycompareday 只比较天还是具体到时分，默认是只比较天
  * @return bool 有交集返回true否则返回false
  */
-bool CalendarScheduler::OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend)
+bool CalendarScheduler::OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend, bool bonleycompareday)
 {
     bool boverlap = false;
-    //只需要判断date即可，不需要比较time
-    if ((start.date() <= jobstart.date() && end.date() >= jobstart.date())
+    //bonleycompareday为True只需要判断date即可，不需要比较time
+    if (bonleycompareday) {
+        if ((start.date() <= jobstart.date() && end.date() >= jobstart.date())
             || (start.date() >= jobstart.date() && start.date() <= jobend.date())) {
-        boverlap = true;
+            boverlap = true;
+        }
+    } else {
+        if ((start <= jobstart && end >= jobstart)
+            || (start >= jobstart && start <= jobend)) {
+            boverlap = true;
+        }
     }
+
     return boverlap;
 }
 
@@ -649,6 +712,31 @@ void CalendarScheduler::AfterJobChanged(const QList<qlonglong> &Ids)
     QDateTime tmstart = QDateTime::currentDateTime();
     QDateTime tmend = tmstart.addMSecs(UPDATEREMINDJOBTIMEINTERVAL);
     emit NotifyUpdateRemindJobs(GetRemindJobs(tmstart, tmend));
+}
+
+QList<stJobArr> CalendarScheduler::FilterDateJobsWrap(const QList<stJobArr> &arrList, const QDateTime &start, const QDateTime &end)
+{
+    QList<stJobArr> wraplist;
+    foreach (stJobArr jobarr, arrList) {
+        QList<Job> jobs, extendjobs;
+        foreach (Job jb1, jobarr.jobs) {
+            if (OverLap(start, end, jb1.Start, jb1.End)) {
+                jobs.append(jb1);
+            }
+        }
+        foreach (Job jb2, jobarr.extends) {
+            if (OverLap(start, end, jb2.Start, jb2.End)) {
+                extendjobs.append(jb2);
+            }
+        }
+        if (jobs.size() + extendjobs.size() > 0) {
+            jobarr.jobs = jobs;
+            jobarr.extends = extendjobs;
+            wraplist.append(jobarr);
+        }
+    }
+
+    return wraplist;
 }
 
 void CalendarScheduler::UpdateRemindTimeout()

@@ -45,6 +45,8 @@ public:
     void UpdateType(const QString &typeInfo);
     QString GetJobs(const QDateTime &start, const QDateTime &end);
     QString QueryJobs(const QString &params);
+    QString QueryJobsWithLimit(const QString &params, qint32 maxNum);
+    QString QueryJobsWithRule(const QString &params, const QString &rules);
 
 private:
     void initConnections();
@@ -55,7 +57,7 @@ private:
     void FillFestivalJobs(const QDateTime &start, const QDateTime &end, const QString &querykey, QList<stJobArr> &listjob);
     QList<QDateTime> GetIgnoreList(const Job &job);
     bool ContainsInIgnoreList(const QList<QDateTime> ignorelist, const QDateTime &time);
-    bool OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend);
+    bool OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend, bool bonleycompareday = true);
     QDateTime GetNextJobStartTimeByRule(const stRRuleOptions &options, const QDateTime &datetime);
     stRRuleOptions ParseRRule(const QString &rule);
     QString JobArrListToJsonStr(const QList<stJobArr> &jobArrList);
@@ -63,6 +65,7 @@ private:
     QDateTime GetJobRemindTime(const Job &job);
     QDateTime ParseRemind(const QDateTime &tm, const QString &strremind);
     void AfterJobChanged(const QList<qlonglong> &Ids);
+    QList<stJobArr> FilterDateJobsWrap(const QList<stJobArr> &arrList, const QDateTime &start, const QDateTime &end);
 
 signals:
     void NotifyJobChange(const QList<qlonglong> &Ids);
