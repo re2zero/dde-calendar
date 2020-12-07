@@ -110,8 +110,9 @@ enum RepeatOverCondition {
 };
 
 typedef struct RRuleOptions {
-    RepeatType rpeat; //重复规则 0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
-    RepeatOverCondition type; //结束重复 0 永不 1  多少次结束  2 结束日期
+    //初始化
+    RepeatType rpeat {RepeatType::RepeatNone}; //重复规则 0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
+    RepeatOverCondition type {RepeatOverCondition::RepeatOverNever}; //结束重复 0 永不 1  多少次结束  2 结束日期
     int tcount; //多少次结束只有当type=1才会生效
     QDateTime overdate; //type=2时才有效
 } stRRuleOptions;

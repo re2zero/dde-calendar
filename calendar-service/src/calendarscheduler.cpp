@@ -562,7 +562,8 @@ QDateTime CalendarScheduler::GetNextJobStartTimeByRule(const stRRuleOptions &opt
 stRRuleOptions CalendarScheduler::ParseRRule(const QString &rule)
 {
     //无规则的不走这里判断所以此处默认rule不为空
-    stRRuleOptions options;
+    //局部变量初始化
+    stRRuleOptions options {};
     QStringList rruleslist = rule.split(";", QString::SkipEmptyParts);
     //rpeat重复规则 0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
     //type结束重复类型 0 永不 1  多少次结束  2 结束日期
