@@ -47,8 +47,16 @@ QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
     //获取宜忌信息
     QList<stHuangLi> hllist = m_database->QueryHuangLiByDays(viewdate);
     //将黄历信息保存到CaHuangLiDayInfo
-    hldayinfo.mSuit = hllist.begin()->Suit;
-    hldayinfo.mAvoid = hllist.begin()->Avoid;
+    //数据库中的宜忌信息是从2008年开始的，搜索之前年份的会导致hllist为空，所以需要判断hllist的size
+    if (hllist.size() > 0) {
+        //对宜忌赋值
+        hldayinfo.mSuit = hllist.begin()->Suit;
+        hldayinfo.mAvoid = hllist.begin()->Avoid;
+    } else {
+        //如果没有，设置为空
+        hldayinfo.mSuit = "";
+        hldayinfo.mAvoid = "";
+    }
     hldayinfo.mGanZhiYear = lunardayinfo.GanZhiYear;
     hldayinfo.mGanZhiMonth = lunardayinfo.GanZhiMonth;
     hldayinfo.mGanZhiDay = lunardayinfo.GanZhiDay;
