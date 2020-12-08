@@ -91,7 +91,7 @@ typedef struct JobArr {
 typedef struct JobTime {
     QDateTime start;
     QDateTime end;
-    qint64 recurID;
+    qint64 recurID = 0;
 } stJobTime;
 
 enum RepeatType {
