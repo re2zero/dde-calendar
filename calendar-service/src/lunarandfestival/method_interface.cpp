@@ -838,9 +838,12 @@ QString GetSolarDayFestival(int year, int month, int day)
     if (!solarFestival.isEmpty()) {
         QStringList temlist = solarFestival.split(",");
         for (int i = 0; i < temlist.size(); ++i) {
+            //节日名称
             QString temname = temlist.at(i);
+            //带有节日映射的的迭代器
             auto it = solarFestivalStarYear.find(temname);
-            if (it != solarFestivalStarYear.end() && *it < year) {
+            //保证不越界，并且节日的开始年份在year之前(包括year)
+            if (it != solarFestivalStarYear.end() && *it <= year) {
                 if (!festivals.isEmpty()) {
                     festivals.append(',');
                 }
