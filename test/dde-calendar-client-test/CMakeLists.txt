@@ -25,10 +25,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_FLAGS "-Wl,--as-needed -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "-pie")
 
-#Generate the qm file
-execute_process(COMMAND bash ${APP_TRANS_SCRIPT}
-                    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/")
-
 include_directories(${APP_CLIENT_DIR}/src)
 
 SUBDIRLIST(all_src ${APP_CLIENT_DIR}/src)
@@ -51,7 +47,7 @@ endforeach()
 file(GLOB_RECURSE Calendar_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 # Tell CMake to create the executable
-add_executable(${APP_BIN_NAME} ${Calendar_TEST_SRC} ${Calendar_SRC} ${APP_QRC})
+add_executable(${APP_BIN_NAME} ${Calendar_TEST_SRC} ${Calendar_SRC})
 
 target_include_directories(${APP_BIN_NAME} PUBLIC ${DtkWidget_INCLUDE_DIRS} ${OBJECT_BINARY_DIR})
 
