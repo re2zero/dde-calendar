@@ -321,11 +321,9 @@ QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const 
         }
         foreach (stJobTime jobtime, jobtimelist) {
             Job jobtem = jb;
-            if (0 != jobtime.recurID) {
-                jobtem.Start = jobtime.start;
-                jobtem.End = jobtime.start.addSecs(interval);
-                jobtem.RecurID = jobtime.recurID;
-            }
+            jobtem.Start = jobtime.start;
+            jobtem.End = jobtime.start.addSecs(interval);
+            jobtem.RecurID = jobtime.recurID;
             int idx = static_cast<int>(start.daysTo(jobtime.start));
             if (idx >= 0 && idx <= days) {
                 jobArrList[idx].jobs.append(jobtem);
@@ -374,6 +372,11 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
         QDateTime jobstart = job.Start; //当前原始job的起始时间
         QDateTime jobend = job.End; //当前原始job的结束时间
         int dateinterval = static_cast<int>(jobstart.daysTo(jobend)); //job的开始结束间隔日期
+
+        int dayofweek = jobstart.date().dayOfWeek(); //判断是周几
+        if (dayofweek > Qt::Friday && options.rpeat == RepeatType::RepeatWorkDay) //周末并且options为工作日重复
+            jobstart.setDate(jobstart.date().addDays(7 - dayofweek + 1)); //在周末设置工作日重复日程，需要重新设置日程开始时间
+
         QDateTime next = jobstart; //next为下一新建日程起始日期
         //只有当下一个新建日程的起始日期小于查询日期的结束日期才会有交集，否则没有意义
         //注意一定要判断是否有交集，因为Job的创建日期可能远远早于查询日期，查询到的是多次重复后与查询时间有交集的
@@ -531,9 +534,10 @@ QDateTime CalendarScheduler::GetNextJobStartTimeByRule(const stRRuleOptions &opt
         break;
     case RepeatWorkDay:
         dayofweek = datetime.date().dayOfWeek();
-        //计算当前为周几如果是周五需要跳过周六周日，否则直接下一天
-        if (dayofweek == Qt::Friday) {
-            next = datetime.addDays(3);
+        //计算当前为周几如果是周五或者是周末需要跳过，否则直接下一天
+        //需要跳过因为工作日不包括周末
+        if (dayofweek >= Qt::Friday) {
+            next = datetime.addDays(7 - dayofweek + 1);
         } else {
             next = datetime.addDays(1);
         }
