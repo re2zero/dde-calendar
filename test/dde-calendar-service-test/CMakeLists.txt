@@ -1,0 +1,69 @@
+cmake_minimum_required(VERSION 3.7)
+project(dde-calendar-service-test)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(APP_BIN_NAME "dde-calendar-service-test")
+set(APP_SERVICE_DIR "${CMAKE_SOURCE_DIR}/calendar-service")
+set(APP_SERVICE_RES_DIR "${APP_SERVICE_DIR}/assets")
+
+# Find the library
+find_package(PkgConfig REQUIRED)
+find_package(DtkCore REQUIRED)
+find_package(Qt5 COMPONENTS
+    Core
+    DBus
+    Sql
+REQUIRED)
+find_package(Qt5Test REQUIRED)
+find_package(GTest REQUIRED)
+
+set(LINK_LIBS
+    Qt5::Core
+    Qt5::DBus
+    Qt5::Sql
+    ${DtkCore_LIBRARIES}
+)
+
+include_directories(${APP_SERVICE_DIR}/src)
+
+SUBDIRLIST(all_src ${APP_SERVICE_DIR}/src)
+
+#Include all app own subdirectorys
+foreach(subdir ${all_src})
+    include_directories(${APP_SERVICE_DIR}/src/${subdir})
+endforeach()
+
+file(GLOB_RECURSE CALENDARSERVICE_SRCS ${APP_SERVICE_DIR}/src/*.cpp)
+include_directories(../../calendar-basicstruct/)
+list(REMOVE_ITEM CALENDARSERVICE_SRCS ${APP_SERVICE_DIR}/src/main.cpp)
+
+#test src
+SUBDIRLIST(TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+foreach(subdir ${TEST_SRC})
+    include_directories(${subdir})
+endforeach()
+
+file(GLOB_RECURSE Calendar_Service_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+
+add_executable(${APP_BIN_NAME} ${Calendar_Service_TEST_SRC} ${CALENDARSERVICE_SRCS})
+
+target_link_libraries(${APP_BIN_NAME} 
+    ${LINK_LIBS}
+    ${GTEST_LIBRARIES}
+    ${GTEST_MAIN_LIBRARIES}
+    pthread
+    basestruct
+)
+
+# 设置添加gocv相关信息的输出
+set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
+ADD_COMPILE_OPTIONS(-fno-access-control)
+##------------------------------ 创建'make server test'指令---------------------------------------
+
+add_custom_command(TARGET ${APP_BIN_NAME} POST_BUILD
+    COMMAND echo " =================== CREAT LCOV REPROT BEGIN ==================== "
+    COMMAND ${CMAKE_BINARY_DIR}/test/dde-calendar-service-test/${APP_BIN_NAME}
+    COMMAND echo " =================== TEST END ==================== "
+    )
