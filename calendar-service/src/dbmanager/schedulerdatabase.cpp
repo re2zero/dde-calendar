@@ -134,7 +134,8 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString
         strsql = QString("select * from jobs where title like '%%1%' or title_pinyin like '%%2%' ").arg(key).arg(pinyin);
     } else if (!key.isEmpty()) {
         //按照key查询
-        strsql = QString("select * from jobs where title like '%%1%' ").arg(key);
+        //添加/和escape处理转意字符
+        strsql = QString("select * from jobs where title like '%/%1%' escape '/' ").arg(key);
     } else {
         //如果没有key，则搜索所有
         strsql = QString("select * from jobs ");
