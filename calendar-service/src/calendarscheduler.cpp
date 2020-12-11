@@ -445,8 +445,8 @@ void CalendarScheduler::FillFestivalJobs(const QDateTime &start, const QDateTime
                     jb.Title = festival;
                     jb.Type = JobTypeFestival;
                     jb.AllDay = true;
-                    jb.Start = day.date;
-                    jb.End = day.date;
+                    jb.Start = QDateTime(QDate(day.date.date()), QTime(0, 0));
+                    jb.End = QDateTime(QDate(day.date.date()), QTime(23, 59));
                     jb.RRule = "FREQ=YEARLY";
                     jb.ID = GetFestivalId(festival);
                     listjob[index].jobs.append(jb);
