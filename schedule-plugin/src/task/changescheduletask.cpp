@@ -273,9 +273,6 @@ bool changeScheduleTask::getNewInfo()
 {
     scheduleState *currentState = getCurrentState();
     ScheduleDtailInfo m_NewInfo = currentState->getLocalData()->SelectInfo();
-    m_NewInfo.allday = false;
-    m_NewInfo.remind = true;
-    m_NewInfo.remindData.n = 0;
     if (!currentState->getLocalData()->getToTitleName().isEmpty())
         m_NewInfo.titleName = currentState->getLocalData()->getToTitleName();
     QVector<DateTimeInfo> m_ToTime = currentState->getLocalData()->getToTime().dateTime;
@@ -299,6 +296,12 @@ bool changeScheduleTask::getNewInfo()
                     m_NewInfo.beginDateTime.setTime(m_ToTime.at(0).m_Time);
                 }
                 m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);
+                //如果存在时间点则将全天的日程修改为非全天并修改提醒规则
+                if (m_NewInfo.allday) {
+                    m_NewInfo.allday = false;
+                    m_NewInfo.remind = true;
+                    m_NewInfo.remindData.n = 0;
+                }
             }
         }
         if (m_ToTime.size() == 2) {
@@ -323,6 +326,7 @@ bool changeScheduleTask::getNewInfo()
             if (m_NewInfo.endDateTime < m_NewInfo.beginDateTime) {
                 m_NewInfo.endDateTime = m_NewInfo.beginDateTime.addSecs(3600);
             }
+            //TODO 对于多个时间点还未支持,全天非全天的修改待做
         }
     }
     currentState->getLocalData()->setNewInfo(m_NewInfo);
