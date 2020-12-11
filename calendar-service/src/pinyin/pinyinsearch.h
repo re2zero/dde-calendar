@@ -53,6 +53,8 @@ private:
     /* 合法单拼音表 */
     QMap<QString, bool> validPinyinMap {};
     static pinyinsearch *m_pinyinsearch;
+    //拼音字典
+    static QVector<QMap<int, QString>> pinyinDictVector;
 };
 
 #endif

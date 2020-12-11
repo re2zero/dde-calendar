@@ -467,34 +467,3 @@ QMap<QString, QString> phoneticSymbol = {
     {"ǹ", "n4"},
     {"ḿ", "m2"},
 };
-/**
- * @brief getPinYinDictVector   获取拼音字典
- * @return
- */
-const QVector<QMap<int, QString> > getPinYinDictVector()
-{
-    QVector<QMap<int,QString> > pinyinDictVector{};
-    //添加拼音字典
-    pinyinDictVector.append(PinyinDict_1);
-    pinyinDictVector.append(PinyinDict_2);
-    pinyinDictVector.append(PinyinDict_3);
-    pinyinDictVector.append(PinyinDict_4);
-    pinyinDictVector.append(PinyinDict_5);
-    pinyinDictVector.append(PinyinDict_6);
-    pinyinDictVector.append(PinyinDict_7);
-    pinyinDictVector.append(PinyinDict_8);
-    pinyinDictVector.append(PinyinDict_9);
-    pinyinDictVector.append(PinyinDict_10);
-    pinyinDictVector.append(PinyinDict_11);
-    pinyinDictVector.append(PinyinDict_12);
-    pinyinDictVector.append(PinyinDict_13);
-    pinyinDictVector.append(PinyinDict_14);
-    pinyinDictVector.append(PinyinDict_15);
-    pinyinDictVector.append(PinyinDict_16);
-    pinyinDictVector.append(PinyinDict_17);
-    pinyinDictVector.append(PinyinDict_18);
-    pinyinDictVector.append(PinyinDict_19);
-    pinyinDictVector.append(PinyinDict_20);
-    pinyinDictVector.append(PinyinDict_21);
-    return pinyinDictVector;
-}
