@@ -304,7 +304,6 @@ QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const 
     for (int i = 0; i <= days; ++i) {
         stJobArr arr;
         QDateTime tem = start.addDays(i);
-        qDebug() << tem.date();
         arr.date = tem.date();
         jobArrList.append(arr);
     }
@@ -760,7 +759,13 @@ void CalendarScheduler::OnModifyJobRemind(const Job &job, const QString &remind)
     QList<qlonglong> ids;
     //规则不为空则创建一个新的日程
     if (!newjob.RRule.isEmpty()) {
+        //修改重复日程的提醒规则相当于“仅修改此日程”的规则，忽略当天的日程，新建一个没有重复规则的日程
+        //修改新日程的提醒规则
         newjob.Remind = remind;
+        //清空日程的重复规则
+        newjob.RRule.clear();
+        //设置初始值
+        newjob.RecurID = 0;
         QList<QDateTime> ignorelist = GetIgnoreList(job);
         bool bsuccess = true;
         //判断是否在忽略列表，如果不在忽略列表则加入忽略列表，后面重新创建新日程替代该旧日程
