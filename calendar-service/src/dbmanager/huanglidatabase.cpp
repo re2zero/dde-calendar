@@ -79,16 +79,22 @@ QList<stHuangLi> HuangLiDataBase::QueryHuangLiByDays(const QList<stDay> &days)
     QList<stHuangLi> infos;
     QSqlQuery query(m_database);
     foreach (stDay d, days) {
+        //查询的id
+        qint64 id = QString().sprintf("%d%02d%02d", d.Year, d.Month, d.Day).toInt();
         QString strsql("SELECT id, avoid, suit FROM huangli WHERE id = %1");
-        strsql = strsql.arg(QString().sprintf("%d%02d%02d", d.Year, d.Month, d.Day));
-        qDebug() << strsql;
+        strsql = strsql.arg(id);
+        //数据库中的宜忌信息是从2008年开始的
+        stHuangLi sthuangli;
+        //因此这里先将sthuangli内容初始化
+        sthuangli.ID = id;
+        //如果数据库中有查询到数据，则进行赋值，如果没有，则使用初始值
         if (query.exec(strsql) && query.next()) {
-            stHuangLi sthuangli;
             sthuangli.ID = query.value("id").toInt();
             sthuangli.Avoid = query.value("avoid").toString();
             sthuangli.Suit = query.value("suit").toString();
-            infos.append(sthuangli);
         }
+        //将黄历数据放到list中
+        infos.append(sthuangli);
     }
     return infos;
 }

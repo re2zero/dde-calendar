@@ -26,8 +26,8 @@
 
 typedef struct HuangLi {
     qint64 ID; //  `json:"id"` // format: ("%s%02s%02s", year, month, day)
-    QString Avoid; // `json:"avoid"`
-    QString Suit; //`json:"suit"`
+    QString Avoid {}; // `json:"avoid"`
+    QString Suit {}; //`json:"suit"`
 } stHuangLi;
 
 typedef struct _tagHolidayInfo {
