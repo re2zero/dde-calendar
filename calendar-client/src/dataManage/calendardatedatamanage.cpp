@@ -204,12 +204,14 @@ QDate CalendarDateDataManager::getFirstDayOfWeek(const QDate &date)
 int CalendarDateDataManager::getWeekNumOfYear(const QDate &date)
 {
     int _weekNum {0};
+    //获取选择时间所在周的最后一天
+    const QDate _laseDateInWeekBySelectDate = getFirstDayOfWeek(date).addDays(6);
     //该年第一天
-    const QDate _firstDayOfYear{date.year(), 1, 1};
+    const QDate _firstDayOfYear{_laseDateInWeekBySelectDate.year(), 1, 1};
     //该年显示的第一天日期
     const QDate _firstShowDayOfYear = getFirstDayOfWeek(_firstDayOfYear);
-    //处于该年显示第多少天
-    const qint64  _dayOfShowYear = _firstShowDayOfYear.daysTo(_firstDayOfYear) + date.dayOfYear();
+    //处于该年显示第多少天,0为第一天
+    const qint64  _dayOfShowYear = _firstShowDayOfYear.daysTo(_firstDayOfYear) + _laseDateInWeekBySelectDate.dayOfYear() - 1;
     _weekNum = qFloor(_dayOfShowYear / 7) + 1;
     return  _weekNum;
 }

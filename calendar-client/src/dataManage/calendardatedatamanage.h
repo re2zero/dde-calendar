@@ -64,7 +64,6 @@ public:
     QString getWeekDayFormat() const;
     //返回显示的年份,开始和结束时间
     ShowDateRange getShowDateRange() const;
-
     //根据日期获取当前周第一天的日期
     static QDate getFirstDayOfWeek(const QDate &date);
     //根据日期获取该日期处于该年第多少周

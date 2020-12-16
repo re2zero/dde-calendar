@@ -239,7 +239,6 @@ void CWeekView::setSelectedCell(int index)
     m_cellList.at(index)->update();
     m_selectDate = m_days[index];
     const QString dayNum = QString::number(m_getWeekNumOfYear(m_selectDate));
-
     if (m_days[index].year() < DDECalendar::QueryEarliestYear && dayNum != "1")
         return;
     emit signalsSelectDate(m_days[index]);
