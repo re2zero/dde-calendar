@@ -418,6 +418,8 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
  */
 void CMonthWindow::slottoday()
 {
+    //隐藏提示框
+    slotScheduleHide();
     setSelectDate(getCurrendDateTime().date(), true);
     updateData();
 }
