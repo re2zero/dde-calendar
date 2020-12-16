@@ -587,7 +587,8 @@ void CYearScheduleOutView::mousePressEvent(QMouseEvent *event)
                 this->hide();
                 //跳转到周视图
             } else {
-                if (scheduleinfoList.at(i).getID() != DDECalendar::FestivalTypeID) {
+                //如果日程类型不为节假日或纪念日则显示编辑框
+                if (scheduleinfoList.at(i).getType() != DDECalendar::FestivalTypeID) {
                     emit signalViewtransparentFrame(1);
                     CScheduleDlg dlg(0);
                     dlg.setData(scheduleinfoList.at(i));
