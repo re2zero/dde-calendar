@@ -47,61 +47,40 @@ CMonthDayView::CMonthDayView(QWidget *parent)
     setLineWidth(0);
     setWindowFlags(Qt::FramelessWindowHint);
 
-    connect(m_monthWidget,
-            &CMonthWidget::signalsSelectDate,
-            this,
-            &CMonthDayView::signalsSelectDate);
+    connect(m_monthWidget, &CMonthWidget::signalsSelectDate, this, &CMonthDayView::signalsSelectDate);
 }
 
 CMonthDayView::~CMonthDayView()
 {
 }
 
-void CMonthDayView::setCurrentDate(const QDate date)
+/**
+ * @brief CMonthDayView::setSelectDate  设置选择时间
+ * @param date
+ */
+void CMonthDayView::setSelectDate(const QDate &date)
 {
     m_selectDate = date;
-    m_days[5] = m_selectDate;
-
-    for (int i(4); i >= 0; i--) {
-        m_days[4 - i] = m_selectDate.addMonths(-i - 1);
-    }
-    for (int i(6); i != DDEMonthCalendar::MonthNumofYear; ++i) {
+    for (int i  = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         m_days[i] = m_selectDate.addMonths(i - 5);
     }
-    update();
-    m_monthWidget->setDate(m_days);
-}
-
-void CMonthDayView::setRCurrentDate(const QDate date)
-{
-    if (m_selectDate == date) return;
-
-    m_selectDate = date;
-    m_days[5] = m_selectDate;
-
-    for (int i(4); i >= 0; i--) {
-        m_days[4 - i] = m_selectDate.addMonths(-i - 1);
-    }
-
-    for (int i(6); i != DDEMonthCalendar::MonthNumofYear; ++i) {
-        m_days[i] = m_selectDate.addMonths(i - 5);
-    }
-
     m_monthWidget->setDate(m_days);
     update();
 }
 
+/**
+ * @brief CMonthDayView::setTheMe   设置主题颜色
+ * @param type
+ */
 void CMonthDayView::setTheMe(int type)
 {
     QColor frameclor;
-
     if (type == 0 || type == 1) {
         frameclor = "#FFFFFF";
     } else if (type == 2) {
         frameclor = "#FFFFFF";
         frameclor.setAlphaF(0.05);
     }
-
     DPalette anipa = palette();
     anipa.setColor(DPalette::Background, frameclor);
     setPalette(anipa);
@@ -119,6 +98,8 @@ void CMonthDayView::wheelEvent(QWheelEvent *e)
     //如果滚动为左右则触发信号
     if (e->orientation() == Qt::Orientation::Horizontal) {
         emit signalAngleDelta(e->angleDelta().x());
+    } else {
+        emit signalAngleDelta(e->angleDelta().y());
     }
 }
 
@@ -255,17 +236,23 @@ void CMonthWidget::mousePress(const QPoint &point)
     }
     update();
 }
-
+/**
+ * @brief CMonthWidget::updateSize  更新item大小
+ */
 void CMonthWidget::updateSize()
 {
     qreal w = this->width() / m_MonthItem.size();
-
     for (int i = 0; i < m_MonthItem.size(); ++i) {
         m_MonthItem.at(i)->setRect(i * w, 0, w, this->height());
     }
     update();
 }
 
+/**
+ * @brief CMonthWidget::getMousePosItem     获取鼠标点击的区域编号
+ * @param pos
+ * @return
+ */
 int CMonthWidget::getMousePosItem(const QPointF &pos)
 {
     int res = -1;
@@ -298,31 +285,59 @@ CMonthRect::CMonthRect()
     m_dayNumFont.setWeight(QFont::Light);
 }
 
+/**
+ * @brief CMonthRect::setDate   设置时间
+ * @param date
+ */
 void CMonthRect::setDate(const QDate &date)
 {
     m_Date = date;
 }
 
+/**
+ * @brief CMonthRect::getDate   获取时间
+ * @return
+ */
 QDate CMonthRect::getDate() const
 {
     return  m_Date;
 }
 
+/**
+ * @brief CMonthRect::rect      获取矩阵大小
+ * @return
+ */
 QRectF CMonthRect::rect() const
 {
     return  m_rect;
 }
 
+/**
+ * @brief CMonthRect::setRect     设置矩阵大小
+ * @param rect
+ */
 void CMonthRect::setRect(const QRectF &rect)
 {
     m_rect = rect;
 }
 
+/**
+ * @brief CMonthRect::setRect       设置矩阵大小
+ * @param x
+ * @param y
+ * @param w
+ * @param h
+ */
 void CMonthRect::setRect(qreal x, qreal y, qreal w, qreal h)
 {
     m_rect.setRect(x, y, w, h);
 }
 
+/**
+ * @brief CMonthRect::paintItem     绘制
+ * @param painter
+ * @param rect
+ */
 void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
 {
     m_selectColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
@@ -359,11 +374,19 @@ void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
     }
 }
 
+/**
+ * @brief CMonthRect::setDevicePixelRatio       设置设备缩放比例
+ * @param pixel
+ */
 void CMonthRect::setDevicePixelRatio(const qreal pixel)
 {
     m_DevicePixelRatio = pixel;
 }
 
+/**
+ * @brief CMonthRect::setTheMe  设置主题
+ * @param type
+ */
 void CMonthRect::setTheMe(int type)
 {
     m_themetype = type;
@@ -391,6 +414,10 @@ void CMonthRect::setTheMe(int type)
     }
 }
 
+/**
+ * @brief CMonthRect::setSelectRect  设置选择的矩阵
+ * @param selectRect
+ */
 void CMonthRect::setSelectRect(CMonthRect *selectRect)
 {
     m_SelectRect = selectRect;

@@ -25,7 +25,9 @@
 #include <QDebug>
 
 bool DragInfoItem::m_press = false;
-ScheduleDtailInfo DragInfoItem::m_HoverInfo;
+ScheduleDataInfo DragInfoItem::m_HoverInfo;
+ScheduleDataInfo DragInfoItem::m_pressInfo;
+QVector<ScheduleDataInfo>    DragInfoItem::m_searchScheduleInfo;
 
 DragInfoItem::DragInfoItem(QRectF rect, QGraphicsItem *parent)
     : QGraphicsRectItem(parent)
@@ -33,11 +35,10 @@ DragInfoItem::DragInfoItem(QRectF rect, QGraphicsItem *parent)
 {
     setRect(m_rect);
     setAcceptHoverEvents(true);
-
     const int duration = 200;
-    m_properAnimationFirst = new QPropertyAnimation( this, "offset", this);
+    m_properAnimationFirst = new QPropertyAnimation(this, "offset", this);
     m_properAnimationFirst->setObjectName("First");
-    m_properAnimationSecond = new QPropertyAnimation( this, "offset", this);
+    m_properAnimationSecond = new QPropertyAnimation(this, "offset", this);
     m_properAnimationSecond->setObjectName("Second");
     m_properAnimationFirst->setDuration(duration);
     m_properAnimationSecond->setDuration(duration);
@@ -57,12 +58,12 @@ DragInfoItem::~DragInfoItem()
 
 }
 
-void DragInfoItem::setData(const ScheduleDtailInfo &vScheduleInfo)
+void DragInfoItem::setData(const ScheduleDataInfo &vScheduleInfo)
 {
     m_vScheduleInfo = vScheduleInfo;
 }
 
-ScheduleDtailInfo DragInfoItem::getData() const
+ScheduleDataInfo DragInfoItem::getData() const
 {
     return  m_vScheduleInfo;
 }
@@ -70,6 +71,33 @@ ScheduleDtailInfo DragInfoItem::getData() const
 void DragInfoItem::setPressFlag(const bool flag)
 {
     m_press = flag;
+}
+
+/**
+ * @brief DragInfoItem::setPressSchedule        记录选中日程
+ * @param pressSchedule
+ */
+void DragInfoItem::setPressSchedule(const ScheduleDataInfo &pressSchedule)
+{
+    m_pressInfo = pressSchedule;
+}
+
+/**
+ * @brief DragInfoItem::getPressSchedule        获取选中日程
+ * @return
+ */
+ScheduleDataInfo DragInfoItem::getPressSchedule()
+{
+    return  m_pressInfo;
+}
+
+/**
+ * @brief DragInfoItem::setSearchScheduleInfo       设置搜索日程新
+ * @param searchScheduleInfo
+ */
+void DragInfoItem::setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchScheduleInfo)
+{
+    m_searchScheduleInfo = searchScheduleInfo;
 }
 
 void DragInfoItem::setFont(DFontSizeManager::SizeType type)
@@ -122,7 +150,7 @@ void DragInfoItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void DragInfoItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
-    m_HoverInfo = ScheduleDtailInfo();
+    m_HoverInfo = ScheduleDataInfo();
     update();
 }
 
@@ -131,5 +159,8 @@ void DragInfoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(option);
     Q_UNUSED(widget);
     m_vHoverflag = m_HoverInfo == m_vScheduleInfo;
-    paintBackground(painter,this->rect());
+    m_vHighflag = false;
+    m_vSelectflag = false;
+    m_vHighflag = m_searchScheduleInfo.contains(m_vScheduleInfo);
+    paintBackground(painter, this->rect());
 }

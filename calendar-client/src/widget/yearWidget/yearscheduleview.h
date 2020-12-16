@@ -19,7 +19,7 @@
 #ifndef YEARSCHEDULEVIEW_H
 #define YEARSCHEDULEVIEW_H
 
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
 
 #include <DLabel>
 #include <DPushButton>
@@ -54,12 +54,12 @@ public:
      * @brief setData 设置日程信息，并全天日程置于非全天日程之前
      * @param vListData 日程信息
      */
-    void setData(QVector<ScheduleDtailInfo> &vListData);
+    void setData(QVector<ScheduleDataInfo> &vListData);
     /**
      * @brief getlistdate 获取日程信息
      * @return  日程信息
      */
-    QVector<ScheduleDtailInfo> getlistdate()
+    QVector<ScheduleDataInfo> getlistdate()
     {
         return m_vlistData;
     }
@@ -109,7 +109,7 @@ private:
      * @param info 日程信息
      * @param type 系统主题类型
      */
-    void createItemWidget(ScheduleDtailInfo info, int type = 0);
+    void createItemWidget(ScheduleDataInfo info, int type = 0);
 
 protected:
     /**
@@ -123,7 +123,7 @@ protected:
      * @param index 日程的索引
      * @param type 系统主题类型
      */
-    void paintItem(ScheduleDtailInfo info, int index, int type = 0);
+    void paintItem(ScheduleDataInfo info, int index, int type = 0);
     /**
      * @brief paintItem
      */
@@ -132,12 +132,11 @@ protected:
 private:
     DListWidget *m_gradientItemList = nullptr; //下拉列表窗
     bool m_widgetFlag;
-    QVector<ScheduleDtailInfo> m_vlistData;
+    QVector<ScheduleDataInfo> m_vlistData;
     QString m_soloDay;
     QVector<DLabel *> m_labellist;
     int m_type;
     QDate m_currentDate;
-    QColor m_bBackgroundcolor = "#000000";
     QColor m_btimecolor = "#526A7F";
     QColor m_bttextcolor = "#414D68";
     QColor m_lBackgroundcolor = Qt::white;
@@ -186,7 +185,7 @@ public:
      * @brief setData 设置日程信息
      * @param vScheduleInfo 日程信息
      */
-    void setData(ScheduleDtailInfo vScheduleInfo);
+    void setData(ScheduleDataInfo vScheduleInfo);
 
 protected:
     /**
@@ -196,7 +195,7 @@ protected:
     void paintEvent(QPaintEvent *e) override;
 
 private:
-    ScheduleDtailInfo m_ScheduleInfo;
+    ScheduleDataInfo m_ScheduleInfo;
     QColor m_Backgroundcolor;
     QColor m_timecolor;
     QColor m_Statecolor;
@@ -224,7 +223,7 @@ public:
      * @brief setData 设置日程信息
      * @param vListData 日程信息
      */
-    void setData(QVector<ScheduleDtailInfo> &vListData);
+    void setData(QVector<ScheduleDataInfo> &vListData);
     /**
      * @brief clearData 清楚数据
      */
@@ -259,21 +258,22 @@ signals:
      * @brief signalsViewSelectDate 跳转视图信号
      * @param date 当天的时间
      */
-    void signalsViewSelectDate(QDate date);
+    void signalsViewSelectDate(QDate date, const int pressType = 3);
     /**
      * @brief signalupdateschedule 更新日程信息的信号
      */
     void signalupdateschedule();
-
+    //弹出对话框设置背景底色
+    void signalViewtransparentFrame(int type);
 private:
     CYearScheduleView *yearscheduleview = nullptr;
-    QVector<ScheduleDtailInfo> scheduleinfoList;
+    QVector<ScheduleDataInfo> scheduleinfoList;
     QDate currentdate;
     int list_count = 0;
 
 protected:
     /**
-     * @brief mousePressEvent 鼠标单击事件，单击非节日日程进行编辑，单击”...”区域跳转到周视图。
+     * @brief mousePressEvent 鼠标单击事件，单击非节日日程进行编辑，单击"..."区域跳转到周视图。
      * @param event 鼠标事件
      */
     void mousePressEvent(QMouseEvent *event) override;

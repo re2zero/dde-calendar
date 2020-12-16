@@ -78,7 +78,8 @@ public:
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiDayInfo &what);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiDayInfo &what);
     QString toJson();
-
+    void strJsonToInfo(const QString &strJson, bool &isVaild);
+    void jsonObjectToInfo(const QJsonObject &jsonObject);
 public:
     QString mGanZhiYear; //年干支
     QString mGanZhiMonth; //月干支
@@ -105,7 +106,8 @@ public:
     friend QDBusArgument &operator<<(QDBusArgument &argument, const CaHuangLiMonthInfo &what);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, CaHuangLiMonthInfo &what);
     QString toJson();
-
+    void strJsonToInfo(const QString &strJson, bool &isVaild);
+    void clear();
 public:
     qint32 mFirstDayWeek; //第一天所在周
     qint32 mDays; //每月天数

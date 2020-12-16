@@ -69,6 +69,8 @@ void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
     if (!(w > 0)) {
         return;
     }
+    m_beginDate = begin;
+    m_endDate = end;
     m_TotalDay = begin.daysTo(end) + 1;
     m_graphicsView->setRange(w, scheduleViewHegith(), begin, end, m_rightmagin);
     m_alldaylist->setRange(w, 22, m_beginDate, m_endDate, m_rightmagin);
@@ -86,12 +88,6 @@ void CScheduleView::setRange(QDate begin, QDate end)
     m_beginDate = begin;
     m_endDate = end;
     updateSchedule();
-}
-
-void CScheduleView::setFirstWeekday(int weekday)
-{
-    m_firstWeekDay = weekday;
-    m_graphicsView->setFirstWeekday(weekday);
 }
 
 void CScheduleView::setTheMe(int type)
@@ -131,9 +127,9 @@ void CScheduleView::setTime(QTime time)
     m_graphicsView->setTime(time);
 }
 
-void CScheduleView::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
+void CScheduleView::setSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
-    if (scheduleInfo.allday) {
+    if (scheduleInfo.getAllDay()) {
         m_alldaylist->setSelectSchedule(scheduleInfo);
     } else {
         m_graphicsView->setSelectSchedule(scheduleInfo);
@@ -151,50 +147,19 @@ bool CScheduleView::IsDragging()
     return (m_graphicsView->getDragStatus() != 4) || (m_alldaylist->getDragStatus() != 4);
 }
 
-void CScheduleView::slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data)
+void CScheduleView::setCurrentDate(const QDateTime &currentDate)
 {
-    updateAllday();
-    m_graphicsView->updateInfo();
-    m_graphicsView->update();
-    m_graphicsView->scene()->update();
+    m_graphicsView->setCurrentDate(currentDate);
+}
 
-    if (m_viewType == 1) {
-        if (QDate::currentDate() == m_beginDate) {
-            m_graphicsView->setTime(QTime::currentTime());
-        } else {
-            if (data.isEmpty()) {
-                m_graphicsView->setTime(QTime(13, 0));
-            } else {
-                QVector<ScheduleDtailInfo> scheduleInfolist;
-
-                for (int i = 0; i < data.at(0).vData.count(); i++) {
-                    if (data.at(0).vData.at(i).allday)
-                        continue;
-                    scheduleInfolist.append(data.at(0).vData.at(i));
-                }
-                if (scheduleInfolist.isEmpty()) {
-                    m_graphicsView->setTime(QTime(13, 0));
-                } else {
-                    std::sort(scheduleInfolist.begin(), scheduleInfolist.end(),
-                    [](const ScheduleDtailInfo & s1, const ScheduleDtailInfo & s2) -> bool {
-                        return s1.beginDateTime < s2.beginDateTime;
-                    });
-                    QTime time = scheduleInfolist.at(0).beginDateTime.time();
-
-                    if (scheduleInfolist.at(0).beginDateTime.date() != m_beginDate) {
-                        time = QTime(0, 0);
-                    }
-                    if (time.hour() + 4 >= 24) {
-                        time = QTime(20, 0);
-                    } else {
-                        time = time.addSecs(14400);
-                    }
-                    m_graphicsView->setTime(time);
-                }
-            }
-        }
-    }
-    setEnabled(true);
+/**
+ * @brief CScheduleView::setShowScheduleInfo        设置显示日程
+ * @param scheduleInfo
+ */
+void CScheduleView::setShowScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo> > &scheduleInfo)
+{
+    m_showSchedule = scheduleInfo;
+    updateSchedule();
 }
 
 void CScheduleView::setDate(QDate date)
@@ -206,7 +171,6 @@ void CScheduleView::setDate(QDate date)
 void CScheduleView::slotupdateSchedule()
 {
     updateSchedule();
-    emit signalsUpdateShcedule(0);
 }
 
 void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype)
@@ -503,12 +467,12 @@ void CScheduleView::slotCurrentScheduleDate(QDate date)
     emit signalsCurrentScheduleDate(date);
 }
 
-void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out)
+void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDataInfo &out)
 {
     if (isShow) {
         QPoint pos22 = QCursor::pos();
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-                                      out.type.ID);
+                                      out.getType());
         QDesktopWidget *w = QApplication::desktop();
         m_ScheduleRemindWidget->setData(out, gdcolor);
 
@@ -536,35 +500,36 @@ void CScheduleView::slotUpdateScene()
     m_alldaylist->slotUpdateScene();
 }
 
+/**
+ * @brief CScheduleView::updateSchedule         更新日程显示
+ */
 void CScheduleView::updateSchedule()
 {
+    //获取一个月的日程信息
     m_graphicsView->clearSchdule();
-    CScheduleDataCtrl *scheduleDataCtrl =
-        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
-    QDateTime bdate = QDateTime(m_beginDate);
-    QDateTime edate = QDateTime(m_endDate);
-    edate.setTime(QTime(23, 59, 59));
-    QVector<ScheduleDateRangeInfo> data;
-    scheduleDataCtrl->queryScheduleInfo("", bdate, edate, data);
-    QVector<ScheduleDtailInfo> allInfo;
-    QVector<ScheduleDtailInfo> nonAllInfo;
+    QVector<ScheduleDataInfo> allInfo;
+    QVector<ScheduleDataInfo> nonAllInfo;
 
-    for (int i = 0; i < data.size(); ++i) {
-        for (int j = 0; j < data.at(i).vData.size(); ++j) {
-            if (data.at(i).vData.at(j).allday) {
-                if (!allInfo.contains(data.at(i).vData.at(j))) {
-                    allInfo.append(data.at(i).vData.at(j));
+    QMap<QDate, QVector<ScheduleDataInfo> >::const_iterator _iterator = m_showSchedule.constBegin();
+    for (; _iterator != m_showSchedule.constEnd(); ++_iterator) {
+        for (int i = 0; i < _iterator->size(); ++i) {
+            if (_iterator.value().at(i).getAllDay()) {
+                if (!allInfo.contains(_iterator.value().at(i))) {
+                    allInfo.append(_iterator.value().at(i));
                 }
             } else {
-                if (!nonAllInfo.contains(data.at(i).vData.at(j))) {
-                    nonAllInfo.append(data.at(i).vData.at(j));
+                if (!nonAllInfo.contains(_iterator.value().at(i))) {
+                    nonAllInfo.append(_iterator.value().at(i));
                 }
             }
         }
     }
     m_alldaylist->setInfo(allInfo);
     m_graphicsView->setInfo(nonAllInfo);
-    slotsupdatescheduleD(data);
+    updateAllday();
+    m_graphicsView->updateInfo();
+    m_graphicsView->update();
+    m_graphicsView->scene()->update();
 }
 
 void CScheduleView::updateAllday()

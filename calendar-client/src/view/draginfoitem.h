@@ -21,6 +21,7 @@
 #ifndef DRAGINFOITEM_H
 #define DRAGINFOITEM_H
 #include "scheduledatamanage.h"
+#include "src/scheduledatainfo.h"
 
 #include <DFontSizeManager>
 
@@ -30,7 +31,10 @@ DWIDGET_USE_NAMESPACE
 
 class QPropertyAnimation;
 class QSequentialAnimationGroup;
-
+/**
+ * @brief The DragInfoItem class
+ * 显示项  支持拖拽
+ */
 class DragInfoItem : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
@@ -38,8 +42,8 @@ class DragInfoItem : public QObject, public QGraphicsRectItem
 public:
     explicit DragInfoItem(QRectF rect, QGraphicsItem *parent = nullptr);
     ~DragInfoItem() override;
-    void setData(const ScheduleDtailInfo  &vScheduleInfo);
-    ScheduleDtailInfo getData() const;
+    void setData(const ScheduleDataInfo  &vScheduleInfo);
+    ScheduleDataInfo getData() const;
 
     void setFont(DFontSizeManager::SizeType type);
     void setOffset(const int &offset);
@@ -56,6 +60,12 @@ public:
     }
 public:
     static void setPressFlag(const bool flag);
+    //设置选中日程
+    static void setPressSchedule(const ScheduleDataInfo &pressSchedule);
+    //获取选中日程
+    static ScheduleDataInfo getPressSchedule();
+    //设置搜索日程
+    static void setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchScheduleInfo);
 public slots:
     void animationFinished();
 protected:
@@ -63,11 +73,11 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 protected:
-    virtual void paintBackground(QPainter *painter,const QRectF &rect,const int isPixMap = false) =0;
+    virtual void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) = 0;
 protected:
-    ScheduleDtailInfo                   m_vScheduleInfo;
+    ScheduleDataInfo                   m_vScheduleInfo;
     QFont                               m_font;
-    bool                                m_vSelectflag =false;
+    bool                                m_vSelectflag = false;
     bool                                m_vHoverflag = false;
     bool                                m_vHighflag = false;
     QRectF                              m_rect;
@@ -78,7 +88,9 @@ protected:
     QPropertyAnimation *m_properAnimationSecond = nullptr;
     QSequentialAnimationGroup *m_Group = nullptr;
     static bool                         m_press;
-    static ScheduleDtailInfo            m_HoverInfo;
+    static ScheduleDataInfo             m_HoverInfo;
+    static ScheduleDataInfo             m_pressInfo;
+    static QVector<ScheduleDataInfo>    m_searchScheduleInfo;
 };
 
 #endif // DRAGINFOITEM_H

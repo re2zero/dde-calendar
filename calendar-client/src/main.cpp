@@ -22,6 +22,7 @@
 #include "exportedinterface.h"
 #include "configsettings.h"
 #include "accessible/accessible.h"
+#include "src/DebugTimeManager.h"
 
 #include <DApplication>
 #include <DLog>
@@ -100,9 +101,9 @@ QString GetStyleSheetContent()
     }
 }
 
-#include "schedulesdbus.h"
 int main(int argc, char *argv[])
 {
+    PERF_PRINT_BEGIN("POINT-01", "");
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     //适配deepin-turbo启动加速
     DApplication *app = nullptr;
@@ -142,9 +143,8 @@ int main(int argc, char *argv[])
     // set theme
     bool isOk = false;
     int viewtype = CConfigSettings::value("base.view").toInt(&isOk);
-
     if (!isOk)
-        viewtype = 2;
+        viewtype = 1;
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
     // 应用已保存的主题设置
@@ -160,16 +160,16 @@ int main(int argc, char *argv[])
     dbus.registerService("com.deepin.Calendar");
     dbus.registerObject("/com/deepin/Calendar", &ww);
     ww.slotTheme(getThemeTypeSetting());
-    ww.viewWindow(viewtype, QDateTime::currentDateTime());
+
+    ww.viewWindow(viewtype);
     ww.show();
 
     //监听当前应用主题切换事件
-    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
-                     [](DGuiApplicationHelper::ColorType type) {
-                         qDebug() << type;
-                         // 保存程序的主题设置  type : 0,系统主题， 1,浅色主题， 2,深色主题
-                         saveThemeTypeSetting(type);
-                         DGuiApplicationHelper::instance()->setPaletteType(type);
-                     });
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
+    [](DGuiApplicationHelper::ColorType type) {
+        // 保存程序的主题设置  type : 0,系统主题， 1,浅色主题， 2,深色主题
+        saveThemeTypeSetting(type);
+    });
+    PERF_PRINT_END("POINT-01");
     return app->exec();
 }

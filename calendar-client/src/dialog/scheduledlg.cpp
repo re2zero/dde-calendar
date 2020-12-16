@@ -21,20 +21,15 @@
 #include "scheduledatamanage.h"
 #include "timeedit.h"
 #include "constants.h"
+#include "cscheduleoperation.h"
 
 #include <DHiDPIHelper>
 #include <DMessageBox>
-#include <DPalette>
 #include <DFontSizeManager>
 
-#include <QCalendarWidget>
 #include <QHBoxLayout>
 #include <QIcon>
-#include <QIntValidator>
-#include <QMessageBox>
 #include <QShortcut>
-#include <QTextBlock>
-#include <QToolButton>
 #include <QVBoxLayout>
 #include <QKeyEvent>
 
@@ -73,22 +68,22 @@ CScheduleDlg::~CScheduleDlg()
     emit signalViewtransparentFrame(0);
 }
 
-void CScheduleDlg::setData(const ScheduleDtailInfo &info)
+void CScheduleDlg::setData(const ScheduleDataInfo &info)
 {
-    m_scheduleDtailInfo = info;
-    m_typeComBox->setCurrentIndex(info.type.ID - 1);
-    m_textEdit->setPlainText(info.titleName);
-    m_beginDateEdit->setDate(info.beginDateTime.date());
-    m_beginTimeEdit->setTime(info.beginDateTime.time());
-    m_endDateEdit->setDate(info.endDateTime.date());
-    m_endTimeEdit->setTime(info.endDateTime.time());
-    m_allDayCheckbox->setChecked(info.allday);
-    m_endRepeatDate->setMinimumDate(info.beginDateTime.date());
+    m_ScheduleDataInfo = info;
+    m_typeComBox->setCurrentIndex(info.getType() - 1);
+    m_textEdit->setPlainText(info.getTitleName());
+    m_beginDateEdit->setDate(info.getBeginDateTime().date());
+    m_beginTimeEdit->setTime(info.getBeginDateTime().time());
+    m_endDateEdit->setDate(info.getEndDateTime().date());
+    m_endTimeEdit->setTime(info.getEndDateTime().time());
+    m_allDayCheckbox->setChecked(info.getAllDay());
+    m_endRepeatDate->setMinimumDate(info.getBeginDateTime().date());
 
-    m_currentDate = info.beginDateTime;
-    m_EndDate = info.endDateTime;
+    m_currentDate = info.getBeginDateTime();
+    m_EndDate = info.getEndDateTime();
 
-    slotallDayStateChanged(info.allday);
+    slotallDayStateChanged(info.getAllDay());
     initRmindRpeatUI();
 }
 
@@ -127,9 +122,9 @@ void CScheduleDlg::setDate(const QDateTime &date)
     m_endRepeatDate->setMinimumDate(date.date());
 }
 
-ScheduleDtailInfo CScheduleDlg::getScheduleData()
+ScheduleDataInfo CScheduleDlg::getScheduleData()
 {
-    return m_scheduleDtailInfo;
+    return m_ScheduleDataInfo;
 }
 
 void CScheduleDlg::setAllDay(bool flag)
@@ -137,22 +132,9 @@ void CScheduleDlg::setAllDay(bool flag)
     m_allDayCheckbox->setChecked(flag);
 }
 
-void CScheduleDlg::slotCancelBt(int buttonIndex, QString buttonName)
+void CScheduleDlg::clickOkBtn()
 {
-    if (buttonIndex != 0 && buttonName != "Cancel")
-        return;
-
-    reject();
-}
-
-void CScheduleDlg::slotOkBt(int buttonIndex, QString buttonName)
-{
-    if (buttonIndex != 1 && buttonName != "Save")
-        return;
-
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
-    ScheduleDtailInfo scheduleDtailInfo = m_scheduleDtailInfo;
+    ScheduleDataInfo _newSchedule = m_ScheduleDataInfo;
     QDateTime beginDateTime, endDateTime;
     beginDateTime.setDate(m_beginDateEdit->date());
     beginDateTime.setTime(m_beginTimeEdit->getTime());
@@ -160,15 +142,16 @@ void CScheduleDlg::slotOkBt(int buttonIndex, QString buttonName)
     endDateTime.setTime(m_endTimeEdit->getTime());
 
     if (m_textEdit->toPlainText().isEmpty()) {
-        scheduleDtailInfo.titleName = m_textEdit->placeholderText();
+        _newSchedule.setTitleName(m_textEdit->placeholderText());
     } else {
-        scheduleDtailInfo.titleName = m_textEdit->toPlainText();
+        _newSchedule.setTitleName(m_textEdit->toPlainText());
     }
 
-    if (scheduleDtailInfo.titleName.isEmpty()) {
+    if (_newSchedule.getTitleName().isEmpty()) {
         return;
     }
-
+    if (m_typeComBox->currentIndex() > 0)
+        _newSchedule.setType(m_typeComBox->currentIndex() + 1);
     if (beginDateTime > endDateTime) {
         DDialog *prompt = new DDialog(this);
         prompt->setIcon(QIcon(":/resources/icon/warning.svg"));
@@ -180,58 +163,66 @@ void CScheduleDlg::slotOkBt(int buttonIndex, QString buttonName)
     }
 
     if (m_type == 1)
-        scheduleDtailInfo.id = 0;
-    scheduleDtailInfo.allday = m_allDayCheckbox->isChecked();
+        _newSchedule.setID(0) ;
+    _newSchedule.setAllDay(m_allDayCheckbox->isChecked());
 
-    if (m_rmindCombox->currentIndex() == 0)
-        scheduleDtailInfo.remind = false;
-    else {
-        scheduleDtailInfo.remind = true;
-    }
-
-    if (scheduleDtailInfo.allday) {
-        if (scheduleDtailInfo.remind) {
-            scheduleDtailInfo.remindData.time = QTime(9, 0);
-            if (m_rmindCombox->currentIndex() == 1) {
-                scheduleDtailInfo.remindData.n = DDECalendar::OnStartDay;
-            } else if (m_rmindCombox->currentIndex() == 2) {
-                scheduleDtailInfo.remindData.n = DDECalendar::OneDayBeforeWithDay;
-            } else if (m_rmindCombox->currentIndex() == 3) {
-                scheduleDtailInfo.remindData.n = DDECalendar::TwoDayBeforeWithDay;
-            } else if (m_rmindCombox->currentIndex() == 4) {
-                scheduleDtailInfo.remindData.n = DDECalendar::OneWeekBeforeWithDay;
-            }
+    RemindData _remindData;
+    if (_newSchedule.getAllDay()) {
+        _remindData.setRemindTime(QTime(9, 0));
+        switch (m_rmindCombox->currentIndex()) {
+        case 1:
+            _remindData.setRemindNum(DDECalendar::OnStartDay);
+            break;
+        case 2:
+            _remindData.setRemindNum(DDECalendar::OneDayBeforeWithDay);
+            break;
+        case 3:
+            _remindData.setRemindNum(DDECalendar::TwoDayBeforeWithDay);
+            break;
+        case 4:
+            _remindData.setRemindNum(DDECalendar::OneWeekBeforeWithDay);
+            break;
+        default:
+            break;
         }
     } else {
-        if (scheduleDtailInfo.remind) {
-            if (m_rmindCombox->currentIndex() == 1) {
-                scheduleDtailInfo.remindData.n = DDECalendar::AtTimeOfEvent;
-            } else if (m_rmindCombox->currentIndex() == 2) {
-                scheduleDtailInfo.remindData.n = DDECalendar::FifteenMinutesBefore;
-            } else if (m_rmindCombox->currentIndex() == 3) {
-                scheduleDtailInfo.remindData.n = DDECalendar::ThirtyMinutesBefore;
-            } else if (m_rmindCombox->currentIndex() == 4) {
-                scheduleDtailInfo.remindData.n = DDECalendar::OneHourBefore;
-            } else if (m_rmindCombox->currentIndex() == 5) {
-                scheduleDtailInfo.remindData.n = DDECalendar::OneDayBeforeWithMinutes;
-            } else if (m_rmindCombox->currentIndex() == 6) {
-                scheduleDtailInfo.remindData.n = DDECalendar::TwoDayBeforeWithMinutes;
-            } else if (m_rmindCombox->currentIndex() == 7) {
-                scheduleDtailInfo.remindData.n = DDECalendar::OneWeekBeforeWithMinutes;
-            }
+        switch (m_rmindCombox->currentIndex()) {
+        case 1:
+            _remindData.setRemindNum(DDECalendar::AtTimeOfEvent);
+            break;
+        case 2:
+            _remindData.setRemindNum(DDECalendar::FifteenMinutesBefore);
+            break;
+        case 3:
+            _remindData.setRemindNum(DDECalendar::ThirtyMinutesBefore);
+            break;
+        case 4:
+            _remindData.setRemindNum(DDECalendar::OneHourBefore);
+            break;
+        case 5:
+            _remindData.setRemindNum(DDECalendar::OneDayBeforeWithMinutes);
+            break;
+        case 6:
+            _remindData.setRemindNum(DDECalendar::TwoDayBeforeWithMinutes);
+            break;
+        case 7:
+            _remindData.setRemindNum(DDECalendar::OneWeekBeforeWithMinutes);
+            break;
+        default:
+            break;
         }
     }
+    _newSchedule.setRemindData(_remindData);
 
-    scheduleDtailInfo.rpeat = m_beginrepeatCombox->currentIndex();
-
-    if (scheduleDtailInfo.rpeat != 0) {
-        scheduleDtailInfo.enddata.type = m_endrepeatCombox->currentIndex();
-
+    RepetitionRule _repetitionRule;
+    _repetitionRule.setRuleId(static_cast<RepetitionRule::RRuleID>(m_beginrepeatCombox->currentIndex()));
+    if (_repetitionRule.getRuleId() > 0) {
+        _repetitionRule.setRuleType(static_cast<RepetitionRule::RRuleEndType>(m_endrepeatCombox->currentIndex()));
         if (m_endrepeatCombox->currentIndex() == 1) {
             if (m_endrepeattimes->text().isEmpty()) {
                 return;
             }
-            scheduleDtailInfo.enddata.tcount = m_endrepeattimes->text().toInt();
+            _repetitionRule.setEndCount(m_endrepeattimes->text().toInt());
         } else if (m_endrepeatCombox->currentIndex() == 2) {
             QDateTime endrpeattime = beginDateTime;
             endrpeattime.setDate(m_endRepeatDate->date());
@@ -239,62 +230,40 @@ void CScheduleDlg::slotOkBt(int buttonIndex, QString buttonName)
             if (beginDateTime > endrpeattime) {
                 return;
             }
-            scheduleDtailInfo.enddata.date = endrpeattime;
+            _repetitionRule.setEndDate(endrpeattime);
         }
     }
-
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
-        m_typeComBox->currentIndex() + 1, scheduleDtailInfo.type);
-    scheduleDtailInfo.beginDateTime = beginDateTime;
-    scheduleDtailInfo.endDateTime = endDateTime;
+    _newSchedule.setRepetitionRule(_repetitionRule);
+    _newSchedule.setBeginDateTime(beginDateTime);
+    _newSchedule.setEndDateTime(endDateTime);
+    CScheduleOperation _scheduleOperation(this);
 
     if (m_type == 1) {
-        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->addSchedule(
-            scheduleDtailInfo);
+        //创建日程
+        _scheduleOperation.createSchedule(_newSchedule);
     } else if (m_type == 0) {
-        if (m_scheduleDtailInfo.rpeat == 0 &&
-                m_scheduleDtailInfo.rpeat == scheduleDtailInfo.rpeat) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
-                scheduleDtailInfo);
-        } else {
-            if (m_scheduleDtailInfo.allday != scheduleDtailInfo.allday) {
-                CScheduleCtrlDlg msgBox;
-                msgBox.setText(
-                    tr("All occurrences of a repeating event must have the same all-day status."));
-                msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
-                msgBox.addPushButton(tr("Cancel"), true);
-                msgBox.addWaringButton(tr("Change All"), true);
-                msgBox.exec();
+        //修改日程
+        _scheduleOperation.changeSchedule(_newSchedule, m_ScheduleDataInfo);
+    }
+}
 
-                if (msgBox.clickButton() == 0) {
-                    return;
-                } else if (msgBox.clickButton() == 1) {
-                    CScheduleDataManage::getScheduleDataManage()
-                    ->getscheduleDataCtrl()
-                    ->updateScheduleInfo(scheduleDtailInfo);
-                }
-            } else if (m_scheduleDtailInfo.rpeat != scheduleDtailInfo.rpeat) {
-                CScheduleCtrlDlg msgBox;
-                msgBox.setText(tr("You are changing the repeating rule of this event."));
-                msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
-                msgBox.addPushButton(tr("Cancel"), true);
-                msgBox.addWaringButton(tr("Change All"), true);
-                msgBox.exec();
-
-                if (msgBox.clickButton() == 0) {
-                    return;
-                } else if (msgBox.clickButton() == 1) {
-                    CScheduleDataManage::getScheduleDataManage()
-                    ->getscheduleDataCtrl()
-                    ->updateScheduleInfo(scheduleDtailInfo);
-                }
-            } else {
-                ChangeRecurInfo(this, scheduleDtailInfo, m_scheduleDtailInfo, themetype);
-            }
-        }
+void CScheduleDlg::slotBtClick(int buttonIndex, QString buttonName)
+{
+    Q_UNUSED(buttonName)
+    switch (buttonIndex) {
+    case 0: {
+        //取消
+        break;
+    }
+    case 1: {
+        //确定
+        clickOkBtn();
+        break;
+    }
+    default:
+        break;
     }
     accept();
-    emit  signalScheduleUpdate();
 }
 
 void CScheduleDlg::slotTextChange()
@@ -366,10 +335,10 @@ void CScheduleDlg::slotallDayStateChanged(int state)
         m_endTimeEdit->setVisible(true);
 
         if (m_type == 0) {
-            m_beginDateEdit->setDate(m_scheduleDtailInfo.beginDateTime.date());
-            m_beginTimeEdit->setTime(m_scheduleDtailInfo.beginDateTime.time());
-            m_endDateEdit->setDate(m_scheduleDtailInfo.endDateTime.date());
-            m_endTimeEdit->setTime(m_scheduleDtailInfo.endDateTime.time());
+            m_beginDateEdit->setDate(m_ScheduleDataInfo.getBeginDateTime().date());
+            m_beginTimeEdit->setTime(m_ScheduleDataInfo.getBeginDateTime().time());
+            m_endDateEdit->setDate(m_ScheduleDataInfo.getEndDateTime().date());
+            m_endTimeEdit->setTime(m_ScheduleDataInfo.getEndDateTime().time());
         } else {
             m_beginDateEdit->setDate(m_currentDate.date());
             m_beginTimeEdit->setTime(m_currentDate.time());
@@ -386,9 +355,9 @@ void CScheduleDlg::slotallDayStateChanged(int state)
         m_endTimeEdit->setVisible(false);
 
         if (m_type == 0) {
-            m_beginDateEdit->setDate(m_scheduleDtailInfo.beginDateTime.date());
+            m_beginDateEdit->setDate(m_ScheduleDataInfo.getBeginDateTime().date());
             m_beginTimeEdit->setTime(QTime(0, 0));
-            m_endDateEdit->setDate(m_scheduleDtailInfo.endDateTime.date());
+            m_endDateEdit->setDate(m_ScheduleDataInfo.getEndDateTime().date());
             m_endTimeEdit->setTime(QTime(23, 59));
         } else {
             m_beginDateEdit->setDate(m_currentDate.date());
@@ -809,10 +778,6 @@ void CScheduleDlg::initUI()
     m_gwi = new DFrame(this);
     m_gwi->setFrameShape(QFrame::NoFrame);
     m_gwi->setLayout(maintlayout);
-    DPalette anipa = m_gwi->palette();
-    QColor color = "#F8F8F8";
-    color.setAlphaF(0.0);
-    anipa.setColor(DPalette::Background, color);
     addContent(m_gwi, Qt::AlignCenter);
     initDateEdit();
 
@@ -826,8 +791,8 @@ void CScheduleDlg::initConnection()
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
                      this,
                      &CScheduleDlg::setTheMe);
-    connect(this, &DDialog::buttonClicked, this, &CScheduleDlg::slotCancelBt);
-    connect(this, &DDialog::buttonClicked, this, &CScheduleDlg::slotOkBt);
+//    connect(this, &DDialog::buttonClicked, this, &CScheduleDlg::slotCancelBt);
+    connect(this, &DDialog::buttonClicked, this, &CScheduleDlg::slotBtClick);
     connect(m_textEdit, &DTextEdit::textChanged, this, &CScheduleDlg::slotTextChange);
     connect(m_endrepeattimes, &DLineEdit::textChanged, this, &CScheduleDlg::slotendrepeatTextchange);
 
@@ -855,56 +820,56 @@ void CScheduleDlg::initDateEdit()
 
 void CScheduleDlg::initRmindRpeatUI()
 {
-    if (m_scheduleDtailInfo.allday) {
-        if (m_scheduleDtailInfo.remind) {
-            if (m_scheduleDtailInfo.remindData.n == DDECalendar::OnStartDay) {
+    if (m_ScheduleDataInfo.getAllDay()) {
+        if (m_ScheduleDataInfo.getRemindData().getRemindNum() > -1) {
+            if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::OnStartDay) {
                 m_rmindCombox->setCurrentIndex(1);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneDayBeforeWithDay) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::OneDayBeforeWithDay) {
                 m_rmindCombox->setCurrentIndex(2);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::TwoDayBeforeWithDay) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::TwoDayBeforeWithDay) {
                 m_rmindCombox->setCurrentIndex(3);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneWeekBeforeWithDay) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::OneWeekBeforeWithDay) {
                 m_rmindCombox->setCurrentIndex(4);
             }
         } else {
             m_rmindCombox->setCurrentIndex(0);
         }
     } else {
-        if (m_scheduleDtailInfo.remind) {
-            if (m_scheduleDtailInfo.remindData.n == DDECalendar::AtTimeOfEvent) {
+        if (m_ScheduleDataInfo.getRemindData().getRemindNum() > -1) {
+            if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::AtTimeOfEvent) {
                 m_rmindCombox->setCurrentIndex(1);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::FifteenMinutesBefore) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::FifteenMinutesBefore) {
                 m_rmindCombox->setCurrentIndex(2);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::ThirtyMinutesBefore) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::ThirtyMinutesBefore) {
                 m_rmindCombox->setCurrentIndex(3);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneHourBefore) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::OneHourBefore) {
                 m_rmindCombox->setCurrentIndex(4);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneDayBeforeWithMinutes) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::OneDayBeforeWithMinutes) {
                 m_rmindCombox->setCurrentIndex(5);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::TwoDayBeforeWithMinutes) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::TwoDayBeforeWithMinutes) {
                 m_rmindCombox->setCurrentIndex(6);
-            } else if (m_scheduleDtailInfo.remindData.n == DDECalendar::OneWeekBeforeWithMinutes) {
+            } else if (m_ScheduleDataInfo.getRemindData().getRemindNum() == DDECalendar::OneWeekBeforeWithMinutes) {
                 m_rmindCombox->setCurrentIndex(7);
             }
         } else {
             m_rmindCombox->setCurrentIndex(0);
         }
     }
-    slotbRpeatactivated(m_scheduleDtailInfo.rpeat);
-    m_beginrepeatCombox->setCurrentIndex(m_scheduleDtailInfo.rpeat);
+    slotbRpeatactivated(m_ScheduleDataInfo.getRepetitionRule().getRuleId());
+    m_beginrepeatCombox->setCurrentIndex(m_ScheduleDataInfo.getRepetitionRule().getRuleId());
 
-    if (m_scheduleDtailInfo.rpeat != 0) {
-        if (m_scheduleDtailInfo.enddata.type == 0) {
+    if (m_ScheduleDataInfo.getRepetitionRule().getRuleId() != 0) {
+        if (m_ScheduleDataInfo.getRepetitionRule().getRuleType() == 0) {
             m_endrepeatCombox->setCurrentIndex(0);
-        } else if (m_scheduleDtailInfo.enddata.type == 1) {
+        } else if (m_ScheduleDataInfo.getRepetitionRule().getRuleType() == 1) {
             m_endrepeatCombox->setCurrentIndex(1);
-            m_endrepeattimes->setText(QString::number(m_scheduleDtailInfo.enddata.tcount));
-        } else if (m_scheduleDtailInfo.enddata.type == 2) {
+            m_endrepeattimes->setText(QString::number(m_ScheduleDataInfo.getRepetitionRule().getEndCount()));
+        } else if (m_ScheduleDataInfo.getRepetitionRule().getRuleType() == 2) {
             m_endrepeatCombox->setCurrentIndex(2);
-            m_endRepeatDate->setDate(m_scheduleDtailInfo.enddata.date.date());
+            m_endRepeatDate->setDate(m_ScheduleDataInfo.getRepetitionRule().getEndDate().date());
         }
         m_endrepeatWidget->show();
-        sloteRpeatactivated(m_scheduleDtailInfo.enddata.type);
+        sloteRpeatactivated(m_ScheduleDataInfo.getRepetitionRule().getRuleType());
     } else {
         m_endrepeatWidget->hide();
     }
@@ -923,109 +888,4 @@ void CScheduleDlg::setTheMe(const int type)
     //设置颜色
     pa.setColor(DPalette::Text, titleColor);
     m_textEdit->setPalette(pa);
-}
-
-void CScheduleDlg::ChangeRecurInfo(QWidget *parent, const ScheduleDtailInfo &newinfo, const ScheduleDtailInfo &oldinfo, int m_themetype)
-{
-    Q_UNUSED(m_themetype);
-    Q_UNUSED(parent);
-
-    if (newinfo.RecurID == 0) {
-        CScheduleCtrlDlg msgBox;
-        msgBox.setText(tr("You are changing a repeating event."));
-        msgBox.setInformativeText(
-            tr("Do you want to change only this occurrence of the event, or all "
-               "occurrences?"));
-        msgBox.addPushButton(tr("Cancel"));
-        msgBox.addPushButton(tr("All"));
-        msgBox.addsuggestButton(tr("Only This Event"));
-        msgBox.exec();
-
-        if (msgBox.clickButton() == 0) {
-            return;
-        } else if (msgBox.clickButton() == 1) {
-            ScheduleDtailInfo scheduleDtailInfo = newinfo;
-            if (scheduleDtailInfo.enddata.type == 1 && scheduleDtailInfo.enddata.tcount < 1) {
-                scheduleDtailInfo.enddata.type = 0;
-            } else if (scheduleDtailInfo.enddata.type == 2 && scheduleDtailInfo.beginDateTime.daysTo(scheduleDtailInfo.enddata.date) < 0) {
-                scheduleDtailInfo.enddata.type = 0;
-                scheduleDtailInfo.rpeat = 0;
-            }
-            CScheduleDataManage::getScheduleDataManage()
-            ->getscheduleDataCtrl()
-            ->updateScheduleInfo(scheduleDtailInfo);
-        } else if (msgBox.clickButton() == 2) {
-            ChangeOnlyInfo(newinfo, oldinfo);
-        }
-    } else {
-        CScheduleCtrlDlg msgBox;
-        msgBox.setText(tr("You are changing a repeating event."));
-        msgBox.setInformativeText(
-            tr("Do you want to change only this occurrence of the event, or this and "
-               "all future occurrences?"));
-        msgBox.addPushButton(tr("Cancel"));
-        msgBox.addPushButton(tr("All Future Events"));
-        msgBox.addsuggestButton(tr("Only This Event"));
-        msgBox.exec();
-
-        if (msgBox.clickButton() == 0) {
-            return;
-        } else if (msgBox.clickButton() == 1) {
-            ScheduleDtailInfo newschedule = newinfo;
-            newschedule.RecurID = 0;
-            newschedule.id = 0;
-            if (newschedule.enddata.type == 1) {
-                newschedule.enddata.tcount = qAbs(newinfo.enddata.tcount - newinfo.RecurID);
-                if (newschedule.enddata.tcount < 1) {
-                    newschedule.enddata.type = 0;
-                    newschedule.rpeat = 0;
-                }
-            }
-            CScheduleDataManage::getScheduleDataManage()
-            ->getscheduleDataCtrl()
-            ->addSchedule(newschedule);
-            ScheduleDtailInfo updatescheduleData;
-            CScheduleDataManage::getScheduleDataManage()
-            ->getscheduleDataCtrl()
-            ->getScheduleInfoById(oldinfo.id, updatescheduleData);
-            if (updatescheduleData.enddata.type == 1) {
-                updatescheduleData.enddata.tcount = newinfo.RecurID - 1;
-                if (updatescheduleData.enddata.tcount < 1) {
-                    updatescheduleData.enddata.type = 0;
-                    updatescheduleData.rpeat = 0;
-                }
-            } else {
-                //如果结束类型为永不或结束于日期
-                updatescheduleData.enddata.type = 2;
-                updatescheduleData.enddata.date =
-                    oldinfo.beginDateTime.addDays(-1);
-            }
-
-            CScheduleDataManage::getScheduleDataManage()
-            ->getscheduleDataCtrl()
-            ->updateScheduleInfo(updatescheduleData);
-        } else if (msgBox.clickButton() == 2) {
-            ChangeOnlyInfo(newinfo, oldinfo);
-        }
-    }
-}
-
-void CScheduleDlg::ChangeOnlyInfo(const ScheduleDtailInfo &newinfo, const ScheduleDtailInfo &oldinfo)
-{
-    ScheduleDtailInfo newschedule = newinfo;
-    newschedule.rpeat = 0;
-    newschedule.RecurID = 0;
-    newschedule.id = 0;
-    newschedule.ignore.clear();
-    CScheduleDataManage::getScheduleDataManage()
-    ->getscheduleDataCtrl()
-    ->addSchedule(newschedule);
-    ScheduleDtailInfo updatescheduleData;
-    CScheduleDataManage::getScheduleDataManage()
-    ->getscheduleDataCtrl()
-    ->getScheduleInfoById(oldinfo.id, updatescheduleData);
-    updatescheduleData.ignore.append(oldinfo.beginDateTime);
-    CScheduleDataManage::getScheduleDataManage()
-    ->getscheduleDataCtrl()
-    ->updateScheduleInfo(updatescheduleData);
 }

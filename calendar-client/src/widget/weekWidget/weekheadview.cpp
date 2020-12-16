@@ -18,7 +18,6 @@
  */
 
 #include "weekheadview.h"
-#include "calendardbus.h"
 #include "customframe.h"
 #include "scheduledatamanage.h"
 
@@ -42,17 +41,6 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     , m_touchGesture(this)
 {
     setContentsMargins(0, 0, 0, 0);
-    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
-                                   "/com/deepin/dataserver/Calendar",
-                                   QDBusConnection::sessionBus(), this);
-    if (!queue)
-        queue = new QQueue<int>;
-
-    if (!lunarCache)
-        lunarCache = new QMap<QDate, CaLunarDayInfo>;
-
-    if (!emptyCaLunarDayInfo)
-        emptyCaLunarDayInfo = new CaLunarDayInfo;
 
     m_dayNumFont.setWeight(QFont::Medium);
     m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
@@ -84,75 +72,18 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     }
 
     setLayout(hboxLayout);
-
-    connect(this, &CWeekHeadView::dateSelected, this, &CWeekHeadView::handleCurrentDateChanged);
     setFrameRounded(false);
-
-    m_monthList.append("一月");
-    m_monthList.append("二月");
-    m_monthList.append("三月");
-    m_monthList.append("四月");
-    m_monthList.append("五月");
-    m_monthList.append("六月");
-    m_monthList.append("七月");
-    m_monthList.append("八月");
-    m_monthList.append("九月");
-    m_monthList.append("十月");
-    m_monthList.append("十一月");
-    m_monthList.append("十二月");
 }
 
 CWeekHeadView::~CWeekHeadView()
 {
-    if (lunarCache != nullptr) {
-        delete lunarCache;
-        lunarCache = nullptr;
-    }
-    if (emptyCaLunarDayInfo != nullptr) {
-        delete  emptyCaLunarDayInfo;
-        emptyCaLunarDayInfo = nullptr;
-    }
-    if (queue != nullptr) {
-        delete queue;
-        queue = nullptr;
-    }
+
 }
 
-void CWeekHeadView::handleCurrentDateChanged(const QDate date, const CaLunarDayInfo &detail)
-{
-    Q_UNUSED(detail);
-
-    if (date != m_currentDate) {
-        setCurrentDate(date);
-    }
-}
-
-void CWeekHeadView::setFirstWeekday(int weekday)
-{
-    m_firstWeekDay = weekday;
-    updateDate();
-}
-
-int CWeekHeadView::getDateType(const QDate &date)
-{
-    const int currentIndex = getDateIndex(date);
-    const CaLunarDayInfo info = getCaLunarDayInfo(currentIndex);
-    const int dayOfWeek = date.dayOfWeek();
-    bool weekends = dayOfWeek == DDEWeekCalendar::FirstDayofWeekend || dayOfWeek == DDEWeekCalendar::AFewDaysofWeek;
-    bool isCurrentMonth = m_currentDate.month() == date.month();
-    bool isFestival = !info.mSolarFestival.isEmpty() || !info.mLunarFestival.isEmpty();
-    int resultFlag = 0;
-
-    if (!isCurrentMonth)
-        resultFlag |= SO_MNotCurrentMonth;
-    if (isFestival)
-        resultFlag |= SO_MFestival;
-    if (weekends)
-        resultFlag |= SO_MWeekends;
-
-    return resultFlag;
-}
-
+/**
+ * @brief setTheMe      根据系统主题类型设置颜色
+ * @param type          系统主题类型
+ */
 void CWeekHeadView::setTheMe(int type)
 {
     m_themetype = type;
@@ -172,7 +103,6 @@ void CWeekHeadView::setTheMe(int type)
         m_defaultTextColor = "#6F6F6F";
         m_currentDayTextColor = "#FFFFFF";
         m_defaultLunarColor = "#898989";
-        m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_currentMonthColor = "#000000";
         m_backgroudColor = "#E6EEF2";
         m_solofestivalLunarColor = "#4DFF7272";
@@ -189,48 +119,44 @@ void CWeekHeadView::setTheMe(int type)
         m_defaultTextColor = "#C0C6D4";
         m_currentDayTextColor = "#C0C6D4";
         m_defaultLunarColor = "#6886BA";
-        m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+
         m_currentMonthColor = "#000000";
         m_backgroudColor = "#82AEC1";
         m_backgroudColor.setAlphaF(0.1);
         m_solofestivalLunarColor = "#4DFF7272";
     }
-
-    for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i)
-        m_cellList.at(i)->update();
+    m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+    update();
 }
 
-void CWeekHeadView::setWeekDay(QVector<QDate> vDays)
+/**
+ * @brief CWeekHeadView::setWeekDay         设置一周显示时间
+ * @param vDays
+ * @param selectDate
+ */
+void CWeekHeadView::setWeekDay(QVector<QDate> vDays, const QDate &selectDate)
 {
     if (vDays.count() != DDEWeekCalendar::AFewDaysofWeek)
         return;
-
-    for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i)
-        m_days[i] = vDays[i];
-}
-
-void CWeekHeadView::setMounthLabelWidth(int w, int rw)
-{
-    m_monthW = w + 1;
-    m_fixwidth = rw;
-}
-
-void CWeekHeadView::setCurrentDate(const QDate date)
-{
-    qDebug() << "set current date " << date;
-
-    if (date == m_currentDate) {
-        return;
-    }
-    m_currentDate = date;
-
-    emit signalcurrentDateChanged(m_currentDate);
-    // to refresh lunar calendar
-    updateCurrentLunar(getCaLunarDayInfo(getDateIndex(m_currentDate)));
+    m_days = vDays;
     QLocale locale;
-    m_monthLabel->setTextStr(locale.monthName(date.month(), QLocale::ShortFormat));
+    m_monthLabel->setTextStr(locale.monthName(selectDate.month(), QLocale::ShortFormat));
 }
 
+/**
+ * @brief CWeekHeadView::setHunagliInfo     设置黄历信息
+ * @param huangliInfo
+ */
+void CWeekHeadView::setHunagliInfo(const QMap<QDate, CaHuangLiDayInfo> &huangliInfo)
+{
+    m_huangliInfo = huangliInfo;
+    update();
+}
+
+/**
+ * @brief setLunarVisible   设置是否显示阴历信息
+ * @param visible           是否显示阴历信息
+ */
 void CWeekHeadView::setLunarVisible(bool visible)
 {
     int state = int(m_showState);
@@ -244,25 +170,12 @@ void CWeekHeadView::setLunarVisible(bool visible)
     update();
 }
 
-void CWeekHeadView::setCellSelectable(bool selectable)
-{
-    if (selectable == m_cellSelectable)
-        return;
-
-    m_cellSelectable = selectable;
-
-    emit cellSelectableChanged(m_cellSelectable);
-}
-
-int CWeekHeadView::getDateIndex(const QDate &date) const
-{
-    for (int i = 0; i != DDEWeekCalendar::AFewDaysofWeek; ++i)
-        if (m_days[i] == date)
-            return i;
-
-    return 0;
-}
-
+/**
+ * @brief eventFilter 过滤器
+ * @param o 事件对象
+ * @param e 时间类型
+ * @return false
+ */
 bool CWeekHeadView::eventFilter(QObject *o, QEvent *e)
 {
     QWidget *cell = qobject_cast<QWidget *>(o);
@@ -270,136 +183,57 @@ bool CWeekHeadView::eventFilter(QObject *o, QEvent *e)
     if (cell && m_cellList.contains(cell)) {
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
-        } else if (e->type() == QEvent::MouseButtonPress) {
-        } else if (e->type() == QEvent::MouseButtonDblClick) {
+        }  else if (e->type() == QEvent::MouseButtonDblClick) {
             const int pos = m_cellList.indexOf(cell);
             emit signalsViewSelectDate(m_days[pos]);
         }
     }
-
     return false;
 }
 
-void CWeekHeadView::updateDate()
-{
-    const int currentIndex = getDateIndex(m_currentDate);
-    setSelectedCell(currentIndex);
-    update();
-}
-
-void CWeekHeadView::updateCurrentLunar(const CaLunarDayInfo &info)
-{
-    if (!info.mLunarFestival.isEmpty()) {
-        emit currentFestivalChanged(info.mLunarFestival);
-    } else if (!info.mTerm.isEmpty()) {
-        emit currentFestivalChanged(info.mTerm);
-    } else if (!info.mSolarFestival.isEmpty()) {
-        QStringList tmpFestival = info.mSolarFestival.split(" ");
-
-        if (tmpFestival.length() >= 3) {
-            emit currentFestivalChanged(QString("%1 %2").arg(tmpFestival[0]).arg(tmpFestival[1]));
-        } else {
-            emit currentFestivalChanged(info.mSolarFestival);
-        }
-    } else {
-        emit currentFestivalChanged("");
-    }
-
-    QVector<QDate> vdate;
-    QVector<CaLunarDayInfo> vdetail;
-
-    for (int i = 0; i < DDEWeekCalendar::AFewDaysofWeek; i++) {
-        vdate.append(m_days[i]);
-        vdetail.append(getCaLunarDayInfo(getDateIndex(m_days[i])));
-    }
-
-    emit signalcurrentLunarDateChanged(vdate, vdetail, 1);
-    updateDate();
-}
-
+/**
+ * @brief getCellDayNum 根据索引值获取当天是在一个月中的第几天
+ * @param pos 索引
+ * @return 日期的字符串
+ */
 const QString CWeekHeadView::getCellDayNum(int pos)
 {
     return QString::number(m_days[pos].day());
 }
 
+/**
+ * @brief getCellDate 根据索引获取当天的日期
+ * @param pos 索引值
+ * @return 日期
+ */
 const QDate CWeekHeadView::getCellDate(int pos)
 {
     return m_days[pos];
 }
 
+/**
+ * @brief getLunar 根据索引值获取当天的阴历信息
+ * @param pos 索引值
+ * @return 阴历信息字符串
+ */
 const QString CWeekHeadView::getLunar(int pos)
 {
-    CaLunarDayInfo info = getCaLunarDayInfo(pos);
-
-    if (info.mLunarDayName == "初一") {
-        info.mLunarDayName =  info.mLunarMonthName;
+    CaHuangLiDayInfo info ;
+    if (pos >= 0 && pos < m_days.size()) {
+        info = m_huangliInfo[m_days[pos]];
+        if (info.mLunarDayName == "初一") {
+            info.mLunarDayName =  info.mLunarMonthName;
+        }
+        if (info.mTerm.isEmpty())
+            return info.mLunarDayName;
     }
-
-    if (info.mTerm.isEmpty())
-        return info.mLunarDayName;
-
     return info.mTerm;
 }
 
-const CaLunarDayInfo CWeekHeadView::getCaLunarDayInfo(int pos)
-{
-    const QDate date = m_days[pos];
-
-    if (lunarCache->contains(date)) {
-        return lunarCache->value(date);
-    }
-
-    if (lunarCache->size() > 300)
-        lunarCache->clear();
-
-    queue->push_back(pos);
-
-    QTimer::singleShot(300, this, SLOT(getDbusData()));
-
-    return *emptyCaLunarDayInfo;
-}
-
-void CWeekHeadView::getDbusData()
-{
-    if (queue->isEmpty())
-        return;
-
-    const int pos = queue->head();
-    queue->pop_front();
-    const QDate date = m_days[pos];
-
-    if (!date.isValid()) {
-        return;
-    }
-
-    CaLunarDayInfo currentDayInfo;
-
-    if (!lunarCache->contains(date)) {
-        bool o1 = true;
-        QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(date.year(), date.month(), false, o1);
-
-        QDate cacheDate;
-        cacheDate.setDate(date.year(), date.month(), 1);
-        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
-            lunarCache->insert(cacheDate, dayInfo);
-
-            if (date == m_currentDate) {
-                currentDayInfo = dayInfo;
-            }
-            cacheDate = cacheDate.addDays(1);
-        }
-    } else {
-        currentDayInfo = lunarCache->value(date);
-    }
-
-    m_cellList.at(pos)->update();
-
-    // refresh   lunar info
-    if (date == m_currentDate) {
-        updateCurrentLunar(currentDayInfo);
-    }
-}
-
+/**
+ * @brief paintCell 绘制周信息
+ * @param cell 每天所在的widget
+ */
 void CWeekHeadView::paintCell(QWidget *cell)
 {
     m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
@@ -418,30 +252,9 @@ void CWeekHeadView::paintCell(QWidget *cell)
     } else {
         painter.setBrush(QBrush(m_backgroudColor));
     }
-    if (d != 6) {
+    if (m_cellList.last() != cell) {
         painter.drawRect(rect); //画矩形
-    } else {
-        int labelwidth = cell->width();
-        int labelheight = cell->height();
-        QPainterPath painterPath;
-        painterPath.moveTo(m_radius, 0);
-
-        painterPath.lineTo(0, 0);
-        painterPath.lineTo(0, m_radius);
-        painterPath.lineTo(0, labelheight - m_radius);
-        painterPath.lineTo(0, labelheight);
-        painterPath.lineTo(m_radius, labelheight);
-        painterPath.lineTo(labelwidth - m_radius, labelheight);
-        painterPath.lineTo(labelwidth, labelheight);
-        painterPath.lineTo(labelwidth, labelheight - m_radius);
-        painterPath.lineTo(labelwidth, m_radius);
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
-        painterPath.lineTo(m_radius, 0);
-        painterPath.closeSubpath();
-        painter.drawPath(painterPath);
-    }
-    //绘制分割线
-    if (d != DDEWeekCalendar::FirstDayofWeekend && d != DDEWeekCalendar::AFewDaysofWeek) {
+        //绘制分割线
         QPoint point_begin(cell->width(), 0);
         QPoint point_end(cell->width(), cell->height());
         painter.save();
@@ -450,8 +263,19 @@ void CWeekHeadView::paintCell(QWidget *cell)
         painter.setPen(m_linecolor);
         painter.drawLine(point_begin, point_end);
         painter.restore();
+    } else {
+        int labelwidth = cell->width();
+        int labelheight = cell->height();
+        QPainterPath painterPath;
+        painterPath.moveTo(0, 0);
+        painterPath.lineTo(0, labelheight);
+        painterPath.lineTo(labelwidth, labelheight);
+        painterPath.lineTo(labelwidth, labelheight - m_radius);
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
+        painterPath.lineTo(0, 0);
+        painterPath.closeSubpath();
+        painter.drawPath(painterPath);
     }
-
     int bw = (cell->width() - 104) / 2;
     int bh = (cell->height() - 26) / 2;
 
@@ -545,61 +369,11 @@ void CWeekHeadView::paintCell(QWidget *cell)
             } else {
                 painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
             }
-            CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
+            //      CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
         }
     }
     painter.restore();
     painter.end();
-}
-
-void CWeekHeadView::cellClicked(QWidget *cell)
-{
-    if (!m_cellSelectable)
-        return;
-
-    const int pos = m_cellList.indexOf(cell);
-    if (pos == -1)
-        return;
-
-    setSelectedCell(pos);
-
-    // my gift eggs
-    static int gift = 0;
-
-    if (m_days[pos] == QDate(1993, 7, 28))
-        if (++gift == 10)
-            QMessageBox::about(this, "LinuxDeepin", "by shibowen <sbw@sbw.so> :P");
-}
-
-void CWeekHeadView::setSelectedCell(int index)
-{
-    if (m_selectedCell == index)
-        return;
-
-    const int prevPos = m_selectedCell;
-    m_selectedCell = index;
-
-    m_cellList.at(prevPos)->update();
-    m_cellList.at(index)->update();
-    emit dateSelected(m_days[index], getCaLunarDayInfo(index));
-}
-
-int CWeekHeadView::checkDay(int weekday)
-{
-    // check the week, calculate the correct order in the custom.
-    if (weekday <= 0)
-        return weekday += DDEWeekCalendar::AFewDaysofWeek;
-
-    if (weekday > DDEWeekCalendar::AFewDaysofWeek)
-        return weekday -= DDEWeekCalendar::AFewDaysofWeek;
-
-    return weekday;
-}
-
-void CWeekHeadView::mousePressEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    emit signaleSchedulHide();
 }
 
 void CWeekHeadView::wheelEvent(QWheelEvent *e)

@@ -24,31 +24,25 @@
 #include "widget/dayWidget/daywindow.h"
 #include "scheduledatamanage.h"
 #include "myscheduleview.h"
-#include "creatorparschedule.h"
 #include "configsettings.h"
 #include "shortcut.h"
 #include "schedulesearchview.h"
 #include "cdynamicicon.h"
 #include "constants.h"
-#include "dbus/schedulesdbus.h"
 
-#include <DAboutDialog>
 #include <DHiDPIHelper>
 #include <DPalette>
 #include <DFontSizeManager>
-#include <DApplicationHelper>
 #include <DWidgetUtil>
+#include <DTitlebar>
+#include <DApplicationHelper>
 
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
-#include <QMessageBox>
 #include <QShortcut>
-#include <QDesktopWidget>
-#include <QApplication>
 #include <QSizePolicy>
 #include <QHBoxLayout>
-#include <QSpacerItem>
 #include <QWidget>
 #include <QMenuBar>
 #include <QMouseEvent>
@@ -62,13 +56,10 @@ static const int CalendarMHeight = 634;
 Calendarmainwindow::Calendarmainwindow(QWidget *w)
     : DMainWindow(w)
 {
-    m_DataGetThread = new DbusDataGetThread(CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getDbus(),
-                                            this);
     m_currentdate = QDate::currentDate();
     setContentsMargins(QMargins(0, 0, 0, 0));
     initUI();
     initConnection();
-    initLunar();
     setMinimumSize(CalendarMWidth, CalendarMHeight);
     setWindowTitle(tr("Calendar"));
     new CalendarAdaptor(this);
@@ -102,47 +93,6 @@ Calendarmainwindow::~Calendarmainwindow()
     CDynamicIcon::releaseInstance();
 }
 
-bool Calendarmainwindow::analysisCreate(const QString &content, ScheduleDtailInfo &info)
-{
-    if (content.isEmpty()) return false;
-    QJsonParseError json_error;
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(content.toLocal8Bit(), &json_error));
-
-    if (json_error.error != QJsonParseError::NoError) {
-        return false;
-    }
-
-    QJsonArray rootarry = jsonDoc.array();
-
-    for (int i = 0; i < rootarry.size(); i++) {
-
-        QJsonObject subObj = rootarry.at(i).toObject();
-        if (subObj.value("name").toString() == "content") {
-            info.titleName = subObj.value("value").toString();
-        }
-        if (subObj.value("name").toString() == "datetime") {
-            QString ssubObj = subObj.value("normValue").toString();
-            QJsonParseError sjson_error;
-            QJsonDocument sjsonDoc(QJsonDocument::fromJson(ssubObj.toLocal8Bit(), &sjson_error));
-
-            if (sjson_error.error != QJsonParseError::NoError) {
-                return false;
-            }
-            QJsonObject ssobject = sjsonDoc.object();
-            info.beginDateTime = QDateTime::fromString(ssobject.value("datetime").toString(), "yyyy-MM-ddThh:mm:ss");
-        }
-        if (subObj.value("value").toString() == "reminder") {
-            info.id = 0;
-            info.rpeat = 0;
-            info.remind = true;
-            info.remindData.n = 0;
-            info.endDateTime = info.beginDateTime.addSecs(3600);
-            info.allday = false;
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(1, info.type);
-        }
-    }
-    return true;
-}
 void Calendarmainwindow::onViewShortcut()
 {
     QRect rect = window()->geometry();
@@ -160,80 +110,55 @@ void Calendarmainwindow::onViewShortcut()
     connect(shortcutViewProc, SIGNAL(finished(int)), shortcutViewProc, SLOT(deleteLater()));
 }
 
-void Calendarmainwindow::slotGetScheduleInfoSuccess()
+/**
+ * @brief Calendarmainwindow::slotCurrentDateUpdate     更新当前时间
+ */
+void Calendarmainwindow::slotCurrentDateUpdate()
 {
-    m_yearwindow->getScheduleInfo();
-}
-
-void Calendarmainwindow::slotDynamicIconUpdate()
-{
-    if (QDate::currentDate() != CDynamicIcon::getInstance()->getDate()) {
+    //获取当前时间
+    const QDateTime _currentDate = QDateTime::currentDateTime();
+    //如果当前日期与动态图标日期不一样则重新生成动态图标
+    if (_currentDate.date() != CDynamicIcon::getInstance()->getDate()) {
         CDynamicIcon::getInstance()->setDate(QDate::currentDate());
         CDynamicIcon::getInstance()->setIcon();
     }
+    //设置当前时间
+    m_DayWindow->setCurrendDateTime(_currentDate);
 }
-void Calendarmainwindow::viewWindow(int type, QDateTime datetime)
+
+/**
+ * @brief Calendarmainwindow::viewWindow        切换视图
+ * @param type                                  视图索引
+ * @param showAnimation                         是否显示动画
+ */
+void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
 {
     if (type < 0 || type > m_stackWidget->count()) {
         return;
     }
-
-    m_stackWidget->setCurrentIndex(type - 1);
-
-    if (type - 1 != 0) {
-        m_priindex = type - 1;
+    if (showAnimation) {
+        m_stackWidget->setCurrent(type);
+    } else {
+        m_stackWidget->setCurrentIndex(type);
     }
-
-    switch (type - 1) {
+    switch (type) {
     case DDECalendar::CalendarYearWindow: {
-        m_yearButton->setFocus();
         m_yearButton->setChecked(true);
-        m_yearwindow->setDate(datetime.date());
     } break;
     case DDECalendar::CalendarMonthWindow: {
-        m_monthButton->setFocus();
         m_monthButton->setChecked(true);
-        m_monthWindow->setDate(datetime.date());
-        m_monthWindow->slotupdateSchedule(0);
     } break;
     case DDECalendar::CalendarWeekWindow: {
-        m_weekButton->setFocus();
         m_weekButton->setChecked(true);
-        m_weekWindow->setDate(datetime.date());
-        m_weekWindow->setTime(datetime.time());
-        m_weekWindow->slotupdateSchedule(0);
     } break;
     case DDECalendar::CalendarDayWindow: {
-        m_dayButton->setFocus();
+        m_DayWindow->setTime();
         m_dayButton->setChecked(true);
-        m_DayWindow->setDate(datetime.date());
-        m_DayWindow->slotupdateSchedule(0);
         m_searchflag = true;
     } break;
     }
+    m_priindex = type == 0 ? m_priindex : type;
     CConfigSettings::setOption("base.view", type);
-}
-
-void Calendarmainwindow::UpdateJob()
-{
-    int index = m_stackWidget->currentIndex();
-
-    if (index < 0 || index > m_stackWidget->count() - 1) {
-
-        return;
-    }
-
-    switch (index) {
-    case DDECalendar::CalendarMonthWindow: {
-        m_monthWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarWeekWindow: {
-        m_weekWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarDayWindow: {
-        m_DayWindow->slotupdateSchedule(0);
-    } break;
-    }
 }
 
 void Calendarmainwindow::updateHigh()
@@ -330,21 +255,24 @@ void Calendarmainwindow::slotTheme(int type)
 
 void Calendarmainwindow::OpenSchedule(QString job)
 {
-    if (job.isEmpty()) return;
-
-    ScheduleDtailInfo out;
-
-    if (CreatOrParSchedule::GetJob(job, out)) {
-        m_dayButton->setFocus();
-        m_dayButton->setChecked(true);
-        m_stackWidget->setCurrentIndex(DDECalendar::CalendarDayWindow);
-        m_DayWindow->setDate(out.beginDateTime.date());
-        m_DayWindow->slotupdateSchedule(0);
-        CMyScheduleView dlg(out, this);
-        dlg.exec();
-        m_DayWindow->slotupdateSchedule(0);
-        slotWUpdateShcedule(nullptr, 0);
-    }
+    if (job.isEmpty())
+        return;
+    ScheduleDataInfo out;
+    out = ScheduleDataInfo::JsonStrToSchedule(job);
+    m_dayButton->setFocus();
+    m_dayButton->setChecked(true);
+    //切换到日视图
+    m_stackWidget->setCurrentIndex(DDECalendar::CalendarDayWindow);
+    //设置选择时间
+    m_DayWindow->setSelectDate(out.getBeginDateTime().date());
+    //更新界面显示
+    m_DayWindow->updateData();
+    //设置非全天时间定位位置
+    m_DayWindow->setTime(out.getBeginDateTime().time());
+    //弹出编辑对话框
+    CMyScheduleView dlg(out, this);
+    dlg.exec();
+    slotWUpdateShcedule();
 }
 
 void Calendarmainwindow::ActiveWindow()
@@ -362,8 +290,8 @@ void Calendarmainwindow::initUI()
     this->setObjectName("MainWindow");
     this->setAccessibleName("MainWindow");
     this->setAccessibleDescription("This is the main window");
-    m_DynamicIconUpdateTimer = new QTimer(this);
-    m_DynamicIconUpdateTimer->start(3000);
+    m_currentDateUpdateTimer = new QTimer(this);
+    m_currentDateUpdateTimer->start(3000);
 
     QFrame *titleframe = new QFrame(this);
     titleframe->setAccessibleName("TitleFrame");
@@ -383,13 +311,6 @@ void Calendarmainwindow::initUI()
     //设置年辅助技术显示名称
     m_yearButton->setObjectName("YearButton");
     m_yearButton->setAccessibleName("YearButton");
-    DPalette pl = m_yearButton->palette();
-    pl.setColor(DPalette::ButtonText, QColor("#414D68"));
-    pl.setColor(DPalette::Light, QColor("#E6E6E6"));
-    pl.setColor(DPalette::Dark, QColor("#E3E3E3"));
-    QColor sbcolor("#000000");
-    sbcolor.setAlphaF(0.08);
-    pl.setColor(DPalette::Shadow, sbcolor);
 
     QFont viewfont;
     viewfont.setWeight(QFont::Medium);
@@ -411,10 +332,6 @@ void Calendarmainwindow::initUI()
     m_dayButton->setObjectName("DayButton");
     m_dayButton->setAccessibleName("DayButton");
     m_dayButton->setFixedSize(50, 36);
-    m_yearButton->setPalette(pl);
-    m_monthButton->setPalette(pl);
-    m_weekButton->setPalette(pl);
-    m_dayButton->setPalette(pl);
     m_yearButton->setFont(viewfont);
     m_monthButton->setFont(viewfont);
     m_weekButton->setFont(viewfont);
@@ -510,130 +427,54 @@ void Calendarmainwindow::initUI()
 
 void Calendarmainwindow::initConnection()
 {
-    connect(m_DataGetThread,
-            &DbusDataGetThread::signalGetScheduleSuccess,
-            this,
-            &Calendarmainwindow::slotGetScheduleInfoSuccess);
-
-    connect(m_stackWidget
-            , &AnimationStackedWidget::signalIsFinished
-            , this
-            , &Calendarmainwindow::slotSetButtonBox);
+    connect(m_stackWidget, &AnimationStackedWidget::signalIsFinished, this, &Calendarmainwindow::slotSetButtonBox);
     connect(m_buttonBox, &DButtonBox::buttonClicked, this, &Calendarmainwindow::slotstackWClicked);
-    connect(m_weekWindow, &CWeekWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
-    connect(m_monthWindow, &CMonthWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
-    connect(m_DayWindow, &CDayWindow::signalsWUpdateShcedule, this, &Calendarmainwindow::slotWUpdateShcedule);
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &Calendarmainwindow::slotSreturnPressed);
     connect(m_searchEdit, &DSearchEdit::textChanged, this, &Calendarmainwindow::slotStextChanged);
     connect(m_searchEdit, &DSearchEdit::focusChanged, this, &Calendarmainwindow::slotStextfocusChanged);
-    connect(m_weekWindow, &CWeekWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
-    connect(m_monthWindow, &CMonthWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
-    connect(m_DayWindow, &CDayWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
-    connect(m_yearwindow, &CYearWindow::signalsReturnTodayUpdate, this, &Calendarmainwindow::slotReturnTodyUpdate);
     //监听当前应用主题切换事件
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &Calendarmainwindow::slotTheme);
-
-    m_dbus = new CSchedulesDBus("com.deepin.dataserver.Calendar",
-                                "/com/deepin/dataserver/Calendar",
-                                QDBusConnection::sessionBus(), this);
-    connect(m_dbus, &CSchedulesDBus::JobsUpdated,
-            this, &Calendarmainwindow::slotJobsUpdated);
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalsUpdateShcedule, this, &Calendarmainwindow::slotTransitSearchSchedule);
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalDate, this, &Calendarmainwindow::slotsearchDateSelect);
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectSchedule,
-            this, &Calendarmainwindow::slotSearchSelectSchedule);
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide,
-            this, &Calendarmainwindow::setScheduleHide);
-
-    connect(m_yearwindow, &CYearWindow::signaldoubleclickDate, this, &Calendarmainwindow::slotdoubleclickDate);
-    connect(m_yearwindow, &CYearWindow::signalselectWeekwindow, this, &Calendarmainwindow::slotselectWeek);
-    connect(m_yearwindow, &CYearWindow::signalselectMonth, this, &Calendarmainwindow::slotselectMonth);
-
-    connect(m_monthWindow, &CMonthWindow::signalsViewSelectDate, this, &Calendarmainwindow::slotViewSelectDate);
-    connect(m_monthWindow, &CMonthWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
-    connect(m_weekWindow, &CWeekWindow::signalsCurrentScheduleDate, this, &Calendarmainwindow::slotCurrentScheduleDate);
-    connect(m_weekWindow, &CWeekWindow::signalsViewSelectDate, this, &Calendarmainwindow::slotViewSelectDate);
-    connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    //编辑搜索日程刷新界面
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectSchedule, this, &Calendarmainwindow::slotSearchSelectSchedule);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide, this, &Calendarmainwindow::setScheduleHide);
+    //界面弹出对话框设置背景阴影
     connect(m_scheduleSearchView, &CScheduleSearchView::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_yearwindow, &CYearWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
     connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
     connect(m_DayWindow, &CDayWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-
-    connect(m_weekWindow, &CWeekWindow::signalCurrentDate, this, &Calendarmainwindow::slotCurrentDate);
-    connect(m_monthWindow, &CMonthWindow::signalCurrentDate, this, &Calendarmainwindow::slotCurrentDate);
-    connect(m_DayWindow, &CDayWindow::signalCurrentDate, this, &Calendarmainwindow::slotCurrentDate);
-    connect(m_yearwindow, &CYearWindow::signalCurrentDate, this, &Calendarmainwindow::slotCurrentDate);
-
-    connect(m_yearwindow,
-            &CYearWindow::signalupdateschedule,
-            this,
-            &Calendarmainwindow::getScheduleInfo);
-
-    connect(m_DynamicIconUpdateTimer,
-            &QTimer::timeout,
-            this,
-            &Calendarmainwindow::slotDynamicIconUpdate);
+    //更新当前时间
+    connect(m_currentDateUpdateTimer, &QTimer::timeout, this, &Calendarmainwindow::slotCurrentDateUpdate);
+    //切换视图
+    connect(m_yearwindow, &CYearWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
+    connect(m_monthWindow, &CMonthWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
+    connect(m_weekWindow, &CWeekWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
 }
 
-void Calendarmainwindow::initLunar()
-{
-    QLocale locale;
-    bool flag = false;
-
-    if (locale.language() == QLocale::Chinese) {
-        flag = true;
-    }
-
-    m_yearwindow->setLunarVisible(flag);
-    m_monthWindow->setLunarVisible(flag);
-    m_weekWindow->setLunarVisible(flag);
-    m_DayWindow->setLunarVisible(flag);
-}
-
+/**
+ * @brief Calendarmainwindow::createview        创建视图
+ */
 void Calendarmainwindow::createview()
 {
-    CScheduleDataManage::getScheduleDataManage()->setFirstWeekDay(0);
-    CScheduleDataManage::getScheduleDataManage()->setCurrentYear(QDate::currentDate().year());
-
-    getScheduleInfo();
     m_yearwindow = new CYearWindow(this);
-    m_yearwindow->setDate(QDate::currentDate());
+    m_yearwindow->updateData();
     m_stackWidget->addWidget(m_yearwindow);
-#if 1
-    m_monthWindow = new CMonthWindow;
-    //0:周日 1～6：周一～周六
-    m_monthWindow->setFirstWeekday(0);
-    m_monthWindow->setDate(QDate::currentDate());
+    m_monthWindow = new CMonthWindow(this);
+    m_monthWindow->updateData();
     m_stackWidget->addWidget(m_monthWindow);
 
     m_weekWindow  = new CWeekWindow(this);
-    m_weekWindow->setFirstWeekday(0);
-    m_weekWindow->setDate(QDate::currentDate());
-    m_weekWindow->slotupdateSchedule(0);
+    m_weekWindow->updateData();
     m_stackWidget->addWidget(m_weekWindow);
 
     m_DayWindow = new CDayWindow;
-    QTimer::singleShot(500, [ = ] {
-        m_DayWindow->setDate(QDate::currentDate());
-    });
+    m_DayWindow->updateData();
     m_stackWidget->addWidget(m_DayWindow);
-#endif
 }
 
-DPushButton *Calendarmainwindow::createButon(QString name)
-{
-    DPushButton *button = new DPushButton();
-    button->setText(name);
-    button->setFixedSize(50, 40);
-
-    return  button;
-}
-
-void Calendarmainwindow::getScheduleInfo()
-{
-    YearScheduleInfo *info = CScheduleDataManage::getScheduleDataManage()->getGetAllYearScheduleInfo();
-    m_DataGetThread->getScheduleInfo(info);
-}
-
+/**
+ * @brief Calendarmainwindow::setScheduleHide       隐藏提示框
+ */
 void Calendarmainwindow::setScheduleHide()
 {
     m_yearwindow->slotSetScheduleHide();
@@ -654,82 +495,35 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
     CConfigSettings::setOption("base.state", int(windowState()));
 }
 
+/**
+ * @brief Calendarmainwindow::slotstackWClicked 点击按钮切换视图
+ * @param bt
+ */
 void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
 {
     m_buttonBox->setEnabled(false);
     setScheduleHide();
     int index = m_buttonBox->id(bt);
-
-    if (index < 0 || index > m_stackWidget->count() - 1) {
-
-        return;
-    }
-    m_searchflag = false;
-    m_stackWidget->setCurrent(index);
-
-    if (index != 0) {
-        m_priindex = index;
-    }
-
-    if (m_currentdate.year() < DDECalendar::QueryEarliestYear)
-        return;
-    switch (index) {
-    case DDECalendar::CalendarYearWindow: {
-        m_yearwindow->setDate(m_currentdate);
-    } break;
-    case DDECalendar::CalendarMonthWindow: {
-        m_monthWindow->setDate(m_currentdate);
-        m_monthWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarWeekWindow: {
-        m_weekWindow->setDate(m_currentdate);
-        m_weekWindow->slotupdateSchedule(1);
-    } break;
-    case DDECalendar::CalendarDayWindow: {
-        m_DayWindow->setDate(m_currentdate);
-        m_DayWindow->slotupdateSchedule(1);
-        m_searchflag = true;
-    } break;
-    }
-    CConfigSettings::setOption("base.view", index + 1);
+    viewWindow(index, true);
 }
 
-void Calendarmainwindow::slotWUpdateShcedule(QMainWindow *w, int id)
+void Calendarmainwindow::slotWUpdateShcedule()
 {
-    Q_UNUSED(w);
-    Q_UNUSED(id);
-
     if (m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
-        m_yearwindow->slotupdateSchedule(0);
     }
     updateHigh();
     return;
 }
 
-void Calendarmainwindow::slotReturnTodyUpdate(QMainWindow *w)
-{
-    if (w != m_weekWindow)
-        m_weekWindow->slotReturnTodayUpdate();
-    if (w != m_monthWindow)
-        m_monthWindow->slotReturnTodayUpdate();
-    if (w != m_DayWindow)
-        m_DayWindow->slotReturnTodayUpdate();
-    if (w != m_yearwindow)
-        m_yearwindow->slotReturnTodayUpdate();
-}
-
 void Calendarmainwindow::slotSreturnPressed()
 {
-#if 1
     if (!m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_opensearchflag = true;
         m_contentBackground->setVisible(true);
     }
     m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
-    m_yearwindow->setDate(m_currentdate);
     updateHigh();
-#endif
 }
 
 void Calendarmainwindow::slotStextChanged()
@@ -749,41 +543,16 @@ void Calendarmainwindow::slotStextChanged()
         m_opensearchflag = false;
     }
     updateHigh();
-
 }
 
+/**
+ * @brief Calendarmainwindow::slotStextfocusChanged     搜索框有焦点时隐藏提示框
+ * @param onFocus
+ */
 void Calendarmainwindow::slotStextfocusChanged(bool onFocus)
 {
     if (onFocus) {
         setScheduleHide();
-    }
-}
-
-void Calendarmainwindow::slotJobsUpdated(const QList<qlonglong> &Ids)
-{
-    Q_UNUSED(Ids);
-    int index = m_stackWidget->currentIndex();
-
-    if (index < 0 || index > m_stackWidget->count() - 1) {
-        return;
-    }
-
-    switch (index) {
-    //年窗口截面刷新
-    case DDECalendar::CalendarYearWindow: {
-        //获取数据
-        getScheduleInfo();
-        m_yearwindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarMonthWindow: {
-        m_monthWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarWeekWindow: {
-        m_weekWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarDayWindow: {
-        m_DayWindow->slotupdateSchedule(0);
-    } break;
     }
 }
 
@@ -792,144 +561,35 @@ void Calendarmainwindow::slotSearchEdit()
     m_searchEdit->lineEdit()->setFocus();
 }
 
-void Calendarmainwindow::slotTransitSearchSchedule(int id)
+/**
+ * @brief Calendarmainwindow::slotSearchSelectSchedule  单击搜索日程动画设置
+ * @param scheduleInfo
+ */
+void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
-    Q_UNUSED(id);
-    getScheduleInfo();
-
-    int index = m_stackWidget->currentIndex();
-    if (index < 0 || index > m_stackWidget->count() - 1) {
-
-        return;
-    }
-
-    switch (index) {
-    case DDECalendar::CalendarYearWindow: {
-        m_yearwindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarMonthWindow: {
-        m_monthWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarWeekWindow: {
-        m_weekWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarDayWindow: {
-        m_DayWindow->slotupdateSchedule(0);
-    } break;
-    }
-    m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
-}
-
-void Calendarmainwindow::slotsearchDateSelect(QDate date)
-{
-    setScheduleHide();
-    int index = m_stackWidget->currentIndex();
-
-    if (index < 0 || index > m_stackWidget->count() - 1) {
-        return;
-    }
-
-    switch (index) {
-    case DDECalendar::CalendarYearWindow: {
-        m_yearwindow->setDate(date);
-    } break;
-    case DDECalendar::CalendarMonthWindow: {
-        m_monthWindow->setDate(date);
-    } break;
-    case DDECalendar::CalendarWeekWindow: {
-        m_weekWindow->setDate(date);
-    } break;
-    case DDECalendar::CalendarDayWindow: {
-        m_DayWindow->setDate(date);
-    } break;
-    }
-}
-
-void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
-{
-    int index = m_stackWidget->currentIndex();
-
-    if (index < 0 || index > m_stackWidget->count() - 1) {
-        return;
-    }
-    //等界面刷新完成后进行动作
-    QTimer::singleShot(50, [this, index, scheduleInfo] {
-        switch (index)
-        {
-        case DDECalendar::CalendarYearWindow: {
-        } break;
-        case DDECalendar::CalendarMonthWindow: {
-            m_monthWindow->setSelectSchedule(scheduleInfo);
-        } break;
-        case DDECalendar::CalendarWeekWindow: {
-            m_weekWindow->setSelectSchedule(scheduleInfo);
-        } break;
-        case DDECalendar::CalendarDayWindow: {
-            m_DayWindow->setSelectSchedule(scheduleInfo);
-        } break;
+    //获取当前视图编号
+    CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>(m_stackWidget->currentWidget());
+    if (_showWidget) {
+        //设置选择时间
+        if (_showWidget->setSelectDate(scheduleInfo.getBeginDateTime().date())) {
+            //更新显示数据
+            _showWidget->updateData();
+            //延迟150毫秒设置选中动画
+            QTimer::singleShot(150, this, [ = ] {
+                _showWidget->setSelectSearchScheduleInfo(scheduleInfo);
+            });
         }
-    });
-}
-
-void Calendarmainwindow::slotdoubleclickDate(QDate date)
-{
-    m_stackWidget->setCurrentIndex(m_priindex);
-
-    switch (m_priindex) {
-    case DDECalendar::CalendarMonthWindow: {
-        m_monthButton->setFocus();
-        m_monthButton->setChecked(true);
-        m_monthWindow->setDate(date);
-        m_monthWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarWeekWindow: {
-        m_weekButton->setFocus();
-        m_weekButton->setChecked(true);
-        m_weekWindow->setDate(date);
-        m_weekWindow->setTime(QTime::currentTime());
-        m_weekWindow->slotupdateSchedule(0);
-    } break;
-    case DDECalendar::CalendarDayWindow: {
-        m_dayButton->setFocus();
-        m_dayButton->setChecked(true);
-        m_DayWindow->setDate(date);
-        m_DayWindow->setTime(QTime::currentTime());
-        m_DayWindow->slotupdateSchedule(0);
-    } break;
     }
-    CConfigSettings::setOption("base.view", m_priindex + 1);
 }
 
-void Calendarmainwindow::slotselectMonth(QDate date)
-{
-    qDebug() << date;
-    viewWindow(DDECalendar::CalendarMonthWindow + 1, QDateTime(date));
-}
-
-void Calendarmainwindow::slotselectWeek(QDate date)
-{
-    qDebug() << date;
-    viewWindow(DDECalendar::CalendarWeekWindow + 1, QDateTime(date));
-    CConfigSettings::setOption("base.view", m_priindex + 1);
-}
-
-void Calendarmainwindow::slotCurrentScheduleDate(QDate date)
-{
-    viewWindow(DDECalendar::CalendarDayWindow + 1, QDateTime(date));
-}
-
-void Calendarmainwindow::slotViewSelectDate(QDate date)
-{
-    if (date.year() < DDECalendar::QueryEarliestYear)
-        return;
-    viewWindow(DDECalendar::CalendarDayWindow + 1, QDateTime(date));
-}
-
-void Calendarmainwindow::slotViewtransparentFrame(int type)
+/**
+ * @brief Calendarmainwindow::slotViewtransparentFrame      添加视图阴影
+ * @param isShow
+ */
+void Calendarmainwindow::slotViewtransparentFrame(const bool isShow)
 {
     static int showFrameCount = 0;
-
-    if (type) {
+    if (isShow) {
         m_transparentFrame->resize(width(), height() - 50);
         m_transparentFrame->move(0, 50);
         m_transparentFrame->show();
@@ -939,13 +599,9 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
             m_transparentFrame->hide();
         --showFrameCount;
     }
-
+    //获取当前视图
     int index = m_stackWidget->currentIndex();
-    if (index < 0 || index > m_stackWidget->count() - 1) {
-
-        return;
-    }
-
+    //设置焦点
     switch (index) {
     case DDECalendar::CalendarYearWindow: {
         m_yearwindow->setFocus();
@@ -962,20 +618,43 @@ void Calendarmainwindow::slotViewtransparentFrame(int type)
     }
 }
 
-void Calendarmainwindow::slotCurrentDate(QDate date)
-{
-    m_currentdate = date;
-    CScheduleDataManage::getScheduleDataManage()->setCurrentYear(date.year());
-    getScheduleInfo();
-}
-
+/**
+ * @brief Calendarmainwindow::slotSetButtonBox      启用buttonbox
+ */
 void Calendarmainwindow::slotSetButtonBox()
 {
     m_buttonBox->setEnabled(true);
 }
-void Calendarmainwindow::closeEvent(QCloseEvent *event)
+
+/**
+ * @brief Calendarmainwindow::slotSwitchView        切换视图
+ * @param viewIndex         切换类型
+ */
+void Calendarmainwindow::slotSwitchView(const int viewIndex)
 {
-    QWidget::closeEvent(event);
+    // 0:跳转上一个视图  1：月视图  2：周视图  3:日视图
+    switch (viewIndex) {
+    case 0: {
+        if (m_priindex == DDECalendar::CalendarYearWindow)
+            m_priindex = DDECalendar::CalendarDayWindow;
+        viewWindow(m_priindex);
+        break;
+    }
+    case 1: {
+        viewWindow(DDECalendar::CalendarMonthWindow);
+        break;
+    }
+    case 2: {
+        viewWindow(DDECalendar::CalendarWeekWindow);
+        break;
+    }
+    case 3: {
+        viewWindow(DDECalendar::CalendarDayWindow);
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)
@@ -987,7 +666,6 @@ void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)
 void Calendarmainwindow::changeEvent(QEvent *event)
 {
     DMainWindow::changeEvent(event);
-
     if (event->type() == QEvent::ActivationChange) {
         setScheduleHide();
     }

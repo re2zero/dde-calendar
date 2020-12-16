@@ -19,10 +19,9 @@
 #ifndef SCHEDULESEARCHVIEW_H
 #define SCHEDULESEARCHVIEW_H
 
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
 
 #include <DLabel>
-#include <DPushButton>
 #include <DMenu>
 #include <DListWidget>
 
@@ -31,6 +30,10 @@ class QVBoxLayout;
 class CScheduleListWidget;
 class CScheduleSearchItem;
 class CScheduleSearchDateItem;
+/**
+ * @brief The CScheduleSearchView class
+ * 搜索结果展示界面
+ */
 class CScheduleSearchView : public DWidget
 {
     Q_OBJECT
@@ -38,34 +41,30 @@ public:
     CScheduleSearchView(QWidget *parent = nullptr);
     ~CScheduleSearchView() override;
     void setTheMe(int type = 0);
+    //清空搜索
     void clearSearch();
     void setMaxWidth(const int w);
 signals:
-    void signalsUpdateShcedule(int id = 0);
-    void signalDate(QDate date);
-    void signalSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
+    void signalSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
     void signalScheduleHide();
 public slots:
-    void slotdeleteitem(CScheduleSearchItem *item);
-    void slotedititem(CScheduleSearchItem *item);
+    //需要搜索日程关键字
     void slotsetSearch(QString str);
-    void slotSelectDate(QDate date);
-    void slotSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
-
+    void slotSelectSchedule(const ScheduleDataInfo &scheduleInfo);
+    //更新搜索信息
+    void updateSearch();
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-
 private:
     void updateDateShow();
-    void createItemWidget(ScheduleDtailInfo info, QDate date, int rtype);
+    void createItemWidget(ScheduleDataInfo info, QDate date, int rtype);
     QListWidgetItem *createItemWidget(QDate date);
-
 private:
     CScheduleListWidget *m_gradientItemList = nullptr; //下拉列表窗
     bool m_widgetFlag;
-    QVector<ScheduleDateRangeInfo> m_vlistData;
+    QMap<QDate, QVector<ScheduleDataInfo> > m_vlistData;
     QVector<DLabel *> m_labellist;
     int m_type;
     QDate m_currentDate;
@@ -76,6 +75,7 @@ private:
     QColor m_ltextcolor = "#001A2E";
     QListWidgetItem *m_currentItem = nullptr;
     int m_maxWidth = 200;
+    QString     m_searchStr{""};
 };
 
 class CScheduleListWidget : public DListWidget
@@ -89,6 +89,7 @@ signals:
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *e) override;
 };
 
 class CScheduleSearchItem : public DLabel
@@ -96,7 +97,8 @@ class CScheduleSearchItem : public DLabel
     Q_OBJECT
     enum MouseStatus { M_NONE,
                        M_PRESS,
-                       M_HOVER };
+                       M_HOVER
+                     };
 
 public:
     explicit CScheduleSearchItem(QWidget *parent = nullptr);
@@ -104,24 +106,21 @@ public:
     void setSplitLineColor(QColor color1);
     void setText(QColor tcolor, QFont font);
     void setTimeC(QColor tcolor, QFont font);
-    void setData(ScheduleDtailInfo vScheduleInfo, QDate date);
+    void setData(ScheduleDataInfo vScheduleInfo, QDate date);
     void setRoundtype(int rtype);
     void setTheMe(int type = 0);
-    const ScheduleDtailInfo &getData() const
+    const ScheduleDataInfo &getData() const
     {
         return m_ScheduleInfo;
     }
 signals:
     void signalsDelete(CScheduleSearchItem *item);
     void signalsEdit(CScheduleSearchItem *item);
-    void signalSelectDate(QDate date);
-    void signalSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
+    void signalSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
 public slots:
     void slotEdit();
     void slotDelete();
-    void slotDoubleEvent(int type = 0);
-
 protected:
     void paintEvent(QPaintEvent *e) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
@@ -138,7 +137,7 @@ private:
         QColor timeColor;
         QColor textColor;
     };
-    ScheduleDtailInfo m_ScheduleInfo;
+    ScheduleDataInfo m_ScheduleInfo;
     QAction *m_editAction = nullptr;
     QAction *m_deleteAction = nullptr;
     QColor m_Backgroundcolor;

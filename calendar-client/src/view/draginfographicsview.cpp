@@ -23,6 +23,7 @@
 #include "schedulectrldlg.h"
 #include "myscheduleview.h"
 #include "constants.h"
+#include "cscheduleoperation.h"
 
 #include <DMenu>
 
@@ -36,6 +37,10 @@
 #include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QKeyEvent>
+#include <QPropertyAnimation>
+#include <QtMath>
+#include <QPainter>
+#include <QPainterPath>
 
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     : DGraphicsView(parent)
@@ -205,7 +210,7 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     DragInfoItem *item = dynamic_cast<DragInfoItem *>(itemAt(event->pos()));
 
     if (item != nullptr) {
-        if (item->getData().type.ID != DDECalendar::FestivalTypeID) {
+        if (item->getData().getType() != DDECalendar::FestivalTypeID) {
             if (m_DragStatus == NONE) {
                 switch (getPosInItem(event->pos(), item->rect())) {
                 case LEFT:
@@ -244,18 +249,20 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     case ChangeBegin:
         if (!IsEqualtime(m_MoveDate, gDate)) {
             m_MoveDate = gDate;
-            m_DragScheduleInfo.beginDateTime =
-                getDragScheduleInfoBeginTime(m_MoveDate);
-            m_DragScheduleInfo.endDateTime = m_InfoEndTime;
+            //获取日程开始时间
+            QDateTime _beginTime = getDragScheduleInfoBeginTime(m_MoveDate);
+            m_DragScheduleInfo.setBeginDateTime(_beginTime);
+            m_DragScheduleInfo.setEndDateTime(m_InfoEndTime);
             upDateInfoShow(ChangeBegin, m_DragScheduleInfo);
         }
         break;
     case ChangeEnd:
         if (!IsEqualtime(m_MoveDate, gDate)) {
             m_MoveDate = gDate;
-            m_DragScheduleInfo.endDateTime =
-                getDragScheduleInfoEndTime(m_MoveDate);
-            m_DragScheduleInfo.beginDateTime = m_InfoBeginTime;
+            m_DragScheduleInfo.setBeginDateTime(m_InfoBeginTime);
+            //获取结束时间
+            QDateTime _endTime = getDragScheduleInfoEndTime(m_MoveDate);
+            m_DragScheduleInfo.setEndDateTime(_endTime);
             upDateInfoShow(ChangeEnd, m_DragScheduleInfo);
         }
         break;
@@ -266,9 +273,16 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
-            m_DragScheduleInfo.IsMoveInfo = false;
+            if (m_DragScheduleInfo == DragInfoItem::getPressSchedule()) {
+                if (m_DragScheduleInfo.getBeginDateTime() == DragInfoItem::getPressSchedule().getBeginDateTime()
+                        && DragInfoItem::getPressSchedule().getEndDateTime() == m_DragScheduleInfo.getEndDateTime()) {
+                    updateInfo();
+                }
+            }
+            m_DragScheduleInfo.setIsMoveInfo(false);
             setPressSelectInfo(m_DragScheduleInfo);
-            emit signalsUpdateShcedule();
+            DragInfoItem::setPressSchedule(m_DragScheduleInfo);
+
         }
     }
     break;
@@ -298,7 +312,7 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
     if (infoitem != nullptr) {
-        if (infoitem->getData().type.ID != DDECalendar::FestivalTypeID) {
+        if (infoitem->getData().getType() != DDECalendar::FestivalTypeID) {
             m_rightMenu->clear();
             m_rightMenu->addAction(m_editAction);
             m_rightMenu->addAction(m_deleteAction);
@@ -337,10 +351,9 @@ void DragInfoGraphicsView::dragEnterEvent(QDragEnterEvent *event)
             event->ignore();
         }
         QJsonObject rootobj = jsonDoc.object();
-        ScheduleDtailInfo info =
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
+        ScheduleDataInfo info = ScheduleDataInfo::JsonToSchedule(rootobj);
 
-        if ((event->source() != this && info.rpeat > 0) || info.type.ID == DDECalendar::FestivalTypeID) {
+        if ((event->source() != this && info.getRepetitionRule().getRuleId() > 0) || info.getType() == DDECalendar::FestivalTypeID) {
             event->ignore();
         } else {
             event->accept();
@@ -372,11 +385,10 @@ void DragInfoGraphicsView::dragMoveEvent(QDragMoveEvent *event)
     if (!IsEqualtime(m_MoveDate, gDate)) {
         m_MoveDate = gDate;
         QJsonObject rootobj = jsonDoc.object();
-        m_DragScheduleInfo =
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->JsonObjectToInfo(rootobj);
-
+        m_DragScheduleInfo = ScheduleDataInfo::JsonToSchedule(rootobj);
+        m_DragScheduleInfo.setIsMoveInfo(true);
         MoveInfoProcess(m_DragScheduleInfo, event->posF());
-        setPressSelectInfo(m_DragScheduleInfo);
+        DragInfoItem::setPressSchedule(m_DragScheduleInfo);
     }
 }
 
@@ -411,27 +423,58 @@ void DragInfoGraphicsView::keyPressEvent(QKeyEvent *event)
     DGraphicsView::keyPressEvent(event);
 }
 
+void DragInfoGraphicsView::paintEvent(QPaintEvent *event)
+{
+    DGraphicsView::paintEvent(event);
+    //绘制圆角效果
+    QPainter painter(viewport());
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(m_outerBorderColor);
+    //左下角绘制圆角补角,颜色与外框背景色一致
+    if (m_leftShowRadius) {
+        QPainterPath _leftPath;
+        _leftPath.moveTo(0, this->height() - m_radius);
+        _leftPath.arcTo(0, this->height() - m_radius * 2, m_radius * 2, m_radius * 2, 180, 90);
+        _leftPath.lineTo(0, this->height());
+        _leftPath.lineTo(0, this->height() - m_radius);
+        painter.drawPath(_leftPath);
+    }
+    //右下角绘制圆角补角
+    if (m_rightShowRadius) {
+        QPainterPath _rightPath;
+        _rightPath.moveTo(this->width() - m_radius, this->height());
+        _rightPath.arcTo(this->width() - m_radius * 2, this->height() - m_radius * 2, m_radius * 2, m_radius * 2, 270, 90);
+        _rightPath.lineTo(this->width(), this->height());
+        _rightPath.lineTo(this->width() - m_radius, this->height());
+        painter.drawPath(_rightPath);
+        painter.end();
+    }
+}
+
 void DragInfoGraphicsView::slotCreate()
 {
     slotCreate(m_createDate);
 }
 
-void DragInfoGraphicsView::setPressSelectInfo(const ScheduleDtailInfo &info)
+/**
+ * @brief DragInfoGraphicsView::setPressSelectInfo      设置点击选中日程
+ * @param info
+ */
+void DragInfoGraphicsView::setPressSelectInfo(const ScheduleDataInfo &info)
 {
-    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(info);
+    DragInfoItem::setPressSchedule(info);
 }
 
-void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDtailInfo &info)
+/**
+ * @brief DragInfoGraphicsView::updateScheduleInfo      拖拽更新日程信息
+ * @param info
+ */
+void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
 {
     emit signalViewtransparentFrame(1);
-
-    if (info.rpeat > 0) {
-        CScheduleDlg::ChangeRecurInfo(this, info,
-                                      m_PressScheduleInfo, m_themetype);
-    } else {
-        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
-            info);
-    }
+    CScheduleOperation _scheduleOperation(this);
+    _scheduleOperation.changeSchedule(info, m_PressScheduleInfo);
     emit signalViewtransparentFrame(0);
 }
 
@@ -443,13 +486,13 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
 
     if (item != nullptr) {
         PosInItem mpressstatus = getPosInItem(pos, item->boundingRect());
-        if (mpressstatus != MIDDLE && item->getData().type.ID == 4) {
+        if (mpressstatus != MIDDLE && item->getData().getType() == 4) {
             return;
         }
         m_DragScheduleInfo = item->getData();
         m_PressScheduleInfo = item->getData();
-        m_InfoBeginTime = m_DragScheduleInfo.beginDateTime;
-        m_InfoEndTime = m_DragScheduleInfo.endDateTime;
+        m_InfoBeginTime = m_DragScheduleInfo.getBeginDateTime();
+        m_InfoEndTime = m_DragScheduleInfo.getEndDateTime();
         switch (mpressstatus) {
         case TOP:
             m_DragStatus = ChangeBegin;
@@ -471,9 +514,8 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
             ShowSchedule(item);
             m_DragStatus = ChangeWhole;
             QMimeData *mimeData = new QMimeData();
-            mimeData->setText(m_DragScheduleInfo.titleName);
-            mimeData->setData("Info",
-                              CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->InfoToJson(m_DragScheduleInfo).toUtf8());
+            mimeData->setText(m_DragScheduleInfo.getTitleName());
+            mimeData->setData("Info", ScheduleDataInfo::ScheduleToJsonStr(m_DragScheduleInfo).toUtf8());
 
             if (m_Drag == nullptr) {
                 m_Drag = new QDrag(this);
@@ -491,12 +533,14 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
     }
 }
 
+/**
+ * @brief DragInfoGraphicsView::mouseReleaseScheduleUpdate      鼠标左击释放数据处理
+ */
 void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
 {
     setCursor(Qt::ArrowCursor);
     m_press = false;
     DragInfoItem::setPressFlag(false);
-    bool isUpdateInfo = false;
 
     switch (m_DragStatus) {
     case IsCreate:
@@ -507,12 +551,13 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             emit signalViewtransparentFrame(1);
             CScheduleDlg dlg(1, this);
             dlg.setData(m_DragScheduleInfo);
-            if (dlg.exec() == DDialog::Accepted) {
-            } else {
-                setPressSelectInfo(ScheduleDtailInfo());
+            //如果取消新建则主动刷新日程信息
+            if (dlg.exec() != DDialog::Accepted) {
+                updateInfo();
             }
+            //设置选中日程为无效日程
+            setPressSelectInfo(ScheduleDataInfo());
             emit signalViewtransparentFrame(0);
-            isUpdateInfo = true;
         }
         break;
     case ChangeBegin:
@@ -520,7 +565,6 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             //如果不添加会进入leaveEvent事件内的条件
             m_DragStatus = NONE;
             updateScheduleInfo(m_DragScheduleInfo);
-            isUpdateInfo = true;
         }
         break;
     case ChangeEnd:
@@ -528,23 +572,18 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             //如果不添加会进入leaveEvent事件内的条件
             m_DragStatus = NONE;
             updateScheduleInfo(m_DragScheduleInfo);
-            isUpdateInfo = true;
         }
         break;
     default:
         break;
     }
     m_DragStatus = NONE;
-
-    if (isUpdateInfo) {
-        emit signalsUpdateShcedule();
-    }
     update();
 }
 
 void DragInfoGraphicsView::mousePress(const QPoint &point)
 {
-    setPressSelectInfo(ScheduleDtailInfo());
+    setPressSelectInfo(ScheduleDataInfo());
     QGraphicsItem *listItem = itemAt(point);
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
@@ -575,73 +614,16 @@ void DragInfoGraphicsView::stopTouchAnimation()
     m_touchAnimation->stop();
 }
 
-void DragInfoGraphicsView::DeleteItem(const ScheduleDtailInfo &info)
+/**
+ * @brief DragInfoGraphicsView::DeleteItem      删除日程
+ * @param info
+ */
+void DragInfoGraphicsView::DeleteItem(const ScheduleDataInfo &info)
 {
     emit signalViewtransparentFrame(1);
-
-    if (info.rpeat == 0) {
-        CScheduleCtrlDlg msgBox(this);
-        msgBox.setText(tr("You are deleting an event."));
-        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        msgBox.addPushButton(tr("Cancel"), true);
-        msgBox.addWaringButton(tr("Delete"), true);
-        msgBox.exec();
-
-        if (msgBox.clickButton() == 0) {
-            emit signalViewtransparentFrame(0);
-            return;
-        } else if (msgBox.clickButton() == 1) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
-        }
-    } else {
-        if (info.RecurID == 0) {
-            CScheduleCtrlDlg msgBox(this);
-            msgBox.setText(tr("You are deleting an event."));
-            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            msgBox.addPushButton(tr("Cancel"));
-            msgBox.addPushButton(tr("Delete All"));
-            msgBox.addWaringButton(tr("Delete Only This Event"));
-            msgBox.exec();
-
-            if (msgBox.clickButton() == 0) {
-                emit signalViewtransparentFrame(0);
-                return;
-            } else if (msgBox.clickButton() == 1) {
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
-            } else if (msgBox.clickButton() == 2) {
-
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.ignore.append(info.beginDateTime);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            }
-        } else {
-            CScheduleCtrlDlg msgBox(this);
-            msgBox.setText(tr("You are deleting an event."));
-            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            msgBox.addPushButton(tr("Cancel"));
-            msgBox.addPushButton(tr("Delete All Future Events"));
-            msgBox.addWaringButton(tr("Delete Only This Event"));
-            msgBox.exec();
-
-            if (msgBox.clickButton() == 0) {
-                emit signalViewtransparentFrame(0);
-                return;
-            } else if (msgBox.clickButton() == 1) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.enddata.type = 2;
-                newschedule.enddata.date = info.beginDateTime.addDays(-1);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            } else if (msgBox.clickButton() == 2) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.ignore.append(info.beginDateTime);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            }
-        }
-    }
-    emit signalsUpdateShcedule();
+    //删除日程
+    CScheduleOperation _scheduleOperation(this);
+    _scheduleOperation.deleteSchedule(info);
     emit signalViewtransparentFrame(0);
 }
 
@@ -677,28 +659,22 @@ void DragInfoGraphicsView::slotCreate(const QDateTime &date)
     emit signalViewtransparentFrame(0);
 }
 
-ScheduleDtailInfo DragInfoGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
+ScheduleDataInfo DragInfoGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
 {
-    ScheduleDtailInfo info;
+    ScheduleDataInfo info;
 
     if (beginDate.daysTo(endDate) > 0) {
-        info.beginDateTime = QDateTime(beginDate.date(), QTime(0, 0, 0));
-        info.endDateTime = QDateTime(endDate.date(), QTime(23, 59, 59));
+        info.setBeginDateTime(QDateTime(beginDate.date(), QTime(0, 0, 0)));
+        info.setEndDateTime(QDateTime(endDate.date(), QTime(23, 59, 59)));
     } else {
-        info.beginDateTime = QDateTime(endDate.date(), QTime(0, 0, 0));
-        info.endDateTime = QDateTime(beginDate.date(), QTime(23, 59, 00));
+        info.setBeginDateTime(QDateTime(endDate.date(), QTime(0, 0, 0)));
+        info.setEndDateTime(QDateTime(beginDate.date(), QTime(23, 59, 00)));
     }
-    info.titleName = tr("New Event");
-    info.allday = true;
-    info.remind = true;
-    info.id = 0;
-    info.remindData.n = 1;
-    info.remindData.time = QTime(9, 0);
-    info.RecurID = 0;
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
-        1, info.type);
-    info.rpeat = 0;
-
+    info.setTitleName(tr("New Event"));
+    info.setAllDay(true);
+    info.setRemindData(RemindData(1, QTime(9, 0)));
+    info.setID(0);
+    info.setRecurID(0);
     return info;
 }
 
@@ -708,6 +684,14 @@ void DragInfoGraphicsView::ShowSchedule(DragInfoItem *infoitem)
         return;
     emit signalScheduleShow(true, infoitem->getData());
 
+}
+
+void DragInfoGraphicsView::setTheMe(int type)
+{
+    Q_UNUSED(type);
+    DPalette _painte;
+    //获取外框背景色
+    m_outerBorderColor = _painte.color(QPalette::Active, QPalette::Window);
 }
 
 void DragInfoGraphicsView::slideEvent(QPointF &startPoint, QPointF &stopPort)
@@ -756,3 +740,24 @@ int DragInfoGraphicsView::getDragStatus() const
     return m_DragStatus;
 }
 
+void DragInfoGraphicsView::setShowRadius(bool leftShow, bool rightShow)
+{
+    m_leftShowRadius = leftShow;
+    m_rightShowRadius = rightShow;
+}
+
+/**
+ * @brief DragInfoGraphicsView::slotDeleteItem      删除日程
+ */
+void DragInfoGraphicsView::slotDeleteItem()
+{
+    //获取选中日程
+    ScheduleDataInfo _pressSchedule = DragInfoItem::getPressSchedule();
+    //判断是否有效,如果为有效日程则删除
+    if (_pressSchedule.isValid()) {
+        CScheduleOperation _scheduleOperation(this);
+        _scheduleOperation.deleteSchedule(DragInfoItem::getPressSchedule());
+        //设置选择日程
+        DragInfoItem::setPressSchedule(ScheduleDataInfo());
+    }
+}

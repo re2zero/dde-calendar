@@ -19,7 +19,6 @@
 #include "weekwindow.h"
 #include "scheduleview.h"
 #include "constants.h"
-#include "calendardbus.h"
 #include "weekheadview.h"
 #include "weekview.h"
 #include "schedulesearchview.h"
@@ -36,11 +35,12 @@
 
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : CScheduleBaseWidget(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
+    setLunarVisible(m_calendarManager->getShowLunar());
 }
 
 CWeekWindow::~CWeekWindow()
@@ -48,28 +48,10 @@ CWeekWindow::~CWeekWindow()
 
 }
 
-void CWeekWindow::setDate(QDate date)
-{
-    if (!date.isValid()) return;
-
-    m_currentdate = date;
-    m_weekview->setCurrentDate(date);
-    update();
-    emit signalCurrentDate(date);
-}
-
-void CWeekWindow::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
-{
-    m_scheduleView->setSelectSchedule(scheduleInfo);
-}
-
-void CWeekWindow::setFirstWeekday(int weekday)
-{
-    m_weekview->setFirstWeekDay(weekday);
-    m_weekHeadView->setFirstWeekday(weekday);
-    m_scheduleView->setFirstWeekday(weekday);
-}
-
+/**
+ * @brief setLunarVisible   设置是否显示阴历信息
+ * @param state             是否显示阴历信息
+ */
 void CWeekWindow::setLunarVisible(bool state)
 {
     m_weekHeadView->setLunarVisible(state);
@@ -77,15 +59,11 @@ void CWeekWindow::setLunarVisible(bool state)
     m_scheduleView->setLunarVisible(state);
 }
 
+/**
+ * @brief initUI 初始化界面设置
+ */
 void CWeekWindow::initUI()
 {
-    m_contentBackground = new DFrame;
-    m_contentBackground->setAutoFillBackground(true);
-    DPalette anipa = m_contentBackground->palette();
-    anipa.setColor(DPalette::Background, "#F8F8F8");
-    m_contentBackground->setPalette(anipa);
-    m_contentBackground->setContentsMargins(0, 0, 0, 0);
-
     m_today = new CTodayButton;
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedSize(DDEWeekCalendar::WTodayWindth, DDEWeekCalendar::WTodayHeight);
@@ -114,10 +92,10 @@ void CWeekWindow::initUI()
     Lunadpa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_YearLabel->setPalette(Lunadpa);
 
-    m_YearLunarLabel = new QLabel(m_contentBackground);
+    m_YearLunarLabel = new QLabel(this);
     m_YearLunarLabel->setFixedSize(DDEWeekCalendar::W_YLunatLabelWindth, DDEWeekCalendar::W_YLunatLabelHeight);
 
-    m_weekview  = new CWeekView(this);
+    m_weekview  = new CWeekView(&CalendarDateDataManager::getWeekNumOfYear, this);
 
     m_weekLabel = new QLabel();
     m_weekLabel->setFixedHeight(DDEWeekCalendar::W_YLableHeight);
@@ -202,11 +180,12 @@ void CWeekWindow::initUI()
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 0, 0, 10);
     m_tmainLayout->addLayout(ssLayout);
-
-    m_contentBackground->setLayout(m_tmainLayout);
-    setCentralWidget(m_contentBackground);
+    this->setLayout(m_tmainLayout);
 }
 
+/**
+ * @brief initConnection 初始化信号和槽的连接
+ */
 void CWeekWindow::initConnection()
 {
     connect(m_today, &CTodayButton::clicked, this, &CWeekWindow::slottoday);
@@ -214,14 +193,9 @@ void CWeekWindow::initConnection()
     connect(m_weekview, &CWeekView::signalBtnPrev, this, &CWeekWindow::slotprev);
     //周数信息区域后按钮点击事件关联触发后一周
     connect(m_weekview, &CWeekView::signalBtnNext, this, &CWeekWindow::slotnext);
-    connect(m_weekview, &CWeekView::signalsSelectDate, this, &CWeekWindow::slotCurrentWeek);
-    connect(m_weekHeadView, &CWeekHeadView::signalcurrentLunarDateChanged, this, &CWeekWindow::slotcurrentDateLunarChanged);
-    connect(m_weekHeadView, &CWeekHeadView::signalcurrentDateChanged, this, &CWeekWindow::slotcurrentDateChanged);
-    connect(m_scheduleView, &CScheduleView::signalsUpdateShcedule, this, &CWeekWindow::slotTransitSchedule);
-    connect(m_scheduleView, &CScheduleView::signalsCurrentScheduleDate, this, &CWeekWindow::signalsCurrentScheduleDate);
+    connect(m_weekview, &CWeekView::signalsSelectDate, this, &CWeekWindow::slotSelectDate);
     connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CWeekWindow::signalViewtransparentFrame);
-    connect(m_weekHeadView, &CWeekHeadView::signalsViewSelectDate, this, &CWeekWindow::signalsViewSelectDate);
-    connect(m_weekHeadView, &CWeekHeadView::signaleSchedulHide, this, &CWeekWindow::slotScheduleHide);
+    connect(m_weekHeadView, &CWeekHeadView::signalsViewSelectDate, this, &CWeekWindow::slotViewSelectDate);
     connect(m_weekview, &CWeekView::signalIsDragging, this, &CWeekWindow::slotIsDragging);
     //日程信息区域滚动信号关联
     connect(m_scheduleView, &CScheduleView::signalAngleDelta, this, &CWeekWindow::slotAngleDelta);
@@ -229,14 +203,13 @@ void CWeekWindow::initConnection()
     connect(m_weekHeadView, &CWeekHeadView::signalAngleDelta, this, &CWeekWindow::slotAngleDelta);
 }
 
+/**
+ * @brief setTheMe  根据系统主题类型设置颜色
+ * @param type      系统主题类型
+ */
 void CWeekWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
-        DPalette anipa = m_contentBackground->palette();
-        anipa.setColor(DPalette::Background, "#F8F8F8");
-        m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);
-
         DPalette todaypa = m_today->palette();
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         todaypa.setColor(DPalette::ButtonText, todayColor);
@@ -269,11 +242,6 @@ void CWeekWindow::setTheMe(int type)
         m_weekLabel->setPalette(wpa);
         m_weekLabel->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
-        DPalette anipa = m_contentBackground->palette();
-        anipa.setColor(DPalette::Background, "#252525");
-        m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);
-
         DPalette todaypa = m_today->palette();
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         todaypa.setColor(DPalette::ButtonText, todayColor);
@@ -309,142 +277,167 @@ void CWeekWindow::setTheMe(int type)
     m_scheduleView->setTheMe(type);
 }
 
+/**
+ * @brief setTime 设置CScheduleView的时间
+ * @param time 时间
+ */
 void CWeekWindow::setTime(QTime time)
 {
     m_scheduleView->setTime(time);
 }
+
+/**
+ * @brief setSearchWFlag 设置搜索标志
+ * @param flag 是否进行了搜索
+ */
 void CWeekWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;
-    m_weekview->setsearchfalg(flag);
     update();
 }
 
-void CWeekWindow::clearSearch()
-{
-}
-
+/**
+ * @brief CWeekWindow::updateHigh       更新全天区域高度
+ */
 void CWeekWindow::updateHigh()
 {
     m_scheduleView->updateHigh();
 }
-void CWeekWindow::slotReturnTodayUpdate()
+
+/**
+ * @brief CWeekWindow::setYearData      设置年显示和今天按钮显示
+ */
+void CWeekWindow::setYearData()
 {
-    setDate(QDate::currentDate());
+    if (getSelectDate() == getCurrendDateTime().date()) {
+        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
+    } else {
+        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
+    }
+    if (getShowLunar()) {
+        m_YearLabel->setText(QString::number(getSelectDate().year()) + tr("Y"));
+    } else {
+        m_YearLabel->setText(QString::number(getSelectDate().year()));
+    }
 }
 
+/**
+ * @brief CWeekWindow::updateShowDate       更新显示时间
+ * @param isUpdateBar
+ */
+void CWeekWindow::updateShowDate(const bool isUpdateBar)
+{
+    setYearData();
+    QVector<QDate> _weekShowData = m_calendarManager->getCalendarDateDataManage()->getWeekDate(getSelectDate());
+    m_weekHeadView->setWeekDay(_weekShowData, getSelectDate());
+    //获取一周的开始结束时间
+    m_startDate = _weekShowData.first();
+    m_stopDate = _weekShowData.last();
+    //如果时间无效则打印log
+    if (m_startDate.isNull() || m_stopDate.isNull()) {
+        qWarning() << "week start or stop date error";
+    }
+    //设置全天和非全天显示时间范围
+    m_scheduleView->setRange(m_startDate, m_stopDate);
+    //是否更新显示周数窗口
+    if (isUpdateBar) {
+        m_weekview->setCurrent(getCurrendDateTime());
+        m_weekview->setSelectDate(getSelectDate());
+    }
+    if (getShowLunar())
+        updateShowLunar();
+    updateShowSchedule();
+    update();
+}
+
+/**
+ * @brief CWeekWindow::updateShowSchedule       更新日程显示
+ */
+void CWeekWindow::updateShowSchedule()
+{
+    QMap<QDate, QVector<ScheduleDataInfo> > _weekScheduleInfo = m_calendarManager->getScheduleTask()->getScheduleInfo(m_startDate, m_stopDate);
+    m_scheduleView->setShowScheduleInfo(_weekScheduleInfo);
+}
+
+/**
+ * @brief CWeekWindow::updateShowLunar                  更新显示农历信息
+ */
+void CWeekWindow::updateShowLunar()
+{
+    getLunarInfo();
+    m_YearLunarLabel->setText(m_lunarYear);
+    QMap<QDate, CaHuangLiDayInfo> _weekHuangliInfo = m_calendarManager->getScheduleTask()->getHuangliInfo(m_startDate, m_stopDate);
+    m_weekHeadView->setHunagliInfo(_weekHuangliInfo);
+}
+
+/**
+ * @brief CWeekWindow::setSelectSearchScheduleInfo      设置选中搜索日程
+ * @param info
+ */
+void CWeekWindow::setSelectSearchScheduleInfo(const ScheduleDataInfo &info)
+{
+    m_scheduleView->setSelectSchedule(info);
+}
+
+/**
+ * @brief CWeekWindow::slotIsDragging                   判断是否可以拖拽
+ * @param isDragging
+ */
 void CWeekWindow::slotIsDragging(bool &isDragging)
 {
     isDragging = m_scheduleView->IsDragging();
 }
 
-void CWeekWindow::slotupdateSchedule(int id)
+/**
+ * @brief CWeekWindow::slotViewSelectDate       切换日视图并设置选择时间
+ * @param date
+ */
+void CWeekWindow::slotViewSelectDate(const QDate &date)
 {
-    Q_UNUSED(id);
-    m_scheduleView->slotupdateSchedule();
+    if (setSelectDate(date)) {
+        emit signalSwitchView(3);
+    }
 }
 
-void CWeekWindow::slotTransitSchedule(int id)
-{
-    emit signalsWUpdateShcedule(this, id);
-}
-
-void CWeekWindow::slotTransitSearchSchedule(int id)
-{
-    m_scheduleView->slotupdateSchedule();
-    emit signalsWUpdateShcedule(this, id);
-}
-
+/**
+ * @brief slotprev 切换到上一周，隐藏日程浮框
+ */
 void CWeekWindow::slotprev()
 {
-    slotScheduleHide();
-    QDate tcurrent = m_currentdate.addDays(-DDEWeekCalendar::AFewDaysofWeek);
-
-    if (tcurrent.year() < DDECalendar::QueryEarliestYear)
-        return;
-    if (m_currentdate.year() >= DDECalendar::QueryEarliestYear) {
-        m_currentdate = tcurrent;
-        setDate(m_currentdate);
-    } else {
-    }
+    switchDate(getSelectDate().addDays(-7));
 }
 
+/**
+ * @brief slotnext 切换到下一周，隐藏日程浮框
+ */
 void CWeekWindow::slotnext()
 {
-    slotScheduleHide();
-    m_currentdate = m_currentdate.addDays(DDEWeekCalendar::AFewDaysofWeek);
-    setDate(m_currentdate);
+    switchDate(getSelectDate().addDays(7));
 }
 
+/**
+ * @brief slottoday     返回到当前时间，隐藏日程浮框
+ */
 void CWeekWindow::slottoday()
 {
-    slotScheduleHide();
-    emit signalsReturnTodayUpdate(this);
-    setDate(QDate::currentDate());
+    switchDate(getCurrendDateTime().date());
 }
 
-void CWeekWindow::slotCurrentWeek(QDate date, QDate currentDate)
+/**
+ * @brief CWeekWindow::slotSelectDate       修改选择时间
+ * @param date
+ */
+void CWeekWindow::slotSelectDate(const QDate &date)
 {
-    QVector<QDate> vDate;
-
-    for (int i = 0; i < DDEWeekCalendar::AFewDaysofWeek; i++)
-        vDate.append(date.addDays(i));
-    emit signalCurrentDate(vDate[0]);
-    m_currentdate = currentDate;
-    m_weekHeadView->setWeekDay(vDate);
-    m_weekHeadView->setCurrentDate(m_currentdate);
-    m_scheduleView->setRange(date, date.addDays(6));
+    //更新选择时间
+    setSelectDate(date);
+    updateShowDate(false);
 }
 
-void CWeekWindow::slotcurrentDateLunarChanged(QVector<QDate> vdate, QVector<CaLunarDayInfo> vdetail, int type)
-{
-    int offset = 0;
-
-    for (int i = 0; i < vdate.count(); ++i) {
-        if (vdate.at(i) == m_currentdate) {
-            offset = i;
-            break;
-        }
-    }
-    if (m_currentdate == QDate::currentDate()) {
-        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-    } else {
-        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
-    }
-    if (!vdate.isEmpty()) {
-        CaLunarDayInfo detail = vdetail.at(offset);
-        if (type == 1) {
-            int yearnum = vdate.at(0).year();
-            if (yearnum < DDECalendar::QueryEarliestYear)
-                yearnum = DDECalendar::QueryEarliestYear;
-            QLocale locale;
-            if (locale.language() == QLocale::Chinese) {
-                m_YearLabel->setText(QString::number(yearnum) + tr("Y"));
-            } else {
-                m_YearLabel->setText(QString::number(yearnum));
-            }
-            m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
-        }
-    }
-}
-
-void CWeekWindow::slotcurrentDateChanged(QDate date)
-{
-    if (m_currentdate == QDate::currentDate()) {
-        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-    } else {
-        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
-    }
-    m_currentdate = date;
-    m_scheduleView->setDate(date);
-}
-
-void CWeekWindow::slotsearchDateSelect(QDate date)
-{
-    setDate(date);
-    slotupdateSchedule();
-}
-
+/**
+ * @brief slotAngleDelta    接受处理滚动相对量
+ * @param delta             滚动相对量
+ */
 void CWeekWindow::slotAngleDelta(int delta)
 {
     //如果为拖拽状态则退出
@@ -456,6 +449,21 @@ void CWeekWindow::slotAngleDelta(int delta)
         }
     }
 }
+
+/**
+ * @brief CWeekWindow::switchDate       切换选择时间
+ * @param date
+ */
+void CWeekWindow::switchDate(const QDate &date)
+{
+    //隐藏提示框
+    slotScheduleHide();
+    //设置选择时间
+    if (setSelectDate(date, true)) {
+        updateData();
+    }
+}
+
 /**
  * @brief slotScheduleHide 隐藏日程浮框
  */
@@ -464,9 +472,12 @@ void CWeekWindow::slotScheduleHide()
     m_scheduleView->slotScheduleShow(false);
 }
 
+/**
+ * @brief resizeEvent 调整周视图窗口
+ * @param event 窗口大小调整事件
+ */
 void CWeekWindow::resizeEvent(QResizeEvent *event)
 {
-    qreal sleftMagin = 0.093 * width() + 0.5;
     qreal headh = height() * 0.0924 + 0.5;
     qreal dw = width() * 0.4186 + 0.5;
     int dh = 36;
@@ -486,12 +497,14 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
     } else {
         m_weekview->setFixedSize(qRound(dw - 100 + 72), dh);
     }
-
-    m_weekHeadView->setMounthLabelWidth(qRound(sleftMagin + 1), qRound(width() * 0.9802 + 0.5));
     m_weekHeadView->setFixedSize(width() - winframe, qRound(headh));
-    QMainWindow::resizeEvent(event);
+    QWidget::resizeEvent(event);
 }
 
+/**
+ * @brief mousePressEvent 鼠标单击隐藏日程浮框
+ * @param event 鼠标事件
+ */
 void CWeekWindow::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);

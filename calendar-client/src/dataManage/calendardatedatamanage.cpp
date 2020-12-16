@@ -22,31 +22,37 @@
 
 #include <QtMath>
 
+const int MonthMaxDay = 42;
+Qt::DayOfWeek     CalendarDateDataManager::m_weekFirstDay = Qt::Sunday;
 /**
  * @brief CalendarDateDataManage    构造函数
  * @param parent
  */
-CalendarDateDataManage::CalendarDateDataManage()
+CalendarDateDataManager::CalendarDateDataManager()
     : m_currentDateTime(QDateTime::currentDateTime())
-    ,m_selectDate(m_currentDateTime.date())
-    ,m_weekFirstDay(Qt::Sunday)
-    ,m_weekDayFormat("ddd")
+    , m_selectDate(m_currentDateTime.date())
+    , m_weekDayFormat("ddd")
 {
-
+    //设置显示年份,开始结束时间
+    setYearBeginAndEndDate(m_selectDate.year());
 }
 /**
  * @brief setSelectDate     设置选择时间
  * @param selectDate        选择时间
  */
-void CalendarDateDataManage::setSelectDate(const QDate &selectDate)
+void CalendarDateDataManager::setSelectDate(const QDate &selectDate, const bool isSwitchYear)
 {
     m_selectDate = selectDate;
+    if (isSwitchYear || m_showDateRange.startDate > m_selectDate || m_showDateRange.stopDate < m_selectDate) {
+        //如果选择时间不在显示范围内则修改显示年份,开始和结束时间
+        setYearBeginAndEndDate(m_selectDate.year());
+    }
 }
 /**
  * @brief getSelectDate     获取选择时间
  * @return                  返回选择时间
  */
-QDate CalendarDateDataManage::getSelectDate() const
+QDate CalendarDateDataManager::getSelectDate() const
 {
     return m_selectDate;
 }
@@ -54,7 +60,7 @@ QDate CalendarDateDataManage::getSelectDate() const
  * @brief setCurrentDateTime        设置当前时间
  * @param currentDateTime           当前时间
  */
-void CalendarDateDataManage::setCurrentDateTime(const QDateTime &currentDateTime)
+void CalendarDateDataManager::setCurrentDateTime(const QDateTime &currentDateTime)
 {
     m_currentDateTime = currentDateTime;
 }
@@ -62,7 +68,7 @@ void CalendarDateDataManage::setCurrentDateTime(const QDateTime &currentDateTime
  * @brief getCurrentDate    获取当前时间
  * @return                  返回当前时间
  */
-QDateTime CalendarDateDataManage::getCurrentDate() const
+QDateTime CalendarDateDataManager::getCurrentDate() const
 {
     return  m_currentDateTime;
 }
@@ -71,25 +77,26 @@ QDateTime CalendarDateDataManage::getCurrentDate() const
  * @param year              设置的年份
  * @return                  返回全年的时间，按照月份分组
  */
-QMap<int,QVector<QDate> > CalendarDateDataManage::getYearDate(const int &year)
+QMap<int, QVector<QDate> > CalendarDateDataManager::getYearDate()
 {
-    QMap<int ,QVector<QDate> > _resultMap;
+    QMap<int, QVector<QDate> > _resultMap;
     for (int i = 1; i < 13; ++i) {
-        _resultMap[i] = getMonthDate(year,i);
+        _resultMap[i] = getMonthDate(m_showDateRange.showYear, i);
     }
     return _resultMap;
 }
+
 /**
  * @brief getMonthDate      获取月份的所有时间
  * @param year              设置的年份
  * @param month             设置的月份
  * @return                  返回当月全部时间
  */
-QVector<QDate> CalendarDateDataManage::getMonthDate(const int &year, const int &month)
+QVector<QDate> CalendarDateDataManager::getMonthDate(const int &year, const int &month)
 {
     QVector<QDate> _resultDate;
     //自然月的第一天
-    const QDate _monthFirstDay{year,month,1};
+    const QDate _monthFirstDay{year, month, 1};
     //获取显示月的第一天
     const QDate _firstShowDayOfMonth = getFirstDayOfWeek(_monthFirstDay);
     //获取该月所有显示时间
@@ -103,13 +110,13 @@ QVector<QDate> CalendarDateDataManage::getMonthDate(const int &year, const int &
  * @param date              设置的时间
  * @return                  返回这个周全部时间
  */
-QVector<QDate> CalendarDateDataManage::getWeekDate(const QDate &date)
+QVector<QDate> CalendarDateDataManager::getWeekDate(const QDate &date)
 {
     QVector<QDate> _resultDate;
     //获取这个周的第一天日期
     const QDate _firstDayofWeek = getFirstDayOfWeek(date);
     //获取该周所有显示时间
-    for (int i = 0; i<7; ++i) {
+    for (int i = 0; i < 7; ++i) {
         _resultDate.append(_firstDayofWeek.addDays(i));
     }
     return _resultDate;
@@ -118,7 +125,7 @@ QVector<QDate> CalendarDateDataManage::getWeekDate(const QDate &date)
  * @brief getDayDateBySelectDate    根据选择时间获取当天日期
  * @return                  返回选择时间
  */
-QDate CalendarDateDataManage::getDayDateBySelectDate() const
+QDate CalendarDateDataManager::getDayDateBySelectDate() const
 {
     return m_selectDate;
 }
@@ -126,15 +133,16 @@ QDate CalendarDateDataManage::getDayDateBySelectDate() const
  * @brief setWeekFirstDay           设置每周以周几作为每周第一天
  * @param firstDay                  每周第一天
  */
-void CalendarDateDataManage::setWeekFirstDay(const Qt::DayOfWeek &firstDay)
+void CalendarDateDataManager::setWeekFirstDay(const Qt::DayOfWeek &firstDay)
 {
     m_weekFirstDay = firstDay;
+    setYearBeginAndEndDate(m_showDateRange.showYear);
 }
 /**
  * @brief getWeekFirstDay           获取每周以周几作为每周第一天
  * @return                          每周第一天
  */
-Qt::DayOfWeek CalendarDateDataManage::getWeekFirstDay() const
+Qt::DayOfWeek CalendarDateDataManager::getWeekFirstDay()
 {
     return  m_weekFirstDay;
 }
@@ -144,7 +152,7 @@ Qt::DayOfWeek CalendarDateDataManage::getWeekFirstDay() const
  *                      0 "dddd"
  *                      1 "ddd"
  */
-void CalendarDateDataManage::setWeekDayFormatByID(const int &weekDayFormatID)
+void CalendarDateDataManager::setWeekDayFormatByID(const int &weekDayFormatID)
 {
     switch (weekDayFormatID) {
     case 0:
@@ -161,38 +169,56 @@ void CalendarDateDataManage::setWeekDayFormatByID(const int &weekDayFormatID)
  * "ddd"    周一
  * "dddd"   星期一
  */
-QString CalendarDateDataManage::getWeekDayFormat() const
+QString CalendarDateDataManager::getWeekDayFormat() const
 {
     return m_weekDayFormat;
+}
+
+/**
+ * @brief CalendarDateDataManager::getShowDateRange     获取显示年,开始结束时间
+ * @return
+ */
+ShowDateRange CalendarDateDataManager::getShowDateRange() const
+{
+    return m_showDateRange;
 }
 /**
  * @brief getFirstDayOfWeek         根据日期获取当前周第一天的日期
  * @param date                      选择的日期
  * @return                          当前周第一天的日期
  */
-QDate CalendarDateDataManage::getFirstDayOfWeek(const QDate &date)
+QDate CalendarDateDataManager::getFirstDayOfWeek(const QDate &date)
 {
     //根据选择时间周工作日和每周第一天的周工作日得到偏移量
     int _offset = date.dayOfWeek() - m_weekFirstDay;
     //根据偏移量获取需要添加还有减去的偏移天数
-    const int _offsetDay = _offset <0 ?_offset +7:_offset;
+    const int _offsetDay = _offset < 0 ? _offset + 7 : _offset;
     //返回这周第一天的日期
     return date.addDays(0 - _offsetDay);
 }
 /**
- * @brief getWeekNumOfYear		根据日期获取该日期处于该年第多少周
+ * @brief getWeekNumOfYear      根据日期获取该日期处于该年第多少周
  * @param date                  选择的日期
  * @return                      处于当年第多少周
  */
-int CalendarDateDataManage::getWeekNumOfYear(const QDate &date)
+int CalendarDateDataManager::getWeekNumOfYear(const QDate &date)
 {
     int _weekNum {0};
     //该年第一天
-    const QDate _firstDayOfYear{date.year(),1,1};
+    const QDate _firstDayOfYear{date.year(), 1, 1};
     //该年显示的第一天日期
     const QDate _firstShowDayOfYear = getFirstDayOfWeek(_firstDayOfYear);
     //处于该年显示第多少天
     const qint64  _dayOfShowYear = _firstShowDayOfYear.daysTo(_firstDayOfYear) + date.dayOfYear();
-    _weekNum = qFloor(_dayOfShowYear/7) + 1;
+    _weekNum = qFloor(_dayOfShowYear / 7) + 1;
     return  _weekNum;
+}
+
+void CalendarDateDataManager::setYearBeginAndEndDate(const int year)
+{
+    m_showDateRange.showYear = year;
+    QDate _firstDayOfJan(year, 1, 1);
+    m_showDateRange.startDate = getFirstDayOfWeek(_firstDayOfJan);
+    QDate _firstDayOfDec(year, 12, 1);
+    m_showDateRange.stopDate = getFirstDayOfWeek(_firstDayOfDec).addDays(MonthMaxDay - 1);
 }

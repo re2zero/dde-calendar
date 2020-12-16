@@ -19,7 +19,7 @@
 #ifndef SCHEDULEITEM_H
 #define SCHEDULEITEM_H
 
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
 #include "draginfoitem.h"
 
 #include <QGraphicsItem>
@@ -34,13 +34,15 @@ class CScheduleItem : public DragInfoItem
 public:
     CScheduleItem(QRectF rect, QGraphicsItem *parent = nullptr, int type = 0);
     ~CScheduleItem() override;
-    void setData(const ScheduleDtailInfo &info, QDate date, int totalNum);
-    bool hasSelectSchedule(const ScheduleDtailInfo &info);
+    //设置显示数据
+    void setData(const ScheduleDataInfo &info, QDate date, int totalNum);
+    //是否含有选中日程
+    bool hasSelectSchedule(const ScheduleDataInfo &info);
     int getType()
     {
         return m_type;
     }
-    ScheduleDtailInfo getData() const
+    ScheduleDataInfo getData() const
     {
         return m_vScheduleInfo;
     }
@@ -48,13 +50,12 @@ public:
     {
         return m_date;
     }
-
 private:
+    //根据字体大小,宽度和高度将标题切换为多行
     void splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm);
-
 private:
+    //绘制item显示效果
     void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;
-
 private:
     QDate m_date;
     int m_type = 0;

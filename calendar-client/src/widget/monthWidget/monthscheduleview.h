@@ -19,7 +19,8 @@
 #ifndef MONTHSCHEDULEVIEW_H
 #define MONTHSCHEDULEVIEW_H
 
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
+#include "scheduledaterangeinfo.h"
 #include "draginfoitem.h"
 
 #include <DLabel>
@@ -48,7 +49,7 @@ public:
     CMonthScheduleView(QWidget *parent, QGraphicsScene *scene);
     ~CMonthScheduleView() override;
     void setallsize(int w, int h, int left, int top, int buttom, int itemHeight = 22);
-    void setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth);
+    void setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, int currentMonth);
     void setTheMe(int type = 0);
     void updateData();
     void updateHigh();
@@ -57,15 +58,15 @@ public:
     {
         return m_ItemHeight;
     }
-    void updateDate(const ScheduleDtailInfo &info);
-    void changeDate(const ScheduleDtailInfo &info);
-    void updateDate(const int row, const ScheduleDtailInfo &info);
+    void updateDate(const ScheduleDataInfo &info);
+    void changeDate(const ScheduleDataInfo &info);
+    void updateDate(const int row, const ScheduleDataInfo &info);
 signals:
     void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
-    void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
+    void signalPressScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
 public slots:
     void slotdeleteitem(CMonthScheduleWidgetItem *item);
     void slotedititem(CMonthScheduleWidgetItem *item, int type = 0);
@@ -78,7 +79,7 @@ private:
     void computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh);
 
 private:
-    QVector<ScheduleDateRangeInfo> m_data;
+    QMap<QDate, QVector<ScheduleDataInfo> > m_data;
     int m_cNum = 2; //日程层数
     QWidget *m_parernt = nullptr;
     int m_currentMonth = 0;
@@ -104,9 +105,9 @@ public:
     ~CWeekScheduleView() override;
 
 public:
-    void setData(QVector<ScheduleDateRangeInfo> &data, const int position, const int count = 7);
-    bool addData(const ScheduleDtailInfo &info);
-    void changeDate(const ScheduleDtailInfo &info);
+    void setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, const QDate  &startDate, const QDate &stopDate);
+    bool addData(const ScheduleDataInfo &info);
+    void changeDate(const ScheduleDataInfo &info);
     void setHeight(const int ScheduleHeight, const int DayHeigth);
     QVector<RowScheduleInfo> getMScheduleInfo() const
     {
@@ -116,7 +117,7 @@ public:
     {
         return m_scheduleShowItem;
     }
-    void updateSchedule(const bool isNormalDisplay, const ScheduleDtailInfo &info = ScheduleDtailInfo());
+    void updateSchedule(const bool isNormalDisplay, const ScheduleDataInfo &info = ScheduleDataInfo());
     void clearItem();
 
 private:
@@ -130,12 +131,12 @@ private:
      * @param addRow                需要添加的行
      * @param addInfo               添加的日程
      */
-    void addShowSchedule(const int &startPos, const int &endPos, const int &addRow, const ScheduleDtailInfo &addInfo);
+    void addShowSchedule(const int &startPos, const int &endPos, const int &addRow, const ScheduleDataInfo &addInfo);
 
 private:
     QVector<QGraphicsRectItem *> m_scheduleShowItem;
     QVector<RowScheduleInfo> m_MScheduleInfo;
-    QVector<ScheduleDtailInfo> m_ScheduleInfo;
+    QVector<ScheduleDataInfo> m_ScheduleInfo;
     QVector<int> m_ColumnScheduleCount;
     int m_ScheduleHeight = 0;
     int m_DayHeight = 0;
@@ -171,7 +172,7 @@ public:
     }
 signals:
     void signalsCurrentScheduleDate(QDate date);
-    void signalPressScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
+    void signalPressScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;

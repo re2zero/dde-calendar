@@ -21,7 +21,7 @@
 #ifndef SchecduleRemindWidget_H
 #define SchecduleRemindWidget_H
 
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
 #include "scheduledatamanage.h"
 
 #include <DWidget>
@@ -38,14 +38,14 @@ class SchecduleRemindWidget : public DArrowRectangle
 public:
     explicit SchecduleRemindWidget(QWidget *parent = nullptr);
     ~SchecduleRemindWidget() override;
-    void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
+    void setData(const ScheduleDataInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
 
 signals:
 
 public slots:
 private:
     CenterWidget *m_centerWidget = nullptr;
-    ScheduleDtailInfo     m_ScheduleInfo;
+    ScheduleDataInfo     m_ScheduleInfo;
     CSchedulesColor gdcolor;
 };
 
@@ -56,7 +56,7 @@ class CenterWidget : public DFrame
 public:
     explicit CenterWidget(DWidget *parent = nullptr);
     ~CenterWidget() override;
-    void setData(const ScheduleDtailInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
+    void setData(const ScheduleDataInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
     void setTheMe(const int type = 0);
 private:
     void UpdateTextList();
@@ -68,7 +68,7 @@ private:
     int textwidth;
     int textheight;
     const int textRectWidth = 165;
-    ScheduleDtailInfo     m_ScheduleInfo;
+    ScheduleDataInfo     m_ScheduleInfo;
     CSchedulesColor gdcolor;
     QColor textColor;
     QColor timeColor;

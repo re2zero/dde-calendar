@@ -50,6 +50,8 @@ QTime CTimeEdit::getTime()
 
 void CTimeEdit::initUI()
 {
+    //关闭自动补全
+    this->setAutoCompletion(false);
     m_timeEdit = new DLineEdit(this);
     m_timeEdit->lineEdit()->setInputMask("00:00;0");
     m_timeEdit->setClearButtonEnabled(false);

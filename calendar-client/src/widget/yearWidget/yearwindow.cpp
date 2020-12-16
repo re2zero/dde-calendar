@@ -20,7 +20,7 @@
 #include "yearview.h"
 #include "constants.h"
 #include "schedulesearchview.h"
-#include "calendardbus.h"
+#include "yearscheduleview.h"
 
 #include <DPalette>
 #include <DHiDPIHelper>
@@ -28,14 +28,14 @@
 #include <QMessageBox>
 #include <QMenuBar>
 #include <QMouseEvent>
+#include <QApplication>
 
 DGUI_USE_NAMESPACE
 CYearWindow::CYearWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : CScheduleBaseWidget(parent)
 {
     initUI();
     initConnection();
-    setWindowFlags(Qt::FramelessWindowHint); //去掉标题
     setContentsMargins(0, 0, 0, 0);
     //设置接受触摸事件
     this->setAttribute(Qt::WA_AcceptTouchEvents);
@@ -43,6 +43,8 @@ CYearWindow::CYearWindow(QWidget *parent)
     grabGesture(Qt::TapGesture);
     grabGesture(Qt::TapAndHoldGesture);
     grabGesture(Qt::PanGesture);
+    //设置年份显示
+    setYearData();
 }
 
 CYearWindow::~CYearWindow()
@@ -50,6 +52,12 @@ CYearWindow::~CYearWindow()
 
 }
 
+/**
+ * @brief eventFilter 过滤器，过滤返回今天的按钮事件
+ * @param watched 事件对象
+ * @param event 事件类型
+ * @return false
+ */
 bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == m_today) {
@@ -57,24 +65,30 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
             slottoday();
         }
     }
-    return QMainWindow::eventFilter(watched, event);
+    return QWidget::eventFilter(watched, event);
 }
 
+/**
+ * @brief mousePressEvent 鼠标单击事件，单击日期区域外，隐藏日程浮框
+ * @param event 鼠标事件
+ */
 void CYearWindow::mousePressEvent(QMouseEvent *event)
 {
     if (event->source() == Qt::MouseEventSynthesizedByQt) {
         //如果为触摸点击则记录开始坐标
-        m_TouchBeginPoint = event->pos();
+        m_touchBeginPoint = event->pos();
     }
-    m_YearWidget->slotHideInfo();
-    QMainWindow::mousePressEvent(event);
+    QWidget::mousePressEvent(event);
 }
 
+/**
+ * @brief resizeEvent 窗口大小调整事件，搜索时，调整边框大小
+ * @param event 窗口大小调整事件
+ */
 void CYearWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
     m_topWidget->setGeometry(0, 0, this->width(), DDEMonthCalendar::M_YTopHeight);
-
     if (m_searchfalg) {
         m_tmainLayout->setContentsMargins(10, 0, 2, 0);
         m_topWidget->setContentsMargins(10, 0, 2, 0);
@@ -89,18 +103,18 @@ void CYearWindow::mouseMoveEvent(QMouseEvent *event)
     if (event->source() == Qt::MouseEventSynthesizedByQt) {
         return;
     }
-    QMainWindow::mouseMoveEvent(event);
+    QWidget::mouseMoveEvent(event);
 }
 
 void CYearWindow::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->source() == Qt::MouseEventSynthesizedByQt) {
         //如果为触摸移动状态
-        if (m_TouchState == 2) {
+        if (m_touchState == 2) {
             //获取停止位置
             QPointF stopPoint = event->pos();
             //计算出移动状态
-            TouchGestureData touchGData = calculateAzimuthAngle(m_TouchBeginPoint, stopPoint);
+            TouchGestureData touchGData = calculateAzimuthAngle(m_touchBeginPoint, stopPoint);
             //如果方向为上下则切换年份
             switch (touchGData.movingDirection) {
             case TouchGestureData::T_TOP: {
@@ -115,7 +129,7 @@ void CYearWindow::mouseReleaseEvent(QMouseEvent *event)
                 break;
             }
         }
-        m_TouchState = 0;
+        m_touchState = 0;
     }
 }
 
@@ -123,9 +137,14 @@ bool CYearWindow::event(QEvent *e)
 {
     if (e->type() == QEvent::Gesture)
         return gestureEvent(static_cast<QGestureEvent *>(e));
-    return QMainWindow::event(e);
+    return QWidget::event(e);
 }
 
+/**
+ * @brief gestureEvent      触摸手势处理
+ * @param event             手势事件
+ * @return
+ */
 bool CYearWindow::gestureEvent(QGestureEvent *event)
 {
     if (QGesture *tap = event->gesture(Qt::TapGesture))
@@ -135,6 +154,10 @@ bool CYearWindow::gestureEvent(QGestureEvent *event)
     return true;
 }
 
+/**
+ * @brief tapGestureTriggered       轻切手势处理
+ * @param tap                       轻切手势事件
+ */
 void CYearWindow::tapGestureTriggered(QTapGesture *tap)
 {
     switch (tap->state()) {
@@ -142,11 +165,11 @@ void CYearWindow::tapGestureTriggered(QTapGesture *tap)
         break;
     }
     case Qt::GestureStarted: {
-        m_TouchState = 1;
+        m_touchState = 1;
         break;
     }
     case Qt::GestureUpdated: {
-        m_TouchState = 2;
+        m_touchState = 2;
         break;
     }
     case Qt::GestureFinished: {
@@ -158,6 +181,10 @@ void CYearWindow::tapGestureTriggered(QTapGesture *tap)
     }
 }
 
+/**
+ * @brief panTriggered      多指滑动手势处理
+ * @param pan               多指滑动手势
+ */
 void CYearWindow::panTriggered(QPanGesture *pan)
 {
     switch (pan->state()) {
@@ -194,6 +221,12 @@ void CYearWindow::panTriggered(QPanGesture *pan)
     }
 }
 
+/**
+ * @brief calculateAzimuthAngle     计算方位角
+ * @param startPoint            起始坐标
+ * @param stopPoint            结束坐标
+ * @return      触摸手势数据
+ */
 TouchGestureData CYearWindow::calculateAzimuthAngle(QPointF &startPoint,  QPointF &stopPoint)
 {
     TouchGestureData _result{};
@@ -219,28 +252,12 @@ TouchGestureData CYearWindow::calculateAzimuthAngle(QPointF &startPoint,  QPoint
     _result.lenght = line;
     return  _result;
 }
+
 /**
- * @brief setDate 设置年视图当前显示的时间
- * @param date 年视图当前显示的时间
+ * @brief initUI 初始化年视图的界面显示
  */
-void CYearWindow::setDate(QDate date)
-{
-    if (!date.isValid()) return;
-
-    m_YearWidget->setDate(date);
-    m_YearWidget->slotcurrentDateChanged(date);
-    emit signalCurrentDate(date);
-    slotUpdateCurrentDate(date);
-}
-
 void CYearWindow::initUI()
 {
-    m_contentBackground = new DFrame(this);
-
-    DPalette anipa = m_contentBackground->palette();
-    anipa.setColor(DPalette::Background, "#F8F8F8");
-    m_contentBackground->setAutoFillBackground(true);
-    m_contentBackground->setPalette(anipa);
     m_today = new QLabel(this);
     m_today->installEventFilter(this);
 
@@ -266,162 +283,118 @@ void CYearWindow::initUI()
     m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
     m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
 
-    m_YearLabel = new QLabel(this);
-    m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
+    m_yearLabel = new QLabel(this);
+    m_yearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
 
     QFont t_labelF;
     t_labelF.setWeight(QFont::Medium);
     t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
-    m_YearLabel->setFont(t_labelF);
-    DPalette pa = m_YearLabel->palette();
+    m_yearLabel->setFont(t_labelF);
+    DPalette pa = m_yearLabel->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
-    m_YearLabel->setPalette(pa);
+    m_yearLabel->setPalette(pa);
 
-    m_YearLunarLabel = new QLabel(m_contentBackground);
-    m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
+    m_yearLunarLabel = new QLabel(this);
+    m_yearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
 
     QFont ylabelF;
     ylabelF.setWeight(QFont::Medium);
     ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
-    m_YearLunarLabel->setFont(ylabelF);
-    DPalette Lunapa = m_YearLunarLabel->palette();
+    m_yearLunarLabel->setFont(ylabelF);
+    DPalette Lunapa = m_yearLunarLabel->palette();
     Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-    m_YearLunarLabel->setPalette(Lunapa);
+    m_yearLunarLabel->setPalette(Lunapa);
 
-    m_YearLunarDayLabel = new QLabel(m_contentBackground);
-    m_YearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunatLabelHeight);
-    m_YearLunarDayLabel->setFont(ylabelF);
-    m_YearLunarDayLabel->setPalette(Lunapa);
-    m_YearLunarDayLabel->setAlignment(Qt::AlignRight);
+    m_yearLunarDayLabel = new QLabel(this);
+    m_yearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunatLabelHeight);
+    m_yearLunarDayLabel->setFont(ylabelF);
+    m_yearLunarDayLabel->setPalette(Lunapa);
+    m_yearLunarDayLabel->setAlignment(Qt::AlignRight);
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
     yeartitleLayout->setSpacing(0);
     yeartitleLayout->setContentsMargins(11, 12, 8, 10);
-    yeartitleLayout->addWidget(m_YearLabel);
+    yeartitleLayout->addWidget(m_yearLabel);
 
     QHBoxLayout *yeartitleLayout1 = new QHBoxLayout;
     yeartitleLayout1->setMargin(0);
     yeartitleLayout1->setSpacing(0);
     yeartitleLayout1->setContentsMargins(4, 9, 0, 7);
-    yeartitleLayout1->addWidget(m_YearLunarLabel);
+    yeartitleLayout1->addWidget(m_yearLunarLabel);
     yeartitleLayout1->addSpacing(390);
     yeartitleLayout1->addStretch();
-    yeartitleLayout1->addWidget(m_YearLunarDayLabel, 0, Qt::AlignVCenter);
+    yeartitleLayout1->addWidget(m_yearLunarDayLabel, 0, Qt::AlignVCenter);
 
-    m_todayframe = new CustomFrame(this);
-    m_todayframe->setContentsMargins(0, 0, 0, 0);
-    m_todayframe->setRoundState(true, true, true, true);
-    m_todayframe->setBColor(Qt::white);
-    m_todayframe->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
-    m_todayframe->setboreder(1);
+    m_todayFrame = new CustomFrame(this);
+    m_todayFrame->setContentsMargins(0, 0, 0, 0);
+    m_todayFrame->setRoundState(true, true, true, true);
+    m_todayFrame->setBColor(Qt::white);
+    m_todayFrame->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_todayFrame->setboreder(1);
     QHBoxLayout *todaylayout = new QHBoxLayout;
     todaylayout->setMargin(0);
     todaylayout->setSpacing(0);
     todaylayout->addWidget(m_prevButton);
     todaylayout->addWidget(m_today, 0, Qt::AlignCenter);
     todaylayout->addWidget(m_nextButton);
-    m_todayframe->setLayout(todaylayout);
+    m_todayFrame->setLayout(todaylayout);
     yeartitleLayout1->addSpacing(10);
-    yeartitleLayout1->addWidget(m_todayframe);
+    yeartitleLayout1->addWidget(m_todayFrame);
     yeartitleLayout->addLayout(yeartitleLayout1);
 
-    m_topWidget = new DWidget(this);
-    m_topWidget->setLayout(yeartitleLayout);
-
-    YearWidget_First = new YearFrame();
-    YearWidget_Second = new YearFrame();
+    m_firstYearWidget = new YearFrame();
+    m_secondYearWidget = new YearFrame();
 
     m_StackedWidget = new  AnimationStackedWidget(AnimationStackedWidget::TB);
-    m_StackedWidget->addWidget(YearWidget_First);
-    m_StackedWidget->addWidget(YearWidget_Second);
+    m_StackedWidget->addWidget(m_firstYearWidget);
+    m_StackedWidget->addWidget(m_secondYearWidget);
     m_StackedWidget->setContentsMargins(0, 0, 0, 0);
     m_StackedWidget->setDuration(600);
+    m_StackedWidget->setFrameShape(QFrame::NoFrame);
+    m_StackedWidget->setFrameShadow(QFrame::Plain);
 
-    m_YearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(0));
+    m_yearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(0));
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->setMargin(0);
     hhLayout->setSpacing(0);
     hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addWidget(m_StackedWidget);
 
-    m_tmainLayout = new QHBoxLayout;
+    m_tmainLayout = new QVBoxLayout;
     m_tmainLayout->setMargin(0);
     m_tmainLayout->setSpacing(0);
     m_tmainLayout->setContentsMargins(10, 0, 10, 0);
     m_tmainLayout->addLayout(hhLayout);
+    this->setLayout(m_tmainLayout);
 
-    m_contentBackground->setContentsMargins(0, 0, 0, 0);
-    m_contentBackground->setLayout(m_tmainLayout);
+    m_topWidget = new DWidget(this);
+    m_topWidget->setLayout(yeartitleLayout);
 
-    setCentralWidget(m_contentBackground);
+    m_Scheduleview = new CYearScheduleOutView(this);
 }
 
+/**
+ * @brief initConnection 初始化信号和槽的连接
+ */
 void CYearWindow::initConnection()
 {
     connect(m_prevButton, &DIconButton::clicked, this, &CYearWindow::slotprev);
     connect(m_nextButton, &DIconButton::clicked, this, &CYearWindow::slotnext);
-    connect(YearWidget_First,
-            &YearFrame::signaldoubleclickDate,
-            this,
-            &CYearWindow::signaldoubleclickDate);
-    connect(YearWidget_Second,
-            &YearFrame::signaldoubleclickDate,
-            this,
-            &CYearWindow::signaldoubleclickDate);
-
-    connect(YearWidget_First,
-            &YearFrame::signalselectMonth,
-            this,
-            &CYearWindow::signalselectMonth);
-
-    connect(YearWidget_Second,
-            &YearFrame::signalselectMonth,
-            this,
-            &CYearWindow::signalselectMonth);
-    connect(YearWidget_First,
-            &YearFrame::signalselectWeekwindow,
-            this,
-            &CYearWindow::signalselectWeekwindow);
-
-    connect(YearWidget_Second,
-            &YearFrame::signalselectWeekwindow,
-            this,
-            &CYearWindow::signalselectWeekwindow);
-
-    connect(YearWidget_First,
-            &YearFrame::signalUpdateYearDate,
-            this,
-            &CYearWindow::slotUpdateCurrentDate);
-    connect(YearWidget_Second,
-            &YearFrame::signalUpdateYearDate,
-            this,
-            &CYearWindow::slotUpdateCurrentDate);
-    connect(YearWidget_First,
-            &YearFrame::signalupdateschedule,
-            this,
-            &CYearWindow::signalupdateschedule);
-
-    connect(m_StackedWidget,
-            &AnimationStackedWidget::signalIsFinished,
-            this,
-            &CYearWindow::setYearData);
+    connect(m_StackedWidget, &AnimationStackedWidget::signalIsFinished, this, &CYearWindow::setYearData);
+    connect(m_firstYearWidget, &YearFrame::signalMousePress, this, &CYearWindow::slotMousePress);
+    connect(m_secondYearWidget, &YearFrame::signalMousePress, this, &CYearWindow::slotMousePress);
+    connect(m_Scheduleview, &CYearScheduleOutView::signalsViewSelectDate, this, &CYearWindow::slotMousePress);
+    connect(m_Scheduleview, &CYearScheduleOutView::signalViewtransparentFrame, this, &CYearWindow::signalViewtransparentFrame);
 }
 
-void CYearWindow::setLunarVisible(bool state)
-{
-    m_YearLunarLabel->setVisible(state);
-    m_YearLunarDayLabel->setVisible(state);
-}
-
+/**
+ * @brief setTheMe 设置系统主题
+ * @param type 主题类型
+ */
 void CYearWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
-        DPalette anipa = m_contentBackground->palette();
-        anipa.setColor(DPalette::Background, "#F8F8F8");
-        m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);
-
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::WindowText, QColor("#000000"));
         todaypa.setColor(DPalette::Background, Qt::white);
@@ -429,26 +402,21 @@ void CYearWindow::setTheMe(int type)
         m_today->setForegroundRole(DPalette::WindowText);
         m_today->setBackgroundRole(DPalette::Background);
 
-        m_todayframe->setBColor(Qt::white);
+        m_todayFrame->setBColor(Qt::white);
 
-        DPalette pa = m_YearLabel->palette();
+        DPalette pa = m_yearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
-        m_YearLabel->setPalette(pa);
-        m_YearLabel->setForegroundRole(DPalette::WindowText);
+        m_yearLabel->setPalette(pa);
+        m_yearLabel->setForegroundRole(DPalette::WindowText);
 
-        DPalette Lunapa = m_YearLunarLabel->palette();
+        DPalette Lunapa = m_yearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-        m_YearLunarLabel->setPalette(Lunapa);
-        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
+        m_yearLunarLabel->setPalette(Lunapa);
+        m_yearLunarLabel->setForegroundRole(DPalette::WindowText);
 
-        m_YearLunarDayLabel->setPalette(Lunapa);
-        m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);
+        m_yearLunarDayLabel->setPalette(Lunapa);
+        m_yearLunarDayLabel->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
-        DPalette anipa = m_contentBackground->palette();
-        anipa.setColor(DPalette::Background, "#252525");
-        m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);
-
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         QColor tbcolor = "#414141";
@@ -459,142 +427,252 @@ void CYearWindow::setTheMe(int type)
         m_today->setBackgroundRole(DPalette::Background);
         QColor tbcolor2 = "#414141";
         tbcolor2.setAlphaF(0.3);
-        m_todayframe->setBColor(tbcolor2);
-        DPalette pa = m_YearLabel->palette();
+        m_todayFrame->setBColor(tbcolor2);
+        DPalette pa = m_yearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-        m_YearLabel->setPalette(pa);
-        m_YearLabel->setForegroundRole(DPalette::WindowText);
-        DPalette Lunapa = m_YearLunarLabel->palette();
+        m_yearLabel->setPalette(pa);
+        m_yearLabel->setForegroundRole(DPalette::WindowText);
+        DPalette Lunapa = m_yearLunarLabel->palette();
         Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
-        m_YearLunarLabel->setPalette(Lunapa);
-        m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
-        m_YearLunarDayLabel->setPalette(Lunapa);
-        m_YearLunarDayLabel->setForegroundRole(DPalette::WindowText);
+        m_yearLunarLabel->setPalette(Lunapa);
+        m_yearLunarLabel->setForegroundRole(DPalette::WindowText);
+        m_yearLunarDayLabel->setPalette(Lunapa);
+        m_yearLunarDayLabel->setForegroundRole(DPalette::WindowText);
     }
-    YearWidget_First->setTheMe(type);
-    YearWidget_Second->setTheMe(type);
+    m_firstYearWidget->setTheMe(type);
+    m_secondYearWidget->setTheMe(type);
 
     DPalette palette = m_topWidget->palette();
     palette.setBrush(DPalette::WindowText, palette.color(DPalette::Window));
     m_topWidget->setAutoFillBackground(true);
     m_topWidget->setPalette(palette);
 }
+
+/**
+ * @brief CYearWindow::setSearchWFlag                   设置是否在进行搜索
+ * @param flag
+ */
 void CYearWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;
-    m_YearWidget->setSearchWFlag(flag);
 }
 
-void CYearWindow::clearSearch()
+/**
+ * @brief CYearWindow::updateShowDate                   更新显示时间
+ */
+void CYearWindow::updateShowDate(const bool isUpdateBar)
 {
+    Q_UNUSED(isUpdateBar);
+    QMap<int, QVector<QDate> > _yearShowData = m_calendarManager->getCalendarDateDataManage()->getYearDate();
+    m_yearWidget->setShowDate(getSelectDate(), _yearShowData);
 }
 
-void CYearWindow::getScheduleInfo()
+/**
+ * @brief CYearWindow::updateShowScheduleData           更新显示日程数据
+ */
+void CYearWindow::updateShowSchedule()
 {
-    m_YearWidget->getInfoAndSetLineFlag();
+    //获取显示日期中是否包含日程信息标志
+    QMap<QDate, bool> _fullInfo = m_calendarManager->getScheduleTask()->getDateHasSchedule();
+    m_yearWidget->setDateHasScheduleSign(_fullInfo);
 }
 
-void CYearWindow::slotTransitSearchSchedule(int id)
+/**
+ * @brief CYearWindow::updateShowLunar                  更新显示农历信息
+ */
+void CYearWindow::updateShowLunar()
 {
-    emit signalsWUpdateShcedule(this, id);
+    getLunarInfo();
+    m_yearWidget->setLunarYearDate(m_lunarYear);
+    //如果正在切换则退出
+    if (m_StackedWidget->IsRunning())
+        return;
+    setLunarShow();
 }
 
+/**
+ * @brief CYearWindow::updateSearchScheduleInfo         更新搜索日程信息
+ */
+void CYearWindow::updateSearchScheduleInfo()
+{
+    //获取搜索日程信息
+    QMap<QDate, QVector<ScheduleDataInfo> > _searchSchedule = m_calendarManager->getScheduleTask()->getSearchScheduleInfo();
+    m_yearWidget->setSearchSchedule(_searchSchedule);
+}
+
+/**
+ * @brief CYearWindow::setSelectSearchScheduleInfo      设置选中搜索日程
+ * @param info
+ */
+void CYearWindow::setSelectSearchScheduleInfo(const ScheduleDataInfo &info)
+{
+    Q_UNUSED(info);
+}
+
+/**
+ * @brief CYearWindow::slotSetScheduleHide              隐藏日程提示框
+ */
 void CYearWindow::slotSetScheduleHide()
 {
-    m_YearWidget->slotHideInfo();
+    m_Scheduleview->hide();
 }
 
+/**
+ * @brief CYearWindow::slotprev     切换上一年
+ */
 void CYearWindow::slotprev()
 {
-    m_YearWidget->slotHideInfo();
-
-    if (m_currentdate.year() == DDECalendar::QueryEarliestYear)
-        return;
-
-    if (m_StackedWidget->IsRunning()) return;
-
-    QDate tcurrent = QDate(m_currentdate.year() - 1, m_currentdate.month(), m_currentdate.day());
-
-    if (!tcurrent.isValid()) {
-        m_currentdate = QDate(m_currentdate.year() - 1, m_currentdate.month(), 1);
-    } else {
-        m_currentdate = tcurrent;
-    }
-    if (m_currentdate.year() >= DDECalendar::QueryEarliestYear) {
-        int index = m_StackedWidget->currentIndex();
-        index = qAbs(index - 1) % 2;
-        m_YearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(index));
-        m_YearWidget->setDate(m_currentdate);
-        m_StackedWidget->setPre();
-        emit signalCurrentDate(m_currentdate);
-    } else {
-    }
+    switchYear(-1);
 }
 
+/**
+ * @brief CYearWindow::slotnext     切换下一年
+ */
 void CYearWindow::slotnext()
 {
-    m_YearWidget->slotHideInfo();
-
-    if (m_StackedWidget->IsRunning()) return;
-    QDate tcurrent = QDate(m_currentdate.year() + 1, m_currentdate.month(), m_currentdate.day());
-
-    if (!tcurrent.isValid()) {
-        m_currentdate = QDate(m_currentdate.year() + 1, m_currentdate.month(), 1);
-    } else {
-        m_currentdate = tcurrent;
-    }
-    int index = m_StackedWidget->currentIndex();
-    index = (index + 1) % 2;
-    m_YearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(index));
-    m_YearWidget->setDate(m_currentdate);
-    m_StackedWidget->setNext();
-    emit signalCurrentDate(m_currentdate);
+    switchYear(1);
 }
 
+/**
+ * @brief CYearWindow::slottoday    返回当前时间
+ */
 void CYearWindow::slottoday()
 {
-    m_YearWidget->slotHideInfo();
-    emit signalsReturnTodayUpdate(this);
-    setDate(QDate::currentDate());
-}
-
-void CYearWindow::slotReturnTodayUpdate()
-{
-}
-
-void CYearWindow::slotupdateSchedule(const int id)
-{
-    m_YearWidget->slotupdateSchedule(id);
-}
-
-void CYearWindow::slotUpdateCurrentDate(const QDate &date)
-{
-    m_currentdate = date;
+    //隐藏提示
+    slotSetScheduleHide();
+    //设置选择时间为当前时间
+    setSelectDate(getCurrendDateTime().date());
+    //更新数据
+    updateData();
     setYearData();
 }
 
+/**
+ * @brief CYearWindow::switchYear   根据偏移值切换年份
+ * @param offsetYear                偏移值
+ */
+void CYearWindow::switchYear(const int offsetYear)
+{
+    slotSetScheduleHide();
+    //获取选择时间
+    QDate _selectData = getSelectDate();
+    //如果正在切换则退出
+    if (m_StackedWidget->IsRunning())
+        return;
+    _selectData = _selectData.addYears(offsetYear);
+    //设置选择时间，如果成功则切换
+    if (setSelectDate(_selectData, true)) {
+        int index = m_StackedWidget->currentIndex();
+        index = qAbs(index + offsetYear) % 2;
+        m_yearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(index));
+        //获取一年的显示时间
+        QMap<int, QVector<QDate> > _yearShowData = m_calendarManager->getCalendarDateDataManage()->getYearDate();
+        //设置显示时间
+        m_yearWidget->setShowDate(getSelectDate(), _yearShowData);
+        updateData();
+        if (offsetYear > 0) {
+            //下一年
+            m_StackedWidget->setNext();
+        } else {
+            //上一年
+            m_StackedWidget->setPre();
+        }
+    }
+}
+
+/**
+ * @brief CYearWindow::setLunarShow     显示农历信息
+ */
+void CYearWindow::setLunarShow()
+{
+    m_yearLunarLabel->setText(m_lunarYear);
+    m_yearLunarDayLabel->setText(m_lunarDay);
+}
+
+/**
+ * @brief CYearWindow::setYearData  设置选择时间年
+ */
 void CYearWindow::setYearData()
 {
-    if (m_currentdate == QDate::currentDate()) {
+    //如果选择日期为本地时间日期则显示今天，否则显示返回当天
+    if (getSelectDate() == getCurrendDateTime().date()) {
         m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     } else {
         m_today->setText(QCoreApplication::translate("Return", "Today", "Return"));
     }
-    QLocale locale;
-
-    if (locale.language() == QLocale::Chinese) {
-        m_YearLabel->setText(QString::number(m_currentdate.year()) + tr("Y"));
+    //如果是中文环境
+    if (getShowLunar()) {
+        m_yearLabel->setText(QString::number(getSelectDate().year()) + tr("Y"));
+        //获取农历信息
+        getLunarInfo();
+        //显示农历信息
+        setLunarShow();
     } else {
-        m_YearLabel->setText(QString::number(m_currentdate.year()));
+        m_yearLabel->setText(QString::number(getSelectDate().year()));
     }
-    m_YearLunarLabel->setText(m_YearWidget->getLunarYear());
-    m_YearLunarDayLabel->setText(m_YearWidget->getLunarDay());
-}
-void CYearWindow::slotsearchDateSelect(QDate date)
-{
-    setDate(date);
 }
 
+/**
+ * @brief CYearWindow::slotMousePress       接收点击日期事件
+ * @param selectDate                        选择的日期
+ * @param pressType         鼠标点击类型 0:单击具体日期  1:双击具体日期  2:双击月份   3:提示框跳转周视图
+ */
+void CYearWindow::slotMousePress(const QDate &selectDate, const int pressType)
+{
+    slotSetScheduleHide();
+    if (!selectDate.isValid())
+        return;
+    //设置选择时间
+    setSelectDate(selectDate);
+    setYearData();
+    switch (pressType) {
+    case 0: {
+        // 0:单击
+        QVector<ScheduleDataInfo> _shceduleInfo{};
+        //获取选择日期的日程信息
+        QMap<QDate, QVector<ScheduleDataInfo> > showInfo = m_calendarManager->getScheduleTask()->getScheduleInfo(selectDate, selectDate);
+        if (showInfo.begin() != showInfo.end()) {
+            _shceduleInfo = showInfo.begin().value();
+        }
+        m_Scheduleview->setCurrentDate(selectDate);
+        m_Scheduleview->setData(_shceduleInfo);
+        QPoint pos22 = QCursor::pos();
+        QDesktopWidget *w = QApplication::desktop();
+        m_Scheduleview->showWindow();
+        if (pos22.x() + 10 + m_Scheduleview->width() < w->width()) {
+            m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowLeft);
+            m_Scheduleview->show(pos22.x() + 10, pos22.y());
+        } else {
+            m_Scheduleview->adjustPosition(true);
+            m_Scheduleview->setArrowDirection(DArrowRectangle::ArrowRight);
+            m_Scheduleview->show(pos22.x() - 10, pos22.y());
+        }
+        break;
+    }
+    case 1: {
+        // 1:双击时间
+        signalSwitchView();
+        break;
+    }
+    case 2: {
+        // 2: 双击月
+        signalSwitchView(1);
+        break;
+    }
+    case 3: {
+        // 3: 提示框跳转周视图
+        signalSwitchView(2);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+/**
+ * @brief wheelEvent 通过鼠标中间的滚轮滚动切换年份，并刷新年视图下的所有内容。
+ * @param event 鼠标滚轮事件
+ */
 void CYearWindow::wheelEvent(QWheelEvent *event)
 {
     //如果为左右方向则退出
@@ -610,9 +688,6 @@ void CYearWindow::wheelEvent(QWheelEvent *event)
 YearFrame::YearFrame(DWidget *parent)
     : DFrame(parent)
 {
-    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
-                                   "/com/deepin/dataserver/Calendar",
-                                   QDBusConnection::sessionBus(), this);
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setMargin(0);
     gridLayout->setSpacing(8);
@@ -621,15 +696,9 @@ YearFrame::YearFrame(DWidget *parent)
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 4; j++) {
             CYearView *view = new CYearView(this);
-            connect(view, &CYearView::signalcurrentDateChanged, this, &YearFrame::slotcurrentDateChanged);
-            connect(view, &CYearView::signaldoubleclickDate, this, &YearFrame::signaldoubleclickDate);
-            connect(view, &CYearView::signalselectWeekwindow, this, &YearFrame::signalselectWeekwindow);
-            connect(view, &CYearView::signalupdateschedule, this, &YearFrame::signalupdateschedule);
-            connect(view, &CYearView::signalselectMonth, this, &YearFrame::signalselectMonth);
-            connect(view, &CYearView::signalHideInfo, this, &YearFrame::slotHideInfo);
-            connect(view, &CYearView::signalSelectInfo, this, &YearFrame::slotSelectInfo);
             gridLayout->addWidget(view, i, j);
             m_monthViewList.append(view);
+            connect(view, &CYearView::signalMousePress, this, &YearFrame::signalMousePress);
         }
     }
 
@@ -690,32 +759,69 @@ YearFrame::~YearFrame()
 
 }
 
-void YearFrame::setDate(QDate &date)
+/**
+ * @brief YearFrame::setShowDate        设置显示时间
+ * @param selectDate                    选择的时间
+ * @param showDate                      需要显示一年的时间
+ */
+void YearFrame::setShowDate(const QDate &selectDate, const QMap<int, QVector<QDate> > &showDate)
 {
-    if (!date.isValid()) return;
-    m_currentdate = date;
-
+    //判断是否显示12个月
+    Q_ASSERT(showDate.size() == 12);
+    m_selectDate = selectDate;
+    QDate _showMonth(m_selectDate.year(), 1, 1);
     for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
-        QDate tdate(m_currentdate.year(), i + 1, 1);
-        m_monthViewList.at(i)->setCurrentDate(tdate, 0);
+        QDate _setShowMonth = _showMonth.addMonths(i);
+        m_monthViewList.at(i)->setShowDate(_setShowMonth, showDate[i + 1]);
     }
-    for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
-        QDate tdate(m_currentdate.year(), i + 1, 1);
-        if (date.year() == tdate.year() && date.month() == tdate.month()) {
-            m_monthViewList.at(i)->setCurrentDate(date, 1);
-            break;
+    //更新显示界面
+    update();
+    //设置年份显示
+    setYearShow();
+}
+
+/**
+ * @brief YearFrame::setLunarYearDate   设置阴历年显示
+ * @param lunar                         显示数据
+ */
+void YearFrame::setLunarYearDate(const QString &lunar)
+{
+    m_YearLunarLabel->setText(lunar);
+}
+
+/**
+ * @brief YearFrame::setDateHasScheduleSign     设置日期是否存在日程
+ * @param hasSchedule
+ */
+void YearFrame::setDateHasScheduleSign(const QMap<QDate, bool> &hasSchedule)
+{
+    QDate _startDate;
+    QDate _stopDate;
+    QDate _getDate;
+    qint64 _offset = 0;
+    QVector<bool> _hasScheduleVector{};
+    for (int i = 0; i < m_monthViewList.size(); ++i) {
+        //如果时间有效
+        if (m_monthViewList.at(i)->getStartAndStopDate(_startDate, _stopDate)) {
+            _offset = _startDate.daysTo(_stopDate) + 1;
+            _hasScheduleVector.clear();
+            for (int j = 0 ; j < _offset; ++j) {
+                _getDate = _startDate.addDays(j);
+                if (hasSchedule.contains(_getDate)) {
+                    _hasScheduleVector.append(hasSchedule[_getDate]);
+                } else {
+                    _hasScheduleVector.append(false);
+                }
+            }
+            m_monthViewList.at(i)->setHasScheduleFlag(_hasScheduleVector);
         }
     }
-    getLunarData();
 }
 
-void YearFrame::getInfoAndSetLineFlag()
-{
-    for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
-        m_monthViewList.at(i)->getInfoAndSetLineFlag();
-    }
-}
-
+/**
+ * @brief YearFrame::setTheMe       设置不同主题颜色
+ * @param type
+ */
 void YearFrame::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
@@ -754,55 +860,52 @@ void YearFrame::setTheMe(int type)
     }
 }
 
-void YearFrame::setSearchWFlag(bool flag)
+/**
+ * @brief YearFrame::setSearchSchedule      设置搜索日程
+ * @param searchInfo
+ */
+void YearFrame::setSearchSchedule(const QMap<QDate, QVector<ScheduleDataInfo> > &searchInfo)
 {
-    m_searchfalg = flag;
-}
-
-void YearFrame::getLunarData()
-{
-    bool o1 = true;
-    QDBusReply<CaLunarDayInfo> replydd = m_DBusInter->GetLunarInfoBySolar(m_currentdate.year(), m_currentdate.month(), m_currentdate.day(), o1);
-    CaLunarDayInfo currentDayInfo = replydd.value();
-    m_LunarYear = QString("-%0%1年-").arg(currentDayInfo.mGanZhiYear).arg(currentDayInfo.mZodiac);
-    m_LunarDay = QString("-农历%0%1-").arg(currentDayInfo.mLunarMonthName).arg(currentDayInfo.mLunarDayName);
-    QLocale locale;
-
-    if (locale.language() == QLocale::Chinese) {
-        m_YearLabel->setText(QString::number(m_currentdate.year()) + tr("Y"));
-        m_YearLunarLabel->setText(m_LunarYear);
-    } else {
-        m_YearLabel->setText(QString::number(m_currentdate.year()));
-        m_YearLunarLabel->setText("");
+    QDate _startDate;
+    QDate _stopDate;
+    QDate _getDate;
+    qint64 _offset = 0;
+    QVector<bool> _hasSearchScheduleVector{};
+    for (int i = 0; i < m_monthViewList.size(); ++i) {
+        //如果时间有效
+        if (m_monthViewList.at(i)->getStartAndStopDate(_startDate, _stopDate)) {
+            _offset = _startDate.daysTo(_stopDate) + 1;
+            _hasSearchScheduleVector.clear();
+            for (int j = 0 ; j < _offset; ++j) {
+                _getDate = _startDate.addDays(j);
+                if (searchInfo.contains(_getDate) && searchInfo[_getDate].size() > 0) {
+                    _hasSearchScheduleVector.append(true);
+                } else {
+                    _hasSearchScheduleVector.append(false);
+                }
+            }
+            m_monthViewList.at(i)->setHasSearchScheduleFlag(_hasSearchScheduleVector);
+        }
     }
 
 }
 
-void YearFrame::slotcurrentDateChanged(QDate date)
+/**
+ * @brief YearFrame::setYearShow    设置年信息显示
+ */
+void YearFrame::setYearShow()
 {
-    m_currentdate = date;
-    getLunarData();
-    emit signalUpdateYearDate(date);
+    if (QLocale::system().language() == QLocale::Chinese) {
+        m_YearLabel->setText(QString::number(m_selectDate.year()) + tr("Y"));
+        m_YearLunarLabel->setText(m_LunarYear);
+    } else {
+        m_YearLabel->setText(QString::number(m_selectDate.year()));
+        m_YearLunarLabel->setText("");
+    }
 }
 
-void YearFrame::slotHideInfo()
-{
-    CYearView::ScheduleViewHide();
-}
 
 void YearFrame::slotSelectInfo(bool flag)
 {
     m_selectFlag = flag;
-}
-
-void YearFrame::slotupdateSchedule(const int id)
-{
-    for (int i = 0; i < m_monthViewList.size(); ++i) {
-        m_monthViewList.at(i)->slotupdateSchedule(id);
-    }
-}
-
-void YearFrame::slotSetScheduleHide()
-{
-    CYearView::ScheduleViewHide();
 }

@@ -19,28 +19,18 @@
 #ifndef SCHEDULEDLG_H
 #define SCHEDULEDLG_H
 
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
 
-#include <DArrowButton>
 #include <DCheckBox>
 #include <DDateEdit>
 #include <DDialog>
 #include <DFrame>
 #include <DLineEdit>
-#include <DPushButton>
-#include <DSuggestButton>
 #include <DTextEdit>
-#include <DTimeEdit>
 #include <DComboBox>
 
-#include <QButtonGroup>
-#include <QComboBox>
-#include <QDateEdit>
 #include <QLabel>
-#include <QObject>
-#include <QRadioButton>
 #include <QTimeEdit>
-#include <QWidget>
 
 DWIDGET_USE_NAMESPACE
 class CTimeEdit;
@@ -50,16 +40,19 @@ class CScheduleDlg : public DDialog
 public:
     CScheduleDlg(int type, QWidget *parent = nullptr, const bool isAllDay = true);
     ~CScheduleDlg() override;
-    void setData(const ScheduleDtailInfo &info);
+    void setData(const ScheduleDataInfo &info);
     void setDate(const QDateTime &date);
-    ScheduleDtailInfo getScheduleData();
+    ScheduleDataInfo getScheduleData();
     void setAllDay(bool flag);
+private:
+    //确定按钮处理
+    void clickOkBtn();
 signals:
     void signalViewtransparentFrame(int type);
     void signalScheduleUpdate(int id = 0);
 public slots:
-    void slotCancelBt(int buttonIndex, QString buttonName);
-    void slotOkBt(int buttonIndex, QString buttonName);
+    //对话框按钮点击处理
+    void slotBtClick(int buttonIndex, QString buttonName);
     void slotTextChange();
     void slotendrepeatTextchange();
     void slotBDateEidtInfo(const QDate &date);
@@ -80,11 +73,6 @@ private:
      * @param type  主题type
      */
     void setTheMe(const int type);
-public:
-    static void ChangeRecurInfo(QWidget *parent,const ScheduleDtailInfo &newinfo,
-                                const ScheduleDtailInfo &oldinfo,int m_themetype);
-    static void ChangeOnlyInfo(const ScheduleDtailInfo &newinfo,
-                               const ScheduleDtailInfo &oldinfo);
 private:
     QLabel *m_typeLabel = nullptr;
     DComboBox *m_typeComBox = nullptr;
@@ -117,7 +105,7 @@ private:
     const bool m_createAllDay;
 private:
     //日程
-    ScheduleDtailInfo m_scheduleDtailInfo;
+    ScheduleDataInfo m_ScheduleDataInfo;
     int m_type; // 1新建 0 编辑日程
     QDateTime m_currentDate;
     QDateTime m_EndDate;

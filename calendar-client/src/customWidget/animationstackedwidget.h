@@ -25,6 +25,10 @@
 #include <QStackedLayout>
 #include <QPropertyAnimation>
 
+/**
+ * @brief The AnimationStackedWidget class
+ * 动画切换界面
+ */
 class AnimationStackedWidget : public QStackedWidget
 {
     Q_OBJECT
@@ -35,10 +39,7 @@ public:
 public:
     explicit AnimationStackedWidget(const AnimationOri ori = LR, QWidget *parent = nullptr);
     ~AnimationStackedWidget() override;
-    /**
-     * @brief setDuration   设置动画持续时间
-     * @param duration  动画时间
-     */
+    //设置动画持续时间
     void setDuration(int duration = 500);
     /**
      * @brief IsRunning 动画是否正在运行
@@ -48,76 +49,38 @@ public:
     {
         return m_IsAnimation;
     }
-    /**
-     * @brief offset    获取移动偏移量
-     * @return   移动偏移量
-     */
+    //获取移动偏移量
     double offset() const;
-    /**
-     * @brief setOffset 设置移动偏移量
-     * @param offset  移动偏移量
-     */
+    //设置移动偏移量
     void setOffset(double offset);
-
 protected:
-    /**
-     * @brief paintEvent   窗口绘制事件
-     * @param e 绘制事件对象
-     */
+    //窗口绘制事件
     void paintEvent(QPaintEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
 signals:
     /**
      * @brief signalIsFinished     动画结束信号
      */
     void signalIsFinished();
 public slots:
-    /**
-     * @brief animationFinished  动画切换完成
-     */
+    //动画切换完成
     void animationFinished();
-    /**
-     * @brief setCurrent   设置当前窗口
-     * @param index 索引
-     */
+    //设置当前窗口
     void setCurrent(int index);
-    /**
-     * @brief setPre 设置上一个索引的窗口
-     */
+    //setPre设置上一个索引的窗口
     void setPre();
-    /**
-     * @brief setNext 设置下一个索引的窗口
-     */
+    //设置下一个索引的窗口
     void setNext();
 private:
-    /**
-     * @brief setCurrentWidget  根据索引设置当前窗口，开启动画绘制
-     * @param index     索引
-     * @param beginWidth 动画起始值
-     */
-    void setCurrentWidget(int &index,int beginWidth);
-    /**
-     * @brief getBeginValue 获取动画起始值
-     * @return 返回动画起始值
-     */
+    //根据索引设置当前窗口，开启动画绘制
+    void setCurrentWidget(int &index, int beginWidth);
+    //获取动画起始值
     int getBeginValue();
-    /**
-     * @brief getMoveOrientation  根据当前索引和下一个索引获取动画方向
-     * @param currIndex 当前索引
-     * @param nextIndex 设置的索引
-     * @return  动画绘制方向
-     */
-    MoveOrientation getMoveOrientation(const int currIndex,const int nextIndex);
-    /**
-     * @brief paintCurrentWidget获取当前窗口的图片动态绘制
-     * @param paint     绘制对象
-     * @param nextIndex 窗口索引
-     */
+    //根据当前索引和下一个索引获取动画方向
+    MoveOrientation getMoveOrientation(const int currIndex, const int nextIndex);
+    //获取当前窗口的图片动态绘制
     void paintCurrentWidget(QPainter &paint, int currentIndex);
-    /**
-     * @brief paintNextWidget   获取下一个窗口的图片动态绘制
-     * @param paint         绘制对象
-     * @param nextIndex     窗口索引
-     */
+    //获取下一个窗口的图片动态绘制
     void paintNextWidget(QPainter &paint, int nextIndex);
 private:
     /**

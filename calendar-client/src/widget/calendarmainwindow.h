@@ -20,31 +20,25 @@
 #ifndef CALENDARMAINWINDOW_H
 #define CALENDARMAINWINDOW_H
 
-#include "dbusdatagetthread.h"
+#include "src/scheduledatainfo.h"
 
-#include <DPushButton>
-#include <DTitlebar>
 #include <DLabel>
 #include <DButtonBox>
 #include <DFrame>
+#include <DMainWindow>
+#include <DSearchEdit>
 
 #include <QStackedLayout>
 #include <QPropertyAnimation>
 #include <QStackedWidget>
 #include <QButtonGroup>
-#include <QMainWindow>
 #include <QObject>
-#include <DMainWindow>
-
-#include <dstackwidget.h>
-#include <dsearchedit.h>
 
 DWIDGET_USE_NAMESPACE
 class CYearWindow;
 class CMonthWindow;
 class CWeekWindow;
 class CDayWindow;
-class CSchedulesDBus;
 class CScheduleSearchView;
 class AnimationStackedWidget;
 class CScheduleDataManage;
@@ -54,9 +48,7 @@ class Calendarmainwindow : public DMainWindow
 public:
     explicit Calendarmainwindow(QWidget *w = nullptr);
     ~Calendarmainwindow() override;
-    bool analysisCreate(const QString &content, ScheduleDtailInfo &info);
-    void viewWindow(int type, QDateTime datetime);
-    void UpdateJob();
+    void viewWindow(int type, const bool showAnimation = false);
     void updateHigh();
     void setSearchWidth(int w);
 public slots:
@@ -65,45 +57,37 @@ public slots:
     void ActiveWindow();
     void RaiseWindow();
     void onViewShortcut();
-    void slotGetScheduleInfoSuccess();
-    void slotDynamicIconUpdate();
+    //更新当前时间
+    void slotCurrentDateUpdate();
 private:
     void initUI();
     void initConnection();
-    void initLunar();
+    //创建视图
     void createview();
-    DPushButton *createButon(QString name);
-
-    void getScheduleInfo();
 protected:
     void resizeEvent(QResizeEvent *event) override;
-    void closeEvent(QCloseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void changeEvent(QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
 private slots:
+    //隐藏提示框
     void setScheduleHide();
+    //点击按钮切换视图
     void slotstackWClicked(QAbstractButton *bt);
-    void slotWUpdateShcedule(QMainWindow *w, int id = 0);
-    void slotReturnTodyUpdate(QMainWindow *w);
+    void slotWUpdateShcedule();
     void slotSreturnPressed();
     void slotStextChanged();
+    //搜索框有焦点时隐藏提示框
     void slotStextfocusChanged(bool onFocus);
-    void slotJobsUpdated(const QList<qlonglong> &Ids);
     void slotSearchEdit();
-    void slotTransitSearchSchedule(int id = 0);
-    void slotsearchDateSelect(QDate date);
-    void slotSearchSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
-
-    void slotdoubleclickDate(QDate date);
-    void slotselectMonth(QDate date);
-    void slotselectWeek(QDate date);
-
-    void slotCurrentScheduleDate(QDate date);
-    void slotViewSelectDate(QDate date);
-    void slotViewtransparentFrame(int type);
-    void slotCurrentDate(QDate date);
+    //单击搜索日程动画设置
+    void slotSearchSelectSchedule(const ScheduleDataInfo &scheduleInfo);
+    //添加视图阴影
+    void slotViewtransparentFrame(const bool isShow);
+    //启用buttonbox
     void slotSetButtonBox();
+    //切换视图
+    void slotSwitchView(const int viewIndex);
 private:
     DLabel *m_icon = nullptr;
     AnimationStackedWidget *m_stackWidget = nullptr;
@@ -117,7 +101,6 @@ private:
     CMonthWindow *m_monthWindow = nullptr;
     CWeekWindow *m_weekWindow = nullptr;
     CDayWindow *m_DayWindow = nullptr;
-    CSchedulesDBus *m_dbus = nullptr;
     bool m_searchflag = false;
     CScheduleSearchView *m_scheduleSearchView = nullptr;
     DFrame *m_contentBackground = nullptr;
@@ -127,8 +110,7 @@ private:
     QDate m_currentdate;
     int m_scheduleSearchViewMaxWidth;
     QPropertyAnimation *m_animation = nullptr;
-    DbusDataGetThread *m_DataGetThread = nullptr;
-    QTimer *m_DynamicIconUpdateTimer = nullptr;
+    QTimer *m_currentDateUpdateTimer = nullptr;
 };
 
 #endif // CALENDARMAINWINDOW_H

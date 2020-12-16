@@ -18,7 +18,6 @@
  */
 
 #include "monthview.h"
-#include "calendardbus.h"
 #include "scheduledlg.h"
 #include "scheduledatamanage.h"
 
@@ -39,44 +38,35 @@
 #include <QMouseEvent>
 
 DGUI_USE_NAMESPACE
+
+/**
+ * @brief setTheMe  根据系统主题类型设置颜色
+ * @param type      系统主题类型
+ */
 void CMonthView::setTheMe(int type)
 {
     m_weekIndicator->setTheMe(type);
-    m_MonthGraphicsView->setTheMe(type);
+    m_monthGraphicsView->setTheMe(type);
 }
 
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
-    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
-                                   "/com/deepin/dataserver/Calendar",
-                                   QDBusConnection::sessionBus(), this);
-    if (!lunarCache)
-        lunarCache = new QMap<QDate, CaLunarDayInfo>;
-
     m_weekIndicator = new CMonthWeekView;
-    m_MonthGraphicsView = new CMonthGraphiview(this);
+    m_monthGraphicsView = new CMonthGraphiview(this);
 
-    connect(m_MonthGraphicsView,
+    connect(m_monthGraphicsView,
             &CMonthGraphiview::signalsViewSelectDate,
             this,
             &CMonthView::signalsViewSelectDate);
-    connect(m_MonthGraphicsView,
-            &CMonthGraphiview::signalsUpdateShcedule,
-            this,
-            &CMonthView::slotScheduleUpdate);
-    connect(m_MonthGraphicsView,
-            &CMonthGraphiview::signalsScheduleUpdate,
-            this,
-            &CMonthView::signalsScheduleUpdate);
-    connect(m_MonthGraphicsView,
+    connect(m_monthGraphicsView,
             &CMonthGraphiview::signalViewtransparentFrame,
             this,
             &CMonthView::signalViewtransparentFrame);
-    connect(m_MonthGraphicsView,
+    connect(m_monthGraphicsView,
             &CMonthGraphiview::signalScheduleShow,
             this,
             &CMonthView::slotScheduleRemindWidget);
-    connect(m_MonthGraphicsView,
+    connect(m_monthGraphicsView,
             &CMonthGraphiview::signalAngleDelta, this,
             &CMonthView::signalAngleDelta);
     //新建最终布局
@@ -85,73 +75,44 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_mainLayout->setSpacing(0);
     m_mainLayout->setContentsMargins(10, 0, 0, 10);
     m_mainLayout->addWidget(m_weekIndicator);
-    m_mainLayout->addWidget(m_MonthGraphicsView);
+    m_mainLayout->addWidget(m_monthGraphicsView);
 
     setLayout(m_mainLayout);
-    CScheduleDataCtrl  *scheduleDataCtrl = CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl();
     m_createAction = new QAction(tr("New event"), this);
 
-    m_RemindWidget = new SchecduleRemindWidget(this);
-
-    connect(scheduleDataCtrl, &CScheduleDataCtrl::signalsupdatescheduleD, this, &CMonthView::slotsupdatescheduleD);
-    connect(this, &CMonthView::signalsupdatescheduleD, scheduleDataCtrl, &CScheduleDataCtrl::slotupdatescheduleD);
+    m_remindWidget = new SchecduleRemindWidget(this);
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 }
 
 CMonthView::~CMonthView()
 {
-    if (lunarCache != nullptr) {
-        delete lunarCache;
-        lunarCache  = nullptr;
-    }
 }
 
-void CMonthView::slotScheduleUpdate()
+void CMonthView::setSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
-    emit signalsScheduleUpdate(0);
-    emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
+    m_monthGraphicsView->setSelectSchedule(scheduleInfo);
 }
 
-void CMonthView::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
-{
-    m_MonthGraphicsView->setSelectSchedule(scheduleInfo);
-}
-
-void CMonthView::slotsupdatescheduleD(QWidget *w, QVector<ScheduleDateRangeInfo> &data)
-{
-    if (w != this) return;
-    if (m_sflag) {
-        m_MonthGraphicsView->setScheduleInfo(data);
-    }
-    parentWidget()->setEnabled(true);
-}
-
-void CMonthView::slotdelete(int id)
-{
-    Q_UNUSED(id);
-    emit signalsScheduleUpdate(0);
-}
-
-void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDtailInfo &out)
+void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDataInfo &out)
 {
     if (isShow) {
         QPoint pos22 = QCursor::pos();
         CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-                                      out.type.ID);
-        m_RemindWidget->setData(out, gdcolor);
-        m_RemindWidget->show(pos22.x() + 10, pos22.y());
+                                      out.getType());
+        m_remindWidget->setData(out, gdcolor);
+        m_remindWidget->show(pos22.x() + 10, pos22.y());
         QDesktopWidget *w = QApplication::desktop();
 
-        if ((pos22.x() + m_RemindWidget->width() + 10) > w->width()) {
-            m_RemindWidget->setArrowDirection(DArrowRectangle::ArrowRight);
-            m_RemindWidget->show(pos22.x() - 10, pos22.y());
+        if ((pos22.x() + m_remindWidget->width() + 10) > w->width()) {
+            m_remindWidget->setArrowDirection(DArrowRectangle::ArrowRight);
+            m_remindWidget->show(pos22.x() - 10, pos22.y());
         } else {
-            m_RemindWidget->setArrowDirection(DArrowRectangle::ArrowLeft);
-            m_RemindWidget->show(pos22.x() + 10, pos22.y());
+            m_remindWidget->setArrowDirection(DArrowRectangle::ArrowLeft);
+            m_remindWidget->show(pos22.x() + 10, pos22.y());
         }
     } else {
-        m_RemindWidget->hide();
+        m_remindWidget->hide();
     }
 }
 
@@ -173,132 +134,79 @@ void CMonthView::mousePressEvent(QMouseEvent *event)
     slotScheduleRemindWidget(false);
 }
 
-void CMonthView::setFirstWeekday(int weekday)
+/**
+ * @brief setFirstWeekday   设置每周的第一天是周几
+ * @param weekday           周几
+ */
+void CMonthView::setFirstWeekday(Qt::DayOfWeek weekday)
 {
     m_firstWeekDay = weekday;
-    m_weekIndicator->setList(weekday);
-    m_weekIndicator->updateWeek();
-    updateDate();
+    m_weekIndicator->setFirstDay(weekday);
 }
 
-void CMonthView::setCurrentDate(const QDate date)
+/**
+ * @brief CMonthView::setShowDate       设置显示日期
+ * @param showDate
+ */
+void CMonthView::setShowDate(const QVector<QDate> &showDate)
 {
-    slotScheduleRemindWidget(false);
-    qDebug() << "set current date " << date;
+    m_showDate = showDate;
+    m_monthGraphicsView->setDate(m_showDate);
+}
 
-    if (date.year() < DDECalendar::QueryEarliestYear)
-        return;
+/**
+ * @brief CMonthView::setHuangliInfo        设置黄历信息
+ * @param huangliInfo
+ */
+void CMonthView::setHuangliInfo(const QMap<QDate, CaHuangLiDayInfo> &huangliInfo)
+{
+    m_monthGraphicsView->setLunarInfo(huangliInfo);
+}
 
-    if (date.month() != m_currentDate.month()) {
-        m_festivallist.clear();
-        m_DBusInter->GetFestivalMonth(date.addMonths(-1).year(), date.addMonths(-1).month(), m_festivallist);
-        m_DBusInter->GetFestivalMonth(date.year(), date.month(), m_festivallist);
-        m_DBusInter->GetFestivalMonth(date.addMonths(1).year(), date.addMonths(1).month(), m_festivallist);
-    }
-    m_currentDate = date;
-    m_MonthGraphicsView->setFestivalInfo(m_festivallist);
-    updateDate();
-    getDbusData();
-    m_MonthGraphicsView->setLunarInfo(lunarCache);
-    emit signalcurrentDateChanged(m_currentDate);
-    m_weekIndicator->updateWeek();
-    emit signalsupdatescheduleD(this, m_days[0], m_days[41]);
+/**
+ * @brief CMonthView::setFestival       设置班休信息
+ * @param festivalInfo
+ */
+void CMonthView::setFestival(const QMap<QDate, int> &festivalInfo)
+{
+    m_monthGraphicsView->setFestival(festivalInfo);
+}
+
+/**
+ * @brief CMonthView::setScheduleInfo       设置显示日程
+ * @param scheduleInfo
+ */
+void CMonthView::setScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo> > &scheduleInfo)
+{
+    m_monthGraphicsView->setScheduleInfo(scheduleInfo);
+}
+
+/**
+ * @brief CMonthView::setSearchScheduleInfo     设置搜索日程
+ * @param searchScheduleInfo
+ */
+void CMonthView::setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchScheduleInfo)
+{
+    m_monthGraphicsView->setSearchScheduleInfo(searchScheduleInfo);
 }
 
 void CMonthView::setLunarVisible(bool visible)
 {
-    m_MonthGraphicsView->setLunarVisible(visible);
+    m_monthGraphicsView->setLunarVisible(visible);
 }
 
-int CMonthView::getDateIndex(const QDate &date) const
+ScheduleDataInfo CMonthView::getScheduleInfo(const QDate &beginDate, const QDate &endDate)
 {
-    for (int i = 0; i != DDEMonthCalendar::ItemSizeofMonthDay; ++i)
-        if (m_days[i] == date)
-            return i;
-
-    return 0;
-}
-
-void CMonthView::updateDate()
-{
-    const QDate firstDay(m_currentDate.year(), m_currentDate.month(), 1);
-    int offset = firstDay.dayOfWeek() % DDEMonthCalendar::AFewDaysofWeek - m_firstWeekDay;
-    const int day = offset < 0 ? offset + DDEMonthCalendar::AFewDaysofWeek : offset;
-    const int currentIndex = day + m_currentDate.day() - 1;
-
-    if (currentIndex < 0) {
-        return;
-    }
-
-    for (int i(0); i != DDEMonthCalendar::ItemSizeofMonthDay; ++i) {
-        m_days[i] = firstDay.addDays(i - day);
-    }
-    m_MonthGraphicsView->setDate(m_days);
-    update();
-}
-
-void CMonthView::updateCurrentLunar(const CaLunarDayInfo &info)
-{
-    emit signalcurrentLunarDateChanged(m_currentDate, info, 1);
-}
-
-ScheduleDtailInfo CMonthView::getScheduleInfo(const QDate &beginDate, const QDate &endDate)
-{
-    ScheduleDtailInfo info;
-
+    ScheduleDataInfo info;
     if (beginDate.daysTo(endDate) > 0) {
-        info.beginDateTime = QDateTime(beginDate, QTime(0, 0, 0));
-        info.endDateTime = QDateTime(endDate, QTime(23, 59, 59));
+        info.setBeginDateTime(QDateTime(beginDate, QTime(0, 0, 0)));
+        info.setEndDateTime(QDateTime(endDate, QTime(23, 59, 59)));
     } else {
-        info.beginDateTime = QDateTime(endDate, QTime(0, 0, 0));
-        info.endDateTime = QDateTime(beginDate, QTime(23, 59, 00));
+        info.setBeginDateTime(QDateTime(endDate, QTime(0, 0, 0)));
+        info.setEndDateTime(QDateTime(beginDate, QTime(23, 59, 00)));
     }
-    info.titleName = tr("New Event");
-    info.allday = true;
-    info.remind = true;
-    info.remindData.n = 1;
-    info.remindData.time = QTime(9, 0);
-    info.RecurID = 0;
-    info.id = 0;
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
-        1, info.type);
-    info.rpeat = 0;
-
+    info.setTitleName(tr("New Event"));
+    info.setAllDay(true);
+    info.setRemindData(RemindData(1, QTime(9, 0)));
     return info;
 }
-
-const QDate CMonthView::getCellDate(int pos)
-{
-    return m_days[pos];
-}
-
-const CaLunarDayInfo CMonthView::getCaLunarDayInfo(const QDate &date)
-{
-    return lunarCache->value(date);
-}
-
-void CMonthView::getDbusData()
-{
-    lunarCache->clear();
-
-    CaLunarDayInfo currentDayInfo;
-    bool o1 = true;
-    QDate getDate = m_currentDate;
-
-    for (int i = -1; i < 2; ++i) {
-        getDate = m_currentDate.addMonths(i);
-        QDBusReply<CaLunarMonthInfo> reply = m_DBusInter->GetLunarMonthCalendar(getDate.year(),
-                                                                                getDate.month(), false, o1);
-
-        QDate cacheDate;
-        cacheDate.setDate(getDate.year(), getDate.month(), 1);
-        foreach (const CaLunarDayInfo &dayInfo, reply.value().mCaLunarDayInfo) {
-            lunarCache->insert(cacheDate, dayInfo);
-            cacheDate = cacheDate.addDays(1);
-        }
-    }
-    // refresh   lunar info
-    updateCurrentLunar(lunarCache->value(m_currentDate));
-}
-
-

@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "calendardbus.h"
 #include "todaybutton.h"
 #include "scheduledatamanage.h"
 #include "daymonthview.h"
@@ -44,16 +43,6 @@ DGUI_USE_NAMESPACE
 CDayMonthView::CDayMonthView(QWidget *parent)
     : CustomFrame(parent)
 {
-    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
-                                   "/com/deepin/dataserver/Calendar",
-                                   QDBusConnection::sessionBus(), this);
-    if (!queue)
-        queue = new QQueue<int>;
-    if (!lunarCache)
-        lunarCache = new QMap<QDate, CaHuangLiDayInfo>;
-    if (!emptyCaHuangLiDayInfo)
-        emptyCaHuangLiDayInfo = new CaHuangLiDayInfo;
-
     m_weeklist.append(tr("Monday"));
     m_weeklist.append(tr("Tuesday"));
     m_weeklist.append(tr("Wednesday"));
@@ -67,32 +56,19 @@ CDayMonthView::CDayMonthView(QWidget *parent)
 
 CDayMonthView::~CDayMonthView()
 {
-    if (lunarCache != nullptr) {
-        delete lunarCache;
-        lunarCache = nullptr;
-    }
-    if (queue != nullptr) {
-        delete queue;
-        queue = nullptr;
-    }
-    if (emptyCaHuangLiDayInfo != nullptr) {
-        delete emptyCaHuangLiDayInfo;
-        emptyCaHuangLiDayInfo = nullptr;
-    }
-}
-void CDayMonthView::handleCurrentDateChanged(const QDate date, const CaHuangLiDayInfo &detail)
-{
-    Q_UNUSED(detail);
-    if (date != m_currentDate) {
-        setCurrentDate(date);
-    }
 }
 
-void CDayMonthView::setFirstWeekday(int weekday)
+void CDayMonthView::setShowDate(const QVector<QDate> &showDate, const QDate &selectDate, const QDate &currentDate)
 {
-    m_firstWeekDay = weekday;
-    updateDate();
+    m_showDays = showDate;
+    m_selectDate = selectDate;
+    m_currentDate = currentDate;
+    //当前选择index
+    m_selectedCell = m_showDays.indexOf(m_selectDate);
+    updateDateShow();
+    update();
 }
+
 void CDayMonthView::setLunarVisible(bool visible)
 {
     m_huanglistate = visible;
@@ -155,13 +131,11 @@ void CDayMonthView::setTheMe(int type)
         yicolor.setAlphaF(0.1);
         m_yiLabel->setbackgroundColor(yicolor);
         m_yiLabel->setTextInfo(QColor("#7B7B7B"), hlabelF);
-        m_yiLabel->update();
 
         QColor jicolor = QColor("#C17575");
         jicolor.setAlphaF(0.1);
         m_jiLabel->setbackgroundColor(jicolor);
         m_jiLabel->setTextInfo(QColor("#7B7B7B"), hlabelF);
-        m_jiLabel->update();
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0081FF";
@@ -216,13 +190,11 @@ void CDayMonthView::setTheMe(int type)
         yicolor.setAlphaF(0.2);
         m_yiLabel->setbackgroundColor(yicolor);
         m_yiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
-        m_yiLabel->update();
 
         QColor jicolor = QColor("#A43B3B");
         jicolor.setAlphaF(0.2);
         m_jiLabel->setbackgroundColor(jicolor);
         m_jiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
-        m_jiLabel->update();
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0059D2";
@@ -236,10 +208,7 @@ void CDayMonthView::setTheMe(int type)
         m_notCurrentTextColor.setAlphaF(0.5);
         m_ceventColor = QColor(204, 77, 3);
     }
-
-    for (int i(0); i != DDEDayCalendar::PainterCellNum; ++i) {
-        m_cellList.at(i)->update();
-    }
+    update();
 }
 
 void CDayMonthView::setSearchFlag(bool flag)
@@ -248,52 +217,33 @@ void CDayMonthView::setSearchFlag(bool flag)
     update();
 }
 
-void CDayMonthView::updateFlag()
+/**
+ * @brief CDayMonthView::setHuangliInfo     设置黄历信息
+ * @param huangliInfo
+ */
+void CDayMonthView::setHuangliInfo(const CaHuangLiDayInfo &huangliInfo)
 {
-    getlineflag();
+    m_huangliInfo = huangliInfo;
+    updateDateLunarDay();
+}
+
+void CDayMonthView::setHasScheduleFlag(const QVector<bool> &hasScheduleFlag)
+{
+    m_vlineflag = hasScheduleFlag;
     update();
-}
-void CDayMonthView::setCurrentDate(const QDate date, int type)
-{
-    Q_UNUSED(type);
-
-    if (date.year() < DDECalendar::QueryEarliestYear)
-        return;
-
-    if (date == m_currentDate) {
-        return;
-    }
-
-    if (date == QDate::currentDate()) {
-        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-    } else {
-        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
-    }
-
-    m_currentDate = date;
-    updateCurrentLunar();
-}
-
-int CDayMonthView::getDateIndex(const QDate &date) const
-{
-    for (int i = 0; i != DDEDayCalendar::PainterCellNum; ++i)
-        if (m_days[i] == date)
-            return i;
-
-    return 0;
 }
 
 bool CDayMonthView::eventFilter(QObject *o, QEvent *e)
 {
+    if (m_showDays.size() != 42)
+        return false;
     QWidget *cell = qobject_cast<QWidget *>(o);
-
     if (cell && m_cellList.contains(cell)) {
         const int pos = m_cellList.indexOf(cell);
-        QDate date = m_days[pos];
-
+        QDate date = m_showDays[pos];
+        //如果需要显示时间小于1900年则退出
         if (date.year() < DDECalendar::QueryEarliestYear)
             return false;
-
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
@@ -306,51 +256,11 @@ bool CDayMonthView::eventFilter(QObject *o, QEvent *e)
     return false;
 }
 
-void CDayMonthView::updateDate()
-{
-    const QDate firstDay(m_currentDate.year(), m_currentDate.month(), 1);
-    const int day = (firstDay.dayOfWeek() + m_firstWeekDay) % 7;
-    const int currentIndex = day + m_currentDate.day() - 1;
-
-    if (currentIndex < 0) {
-        return;
-    }
-
-    for (int i(0); i != DDEDayCalendar::PainterCellNum; ++i) {
-        m_days[i] = firstDay.addDays(i - day);
-    }
-
-    setSelectedCell(currentIndex);
-    getlineflag();
-    update();
-}
-
-void CDayMonthView::getlineflag()
-{
-    QLocale locale;
-    CScheduleDataManage *tdataManage = CScheduleDataManage::getScheduleDataManage();
-    m_vlineflag.resize(DDEDayCalendar::PainterCellNum);
-    m_vlineflag.fill(false);
-    QVector<ScheduleDateRangeInfo> out;
-
-    if (tdataManage->getscheduleDataCtrl()->getScheduleInfo(m_days[0], m_days[41], out)) {
-        if (out.count() == DDEDayCalendar::PainterCellNum)
-            for (int i = 0; i < DDEDayCalendar::PainterCellNum; i++) {
-                if (!out.at(i).vData.isEmpty()) {
-                    m_vlineflag[i] = true;
-                }
-            }
-    }
-}
-
 void CDayMonthView::initUI()
 {
     m_dayNumFont.setPixelSize(DDECalendar::FontSizeTwelve);
-
     m_today = new CTodayButton;
-
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
     DPalette todaypa = m_today->palette();
     QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
@@ -458,6 +368,7 @@ void CDayMonthView::initUI()
     m_yiLabel->setbackgroundColor(QColor("#75C18E"));
     m_yiLabel->setTextInfo(QColor("#7B7B7B "), hlabelF);
     m_yiLabel->setFixedSize(DDEDayCalendar::DHualiDtailLableWidth, DDEDayCalendar::DHualiDtailLableHeight);
+    m_yiLabel->setHuangLiText(QStringList());
     m_yidownLayout->addWidget(m_yiLabel);
 
     m_jidownLayout = new QVBoxLayout;
@@ -469,6 +380,7 @@ void CDayMonthView::initUI()
     m_jiLabel->setbackgroundColor(QColor("#C17575"));
     m_jiLabel->setTextInfo(QColor("#7B7B7B "), hlabelF);
     m_jiLabel->setFixedSize(DDEDayCalendar::DHualiDtailLableWidth, DDEDayCalendar::DHualiDtailLableHeight);
+    m_jiLabel->setHuangLiText(QStringList(), 1);
     m_jidownLayout->addWidget(m_jiLabel);
 
     m_hhLayout = new QVBoxLayout;
@@ -500,38 +412,48 @@ void CDayMonthView::initConnection()
     connect(m_prevButton, &DIconButton::clicked, this, &CDayMonthView::slotprev);
     connect(m_today, &CTodayButton::clicked, this, &CDayMonthView::slottoday);
     connect(m_nextButton, &DIconButton::clicked, this, &CDayMonthView::slotnext);
-    connect(this, &CDayMonthView::dateSelected, this, &CDayMonthView::handleCurrentDateChanged);
 }
 
+/**
+ * @brief CDayMonthView::updateDateShow     更新月/天界面显示
+ */
 void CDayMonthView::updateDateShow()
 {
     QLocale locale;
-    m_currentMouth->setTextStr(locale.monthName(m_currentDate.month(), QLocale::ShortFormat));
-    m_currentDay->setTextStr(QString::number(m_currentDate.day()));
+    m_currentMouth->setTextStr(locale.monthName(m_selectDate.month(), QLocale::ShortFormat));
+    m_currentDay->setTextStr(QString::number(m_selectDate.day()));
 
-    if (m_currentDate.dayOfWeek() > 0)
-        m_currentWeek->setTextStr(m_weeklist.at(m_currentDate.dayOfWeek() - 1));
-    m_currentYear->setTextStr(m_currentDate.toString("yyyy/M"));
+    if (m_selectDate.dayOfWeek() > 0)
+        m_currentWeek->setTextStr(m_weeklist.at(m_selectDate.dayOfWeek() - 1));
+    m_currentYear->setTextStr(m_selectDate.toString("yyyy/M"));
+
+    if (m_selectDate == m_currentDate) {
+        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
+    } else {
+        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
+    }
 }
 
+/**
+ * @brief CDayMonthView::updateDateLunarDay     更新显示黄历信息
+ */
 void CDayMonthView::updateDateLunarDay()
 {
     if (!m_huanglistate) return;
-    CaHuangLiDayInfo info = getCaHuangLiDayInfo(getDateIndex(m_currentDate));
-    m_currentLuna->setTextStr(info.mGanZhiYear + "年 " + "【" + info.mZodiac + "年】" + info.mGanZhiMonth + "月 " + info.mGanZhiDay + "日 ");
-    QStringList yilist = info.mSuit.split(".", QString::SkipEmptyParts);
-    QStringList jilist = info.mAvoid.split(".", QString::SkipEmptyParts);
+    m_currentLuna->setTextStr(m_huangliInfo.mGanZhiYear + "年 " + "【" + m_huangliInfo.mZodiac + "年】" + m_huangliInfo.mGanZhiMonth + "月 " + m_huangliInfo.mGanZhiDay + "日 ");
+    QStringList yilist = m_huangliInfo.mSuit.split(".", QString::SkipEmptyParts);
+    QStringList jilist = m_huangliInfo.mAvoid.split(".", QString::SkipEmptyParts);
     m_yiLabel->setHuangLiText(yilist);
     m_jiLabel->setHuangLiText(jilist, 1);
 }
 const QString CDayMonthView::getCellDayNum(int pos)
 {
-    return QString::number(m_days[pos].day());
+    return QString::number(m_showDays[pos].day());
 }
 
 const QDate CDayMonthView::getCellDate(int pos)
 {
-    return m_days[pos];
+    return m_showDays[pos];
 }
 void CDayMonthView::paintCell(QWidget *cell)
 {
@@ -539,9 +461,10 @@ void CDayMonthView::paintCell(QWidget *cell)
 
     const int pos = m_cellList.indexOf(cell);
     const bool isSelectedCell = pos == m_selectedCell;
-    const bool isCurrentDay = getCellDate(pos) == QDate::currentDate();
+    const bool isCurrentDay = getCellDate(pos) == m_currentDate;
 
     QPainter painter(cell);
+    painter.setRenderHint(QPainter::Antialiasing);
 
     // draw selected cell background circle
     if (isSelectedCell) {
@@ -557,7 +480,6 @@ void CDayMonthView::paintCell(QWidget *cell)
         //判断最终rect是哪一个
         fillRect = cell->height() < cell->width() ? rectByHeight : rectByWidth;
         painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);
@@ -574,7 +496,7 @@ void CDayMonthView::paintCell(QWidget *cell)
     } else if (isCurrentDay) {
         painter.setPen(m_currentDayTextColor);
     } else {
-        if (m_currentDate.month() == getCellDate(pos).month())
+        if (m_selectDate.month() == getCellDate(pos).month())
             painter.setPen(m_defaultTextColor);
         else
             painter.setPen(m_notCurrentTextColor);
@@ -588,9 +510,6 @@ void CDayMonthView::paintCell(QWidget *cell)
     if (m_vlineflag.count() == DDEDayCalendar::PainterCellNum) {
         if (m_vlineflag[pos]) {
             painter.save();
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setRenderHint(QPainter::HighQualityAntialiasing);
-            painter.setRenderHint(QPainter::SmoothPixmapTransform);
             QPen pen;
             pen.setWidth(2);
             pen.setColor(m_ceventColor);
@@ -614,14 +533,9 @@ void CDayMonthView::paintCell(QWidget *cell)
 
 void CDayMonthView::cellClicked(QWidget *cell)
 {
-    if (!m_cellSelectable)
-        return;
-
     const int pos = m_cellList.indexOf(cell);
-
     if (pos == -1)
         return;
-
     setSelectedCell(pos);
 }
 
@@ -629,88 +543,12 @@ void CDayMonthView::setSelectedCell(int index)
 {
     if (m_selectedCell == index)
         return;
-
-    const int prevPos = m_selectedCell;
-    m_selectedCell = index;
-
-    updateDate();
-    m_cellList.at(prevPos)->update();
-    m_cellList.at(index)->update();
-
-    if (m_currentDate.year() < DDECalendar::QueryEarliestYear)
-        return;
-    emit signalcurrentDateChanged(m_days[index]);
-}
-void CDayMonthView::updateCurrentLunar()
-{
-    updateDate();
-    updateDateShow();
-    updateDateLunarDay();
-    emit signalcurrentLunarDateChanged(m_currentDate, getCaHuangLiDayInfo(getDateIndex(m_currentDate)), 1);
-}
-const QString CDayMonthView::getLunar(int pos)
-{
-    CaHuangLiDayInfo info = getCaHuangLiDayInfo(pos);
-
-    if (info.mLunarDayName == "初一") {
-        info.mLunarDayName = info.mLunarMonthName + info.mLunarDayName;
-    }
-
-    if (info.mTerm.isEmpty())
-        return info.mLunarDayName;
-
-    return info.mTerm;
+    changeSelectDate(m_showDays.at(index));
 }
 
-const CaHuangLiDayInfo CDayMonthView::getCaHuangLiDayInfo(int pos)
+void CDayMonthView::changeSelectDate(const QDate &date)
 {
-    const QDate date = m_days[pos];
-
-    if (lunarCache->contains(date)) {
-        return lunarCache->value(date);
-    }
-
-    if (lunarCache->size() > 40)
-        lunarCache->clear();
-
-    queue->push_back(pos);
-
-    QTimer::singleShot(300, this, SLOT(getDbusData()));
-
-    return *emptyCaHuangLiDayInfo;
-}
-
-void CDayMonthView::getDbusData()
-{
-    if (queue->isEmpty())
-        return;
-
-    const int pos = queue->head();
-    queue->pop_front();
-    const QDate date = m_days[pos];
-    if (!date.isValid()) {
-        return;
-    }
-
-    CaHuangLiDayInfo currentDayInfo;
-
-    if (!lunarCache->contains(date)) {
-        CaHuangLiDayInfo scurrentDayinfo;
-        if (m_DBusInter->GetHuangLiDayCalendar(date.year(), date.month(), date.day(), scurrentDayinfo)) {
-            lunarCache->insert(date, scurrentDayinfo);
-            currentDayInfo = scurrentDayinfo;
-        }
-
-    } else {
-        currentDayInfo = lunarCache->value(date);
-    }
-
-    m_cellList.at(pos)->update();
-
-    // refresh   lunar info
-    if (date == m_currentDate) {
-        updateCurrentLunar();
-    }
+    emit signalChangeSelectDate(date);
 }
 
 void CDayMonthView::resizeEvent(QResizeEvent *event)
@@ -750,37 +588,14 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
     //如果是拖拽则退出
     bool isDragging = false;
     emit signalIsDragging(isDragging);
-
     if (isDragging)
         return;
     if (event->delta() < 0) {
-        m_currentDate = m_currentDate.addDays(1);
-
-        if (m_currentDate == QDate::currentDate()) {
-            m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-        } else {
-            m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
-        }
-        emit signalcurrentDateChanged(m_currentDate);
-        updateCurrentLunar();
+        //切换前一天
+        changeSelectDate(m_selectDate.addDays(1));
     } else {
-        QDate t_curret = m_currentDate.addDays(-1);
-
-        if (t_curret.year() < DDECalendar::QueryEarliestYear)
-            return;
-
-        if (m_currentDate.year() >= DDECalendar::QueryEarliestYear) {
-            m_currentDate = t_curret;
-
-            if (m_currentDate == QDate::currentDate()) {
-                m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-            } else {
-                m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
-            }
-            emit signalcurrentDateChanged(m_currentDate);
-            updateCurrentLunar();
-        } else {
-        }
+        //切换后一天
+        changeSelectDate(m_selectDate.addDays(-1));
     }
 }
 
@@ -791,81 +606,39 @@ void CDayMonthView::paintEvent(QPaintEvent *e)
     int labelheight = height();
     DPalette anipa = this->palette();
     QPainter painter(this);
-    painter.save();
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
+    painter.save();
     painter.setBrush(anipa.background());
     painter.setPen(Qt::NoPen);
     QPainterPath painterPath;
-    painterPath.moveTo(m_radius, 0);
-
-    painterPath.lineTo(0, 0);
-    painterPath.lineTo(0, m_radius);
-
-    painterPath.lineTo(0, labelheight - m_radius);
-
+    painterPath.moveTo(0, 0);
     painterPath.lineTo(0, labelheight);
-    painterPath.lineTo(m_radius, labelheight);
-
-    painterPath.lineTo(labelwidth - m_radius, labelheight);
-
+//  如果有搜索界面则为右边为直角否则为圆角
     if (!m_searchflag) {
+        painterPath.lineTo(labelwidth - m_radius, labelheight);
         painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+        painterPath.lineTo(labelwidth, m_radius);
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
     } else {
         painterPath.lineTo(labelwidth, labelheight);
-        painterPath.lineTo(labelwidth, labelheight - m_radius);
-    }
-    painterPath.lineTo(labelwidth, m_radius);
-
-    if (!m_searchflag) {
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
-
-    } else {
         painterPath.lineTo(labelwidth, 0);
-        painterPath.lineTo(labelwidth - m_radius, 0);
     }
-    painterPath.lineTo(m_radius, 0);
+    painterPath.lineTo(0, 0);
     painterPath.closeSubpath();
     painter.drawPath(painterPath);
     painter.restore();
 }
 void CDayMonthView::slotprev()
 {
-    emit signalSchedulHide();
-
-    if (m_currentDate.year() == DDECalendar::QueryEarliestYear && m_currentDate.month() == 1)
-        return;
-
-    if (m_currentDate.year() >= DDECalendar::QueryEarliestYear) {
-        m_currentDate = m_currentDate.addMonths(-1);
-
-        if (m_currentDate == QDate::currentDate()) {
-            m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-        } else {
-            m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
-        }
-        emit signalcurrentDateChanged(m_currentDate);
-        updateCurrentLunar();
-    } else {
-    }
+    changeSelectDate(m_selectDate.addMonths(-1));
 }
 
 void CDayMonthView::slotnext()
 {
-    emit signalSchedulHide();
-    m_currentDate = m_currentDate.addMonths(1);
-
-    if (m_currentDate == QDate::currentDate()) {
-        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-    } else {
-        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
-    }
-    emit signalcurrentDateChanged(m_currentDate);
-    updateCurrentLunar();
+    changeSelectDate(m_selectDate.addMonths(1));
 }
 
 void CDayMonthView::slottoday()
 {
-    emit signalSchedulHide();
-    emit signalsReturnDay();
-    setCurrentDate(QDate::currentDate());
+    changeSelectDate(m_currentDate);
 }

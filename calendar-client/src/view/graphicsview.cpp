@@ -39,6 +39,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QtMath>
 
 DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
@@ -60,16 +61,20 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
     m_margins = QMargins(0, 0, 0, 0);
 
     setLineWidth(0);
+    //TODO 界面刷新?
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(scrollBarValueChangedSlot()));
     m_timer->start(60000);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     connect(this->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChangedSlot()));
-    connect(this->verticalScrollBar(),
-            &QScrollBar::sliderPressed,
-            this,
-            &CGraphicsView::slotScrollBar);
+    connect(this->verticalScrollBar(), &QScrollBar::sliderPressed, this, &CGraphicsView::slotScrollBar);
+
+    //如果为周视图
+    if (m_viewType == 0) {
+        //设置显示右下角圆角
+        setShowRadius(false, true);
+    }
 }
 
 CGraphicsView::~CGraphicsView()
@@ -108,6 +113,7 @@ void CGraphicsView::setTheMe(int type)
         m_LRPen.setColor(linecolor);
         m_TBPen.setColor(linecolor);
     }
+    DragInfoGraphicsView::setTheMe(type);
     scene()->update();
     update();
 }
@@ -148,7 +154,6 @@ void CGraphicsView::setRange(int w, int h, QDate begindate, QDate enddate, int r
     m_dayInterval = w * 1.0 / totalDay;
     m_timeInterval = h / 24.0;
     m_totalDay = totalDay;
-
     if (m_viewType == 0) {
         int viewWidth = viewport()->width();
         int viewHeight = viewport()->height();
@@ -164,30 +169,39 @@ void CGraphicsView::setRange(QDate begin, QDate end)
     m_beginDate = begin;
     m_endDate = end;
     getCoorManage()->setDateRange(begin, end);
+    this->scene()->update();
 }
 
-void CGraphicsView::setInfo(const QVector<ScheduleDtailInfo> &info)
+void CGraphicsView::setCurrentDate(const QDateTime &currentDate)
+{
+    m_currentDate = currentDate;
+    scrollBarValueChangedSlot();
+//    qDebug() << m_currentDate;
+    this->scene()->update();
+}
+
+void CGraphicsView::setInfo(const QVector<ScheduleDataInfo> &info)
 {
     m_scheduleInfo = info;
 }
 
-bool MScheduleTimeThan(const ScheduleDtailInfo &s1, const ScheduleDtailInfo &s2)
+bool MScheduleTimeThan(const ScheduleDataInfo &s1, const ScheduleDataInfo &s2)
 {
-    if (s1.beginDateTime.date().daysTo(s1.endDateTime.date()) == s2.beginDateTime.date().daysTo(s2.endDateTime.date())) {
-        if (s1.beginDateTime == s2.beginDateTime) {
-            return s1.beginDateTime.secsTo(s1.endDateTime) > s2.beginDateTime.secsTo(s2.endDateTime);
+    if (s1.getBeginDateTime().date().daysTo(s1.getEndDateTime().date()) == s2.getBeginDateTime().date().daysTo(s2.getEndDateTime().date())) {
+        if (s1.getBeginDateTime() == s2.getBeginDateTime()) {
+            return s1.getBeginDateTime().secsTo(s1.getEndDateTime()) > s2.getBeginDateTime().secsTo(s2.getEndDateTime());
         } else {
-            return s1.beginDateTime < s2.beginDateTime;
+            return s1.getBeginDateTime() < s2.getBeginDateTime();
         }
     } else {
-        return s1.beginDateTime.date().daysTo(s1.endDateTime.date()) > s2.beginDateTime.date().daysTo(s2.endDateTime.date());
+        return s1.getBeginDateTime().date().daysTo(s1.getEndDateTime().date()) > s2.getBeginDateTime().date().daysTo(s2.getEndDateTime().date());
     }
 }
 
-void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, const ScheduleDtailInfo &info)
+void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, const ScheduleDataInfo &info)
 {
     clearSchdule();
-    QVector<ScheduleDtailInfo> vListData;
+    QVector<ScheduleDataInfo> vListData;
     vListData = m_scheduleInfo;
 
     switch (status) {
@@ -207,24 +221,24 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
         vListData.append(info);
         break;
     }
-    QMap<QDate, QVector<ScheduleDtailInfo>> m_InfoMap;
+    QMap<QDate, QVector<ScheduleDataInfo>> m_InfoMap;
     QDate currentDate;
     qint64 count = m_beginDate.daysTo(m_endDate);
     qint64 beginoffset = 0, endoffset = 0;
-    QVector<ScheduleDtailInfo> currentInfo;
+    QVector<ScheduleDataInfo> currentInfo;
 
     for (int i = 0; i <= count; ++i) {
         currentDate = m_beginDate.addDays(i);
         currentInfo.clear();
 
         for (int j = 0; j < vListData.size(); ++j) {
-            beginoffset = vListData.at(j).beginDateTime.date().daysTo(currentDate);
-            endoffset = currentDate.daysTo(vListData.at(j).endDateTime.date());
+            beginoffset = vListData.at(j).getBeginDateTime().date().daysTo(currentDate);
+            endoffset = currentDate.daysTo(vListData.at(j).getEndDateTime().date());
 
             if (beginoffset < 0 || endoffset < 0) {
                 continue;
             }
-            if (vListData.at(j).endDateTime.date() == currentDate && vListData.at(j).beginDateTime.daysTo(vListData.at(j).endDateTime) > 0 && vListData.at(j).endDateTime.time() == QTime(0, 0, 0)) {
+            if (vListData.at(j).getEndDateTime().date() == currentDate && vListData.at(j).getBeginDateTime().daysTo(vListData.at(j).getEndDateTime()) > 0 && vListData.at(j).getEndDateTime().time() == QTime(0, 0, 0)) {
                 continue;
             }
             currentInfo.append(vListData.at(j));
@@ -245,9 +259,9 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
                             addSchduleItem(info.at(m).vData.at(n), currentDate, n + 1,
                                            tnum, 0, m_viewType, m_sMaxNum);
                         }
-                        ScheduleDtailInfo tdetaliinfo = info.at(m).vData.at(tnum - 2);
-                        tdetaliinfo.titleName = "...";
-                        tdetaliinfo.type.ID = 3;
+                        ScheduleDataInfo tdetaliinfo = info.at(m).vData.at(tnum - 2);
+                        tdetaliinfo.setTitleName("...");
+                        tdetaliinfo.setType(3);
                         addSchduleItem(tdetaliinfo, currentDate, tnum, tnum, 1,
                                        m_viewType, m_sMaxNum);
                     } else {
@@ -280,29 +294,28 @@ void CGraphicsView::ShowSchedule(DragInfoItem *infoitem)
     DragInfoGraphicsView::ShowSchedule(infoitem);
 }
 
-void CGraphicsView::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &pos)
+void CGraphicsView::MoveInfoProcess(ScheduleDataInfo &info, const QPointF &pos)
 {
     Q_UNUSED(pos);
 
-    if (!info.allday) {
+    if (!info.getAllDay()) {
         qint64 offset = m_PressDate.secsTo(m_MoveDate);
-        info.beginDateTime = info.beginDateTime.addSecs(offset);
-        info.endDateTime = info.endDateTime.addSecs(offset);
+        info.getBeginDateTime() = info.getBeginDateTime().addSecs(offset);
+        info.getEndDateTime() = info.getEndDateTime().addSecs(offset);
     } else {
-        info.allday = false;
-        info.remind = false;
-        info.beginDateTime = m_MoveDate;
-        info.endDateTime = m_MoveDate.addSecs(3600);
+        info.setAllDay(false);
+        info.setRemindData(RemindData());
+        info.getBeginDateTime() = m_MoveDate;
+        info.getEndDateTime() = m_MoveDate.addSecs(3600);
     }
-    info.IsMoveInfo = true;
     upDateInfoShow(ChangeWhole, info);
 }
 
-void CGraphicsView::addSchduleItem(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
+void CGraphicsView::addSchduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
 {
     CScheduleItem *item = new CScheduleItem(
-        m_coorManage->getDrawRegion(date, info.beginDateTime,
-                                    info.endDateTime, index, totalNum, maxnum,
+        m_coorManage->getDrawRegion(date, info.getBeginDateTime(),
+                                    info.getEndDateTime(), index, totalNum, maxnum,
                                     viewtype),
         nullptr, type);
     m_Scene->addItem(item);
@@ -312,10 +325,10 @@ void CGraphicsView::addSchduleItem(const ScheduleDtailInfo &info, QDate date, in
 
 void CGraphicsView::deleteSchduleItem(CScheduleItem *item)
 {
-    int id = item->getData().id;
+    int id = item->getData().getID();
 
     for (int i = 0; i < m_vScheduleItem.size(); i++) {
-        if (m_vScheduleItem[i]->getData().id == id) {
+        if (m_vScheduleItem[i]->getData().getID() == id) {
             m_vScheduleItem.remove(i);
             m_Scene->removeItem(item);
             delete m_vScheduleItem[i];
@@ -325,13 +338,13 @@ void CGraphicsView::deleteSchduleItem(CScheduleItem *item)
     }
 }
 
-void CGraphicsView::setSelectSchedule(const ScheduleDtailInfo &info)
+void CGraphicsView::setSelectSchedule(const ScheduleDataInfo &info)
 {
-    setTime(info.beginDateTime.time());
-
+    setTime(info.getBeginDateTime().time());
     for (int i = 0; i < m_vScheduleItem.size(); ++i) {
         if (m_vScheduleItem.at(i)->getType() == 1)
             continue;
+        //判断是否为选中日程
         if (m_vScheduleItem.at(i)->hasSelectSchedule(info)) {
             m_vScheduleItem.at(i)->setStartValue(0);
             m_vScheduleItem.at(i)->setEndValue(10);
@@ -351,9 +364,9 @@ void CGraphicsView::clearSchdule()
     m_updateDflag = true;
 }
 
-void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist, QList<ScheduleclassificationInfo> &info)
+void CGraphicsView::scheduleClassificationType(QVector<ScheduleDataInfo> &scheduleInfolist, QList<ScheduleclassificationInfo> &info)
 {
-    QVector<ScheduleDtailInfo> schedulelist = scheduleInfolist;
+    QVector<ScheduleDataInfo> schedulelist = scheduleInfolist;
     if (schedulelist.isEmpty())
         return;
 
@@ -362,8 +375,8 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
     QVector<int> containIndex;
 
     for (int k = 0; k < schedulelist.count(); k++) {
-        QDateTime endTime = schedulelist.at(k).endDateTime;
-        QDateTime begTime = schedulelist.at(k).beginDateTime;
+        QDateTime endTime = schedulelist.at(k).getEndDateTime();
+        QDateTime begTime = schedulelist.at(k).getBeginDateTime();
 
         if (begTime.date().daysTo(endTime.date()) == 0 && begTime.time().secsTo(endTime.time()) < m_minTime) {
             endTime = begTime.addSecs(m_minTime);
@@ -374,13 +387,13 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
         containIndex.clear();
 
         for (int i = 0; i < info.count(); i++) {
-            if ((schedulelist.at(k).beginDateTime >= info.at(i).begindate && schedulelist.at(k).beginDateTime <= info.at(i).enddate) || (endTime >= info.at(i).begindate && endTime <= info.at(i).enddate)) {
+            if ((schedulelist.at(k).getBeginDateTime() >= info.at(i).begindate && schedulelist.at(k).getBeginDateTime() <= info.at(i).enddate) || (endTime >= info.at(i).begindate && endTime <= info.at(i).enddate)) {
                 containIndex.append(i);
             }
         }
         if (containIndex.count() == 0) {
             ScheduleclassificationInfo firstschedule;
-            firstschedule.begindate = schedulelist.at(k).beginDateTime;
+            firstschedule.begindate = schedulelist.at(k).getBeginDateTime();
             firstschedule.enddate = endTime;
             firstschedule.vData.append(schedulelist.at(k));
             info.append(firstschedule);
@@ -399,8 +412,8 @@ void CGraphicsView::scheduleClassificationType(QVector<ScheduleDtailInfo> &sched
             for (int i = containIndex.count() - 1; i > 0; --i) {
                 info.removeAt(containIndex.at(i));
             }
-            if (schedulelist.at(k).beginDateTime < scheduleInfo.begindate)
-                scheduleInfo.begindate = schedulelist.at(k).beginDateTime;
+            if (schedulelist.at(k).getBeginDateTime() < scheduleInfo.begindate)
+                scheduleInfo.begindate = schedulelist.at(k).getBeginDateTime();
             if (endTime > scheduleInfo.enddate)
                 scheduleInfo.enddate = endTime;
             scheduleInfo.vData.append(schedulelist.at(k));
@@ -470,17 +483,6 @@ void CGraphicsView::slotDoubleEvent(int type)
     Q_UNUSED(type);
     m_updateDflag = true;
     emit signalsUpdateShcedule();
-}
-
-void CGraphicsView::slotDeleteItem()
-{
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID < 0) {
-        return;
-    }
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID != DDECalendar::FestivalTypeID) {
-        DeleteItem(CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo());
-    }
-    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
 }
 
 void CGraphicsView::slotScrollBar()
@@ -565,7 +567,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
                 t_painter.drawLine(QPoint(0, m_vLRLarge[i] - 1), QPoint(t_width, m_vLRLarge[i] - 1));
             t_painter.restore();
 
-            if (m_viewType == 1 && m_coorManage->getBegindate() == QDate::currentDate()) {
+            if (m_viewType == 1 && m_coorManage->getBegindate() == m_currentDate.date()) {
                 t_painter.save();
                 QPen pen = m_LRPen;
                 pen.setColor(m_currenttimecolor);
@@ -576,7 +578,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
             }
         }
     }
-    QGraphicsView::paintEvent(event);
+    DragInfoGraphicsView::paintEvent(event);
 }
 
 void CGraphicsView::paintBackground(QPainter &painter)
@@ -648,7 +650,7 @@ void CGraphicsView::scrollBarValueChangedSlot()
         vHours.append(qFloor(i / m_timeInterval + 0.5));
     }
 
-    qreal currentTime = static_cast<qreal>(m_coorManage->getHeight(QTime::currentTime()));
+    qreal currentTime = static_cast<qreal>(m_coorManage->getHeight(m_currentDate.time()));
 
     if (currentTime > beginpos && currentTime < leftBttomrealPos.y()) {
         m_cuttrnttimetype = 1;
@@ -692,37 +694,28 @@ CGraphicsView::PosInItem CGraphicsView::getPosInItem(const QPoint &p, const QRec
     return MIDDLE;
 }
 
-ScheduleDtailInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
+ScheduleDataInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
 {
-    ScheduleDtailInfo info;
-
+    ScheduleDataInfo info;
     if (beginDate.secsTo(endDate) > 0) {
-        info.beginDateTime = beginDate;
+        info.getBeginDateTime() = beginDate;
 
         if (beginDate.secsTo(endDate) < DDECalendar::ThirtyMinutesWithSec) {
-            info.endDateTime = beginDate.addSecs(DDECalendar::ThirtyMinutesWithSec);
+            info.getEndDateTime() = beginDate.addSecs(DDECalendar::ThirtyMinutesWithSec);
         } else {
-            info.endDateTime = endDate;
+            info.getEndDateTime() = endDate;
         }
     } else {
         if (endDate.secsTo(beginDate) < DDECalendar::ThirtyMinutesWithSec) {
-            info.beginDateTime = beginDate.addSecs(-DDECalendar::ThirtyMinutesWithSec);
+            info.getBeginDateTime() = beginDate.addSecs(-DDECalendar::ThirtyMinutesWithSec);
         } else {
-            info.beginDateTime = endDate;
+            info.getBeginDateTime() = endDate;
         }
-        info.endDateTime = beginDate;
+        info.getEndDateTime() = beginDate;
     }
-    info.titleName = tr("New Event");
-    info.allday = false;
-    info.remind = true;
-    info.id = 0;
-    info.remindData.n = 1;
-    info.remindData.time = QTime(9, 0);
-    info.RecurID = 0;
-    CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->GetType(
-        1, info.type);
-    info.rpeat = 0;
-
+    info.setTitleName(tr("New Event"));
+    info.setAllDay(false);
+    info.setRemindData(RemindData(1, QTime(9, 0)));
     return info;
 }
 
@@ -789,15 +782,15 @@ void CGraphicsView::keepCenterOnScene()
     centerOnScene(pos);
 }
 
+/**
+ * @brief CGraphicsView::getLargeScaleFlag      获取大刻度显示
+ * @param LRFlag                                水平刻度
+ * @param TBFlag                                垂直刻度
+ */
 void CGraphicsView::getLargeScaleFlag(bool &LRFlag, bool &TBFlag)
 {
     LRFlag = m_LRFlag;
     TBFlag = m_TBFlag;
-}
-
-void CGraphicsView::setFirstWeekday(int weekday)
-{
-    m_firstWeekDay = weekday;
 }
 
 void CGraphicsView::setTime(QTime time)

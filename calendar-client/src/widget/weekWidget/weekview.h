@@ -28,6 +28,8 @@
 #include <QDate>
 
 DWIDGET_USE_NAMESPACE
+
+typedef int(*GetWeekNumOfYear)(const QDate &);
 /**
  * @brief The CWeekView class
  */
@@ -35,35 +37,16 @@ class CWeekView : public QWidget
 {
     Q_OBJECT
 public:
-    /**
-     * @brief CWeekView 构造函数
-     * @param parent 父类
-     */
-    explicit CWeekView(QWidget *parent = nullptr);
-    /**
-      * @brief ~CWeekView 析构函数
-      */
-    ~CWeekView();
-    /**
-     * @brief setFirstWeekDay 设置每周的第一天是周几，并更新
-     * @param weekday 周几
-     */
-    void setFirstWeekDay(int weekday);
-    /**
-     * @brief setCurrentDate 设置当天时间，并更新
-     * @param date 时间
-     */
-    void setCurrentDate(const QDate date);
-    /**
-     * @brief setTheMe 根据系统主题类型设置颜色
-     * @param type 系统主题类型
-     */
+    explicit CWeekView(const GetWeekNumOfYear &getWeekNumOfYear, QWidget *parent = nullptr);
+    ~CWeekView() override;
+    //设置选择时间，并更新
+    void setSelectDate(const QDate date);
+    //设置当前时间
+    void setCurrent(const QDateTime &dateTime);
+    //根据系统主题类型设置颜色
     void setTheMe(int type = 0);
-    /**
-     * @brief setsearchfalg
-     * @param flag
-     */
-    void setsearchfalg(bool flag);
+private:
+    void switchDate(const QDate &date);
 public slots:
     /**
      * @brief cellClicked 选择点击的日期
@@ -80,11 +63,10 @@ public slots:
     void slotnext();
 signals:
     /**
-     * @brief signalsSelectDate 选择日期的信号
-     * @param date 选择的日期
-     * @param currentDate 今天的时间
+     * @brief signalsSelectDate     选择日期的信号
+     * @param date                  选择的日期
      */
-    void signalsSelectDate(QDate date, QDate currentDate);
+    void signalsSelectDate(const QDate &date);
     /**
      * @brief signalIsDragging 判断是否是拖拽状态
      * @param isDragging 是否是拖拽状态
@@ -112,17 +94,9 @@ private:
      * @param cell 周数所在的widget
      */
     void paintCell(QWidget *cell);
-    /**
-     * @brief eventFilter 过滤器
-     * @param o 事件对象
-     * @param e 事件类型
-     * @return  false
-     */
+
     bool eventFilter(QObject *o, QEvent *e) override;
-    /**
-     * @brief setSelectedCell 设置被选择的周数
-     * @param index 周数所在的索引
-     */
+    //设置被选择的周数
     void setSelectedCell(int index);
     /**
      * @brief updateDate 更新数据
@@ -137,19 +111,20 @@ private:
     //选择的日期
     QDate m_selectDate;
     QDate m_days[10];
-    bool m_cellSelectable = true;
     int m_selectedCell = 0;
     QFont m_dayNumFont;
+
+    QDateTime m_currentDate;
+
+    GetWeekNumOfYear  m_getWeekNumOfYear;
+
 
     QColor m_defaultTextColor = Qt::black;
     QColor m_backgrounddefaultColor = Qt::white;
     QColor m_currentDayTextColor = Qt::white;
     QColor m_backgroundcurrentDayColor = "#0081FF";
     QColor m_fillColor = Qt::white;
-    int m_firstWeekDay;
-    int m_weekAddDay = 0;
     int m_themetype = 1;
-    bool m_searchfalg = false;
     /**
      * @brief m_touchGesture        触摸手势处理
      */

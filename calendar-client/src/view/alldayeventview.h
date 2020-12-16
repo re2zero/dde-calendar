@@ -21,7 +21,6 @@
 
 #include "draginfoitem.h"
 #include "draginfographicsview.h"
-#include "schedulestructs.h"
 
 #include <DComboBox>
 #include <DLabel>
@@ -45,9 +44,9 @@ class CAllDayEventWeekView : public DragInfoGraphicsView
 public:
     CAllDayEventWeekView(QWidget *parent = nullptr, int edittype = 0);
     ~CAllDayEventWeekView() override;
-    void setDayData(const QVector<QVector<ScheduleDtailInfo>> &vlistData);
-    void setInfo(const QVector<ScheduleDtailInfo> &info);
-    QVector<QVector<ScheduleDtailInfo>> &getListData()
+    void setDayData(const QVector<QVector<ScheduleDataInfo>> &vlistData);
+    void setInfo(const QVector<ScheduleDataInfo> &info);
+    QVector<QVector<ScheduleDataInfo>> &getListData()
     {
         return m_vlistData;
     }
@@ -58,14 +57,13 @@ public:
         return m_coorManage;
     }
     void updateHigh();
-    void setSelectSchedule(const ScheduleDtailInfo &info);
+    void setSelectSchedule(const ScheduleDataInfo &info);
     void setMargins(int left, int top, int right, int bottom);
-    void updateInfo();
+    void updateInfo() override;
 signals:
     void signalUpdatePaint(const int topM);
     void signalSceneUpdate();
 public slots:
-    void slotDeleteItem();
     void slotUpdateScene();
 private slots:
     void slotDoubleEvent();
@@ -82,12 +80,12 @@ private:
     //根据鼠标移动的距离判断是否创建日程
     bool JudgeIsCreate(const QPointF &pos) override;
     void RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos) override;
-    void MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &pos) override;
+    void MoveInfoProcess(ScheduleDataInfo &info, const QPointF &pos) override;
     QDateTime getDragScheduleInfoBeginTime(const QDateTime &moveDateTime) override;
     QDateTime getDragScheduleInfoEndTime(const QDateTime &moveDateTime) override;
     PosInItem getPosInItem(const QPoint &p, const QRectF &itemRect) override;
     QDateTime getPosDate(const QPoint &p) override;
-    void upDateInfoShow(const DragStatus &status = NONE, const ScheduleDtailInfo &info = ScheduleDtailInfo()) override;
+    void upDateInfoShow(const DragStatus &status = NONE, const ScheduleDataInfo &info = ScheduleDataInfo()) override;
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
@@ -110,8 +108,8 @@ private:
 
 private:
     int itemHeight = 22;
-    QVector<QVector<ScheduleDtailInfo>> m_vlistData;
-    QVector<ScheduleDtailInfo> m_scheduleInfo;
+    QVector<QVector<ScheduleDataInfo>> m_vlistData;
+    QVector<ScheduleDataInfo> m_scheduleInfo;
     QVector<CAllDayEventWidgetItem *> m_baseShowItem;
     int m_editType = 0;
     CScheduleCoorManage *m_coorManage = nullptr;
@@ -131,7 +129,7 @@ class CAllDayEventWidgetItem : public DragInfoItem
     Q_OBJECT
 public:
     explicit CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *parent = nullptr, int edittype = 0);
-    bool hasSelectSchedule(const ScheduleDtailInfo &info);
+    bool hasSelectSchedule(const ScheduleDataInfo &info);
 
 protected:
     void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;

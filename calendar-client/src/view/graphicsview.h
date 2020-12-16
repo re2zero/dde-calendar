@@ -19,7 +19,7 @@
 #ifndef GRAPHICSVIEW_H
 #define GRAPHICSVIEW_H
 
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
 #include "draginfographicsview.h"
 
 #include <DGraphicsView>
@@ -35,7 +35,7 @@ DWIDGET_USE_NAMESPACE
 typedef struct _tagScheduleclassificationInfo {
     QDateTime begindate;
     QDateTime enddate;
-    QVector<ScheduleDtailInfo> vData;
+    QVector<ScheduleDataInfo> vData;
 
 } ScheduleclassificationInfo;
 
@@ -55,15 +55,15 @@ public:
     void updateHigh();
     void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
     void setRange(QDate begin, QDate end);
-
+    void setCurrentDate(const QDateTime &currentDate);
     CScheduleCoorManage *getCoorManage()
     {
         return m_coorManage;
     }
-    void setInfo(const QVector<ScheduleDtailInfo> &info);
-    void addSchduleItem(const ScheduleDtailInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
+    void setInfo(const QVector<ScheduleDataInfo> &info);
+    void addSchduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
     void deleteSchduleItem(CScheduleItem *item);
-    void setSelectSchedule(const ScheduleDtailInfo &info);
+    void setSelectSchedule(const ScheduleDataInfo &info);
     void clearSchdule();
 
     void setMinTime(const int &minTime)
@@ -76,8 +76,7 @@ public:
     }
     void keepCenterOnScene();
 
-    void scheduleClassificationType(QVector<ScheduleDtailInfo> &scheduleInfolist,
-                                    QList<ScheduleclassificationInfo> &info);
+    void scheduleClassificationType(QVector<ScheduleDataInfo> &scheduleInfolist, QList<ScheduleclassificationInfo> &info);
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -85,30 +84,11 @@ public:
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) override;
 #endif
-
-    /************************************************************************
-    Function:       resizeEvent()
-    Description:    窗口大小改变事件
-    Input:          event 窗口大小改变事件
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
     void resizeEvent(QResizeEvent *event) override;
-
-    /************************************************************************
-    Function:       getLargeScaleFlag()
-    Description:    获取大刻度显示
-    Input:          LRFlag 水平刻度，TBFlag 垂直刻度
-    Output:         无
-    Return:         无
-    Others:         无
-    ************************************************************************/
+    //获取大刻度显示
     void getLargeScaleFlag(bool &LRFlag, bool &TBFlag);
-    void setFirstWeekday(int weekday);
     void setTime(QTime time);
-    void updateInfo();
-
+    void updateInfo() override;
 protected:
     void paintEvent(QPaintEvent *event) override;
 
@@ -121,7 +101,6 @@ private:
 public slots:
     void scrollBarValueChangedSlot();
     void slotDoubleEvent(int type);
-    void slotDeleteItem();
     void slotScrollBar();
     void slotUpdateScene();
 signals:
@@ -142,12 +121,12 @@ public:
 protected:
     void slotCreate(const QDateTime &date) override;
     bool MeetCreationConditions(const QDateTime &date) override;
-    void upDateInfoShow(const DragStatus &status = NONE, const ScheduleDtailInfo &info = ScheduleDtailInfo()) override;
+    void upDateInfoShow(const DragStatus &status = NONE, const ScheduleDataInfo &info = ScheduleDataInfo()) override;
     QDateTime getPosDate(const QPoint &p) override;
     void ShowSchedule(DragInfoItem *infoitem) override;
-    void MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &pos) override;
+    void MoveInfoProcess(ScheduleDataInfo &info, const QPointF &pos) override;
     PosInItem getPosInItem(const QPoint &p, const QRectF &itemRect) override;
-    ScheduleDtailInfo getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate) override;
+    ScheduleDataInfo getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate) override;
     bool IsEqualtime(const QDateTime &timeFirst, const QDateTime &timeSecond) override;
     bool JudgeIsCreate(const QPointF &pos) override;
     void RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos) override;
@@ -166,7 +145,6 @@ private:
     QVector<int> m_vTBLarge; //大刻度像素位置
     qreal m_dayInterval;
     qreal m_timeInterval;
-    int m_firstWeekDay;
     qint64 m_totalDay;
     qreal m_sceneHeightScale = 0;
 
@@ -179,9 +157,10 @@ private:
     bool m_updateDflag = false;
     int m_rightmagin = 0;
 
-    QVector<ScheduleDtailInfo> m_scheduleInfo;
+    QVector<ScheduleDataInfo> m_scheduleInfo;
     QDate m_beginDate;
     QDate m_endDate;
+    QDateTime m_currentDate;
     int m_minTime; //最小高度对应的最小时间
     int m_sMaxNum = 4;
 };

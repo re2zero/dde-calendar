@@ -29,22 +29,26 @@
 DWIDGET_USE_NAMESPACE
 
 class CMonthWidget;
+/**
+ * @brief The CMonthDayView class       月视图月份自定义控件
+ */
 class CMonthDayView : public DFrame
 {
     Q_OBJECT
 public:
     explicit CMonthDayView(QWidget *parent = nullptr);
-    ~CMonthDayView();
-    void setCurrentDate(const QDate date);
-    void setRCurrentDate(const QDate date);
+    ~CMonthDayView() override;
+    //设置选择时间
+    void setSelectDate(const QDate &date);
+    //设置主题颜色
     void setTheMe(int type = 0);
     void setsearchfalg(bool flag);
 protected:
     void wheelEvent(QWheelEvent *e) override;
     bool event(QEvent *e) override;
 signals:
+    //切换月份修改选择时间
     void signalsSelectDate(QDate date);
-    void signalsCurrentDate(QDate date);
     /**
      * @brief signalAngleDelta      发送滚动信号滚动相对量
      * @param delta     滚动相对量
@@ -54,8 +58,8 @@ private:
     /**
      * @brief m_touchGesture        触摸手势处理
      */
-    touchGestureOperation m_touchGesture;
-    CMonthWidget *m_monthWidget = nullptr;
+    touchGestureOperation       m_touchGesture;
+    CMonthWidget                *m_monthWidget = nullptr;
     QDate                       m_selectDate;
     QDate                       m_days[12];
 
@@ -86,10 +90,11 @@ protected:
      * @param event 鼠标事件
      */
     void mouseMoveEvent(QMouseEvent *event) override;
-
 private:
     void mousePress(const QPoint &point);
+    //更新item大小
     void updateSize();
+    //获取鼠标点击的区域编号
     int getMousePosItem(const QPointF &pos);
 signals:
     void signalsSelectDate(QDate date);
@@ -106,14 +111,23 @@ class CMonthRect
 {
 public:
     CMonthRect();
+    //设置时间
     void setDate(const QDate &date);
+    //获取时间
     QDate getDate()const;
+    //获取矩阵大小
     QRectF rect() const;
+    //设置矩阵大小
     void setRect(const QRectF &rect);
+    //设置矩阵大小
     inline void setRect(qreal x, qreal y, qreal w, qreal h);
+    //绘制
     void paintItem(QPainter *painter, const QRectF &rect);
+    //设置设备缩放比例
     void setDevicePixelRatio(const qreal pixel);
+    //设置主题
     static void setTheMe(int type);
+    //设置选择的矩阵
     static void setSelectRect(CMonthRect *selectRect);
 private:
     QRectF                              m_rect;

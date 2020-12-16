@@ -21,31 +21,52 @@
 #define MONTHWEEKVIEW_H
 
 #include "constants.h"
-#include "customframe.h"
 
 #include <DWidget>
-#include <DLabel>
-#include <DHorizontalLine>
-
-#include <QHBoxLayout>
 
 DWIDGET_USE_NAMESPACE
+class WeekRect;
+/**
+ * @brief The CMonthWeekView class
+ *      月视图周显示
+ */
 class CMonthWeekView : public DWidget
 {
     Q_OBJECT
 public:
     explicit CMonthWeekView(QWidget *parent = nullptr);
-    void setList(int weekday);
+    ~CMonthWeekView() override;
+    void setFirstDay(const Qt::DayOfWeek weekday);
     void setTheMe(int type = 0);
     void updateWeek();
-private:
-    int checkDay(int weekday);
 protected:
     void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 private:
-    QHBoxLayout *m_mainLayout = nullptr;
-    QVector<QPair<CustomFrame *, int>> m_weekData;
-    QVector<DHorizontalLine *>             m_vline;
+    QColor                      m_backgroudColor;
+    QVector<WeekRect *>         m_weekRect;
+    int                         m_radius = 8;
+    Qt::DayOfWeek               m_firstWeek;
+};
+
+
+class WeekRect
+{
+public:
+    WeekRect();
+    void setWeek(const Qt::DayOfWeek &showWeek, const bool &showLine = false);
+    void setRect(const QRectF &rectF);
+    void paintRect(QPainter &painter);
+    void setTheMe(int type = 0);
+private:
+    QColor          m_activeColor;
+    QColor          m_testColor;
+    Qt::DayOfWeek   m_showWeek;
+    QString         m_weekStr;
+    QFont           m_font;
+    QRectF          m_rectF;
+    bool            m_showLine;
+    qreal           m_lineHeight{2};
 };
 
 #endif // WEEKINDICATOR_H

@@ -29,7 +29,6 @@
 #include <DHiDPIHelper>
 
 #include <QAction>
-#include <QMimeData>
 #include <QShortcut>
 #include <QPainterPath>
 #include <QMouseEvent>
@@ -39,15 +38,14 @@ bool CDayGraphicsItem::m_LunarVisible = false;
 CMonthGraphiview::CMonthGraphiview(QWidget *parent)
     : DragInfoGraphicsView(parent)
 {
+    //设置显示左右下角圆角
+    setShowRadius(true, true);
     QShortcut *shortcut = new QShortcut(parent);
     shortcut->setKey(QKeySequence(QLatin1String("Delete")));
-    connect(shortcut,
-            &QShortcut::activated, this,
-            &CMonthGraphiview::slotDeleteItem);
+    connect(shortcut, &QShortcut::activated, this,  &CMonthGraphiview::slotDeleteItem);
 
     m_MonthScheduleView = new CMonthScheduleView(this, m_Scene);
-    connect(this, &CMonthGraphiview::signalFontChange,
-            m_MonthScheduleView, &CMonthScheduleView::slotFontChange);
+    connect(this, &CMonthGraphiview::signalFontChange, m_MonthScheduleView, &CMonthScheduleView::slotFontChange);
 
     for (int i = 0; i < DDEMonthCalendar::ItemSizeofMonthDay; ++i) {
         CDayGraphicsItem *item = new CDayGraphicsItem();
@@ -61,20 +59,13 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
 
 CMonthGraphiview::~CMonthGraphiview()
 {
-    delete m_MonthScheduleView;
-
-    for (int i = 0; i < m_DayItem.size(); ++i) {
-        CDayGraphicsItem *item = m_DayItem.at(i);
-        delete item;
-        item = nullptr;
-    }
-
     m_DayItem.clear();
 }
 
 void CMonthGraphiview::setTheMe(int type)
 {
     m_themetype = type;
+    DragInfoGraphicsView::setTheMe(type);
 
     for (int i = 0; i < m_DayItem.size(); ++i) {
         m_DayItem.at(i)->setTheMe(type);
@@ -83,28 +74,35 @@ void CMonthGraphiview::setTheMe(int type)
     m_MonthScheduleView->setTheMe(type);
 }
 
-void CMonthGraphiview::setDate(const QDate date[42])
+void CMonthGraphiview::setDate(const QVector<QDate> &showDate)
 {
-    if (date[0].day() != 1) {
-        m_currentMonth = date[0].addMonths(1).month();
+    Q_ASSERT(showDate.size() == 42);
+    if (showDate.at(0).day() != 1) {
+        m_currentMonth = showDate.at(0).addMonths(1).month();
     } else {
-        m_currentMonth = date[0].month();
+        m_currentMonth = showDate.at(0).month();
     }
-
     for (int i = 0; i < m_DayItem.size(); ++i) {
-        m_DayItem.at(i)->setData(date[i]);
-        m_DayItem.at(i)->setCurrentMonth(date[i].month() == m_currentMonth);
-        m_DayItem.at(i)->setStatus(CDayGraphicsItem::HolidayStatus(getFestivalInfoByDate(date[i])));
+        m_DayItem.at(i)->setData(showDate.at(i));
+        m_DayItem.at(i)->setCurrentMonth(showDate.at(i).month() == m_currentMonth);
     }
-
+    m_shceludelistdata.clear();
     this->scene()->update();
 }
 
-void CMonthGraphiview::setLunarInfo(QMap<QDate, CaLunarDayInfo> *lunarCache)
+void CMonthGraphiview::setFestival(const QMap<QDate, int> &festivalInfo)
+{
+    m_festivallist = festivalInfo;
+    for (int i = 0; i < m_DayItem.size(); ++i) {
+        m_DayItem.at(i)->setStatus(static_cast<CDayGraphicsItem::HolidayStatus>(m_festivallist[m_DayItem.at(i)->getDate()]));
+    }
+    this->scene()->update();
+}
+
+void CMonthGraphiview::setLunarInfo(const QMap<QDate, CaHuangLiDayInfo> &lunarCache)
 {
     m_lunarCache = lunarCache;
     updateLunar();
-
 }
 
 void CMonthGraphiview::setLunarVisible(bool visible)
@@ -112,13 +110,17 @@ void CMonthGraphiview::setLunarVisible(bool visible)
     CDayGraphicsItem::m_LunarVisible = visible;
 }
 
-void CMonthGraphiview::setScheduleInfo(const QVector<ScheduleDateRangeInfo> &info)
+/**
+ * @brief CMonthGraphiview::setScheduleInfo 设置日程信息
+ * @param info
+ */
+void CMonthGraphiview::setScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo> > &info)
 {
     m_shceludelistdata = info;
     updateInfo();
 }
 
-void CMonthGraphiview::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
+void CMonthGraphiview::setSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
     QVector<QGraphicsRectItem *> mscheduleShowBtn = m_MonthScheduleView->getScheduleShowItem();
 
@@ -133,6 +135,16 @@ void CMonthGraphiview::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
             item->startAnimation();
         }
     }
+}
+
+/**
+ * @brief CMonthGraphiview::setSearchScheduleInfo       设置搜索日程信息
+ * @param searchScheduleInfo
+ */
+void CMonthGraphiview::setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchScheduleInfo)
+{
+    DragInfoItem::setSearchScheduleInfo(searchScheduleInfo);
+    this->scene()->update();
 }
 
 void CMonthGraphiview::updateSize()
@@ -158,13 +170,13 @@ void CMonthGraphiview::updateSize()
 void CMonthGraphiview::updateLunar()
 {
     QDate date;
-    CaLunarDayInfo info;
+    CaHuangLiDayInfo info;
     QString lunarStr("");
 
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
         date = m_DayItem.at(i)->getDate();
-        if (m_lunarCache->contains(date)) {
-            info = m_lunarCache->value(date);
+        if (m_lunarCache.contains(date)) {
+            info = m_lunarCache.value(date);
 
             if (info.mLunarDayName == "初一") {
                 info.mLunarDayName = info.mLunarMonthName + info.mLunarDayName;
@@ -201,20 +213,10 @@ void CMonthGraphiview::updateInfo()
 
         break;
     }
+    viewport()->update();
     update();
 }
 
-char CMonthGraphiview::getFestivalInfoByDate(const QDate &date)
-{
-    for (int i = 0; i < m_festivallist.count(); i++) {
-        for (int j = 0; j < m_festivallist[i].listHoliday.count(); j++) {
-            if (m_festivallist[i].listHoliday[j].date == date) {
-                return m_festivallist[i].listHoliday[j].status;
-            }
-        }
-    }
-    return 0;
-}
 
 QPointF CMonthGraphiview::getItemPos(const QPoint &p, const QRectF &itemRect)
 {
@@ -233,11 +235,9 @@ CMonthGraphiview::PosInItem CMonthGraphiview::getPosInItem(const QPoint &p, cons
     if (itemPos.x() < 5) {
         return LEFT;
     }
-
     if (bottomy < 5) {
         return RIGHT;
     }
-
     return MIDDLE;
 }
 
@@ -272,7 +272,7 @@ QDateTime CMonthGraphiview::getPosDate(const QPoint &p)
                       QTime(0, 0, 0));
 }
 
-void CMonthGraphiview::upDateInfoShow(const CMonthGraphiview::DragStatus &status, const ScheduleDtailInfo &info)
+void CMonthGraphiview::upDateInfoShow(const CMonthGraphiview::DragStatus &status, const ScheduleDataInfo &info)
 {
     switch (status) {
     case NONE:
@@ -322,92 +322,6 @@ void CMonthGraphiview::slideEvent(QPointF &startPoint, QPointF &stopPort)
     if (delta != 0) {
         emit signalAngleDelta(delta);
     }
-}
-
-void CMonthGraphiview::updateScheduleInfo(const ScheduleDtailInfo &info)
-{
-    if (info.rpeat > 0) {
-        CScheduleDlg::ChangeRecurInfo(this, info,
-                                      m_PressScheduleInfo, m_themetype);
-    } else {
-        CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(
-            info);
-    }
-}
-
-void CMonthGraphiview::DeleteItem(const ScheduleDtailInfo &info)
-{
-    emit signalViewtransparentFrame(1);
-
-    if (info.rpeat == 0) {
-        CScheduleCtrlDlg msgBox(this);
-        msgBox.setText(tr("You are deleting an event."));
-        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        msgBox.addPushButton(tr("Cancel"), true);
-        msgBox.addWaringButton(tr("Delete"), true);
-        msgBox.exec();
-
-        if (msgBox.clickButton() == 0) {
-            emit signalViewtransparentFrame(0);
-            return;
-        } else if (msgBox.clickButton() == 1) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
-        }
-    } else {
-        if (info.RecurID == 0) {
-            CScheduleCtrlDlg msgBox(this);
-            msgBox.setText(tr("You are deleting an event."));
-            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            msgBox.addPushButton(tr("Cancel"));
-            msgBox.addPushButton(tr("Delete All"));
-            msgBox.addWaringButton(tr("Delete Only This Event"));
-            msgBox.exec();
-
-            if (msgBox.clickButton() == 0) {
-                emit signalViewtransparentFrame(0);
-                return;
-            } else if (msgBox.clickButton() == 1) {
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(info.id);
-            } else if (msgBox.clickButton() == 2) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.ignore.append(info.beginDateTime);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            }
-        } else {
-            CScheduleCtrlDlg msgBox(this);
-            msgBox.setText(tr("You are deleting an event."));
-            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            msgBox.addPushButton(tr("Cancel"));
-            msgBox.addPushButton(tr("Delete All Future Events"));
-            msgBox.addWaringButton(tr("Delete Only This Event"));
-            msgBox.exec();
-
-            if (msgBox.clickButton() == 0) {
-                emit signalViewtransparentFrame(0);
-                return;
-            } else if (msgBox.clickButton() == 1) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.enddata.type = 2;
-                newschedule.enddata.date = info.beginDateTime.addDays(-1);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-
-            } else if (msgBox.clickButton() == 2) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(info.id, newschedule);
-                newschedule.ignore.append(info.beginDateTime);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            }
-        }
-    }
-    emit signalsUpdateShcedule();
-    emit signalViewtransparentFrame(0);
-}
-
-void CMonthGraphiview::setPressSelectInfo(const ScheduleDtailInfo &info)
-{
-    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(info);
 }
 
 void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
@@ -509,11 +423,11 @@ void CMonthGraphiview::RightClickToCreate(QGraphicsItem *listItem, const QPoint 
     }
 }
 
-void CMonthGraphiview::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &pos)
+void CMonthGraphiview::MoveInfoProcess(ScheduleDataInfo &info, const QPointF &pos)
 {
     qint64 offset       = m_PressDate.daysTo(m_MoveDate);
-    info.beginDateTime  = info.beginDateTime.addDays(offset);
-    info.endDateTime    = info.endDateTime.addDays(offset);
+    info.setBeginDateTime(info.getBeginDateTime().addDays(offset));
+    info.setEndDateTime(info.getEndDateTime().addDays(offset));
     qreal y = 0;
     QRectF rect = this->sceneRect();
 
@@ -526,22 +440,39 @@ void CMonthGraphiview::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &p
     }
 
     int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumofMonth)) % DDEMonthCalendar::LinesNumofMonth;
-    info.IsMoveInfo = true;
     m_MonthScheduleView->updateDate(yoffset, info);
 }
 
+/**
+ * @brief CMonthGraphiview::getDragScheduleInfoBeginTime        获取移动开始时间
+ * @param moveDateTime
+ * @return
+ */
 QDateTime CMonthGraphiview::getDragScheduleInfoBeginTime(const QDateTime &moveDateTime)
 {
-    return moveDateTime.daysTo(m_InfoEndTime) < 0 ?
-           QDateTime(m_InfoEndTime.date(), m_InfoBeginTime.time()) :
-           QDateTime(moveDateTime.date(), m_InfoBeginTime.time());
+    //获取移动开始时间
+    QDateTime _beginTime = moveDateTime.daysTo(m_InfoEndTime) < 0 ?
+                           QDateTime(m_InfoEndTime.date(), m_InfoBeginTime.time()) :
+                           QDateTime(moveDateTime.date(), m_InfoBeginTime.time());
+    //如果开始时间晚与结束时间则减少一天
+    _beginTime = _beginTime > m_InfoEndTime ? _beginTime.addDays(-1) : _beginTime;
+    return _beginTime;
 }
 
+/**
+ * @brief CMonthGraphiview::getDragScheduleInfoEndTime      获取结束时间
+ * @param moveDateTime
+ * @return
+ */
 QDateTime CMonthGraphiview::getDragScheduleInfoEndTime(const QDateTime &moveDateTime)
 {
-    return m_InfoBeginTime.daysTo(moveDateTime) < 0 ?
-           QDateTime(m_InfoBeginTime.date(), m_InfoEndTime.time()) :
-           QDateTime(moveDateTime.date(), m_InfoEndTime.time());
+    //获取结束时间
+    QDateTime _endTime = m_InfoBeginTime.daysTo(moveDateTime) < 0 ?
+                         QDateTime(m_InfoBeginTime.date(), m_InfoEndTime.time()) :
+                         QDateTime(moveDateTime.date(), m_InfoEndTime.time());
+    //如果结束时间小于开始时间则添加一天
+    _endTime = _endTime < m_InfoBeginTime ? _endTime.addDays(1)  : _endTime;
+    return _endTime;
 }
 
 void CMonthGraphiview::slotCreate(const QDateTime &date)
@@ -573,19 +504,6 @@ void CMonthGraphiview::slotdelete(const int id)
     emit signalsScheduleUpdate(0);
 }
 
-void CMonthGraphiview::slotDeleteItem()
-{
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID < 0) {
-        return;
-    }
-
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID != DDECalendar::FestivalTypeID) {
-        DeleteItem(CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo());
-    }
-
-    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
-}
-
 CDayGraphicsItem::CDayGraphicsItem(QGraphicsItem *parent)
     : QGraphicsRectItem(parent)
     , m_Date(QDate::currentDate())
@@ -601,13 +519,12 @@ CDayGraphicsItem::CDayGraphicsItem(QGraphicsItem *parent)
 
 CDayGraphicsItem::~CDayGraphicsItem()
 {
-
 }
 
 void CDayGraphicsItem::setData(const QDate &date)
 {
     m_Date = date;
-    setLunar("");
+//    setLunar("");
 }
 
 void CDayGraphicsItem::setLunar(const QString &lunar)
@@ -696,35 +613,35 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     pen.setColor(m_BorderColor);
     painter->setPen(pen);
 
-    if (m_itemnum == 35) {
-        QPainterPath painterpath;
-        painterpath.moveTo(0, this->rect().y());
-        painterpath.lineTo(0, this->rect().y() + this->rect().height() - m_radius);
-        painterpath.arcTo(QRectF(0,
-                                 this->rect().y() + this->rect().height() - m_radius * 2,
-                                 m_radius * 2,
-                                 m_radius * 2),
-                          180, 90);
-        painterpath.lineTo(this->rect().width(), this->rect().y() + this->rect().height());
-        painterpath.lineTo(this->rect().width(), this->rect().y());
-        painterpath.lineTo(0, this->rect().y());
-        painter->drawPath(painterpath);
-    } else if (m_itemnum == 41) {
-        QPainterPath painterpath;
-        painterpath.moveTo(this->rect().x(), this->rect().y());
-        painterpath.lineTo(this->rect().x(), this->rect().y() + this->rect().height());
-        painterpath.lineTo(this->rect().x() + this->rect().width() - m_radius, this->rect().y() + this->rect().height());
-        painterpath.arcTo(QRectF(this->rect().x() + this->rect().width() - m_radius * 2,
-                                 this->rect().y() + this->rect().height() - m_radius * 2,
-                                 m_radius * 2,
-                                 m_radius * 2),
-                          270, 90);
-        painterpath.lineTo(this->rect().x() + this->rect().width(), this->rect().y());
-        painterpath.lineTo(this->rect().y() + this->rect().height(), this->rect().y());
-        painter->drawPath(painterpath);
-    } else {
-        painter->drawRect(this->rect());
-    }
+//    if (m_itemnum == 35) {
+//        QPainterPath painterpath;
+//        painterpath.moveTo(0, this->rect().y());
+//        painterpath.lineTo(0, this->rect().y() + this->rect().height() - m_radius);
+//        painterpath.arcTo(QRectF(0,
+//                                 this->rect().y() + this->rect().height() - m_radius * 2,
+//                                 m_radius * 2,
+//                                 m_radius * 2),
+//                          180, 90);
+//        painterpath.lineTo(this->rect().width(), this->rect().y() + this->rect().height());
+//        painterpath.lineTo(this->rect().width(), this->rect().y());
+//        painterpath.lineTo(0, this->rect().y());
+//        painter->drawPath(painterpath);
+//    } else if (m_itemnum == 41) {
+//        QPainterPath painterpath;
+//        painterpath.moveTo(this->rect().x(), this->rect().y());
+//        painterpath.lineTo(this->rect().x(), this->rect().y() + this->rect().height());
+//        painterpath.lineTo(this->rect().x() + this->rect().width() - m_radius, this->rect().y() + this->rect().height());
+//        painterpath.arcTo(QRectF(this->rect().x() + this->rect().width() - m_radius * 2,
+//                                 this->rect().y() + this->rect().height() - m_radius * 2,
+//                                 m_radius * 2,
+//                                 m_radius * 2),
+//                          270, 90);
+//        painterpath.lineTo(this->rect().x() + this->rect().width(), this->rect().y());
+//        painterpath.lineTo(this->rect().y() + this->rect().height(), this->rect().y());
+//        painter->drawPath(painterpath);
+//    } else {
+    painter->drawRect(this->rect());
+//    }
 
     painter->save();
     painter->restore();

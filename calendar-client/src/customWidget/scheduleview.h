@@ -18,7 +18,7 @@
  */
 #ifndef SCHEDULEVIEW_H
 #define SCHEDULEVIEW_H
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
 #include "SchecduleRemindWidget.h"
 #include "../widget/touchgestureoperation.h"
 
@@ -40,19 +40,16 @@ public:
     void setviewMagin(int left, int top, int right, int bttom);
     void setRange(int w, int h, QDate begin, QDate end);
     void setRange(QDate begin, QDate end);
-    void setFirstWeekday(int weekday);
     void setTheMe(int type = 0);
     void setLunarVisible(bool state);
     void setTime(QTime time);
-    void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
+    void setSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void updateHigh();
     bool IsDragging();
-public slots:
-    void slotsupdatescheduleD(QVector<ScheduleDateRangeInfo> &data);
+    void setCurrentDate(const QDateTime &currentDate);
+    //设置显示日程
+    void setShowScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo> > &scheduleInfo);
 signals:
-    void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
-signals:
-    void signalsUpdateShcedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     /**
@@ -66,7 +63,7 @@ public slots:
     void slotupdateSchedule();
     void slotDeleteitem();
     void slotCurrentScheduleDate(QDate date);
-    void slotScheduleShow(const bool isShow, const ScheduleDtailInfo &out = ScheduleDtailInfo());
+    void slotScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
     void slotUpdatePaint(const int topM);
     void slotUpdateScene();
 
@@ -75,7 +72,6 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void wheelEvent(QWheelEvent *e) override;
     bool event(QEvent *e) override;
-
 private:
     void initUI();
     void initConnection();
@@ -89,15 +85,15 @@ private:
     QVector<int> m_vPos;
     QVector<int> m_vHours;
     CAllDayEventWeekView *m_alldaylist = nullptr;
-    QVector<ScheduleDateRangeInfo> m_vListSchedule;
+    QMap<QDate, QVector<ScheduleDataInfo> >     m_showSchedule{};
     int m_leftMagin;
     int m_topMagin;
     int m_rightmagin = 0;
     qint64 m_TotalDay;
     QDate m_currteDate;
-    int m_firstWeekDay;
     QDate m_beginDate;
     QDate m_endDate;
+    // 0: 周  1:日
     int m_viewType = 0;
     int m_sMaxNum = 4;
     QColor m_linecolor = Qt::lightGray;

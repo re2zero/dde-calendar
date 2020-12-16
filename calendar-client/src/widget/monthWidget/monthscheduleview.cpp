@@ -70,15 +70,16 @@ void CMonthScheduleWidgetItem::paintBackground(QPainter *painter, const QRectF &
     qreal labelheight = rect.height();
     m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.type.ID);
-    m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
     QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
     QColor color1 = gdcolor.gradientFromC;
     QColor color2 = gdcolor.gradientToC;
     QColor textcolor = gdcolor.textColor;
 
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo) {
-        if (m_vScheduleInfo.IsMoveInfo == CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
+    //判断是否为选中日程
+    if (m_vScheduleInfo == m_pressInfo) {
+        //判断当前日程是否为拖拽移动日程
+        if (m_vScheduleInfo.getIsMoveInfo() == m_pressInfo.getIsMoveInfo()) {
             m_vHighflag = true;
         } else {
             painter->setOpacity(0.4);
@@ -87,23 +88,22 @@ void CMonthScheduleWidgetItem::paintBackground(QPainter *painter, const QRectF &
         m_vSelectflag = m_press;
     }
 
+
     if (isPixMap) {
         painter->setOpacity(0.6);
         textcolor.setAlphaF(0.8);
-    }
-
-    if (m_vHoverflag) {
-        color1 = gdcolor.hovergradientFromC;
-        color2 = gdcolor.hovergradientToC;
-    } else if (m_vHighflag) {
-        color1 = gdcolor.hightlightgradientFromC;
-        color2 = gdcolor.hightlightgradientToC;
     }
 
     if (m_vSelectflag) {
         color1 = gdcolor.pressgradientFromC;
         color2 = gdcolor.pressgradientToC;
         textcolor.setAlphaF(0.4);
+    } else  if (m_vHoverflag) {
+        color1 = gdcolor.hovergradientFromC;
+        color2 = gdcolor.hovergradientToC;
+    } else if (m_vHighflag) {
+        color1 = gdcolor.hightlightgradientFromC;
+        color2 = gdcolor.hightlightgradientToC;
     }
 
     linearGradient.setColorAt(0, color1);
@@ -125,7 +125,7 @@ void CMonthScheduleWidgetItem::paintBackground(QPainter *painter, const QRectF &
     painter->setPen(textcolor);
     QFontMetrics fm = painter->fontMetrics();
 
-    QString tStitlename = m_vScheduleInfo.titleName;
+    QString tStitlename = m_vScheduleInfo.getTitleName();
     tStitlename.replace("\n", "");
     QString str = tStitlename;
     qreal textWidth = labelwidth - m_pos.x() - m_offset * 2;
@@ -308,7 +308,7 @@ void CMonthScheduleView::setallsize(int w, int h, int left, int top, int buttom,
     m_cNum = static_cast<int>(((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5 - 27) / (itemHeight + 1));
 }
 
-void CMonthScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, int currentMonth)
+void CMonthScheduleView::setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, int currentMonth)
 {
     m_data = data;
     m_currentMonth = currentMonth;
@@ -317,13 +317,13 @@ void CMonthScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, int curre
 
 void CMonthScheduleView::slotdeleteitem(CMonthScheduleWidgetItem *item)
 {
-    emit signalsUpdateShcedule(item->getData().id);
+    emit signalsUpdateShcedule(item->getData().getID());
 }
 
 void CMonthScheduleView::slotedititem(CMonthScheduleWidgetItem *item, int type)
 {
     Q_UNUSED(type);
-    emit signalsUpdateShcedule(item->getData().id);
+    emit signalsUpdateShcedule(item->getData().getID());
 }
 
 void CMonthScheduleView::slotFontChange()
@@ -341,49 +341,31 @@ void CMonthScheduleView::slotFontChange()
     }
 }
 
-bool MScheduleDateThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
-{
-    if (s1.bdate != s1.edate && s2.bdate == s2.edate) {
-        return true;
-    } else if (s1.bdate == s1.edate && s2.bdate != s2.edate) {
-        return false;
-    } else if (s1.bdate != s1.edate && s2.bdate != s2.edate) {
-        if (s1.tData.beginDateTime == s2.tData.beginDateTime) {
-            return s1.bdate.daysTo(s1.edate) > s2.bdate.daysTo(s2.edate);
-        } else {
-            return s1.bdate < s2.bdate;
-        }
-    } else {
-        if (s1.tData.beginDateTime == s2.tData.beginDateTime) {
-            return s1.tData.titleName < s2.tData.titleName;
-        } else {
-            return s1.tData.beginDateTime < s2.tData.beginDateTime;
-        }
-    }
-}
-bool MScheduleDaysThan(const MScheduleDateRangeInfo &s1, const MScheduleDateRangeInfo &s2)
-{
-    return s1.bdate.daysTo(s1.edate) > s2.bdate.daysTo(s2.edate);
-}
+/**
+ * @brief CMonthScheduleView::updateData        更新日程数据
+ */
 void CMonthScheduleView::updateData()
 {
+    //清空日程显示
+    for (int i = 0; i < m_weekSchedule.size(); ++i) {
+        m_weekSchedule[i]->clearItem();
+    }
     //保护数据防止越界
     if (m_data.count() != DDEMonthCalendar::ItemSizeofMonthDay || m_cNum < 1)
         return;
     //开始结束时间
-    QDate begindate = m_data.begin()->date;
-    QDate enddate = m_data[m_data.count() - 1].date;
+    QMap<QDate, QVector<ScheduleDataInfo> >::iterator _iter = m_data.begin();
+    QDate begindate = _iter.key();
+    _iter += (m_data.size() - 1);
+    QDate enddate = _iter.key();
     m_beginDate = begindate;
     m_endDate = enddate;
-
     for (int i = 0; i < m_weekSchedule.size(); ++i) {
-        m_weekSchedule[i]->clearItem();
         m_weekSchedule[i]->setHeight(m_ItemHeight, qRound((m_height - m_topMagin - m_buttommagin) / 6.0 - 27));
-        m_weekSchedule[i]->setData(m_data, i * 7, 7);
+        m_weekSchedule[i]->setData(m_data, begindate.addDays(i * 7), begindate.addDays(i * 7 + 6));
         QVector<QVector<MScheduleDateRangeInfo>> mSchedule = m_weekSchedule[i]->getMScheduleInfo();
         updateDateShow(mSchedule, m_weekSchedule[i]->getScheduleShowItem());
     }
-    return;
 }
 
 void CMonthScheduleView::updateHigh()
@@ -408,7 +390,7 @@ QVector<QGraphicsRectItem *> CMonthScheduleView::getScheduleShowItem() const
     return m_scheduleShowItem;
 }
 
-void CMonthScheduleView::updateDate(const ScheduleDtailInfo &info)
+void CMonthScheduleView::updateDate(const ScheduleDataInfo &info)
 {
     for (int i = 0; i < m_weekSchedule.size(); ++i) {
         if (m_weekSchedule.at(i)->addData(info)) {
@@ -421,7 +403,7 @@ void CMonthScheduleView::updateDate(const ScheduleDtailInfo &info)
     }
 }
 
-void CMonthScheduleView::changeDate(const ScheduleDtailInfo &info)
+void CMonthScheduleView::changeDate(const ScheduleDataInfo &info)
 {
     for (int i = 0; i < m_weekSchedule.size(); ++i) {
         m_weekSchedule.at(i)->changeDate(info);
@@ -430,7 +412,7 @@ void CMonthScheduleView::changeDate(const ScheduleDtailInfo &info)
     }
 }
 
-void CMonthScheduleView::updateDate(const int row, const ScheduleDtailInfo &info)
+void CMonthScheduleView::updateDate(const int row, const ScheduleDataInfo &info)
 {
     for (int i = 0; i < m_weekSchedule.size(); ++i) {
         if (row == i) {
@@ -458,7 +440,7 @@ void CMonthScheduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>>
 
 void CMonthScheduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum, QVector<QGraphicsRectItem *> &schudeleShowItem)
 {
-    ScheduleDtailInfo gd = info.tData;
+    ScheduleDataInfo gd = info.tData;
     QPoint pos;
     int fw;
     int fh;
@@ -467,7 +449,6 @@ void CMonthScheduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, i
     m_Scene->addItem(gwi);
 
     QFont font;
-
     gwi->setData(gd);
 
     QColor TransparentC = "#000000";
@@ -542,28 +523,28 @@ CWeekScheduleView::~CWeekScheduleView()
 {
 }
 
-void CWeekScheduleView::setData(QVector<ScheduleDateRangeInfo> &data, const int position, const int count)
+void CWeekScheduleView::setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, const QDate &startDate, const QDate &stopDate)
 {
-    int endPos = position + count;
-    Q_ASSERT(!(endPos > data.size()));
+    //显示一周的日程
+    Q_ASSERT(startDate.daysTo(stopDate) == 6);
     m_ScheduleInfo.clear();
-
-    for (int i = position; i < endPos; ++i) {
-        for (int j = 0; j < data.at(i).vData.size(); ++j) {
-            if (!m_ScheduleInfo.contains(data.at(i).vData.at(j))) {
-                m_ScheduleInfo.append(data.at(i).vData.at(j));
+    beginDate = startDate;
+    endDate = stopDate;
+    for (int i = 0 ; i <= beginDate.daysTo(endDate); ++i) {
+        for (int j = 0; j < data[beginDate.addDays(i)].size(); ++j) {
+            if (!m_ScheduleInfo.contains(data[beginDate.addDays(i)].at(j))) {
+                m_ScheduleInfo.append(data[beginDate.addDays(i)].at(j));
             }
         }
     }
-    beginDate = data.at(position).date;
-    endDate = data.at(position + count - 1).date;
-    m_colum = count;
+    //设置日程显示列数
+    m_colum = static_cast<int>(startDate.daysTo(stopDate) + 1);
     updateSchedule(true);
 }
 
-bool CWeekScheduleView::addData(const ScheduleDtailInfo &info)
+bool CWeekScheduleView::addData(const ScheduleDataInfo &info)
 {
-    if (info.beginDateTime.date().daysTo(endDate) >= 0 && beginDate.daysTo(info.endDateTime.date()) >= 0) {
+    if (info.getBeginDateTime().date().daysTo(endDate) >= 0 && beginDate.daysTo(info.getEndDateTime().date()) >= 0) {
         clearItem();
         updateSchedule(false, info);
         return true;
@@ -572,7 +553,7 @@ bool CWeekScheduleView::addData(const ScheduleDtailInfo &info)
     return false;
 }
 
-void CWeekScheduleView::changeDate(const ScheduleDtailInfo &info)
+void CWeekScheduleView::changeDate(const ScheduleDataInfo &info)
 {
     int index = m_ScheduleInfo.indexOf(info);
 
@@ -592,12 +573,11 @@ void CWeekScheduleView::setHeight(const int ScheduleHeight, const int DayHeigth)
     setMaxNum();
 }
 
-void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const ScheduleDtailInfo &info)
+void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const ScheduleDataInfo &info)
 {
-    QVector<ScheduleDtailInfo> schedulev;
+    QVector<ScheduleDataInfo> schedulev;
     schedulev.clear();
     schedulev = m_ScheduleInfo;
-
     if (isNormalDisplay) {
         Q_UNUSED(info);
     } else {
@@ -610,8 +590,8 @@ void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const Schedul
 
     for (int i = 0; i < schedulev.size(); ++i) {
         //日程时间重新标定
-        tbegindate = schedulev.at(i).beginDateTime.date();
-        tenddate = schedulev.at(i).endDateTime.date();
+        tbegindate = schedulev.at(i).getBeginDateTime().date();
+        tenddate = schedulev.at(i).getEndDateTime().date();
 
         if (tenddate < beginDate || tbegindate > endDate)
             continue;
@@ -620,14 +600,14 @@ void CWeekScheduleView::updateSchedule(const bool isNormalDisplay, const Schedul
         if (tenddate > endDate)
             tenddate = endDate;
         //日程信息
-        MScheduleDateRangeInfo info;
-        info.bdate = tbegindate;
-        info.edate = tenddate;
-        info.tData = schedulev.at(i);
-        info.state = false;
-        vMDaySchedule.append(info);
-        qint64 pos = beginDate.daysTo(info.bdate);
-        qint64 count = info.bdate.daysTo(info.edate);
+        MScheduleDateRangeInfo _rangeInfo;
+        _rangeInfo.bdate = tbegindate;
+        _rangeInfo.edate = tenddate;
+        _rangeInfo.tData = schedulev.at(i);
+        _rangeInfo.state = false;
+        vMDaySchedule.append(_rangeInfo);
+        qint64 pos = beginDate.daysTo(_rangeInfo.bdate);
+        qint64 count = _rangeInfo.bdate.daysTo(_rangeInfo.edate);
         int j = static_cast<int>(pos);
 
         for (; j < (pos + count + 1); ++j) {
@@ -747,7 +727,7 @@ void CWeekScheduleView::sortAndFilter(QVector<MScheduleDateRangeInfo> &vMDaySche
     }
 }
 
-void CWeekScheduleView::addShowSchedule(const int &startPos, const int &endPos, const int &addRow, const ScheduleDtailInfo &addInfo)
+void CWeekScheduleView::addShowSchedule(const int &startPos, const int &endPos, const int &addRow, const ScheduleDataInfo &addInfo)
 {
     MScheduleDateRangeInfo scheduleInfo;
     //设置显示的开始日期

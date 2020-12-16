@@ -46,7 +46,7 @@ SchecduleRemindWidget::~SchecduleRemindWidget()
 
 }
 
-void SchecduleRemindWidget::setData(const ScheduleDtailInfo &vScheduleInfo, const CSchedulesColor &gcolor)
+void SchecduleRemindWidget::setData(const ScheduleDataInfo &vScheduleInfo, const CSchedulesColor &gcolor)
 {
     m_centerWidget->setData(vScheduleInfo, gcolor);
     m_ScheduleInfo = vScheduleInfo;
@@ -65,7 +65,7 @@ CenterWidget::~CenterWidget()
 
 }
 
-void CenterWidget::setData(const ScheduleDtailInfo &vScheduleInfo, const CSchedulesColor &gcolor)
+void CenterWidget::setData(const ScheduleDataInfo &vScheduleInfo, const CSchedulesColor &gcolor)
 {
     m_ScheduleInfo = vScheduleInfo;
     gdcolor = gcolor;
@@ -94,32 +94,32 @@ void CenterWidget::UpdateTextList()
 {
     testList.clear();
     QFontMetrics metrics(textfont);
-    textwidth = metrics.width(m_ScheduleInfo.titleName);
+    textwidth = metrics.width(m_ScheduleInfo.getTitleName());
     textheight = metrics.height();
     const int  h_count = qCeil(textwidth / textRectWidth);
     QString text;
 
     if (h_count < 1) {
-        testList.append(m_ScheduleInfo.titleName);
+        testList.append(m_ScheduleInfo.getTitleName());
     } else {
         const int text_Max_Height = 108;
         const int text_HeightMaxCount = qFloor(text_Max_Height / textheight);
 
-        for (int i = 0; i < m_ScheduleInfo.titleName.count(); ++i) {
-            text += m_ScheduleInfo.titleName.at(i);
+        for (int i = 0; i < m_ScheduleInfo.getTitleName().count(); ++i) {
+            text += m_ScheduleInfo.getTitleName().at(i);
             if (metrics.width(text) > textRectWidth) {
                 text.remove(text.count() - 1, 1);
                 testList.append(text);
                 text = "";
 
                 if (testList.count() == (text_HeightMaxCount - 1)) {
-                    text = m_ScheduleInfo.titleName.right( m_ScheduleInfo.titleName.count() - i );
+                    text = m_ScheduleInfo.getTitleName().right(m_ScheduleInfo.getTitleName().count() - i);
                     testList.append(metrics.elidedText(text, Qt::ElideRight, textRectWidth));
                     break;
                 }
                 --i;
             } else {
-                if (i + 1 == m_ScheduleInfo.titleName.count()) {
+                if (i + 1 == m_ScheduleInfo.getTitleName().count()) {
                     testList.append(text);
                 }
             }
@@ -144,15 +144,15 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     painter.setFont(timeFont);
     QString timestr;
     QLocale locale;
-    timestr = m_ScheduleInfo.beginDateTime.time().toString("AP h:mm");
+    timestr = m_ScheduleInfo.getBeginDateTime().time().toString("AP h:mm");
 
     QFontMetrics metrics(timeFont);
-    if (m_ScheduleInfo.allday)
+    if (m_ScheduleInfo.getAllDay())
         timestr = tr("All Day");
     int timewidth = metrics.width(timestr);
     int timeheight = metrics.height();
 
-    painter.drawText(QRect( x + 13, 7, timewidth, timeheight), Qt::AlignLeft | Qt::AlignTop, timestr);
+    painter.drawText(QRect(x + 13, 7, timewidth, timeheight), Qt::AlignLeft | Qt::AlignTop, timestr);
     painter.setRenderHints(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
     painter.setBrush(QBrush(gdcolor.dotColor));

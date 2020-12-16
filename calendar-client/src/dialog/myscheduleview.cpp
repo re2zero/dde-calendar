@@ -22,6 +22,7 @@
 #include "schedulectrldlg.h"
 #include "cdynamicicon.h"
 #include "constants.h"
+#include "cscheduleoperation.h"
 
 #include <DMessageBox>
 #include <DPushButton>
@@ -36,7 +37,7 @@
 #include <QtMath>
 
 DGUI_USE_NAMESPACE
-CMyScheduleView::CMyScheduleView(const ScheduleDtailInfo &schduleInfo, QWidget *parent)
+CMyScheduleView::CMyScheduleView(const ScheduleDataInfo &schduleInfo, QWidget *parent)
     : DDialog(parent)
 {
     setContentsMargins(0, 0, 0, 0);
@@ -46,12 +47,12 @@ CMyScheduleView::CMyScheduleView(const ScheduleDtailInfo &schduleInfo, QWidget *
     //根据主题type设置颜色
     setLabelTextColor(DGuiApplicationHelper::instance()->themeType());
     setFixedSize(380, 160);
-    AutoFeed(m_scheduleInfo.titleName);
+    AutoFeed(m_scheduleInfo.getTitleName());
 
-    if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
-        m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString(("yyyy-MM-dd")));
+    if (m_scheduleInfo.getType() == DDECalendar::FestivalTypeID) {
+        m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString(("yyyy-MM-dd")));
     } else {
-        m_timeLabel->setText(m_scheduleInfo.beginDateTime.toString("yyyy-MM-dd hh:mm") + " ~ " + m_scheduleInfo.endDateTime.toString("yyyy-MM-dd hh:mm"));
+        m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString("yyyy-MM-dd hh:mm") + " ~ " + m_scheduleInfo.getEndDateTime().toString("yyyy-MM-dd hh:mm"));
     }
 }
 
@@ -59,6 +60,11 @@ CMyScheduleView::~CMyScheduleView()
 {
     emit signalViewtransparentFrame(0);
 }
+
+/**
+ * @brief CMyScheduleView::AutoFeed     字体改变更改界面显示
+ * @param text
+ */
 void CMyScheduleView::AutoFeed(QString text)
 {
     QString strText = text;
@@ -103,6 +109,10 @@ void CMyScheduleView::AutoFeed(QString text)
     m_scheduleLabel->setText(resultStr);
 }
 
+/**
+ * @brief setLabelTextColor     设置label文字颜色
+ * @param type  主题type
+ */
 void CMyScheduleView::setLabelTextColor(const int type)
 {
     //标题显示颜色
@@ -129,6 +139,11 @@ void CMyScheduleView::setLabelTextColor(const int type)
     setPaletteTextColor(m_timeLabel, timeColor);
 }
 
+/**
+ * @brief setPaletteTextColor   设置调色板颜色
+ * @param widget                需要设置的widget
+ * @param textColor             显示颜色
+ */
 void CMyScheduleView::setPaletteTextColor(QWidget *widget, QColor textColor)
 {
     //如果为空指针则退出
@@ -151,103 +166,42 @@ bool CMyScheduleView::eventFilter(QObject *o, QEvent *e)
     Q_UNUSED(o);
 
     if (e->type() == QEvent::FontChange) {
-        AutoFeed(m_scheduleInfo.titleName);
+        AutoFeed(m_scheduleInfo.getTitleName());
     }
 
     return false;
 }
 
-void CMyScheduleView::slotEditBt(int buttonIndex, QString buttonName)
+/**
+ * @brief CMyScheduleView::slotBtClick      按钮点击事件
+ * @param buttonIndex
+ * @param buttonName
+ */
+void CMyScheduleView::slotBtClick(int buttonIndex, QString buttonName)
 {
-    if (buttonIndex != 1 && buttonName != "Edit")
+    Q_UNUSED(buttonName);
+    if (buttonIndex == 0) {
+        //删除日程
+        CScheduleOperation _scheduleOpertion(this);
+        if (_scheduleOpertion.deleteSchedule(m_scheduleInfo)) {
+            accept();
+        };
         return;
-
-    CScheduleDlg dlg(0, this);
-    dlg.setData(m_scheduleInfo);
-
-    if (dlg.exec() == DDialog::Accepted) {
-        accept();
-        emit signalsEditorDelete(1);
+    }
+    if (buttonIndex == 1) {
+        //编辑日程
+        CScheduleDlg dlg(0, this);
+        dlg.setData(m_scheduleInfo);
+        if (dlg.exec() == DDialog::Accepted) {
+            accept();
+        }
+        return;
     }
 }
 
-void CMyScheduleView::slotDeleteBt(int buttonIndex, QString buttonName)
-{
-    if (buttonIndex != 0 && buttonName != "Delete")
-        return;
-
-    if (m_scheduleInfo.rpeat == 0) {
-        CScheduleCtrlDlg msgBox;
-        msgBox.setText(tr("You are deleting an event."));
-        msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        msgBox.addPushButton(tr("Cancel"), true);
-        msgBox.addWaringButton(tr("Delete"), true);
-        msgBox.exec();
-
-        if (msgBox.clickButton() == 0) {
-            return;
-        } else if (msgBox.clickButton() == 1) {
-            CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_scheduleInfo.id);
-        } else {
-            return;
-        }
-    } else {
-        if (m_scheduleInfo.RecurID == 0) {
-            CScheduleCtrlDlg msgBox;
-
-            msgBox.setText(tr("You are deleting an event."));
-            msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            msgBox.addPushButton(tr("Cancel"));
-            msgBox.addPushButton(tr("Delete All"));
-            msgBox.addWaringButton(tr("Delete Only This Event"));
-            msgBox.exec();
-
-            if (msgBox.clickButton() == 0) {
-                return;
-            } else if (msgBox.clickButton() == 1) {
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->deleteScheduleInfoById(m_scheduleInfo.id);
-            } else if (msgBox.clickButton() == 2) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleInfo.id, newschedule);
-                newschedule.ignore.append(m_scheduleInfo.beginDateTime);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            } else {
-                return;
-            }
-        } else {
-            CScheduleCtrlDlg msgBox;
-            msgBox.setText(tr("You are deleting an event."));
-            msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            msgBox.addPushButton(tr("Cancel"));
-            msgBox.addPushButton(tr("Delete All Future Events"));
-            msgBox.addWaringButton(tr("Delete Only This Event"));
-            msgBox.exec();
-
-            if (msgBox.clickButton() == 0) {
-                return;
-            } else if (msgBox.clickButton() == 1) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleInfo.id, newschedule);
-
-                newschedule.enddata.type = 2;
-                newschedule.enddata.date = m_scheduleInfo.beginDateTime.addDays(-1);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-
-            } else if (msgBox.clickButton() == 2) {
-                ScheduleDtailInfo newschedule;
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->getScheduleInfoById(m_scheduleInfo.id, newschedule);
-
-                newschedule.ignore.append(m_scheduleInfo.beginDateTime);
-                CScheduleDataManage::getScheduleDataManage()->getscheduleDataCtrl()->updateScheduleInfo(newschedule);
-            } else {
-                return;
-            }
-        }
-    }
-    accept();
-    emit signalsEditorDelete(1);
-}
-
+/**
+ * @brief CMyScheduleView::initUI       界面初始化
+ */
 void CMyScheduleView::initUI()
 {
     //在点击任何对话框上的按钮后不关闭对话框，保证关闭子窗口时不被一起关掉
@@ -303,7 +257,7 @@ void CMyScheduleView::initUI()
     mainLayout->addSpacing(6);
     mainLayout->addWidget(m_timeLabel);
 
-    if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
+    if (m_scheduleInfo.getType() == DDECalendar::FestivalTypeID) {
         addButton(tr("OK"), false, DDialog::ButtonNormal);
         QAbstractButton *button_ok = getButton(0);
         button_ok->setFixedSize(360, 36);
@@ -334,11 +288,10 @@ void CMyScheduleView::initConnection()
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
                      this,
                      &CMyScheduleView::setLabelTextColor);
-    if (m_scheduleInfo.type.ID == DDECalendar::FestivalTypeID) {
+    if (m_scheduleInfo.getType() == DDECalendar::FestivalTypeID) {
         connect(this, &DDialog::buttonClicked, this, &CMyScheduleView::close);
     } else {
-        connect(this, &DDialog::buttonClicked, this, &CMyScheduleView::slotEditBt);
-        connect(this, &DDialog::buttonClicked, this, &CMyScheduleView::slotDeleteBt);
+        connect(this, &DDialog::buttonClicked, this, &CMyScheduleView::slotBtClick);
     }
 
     QShortcut *shortcut = new QShortcut(this);

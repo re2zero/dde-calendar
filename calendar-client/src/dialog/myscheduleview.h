@@ -19,7 +19,7 @@
 #ifndef MYSCHEDULEVIEW_H
 #define MYSCHEDULEVIEW_H
 
-#include "schedulestructs.h"
+#include "src/scheduledatainfo.h"
 
 #include <DDialog>
 #include <DPushButton>
@@ -33,14 +33,17 @@
 #include <QScrollBar>
 
 DWIDGET_USE_NAMESPACE
-
+/**
+ * @brief The CMyScheduleView class
+ * 日程概括对话框
+ */
 class CMyScheduleView : public DDialog
 {
     Q_OBJECT
 public:
-    explicit CMyScheduleView(const ScheduleDtailInfo &schduleInfo, QWidget *parent = nullptr);
+    explicit CMyScheduleView(const ScheduleDataInfo &schduleInfo, QWidget *parent = nullptr);
     ~CMyScheduleView() override;
-    ScheduleDtailInfo getSchedules()
+    ScheduleDataInfo getSchedules()
     {
         return  m_scheduleInfo;
     }
@@ -48,35 +51,26 @@ signals:
     void signalsEditorDelete(int type = 0);
     void signalViewtransparentFrame(int type);
 public slots:
-    void slotEditBt(int buttonIndex, QString buttonName);
-    void slotDeleteBt(int buttonIndex, QString buttonName);
+    //按钮点击事件
+    void slotBtClick(int buttonIndex, QString buttonName);
 private:
+    //界面初始化
     void initUI();
     void initConnection();
+    //字体改变更改界面显示
     void AutoFeed(QString text);
-    /**
-     * @brief setLabelTextColor     设置label文字颜色
-     * @param type  主题type
-     */
+    //设置label文字颜色
     void setLabelTextColor(const int type);
-    /**
-     * @brief setPaletteTextColor   设置调色板颜色
-     * @param widget    需要设置的widget
-     * @param textColor     显示颜色
-     */
-    void setPaletteTextColor(QWidget *widget,QColor textColor);
+    //设置调色板颜色
+    void setPaletteTextColor(QWidget *widget, QColor textColor);
 protected:
     void showEvent(QShowEvent *event) override;
     bool eventFilter(QObject *o, QEvent *e) override;
 private:
     QLabel *m_scheduleLabel = nullptr;
     QLabel *m_timeLabel = nullptr;
-    DSuggestButton *m_editBt = nullptr;
-    DPushButton *m_deleteBt = nullptr;
-    DPushButton *m_okBt = nullptr;
-    QLabel *m_icon = nullptr;
     QLabel *m_Title = nullptr;
-    ScheduleDtailInfo m_scheduleInfo; //日程
+    ScheduleDataInfo m_scheduleInfo; //日程
     QScrollArea *area = nullptr;
     QFont labelF;
 };

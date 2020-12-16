@@ -257,7 +257,7 @@ QDate CScheduleCoorManage::getsDate(QPointF pos)
     return date;
 }
 
-float CScheduleCoorManage::getHeight(QTime time)
+float CScheduleCoorManage::getHeight(const QTime &time)
 {
     QTime beginzero(0, 0, 0);
     int ScheduleBT = beginzero.secsTo(time);

@@ -20,6 +20,7 @@
 #define MONTHWINDOW_H
 
 #include "SchecduleRemindWidget.h"
+#include "cschedulebasewidget.h"
 
 #include <DPushButton>
 #include <DFrame>
@@ -36,188 +37,74 @@ class CMonthView;
 class CMonthDayView;
 class QHBoxLayout;
 class CTodayButton;
-class CMonthWindow: public QMainWindow
+class CMonthWindow: public CScheduleBaseWidget
 {
     Q_OBJECT
 public:
-    /**
-     * @brief CMonthWindow 构造函数
-     * @param parent 父类
-     */
     explicit CMonthWindow(QWidget *parent = nullptr);
-    /**
-      * @brief ~CMonthWindow 析构函数
-      */
     ~CMonthWindow() override;
-    /**
-     * @brief setFirstWeekday 设置每周第一天是周几
-     * @param weekday 周几
-     */
-    void setFirstWeekday(int weekday);
-    /**
-     * @brief setDate 设置时间
-     * @param date 日期
-     */
-    void setDate(QDate date);
-    /**
-     * @brief setLunarVisible 设置是否显示阴历信息
-     * @param state 是否显示阴历信息
-     */
+    //设置是否显示阴历信息
     void setLunarVisible(bool state);
-    /**
-     * @brief setTheMe 根据系统主题类型设置颜色
-     * @param type 系统主题类型
-     */
+    //根据系统主题类型设置颜色
     void setTheMe(int type = 0);
-    /**
-     * @brief setSearchWFlag 设置是否选择的标志
-     * @param flag 是否选择的标志
-     */
+
+    void setYearData() override;
+    //更新显示时间
+    void updateShowDate(const bool isUpdateBar = true) override;
+    //更新日程显示
+    void updateShowSchedule() override;
+    //更新显示农历信息
+    void updateShowLunar() override;
+    //更新界面搜索日程显示
+    void updateSearchScheduleInfo() override;
+    //设置选中搜索日程
+    void setSelectSearchScheduleInfo(const ScheduleDataInfo &info) override;
+    //设置是否显示搜索界面
     void setSearchWFlag(bool flag);
-    /**
-     * @brief clearSearch
-     */
-    void clearSearch();
 public slots:
-    /**
-     * @brief previousMonth 选择上一个月份
-     */
+    //选择上一个月份
     void previousMonth();
-    /**
-     * @brief nextMonth 选择下一个月份
-     */
+    //选择下一个月份
     void nextMonth();
-    /**
-     * @brief slotsearchDateSelect 选择搜索到的日期
-     * @param date 日期
-     */
-    void slotsearchDateSelect(QDate date);
 private:
-    /**
-     * @brief initUI 初始化界面
-     */
+    //初始化界面
     void initUI();
-    /**
-     * @brief initConnection 初始化信号和槽的连接
-     */
+    //初始化信号和槽的连接
     void initConnection();
-    /**
-     * @brief initLunar 初始化阴历信息
-     */
-    void initLunar();
-    /**
-     * @brief slideMonth 切换月份，并更新信息
-     * @param next 是否切换到下一个月
-     */
+    //切换月份，并更新信息
     void slideMonth(bool next);
 signals:
-    /**
-     * @brief dateSelected
-     * @param date
-     * @param detail
-     */
-    void dateSelected(const QDate date, const CaLunarDayInfo &detail) const;
-    /**
-     * @brief signalsWUpdateShcedule 更新日程的信号
-     * @param w unused
-     * @param id unused
-     */
-    void signalsWUpdateShcedule(QMainWindow *w, int id = 0);
-    /**
-     * @brief signalsReturnTodayUpdate 返回今天的按钮的信号
-     * @param w 视图
-     */
-    void signalsReturnTodayUpdate(QMainWindow *w);
     /**
      * @brief signalsCurrentScheduleDate
      * @param date
      */
     void signalsCurrentScheduleDate(QDate date);
-    /**
-     * @brief signalsViewSelectDate 切换视图的信号
-     * @param date 日期
-     */
-    void signalsViewSelectDate(QDate date);
-    /**
-     * @brief signalViewtransparentFrame 获取视图的焦点
-     * @param type
-     */
-    void signalViewtransparentFrame(int type);
-    /**
-     * @brief signalCurrentDate 设置时间的信号
-     * @param date 日期
-     */
-    void signalCurrentDate(QDate date);
 public slots:
-    /**
-     * @brief slotReturnTodayUpdate 返回今天
-     */
-    void slotReturnTodayUpdate();
-    /**
-     * @brief slotScheduleHide 隐藏日程浮框
-     */
+    //隐藏日程浮框
     void slotScheduleHide();
-    /**
-     * @brief slotAngleDelta    接受滚动事件滚动相对量
-     * @param delta     滚动相对量
-     */
+    //接受滚动事件滚动相对量
     void slotAngleDelta(int delta);
-public slots:
-    /**
-     * @brief slotupdateSchedule 更新日程
-     * @param id
-     */
-    void slotupdateSchedule(int id = 0);
-    /**
-     * @brief slotTransitSchedule 发送更新日程的信号
-     * @param id
-     */
-    void slotTransitSchedule(int id = 0);
-    /**
-     * @brief setSelectSchedule 设置选择的日程
-     * @param scheduleInfo 选择日程的信息
-     */
-    void setSelectSchedule(const ScheduleDtailInfo &scheduleInfo);
+    //设置选择时间切换日视图
+    void slotViewSelectDate(const QDate &date);
 protected:
-    /**
-     * @brief resizeEvent 窗口大小调整
-     * @param event 窗口大小调整事件
-     */
     void resizeEvent(QResizeEvent *event) override;
 private slots:
-    /**
-     * @brief slottoday 返回今天
-     */
+    //返回当前时间
     void slottoday();
-    /**
-     * @brief slotcurrentDateLunarChanged 当前时间改变，更新信息
-     * @param date 时间
-     * @param detail 阴历信息
-     * @param type 是否显示阴历信息
-     */
-    void slotcurrentDateLunarChanged(QDate date,  CaLunarDayInfo detail, int type = 0);
-    /**
-     * @brief slotcurrentDateChanged 根据时间变化，返回今天按钮状态变化
-     * @param date 时间
-     */
-    void slotcurrentDateChanged(QDate date);
-    /**
-     * @brief slotSelectedMonth 设置选择的月份
-     * @param date 日期
-     */
-    void slotSelectedMonth(QDate date);
+    //设置选择的月份
+    void slotSetSelectDate(const QDate &date);
 private:
-    CMonthView *m_monthView = nullptr;
-    CMonthDayView *m_monthDayView = nullptr;
-    DFrame *m_contentBackground = nullptr;
-    CTodayButton *m_today = nullptr;
-    QDate                   m_currentdate;
-    QLabel *m_YearLabel = nullptr;
-    QLabel *m_YearLunarLabel = nullptr;
-    QSpacerItem *m_spaceitem = nullptr;
-    DWidget *m_gridWidget = nullptr;
+    CMonthView              *m_monthView = nullptr;
+    CMonthDayView           *m_monthDayView = nullptr;
+    CTodayButton            *m_today = nullptr;
+    QDate                   m_startDate;
+    QDate                   m_stopDate;
+    QLabel                  *m_YearLabel = nullptr;
+    QLabel                  *m_YearLunarLabel = nullptr;
+    QSpacerItem             *m_spaceitem = nullptr;
+    DWidget                 *m_gridWidget = nullptr;
     bool                    m_searchfalg = false;
-    QHBoxLayout *m_tmainLayout = nullptr;
+    QHBoxLayout             *m_tmainLayout = nullptr;
 };
 
 #endif // YEARWINDOW_H

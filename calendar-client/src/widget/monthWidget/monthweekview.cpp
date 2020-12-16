@@ -21,178 +21,143 @@
 #include "scheduledatamanage.h"
 
 #include <DPalette>
-#include <DApplicationHelper>
-#include <DPalette>
 
-#include <QLabel>
 #include <QDebug>
 #include <QDate>
+#include <QPainter>
+#include <QPainterPath>
 
 DGUI_USE_NAMESPACE
 CMonthWeekView::CMonthWeekView(QWidget *parent)
     : DWidget(parent)
 {
-    m_mainLayout = new QHBoxLayout;
-    m_mainLayout->setMargin(0);
-    m_mainLayout->setSpacing(0);
-    setLayout(m_mainLayout);
+    for (int i = 0 ; i < 7 ; ++i) {
+        m_weekRect.append(new WeekRect());
+    }
 }
 
-void CMonthWeekView::setList(int weekday)
+CMonthWeekView::~CMonthWeekView()
 {
-    QLayoutItem *child;
-
-    while ((child = m_mainLayout->takeAt(0)) != nullptr) {
-        if (child->widget() != nullptr) {
-            delete child->widget();
-        }
-        delete child;
+    for (int i = 0 ; i < 7 ; ++i) {
+        WeekRect *weekRect =  m_weekRect.at(i);
+        delete weekRect;
     }
-    m_weekData.clear();
-    QLocale locale;
+    m_weekRect.clear();
+}
 
-    for (int i = 0; i != DDEMonthCalendar::AFewDaysofWeek; ++i) {
-        int d = checkDay(i + weekday);
-
-        QVBoxLayout *hhLayout = new QVBoxLayout;
-        hhLayout->setMargin(0);
-        hhLayout->setSpacing(0);
-        hhLayout->setContentsMargins(0, 0, 0, 0);
-
-        CustomFrame *label = new CustomFrame();
-        label->setTextStr(locale.dayName(d ? d : DDEMonthCalendar::AFewDaysofWeek, QLocale::ShortFormat));
-        label->setContentsMargins(0, 0, 0, 0);
-        QFont weekfont;
-        weekfont.setWeight(QFont::Medium);
-        weekfont.setPixelSize(DDECalendar::FontSizeSixteen);
-        label->setTextFont(weekfont);
-
-        if (i ==0) {
-            label->setRoundState(true, false, false, false);
-        } else if (i == DDEMonthCalendar::AFewDaysofWeek - 1) {
-            label->setRoundState(false, true, false, false);
-        }
-
-        if (d == 0) {
-            QColor textbC(0, 66, 154);
-            QColor colorSeven = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-            label->setTextColor(colorSeven);
-            label->setBColor(textbC);
-            m_weekData.append(qMakePair(label, 1));
-        } else if (d == DDEMonthCalendar::AFewDaysofWeek - 1) {
-            QColor textbC(0, 66, 154);
-            QColor colorSix = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-            label->setTextColor(colorSix);
-            label->setBColor(textbC);
-            m_weekData.append(qMakePair(label, 1));
-        } else {
-            QColor textC = Qt::black;
-            QColor textbC(0, 66, 154);
-            textbC.setAlphaF(0.05);
-            label->setTextColor(textC);
-            label->setBColor(textbC);
-            m_weekData.append(qMakePair(label, 0));
-        }
-
-        if ((i == weekday - 1 && weekday != 0) || i == weekday || (weekday == 0 && i == 6)) {
-            label->setObjectName("MonthHeaderWeekend");
-        } else {
-            label->setObjectName("MonthHeaderWeekday");
-        }
-
-        DHorizontalLine *splitline = new DHorizontalLine;
-
-        if (i == 0 || i == DDEMonthCalendar::AFewDaysofWeek - 1) {
-            label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, DDEMonthCalendar::MWeekCellHeight);
-            splitline->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 1, 2);
-        } else {
-            label->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 3, DDEMonthCalendar::MWeekCellHeight);
-            splitline->setFixedSize(DDEMonthCalendar::MWeekCellWidth - 3, 2);
-        }
-        hhLayout->addWidget(label);
-        hhLayout->addWidget(splitline);
-        splitline->setAutoFillBackground(true);
-        m_vline.append(splitline);
-        splitline->setVisible(false);
-        m_mainLayout->addLayout(hhLayout);
-    }
+void CMonthWeekView::setFirstDay(const Qt::DayOfWeek weekday)
+{
+    m_firstWeek = weekday;
+    updateWeek();
 }
 
 void CMonthWeekView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
-        for (int i = 0; i < m_weekData.count(); i++) {
-            if (m_weekData.at(i).second == 1) {
-                QColor color = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-                QColor textbC("#75C18E");
-                textbC.setAlphaF(0.1);
-                m_weekData.at(i).first->setTextColor(color);
-                m_weekData.at(i).first->setBColor(textbC);
-            } else {
-                QColor textC = "#6F6F6F";
-                QColor textbC("#75C18E");
-                textbC.setAlphaF(0.1);
-                m_weekData.at(i).first->setTextColor(textC);
-                m_weekData.at(i).first->setBColor(textbC);
-            }
-            m_vline.at(i)->setBackgroundRole(DPalette::Highlight);
-        }
+        m_backgroudColor = "#75C18E";
+        m_backgroudColor.setAlphaF(0.1);
 
     } else if (type == 2) {
-        for (int i = 0; i < m_weekData.count(); i++) {
-            if (m_weekData.at(i).second == 1) {
-                QColor color = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-                QColor textbC = "#82AEC1";
-                textbC.setAlphaF(0.10);
-                m_weekData.at(i).first->setTextColor(color);
-                m_weekData.at(i).first->setBColor(textbC);
-            } else {
-                QColor textC = "#C0C6D4";
-                QColor textbC = "#82AEC1";
-                textbC.setAlphaF(0.10);
-                m_weekData.at(i).first->setTextColor(textC);
-                m_weekData.at(i).first->setBColor(textbC);
-            }
-            m_vline.at(i)->setBackgroundRole(DPalette::Highlight);
-        }
+        m_backgroudColor = "#82AEC1";
+        m_backgroudColor.setAlphaF(0.10);
+    }
+    for (int i = 0 ; i < m_weekRect.size(); ++i) {
+        m_weekRect.at(i)->setTheMe(type);
     }
 }
 
 void CMonthWeekView::updateWeek()
 {
-    for (int i = 0; i < m_vline.count(); ++i) {
-        m_vline.at(i)->setVisible(false);
+    Qt::DayOfWeek _setWeek;
+    for (int i = 0; i < m_weekRect.size(); ++i) {
+        int weekNum = (m_firstWeek + i) % 7;
+        _setWeek = static_cast<Qt::DayOfWeek>(weekNum == 0 ? 7 : weekNum);
+        m_weekRect.at(i)->setWeek(_setWeek);
     }
-    QDate date = QDate::currentDate();
-    int d = date.dayOfWeek();
-    QLocale locale;
-    QString str = locale.dayName(d ? d : DDEMonthCalendar::AFewDaysofWeek, QLocale::ShortFormat);
-
-    for (int i = 0; i < m_vline.count(); ++i) {
-        if (m_weekData.at(i).first->getTextStr() == str) {
-            m_vline.at(i)->setVisible(true);
-        }
-    }
-}
-
-int CMonthWeekView::checkDay(int weekday)
-{
-    // check the week, calculate the correct order in the custom.
-    return weekday % DDEMonthCalendar::AFewDaysofWeek;
+    update();
 }
 
 void CMonthWeekView::resizeEvent(QResizeEvent *event)
 {
-    int tw = static_cast<int>(width() / 7.0 + 0.5);
-    int th = height();
-
-    for (int i = 0; i < m_weekData.count(); i++) {
-        if (m_weekData.at(i).second == 1) {
-            m_weekData.at(i).first->setFixedSize(tw, th);
-        } else {
-            m_weekData.at(i).first->setFixedSize(tw, th);
-        }
-        m_vline.at(i)->setFixedWidth(tw);
+    qreal weekRectWith = width() / 7;
+    QRectF _rectF;
+    for (int i = 0 ; i < m_weekRect.size(); ++i) {
+        _rectF.setRect(i * weekRectWith, 0, weekRectWith, this->height());
+        m_weekRect.at(i)->setRect(_rectF);
     }
     DWidget::resizeEvent(event);
+}
+
+void CMonthWeekView::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    QPainterPath painterPath;
+    //从左下角开始
+    painterPath.moveTo(0, this->height());
+    painterPath.lineTo(this->width(), this->height());
+    painterPath.lineTo(this->width(), m_radius);
+    painterPath.arcTo(QRect(this->width() - m_radius, 0, m_radius, m_radius), 0, 90);
+    painterPath.lineTo(m_radius, 0);
+    painterPath.arcTo(QRect(0, 0, m_radius, m_radius), 90, 90);
+    painter.setBrush(m_backgroudColor);
+    painter.setPen(Qt::NoPen);
+    painter.drawPath(painterPath);
+    for (int i = 0 ; i < m_weekRect.size(); ++i) {
+        m_weekRect.at(i)->paintRect(painter);
+    }
+    painter.end();
+}
+
+WeekRect::WeekRect()
+{
+    m_font.setWeight(QFont::Medium);
+    m_font.setPixelSize(DDECalendar::FontSizeSixteen);
+}
+
+void WeekRect::setWeek(const Qt::DayOfWeek &showWeek, const bool &showLine)
+{
+    m_showWeek = showWeek;
+    m_showLine = showLine;
+    QLocale locale;
+    m_weekStr = locale.dayName(m_showWeek, QLocale::ShortFormat);
+}
+
+void WeekRect::setRect(const QRectF &rectF)
+{
+    m_rectF = rectF;
+}
+
+void WeekRect::paintRect(QPainter &painter)
+{
+    //绘制文字
+    painter.save();
+    painter.setFont(m_font);
+    if (m_showWeek > 5) {
+        painter.setPen(m_activeColor);
+    } else {
+        painter.setPen(m_testColor);
+    }
+    painter.drawText(m_rectF, Qt::AlignCenter, m_weekStr);
+    painter.restore();
+    if (m_showLine) {
+        //绘制横线
+        painter.save();
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(m_activeColor);
+        painter.drawRect(QRectF(0, m_rectF.height() - m_lineHeight, m_rectF.width(), m_lineHeight));
+        painter.restore();
+    }
+
+}
+
+void WeekRect::setTheMe(int type)
+{
+    m_activeColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+    if (type == 0 || type == 1) {
+        m_testColor = "#6F6F6F";
+    } else {
+        m_testColor = "#C0C6D4";
+    }
 }

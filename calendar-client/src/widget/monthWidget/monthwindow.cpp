@@ -20,7 +20,6 @@
 #include "monthview.h"
 #include "monthdayview.h"
 #include "constants.h"
-#include "calendardbus.h"
 #include "schedulesearchview.h"
 #include "todaybutton.h"
 #include "scheduledatamanage.h"
@@ -32,12 +31,11 @@
 
 DGUI_USE_NAMESPACE
 CMonthWindow::CMonthWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : CScheduleBaseWidget(parent)
 {
-    setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
-    initLunar();
+    setLunarVisible(m_calendarManager->getShowLunar());
 }
 
 CMonthWindow::~CMonthWindow()
@@ -49,47 +47,23 @@ CMonthWindow::~CMonthWindow()
     m_monthView = nullptr;
 }
 
-void CMonthWindow::setFirstWeekday(int weekday)
-{
-    m_monthView->setFirstWeekday(weekday);
-}
-
-void CMonthWindow::setDate(QDate date)
-{
-    if (!date.isValid())
-        return;
-
-    m_monthDayView->setCurrentDate(date);
-
-    if (m_currentdate == date)
-        return;
-
-    m_currentdate = date;
-    QLocale locale;
-
-    if (locale.language() == QLocale::Chinese) {
-        m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
-    } else {
-        m_YearLabel->setText(QString::number(date.year()));
-    }
-    m_monthView->setCurrentDate(date);
-    emit signalCurrentDate(date);
-}
-
+/**
+ * @brief setLunarVisible   设置是否显示阴历信息
+ * @param state             是否显示阴历信息
+ */
 void CMonthWindow::setLunarVisible(bool state)
 {
     m_monthView->setLunarVisible(state);
     m_YearLunarLabel->setVisible(state);
 }
 
+/**
+ * @brief setTheMe  根据系统主题类型设置颜色
+ * @param type      系统主题类型
+ */
 void CMonthWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
-        DPalette anipa = m_contentBackground->palette();
-        anipa.setColor(DPalette::Background, "#F8F8F8");
-        m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);
-
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         DPalette todaypa = m_today->palette();
         todaypa.setColor(DPalette::ButtonText, todayColor);
@@ -144,10 +118,6 @@ void CMonthWindow::setTheMe(int type)
         Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
         m_YearLunarLabel->setPalette(Lunapa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
-        DPalette anipa = m_contentBackground->palette();
-        anipa.setColor(DPalette::Background, "#252525");
-        m_contentBackground->setPalette(anipa);
-        m_contentBackground->setBackgroundRole(DPalette::Background);
 
         DPalette gpa = m_gridWidget->palette();
         gpa.setColor(DPalette::Background, "#252525");
@@ -158,30 +128,109 @@ void CMonthWindow::setTheMe(int type)
     m_monthView->setTheMe(type);
 }
 
-void CMonthWindow::previousMonth()
+void CMonthWindow::setYearData()
 {
-    slideMonth(false);
+    if (getSelectDate() == getCurrendDateTime().date()) {
+        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
+    } else {
+        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
+    }
+    if (getShowLunar()) {
+        m_YearLabel->setText(QString::number(getSelectDate().year()) + tr("Y"));
+    } else {
+        m_YearLabel->setText(QString::number(getSelectDate().year()));
+    }
 }
 
-void CMonthWindow::nextMonth()
+/**
+ * @brief CMonthWindow::updateShowDate  更新显示时间
+ * @param isUpdateBar
+ */
+void CMonthWindow::updateShowDate(const bool isUpdateBar)
 {
-    slideMonth(true);
+    setYearData();
+    const QDate _selectDate = m_calendarManager->getCalendarDateDataManage()->getSelectDate();
+    Qt::DayOfWeek _firstWeek = m_calendarManager->getCalendarDateDataManage()->getWeekFirstDay();
+    m_monthView->setFirstWeekday(_firstWeek);
+    QVector<QDate> _monthShowData = m_calendarManager->getCalendarDateDataManage()->getMonthDate(_selectDate.year(), _selectDate.month());
+    m_startDate = _monthShowData.first();
+    m_stopDate = _monthShowData.last();
+    m_monthView->setShowDate(_monthShowData);
+    if (isUpdateBar)
+        m_monthDayView->setSelectDate(_selectDate); //设置12个月份显示
+    //如果为中文环境则显示班休和农历信息
+    if (getShowLunar()) {
+        updateShowLunar();
+    }
+    //切换月份须更新显示日程
+    updateShowSchedule();
 }
 
-void CMonthWindow::slotsearchDateSelect(QDate date)
+/**
+ * @brief CMonthWindow::updateShowSchedule  更新日程显示
+ */
+void CMonthWindow::updateShowSchedule()
 {
-    setDate(date);
-    slotupdateSchedule();
+    QMap<QDate, QVector<ScheduleDataInfo> > _monthScheduleInfo = m_calendarManager->getScheduleTask()->getScheduleInfo(m_startDate, m_stopDate);
+    m_monthView->setScheduleInfo(_monthScheduleInfo);
 }
 
+/**
+ * @brief CMonthWindow::updateShowLunar     更新显示农历信息
+ */
+void CMonthWindow::updateShowLunar()
+{
+    getLunarInfo();
+    m_YearLunarLabel->setText(m_lunarYear);
+    QMap<QDate, int> _monthFestivalInfo = m_calendarManager->getScheduleTask()->getFestivalInfo(m_startDate, m_stopDate);
+    m_monthView->setFestival(_monthFestivalInfo);
+    QMap<QDate, CaHuangLiDayInfo>  _monthHuangliInfo = m_calendarManager->getScheduleTask()->getHuangliInfo(m_startDate, m_stopDate);
+    m_monthView->setHuangliInfo(_monthHuangliInfo);
+}
+
+/**
+ * @brief CMonthWindow::updateSearchScheduleInfo        更新搜索日程信息
+ */
+void CMonthWindow::updateSearchScheduleInfo()
+{
+    //获取搜索日程信息
+    QVector<ScheduleDataInfo> _searchSchedule = m_calendarManager->getScheduleTask()->getSearchScheduleInfoVector();
+    m_monthView->setSearchScheduleInfo(_searchSchedule);
+}
+
+/**
+ * @brief CMonthWindow::setSelectSearchScheduleInfo     设置选中日程
+ * @param info
+ */
+void CMonthWindow::setSelectSearchScheduleInfo(const ScheduleDataInfo &info)
+{
+    m_monthView->setSelectSchedule(info);
+}
+
+/**
+ * @brief CMonthWindow::setSearchWFlag      设置是否显示搜索界面
+ * @param flag
+ */
 void CMonthWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;
     m_monthDayView->setsearchfalg(flag);
 }
 
-void CMonthWindow::clearSearch()
+/**
+ * @brief previousMonth 选择上一个月份
+ */
+void CMonthWindow::previousMonth()
 {
+    slideMonth(false);
+}
+
+/**
+ * @brief nextMonth     选择下一个月份
+ */
+void CMonthWindow::nextMonth()
+{
+    slideMonth(true);
 }
 
 /**
@@ -189,13 +238,6 @@ void CMonthWindow::clearSearch()
  */
 void CMonthWindow::initUI()
 {
-    m_contentBackground = new DFrame;
-    m_contentBackground->setContentsMargins(0, 0, 0, 0);
-    DPalette anipa = m_contentBackground->palette();
-    anipa.setColor(DPalette::Background, "#F8F8F8");
-    m_contentBackground->setAutoFillBackground(true);
-    m_contentBackground->setPalette(anipa);
-
     m_today = new CTodayButton;
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedSize(DDEMonthCalendar::MTodayWindth, DDEMonthCalendar::MTodayHeight);
@@ -282,59 +324,52 @@ void CMonthWindow::initUI()
     ssLayout->setContentsMargins(0, 10, 0, 10);
     m_tmainLayout->addLayout(ssLayout);
 
-    m_contentBackground->setLayout(m_tmainLayout);
-
-    setCentralWidget(m_contentBackground);
+    this->setLayout(m_tmainLayout);
 }
 
+/**
+ * @brief initConnection 初始化信号和槽的连接
+ */
 void CMonthWindow::initConnection()
 {
     connect(m_today, &DPushButton::clicked, this, &CMonthWindow::slottoday);
-    connect(m_monthView, &CMonthView::signalcurrentLunarDateChanged, this, &CMonthWindow::slotcurrentDateLunarChanged);
-    connect(m_monthView, &CMonthView::signalcurrentDateChanged, this, &CMonthWindow::slotcurrentDateChanged);
-    connect(m_monthDayView, &CMonthDayView::signalsSelectDate, this, &CMonthWindow::slotSelectedMonth);
-    connect(m_monthView, &CMonthView::signalsScheduleUpdate, this, &CMonthWindow::slotTransitSchedule);
-    connect(m_monthDayView, &CMonthDayView::signalsCurrentDate, this, &CMonthWindow::slotSelectedMonth);
-    connect(m_monthView, &CMonthView::signalsCurrentScheduleDate, this, &CMonthWindow::signalsCurrentScheduleDate);
+    connect(m_monthDayView, &CMonthDayView::signalsSelectDate, this, &CMonthWindow::slotSetSelectDate);
     connect(m_monthView, &CMonthView::signalViewtransparentFrame, this, &CMonthWindow::signalViewtransparentFrame);
-    connect(m_monthView, &CMonthView::signalsViewSelectDate, this, &CMonthWindow::signalsViewSelectDate);
+    //双击时间修改选择时间和切换到日视图
+    connect(m_monthView, &CMonthView::signalsViewSelectDate, this, &CMonthWindow::slotViewSelectDate);
     connect(m_monthView, &CMonthView::signalAngleDelta, this, &CMonthWindow::slotAngleDelta);
     //月份控件区域左右滚动信号关联
     connect(m_monthDayView, &CMonthDayView::signalAngleDelta, this, &CMonthWindow::slotAngleDelta);
 }
 
-void CMonthWindow::initLunar()
-{
-    m_monthView->setLunarVisible(true);
-}
-
+/**
+ * @brief slideMonth    切换月份，并更新信息
+ * @param next          是否切换到下一个月
+ */
 void CMonthWindow::slideMonth(bool next)
 {
-    QDate currentDate;
-
+    slotScheduleHide();
     if (next) {
-        if (m_currentdate.year() == DDECalendar::QueryEarliestYear && m_currentdate.month() == 1)
-            return;
-        currentDate = m_currentdate.addMonths(-1);
+        setSelectDate(getSelectDate().addMonths(-1), true);
     } else {
-        currentDate = m_currentdate.addMonths(1);
+        setSelectDate(getSelectDate().addMonths(1), true);
     }
-
-    setDate(currentDate);
-    QDate tdate = QDate(m_currentdate.year(), m_currentdate.month(), 1);
-    emit signalCurrentDate(tdate);
+    //更新日程
+    updateShowDate();
 }
 
-void CMonthWindow::slotReturnTodayUpdate()
-{
-    setDate(QDate::currentDate());
-}
-
+/**
+ * @brief slotScheduleHide 隐藏日程浮框
+ */
 void CMonthWindow::slotScheduleHide()
 {
     m_monthView->slotScheduleRemindWidget(false);
 }
 
+/**
+ * @brief slotAngleDelta    接受滚动事件滚动相对量
+ * @param delta             滚动相对量
+ */
 void CMonthWindow::slotAngleDelta(int delta)
 {
     //拖拽时禁用
@@ -348,87 +383,53 @@ void CMonthWindow::slotAngleDelta(int delta)
         }
     }
 }
+
 /**
- * @brief slotupdateSchedule 更新日程
- * @param id
+ * @brief CMonthWindow::slotViewSelectDate          设置选择时间切换日视图
+ * @param date
  */
-void CMonthWindow::slotupdateSchedule(int id)
+void CMonthWindow::slotViewSelectDate(const QDate &date)
 {
-    Q_UNUSED(id);
-    m_monthView->slotScheduleUpdate();
+    slotScheduleHide();
+    if (setSelectDate(date, true)) {
+        emit signalSwitchView(3);
+    }
 }
 
-void CMonthWindow::slotTransitSchedule(int id)
-{
-    emit signalsWUpdateShcedule(this, id);
-}
-
-void CMonthWindow::setSelectSchedule(const ScheduleDtailInfo &scheduleInfo)
-{
-    m_monthView->setSelectSchedule(scheduleInfo);
-}
-
+/**
+ * @brief resizeEvent                   窗口大小调整
+ * @param event                         窗口大小调整事件
+ */
 void CMonthWindow::resizeEvent(QResizeEvent *event)
 {
     qreal dw = width() * 0.5023 + 0.5;
     int dh = 36;
-
     if (m_searchfalg) {
         m_tmainLayout->setContentsMargins(0, 0, 0, 0);
     } else {
         m_tmainLayout->setContentsMargins(0, 0, 10, 0);
     }
-
-    if (!m_searchfalg) {
-        m_monthDayView->setFixedSize(qRound(dw), dh);
-    } else {
-        m_monthDayView->setFixedSize(qRound(dw), dh);
-    }
-
-    QMainWindow::resizeEvent(event);
+    m_monthDayView->setFixedSize(qRound(dw), dh);
+    QWidget::resizeEvent(event);
 }
 
+/**
+ * @brief CMonthWindow::slottoday               返回当前时间
+ */
 void CMonthWindow::slottoday()
 {
-    emit signalsReturnTodayUpdate(this);
-    setDate(QDate::currentDate());
+    setSelectDate(getCurrendDateTime().date(), true);
+    updateData();
 }
 
-void CMonthWindow::slotcurrentDateLunarChanged(QDate date, CaLunarDayInfo detail, int type)
+/**
+ * @brief CMonthWindow::slotSetSelectDate       设置选择时间
+ * @param date
+ */
+void CMonthWindow::slotSetSelectDate(const QDate &date)
 {
-    QDate currentdate = m_currentdate;
-    m_currentdate = date;
-
-    if (type == 1) {
-        QLocale locale;
-
-        if (locale.language() == QLocale::Chinese) {
-            m_YearLabel->setText(QString::number(date.year()) + tr("Y"));
-        } else {
-            m_YearLabel->setText(QString::number(date.year()));
-        }
-        m_YearLunarLabel->setText("-" + detail.mGanZhiYear + detail.mZodiac + "年-");
-    } else if (type == 0) {
-        if (date.month() != currentdate.month()) {
-            m_monthDayView->setRCurrentDate(date);
-        }
+    slotScheduleHide();
+    if (setSelectDate(date, true)) {
+        updateShowDate(false);
     }
-}
-
-void CMonthWindow::slotcurrentDateChanged(QDate date)
-{
-    m_currentdate = date;
-
-    if (m_currentdate == QDate::currentDate()) {
-        m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-    } else {
-        m_today->setText(QCoreApplication::translate("Return Today", "Today", "Return Today"));
-    }
-}
-
-void CMonthWindow::slotSelectedMonth(QDate date)
-{
-    m_currentdate = date;
-    m_monthView->setCurrentDate(date);
-    emit signalCurrentDate(date);
 }

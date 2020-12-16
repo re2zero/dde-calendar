@@ -23,6 +23,7 @@
 #include "myscheduleview.h"
 #include "scheduledatamanage.h"
 #include "constants.h"
+#include "scheduledaterangeinfo.h"
 
 #include <DMessageBox>
 #include <DPushButton>
@@ -51,7 +52,7 @@ CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *paren
     Q_UNUSED(edittype);
 }
 
-bool CAllDayEventWidgetItem::hasSelectSchedule(const ScheduleDtailInfo &info)
+bool CAllDayEventWidgetItem::hasSelectSchedule(const ScheduleDataInfo &info)
 {
     return info == m_vScheduleInfo;
 }
@@ -61,7 +62,7 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
     Q_UNUSED(isPixMap);
     m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
     painter->setRenderHints(QPainter::Antialiasing);
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.type.ID);
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
     QRectF drawrect = rect;
     QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
 
@@ -69,10 +70,11 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
     QColor color2 = gdcolor.gradientToC;
     QColor textcolor = gdcolor.textColor;
 
-    m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
 
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo) {
-        if (m_vScheduleInfo.IsMoveInfo == CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
+    //判断是否为选中日程
+    if (m_vScheduleInfo == m_pressInfo) {
+        //判断当前日程是否为拖拽移动日程
+        if (m_vScheduleInfo.getIsMoveInfo() == m_pressInfo.getIsMoveInfo()) {
             m_vHighflag = true;
         } else {
             painter->setOpacity(0.4);
@@ -88,8 +90,7 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
     } else if (m_vHighflag) {
         color1 = gdcolor.hightlightgradientFromC;
         color2 = gdcolor.hightlightgradientToC;
-    }
-    if (m_vSelectflag) {
+    } else if (m_vSelectflag) {
         color1 = gdcolor.pressgradientFromC;
         color2 = gdcolor.pressgradientToC;
         textcolor.setAlphaF(0.4);
@@ -107,7 +108,7 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
     painter->setFont(m_font);
     painter->setPen(textcolor);
     QFontMetrics fm = painter->fontMetrics();
-    QString tStitlename = m_vScheduleInfo.titleName;
+    QString tStitlename = m_vScheduleInfo.getTitleName();
     tStitlename.replace("\n", "");
     QString str = tStitlename;
     QString tstr;
@@ -213,23 +214,22 @@ void CAllDayEventWeekView::RightClickToCreate(QGraphicsItem *listItem, const QPo
     m_rightMenu->exec(QCursor::pos());
 }
 
-void CAllDayEventWeekView::MoveInfoProcess(ScheduleDtailInfo &info, const QPointF &pos)
+void CAllDayEventWeekView::MoveInfoProcess(ScheduleDataInfo &info, const QPointF &pos)
 {
     Q_UNUSED(pos);
-    if (info.allday) {
+    if (info.getAllDay()) {
         qint64 offset = m_PressDate.daysTo(m_MoveDate);
-        info.beginDateTime = info.beginDateTime.addDays(offset);
-        info.endDateTime = info.endDateTime.addDays(offset);
+        info.setBeginDateTime(info.getBeginDateTime().addDays(offset));
+        info.setEndDateTime(info.getEndDateTime().addDays(offset));
     } else {
-        qint64 offset = info.beginDateTime.daysTo(info.endDateTime);
-        info.allday = true;
-        info.remind = true;
-        info.remindData.time = QTime(9, 0);
-        info.remindData.n = 1;
-        m_DragScheduleInfo.beginDateTime = QDateTime(m_MoveDate.date(), QTime(0, 0, 0));
-        m_DragScheduleInfo.endDateTime = QDateTime(m_MoveDate.addDays(offset).date(), QTime(23, 59, 59));
+        qint64 offset = info.getBeginDateTime().daysTo(info.getEndDateTime());
+        info.setAllDay(true);
+//        info.remind = true;
+        info.getRemindData().setRemindTime(QTime(9, 0));
+        info.getRemindData().setRemindNum(1);
+        m_DragScheduleInfo.setBeginDateTime(QDateTime(m_MoveDate.date(), QTime(0, 0, 0)));
+        m_DragScheduleInfo.setEndDateTime(QDateTime(m_MoveDate.addDays(offset).date(), QTime(23, 59, 59)));
     }
-    info.IsMoveInfo = true;
     upDateInfoShow(ChangeWhole, info);
 }
 
@@ -261,6 +261,7 @@ void CAllDayEventWeekView::setRange(QDate begin, QDate end)
     m_beginDate = begin;
     m_endDate = end;
     getCoorManage()->setDateRange(begin, end);
+    this->scene()->update();
 }
 
 void CAllDayEventWeekView::updateHigh()
@@ -270,7 +271,7 @@ void CAllDayEventWeekView::updateHigh()
     }
 }
 
-void CAllDayEventWeekView::setSelectSchedule(const ScheduleDtailInfo &info)
+void CAllDayEventWeekView::setSelectSchedule(const ScheduleDataInfo &info)
 {
     for (int i = 0; i < m_baseShowItem.size(); ++i) {
         CAllDayEventWidgetItem *item = m_baseShowItem.at(i);
@@ -302,9 +303,9 @@ void CAllDayEventWeekView::updateInfo()
     }
 }
 
-void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const ScheduleDtailInfo &info)
+void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const ScheduleDataInfo &info)
 {
-    QVector<ScheduleDtailInfo> vListData;
+    QVector<ScheduleDataInfo> vListData;
     vListData = m_scheduleInfo;
     switch (status) {
     case NONE:
@@ -328,8 +329,8 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
 
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
     for (int i = 0; i < vListData.count(); i++) {
-        QDate tbegindate = vListData.at(i).beginDateTime.date();
-        QDate tenddate = vListData.at(i).endDateTime.date();
+        QDate tbegindate = vListData.at(i).getBeginDateTime().date();
+        QDate tenddate = vListData.at(i).getEndDateTime().date();
         if (tbegindate < m_beginDate)
             tbegindate = m_beginDate;
         if (tenddate > m_endDate)
@@ -380,7 +381,7 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
         if (flag)
             vMDaySchedule[i].state = true;
     }
-    QVector<QVector<ScheduleDtailInfo>> vResultData;
+    QVector<QVector<ScheduleDataInfo>> vResultData;
     for (int i = 0; i < vListData.count(); i++) {
         QVector<int> vId;
         for (int j = 0; j < tNum; j++) {
@@ -394,7 +395,7 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
                     vId.append(vCfillSchedule[i][j]);
             }
         }
-        QVector<ScheduleDtailInfo> tData;
+        QVector<ScheduleDataInfo> tData;
         for (int j = 0; j < vId.count(); j++) {
             tData.append(vMDaySchedule[vId[j]].tData);
         }
@@ -431,13 +432,13 @@ CAllDayEventWeekView::~CAllDayEventWeekView()
     m_coorManage = nullptr;
 }
 
-void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDtailInfo>> &vlistData)
+void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDataInfo>> &vlistData)
 {
     m_vlistData = vlistData;
     updateDateShow();
 }
 
-void CAllDayEventWeekView::setInfo(const QVector<ScheduleDtailInfo> &info)
+void CAllDayEventWeekView::setInfo(const QVector<ScheduleDataInfo> &info)
 {
     m_scheduleInfo = info;
 }
@@ -513,8 +514,8 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
 {
     Q_UNUSED(average)
     for (int i = 0; i < m_vlistData[index].size(); ++i) {
-        const ScheduleDtailInfo &info = m_vlistData[index].at(i);
-        QRectF drawrect = m_coorManage->getAllDayDrawRegion(info.beginDateTime.date(), info.endDateTime.date());
+        const ScheduleDataInfo &info = m_vlistData[index].at(i);
+        QRectF drawrect = m_coorManage->getAllDayDrawRegion(info.getBeginDateTime().date(), info.getEndDateTime().date());
         drawrect.setY(2 + (itemHeight + 1) * index);
         drawrect.setHeight(itemHeight);
 
@@ -598,17 +599,6 @@ QDateTime CAllDayEventWeekView::getPosDate(const QPoint &p)
 {
     return QDateTime(m_coorManage->getsDate(mapFrom(this, p)),
                      QTime(0, 0, 0));
-}
-
-void CAllDayEventWeekView::slotDeleteItem()
-{
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID < 0) {
-        return;
-    }
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().type.ID != DDECalendar::FestivalTypeID) {
-        DeleteItem(CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo());
-    }
-    CScheduleDataManage::getScheduleDataManage()->setPressSelectInfo(ScheduleDtailInfo());
 }
 
 void CAllDayEventWeekView::slotUpdateScene()

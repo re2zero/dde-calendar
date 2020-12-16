@@ -17,19 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scheduledatamanage.h"
-#include "schedulesdbus.h"
-#include "calendardbus.h"
 
 CScheduleDataManage *CScheduleDataManage::m_vscheduleDataManage = new CScheduleDataManage;
-CScheduleDataCtrl *CScheduleDataManage::getscheduleDataCtrl()
-{
-    return m_scheduleDataCtrl;
-}
-
-CHuangliDayDataManage *CScheduleDataManage::getHuangliDayDataManage()
-{
-    return m_HuangliDayDataManage;
-}
 
 CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
 {
@@ -51,54 +40,49 @@ QColor CScheduleDataManage::getSystemActiveColor()
     return DGuiApplicationHelper::instance()->applicationPalette().highlight().color();
 }
 
-void CScheduleDataManage::setSearchResult(QVector<ScheduleDateRangeInfo> &vData)
-{
-    m_vScheduleInfo = vData;
-}
+//bool CScheduleDataManage::getSearchResult(ScheduleDtailInfo info)
+//{
+//    QDateTime date = QDateTime::currentDateTime();
+//    QDateTime bdate = date.addMonths(-6);
 
-bool CScheduleDataManage::getSearchResult(ScheduleDtailInfo info)
-{
-    QDateTime date = QDateTime::currentDateTime();
-    QDateTime bdate = date.addMonths(-6);
+//    if (!bdate.isValid()) {
+//        QDateTime tdate = date;
+//        tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
+//        bdate = tdate.addMonths(-6);
+//    }
 
-    if (!bdate.isValid()) {
-        QDateTime tdate = date;
-        tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
-        bdate = tdate.addMonths(-6);
-    }
+//    QDateTime edate = date.addMonths(6);
 
-    QDateTime edate = date.addMonths(6);
+//    if (!edate.isValid()) {
+//        QDateTime tdate = date;
+//        tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
+//        edate = tdate.addMonths(7);
+//        edate = edate.addDays(-1);
+//    }
 
-    if (!edate.isValid()) {
-        QDateTime tdate = date;
-        tdate.setDate(QDate(date.date().year(), date.date().month(), 1));
-        edate = tdate.addMonths(7);
-        edate = edate.addDays(-1);
-    }
+//    for (int i = 0; i < m_vScheduleInfo.size(); i++) {
+//        QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
+//        for (int j = 0; j < scheduleInfolist.count(); j++) {
+//            if (scheduleInfolist.at(j) == info) {
+//                if (bdate < info.beginDateTime && edate > info.endDateTime)
+//                    return true;
+//            }
+//        }
+//    }
 
-    for (int i = 0; i < m_vScheduleInfo.size(); i++) {
-        QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
-        for (int j = 0; j < scheduleInfolist.count(); j++) {
-            if (scheduleInfolist.at(j) == info) {
-                if (bdate < info.beginDateTime && edate > info.endDateTime)
-                    return true;
-            }
-        }
-    }
-
-    return false;
-}
+//    return false;
+//}
 
 bool CScheduleDataManage::getSearchResult(QDate date)
 {
-    for (int i = 0; i < m_vScheduleInfo.size(); i++) {
-        QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
+//    for (int i = 0; i < m_vScheduleInfo.size(); i++) {
+//        QVector<ScheduleDtailInfo> &scheduleInfolist = m_vScheduleInfo[i].vData;
 
-        if (m_vScheduleInfo[i].date == date && !scheduleInfolist.isEmpty()) {
-            return true;
-        }
-    }
-    return false;
+//        if (m_vScheduleInfo[i].date == date && !scheduleInfolist.isEmpty()) {
+//            return true;
+//        }
+//    }
+//    return false;
 }
 
 void CScheduleDataManage::setTheMe(int type)
@@ -412,15 +396,11 @@ CScheduleDataManage *CScheduleDataManage::getScheduleDataManage()
 
 void CScheduleDataManage::clear()
 {
-    delete m_scheduleDataCtrl;
 }
 
 CScheduleDataManage::CScheduleDataManage()
 {
-    m_scheduleDataCtrl = new CScheduleDataCtrl;
-    m_HuangliDayDataManage = new CHuangliDayDataManage;
-
-    m_GetAllYearScheduleInfo = new YearScheduleInfo();
+//    m_GetAllYearScheduleInfo = new YearScheduleInfo();
     CSchedulesColor workC;
     workC.type = 1;
     workC.gradientFromC = "#FBCEB7";
@@ -473,257 +453,4 @@ CScheduleDataManage::CScheduleDataManage()
 
 CScheduleDataManage::~CScheduleDataManage()
 {
-    delete m_scheduleDataCtrl;
-    delete m_HuangliDayDataManage;
-    delete m_GetAllYearScheduleInfo;
-}
-
-YearScheduleInfo *CScheduleDataManage::getGetAllYearScheduleInfo() const
-{
-    return m_GetAllYearScheduleInfo;
-}
-
-int CScheduleDataManage::getFirstWeekDay() const
-{
-    return m_firstWeekDay;
-}
-
-void CScheduleDataManage::setFirstWeekDay(int firstWeekDay)
-{
-    m_firstWeekDay = firstWeekDay;
-}
-
-QDate CScheduleDataManage::getFirstOfMonth(const QDate &date)
-{
-    const QDate firstDay(date.year(), date.month(), 1);
-    int offset = firstDay.dayOfWeek() % 7 - m_firstWeekDay;
-
-    const int day = offset < 0 ? offset + 7 : offset;
-    return firstDay.addDays(0 - day);
-}
-
-void CScheduleDataManage::setCurrentYear(int CurrentYear)
-{
-    m_CurrentYear = CurrentYear;
-    m_GetAllYearScheduleInfo->m_year = m_CurrentYear;
-
-    for (int i = 1; i < 13; ++i) {
-        m_GetAllYearScheduleInfo->m_firstDay[i] =
-            getFirstOfMonth(QDate(m_CurrentYear, i, 1));
-    }
-}
-
-ScheduleDtailInfo CScheduleDataManage::getPressSelectInfo() const
-{
-    return m_PressSelectInfo;
-}
-
-void CScheduleDataManage::setPressSelectInfo(const ScheduleDtailInfo &PressSelectInfo)
-{
-    m_PressSelectInfo = PressSelectInfo;
-}
-
-CScheduleDataCtrl::CScheduleDataCtrl()
-{
-    qRegisterMetaType<QVector<ScheduleDateRangeInfo>>("QVector<ScheduleDateRangeInfo>");
-    m_dbus = new CSchedulesDBus("com.deepin.dataserver.Calendar",
-                                "/com/deepin/dataserver/Calendar",
-                                QDBusConnection::sessionBus(), this);
-    m_scheduleDateCache = nullptr;
-
-    if (!m_scheduleDateCache)
-        m_scheduleDateCache = new QMap<QDate, ScheduleDateRangeInfo>;
-    m_thread = new CDataProcessThread(m_dbus);
-    connect(m_thread, &CDataProcessThread::signalsDataProcess, this, &CScheduleDataCtrl::slotDataProcess);
-}
-
-CScheduleDataCtrl::~CScheduleDataCtrl()
-{
-    delete m_scheduleDateCache;
-    delete m_dbus;
-    delete m_thread;
-}
-
-qint64 CScheduleDataCtrl::addSchedule(const ScheduleDtailInfo &scheduledate)
-{
-    clearData();
-    return m_dbus->CreateJob(scheduledate);
-}
-
-bool CScheduleDataCtrl::getScheduleInfoById(int id, ScheduleDtailInfo &out)
-{
-    return m_dbus->GetJob(id, out);
-}
-
-bool CScheduleDataCtrl::getScheduleInfo(const QDate bdate, const QDate edate, QVector<ScheduleDateRangeInfo> &out)
-{
-    return m_dbus->GetJobs(bdate.year(), bdate.month(), bdate.day(), edate.year(), edate.month(), edate.day(), out);
-}
-
-bool CScheduleDataCtrl::queryScheduleInfo(QString key, QDateTime starttime, QDateTime endtime, QVector<ScheduleDateRangeInfo> &out)
-{
-    return m_dbus->QueryJobs(key, starttime, endtime, out);
-}
-
-bool CScheduleDataCtrl::queryScheduleInfo(QString key, QDateTime starttime, QDateTime endtime, QString &out)
-{
-    return m_dbus->QueryJobs(key, starttime, endtime, out);
-}
-
-bool CScheduleDataCtrl::updateScheduleInfo(const ScheduleDtailInfo &scheduledate)
-{
-    clearData();
-    return m_dbus->UpdateJob(scheduledate);
-}
-
-bool CScheduleDataCtrl::deleteScheduleInfoById(int id)
-{
-    clearData();
-    return m_dbus->DeleteJob(id);
-}
-
-bool CScheduleDataCtrl::GetType(qint64 jobId, ScheduleType &out)
-{
-    while (m_thread->isRunning())
-        ;
-    return m_dbus->GetType(jobId, out);
-}
-
-QString CScheduleDataCtrl::InfoToJson(const ScheduleDtailInfo &scheduledate)
-{
-    return m_dbus->createScheduleDtailInfojson(scheduledate);
-}
-
-ScheduleDtailInfo CScheduleDataCtrl::JsonObjectToInfo(QJsonObject &obj)
-{
-    return m_dbus->parsingScheduleDtailInfojsonID(obj);
-}
-
-void CScheduleDataCtrl::slotupdatescheduleD(QWidget *w, QDate begin, QDate end)
-{
-    m_currentWidget = w;
-    m_begindate = begin;
-    m_enddate = end;
-    m_thread->DataProcessStart(begin, end);
-}
-
-void CScheduleDataCtrl::slotDataProcess(QVector<ScheduleDateRangeInfo> out)
-{
-    emit signalsupdatescheduleD(m_currentWidget, out);
-}
-
-void CScheduleDataCtrl::clearData()
-{
-    while (m_thread->isRunning())
-        ;
-    m_scheduleDateCache->clear();
-}
-
-CSchedulesDBus *CScheduleDataCtrl::getDbus() const
-{
-    return m_dbus;
-}
-
-CDataProcessThread::CDataProcessThread(CSchedulesDBus *_DataManage)
-    : m_DataManage(_DataManage)
-    , m_stopFlag(false)
-{
-    Q_ASSERT(m_DataManage != nullptr);
-}
-
-CDataProcessThread::~CDataProcessThread()
-{
-    //防止未运行完
-    m_mutex.lock();
-    m_stopFlag = true;
-    m_mutex.unlock();
-    //是否允许
-    while (isRunning()) {}
-}
-
-void CDataProcessThread::DataProcessStart(QDate begin, QDate end)
-{
-    m_mutex.lock();
-    this->m_stopFlag = true;
-    this->m_begindate = begin;
-    this->m_enddate = end;
-    m_mutex.unlock();
-
-    while (isRunning()) {}
-    m_mutex.lock();
-    m_stopFlag = false;
-    m_mutex.unlock();
-
-    start(QThread::NormalPriority);
-}
-
-void CDataProcessThread::run()
-{
-    forever
-    {
-        //运行
-        m_mutex.lock();
-        QDate bdate = m_begindate;
-        QDate edate = m_enddate;
-        bool t_stopFlag = m_stopFlag;
-        m_mutex.unlock();
-        if (t_stopFlag)
-            return;
-        QVector<ScheduleDateRangeInfo> out;
-        bool flag = m_DataManage->GetJobs(bdate.year(), bdate.month(), bdate.day(), edate.year(), edate.month(), edate.day(), out);
-        if (!flag)
-            return;
-        emit signalsDataProcess(out);
-        break;
-    }
-}
-
-CHuangliDayDataManage::CHuangliDayDataManage()
-{
-    m_DBusInter = new CalendarDBus("com.deepin.dataserver.Calendar",
-                                   "/com/deepin/dataserver/Calendar",
-                                   QDBusConnection::sessionBus(), this);
-}
-
-CHuangliDayDataManage::~CHuangliDayDataManage()
-{
-    delete m_DBusInter;
-}
-
-bool CHuangliDayDataManage::getSoloDay(QDate date, QString &str)
-{
-    CaHuangLiDayInfo scurrentDayinfo;
-
-    if (m_DBusInter->GetHuangLiDayCalendar(date.year(), date.month(), date.day(), scurrentDayinfo)) {
-        if (scurrentDayinfo.mSolarFestival.isEmpty() && scurrentDayinfo.mLunarFestival.isEmpty()) {
-            str = QString();
-            return false;
-        } else if (!scurrentDayinfo.mSolarFestival.isEmpty() && !scurrentDayinfo.mLunarFestival.isEmpty()) {
-            str = scurrentDayinfo.mSolarFestival + " " + scurrentDayinfo.mLunarFestival;
-            return true;
-        } else {
-            str = scurrentDayinfo.mSolarFestival + scurrentDayinfo.mLunarFestival;
-            return true;
-        }
-    }
-    return false;
-}
-
-QVector<bool> CHuangliDayDataManage::getDayFlag(QDate date)
-{
-    QVector<bool> vflag;
-    vflag.resize(42);
-    vflag.fill(false);
-    CaHuangLiMonthInfo out;
-
-    if (m_DBusInter->GetHuangLiMonthCalendar(date.year(), date.month(), true, out)) {
-        if (out.mCaLunarDayInfo.count() == 42) {
-            for (int i = 0; i < 42; i++) {
-                if (!out.mCaLunarDayInfo.at(i).mSolarFestival.isEmpty() || !out.mCaLunarDayInfo.at(i).mLunarFestival.isEmpty()) {
-                    vflag[i] = true;
-                }
-            }
-        }
-    }
-    return vflag;
 }

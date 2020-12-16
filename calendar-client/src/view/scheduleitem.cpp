@@ -48,7 +48,13 @@ CScheduleItem::~CScheduleItem()
 {
 }
 
-void CScheduleItem::setData(const ScheduleDtailInfo &info, QDate date, int totalNum)
+/**
+ * @brief CScheduleItem::setData        设置显示数据
+ * @param info
+ * @param date
+ * @param totalNum
+ */
+void CScheduleItem::setData(const ScheduleDataInfo &info, QDate date, int totalNum)
 {
     m_vScheduleInfo = info;
     m_totalNum = totalNum;
@@ -56,11 +62,25 @@ void CScheduleItem::setData(const ScheduleDtailInfo &info, QDate date, int total
     update();
 }
 
-bool CScheduleItem::hasSelectSchedule(const ScheduleDtailInfo &info)
+/**
+ * @brief CScheduleItem::hasSelectSchedule      是否含有选中日程
+ * @param info
+ * @return
+ */
+bool CScheduleItem::hasSelectSchedule(const ScheduleDataInfo &info)
 {
     return info == m_vScheduleInfo;
 }
 
+/**
+ * @brief CScheduleItem::splitText      根据字体大小,宽度和高度将标题切换为多行
+ * @param font
+ * @param w
+ * @param h
+ * @param str
+ * @param liststr
+ * @param fontm
+ */
 void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm)
 {
     if (str.isEmpty())
@@ -130,20 +150,27 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
     }
 }
 
+/**
+ * @brief CScheduleItem::paintBackground        绘制item显示效果
+ * @param painter
+ * @param rect
+ * @param isPixMap
+ */
 void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
 {
     Q_UNUSED(isPixMap);
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-        m_vScheduleInfo.type.ID);
-    m_vHighflag = CScheduleDataManage::getScheduleDataManage()->getSearchResult(m_vScheduleInfo);
+    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
 
-    if (CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo() == m_vScheduleInfo) {
-        if (m_vScheduleInfo.IsMoveInfo == CScheduleDataManage::getScheduleDataManage()->getPressSelectInfo().IsMoveInfo) {
+    //判断是否为选中日程
+    if (m_vScheduleInfo == m_pressInfo) {
+        //判断当前日程是否为拖拽移动日程
+        if (m_vScheduleInfo.getIsMoveInfo() == m_pressInfo.getIsMoveInfo()) {
             m_vHighflag = true;
         } else {
             painter->setOpacity(0.4);
             gdcolor.textColor.setAlphaF(0.4);
             gdcolor.timeColor.setAlphaF(0.4);
+            m_vHighflag = false;
         }
         m_vSelectflag = m_press;
     }
@@ -157,8 +184,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         bcolor = gdcolor.hoverPurecolor;
     } else if (m_vHighflag) {
         bcolor = gdcolor.hightlightPurecolor;
-    }
-    if (m_vSelectflag) {
+    } else if (m_vSelectflag) {
         bcolor = gdcolor.pressPurecolor;
     }
     painter->setBrush(bcolor);
@@ -213,12 +239,12 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
 
         //绘制日程起始时间
-        if (m_vScheduleInfo.beginDateTime.date() == m_date) {
+        if (m_vScheduleInfo.getBeginDateTime().date() == m_date) {
             painter->save();
             painter->setFont(font);
             painter->setPen(gdcolor.timeColor);
 
-            QTime stime = m_vScheduleInfo.beginDateTime.time();
+            QTime stime = m_vScheduleInfo.getBeginDateTime().time();
             QString str = stime.toString("AP h:mm");
             QFontMetrics fontmetris(font);
             qreal drawTextWidth = rect.width() - m_offset * 2;
@@ -266,7 +292,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         splitText(font,
                   textRect.width() - tmagin - 8,
                   textRect.height() - 20,
-                  m_vScheduleInfo.titleName,
+                  m_vScheduleInfo.getTitleName(),
                   liststr, fm);
 
         for (int i = 0; i < liststr.count(); i++) {
