@@ -55,11 +55,20 @@ endforeach()
 #lupdate end
 
 file (GLOB DTNG_TS_FILES translations/*.ts)
+
+#lrelease start
+#发布qm文件
+find_program(LRELEASE_EXECUTABLE lrelease)
+foreach(_ts_file ${DTNG_TS_FILES})
+        execute_process(COMMAND ${LRELEASE_EXECUTABLE}   ${_ts_file})
+endforeach()
+#lrelease end
+
 qt5_create_translation(DTNG_QM_FILES
     ${DTNG_TS_FILES}
      ${DTNG_QM_FILES}
      )
-
+     
  set(CMAKE_INSTALL_PREFIX /usr)
  file(GLOB APP_QM_FILES "translations/*.qm")
  install(FILES ${APP_QM_FILES} DESTINATION share/dde-calendar/translations)

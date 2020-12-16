@@ -1,40 +1,40 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ms" version="2.1">
 <context>
     <name>CDayMonthView</name>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="46"/>
         <source>Monday</source>
-        <translation>Segunda-feira</translation>
+        <translation>Isnin</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="47"/>
         <source>Tuesday</source>
-        <translation>Terça-feira</translation>
+        <translation>Selasa</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="48"/>
         <source>Wednesday</source>
-        <translation>Quarta-feira</translation>
+        <translation>Rabu</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="49"/>
         <source>Thursday</source>
-        <translation>Quinta-feira</translation>
+        <translation>Khamis</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="50"/>
         <source>Friday</source>
-        <translation>Sexta-feira</translation>
+        <translation>Jumaat</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="51"/>
         <source>Saturday</source>
-        <translation>Sábado</translation>
+        <translation>Sabtu</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="52"/>
         <source>Sunday</source>
-        <translation>Domingo</translation>
+        <translation>Ahad</translation>
     </message>
 </context>
 <context>
@@ -42,17 +42,17 @@
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daywindow.cpp" line="126"/>
         <source>Y</source>
-        <translation>A</translation>
+        <translation>T</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daywindow.cpp" line="127"/>
         <source>M</source>
-        <translation>M</translation>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daywindow.cpp" line="128"/>
         <source>D</source>
-        <translation>D</translation>
+        <translation>H</translation>
     </message>
 </context>
 <context>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../calendar-client/src/view/graphicsview.cpp" line="716"/>
         <source>New Event</source>
-        <translation>Novo Evento</translation>
+        <translation>Peristiwa Baharu</translation>
     </message>
 </context>
 <context>
@@ -69,7 +69,7 @@
         <location filename="../calendar-client/src/widget/monthWidget/monthscheduleview.cpp" line="243"/>
         <location filename="../calendar-client/src/widget/monthWidget/monthscheduleview.cpp" line="276"/>
         <source>%1 more</source>
-        <translation>%1 mais</translation>
+        <translation>%1 lagi</translation>
     </message>
 </context>
 <context>
@@ -77,12 +77,12 @@
     <message>
         <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="81"/>
         <source>New event</source>
-        <translation>Novo evento</translation>
+        <translation>Peristiwa baharu</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="208"/>
         <source>New Event</source>
-        <translation>Novo Evento</translation>
+        <translation>Peristiwa Baharu</translation>
     </message>
 </context>
 <context>
@@ -90,7 +90,7 @@
     <message>
         <location filename="../calendar-client/src/widget/monthWidget/monthwindow.cpp" line="139"/>
         <source>Y</source>
-        <translation>A</translation>
+        <translation>T</translation>
     </message>
 </context>
 <context>
@@ -98,22 +98,22 @@
     <message>
         <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="265"/>
         <source>Delete</source>
-        <translation>Excluir</translation>
+        <translation>Padam</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="224"/>
         <source>My Event</source>
-        <translation>Evento</translation>
+        <translation>Peristiwa Saya</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="261"/>
         <source>OK</source>
-        <translation>Ok</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="266"/>
         <source>Edit</source>
-        <translation>Editar</translation>
+        <translation>Sunting</translation>
     </message>
 </context>
 <context>
@@ -122,27 +122,27 @@
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="47"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="549"/>
         <source>New Event</source>
-        <translation>Novo Evento</translation>
+        <translation>Peristiwa Baharu</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="59"/>
         <source>Edit Event</source>
-        <translation>Editar Evento</translation>
+        <translation>Sunting Peristiwa</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="158"/>
         <source>End time must be greater than start time</source>
-        <translation>O tempo de término deve ser maior que o tempo de início</translation>
+        <translation>Masa tamat mesti lebih besar dari masa mula</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="160"/>
         <source>OK</source>
-        <translation>Ok</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="771"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="326"/>
@@ -150,203 +150,203 @@
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="686"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="714"/>
         <source>Never</source>
-        <translation>Nunca</translation>
+        <translation>Tidak sesekali</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="327"/>
         <source>At time of event</source>
-        <translation>No momento do evento</translation>
+        <translation>Semua tempoh peristiwa</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="328"/>
         <source>15 minutes before</source>
-        <translation>15 minutos antes</translation>
+        <translation>15 minit sebelum</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="329"/>
         <source>30 minutes before</source>
-        <translation>30 minutos antes</translation>
+        <translation>30 minit sebelum</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="330"/>
         <source>1 hour before</source>
-        <translation>1 hora antes</translation>
+        <translation>1 jam sebelum</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="331"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="351"/>
         <source>1 day before</source>
-        <translation>1 dia antes</translation>
+        <translation>1 hari sebelum</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="332"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="352"/>
         <source>2 days before</source>
-        <translation>2 dias antes</translation>
+        <translation>2 hari sebelum</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="333"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="353"/>
         <source>1 week before</source>
-        <translation>1 semana antes</translation>
+        <translation>1 minggu sebelum</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="350"/>
         <source>On start day (9:00 AM)</source>
-        <translation>No dia de início (9:00 AM)</translation>
+        <translation>Pada hari mula (9:00 AM)</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="414"/>
         <source>New event</source>
-        <translation>Novo evento</translation>
+        <translation>Peristiwa baharu</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="434"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="497"/>
         <source>Type:</source>
-        <translation>Tipo:</translation>
+        <translation>Jenis:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="438"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="534"/>
         <source>Description:</source>
-        <translation>Descrição:</translation>
+        <translation>Keterangan:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="442"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="567"/>
         <source>All Day:</source>
-        <translation>Dia Inteiro:</translation>
+        <translation>Sepanjang Hari:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="446"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="587"/>
         <source>Starts:</source>
-        <translation>Inicia em:</translation>
+        <translation>Mula:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="450"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="619"/>
         <source>Ends:</source>
-        <translation>Termina em:</translation>
+        <translation>Tamat:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="454"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="651"/>
         <source>Remind Me:</source>
-        <translation>Lembre-me:</translation>
+        <translation>Ingatkan Saya:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="458"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="676"/>
         <source>Repeat:</source>
-        <translation>Repetir:</translation>
+        <translation>Ulang:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="462"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="703"/>
         <source>End Repeat:</source>
-        <translation>Termina em:</translation>
+        <translation>Tamat Ulang:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="494"/>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>Jenis</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="511"/>
         <source>Work</source>
-        <translation>Trabalho</translation>
+        <translation>Kerja</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="515"/>
         <source>Life</source>
-        <translation>Vida Pessoal</translation>
+        <translation>Lapang</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="520"/>
         <source>Other</source>
-        <translation>Outro</translation>
+        <translation>Lain-lain</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="537"/>
         <source>Description</source>
-        <translation>Descrição</translation>
+        <translation>Keterangan</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="564"/>
         <source>All Day</source>
-        <translation>Dia Inteiro</translation>
+        <translation>Sepanjang Hari</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="584"/>
         <source>Starts</source>
-        <translation>Inicia em</translation>
+        <translation>Mula</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="616"/>
         <source>Ends</source>
-        <translation>Termina em</translation>
+        <translation>Tamat</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="652"/>
         <source>Remind Me</source>
-        <translation>Lembre-me</translation>
+        <translation>Ingatkan Saya</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="673"/>
         <source>Repeat</source>
-        <translation>Repetir</translation>
+        <translation>Ulang</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="687"/>
         <source>Daily</source>
-        <translation>Diariamente</translation>
+        <translation>Harian</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="688"/>
         <source>Weekdays</source>
-        <translation>Dias úteis</translation>
+        <translation>Hari Bekerja</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="689"/>
         <source>Weekly</source>
-        <translation>Semanalmente</translation>
+        <translation>Mingguan</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="690"/>
         <source>Monthly</source>
-        <translation>Mensalmente</translation>
+        <translation>Bulanan</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="691"/>
         <source>Yearly</source>
-        <translation>Anualmente</translation>
+        <translation>Tahunan</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="704"/>
         <source>End Repeat</source>
-        <translation>Termina em</translation>
+        <translation>Tamat Ulang</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="715"/>
         <source>After</source>
-        <translation>Depois</translation>
+        <translation>Selepas</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="716"/>
         <source>On</source>
-        <translation>Ativo</translation>
+        <translation>Pada</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="735"/>
         <source>time(s)</source>
-        <translation>vez(es)</translation>
+        <translation>kali</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="772"/>
         <source>Save</source>
-        <translation>Salvar</translation>
+        <translation>Simpan</translation>
     </message>
 </context>
 <context>
@@ -465,17 +465,17 @@
     <message>
         <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="690"/>
         <source>Y</source>
-        <translation>A</translation>
+        <translation>T</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="690"/>
         <source>M</source>
-        <translation>M</translation>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="690"/>
         <source>D</source>
-        <translation>D</translation>
+        <translation>H</translation>
     </message>
 </context>
 <context>
@@ -483,17 +483,17 @@
     <message>
         <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="52"/>
         <source>Edit</source>
-        <translation>Editar</translation>
+        <translation>Sunting</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="53"/>
         <source>Delete</source>
-        <translation>Excluir</translation>
+        <translation>Padam</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="241"/>
         <source>All Day</source>
-        <translation>Dia Inteiro</translation>
+        <translation>Sepanjang Hari</translation>
     </message>
 </context>
 <context>
@@ -501,7 +501,7 @@
     <message>
         <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="505"/>
         <source>No search results</source>
-        <translation>Nenhum resultado encontrado</translation>
+        <translation>Tiada keputusan gelintar</translation>
     </message>
 </context>
 <context>
@@ -509,7 +509,7 @@
     <message>
         <location filename="../calendar-client/src/customWidget/scheduleview.cpp" line="338"/>
         <source>ALL DAY</source>
-        <translation>DIA INTEIRO</translation>
+        <translation>SEPANJANG HARI</translation>
     </message>
 </context>
 <context>
@@ -517,12 +517,12 @@
     <message>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="109"/>
         <source>Week</source>
-        <translation>Semana</translation>
+        <translation>Minggu</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="318"/>
         <source>Y</source>
-        <translation>A</translation>
+        <translation>T</translation>
     </message>
 </context>
 <context>
@@ -531,7 +531,7 @@
         <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="138"/>
         <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="144"/>
         <source>All Day</source>
-        <translation>Dia Inteiro</translation>
+        <translation>Sepanjang Hari</translation>
     </message>
 </context>
 <context>
@@ -540,12 +540,12 @@
         <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="473"/>
         <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="476"/>
         <source>All Day</source>
-        <translation>Dia Inteiro</translation>
+        <translation>Sepanjang Hari</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="505"/>
         <source>No event</source>
-        <translation>Nenhum evento</translation>
+        <translation>Tiada peristiwa</translation>
     </message>
 </context>
 <context>
@@ -553,7 +553,7 @@
     <message>
         <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="605"/>
         <source>Y</source>
-        <translation>A</translation>
+        <translation>T</translation>
     </message>
 </context>
 <context>
@@ -561,12 +561,12 @@
     <message>
         <location filename="../calendar-client/src/main.cpp" line="124"/>
         <source>Calendar</source>
-        <translation>Calendário</translation>
+        <translation>Kalendar</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/main.cpp" line="127"/>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>O Calendário é uma ferramenta que permite agendar e visualizar eventos.</translation>
+        <translation>Kalendar ialah sebuah alat untuk melihat tarikh, dan juga satu perancang harian pintar yang dapat menjadualkan semua perkara dalam hidup ini.</translation>
     </message>
 </context>
 <context>
@@ -574,31 +574,31 @@
     <message>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="64"/>
         <source>Calendar</source>
-        <translation>Calendário</translation>
+        <translation>Kalendar</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="304"/>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="310"/>
         <source>Y</source>
-        <translation>A</translation>
+        <translation>T</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="304"/>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="320"/>
         <source>M</source>
-        <translation>M</translation>
+        <translation>B</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="304"/>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="325"/>
         <source>W</source>
-        <translation>S</translation>
+        <translation>M</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="304"/>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="330"/>
         <source>D</source>
-        <translation>D</translation>
+        <translation>H</translation>
     </message>
 </context>
 <context>
@@ -606,7 +606,7 @@
     <message>
         <location filename="../calendar-client/src/customWidget/SchecduleRemindWidget.cpp" line="151"/>
         <source>All Day</source>
-        <translation>Dia Inteiro</translation>
+        <translation>Sepanjang Hari</translation>
     </message>
 </context>
 <context>
@@ -614,22 +614,22 @@
     <message>
         <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="55"/>
         <source>Edit</source>
-        <translation>Editar</translation>
+        <translation>Sunting</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="56"/>
         <source>Delete</source>
-        <translation>Excluir</translation>
+        <translation>Padam</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="57"/>
         <source>New event</source>
-        <translation>Novo evento</translation>
+        <translation>Peristiwa baharu</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="673"/>
         <source>New Event</source>
-        <translation>Novo Evento</translation>
+        <translation>Peristiwa Baharu</translation>
     </message>
 </context>
 <context>
@@ -638,7 +638,7 @@
         <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="601"/>
         <source>Today</source>
         <comment>Return</comment>
-        <translation>Hoje</translation>
+        <translation>Hari ini</translation>
     </message>
 </context>
 <context>
@@ -649,7 +649,7 @@
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="315"/>
         <source>Today</source>
         <comment>Return Today</comment>
-        <translation>Hoje</translation>
+        <translation>Hari ini</translation>
     </message>
 </context>
 <context>
@@ -657,37 +657,37 @@
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="31"/>
         <source>Help</source>
-        <translation>Ajuda</translation>
+        <translation>Bantuan</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="32"/>
         <source>Delete event</source>
-        <translation>Excluir evento</translation>
+        <translation>Padam peristiwa</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="35"/>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation>Salin</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="36"/>
         <source>Cut</source>
-        <translation>Recortar</translation>
+        <translation>Potong</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="37"/>
         <source>Paste</source>
-        <translation>Colar</translation>
+        <translation>Tampal</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="40"/>
         <source>Delete</source>
-        <translation>Excluir</translation>
+        <translation>Padam</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="41"/>
         <source>Select all</source>
-        <translation>Selecionar Tudo</translation>
+        <translation>Pilih semua</translation>
     </message>
 </context>
 <context>
@@ -695,7 +695,7 @@
     <message>
         <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="899"/>
         <source>Y</source>
-        <translation>A</translation>
+        <translation>T</translation>
     </message>
 </context>
 <context>
@@ -711,7 +711,7 @@
         <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="599"/>
         <source>Today</source>
         <comment>Today</comment>
-        <translation>Hoje</translation>
+        <translation>Hari ini</translation>
     </message>
 </context>
 </TS>

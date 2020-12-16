@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ca" version="2.1">
 <context>
     <name>JobRemindManager</name>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="89"/>
         <source>One day before start</source>
-        <translation>Einen Tag vor Beginn</translation>
+        <translation>Un dia abans de l&apos;inici</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="89"/>
@@ -12,40 +12,40 @@
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="96"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="98"/>
         <source>Close</source>
-        <translation>Schließen</translation>
+        <translation>Tanca</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="91"/>
         <source>Remind me tomorrow</source>
-        <translation>Erinnere mich morgen</translation>
+        <translation>Recorda-m&apos;ho demà</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="96"/>
         <source>Remind me later</source>
-        <translation>Erinnere mich später</translation>
+        <translation>Recorda-m&apos;ho més tard</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="101"/>
         <source>Schedule Reminder</source>
-        <translation>Terminerinnerung</translation>
+        <translation>Programació del recordatori</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="191"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="200"/>
         <source>%1 to %2</source>
-        <translation>%1 bis %2</translation>
+        <translation>de %1 a %2</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="272"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="283"/>
         <source>Today</source>
-        <translation>Heute</translation>
+        <translation>Avui</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="275"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="286"/>
         <source>Tomorrow</source>
-        <translation>Morgen</translation>
+        <translation>Demà</translation>
     </message>
 </context>
 </TS>

@@ -30,20 +30,20 @@
         <translation>Herinnering inplannen</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="188"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="194"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="191"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="200"/>
         <source>%1 to %2</source>
         <translation>van %1 tot %2</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="261"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="268"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="272"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="283"/>
         <source>Today</source>
         <translation>Vandaag</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="263"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="270"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="275"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="286"/>
         <source>Tomorrow</source>
         <translation>Morgen</translation>
     </message>

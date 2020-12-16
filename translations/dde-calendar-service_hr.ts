@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="hr" version="2.1">
 <context>
     <name>JobRemindManager</name>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="89"/>
         <source>One day before start</source>
-        <translation>Einen Tag vor Beginn</translation>
+        <translation>Dan prije početka</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="89"/>
@@ -12,40 +12,40 @@
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="96"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="98"/>
         <source>Close</source>
-        <translation>Schließen</translation>
+        <translation>Zatvori</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="91"/>
         <source>Remind me tomorrow</source>
-        <translation>Erinnere mich morgen</translation>
+        <translation>Podsjeti me sutra</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="96"/>
         <source>Remind me later</source>
-        <translation>Erinnere mich später</translation>
+        <translation>Podsjeti me kasnije</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="101"/>
         <source>Schedule Reminder</source>
-        <translation>Terminerinnerung</translation>
+        <translation>Podsjetnik rasporeda</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="191"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="200"/>
         <source>%1 to %2</source>
-        <translation>%1 bis %2</translation>
+        <translation>%1 do %2</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="272"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="283"/>
         <source>Today</source>
-        <translation>Heute</translation>
+        <translation>Danas</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="275"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="286"/>
         <source>Tomorrow</source>
-        <translation>Morgen</translation>
+        <translation>Sutra</translation>
     </message>
 </context>
 </TS>
