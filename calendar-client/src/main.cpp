@@ -126,7 +126,12 @@ int main(int argc, char *argv[])
     app->setProductIcon(t_icon);
     app->setApplicationDescription(QApplication::translate("CalendarWindow", "Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. "));
     app->setApplicationAcknowledgementPage("https://www.deepin.org/acknowledgments/dde-calendar");
-
+    //命令行参数
+    QCommandLineParser _commandLine;       //建立命令行解析
+    _commandLine.addHelpOption();          //增加-h/-help解析命令
+    _commandLine.addVersionOption();       //增加-v 解析命令
+    _commandLine.setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
+    _commandLine.process(*app);
     DGuiApplicationHelper::setSingleInstanceInterval(-1);
 
     if (!DGuiApplicationHelper::instance()->setSingleInstance(
