@@ -69,23 +69,23 @@ typedef struct _tagJob {
     qint64 ID;
     qint64 Type;
     qint64 RecurID;
-    QString Title;
-    QString Description;
+    QString Title {};
+    QString Description {};
     bool AllDay;
     QDateTime Start;
     QDateTime End;
-    QString RRule;
-    QString Remind;
-    QString Ignore;
-    QString Title_pinyin;
+    QString RRule {};
+    QString Remind {};
+    QString Ignore {};
+    QString Title_pinyin {};
     QDateTime RemidTime; //提醒时间
     qint32 RemindLaterCount; //执行稍后提醒次数
 } Job;
 
 typedef struct JobArr {
     QDate date;
-    QList<Job> jobs;
-    QList<Job> extends;
+    QList<Job> jobs {};
+    QList<Job> extends {};
 } stJobArr;
 
 typedef struct JobTime {
@@ -113,7 +113,7 @@ typedef struct RRuleOptions {
     //初始化
     RepeatType rpeat {RepeatType::RepeatNone}; //重复规则 0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
     RepeatOverCondition type {RepeatOverCondition::RepeatOverNever}; //结束重复 0 永不 1  多少次结束  2 结束日期
-    int tcount; //多少次结束只有当type=1才会生效
+    int tcount {}; //多少次结束只有当type=1才会生效
     QDateTime overdate; //type=2时才有效
 } stRRuleOptions;
 

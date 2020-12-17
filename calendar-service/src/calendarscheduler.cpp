@@ -227,7 +227,6 @@ QString CalendarScheduler::QueryJobs(const QString &params)
     QList<Job> joblist = m_database->GetAllOriginJobs(strKey);
     QList<stJobArr> jobArrList = GetJobsBetween(starttime, endtime, joblist, strKey);
     QString strJson = JobArrListToJsonStr(jobArrList);
-    qDebug() << strJson;
     return strJson;
 }
 
@@ -436,7 +435,7 @@ void CalendarScheduler::FillFestivalJobs(const QDateTime &start, const QDateTime
     }
 
     foreach (stDayFestival day, festivaldays) {
-        int index = start.daysTo(day.date);
+        int index = static_cast<int>(start.daysTo(day.date));
         if (index >= 0 && index < listjob.size()) {
             foreach (QString festival, day.Festivals) {
                 if (!festival.isEmpty()) {
@@ -532,7 +531,7 @@ QDateTime CalendarScheduler::GetNextJobStartTimeByRule(const stRRuleOptions &opt
         next = datetime.addDays(1);
         break;
     case RepeatWorkDay:
-        dayofweek = datetime.date().dayOfWeek();
+        dayofweek = static_cast<quint8>(datetime.date().dayOfWeek());
         //计算当前为周几如果是周五或者是周末需要跳过，否则直接下一天
         //需要跳过因为工作日不包括周末
         if (dayofweek >= Qt::Friday) {

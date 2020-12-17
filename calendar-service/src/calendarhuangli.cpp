@@ -34,7 +34,7 @@ CalendarHuangLi::CalendarHuangLi(QObject *parent)
 //获取指定公历月的假日信息
 QString CalendarHuangLi::GetFestivalMonth(quint32 year, quint32 month)
 {
-    return m_database->QueryFestivalList(year, month);
+    return m_database->QueryFestivalList(year, static_cast<quint8>(month));
 }
 
 QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
@@ -67,8 +67,8 @@ QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
 QString CalendarHuangLi::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
 {
     CaHuangLiMonthInfo monthinfo;
-    SolarMonthInfo solarmonth = GetSolarMonthCalendar(year, month, fill);
-    LunarMonthInfo lunarmonth = GetLunarMonthCalendar(year, month, fill);
+    SolarMonthInfo solarmonth = GetSolarMonthCalendar(static_cast<qint32>(year), static_cast<qint32>(month), fill);
+    LunarMonthInfo lunarmonth = GetLunarMonthCalendar(static_cast<qint32>(year), static_cast<qint32>(month), fill);
     monthinfo.mFirstDayWeek = lunarmonth.FirstDayWeek;
     monthinfo.mDays = lunarmonth.Days;
     QList<stHuangLi> hllist = m_database->QueryHuangLiByDays(solarmonth.Datas);

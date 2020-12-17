@@ -27,15 +27,15 @@
 
 // MonthInfo 保存农历信息
 typedef struct _lunarInfo {
-    int LunarMonthName; // 农历月名
-    int LunarMonthDays; // 本月天数
+    int LunarMonthName = 0; // 农历月名
+    int LunarMonthDays = 0; // 本月天数
     double ShuoJD; // 本月朔日时间 北京时间 儒略日
     QDateTime ShuoTime; // 本月朔日时间 北京时间
     bool IsLeap = false; // 是否为闰月
-    int LunarYear; // 农历年
-    int LunarDay; // 农历日
-    int MonthZhi; // 农历日所在的月的地支
-    int SolarTerm; // 0~23 二十四节气 ，-1 非节气
+    int LunarYear = 0; // 农历年
+    int LunarDay = 0; // 农历日
+    int MonthZhi = 0; // 农历日所在的月的地支
+    int SolarTerm = 0; // 0~23 二十四节气 ，-1 非节气
 } lunarInfo;
 
 typedef struct _day {
@@ -49,36 +49,36 @@ typedef struct _LunarDayInfo {
     {
         LunarLeapMonth = 0;
     }
-    QString GanZhiYear; // 农历年的干支
-    QString GanZhiMonth; // 农历月的干支
-    QString GanZhiDay; // 农历日的干支
-    QString LunarMonthName; // 农历月名
-    QString LunarDayName; // 农历日名
+    QString GanZhiYear {}; // 农历年的干支
+    QString GanZhiMonth {}; // 农历月的干支
+    QString GanZhiDay {}; // 农历日的干支
+    QString LunarMonthName {}; // 农历月名
+    QString LunarDayName {}; // 农历日名
     int32_t LunarLeapMonth; // 未使用
-    QString Zodiac; // 农历年的生肖
-    QString Term; // 农历节气
-    QString SolarFestival; // 公历节日
-    QString LunarFestival; // 农历节日
-    int32_t Worktime; // 未使用
+    QString Zodiac {}; // 农历年的生肖
+    QString Term {}; // 农历节气
+    QString SolarFestival {}; // 公历节日
+    QString LunarFestival {}; // 农历节日
+    int32_t Worktime = 0; // 未使用
 } stLunarDayInfo;
 
 //农历
 typedef struct _LunarMonthInfo {
-    qint32 FirstDayWeek;
-    qint32 Days;
-    QList<stLunarDayInfo> Datas;
+    qint32 FirstDayWeek = 0;
+    qint32 Days = 0;
+    QList<stLunarDayInfo> Datas {};
 } LunarMonthInfo;
 
 //阳历 公历
 typedef struct _SolarMonthInfo {
-    qint32 FirstDayWeek;
-    qint32 Days;
-    QList<stDay> Datas;
+    qint32 FirstDayWeek = 0;
+    qint32 Days = 0;
+    QList<stDay> Datas {};
 } SolarMonthInfo;
 
 typedef struct DayFestival {
     QDateTime date;
-    QStringList Festivals;
+    QStringList Festivals {};
 } stDayFestival;
 
 // 十二月名
@@ -168,8 +168,8 @@ enum solarTerms {
 };
 
 typedef struct _Festival {
-    QString name;
-    int startYear;
+    QString name {};
+    int startYear = 0;
 } stSolarFestival;
 
 static QMap<int, QString> solarFestivals = {

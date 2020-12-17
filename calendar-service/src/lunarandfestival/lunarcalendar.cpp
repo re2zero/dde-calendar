@@ -58,7 +58,7 @@ lunarInfo LunarCalendar::SolarDayToLunarDay(qint32 month, qint32 day)
     dayinfo.MonthZhi = monthZhi;
     // 求农历年、月、日
     foreach (lunarInfo lm, Months) {
-        int dd = deltaDays(lm.ShuoTime, dt) + 1;
+        int dd = static_cast<int>(deltaDays(lm.ShuoTime, dt)) + 1;
         if (1 <= dd && dd <= lm.LunarMonthDays) {
             dayinfo.LunarYear = lm.LunarYear;
             dayinfo.LunarMonthName = lm.LunarMonthName;
@@ -120,7 +120,7 @@ void LunarCalendar::fillMonths()
         info.ShuoTime = GetDateTimeFromJulianDay(info.ShuoJD);
         double nextShuoJD = NewMoonJDs[i + 1];
         QDateTime nextShuoTime = GetDateTimeFromJulianDay(nextShuoJD);
-        info.LunarMonthDays = deltaDays(info.ShuoTime, nextShuoTime);
+        info.LunarMonthDays = static_cast<int>(deltaDays(info.ShuoTime, nextShuoTime));
         Months.append(info);
         yuejian++;
     }

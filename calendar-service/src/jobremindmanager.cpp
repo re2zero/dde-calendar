@@ -214,7 +214,7 @@ void JobRemindManager::RemindJobLater(const Job &job)
     qint64 duration = 0;
     GetRemindLaterDuration(job.RemindLaterCount, duration);
     QTimer *timer = new QTimer(this);
-    timer->setInterval(duration);
+    timer->setInterval(static_cast<int>(duration));
     m_remindlatertimersmap.insert(timer, job);
     BindToRemindWorkTimeOut(timer);
     timer->start();
@@ -260,6 +260,7 @@ void JobRemindManager::BindToRemindWorkTimeOut(QTimer *timer)
 
 QString JobRemindManager::GetBodyTimePart(const QDateTime &nowtime, const QDateTime &jobtime, bool allday, bool isstart)
 {
+    Q_UNUSED(isstart);
     //ToDo 需确认规则，需根据isstart确认是否为开始时间单独处理
     QString strmsg;
     qint64 diff = nowtime.daysTo(jobtime); //jobtime只可能大于等于当前remind任务执行的当前时间
@@ -330,7 +331,7 @@ void JobRemindManager::UpdateRemindJobs(const QList<Job> &jobs)
         qDebug() << __FUNCTION__ << "RemindTime=" << jb.RemidTime;
         qint64 msec = QDateTime::currentDateTime().msecsTo(jb.RemidTime);
         QTimer *timer = new QTimer(this);
-        timer->setInterval(msec);
+        timer->setInterval(static_cast<int>(msec));
         m_timejobmap.insert(timer, jb);
         BindToRemindWorkTimeOut(timer);
         timer->start();
@@ -363,10 +364,10 @@ void JobRemindManager::NotifyClosed(quint32 id, quint32 reason)
     qDebug() << __FUNCTION__ << QString("*********------id=%1 reason=%2").arg(id).arg(reason);
 
     //点击消息提示框reason==2激活日历窗口，否则直接返回
-    if (reason != notifyCloseReasonDismissedByUser) {
+    if (static_cast<int>(reason) != notifyCloseReasonDismissedByUser) {
         return;
     }
-    auto it = m_notifymap.find(id);
+    auto it = m_notifymap.find(static_cast<int>(id));
     if (it != m_notifymap.end()) {
         Job job = it.value();
         CallUiOpenSchedule(job);
@@ -382,7 +383,7 @@ void JobRemindManager::NotifyClosed(quint32 id, quint32 reason)
 void JobRemindManager::ActionInvoked(quint32 id, const QString &actionKey)
 {
     qDebug() << __FUNCTION__ << QString("*********+++++++++id=%1 actionKey=%2").arg(id).arg(actionKey);
-    auto it = m_notifymap.find(id);
+    auto it = m_notifymap.find(static_cast<int>(id));
     if (it != m_notifymap.end()) {
         Job job = it.value();
         if (0 == actionKey.compare(notifyActKeyRemindLater)) {

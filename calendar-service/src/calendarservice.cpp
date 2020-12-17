@@ -78,6 +78,7 @@ qint64 CalendarService::CreateJob(const QString &jobInfo)
 
 qint64 CalendarService::CreateType(const QString &typeInfo)
 {
+    Q_UNUSED(typeInfo);
     return 0;
 }
 
@@ -110,9 +111,9 @@ QString CalendarService::GetJob(qint64 id)
  */
 QString CalendarService::GetJobs(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay)
 {
-    QDate startdate(startYear, startMonth, startDay);
+    QDate startdate(static_cast<int>(startYear), static_cast<int>(startMonth), static_cast<int>(startDay));
     QDateTime start(startdate);
-    QDate enddate(endYear, endMonth, endDay);
+    QDate enddate(static_cast<int>(endYear), static_cast<int>(endMonth), static_cast<int>(endDay));
     QDateTime end(enddate);
     return m_scheduler->GetJobs(start, end);
 }
