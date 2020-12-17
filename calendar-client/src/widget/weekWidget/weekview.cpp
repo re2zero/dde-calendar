@@ -200,6 +200,10 @@ bool CWeekView::eventFilter(QObject *o, QEvent *e)
 {
     QWidget *cell = qobject_cast<QWidget *>(o);
     if (cell && m_cellList.contains(cell)) {
+        const int pos = m_cellList.indexOf(cell);
+        //获取每个cell的时间,如果小于1900年则过滤显示和点击操作
+        if (m_days[pos].year() < DDECalendar::QueryEarliestYear)
+            return false;
         if (e->type() == QEvent::Paint) {
             paintCell(cell);
         } else if (e->type() == QEvent::MouseButtonPress) {
