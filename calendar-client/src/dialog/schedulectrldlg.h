@@ -22,6 +22,7 @@
 #include <DDialog>
 #include <DPushButton>
 #include <DSuggestButton>
+#include <DFrame>
 
 #include <QObject>
 #include <QLabel>
@@ -55,7 +56,7 @@ private:
      * @param widget    需要设置的widget
      * @param textColor     显示颜色
      */
-    void setPaletteTextColor(QWidget *widget,QColor textColor);
+    void setPaletteTextColor(QWidget *widget, QColor textColor);
 protected:
     void changeEvent(QEvent *event) override;
 private slots:
@@ -70,6 +71,7 @@ private:
     QVector<QPushButton *> m_buttonlist;
     QVBoxLayout *m_mainBoxLayout = nullptr;
     QHBoxLayout *m_btBoxLayout = nullptr;
+    DFrame *gwi = nullptr;
     QFont labelF;
     QFont labelT;
     QVector<QString> str_btName;

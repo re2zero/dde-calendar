@@ -122,14 +122,17 @@ void CMyScheduleView::setLabelTextColor(const int type)
     //时间显示颜色
     QColor timeColor;
     if (type == 2) {
-        titleColor = "#C0C6D4";
+        titleColor = "#FFFFFF";
+        titleColor.setAlphaF(0.9);
         scheduleTitleColor = "#FFFFFF";
+        scheduleTitleColor.setAlphaF(0.8);
         timeColor = "#FFFFFF";
         timeColor.setAlphaF(0.7);
     } else {
-        titleColor = "#001A2E";
+        titleColor = "#000000";
+        titleColor.setAlphaF(0.9);
         scheduleTitleColor = "#000000";
-        scheduleTitleColor.setAlphaF(0.9);
+        scheduleTitleColor.setAlphaF(0.7);
         timeColor = "#000000";
         timeColor.setAlphaF(0.7);
     }

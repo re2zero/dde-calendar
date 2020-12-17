@@ -36,6 +36,7 @@ CScheduleCtrlDlg::CScheduleCtrlDlg(QWidget *parent)
     setContentsMargins(0, 0, 0, 0);
     initUI();
     initConnection();
+    setTheMe(DGuiApplicationHelper::instance()->themeType());
     resize(380, 260);
     setFocusPolicy(Qt::ClickFocus);
 }
@@ -46,7 +47,7 @@ void CScheduleCtrlDlg::initUI()
     setOnButtonClickedClose(false);
     QIcon t_icon(CDynamicIcon::getInstance()->getPixmap());// = QIcon::fromTheme("dde-calendar");
     setIcon(t_icon);
-    m_Title = new QLabel(this);
+    m_Title = new QLabel();
     m_Title->setFixedHeight(48);
     m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
@@ -59,17 +60,17 @@ void CScheduleCtrlDlg::initUI()
     m_mainBoxLayout->setMargin(0);
     m_mainBoxLayout->setSpacing(0);
 
-    m_firstLabel = new QLabel(this);
+    m_firstLabel = new QLabel();
     m_firstLabel->setAlignment(Qt::AlignCenter);
     m_firstLabel->setFixedWidth(350);
     m_firstLabel->setWordWrap(true);
-    labelF.setWeight(QFont::Medium);
+    labelF.setWeight(QFont::DemiBold);
     DFontSizeManager::instance()->bind(m_firstLabel, DFontSizeManager::T6);
     m_firstLabel->setForegroundRole(DPalette::WindowText);
     m_firstLabel->setFont(labelF);
     m_mainBoxLayout->addWidget(m_firstLabel);
 
-    m_seconLabel = new QLabel(this);
+    m_seconLabel = new QLabel();
     m_seconLabel->setFixedWidth(350);
     m_seconLabel->setAlignment(Qt::AlignCenter);
     labelTitle.setWeight(QFont::Bold);
@@ -81,7 +82,7 @@ void CScheduleCtrlDlg::initUI()
     m_seconLabel->setWordWrap(true);
     m_mainBoxLayout->addSpacing(3);
     m_mainBoxLayout->addWidget(m_seconLabel);
-    DFrame *gwi = new DFrame(this);
+    gwi = new DFrame(this);
     gwi->setContentsMargins(0, 0, 0, 0);
     gwi->setLayout(m_mainBoxLayout);
     DPalette anipa = gwi->palette();
@@ -112,6 +113,7 @@ void CScheduleCtrlDlg::setTheMe(const int type)
     QColor contentColor;
     if (type == 2) {
         titleColor = "#FFFFFF";
+        titleColor.setAlphaF(0.9);
         contentColor = "#FFFFFF";
         contentColor.setAlphaF(0.7);
     } else {
@@ -157,6 +159,7 @@ void CScheduleCtrlDlg::changeEvent(QEvent *event)
         }
     }
     setFixedHeight(36 + 48 + height_firstLabel + height_seconLabel + 30);
+    gwi->setFixedHeight(height_firstLabel + height_seconLabel);
 }
 
 void CScheduleCtrlDlg::buttonJudge(int id)
