@@ -18,18 +18,20 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifndef TEST_SCHEDULERDATABASE_H
+#define TEST_SCHEDULERDATABASE_H
+
+#include "dbmanager/schedulerdatabase.h"
 #include "gtest/gtest.h"
-#include <QDebug>
-#include <QCoreApplication>
+#include <QObject>
 
-int main(int argc, char **argv) {
-    qDebug() << "start libdeepin-font-manager test cases ..............";
+class test_schedulerdatabase : public QObject, public::testing::Test
+{
+public:
+    test_schedulerdatabase();
+    ~test_schedulerdatabase();
+protected:
+    SchedulerDatabase *sDb = nullptr;
+};
 
-    qputenv("QT_QPA_PLATFORM", "offscreen");
-    QCoreApplication application(argc, argv);
-
-    ::testing::InitGoogleTest(&argc, argv);
-    int ret = RUN_ALL_TESTS();
-    qDebug() << "end libdeepin-font-manager test cases ..............";
-    return ret;
-}
+#endif // TEST_SCHEDULERDATABASE_H

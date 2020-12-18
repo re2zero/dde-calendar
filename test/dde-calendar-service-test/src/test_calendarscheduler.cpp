@@ -18,18 +18,19 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "gtest/gtest.h"
+#include "test_calendarscheduler.h"
+#include "../third-party_stub/stub.h"
+#include <QDBusConnection>
+#include <QProcess>
+#include <QThread>
 #include <QDebug>
-#include <QCoreApplication>
 
-int main(int argc, char **argv) {
-    qDebug() << "start libdeepin-font-manager test cases ..............";
+test_calendarscheduler::test_calendarscheduler()
+{
+    calScheduler = new CalendarScheduler();
+}
 
-    qputenv("QT_QPA_PLATFORM", "offscreen");
-    QCoreApplication application(argc, argv);
-
-    ::testing::InitGoogleTest(&argc, argv);
-    int ret = RUN_ALL_TESTS();
-    qDebug() << "end libdeepin-font-manager test cases ..............";
-    return ret;
+test_calendarscheduler::~test_calendarscheduler()
+{
+    delete calScheduler;
 }

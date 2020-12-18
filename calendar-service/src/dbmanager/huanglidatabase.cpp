@@ -28,14 +28,18 @@
 #include <QJsonObject>
 
 HuangLiDataBase::HuangLiDataBase(QObject *parent)
-    : QObject(parent)
+    : QObject(parent), dbpath("/usr/share/dde-calendar/data/huangli.db")
 {
-    //黄历数据库路径
-    QString dbpath = "/usr/share/dde-calendar/data/huangli.db";
+    //黄历数据库路径 "/usr/share/dde-calendar/data/huangli.db"
+    OpenHuangliDatabase(dbpath);
+    Q_ASSERT(m_database.isOpen());
+}
+
+bool HuangLiDataBase::OpenHuangliDatabase(const QString &dbpath)
+{
     m_database = QSqlDatabase::addDatabase("QSQLITE");
     m_database.setDatabaseName(dbpath);
-    m_database.open();
-    Q_ASSERT(m_database.isOpen());
+    return m_database.open();
 }
 
 QString HuangLiDataBase::QueryFestivalList(quint32 year, quint8 month)

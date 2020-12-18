@@ -22,31 +22,26 @@
 
 test_calendarservice::test_calendarservice()
 {
-
+    //service = new CalendarService();
 }
 
-void stub_Handle()
+test_calendarservice::~test_calendarservice()
 {
-
+    delete service;
 }
 
-//QString CalendarService::GetFestivalMonth(quint32 year, quint32 month)
-TEST_F(test_calendarservice, GetFestivalMonth)
-{
-//    Stub stub;
-//    stub.set(ADDR(CalendarService, GetFestivalMonth), stub_Handle);
-//    QString festivalMonth = service->GetFestivalMonth(2020, 10);
-//    //qInfo() << festivalMonth;
-//    assert(1==1);
-//    delete service;
-    qInfo() << "festivalMonth++++++++++++++++++++++++++";
-}
-
-////QString CalendarService::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
-//TEST_F(test_calendarservice, GetHuangLiDay)
+////QString CalendarService::GetFestivalMonth(quint32 year, quint32 month)
+//TEST_F(test_calendarservice, GetFestivalMonth)
 //{
-//    CalendarService service;
-//    QString huangLiDay = service.GetHuangLiDay(2020, 10, 7);
-//    qInfo() << huangLiDay;
+//    QString festivalMonth = service->GetFestivalMonth(2020, 10);
+//    qInfo() << festivalMonth;
+//    assert(1==1);
+//}
+
+////QString CalendarService::GetType(qint64 id)
+//TEST_F(test_calendarservice, GetType)
+//{
+//    QString Type = service->GetType(1);
+//    qInfo() << Type;
 //    assert(1==1);
 //}

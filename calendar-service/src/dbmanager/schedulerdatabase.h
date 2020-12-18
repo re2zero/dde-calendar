@@ -21,6 +21,7 @@
 #ifndef SCHEDULERDATABASE_H
 #define SCHEDULERDATABASE_H
 #include "src/commondatastruct.h"
+#include "gtest/gtest_prod.h"
 
 #include <QObject>
 #include <QSqlDatabase>
@@ -45,6 +46,7 @@ public:
 
 private:
     void CreateTables();
+    void OpenSchedulerDatabase(const QString &dbpath);
 
 signals:
 
@@ -52,6 +54,7 @@ public slots:
 
 private:
     QSqlDatabase m_database;
+    FRIEND_TEST(test_schedulerdatabase, dbOparetion);
 };
 
 #endif // SCHEDULERDATABASE_H

@@ -18,18 +18,21 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "gtest/gtest.h"
-#include <QDebug>
-#include <QCoreApplication>
+#include "test_scheduledatamanage.h"
 
-int main(int argc, char **argv) {
-    qDebug() << "start libdeepin-font-manager test cases ..............";
+test_scheduledatamanage::test_scheduledatamanage()
+{
+    datamanage = new CScheduleDataManage();
+}
 
-    qputenv("QT_QPA_PLATFORM", "offscreen");
-    QCoreApplication application(argc, argv);
+test_scheduledatamanage::~test_scheduledatamanage()
+{
+    delete datamanage;
+}
 
-    ::testing::InitGoogleTest(&argc, argv);
-    int ret = RUN_ALL_TESTS();
-    qDebug() << "end libdeepin-font-manager test cases ..............";
-    return ret;
+//void CScheduleDataManage::setTheMe(int type)
+TEST_F(test_scheduledatamanage, setTheMe)
+{
+    datamanage->setTheMe();
+    assert(1 == 1);
 }

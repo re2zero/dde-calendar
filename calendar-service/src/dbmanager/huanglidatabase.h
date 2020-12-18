@@ -41,6 +41,9 @@ public slots:
 
 private:
     QSqlDatabase m_database;
+    QString dbpath;
+
+    bool OpenHuangliDatabase(const QString &dbpath);
 };
 
 #endif // HUANGLIDATABASE_H

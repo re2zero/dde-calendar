@@ -22,7 +22,6 @@
 #define TEST_CALENDARSERVICE_H
 
 #include "calendarservice.h"
-#include "../third-party_stub/stub.h"
 #include "gtest/gtest.h"
 #include <QObject>
 
@@ -30,8 +29,9 @@ class test_calendarservice : public QObject, public::testing::Test
 {
 public:
     test_calendarservice();
+    ~test_calendarservice();
 protected:
-    CalendarService *service;
+    CalendarService *service = nullptr;
 };
 
 #endif // TEST_CALENDARSERVICE_H

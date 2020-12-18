@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.7)
 #common resource names
 project(dde-calendar-client-test)
 
+ADD_COMPILE_OPTIONS(-fno-access-control)
+
 set(APP_CLIENT_DIR "${CMAKE_SOURCE_DIR}/calendar-client")
 set(APP_RES_DIR "${APP_CLIENT_DIR}/assets")
 set(APP_BIN_NAME "dde-calendar-test")
@@ -68,9 +70,15 @@ target_link_libraries(${APP_BIN_NAME}
 
 # 设置添加gocv相关信息的输出
 set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
-ADD_COMPILE_OPTIONS(-fno-access-control)
+
 
 ##------------------------------ 创建'make client test'指令---------------------------------------
+
+add_custom_command(TARGET ${APP_BIN_NAME} PRE_LINK
+    COMMAND echo " =================== SERVICE START ==================== "
+    #COMMAND ls ${CMAKE_BINARY_DIR}/calendar-service/
+    #COMMAND ${CMAKE_BINARY_DIR}/calendar-service/dde-calendar-service &
+    )
 
 add_custom_command(TARGET ${APP_BIN_NAME} POST_BUILD
     COMMAND echo " =================== CREAT LCOV REPROT BEGIN ==================== "

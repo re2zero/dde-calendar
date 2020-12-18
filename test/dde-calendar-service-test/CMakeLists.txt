@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 project(dde-calendar-service-test)
 
+ADD_COMPILE_OPTIONS(-fno-access-control)
+
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -45,6 +47,10 @@ foreach(subdir ${TEST_SRC})
     include_directories(${subdir})
 endforeach()
 
+set(HL_DATABASE_DIR ${APP_SERVICE_RES_DIR}/data/huangli.db)
+set(SD_DATABASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scheduler.db)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in config.h @ONLY)
+
 file(GLOB_RECURSE Calendar_Service_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 add_executable(${APP_BIN_NAME} ${Calendar_Service_TEST_SRC} ${CALENDARSERVICE_SRCS})
@@ -59,7 +65,7 @@ target_link_libraries(${APP_BIN_NAME}
 
 # 设置添加gocv相关信息的输出
 set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
-ADD_COMPILE_OPTIONS(-fno-access-control)
+
 ##------------------------------ 创建'make server test'指令---------------------------------------
 
 add_custom_command(TARGET ${APP_BIN_NAME} POST_BUILD
