@@ -50,7 +50,7 @@ public:
     //更新全天和非全天高度
     void updateHigh();
     //设置当前时间
-    void setCurrendDateTime(const QDateTime &currentDate) override;
+    void setCurrentDateTime(const QDateTime &currentDate) override;
     //设置选择时间年信息显示
     void setYearData() override;
     //更新显示时间

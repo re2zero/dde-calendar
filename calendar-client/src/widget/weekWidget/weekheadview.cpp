@@ -369,7 +369,6 @@ void CWeekHeadView::paintCell(QWidget *cell)
             } else {
                 painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
             }
-            //      CaLunarDayInfo dayInfo = getCaLunarDayInfo(pos);
         }
     }
     painter.restore();

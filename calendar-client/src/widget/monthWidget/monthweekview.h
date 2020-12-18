@@ -39,6 +39,8 @@ public:
     void setFirstDay(const Qt::DayOfWeek weekday);
     void setTheMe(int type = 0);
     void updateWeek();
+    //设置当前时间
+    void setCurrentDate(const QDate &currentDate);
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
@@ -46,7 +48,8 @@ private:
     QColor                      m_backgroudColor;
     QVector<WeekRect *>         m_weekRect;
     int                         m_radius = 8;
-    Qt::DayOfWeek               m_firstWeek;
+    Qt::DayOfWeek               m_firstWeek{Qt::Sunday};
+    Qt::DayOfWeek               m_currentWeek{Qt::Monday};
 };
 
 

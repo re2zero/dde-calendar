@@ -47,10 +47,12 @@ public:
     void setLunarVisible(bool state);
     //根据系统主题类型设置颜色
     void setTheMe(int type = 0);
-
+    //设置年份显示
     void setYearData() override;
     //更新显示时间
     void updateShowDate(const bool isUpdateBar = true) override;
+    //设置当前时间
+    void setCurrentDateTime(const QDateTime &currentDate) override;
     //更新日程显示
     void updateShowSchedule() override;
     //更新显示农历信息

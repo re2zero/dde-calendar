@@ -69,12 +69,29 @@ void CMonthWeekView::setTheMe(int type)
 void CMonthWeekView::updateWeek()
 {
     Qt::DayOfWeek _setWeek;
+    bool _showLine{false};
     for (int i = 0; i < m_weekRect.size(); ++i) {
         int weekNum = (m_firstWeek + i) % 7;
         _setWeek = static_cast<Qt::DayOfWeek>(weekNum == 0 ? 7 : weekNum);
-        m_weekRect.at(i)->setWeek(_setWeek);
+        //如果为当前时间所在周则绘制横线
+        if (_setWeek == m_currentWeek) {
+            _showLine = true;
+        } else {
+            _showLine = false;
+        }
+        m_weekRect.at(i)->setWeek(_setWeek, _showLine);
     }
     update();
+}
+
+/**
+ * @brief CMonthWeekView::setCurrentDate        设置当前时间,获取当前时间所在周
+ * @param currentDate
+ */
+void CMonthWeekView::setCurrentDate(const QDate &currentDate)
+{
+    m_currentWeek = static_cast<Qt::DayOfWeek>(currentDate.dayOfWeek());
+    updateWeek();
 }
 
 void CMonthWeekView::resizeEvent(QResizeEvent *event)
@@ -146,7 +163,7 @@ void WeekRect::paintRect(QPainter &painter)
         painter.save();
         painter.setPen(Qt::NoPen);
         painter.setBrush(m_activeColor);
-        painter.drawRect(QRectF(0, m_rectF.height() - m_lineHeight, m_rectF.width(), m_lineHeight));
+        painter.drawRect(QRectF(m_rectF.x(), m_rectF.height() - m_lineHeight, m_rectF.width(), m_lineHeight));
         painter.restore();
     }
 

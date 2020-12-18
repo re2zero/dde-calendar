@@ -121,9 +121,11 @@ void Calendarmainwindow::slotCurrentDateUpdate()
     if (_currentDate.date() != CDynamicIcon::getInstance()->getDate()) {
         CDynamicIcon::getInstance()->setDate(QDate::currentDate());
         CDynamicIcon::getInstance()->setIcon();
+        //更新月视图当前周横线绘制
+        m_monthWindow->setCurrentDateTime(_currentDate);
     }
     //设置当前时间
-    m_DayWindow->setCurrendDateTime(_currentDate);
+    m_DayWindow->setCurrentDateTime(_currentDate);
 }
 
 /**

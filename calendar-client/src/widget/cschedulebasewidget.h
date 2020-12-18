@@ -36,7 +36,7 @@ public:
     //获取选择时间
     QDate getSelectDate() const;
     //设置当前时间
-    virtual void setCurrendDateTime(const QDateTime &currentDate);
+    virtual void setCurrentDateTime(const QDateTime &currentDate);
     //获取当前时间
     QDateTime getCurrendDateTime() const;
     //获取是否显示农历信息

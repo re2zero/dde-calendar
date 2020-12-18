@@ -190,6 +190,15 @@ void CMonthView::setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchSc
     m_monthGraphicsView->setSearchScheduleInfo(searchScheduleInfo);
 }
 
+/**
+ * @brief CMonthView::setCurrentDate        设置当前时间
+ * @param currentDate
+ */
+void CMonthView::setCurrentDate(const QDate &currentDate)
+{
+    m_weekIndicator->setCurrentDate(currentDate);
+}
+
 void CMonthView::setLunarVisible(bool visible)
 {
     m_monthGraphicsView->setLunarVisible(visible);

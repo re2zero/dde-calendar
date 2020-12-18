@@ -167,6 +167,17 @@ void CMonthWindow::updateShowDate(const bool isUpdateBar)
 }
 
 /**
+ * @brief CMonthWindow::setCurrentDateTime      设置当前时间
+ * @param currentDate
+ */
+void CMonthWindow::setCurrentDateTime(const QDateTime &currentDate)
+{
+    CScheduleBaseWidget::setCurrentDateTime(currentDate);
+    //更新当前时间
+    m_monthView->setCurrentDate(currentDate.date());
+}
+
+/**
  * @brief CMonthWindow::updateShowSchedule  更新日程显示
  */
 void CMonthWindow::updateShowSchedule()
@@ -295,6 +306,7 @@ void CMonthWindow::initUI()
     yeartitleLayout->addWidget(m_today, 0, Qt::AlignRight);
 
     m_monthView = new CMonthView(this);
+    m_monthView->setCurrentDate(getCurrendDateTime().date());
     QVBoxLayout *mhLayout = new QVBoxLayout;
     mhLayout->setMargin(0);
     mhLayout->setSpacing(0);

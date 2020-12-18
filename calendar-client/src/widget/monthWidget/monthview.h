@@ -65,6 +65,8 @@ public:
     void setScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo> > &scheduleInfo);
     //设置搜索日程
     void setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchScheduleInfo);
+    //设置当前时间
+    void setCurrentDate(const QDate &currentDate);
 signals:
     /**
      * @brief signalViewtransparentFrame 设置窗口的焦点

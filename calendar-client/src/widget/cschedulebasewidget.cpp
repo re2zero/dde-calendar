@@ -76,10 +76,10 @@ QDate CScheduleBaseWidget::getSelectDate() const
 }
 
 /**
- * @brief CScheduleBaseWidget::setCurrendDateTime   设置当前时间
+ * @brief CScheduleBaseWidget::setCurrentDateTime   设置当前时间
  * @param currentDate
  */
-void CScheduleBaseWidget::setCurrendDateTime(const QDateTime &currentDate)
+void CScheduleBaseWidget::setCurrentDateTime(const QDateTime &currentDate)
 {
     m_calendarManager->getCalendarDateDataManage()->setCurrentDateTime(currentDate);
 }
