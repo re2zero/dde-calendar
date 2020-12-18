@@ -53,7 +53,8 @@ private:
     void changeRecurInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
     //修改重复日程,仅修改此日程
     void changeOnlyInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
-
+    //修改重复规则
+    void changeRepetitionRule(ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
 signals:
 
 public slots:

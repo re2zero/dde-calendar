@@ -149,24 +149,8 @@ bool CScheduleOperation::deleteSchedule(const ScheduleDataInfo &scheduleInfo)
                 ScheduleDataInfo newschedule;
                 //获取原始日程信息
                 m_DBusManager->GetJob(scheduleInfo.getID(), newschedule);
-
-                switch (newschedule.getRepetitionRule().getRuleType()) {
-                case RepetitionRule::RRuleType_FREQ: {
-                    //如果为结束与次数则修改结束次数
-                    newschedule.getRepetitionRule().setEndCount(scheduleInfo.getRecurID() - 1);
-                    if (newschedule.getRepetitionRule().getEndCount() < 1) {
-                        newschedule.getRepetitionRule().setRuleId(RepetitionRule::RRuleID::RRule_NONE);
-                        newschedule.getRepetitionRule().setRuleType(RepetitionRule::RRuleEndType::RRuleType_NEVER);
-                    }
-                    break;
-                }
-                default: {
-                    //如果该日程结束类型为永不和结束于日期则修改结束日期
-                    newschedule.getRepetitionRule().setRuleType(RepetitionRule::RRuleType_DATE);
-                    newschedule.getRepetitionRule().setEndDate(scheduleInfo.getBeginDateTime().addDays(-1));
-                    break;
-                }
-                }
+                //修改重复规则
+                changeRepetitionRule(newschedule, scheduleInfo);
                 //更新日程
                 m_DBusManager->UpdateJob(newschedule);
                 _restuleBool = true;
@@ -284,22 +268,8 @@ void CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
             // 根据id获取日程并修改
             ScheduleDataInfo updatescheduleData;
             m_DBusManager->GetJob(oldinfo.getID(), updatescheduleData);
-            //获取原始日程的重复类型
-            RepetitionRule &_upRule = updatescheduleData.getRepetitionRule();
-            //如果重复类型为重复与次数
-            if (_upRule.getRuleType() == 1) {
-                //修改重复次数
-                _upRule.setEndCount(newinfo.getRecurID() - 1);
-                //如果重复次数小于1次则修改为普通日程
-                if (_upRule.getEndCount() < 1) {
-                    _upRule.setRuleId(RepetitionRule::RRuleID::RRule_NONE);
-                    _upRule.setRuleType(RepetitionRule::RRuleEndType::RRuleType_NEVER);
-                }
-            } else {
-                //如果结束类型为永不或结束于日期 则修改结束类型为结束于日期并更改结束时间
-                _upRule.setRuleType(RepetitionRule::RRuleEndType::RRuleType_DATE);
-                _upRule.setEndDate(oldinfo.getBeginDateTime().addDays(-1));
-            }
+            //修改重复规则
+            changeRepetitionRule(updatescheduleData, oldinfo);
             //更新日程
             m_DBusManager->UpdateJob(updatescheduleData);
         } else if (msgBox.clickButton() == 2) {
@@ -328,4 +298,31 @@ void CScheduleOperation::changeOnlyInfo(const ScheduleDataInfo &newinfo, const S
     updatescheduleData.getIgnoreTime().append(oldinfo.getBeginDateTime());
     //更新原始信息
     m_DBusManager->UpdateJob(updatescheduleData);
+}
+
+/**
+ * @brief CScheduleOperation::changeRepetitionRule      修改日程重复规则
+ * @param newinfo
+ * @param oldinfo
+ */
+void CScheduleOperation::changeRepetitionRule(ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo)
+{
+    switch (newinfo.getRepetitionRule().getRuleType()) {
+    case RepetitionRule::RRuleType_FREQ: {
+        //如果为结束与次数则修改结束次数
+        newinfo.getRepetitionRule().setEndCount(oldinfo.getRecurID() - 1);
+        //结束次数为0表示重复一次
+        if (newinfo.getRepetitionRule().getEndCount() < 0) {
+            newinfo.getRepetitionRule().setRuleId(RepetitionRule::RRuleID::RRule_NONE);
+            newinfo.getRepetitionRule().setRuleType(RepetitionRule::RRuleEndType::RRuleType_NEVER);
+        }
+        break;
+    }
+    default: {
+        //如果该日程结束类型为永不和结束于日期则修改结束日期
+        newinfo.getRepetitionRule().setRuleType(RepetitionRule::RRuleType_DATE);
+        newinfo.getRepetitionRule().setEndDate(oldinfo.getBeginDateTime().addDays(-1));
+        break;
+    }
+    }
 }
