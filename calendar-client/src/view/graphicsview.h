@@ -106,8 +106,6 @@ public slots:
 signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void signalsCurrentScheduleDate(QDate date);
-    void signalSceneUpdate();
-
 private:
     int checkDay(int weekday);
     void TimeRound(QDateTime &dtime);

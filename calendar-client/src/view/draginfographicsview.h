@@ -157,6 +157,8 @@ signals:
      * @param out                       显示的日程信息
      */
     void signalScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
+    //scene更新
+    void signalSceneUpdate();
 public slots:
     //删除日程
     void slotDeleteItem();

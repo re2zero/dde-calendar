@@ -100,6 +100,8 @@ void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
         return;
     }
     mousePress(event->pos());
+    //更新其它view中item状态显示
+    emit signalSceneUpdate();
 }
 
 void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
@@ -143,6 +145,8 @@ void DragInfoGraphicsView::mouseReleaseEvent(QMouseEvent *event)
     }
     m_touchState = TS_NONE;
     mouseReleaseScheduleUpdate();
+    //update scene
+    this->scene()->update();
 }
 
 
@@ -595,6 +599,7 @@ void DragInfoGraphicsView::mousePress(const QPoint &point)
         emit signalScheduleShow(false);
     }
     DragPressEvent(point, infoitem);
+    this->scene()->update();
     update();
 }
 
