@@ -39,7 +39,7 @@ public:
     //创建日程
     bool createSchedule(const ScheduleDataInfo &scheduleInfo);
     //修改日程
-    void changeSchedule(const ScheduleDataInfo &newInfo, const ScheduleDataInfo &oldInfo);
+    bool changeSchedule(const ScheduleDataInfo &newInfo, const ScheduleDataInfo &oldInfo);
     //删除日程  false :取消删除  true: 确定删除
     bool deleteSchedule(const ScheduleDataInfo &scheduleInfo);
     //查询日程
@@ -50,9 +50,9 @@ public:
     void deleteOnlyInfo(const ScheduleDataInfo &scheduleInfo);
 private:
     //修改重复日程
-    void changeRecurInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
+    bool changeRecurInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
     //修改重复日程,仅修改此日程
-    void changeOnlyInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
+    bool changeOnlyInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
     //修改重复规则
     void changeRepetitionRule(ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
 signals:

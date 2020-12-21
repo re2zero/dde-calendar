@@ -59,6 +59,7 @@ public:
     void updateHigh();
     void setSelectSchedule(const ScheduleDataInfo &info);
     void setMargins(int left, int top, int right, int bottom);
+    //更新日程显示
     void updateInfo() override;
 signals:
     void signalUpdatePaint(const int topM);

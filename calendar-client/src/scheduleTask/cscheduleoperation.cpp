@@ -45,11 +45,12 @@ bool CScheduleOperation::createSchedule(const ScheduleDataInfo &scheduleInfo)
  * @param newInfo
  * @param oldInfo
  */
-void CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const ScheduleDataInfo &oldInfo)
+bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const ScheduleDataInfo &oldInfo)
 {
+    bool _result {false};
     if (newInfo.getRepetitionRule().getRuleId() == 0 && newInfo.getRepetitionRule().getRuleId() == oldInfo.getRepetitionRule().getRuleId()) {
         //如果为普通日程且没有修改重复类型则更新日程
-        m_DBusManager->UpdateJob(newInfo);
+        _result = m_DBusManager->UpdateJob(newInfo);
     } else {
         //如果切换了全天状态则提醒是否修改全部
         if (newInfo.getAllDay() != oldInfo.getAllDay()) {
@@ -62,10 +63,10 @@ void CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
             msgBox.exec();
 
             if (msgBox.clickButton() == 0) {
-                return;
+                _result = false;
             } else if (msgBox.clickButton() == 1) {
                 //更新日程
-                m_DBusManager->UpdateJob(newInfo);
+                _result =  m_DBusManager->UpdateJob(newInfo);
             }
         } else if (oldInfo.getRepetitionRule().getRuleId() != newInfo.getRepetitionRule().getRuleId()) {
             //修改重复规则
@@ -76,15 +77,16 @@ void CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
             msgBox.addWaringButton(tr("Change All"), true);
             msgBox.exec();
             if (msgBox.clickButton() == 0) {
-                return;
+                _result = false;
             } else if (msgBox.clickButton() == 1) {
                 //更新日程
-                m_DBusManager->UpdateJob(newInfo);
+                _result = m_DBusManager->UpdateJob(newInfo);
             }
         } else {
-            changeRecurInfo(newInfo, oldInfo);
+            _result = changeRecurInfo(newInfo, oldInfo);
         }
     }
+    return  _result;
 }
 
 /**
@@ -204,8 +206,9 @@ void CScheduleOperation::deleteOnlyInfo(const ScheduleDataInfo &scheduleInfo)
  * @param newinfo
  * @param oldinfo
  */
-void CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo)
+bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo)
 {
+    bool _result{false};
     //如果为重复类型第一个
     if (newinfo.getRecurID() == 0) {
         CScheduleCtrlDlg msgBox(m_widget);
@@ -219,7 +222,7 @@ void CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
         msgBox.exec();
 
         if (msgBox.clickButton() == 0) {
-            return;
+            _result = false;
         } else if (msgBox.clickButton() == 1) {
             //修改所有日程
             ScheduleDataInfo _scheduleDataInfo = newinfo;
@@ -232,10 +235,10 @@ void CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
             //TODO 清空忽略日程
             _scheduleDataInfo.getIgnoreTime().clear();
             //更新日程
-            m_DBusManager->UpdateJob(_scheduleDataInfo);
+            _result = m_DBusManager->UpdateJob(_scheduleDataInfo);
         } else if (msgBox.clickButton() == 2) {
             //仅修改此日程
-            changeOnlyInfo(newinfo, oldinfo);
+            _result = changeOnlyInfo(newinfo, oldinfo);
         }
     } else {
         CScheduleCtrlDlg msgBox(m_widget);
@@ -249,7 +252,7 @@ void CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
         msgBox.exec();
 
         if (msgBox.clickButton() == 0) {
-            return;
+            _result = false;
         } else if (msgBox.clickButton() == 1) {
             ScheduleDataInfo newschedule = newinfo;
             newschedule.setRecurID(0);
@@ -271,11 +274,12 @@ void CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
             //修改重复规则
             changeRepetitionRule(updatescheduleData, oldinfo);
             //更新日程
-            m_DBusManager->UpdateJob(updatescheduleData);
+            _result = m_DBusManager->UpdateJob(updatescheduleData);
         } else if (msgBox.clickButton() == 2) {
-            changeOnlyInfo(newinfo, oldinfo);
+            _result = changeOnlyInfo(newinfo, oldinfo);
         }
     }
+    return  false;
 }
 
 /**
@@ -283,7 +287,7 @@ void CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
  * @param newinfo
  * @param oldinfo
  */
-void CScheduleOperation::changeOnlyInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo)
+bool CScheduleOperation::changeOnlyInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo)
 {
     ScheduleDataInfo newschedule = newinfo;
     newschedule.getRepetitionRule().clear();
@@ -297,7 +301,7 @@ void CScheduleOperation::changeOnlyInfo(const ScheduleDataInfo &newinfo, const S
     m_DBusManager->GetJob(oldinfo.getID(), updatescheduleData);
     updatescheduleData.getIgnoreTime().append(oldinfo.getBeginDateTime());
     //更新原始信息
-    m_DBusManager->UpdateJob(updatescheduleData);
+    return m_DBusManager->UpdateJob(updatescheduleData);
 }
 
 /**

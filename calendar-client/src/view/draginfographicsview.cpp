@@ -277,16 +277,13 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
-            if (m_DragScheduleInfo == DragInfoItem::getPressSchedule()) {
-                if (m_DragScheduleInfo.getBeginDateTime() == DragInfoItem::getPressSchedule().getBeginDateTime()
-                        && DragInfoItem::getPressSchedule().getEndDateTime() == m_DragScheduleInfo.getEndDateTime()) {
+            //如果点击日程和拖拽日程是一个日程则更新日程显示
+            if (m_PressScheduleInfo == DragInfoItem::getPressSchedule()) {
+                if (m_PressScheduleInfo.getBeginDateTime() == DragInfoItem::getPressSchedule().getBeginDateTime()
+                        && DragInfoItem::getPressSchedule().getEndDateTime() == m_PressScheduleInfo.getEndDateTime()) {
                     updateInfo();
                 }
             }
-            m_DragScheduleInfo.setIsMoveInfo(false);
-            setPressSelectInfo(m_DragScheduleInfo);
-            DragInfoItem::setPressSchedule(m_DragScheduleInfo);
-
         }
     }
     break;
@@ -478,7 +475,9 @@ void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
 {
     emit signalViewtransparentFrame(1);
     CScheduleOperation _scheduleOperation(this);
-    _scheduleOperation.changeSchedule(info, m_PressScheduleInfo);
+    if (!_scheduleOperation.changeSchedule(info, m_PressScheduleInfo)) {
+        updateInfo();
+    }
     emit signalViewtransparentFrame(0);
 }
 
@@ -737,6 +736,19 @@ void DragInfoGraphicsView::slideEvent(QPointF &startPoint, QPointF &stopPort)
     }
     if (delta != 0) {
         emit signalAngleDelta(delta);
+    }
+}
+
+/**
+ * @brief DragInfoGraphicsView::updateInfo      更新日程数据显示
+ */
+void DragInfoGraphicsView::updateInfo()
+{
+    //如果拖拽日程有效则更新为不是移动日程
+    if (m_DragScheduleInfo.isValid() && m_DragScheduleInfo.getID() != 0) {
+        m_DragScheduleInfo.setIsMoveInfo(false);
+        //设置选择日程状态
+        setPressSelectInfo(m_DragScheduleInfo);
     }
 }
 

@@ -291,8 +291,12 @@ void CAllDayEventWeekView::setMargins(int left, int top, int right, int bottom)
     setViewportMargins(QMargins(left, top, right, bottom));
 }
 
+/**
+ * @brief CAllDayEventWeekView::updateInfo  更新日程显示
+ */
 void CAllDayEventWeekView::updateInfo()
 {
+    DragInfoGraphicsView::updateInfo();
     switch (m_DragStatus) {
     case IsCreate:
         upDateInfoShow(IsCreate, m_DragScheduleInfo);

@@ -194,8 +194,12 @@ void CMonthGraphiview::updateLunar()
     }
 }
 
+/**
+ * @brief CMonthGraphiview::updateInfo      更新日程数据显示
+ */
 void CMonthGraphiview::updateInfo()
 {
+    DragInfoGraphicsView::updateInfo();
     int h = m_MonthScheduleView->getScheduleHeight();
     m_MonthScheduleView->setallsize(this->viewport()->width(),
                                     this->viewport()->height(),

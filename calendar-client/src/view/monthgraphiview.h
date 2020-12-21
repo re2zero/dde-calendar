@@ -65,6 +65,7 @@ public:
 private:
     void updateSize();
     void updateLunar();
+    //更新日程数据显示
     void updateInfo() override;
     QPointF getItemPos(const QPoint &p, const QRectF &itemRect);
 protected:

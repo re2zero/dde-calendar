@@ -804,8 +804,13 @@ void CGraphicsView::setTime(QTime time)
     centerOnScene(centerpos);
 }
 
+/**
+ * @brief CGraphicsView::updateInfo         更新日程数据显示
+ */
 void CGraphicsView::updateInfo()
 {
+    //更新选择日程状态
+    DragInfoGraphicsView::updateInfo();
     switch (m_DragStatus) {
     case IsCreate:
         upDateInfoShow(IsCreate, m_DragScheduleInfo);
