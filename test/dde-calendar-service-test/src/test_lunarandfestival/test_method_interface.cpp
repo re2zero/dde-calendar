@@ -206,7 +206,6 @@ TEST_F(test_method_interface, DmsToDegrees)
     int mintues = 3;
     double seconds = 7200;
     double degress = DmsToDegrees(degrees, mintues, seconds);
-    //qInfo() << degress;
     assert(6.05 == degress);
 }
 
@@ -217,7 +216,6 @@ TEST_F(test_method_interface, DmsToSeconds)
     int m = 3;
     double s = 7200;
     double degress = DmsToSeconds(d, m, s);
-    //qInfo() << degress;
     assert(21780 == degress);
 }
 
@@ -226,9 +224,8 @@ TEST_F(test_method_interface, DmsToRadians)
 {
     int d = 4;
     int m = 3;
-    double s = 7200;
+    int s = 7200;
     double degress = DmsToRadians(d, m, s);
-    //qInfo() << degress;
     assert(0.105592 <= degress);
 }
 
@@ -265,7 +262,6 @@ TEST_F(test_method_interface, JDBeijingTime2UTC)
 {
     double bjtJD = 1.01;
     double utc = JDBeijingTime2UTC(bjtJD);
-    qInfo() << "utc" << utc ;
     assert(0.67667 > utc);
 }
 
@@ -284,4 +280,20 @@ TEST_F(test_method_interface, GetSolarDayFestival)
     day = 1;
     getFesStr = GetSolarDayFestival(year, month, day);
     assert("儿童节" == getFesStr);
+}
+
+//double CalcEarthObliquityNutation(double dt)
+TEST_F(test_method_interface, CalcEarthObliquityNutation)
+{
+    double julianDay = 1;
+    double dt = GetJulianCentury(julianDay);
+    double ceon = CalcEarthObliquityNutation(dt);
+    qInfo() << ceon;
+}
+
+//double lightAberration()
+TEST_F(test_method_interface, lightAberration)
+{
+    double lightAb = lightAberration();
+    qInfo() << lightAb;
 }

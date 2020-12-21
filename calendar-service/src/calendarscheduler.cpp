@@ -46,7 +46,7 @@ CalendarScheduler::CalendarScheduler(QObject *parent)
     IsFestivalJobEnabled();
     //将提醒提醒任务管理放入子线程
     m_jobremindmanager = new JobRemindManager;
-    QThread *threadremind = new QThread(this);
+    threadremind = new QThread(this);
     m_jobremindmanager->moveToThread(threadremind);
     threadremind->start();
     m_timeUpdateRemindJobs = new QTimer(this);
@@ -55,6 +55,16 @@ CalendarScheduler::CalendarScheduler(QObject *parent)
     initConnections();
     UpdateRemindTimeout();
     m_timeUpdateRemindJobs->start();
+}
+
+CalendarScheduler::~CalendarScheduler()
+{
+    if (!threadremind->isFinished()) {
+        m_jobremindmanager->disconnect();
+        threadremind->quit();
+        threadremind->wait();
+    }
+    delete m_jobremindmanager;
 }
 
 void CalendarScheduler::initConnections()

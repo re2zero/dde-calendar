@@ -53,6 +53,7 @@ test_schedulerdatabase::~test_schedulerdatabase()
 {
     if (sDb->m_database.isOpen()) {
         sDb->m_database.close();
+        sDb->m_database.removeDatabase("SchedulerDatabase");
     }
     delete sDb;
 }
@@ -137,7 +138,7 @@ TEST_F(test_schedulerdatabase, CreateJob)
     //为delete提供待删除数据
     Job job3;
     job3.Start = QDateTime::fromString("2020-12-14T00:00:00+08:00", Qt::ISODate);
-    job3.End = QDateTime::fromString("2020-12-014T23:59:00+08:00", Qt::ISODate);
+    job3.End = QDateTime::fromString("2020-12-14T23:59:00+08:00", Qt::ISODate);
     job3.AllDay = true;
     job3.Type = 1;
     job3.Description = "";
@@ -248,5 +249,21 @@ TEST_F(test_schedulerdatabase, UpdateType)
 TEST_F(test_schedulerdatabase, DeleteType)
 {
     sDb->DeleteType(6);
+    assert(1 == 1);
+}
+
+//void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
+TEST_F(test_schedulerdatabase, OpenSchedulerDatabase)
+{
+    QString dbpath = "";
+    sDb->OpenSchedulerDatabase(dbpath);
+
+    dbpath = "123123";
+    sDb->OpenSchedulerDatabase(dbpath);
+
+    dbpath = "%s%s%s%s%s%s";
+    sDb->OpenSchedulerDatabase(dbpath);
+
+    sDb->OpenSchedulerDatabase(SD_DATABASE_DIR);
     assert(1 == 1);
 }

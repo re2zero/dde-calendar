@@ -34,6 +34,7 @@ class CalendarScheduler : public QObject
     Q_OBJECT
 public:
     explicit CalendarScheduler(QObject *parent = nullptr);
+    ~CalendarScheduler();
 
     QString GetType(qint64 id);
     QString GetTypes();
@@ -84,6 +85,7 @@ private:
     static QMap<QString, quint32> m_festivalIdMap; //节日对应节日Id
     static quint32 nextFestivalJobId; //下一个节日id
     static QMutex m_getJobIdMutex; //节日id获取锁
+    QThread *threadremind = nullptr;
 };
 
 #endif // CALENDARSCHEDULER_H

@@ -88,3 +88,19 @@ TEST_F(test_huanglidatabase, QueryHuangLiByDays)
     assert(20201001 == hl1.ID && 20201002 == hl2.ID);
     assert(hl2Suit == hl2.Suit && hl2Avoid == hl2.Avoid);
 }
+
+//bool HuangLiDataBase::OpenHuangliDatabase(const QString &dbpath)
+TEST_F(test_huanglidatabase, OpenHuangliDatabase)
+{
+    QString dbpath = "";
+    hlDb->OpenHuangliDatabase(dbpath);
+
+    dbpath = "123123";
+    hlDb->OpenHuangliDatabase(dbpath);
+
+    dbpath = "%s%s%s%s%s%s";
+    hlDb->OpenHuangliDatabase(dbpath);
+
+    hlDb->OpenHuangliDatabase(HL_DATABASE_DIR);
+    assert(1 == 1);
+}
