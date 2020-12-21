@@ -526,32 +526,48 @@ QDateTime CalendarScheduler::GetNextJobStartTimeByRule(const stRRuleOptions &opt
 {
     QDateTime next;
     quint8 dayofweek;
-    switch (options.rpeat) {
-    case RepeatDaily:
-        next = datetime.addDays(1);
-        break;
-    case RepeatWorkDay:
-        dayofweek = static_cast<quint8>(datetime.date().dayOfWeek());
-        //计算当前为周几如果是周五或者是周末需要跳过，否则直接下一天
-        //需要跳过因为工作日不包括周末
-        if (dayofweek >= Qt::Friday) {
-            next = datetime.addDays(7 - dayofweek + 1);
-        } else {
+    //日程所在年
+    int year = datetime.date().year();
+    //日程所在月
+    int month = datetime.date().month();
+    //日程所在日
+    int day = datetime.date().day();
+    //日程时间
+    QTime nextTime = datetime.time();
+    //判断next日期是否合法，需要先给next赋值，所以使用do-while
+    do {
+        switch (options.rpeat) {
+        case RepeatDaily:
             next = datetime.addDays(1);
+            break;
+        case RepeatWorkDay:
+            dayofweek = static_cast<quint8>(datetime.date().dayOfWeek());
+            //计算当前为周几如果是周五或者是周末需要跳过，否则直接下一天
+            //需要跳过因为工作日不包括周末
+            if (dayofweek >= Qt::Friday) {
+                next = datetime.addDays(7 - dayofweek + 1);
+            } else {
+                next = datetime.addDays(1);
+            }
+            break;
+        case RepeatWeekly:
+            next = datetime.addDays(7);
+            break;
+        case RepeatMonthly:
+            //月份超过12月，则进入下一年
+            if (++month == 13) {
+                year += 1;
+                month = 1;
+            }
+            next = QDateTime(QDate(year, month, day), nextTime);
+            break;
+        case RepeatYearly:
+            next = QDateTime(QDate(++year, month, day), nextTime);
+            break;
+        default:
+            break;
         }
-        break;
-    case RepeatWeekly:
-        next = datetime.addDays(7);
-        break;
-    case RepeatMonthly:
-        next = datetime.addMonths(1);
-        break;
-    case RepeatYearly:
-        next = datetime.addYears(1);
-        break;
-    default:
-        break;
-    }
+    } while (!next.isValid());
 
     return next;
 }
