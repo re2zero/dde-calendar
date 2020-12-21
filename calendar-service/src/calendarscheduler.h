@@ -57,7 +57,7 @@ private:
     void FillFestivalJobs(const QDateTime &start, const QDateTime &end, const QString &querykey, QList<stJobArr> &listjob);
     QList<QDateTime> GetIgnoreList(const Job &job);
     bool ContainsInIgnoreList(const QList<QDateTime> ignorelist, const QDateTime &time);
-    bool OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend, bool bonleycompareday = true);
+    bool OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend);
     QDateTime GetNextJobStartTimeByRule(const stRRuleOptions &options, const QDateTime &datetime);
     stRRuleOptions ParseRRule(const QString &rule);
     QString JobArrListToJsonStr(const QList<stJobArr> &jobArrList);

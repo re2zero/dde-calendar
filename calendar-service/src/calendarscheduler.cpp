@@ -360,6 +360,8 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             if (start <= job.End && end >= job.Start) {
                 stJobTime jobtime;
                 jobtime.start = job.Start;
+                jobtime.end = job.End;
+                jobtime.recurID = 0;
                 jobtimelist.append(jobtime);
             }
             return jobtimelist;
@@ -369,7 +371,7 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
         stRRuleOptions options = ParseRRule(job.RRule);
         QDateTime jobstart = job.Start; //当前原始job的起始时间
         QDateTime jobend = job.End; //当前原始job的结束时间
-        int dateinterval = static_cast<int>(jobstart.daysTo(jobend)); //job的开始结束间隔日期
+        int dateinterval = static_cast<int>(jobstart.secsTo(jobend)); //job的开始结束间隔日期
 
         int dayofweek = jobstart.date().dayOfWeek(); //判断是周几
         if (dayofweek > Qt::Friday && options.rpeat == RepeatType::RepeatWorkDay) //周末并且options为工作日重复
@@ -386,7 +388,7 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
                 break;
             }
 
-            QDateTime copyend = next.addDays(dateinterval);
+            QDateTime copyend = next.addSecs(dateinterval);
             //如果查询时间范围和Job时间范围有交集则保存
             //另外需要保证该新建任务没有被删除即未被ignore，新建任务重复的规则删除是删除该次重复包含的的所有天，
             if (OverLap(start, end, copystart, copyend) && !ContainsInIgnoreList(igonrelist, copystart)) {
@@ -494,23 +496,14 @@ bool CalendarScheduler::ContainsInIgnoreList(const QList<QDateTime> ignorelist, 
  * @param end 第一个时间范围的结束时间
  * @param jobstart 第二个时间范围的开始时间
  * @param jobend 第二个时间范围的结束时间
- * @param bonleycompareday 只比较天还是具体到时分，默认是只比较天
  * @return bool 有交集返回true否则返回false
  */
-bool CalendarScheduler::OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend, bool bonleycompareday)
+bool CalendarScheduler::OverLap(const QDateTime &start, const QDateTime &end, const QDateTime &jobstart, const QDateTime &jobend)
 {
     bool boverlap = false;
-    //bonleycompareday为True只需要判断date即可，不需要比较time
-    if (bonleycompareday) {
-        if ((start.date() <= jobstart.date() && end.date() >= jobstart.date())
-            || (start.date() >= jobstart.date() && start.date() <= jobend.date())) {
-            boverlap = true;
-        }
-    } else {
-        if ((start <= jobstart && end >= jobstart)
-            || (start >= jobstart && start <= jobend)) {
-            boverlap = true;
-        }
+    if ((start <= jobstart && end >= jobstart)
+        || (start >= jobstart && start <= jobend)) {
+        boverlap = true;
     }
 
     return boverlap;
