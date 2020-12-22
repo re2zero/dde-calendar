@@ -110,6 +110,7 @@ private:
      * @brief m_touchGesture        触摸手势处理
      */
     touchGestureOperation m_touchGesture;
+    QColor              m_outerBorderColor;             //外边框背景色
 };
 
 #endif // SCHEDULEVIEW_H

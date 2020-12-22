@@ -44,7 +44,6 @@ CScheduleView::CScheduleView(QWidget *parent, int viewType)
 {
     initUI();
     initConnection();
-    setFrameRounded(true);
     setLineWidth(0);
 }
 
@@ -93,25 +92,19 @@ void CScheduleView::setRange(QDate begin, QDate end)
 void CScheduleView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
-        DPalette palette(this->palette());
-        palette.setColor(DPalette::Background, "#FFFFFF");
-        this->setPalette(palette);
-        setBackgroundRole(DPalette::Background);
         m_linecolor = "#000000";
         m_linecolor.setAlphaF(0.1);
         m_ALLDayColor = "#303030";
         m_timeColor = "#7D7D7D";
     } else if (type == 2) {
-        DPalette palette(this->palette());
-        QColor tbcolor = "#282828";
-        palette.setColor(DPalette::Background, tbcolor);
-        this->setPalette(palette);
-        setBackgroundRole(DPalette::Background);
         m_linecolor = "#000000";
         m_linecolor.setAlphaF(0.1);
         m_ALLDayColor = "#7D7D7D";
         m_timeColor = "#7D7D7D";
     }
+    DPalette _painte;
+    //获取外框背景色
+    m_outerBorderColor = _painte.color(QPalette::Active, QPalette::Window);
     m_graphicsView->setTheMe(type);
     m_alldaylist->setTheMe(type);
     update();
@@ -183,30 +176,12 @@ void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cut
 
 void CScheduleView::paintEvent(QPaintEvent *event)
 {
-    Q_UNUSED(event);
+    DFrame::paintEvent(event);
     QPainter painter(this);
     font.setWeight(QFont::Normal);
     font.setPixelSize(DDECalendar::FontSizeEleven);
-
     if (m_vPos.isEmpty())
         return;
-
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::NoPen);
-    DPalette backgroundPal;
-    backgroundPal = this->palette();
-    QBrush backgroundBrush = backgroundPal.background();
-    painter.setBrush(backgroundBrush);
-    QPainterPath painterpath;
-    painterpath.lineTo(1, this->height() - m_radius);
-    painterpath.arcTo(QRectF(1, this->height() - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
-    painterpath.lineTo(75, this->height());
-    painterpath.lineTo(75, 0);
-    painterpath.lineTo(1, 0);
-    painter.drawPath(painterpath);
-    painter.restore();
-
     QLocale locale;
 
     if (locale.language() == QLocale::Chinese) {
@@ -339,10 +314,16 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     painter.restore();
 
     //绘制全天与非全天之间的直线
+    painter.save();
     painter.setPen(m_linecolor);
     //分割线y坐标点
     const int point_y = m_topMagin - 2;
     painter.drawLine(0, point_y, this->width() - m_rightmagin - 2, point_y);
+    painter.restore();
+    //绘制右侧背景色（否则会有一个竖线的白色背景，不协调）
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(m_outerBorderColor);
+    painter.drawRect(QRectF(this->width()-1,0,this->width(),this->height()));
     painter.end();
 }
 
