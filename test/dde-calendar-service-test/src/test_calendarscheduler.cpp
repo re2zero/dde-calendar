@@ -254,3 +254,31 @@ TEST_F(test_calendarscheduler, QueryJobsWithRule)
     QString qJobs = calScheduler->QueryJobsWithRule(params, rules);
     assert(jobs == qJobs);
 }
+
+//void CalendarScheduler::OnModifyJobRemind(const Job &job, const QString &remind)
+TEST_F(test_calendarscheduler, OnModifyJobRemind)
+{
+    Job job3;
+    job3.Start = QDateTime::fromString("2020-12-15T00:00:00+08:00", Qt::ISODate);
+    job3.End = QDateTime::fromString("2020-12-16T23:59:00+08:00", Qt::ISODate);
+    job3.AllDay = true;
+    job3.Type = 1;
+    job3.Description = "";
+    job3.ID = 3;
+    job3.Ignore = "[]";
+    job3.Title = "UT测试C";
+    job3.RRule = "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=2";
+    job3.RecurID = 0;
+    job3.Remind = "1;09:00";
+    calScheduler->OnModifyJobRemind(job3, "1,10:00");
+}
+
+//quint32 CalendarScheduler::GetFestivalId(const QString &name)
+TEST_F(test_calendarscheduler, GetFestivalId)
+{
+    quint32 id = calScheduler->GetFestivalId("国庆节");
+    qInfo() << "啊？ 这特么是国庆节？" << id ;
+
+    id = calScheduler->GetFestivalId("春节");
+    qInfo() << "啊？ 这特么是春节？" << id ;
+}

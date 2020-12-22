@@ -30,10 +30,7 @@ ADD_SUBDIRECTORY(calendar-basicstruct)
 ADD_SUBDIRECTORY(calendar-client)
 ADD_SUBDIRECTORY(calendar-service)
 ADD_SUBDIRECTORY(schedule-plugin)
-#目前只在x86平台ut测试
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
-    ADD_SUBDIRECTORY(test)
-endif()
+ADD_SUBDIRECTORY(test)
 
 #前后端都有翻译所以将翻译放到更高层级
 find_package(Qt5LinguistTools REQUIRED)

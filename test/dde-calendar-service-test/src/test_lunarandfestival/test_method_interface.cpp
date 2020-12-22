@@ -288,12 +288,12 @@ TEST_F(test_method_interface, CalcEarthObliquityNutation)
     double julianDay = 1;
     double dt = GetJulianCentury(julianDay);
     double ceon = CalcEarthObliquityNutation(dt);
-    qInfo() << ceon;
+    //qInfo() << ceon;
 }
 
 //double lightAberration()
 TEST_F(test_method_interface, lightAberration)
 {
     double lightAb = lightAberration();
-    qInfo() << lightAb;
+    //qInfo() << lightAb;
 }
