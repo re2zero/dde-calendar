@@ -441,6 +441,8 @@ void CYearWindow::setTheMe(int type)
     }
     m_firstYearWidget->setTheMe(type);
     m_secondYearWidget->setTheMe(type);
+    //设置提示框主题类型
+    m_Scheduleview->setTheMe(type);
 
     DPalette palette = m_topWidget->palette();
     palette.setBrush(DPalette::WindowText, palette.color(DPalette::Window));
