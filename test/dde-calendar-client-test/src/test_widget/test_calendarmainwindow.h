@@ -1,9 +1,9 @@
 /*
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     chenhaifeng  <chenhaifeng@uniontech.com>
+* Author:     hejinghai <hejinghai@uniontech.com>
 *
-* Maintainer: chenhaifeng  <chenhaifeng@uniontech.com>
+* Maintainer: hejinghai <hejinghai@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,20 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifndef TEST_CALENDARMAINWINDOW_H
+#define TEST_CALENDARMAINWINDOW_H
+
+#include "calendarmainwindow.h"
 #include "gtest/gtest.h"
-#include <QDebug>
-#include <QApplication>
+#include <QObject>
 
-int main(int argc, char **argv) {
-    qDebug() << "start libdeepin-font-manager test cases ..............";
+class test_calendarmainwindow : public QObject, public::testing::Test
+{
+public:
+    test_calendarmainwindow();
+    ~test_calendarmainwindow();
+protected:
+    Calendarmainwindow *mainWindow = nullptr;
+};
 
-    qputenv("QT_QPA_PLATFORM", "offscreen");
-    QApplication application(argc, argv);
-
-    ::testing::InitGoogleTest(&argc, argv);
-    int ret = RUN_ALL_TESTS();
-    qDebug() << "end libdeepin-font-manager test cases ..............";
-    return ret;
-}
+#endif // TEST_CALENDARMAINWINDOW_H
