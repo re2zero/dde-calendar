@@ -301,6 +301,7 @@ void CScheduleSearchItem::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         emit signalSelectSchedule(m_ScheduleInfo);
     }
+    DLabel::mousePressEvent(event);
 }
 
 void CScheduleSearchItem::mouseReleaseEvent(QMouseEvent *event)
@@ -309,6 +310,7 @@ void CScheduleSearchItem::mouseReleaseEvent(QMouseEvent *event)
         m_mouseStatus = M_HOVER;
         update();
     }
+    DLabel::mouseReleaseEvent(event);
 }
 
 void CScheduleSearchItem::enterEvent(QEvent *event)
@@ -697,8 +699,8 @@ void CScheduleSearchDateItem::paintEvent(QPaintEvent *e)
 
 void CScheduleSearchDateItem::mousePressEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event);
     emit signalLabelScheduleHide();
+    DLabel::mousePressEvent(event);
 }
 
 CScheduleListWidget::CScheduleListWidget(QWidget *parent)
@@ -707,6 +709,12 @@ CScheduleListWidget::CScheduleListWidget(QWidget *parent)
     //设置对象名称和辅助显示名称
     this->setObjectName("CScheduleListWidget");
     this->setAccessibleName("CScheduleListWidget");
+    //接受触摸事件
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    //截获相应的gesture手势
+    grabGesture(Qt::TapGesture);
+    grabGesture(Qt::TapAndHoldGesture);
+    grabGesture(Qt::PanGesture);
 }
 
 CScheduleListWidget::~CScheduleListWidget()
