@@ -53,7 +53,7 @@ private:
     void initConnections();
     static quint32 GetFestivalId(const QString &name);
     void IsFestivalJobEnabled();
-    QList<stJobArr> GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, const QString &querykey = QString(), bool bextend = true);
+    QList<stJobArr> GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, bool needFestival, const QString &querykey = QString(), bool bextend = true);
     QList<stJobTime> GetJobTimesBetween(const QDateTime &start, const QDateTime &end, const Job &job);
     void FillFestivalJobs(const QDateTime &start, const QDateTime &end, const QString &querykey, QList<stJobArr> &listjob);
     QList<QDateTime> GetIgnoreList(const Job &job);

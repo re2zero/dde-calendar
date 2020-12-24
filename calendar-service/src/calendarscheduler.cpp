@@ -215,7 +215,7 @@ QString CalendarScheduler::GetJobs(const QDateTime &start, const QDateTime &end)
 {
     QString strJson;
     QList<Job> joblist = m_database->GetAllOriginJobs();
-    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist); //获取时间范围内所有的Job
+    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist, m_festivalJobEnabled); //获取时间范围内所有的Job
     strJson = JobArrListToJsonStr(jobArrList);
     return strJson;
 }
@@ -235,7 +235,7 @@ QString CalendarScheduler::QueryJobs(const QString &params)
     QDateTime starttime = Utils::fromconvertData(obj.value("Start").toString());
     QDateTime endtime = Utils::fromconvertData(obj.value("End").toString());
     QList<Job> joblist = m_database->GetAllOriginJobs(strKey);
-    QList<stJobArr> jobArrList = GetJobsBetween(starttime, endtime, joblist, strKey);
+    QList<stJobArr> jobArrList = GetJobsBetween(starttime, endtime, joblist, m_festivalJobEnabled, strKey);
     QString strJson = JobArrListToJsonStr(jobArrList);
     return strJson;
 }
@@ -251,7 +251,7 @@ QString CalendarScheduler::QueryJobsWithLimit(const QString &params, qint32 maxN
 
     QList<Job> joblist = m_database->GetAllOriginJobs(strKey, QString("start asc"));
     //获取时间范围内符合条件的Job，不扩展
-    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist, strKey, false);
+    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist, false, strKey, false);
     jobArrList = FilterDateJobsWrap(jobArrList, start, end);
     //根据manNum获取指定数量的Job多余的直接丢弃
     int jobCount = 0;
@@ -288,7 +288,7 @@ QString CalendarScheduler::QueryJobsWithRule(const QString &params, const QStrin
     QString strKey = obj.value("key").toString();
     QList<Job> joblist = m_database->GetAllOriginJobsWithRule(strKey, rules);
     //获取时间范围内符合条件的Job，不扩展
-    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist, strKey, false);
+    QList<stJobArr> jobArrList = GetJobsBetween(start, end, joblist, false, strKey, false);
     jobArrList = FilterDateJobsWrap(jobArrList, start, end);
     QString strJson = JobArrListToJsonStr(jobArrList);
     return strJson;
@@ -306,7 +306,17 @@ void CalendarScheduler::IsFestivalJobEnabled()
     }
 }
 
-QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, const QString &querykey, bool bextend)
+/**
+ * @brief CalendarScheduler::GetJobsBetween 对查询到的日程进行解析处理
+ * @param start 查询的开始时间
+ * @param end 查询的结束时间
+ * @param joblist 查询到的日程list
+ * @param needFestival 是否需要返回节日日程
+ * @param querykey 查询的关键字
+ * @param bextend 是否需要扩展跨天日程
+ * @return  日程list
+ */
+QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const QDateTime &end, const QList<Job> &joblist, bool needFestival, const QString &querykey, bool bextend)
 {
     QList<stJobArr> jobArrList;
     int days = static_cast<int>(start.daysTo(end));
@@ -317,7 +327,7 @@ QList<stJobArr> CalendarScheduler::GetJobsBetween(const QDateTime &start, const 
         jobArrList.append(arr);
     }
     //判断是否需要获取中国节日日程
-    if (m_festivalJobEnabled) {
+    if (needFestival) {
         FillFestivalJobs(start, end, querykey, jobArrList);
     }
 
@@ -654,7 +664,7 @@ QList<Job> CalendarScheduler::GetRemindJobs(const QDateTime &start, const QDateT
     QList<Job> jobs;
     jobs = m_database->GetJobsContainRemind();
     QDateTime endDate = start.addDays(8);
-    QList<stJobArr> jobArrList = GetJobsBetween(start, endDate, jobs, "", false); //此处获取的数据不需要展开，因此extend为空
+    QList<stJobArr> jobArrList = GetJobsBetween(start, endDate, jobs, false, "", false); //此处获取的数据不需要展开，因此extend为空
     if (jobArrList.size() > 0) {
         jobs.clear();
         foreach (stJobArr jobarr, jobArrList) {
