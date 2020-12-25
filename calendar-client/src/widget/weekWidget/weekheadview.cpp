@@ -37,7 +37,7 @@
 
 DGUI_USE_NAMESPACE
 CWeekHeadView::CWeekHeadView(QWidget *parent)
-    : DFrame(parent)
+    : DWidget(parent)
     , m_touchGesture(this)
 {
     setContentsMargins(0, 0, 0, 0);
@@ -72,7 +72,6 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     }
 
     setLayout(hboxLayout);
-    setFrameRounded(false);
 }
 
 CWeekHeadView::~CWeekHeadView()
@@ -410,6 +409,6 @@ bool CWeekHeadView::event(QEvent *e)
         }
         return true;
     } else {
-        return DFrame::event(e);
+        return DWidget::event(e);
     }
 }

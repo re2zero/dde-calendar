@@ -25,9 +25,8 @@
 #include "src/dbusdatastruct.h"
 
 #include <DLabel>
-#include <DFrame>
+#include <DWidget>
 
-#include <QWidget>
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
@@ -35,7 +34,12 @@
 DWIDGET_USE_NAMESPACE
 
 class CustomFrame;
-class CWeekHeadView: public DFrame
+
+/**
+ * @brief The CWeekHeadView class
+ *  周试图日期模块显示
+ */
+class CWeekHeadView : public DWidget
 {
     Q_OBJECT
 public:
