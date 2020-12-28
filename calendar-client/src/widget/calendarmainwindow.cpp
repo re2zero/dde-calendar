@@ -576,6 +576,8 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &schedu
         if (_showWidget->setSelectDate(scheduleInfo.getBeginDateTime().date())) {
             //更新显示数据
             _showWidget->updateData();
+            //设置年份信息显示
+            _showWidget->setYearData();
             //延迟150毫秒设置选中动画
             QTimer::singleShot(150, this, [ = ] {
                 _showWidget->setSelectSearchScheduleInfo(scheduleInfo);
