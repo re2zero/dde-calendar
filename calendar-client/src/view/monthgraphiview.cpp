@@ -502,12 +502,6 @@ void CMonthGraphiview::slotCreate(const QDateTime &date)
     emit signalViewtransparentFrame(0);
 }
 
-void CMonthGraphiview::slotdelete(const int id)
-{
-    Q_UNUSED(id);
-    emit signalsScheduleUpdate(0);
-}
-
 CDayGraphicsItem::CDayGraphicsItem(QGraphicsItem *parent)
     : QGraphicsRectItem(parent)
     , m_Date(QDate::currentDate())

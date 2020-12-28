@@ -99,7 +99,6 @@ signals:
     void signalsScheduleUpdate(const int id = 0);
 public slots:
     void slotCreate(const QDateTime &date) override;
-    void slotdelete(const int id = 0);
 private:
     QVector<CDayGraphicsItem *>         m_DayItem;
     QMap<QDate, CaHuangLiDayInfo>         m_lunarCache;

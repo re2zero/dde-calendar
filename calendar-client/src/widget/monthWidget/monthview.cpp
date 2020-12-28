@@ -22,18 +22,13 @@
 #include "scheduledatamanage.h"
 
 #include <DHiDPIHelper>
-#include <DHiDPIHelper>
 #include <DPalette>
 
 #include <QGridLayout>
-#include <QLabel>
 #include <QPainter>
 #include <QEvent>
-#include <QDebug>
 #include <QMessageBox>
 #include <QTime>
-#include <QQueue>
-#include <QShortcut>
 #include <QApplication>
 #include <QMouseEvent>
 
