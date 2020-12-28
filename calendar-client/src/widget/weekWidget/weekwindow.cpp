@@ -201,6 +201,8 @@ void CWeekWindow::initConnection()
     connect(m_scheduleView, &CScheduleView::signalAngleDelta, this, &CWeekWindow::slotAngleDelta);
     //每周信息区域滚动信号关联
     connect(m_weekHeadView, &CWeekHeadView::signalAngleDelta, this, &CWeekWindow::slotAngleDelta);
+    //双击"..."标签切换日视图
+    connect(m_scheduleView, &CScheduleView::signalsCurrentScheduleDate, this, &CWeekWindow::slotViewSelectDate);
 }
 
 /**
