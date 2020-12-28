@@ -112,17 +112,28 @@ void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &re
     tStitlename.replace("\n", "");
     QString str = tStitlename;
     QString tstr;
-    for (int i = 0; i < str.count(); i++) {
-        tstr.append(str.at(i));
-        int widthT = fm.width(tstr) + 5;
-        if (widthT >= fillRect.width() - 13) {
-            tstr.chop(2);
-            break;
+    int _rightOffset = fm.width("...");
+    //显示宽度  左侧偏移13右侧偏移8
+    qreal _showWidth = fillRect.width() - 13 - 8 - m_offset * 2;
+    //如果标题总长度大于显示长度则显示长度须减去"..."的长度
+    if (fm.width(str) > _showWidth) {
+        _showWidth -= _rightOffset;
+        for (int i = 0; i < str.count(); i++) {
+            tstr.append(str.at(i));
+            int widthT = fm.width(tstr);
+            //如果宽度大于显示长度则去除最后添加的字符
+            if (widthT > _showWidth) {
+                tstr.chop(1);
+                break;
+            }
         }
+        if (tstr != str) {
+            tstr = tstr + "...";
+        }
+    } else {
+        tstr = str;
     }
-    if (tstr != str) {
-        tstr = tstr + "...";
-    }
+
     painter->drawText(QRectF(fillRect.topLeft().x() + 13, fillRect.y(), fillRect.width(), fillRect.height()),
                       Qt::AlignLeft | Qt::AlignVCenter, tstr);
     if (m_vHoverflag && !m_vSelectflag) {

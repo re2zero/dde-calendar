@@ -128,20 +128,29 @@ void CMonthScheduleWidgetItem::paintBackground(QPainter *painter, const QRectF &
     QString tStitlename = m_vScheduleInfo.getTitleName();
     tStitlename.replace("\n", "");
     QString str = tStitlename;
-    qreal textWidth = labelwidth - m_pos.x() - m_offset * 2;
+    //右侧偏移8
+    qreal textWidth = labelwidth - m_pos.x() - m_offset * 2 - 8;
     QString tstr;
-
-    for (int i = 0; i < str.count(); i++) {
-        tstr.append(str.at(i));
-        int widthT = fm.width(tstr) + 5;
-        if (widthT >= textWidth) {
-            tstr.chop(2);
-            break;
+    int _rightOffset = fm.width("...");
+    //显示宽度  左侧偏移13右侧偏移8
+    qreal _showWidth = textWidth;
+    //如果标题总长度大于显示长度则显示长度须减去"..."的长度
+    if (fm.width(str) > _showWidth) {
+        _showWidth -= _rightOffset;
+        for (int i = 0; i < str.count(); i++) {
+            tstr.append(str.at(i));
+            int widthT = fm.width(tstr);
+            //如果宽度大于显示长度则去除最后添加的字符
+            if (widthT > _showWidth) {
+                tstr.chop(1);
+                break;
+            }
         }
-    }
-
-    if (tstr != str) {
-        tstr = tstr + "...";
+        if (tstr != str) {
+            tstr = tstr + "...";
+        }
+    } else {
+        tstr = str;
     }
 
     painter->drawText(QRectF(rect.x() + m_pos.x(),
