@@ -315,8 +315,8 @@ void CScheduleOperation::changeRepetitionRule(ScheduleDataInfo &newinfo, const S
     case RepetitionRule::RRuleType_FREQ: {
         //如果为结束与次数则修改结束次数
         newinfo.getRepetitionRule().setEndCount(oldinfo.getRecurID() - 1);
-        //结束次数为0表示重复一次
-        if (newinfo.getRepetitionRule().getEndCount() < 0) {
+        //结束次数为0表示不重复，设置为普通日程
+        if (newinfo.getRepetitionRule().getEndCount() < 1) {
             newinfo.getRepetitionRule().setRuleId(RepetitionRule::RRuleID::RRule_NONE);
             newinfo.getRepetitionRule().setRuleType(RepetitionRule::RRuleEndType::RRuleType_NEVER);
         }
