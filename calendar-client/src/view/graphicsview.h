@@ -63,7 +63,8 @@ public:
     void setInfo(const QVector<ScheduleDataInfo> &info);
     void addSchduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
     void deleteSchduleItem(CScheduleItem *item);
-    void setSelectSchedule(const ScheduleDataInfo &info);
+    //设置搜索选中日程
+    void setSelectSearchSchedule(const ScheduleDataInfo &info) override;
     void clearSchdule();
 
     void setMinTime(const int &minTime)

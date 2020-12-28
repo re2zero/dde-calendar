@@ -86,7 +86,7 @@ CMonthView::~CMonthView()
 
 void CMonthView::setSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
-    m_monthGraphicsView->setSelectSchedule(scheduleInfo);
+    m_monthGraphicsView->setSelectSearchSchedule(scheduleInfo);
 }
 
 void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDataInfo &out)

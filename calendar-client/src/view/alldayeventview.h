@@ -57,7 +57,8 @@ public:
         return m_coorManage;
     }
     void updateHigh();
-    void setSelectSchedule(const ScheduleDataInfo &info);
+    //获取搜索选中日程
+    void setSelectSearchSchedule(const ScheduleDataInfo &info) override;
     void setMargins(int left, int top, int right, int bottom);
     //更新日程显示
     void updateInfo() override;

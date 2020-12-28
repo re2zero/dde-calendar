@@ -59,7 +59,8 @@ public:
     void setLunarVisible(bool visible);
     //设置日程信息
     void setScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo> > &info);
-    void setSelectSchedule(const ScheduleDataInfo &scheduleInfo);
+    //设置搜索选中日程
+    void setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo) override;
     //设置搜索日程信息
     void setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchScheduleInfo);
 private:

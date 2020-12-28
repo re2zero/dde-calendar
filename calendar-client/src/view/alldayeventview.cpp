@@ -271,8 +271,13 @@ void CAllDayEventWeekView::updateHigh()
     }
 }
 
-void CAllDayEventWeekView::setSelectSchedule(const ScheduleDataInfo &info)
+/**
+ * @brief CAllDayEventWeekView::setSelectSearchSchedule     设置搜索选中日程
+ * @param info
+ */
+void CAllDayEventWeekView::setSelectSearchSchedule(const ScheduleDataInfo &info)
 {
+    DragInfoGraphicsView::setSelectSearchSchedule(info);
     for (int i = 0; i < m_baseShowItem.size(); ++i) {
         CAllDayEventWidgetItem *item = m_baseShowItem.at(i);
         if (item->hasSelectSchedule(info)) {

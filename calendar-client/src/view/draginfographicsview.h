@@ -104,6 +104,11 @@ private:
 protected:
     //删除日程
     void DeleteItem(const ScheduleDataInfo &info);
+
+public:
+    //设置搜索选中日程
+    virtual void setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo);
+
 protected:
     virtual void setDragPixmap(QDrag *drag, DragInfoItem *item);
     virtual void slotCreate(const QDateTime &date);

@@ -120,8 +120,14 @@ void CMonthGraphiview::setScheduleInfo(const QMap<QDate, QVector<ScheduleDataInf
     updateInfo();
 }
 
-void CMonthGraphiview::setSelectSchedule(const ScheduleDataInfo &scheduleInfo)
+/**
+ * @brief CMonthGraphiview::setSelectSearchSchedule     设置选择搜索日程
+ * @param scheduleInfo
+ */
+void CMonthGraphiview::setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo)
 {
+    DragInfoGraphicsView::setSelectSearchSchedule(scheduleInfo);
+    //获取所有的日程item
     QVector<QGraphicsRectItem *> mscheduleShowBtn = m_MonthScheduleView->getScheduleShowItem();
 
     for (int i = 0; i < mscheduleShowBtn.size(); ++i) {

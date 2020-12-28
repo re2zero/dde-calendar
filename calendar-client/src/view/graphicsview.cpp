@@ -338,8 +338,13 @@ void CGraphicsView::deleteSchduleItem(CScheduleItem *item)
     }
 }
 
-void CGraphicsView::setSelectSchedule(const ScheduleDataInfo &info)
+/**
+ * @brief CGraphicsView::setSelectSearchSchedule        设置搜索选中日程
+ * @param info
+ */
+void CGraphicsView::setSelectSearchSchedule(const ScheduleDataInfo &info)
 {
+    DragInfoGraphicsView::setSelectSearchSchedule(info);
     setTime(info.getBeginDateTime().time());
     for (int i = 0; i < m_vScheduleItem.size(); ++i) {
         if (m_vScheduleItem.at(i)->getType() == 1)

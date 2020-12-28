@@ -123,9 +123,9 @@ void CScheduleView::setTime(QTime time)
 void CScheduleView::setSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
     if (scheduleInfo.getAllDay()) {
-        m_alldaylist->setSelectSchedule(scheduleInfo);
+        m_alldaylist->setSelectSearchSchedule(scheduleInfo);
     } else {
-        m_graphicsView->setSelectSchedule(scheduleInfo);
+        m_graphicsView->setSelectSearchSchedule(scheduleInfo);
     }
 }
 
@@ -323,7 +323,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     //绘制右侧背景色（否则会有一个竖线的白色背景，不协调）
     painter.setPen(Qt::NoPen);
     painter.setBrush(m_outerBorderColor);
-    painter.drawRect(QRectF(this->width()-1,0,this->width(),this->height()));
+    painter.drawRect(QRectF(this->width() - 1, 0, this->width(), this->height()));
     painter.end();
 }
 

@@ -631,6 +631,15 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDataInfo &info)
     emit signalViewtransparentFrame(0);
 }
 
+/**
+ * @brief DragInfoGraphicsView::setSelectSearchSchedule     设置选中搜索日程
+ * @param scheduleInfo
+ */
+void DragInfoGraphicsView::setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo)
+{
+    setPressSelectInfo(scheduleInfo);
+}
+
 void DragInfoGraphicsView::setDragPixmap(QDrag *drag, DragInfoItem *item)
 {
     Q_UNUSED(item);
@@ -770,11 +779,13 @@ void DragInfoGraphicsView::slotDeleteItem()
 {
     //获取选中日程
     ScheduleDataInfo _pressSchedule = DragInfoItem::getPressSchedule();
-    //判断是否有效,如果为有效日程则删除
-    if (_pressSchedule.isValid()) {
+    //判断是否有效,如果为有效日程且日程类型不为节日或纪念日则删除
+    if (_pressSchedule.isValid() && _pressSchedule.getType() != 4) {
         CScheduleOperation _scheduleOperation(this);
-        _scheduleOperation.deleteSchedule(DragInfoItem::getPressSchedule());
-        //设置选择日程
-        DragInfoItem::setPressSchedule(ScheduleDataInfo());
+        _scheduleOperation.deleteSchedule(_pressSchedule);
+        //设置选择日程为无效日程
+        setPressSelectInfo(ScheduleDataInfo());
+        //设置拖拽日程为无效日程
+        m_DragScheduleInfo = DragInfoItem::getPressSchedule();
     }
 }
