@@ -542,8 +542,8 @@ void CYearWindow::slottoday()
 {
     //隐藏提示
     slotSetScheduleHide();
-    //设置选择时间为当前时间
-    setSelectDate(getCurrendDateTime().date());
+    //设置选择时间为当前时间，切换年份信息
+    setSelectDate(getCurrendDateTime().date(), true);
     //更新数据
     updateData();
     setYearData();
