@@ -616,57 +616,25 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     pen.setWidth(1);
     pen.setColor(m_BorderColor);
     painter->setPen(pen);
-
-//    if (m_itemnum == 35) {
-//        QPainterPath painterpath;
-//        painterpath.moveTo(0, this->rect().y());
-//        painterpath.lineTo(0, this->rect().y() + this->rect().height() - m_radius);
-//        painterpath.arcTo(QRectF(0,
-//                                 this->rect().y() + this->rect().height() - m_radius * 2,
-//                                 m_radius * 2,
-//                                 m_radius * 2),
-//                          180, 90);
-//        painterpath.lineTo(this->rect().width(), this->rect().y() + this->rect().height());
-//        painterpath.lineTo(this->rect().width(), this->rect().y());
-//        painterpath.lineTo(0, this->rect().y());
-//        painter->drawPath(painterpath);
-//    } else if (m_itemnum == 41) {
-//        QPainterPath painterpath;
-//        painterpath.moveTo(this->rect().x(), this->rect().y());
-//        painterpath.lineTo(this->rect().x(), this->rect().y() + this->rect().height());
-//        painterpath.lineTo(this->rect().x() + this->rect().width() - m_radius, this->rect().y() + this->rect().height());
-//        painterpath.arcTo(QRectF(this->rect().x() + this->rect().width() - m_radius * 2,
-//                                 this->rect().y() + this->rect().height() - m_radius * 2,
-//                                 m_radius * 2,
-//                                 m_radius * 2),
-//                          270, 90);
-//        painterpath.lineTo(this->rect().x() + this->rect().width(), this->rect().y());
-//        painterpath.lineTo(this->rect().y() + this->rect().height(), this->rect().y());
-//        painter->drawPath(painterpath);
-//    } else {
     painter->drawRect(this->rect());
-//    }
-
     painter->save();
-    painter->restore();
     //绘制日期
     painter->setFont(m_dayNumFont);
     QRectF fillRect;
-
     if (m_LunarVisible) {
         fillRect.setRect(this->rect().x() + 3, this->rect().y() + 4, hh, hh);
     } else {
         fillRect.setRect(this->rect().x(), this->rect().y() + 4, this->rect().width(), hh);
     }
-
+    //如果为当前时间
     if (m_Date == QDate::currentDate()) {
+        //设置不透明度为1
+        painter->setOpacity(1);
         QFont tfont = m_dayNumFont;
         tfont.setPixelSize(DDECalendar::FontSizeTwenty);
         painter->setFont(tfont);
         painter->setPen(m_dayNumCurrentColor);
-
         painter->save();
-        painter->setRenderHint(QPainter::Antialiasing);
         painter->setBrush(QBrush(m_currentColor));
         painter->setPen(Qt::NoPen);
         if (m_LunarVisible)
@@ -683,8 +651,6 @@ void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawText(fillRect,
                       Qt::AlignCenter,
                       QString::number(m_Date.day()));
-
-    painter->save();
     painter->restore();
     //绘制农历
     if (m_LunarVisible) {
