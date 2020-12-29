@@ -44,7 +44,7 @@ public:
     //更新所有数据，显示时间和日程数据
     void updateData();
     //更新dbus数据
-    void updateDBusData(const QDate &startDate, const QDate &stopDate, const bool isGetLunar);
+    void updateDBusData();
     //更新界面搜索日程显示
     virtual void updateSearchScheduleInfo();
     //设置年显示

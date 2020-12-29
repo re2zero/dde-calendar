@@ -186,7 +186,8 @@ void CalendarManager::updateJobs()
 {
     //更新dbus数据
     ShowDateRange _showDateRange = m_dateManage->getShowDateRange();
-    m_scheduleTask->updateInfo(_showDateRange.startDate, _showDateRange.stopDate, m_showLunar);
+    //获取显示年份前后一个月数据
+    m_scheduleTask->updateInfo(_showDateRange.startDate.addDays(-42), _showDateRange.stopDate.addDays(42), m_showLunar);
 }
 
 /**

@@ -25,9 +25,8 @@ CScheduleBaseWidget::CScheduleBaseWidget(QWidget *parent)
 {
     if (m_calendarManager == nullptr) {
         m_calendarManager = CalendarManager::getInstance();
-        ShowDateRange _showDateRange = m_calendarManager->getCalendarDateDataManage()->getShowDateRange();
         //获取一年的日程信息
-        updateDBusData(_showDateRange.startDate, _showDateRange.stopDate, getShowLunar());
+        updateDBusData();
     }
     m_calendarManager->addShowWidget(this);
 }
@@ -57,11 +56,7 @@ bool CScheduleBaseWidget::setSelectDate(const QDate &selectDate, const bool isSw
             m_calendarManager->getShowWidget(i)->setYearData();
             m_calendarManager->getShowWidget(i)->updateShowDate();
         }
-        ShowDateRange _showDateRange = m_calendarManager->getCalendarDateDataManage()->getShowDateRange();
-        //如果缓存中不包含开始或结束时间则更新dbus数据
-        if (!m_calendarManager->getScheduleTask()->hasScheduleInfo(_showDateRange.startDate, _showDateRange.stopDate)) {
-            updateDBusData(_showDateRange.startDate, _showDateRange.stopDate, getShowLunar());
-        }
+        updateDBusData();
     }
     return _result;
 }
@@ -114,17 +109,24 @@ void CScheduleBaseWidget::updateData()
 }
 
 /**
- * @brief CScheduleBaseWidget::updateDBusData           更新dbus数据
+ * @brief CScheduleBaseWidget::updateDBusData           更新一年的dbus数据
  */
-void CScheduleBaseWidget::updateDBusData(const QDate &startDate, const QDate &stopDate, const bool isGetLunar)
+void CScheduleBaseWidget::updateDBusData()
 {
-    //获取日程任务
-    CScheduleTask *_task = m_calendarManager->getScheduleTask();
-    if (startDate.isValid() && stopDate.isValid()) {
-        //更新日程信息
-        _task->updateInfo(startDate, stopDate, isGetLunar);
-    } else {
-        qWarning() << "startDate or stopDate Err!";
+    ShowDateRange _showDateRange = m_calendarManager->getCalendarDateDataManage()->getShowDateRange();
+    //如果缓存中不包含开始或结束时间则更新dbus数据
+    if (!m_calendarManager->getScheduleTask()->hasScheduleInfo(_showDateRange.startDate, _showDateRange.stopDate)) {
+        //获取日程开始和结束时间，考虑切换日视图会显示显示时间之外的时间所以前后多获取2个月日程数据。
+        QDate _startDate = _showDateRange.startDate.addDays(-42);
+        QDate _stopDate = _showDateRange.stopDate.addDays(42); //getShowLunar()
+        //获取日程任务
+        CScheduleTask *_task = m_calendarManager->getScheduleTask();
+        if (_startDate.isValid() && _stopDate.isValid()) {
+            //更新日程信息
+            _task->updateInfo(_startDate, _stopDate, getShowLunar());
+        } else {
+            qWarning() << "startDate or stopDate Err!";
+        }
     }
 }
 
