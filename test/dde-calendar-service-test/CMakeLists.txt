@@ -65,11 +65,3 @@ target_link_libraries(${APP_BIN_NAME}
 
 # 设置添加gocv相关信息的输出
 set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
-
-##------------------------------ 创建'make server test'指令---------------------------------------
-
-add_custom_command(TARGET ${APP_BIN_NAME} POST_BUILD
-    COMMAND echo " =================== CREAT LCOV REPROT BEGIN ==================== "
-    COMMAND ${CMAKE_BINARY_DIR}/test/dde-calendar-service-test/${APP_BIN_NAME}
-    COMMAND echo " =================== TEST END ==================== "
-    )
