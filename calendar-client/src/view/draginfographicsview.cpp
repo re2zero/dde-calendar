@@ -42,6 +42,9 @@
 #include <QPainter>
 #include <QPainterPath>
 
+//定义拖拽日程
+ScheduleDataInfo DragInfoGraphicsView::m_DragScheduleInfo;
+
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     : DGraphicsView(parent)
     , m_Scene(new QGraphicsScene(this))

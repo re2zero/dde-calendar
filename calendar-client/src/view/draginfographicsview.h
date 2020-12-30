@@ -183,7 +183,8 @@ protected:
     QDateTime                           m_PressDate;
     QDateTime                           m_MoveDate;
     QPoint                              m_PressPos;
-    ScheduleDataInfo                    m_DragScheduleInfo;
+    //保证月，周/日全天和非全天的拖拽日程为同一个
+    static ScheduleDataInfo m_DragScheduleInfo;
     QDateTime                           m_InfoBeginTime;
     QDateTime                           m_InfoEndTime;
     QDrag *m_Drag = nullptr;

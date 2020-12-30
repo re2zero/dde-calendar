@@ -435,10 +435,13 @@ void CScheduleView::initConnection()
     connect(dshortcut, SIGNAL(activated()), this, SLOT(slotDeleteitem()));
 }
 
+/**
+ * @brief CScheduleView::slotDeleteitem     快捷键删除日程
+ */
 void CScheduleView::slotDeleteitem()
 {
+    //"delete"快捷键删除日程，因为只有一个点击选中日程所以全天或非全天只需要有一个删除就可以了
     m_graphicsView->slotDeleteItem();
-    m_alldaylist->slotDeleteItem();
 }
 
 void CScheduleView::slotCurrentScheduleDate(QDate date)

@@ -61,6 +61,7 @@ public slots:
     void slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void setDate(QDate date);
     void slotupdateSchedule();
+    //快捷键删除日程
     void slotDeleteitem();
     void slotCurrentScheduleDate(QDate date);
     void slotScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
