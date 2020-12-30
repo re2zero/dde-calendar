@@ -129,22 +129,6 @@ void CWeekView::setTheMe(int type)
     }
 }
 
-void CWeekView::switchDate(const QDate &date)
-{
-    if (date.year() >= DDECalendar::QueryEarliestYear) {
-        setSelectDate(date);
-    }
-}
-
-void CWeekView::slotprev()
-{
-    switchDate(m_selectDate.addDays(-DDEWeekCalendar::AFewDaysofWeek));
-}
-
-void CWeekView::slotnext()
-{
-    switchDate(m_selectDate.addDays(DDEWeekCalendar::AFewDaysofWeek));
-}
 void CWeekView::paintCell(QWidget *cell)
 {
     const QRect rect(0, 0, cell->width(), cell->height());
@@ -289,10 +273,12 @@ bool CWeekView::event(QEvent *e)
                 m_touchGesture.setUpdate(false);
                 switch (m_touchGesture.getMovingDir()) {
                 case touchGestureOperation::T_LEFT:
-                    slotnext();
+                    //切换下周
+                    signalBtnNext();
                     break;
                 case touchGestureOperation::T_RIGHT:
-                    slotprev();
+                    //切换上周
+                    signalBtnPrev();
                     break;
                 default:
                     break;

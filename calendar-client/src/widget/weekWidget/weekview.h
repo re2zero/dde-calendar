@@ -45,22 +45,12 @@ public:
     void setCurrent(const QDateTime &dateTime);
     //根据系统主题类型设置颜色
     void setTheMe(int type = 0);
-private:
-    void switchDate(const QDate &date);
 public slots:
     /**
      * @brief cellClicked 选择点击的日期
      * @param cell 周数所在的widget
      */
     void cellClicked(QWidget *cell);
-    /**
-     * @brief slotprev 选择上一周
-     */
-    void slotprev();
-    /**
-     * @brief slotnext 选择下一周
-     */
-    void slotnext();
 signals:
     /**
      * @brief signalsSelectDate     选择日期的信号
