@@ -323,8 +323,10 @@ void DataGetWork::queryLunarInfo(const QueryRange &queryRange)
     quint32 _month ;
     QDate _beginDate;
     QVector<FestivalInfo> _festivallist{};
-    //获取前年11月至后年2月份农历信息
-    for (int i = 0; i < 16; ++i) {
+    //获取开始时间和结束时间相差多少个月
+    const int _offsetMonth = (queryRange._stopDate.year() - queryRange._startDate.year()) * 12 + queryRange._stopDate.month() - queryRange._startDate.month();
+    //获取开始时间至结束时间所在月的农历和节假日信息
+    for (int i = 0; i <= _offsetMonth; ++i) {
         _monthInfo.clear();
         _beginDate = queryRange._startDate.addMonths(i);
         _year = static_cast<quint32>(_beginDate.year());
