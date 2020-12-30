@@ -251,11 +251,10 @@ void CWeekView::wheelEvent(QWheelEvent *event)
     emit signalIsDragging(isDragging);
     //判断是否是拖拽状态
     if (!isDragging) {
-        if (event->angleDelta().x() > 100 || event->angleDelta().y() > 100) {
+        if (event->delta() < 0) {
             //上一周
             signalBtnPrev();
-        }
-        if (event->angleDelta().x() < -100 || event->angleDelta().y() < -100) {
+        } else {
             //下一周
             signalBtnNext();
         }
