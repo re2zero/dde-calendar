@@ -111,10 +111,13 @@ QString CalendarService::GetJob(qint64 id)
  */
 QString CalendarService::GetJobs(quint32 startYear, quint32 startMonth, quint32 startDay, quint32 endYear, quint32 endMonth, quint32 endDay)
 {
+    //getjobs查询的时间为一整天,给查询的日期赋上精准的时间，和queryjobs查询保持一致
     QDate startdate(static_cast<int>(startYear), static_cast<int>(startMonth), static_cast<int>(startDay));
+    //查询的开始时间为当天的0：0
     QDateTime start(startdate);
     QDate enddate(static_cast<int>(endYear), static_cast<int>(endMonth), static_cast<int>(endDay));
-    QDateTime end(enddate);
+    //getjobs查询是以天为单位的，如果没有设置时间，则默认时间为00:00，那么查询的就是一个时间点，不符合期望，所以需要显示的设置一个当天最晚的时间点，来代表一整天的时间。
+    QDateTime end(enddate, QTime(23, 59));
     return m_scheduler->GetJobs(start, end);
 }
 
