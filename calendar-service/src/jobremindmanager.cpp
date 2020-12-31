@@ -326,6 +326,8 @@ void JobRemindManager::UpdateRemindJobs(const QList<Job> &jobs)
         it.key()->deleteLater();
         qDebug() << __FUNCTION__ << "******stop job id=" << it.value().ID;
     }
+    //清空容器
+    m_timejobmap.clear();
     foreach (Job jb, jobs) {
         //计算当前距离提醒任务还剩多长时间，单位：毫秒
         qDebug() << __FUNCTION__ << "RemindTime=" << jb.RemidTime;
