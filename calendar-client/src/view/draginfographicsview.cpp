@@ -44,6 +44,7 @@
 
 //定义拖拽日程
 ScheduleDataInfo DragInfoGraphicsView::m_DragScheduleInfo;
+bool DragInfoGraphicsView::m_hasUpdateMark = false;
 
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     : DGraphicsView(parent)
@@ -276,16 +277,19 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     case ChangeWhole: {
         if (!m_PressRect.contains(event->pos())) {
             Qt::DropAction dropaction = m_Drag->exec(Qt::MoveAction);
+            //TODO 调试发现exec后代码有时候会执行2遍，先标记下，以后研究,现判断m_Drag是否为nullptr，若为空指针则表示执行过一遍直接退出
+            if (m_Drag == nullptr)
+                return;
             Q_UNUSED(dropaction);
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
-            //如果点击日程和拖拽日程是一个日程则更新日程显示
-            if (m_PressScheduleInfo == DragInfoItem::getPressSchedule()) {
-                if (m_PressScheduleInfo.getBeginDateTime() == DragInfoItem::getPressSchedule().getBeginDateTime()
-                        && DragInfoItem::getPressSchedule().getEndDateTime() == m_PressScheduleInfo.getEndDateTime()) {
-                    updateInfo();
-                }
+            //如果拖拽结束后没有修改日程则更新下界面日程显示
+            if (m_hasUpdateMark) {
+                //更新标志设置为false
+                m_hasUpdateMark = false;
+            } else {
+                updateInfo();
             }
         }
     }
@@ -478,8 +482,9 @@ void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
 {
     emit signalViewtransparentFrame(1);
     CScheduleOperation _scheduleOperation(this);
-    if (!_scheduleOperation.changeSchedule(info, m_PressScheduleInfo)) {
-        updateInfo();
+    if (_scheduleOperation.changeSchedule(info, m_PressScheduleInfo)) {
+        //如果日程修改成功则更新更新标志
+        m_hasUpdateMark = true;
     }
     emit signalViewtransparentFrame(0);
 }

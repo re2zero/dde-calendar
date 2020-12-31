@@ -185,6 +185,7 @@ protected:
     QPoint                              m_PressPos;
     //保证月，周/日全天和非全天的拖拽日程为同一个
     static ScheduleDataInfo m_DragScheduleInfo;
+    static bool m_hasUpdateMark; //拖拽后是否需要更新显示标志
     QDateTime                           m_InfoBeginTime;
     QDateTime                           m_InfoEndTime;
     QDrag *m_Drag = nullptr;
