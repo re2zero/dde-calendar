@@ -132,7 +132,11 @@ void CScheduleDlg::setAllDay(bool flag)
     m_allDayCheckbox->setChecked(flag);
 }
 
-void CScheduleDlg::clickOkBtn()
+/**
+ * @brief CScheduleDlg::clickOkBtn      对话框确定按钮处理
+ * @return              返回true表示隐藏对话框  false表示不隐藏对话框
+ */
+bool CScheduleDlg::clickOkBtn()
 {
     ScheduleDataInfo _newSchedule = m_ScheduleDataInfo;
     QDateTime beginDateTime, endDateTime;
@@ -148,10 +152,11 @@ void CScheduleDlg::clickOkBtn()
     }
 
     if (_newSchedule.getTitleName().isEmpty()) {
-        return;
+        return false;
     }
     if (m_typeComBox->currentIndex() > 0)
         _newSchedule.setType(m_typeComBox->currentIndex() + 1);
+
     if (beginDateTime > endDateTime) {
         DDialog *prompt = new DDialog(this);
         prompt->setIcon(QIcon(":/resources/icon/warning.svg"));
@@ -159,9 +164,8 @@ void CScheduleDlg::clickOkBtn()
         prompt->setWindowFlags(prompt->windowFlags() | Qt::WindowStaysOnTopHint);
         prompt->addButton(tr("OK"), true, DDialog::ButtonNormal);
         prompt->exec();
-        return;
+        return false;
     }
-
     if (m_type == 1)
         _newSchedule.setID(0) ;
     _newSchedule.setAllDay(m_allDayCheckbox->isChecked());
@@ -220,7 +224,7 @@ void CScheduleDlg::clickOkBtn()
         _repetitionRule.setRuleType(static_cast<RepetitionRule::RRuleEndType>(m_endrepeatCombox->currentIndex()));
         if (m_endrepeatCombox->currentIndex() == 1) {
             if (m_endrepeattimes->text().isEmpty()) {
-                return;
+                return false;
             }
             _repetitionRule.setEndCount(m_endrepeattimes->text().toInt());
         } else if (m_endrepeatCombox->currentIndex() == 2) {
@@ -228,7 +232,7 @@ void CScheduleDlg::clickOkBtn()
             endrpeattime.setDate(m_endRepeatDate->date());
 
             if (beginDateTime > endrpeattime) {
-                return;
+                return false;
             }
             _repetitionRule.setEndDate(endrpeattime);
         }
@@ -245,11 +249,14 @@ void CScheduleDlg::clickOkBtn()
         //修改日程
         _scheduleOperation.changeSchedule(_newSchedule, m_ScheduleDataInfo);
     }
+    return true;
 }
 
 void CScheduleDlg::slotBtClick(int buttonIndex, QString buttonName)
 {
     Q_UNUSED(buttonName)
+    //是否隐藏对话框
+    bool _setAccept {true};
     switch (buttonIndex) {
     case 0: {
         //取消
@@ -257,13 +264,16 @@ void CScheduleDlg::slotBtClick(int buttonIndex, QString buttonName)
     }
     case 1: {
         //确定
-        clickOkBtn();
+        _setAccept = clickOkBtn();
         break;
     }
     default:
         break;
     }
-    accept();
+    //如果为false则不隐藏对话框
+    if (_setAccept) {
+        accept();
+    }
 }
 
 void CScheduleDlg::slotTextChange()

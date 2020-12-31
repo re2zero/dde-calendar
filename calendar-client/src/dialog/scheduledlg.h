@@ -46,7 +46,7 @@ public:
     void setAllDay(bool flag);
 private:
     //确定按钮处理
-    void clickOkBtn();
+    bool clickOkBtn();
 signals:
     void signalViewtransparentFrame(int type);
     void signalScheduleUpdate(int id = 0);
