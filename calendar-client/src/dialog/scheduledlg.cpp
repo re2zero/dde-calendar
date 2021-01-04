@@ -65,7 +65,6 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
 
 CScheduleDlg::~CScheduleDlg()
 {
-    emit signalViewtransparentFrame(0);
 }
 
 void CScheduleDlg::setData(const ScheduleDataInfo &info)
@@ -256,23 +255,22 @@ void CScheduleDlg::slotBtClick(int buttonIndex, QString buttonName)
 {
     Q_UNUSED(buttonName)
     //是否隐藏对话框
-    bool _setAccept {true};
     switch (buttonIndex) {
     case 0: {
         //取消
+        close();
         break;
     }
     case 1: {
         //确定
-        _setAccept = clickOkBtn();
+        m_setAccept = clickOkBtn();
+        //如果确定创建(修改)成功则关闭对话框
+        if (m_setAccept)
+            close();
         break;
     }
     default:
         break;
-    }
-    //如果为false则不隐藏对话框
-    if (_setAccept) {
-        accept();
     }
 }
 
@@ -432,6 +430,18 @@ void CScheduleDlg::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
     emit signalViewtransparentFrame(1);
+}
+
+void CScheduleDlg::closeEvent(QCloseEvent *event)
+{
+    DDialog::closeEvent(event);
+    //如果为true 这设置返回值为Accepted 否则设置为Rejected
+    if (m_setAccept) {
+        accept();
+    } else {
+        reject();
+    }
+    emit signalViewtransparentFrame(0);
 }
 
 void CScheduleDlg::changeEvent(QEvent *event)

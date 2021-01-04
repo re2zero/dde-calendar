@@ -62,6 +62,7 @@ public slots:
 protected:
     bool eventFilter(QObject *obj, QEvent *pEvent) override;
     void showEvent(QShowEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
     void changeEvent(QEvent *event) override;
 private:
     void initUI();
@@ -103,6 +104,7 @@ private:
 
     QString m_context;
     const bool m_createAllDay;
+    bool m_setAccept {false}; //是否设置返回代码为Rejected
 private:
     //日程
     ScheduleDataInfo m_ScheduleDataInfo;

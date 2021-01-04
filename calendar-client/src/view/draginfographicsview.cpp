@@ -563,7 +563,9 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             CScheduleDlg dlg(1, this);
             dlg.setData(m_DragScheduleInfo);
             //如果取消新建则主动刷新日程信息
-            if (dlg.exec() != DDialog::Accepted) {
+            dlg.exec();
+            //因dtk override了exec函数，这里使用result判断返回值类型，如果不为Accepted则刷新界面
+            if (dlg.result() != DDialog::Accepted) {
                 updateInfo();
             }
             //设置选中日程为无效日程
