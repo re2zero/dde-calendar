@@ -157,7 +157,7 @@ void CDayWindow::updateShowSchedule()
 {
     //获取一天的日程信息
     QMap<QDate, QVector<ScheduleDataInfo> > _weekScheduleInfo = m_calendarManager->getScheduleTask()->getScheduleInfo(getSelectDate(), getSelectDate());
-    //设置显示日程新
+    //设置显示日程信息
     m_scheduleView->setShowScheduleInfo(_weekScheduleInfo);
     //获取界面显示定位时间位置
     setMakeTime(_weekScheduleInfo);
@@ -172,6 +172,7 @@ void CDayWindow::updateShowSchedule()
             _monthFlag.append(false);
         }
     }
+    //设置日视图右侧月显示日期是否有日程
     m_daymonthView->setHasScheduleFlag(_monthFlag);
 }
 
