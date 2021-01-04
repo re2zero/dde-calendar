@@ -136,26 +136,18 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
     case 2: {
         m_BeginDateTime = queryJsonData->getDateTime().suggestDatetime.at(0).datetime;
         m_EndDateTime = queryJsonData->getDateTime().suggestDatetime.at(1).datetime;
-
-        if (queryJsonData->getDateTime().suggestDatetime.at(1).datetime < QDateTime::currentDateTime()) {
+        //查询时间为过期时间或者是超过半年的时间，则返回一个无效的时间
+        if (queryJsonData->getDateTime().suggestDatetime.at(1).datetime.date() < QDateTime::currentDateTime().date()
+            || queryJsonData->getDateTime().suggestDatetime.at(0).datetime.date() > QDate::currentDate().addMonths(6)) {
             //如果查询结束时间小于当前时间，设置开始结束时间为无效时间
-            m_BeginDateTime.setDate(QDate(0,0,0));
-            m_BeginDateTime.setTime(QTime(0,0,0));
-            m_EndDateTime.setDate(QDate(0,0,0));
-            m_EndDateTime.setTime(QTime(0,0,0));
+            m_BeginDateTime.setDate(QDate(0, 0, 0));
+            m_BeginDateTime.setTime(QTime(0, 0, 0));
+            m_EndDateTime.setDate(QDate(0, 0, 0));
+            m_EndDateTime.setTime(QTime(0, 0, 0));
             break;
-        } else {
-            //最多查询半年的日程
-            if (queryJsonData->getDateTime().suggestDatetime.at(1).datetime.date() > QDate::currentDate().addMonths(6)) {
-                m_EndDateTime.setDate(QDate::currentDate().addMonths(6));
-            }
-            //如果没有时间，设置为一天最后的时间
-            if (!queryJsonData->getDateTime().suggestDatetime.at(1).hasTime) {
-                m_EndDateTime.setTime(QTime(23, 59, 59));
-            }
         }
-
-        if (queryJsonData->getDateTime().suggestDatetime.at(0).datetime <= QDateTime::currentDateTime()) {
+        //对查询的开始时间进行处理
+        if (queryJsonData->getDateTime().suggestDatetime.at(0).datetime < QDateTime::currentDateTime()) {
             //开始时间小于当前时间，设置当前时间
             m_BeginDateTime = QDateTime::currentDateTime();
         } else {
@@ -166,17 +158,28 @@ void queryScheduleTask::setDateTime(QueryJsonData *queryJsonData)
                     m_BeginDateTime.setTime(QTime::currentTime());
                 else
                     //不是今天，设置一天最初的时间
-                    m_BeginDateTime.setTime(QTime(0,0,0));
+                    m_BeginDateTime.setTime(QTime(0, 0, 0));
+            }
+        }
+        //对查询的结束时间进行处理
+        if (queryJsonData->getDateTime().suggestDatetime.at(1).datetime.date() > QDate::currentDate().addMonths(6)) {
+            //如果查询的结束时间超过了半年，则设置为半年以后的时间
+            m_EndDateTime.setDate(QDate::currentDate().addMonths(6));
+            m_EndDateTime.setTime(QTime(23, 59, 59));
+        } else {
+            //如果查询的结束时间没有超过半年，并且没有具体时间，则设置为一天最晚的时间
+            if (!queryJsonData->getDateTime().suggestDatetime.at(1).hasTime) {
+                m_EndDateTime.setTime(QTime(23, 59, 59));
             }
         }
     }
     break;
     default: {
         //如果没有时间，设置开始结束时间为无效时间
-        m_BeginDateTime.setDate(QDate(0,0,0));
-        m_BeginDateTime.setTime(QTime(0,0,0));
-        m_EndDateTime.setDate(QDate(0,0,0));
-        m_EndDateTime.setTime(QTime(0,0,0));
+        m_BeginDateTime.setDate(QDate(0, 0, 0));
+        m_BeginDateTime.setTime(QTime(0, 0, 0));
+        m_EndDateTime.setDate(QDate(0, 0, 0));
+        m_EndDateTime.setTime(QTime(0, 0, 0));
     }
     break;
     }
