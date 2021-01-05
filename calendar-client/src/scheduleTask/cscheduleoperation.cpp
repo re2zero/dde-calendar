@@ -153,8 +153,15 @@ bool CScheduleOperation::deleteSchedule(const ScheduleDataInfo &scheduleInfo)
                 m_DBusManager->GetJob(scheduleInfo.getID(), newschedule);
                 //修改重复规则
                 changeRepetitionRule(newschedule, scheduleInfo);
-                //更新日程
-                m_DBusManager->UpdateJob(newschedule);
+                //如果修改后的日程为普通日程且忽略列表内包含日程开始时间则删除该日程
+                if (newschedule.getRepetitionRule().getRuleId() == RepetitionRule::RRule_NONE && newschedule.getIgnoreTime().contains(newschedule.getBeginDateTime())) {
+                    //删除日程
+                    m_DBusManager->DeleteJob(newschedule.getID());
+                } else {
+                    //更新日程
+                    m_DBusManager->UpdateJob(newschedule);
+                }
+
                 _restuleBool = true;
             } else if (msgBox.clickButton() == 2) {
                 ScheduleDataInfo newschedule;
