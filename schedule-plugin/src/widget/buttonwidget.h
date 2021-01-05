@@ -25,10 +25,10 @@ public:
         ButtonWarning,
         ButtonRecommend
     };
-
-    int addbutton(const QString &text, bool isDefault = false, ButtonType type = ButtonNormal);
-    void insertButton(int index, const QString &text, bool isDefault = false, ButtonType type = ButtonNormal);
-    void insertButton(int index, QAbstractButton *button, bool isDefault = false);
+    //将isDefault设置为true，保证有焦点时，点击enter可以选中
+    int addbutton(const QString &text, bool isDefault = true, ButtonType type = ButtonNormal);
+    void insertButton(int index, const QString &text, bool isDefault = true, ButtonType type = ButtonNormal);
+    void insertButton(int index, QAbstractButton *button, bool isDefault = true);
 
     int buttonCount() const;
 

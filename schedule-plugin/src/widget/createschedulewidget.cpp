@@ -82,7 +82,7 @@ void createSchedulewidget::updateUI()
         //是否创建日程
         QVBoxLayout *mainlayout = new QVBoxLayout();
         buttonwidget *button = new buttonwidget(this);
-        button->addbutton(CANCEL_BUTTON_STRING, false, buttonwidget::ButtonRecommend);
+        button->addbutton(CANCEL_BUTTON_STRING, true, buttonwidget::ButtonRecommend);
         button->addbutton(CONFIRM_BUTTON_STRING);
         connect(button, &buttonwidget::buttonClicked, this, &createSchedulewidget::slotsbuttonchance);
         m_scheduleitemwidget->setScheduleDtailInfo(m_scheduleInfo);
