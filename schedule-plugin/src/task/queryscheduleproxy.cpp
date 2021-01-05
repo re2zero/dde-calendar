@@ -97,6 +97,21 @@ QVector<ScheduleDtailInfo> queryScheduleProxy::querySchedule()
     case JsonData::RepeatStatus::EVEY: {
         TIME_FRAME_IN_THE_NEXT_SIX_MONTHT
         scheduleInfo = queryEveryYearSchedule(beginTime, endTime);
+        SemanticsDateTime queryDatetime = getQueryDateTime(m_queryJsonData);
+        //查询每年的日程中包含日期
+        if (queryDatetime.suggestDatetime.size() == 1) {
+            //查询的日期
+            QDate beginD = queryDatetime.suggestDatetime.at(0).datetime.date();
+            QDate endD = beginD;
+            //过滤包含查询日期的日程
+            scheduleInfo = scheduleFileterByDate(scheduleInfo, beginD, endD);
+        }
+        //获取查询的具体时间
+        TimeLimit fileterTime = getTimeFileterByTimeInfo(queryDatetime);
+        if (!fileterTime.isInvalid) {
+            //过滤包含查询时间的日程
+            scheduleInfo = scheduleFileterByTime(scheduleInfo, fileterTime.beginTime, fileterTime.endTime);
+        }
         if (!m_queryJsonData->TitleName().isEmpty()) {
             scheduleInfo = scheduleFileterByTitleName(scheduleInfo, m_queryJsonData->TitleName());
         }
@@ -193,7 +208,7 @@ QVector<ScheduleDtailInfo> queryScheduleProxy::queryNonRepeatingSchedule()
     mScheduleInfoVector.clear();
     SemanticsDateTime queryDatetime = getQueryDateTime(m_queryJsonData);
     //如果开始时间大于结束时间则退出
-    if(!timeFrameIsValid(queryDatetime)){
+    if (!timeFrameIsValid(queryDatetime)) {
         return mScheduleInfoVector;
     }
     switch (m_queryJsonData->getPropertyStatus()) {
@@ -338,6 +353,30 @@ QVector<ScheduleDtailInfo> queryScheduleProxy::scheduleFileterByTime(QVector<Sch
     return mScheduleFileter;
 }
 
+/**
+ * @brief queryScheduleProxy::scheduleFileterByDate 过滤包含查询日期的日程
+ * @param scheduleInfo 日程信息
+ * @param fileterBeginDate 查询的开始时间
+ * @param fileterEndDate 查询的结束时间
+ * @return 过滤后的日程信息
+ */
+QVector<ScheduleDtailInfo> queryScheduleProxy::scheduleFileterByDate(QVector<ScheduleDtailInfo> &scheduleInfo, QDate &fileterBeginDate, QDate &fileterEndDate)
+{
+    QVector<ScheduleDtailInfo> mScheduleFileter {};
+    //遍历查询到的日程
+    for (int i = 0; i < scheduleInfo.size(); i++) {
+        //查询到的日程的开始结束日期
+        QDate beginD = scheduleInfo.at(i).beginDateTime.date();
+        QDate endD = scheduleInfo.at(i).endDateTime.date();
+        //过滤添加包含查询日期的日程
+        if ((fileterBeginDate <= beginD && fileterEndDate >= beginD)
+            || (fileterBeginDate >= beginD && fileterBeginDate <= endD)) {
+            mScheduleFileter.append(scheduleInfo.at(i));
+        }
+    }
+    return mScheduleFileter;
+}
+
 QVector<ScheduleDtailInfo> queryScheduleProxy::scheduleFileterByTitleName(QVector<ScheduleDtailInfo> &scheduleInfo, const QString &strName)
 {
     QVector<ScheduleDtailInfo> mScheduleFileter {};
@@ -469,7 +508,7 @@ void queryScheduleProxy::setTimeIsExpired(const bool timeisExp)
 bool queryScheduleProxy::timeFrameIsValid(const SemanticsDateTime &timeInfoVect)
 {
     //如果开始时间大于结束时间则返回false
-    if(timeInfoVect.suggestDatetime.size()>1 && timeInfoVect.suggestDatetime.at(0).datetime>timeInfoVect.suggestDatetime.at(1).datetime){
+    if (timeInfoVect.suggestDatetime.size() > 1 && timeInfoVect.suggestDatetime.at(0).datetime > timeInfoVect.suggestDatetime.at(1).datetime) {
         return false;
     }
     return true;

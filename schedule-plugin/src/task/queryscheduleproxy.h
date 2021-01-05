@@ -59,6 +59,7 @@ private:
     bool checkedTimeIsIntersection(QTime &beginTime, QTime &endTime, QTime &fixbeginTime, QTime &fixendTime);
 
     QVector<ScheduleDtailInfo> scheduleFileterByTime(QVector<ScheduleDtailInfo> &scheduleInfo, QTime &fileterBeginTime, QTime &fileterEndTime);
+    QVector<ScheduleDtailInfo> scheduleFileterByDate(QVector<ScheduleDtailInfo> &scheduleInfo, QDate &fileterBeginDate, QDate &fileterEndDate);
     QVector<ScheduleDtailInfo> scheduleFileterByTitleName(QVector<ScheduleDtailInfo> &scheduleInfo, const QString &strName);
     bool weeklyIsIntersections(QDateTime &beginTime, QDateTime &endTime, QSet<int> &weeklySet);
 
