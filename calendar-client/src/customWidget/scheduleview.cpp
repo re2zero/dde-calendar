@@ -315,10 +315,13 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
     //绘制全天与非全天之间的直线
     painter.save();
-    painter.setPen(m_linecolor);
+    painter.setPen(Qt::NoPen);
     //分割线y坐标点
-    const int point_y = m_topMagin - 2;
-    painter.drawLine(0, point_y, this->width() - m_rightmagin - 2, point_y);
+    const int point_y = m_alldaylist->height() + m_alldaylist->y();
+    //设置间隔线颜色
+    painter.setBrush(m_linecolor);
+    //绘制间隔线矩阵
+    painter.drawRect(QRectF(0, point_y, this->width() - m_rightmagin - 2, 1));
     painter.restore();
     //绘制右侧背景色（否则会有一个竖线的白色背景，不协调）
     painter.setPen(Qt::NoPen);
