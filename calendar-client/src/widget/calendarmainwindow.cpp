@@ -572,8 +572,10 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &schedu
     //获取当前视图编号
     CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>(m_stackWidget->currentWidget());
     if (_showWidget) {
+        //如果日程开始时间年份与选择时间年份不一样则切换年份显示
+        bool changeYear = _showWidget->getSelectDate().year() != scheduleInfo.getBeginDateTime().date().year();
         //设置选择时间
-        if (_showWidget->setSelectDate(scheduleInfo.getBeginDateTime().date())) {
+        if (_showWidget->setSelectDate(scheduleInfo.getBeginDateTime().date(), changeYear)) {
             //更新显示数据
             _showWidget->updateData();
             //设置年份信息显示
