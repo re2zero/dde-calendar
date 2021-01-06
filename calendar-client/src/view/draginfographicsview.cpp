@@ -485,6 +485,9 @@ void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
     if (_scheduleOperation.changeSchedule(info, m_PressScheduleInfo)) {
         //如果日程修改成功则更新更新标志
         m_hasUpdateMark = true;
+    } else {
+        //如果取消更新则主动更新显示
+        updateInfo();
     }
     emit signalViewtransparentFrame(0);
 }
