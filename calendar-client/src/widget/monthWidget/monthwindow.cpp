@@ -404,6 +404,8 @@ void CMonthWindow::slotViewSelectDate(const QDate &date)
 {
     slotScheduleHide();
     if (setSelectDate(date, true)) {
+        //更新界面
+        updateData();
         emit signalSwitchView(3);
     }
 }

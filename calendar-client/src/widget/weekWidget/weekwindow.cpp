@@ -397,6 +397,8 @@ void CWeekWindow::slotIsDragging(bool &isDragging)
 void CWeekWindow::slotViewSelectDate(const QDate &date)
 {
     if (setSelectDate(date)) {
+        //更加界面
+        updateData();
         emit signalSwitchView(3);
     }
 }
