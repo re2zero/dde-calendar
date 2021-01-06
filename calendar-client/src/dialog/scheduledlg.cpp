@@ -157,7 +157,8 @@ bool CScheduleDlg::clickOkBtn()
     if (_newSchedule.getTitleName().isEmpty()) {
         return false;
     }
-    if (m_typeComBox->currentIndex() > 0)
+    //如果类型选项不为负数则设置日程类型
+    if (m_typeComBox->currentIndex() >= 0)
         _newSchedule.setType(m_typeComBox->currentIndex() + 1);
 
     if (beginDateTime > endDateTime) {
