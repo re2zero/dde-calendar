@@ -61,6 +61,8 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
 
     setFocusPolicy(Qt::WheelFocus);
     setFixedSize(438, 470);
+    //焦点设置到输入框
+    m_textEdit->setFocus();
 }
 
 CScheduleDlg::~CScheduleDlg()
@@ -84,6 +86,8 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
 
     slotallDayStateChanged(info.getAllDay());
     initRmindRpeatUI();
+    //光标移动到文末
+    m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
 }
 
 void CScheduleDlg::setDate(const QDateTime &date)
