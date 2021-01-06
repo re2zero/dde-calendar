@@ -36,6 +36,8 @@ IconDFrame::IconDFrame(QWidget *parent)
     , m_Monthrenderer(new QSvgRenderer())
     , m_backgroundrenderer(new QSvgRenderer())
 {
+    //设置接受tab切换
+    setFocusPolicy(Qt::TabFocus);
 }
 
 IconDFrame::~IconDFrame()
@@ -67,17 +69,50 @@ void IconDFrame::paintEvent(QPaintEvent *event)
     DFrame::paintEvent(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
+    //绘制tab切换focus效果
+    if (m_tabFocusIn) {
+        QPen pen;
+        //设置边框为2
+        pen.setWidth(2);
+        //设置边框颜色为活动色
+        pen.setColor(DApplicationHelper::instance()->applicationPalette().highlight().color());
+        painter.setPen(pen);
+        //设置边框矩形，由于插件widget会被助手覆盖一个像素，所以需要减去一个像素的外边
+        QRect _showRect(1, 1, this->width() - 2, this->height() - 2);
+        painter.drawRoundedRect(_showRect, 8, 8);
+    }
+    //绘制图标
     paintPixmap(painter);
+    //绘制标题
     paintTitle(painter);
+    painter.end();
 }
 
 void IconDFrame::hideEvent(QHideEvent *event)
 {
     Q_UNUSED(event);
-    if(isEnabled()){
+    if (isEnabled()) {
         //如果窗口为启用状态则触发窗口隐藏信号
         emit widgetIsHide();
     }
+}
+
+void IconDFrame::focusInEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event);
+    //设置focus标志为true
+    m_tabFocusIn = true;
+    //刷新界面
+    update();
+}
+
+void IconDFrame::focusOutEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event);
+    //设置focus标志为false
+    m_tabFocusIn = false;
+    //刷新界面
+    update();
 }
 
 void IconDFrame::setTheMe(const int type)

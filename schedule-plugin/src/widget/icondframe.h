@@ -44,6 +44,9 @@ private:
 protected:
     void paintEvent(QPaintEvent *event) override;
     void hideEvent(QHideEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
+
 private:
     void setTheMe(const int type);
     void paintPixmap(QPainter &painter);
@@ -65,6 +68,7 @@ private:
 
     QColor m_TitleColor;
     QFont m_TitleFont;
+    bool m_tabFocusIn {false}; //获取tab焦点标记
 };
 
 #endif // ICONDFRAME_H
