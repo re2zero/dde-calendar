@@ -573,7 +573,7 @@ void CAllDayEventWeekView::paintBackground(QPainter &painter)
     const qreal XPointOffset = 1.5;
     // 分割线颜色
     QColor m_linecolor = "#000000";
-    m_linecolor.setAlphaF(0.1);
+    m_linecolor.setAlphaF(0.05);
     if (m_TotalDay > 1) {
         painter.save();
         painter.setPen(Qt::SolidLine);

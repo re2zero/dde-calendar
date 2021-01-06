@@ -100,7 +100,8 @@ void CGraphicsView::setTheMe(int type)
         m_weekcolor = "#00429A";
         m_weekcolor.setAlphaF(0.05);
         QColor linecolor = "#000000";
-        linecolor.setAlphaF(0.1);
+        //ui图透明度为5%
+        linecolor.setAlphaF(0.05);
         m_LRPen.setColor(linecolor);
         m_TBPen.setColor(linecolor);
         m_LRPen.setStyle(Qt::SolidLine);
@@ -109,7 +110,8 @@ void CGraphicsView::setTheMe(int type)
         m_weekcolor = "#4F9BFF";
         m_weekcolor.setAlphaF(0.1);
         QColor linecolor = "#000000";
-        linecolor.setAlphaF(0.1);
+        //ui图透明度为5%
+        linecolor.setAlphaF(0.05);
         m_LRPen.setColor(linecolor);
         m_TBPen.setColor(linecolor);
     }
@@ -598,13 +600,10 @@ void CGraphicsView::paintBackground(QPainter &painter)
     const qreal intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
     // 每天X坐标点偏移
     const qreal XPointOffset = 1.5;
-    // 分割线颜色
-    QColor m_linecolor = "#000000";
-    m_linecolor.setAlphaF(0.1);
     if (m_TotalDay > 1) {
         painter.save();
-        painter.setPen(Qt::SolidLine);
-        painter.setPen(m_linecolor);
+        //设置分割颜色
+        painter.setPen(m_LRPen);
         //绘制分割线
         for (int i = 1; i < 7; ++i) {
             painter.drawLine(QPointF(i * intenval + m_leftMagin + XPointOffset, 1),
