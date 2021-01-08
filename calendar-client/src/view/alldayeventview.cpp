@@ -444,6 +444,8 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
     m_editType = edittype;
     updateItemHeightByFontSize();
     m_coorManage = new CScheduleCoorManage;
+    //设置创建名称
+    setBuildName("ALL VIEW");
 }
 
 CAllDayEventWeekView::~CAllDayEventWeekView()

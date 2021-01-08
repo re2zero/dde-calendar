@@ -69,6 +69,8 @@ CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
 
     connect(this->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChangedSlot()));
     connect(this->verticalScrollBar(), &QScrollBar::sliderPressed, this, &CGraphicsView::slotScrollBar);
+    //设置创建名称
+    setBuildName("PART TIME VIEW");
 
     //如果为周视图
     if (m_viewType == 0) {

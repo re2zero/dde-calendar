@@ -43,6 +43,8 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
     QShortcut *shortcut = new QShortcut(parent);
     shortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(shortcut, &QShortcut::activated, this,  &CMonthGraphiview::slotDeleteItem);
+    //设置创建名称
+    setBuildName("MONTH VIEW");
 
     m_MonthScheduleView = new CMonthScheduleView(this, m_Scene);
     connect(this, &CMonthGraphiview::signalFontChange, m_MonthScheduleView, &CMonthScheduleView::slotFontChange);
