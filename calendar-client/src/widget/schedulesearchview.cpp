@@ -458,6 +458,8 @@ void CScheduleSearchView::updateDateShow()
                 offset = d;
                 topdate = _iterator.key();
             }
+            //排序
+            std::sort(_showInfo.begin(), _showInfo.end());
             m_showData[_iterator.key()] = _showInfo;
         }
     }
