@@ -261,32 +261,42 @@ bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
         if (msgBox.clickButton() == 0) {
             _result = false;
         } else if (msgBox.clickButton() == 1) {
+            // 根据id获取日程并修改
+            ScheduleDataInfo updatescheduleData;
+            // 获取原始数据
+            m_DBusManager->GetJob(oldinfo.getID(), updatescheduleData);
+            //修改重复规则
+            changeRepetitionRule(updatescheduleData, newinfo);
+            //如果修改后的日程为普通日程且忽略列表内包含日程开始时间则删除该日程
+            if (updatescheduleData.getRepetitionRule().getRuleId() == RepetitionRule::RRule_NONE && updatescheduleData.getIgnoreTime().contains(updatescheduleData.getBeginDateTime())) {
+                //删除日程
+                m_DBusManager->DeleteJob(updatescheduleData.getID());
+            } else {
+                //更新日程
+                m_DBusManager->UpdateJob(updatescheduleData);
+            }
+            //创建日程
             ScheduleDataInfo newschedule = newinfo;
-            newschedule.setRecurID(0);
-            newschedule.setID(0);
+            //获取重复规则
             RepetitionRule _rule = newschedule.getRepetitionRule();
             if (_rule.getRuleType() == 1) {
-                _rule.setEndCount(qAbs(_rule.getEndCount() - newinfo.getRecurID()));
+                //更新重复规则
+                _rule.setEndCount(qAbs(_rule.getEndCount() - newschedule.getRecurID()));
                 if (_rule.getEndCount() < 1) {
                     _rule.setRuleId(RepetitionRule::RRuleID::RRule_NONE);
                     _rule.setRuleType(RepetitionRule::RRuleEndType::RRuleType_NEVER);
                 }
             }
+            newschedule.setRecurID(0);
+            newschedule.setID(0);
             newschedule.setRepetitionRule(_rule);
-            // 新建日程
-            m_DBusManager->CreateJob(newschedule);
-            // 根据id获取日程并修改
-            ScheduleDataInfo updatescheduleData;
-            m_DBusManager->GetJob(oldinfo.getID(), updatescheduleData);
-            //修改重复规则
-            changeRepetitionRule(updatescheduleData, oldinfo);
-            //更新日程
-            _result = m_DBusManager->UpdateJob(updatescheduleData);
+            //创建新日程
+            _result = m_DBusManager->CreateJob(newschedule);
         } else if (msgBox.clickButton() == 2) {
             _result = changeOnlyInfo(newinfo, oldinfo);
         }
     }
-    return  false;
+    return _result;
 }
 
 /**
