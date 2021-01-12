@@ -45,10 +45,15 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     m_widget = new createSchedulewidget();
     //设置日程时间
     setDateTime(createJsonData);
-    qDebug() << "beginDateTimeIsinHalfYear"
-             << beginDateTimeIsinHalfYear()
-             << "ShouldEndSession"
-             << createJsonData->ShouldEndSession();
+    if (m_begintime > m_endtime) {
+        //日程的开始时间大于结束时间，
+        qFatal("error: schedule begindatetime is after the enddatetime!");
+    }
+
+    qInfo() << "beginDateTimeIsinHalfYear"
+            << beginDateTimeIsinHalfYear()
+            << "ShouldEndSession"
+            << createJsonData->ShouldEndSession();
     //判断日程开始时间是否在半年以内
     if (beginDateTimeIsinHalfYear() || m_begintime.date() == QDate::currentDate()) {
         //判断多伦标志
@@ -79,14 +84,34 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
 
 void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
 {
-    if (createJsonData->getDateTime().suggestDatetime.size() > 0) {
-        //用户有输入时间，则设置开始时间
+    //助手返回时间的个数
+    int DateTimeSize = createJsonData->getDateTime().suggestDatetime.size();
+    if (DateTimeSize <= 0) {
+        //如果没有时间，日程开始时间设置为当前时间
+        m_begintime = QDateTime::currentDateTime();
+        m_endtime = m_begintime.addSecs(60 * 60);
+        qInfo() << "m_begintime = " << m_begintime << ", m_endtime = " << m_endtime;
+        return;
+    }
+    switch (DateTimeSize) {
+    case 1: {
+        //只有一个时间，为日程开始时间，结束时间为开始时间一个小时后
         m_begintime = createJsonData->getDateTime().suggestDatetime.at(0).datetime;
         if (!createJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
-            //如果没有time，设置当前time
             m_begintime.setTime(QTime::currentTime());
         }
-        if (createJsonData->getDateTime().suggestDatetime.size() == 2 && m_begintime < QDateTime::currentDateTime()) {
+        m_endtime = m_begintime.addSecs(60 * 60);
+    } break;
+    case 2: {
+        //有两个时间
+        m_begintime = createJsonData->getDateTime().suggestDatetime.at(0).datetime;
+        m_endtime = createJsonData->getDateTime().suggestDatetime.at(1).datetime;
+        //开始时间没有具体时间点，设置为当前时间点
+        if (!createJsonData->getDateTime().suggestDatetime.at(0).hasTime) {
+            m_begintime.setTime(QTime::currentTime());
+        }
+        //开始时间为当天的，如果开始日期小于当天不做处理，
+        if (m_begintime.date() == QDateTime::currentDateTime().date()) {
             if (m_begintime.time() > QTime::currentTime()) {
                 //跨天日程，如果日程开始时间大于当前时间，则开始时间为当天
                 m_begintime.setDate(m_begintime.date().addDays(m_begintime.date().daysTo(QDate::currentDate())));
@@ -95,22 +120,16 @@ void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
                 m_begintime.setDate(m_begintime.date().addDays(m_begintime.date().daysTo(QDate::currentDate()) + 1));
             }
         }
-    } else {
-        //用户没有输入时间，则日程开始时间设置为当前时间
-        m_begintime = QDateTime::currentDateTime();
-    }
-    if (createJsonData->getDateTime().suggestDatetime.size() <= 1) {
-        //如果只有开始时间，则结束时间默认为开始时间后一个小时
-        m_endtime = m_begintime.addSecs(60 * 60);
-    } else if (createJsonData->getDateTime().suggestDatetime.size() == 2) {
-        //如果有结束时间，则设置结束时间
-        m_endtime = createJsonData->getDateTime().suggestDatetime.at(1).datetime;
         if (!createJsonData->getDateTime().suggestDatetime.at(1).hasTime) {
             //如果用户没有输入结束时间，则默认为当天23：59：59
             m_endtime.setTime(QTime(23, 59, 59));
         }
+    } break;
+    default: {
+        createJsonData->setShouldEndSession(false);
+    } break;
     }
-    qDebug() << "m_begintime = " << m_begintime << ", m_endtime = " << m_endtime;
+    qInfo() << "m_begintime = " << m_begintime << ", m_endtime = " << m_endtime;
 }
 
 void createScheduleTask::setScheduleTitleName(CreateJsonData *createJsonData)
@@ -133,8 +152,9 @@ QVector<ScheduleDtailInfo> createScheduleTask::createScheduleWithRepeatStatus(Cr
     switch (createJsonData->getRepeatStatus()) {
     case CreateJsonData::NONE: {
         //非重复日程，不能创建过期日程
-        if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6))
+        if (m_begintime > QDateTime::currentDateTime() && m_begintime < QDateTime::currentDateTime().addMonths(6)) {
             schedule = getNotRepeatDaySchedule();
+        }
     }
     break;
     case CreateJsonData::EVED:
@@ -173,11 +193,6 @@ QVector<ScheduleDtailInfo> createScheduleTask::createScheduleWithRepeatStatus(Cr
 void createScheduleTask::creareScheduleUI(QVector<ScheduleDtailInfo> schedule)
 {
     if (!schedule.isEmpty()) {
-        //日程信息不为空，创建插件
-        qDebug() << "creatUI"
-                 << getFirstSchedule(schedule).beginDateTime
-                 << getFirstSchedule(schedule).endDateTime
-                 << m_begintime.daysTo(m_endtime);
         //设置日程时间
         setDateTimeAndGetSchedule(getFirstSchedule(schedule).beginDateTime, getFirstSchedule(schedule).endDateTime);
         //设置dbus
@@ -185,6 +200,8 @@ void createScheduleTask::creareScheduleUI(QVector<ScheduleDtailInfo> schedule)
         m_widget->scheduleEmpty(true);
         //更新界面
         m_widget->updateUI();
+    } else {
+        qFatal("Creat ScheduleInfo is Empty!");
     }
 }
 
@@ -270,13 +287,13 @@ QVector<ScheduleDtailInfo> createScheduleTask::getEveryWeekSchedule(QVector<int>
 {
     QVector<QDateTime> beginDateTime {};
     QVector<ScheduleDtailInfo> schedule;
-    //每天重复
-    if (everyDayState)
-        return getEveryDaySchedule();
     //设置重复类型
     m_widget->setRpeat(3);
     //获取解析时间
     beginDateTime = analysisEveryWeekDate(dateRange);
+    //每天重复
+    if (everyDayState)
+        return getEveryDaySchedule();
 
     for (int i = 0; i < beginDateTime.count(); i++) {
         //设置日程结束时间
@@ -294,13 +311,13 @@ QVector<ScheduleDtailInfo> createScheduleTask::getEveryMonthSchedule(QVector<int
 {
     QVector<QDateTime> beginDateTime {};
     QVector<ScheduleDtailInfo> schedule;
-    //每天重复
-    if (everyDayState)
-        return getEveryDaySchedule();
     //设置重复类型
     m_widget->setRpeat(4);
     //获取解析日期
     beginDateTime = analysisEveryMonthDate(dateRange);
+    //每天重复
+    if (everyDayState)
+        return getEveryDaySchedule();
 
     for (int i = 0; i < beginDateTime.count(); i++) {
         //设置日程结束时间
@@ -453,7 +470,7 @@ QVector<QDateTime> createScheduleTask::getTwoWeekNumDate(int firstWeekNum, int s
             return beginDateTime;
         } else {
             //除去每天的其他情况
-            firstWeekNumGreaterThanSecondButEveryDay(firstWeekNum, secondWeekNum);
+            beginDateTime = firstWeekNumGreaterThanSecondButEveryDay(firstWeekNum, secondWeekNum);
         }
     }
 
@@ -507,7 +524,7 @@ QVector<QDateTime> createScheduleTask::firstWeekNumGreaterThanSecondButEveryDay(
         }
     } else if (currentDayofWeek < firstWeekNum && currentDayofWeek > secondWeekNum) {
         //今天所在周数小于开始周数，大于结束周数
-        beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(firstWeekNum - currentDayofWeek),firstWeekNum, 7));
+        beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(firstWeekNum - currentDayofWeek), firstWeekNum, 7));
         beginDateTime.append(getWeekAllDateTime(QDate::currentDate().addDays(1 + 7 - currentDayofWeek), 1, secondWeekNum));
     } else if (currentDayofWeek <= secondWeekNum) {
         //今天所在周数小于等于结束周数
@@ -591,7 +608,7 @@ QVector<QDateTime> createScheduleTask::analysisWorkDayDate()
 QDate createScheduleTask::getValidDate(QDate viewDate, int viewDateDay)
 {
     //设置一个无效时间
-    QDate validDate(QDate(0,0,0));
+    QDate validDate(QDate(0, 0, 0));
     //初始化年
     int month = viewDate.month();
     //判断未来半年的时间是否合法
@@ -683,13 +700,13 @@ QVector<QDateTime> createScheduleTask::getOneMonthNumDate(int firstMonthNum)
     if (currentDayofMonth < firstMonthNum) {
         //今天小于开始日期
         //获取合法日期
-        QDate validDate = getValidDate(QDate::currentDate(),firstMonthNum);
+        QDate validDate = getValidDate(QDate::currentDate(), firstMonthNum);
         //日期合法，设置日期
         if (validDate.isValid())
             m_begintime.setDate(validDate);
     } else if (currentDayofMonth > firstMonthNum) {
         //获取合法日期
-        QDate validDate = getValidDate(QDate::currentDate().addMonths(1),firstMonthNum);
+        QDate validDate = getValidDate(QDate::currentDate().addMonths(1), firstMonthNum);
         //日期合法，设置日期
         if (validDate.isValid())
             m_begintime.setDate(validDate);
@@ -714,7 +731,7 @@ QVector<QDateTime> createScheduleTask::getTwoMonthNumDate(int firstMonthNum, int
 
     if (firstMonthNum == secondMonthNum) {
         //开始日期等于结束日期，为每天
-        getEveryDaySchedule();
+        everyDayState = true;
         return beginDateTime;
     } else if (firstMonthNum < secondMonthNum) {
         //开始日期小于结束日期
@@ -723,7 +740,7 @@ QVector<QDateTime> createScheduleTask::getTwoMonthNumDate(int firstMonthNum, int
         //开始日期大于结束日期
         if (firstMonthNum - secondMonthNum == 1) {
             //开始日期和结束日期差一天，为每天
-            getEveryDaySchedule();
+            everyDayState = true;
             return beginDateTime;
         } else {
             //开始日期大于结束日期的其他情况
@@ -784,7 +801,7 @@ QVector<QDateTime> createScheduleTask::getMonthFrontPartDateTime(QDate BeginDate
     int currentDayofMonth = QDate::currentDate().day();
     //包含今天
     if (containsToday)
-        currentDayofMonth +=1;
+        currentDayofMonth += 1;
     //设置日期
     for (int i = firstMonthNum; i < currentDayofMonth; i++) {
         //获取合法日期
@@ -805,7 +822,7 @@ QVector<QDateTime> createScheduleTask::getMonthBackPartDateTime(QDate BeginDate,
     int currentDayofMonth = QDate::currentDate().day();
     //不包含今天
     if (!containsToday)
-        currentDayofMonth +=1;
+        currentDayofMonth += 1;
     //设置日期
     for (int i = currentDayofMonth; i < secondMonthNum + 1; i++) {
         //获取合法日期
