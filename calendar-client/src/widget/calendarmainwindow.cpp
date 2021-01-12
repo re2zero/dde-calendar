@@ -29,6 +29,7 @@
 #include "schedulesearchview.h"
 #include "cdynamicicon.h"
 #include "constants.h"
+#include "scheduledlg.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -384,6 +385,13 @@ void Calendarmainwindow::initUI()
     titlebar->setFixedHeight(50);
     titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
     titlebar->setCustomWidget(m_searchEdit, true);
+    //新建日程快捷按钮
+    m_newScheduleBtn = new DToolButton(this);
+    DStyle style;
+    m_newScheduleBtn->setFixedSize(36, 36);
+    //设置+
+    m_newScheduleBtn->setIcon(style.standardIcon(DStyle::SP_IncreaseElement));
+    titlebar->addWidget(m_newScheduleBtn, Qt::AlignRight);
 
     m_stackWidget = new AnimationStackedWidget();
     m_stackWidget->setObjectName("StackedWidget");
@@ -459,6 +467,8 @@ void Calendarmainwindow::initConnection()
     connect(m_yearwindow, &CYearWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
     connect(m_monthWindow, &CMonthWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
     connect(m_weekWindow, &CWeekWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
+    //按钮关联新建日程
+    connect(m_newScheduleBtn, &DToolButton::clicked, this, &Calendarmainwindow::slotNewSchedule);
 }
 
 /**
@@ -669,6 +679,20 @@ void Calendarmainwindow::slotSwitchView(const int viewIndex)
     default:
         break;
     }
+}
+
+/**
+ * @brief Calendarmainwindow::slotNewSchedule       全局新建日程
+ */
+void Calendarmainwindow::slotNewSchedule()
+{
+    //设置日程开始时间
+    QDateTime _beginTime(m_yearwindow->getSelectDate(), QTime::currentTime());
+    //新建日程对话框
+    CScheduleDlg _scheduleDig(1, this, false);
+    //设置开始时间
+    _scheduleDig.setDate(_beginTime);
+    _scheduleDig.exec();
 }
 
 void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)

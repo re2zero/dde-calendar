@@ -27,6 +27,7 @@
 #include <DFrame>
 #include <DMainWindow>
 #include <DSearchEdit>
+#include <DToolButton>
 
 #include <QStackedLayout>
 #include <QPropertyAnimation>
@@ -88,6 +89,9 @@ private slots:
     void slotSetButtonBox();
     //切换视图
     void slotSwitchView(const int viewIndex);
+    //新建日程
+    void slotNewSchedule();
+
 private:
     DLabel *m_icon = nullptr;
     AnimationStackedWidget *m_stackWidget = nullptr;
@@ -111,6 +115,7 @@ private:
     int m_scheduleSearchViewMaxWidth;
     QPropertyAnimation *m_animation = nullptr;
     QTimer *m_currentDateUpdateTimer = nullptr;
+    DToolButton *m_newScheduleBtn {nullptr}; //全局的新建日程按钮
 };
 
 #endif // CALENDARMAINWINDOW_H
