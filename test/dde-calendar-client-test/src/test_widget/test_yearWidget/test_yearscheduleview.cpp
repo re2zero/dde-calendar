@@ -74,7 +74,7 @@ TEST_F(test_yearscheduleview, setTimeC)
     xYearScheduleItem->setTimeC(tcolor, font);
 }
 
-QVector<ScheduleDataInfo> getScheduleDataInfo()
+QVector<ScheduleDataInfo> test_yearscheduleview::getScheduleDataInfo()
 {
     QVector<ScheduleDataInfo> scheduleDate {};
     ScheduleDataInfo schedule1, schedule2, schedule3, schedule4, schedule5, scheduleFes;
@@ -136,7 +136,7 @@ QVector<ScheduleDataInfo> getScheduleDataInfo()
     return scheduleDate;
 }
 
-QVector<ScheduleDataInfo> getScheduleDateAndTitle()
+QVector<ScheduleDataInfo> test_yearscheduleview::getScheduleDateAndTitle()
 {
     QVector<ScheduleDataInfo> scheduleDate {};
     ScheduleDataInfo s11, s12;

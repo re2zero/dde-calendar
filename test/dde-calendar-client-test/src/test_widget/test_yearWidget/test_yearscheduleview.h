@@ -34,6 +34,10 @@ protected:
     CYearScheduleItem *xYearScheduleItem = nullptr;
     CYearScheduleView *cYearScheduleView = nullptr;
     CYearScheduleOutView *zYearScheduleOutView = nullptr;
+
+public:
+    QVector<ScheduleDataInfo> getScheduleDataInfo();
+    QVector<ScheduleDataInfo> getScheduleDateAndTitle();
 };
 
 #endif // TEST_YEARSCHEDULEVIEW_H
