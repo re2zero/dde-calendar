@@ -117,15 +117,22 @@ void Calendarmainwindow::slotCurrentDateUpdate()
 {
     //获取当前时间
     const QDateTime _currentDate = QDateTime::currentDateTime();
+    //设置当前时间
+    m_DayWindow->setCurrentDateTime(_currentDate);
     //如果当前日期与动态图标日期不一样则重新生成动态图标
     if (_currentDate.date() != CDynamicIcon::getInstance()->getDate()) {
         CDynamicIcon::getInstance()->setDate(QDate::currentDate());
         CDynamicIcon::getInstance()->setIcon();
+        //更新视图数据显示
+        for (int i = 0; i < m_stackWidget->count(); ++i) {
+            CScheduleBaseWidget *widget = qobject_cast<CScheduleBaseWidget *>(m_stackWidget->widget(i));
+            widget->updateData();
+        }
+        //设置年视图年数据时间显示
+        m_yearwindow->setYearData();
         //更新月视图当前周横线绘制
         m_monthWindow->setCurrentDateTime(_currentDate);
     }
-    //设置当前时间
-    m_DayWindow->setCurrentDateTime(_currentDate);
 }
 
 /**
@@ -293,7 +300,8 @@ void Calendarmainwindow::initUI()
     this->setAccessibleName("MainWindow");
     this->setAccessibleDescription("This is the main window");
     m_currentDateUpdateTimer = new QTimer(this);
-    m_currentDateUpdateTimer->start(3000);
+    //1.5秒更新当前时间
+    m_currentDateUpdateTimer->start(1500);
 
     QFrame *titleframe = new QFrame(this);
     titleframe->setAccessibleName("TitleFrame");

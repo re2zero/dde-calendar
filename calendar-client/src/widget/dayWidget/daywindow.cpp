@@ -109,10 +109,8 @@ void CDayWindow::setCurrentDateTime(const QDateTime &currentDate)
 {
     //设置当前时间
     CScheduleBaseWidget::setCurrentDateTime(currentDate);
-    //如果选择日期为当前日期,则更新当前时间
-    if (getSelectDate() == currentDate.date()) {
-        m_scheduleView->setCurrentDate(getCurrendDateTime());
-    }
+    //更新当前时间
+    m_scheduleView->setCurrentDate(getCurrendDateTime());
 }
 
 /**
