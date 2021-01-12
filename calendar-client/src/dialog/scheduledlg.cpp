@@ -73,7 +73,16 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
 {
     m_ScheduleDataInfo = info;
     m_typeComBox->setCurrentIndex(info.getType() - 1);
-    m_textEdit->setPlainText(info.getTitleName());
+    if (m_type == 1) {
+        //如果为新建则设置为提示信息
+        m_textEdit->setPlaceholderText(info.getTitleName());
+    } else {
+        //如果为编辑则显示
+        m_textEdit->setPlainText(info.getTitleName());
+        //光标移动到文末
+        m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+    }
+
     m_beginDateEdit->setDate(info.getBeginDateTime().date());
     m_beginTimeEdit->setTime(info.getBeginDateTime().time());
     m_endDateEdit->setDate(info.getEndDateTime().date());
@@ -86,8 +95,6 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
 
     slotallDayStateChanged(info.getAllDay());
     initRmindRpeatUI();
-    //光标移动到文末
-    m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
 }
 
 void CScheduleDlg::setDate(const QDateTime &date)
@@ -95,16 +102,8 @@ void CScheduleDlg::setDate(const QDateTime &date)
     m_currentDate = date;
     int hours = date.time().hour();
     int minnutes = 0;
-
-    if (date.date() == QDate::currentDate()) {
-        minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
-    } else {
-        int minnutes = date.time().minute() % DDECalendar::QuarterOfAnhourWithMinute;
-        if (minnutes != 0) {
-            minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
-        }
-    }
-
+    //时间向后取整
+    minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
     if (minnutes == 60) {
         if (hours + 1 == 24) {
             m_currentDate.setTime(QTime(0, 0));
@@ -115,7 +114,6 @@ void CScheduleDlg::setDate(const QDateTime &date)
     } else {
         m_currentDate.setTime(QTime(hours, minnutes));
     }
-
     m_beginDateEdit->setDate(m_currentDate.date());
     m_beginTimeEdit->setTime(m_currentDate.time());
     QDateTime datetime = m_currentDate.addSecs(3600);
@@ -417,15 +415,6 @@ bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
             }
             if (keyEvent->key() == Qt::Key_Tab)
                 return true;
-        }
-        if (m_type == 1) {
-            if (pEvent->type() == QEvent::FocusIn) {
-                //清空编辑框默认占位符
-                m_textEdit->setPlaceholderText("");
-            } else if (pEvent->type() == QEvent::FocusOut) {
-                //设置编辑框默认占位符
-                m_textEdit->setPlaceholderText(tr("New event"));
-            }
         }
     }
     return QDialog::eventFilter(obj, pEvent);
