@@ -163,11 +163,6 @@ CYearScheduleView::~CYearScheduleView()
 {
 }
 
-void CYearScheduleView::setSoloDay(QString soloday)
-{
-    m_soloDay = soloday;
-}
-
 bool YScheduleDateThan(const ScheduleDataInfo &s1, const ScheduleDataInfo &s2)
 {
     QDate bdate1 = s1.getBeginDateTime().date();
@@ -246,13 +241,12 @@ void CYearScheduleView::setData(QVector<ScheduleDataInfo> &vListData)
 void CYearScheduleView::clearData()
 {
     m_vlistData.clear();
-    m_soloDay.clear();
     return;
 }
 
 int CYearScheduleView::showWindow()
 {
-    if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
+    if (m_vlistData.isEmpty()) {
         setFixedSize(130, 45);
     } else {
         setFixedSize(240, 180);
@@ -290,13 +284,6 @@ void CYearScheduleView::setTheMe(int type)
     }
 }
 
-void CYearScheduleView::setDtype(int type, int arrowheight)
-{
-    m_dtype = type;
-    m_arrowheight = arrowheight;
-    update();
-}
-
 void CYearScheduleView::setCurrentDate(QDate cdate)
 {
     m_currentDate = cdate;
@@ -316,58 +303,19 @@ void CYearScheduleView::updateDateShow()
 {
     int sviewNum = 0;
 
-    if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty()) {
-        if (!m_soloDay.isEmpty()) {
-            if (m_vlistData.size() > 4) {
-                sviewNum = DDEYearCalendar::YearScheduleListMaxcount;
-            } else {
-                sviewNum = m_vlistData.size() + 1;
-            }
+    if (!m_vlistData.isEmpty()) {
+        if (m_vlistData.size() > DDEYearCalendar::YearScheduleListMaxcount) {
+            sviewNum = DDEYearCalendar::YearScheduleListMaxcount;
         } else {
-            if (m_vlistData.size() > DDEYearCalendar::YearScheduleListMaxcount) {
-                sviewNum = DDEYearCalendar::YearScheduleListMaxcount;
-            } else {
-                sviewNum = m_vlistData.size();
-            }
+            sviewNum = m_vlistData.size();
         }
     }
 
-    if (!m_soloDay.isEmpty() || !m_vlistData.isEmpty())
+    if (!m_vlistData.isEmpty())
         setFixedSize(240, 45 + (sviewNum - 1) * 29);
     update();
 
     return;
-}
-
-void CYearScheduleView::createItemWidget(ScheduleDataInfo info, int type)
-{
-    ScheduleDataInfo &gd = info;
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.getType());
-    CYearScheduleItem *gwi = new CYearScheduleItem();
-    QFont font;
-
-    font.setWeight(QFont::Medium);
-    font.setPixelSize(DDECalendar::FontSizeFourteen);
-    QColor scolor = gdcolor.Purecolor;
-    scolor.setAlphaF(1.0);
-
-    if (type == 0)
-        gwi->setStateColor(gdcolor.splitColor);
-    else {
-        gwi->setStateColor(m_solocolor);
-    }
-    gwi->setText(m_bttextcolor, font);
-    font.setPixelSize(DDECalendar::FontSizeTwelve);
-    gwi->setTimeC(m_btimecolor, font);
-    gwi->setFixedSize(m_gradientItemList->width() - 3, 28);
-    gwi->setData(gd);
-
-    QListWidgetItem *listItem = new QListWidgetItem;
-    listItem->setSizeHint(QSize(m_gradientItemList->width() - 2, 29)); //每次改变Item的高度
-    listItem->setFlags(Qt::ItemIsTristate);
-    m_gradientItemList->addItem(listItem);
-    m_gradientItemList->setItemWidget(listItem, gwi);
-    m_labellist.append(gwi);
 }
 
 void CYearScheduleView::paintEvent(QPaintEvent *event)
@@ -377,7 +325,7 @@ void CYearScheduleView::paintEvent(QPaintEvent *event)
     for (int i = 0; i < m_vlistData.size(); ++i) {
         paintItem(m_vlistData.at(i), i, 0);
     }
-    if (m_soloDay.isEmpty() && m_vlistData.isEmpty()) {
+    if (m_vlistData.isEmpty()) {
         paintItem();
     }
     adjustPos = false;
@@ -515,11 +463,6 @@ CYearScheduleOutView::CYearScheduleOutView(QWidget *parent)
     this->setContent(yearscheduleview);
 }
 
-void CYearScheduleOutView::setSoloDay(QString soloday)
-{
-    yearscheduleview->setSoloDay(soloday);
-}
-
 void CYearScheduleOutView::setData(QVector<ScheduleDataInfo> &vListData)
 {
     list_count = vListData.size();
@@ -541,11 +484,6 @@ void CYearScheduleOutView::showWindow()
 void CYearScheduleOutView::setTheMe(int type)
 {
     yearscheduleview->setTheMe(type);
-}
-
-void CYearScheduleOutView::setDtype(int type, int arrowheight)
-{
-    yearscheduleview->setDtype(type, arrowheight);
 }
 
 void CYearScheduleOutView::setCurrentDate(QDate cdate)

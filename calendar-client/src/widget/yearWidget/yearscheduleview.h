@@ -46,11 +46,6 @@ public:
       */
     ~CYearScheduleView();
     /**
-     * @brief setSoloDay
-     * @param soloday
-     */
-    void setSoloDay(QString soloday);
-    /**
      * @brief setData 设置日程信息，并全天日程置于非全天日程之前
      * @param vListData 日程信息
      */
@@ -78,12 +73,6 @@ public:
      */
     void setTheMe(int type = 0);
     /**
-     * @brief setDtype
-     * @param type
-     * @param arrowheight
-     */
-    void setDtype(int type, int arrowheight);
-    /**
      * @brief setCurrentDate 设置日程所在当天的日期
      * @param cdate 日期
      */
@@ -104,12 +93,6 @@ private:
      * @brief updateDateShow 调整最多展示日程为五个，并设置浮框大小
      */
     void updateDateShow();
-    /**
-     * @brief createItemWidget 设置每条日程的具体信息
-     * @param info 日程信息
-     * @param type 系统主题类型
-     */
-    void createItemWidget(ScheduleDataInfo info, int type = 0);
 
 protected:
     /**
@@ -133,7 +116,6 @@ private:
     DListWidget *m_gradientItemList = nullptr; //下拉列表窗
     bool m_widgetFlag;
     QVector<ScheduleDataInfo> m_vlistData;
-    QString m_soloDay;
     QVector<DLabel *> m_labellist;
     int m_type;
     QDate m_currentDate;
@@ -215,11 +197,6 @@ public:
      */
     explicit CYearScheduleOutView(QWidget *parent = nullptr);
     /**
-     * @brief setSoloDay
-     * @param soloday
-     */
-    void setSoloDay(QString soloday);
-    /**
      * @brief setData 设置日程信息
      * @param vListData 日程信息
      */
@@ -237,12 +214,6 @@ public:
      * @param type 系统主题
      */
     void setTheMe(int type = 0);
-    /**
-     * @brief setDtype
-     * @param type
-     * @param arrowheight
-     */
-    void setDtype(int type, int arrowheight);
     /**
      * @brief setCurrentDate 设置日程所在当天的日期
      * @param cdate 日期
