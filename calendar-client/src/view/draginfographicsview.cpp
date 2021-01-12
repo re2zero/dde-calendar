@@ -662,6 +662,8 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
 void DragInfoGraphicsView::mousePress(const QPoint &point)
 {
     setPressSelectInfo(ScheduleDataInfo());
+    //设置拖拽日程为无效日程
+    m_DragScheduleInfo = ScheduleDataInfo();
     QGraphicsItem *listItem = itemAt(point);
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
