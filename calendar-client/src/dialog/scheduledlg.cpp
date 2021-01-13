@@ -385,9 +385,16 @@ void CScheduleDlg::slotbRpeatactivated(int index)
     if (index > 0) {
         m_endrepeatWidget->setVisible(true);
         setFixedSize(438, 506);
+        if (m_endrepeatCombox->currentIndex() == 1) {
+            //如果结束重复于次数，判断次数是否为空
+            slotendrepeatTextchange();
+        }
     } else {
         m_endrepeatWidget->setVisible(false);
         setFixedSize(438, 470);
+        //重复类型为“从不”时，使能保存按钮
+        QAbstractButton *m_OkBt = getButton(1);
+        m_OkBt->setEnabled(true);
     }
 }
 
@@ -399,9 +406,16 @@ void CScheduleDlg::sloteRpeatactivated(int index)
     } else if (index == 1) {
         m_endrepeattimesWidget->setVisible(true);
         m_endRepeatDate->setVisible(false);
+        //重复结束于次数，判断次数是否为空
+        slotendrepeatTextchange();
     } else {
         m_endrepeattimesWidget->setVisible(false);
         m_endRepeatDate->setVisible(true);
+    }
+    if (index != 1) {
+        //只要不是结束重复于次数，使能保存按钮
+        QAbstractButton *m_OkBt = getButton(1);
+        m_OkBt->setEnabled(true);
     }
 }
 
