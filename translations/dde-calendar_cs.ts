@@ -360,7 +360,7 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="59"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="74"/>
         <source>Do you want to change all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete změnit všechny výskyty?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="60"/>
@@ -371,13 +371,13 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="232"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="262"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Storno</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="61"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="76"/>
         <source>Change All</source>
-        <translation type="unfinished"/>
+        <translation>Změnit vše</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="73"/>
@@ -389,33 +389,33 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="115"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="138"/>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Mažete událost.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="101"/>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete tuto událost smazat?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="103"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Smazat</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="116"/>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete smazat všechny výskyty této události, nebo jen vybraný výskyt?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="118"/>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Smazat vše</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="119"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="142"/>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Smazat jen tuto událost</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="139"/>
@@ -425,29 +425,29 @@
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="141"/>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Smazat všechny budoucí události</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="228"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="258"/>
         <source>You are changing a repeating event.</source>
-        <translation type="unfinished"/>
+        <translation>Měníte pravidlo opakující se události.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="230"/>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete změnit jen tento výskyt události, nebo všechny výskyty?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="233"/>
         <source>All</source>
-        <translation type="unfinished"/>
+        <translation>Vše</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="234"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="264"/>
         <source>Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Jen tato událost</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="260"/>
@@ -457,7 +457,7 @@
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="263"/>
         <source>All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Všechny budoucí události</translation>
     </message>
 </context>
 <context>

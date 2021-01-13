@@ -354,13 +354,13 @@
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="58"/>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation type="unfinished"/>
+        <translation>Krejt përsëritjet e një veprimtarie që përsëritet duhet të kenë të njëjtën gjendje gjithë-ditën.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="59"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="74"/>
         <source>Do you want to change all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Doni të ndryshohen krejt përsëritjet?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="60"/>
@@ -371,93 +371,93 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="232"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="262"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anuloje</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="61"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="76"/>
         <source>Change All</source>
-        <translation type="unfinished"/>
+        <translation>Ndryshoji Krejt</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="73"/>
         <source>You are changing the repeating rule of this event.</source>
-        <translation type="unfinished"/>
+        <translation>Po ndryshoni rregullin e përsëritjes së kësaj veprimtarie.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="100"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="115"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="138"/>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Po fshini një veprimtari.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="101"/>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Jeni i sigurt se doni të fshihet kjo veprimtari?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="103"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Fshije</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="116"/>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Doni të fshihen krejt përsëritjet e kësaj veprimtarie, apo vetëm përsëritjen e përzgjedhur?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="118"/>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Fshiji Krejt</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="119"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="142"/>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Fshi Vetëm Këtë Veprimtari</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="139"/>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Doni të fshihet kjo dhe krejt përsëritjet në të ardhmen të kësaj veprimtarie, apo vetëm përsëritjen e përzgjedhur?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="141"/>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Fshi Krejt Veprimtaritë e Ardhshme</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="228"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="258"/>
         <source>You are changing a repeating event.</source>
-        <translation type="unfinished"/>
+        <translation>Po ndryshoni një veprimtari me përsëritje.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="230"/>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Doni të ndryshohet vetëm kjo përsëritje e veprimtarisë, apo krejt përsëritjet?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="233"/>
         <source>All</source>
-        <translation type="unfinished"/>
+        <translation>Krejt</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="234"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="264"/>
         <source>Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Vetëm Këtë Veprimtari</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="260"/>
         <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Doni të ndryshohet vetëm kjo përsëritje e veprimtarisë, apo këtë dhe krejt përsëritjet në të ardhmen?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="263"/>
         <source>All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Krejt Veprimtaritë e Ardhshme</translation>
     </message>
 </context>
 <context>

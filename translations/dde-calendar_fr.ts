@@ -354,13 +354,13 @@
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="58"/>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation type="unfinished"/>
+        <translation>Toutes les occurrences d&apos;un événement répétitif doivent avoir le même statut toute la journée.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="59"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="74"/>
         <source>Do you want to change all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous modifier toutes les occurrences ?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="60"/>
@@ -371,93 +371,93 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="232"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="262"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="61"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="76"/>
         <source>Change All</source>
-        <translation type="unfinished"/>
+        <translation>Tout changer</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="73"/>
         <source>You are changing the repeating rule of this event.</source>
-        <translation type="unfinished"/>
+        <translation>Vous modifiez la règle de répétition de cet événement.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="100"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="115"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="138"/>
         <source>You are deleting an event.</source>
-        <translation type="unfinished"/>
+        <translation>Vous êtes en train de supprimer un événement.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="101"/>
         <source>Are you sure you want to delete this event?</source>
-        <translation type="unfinished"/>
+        <translation>Êtes-vous sûr de vouloir supprimer cet événement ?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="103"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="116"/>
         <source>Do you want to delete all occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous supprimer toutes les occurrences de cet événement ou uniquement l&apos;occurrence sélectionnée ?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="118"/>
         <source>Delete All</source>
-        <translation type="unfinished"/>
+        <translation>Tout supprimer</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="119"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="142"/>
         <source>Delete Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer uniquement cet événement</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="139"/>
         <source>Do you want to delete this and all future occurrences of this event, or only the selected occurrence?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous supprimer cet événement et toutes les occurrences futures de cet événement, ou uniquement l&apos;occurrence sélectionnée ?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="141"/>
         <source>Delete All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer tous les événements futurs</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="228"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="258"/>
         <source>You are changing a repeating event.</source>
-        <translation type="unfinished"/>
+        <translation>Vous modifiez un événement récurrent.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="230"/>
         <source>Do you want to change only this occurrence of the event, or all occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous modifier uniquement cette occurrence de l&apos;événement ou toutes les occurrences ?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="233"/>
         <source>All</source>
-        <translation type="unfinished"/>
+        <translation>Tout</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="234"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="264"/>
         <source>Only This Event</source>
-        <translation type="unfinished"/>
+        <translation>Seulement cet événement</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="260"/>
         <source>Do you want to change only this occurrence of the event, or this and all future occurrences?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous modifier uniquement cette occurrence de l&apos;événement, ou cette occurrence et toutes les occurrences futures ?</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="263"/>
         <source>All Future Events</source>
-        <translation type="unfinished"/>
+        <translation>Tous les événements futurs</translation>
     </message>
 </context>
 <context>
