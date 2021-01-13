@@ -77,7 +77,7 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     grabGesture(Qt::TapGesture);
     grabGesture(Qt::SwipeGesture);
 
-    m_touchAnimation = new QPropertyAnimation(this, "touchSlidePos");
+    m_touchAnimation = new QPropertyAnimation(this, "touchSlidePos", this);
     //设置动画时间
     m_touchAnimation->setDuration(1000);
     //设置动画曲线
@@ -86,7 +86,6 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
 
 DragInfoGraphicsView::~DragInfoGraphicsView()
 {
-
 }
 
 void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)

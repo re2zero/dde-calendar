@@ -48,11 +48,11 @@ public:
     }
 
 private:
-    int m_width;
-    int m_height;
+    int m_width {0};
+    int m_height {0};
     QDate m_begindate;
     QDate m_enddate;
-    qint64 m_totalDay;
+    qint64 m_totalDay {0};
     int m_rightmagin = 0;
 };
 
