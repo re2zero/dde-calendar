@@ -101,7 +101,8 @@ void IconDFrame::focusInEvent(QFocusEvent *event)
 {
     Q_UNUSED(event);
     //设置focus标志为true
-    m_tabFocusIn = true;
+    //TODO 根据需求先取消tab选中效果
+    m_tabFocusIn = false;
     //刷新界面
     update();
 }
