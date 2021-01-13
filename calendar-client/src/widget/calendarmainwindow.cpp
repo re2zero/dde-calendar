@@ -603,6 +603,10 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &schedu
                 _showWidget->setSelectSearchScheduleInfo(scheduleInfo);
             });
         }
+        //如果当前界面不为年试图则更新年视图数据
+        if (_showWidget != m_yearwindow) {
+            m_yearwindow->updateData();
+        }
     }
 }
 
