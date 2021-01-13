@@ -200,7 +200,7 @@ void CalendarManager::WeekBeginsChanged(int value)
     setWeekBegins(value);
     //更新显示界面
     for (int i = 0; i < m_showWidget.size(); ++i) {
-        m_showWidget.at(i)->updateShowDate();
+        m_showWidget.at(i)->updateData();
     }
     //更新dbus数据
     updateJobs();
