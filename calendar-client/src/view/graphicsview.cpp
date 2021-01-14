@@ -158,13 +158,6 @@ void CGraphicsView::setRange(int w, int h, QDate begindate, QDate enddate, int r
     m_dayInterval = w * 1.0 / totalDay;
     m_timeInterval = h / 24.0;
     m_totalDay = totalDay;
-    if (m_viewType == 0) {
-        int viewWidth = viewport()->width();
-        int viewHeight = viewport()->height();
-        QPoint newCenter(viewWidth / 2, viewHeight / 2 - 2000);
-
-        centerOnScene(mapToScene(newCenter));
-    }
 }
 
 void CGraphicsView::setRange(QDate begin, QDate end)
