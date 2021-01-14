@@ -367,6 +367,12 @@ void CYearScheduleOutView::showWindow()
 void CYearScheduleOutView::setTheMe(int type)
 {
     yearscheduleview->setTheMe(type);
+    //根据主题设备不一样的背景色
+    if (type == 2) {
+        setBackgroundColor(DBlurEffectWidget::DarkColor);
+    } else {
+        setBackgroundColor(DBlurEffectWidget::LightColor);
+    }
 }
 
 void CYearScheduleOutView::setCurrentDate(QDate cdate)
