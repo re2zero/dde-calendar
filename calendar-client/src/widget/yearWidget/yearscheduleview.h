@@ -29,7 +29,6 @@
 
 DWIDGET_USE_NAMESPACE
 class QVBoxLayout;
-class CYearScheduleItem;
 class CYearScheduleOutView;
 class CYearScheduleView : public DWidget
 {
@@ -87,13 +86,11 @@ public:
      * @param ad 是否调整显示位置
      */
     void adjustPosition(bool ad);
-
 private:
     /**
      * @brief updateDateShow 调整最多展示日程为五个，并设置浮框大小
      */
     void updateDateShow();
-
 protected:
     /**
      * @brief paintEvent 绘制日程
@@ -111,79 +108,16 @@ protected:
      * @brief paintItem
      */
     void paintItem();
-
 private:
-    DListWidget *m_gradientItemList = nullptr; //下拉列表窗
-    bool m_widgetFlag;
     QVector<ScheduleDataInfo> m_vlistData;
-    QVector<DLabel *> m_labellist;
     int m_type;
     QDate m_currentDate;
     QColor m_btimecolor = "#526A7F";
     QColor m_bttextcolor = "#414D68";
     QColor m_lBackgroundcolor = Qt::white;
-    QColor m_ltextcolor = "#001A2E";
     QColor m_solocolor = "#001A2E";
     QColor m_TBcolor = "#001A2E";
-    int m_dtype = 3;
-    int m_arrowheight = 0;
-    QColor m_borderColor = "#000000";
     bool adjustPos = false;
-};
-
-class CYearScheduleItem : public DLabel
-{
-    Q_OBJECT
-
-public:
-    /**
-     * @brief CYearScheduleItem 构造函数
-     * @param parent 父类
-     */
-    explicit CYearScheduleItem(QWidget *parent = nullptr);
-    /**
-     * @brief setBackgroundColor 设置背景颜色
-     * @param color1 背景颜色
-     */
-    void setBackgroundColor(QColor color1);
-    /**
-     * @brief setStateColor 设置圆点的颜色
-     * @param color1 圆点颜色
-     */
-    void setStateColor(QColor color1);
-    /**
-     * @brief setText 设置文字颜色和字体
-     * @param tcolor 文字颜色
-     * @param font 文字字体
-     */
-    void setText(QColor tcolor, QFont font);
-    /**
-     * @brief setTimeC 设置时间的颜色和字体
-     * @param tcolor 时间的颜色
-     * @param font 时间的字体
-     */
-    void setTimeC(QColor tcolor, QFont font);
-    /**
-     * @brief setData 设置日程信息
-     * @param vScheduleInfo 日程信息
-     */
-    void setData(ScheduleDataInfo vScheduleInfo);
-
-protected:
-    /**
-     * @brief paintEvent
-     * @param e
-     */
-    void paintEvent(QPaintEvent *e) override;
-
-private:
-    ScheduleDataInfo m_ScheduleInfo;
-    QColor m_Backgroundcolor;
-    QColor m_timecolor;
-    QColor m_Statecolor;
-    QFont m_timefont;
-    QColor m_ttextcolor;
-    QFont m_tfont;
 };
 
 class CYearScheduleOutView : public DArrowRectangle

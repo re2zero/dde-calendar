@@ -25,53 +25,16 @@
 
 test_yearscheduleview::test_yearscheduleview()
 {
-    xYearScheduleItem = new CYearScheduleItem();
     cYearScheduleView = new CYearScheduleView();
     zYearScheduleOutView = new CYearScheduleOutView();
 }
 
 test_yearscheduleview::~test_yearscheduleview()
 {
-    delete xYearScheduleItem;
-    xYearScheduleItem = nullptr;
     delete cYearScheduleView;
     cYearScheduleView = nullptr;
     delete zYearScheduleOutView;
     zYearScheduleOutView = nullptr;
-}
-
-//void CYearScheduleItem::setBackgroundColor(QColor color1)
-TEST_F(test_yearscheduleview, setBackgroundColor)
-{
-    QColor color1(240, 100, 100);
-    xYearScheduleItem->setBackgroundColor(color1);
-}
-
-//void CYearScheduleItem::setStateColor(QColor color1)
-TEST_F(test_yearscheduleview, setStateColor)
-{
-    QColor color1(240, 100, 100);
-    xYearScheduleItem->setStateColor(color1);
-}
-
-//void CYearScheduleItem::setText(QColor tcolor, QFont font)
-TEST_F(test_yearscheduleview, setText)
-{
-    QColor tcolor(140, 140, 120);
-    QFont font;
-    font.setWeight(QFont::Medium);
-    font.setPixelSize(DDECalendar::FontSizeTwelve);
-    xYearScheduleItem->setText(tcolor, font);
-}
-
-//void CYearScheduleItem::setTimeC(QColor tcolor, QFont font)
-TEST_F(test_yearscheduleview, setTimeC)
-{
-    QColor tcolor(140, 140, 120);
-    QFont font;
-    font.setWeight(QFont::Medium);
-    font.setPixelSize(DDECalendar::FontSizeTwelve);
-    xYearScheduleItem->setTimeC(tcolor, font);
 }
 
 QVector<ScheduleDataInfo> test_yearscheduleview::getScheduleDataInfo()
@@ -200,13 +163,6 @@ QVector<ScheduleDataInfo> test_yearscheduleview::getScheduleDateAndTitle()
     return scheduleDate;
 }
 
-//void CYearScheduleItem::setData(ScheduleDataInfo vScheduleInfo)
-TEST_F(test_yearscheduleview, setData)
-{
-    ScheduleDataInfo scheduleInfo = getScheduleDataInfo().first();
-    xYearScheduleItem->setData(scheduleInfo);
-}
-
 //bool YScheduleDateThan(const ScheduleDataInfo &s1, const ScheduleDataInfo &s2)
 bool YScheduleDateThan(const ScheduleDataInfo &s1, const ScheduleDataInfo &s2);
 TEST_F(test_yearscheduleview, yschesuledatethan)
@@ -305,19 +261,6 @@ TEST_F(test_yearscheduleview, getCurrentDate)
 TEST_F(test_yearscheduleview, adjustPosition)
 {
     cYearScheduleView->adjustPosition(false);
-}
-
-//void CYearScheduleView::updateDateShow()
-TEST_F(test_yearscheduleview, updateDateShow)
-{
-    QVector<ScheduleDataInfo> vlistData = getScheduleDataInfo();
-    cYearScheduleView->setData(vlistData);
-    cYearScheduleView->updateDateShow();
-    cYearScheduleView->clearData();
-
-    vlistData.removeFirst();
-    cYearScheduleView->setData(vlistData);
-    cYearScheduleView->updateDateShow();
 }
 
 //void CYearScheduleOutView::setData(QVector<ScheduleDataInfo> &vListData)

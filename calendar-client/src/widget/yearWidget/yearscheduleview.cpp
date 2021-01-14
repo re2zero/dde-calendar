@@ -42,115 +42,6 @@ DGUI_USE_NAMESPACE
 
 const QString fontfamily = QStringLiteral("SourceHanSansSC-Medium");
 
-CYearScheduleItem::CYearScheduleItem(QWidget *parent)
-    : DLabel(parent)
-{
-}
-
-void CYearScheduleItem::setBackgroundColor(QColor color1)
-{
-    m_Backgroundcolor = color1;
-}
-
-void CYearScheduleItem::setStateColor(QColor color1)
-{
-    m_Statecolor = color1;
-}
-
-void CYearScheduleItem::setText(QColor tcolor, QFont font)
-{
-    m_ttextcolor = tcolor;
-    m_tfont = font;
-}
-
-void CYearScheduleItem::setTimeC(QColor tcolor, QFont font)
-{
-    m_timecolor = tcolor;
-    m_timefont = font;
-}
-
-void CYearScheduleItem::setData(ScheduleDataInfo vScheduleInfo)
-{
-    m_ScheduleInfo = vScheduleInfo;
-    update();
-}
-
-void CYearScheduleItem::paintEvent(QPaintEvent *e)
-{
-    Q_UNUSED(e);
-    int labelwidth = width();
-    int labelheight = height();
-
-    QPainter painter(this);
-    QRect fillRect = QRect(0, 0, labelwidth, labelheight);
-    painter.setRenderHints(QPainter::HighQualityAntialiasing);
-    QColor bcolor = m_Backgroundcolor;
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
-    painter.setBrush(QBrush(bcolor));
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(fillRect);
-    painter.restore();
-    //圆点
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
-    painter.setBrush(QBrush(m_Statecolor));
-    painter.setPen(Qt::NoPen);
-    painter.drawEllipse(QRect(10, (labelheight - 8) / 2, 8, 8));
-    painter.restore();
-
-    QString str;
-    //左边文字
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
-    painter.setPen(m_ttextcolor);
-    painter.setFont(m_tfont);
-    QFontMetrics fm = painter.fontMetrics();
-    QString tStitlename = m_ScheduleInfo.getTitleName();
-    tStitlename.replace("\n", "");
-    str = tStitlename;
-    int tilenameW = labelwidth - 90;
-    QString tstr;
-
-    for (int i = 0; i < str.count(); i++) {
-        tstr.append(str.at(i));
-        int widthT = fm.width(tstr) + 5;
-        if (widthT >= tilenameW) {
-            tstr.chop(1);
-            break;
-        }
-    }
-    if (tstr != str) {
-        tstr = tstr + "...";
-    }
-
-    painter.drawText(QRect(28, 0, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
-    painter.restore();
-    //右边时间
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
-    painter.setPen(m_timecolor);
-    painter.setFont(m_timefont);
-    QLocale locale;
-
-    if (locale.language() == QLocale::Chinese) {
-        if (m_ScheduleInfo.getAllDay()) {
-            str = tr("All Day");
-        } else {
-            str = m_ScheduleInfo.getBeginDateTime().time().toString("ap h") + ("时");
-        }
-    } else {
-        if (m_ScheduleInfo.getAllDay()) {
-            str = tr("All Day");
-        } else {
-            str = m_ScheduleInfo.getBeginDateTime().time().toString("ap h:mm");
-        }
-    }
-    QFontMetrics fm2 = painter.fontMetrics();
-    painter.drawText(QRect(labelwidth - 60, 0, 50, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
-    painter.restore();
-}
-
 CYearScheduleView::CYearScheduleView(QWidget *parent)
     : DWidget(parent)
 {
@@ -264,23 +155,15 @@ void CYearScheduleView::setTheMe(int type)
         m_bttextcolor = "#414D68";
         m_lBackgroundcolor = "#EBEBEB";
         m_lBackgroundcolor.setAlphaF(0.0);
-        m_ltextcolor = "#001A2E";
         m_solocolor = "#FF7272";
-        m_TBcolor = "#EBEBEB";
-        m_borderColor = "#000000";
-        m_borderColor.setAlphaF(0.05);
     } else if (type == 2) {
         m_btimecolor = "#C0C6D4";
         m_btimecolor.setAlphaF(0.7);
         m_bttextcolor = "#C0C6D4";
         m_lBackgroundcolor = "#191919";
         m_lBackgroundcolor.setAlphaF(0.00);
-        m_ltextcolor = "#C0C6D4";
         m_solocolor = "#FF7272";
         m_solocolor.setAlphaF(0.8);
-        m_TBcolor = "#191919";
-        m_borderColor = "#FFFFFF";
-        m_borderColor.setAlphaF(0.05);
     }
 }
 

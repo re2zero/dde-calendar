@@ -31,7 +31,6 @@ public:
     test_yearscheduleview();
     ~test_yearscheduleview();
 protected:
-    CYearScheduleItem *xYearScheduleItem = nullptr;
     CYearScheduleView *cYearScheduleView = nullptr;
     CYearScheduleOutView *zYearScheduleOutView = nullptr;
 
