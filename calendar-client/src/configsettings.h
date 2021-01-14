@@ -29,9 +29,8 @@ class CConfigSettings : public QObject, public DCalendar::DSingleton<CConfigSett
 {
     Q_OBJECT
 public:
-    explicit CConfigSettings(QObject *parent = 0);
+    explicit CConfigSettings(QObject *parent = nullptr);
     ~CConfigSettings();
-
     static void init();
     static QPointer<QSettings> settings();
 
