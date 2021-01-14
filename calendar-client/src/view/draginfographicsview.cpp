@@ -100,9 +100,6 @@ void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
         m_TouchBeginPoint = event->pos();
         m_TouchBeginTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
         m_touchState = TS_PRESS;
-        //添加操作日志，以便分析
-        qDebug() << getBuildName() << ":"
-                 << "touch Press";
         return;
     }
     mousePress(event->pos());
@@ -176,9 +173,6 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
             if (movingLength < lengthOffset && (timeOffset > 250 && timeOffset < 900)) {
                 m_touchState = TS_DRAG_MOVE;
                 m_touchDragMoveState = 1;
-                //添加操作日志，以便分析
-                qDebug() << getBuildName() << ":"
-                         << "touch begin TS_DRAG_MOVE";
             }
             //如果移动距离大于5则为滑动状态
             if (movingLength > lengthOffset) {
@@ -194,16 +188,10 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
             //如果移动距离小于5且点击时间大于900毫秒则为长按状态
             if (movingLength < lengthOffset && (timeOffset > 900)) {
                 m_touchState = TS_LONG_PRESS;
-                //添加操作日志，以便分析
-                qDebug() << getBuildName() << ":"
-                         << "touch TS_LONG_PRESS";
             }
             if (movingLength > lengthOffset) {
                 if (m_touchDragMoveState == 1) {
                     mousePress(m_TouchBeginPoint.toPoint());
-                    //添加操作日志，以便分析
-                    qDebug() << getBuildName() << ":"
-                             << "touch long press to move";
                 }
                 m_touchDragMoveState = 2;
             }
@@ -213,9 +201,6 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
             //3 滑动
             QPointF _currentPoint = event->pos();
             slideEvent(m_TouchBeginPoint, _currentPoint);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "touch TS_SLIDE";
             break;
         }
         default:
@@ -298,21 +283,12 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "end of touch ChangeWhole";
             //如果拖拽结束后没有修改日程则更新下界面日程显示
             if (m_hasUpdateMark) {
                 //更新标志设置为false
                 m_hasUpdateMark = false;
-                //添加操作日志，以便分析
-                qDebug() << getBuildName() << ":"
-                         << "info update";
             } else {
                 updateInfo();
-                //添加操作日志，以便分析
-                qDebug() << getBuildName() << ":"
-                         << "info not update,update show";
             }
         }
     }
@@ -388,9 +364,6 @@ void DragInfoGraphicsView::dragEnterEvent(QDragEnterEvent *event)
             event->ignore();
         } else {
             event->accept();
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "accept info";
         }
     } else {
         event->ignore();
@@ -402,9 +375,6 @@ void DragInfoGraphicsView::dragLeaveEvent(QDragLeaveEvent *event)
 {
     Q_UNUSED(event);
     upDateInfoShow();
-    //添加操作日志，以便分析
-    qDebug() << getBuildName() << ":"
-             << "dragLeave updateShow";
     m_MoveDate = m_MoveDate.addMonths(-2);
 }
 
@@ -424,9 +394,6 @@ void DragInfoGraphicsView::dragMoveEvent(QDragMoveEvent *event)
         QJsonObject rootobj = jsonDoc.object();
         m_DragScheduleInfo = ScheduleDataInfo::JsonToSchedule(rootobj);
         m_DragScheduleInfo.setIsMoveInfo(true);
-        //添加操作日志，以便分析
-        qDebug() << getBuildName() << ":"
-                 << "MoveInfoProcess";
         MoveInfoProcess(m_DragScheduleInfo, event->posF());
         DragInfoItem::setPressSchedule(m_DragScheduleInfo);
     }
@@ -543,30 +510,18 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
         case TOP:
             m_DragStatus = ChangeBegin;
             setCursor(Qt::SplitVCursor);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "dnd begin change item(top)  ";
             break;
         case BOTTOM:
             m_DragStatus = ChangeEnd;
             setCursor(Qt::SplitVCursor);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "dnd begin change item(bottom)  ";
             break;
         case LEFT:
             m_DragStatus = ChangeBegin;
             setCursor(Qt::SplitHCursor);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "dnd begin change item(left)  ";
             break;
         case RIGHT:
             m_DragStatus = ChangeEnd;
             setCursor(Qt::SplitHCursor);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "dnd begin change item(right)  ";
             break;
         default:
             ShowSchedule(item);
@@ -583,16 +538,10 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
                                       pos.y() - item->boundingRect().y());
             m_Drag->setHotSpot(itemPos.toPoint());
             setDragPixmap(m_Drag, item);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "dnd begin move item  ";
             break;
         }
     } else {
         m_DragStatus = IsCreate;
-        //添加操作日志，以便分析
-        qDebug() << getBuildName() << ":"
-                 << "dnd begin IsCreate";
         m_isCreate = false;
     }
 }
@@ -611,9 +560,6 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
         if (MeetCreationConditions(m_MoveDate)) {
             //如果不添加会进入leaveEvent事件内的条件
             m_DragStatus = NONE;
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "dnd IsCreate end";
             emit signalViewtransparentFrame(1);
             CScheduleDlg dlg(1, this);
             dlg.setData(m_DragScheduleInfo);
@@ -622,9 +568,6 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             //因dtk override了exec函数，这里使用result判断返回值类型，如果不为Accepted则刷新界面
             if (dlg.result() != DDialog::Accepted) {
                 updateInfo();
-                //添加操作日志，以便分析
-                qDebug() << getBuildName() << ":"
-                         << "Cancel create operation,updateInfo";
             }
             //设置选中日程为无效日程
             setPressSelectInfo(ScheduleDataInfo());
@@ -636,9 +579,6 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             //如果不添加会进入leaveEvent事件内的条件
             m_DragStatus = NONE;
             updateScheduleInfo(m_DragScheduleInfo);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "End of dnd change item(ChangeBegin)";
         }
         break;
     case ChangeEnd:
@@ -646,9 +586,6 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             //如果不添加会进入leaveEvent事件内的条件
             m_DragStatus = NONE;
             updateScheduleInfo(m_DragScheduleInfo);
-            //添加操作日志，以便分析
-            qDebug() << getBuildName() << ":"
-                     << "End of dnd change item(ChangeEnd)";
         }
         break;
     default:
@@ -670,14 +607,8 @@ void DragInfoGraphicsView::mousePress(const QPoint &point)
         setPressSelectInfo(infoitem->getData());
         m_press = true;
         DragInfoItem::setPressFlag(true);
-        //添加操作日志，以便分析
-        qDebug() << getBuildName() << ":"
-                 << "Press Item ";
     } else {
         emit signalScheduleShow(false);
-        //添加操作日志，以便分析
-        qDebug() << getBuildName() << ":"
-                 << "Click on the blank section";
     }
     DragPressEvent(point, infoitem);
     this->scene()->update();

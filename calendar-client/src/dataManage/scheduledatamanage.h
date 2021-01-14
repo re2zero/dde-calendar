@@ -53,7 +53,6 @@ public:
     static CScheduleDataManage *getScheduleDataManage();
     CSchedulesColor getScheduleColorByType(int type);
     QColor getSystemActiveColor();
-    bool getSearchResult(QDate date); //true 高亮
     void setTheMe(int type = 0);
     int getTheme()
     {

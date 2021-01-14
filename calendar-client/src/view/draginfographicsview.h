@@ -108,7 +108,6 @@ protected:
     void setBuildName(const QString &buildName);
     //获取创建名称
     QString getBuildName() const;
-
 public:
     //设置搜索选中日程
     virtual void setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo);
