@@ -62,8 +62,11 @@ int main(int argc, char *argv[])
     _commandLine.addVersionOption();       //增加-v 解析命令
     _commandLine.setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
     _commandLine.process(*app);
+//如果dtk版本为5.2.0.1以上则使用新的dtk接口
+#if (DTK_VERSION > DTK_VERSION_CHECK(5, 2, 0, 1))
+    //设置为-1将永久等待
     DGuiApplicationHelper::setSingleInstanceInterval(-1);
-
+#endif
     if (!DGuiApplicationHelper::instance()->setSingleInstance(
                 app->applicationName(),
                 DGuiApplicationHelper::UserScope)) {
