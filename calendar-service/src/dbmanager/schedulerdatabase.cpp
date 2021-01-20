@@ -29,6 +29,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QSqlQuery>
+#include <QFile>
 
 SchedulerDatabase::SchedulerDatabase(QObject *parent)
     : QObject(parent)
@@ -266,6 +267,10 @@ void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
     // 重复调用QSQLITE会导致数据库连接覆盖导致失败，需指定每部分的连接名称
     m_database = QSqlDatabase::addDatabase("QSQLITE", "SchedulerDatabase");
     m_database.setDatabaseName(dbpath);
+    //这里用QFile来修改日历数据库文件的权限
+    QFile file(dbpath);
+    //将权限修改为600（对文件的所有者可以读写，其他用户不可读不可写）
+    file.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
     m_database.open();
     if (m_database.isOpen()) {
         const QStringList tables = m_database.tables();
