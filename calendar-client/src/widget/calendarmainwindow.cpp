@@ -76,16 +76,23 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w)
 
     setTitlebarShadowEnabled(true);
     setFocusPolicy(Qt::ClickFocus);
-    QByteArray arrybyte = CConfigSettings::value("base.geometry").toByteArray();
-    bool isOk = false;
-    int state = CConfigSettings::value("base.state").toInt(&isOk);
-    if (!arrybyte.isEmpty() && isOk) {
-        Qt::WindowStates winStates = static_cast<Qt::WindowStates >(state);
-        setWindowState(winStates);
-        if (winStates != Qt::WindowState::WindowMaximized) {
-            restoreGeometry(arrybyte);
+    //如果为平板模式则使其大小为屏幕大小
+    if (DDECalendar::isTable) {
+        QDesktopWidget *w = QApplication::desktop();
+        setFixedSize(w->size());
+    } else {
+        QByteArray arrybyte = CConfigSettings::value("base.geometry").toByteArray();
+        bool isOk = false;
+        int state = CConfigSettings::value("base.state").toInt(&isOk);
+        if (!arrybyte.isEmpty() && isOk) {
+            Qt::WindowStates winStates = static_cast<Qt::WindowStates>(state);
+            setWindowState(winStates);
+            if (winStates != Qt::WindowState::WindowMaximized) {
+                restoreGeometry(arrybyte);
+            }
         }
     }
+
     Dtk::Widget::moveToCenter(this);
 }
 
@@ -701,8 +708,13 @@ void Calendarmainwindow::slotNewSchedule()
 
 void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)
 {
-    DMainWindow::mouseMoveEvent(event);
-    setScheduleHide();
+    //如果为平板模式则不可移动
+    if (DDECalendar::isTable) {
+        Q_UNUSED(event);
+    } else {
+        DMainWindow::mouseMoveEvent(event);
+        setScheduleHide();
+    }
 }
 
 void Calendarmainwindow::changeEvent(QEvent *event)
