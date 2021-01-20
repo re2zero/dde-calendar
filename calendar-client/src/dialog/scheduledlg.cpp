@@ -102,8 +102,10 @@ void CScheduleDlg::setDate(const QDateTime &date)
     m_currentDate = date;
     int hours = date.time().hour();
     int minnutes = 0;
-    //时间向后取整
-    minnutes = (date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute + 1) * DDECalendar::QuarterOfAnhourWithMinute;
+    //取15的整数倍
+    minnutes = date.time().minute() / DDECalendar::QuarterOfAnhourWithMinute * DDECalendar::QuarterOfAnhourWithMinute;
+    //如果有余数则添加15分钟
+    minnutes = minnutes + (date.time().minute() % DDECalendar::QuarterOfAnhourWithMinute == 0 ? 0 : 15);
     if (minnutes == 60) {
         if (hours + 1 == 24) {
             m_currentDate.setTime(QTime(0, 0));
