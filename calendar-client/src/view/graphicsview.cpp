@@ -173,8 +173,6 @@ void CGraphicsView::setCurrentDate(const QDateTime &currentDate)
 {
     m_currentDate = currentDate;
     scrollBarValueChangedSlot();
-//    qDebug() << m_currentDate;
-    this->scene()->update();
 }
 
 void CGraphicsView::setInfo(const QVector<ScheduleDataInfo> &info)
@@ -623,7 +621,6 @@ void CGraphicsView::paintBackground(QPainter &painter)
 
 void CGraphicsView::scrollBarValueChangedSlot()
 {
-    emit signalScheduleShow(false);
     QMutexLocker locker(&m_Mutex);
     int viewHeight = viewport()->height();
     m_vLRLarge.clear();
