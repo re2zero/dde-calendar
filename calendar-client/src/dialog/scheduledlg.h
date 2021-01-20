@@ -20,10 +20,10 @@
 #define SCHEDULEDLG_H
 
 #include "src/scheduledatainfo.h"
+#include "dcalendarddialog.h"
 
 #include <DCheckBox>
 #include <DDateEdit>
-#include <DDialog>
 #include <DFrame>
 #include <DLineEdit>
 #include <DTextEdit>
@@ -34,7 +34,7 @@
 
 DWIDGET_USE_NAMESPACE
 class CTimeEdit;
-class CScheduleDlg : public DDialog
+class CScheduleDlg : public DCalendarDDialog
 {
     Q_OBJECT
 public:

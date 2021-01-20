@@ -54,7 +54,7 @@ bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
     } else {
         //如果切换了全天状态则提醒是否修改全部
         if (newInfo.getAllDay() != oldInfo.getAllDay()) {
-            CScheduleCtrlDlg msgBox;
+            CScheduleCtrlDlg msgBox(m_widget);
             msgBox.setText(
                 tr("All occurrences of a repeating event must have the same all-day status."));
             msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
@@ -70,7 +70,7 @@ bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
             }
         } else if (oldInfo.getRepetitionRule().getRuleId() != newInfo.getRepetitionRule().getRuleId()) {
             //修改重复规则
-            CScheduleCtrlDlg msgBox;
+            CScheduleCtrlDlg msgBox(m_widget);
             msgBox.setText(tr("You are changing the repeating rule of this event."));
             msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
             msgBox.addPushButton(tr("Cancel"), true);

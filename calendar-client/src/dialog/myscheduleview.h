@@ -20,10 +20,8 @@
 #define MYSCHEDULEVIEW_H
 
 #include "src/scheduledatainfo.h"
+#include "dcalendarddialog.h"
 
-#include <DDialog>
-#include <DPushButton>
-#include <DSuggestButton>
 #include <DTextEdit>
 
 #include <QObject>
@@ -37,7 +35,7 @@ DWIDGET_USE_NAMESPACE
  * @brief The CMyScheduleView class
  * 日程概括对话框
  */
-class CMyScheduleView : public DDialog
+class CMyScheduleView : public DCalendarDDialog
 {
     Q_OBJECT
 public:

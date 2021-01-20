@@ -20,6 +20,7 @@
 #include "scheduledlg.h"
 #include "scheduledatamanage.h"
 #include "cdynamicicon.h"
+#include "constants.h"
 
 #include <DMessageBox>
 #include <DPushButton>
@@ -31,7 +32,7 @@
 
 DGUI_USE_NAMESPACE
 CScheduleCtrlDlg::CScheduleCtrlDlg(QWidget *parent)
-    : DDialog(parent)
+    : DCalendarDDialog(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     initUI();

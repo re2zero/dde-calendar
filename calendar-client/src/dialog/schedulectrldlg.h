@@ -19,20 +19,18 @@
 #ifndef CSCHEDULECTRLDLG_H
 #define CSCHEDULECTRLDLG_H
 
-#include <DDialog>
-#include <DPushButton>
-#include <DSuggestButton>
+#include "dcalendarddialog.h"
+
 #include <DFrame>
 
 #include <QObject>
 #include <QLabel>
-#include <QButtonGroup>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
 DWIDGET_USE_NAMESPACE
 
-class CScheduleCtrlDlg : public DDialog
+class CScheduleCtrlDlg : public DCalendarDDialog
 {
     Q_OBJECT
 public:

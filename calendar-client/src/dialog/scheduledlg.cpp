@@ -35,7 +35,7 @@
 
 DGUI_USE_NAMESPACE
 CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
-    : DDialog(parent)
+    : DCalendarDDialog(parent)
     , m_createAllDay(isAllDay)
 {
     setContentsMargins(0, 0, 0, 0);
@@ -162,7 +162,7 @@ bool CScheduleDlg::clickOkBtn()
         _newSchedule.setType(m_typeComBox->currentIndex() + 1);
 
     if (beginDateTime > endDateTime) {
-        DDialog *prompt = new DDialog(this);
+        DCalendarDDialog *prompt = new DCalendarDDialog(this);
         prompt->setIcon(QIcon(":/resources/icon/warning.svg"));
         prompt->setMessage(tr("End time must be greater than start time"));
         prompt->setWindowFlags(prompt->windowFlags() | Qt::WindowStaysOnTopHint);

@@ -19,13 +19,10 @@
 #include "myscheduleview.h"
 #include "scheduledlg.h"
 #include "scheduledatamanage.h"
-#include "schedulectrldlg.h"
 #include "cdynamicicon.h"
 #include "constants.h"
 #include "cscheduleoperation.h"
 
-#include <DMessageBox>
-#include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
 #include <DFontSizeManager>
@@ -38,7 +35,7 @@
 
 DGUI_USE_NAMESPACE
 CMyScheduleView::CMyScheduleView(const ScheduleDataInfo &schduleInfo, QWidget *parent)
-    : DDialog(parent)
+    : DCalendarDDialog(parent)
 {
     setContentsMargins(0, 0, 0, 0);
     m_scheduleInfo = schduleInfo;
