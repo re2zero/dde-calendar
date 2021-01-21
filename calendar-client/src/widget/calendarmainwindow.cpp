@@ -158,19 +158,21 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     } else {
         m_stackWidget->setCurrentIndex(type);
     }
+    //获取焦点
+    m_buttonBox->button(type)->setFocus();
+    //设置选中
+    m_buttonBox->button(type)->setChecked(true);
     switch (type) {
     case DDECalendar::CalendarYearWindow: {
-        m_yearButton->setChecked(true);
+        //更新界面显示
+        m_yearwindow->updateData();
     } break;
     case DDECalendar::CalendarMonthWindow: {
-        m_monthButton->setChecked(true);
     } break;
     case DDECalendar::CalendarWeekWindow: {
-        m_weekButton->setChecked(true);
     } break;
     case DDECalendar::CalendarDayWindow: {
         m_DayWindow->setTime();
-        m_dayButton->setChecked(true);
         m_searchflag = true;
     } break;
     }
