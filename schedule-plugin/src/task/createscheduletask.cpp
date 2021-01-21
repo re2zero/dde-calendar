@@ -49,6 +49,13 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
         //日程的开始时间大于结束时间，
         qFatal("error: schedule begindatetime is after the enddatetime!");
     }
+    if (!isValidDateTime) {
+        //无效时间，直接返回回复语
+        REPLY_ONLY_TTS(m_reply, replyNotValidDT, replyNotValidDT, true);
+        //设置时间有效标志为true
+        isValidDateTime = true;
+        return m_reply;
+    }
 
     qInfo() << "beginDateTimeIsinHalfYear"
             << beginDateTimeIsinHalfYear()
@@ -86,6 +93,18 @@ void createScheduleTask::setDateTime(CreateJsonData *createJsonData)
 {
     //助手返回时间的个数
     int DateTimeSize = createJsonData->getDateTime().suggestDatetime.size();
+    for (int i = 0; i < DateTimeSize; i++) {
+        //对返回的日期进行有效性判断
+        if (!createJsonData->getDateTime().suggestDatetime.at(i).datetime.isValid()) {
+            //助手返回的字符时间
+            QString strDateTime = createJsonData->getDateTime().suggestDatetime.at(i).strDateTime;
+            //有效时间标志
+            isValidDateTime = false;
+            //无效时间回复语
+            replyNotValidDT = QString(ISVALID_DATE_TIME).arg(strDateTime);
+            return;
+        }
+    }
     if (DateTimeSize <= 0) {
         //如果没有时间，日程开始时间设置为当前时间
         m_begintime = QDateTime::currentDateTime();

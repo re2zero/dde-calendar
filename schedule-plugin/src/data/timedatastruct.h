@@ -35,15 +35,17 @@ struct DateTimeInfo {
     QTime m_Time{};
     bool  hasDate{false};
     bool  hasTime{false};
+    QString strDateTime; //保存原始数据
 };
 /**
  * @brief The SuggestDatetimeInfo struct  建议时间信息
  * datetime         时间信息
  * hasTime          是否存在具体时间点
  */
-struct SuggestDatetimeInfo{
+struct SuggestDatetimeInfo {
     QDateTime datetime {};
     bool hasTime {false};
+    QString strDateTime; //保存原始数据
 };
 
 /**
@@ -57,7 +59,8 @@ struct SemanticsDateTime {
     /**
      * @brief clear 清空数据
      */
-    void clear(){
+    void clear()
+    {
         this->dateTime.clear();
         this->suggestDatetime.clear();
     }

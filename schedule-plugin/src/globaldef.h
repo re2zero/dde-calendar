@@ -81,8 +81,12 @@
 #define JSON_THIS "this"
 #define JSON_POSRANK_OFFSET "posRank.offset"
 
-#define JOSN_DATE_DELIMITER "/"
+#define JSON_DATE_DELIMITER "/"
+#define JSON_STR_DATE_DELIMITER "-"
 #define JSON_DATETIME_DELIMITER "T"
+#define YEAR "年"
+#define MONTH "月"
+#define DAY "日"
 //每天多少秒
 #define ONE_DAY_SECS 60 * 60 * 24
 
@@ -138,6 +142,8 @@
 #define CREATE_TIME_OUT_TTS "只能创建未来半年的日程"
 //新建每周末提醒的日程的回复语
 #define EVERY_WEEKEND_TTS "好的，每周六到周日的%1我都会提醒您。"
+//日程时间无效
+#define ISVALID_DATE_TIME "您成功难住我啦，不存在%1这个日期呢"
 //跨天日程，开始日期小于当前时间的回复语
 #define BEGINDATETIME_LATER_THAN_CURRENTDATETIME_ACROSS_THE_DAY_TTS "好的，%1我会提醒您。"
 //查询日期过期

@@ -236,7 +236,7 @@ SemanticsDateTime JsonData::suggestDatetimeResolve(const QJsonObject &jsobj)
             QStringList dateTimeList = sugdateTimeStr.split("/");
             for (int i = 0; i < dateTimeList.size(); ++i) {
                 //如果数据不为空，添加解析数据
-                if(!dateTimeList.at(i).isEmpty()){
+                if (!dateTimeList.at(i).isEmpty()) {
                     semdatetime.suggestDatetime.append(resolveNormValue(dateTimeList.at(i)));
                 }
             }
@@ -245,12 +245,12 @@ SemanticsDateTime JsonData::suggestDatetimeResolve(const QJsonObject &jsobj)
         }
     }
     //模糊时间解析赋值
-    if(!dateTimeStr.isEmpty()){
-        if(dateTimeStr.contains("/")){
+    if (!dateTimeStr.isEmpty()) {
+        if (dateTimeStr.contains("/")) {
             QStringList dateTimeList = dateTimeStr.split("/");
             for (int i = 0; i < dateTimeList.size(); ++i) {
                 //如果数据不为空，添加解析数据
-                if(!dateTimeList.at(i).isEmpty()){
+                if (!dateTimeList.at(i).isEmpty()) {
                     semdatetime.dateTime.append(resolveDateTimeValeu(dateTimeList.at(i)));
                 }
             }
@@ -266,31 +266,79 @@ SuggestDatetimeInfo JsonData::resolveNormValue(const QString &str)
     SuggestDatetimeInfo datetimeInfo;
     datetimeInfo.hasTime = str.contains(JSON_DATETIME_DELIMITER);
     datetimeInfo.datetime = QDateTime::fromString(str, Qt::ISODate);
+    //设置处理后的日期字符
+    datetimeInfo.strDateTime = strTransform(str);
     return datetimeInfo;
 }
 
 DateTimeInfo JsonData::resolveDateTimeValeu(const QString &dateTimeStr)
 {
     DateTimeInfo dateTimeInfo{};
+    dateTimeInfo.strDateTime = dateTimeStr;
     //根据关键符合“T”分割字符
     QStringList dateList = dateTimeStr.split(JSON_DATETIME_DELIMITER);
     //如果只有一个表示没有时间信息
-    if(dateList.size() ==1){
-        dateTimeInfo.m_Date = QDate::fromString(dateList.at(0),DATEFORMAT);
+    if (dateList.size() == 1) {
+        dateTimeInfo.m_Date = QDate::fromString(dateList.at(0), DATEFORMAT);
         dateTimeInfo.hasDate = true;
         dateTimeInfo.hasTime = false;
-    }else if (dateList.size()>1) {
+    } else if (dateList.size() > 1) {
         //如果第一个数据为空表示没有日期信息
-        if(dateList.at(0).isEmpty()){
+        if (dateList.at(0).isEmpty()) {
             dateTimeInfo.hasDate = false;
-        }else {
-            dateTimeInfo.m_Date = QDate::fromString(dateList.at(0),DATEFORMAT);
+        } else {
+            dateTimeInfo.m_Date = QDate::fromString(dateList.at(0), DATEFORMAT);
             dateTimeInfo.hasDate = true;
         }
-        dateTimeInfo.m_Time = QTime::fromString(dateList.at(1),TIMEFORMAT);
+        dateTimeInfo.m_Time = QTime::fromString(dateList.at(1), TIMEFORMAT);
         dateTimeInfo.hasTime = true;
     }
     return dateTimeInfo;
+}
+
+QString JsonData::strTransform(QString oldStr)
+{
+    QString newStr;
+    //对助手返回的字符进行分割
+    QStringList dateList = oldStr.split(JSON_DATETIME_DELIMITER);
+    if (dateList.size() == 1) {
+        //只有日期
+        //处理日期
+        QString strDate = strDateTransform(dateList.at(0));
+        //返回字符非空
+        if (!strDate.isEmpty())
+            return strDate;
+    } else if (dateList.size() > 1) {
+        //有日期和时间
+        QString strDate = "";
+        if (!dateList.at(0).isEmpty()) {
+            //设置日期格式
+            if (!strDateTransform(dateList.at(0)).isEmpty())
+                strDate = strDateTransform(dateList.at(0));
+        }
+        //返回日期+具体时间
+        return strDate + dateList.at(1);
+    }
+    //如果不包含以上情况，返回空
+    return "";
+}
+
+QString JsonData::strDateTransform(QString oldStrDate)
+{
+    //对日期进行分割
+    QStringList strDateList = oldStrDate.split(JSON_STR_DATE_DELIMITER);
+    if (strDateList.size() == 1) {
+        //只有年份
+        return strDateList.at(0) + YEAR;
+    } else if (strDateList.size() == 2) {
+        //年份+月份
+        return strDateList.at(0) + YEAR + strDateList.at(1) + MONTH;
+    } else if (strDateList.size() == 3) {
+        //年+月+日
+        return strDateList.at(0) + YEAR + strDateList.at(1) + MONTH + strDateList.at(2) + DAY;
+    }
+    //如果没有以上情况，返回空
+    return "";
 }
 
 void JsonData::setDefaultValue()

@@ -111,6 +111,10 @@ protected:
      * @return          模糊时间
      */
     DateTimeInfo resolveDateTimeValeu(const QString &dateTimeStr);
+    //修改助手返回日期和时间字符格式
+    QString strTransform(QString oldStr);
+    //修改助手返回日期的字符格式
+    QString strDateTransform(QString oldStrDate);
     virtual void setDefaultValue();
     virtual void jsonObjResolve(const QJsonObject &jsobj);
 

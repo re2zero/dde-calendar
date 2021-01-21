@@ -278,6 +278,10 @@ private:
     QDateTime       m_begintime;
     QDateTime       m_endtime;
     bool            everyDayState = false;
+    //助手时间是否有效
+    bool isValidDateTime = true;
+    //无效日期回复语
+    QString replyNotValidDT;
     createSchedulewidget        *m_widget = nullptr;
 };
 
