@@ -22,11 +22,8 @@
 
 test_yearwindow::test_yearwindow()
 {
-    qDebug() << "1";
     mYearWindow = new CYearWindow();
-    qDebug() << "2";
     dateaManger = new CalendarDateDataManager();
-    qDebug() << "3";
 }
 
 test_yearwindow::~test_yearwindow()
