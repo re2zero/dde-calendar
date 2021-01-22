@@ -25,14 +25,10 @@
 #include "constants.h"
 #include "scheduledaterangeinfo.h"
 
-#include <DMessageBox>
-#include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
 
 #include <QAction>
-#include <QListWidget>
-#include <QLabel>
 #include <QPainter>
 #include <QHBoxLayout>
 #include <QStylePainter>
@@ -263,7 +259,6 @@ void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate
     m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
     m_Scene->setSceneRect(0, 0, w, h);
     m_rightmagin = rightmagin;
-    updateDateShow();
 }
 
 void CAllDayEventWeekView::setRange(QDate begin, QDate end)

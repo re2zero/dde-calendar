@@ -24,7 +24,6 @@
 #include "cscheduleoperation.h"
 
 #include <DHiDPIHelper>
-#include <DMessageBox>
 #include <DFontSizeManager>
 
 #include <QHBoxLayout>
@@ -165,7 +164,6 @@ bool CScheduleDlg::clickOkBtn()
         DCalendarDDialog *prompt = new DCalendarDDialog(this);
         prompt->setIcon(QIcon(":/resources/icon/warning.svg"));
         prompt->setMessage(tr("End time must be greater than start time"));
-        prompt->setWindowFlags(prompt->windowFlags() | Qt::WindowStaysOnTopHint);
         prompt->addButton(tr("OK"), true, DDialog::ButtonNormal);
         prompt->exec();
         return false;
@@ -821,7 +819,6 @@ void CScheduleDlg::initConnection()
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged,
                      this,
                      &CScheduleDlg::setTheMe);
-//    connect(this, &DDialog::buttonClicked, this, &CScheduleDlg::slotCancelBt);
     connect(this, &DDialog::buttonClicked, this, &CScheduleDlg::slotBtClick);
     connect(m_textEdit, &DTextEdit::textChanged, this, &CScheduleDlg::slotTextChange);
     connect(m_endrepeattimes, &DLineEdit::textChanged, this, &CScheduleDlg::slotendrepeatTextchange);

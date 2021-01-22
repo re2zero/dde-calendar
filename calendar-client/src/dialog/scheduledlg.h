@@ -30,7 +30,6 @@
 #include <DComboBox>
 
 #include <QLabel>
-#include <QTimeEdit>
 
 DWIDGET_USE_NAMESPACE
 class CTimeEdit;

@@ -30,7 +30,6 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QPropertyAnimation>
-#include <QSequentialAnimationGroup>
 
 #include <dtkwidget_global.h>
 

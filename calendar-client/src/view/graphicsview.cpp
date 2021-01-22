@@ -25,8 +25,6 @@
 #include "myscheduleview.h"
 #include "constants.h"
 
-#include <DMessageBox>
-#include <DPushButton>
 #include <DHiDPIHelper>
 #include <DPalette>
 

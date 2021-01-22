@@ -21,14 +21,12 @@
 #include "monthgraphiview.h"
 #include "../widget/monthWidget/monthscheduleview.h"
 #include "../dialog/scheduledlg.h"
-#include "../dialog/schedulectrldlg.h"
 #include "../dialog/myscheduleview.h"
 #include "../widget/touchgestureoperation.h"
 #include "constants.h"
 
 #include <DHiDPIHelper>
 
-#include <QAction>
 #include <QShortcut>
 #include <QPainterPath>
 #include <QMouseEvent>

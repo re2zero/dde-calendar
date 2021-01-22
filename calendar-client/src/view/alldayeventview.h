@@ -22,9 +22,6 @@
 #include "draginfoitem.h"
 #include "draginfographicsview.h"
 
-#include <DComboBox>
-#include <DLabel>
-#include <DPushButton>
 #include <DGraphicsView>
 #include <DFontSizeManager>
 #include <DMenu>
@@ -115,7 +112,6 @@ private:
     QVector<CAllDayEventWidgetItem *> m_baseShowItem;
     int m_editType = 0;
     CScheduleCoorManage *m_coorManage = nullptr;
-    QDate m_dianjiDay;
     int m_rightmagin = 0;
     bool m_updateDflag = false;
     QDate m_beginDate;

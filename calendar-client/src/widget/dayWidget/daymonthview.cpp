@@ -593,6 +593,7 @@ void CDayMonthView::wheelEvent(QWheelEvent *event)
     if (event->delta() < 0) {
         //切换前一天
         changeSelectDate(m_selectDate.addDays(1));
+
     } else {
         //切换后一天
         changeSelectDate(m_selectDate.addDays(-1));
@@ -628,6 +629,7 @@ void CDayMonthView::paintEvent(QPaintEvent *e)
     painter.drawPath(painterPath);
     painter.restore();
 }
+
 void CDayMonthView::slotprev()
 {
     changeSelectDate(m_selectDate.addMonths(-1));
