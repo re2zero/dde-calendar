@@ -44,6 +44,26 @@ void DCalendarDDialog::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
+void DCalendarDDialog::keyPressEvent(QKeyEvent *event)
+{
+    //如果dtk版本在5.3.0以下调用QDialog 以上调用DDialog
+#if (DTK_VERSION < DTK_VERSION_CHECK(5, 3, 0, 0))
+    return QDialog::keyPressEvent(event);
+#else
+    return DDialog::keyPressEvent(event);
+#endif
+}
+
+bool DCalendarDDialog::eventFilter(QObject *o, QEvent *e)
+{
+    //如果dtk版本在5.3.0以下调用QDialog 以上调用DDialog
+#if (DTK_VERSION < DTK_VERSION_CHECK(5, 3, 0, 0))
+    return QDialog::eventFilter(o, e);
+#else
+    return DDialog::eventFilter(o, e);
+#endif
+}
+
 /**
  * @brief CMySchceduleView::moveCentorShow      在顶层窗口居中显示
  */

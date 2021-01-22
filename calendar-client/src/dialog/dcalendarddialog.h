@@ -35,7 +35,8 @@ public:
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
-
+    void keyPressEvent(QKeyEvent *event) override;
+    bool eventFilter(QObject *o, QEvent *e) override;
 private:
     //移动到上一层窗口中间显示
     void moveCentorShow();

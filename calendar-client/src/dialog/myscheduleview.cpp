@@ -163,13 +163,11 @@ void CMyScheduleView::showEvent(QShowEvent *event)
 
 bool CMyScheduleView::eventFilter(QObject *o, QEvent *e)
 {
-    Q_UNUSED(o);
-
     if (e->type() == QEvent::FontChange) {
         AutoFeed(m_scheduleInfo.getTitleName());
+        return true;
     }
-
-    return false;
+    return DCalendarDDialog::eventFilter(o, e);
 }
 
 /**

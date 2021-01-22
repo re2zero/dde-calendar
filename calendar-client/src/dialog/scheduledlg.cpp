@@ -431,7 +431,7 @@ bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
                 return true;
         }
     }
-    return QDialog::eventFilter(obj, pEvent);
+    return DCalendarDDialog::eventFilter(obj, pEvent);
 }
 
 void CScheduleDlg::showEvent(QShowEvent *event)
