@@ -19,7 +19,10 @@
 #include "timeedit.h"
 
 #include <QRegExpValidator>
-#include <QDebug>
+#include <QEvent>
+
+//视图容器最大高度
+const int viewContainerMaxHeight = 305;
 
 CTimeEdit::CTimeEdit(QWidget *parent)
     : DComboBox(parent)
@@ -60,7 +63,6 @@ void CTimeEdit::initUI()
     validator = new QRegExpValidator(rx, this);
     m_timeEdit->lineEdit()->setValidator(validator);
     setLineEdit(m_timeEdit->lineEdit());
-
     QStringList list;
 
     for (int i = 0; i < 24; i++) {
@@ -87,4 +89,21 @@ void CTimeEdit::initConnection()
     disconnect(SIGNAL(editTextChanged(const QString &)));
     disconnect(SIGNAL(highlighted(int)));
     disconnect(SIGNAL(highlighted(const QString &)));
+}
+
+void CTimeEdit::showPopup()
+{
+    QComboBox::showPopup();
+    //获取下拉视图容器
+    QFrame *viewContainer = this->findChild<QFrame *>();
+    if (viewContainer) {
+        //如果显示视图容器则设置最大高度
+        viewContainer->setFixedHeight(viewContainerMaxHeight);
+        //获取combobox底部坐标
+        QPoint showPoint = mapToGlobal(this->rect().bottomLeft());
+        //控制视图容器宽度
+        viewContainer->setFixedWidth(this->width());
+        //将视图容器移动到combobox的底部
+        viewContainer->move(showPoint.x(), showPoint.y());
+    }
 }

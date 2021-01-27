@@ -40,6 +40,9 @@ private:
     void initUI();
     void initConnection();
 
+protected:
+    void showPopup() override;
+
 private:
     DLineEdit *m_timeEdit = nullptr;
     int m_type = 0; // 0 h,1 m
