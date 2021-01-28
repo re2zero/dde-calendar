@@ -10,7 +10,7 @@ include_directories(third-party_stub)
 add_custom_target(test)
 add_custom_command(TARGET test
     COMMAND echo " =================== CREAT LCOV REPROT BEGIN ==================== "
-    COMMAND ${CMAKE_BINARY_DIR}/test/dde-calendar-client-test/dde-calendar-test
-    COMMAND ${CMAKE_BINARY_DIR}/test/dde-calendar-service-test/dde-calendar-service-test
+    COMMAND ${CMAKE_BINARY_DIR}/tests/dde-calendar-client-test/dde-calendar-test
+    COMMAND ${CMAKE_BINARY_DIR}/tests/dde-calendar-service-test/dde-calendar-service-test
     COMMAND echo " =================== TEST END ==================== "
     )

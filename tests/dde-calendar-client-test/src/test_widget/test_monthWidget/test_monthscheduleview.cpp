@@ -365,8 +365,8 @@ TEST_F(test_monthscheduleview, sortAndFileter)
     QVector<MScheduleDateRangeInfo> scheduleinfo = getScheduleDateRangeInfo();
     mWeekScheduleView->setHeight(4, 20);
     QMap<QDate, QVector<ScheduleDataInfo>> mapScheduleInfo = getMonthMapScheduleDInfo(4);
-    QDate startDate = QDate(2021, 1, 21);
-    QDate stopData = QDate(2021, 1, 27);
+    QDate startDate = QDate::currentDate();
+    QDate stopData = startDate.addDays(6);
     mWeekScheduleView->setData(mapScheduleInfo, startDate, stopData);
     mWeekScheduleView->sortAndFilter(scheduleinfo);
 }
