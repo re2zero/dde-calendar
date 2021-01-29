@@ -19,10 +19,16 @@ cd $pathname/tests
 
 mkdir -p coverage
 
+#针对当前目录进行覆盖率操作
+extract_info="*/calendar-basicstruct/* */calendar-client/* */calendar-service/* */schedule-plugin/*"  
+
+lcov -d ./coverage -c -o ./coverage/coverage.info
+
 lcov --directory ../ --capture --output-file ./coverage/coverage.info
 
-#以下几行是过滤一些我们不感兴趣的文件的覆盖率信息
-lcov --remove ./coverage/coverage.info '*/${project_name}_test_autogen/*' '*/${project_name}_autogen/*' '*/usr/include/*' '*/theme/*' '*/quaketerminal/*' '*/tests/*' '*/lib/SearchBar.*' '*/build-*/*' -o ./coverage/coverage.info
+lcov --extract ./coverage/coverage.info $extract_info --output-file  ./coverage/coverage.info
+
+lcov --list-full-path -e ./coverage/coverage.info –o ./coverage/coverage-stripped.info
 
 mkdir ../report
 genhtml -o ../report ./coverage/coverage.info
