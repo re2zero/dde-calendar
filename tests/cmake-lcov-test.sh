@@ -19,20 +19,12 @@ cd $pathname/tests
 
 mkdir -p coverage
 
-#针对当前目录进行覆盖率操作
-extract_info="*/calendar-basicstruct/* */calendar-client/* */calendar-service/* */schedule-plugin/*"  
+lcov -d ../ -c -o ./coverage/coverage.info
 
-lcov -d ./coverage -c -o ./coverage/coverage.info
-
-lcov --directory ../ --capture --output-file ./coverage/coverage.info
-
-lcov --extract ./coverage/coverage.info $extract_info --output-file  ./coverage/coverage.info
-
-lcov --list-full-path -e ./coverage/coverage.info –o ./coverage/coverage-stripped.info
+lcov --extract ./coverage/coverage.info '*/calendar-basicstruct/*' '*/calendar-client/*' '*/calendar-service/*' '*/schedule-plugin/*' -o ./coverage/coverage.info
+lcov --remove ./coverage/coverage.info '*/tests/*' -o  ./coverage/coverage.info
 
 mkdir ../report
 genhtml -o ../report ./coverage/coverage.info
-
-lcov -d $build_dir –z
 
 exit 0
