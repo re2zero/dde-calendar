@@ -89,5 +89,7 @@ set(CMAKE_INSTALL_PREFIX /usr)
 # Install files
 install(TARGETS dde-calendar DESTINATION bin)
 
+install(DIRECTORY ${APP_RES_DIR}/dde-calendar
+        DESTINATION /usr/share/deepin-manual/manual-assets/application/)
 install(FILES ${APP_DESKTOP} DESTINATION share/applications)
 install(FILES ${APP_SERVICE} DESTINATION share/dbus-1/services)

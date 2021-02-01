@@ -25,16 +25,9 @@ build*/
 
 .vscode/
 build/
-debian/dde-calendar/usr/share/icons/hicolor/scalable/apps/dde-calendar.svg
-debian/dde-calendar/usr/share/doc/dde-calendar/copyright
-debian/dde-calendar/usr/share/doc/dde-calendar/changelog.gz
 .qmake.stash
-dde-calendar
 Makefile
-debian/dde-calendar.debhelper.log
-debian/dde-calendar.substvars
-debian/files
-debian/files
-debian/dde-calendar.substvars
+debian
+!debian/[source,changelog,compat,control,copyright,rules]
 CMakeLists.txt.user
 *.user.*
