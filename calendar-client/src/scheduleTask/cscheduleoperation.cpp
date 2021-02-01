@@ -234,9 +234,11 @@ bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
             //修改所有日程
             ScheduleDataInfo _scheduleDataInfo = newinfo;
             RepetitionRule _rule = _scheduleDataInfo.getRepetitionRule();
+            //如果此重复日程只有它一个则将修改为普通日程
             if ((_rule.getRuleType() == 1 && _rule.getEndCount() < 1) ||
                     (_rule.getRuleType() == 2 && _scheduleDataInfo.getBeginDateTime().daysTo(_rule.getEndDate()) < 0)) {
                 _rule.setRuleId(RepetitionRule::RRuleID::RRule_NONE);
+                _rule.setRuleType(RepetitionRule::RRuleEndType::RRuleType_NEVER);
             }
             _scheduleDataInfo.setRepetitionRule(_rule);
             //TODO 清空忽略日程
