@@ -303,7 +303,6 @@ qint64 CSchedulesDBus::CreateJob(const ScheduleDtailInfo &info)
 {
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(createScheduleDtailInfojson(info));
-    qDebug() << argumentList.at(0);
     QDBusMessage reply = callWithArgumentList(QDBus::Block, QStringLiteral("CreateJob"), argumentList);
     if (reply.type() != QDBusMessage::ReplyMessage) {
         qDebug() << reply;
