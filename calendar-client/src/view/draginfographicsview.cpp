@@ -461,7 +461,7 @@ void DragInfoGraphicsView::paintEvent(QPaintEvent *event)
 void DragInfoGraphicsView::showEvent(QShowEvent *event)
 {
     //显示时重置大小
-    viewport()->resize(this->width(), this->height());
+    resize(this->width(), this->height());
     DGraphicsView::showEvent(event);
 }
 
