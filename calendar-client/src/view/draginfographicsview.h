@@ -73,7 +73,6 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void showEvent(QShowEvent *event) override;
-
 private:
     void slotCreate();
     //设置点击选中日程

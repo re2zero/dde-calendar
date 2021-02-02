@@ -275,6 +275,8 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
         break;
     case ChangeWhole: {
         if (!m_PressRect.contains(event->pos())) {
+            //拖拽前设置是否已经更新日程界面标志为否
+            m_hasUpdateMark = false;
             Qt::DropAction dropaction = m_Drag->exec(Qt::MoveAction);
             //TODO 调试发现exec后代码有时候会执行2遍，先标记下，以后研究,现判断m_Drag是否为nullptr，若为空指针则表示执行过一遍直接退出
             if (m_Drag == nullptr)
@@ -284,10 +286,7 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
             //如果拖拽结束后没有修改日程则更新下界面日程显示
-            if (m_hasUpdateMark) {
-                //更新标志设置为false
-                m_hasUpdateMark = false;
-            } else {
+            if (!m_hasUpdateMark) {
                 updateInfo();
             }
         }
