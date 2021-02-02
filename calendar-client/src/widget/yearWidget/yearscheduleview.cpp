@@ -417,7 +417,8 @@ void CYearScheduleOutView::mousePressEvent(QMouseEvent *event)
                 //如果日程类型不为节假日或纪念日则显示编辑框
                 if (scheduleinfoList.at(i).getType() != DDECalendar::FestivalTypeID) {
                     emit signalViewtransparentFrame(1);
-                    CScheduleDlg dlg(0);
+                    //因为提示框会消失，所以设置CScheduleDlg的父类为主窗口
+                    CScheduleDlg dlg(0, qobject_cast<QWidget *>(this->parent()));
                     dlg.setData(scheduleinfoList.at(i));
                     dlg.exec();
                     emit signalViewtransparentFrame(0);
