@@ -31,6 +31,13 @@ SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWindow, parent)
     , m_centerWidget(new CenterWidget(this))
 {
+    //如果dtk版本为5.3以上则使用新接口
+#if (DTK_VERSION > DTK_VERSION_CHECK(5, 3, 0, 0))
+    //设置显示圆角
+    setRadiusArrowStyleEnable(true);
+    //设置圆角
+    setRadius(DARROWRECT::DRADIUS);
+#endif
     m_centerWidget->setFixedWidth(207);
     m_centerWidget->setFixedHeight(57);
     setContent(m_centerWidget);
@@ -52,6 +59,18 @@ void SchecduleRemindWidget::setData(const ScheduleDataInfo &vScheduleInfo, const
     m_ScheduleInfo = vScheduleInfo;
     gdcolor = gcolor;
     this->setHeight(m_centerWidget->height() + 10);
+}
+
+/**
+ * @brief SchecduleRemindWidget::setDirection       设置箭头方向
+ * @param value
+ */
+void SchecduleRemindWidget::setDirection(DArrowRectangle::ArrowDirection value)
+{
+    //设置箭头方向
+    this->setArrowDirection(value);
+    //设置内容窗口
+    this->setContent(m_centerWidget);
 }
 
 CenterWidget::CenterWidget(DWidget *parent)
@@ -166,5 +185,4 @@ void CenterWidget::paintEvent(QPaintEvent *e)
             QRect(x, 30 + i * textheight, textRectWidth, textheight),
             Qt::AlignLeft, testList.at(i));
     }
-    painter.end();
 }

@@ -39,7 +39,8 @@ public:
     explicit SchecduleRemindWidget(QWidget *parent = nullptr);
     ~SchecduleRemindWidget() override;
     void setData(const ScheduleDataInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
-
+    //设置箭头方向
+    void setDirection(ArrowDirection value);
 signals:
 
 public slots:

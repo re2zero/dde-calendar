@@ -169,6 +169,11 @@ static const int DHualiDtailLableWidth = 330;
 static const int D_MWindowWidth = 350;
 static const int D_MWindowHeight = 564;
 }
+
+namespace DARROWRECT {
+//提示框圆角
+static const int DRADIUS = 15;
+} // namespace DARROWRECT
 enum Week {
     Monday    = 6,
     Tuesday   = 5,
