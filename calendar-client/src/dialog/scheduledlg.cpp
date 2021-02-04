@@ -284,18 +284,11 @@ void CScheduleDlg::slotTextChange()
     int length = textContent.count();
     QString tStitlename = textContent;
 
-    if (tStitlename.contains("\n")) {
-        tStitlename.replace("\n", "");
-        m_textEdit->setText(tStitlename);
-        cursor.movePosition(QTextCursor::End);
-        m_textEdit->setTextCursor(cursor);
-        return;
-    }
-
     int maxLength = 256; // 最大字符数
 
-    if (length > maxLength) {
-        m_textEdit->setText(m_context);
+    if (tStitlename.contains("\n") || length > maxLength) {
+        //设置纯文本显示原始内容
+        m_textEdit->setPlainText(m_context);
         cursor.movePosition(QTextCursor::End);
         m_textEdit->setTextCursor(cursor);
     }
