@@ -38,6 +38,7 @@
 #include <DTitlebar>
 #include <DApplicationHelper>
 
+#include <QDesktopWidget>
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>

@@ -19,7 +19,6 @@
 #ifndef MONTHWINDOW_H
 #define MONTHWINDOW_H
 
-#include "SchecduleRemindWidget.h"
 #include "cschedulebasewidget.h"
 
 #include <DPushButton>

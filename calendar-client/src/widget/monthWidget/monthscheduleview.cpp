@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "monthscheduleview.h"
-#include "SchecduleRemindWidget.h"
 #include "monthview.h"
 #include "schedulectrldlg.h"
 #include "scheduledlg.h"

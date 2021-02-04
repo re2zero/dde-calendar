@@ -33,7 +33,6 @@ DWIDGET_USE_NAMESPACE
 class QDrag;
 class CAllDayEventWidgetItem;
 class CScheduleCoorManage;
-class SchecduleRemindWidget;
 
 class CAllDayEventWeekView : public DragInfoGraphicsView
 {

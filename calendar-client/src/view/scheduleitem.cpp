@@ -19,7 +19,6 @@
 #include "scheduleitem.h"
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
-#include "SchecduleRemindWidget.h"
 
 #include <DFontSizeManager>
 #include <DGraphicsView>

@@ -36,7 +36,6 @@ DWIDGET_USE_NAMESPACE
 class CMonthScheduleWidgetItem;
 class QVBoxLayout;
 class CMonthScheduleNumButton;
-class SchecduleRemindWidget;
 class QPropertyAnimation;
 class QSequentialAnimationGroup;
 class CWeekScheduleView;
