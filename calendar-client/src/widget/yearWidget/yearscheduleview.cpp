@@ -17,37 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "yearscheduleview.h"
-#include "schedulectrldlg.h"
-#include "myscheduleview.h"
+
 #include "scheduledlg.h"
 #include "scheduledatamanage.h"
 #include "constants.h"
 
-#include <DMessageBox>
-#include <DPushButton>
-#include <DHiDPIHelper>
-#include <DPalette>
-
-#include <QAction>
-#include <QMenu>
-#include <QListWidget>
-#include <QLabel>
 #include <QPainter>
-#include <QHBoxLayout>
-#include <QStylePainter>
 #include <QRect>
 #include <QMouseEvent>
 
 DGUI_USE_NAMESPACE
 
-const QString fontfamily = QStringLiteral("SourceHanSansSC-Medium");
-
 CYearScheduleView::CYearScheduleView(QWidget *parent)
     : DWidget(parent)
 {
-    setContentsMargins(10, 10, 10, 10);
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    setAttribute(Qt::WA_TranslucentBackground);
+    m_textfont.setWeight(QFont::Medium);
+    m_textfont.setPixelSize(DDECalendar::FontSizeTwelve);
 }
 
 CYearScheduleView::~CYearScheduleView()
@@ -135,16 +120,13 @@ void CYearScheduleView::clearData()
     return;
 }
 
-int CYearScheduleView::showWindow()
+void CYearScheduleView::showWindow()
 {
     if (m_vlistData.isEmpty()) {
         setFixedSize(130, 45);
     } else {
-        setFixedSize(240, 180);
+        updateDateShow();
     }
-    updateDateShow();
-
-    return this->width();
 }
 
 void CYearScheduleView::setTheMe(int type)
@@ -153,17 +135,10 @@ void CYearScheduleView::setTheMe(int type)
         m_btimecolor = "#414D68";
         m_btimecolor.setAlphaF(0.7);
         m_bttextcolor = "#414D68";
-        m_lBackgroundcolor = "#EBEBEB";
-        m_lBackgroundcolor.setAlphaF(0.0);
-        m_solocolor = "#FF7272";
     } else if (type == 2) {
         m_btimecolor = "#C0C6D4";
         m_btimecolor.setAlphaF(0.7);
         m_bttextcolor = "#C0C6D4";
-        m_lBackgroundcolor = "#191919";
-        m_lBackgroundcolor.setAlphaF(0.00);
-        m_solocolor = "#FF7272";
-        m_solocolor.setAlphaF(0.8);
     }
 }
 
@@ -177,15 +152,9 @@ QDate CYearScheduleView::getCurrentDate()
     return m_currentDate;
 }
 
-void CYearScheduleView::adjustPosition(bool ad)
-{
-    adjustPos = ad;
-}
-
 void CYearScheduleView::updateDateShow()
 {
     int sviewNum = 0;
-
     if (!m_vlistData.isEmpty()) {
         if (m_vlistData.size() > DDEYearCalendar::YearScheduleListMaxcount) {
             sviewNum = DDEYearCalendar::YearScheduleListMaxcount;
@@ -193,7 +162,6 @@ void CYearScheduleView::updateDateShow()
             sviewNum = m_vlistData.size();
         }
     }
-
     if (!m_vlistData.isEmpty())
         setFixedSize(240, 45 + (sviewNum - 1) * 29);
     update();
@@ -204,32 +172,25 @@ void CYearScheduleView::updateDateShow()
 void CYearScheduleView::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-
-    for (int i = 0; i < m_vlistData.size(); ++i) {
-        paintItem(m_vlistData.at(i), i, 0);
-    }
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
     if (m_vlistData.isEmpty()) {
-        paintItem();
+        paintItem(painter);
+    } else {
+        for (int i = 0; i < m_vlistData.size(); ++i) {
+            paintItem(painter, m_vlistData.at(i), i);
+        }
     }
-    adjustPos = false;
 }
 
-void CYearScheduleView::paintItem(ScheduleDataInfo info, int index, int type)
+void CYearScheduleView::paintItem(QPainter &painter, ScheduleDataInfo info, int index)
 {
     int labelwidth = width() - 30;
     int bheight = index * 29 + 10;
     int labelheight = 28;
     ScheduleDataInfo &gd = info;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.getType());
-    QFont font;
 
-    font.setWeight(QFont::Medium);
-    font.setPixelSize(DDECalendar::FontSizeTwelve);
-    QColor scolor = gdcolor.Purecolor;
-    scolor.setAlphaF(1.0);
-
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
 
 
     if (gd.getID() == -1) {
@@ -237,29 +198,16 @@ void CYearScheduleView::paintItem(ScheduleDataInfo info, int index, int type)
 
         painter.save();
         painter.setPen(m_btimecolor);
-        painter.setFont(font);
-        if (adjustPos) {
-            painter.drawText(QRect(25 - 18, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
-        } else {
-            painter.drawText(QRect(25, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
-        }
+        painter.setFont(m_textfont);
+        painter.drawText(QRect(25, bheight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
         painter.restore();
     } else {
         if (info.getID() != -1) {
-            //圆点
+            //圆点m_solocolor
             painter.save();
-            if (type == 0)
-                painter.setBrush(QBrush(gdcolor.splitColor));
-            else {
-                painter.setBrush(QBrush(m_solocolor));
-            }
+            painter.setBrush(QBrush(gdcolor.splitColor));
             painter.setPen(Qt::NoPen);
-
-            if (adjustPos) {
-                painter.drawEllipse(QRect(25 - 18, bheight + (labelheight - 8) / 2, 8, 8));
-            } else {
-                painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
-            }
+            painter.drawEllipse(QRect(25, bheight + (labelheight - 8) / 2, 8, 8));
             painter.restore();
         }
 
@@ -267,7 +215,7 @@ void CYearScheduleView::paintItem(ScheduleDataInfo info, int index, int type)
         //左边文字
         painter.save();
         painter.setPen(m_bttextcolor);
-        painter.setFont(font);
+        painter.setFont(m_textfont);
         QFontMetrics fm = painter.fontMetrics();
         QString tStitlename = gd.getTitleName();
         tStitlename.replace("\n", "");
@@ -286,20 +234,15 @@ void CYearScheduleView::paintItem(ScheduleDataInfo info, int index, int type)
         if (tstr != str) {
             tstr = tstr + "...";
         }
-        if (adjustPos) {
-            painter.drawText(QRect(41 - 18, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
-        } else {
-            painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
-        }
+        painter.drawText(QRect(41, bheight, tilenameW, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, tstr);
+
         painter.restore();
 
         if (info.getID() != -1) {
             //右边时间
             painter.save();
             painter.setPen(m_btimecolor);
-            painter.setFont(font);
-            QLocale locale;
-
+            painter.setFont(m_textfont);
             if (info.getAllDay()) {
                 str = tr("All Day");
             } else {
@@ -309,32 +252,19 @@ void CYearScheduleView::paintItem(ScheduleDataInfo info, int index, int type)
                     str = info.getBeginDateTime().time().toString("hh:mm");
                 }
             }
-
-            QFontMetrics fm2 = painter.fontMetrics();
-
-            if (adjustPos) {
-                painter.drawText(QRect(width() - 70 - 18, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
-            } else {
-                painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
-            }
+            painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
             painter.restore();
         }
     }
 }
 
-void CYearScheduleView::paintItem()
+void CYearScheduleView::paintItem(QPainter &painter)
 {
-    QFont font;
-    font.setPixelSize(DDECalendar::FontSizeTwelve);
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
     //左边文字
     painter.save();
     painter.setPen(m_bttextcolor);
-    painter.setFont(font);
-    QFontMetrics fm = painter.fontMetrics();
+    painter.setFont(m_textfont);
     QString tStitlename = tr("No event");
-
     painter.drawText(QRect(0, 0, width(), height()), Qt::AlignCenter, tStitlename);
     painter.restore();
 }
@@ -342,6 +272,13 @@ void CYearScheduleView::paintItem()
 CYearScheduleOutView::CYearScheduleOutView(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, parent)
 {
+    //如果dtk版本为5.3以上则使用新接口
+#if (DTK_VERSION > DTK_VERSION_CHECK(5, 3, 0, 0))
+    //设置显示圆角
+    setRadiusArrowStyleEnable(true);
+    //设置圆角
+    setRadius(DARROWRECT::DRADIUS);
+#endif
     yearscheduleview = new CYearScheduleView();
     this->setContent(yearscheduleview);
 }
@@ -350,18 +287,13 @@ void CYearScheduleOutView::setData(QVector<ScheduleDataInfo> &vListData)
 {
     list_count = vListData.size();
     yearscheduleview->setData(vListData);
+    yearscheduleview->showWindow();
     scheduleinfoList = yearscheduleview->getlistdate();
 }
 
 void CYearScheduleOutView::clearData()
 {
     yearscheduleview->clearData();
-}
-
-void CYearScheduleOutView::showWindow()
-{
-    int w = yearscheduleview->showWindow();
-    this->setFixedSize(w, yearscheduleview->height());
 }
 
 void CYearScheduleOutView::setTheMe(int type)
@@ -381,9 +313,16 @@ void CYearScheduleOutView::setCurrentDate(QDate cdate)
     yearscheduleview->setCurrentDate(cdate);
 }
 
-void CYearScheduleOutView::adjustPosition(bool ad)
+/**
+ * @brief SchecduleRemindWidget::setDirection       设置箭头方向
+ * @param value
+ */
+void CYearScheduleOutView::setDirection(DArrowRectangle::ArrowDirection value)
 {
-    yearscheduleview->adjustPosition(ad);
+    //设置箭头方向
+    this->setArrowDirection(value);
+    //设置内容窗口
+    this->setContent(yearscheduleview);
 }
 
 void CYearScheduleOutView::mousePressEvent(QMouseEvent *event)
@@ -392,7 +331,6 @@ void CYearScheduleOutView::mousePressEvent(QMouseEvent *event)
     QPoint pos = QCursor::pos();
     pos = this->mapFromGlobal(pos);
     QVector<QRect> rect_press;
-    QRect rect(35, 50, width() - 50, 20);
     int listShow = 0;
 
     if (!scheduleinfoList.isEmpty()) {

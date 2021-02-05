@@ -21,19 +21,14 @@
 
 #include "src/scheduledatainfo.h"
 
-#include <DLabel>
-#include <DPushButton>
-#include <DListWidget>
 #include <DWidget>
 #include <DArrowRectangle>
 
 DWIDGET_USE_NAMESPACE
-class QVBoxLayout;
 class CYearScheduleOutView;
 class CYearScheduleView : public DWidget
 {
     Q_OBJECT
-
 public:
     /**
      * @brief CYearScheduleView 构造函数
@@ -65,7 +60,7 @@ public:
      * @brief showWindow 设置日程浮框的大小
      * @return 日程浮框的宽度
      */
-    int showWindow();
+    void showWindow();
     /**
      * @brief setTheMe 根据系统主题类型设置颜色
      * @param type 系统主题类型
@@ -81,11 +76,6 @@ public:
      * @return 日期
      */
     QDate getCurrentDate();
-    /**
-     * @brief adjustPosition 根据日程浮框左右朝向不同，日程显示位置不同
-     * @param ad 是否调整显示位置
-     */
-    void adjustPosition(bool ad);
 private:
     /**
      * @brief updateDateShow 调整最多展示日程为五个，并设置浮框大小
@@ -101,29 +91,24 @@ protected:
      * @brief paintItem 绘制日程
      * @param info 日程信息
      * @param index 日程的索引
-     * @param type 系统主题类型
      */
-    void paintItem(ScheduleDataInfo info, int index, int type = 0);
+    void paintItem(QPainter &painter, ScheduleDataInfo info, int index);
     /**
      * @brief paintItem
      */
-    void paintItem();
+    void paintItem(QPainter &painter);
+
 private:
     QVector<ScheduleDataInfo> m_vlistData;
-    int m_type;
     QDate m_currentDate;
     QColor m_btimecolor = "#526A7F";
     QColor m_bttextcolor = "#414D68";
-    QColor m_lBackgroundcolor = Qt::white;
-    QColor m_solocolor = "#001A2E";
-    QColor m_TBcolor = "#001A2E";
-    bool adjustPos = false;
+    QFont m_textfont;
 };
 
 class CYearScheduleOutView : public DArrowRectangle
 {
     Q_OBJECT
-
 public:
     /**
      * @brief CYearScheduleOutView 构造函数
@@ -140,10 +125,6 @@ public:
      */
     void clearData();
     /**
-     * @brief showWindow 设置日程浮框外边框大小
-     */
-    void showWindow();
-    /**
      * @brief setTheMe 设置系统主题颜色
      * @param type 系统主题
      */
@@ -153,11 +134,8 @@ public:
      * @param cdate 日期
      */
     void setCurrentDate(QDate cdate);
-    /**
-     * @brief adjustPosition 根据日程浮框左右朝向不同，日程显示位置不同
-     * @param ad 是否调整显示位置
-     */
-    void adjustPosition(bool ad);
+    //设置箭头方向
+    void setDirection(ArrowDirection value);
 signals:
     /**
      * @brief signalsViewSelectDate 跳转视图信号
@@ -175,7 +153,6 @@ private:
     QVector<ScheduleDataInfo> scheduleinfoList;
     QDate currentdate;
     int list_count = 0;
-
 protected:
     /**
      * @brief mousePressEvent 鼠标单击事件，单击非节日日程进行编辑，单击"..."区域跳转到周视图。

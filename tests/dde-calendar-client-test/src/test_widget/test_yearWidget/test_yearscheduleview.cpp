@@ -221,10 +221,9 @@ TEST_F(test_yearscheduleview, clearDate)
 TEST_F(test_yearscheduleview, showWindow)
 {
     QVector<ScheduleDataInfo> vlistData = getScheduleDataInfo();
-    EXPECT_EQ(cYearScheduleView->showWindow(), 130);
-
+    cYearScheduleView->showWindow();
     cYearScheduleView->setData(vlistData);
-    EXPECT_EQ(cYearScheduleView->showWindow(), 240);
+    cYearScheduleView->showWindow();
 }
 
 //void CYearScheduleView::setTheMe(int type)
@@ -257,11 +256,6 @@ TEST_F(test_yearscheduleview, getCurrentDate)
     EXPECT_FALSE(iscurrent);
 }
 
-//void CYearScheduleView::adjustPosition(bool ad)
-TEST_F(test_yearscheduleview, adjustPosition)
-{
-    cYearScheduleView->adjustPosition(false);
-}
 
 //void CYearScheduleOutView::setData(QVector<ScheduleDataInfo> &vListData)
 TEST_F(test_yearscheduleview, setOutData)
@@ -276,12 +270,6 @@ TEST_F(test_yearscheduleview, clearOutData)
     zYearScheduleOutView->clearData();
 }
 
-//void CYearScheduleOutView::showWindow()
-TEST_F(test_yearscheduleview, showOutWindow)
-{
-    zYearScheduleOutView->showWindow();
-}
-
 //void CYearScheduleOutView::setTheMe(int type)
 TEST_F(test_yearscheduleview, setTheOutMe)
 {
@@ -292,10 +280,4 @@ TEST_F(test_yearscheduleview, setTheOutMe)
 TEST_F(test_yearscheduleview, setCurrentOutDate)
 {
     zYearScheduleOutView->setCurrentDate(QDate(2021, 1, 6));
-}
-
-//void CYearScheduleOutView::adjustPosition(bool ad)
-TEST_F(test_yearscheduleview, adjustOutPosition)
-{
-    zYearScheduleOutView->adjustPosition(false);
 }
