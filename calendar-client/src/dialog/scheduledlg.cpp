@@ -84,8 +84,10 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
 
     m_beginDateEdit->setDate(info.getBeginDateTime().date());
     m_beginTimeEdit->setTime(info.getBeginDateTime().time());
+    m_beginTimeEdit->setSelectItem();
     m_endDateEdit->setDate(info.getEndDateTime().date());
     m_endTimeEdit->setTime(info.getEndDateTime().time());
+    m_endTimeEdit->setSelectItem();
     m_allDayCheckbox->setChecked(info.getAllDay());
     m_endRepeatDate->setMinimumDate(info.getBeginDateTime().date());
 
@@ -117,10 +119,12 @@ void CScheduleDlg::setDate(const QDateTime &date)
     }
     m_beginDateEdit->setDate(m_currentDate.date());
     m_beginTimeEdit->setTime(m_currentDate.time());
+    m_beginTimeEdit->setSelectItem();
     QDateTime datetime = m_currentDate.addSecs(3600);
     m_EndDate = datetime;
     m_endDateEdit->setDate(datetime.date());
     m_endTimeEdit->setTime(datetime.time());
+    m_endTimeEdit->setSelectItem();
     m_endRepeatDate->setMinimumDate(date.date());
 }
 

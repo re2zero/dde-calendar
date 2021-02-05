@@ -51,6 +51,32 @@ QTime CTimeEdit::getTime()
     return m_time;
 }
 
+/**
+ * @brief CTimeEdit::setSelectItem
+ * 根据当前编辑框设置下拉选中item
+ */
+void CTimeEdit::setSelectItem()
+{
+    int hour = m_time.hour();
+    int minute = m_time.minute();
+    //取30分钟倍数的时间
+    minute = minute / 30 * 30;
+    minute += m_time.minute() % 30 == 0 ? 0 : 30;
+    //如果分钟为60则小时+1;
+    if (minute == 60) {
+        minute = 0;
+        //如果为24时则设置为23:30
+        if (++hour == 24) {
+            hour = 23;
+            minute = 30;
+        }
+    }
+    //获取该时间对应的index
+    int index = m_strList.indexOf(QTime(hour, minute).toString("hh:mm"));
+    //设置下拉列表当前index
+    setCurrentIndex(index);
+}
+
 void CTimeEdit::initUI()
 {
     //关闭自动补全
@@ -63,13 +89,11 @@ void CTimeEdit::initUI()
     validator = new QRegExpValidator(rx, this);
     m_timeEdit->lineEdit()->setValidator(validator);
     setLineEdit(m_timeEdit->lineEdit());
-    QStringList list;
-
     for (int i = 0; i < 24; i++) {
-        list << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(0, 2, 10, QLatin1Char('0'));
-        list << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(30);
+        m_strList << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(0, 2, 10, QLatin1Char('0'));
+        m_strList << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(30);
     }
-    this->addItems(list);
+    this->addItems(m_strList);
 }
 
 void CTimeEdit::initConnection()
@@ -106,4 +130,6 @@ void CTimeEdit::showPopup()
         //将视图容器移动到combobox的底部
         viewContainer->move(showPoint.x(), showPoint.y());
     }
+    //因改变了容器的高度，所以需要重新定位当前位置
+    this->view()->scrollTo(this->view()->currentIndex());
 }
