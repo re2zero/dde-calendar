@@ -73,6 +73,9 @@ private:
      * @param type  主题type
      */
     void setTheMe(const int type);
+    //设置tab顺序
+    void setTabFouseOrder();
+
 private:
     QLabel *m_typeLabel = nullptr;
     DComboBox *m_typeComBox = nullptr;

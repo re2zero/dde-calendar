@@ -41,6 +41,7 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     m_type = type;
     initUI();
     initConnection();
+    setTabFouseOrder();
 
     if (type == 1) {
         m_titleLabel->setText(tr("New Event"));
@@ -424,8 +425,11 @@ bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
             if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
                 return true;
             }
-            if (keyEvent->key() == Qt::Key_Tab)
+            if (keyEvent->key() == Qt::Key_Tab) {
+                //如果为tab则切换到全天checkbox
+                m_allDayCheckbox->setFocus(Qt::TabFocusReason);
                 return true;
+            }
         }
     }
     return DCalendarDDialog::eventFilter(obj, pEvent);
@@ -912,4 +916,22 @@ void CScheduleDlg::setTheMe(const int type)
     //设置颜色
     pa.setColor(DPalette::Text, titleColor);
     m_textEdit->setPalette(pa);
+}
+
+/**
+ * @brief CScheduleDlg::setTabFouseOrder
+ *      设置tab顺序
+ */
+void CScheduleDlg::setTabFouseOrder()
+{
+    setTabOrder(m_typeComBox, m_textEdit);
+    setTabOrder(m_textEdit, m_allDayCheckbox);
+    setTabOrder(m_allDayCheckbox, m_beginDateEdit);
+    setTabOrder(m_beginDateEdit, m_beginTimeEdit);
+    setTabOrder(m_beginTimeEdit, m_endDateEdit);
+    setTabOrder(m_endDateEdit, m_endTimeEdit);
+    setTabOrder(m_endTimeEdit, m_rmindCombox);
+    setTabOrder(m_rmindCombox, m_beginrepeatCombox);
+    setTabOrder(m_beginrepeatCombox, m_endrepeatCombox);
+    setTabOrder(m_endrepeatCombox, m_endrepeattimes);
 }
