@@ -274,6 +274,8 @@ private:
      * @return 日期
      */
     QDate getValidDate(QDate viewDate, int viewDateDay);
+    bool shouldEndSession(CreateJsonData *createjsondate);
+    bool validDateTime(QDateTime datetime);
 private:
     QDateTime       m_begintime;
     QDateTime       m_endtime;

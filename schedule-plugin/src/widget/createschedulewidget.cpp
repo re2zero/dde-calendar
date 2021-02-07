@@ -77,6 +77,8 @@ void createSchedulewidget::updateUI()
             m_scheduleitemwidget->addscheduleitem();
             mainlayout->addWidget(m_scheduleitemwidget);
             setCenterLayout(mainlayout);
+        } else {
+            qCritical() << "There's not the same schedule in scheduleSql!";
         }
     } else {
         //是否创建日程
