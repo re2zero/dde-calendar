@@ -133,3 +133,12 @@ void CTimeEdit::showPopup()
     //因改变了容器的高度，所以需要重新定位当前位置
     this->view()->scrollTo(this->view()->currentIndex());
 }
+
+void CTimeEdit::focusInEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event);
+    //如果tab切换到则全部选中
+    this->lineEdit()->selectAll();
+    //更新显示
+    this->update();
+}

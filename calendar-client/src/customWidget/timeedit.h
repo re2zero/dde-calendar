@@ -31,17 +31,18 @@ class CTimeEdit : public DComboBox
     Q_OBJECT
 public:
     CTimeEdit(QWidget *parent = nullptr);
-    ~CTimeEdit();
+    ~CTimeEdit() override;
     void setTime(QTime time);
     QTime getTime();
     //根据当前编辑框设置下拉选中item
     void setSelectItem();
-
 private:
     void initUI();
     void initConnection();
 protected:
     void showPopup() override;
+    void focusInEvent(QFocusEvent *event) override;
+
 private:
     DLineEdit *m_timeEdit = nullptr;
     int m_type = 0; // 0 h,1 m
