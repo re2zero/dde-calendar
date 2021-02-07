@@ -797,9 +797,6 @@ void CScheduleDlg::initUI()
     maintlayout->addWidget(m_endrepeatWidget);
     m_endrepeatWidget->setVisible(false);
 
-    addButton(tr("Cancel"));
-    addButton(tr("Save"), false, DDialog::ButtonRecommend);
-
     for (int i = 0; i < buttonCount(); i++) {
         QAbstractButton *button = getButton(i);
         button->setFixedSize(189, 36);
@@ -809,10 +806,11 @@ void CScheduleDlg::initUI()
     m_gwi->setLayout(maintlayout);
     addContent(m_gwi, Qt::AlignCenter);
     initDateEdit();
-
     if (m_type == 1)
         slotallDayStateChanged(0);
-    setFocus();
+    //添加按钮
+    addButton(tr("Cancel"));
+    addButton(tr("Save"), false, DDialog::ButtonRecommend);
 }
 
 void CScheduleDlg::initConnection()
