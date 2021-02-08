@@ -29,14 +29,8 @@ Utils::Utils()
 
 QString Utils::toconvertData(QDateTime date)
 {
-    QDateTime datetimeutc11 = date;
-    datetimeutc11.setTimeSpec(Qt::UTC);
-    QString strss = datetimeutc11.toString(Qt::ISODate);
-    datetimeutc11.setTimeSpec(Qt::OffsetFromUTC);
-    strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "+" + datetimeutc.toString("hh:mm");
-
     return str;
 }
 
@@ -49,14 +43,8 @@ QDateTime Utils::fromconvertData(QString str)
 
 QString Utils::toconvertIGData(QDateTime date)
 {
-    QDateTime datetimeutc11 = date;
-    datetimeutc11.setTimeSpec(Qt::UTC);
-    QString strss = datetimeutc11.toString(Qt::ISODate);
-    datetimeutc11.setTimeSpec(Qt::OffsetFromUTC);
-    strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z" + datetimeutc.toString("hh:mm");
-
     return str;
 }
 
