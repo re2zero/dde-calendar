@@ -40,7 +40,7 @@ class CDayWindow: public CScheduleBaseWidget
 {
     Q_OBJECT
 public:
-    CDayWindow(QWidget *parent = nullptr);
+    explicit CDayWindow(QWidget *parent = nullptr);
     ~CDayWindow() override;
     void setSearchWFlag(bool flag);
     void setLunarVisible(bool state);

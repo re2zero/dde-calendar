@@ -35,7 +35,7 @@ DCORE_USE_NAMESPACE
 class CDynamicIcon
 {
 private:
-    CDynamicIcon(int width, int height);
+    explicit CDynamicIcon(int width, int height);
     ~CDynamicIcon();
 public:
     static CDynamicIcon *getInstance();

@@ -62,7 +62,7 @@ private:
     };
 
 public:
-    touchGestureOperation(QWidget *parent = nullptr);
+    explicit touchGestureOperation(QWidget *parent = nullptr);
     /**
      * @brief event     事件处理
      * @param e         Qwidget事件

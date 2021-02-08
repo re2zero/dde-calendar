@@ -45,7 +45,7 @@ class CMonthScheduleView : public QObject
     Q_OBJECT
 
 public:
-    CMonthScheduleView(QWidget *parent, QGraphicsScene *scene);
+    explicit CMonthScheduleView(QWidget *parent, QGraphicsScene *scene);
     ~CMonthScheduleView() override;
     void setallsize(int w, int h, int left, int top, int buttom, int itemHeight = 22);
     void setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, int currentMonth);
@@ -100,7 +100,7 @@ class CWeekScheduleView : public QObject
     typedef QVector<MScheduleDateRangeInfo> RowScheduleInfo;
 
 public:
-    CWeekScheduleView(QObject *parent = nullptr);
+    explicit CWeekScheduleView(QObject *parent = nullptr);
     ~CWeekScheduleView() override;
 
 public:
@@ -151,7 +151,7 @@ class CMonthScheduleNumButton : public QObject
     Q_OBJECT
 
 public:
-    CMonthScheduleNumButton(QGraphicsItem *parent = nullptr);
+    explicit CMonthScheduleNumButton(QGraphicsItem *parent = nullptr);
     ~CMonthScheduleNumButton() override;
     void setColor(QColor color1, QColor color2, bool GradientFlag = false);
     void setText(QColor tcolor, QFont font, QPoint pos);

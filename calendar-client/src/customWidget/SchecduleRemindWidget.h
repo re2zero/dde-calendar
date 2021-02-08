@@ -53,7 +53,6 @@ private:
 class CenterWidget : public DFrame
 {
     Q_OBJECT
-    Q_DISABLE_COPY(CenterWidget)
 public:
     explicit CenterWidget(DWidget *parent = nullptr);
     ~CenterWidget() override;

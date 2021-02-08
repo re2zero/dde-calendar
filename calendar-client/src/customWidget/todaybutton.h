@@ -28,7 +28,7 @@ class CTodayButton : public DPushButton
 {
     Q_OBJECT
 public:
-    CTodayButton(QWidget *parent = nullptr);
+    explicit CTodayButton(QWidget *parent = nullptr);
     void setBColor(QColor normalC, QColor hoverC, QColor pressc, QColor normalC1, QColor hoverC1, QColor pressc1);
     void setTColor(QColor normalC, QColor hoverC, QColor pressc);
     void setshadowColor(QColor sc);

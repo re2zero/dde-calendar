@@ -30,7 +30,7 @@ class CTimeEdit : public DComboBox
 {
     Q_OBJECT
 public:
-    CTimeEdit(QWidget *parent = nullptr);
+    explicit CTimeEdit(QWidget *parent = nullptr);
     ~CTimeEdit() override;
     void setTime(QTime time);
     QTime getTime();

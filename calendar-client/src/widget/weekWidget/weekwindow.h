@@ -42,7 +42,7 @@ class CWeekWindow: public CScheduleBaseWidget
 {
     Q_OBJECT
 public:
-    CWeekWindow(QWidget *parent = nullptr);
+    explicit CWeekWindow(QWidget *parent = nullptr);
     ~CWeekWindow() override;
     //设置是否显示阴历信息
     void setLunarVisible(bool state);
