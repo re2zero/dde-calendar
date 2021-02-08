@@ -70,8 +70,9 @@ class CaHuangLiDayInfo
 {
 public:
     CaHuangLiDayInfo()
+        : mWorktime(0)
+        , mLunarLeapMonth(0)
     {
-        mWorktime = mLunarLeapMonth = 0;
     }
     static void registerMetaType();
     friend QDebug operator<<(QDebug argument, const CaHuangLiDayInfo &what);

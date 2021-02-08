@@ -63,15 +63,18 @@ static QVector<stJobTypeJSON> globalPredefinedTypes {
 
 typedef struct _tagJob {
     _tagJob()
+        : ID {0}
+        , Type {0}
+        , RecurID {0}
+        , RemindLaterCount {0}
     {
-        ID = Type = RecurID = RemindLaterCount = 0;
     }
     qint64 ID;
     qint64 Type;
     qint64 RecurID;
     QString Title {};
     QString Description {};
-    bool AllDay;
+    bool AllDay {false};
     QDateTime Start;
     QDateTime End;
     QString RRule {};
