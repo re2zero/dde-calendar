@@ -77,10 +77,13 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w)
 
     setTitlebarShadowEnabled(true);
     setFocusPolicy(Qt::ClickFocus);
+    //获取屏幕大小
+    QSize deskSize = QApplication::desktop()->size();
+    //设置最大尺寸为屏幕尺寸
+    setMaximumSize(deskSize);
     //如果为平板模式则使其大小为屏幕大小
     if (DDECalendar::isTable) {
-        QDesktopWidget *w = QApplication::desktop();
-        setFixedSize(w->size());
+        setFixedSize(deskSize);
     } else {
         QByteArray arrybyte = CConfigSettings::value("base.geometry").toByteArray();
         bool isOk = false;
