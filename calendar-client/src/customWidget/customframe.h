@@ -30,10 +30,10 @@ public:
     CustomFrame(QWidget *parent = nullptr);
     void setBColor(QColor normalC);
     void setRoundState(bool lstate, bool tstate, bool rstate, bool bstate);
-    void setTextStr(QFont font, QColor tc, QString strc, int flag = Qt::AlignCenter);
-    void setTextStr(QString strc);
+    void setTextStr(const QFont &font, const QColor &tc, const QString &strc, int flag = Qt::AlignCenter);
+    void setTextStr(const QString &strc);
     void setTextColor(QColor tc);
-    void setTextFont(QFont font);
+    void setTextFont(const QFont &font);
     void setTextAlign(int flag = Qt::AlignCenter);
     void setRadius(int radius = 8);
     void setboreder(int framew = 0);

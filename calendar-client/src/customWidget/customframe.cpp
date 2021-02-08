@@ -53,7 +53,7 @@ void CustomFrame::setRoundState(bool lstate, bool tstate, bool rstate, bool bsta
     m_bstate = bstate;
 }
 
-void CustomFrame::setTextStr(QFont font, QColor tc, QString strc, int flag)
+void CustomFrame::setTextStr(const QFont &font, const QColor &tc, const QString &strc, int flag)
 {
     m_font = font;
     m_tnormalColor = tc;
@@ -61,7 +61,7 @@ void CustomFrame::setTextStr(QFont font, QColor tc, QString strc, int flag)
     m_textflag = flag;
 }
 
-void CustomFrame::setTextStr(QString strc)
+void CustomFrame::setTextStr(const QString &strc)
 {
     m_text = strc;
 
@@ -79,7 +79,7 @@ void CustomFrame::setTextColor(QColor tc)
     update();
 }
 
-void CustomFrame::setTextFont(QFont font)
+void CustomFrame::setTextFont(const QFont &font)
 {
     m_font = font;
 
