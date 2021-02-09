@@ -73,7 +73,7 @@ class CMonthWidget : public QWidget
 {
     Q_OBJECT
 public:
-    CMonthWidget(QWidget *parent = nullptr);
+    explicit CMonthWidget(QWidget *parent = nullptr);
     ~CMonthWidget() override;
     void setDate(const QDate date[12]);
 protected:
@@ -90,12 +90,16 @@ protected:
      * @param event 鼠标事件
      */
     void mouseMoveEvent(QMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+
 private:
     void mousePress(const QPoint &point);
     //更新item大小
     void updateSize();
     //获取鼠标点击的区域编号
     int getMousePosItem(const QPointF &pos);
+    //根据选择时间更新显示的月份
+    void updateShowDate(const QDate &selectDate);
 signals:
     void signalsSelectDate(QDate date);
 private:
@@ -110,7 +114,7 @@ private:
 class CMonthRect
 {
 public:
-    CMonthRect();
+    explicit CMonthRect(QWidget *parent = nullptr);
     //设置时间
     void setDate(const QDate &date);
     //获取时间
@@ -129,6 +133,9 @@ public:
     static void setTheMe(int type);
     //设置选择的矩阵
     static void setSelectRect(CMonthRect *selectRect);
+    //获取选择的矩阵
+    static CMonthRect *getSelectRect();
+
 private:
     QRectF                              m_rect;
     QDate                               m_Date;
@@ -143,6 +150,7 @@ private:
     static QFont                        m_dayNumFont;
     static CMonthRect                  *m_SelectRect;
     QColor                              m_selectColor;
+    QWidget *m_parentWidget;
 };
 
 #endif // MONTDAYVIEW_H

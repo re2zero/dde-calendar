@@ -30,6 +30,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QKeyEvent>
 
 DGUI_USE_NAMESPACE
 CMonthDayView::CMonthDayView(QWidget *parent)
@@ -46,7 +47,6 @@ CMonthDayView::CMonthDayView(QWidget *parent)
     setFrameRounded(true);
     setLineWidth(0);
     setWindowFlags(Qt::FramelessWindowHint);
-
     connect(m_monthWidget, &CMonthWidget::signalsSelectDate, this, &CMonthDayView::signalsSelectDate);
 }
 
@@ -141,9 +141,11 @@ CMonthWidget::CMonthWidget(QWidget *parent)
     : QWidget(parent)
 {
     for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
-        CMonthRect *monthrect = new CMonthRect();
+        CMonthRect *monthrect = new CMonthRect(this);
         m_MonthItem.append(monthrect);
     }
+    //获取Tab焦点
+    setFocusPolicy(Qt::TabFocus);
 }
 
 CMonthWidget::~CMonthWidget()
@@ -161,7 +163,6 @@ void CMonthWidget::setDate(const QDate date[12])
     for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         m_MonthItem.at(i)->setDate(date[i]);
     }
-
     CMonthRect::setSelectRect(m_MonthItem.at(5));
     update();
 }
@@ -197,7 +198,6 @@ void CMonthWidget::paintEvent(QPaintEvent *event)
         m_MonthItem.at(i)->paintItem(&painter,
                                      m_MonthItem.at(i)->rect());
     }
-    painter.end();
 }
 
 void CMonthWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -221,6 +221,31 @@ void CMonthWidget::mouseMoveEvent(QMouseEvent *event)
             m_touchState = 2;
         }
         QWidget::mouseMoveEvent(event);
+    }
+}
+
+void CMonthWidget::keyPressEvent(QKeyEvent *event)
+{
+    //获取当前选择时间
+    QDate selectDate = CMonthRect::getSelectRect()->getDate();
+    //初始化需要设置的时间
+    QDate setdate = selectDate;
+    switch (event->key()) {
+    case Qt::Key_Left: {
+        setdate = selectDate.addMonths(-1);
+    } break;
+    case Qt::Key_Right: {
+        setdate = selectDate.addMonths(1);
+    } break;
+    default:
+        QWidget::keyPressEvent(event);
+    }
+    if (selectDate != setdate) {
+        //更新时间
+        updateShowDate(setdate);
+        //设置更新后的时间并更新界面
+        setDate(m_days);
+        emit signalsSelectDate(setdate);
     }
 }
 
@@ -267,6 +292,16 @@ int CMonthWidget::getMousePosItem(const QPointF &pos)
     return res;
 }
 
+/**
+ * @brief CMonthWidget::updateShowDate  根据选择时间更新显示的月份
+ * @param selectDate
+ */
+void CMonthWidget::updateShowDate(const QDate &selectDate)
+{
+    for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
+        m_days[i] = selectDate.addMonths(i - 5);
+    }
+}
 
 int         CMonthRect::m_themetype ;
 qreal       CMonthRect::m_DevicePixelRatio;
@@ -279,7 +314,8 @@ QColor      CMonthRect::m_fillColor;
 QFont       CMonthRect::m_dayNumFont;
 CMonthRect         *CMonthRect::m_SelectRect = nullptr;
 
-CMonthRect::CMonthRect()
+CMonthRect::CMonthRect(QWidget *parent)
+    : m_parentWidget(parent)
 {
     m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
     m_dayNumFont.setWeight(QFont::Light);
@@ -359,6 +395,17 @@ void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
         painter->setBrush(QBrush(m_selectColor));
         painter->setPen(Qt::NoPen);
         painter->drawEllipse(fillRect);
+        //如果有焦点，绘制tab选中效果
+        if (m_parentWidget && m_parentWidget->hasFocus()) {
+            QPen pen;
+            pen.setWidth(2);
+            pen.setColor(m_selectColor);
+            painter->setPen(pen);
+            //在原有的选中效果外面再绘制一圈
+            QRectF foucsRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
+            painter->setBrush(Qt::NoBrush);
+            painter->drawEllipse(foucsRect);
+        }
         painter->setRenderHint(QPainter::HighQualityAntialiasing);
         painter->setPen(m_currentDayTextColor);
         painter->setFont(m_dayNumFont);
@@ -421,4 +468,13 @@ void CMonthRect::setTheMe(int type)
 void CMonthRect::setSelectRect(CMonthRect *selectRect)
 {
     m_SelectRect = selectRect;
+}
+
+/**
+ * @brief CMonthRect::getSelectRect 获取选择的矩阵
+ * @return
+ */
+CMonthRect *CMonthRect::getSelectRect()
+{
+    return m_SelectRect;
 }
