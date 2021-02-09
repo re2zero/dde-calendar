@@ -21,6 +21,7 @@
 
 #include "animationstackedwidget.h"
 #include "cschedulebasewidget.h"
+#include "labelwidget.h"
 
 #include <DFrame>
 #include <DIconButton>
@@ -124,7 +125,7 @@ private:
 private:
     DIconButton     *m_prevButton = nullptr;
     DIconButton     *m_nextButton = nullptr;
-    QLabel          *m_today = nullptr;
+    LabelWidget          *m_today = nullptr;
     QDate           m_currentdate;
     QLabel          *m_yearLabel = nullptr;
     QLabel          *m_yearLunarLabel = nullptr;
@@ -161,6 +162,8 @@ public:
     void setTheMe(int type = 0);
     //设置搜索日程
     void setSearchSchedule(const QMap<QDate, QVector<ScheduleDataInfo> > &searchInfo);
+    void setViewFocus(int index);
+    int getViewFocusIndex();
 private:
     //设置年信息显示
     void setYearShow();
@@ -179,6 +182,8 @@ public slots:
      * @param flag 是否选择了如期
      */
     void slotSelectInfo(bool flag);
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
 private:
     QList<CYearView *>          m_monthViewList;
     QLabel                      *m_YearLabel = nullptr;
@@ -189,6 +194,7 @@ private:
     QString                     m_LunarYear;
     QString                     m_LunarDay;
     DWidget                     *m_topWidget = nullptr;
+    int                         currentFocusView = -1;
 };
 
 #endif // YEARWINDOW_H

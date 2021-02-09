@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (C) 2015 ~ 2018 Deepin Technology Co., Ltd.
  *
  * Author:     kirigaya <kirigaya@mkacg.com>
@@ -63,6 +63,27 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
     if (watched == m_today) {
         if (event->type() == QEvent::MouseButtonPress) {
             slottoday();
+        }
+        if (event->type() == QEvent::KeyPress) {
+            //点击 回车键 返回今天
+            QKeyEvent *key = static_cast<QKeyEvent *>(event);
+            if (key->key() == Qt::Key_Return) {
+                //返回今天
+                slottoday();
+            }
+        }
+    }
+    if (watched == m_yearWidget) {
+        //上下键切换年份
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent *key = static_cast<QKeyEvent *>(event);
+            if (key->key() == Qt::Key_Up) {
+                //上一年
+                slotprev();
+            } else if (key->key() == Qt::Key_Down) {
+                //下一年
+                slotnext();
+            }
         }
     }
     return QWidget::eventFilter(watched, event);
@@ -258,7 +279,7 @@ TouchGestureData CYearWindow::calculateAzimuthAngle(QPointF &startPoint,  QPoint
  */
 void CYearWindow::initUI()
 {
-    m_today = new QLabel(this);
+    m_today = new LabelWidget(this);
     m_today->installEventFilter(this);
 
     QFont todayfont;
@@ -335,6 +356,9 @@ void CYearWindow::initUI()
     QHBoxLayout *todaylayout = new QHBoxLayout;
     todaylayout->setMargin(0);
     todaylayout->setSpacing(0);
+    //设置tab选中顺序
+    setTabOrder(m_prevButton, m_today);
+    setTabOrder(m_today, m_nextButton);
     todaylayout->addWidget(m_prevButton);
     todaylayout->addWidget(m_today, 0, Qt::AlignCenter);
     todaylayout->addWidget(m_nextButton);
@@ -345,6 +369,9 @@ void CYearWindow::initUI()
 
     m_firstYearWidget = new YearFrame();
     m_secondYearWidget = new YearFrame();
+    //设置过滤事件
+    m_firstYearWidget->installEventFilter(this);
+    m_secondYearWidget->installEventFilter(this);
 
     m_StackedWidget = new  AnimationStackedWidget(AnimationStackedWidget::TB);
     m_StackedWidget->addWidget(m_firstYearWidget);
@@ -565,8 +592,12 @@ void CYearWindow::switchYear(const int offsetYear)
     //设置选择时间，如果成功则切换
     if (setSelectDate(_selectData, true)) {
         int index = m_StackedWidget->currentIndex();
+        //当前选中的monthview的index
+        int currentYearViewIndex = qobject_cast<YearFrame *>(m_StackedWidget->widget(index))->getViewFocusIndex();
         index = qAbs(index + offsetYear) % 2;
         m_yearWidget = qobject_cast<YearFrame *>(m_StackedWidget->widget(index));
+        //设置年视图翻页后选中的monthview
+        m_yearWidget->setViewFocus(currentYearViewIndex);
         //获取一年的显示时间
         QMap<int, QVector<QDate> > _yearShowData = m_calendarManager->getCalendarDateDataManage()->getYearDate();
         //设置显示时间
@@ -696,6 +727,8 @@ YearFrame::YearFrame(DWidget *parent)
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 4; j++) {
             CYearView *view = new CYearView(this);
+            //为每个monthview设置事件过滤器
+            view->installEventFilter(this);
             gridLayout->addWidget(view, i, j);
             m_monthViewList.append(view);
             connect(view, &CYearView::signalMousePress, this, &YearFrame::signalMousePress);
@@ -891,6 +924,27 @@ void YearFrame::setSearchSchedule(const QMap<QDate, QVector<ScheduleDataInfo> > 
 }
 
 /**
+ * @brief YearFrame::setViewFocus 为选中的view设置焦点
+ * @param index 选中的哪一个view
+ */
+void YearFrame::setViewFocus(int index)
+{
+    if (index >= 0) {
+        //设置选中view的焦点类型
+        m_monthViewList.at(index)->setFocus(Qt::FocusReason::TabFocusReason);
+    }
+}
+
+/**
+ * @brief YearFrame::getViewFocusIndex 获取选中view的index
+ * @return 选中的哪一个view
+ */
+int YearFrame::getViewFocusIndex()
+{
+    return currentFocusView;
+}
+
+/**
  * @brief YearFrame::setYearShow    设置年信息显示
  */
 void YearFrame::setYearShow()
@@ -908,4 +962,17 @@ void YearFrame::setYearShow()
 void YearFrame::slotSelectInfo(bool flag)
 {
     m_selectFlag = flag;
+}
+
+/**
+ * @brief YearFrame::eventFilter 事件过滤器，获取选中monthview的index
+ */
+bool YearFrame::eventFilter(QObject *watched, QEvent *event)
+{
+    CYearView *monthview = qobject_cast<CYearView *>(watched);
+    if (event->type() == QEvent::KeyRelease && m_monthViewList.contains(monthview)) {
+        //当前选中的monthview的index
+        currentFocusView = m_monthViewList.indexOf(monthview);
+    }
+    return QWidget::eventFilter(watched, event);
 }

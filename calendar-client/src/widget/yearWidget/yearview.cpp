@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "scheduledatamanage.h"
 #include "yearview.h"
 #include "constants.h"
 
@@ -32,12 +31,15 @@
 #include <QMouseEvent>
 #include <QPainterPath>
 #include <QtMath>
+#include <QStyleOptionFocusRect>
 
 DGUI_USE_NAMESPACE
 
 CYearView::CYearView(QWidget *parent)
     : CustomFrame(parent)
 {
+    //设置焦点类型
+    setFocusPolicy(Qt::FocusPolicy::TabFocus);
     setMouseTracking(true);
     //add separator line
     m_currentMouth = new CustomFrame();
@@ -227,4 +229,12 @@ void CYearView::paintEvent(QPaintEvent *e)
     painterPath.lineTo(m_radius, m_borderframew);
     painterPath.closeSubpath();
     painter.drawPath(painterPath);
+
+    if (hasFocus()) {
+        //有焦点，绘制焦点
+        QStyleOptionFocusRect option;
+        option.initFrom(this);
+        option.backgroundColor = palette().color(QPalette::Background);
+        style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter, this);
+    }
 }

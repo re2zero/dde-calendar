@@ -3,6 +3,7 @@
 
 #include "customframe.h"
 #include "monthbrefwidget.h"
+#include "scheduledatamanage.h"
 
 #include <DWidget>
 
