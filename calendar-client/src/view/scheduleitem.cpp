@@ -37,8 +37,9 @@ DWIDGET_USE_NAMESPACE
 CScheduleItem::CScheduleItem(QRectF rect, QGraphicsItem *parent, int type)
     : DragInfoItem(rect, parent)
     , m_type(type)
+    , m_totalNum(0)
+    , m_transparentcolor("#000000")
 {
-    m_transparentcolor = "#000000";
     m_transparentcolor.setAlphaF(0.05);
 }
 
@@ -115,12 +116,12 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
                 liststr.append("");
             } else {
                 QString c = str.at(0);
-                QString s = c + "...";
+                QString str = c + "...";
                 QFontMetrics fm(font);
-                while (f_st.width(s) > w && f_st.width(s) > 24) {
-                    s.chop(1);
+                while (f_st.width(str) > w && f_st.width(str) > 24) {
+                    str.chop(1);
                 }
-                liststr.append(s);
+                liststr.append(str);
             }
         }
     } else {

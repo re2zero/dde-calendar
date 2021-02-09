@@ -485,16 +485,16 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
             painter->setPen(pen);
             painter->setBrush(QBrush(m_ceventColor));
             painter->setPen(Qt::NoPen);
-            qreal r = rect.width() * (4 / 25);
-            if (r < 4) {
-                r = 4;
+            qreal ellipse_r = rect.width() * (4 / 25);
+            if (ellipse_r < 4) {
+                ellipse_r = 4;
             } else if (r > 7) {
-                r = 7;
+                ellipse_r = 7;
             }
-            painter->drawEllipse(QRectF(rect.width() - r + rect.x(),
+            painter->drawEllipse(QRectF(rect.width() - ellipse_r + rect.x(),
                                         rect.y(),
-                                        r,
-                                        r));
+                                        ellipse_r,
+                                        ellipse_r));
             painter->restore();
         }
     }

@@ -111,7 +111,6 @@ private:
     int m_priindex = 3; //默认打开日视图双击
     DFrame *m_transparentFrame = nullptr;
     bool m_opensearchflag = false;
-    QDate m_currentdate;
     int m_scheduleSearchViewMaxWidth;
     QPropertyAnimation *m_animation = nullptr;
     QTimer *m_currentDateUpdateTimer = nullptr;

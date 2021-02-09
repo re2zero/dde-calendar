@@ -58,7 +58,6 @@ static const int CalendarMHeight = 634;
 Calendarmainwindow::Calendarmainwindow(QWidget *w)
     : DMainWindow(w)
 {
-    m_currentdate = QDate::currentDate();
     setContentsMargins(QMargins(0, 0, 0, 0));
     initUI();
     initConnection();

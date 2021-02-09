@@ -75,6 +75,8 @@ void SchecduleRemindWidget::setDirection(DArrowRectangle::ArrowDirection value)
 
 CenterWidget::CenterWidget(DWidget *parent)
     : DFrame(parent)
+    , textwidth(0)
+    , textheight(0)
 {
     textfont.setWeight(QFont::Medium);
 }
