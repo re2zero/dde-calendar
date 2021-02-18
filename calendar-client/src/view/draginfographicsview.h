@@ -20,9 +20,10 @@
 */
 #ifndef DRAGINFOGRAPHICSVIEW_H
 #define DRAGINFOGRAPHICSVIEW_H
-#include "draginfoitem.h"
+#include "graphicsItem/draginfoitem.h"
 #include "../widget/touchgestureoperation.h"
 #include "src/scheduledatainfo.h"
+#include "cgraphicsscene.h"
 
 #include <DGraphicsView>
 
@@ -168,12 +169,21 @@ signals:
     void signalScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
     //scene更新
     void signalSceneUpdate();
+    void signalSwitchPrePage();
+    void signalSwitchNextPage();
 public slots:
     //删除日程
     void slotDeleteItem();
+    void slotSwitchPrePage(const QDate &focusDate);
+    void slotSwitchNextPage(const QDate &focusDate);
+
+protected:
+    //设置场景数据切换后当前item焦点
+    virtual void setSceneCurrentItemFocus(const QDate &focusDate);
+
 protected:
     int                                 m_themetype = 0;
-    QGraphicsScene *m_Scene = nullptr;
+    CGraphicsScene *m_Scene = nullptr;
     bool                                m_press = false;
 
     QAction *m_createAction = nullptr; // 创建日程

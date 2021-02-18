@@ -23,7 +23,7 @@
 
 #include <QObject>
 #include <gtest/gtest.h>
-#include <view/scheduleitem.h>
+#include "graphicsItem/scheduleitem.h"
 
 class test_scheduleitem : public ::QObject
     , public ::testing::Test

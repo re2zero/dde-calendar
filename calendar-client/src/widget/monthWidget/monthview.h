@@ -27,12 +27,8 @@
 
 #include <DWidget>
 
-#include <QList>
 #include <QDate>
-#include <QStyleOption>
-#include <QSignalMapper>
 #include <QAction>
-#include <QGraphicsView>
 
 DWIDGET_USE_NAMESPACE
 
@@ -98,17 +94,13 @@ public slots:
     void slotScheduleRemindWidget(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
 signals:
     /**
-     * @brief signalsupdatescheduleD  更新日程的信号
-     * @param w widget
-     * @param begin 开始日期
-     * @param end 结束日期
-     */
-    void signalsupdatescheduleD(QWidget *w, QDate begin, QDate end);
-    /**
      * @brief signalAngleDelta      发送滚动信号滚动相对量
      * @param delta     滚动相对量
      */
     void signalAngleDelta(int delta);
+    void signalSwitchPrePage();
+    void signalSwitchNextPage();
+
 protected:
     /**
      * @brief resizeEvent 窗口大小调整
@@ -120,6 +112,9 @@ protected:
      * @param event 鼠标事件
      */
     void mousePressEvent(QMouseEvent *event) override;
+
+    bool event(QEvent *event) override;
+
 private:
     ScheduleDataInfo getScheduleInfo(const QDate &beginDate, const QDate &endDate);
 private:

@@ -18,19 +18,28 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef LABELWIDGET_H
-#define LABELWIDGET_H
+#ifndef CMONTHSCHEDULEITEM_H
+#define CMONTHSCHEDULEITEM_H
 
-#include <QLabel>
-#include <QPainter>
+#include "draginfoitem.h"
 
-class LabelWidget : public QLabel
+/**
+ * @brief The CMonthScheduleItem class
+ * 月视图日程标签
+ */
+class CMonthScheduleItem : public DragInfoItem
 {
+    Q_OBJECT
 public:
-    LabelWidget(QWidget *parent = nullptr);
-    ~LabelWidget() override;
-protected:
-    void paintEvent(QPaintEvent *ev) override;
+    explicit CMonthScheduleItem(QRect rect, QGraphicsItem *parent = nullptr, int edittype = 0);
+    ~CMonthScheduleItem() override;
+    QPixmap getPixmap();
+
+private:
+    void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;
+
+private:
+    QPoint m_pos;
 };
 
-#endif // LABELWIDGET_H
+#endif // CMONTHSCHEDULEITEM_H

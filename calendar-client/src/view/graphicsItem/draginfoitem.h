@@ -22,10 +22,9 @@
 #define DRAGINFOITEM_H
 #include "scheduledatamanage.h"
 #include "src/scheduledatainfo.h"
+#include "cfocusitem.h"
 
 #include <DFontSizeManager>
-
-#include <QGraphicsRectItem>
 
 DWIDGET_USE_NAMESPACE
 
@@ -35,7 +34,7 @@ class QSequentialAnimationGroup;
  * @brief The DragInfoItem class
  * 显示项  支持拖拽
  */
-class DragInfoItem : public QObject, public QGraphicsRectItem
+class DragInfoItem : public CFocusItem
 {
     Q_OBJECT
     Q_PROPERTY(int offset READ readOffset WRITE setOffset)

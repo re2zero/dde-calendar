@@ -18,19 +18,27 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef LABELWIDGET_H
-#define LABELWIDGET_H
+#include "cscenetabkeydeal.h"
 
-#include <QLabel>
-#include <QPainter>
+#include "graphicsItem/cscenebackgrounditem.h"
+#include "cgraphicsscene.h"
 
-class LabelWidget : public QLabel
+#include <QDebug>
+
+CSceneTabKeyDeal::CSceneTabKeyDeal(QGraphicsScene *scene)
+    : CKeyPressDealBase(Qt::Key_Tab, scene)
 {
-public:
-    LabelWidget(QWidget *parent = nullptr);
-    ~LabelWidget() override;
-protected:
-    void paintEvent(QPaintEvent *ev) override;
-};
+}
 
-#endif // LABELWIDGET_H
+bool CSceneTabKeyDeal::focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *scene)
+{
+    CSceneBackgroundItem *nextItem = qobject_cast<CSceneBackgroundItem *>(item->setNextItemFocusAndGetNextItem());
+    if (nextItem == nullptr) {
+        scene->setCurrentFocusItem(scene->getFirstFocusItem());
+        item->setItemFocus(false);
+        return false;
+    } else {
+        scene->setCurrentFocusItem(nextItem);
+        return true;
+    }
+}

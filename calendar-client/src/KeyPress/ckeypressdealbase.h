@@ -18,19 +18,30 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef LABELWIDGET_H
-#define LABELWIDGET_H
+#ifndef CKEYPRESSDEALBASE_H
+#define CKEYPRESSDEALBASE_H
 
-#include <QLabel>
-#include <QPainter>
+#include <qnamespace.h>
 
-class LabelWidget : public QLabel
+class QGraphicsScene;
+class CSceneBackgroundItem;
+class CGraphicsScene;
+class CKeyPressDealBase
 {
 public:
-    LabelWidget(QWidget *parent = nullptr);
-    ~LabelWidget() override;
+    explicit CKeyPressDealBase(Qt::Key key, QGraphicsScene *scene = nullptr);
+    virtual ~CKeyPressDealBase();
+    //获取注册的key
+    Qt::Key getKey() const;
+    bool dealEvent();
 protected:
-    void paintEvent(QPaintEvent *ev) override;
+    virtual bool focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *scene) = 0;
+
+private:
+    Qt::Key m_key;
+
+protected:
+    QGraphicsScene *m_scene;
 };
 
-#endif // LABELWIDGET_H
+#endif // CKEYPRESSDEALBASE_H

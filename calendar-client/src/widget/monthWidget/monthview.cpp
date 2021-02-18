@@ -24,10 +24,8 @@
 #include <DHiDPIHelper>
 #include <DPalette>
 
-#include <QGridLayout>
 #include <QPainter>
 #include <QEvent>
-#include <QMessageBox>
 #include <QTime>
 #include <QApplication>
 #include <QMouseEvent>
@@ -49,21 +47,12 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_weekIndicator = new CMonthWeekView;
     m_monthGraphicsView = new CMonthGraphiview(this);
 
-    connect(m_monthGraphicsView,
-            &CMonthGraphiview::signalsViewSelectDate,
-            this,
-            &CMonthView::signalsViewSelectDate);
-    connect(m_monthGraphicsView,
-            &CMonthGraphiview::signalViewtransparentFrame,
-            this,
-            &CMonthView::signalViewtransparentFrame);
-    connect(m_monthGraphicsView,
-            &CMonthGraphiview::signalScheduleShow,
-            this,
-            &CMonthView::slotScheduleRemindWidget);
-    connect(m_monthGraphicsView,
-            &CMonthGraphiview::signalAngleDelta, this,
-            &CMonthView::signalAngleDelta);
+    connect(m_monthGraphicsView, &CMonthGraphiview::signalsViewSelectDate, this, &CMonthView::signalsViewSelectDate);
+    connect(m_monthGraphicsView, &CMonthGraphiview::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
+    connect(m_monthGraphicsView, &CMonthGraphiview::signalScheduleShow, this, &CMonthView::slotScheduleRemindWidget);
+    connect(m_monthGraphicsView, &CMonthGraphiview::signalAngleDelta, this, &CMonthView::signalAngleDelta);
+    connect(m_monthGraphicsView, &CMonthGraphiview::signalSwitchPrePage, this, &CMonthView::signalSwitchPrePage);
+    connect(m_monthGraphicsView, &CMonthGraphiview::signalSwitchNextPage, this, &CMonthView::signalSwitchNextPage);
     //新建最终布局
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->setMargin(0);
@@ -129,6 +118,15 @@ void CMonthView::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
     slotScheduleRemindWidget(false);
+}
+
+bool CMonthView::event(QEvent *event)
+{
+    if (event->type() == QEvent::FocusIn) {
+        m_monthGraphicsView->setFocus(Qt::TabFocusReason);
+        return true;
+    }
+    return DWidget::event(event);
 }
 
 /**

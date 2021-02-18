@@ -23,6 +23,8 @@
 
 #include <QObject>
 #include "monthWidget/monthscheduleview.h"
+#include "graphicsItem/cmonthscheduleitem.h"
+#include "graphicsItem/cmonthschedulenumitem.h"
 #include "gtest/gtest.h"
 
 class test_monthscheduleview : public QObject
@@ -34,9 +36,9 @@ public:
 
 protected:
     CMonthScheduleView *mMonthScheduleView = nullptr;
-    CMonthScheduleWidgetItem *mMonthScheduleWidgetItem = nullptr;
+    CMonthScheduleItem *mMonthScheduleWidgetItem = nullptr;
     CWeekScheduleView *mWeekScheduleView = nullptr;
-    CMonthScheduleNumButton *mMonthScheduleNumButton = nullptr;
+    CMonthScheduleNumItem *mMonthScheduleNumButton = nullptr;
     QGraphicsScene *m_scene = nullptr;
 };
 

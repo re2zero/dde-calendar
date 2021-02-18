@@ -26,9 +26,9 @@ test_monthscheduleview::test_monthscheduleview()
     QRect rect;
     m_scene = new QGraphicsScene();
     mMonthScheduleView = new CMonthScheduleView(nullptr, m_scene);
-    mMonthScheduleWidgetItem = new CMonthScheduleWidgetItem(rect);
+    mMonthScheduleWidgetItem = new CMonthScheduleItem(rect);
     mWeekScheduleView = new CWeekScheduleView();
-    mMonthScheduleNumButton = new CMonthScheduleNumButton();
+    mMonthScheduleNumButton = new CMonthScheduleNumItem();
 }
 
 test_monthscheduleview::~test_monthscheduleview()
@@ -376,7 +376,7 @@ TEST_F(test_monthscheduleview, setColor)
 {
     QColor color1(100, 100, 255);
     QColor color2(200, 200, 255);
-    mMonthScheduleNumButton->setColor(color1, color2, false);
+    mMonthScheduleNumButton->setColor(color1, color2);
 }
 
 //void CMonthScheduleNumButton::setText(QColor tcolor, QFont font, QPoint pos)
@@ -384,21 +384,13 @@ TEST_F(test_monthscheduleview, setText)
 {
     QColor color(100, 100, 255);
     QFont font;
-    QPoint pointf(12, 15);
-    mMonthScheduleNumButton->setText(color, font, pointf);
+    mMonthScheduleNumButton->setText(color, font);
 }
 
 //void CMonthScheduleNumButton::setSizeType(DFontSizeManager::SizeType sizeType)
 TEST_F(test_monthscheduleview, setSizeType)
 {
     mMonthScheduleNumButton->setSizeType(DFontSizeManager::SizeType::T1);
-}
-
-//void CMonthScheduleNumButton::setTransparentB(bool t, QColor tcolor)
-TEST_F(test_monthscheduleview, setTransparentB)
-{
-    QColor color(100, 100, 255);
-    mMonthScheduleNumButton->setTransparentB(true, color);
 }
 
 //QPixmap CMonthScheduleWidgetItem::getPixmap()

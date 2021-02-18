@@ -18,19 +18,22 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef LABELWIDGET_H
-#define LABELWIDGET_H
+#ifndef CKEYLEFTDEAL_H
+#define CKEYLEFTDEAL_H
 
-#include <QLabel>
-#include <QPainter>
+#include "ckeypressdealbase.h"
 
-class LabelWidget : public QLabel
+/**
+ * @brief The CKeyLeftDeal class
+ *  左方向键处理
+ */
+class CKeyLeftDeal : public CKeyPressDealBase
 {
 public:
-    LabelWidget(QWidget *parent = nullptr);
-    ~LabelWidget() override;
+    explicit CKeyLeftDeal(QGraphicsScene *scene = nullptr);
+
 protected:
-    void paintEvent(QPaintEvent *ev) override;
+    bool focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *scene) override;
 };
 
-#endif // LABELWIDGET_H
+#endif // CKEYLEFTDEAL_H

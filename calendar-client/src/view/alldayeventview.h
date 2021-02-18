@@ -19,7 +19,7 @@
 #ifndef ALLDAYEVENTVIEW_H
 #define ALLDAYEVENTVIEW_H
 
-#include "draginfoitem.h"
+#include "graphicsItem/draginfoitem.h"
 #include "draginfographicsview.h"
 
 #include <DGraphicsView>

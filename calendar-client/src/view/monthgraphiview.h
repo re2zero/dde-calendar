@@ -25,6 +25,7 @@
 #include "src/lunardatastruct.h"
 #include "src/dbusdatastruct.h"
 #include "draginfographicsview.h"
+#include "view/graphicsItem/cmonthdayitem.h"
 
 #include <DGraphicsView>
 #include <DMenu>
@@ -38,8 +39,6 @@
 
 DWIDGET_USE_NAMESPACE
 
-class CDayGraphicsItem;
-class CMonthScheduleWidgetItem;
 class CMonthScheduleView;
 
 class CMonthGraphiview : public DragInfoGraphicsView
@@ -74,6 +73,10 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void changeEvent(QEvent *event) override;
     void wheelEvent(QWheelEvent *) override;
+
+protected:
+    void setSceneCurrentItemFocus(const QDate &focusDate) override;
+
 private:
     void setDragPixmap(QDrag *drag, DragInfoItem *item) override;
     bool MeetCreationConditions(const QDateTime &date) override;
@@ -101,57 +104,11 @@ signals:
 public slots:
     void slotCreate(const QDateTime &date) override;
 private:
-    QVector<CDayGraphicsItem *>         m_DayItem;
-    QMap<QDate, CaHuangLiDayInfo>         m_lunarCache;
+    QVector<CMonthDayItem *> m_DayItem;
+    QMap<QDate, CaHuangLiDayInfo> m_lunarCache;
     QMap<QDate, int>                    m_festivallist;
     int                                 m_currentMonth;
     CMonthScheduleView                  *m_MonthScheduleView = nullptr;
     QMap<QDate, QVector<ScheduleDataInfo> >      m_shceludelistdata;
 };
-
-class CDayGraphicsItem : public QObject, public QGraphicsRectItem
-{
-    Q_OBJECT
-public:
-    enum HolidayStatus {H_NONE = 0x00, H_REST = 0x01, H_WORK = 0x02};
-    explicit CDayGraphicsItem(QGraphicsItem *parent = nullptr);
-    ~CDayGraphicsItem() override;
-    void setData(const QDate &date);
-    void setLunar(const QString &lunar);
-    void setStatus(const HolidayStatus &status);
-    void setCurrentMonth(bool isCurrent)
-    {
-        m_IsCurrentMonth = isCurrent;
-    }
-    void setTheMe(int type = 0);
-    QDate getDate()const
-    {
-        return m_Date;
-    }
-    void setitemnum(int num);
-protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
-private:
-    QDate                   m_Date;
-    QString                 m_DayLunar;
-    HolidayStatus           m_DayStatus;
-    QFont                   m_dayNumFont;
-    QColor                  m_dayNumColor;
-    QColor                  m_dayNumCurrentColor;
-    QFont                   m_LunerFont;
-    QColor                  m_LunerColor;
-    QColor                  m_BorderColor;
-    bool                    m_IsCurrentMonth = false;
-    QColor                  m_fillColor = Qt::white;
-    QColor                  m_banColor = "#FBE9B7";
-    QColor                  m_xiuColor = "#D4FFB3";
-    int                     m_themetype = 0;
-    QColor                  m_currentColor;
-    int m_itemnum = 0;
-    const int m_radius = 18;
-
-public:
-    static bool             m_LunarVisible;
-};
-
 #endif // MONTHGRAPHIVIEW_H

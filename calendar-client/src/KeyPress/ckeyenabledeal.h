@@ -18,19 +18,28 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef LABELWIDGET_H
-#define LABELWIDGET_H
+#ifndef CKEYENABLEDEAL_H
+#define CKEYENABLEDEAL_H
 
-#include <QLabel>
-#include <QPainter>
+#include "ckeypressdealbase.h"
 
-class LabelWidget : public QLabel
+#include <QDate>
+#include <QWidget>
+
+/**
+ * @brief The CKeyEnableDeal class
+ * 回车键处理
+ */
+class CKeyEnableDeal : public CKeyPressDealBase
 {
 public:
-    LabelWidget(QWidget *parent = nullptr);
-    ~LabelWidget() override;
+    explicit CKeyEnableDeal(QGraphicsScene *scene = nullptr);
 protected:
-    void paintEvent(QPaintEvent *ev) override;
+    //焦点项处理
+    bool focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *scene) override;
+private:
+    //创建日程
+    void createSchedule(const QDate &createDate, QWidget *parent);
 };
 
-#endif // LABELWIDGET_H
+#endif // CKEYENABLEDEAL_H

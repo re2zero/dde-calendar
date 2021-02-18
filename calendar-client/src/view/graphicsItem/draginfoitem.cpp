@@ -30,7 +30,7 @@ ScheduleDataInfo DragInfoItem::m_pressInfo;
 QVector<ScheduleDataInfo>    DragInfoItem::m_searchScheduleInfo;
 
 DragInfoItem::DragInfoItem(QRectF rect, QGraphicsItem *parent)
-    : QGraphicsRectItem(parent)
+    : CFocusItem(parent)
     , m_rect(rect)
 {
     setRect(m_rect);
@@ -51,6 +51,7 @@ DragInfoItem::DragInfoItem(QRectF rect, QGraphicsItem *parent)
             , &QPropertyAnimation::finished
             , this
             , &DragInfoItem::animationFinished);
+    setItemType(CITEM);
 }
 
 DragInfoItem::~DragInfoItem()

@@ -18,19 +18,26 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef LABELWIDGET_H
-#define LABELWIDGET_H
+#include "ckeyupdeal.h"
 
-#include <QLabel>
-#include <QPainter>
+#include "graphicsItem/cscenebackgrounditem.h"
+#include "cgraphicsscene.h"
 
-class LabelWidget : public QLabel
+#include <QDebug>
+
+CKeyUpDeal::CKeyUpDeal(QGraphicsScene *scene)
+    : CKeyPressDealBase(Qt::Key_Up, scene)
 {
-public:
-    LabelWidget(QWidget *parent = nullptr);
-    ~LabelWidget() override;
-protected:
-    void paintEvent(QPaintEvent *ev) override;
-};
+}
 
-#endif // LABELWIDGET_H
+bool CKeyUpDeal::focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *scene)
+{
+    item->initState();
+    if (item->getUpItem() != nullptr) {
+        scene->setCurrentFocusItem(item->getUpItem());
+        item->getUpItem()->setItemFocus(true);
+    } else {
+        scene->setPrePage(item->getDate().addDays(-7));
+    }
+    return true;
+}

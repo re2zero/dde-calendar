@@ -352,6 +352,8 @@ void CMonthWindow::initConnection()
     connect(m_monthView, &CMonthView::signalAngleDelta, this, &CMonthWindow::slotAngleDelta);
     //月份控件区域左右滚动信号关联
     connect(m_monthDayView, &CMonthDayView::signalAngleDelta, this, &CMonthWindow::slotAngleDelta);
+    connect(m_monthView, &CMonthView::signalSwitchPrePage, this, &CMonthWindow::slotSwitchPrePage);
+    connect(m_monthView, &CMonthView::signalSwitchNextPage, this, &CMonthWindow::slotSwitchNextPage);
 }
 
 /**
@@ -408,6 +410,16 @@ void CMonthWindow::slotViewSelectDate(const QDate &date)
         updateData();
         emit signalSwitchView(3);
     }
+}
+
+void CMonthWindow::slotSwitchPrePage()
+{
+    nextMonth();
+}
+
+void CMonthWindow::slotSwitchNextPage()
+{
+    previousMonth();
 }
 
 /**

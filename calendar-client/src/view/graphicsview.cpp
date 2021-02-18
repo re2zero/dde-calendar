@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "graphicsview.h"
-#include "scheduleitem.h"
+#include "graphicsItem/scheduleitem.h"
 #include "schedulecoormanage.h"
 #include "scheduledlg.h"
 #include "scheduledatamanage.h"

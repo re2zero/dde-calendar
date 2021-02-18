@@ -19,7 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "test_graphicsview.h"
-#include "scheduleitem.h"
+#include "graphicsItem/scheduleitem.h"
 #include <QGraphicsView>
 
 test_graphicsview::test_graphicsview()
@@ -86,7 +86,7 @@ TEST_F(test_graphicsview, setCurrentDate)
 //void CGraphicsView::setInfo(const QVector<ScheduleDataInfo> &info)
 TEST_F(test_graphicsview, setInfo)
 {
-    QVector<ScheduleDataInfo> infos = QVector<ScheduleDataInfo>{};
+    QVector<ScheduleDataInfo> infos = QVector<ScheduleDataInfo> {};
     cGraphicsView->setInfo(infos);
 }
 
@@ -152,8 +152,8 @@ TEST_F(test_graphicsview, deleteSchduleItem)
 //void CGraphicsView::scheduleClassificationType(QVector<ScheduleDataInfo> &scheduleInfolist, QList<ScheduleclassificationInfo> &info)
 TEST_F(test_graphicsview, scheduleClassificationType)
 {
-    QVector<ScheduleDataInfo> scheduleInfolist = QVector<ScheduleDataInfo>{};
-    QList<ScheduleclassificationInfo> info = QList<ScheduleclassificationInfo>{};
+    QVector<ScheduleDataInfo> scheduleInfolist = QVector<ScheduleDataInfo> {};
+    QList<ScheduleclassificationInfo> info = QList<ScheduleclassificationInfo> {};
     cGraphicsView->scheduleClassificationType(scheduleInfolist, info);
 }
 

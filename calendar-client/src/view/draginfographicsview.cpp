@@ -48,7 +48,7 @@ bool DragInfoGraphicsView::m_hasUpdateMark = false;
 
 DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     : DGraphicsView(parent)
-    , m_Scene(new QGraphicsScene(this))
+    , m_Scene(new CGraphicsScene(this))
     , m_rightMenu(new DMenu(this))
     , m_MoveDate(QDateTime::currentDateTime())
 {
@@ -82,6 +82,9 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     m_touchAnimation->setDuration(1000);
     //设置动画曲线
     m_touchAnimation->setEasingCurve(QEasingCurve::OutQuart);
+
+    connect(m_Scene, &CGraphicsScene::signalSwitchPrePage, this, &DragInfoGraphicsView::slotSwitchPrePage);
+    connect(m_Scene, &CGraphicsScene::signalSwitchNextPage, this, &DragInfoGraphicsView::slotSwitchNextPage);
 }
 
 DragInfoGraphicsView::~DragInfoGraphicsView()
@@ -240,7 +243,6 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
         }
     }
     QDateTime gDate =  getPosDate(event->pos());
-
     switch (m_DragStatus) {
     case IsCreate:
         m_isCreate = JudgeIsCreate(event->pos());
@@ -277,11 +279,11 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
         if (!m_PressRect.contains(event->pos())) {
             //拖拽前设置是否已经更新日程界面标志为否
             m_hasUpdateMark = false;
-            Qt::DropAction dropaction = m_Drag->exec(Qt::MoveAction);
+            //TODO 拖拽结束后还会返回到鼠标移动事件???
+            m_Drag->exec(Qt::MoveAction);
             //TODO 调试发现exec后代码有时候会执行2遍，先标记下，以后研究,现判断m_Drag是否为nullptr，若为空指针则表示执行过一遍直接退出
             if (m_Drag == nullptr)
                 return;
-            Q_UNUSED(dropaction);
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
@@ -424,8 +426,6 @@ bool DragInfoGraphicsView::event(QEvent *e)
 
 void DragInfoGraphicsView::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Right)
-        return;
     DGraphicsView::keyPressEvent(event);
 }
 
@@ -817,4 +817,21 @@ void DragInfoGraphicsView::slotDeleteItem()
         //设置拖拽日程为无效日程
         m_DragScheduleInfo = DragInfoItem::getPressSchedule();
     }
+}
+
+void DragInfoGraphicsView::slotSwitchPrePage(const QDate &focusDate)
+{
+    emit signalSwitchPrePage();
+    setSceneCurrentItemFocus(focusDate);
+}
+
+void DragInfoGraphicsView::slotSwitchNextPage(const QDate &focusDate)
+{
+    emit signalSwitchNextPage();
+    setSceneCurrentItemFocus(focusDate);
+}
+
+void DragInfoGraphicsView::setSceneCurrentItemFocus(const QDate &focusDate)
+{
+    Q_UNUSED(focusDate);
 }

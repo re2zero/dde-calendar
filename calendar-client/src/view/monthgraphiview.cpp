@@ -24,14 +24,16 @@
 #include "../dialog/myscheduleview.h"
 #include "../widget/touchgestureoperation.h"
 #include "constants.h"
-
-#include <DHiDPIHelper>
+#include "cscenetabkeydeal.h"
+#include "graphicsItem/cmonthschedulenumitem.h"
+#include "ckeyenabledeal.h"
+#include "ckeyleftdeal.h"
+#include "ckeyrightdeal.h"
+#include "ckeyupdeal.h"
+#include "ckeydowndeal.h"
 
 #include <QShortcut>
-#include <QPainterPath>
 #include <QMouseEvent>
-
-bool CDayGraphicsItem::m_LunarVisible = false;
 
 CMonthGraphiview::CMonthGraphiview(QWidget *parent)
     : DragInfoGraphicsView(parent)
@@ -41,20 +43,43 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
     QShortcut *shortcut = new QShortcut(parent);
     shortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(shortcut, &QShortcut::activated, this,  &CMonthGraphiview::slotDeleteItem);
+
     //设置创建名称
     setBuildName("MONTH VIEW");
-
     m_MonthScheduleView = new CMonthScheduleView(this, m_Scene);
     connect(this, &CMonthGraphiview::signalFontChange, m_MonthScheduleView, &CMonthScheduleView::slotFontChange);
 
     for (int i = 0; i < DDEMonthCalendar::ItemSizeofMonthDay; ++i) {
-        CDayGraphicsItem *item = new CDayGraphicsItem();
+        CMonthDayItem *item = new CMonthDayItem();
         item->setZValue(-1);
+        if (m_DayItem.size() > 0) {
+            //设置对应左右和下一个                            关系
+            m_DayItem.last()->setNextFocusItem(item);
+            m_DayItem.last()->setRightItem(item);
+            item->setLeftItem(m_DayItem.last());
+        }
+        int upNum = i - 7;
+        //如果对应的上一排编号大于零则设置对应的上下关系
+        if (upNum >= 0) {
+            m_DayItem.at(upNum)->setDownItem(item);
+            item->setUpItem(m_DayItem.at(upNum));
+        }
+        //设置编号
+        item->setBackgroundNum(i);
         m_DayItem.append(item);
         m_Scene->addItem(item);
-        item->setitemnum(i);
     }
     updateSize();
+    m_Scene->setFirstFocusItem(m_DayItem.first());
+    //添加键盘事件处理
+    CKeyPressPrxy *m_keyPrxy = new CKeyPressPrxy();
+    m_keyPrxy->addkeyPressDeal(new CSceneTabKeyDeal(m_Scene));
+    m_keyPrxy->addkeyPressDeal(new CKeyEnableDeal(m_Scene));
+    m_keyPrxy->addkeyPressDeal(new CKeyLeftDeal(m_Scene));
+    m_keyPrxy->addkeyPressDeal(new CKeyRightDeal(m_Scene));
+    m_keyPrxy->addkeyPressDeal(new CKeyUpDeal(m_Scene));
+    m_keyPrxy->addkeyPressDeal(new CKeyDownDeal(m_Scene));
+    m_Scene->setKeyPressPrxy(m_keyPrxy);
 }
 
 CMonthGraphiview::~CMonthGraphiview()
@@ -94,7 +119,7 @@ void CMonthGraphiview::setFestival(const QMap<QDate, int> &festivalInfo)
 {
     m_festivallist = festivalInfo;
     for (int i = 0; i < m_DayItem.size(); ++i) {
-        m_DayItem.at(i)->setStatus(static_cast<CDayGraphicsItem::HolidayStatus>(m_festivallist[m_DayItem.at(i)->getDate()]));
+        m_DayItem.at(i)->setStatus(static_cast<CMonthDayItem::HolidayStatus>(m_festivallist[m_DayItem.at(i)->getDate()]));
     }
     this->scene()->update();
 }
@@ -107,7 +132,7 @@ void CMonthGraphiview::setLunarInfo(const QMap<QDate, CaHuangLiDayInfo> &lunarCa
 
 void CMonthGraphiview::setLunarVisible(bool visible)
 {
-    CDayGraphicsItem::m_LunarVisible = visible;
+    CMonthDayItem::m_LunarVisible = visible;
 }
 
 /**
@@ -131,7 +156,7 @@ void CMonthGraphiview::setSelectSearchSchedule(const ScheduleDataInfo &scheduleI
     QVector<QGraphicsRectItem *> mscheduleShowBtn = m_MonthScheduleView->getScheduleShowItem();
 
     for (int i = 0; i < mscheduleShowBtn.size(); ++i) {
-        CMonthScheduleWidgetItem *item = dynamic_cast<CMonthScheduleWidgetItem *>(mscheduleShowBtn.at(i));
+        CMonthScheduleItem *item = dynamic_cast<CMonthScheduleItem *>(mscheduleShowBtn.at(i));
 
         if (item == nullptr) continue;
 
@@ -225,6 +250,9 @@ void CMonthGraphiview::updateInfo()
     }
     viewport()->update();
     update();
+    for (int i = 0; i < m_DayItem.size(); ++i) {
+        m_DayItem.at(i)->updateShowItem();
+    }
 }
 
 
@@ -341,7 +369,7 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
     }
 
     QGraphicsItem *listItem = itemAt(event->pos());
-    CMonthScheduleNumButton *item = dynamic_cast<CMonthScheduleNumButton *>(listItem);
+    CMonthScheduleNumItem *item = dynamic_cast<CMonthScheduleNumItem *>(listItem);
 
     if (item != nullptr) {
         //双击切换视图
@@ -351,7 +379,7 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
         return;
     }
 
-    CMonthScheduleWidgetItem *infoitem = dynamic_cast<CMonthScheduleWidgetItem *>(listItem);
+    CMonthScheduleItem *infoitem = dynamic_cast<CMonthScheduleItem *>(listItem);
 
     if (infoitem != nullptr) {
         CMyScheduleView dlg(infoitem->getData(), this);
@@ -362,7 +390,7 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
         return;
     }
 
-    CDayGraphicsItem *Dayitem = dynamic_cast<CDayGraphicsItem *>(listItem);
+    CMonthDayItem *Dayitem = dynamic_cast<CMonthDayItem *>(listItem);
 
     if (Dayitem != nullptr) {
         QPointF point = getItemPos(event->pos(), Dayitem->rect());
@@ -383,6 +411,7 @@ void CMonthGraphiview::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
     updateSize();
     updateInfo();
+    //    m_Scene->currentFocusItemUpdate();
 }
 void CMonthGraphiview::changeEvent(QEvent *event)
 {
@@ -399,9 +428,20 @@ void CMonthGraphiview::wheelEvent(QWheelEvent *e)
     }
 }
 
+void CMonthGraphiview::setSceneCurrentItemFocus(const QDate &focusDate)
+{
+    int offset = static_cast<int>(m_DayItem.first()->getDate().daysTo(focusDate));
+    if (offset >= 0 && offset < m_DayItem.size()) {
+        m_Scene->setCurrentFocusItem(m_DayItem.at(offset));
+        m_Scene->currentFocusItemUpdate();
+    } else {
+        qWarning() << "Switching time range error! focusDate:" << focusDate << " first item date:" << m_DayItem.first()->getDate();
+    }
+}
+
 void CMonthGraphiview::setDragPixmap(QDrag *drag, DragInfoItem *item)
 {
-    CMonthScheduleWidgetItem *infoitem = dynamic_cast<CMonthScheduleWidgetItem *>(item);
+    CMonthScheduleItem *infoitem = dynamic_cast<CMonthScheduleItem *>(item);
     drag->setPixmap(infoitem->getPixmap());
 }
 
@@ -423,7 +463,7 @@ bool CMonthGraphiview::JudgeIsCreate(const QPointF &pos)
 void CMonthGraphiview::RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos)
 {
     Q_UNUSED(pos);
-    CDayGraphicsItem *Dayitem = dynamic_cast<CDayGraphicsItem *>(listItem);
+    CMonthDayItem *Dayitem = dynamic_cast<CMonthDayItem *>(listItem);
 
     if (Dayitem != nullptr) {
         m_rightMenu->clear();
@@ -506,184 +546,4 @@ void CMonthGraphiview::slotCreate(const QDateTime &date)
         emit signalsScheduleUpdate(0);
     }
     emit signalViewtransparentFrame(0);
-}
-
-CDayGraphicsItem::CDayGraphicsItem(QGraphicsItem *parent)
-    : QGraphicsRectItem(parent)
-    , m_Date(QDate::currentDate())
-    , m_DayLunar("")
-    , m_DayStatus(H_NONE)
-{
-    m_dayNumFont.setPixelSize(DDECalendar::FontSizeTwentyfour);
-    m_dayNumFont.setWeight(QFont::Light);
-
-    m_LunerFont.setPixelSize(DDECalendar::FontSizeTwelve);
-    m_LunerFont.setWeight(QFont::Normal);
-}
-
-CDayGraphicsItem::~CDayGraphicsItem()
-{
-}
-
-void CDayGraphicsItem::setData(const QDate &date)
-{
-    m_Date = date;
-//    setLunar("");
-}
-
-void CDayGraphicsItem::setLunar(const QString &lunar)
-{
-    m_DayLunar = lunar;
-}
-
-void CDayGraphicsItem::setStatus(const CDayGraphicsItem::HolidayStatus &status)
-{
-    m_DayStatus = status;
-}
-
-void CDayGraphicsItem::setTheMe(int type)
-{
-    m_themetype = type;
-
-    if (type == 0 || type == 1) {
-        m_dayNumColor = "#000000";
-        m_dayNumCurrentColor = "#FFFFFF";
-
-        m_LunerColor = "#5E5E5E";
-        m_LunerColor.setAlphaF(0.5);
-
-        m_fillColor = Qt::white;
-        m_banColor = "#FF7171";
-        m_banColor.setAlphaF(0.1);
-        m_xiuColor = "#ADFF71";
-        m_xiuColor.setAlphaF(0.1);
-
-        m_BorderColor = "#000000";
-        m_BorderColor.setAlphaF(0.05);
-    } else if (type == 2) {
-        m_dayNumColor = "#C0C6D4";
-        m_dayNumCurrentColor = "#B8D3FF";
-
-        m_LunerColor = "#ABDAFF";
-        m_LunerColor.setAlphaF(0.5);
-
-        m_fillColor = "#000000";
-        m_fillColor.setAlphaF(0.05);
-        m_banColor = "#FF7171";
-        m_banColor.setAlphaF(0.1);
-        m_xiuColor = "#ADFF71";
-        m_xiuColor.setAlphaF(0.1);
-
-        m_BorderColor = "#000000";
-        m_BorderColor.setAlphaF(0.05);
-    }
-    update();
-}
-
-void CDayGraphicsItem::setitemnum(int num)
-{
-    m_itemnum = num;
-}
-
-void CDayGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    const int hh = 36;
-    m_currentColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-    painter->setRenderHints(QPainter::Antialiasing);
-    //绘制背景
-    if (m_LunarVisible) {
-        switch (m_DayStatus) {
-        case H_WORK:
-            painter->setBrush(QBrush(m_banColor));
-            break;
-        case H_REST:
-            painter->setBrush(QBrush(m_xiuColor));
-            break;
-        default:
-            painter->setBrush(QBrush(m_fillColor));
-            break;
-        }
-    } else {
-        painter->setBrush(QBrush(m_fillColor));
-    }
-
-    if (!m_IsCurrentMonth) {
-        painter->setOpacity(0.4);
-    }
-    QPen pen;
-    pen.setWidth(1);
-    pen.setColor(m_BorderColor);
-    painter->setPen(pen);
-    painter->drawRect(this->rect());
-    painter->save();
-    //绘制日期
-    painter->setFont(m_dayNumFont);
-    QRectF fillRect;
-    if (m_LunarVisible) {
-        fillRect.setRect(this->rect().x() + 3, this->rect().y() + 4, hh, hh);
-    } else {
-        fillRect.setRect(this->rect().x(), this->rect().y() + 4, this->rect().width(), hh);
-    }
-    //如果为当前时间
-    if (m_Date == QDate::currentDate()) {
-        //设置不透明度为1
-        painter->setOpacity(1);
-        QFont tfont = m_dayNumFont;
-        tfont.setPixelSize(DDECalendar::FontSizeTwenty);
-        painter->setFont(tfont);
-        painter->setPen(m_dayNumCurrentColor);
-        painter->save();
-        painter->setBrush(QBrush(m_currentColor));
-        painter->setPen(Qt::NoPen);
-        if (m_LunarVisible)
-            painter->drawEllipse(QRectF(this->rect().x() + 6, this->rect().y() + 4, hh - 8, hh - 8));
-        else
-            painter->drawEllipse(QRectF((this->rect().width() - hh + 8) / 2 + this->rect().x(), this->rect().y() + 4, hh - 8, hh - 8));
-        painter->restore();
-    } else {
-        painter->setPen(m_dayNumColor);
-    }
-
-    fillRect.setY(fillRect.y() - 10);
-    fillRect.setX(fillRect.x() - 1);
-    painter->drawText(fillRect,
-                      Qt::AlignCenter,
-                      QString::number(m_Date.day()));
-    painter->restore();
-    //绘制农历
-    if (m_LunarVisible) {
-        QFontMetrics metrics(m_LunerFont);
-        int Lunarwidth = metrics.width(m_DayLunar);
-        qreal filleRectX = this->rect().width() - 12 - 3 - (58 + Lunarwidth) / 2;
-        QRectF fillRect(this->rect().x() + filleRectX,
-                        this->rect().y() + 9,
-                        12,
-                        12);
-
-        if (filleRectX > hh) {
-            painter->setRenderHint(QPainter::Antialiasing);
-            painter->setRenderHint(QPainter::HighQualityAntialiasing);
-            painter->setRenderHint(QPainter::SmoothPixmapTransform);
-            switch (m_DayStatus) {
-            case H_WORK: {
-                QPixmap  pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
-                painter->drawPixmap(fillRect.toRect(), pixmap);
-            }
-            break;
-            case H_REST: {
-                QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
-                painter->drawPixmap(fillRect.toRect(), pixmap);
-            }
-            break;
-            default:
-                break;
-            }
-        }
-        painter->setFont(m_LunerFont);
-        painter->setPen(m_LunerColor);
-        painter->drawText(QRectF(this->rect().x() + this->rect().width() - 58,
-                                 this->rect().y() + 6, 58, 18), Qt::AlignCenter, m_DayLunar);
-    }
 }

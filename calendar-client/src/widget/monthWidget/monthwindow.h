@@ -80,6 +80,7 @@ signals:
      * @param date
      */
     void signalsCurrentScheduleDate(QDate date);
+
 public slots:
     //隐藏日程浮框
     void slotScheduleHide();
@@ -87,6 +88,9 @@ public slots:
     void slotAngleDelta(int delta);
     //设置选择时间切换日视图
     void slotViewSelectDate(const QDate &date);
+    void slotSwitchPrePage();
+    void slotSwitchNextPage();
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
 private slots:

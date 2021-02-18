@@ -18,19 +18,28 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef LABELWIDGET_H
-#define LABELWIDGET_H
+#ifndef CKEYPRESSPRXY_H
+#define CKEYPRESSPRXY_H
 
-#include <QLabel>
-#include <QPainter>
+#include "ckeypressdealbase.h"
 
-class LabelWidget : public QLabel
+#include <QMap>
+#include <QKeyEvent>
+
+class CKeyPressPrxy
 {
 public:
-    LabelWidget(QWidget *parent = nullptr);
-    ~LabelWidget() override;
-protected:
-    void paintEvent(QPaintEvent *ev) override;
+    explicit CKeyPressPrxy();
+    ~CKeyPressPrxy();
+    //键盘事件处理
+    bool keyPressDeal(QKeyEvent *event);
+    //添加需要处理的键盘事件
+    void addkeyPressDeal(CKeyPressDealBase *deal);
+    //移除添加的键盘事件
+    void removeDeal(CKeyPressDealBase *deal);
+
+private:
+    QMap<int, CKeyPressDealBase *> m_keyEventMap {};
 };
 
-#endif // LABELWIDGET_H
+#endif // CKEYPRESSPRXY_H

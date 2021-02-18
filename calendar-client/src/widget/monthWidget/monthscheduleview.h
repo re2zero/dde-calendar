@@ -21,29 +21,19 @@
 
 #include "src/scheduledatainfo.h"
 #include "scheduledaterangeinfo.h"
-#include "draginfoitem.h"
-
-#include <DLabel>
-#include <DPushButton>
-#include <DListWidget>
-#include <DFontSizeManager>
+#include "graphicsItem/draginfoitem.h"
+#include "graphicsItem/cmonthscheduleitem.h"
 
 #include <QMouseEvent>
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
 
 DWIDGET_USE_NAMESPACE
-class CMonthScheduleWidgetItem;
-class QVBoxLayout;
-class CMonthScheduleNumButton;
-class QPropertyAnimation;
-class QSequentialAnimationGroup;
+
 class CWeekScheduleView;
-class CScheduleDataManage;
 class CMonthScheduleView : public QObject
 {
     Q_OBJECT
-
 public:
     explicit CMonthScheduleView(QWidget *parent, QGraphicsScene *scene);
     ~CMonthScheduleView() override;
@@ -67,8 +57,8 @@ signals:
     void signalUpdateUI(int type);
     void signalPressScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
 public slots:
-    void slotdeleteitem(CMonthScheduleWidgetItem *item);
-    void slotedititem(CMonthScheduleWidgetItem *item, int type = 0);
+    void slotdeleteitem(CMonthScheduleItem *item);
+    void slotedititem(CMonthScheduleItem *item, int type = 0);
     void slotFontChange();
 
 private:
@@ -118,7 +108,6 @@ public:
     }
     void updateSchedule(const bool isNormalDisplay, const ScheduleDataInfo &info = ScheduleDataInfo());
     void clearItem();
-
 private:
     void setMaxNum();
     void mScheduleClear();
@@ -131,7 +120,6 @@ private:
      * @param addInfo               添加的日程
      */
     void addShowSchedule(const int &startPos, const int &endPos, const int &addRow, const ScheduleDataInfo &addInfo);
-
 private:
     QVector<QGraphicsRectItem *> m_scheduleShowItem;
     QVector<RowScheduleInfo> m_MScheduleInfo;
@@ -144,65 +132,4 @@ private:
     QDate endDate;
     int m_colum = 0;
 };
-
-class CMonthScheduleNumButton : public QObject
-    , public QGraphicsRectItem
-{
-    Q_OBJECT
-
-public:
-    explicit CMonthScheduleNumButton(QGraphicsItem *parent = nullptr);
-    ~CMonthScheduleNumButton() override;
-    void setColor(QColor color1, QColor color2, bool GradientFlag = false);
-    void setText(QColor tcolor, QFont font, QPoint pos);
-    void setSizeType(DFontSizeManager::SizeType sizeType);
-    void setTransparentB(bool t, QColor tcolor);
-    void setDate(QDate date)
-    {
-        m_date = date;
-    }
-    QDate getDate() const
-    {
-        return m_date;
-    }
-    void setData(int num)
-    {
-        m_num = num;
-    }
-signals:
-    void signalsCurrentScheduleDate(QDate date);
-    void signalPressScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
-
-protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
-
-private:
-    bool m_GradientFlag;
-    QColor m_color1;
-    QColor m_color2;
-    QColor m_textcolor;
-    QFont m_font;
-    QPoint m_pos;
-    int m_num;
-    QColor m_transparentcolor;
-    bool m_transparentf = false;
-    QDate m_date;
-    DFontSizeManager::SizeType m_SizeType = DFontSizeManager::T8;
-};
-
-class CMonthScheduleWidgetItem : public DragInfoItem
-{
-    Q_OBJECT
-public:
-    explicit CMonthScheduleWidgetItem(QRect rect, QGraphicsItem *parent = nullptr, int edittype = 0);
-    ~CMonthScheduleWidgetItem() override;
-    QPixmap getPixmap();
-
-private:
-    void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;
-
-private:
-    QPoint m_pos;
-};
-
 #endif // MONTHSCHEDULEVIEW_H
