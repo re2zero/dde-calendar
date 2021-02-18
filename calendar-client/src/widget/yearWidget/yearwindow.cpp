@@ -969,10 +969,14 @@ void YearFrame::slotSelectInfo(bool flag)
  */
 bool YearFrame::eventFilter(QObject *watched, QEvent *event)
 {
-    CYearView *monthview = qobject_cast<CYearView *>(watched);
-    if (event->type() == QEvent::KeyRelease && m_monthViewList.contains(monthview)) {
-        //当前选中的monthview的index
+    //返回当前活动窗口中的焦点小部件
+    CYearView *monthview = qobject_cast<CYearView *>(QApplication::focusWidget());
+    //焦点小部件是否为12个月份中的一个
+    if (m_monthViewList.contains(monthview)) {
+        //焦点小部件在list中的index
         currentFocusView = m_monthViewList.indexOf(monthview);
+    } else {
+        currentFocusView = -1;
     }
     return QWidget::eventFilter(watched, event);
 }
