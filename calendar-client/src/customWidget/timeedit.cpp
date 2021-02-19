@@ -39,7 +39,8 @@ CTimeEdit::~CTimeEdit()
 void CTimeEdit::setTime(QTime time)
 {
     m_time = time;
-    m_timeEdit->setText(m_time.toString("hh:mm"));
+    setSelectItem();
+    m_timeEdit->setText(time.toString("hh:mm"));
 }
 
 QTime CTimeEdit::getTime()
