@@ -284,19 +284,26 @@ void CScheduleDlg::slotBtClick(int buttonIndex, QString buttonName)
 
 void CScheduleDlg::slotTextChange()
 {
-    QTextCursor cursor = m_textEdit->textCursor();
     QString textContent = m_textEdit->toPlainText();
     int length = textContent.count();
     QString tStitlename = textContent;
 
     int maxLength = 256; // 最大字符数
-
-    if (tStitlename.contains("\n") || length > maxLength) {
+    //去除回车字符
+    if (tStitlename.contains("\n")) {
         //设置纯文本显示原始内容
-        m_textEdit->setPlainText(m_context);
-        cursor.movePosition(QTextCursor::End);
-        m_textEdit->setTextCursor(cursor);
+        tStitlename.replace("\n", "");
+        m_textEdit->setPlainText(tStitlename);
+        //因设置text会再次触发textchange信号,在此直接return
+        return;
     }
+    //如果长度大于最大长度则显示原来的字符
+    if (length > maxLength) {
+        m_textEdit->setPlainText(m_context);
+        return;
+    }
+    //将焦点移动到最后
+    m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
     m_context = m_textEdit->toPlainText();
 }
 
