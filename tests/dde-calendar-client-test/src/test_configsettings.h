@@ -30,6 +30,7 @@ class test_configsettings : public QObject, public::testing::Test
 {
 public:
     test_configsettings();
+    ~test_configsettings();
 protected:
     CConfigSettings *conf;
 };

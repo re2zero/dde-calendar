@@ -491,7 +491,7 @@ void CScheduleSearchView::updateDateShow()
         font.setPixelSize(DDECalendar::FontSizeTwenty);
         gwi->setAlignment(Qt::AlignCenter);
         DPalette daypa = gwi->palette();
-        QColor textcolor = DPalette::ToolTipText;
+        QColor textcolor;
         int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
         if (themtype == 2) {
             textcolor = "#C0C6D4";

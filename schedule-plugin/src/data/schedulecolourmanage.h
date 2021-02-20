@@ -22,6 +22,8 @@
 #define SCHEDULECOLOURMANAGE_H
 
 #include <QColor>
+#include <QObject>
+
 struct CSchedulesColor {
     int type;
     QColor gradientFromC;

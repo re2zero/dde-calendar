@@ -31,13 +31,13 @@ public:
     /* 判断字符串是否只可以进行拼音查询 */
     bool CanQueryByPinyin(QString str);
     /* 创建拼音字符串 */
-    QString CreatePinyin(QString zh);
+    QString CreatePinyin(const QString &zh);
     /* 构造拼音查询表达式 */
     QString CreatePinyinQuery(QString pinyin);
     /* 构造拼音查询正则表达式 */
     QString CreatePinyinRegexp(QString pinyin);
     /* 判断汉字和拼音是否匹配 */
-    bool PinyinMatch(QString zh, QString py);
+    bool PinyinMatch(const QString &zh, const QString &py);
 
 private:
     /* 初始化合法拼音表 */

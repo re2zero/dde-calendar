@@ -36,7 +36,6 @@ TEST_F(test_monthgraphiview, setTheMe)
     int type = 1;
     cMonthGraphiview->setTheMe();
     cMonthGraphiview->setTheMe(type);
-    assert(1 == 1);
 }
 
 //void CMonthGraphiview::setDate(const QVector<QDate> &showDate)
@@ -54,15 +53,13 @@ TEST_F(test_monthgraphiview, setDate)
     }
     std::cout << showDate.size() << std::endl;
     cMonthGraphiview->setDate(showDate);
-    assert(1 == 1);
 }
 
 //void CMonthGraphiview::setLunarInfo(const QMap<QDate, CaHuangLiDayInfo> &lunarCache)
 TEST_F(test_monthgraphiview, setLunarInfo)
 {
-    QMap<QDate, CaHuangLiDayInfo> lunarCache = QMap<QDate, CaHuangLiDayInfo>{};
+    QMap<QDate, CaHuangLiDayInfo> lunarCache = QMap<QDate, CaHuangLiDayInfo> {};
     cMonthGraphiview->setLunarInfo(lunarCache);
-    assert(1 == 1);
 }
 
 //void CMonthGraphiview::setLunarVisible(bool visible)
@@ -70,7 +67,6 @@ TEST_F(test_monthgraphiview, setLunarVisible)
 {
     bool visible = false;
     cMonthGraphiview->setLunarVisible(visible);
-    assert(1 == 1);
 }
 
 //void CMonthGraphiview::setScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo> > &info)
@@ -78,7 +74,6 @@ TEST_F(test_monthgraphiview, setScheduleInfo)
 {
     QMap<QDate, QVector<ScheduleDataInfo> > info = QMap<QDate, QVector<ScheduleDataInfo> > {};
     cMonthGraphiview->setScheduleInfo(info);
-    assert(1 == 1);
 }
 
 //void CMonthGraphiview::setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo)
@@ -86,7 +81,6 @@ TEST_F(test_monthgraphiview, setSelectSearchSchedule)
 {
     ScheduleDataInfo scheduleInfo = ScheduleDataInfo{};
     cMonthGraphiview->setSelectSearchSchedule(scheduleInfo);
-    assert(1 == 1);
 }
 
 //QPointF CMonthGraphiview::getItemPos(const QPoint &p, const QRectF &itemRect)

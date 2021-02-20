@@ -21,7 +21,7 @@ ScheduleDtailInfo &createSchedulewidget::getScheduleDtailInfo()
     return m_scheduleDtailInfo;
 }
 
-void createSchedulewidget::setTitleName(QString titleName)
+void createSchedulewidget::setTitleName(const QString &titleName)
 {
     m_titleName = titleName;
 }

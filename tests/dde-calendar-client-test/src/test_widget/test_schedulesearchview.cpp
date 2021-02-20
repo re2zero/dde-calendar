@@ -107,10 +107,6 @@ QMap<QDate, QVector<ScheduleDataInfo>> getMapScheduleDInfo(int getDays)
         scheduleDateInof[currentDate.addDays(2)] = scheduleInfo;
     } break;
     default: {
-        scheduleInfo.append(getScheduleDInfo().at(2));
-        scheduleDateInof[currentDate.addDays(2)] = scheduleInfo;
-        scheduleInfo.append(getScheduleDInfo().at(2));
-        scheduleDateInof[currentDate.addDays(2)] = scheduleInfo;
         scheduleInfo.append(getScheduleDInfo().at(3));
         scheduleDateInof[currentDate.addDays(3)] = scheduleInfo;
         scheduleInfo.append(getScheduleDInfo().at(4));
@@ -122,7 +118,7 @@ QMap<QDate, QVector<ScheduleDataInfo>> getMapScheduleDInfo(int getDays)
     return scheduleDateInof;
 }
 
-bool stub_QueryJobs(QString key, QDateTime starttime, QDateTime endtime, QMap<QDate, QVector<ScheduleDataInfo>> &out)
+bool stub_QueryJobs(const QString &key, QDateTime starttime, QDateTime endtime, QMap<QDate, QVector<ScheduleDataInfo>> &out)
 {
     Q_UNUSED(key);
     int days = static_cast<int>(starttime.daysTo(endtime));

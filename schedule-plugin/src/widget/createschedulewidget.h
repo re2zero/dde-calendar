@@ -19,7 +19,7 @@ public:
 
 public:
     ScheduleDtailInfo &getScheduleDtailInfo();
-    void setTitleName(QString titleName);
+    void setTitleName(const QString &titleName);
     void setDateTime(QDateTime begintime, QDateTime endtime);
     void setRpeat(int rpeat);
     void setschedule();

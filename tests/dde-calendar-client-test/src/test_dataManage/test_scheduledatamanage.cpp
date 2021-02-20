@@ -42,7 +42,6 @@ TEST_F(test_scheduledatamanage, getSearchResult)
 {
     //QDate date(2020, 12, 01);
     //datamanage->getSearchResult(date);
-    assert(1 == 1);
 }
 
 //void CScheduleDataManage::setTheMe(int type)
@@ -50,28 +49,24 @@ TEST_F(test_scheduledatamanage, setTheMe)
 {
     datamanage->setTheMe(1);
     datamanage->setTheMe(2);
-    assert(1 == 1);
 }
 
 //CScheduleDataManage *CScheduleDataManage::getScheduleDataManage()
 TEST_F(test_scheduledatamanage, getScheduleDataManage)
 {
     datamanage->getScheduleDataManage();
-    assert(1 == 1);
 }
 
 //void CScheduleDataManage::clear()
 TEST_F(test_scheduledatamanage, clear)
 {
     datamanage->clear();
-    assert(1 == 1);
 }
 
 //QColor CScheduleDataManage::getSystemActiveColor()
 TEST_F(test_scheduledatamanage, getSystemActiveColor)
 {
-    QColor getcolor = datamanage->getSystemActiveColor();
-    assert(1 == 1);
+    datamanage->getSystemActiveColor();
 }
 
 //int getTheme()

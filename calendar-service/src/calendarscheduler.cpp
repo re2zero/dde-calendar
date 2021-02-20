@@ -431,7 +431,7 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             //判断next是否有效,时间大于RRule的until
             //判断next是否大于查询的截止时间,这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
             if ((options.type == RepeatOverUntil && next >= options.overdate)
-                || next.date() > end.date()) {
+                    || next.date() > end.date()) {
                 break;
             }
             copystart = next;
@@ -505,7 +505,7 @@ QList<QDateTime> CalendarScheduler::GetIgnoreList(const Job &job)
  * @param start 需要检测时间
  * @return bool 如果在忽略列表中则返回true
  */
-bool CalendarScheduler::ContainsInIgnoreList(const QList<QDateTime> ignorelist, const QDateTime &time)
+bool CalendarScheduler::ContainsInIgnoreList(const QList<QDateTime> &ignorelist, const QDateTime &time)
 {
     return ignorelist.contains(time);
 }
@@ -522,7 +522,7 @@ bool CalendarScheduler::OverLap(const QDateTime &start, const QDateTime &end, co
 {
     bool boverlap = false;
     if ((start <= jobstart && end >= jobstart)
-        || (start >= jobstart && start <= jobend)) {
+            || (start >= jobstart && start <= jobend)) {
         boverlap = true;
     }
 

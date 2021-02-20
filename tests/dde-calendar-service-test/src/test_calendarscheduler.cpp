@@ -29,7 +29,8 @@
 //OpenSchedulerDatabase 脱离原数据库地址，在构建机器上依旧需要打桩来构建新数据库以保证取数据的可靠性
 void stub_OpenSDDatabase(void *obj, const QString &dbpath)
 {
-    SchedulerDatabase *o= (SchedulerDatabase*)obj;
+    Q_UNUSED(dbpath);
+    SchedulerDatabase *o = reinterpret_cast<SchedulerDatabase *>(obj);
     o->m_database = QSqlDatabase::addDatabase("QSQLITE", "SchedulerDatabase");
     o->m_database.setDatabaseName(SD_DATABASE_DIR);
     o->m_database.open();
@@ -81,9 +82,9 @@ TEST_F(test_calendarscheduler, dbOparetion)
     QString sTime = Utils::toconvertData(currentDateTime);
 
     QString strInitJobType = QString("INSERT INTO job_types (created_at, updated_at, name, color) VALUES "
-                             "(\"%1\", \"%1\", \"学习\", \"#FF0000\"),"
-                             "(\"%1\", \"%1\", \"工作\", \"#00FF00\"),"
-                             "(\"%1\", \"%1\", \"其他\", \"#800080\");").arg(sTime);
+                                     "(\"%1\", \"%1\", \"学习\", \"#FF0000\"),"
+                                     "(\"%1\", \"%1\", \"工作\", \"#00FF00\"),"
+                                     "(\"%1\", \"%1\", \"其他\", \"#800080\");").arg(sTime);
     query.exec(strInitJobType);
     if (query.isActive()) {
         query.finish();
@@ -91,9 +92,9 @@ TEST_F(test_calendarscheduler, dbOparetion)
 
     //为后续测试UpdateType、DeleteTpye做先决条件
     QString strCreateJobType = QString("INSERT INTO job_types (created_at, updated_at, name, color) VALUES "
-                               "(\"%1\", \"%1\", \"UT测试X——ID应为4\", \"#FFFFFF\"),"
-                               "(\"%1\", \"%1\", \"UT测试X——ID应为5\", \"#FFFFFF\"),"
-                               "(\"%1\", \"%1\", \"UT测试Y——ID应为6\", \"#FFFFFF\");").arg(sTime);
+                                       "(\"%1\", \"%1\", \"UT测试X——ID应为4\", \"#FFFFFF\"),"
+                                       "(\"%1\", \"%1\", \"UT测试X——ID应为5\", \"#FFFFFF\"),"
+                                       "(\"%1\", \"%1\", \"UT测试Y——ID应为6\", \"#FFFFFF\");").arg(sTime);
     query.exec(strCreateJobType);
     if (query.isActive()) {
         query.finish();
@@ -132,7 +133,6 @@ TEST_F(test_calendarscheduler, GetTypes)
 TEST_F(test_calendarscheduler, DeleteType)
 {
     calScheduler->DeleteType(6);
-    assert(1 == 1);
 }
 
 //void CalendarScheduler::UpdateType(const QString &typeInfo)
@@ -140,7 +140,6 @@ TEST_F(test_calendarscheduler, UpdateType)
 {
     QString updateTypeJson = "{\"ID\":5,\"Name\":\"嗨皮\",\"Color\":\"#CC99AA\"}";
     calScheduler->UpdateType(updateTypeJson);
-    assert(1 == 1);
 }
 
 //qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
@@ -176,7 +175,6 @@ TEST_F(test_calendarscheduler, DeleteJob)
 {
     qint64 id = 1;
     calScheduler->DeleteJob(id);
-    assert(1 == 1);
 }
 
 //void UpdateJob(const QString &jobInfo);
@@ -188,7 +186,6 @@ TEST_F(test_calendarscheduler, UpdateJob)
                             "\"RecurID\":0,\"Remind\":\"1;09:00\",\"Start\":"
                             "\"2020-12-09T00:00:00+08:00\",\"Title\":\"UT测试X\",\"Type\":1}";
     calScheduler->UpdateJob(jobInfo);
-    assert(1 == 1);
 }
 
 
@@ -219,12 +216,12 @@ TEST_F(test_calendarscheduler, GetJobs)
 TEST_F(test_calendarscheduler, QueryJobs)
 {
     const QString jobs = "[{\"Date\":\"2020-12-16\",\"Jobs\":"
-                   "[{\"AllDay\":true,\"Description\":\"\",\"End\":\"2020-12-17T23:59:00+08:00\","
-                   "\"ID\":3,\"Ignore\":[],\"RRule\":\"FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=2\","
-                   "\"RecurID\":1,\"Remind\":\"1;09:00\",\"Start\":\"2020-12-16T00:00:00+08:00\",\"Title\":\"UT测试C\",\"Type\":1},"
-                   "{\"AllDay\":true,\"Description\":\"\",\"End\":\"2020-12-16T23:59:00+08:00\","
-                   "\"ID\":3,\"Ignore\":[],\"RRule\":\"FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=2\","
-                   "\"RecurID\":0,\"Remind\":\"1;09:00\",\"Start\":\"2020-12-15T00:00:00+08:00\",\"Title\":\"UT测试C\",\"Type\":1}]}]";
+                         "[{\"AllDay\":true,\"Description\":\"\",\"End\":\"2020-12-17T23:59:00+08:00\","
+                         "\"ID\":3,\"Ignore\":[],\"RRule\":\"FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=2\","
+                         "\"RecurID\":1,\"Remind\":\"1;09:00\",\"Start\":\"2020-12-16T00:00:00+08:00\",\"Title\":\"UT测试C\",\"Type\":1},"
+                         "{\"AllDay\":true,\"Description\":\"\",\"End\":\"2020-12-16T23:59:00+08:00\","
+                         "\"ID\":3,\"Ignore\":[],\"RRule\":\"FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=2\","
+                         "\"RecurID\":0,\"Remind\":\"1;09:00\",\"Start\":\"2020-12-15T00:00:00+08:00\",\"Title\":\"UT测试C\",\"Type\":1}]}]";
     const QString params = "{\"key\":\"ce\",\"Start\":\"2020-12-16T00:00:00\",\"End\":\"2020-12-16T23:59:00\"}";
     QString qJobs = calScheduler->QueryJobs(params);
     assert(jobs == qJobs);

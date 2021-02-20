@@ -88,7 +88,7 @@ bool pinyinsearch::CanQueryByPinyin(QString str)
  * @param zh 汉字字符串
  * @return 拼音字符串
  */
-QString pinyinsearch::CreatePinyin(QString zh)
+QString pinyinsearch::CreatePinyin(const QString &zh)
 {
     //返回中文对应的拼音，汉字个数对应QList长度，每个汉字拥有的拼音个数对应QStringList长度
     QList<QStringList> pyList = Pinyin(zh);
@@ -169,7 +169,7 @@ QString pinyinsearch::CreatePinyinRegexp(QString pinyin)
  * @param py 汉字对应的拼音
  * @return bool值
  */
-bool pinyinsearch::PinyinMatch(QString zh, QString py)
+bool pinyinsearch::PinyinMatch(const QString &zh, const QString &py)
 {
     //获取汉字的拼音
     QString zhPinyin = CreatePinyin(zh);

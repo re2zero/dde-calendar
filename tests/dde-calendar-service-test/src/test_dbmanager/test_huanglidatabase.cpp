@@ -24,7 +24,8 @@
 
 bool stub_OpenHuangliDatabase(void *obj, const QString &dbpath)
 {
-    HuangLiDataBase *o= (HuangLiDataBase*)obj;
+    Q_UNUSED(dbpath);
+    HuangLiDataBase *o = reinterpret_cast<HuangLiDataBase *>(obj);
     o->m_database = QSqlDatabase::addDatabase("QSQLITE");
     o->m_database.setDatabaseName(HL_DATABASE_DIR);
     return o->m_database.open();
@@ -102,5 +103,4 @@ TEST_F(test_huanglidatabase, OpenHuangliDatabase)
     hlDb->OpenHuangliDatabase(dbpath);
 
     hlDb->OpenHuangliDatabase(HL_DATABASE_DIR);
-    assert(1 == 1);
 }

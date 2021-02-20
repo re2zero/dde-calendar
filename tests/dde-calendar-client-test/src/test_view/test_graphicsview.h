@@ -25,7 +25,7 @@
 #include "gtest/gtest.h"
 #include <QObject>
 
-class test_graphicsview : public QObject, public::testing::Test, public DGraphicsView
+class test_graphicsview : public QObject, public::testing::Test
 {
 public:
     test_graphicsview();

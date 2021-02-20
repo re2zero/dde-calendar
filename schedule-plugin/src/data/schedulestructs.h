@@ -25,41 +25,37 @@
 #include <QVector>
 
 typedef struct _tagScheduleRemindInfo {
-    int id;
+    int id = 0;
     QDateTime remindDateTime;
-    int times;
-    _tagScheduleRemindInfo()
-    {
-        times = 1;
-    }
+    int times = 1;
 } ScheduleRemindInfo;
 typedef struct _tagScheduleRemindData {
-    int n; //全天代表天数 非全天代表分钟
+    int n = 0; //全天代表天数 非全天代表分钟
     QTime time; //全天该变量才有效
 } ScheduleRemindData;
 typedef struct _tagScheduleEndRepeatData {
-    int type; //0 永不 1  多少次结束  2 结束日期
+    int type = 0; //0 永不 1  多少次结束  2 结束日期
     QDateTime date; //为2时才有效
-    int tcount; //1时有效
+    int tcount = 0; //1时有效
 } ScheduleEndRepeatData;
 typedef struct _tagScheduleType {
     QString typeName; //work life other
     QColor color; //颜色
-    int ID;
+    int ID = -1;
 } ScheduleType;
 typedef struct _tagScheduleDtailInfo {
-    int id;
+    int id = 0;
     QDateTime beginDateTime;
     QDateTime endDateTime;
     QVector<QDateTime> ignore;
     QString titleName;
     QString description;
-    bool allday; //1全天
+    bool allday = true; //1全天
     ScheduleType type; //1工作 2 生活 3其他
-    int RecurID; //0 代表原始  大于0 代表克隆
-    bool remind; //0无 1 提醒
+    int RecurID = 0; //0 代表原始  大于0 代表克隆
+    bool remind = true; //0无 1 提醒
     ScheduleRemindData remindData;
-    int rpeat; //0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
+    int rpeat = 0; //0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
     ScheduleEndRepeatData enddata;
     explicit _tagScheduleDtailInfo()
     {
@@ -108,8 +104,8 @@ typedef struct _tagScheduleDateRangeInfo {
 typedef struct _tagMScheduleDateRangeInfo {
     QDate bdate;
     QDate edate;
-    bool state;
-    int num;
+    bool state = true;
+    int num = 0;
     ScheduleDtailInfo tData;
     bool operator<(const _tagMScheduleDateRangeInfo &info) const
     {

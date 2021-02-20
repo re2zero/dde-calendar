@@ -100,8 +100,6 @@ TEST_F(test_schedulecoormanage, getDrawRegion)
 
     index = 5;
     cScheduleCoorManage->getDrawRegion(date, begindate, enddate, index, coount, maxnum, type);
-
-    assert(1 == 1);
 }
 
 //QRectF CScheduleCoorManage::getDrawRegionF(QDateTime begintime, QDateTime endtime)
@@ -150,14 +148,14 @@ TEST_F(test_schedulecoormanage, getsDate)
     QDate date = cScheduleCoorManage->getsDate(pos);
     qInfo() << date;
     QPointF pos1(-1, 0);
-    QDate date1 = cScheduleCoorManage->getsDate(pos1);
+    cScheduleCoorManage->getsDate(pos1);
 }
 
 //float CScheduleCoorManage::getHeight(const QTime &time)
 TEST_F(test_schedulecoormanage, getHeight)
 {
     const float Height = 0;
-    QTime time(18,8,9,30);
+    QTime time(18, 8, 9, 30);
     float height = cScheduleCoorManage->getHeight(time);
     qInfo() << height;
     assert(Height <= height);

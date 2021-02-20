@@ -33,7 +33,6 @@
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
-
 void CMonthScheduleView::setTheMe(int type)
 {
     Q_UNUSED(type);

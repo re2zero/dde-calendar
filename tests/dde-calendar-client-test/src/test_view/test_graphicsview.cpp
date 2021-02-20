@@ -51,7 +51,6 @@ TEST_F(test_graphicsview, setTheMe)
 
     type = 2;
     cGraphicsView->setTheMe(type);
-    assert(1 == 1);
 }
 
 //bool CGraphicsView::MeetCreationConditions(const QDateTime &date)
@@ -144,7 +143,7 @@ TEST_F(test_graphicsview, addSchduleItem)
 //void CGraphicsView::deleteSchduleItem(CScheduleItem *item)
 TEST_F(test_graphicsview, deleteSchduleItem)
 {
-    CScheduleItem *item = nullptr;
+//    CScheduleItem *item = nullptr;
 //    item->m_vScheduleInfo.setID(0);
 //    cGraphicsView->deleteSchduleItem(item);
 }
@@ -162,21 +161,18 @@ TEST_F(test_graphicsview, slotDoubleEvent)
 {
     int type = 1;
     cGraphicsView->slotDoubleEvent(type);
-    assert(1 == 1);
 }
 
 //void CGraphicsView::slotScrollBar()
 TEST_F(test_graphicsview, slotScrollBar)
 {
     cGraphicsView->slotScrollBar();
-    assert(1 == 1);
 }
 
 //void CGraphicsView::slotUpdateScene()
 TEST_F(test_graphicsview, slotUpdateScene)
 {
     cGraphicsView->slotUpdateScene();
-    assert(1 == 1);
 }
 
 //void CGraphicsView::paintBackground(QPainter &painter)
@@ -184,14 +180,12 @@ TEST_F(test_graphicsview, paintBackground)
 {
     QPainter painter;
     cGraphicsView->paintBackground(painter);
-    assert(1 == 1);
 }
 
 //void CGraphicsView::scrollBarValueChangedSlot()
 TEST_F(test_graphicsview, scrollBarValueChangedSlot)
 {
     cGraphicsView->scrollBarValueChangedSlot();
-    assert(1 == 1);
 }
 
 //int CGraphicsView::checkDay(int weekday)
@@ -205,7 +199,6 @@ TEST_F(test_graphicsview, checkDay)
 
     weekday = 8;
     cGraphicsView->checkDay(weekday);
-    assert(1 == 1);
 }
 
 //ScheduleDataInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
@@ -241,8 +234,8 @@ TEST_F(test_graphicsview, JudgeIsCreate)
 //void CGraphicsView::RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos)
 TEST_F(test_graphicsview, RightClickToCreate)
 {
-    QGraphicsItem *listItem = nullptr;
-    QPoint pos(20, 20);
+//    QGraphicsItem *listItem = nullptr;
+//    QPoint pos(20, 20);
     //cGraphicsView->RightClickToCreate(listItem, pos);
 }
 
@@ -268,7 +261,6 @@ TEST_F(test_graphicsview, getDragScheduleInfoEndTime)
 TEST_F(test_graphicsview, keepCenterOnScene)
 {
     cGraphicsView->keepCenterOnScene();
-    assert(1 == 1);
 }
 
 //void CGraphicsView::getLargeScaleFlag(bool &LRFlag, bool &TBFlag)
@@ -277,7 +269,6 @@ TEST_F(test_graphicsview, getLargeScaleFlag)
     bool LRFlag = false;
     bool TBFlag = false;
     cGraphicsView->getLargeScaleFlag(LRFlag, TBFlag);
-    assert(1 == 1);
 }
 
 //void CGraphicsView::setTime(QTime time)
@@ -292,7 +283,6 @@ TEST_F(test_graphicsview, setTime)
 TEST_F(test_graphicsview, updateInfo)
 {
     cGraphicsView->updateInfo();
-    assert(1 == 1);
 }
 
 ////void CGraphicsView::mousePressEvent(QMouseEvent *event)

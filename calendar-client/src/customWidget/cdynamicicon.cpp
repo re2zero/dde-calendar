@@ -82,16 +82,16 @@ CDynamicIcon::~CDynamicIcon()
 CDynamicIcon *CDynamicIcon::getInstance()
 {
     if (nullptr == m_Icon) {
-        m_Icon = new CDynamicIcon(512,512);
+        m_Icon = new CDynamicIcon(512, 512);
     }
     return m_Icon;
 }
 
 void CDynamicIcon::releaseInstance()
 {
-    if (m_Icon !=nullptr) {
+    if (m_Icon != nullptr) {
         delete m_Icon;
-        m_Icon =nullptr;
+        m_Icon = nullptr;
     }
 }
 
@@ -139,32 +139,32 @@ void CDynamicIcon::paintPixmap(QPixmap *pixmap)
     //draw background
     qreal backgroundwidget = pixmap->size().width() * BackgroundRatio;
     qreal backgroundheigth = pixmap->size().height() * BackgroundRatio;
-    QRectF backgroundRect = QRectF((pixmap->size().width()-backgroundwidget)/2,
-                                   (pixmap->size().height()-backgroundheigth)/2,
+    QRectF backgroundRect = QRectF((pixmap->size().width() - backgroundwidget) / 2,
+                                   (pixmap->size().height() - backgroundheigth) / 2,
                                    backgroundwidget,
                                    backgroundheigth);
-    m_backgroundrenderer->render(&painter,backgroundRect);
+    m_backgroundrenderer->render(&painter, backgroundRect);
 
     //draw month
     qreal month_x = pixmap->size().width() * Month_X_Ratio;
     qreal month_y = pixmap->size().width() * Month_Y_Ratio;
     qreal month_w = pixmap->size().width() * Month_W_Ratio;
     qreal month_h = pixmap->size().width() * Month_H_Ratio;
-    m_Monthrenderer->render(&painter,QRectF(month_x,month_y,month_w,month_h));
+    m_Monthrenderer->render(&painter, QRectF(month_x, month_y, month_w, month_h));
 
     //draw day
     qreal day_x = pixmap->size().width() * Day_X_Ratio;
     qreal day_y = pixmap->size().width() * Day_Y_Ratio;
     qreal day_w = pixmap->size().width() * Day_W_Ratio;
     qreal day_h = pixmap->size().width() * Day_H_Ratio;
-    m_Dayrenderer->render(&painter,QRectF(day_x,day_y,day_w,day_h));
+    m_Dayrenderer->render(&painter, QRectF(day_x, day_y, day_w, day_h));
 
     //draw week
     qreal week_x = pixmap->size().width() * Week_X_Ratio;
     qreal week_y = pixmap->size().width() * Week_Y_Ratio;
     qreal week_w = pixmap->size().width() * Week_W_Ratio;
     qreal week_h = pixmap->size().width() * Week_H_Ratio;
-    m_Weekrenderer->render(&painter,QRectF(week_x,week_y,week_w,week_h));
+    m_Weekrenderer->render(&painter, QRectF(week_x, week_y, week_w, week_h));
 
     painter.end();
 }

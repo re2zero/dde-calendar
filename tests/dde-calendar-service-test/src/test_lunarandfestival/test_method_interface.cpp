@@ -21,6 +21,7 @@
 #include "test_method_interface.h"
 #include <QVector>
 #include <QDebug>
+#include <QtGlobal>
 
 test_method_interface::test_method_interface()
 {
@@ -160,7 +161,6 @@ TEST_F(test_method_interface, get25SolarTermJDs)
     int start = 0;
     QVector<double> jds = get25SolarTermJDs(year, start);
     // TODO
-    assert(1 == 1);
 }
 
 //double GetSolarTermJD(int year, int order)
@@ -206,7 +206,7 @@ TEST_F(test_method_interface, DmsToDegrees)
     int mintues = 3;
     double seconds = 7200;
     double degress = DmsToDegrees(degrees, mintues, seconds);
-    assert(6.05 == degress);
+    assert(qAbs(6.05 - degress) < 0.001);
 }
 
 //double DmsToSeconds(int d, int m, double s)
@@ -216,7 +216,7 @@ TEST_F(test_method_interface, DmsToSeconds)
     int m = 3;
     double s = 7200;
     double degress = DmsToSeconds(d, m, s);
-    assert(21780 == degress);
+    assert(qAbs(21780 - degress) < 0.001);
 }
 
 //double DmsToRadians(int d, int m, int s)
@@ -247,14 +247,13 @@ TEST_F(test_method_interface, GetDeltaT)
 {
     const int count = 15;
     const int year[count] = {-501, 0, 1599, 1699, 1799,
-                  1859, 1899, 1919, 1940, 1960,
-                  1985, 2004, 2049, 2149, 2150};
+                             1859, 1899, 1919, 1940, 1960,
+                             1985, 2004, 2049, 2149, 2150
+                            };
     const int mouth = 6;
-    double deltaT[15] = {};
     for (int i = 0; i < count; ++i) {
-        deltaT[i] = GetDeltaT(year[i], mouth);
+        GetDeltaT(year[i], mouth);
     }
-    assert(1 == 1);
 }
 
 //double JDBeijingTime2UTC(double bjtJD)
@@ -287,13 +286,13 @@ TEST_F(test_method_interface, CalcEarthObliquityNutation)
 {
     double julianDay = 1;
     double dt = GetJulianCentury(julianDay);
-    double ceon = CalcEarthObliquityNutation(dt);
+    CalcEarthObliquityNutation(dt);
     //qInfo() << ceon;
 }
 
 //double lightAberration()
 TEST_F(test_method_interface, lightAberration)
 {
-    double lightAb = lightAberration();
+    lightAberration();
     //qInfo() << lightAb;
 }

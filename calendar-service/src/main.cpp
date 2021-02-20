@@ -22,10 +22,10 @@ bool loadTranslator(QCoreApplication *app, QList<QLocale> localeFallback = QList
         QStringList parseLocalNameList = locale.name().split("_", QString::SkipEmptyParts);
         if (parseLocalNameList.length() > 0 && !bsuccess) {
             translateFilename = QString("%1_%2").arg(app->applicationName()).arg(parseLocalNameList.at(0));
-            QString translatePath = QString("%1/%2.qm").arg(CalendarServiceTranslationsDir).arg(translateFilename);
-            if (QFile::exists(translatePath)) {
+            QString parseTranslatePath = QString("%1/%2.qm").arg(CalendarServiceTranslationsDir).arg(translateFilename);
+            if (QFile::exists(parseTranslatePath)) {
                 QTranslator *translator = new QTranslator(app);
-                translator->load(translatePath);
+                translator->load(parseTranslatePath);
                 app->installTranslator(translator);
                 bsuccess = true;
             }

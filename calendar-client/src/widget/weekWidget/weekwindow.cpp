@@ -36,6 +36,7 @@
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent)
     : CScheduleBaseWidget(parent)
+    , m_today(new CTodayButton)
 {
     setContentsMargins(0, 0, 0, 0);
     initUI();
@@ -64,7 +65,6 @@ void CWeekWindow::setLunarVisible(bool state)
  */
 void CWeekWindow::initUI()
 {
-    m_today = new CTodayButton;
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedSize(DDEWeekCalendar::WTodayWindth, DDEWeekCalendar::WTodayHeight);
     DPalette todaypa = m_today->palette();

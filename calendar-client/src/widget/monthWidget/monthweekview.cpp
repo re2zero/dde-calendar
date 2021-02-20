@@ -128,6 +128,7 @@ void CMonthWeekView::paintEvent(QPaintEvent *event)
 }
 
 WeekRect::WeekRect()
+    : m_showLine(false)
 {
     m_font.setWeight(QFont::Medium);
     m_font.setPixelSize(DDECalendar::FontSizeSixteen);

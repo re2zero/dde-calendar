@@ -50,13 +50,13 @@ signals:
     void signalViewtransparentFrame(int type);
 public slots:
     //按钮点击事件
-    void slotBtClick(int buttonIndex, QString buttonName);
+    void slotBtClick(int buttonIndex, const QString &buttonName);
 private:
     //界面初始化
     void initUI();
     void initConnection();
     //字体改变更改界面显示
-    void AutoFeed(QString text);
+    void AutoFeed(const QString &text);
     //设置label文字颜色
     void setLabelTextColor(const int type);
     //设置调色板颜色

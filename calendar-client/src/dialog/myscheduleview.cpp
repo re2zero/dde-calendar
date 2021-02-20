@@ -62,7 +62,7 @@ CMyScheduleView::~CMyScheduleView()
  * @brief CMyScheduleView::AutoFeed     字体改变更改界面显示
  * @param text
  */
-void CMyScheduleView::AutoFeed(QString text)
+void CMyScheduleView::AutoFeed(const QString &text)
 {
     QString strText = text;
     QString resultStr = nullptr;
@@ -175,7 +175,7 @@ bool CMyScheduleView::eventFilter(QObject *o, QEvent *e)
  * @param buttonIndex
  * @param buttonName
  */
-void CMyScheduleView::slotBtClick(int buttonIndex, QString buttonName)
+void CMyScheduleView::slotBtClick(int buttonIndex, const QString &buttonName)
 {
     Q_UNUSED(buttonName);
     if (buttonIndex == 0) {

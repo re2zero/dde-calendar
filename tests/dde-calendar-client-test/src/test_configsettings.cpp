@@ -21,8 +21,15 @@
 #include "test_configsettings.h"
 
 test_configsettings::test_configsettings()
+    : conf(new CConfigSettings)
 {
 
+}
+
+test_configsettings::~test_configsettings()
+{
+    delete conf;
+    conf = nullptr;
 }
 
 void stub_Handle()
@@ -36,5 +43,4 @@ TEST_F(test_configsettings, sync)
     Stub stub;
     stub.set(ADDR(CConfigSettings, sync), stub_Handle);
     conf->sync();
-    assert(1==1);
 }

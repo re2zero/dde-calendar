@@ -44,7 +44,6 @@ TEST_F(test_calendardatedatamanage, setSelectDate)
 
     isSwitchYear = false;
     calendarDateDataManager->setSelectDate(selectDate, isSwitchYear);
-    assert(1 == 1);
 }
 
 //QDate CalendarDateDataManager::getSelectDate() const
@@ -53,7 +52,6 @@ TEST_F(test_calendardatedatamanage, getSelectDate)
     QDate selectDate;
     selectDate = calendarDateDataManager->getSelectDate();
     //qInfo() << selectDate;
-    assert(1 == 1);
 }
 
 //void CalendarDateDataManager::setCurrentDateTime(const QDateTime &currentDateTime)
@@ -62,7 +60,6 @@ TEST_F(test_calendardatedatamanage, setCurrentDateTime)
     QDate date(2020, 12, 25);
     QDateTime currentDateTime(date);
     calendarDateDataManager->setCurrentDateTime(currentDateTime);
-    assert(1 == 1);
 }
 
 //QDateTime CalendarDateDataManager::getCurrentDate() const
@@ -70,7 +67,6 @@ TEST_F(test_calendardatedatamanage, getCurrentDate)
 {
     QDateTime currentDateTime;
     currentDateTime = calendarDateDataManager->getCurrentDate();
-    assert(1 == 1);
 }
 
 //QMap<int, QVector<QDate> > CalendarDateDataManager::getYearDate()
@@ -78,7 +74,6 @@ TEST_F(test_calendardatedatamanage, getYearDate)
 {
     QMap<int, QVector<QDate> > dateTime;
     dateTime = calendarDateDataManager->getYearDate();
-    assert(1 == 1);
 }
 
 //QVector<QDate> CalendarDateDataManager::getWeekDate(const QDate &date)
@@ -86,7 +81,6 @@ TEST_F(test_calendardatedatamanage, getWeekDate)
 {
     QDate selectDate(2020, 12, 25);
     QVector<QDate> dateV = calendarDateDataManager->getWeekDate(selectDate);
-    assert(1 == 1);
 }
 
 //QDate CalendarDateDataManager::getDayDateBySelectDate() const
@@ -94,7 +88,6 @@ TEST_F(test_calendardatedatamanage, getDayDateBySelectDate)
 {
     QDate dateV;
     dateV = calendarDateDataManager->getDayDateBySelectDate();
-    assert(1 == 1);
 }
 
 //void CalendarDateDataManager::setWeekFirstDay(const Qt::DayOfWeek &firstDay)
@@ -102,7 +95,6 @@ TEST_F(test_calendardatedatamanage, setWeekFirstDay)
 {
     Qt::DayOfWeek firstDay(Qt::Sunday);
     calendarDateDataManager->setWeekFirstDay(firstDay);
-    assert(1 == 1);
 }
 
 // Qt::DayOfWeek CalendarDateDataManager::getWeekFirstDay()
@@ -124,7 +116,6 @@ TEST_F(test_calendardatedatamanage, setWeekDayFormatByID)
 
     setWeekDayFormatByID = 1;
     calendarDateDataManager->setWeekDayFormatByID(setWeekDayFormatByID);
-    assert(1 == 1);
 }
 
 //QString CalendarDateDataManager::getWeekDayFormat() const
@@ -132,7 +123,6 @@ TEST_F(test_calendardatedatamanage, getWeekDayFormat)
 {
     QString getWEKfomat;
     calendarDateDataManager->getWeekDayFormat();
-    assert(1 == 1);
 }
 
 //ShowDateRange CalendarDateDataManager::getShowDateRange() const
@@ -140,7 +130,6 @@ TEST_F(test_calendardatedatamanage, getShowDateRange)
 {
     ShowDateRange showDateR;
     showDateR = calendarDateDataManager->getShowDateRange();
-    assert(1 == 1);
 }
 
 //int CalendarDateDataManager::getWeekNumOfYear(const QDate &date)

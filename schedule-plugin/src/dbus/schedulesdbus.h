@@ -107,7 +107,7 @@ public Q_SLOTS: // METHODS
     bool QueryJobs(QString key, QDateTime starttime, QDateTime endtime, QVector<ScheduleDateRangeInfo> &out);
     bool QueryJobs(QString key, QDateTime starttime, QDateTime endtime, QString &out);
     bool QueryJobsWithLimit(QDateTime starttime, QDateTime endtime, qint32 maxNum, QVector<ScheduleDateRangeInfo> &out);
-    bool QueryJobsWithRule(QDateTime starttime, QDateTime endtime, QString rule, QVector<ScheduleDateRangeInfo> &out);
+    bool QueryJobsWithRule(QDateTime starttime, QDateTime endtime, const QString &rule, QVector<ScheduleDateRangeInfo> &out);
 
     bool GetTypes(QVector<ScheduleType> &out);
     bool GetType(qint64 jobId, ScheduleType &out);

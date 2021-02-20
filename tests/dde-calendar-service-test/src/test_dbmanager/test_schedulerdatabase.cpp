@@ -30,7 +30,8 @@
 //OpenSchedulerDatabase
 void stub_OpenSchedulerDatabase(void *obj, const QString &dbpath)
 {
-    SchedulerDatabase *o= (SchedulerDatabase*)obj;
+    Q_UNUSED(dbpath);
+    SchedulerDatabase *o = reinterpret_cast<SchedulerDatabase *>(obj);
     o->m_database = QSqlDatabase::addDatabase("QSQLITE", "SchedulerDatabase");
     o->m_database.setDatabaseName(SD_DATABASE_DIR);
     o->m_database.open();
@@ -83,9 +84,9 @@ TEST_F(test_schedulerdatabase, dbOparetion)
     QString sTime = Utils::toconvertData(currentDateTime);
 
     QString strInitJobType = QString("INSERT INTO job_types (created_at, updated_at, name, color) VALUES "
-                             "(\"%1\", \"%1\", \"学习\", \"#FF0000\"),"
-                             "(\"%1\", \"%1\", \"工作\", \"#00FF00\"),"
-                             "(\"%1\", \"%1\", \"其他\", \"#800080\");").arg(sTime);
+                                     "(\"%1\", \"%1\", \"学习\", \"#FF0000\"),"
+                                     "(\"%1\", \"%1\", \"工作\", \"#00FF00\"),"
+                                     "(\"%1\", \"%1\", \"其他\", \"#800080\");").arg(sTime);
     query.exec(strInitJobType);
     if (query.isActive()) {
         query.finish();
@@ -93,9 +94,9 @@ TEST_F(test_schedulerdatabase, dbOparetion)
 
     //为后续测试UpdateType、DeleteTpye做先决条件
     QString strCreateJobType = QString("INSERT INTO job_types (created_at, updated_at, name, color) VALUES "
-                               "(\"%1\", \"%1\", \"UT测试X——ID应为4\", \"#FFFFFF\"),"
-                               "(\"%1\", \"%1\", \"UT测试X——ID应为5\", \"#FFFFFF\"),"
-                               "(\"%1\", \"%1\", \"UT测试Y——ID应为6\", \"#FFFFFF\");").arg(sTime);
+                                       "(\"%1\", \"%1\", \"UT测试X——ID应为4\", \"#FFFFFF\"),"
+                                       "(\"%1\", \"%1\", \"UT测试X——ID应为5\", \"#FFFFFF\"),"
+                                       "(\"%1\", \"%1\", \"UT测试Y——ID应为6\", \"#FFFFFF\");").arg(sTime);
     query.exec(strCreateJobType);
     if (query.isActive()) {
         query.finish();
@@ -159,10 +160,10 @@ TEST_F(test_schedulerdatabase, GetJob)
     //返回值需要解析
     QString getJob1 = sDb->GetJob(1);
     const QString job1 = "{\"AllDay\":true,\"Description\":\"\",\"End\":"
-                          "\"2020-12-05T23:59:00+08:00\",\"ID\":1,\"Ignore\":[],"
-                          "\"RRule\":\"FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=3\","
-                          "\"RecurID\":0,\"Remind\":\"1;09:00\",\"Start\":"
-                          "\"2020-12-05T00:00:00+08:00\",\"Title\":\"UT测试A\",\"Type\":1}";
+                         "\"2020-12-05T23:59:00+08:00\",\"ID\":1,\"Ignore\":[],"
+                         "\"RRule\":\"FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=3\","
+                         "\"RecurID\":0,\"Remind\":\"1;09:00\",\"Start\":"
+                         "\"2020-12-05T00:00:00+08:00\",\"Title\":\"UT测试A\",\"Type\":1}";
     assert(job1 == getJob1);
 }
 
@@ -184,9 +185,6 @@ TEST_F(test_schedulerdatabase, GetAllOriginJobs)
     const QString key2 = "ce";
     const QString strsort2 = "id";
     QList<Job> jobList2 = sDb->GetAllOriginJobs(key2, strsort2);
-
-
-    assert(1 == 1);
 }
 
 //QList<Job> SchedulerDatabase::GetAllOriginJobsWithRule(const QString &key, const QString &rules)
@@ -195,7 +193,6 @@ TEST_F(test_schedulerdatabase, GetAllOriginJobsWithRule)
     const QString key = "";
     const QString rules = "";
     QList<Job> jobs = sDb->GetAllOriginJobsWithRule(key, rules);
-    assert(1 == 1);
 }
 
 //QList<Job> SchedulerDatabase::GetJobsContainRemind()
@@ -203,14 +200,12 @@ TEST_F(test_schedulerdatabase, GetJobsContainRemind)
 {
     QList<Job> jobList = sDb->GetJobsContainRemind();
     qInfo() << jobList.at(0).ID;
-    assert(1 == 1);
 }
 
 //void SchedulerDatabase::DeleteJob(qint64 id)
 TEST_F(test_schedulerdatabase, DeleteJob)
 {
     sDb->DeleteJob(3);
-    assert(1 == 1);
 }
 
 
@@ -242,14 +237,12 @@ TEST_F(test_schedulerdatabase, UpdateType)
 {
     QString updateTypeJson = "{\"ID\":5,\"Name\":\"嗨皮\",\"Color\":\"#CC99AA\"}";
     sDb->UpdateType(updateTypeJson);
-    assert(1 == 1);
 }
 
 //void SchedulerDatabase::DeleteType(qint64 id)
 TEST_F(test_schedulerdatabase, DeleteType)
 {
     sDb->DeleteType(6);
-    assert(1 == 1);
 }
 
 //void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
@@ -265,5 +258,4 @@ TEST_F(test_schedulerdatabase, OpenSchedulerDatabase)
     sDb->OpenSchedulerDatabase(dbpath);
 
     sDb->OpenSchedulerDatabase(SD_DATABASE_DIR);
-    assert(1 == 1);
 }

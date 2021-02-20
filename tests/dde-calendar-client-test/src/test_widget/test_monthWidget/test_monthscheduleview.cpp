@@ -127,10 +127,6 @@ QMap<QDate, QVector<ScheduleDataInfo>> getMonthMapScheduleDInfo(int getDays)
         scheduleDateInof[currentDate.addDays(2)] = scheduleInfo;
     } break;
     default: {
-        scheduleInfo.append(getMonthScheduleDInfo().at(2));
-        scheduleDateInof[currentDate.addDays(2)] = scheduleInfo;
-        scheduleInfo.append(getMonthScheduleDInfo().at(2));
-        scheduleDateInof[currentDate.addDays(2)] = scheduleInfo;
         scheduleInfo.append(getMonthScheduleDInfo().at(3));
         scheduleDateInof[currentDate.addDays(3)] = scheduleInfo;
         scheduleInfo.append(getMonthScheduleDInfo().at(4));

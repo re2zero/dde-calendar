@@ -338,7 +338,6 @@ QVector<ScheduleDtailInfo> queryScheduleProxy::scheduleFileterByTime(QVector<Sch
     bool isApppend = false;
     for (int i = 0; i < scheduleInfo.size(); ++i) {
         timeoffset_Secs = scheduleInfo.at(i).beginDateTime.secsTo(scheduleInfo.at(i).endDateTime);
-        isApppend = false;
         if (timeoffset_Secs < ONE_DAY_SECS) {
             QTime begTime = scheduleInfo.at(i).beginDateTime.time();
             QTime endTime = scheduleInfo.at(i).endDateTime.time();
@@ -370,7 +369,7 @@ QVector<ScheduleDtailInfo> queryScheduleProxy::scheduleFileterByDate(QVector<Sch
         QDate endD = scheduleInfo.at(i).endDateTime.date();
         //过滤添加包含查询日期的日程
         if ((fileterBeginDate <= beginD && fileterEndDate >= beginD)
-            || (fileterBeginDate >= beginD && fileterBeginDate <= endD)) {
+                || (fileterBeginDate >= beginD && fileterBeginDate <= endD)) {
             mScheduleFileter.append(scheduleInfo.at(i));
         }
     }
@@ -428,7 +427,7 @@ queryScheduleProxy::DateTimeLimit queryScheduleProxy::getTimeLimitByTimeInfo(con
         timeLimit.endTime = endTime;
     } else if (timeInfoVect.suggestDatetime.size() == 1) {
         if (timeInfoVect.suggestDatetime.at(0).datetime.date() < QDateTime::currentDateTime().date()
-            || timeInfoVect.suggestDatetime.at(0).datetime.date() > QDateTime::currentDateTime().addDays(MAXIMUM_DAYS_IN_THE_FUTURE).date()) {
+                || timeInfoVect.suggestDatetime.at(0).datetime.date() > QDateTime::currentDateTime().addDays(MAXIMUM_DAYS_IN_THE_FUTURE).date()) {
             setTimeIsExpired(true);
             return timeLimit;
         }
@@ -453,7 +452,7 @@ queryScheduleProxy::DateTimeLimit queryScheduleProxy::getTimeLimitByTimeInfo(con
     } else {
         QDateTime maxDay = QDateTime::currentDateTime().addDays(MAXIMUM_DAYS_IN_THE_FUTURE);
         if (timeInfoVect.suggestDatetime.at(1).datetime.date() < QDateTime::currentDateTime().date()
-            || timeInfoVect.suggestDatetime.at(0).datetime.date() > maxDay.date()) {
+                || timeInfoVect.suggestDatetime.at(0).datetime.date() > maxDay.date()) {
             setTimeIsExpired(true);
             return timeLimit;
         }

@@ -180,21 +180,21 @@ void CMonthDayItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         QFontMetrics metrics(m_LunerFont);
         int Lunarwidth = metrics.width(m_DayLunar);
         qreal filleRectX = this->rect().width() - 12 - 3 - (58 + Lunarwidth) / 2;
-        QRectF fillRect(this->rect().x() + filleRectX,
-                        this->rect().y() + 9,
-                        12,
-                        12);
+        QRectF fillRectt(this->rect().x() + filleRectX,
+                         this->rect().y() + 9,
+                         12,
+                         12);
 
         if (filleRectX > hh) {
             painter->setRenderHint(QPainter::Antialiasing);
             switch (m_DayStatus) {
             case H_WORK: {
                 QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
-                painter->drawPixmap(fillRect.toRect(), pixmap);
+                painter->drawPixmap(fillRectt.toRect(), pixmap);
             } break;
             case H_REST: {
                 QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
-                painter->drawPixmap(fillRect.toRect(), pixmap);
+                painter->drawPixmap(fillRectt.toRect(), pixmap);
             } break;
             default:
                 break;

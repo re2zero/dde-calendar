@@ -263,11 +263,6 @@ void CSchedulesDBus::parsingScheduleRemind(QString str, ScheduleDtailInfo &info)
 
 QString CSchedulesDBus::toconvertData(QDateTime date)
 {
-    QDateTime datetimeutc11 = date;
-    datetimeutc11.setTimeSpec(Qt::UTC);
-    QString strss = datetimeutc11.toString(Qt::ISODate);
-    datetimeutc11.setTimeSpec(Qt::OffsetFromUTC);
-    strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "+" + datetimeutc.toString("hh:mm");
     //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
@@ -282,11 +277,6 @@ QDateTime CSchedulesDBus::fromconvertData(QString str)
 
 QString CSchedulesDBus::toconvertIGData(QDateTime date)
 {
-    QDateTime datetimeutc11 = date;
-    datetimeutc11.setTimeSpec(Qt::UTC);
-    QString strss = datetimeutc11.toString(Qt::ISODate);
-    datetimeutc11.setTimeSpec(Qt::OffsetFromUTC);
-    strss = datetimeutc11.toString(Qt::ISODateWithMs);
     QDateTime datetimeutc = QDateTime::fromTime_t(0);
     QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z" + datetimeutc.toString("hh:mm");
     //QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z07:00";
@@ -537,8 +527,9 @@ bool CSchedulesDBus::QueryJobsWithLimit(QDateTime starttime, QDateTime endtime, 
     return true;
 }
 
-bool CSchedulesDBus::QueryJobsWithRule(QDateTime starttime, QDateTime endtime, QString rule, QVector<ScheduleDateRangeInfo> &out)
+bool CSchedulesDBus::QueryJobsWithRule(QDateTime starttime, QDateTime endtime, const QString &rule, QVector<ScheduleDateRangeInfo> &out)
 {
+
     QJsonObject qjson;
     qjson.insert("Start", toconvertData(starttime));
     qjson.insert("End", toconvertData(endtime));

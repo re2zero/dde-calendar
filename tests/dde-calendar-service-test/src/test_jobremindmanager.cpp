@@ -27,7 +27,9 @@ void stub_callWithArgumentList(QDBus::CallMode mode,
                                const QString &method,
                                const QList<QVariant> &args)
 {
-
+    Q_UNUSED(mode);
+    Q_UNUSED(method);
+    Q_UNUSED(args);
 }
 
 test_jobremindmanager::test_jobremindmanager()
@@ -104,7 +106,7 @@ TEST_F(test_jobremindmanager, RemindJob)
 TEST_F(test_jobremindmanager, GetRemindAdvanceDays)
 {
     const QString remind = "1,09:00";
-    int dayCount = jobRemindManager->GetRemindAdvanceDays(remind);
+    jobRemindManager->GetRemindAdvanceDays(remind);
 }
 
 //void JobRemindManager::RemindJobLater(const Job &job)

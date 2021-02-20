@@ -24,9 +24,10 @@
 #include <QSqlDatabase>
 #include <QDebug>
 
-bool stub_OpenHuangliDB(void* obj, const QString &dbpath)
+bool stub_OpenHuangliDB(void *obj, const QString &dbpath)
 {
-    HuangLiDataBase* o= (HuangLiDataBase*)obj;
+    Q_UNUSED(dbpath);
+    HuangLiDataBase *o = reinterpret_cast<HuangLiDataBase *>(obj);
     o->m_database = QSqlDatabase::addDatabase("QSQLITE");
     o->m_database.setDatabaseName(HL_DATABASE_DIR);
     return o->m_database.open();
@@ -53,7 +54,6 @@ TEST_F(test_calendarhuangli, GetFestivalMonth)
     quint32 year = 2020;
     quint32 month = 12;
     QString fesMonth = calendarHuangLi->GetFestivalMonth(year, month);
-    assert(1 == 1);
 }
 
 //QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
@@ -87,10 +87,10 @@ TEST_F(test_calendarhuangli, GetHuangLiMonth)
     quint32 year = 2020;
     quint32 month = 12;
     bool fill = false;
-    QString huangliMonth = calendarHuangLi->GetHuangLiMonth(year, month, fill);
+    calendarHuangLi->GetHuangLiMonth(year, month, fill);
 
     fill = true;
-    huangliMonth = calendarHuangLi->GetHuangLiMonth(year, month, fill);
+    calendarHuangLi->GetHuangLiMonth(year, month, fill);
 }
 
 //CaLunarDayInfo CalendarHuangLi::GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day)
@@ -100,7 +100,6 @@ TEST_F(test_calendarhuangli, GetLunarInfoBySolar)
     quint32 month = 12;
     quint32 day = 13;
     CaLunarDayInfo huangliDayInfo = calendarHuangLi->GetLunarInfoBySolar(year, month, day);
-    assert(1 == 1);
 }
 
 //CaLunarMonthInfo CalendarHuangLi::GetLunarCalendarMonth(quint32 year, quint32 month, bool fill)
@@ -109,9 +108,8 @@ TEST_F(test_calendarhuangli, GetLunarCalendarMonth)
     quint32 year = 2020;
     quint32 month = 12;
     bool fill = false;
-    CaLunarMonthInfo huangliMonthInfo = calendarHuangLi->GetLunarCalendarMonth(year, month, fill);
-    assert(1 == 1);
+    calendarHuangLi->GetLunarCalendarMonth(year, month, fill);
 
     fill = true;
-    huangliMonthInfo = calendarHuangLi->GetLunarCalendarMonth(year, month, fill);
+    calendarHuangLi->GetLunarCalendarMonth(year, month, fill);
 }
