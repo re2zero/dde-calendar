@@ -20,6 +20,7 @@
 
 #include <QRegExpValidator>
 #include <QEvent>
+#include <QFocusEvent>
 
 //视图容器最大高度
 const int viewContainerMaxHeight = 305;
@@ -137,9 +138,9 @@ void CTimeEdit::showPopup()
 
 void CTimeEdit::focusInEvent(QFocusEvent *event)
 {
-    Q_UNUSED(event);
-    //如果tab切换到则全部选中
-    this->lineEdit()->selectAll();
-    //更新显示
-    this->update();
+    DComboBox::focusInEvent(event);
+    //如果为tab焦点进入则选中时间
+    if (event->reason() == Qt::TabFocusReason) {
+        this->lineEdit()->selectAll();
+    }
 }
