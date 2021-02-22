@@ -204,12 +204,6 @@ TEST_F(test_alldayeventview, updateItemHeightByFontSize)
     cAllDayEventWeekView->updateItemHeightByFontSize();
 }
 
-//void CAllDayEventWeekView::paintBackground(QPainter &painter)
-TEST_F(test_alldayeventview, paintBackground)
-{
-    QPainter painter;
-    cAllDayEventWeekView->paintBackground(painter);
-}
 
 //void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const ScheduleDataInfo &info)
 TEST_F(test_alldayeventview, upDateInfoShow)

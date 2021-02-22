@@ -21,7 +21,6 @@
 #include "scheduledatamanage.h"
 
 #include <DFontSizeManager>
-#include <DGraphicsView>
 
 #include <QDebug>
 #include <QFontMetricsF>
@@ -29,6 +28,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QPropertyAnimation>
+#include <QMarginsF>
 
 #include <dtkwidget_global.h>
 
@@ -321,5 +321,15 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         painter->setBrush(selcolor);
         painter->setPen(Qt::NoPen);
         painter->drawRect(rect);
+    }
+    if (getItemFoucs()) {
+        //获取tab图形
+        QRectF drawRect = rect.marginsRemoved(QMarginsF(1, 1, 1, 1));
+        painter->setBrush(Qt::NoBrush);
+        QPen framePen;
+        framePen.setWidth(2);
+        framePen.setColor(getSystemActiveColor());
+        painter->setPen(framePen);
+        painter->drawRect(drawRect);
     }
 }

@@ -18,38 +18,29 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#include "cmonthscheduleitem.h"
+#include "calldayscheduleitem.h"
 
 #include <QPainter>
 
-CMonthScheduleItem::CMonthScheduleItem(QRect rect, QGraphicsItem *parent, int edittype)
+CAllDayScheduleItem::CAllDayScheduleItem(QRectF rect, QGraphicsItem *parent)
     : DragInfoItem(rect, parent)
-    , m_pos(13, 5)
-{
-    Q_UNUSED(edittype);
-}
-
-CMonthScheduleItem::~CMonthScheduleItem()
 {
 }
 
-QPixmap CMonthScheduleItem::getPixmap()
+bool CAllDayScheduleItem::hasSelectSchedule(const ScheduleDataInfo &info)
 {
-    QPixmap pixmap(this->rect().size().toSize());
-    pixmap.fill(Qt::transparent);
-    QPainter painter(&pixmap);
-    paintBackground(&painter, pixmap.rect(), true);
-    return pixmap;
+    return info == m_vScheduleInfo;
 }
 
-void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
+void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
 {
-    qreal labelwidth = rect.width();
-    qreal labelheight = rect.height();
+    Q_UNUSED(isPixMap);
     m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
+    painter->setRenderHints(QPainter::Antialiasing);
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
-    QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
+    QRectF drawrect = rect;
+    QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
+
     QColor color1 = gdcolor.gradientFromC;
     QColor color2 = gdcolor.gradientToC;
     QColor textcolor = gdcolor.textColor;
@@ -65,32 +56,25 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
         }
         m_vSelectflag = m_press;
     }
+    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
-    if (isPixMap) {
-        painter->setOpacity(0.6);
-        textcolor.setAlphaF(0.8);
-    }
-
-    if (m_vSelectflag) {
-        color1 = gdcolor.pressgradientFromC;
-        color2 = gdcolor.pressgradientToC;
-        textcolor.setAlphaF(0.4);
-    } else if (m_vHoverflag) {
+    if (m_vHoverflag) {
         color1 = gdcolor.hovergradientFromC;
         color2 = gdcolor.hovergradientToC;
     } else if (m_vHighflag) {
         color1 = gdcolor.hightlightgradientFromC;
         color2 = gdcolor.hightlightgradientToC;
+    } else if (m_vSelectflag) {
+        color1 = gdcolor.pressgradientFromC;
+        color2 = gdcolor.pressgradientToC;
+        textcolor.setAlphaF(0.4);
     }
-
     linearGradient.setColorAt(0, color1);
     linearGradient.setColorAt(1, color2);
-
-    QRectF fillRect = QRectF(rect.x() + 2,
-                             rect.y() + 2,
-                             labelwidth - 2,
-                             labelheight - 2);
-    painter->save();
+    QRectF fillRect = QRectF(drawrect.x(),
+                             drawrect.y(),
+                             drawrect.width(),
+                             drawrect.height() - 2);
     //将直线开始点设为0，终点设为1，然后分段设置颜色
     painter->setBrush(linearGradient);
     if (getItemFoucs() && isPixMap == false) {
@@ -101,23 +85,17 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
     } else {
         painter->setPen(Qt::NoPen);
     }
-    painter->drawRoundedRect(fillRect,
-                             rect.height() / 3,
-                             rect.height() / 3);
-    painter->restore();
+    painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
     painter->setFont(m_font);
     painter->setPen(textcolor);
     QFontMetrics fm = painter->fontMetrics();
-
     QString tStitlename = m_vScheduleInfo.getTitleName();
     tStitlename.replace("\n", "");
     QString str = tStitlename;
-    //右侧偏移8
-    qreal textWidth = labelwidth - m_pos.x() - m_offset * 2 - 8;
     QString tstr;
     int _rightOffset = fm.width("...");
     //显示宽度  左侧偏移13右侧偏移8
-    qreal _showWidth = textWidth;
+    qreal _showWidth = fillRect.width() - 13 - 8 - m_offset * 2;
     //如果标题总长度大于显示长度则显示长度须减去"..."的长度
     if (fm.width(str) > _showWidth) {
         _showWidth -= _rightOffset;
@@ -137,16 +115,12 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
         tstr = str;
     }
 
-    painter->drawText(QRectF(rect.x() + m_pos.x(),
-                             rect.y() + 1,
-                             textWidth,
-                             labelheight - m_pos.y() + 3),
+    painter->drawText(QRectF(fillRect.topLeft().x() + 13, fillRect.y(), fillRect.width(), fillRect.height()),
                       Qt::AlignLeft | Qt::AlignVCenter, tstr);
-
     if (m_vHoverflag && !m_vSelectflag) {
-        QRectF trect = QRectF(rect.x() + 2.5, rect.y() + 2.5, labelwidth - 3, labelheight - 3);
+        QRectF trect = QRectF(fillRect.x() + 0.5, fillRect.y() + 0.5, fillRect.width() - 1, fillRect.height() - 1);
         painter->save();
-        painter->setRenderHints(QPainter::Antialiasing);
+
         QPen pen;
         QColor selcolor;
 
@@ -155,9 +129,7 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
         } else {
             selcolor = "#000000";
         }
-
         selcolor.setAlphaF(0.08);
-
         pen.setColor(selcolor);
         pen.setWidthF(1);
         pen.setStyle(Qt::SolidLine);
@@ -166,7 +138,6 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
         painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
         painter->restore();
     }
-
     if (m_vSelectflag) {
         QColor selcolor = "#000000";
         selcolor.setAlphaF(0.05);

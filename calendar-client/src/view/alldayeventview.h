@@ -19,38 +19,30 @@
 #ifndef ALLDAYEVENTVIEW_H
 #define ALLDAYEVENTVIEW_H
 
-#include "graphicsItem/draginfoitem.h"
-#include "draginfographicsview.h"
+#include "graphicsItem/calldayscheduleitem.h"
+#include "graphicsItem/cweekdaybackgrounditem.h"
+#include "cweekdaygraphicsview.h"
 
-#include <DGraphicsView>
 #include <DFontSizeManager>
-#include <DMenu>
 
 #include <QGraphicsScene>
 #include <QMouseEvent>
 
 DWIDGET_USE_NAMESPACE
-class QDrag;
-class CAllDayEventWidgetItem;
+
 class CScheduleCoorManage;
 
-class CAllDayEventWeekView : public DragInfoGraphicsView
+class CAllDayEventWeekView : public CWeekDayGraphicsview
 {
     Q_OBJECT
 public:
-    CAllDayEventWeekView(QWidget *parent = nullptr, int edittype = 0);
+    CAllDayEventWeekView(QWidget *parent = nullptr, ViewType type = WeekView);
     ~CAllDayEventWeekView() override;
     void setDayData(const QVector<QVector<ScheduleDataInfo>> &vlistData);
     void setInfo(const QVector<ScheduleDataInfo> &info);
     QVector<QVector<ScheduleDataInfo>> &getListData()
     {
         return m_vlistData;
-    }
-    void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
-    void setRange(QDate begin, QDate end);
-    CScheduleCoorManage *getCoorManage()
-    {
-        return m_coorManage;
     }
     void updateHigh();
     //获取搜索选中日程
@@ -65,10 +57,8 @@ public slots:
     void slotUpdateScene();
 private slots:
     void slotDoubleEvent();
-
 public:
     void setTheMe(int type = 0) override;
-
 private:
     void changeEvent(QEvent *event) override;
     bool MeetCreationConditions(const QDateTime &date) override;
@@ -84,51 +74,19 @@ private:
     PosInItem getPosInItem(const QPoint &p, const QRectF &itemRect) override;
     QDateTime getPosDate(const QPoint &p) override;
     void upDateInfoShow(const DragStatus &status = NONE, const ScheduleDataInfo &info = ScheduleDataInfo()) override;
-
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
-    /**
-     * @brief paintEvent 绘制事件
-     * @param event 绘制事件的事件参数
-     */
-    void paintEvent(QPaintEvent *event) override;
-
 private:
     void updateDateShow();
     void createItemWidget(int index, bool average = false);
     void updateItemHeightByFontSize();
-    /**
-     * @brief paintBackground 绘制背景--周试图周六周天的背景色和每天的分割线
-     * @param painter painter对象
-     */
-    void paintBackground(QPainter &painter);
-
 private:
     int itemHeight = 22;
     QVector<QVector<ScheduleDataInfo>> m_vlistData;
     QVector<ScheduleDataInfo> m_scheduleInfo;
-    QVector<CAllDayEventWidgetItem *> m_baseShowItem;
-    int m_editType = 0;
-    CScheduleCoorManage *m_coorManage = nullptr;
-    int m_rightmagin = 0;
+    QVector<CAllDayScheduleItem *> m_baseShowItem;
     bool m_updateDflag = false;
-    QDate m_beginDate;
-    QDate m_endDate;
-    /**
-     * @brief m_weekColor   周六周日背景色
-     */
-    QColor m_weekColor = "#E6EEF2";
 };
 
-class CAllDayEventWidgetItem : public DragInfoItem
-{
-    Q_OBJECT
-public:
-    explicit CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *parent = nullptr, int edittype = 0);
-    bool hasSelectSchedule(const ScheduleDataInfo &info);
-
-protected:
-    void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;
-};
 #endif // CSHCEDULEDAYVIEW_H

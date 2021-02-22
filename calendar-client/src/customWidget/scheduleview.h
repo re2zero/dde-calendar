@@ -21,21 +21,21 @@
 #include "src/scheduledatainfo.h"
 #include "SchecduleRemindWidget.h"
 #include "../widget/touchgestureoperation.h"
+#include "graphicsview.h"
 
 #include <DFrame>
 
 #include <QDate>
 
 DWIDGET_USE_NAMESPACE
-
-class CGraphicsView;
+#define ScheduleViewType CWeekDayGraphicsview::ViewType
 class CAllDayEventWeekView;
 class QVBoxLayout;
 class CScheduleView : public DFrame
 {
     Q_OBJECT
 public:
-    CScheduleView(QWidget *parent = nullptr, int viewType = 0);
+    CScheduleView(QWidget *parent = nullptr, ScheduleViewType viewType = ScheduleViewType::WeekView);
     ~CScheduleView() override;
     void setviewMagin(int left, int top, int right, int bttom);
     void setRange(int w, int h, QDate begin, QDate end);
@@ -95,7 +95,8 @@ private:
     QDate m_beginDate;
     QDate m_endDate;
     // 0: 周  1:日
-    int m_viewType = 0;
+    //    int m_viewType = 0;
+    ScheduleViewType m_viewType;
     int m_sMaxNum = 4;
     QColor m_linecolor = Qt::lightGray;
     QColor m_ALLDayColor = "#303030";

@@ -37,7 +37,7 @@ DGUI_USE_NAMESPACE
 
 static int hourTextWidth = 50;
 static int hourTextHeight = 20;
-CScheduleView::CScheduleView(QWidget *parent, int viewType)
+CScheduleView::CScheduleView(QWidget *parent, ScheduleViewType viewType)
     : DFrame(parent)
     , m_viewType(viewType)
     , m_touchGesture(this)
@@ -74,7 +74,7 @@ void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
     m_graphicsView->setRange(w, scheduleViewHegith(), begin, end, m_rightmagin);
     m_alldaylist->setRange(w, 22, m_beginDate, m_endDate, m_rightmagin);
 
-    if (m_viewType == 1)
+    if (m_viewType == ScheduleViewType::DayView)
         m_currteDate = begin;
     update();
 }
@@ -219,7 +219,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     continue;
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                          hourTextWidth, hourTextHeight);
-                if (rr.intersects(tinrect) && m_viewType == 1 && m_beginDate == QDate::currentDate()) {
+                if (rr.intersects(tinrect) && m_viewType == ScheduleViewType::DayView && m_beginDate == QDate::currentDate()) {
                     continue;
                 }
                 painter.drawText(
@@ -229,7 +229,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             }
             painter.restore();
 
-            if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
+            if (m_viewType == ScheduleViewType::DayView && m_beginDate == QDate::currentDate()) {
                 painter.save();
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
@@ -278,7 +278,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                          hourTextWidth + 2, hourTextHeight);
 
-                if (rr.intersects(tinrect) && m_viewType == 1 && m_beginDate == QDate::currentDate())
+                if (rr.intersects(tinrect) && m_viewType == ScheduleViewType::DayView && m_beginDate == QDate::currentDate())
                     continue;
 
                 painter.drawText(
@@ -288,7 +288,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             }
             painter.restore();
 
-            if (m_viewType == 1 && m_beginDate == QDate::currentDate()) {
+            if (m_viewType == ScheduleViewType::DayView && m_beginDate == QDate::currentDate()) {
                 painter.save();
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
@@ -332,7 +332,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
 void CScheduleView::resizeEvent(QResizeEvent *event)
 {
-    if (m_viewType == 0) {
+    if (m_viewType == ScheduleViewType::WeekView) {
         m_sMaxNum = ((width() - m_leftMagin) / 7) / 27;
     } else {
     }
@@ -390,11 +390,11 @@ void CScheduleView::initUI()
     m_layout = new QVBoxLayout;
     m_layout->setSpacing(0);
     m_layout->setMargin(0);
-    m_alldaylist = new CAllDayEventWeekView(this, 1);
+    m_alldaylist = new CAllDayEventWeekView(this, m_viewType);
     m_layout->addWidget(m_alldaylist);
     m_layout->addSpacing(1);
     m_graphicsView = new CGraphicsView(this, m_viewType);
-    const int miniHeight = m_viewType == 0 ? 300 : 380;
+    const int miniHeight = m_viewType == ScheduleViewType::WeekView ? 300 : 380;
     m_graphicsView->setMinimumHeight(miniHeight);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this,
             SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
@@ -449,7 +449,7 @@ void CScheduleView::slotDeleteitem()
 
 void CScheduleView::slotCurrentScheduleDate(QDate date)
 {
-    if (m_viewType == 1)
+    if (m_viewType == ScheduleViewType::DayView)
         return;
     emit signalsCurrentScheduleDate(date);
 }
@@ -541,7 +541,7 @@ int CScheduleView::scheduleViewHegith()
 {
     qreal mheight = 0;
 
-    if (m_viewType == 0) {
+    if (m_viewType == ScheduleViewType::DayView) {
         mheight = 24 * (0.0968 * height() + 0.5);
     } else {
         mheight = 24 * (0.083 * height() + 0.5);

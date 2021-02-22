@@ -22,6 +22,7 @@
 
 #include <QGraphicsScene>
 #include <QDebug>
+#include <QMarginsF>
 
 CSceneBackgroundItem::CSceneBackgroundItem(QGraphicsItem *parent)
     : CFocusItem(parent)
@@ -102,7 +103,8 @@ void CSceneBackgroundItem::updateShowItem()
         setItemFocus(true);
     }
     m_item.clear();
-    QList<QGraphicsItem *> mlistitem = this->scene()->items(this->rect());
+    QRectF offsetRect = this->rect().marginsRemoved(QMarginsF(1, 1, 1, 1));
+    QList<QGraphicsItem *> mlistitem = this->scene()->items(offsetRect);
     for (int i = 0; i < mlistitem.count(); ++i) {
         CFocusItem *item = dynamic_cast<CFocusItem *>(mlistitem.at(i));
         if (item != nullptr && item->getItemType() != CBACK) {

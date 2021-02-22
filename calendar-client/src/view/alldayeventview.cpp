@@ -24,9 +24,14 @@
 #include "scheduledatamanage.h"
 #include "constants.h"
 #include "scheduledaterangeinfo.h"
+#include "cscenetabkeydeal.h"
+#include "ckeyenabledeal.h"
+#include "ckeyleftdeal.h"
+#include "ckeyrightdeal.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
+#include <DMenu>
 
 #include <QAction>
 #include <QPainter>
@@ -41,138 +46,11 @@
 #include <QGraphicsOpacityEffect>
 
 DGUI_USE_NAMESPACE
-
-CAllDayEventWidgetItem::CAllDayEventWidgetItem(QRectF rect, QGraphicsItem *parent, int edittype)
-    : DragInfoItem(rect, parent)
-{
-    Q_UNUSED(edittype);
-}
-
-bool CAllDayEventWidgetItem::hasSelectSchedule(const ScheduleDataInfo &info)
-{
-    return info == m_vScheduleInfo;
-}
-
-void CAllDayEventWidgetItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
-{
-    Q_UNUSED(isPixMap);
-    m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
-    painter->setRenderHints(QPainter::Antialiasing);
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
-    QRectF drawrect = rect;
-    QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
-
-    QColor color1 = gdcolor.gradientFromC;
-    QColor color2 = gdcolor.gradientToC;
-    QColor textcolor = gdcolor.textColor;
-
-
-    //判断是否为选中日程
-    if (m_vScheduleInfo == m_pressInfo) {
-        //判断当前日程是否为拖拽移动日程
-        if (m_vScheduleInfo.getIsMoveInfo() == m_pressInfo.getIsMoveInfo()) {
-            m_vHighflag = true;
-        } else {
-            painter->setOpacity(0.4);
-            textcolor.setAlphaF(0.4);
-        }
-        m_vSelectflag = m_press;
-    }
-    int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-
-    if (m_vHoverflag) {
-        color1 = gdcolor.hovergradientFromC;
-        color2 = gdcolor.hovergradientToC;
-    } else if (m_vHighflag) {
-        color1 = gdcolor.hightlightgradientFromC;
-        color2 = gdcolor.hightlightgradientToC;
-    } else if (m_vSelectflag) {
-        color1 = gdcolor.pressgradientFromC;
-        color2 = gdcolor.pressgradientToC;
-        textcolor.setAlphaF(0.4);
-    }
-    linearGradient.setColorAt(0, color1);
-    linearGradient.setColorAt(1, color2);
-    QRectF fillRect = QRectF(drawrect.x(),
-                             drawrect.y(),
-                             drawrect.width(),
-                             drawrect.height() - 2);
-    //将直线开始点设为0，终点设为1，然后分段设置颜色
-    painter->setBrush(linearGradient);
-    painter->setPen(Qt::NoPen);
-    painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
-    painter->setFont(m_font);
-    painter->setPen(textcolor);
-    QFontMetrics fm = painter->fontMetrics();
-    QString tStitlename = m_vScheduleInfo.getTitleName();
-    tStitlename.replace("\n", "");
-    QString str = tStitlename;
-    QString tstr;
-    int _rightOffset = fm.width("...");
-    //显示宽度  左侧偏移13右侧偏移8
-    qreal _showWidth = fillRect.width() - 13 - 8 - m_offset * 2;
-    //如果标题总长度大于显示长度则显示长度须减去"..."的长度
-    if (fm.width(str) > _showWidth) {
-        _showWidth -= _rightOffset;
-        for (int i = 0; i < str.count(); i++) {
-            tstr.append(str.at(i));
-            int widthT = fm.width(tstr);
-            //如果宽度大于显示长度则去除最后添加的字符
-            if (widthT > _showWidth) {
-                tstr.chop(1);
-                break;
-            }
-        }
-        if (tstr != str) {
-            tstr = tstr + "...";
-        }
-    } else {
-        tstr = str;
-    }
-
-    painter->drawText(QRectF(fillRect.topLeft().x() + 13, fillRect.y(), fillRect.width(), fillRect.height()),
-                      Qt::AlignLeft | Qt::AlignVCenter, tstr);
-    if (m_vHoverflag && !m_vSelectflag) {
-        QRectF trect = QRectF(fillRect.x() + 0.5, fillRect.y() + 0.5, fillRect.width() - 1, fillRect.height() - 1);
-        painter->save();
-
-        QPen pen;
-        QColor selcolor;
-
-        if (themetype == 2) {
-            selcolor = "#FFFFFF";
-        } else {
-            selcolor = "#000000";
-        }
-        selcolor.setAlphaF(0.08);
-        pen.setColor(selcolor);
-        pen.setWidthF(1);
-        pen.setStyle(Qt::SolidLine);
-        painter->setBrush(Qt::NoBrush);
-        painter->setPen(pen);
-        painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
-        painter->restore();
-    }
-    if (m_vSelectflag) {
-        QColor selcolor = "#000000";
-        selcolor.setAlphaF(0.05);
-        painter->setBrush(selcolor);
-        painter->setPen(Qt::NoPen);
-        painter->drawRoundedRect(fillRect, rect.height() / 3, rect.height() / 3);
-    }
-}
+DWIDGET_USE_NAMESPACE
 
 void CAllDayEventWeekView::setTheMe(int type)
 {
-    m_themetype = type;
-    if (type == 0 || type == 1) {
-        m_weekColor = "#00429A";
-        m_weekColor.setAlphaF(0.05);
-    } else {
-        m_weekColor = "#4F9BFF";
-        m_weekColor.setAlphaF(0.1);
-    }
-    updateDateShow();
+    CWeekDayGraphicsview::setTheMe(type);
 }
 
 void CAllDayEventWeekView::changeEvent(QEvent *event)
@@ -250,26 +128,6 @@ QDateTime CAllDayEventWeekView::getDragScheduleInfoEndTime(const QDateTime &move
     return m_InfoBeginTime.daysTo(m_MoveDate) < 0 ? QDateTime(m_InfoBeginTime.date(), QTime(23, 59, 0)) : QDateTime(moveDateTime.date(), QTime(23, 59, 0));
 }
 
-void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)
-{
-    m_MoveDate.setDate(begindate.addMonths(-2));
-    m_beginDate = begindate;
-    m_endDate = enddate;
-    w -= 2;
-    m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
-    m_Scene->setSceneRect(0, 0, w, h);
-    m_rightmagin = rightmagin;
-}
-
-void CAllDayEventWeekView::setRange(QDate begin, QDate end)
-{
-    m_MoveDate.setDate(begin.addMonths(-2));
-    m_beginDate = begin;
-    m_endDate = end;
-    getCoorManage()->setDateRange(begin, end);
-    this->scene()->update();
-}
-
 void CAllDayEventWeekView::updateHigh()
 {
     for (int i = 0; i < m_baseShowItem.count(); i++) {
@@ -285,7 +143,7 @@ void CAllDayEventWeekView::setSelectSearchSchedule(const ScheduleDataInfo &info)
 {
     DragInfoGraphicsView::setSelectSearchSchedule(info);
     for (int i = 0; i < m_baseShowItem.size(); ++i) {
-        CAllDayEventWidgetItem *item = m_baseShowItem.at(i);
+        CAllDayScheduleItem *item = m_baseShowItem.at(i);
         if (item->hasSelectSchedule(info)) {
             QRectF rect = item->rect();
             centerOn(0, rect.y());
@@ -423,7 +281,6 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
         m_topMagin = 32;
     } else if (vResultData.count() < 6) {
         m_topMagin = 31 + (vResultData.count() - 1) * (itemHeight + 1);
-
     } else {
         m_topMagin = 123;
     }
@@ -433,10 +290,9 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
     emit signalUpdatePaint(m_topMagin);
 }
 
-CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
-    : DragInfoGraphicsView(parent)
+CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, ViewType type)
+    : CWeekDayGraphicsview(parent, type)
 {
-    m_editType = edittype;
     updateItemHeightByFontSize();
     m_coorManage = new CScheduleCoorManage;
     //设置创建名称
@@ -445,8 +301,6 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, int edittype)
 
 CAllDayEventWeekView::~CAllDayEventWeekView()
 {
-    delete m_coorManage;
-    m_coorManage = nullptr;
 }
 
 void CAllDayEventWeekView::setDayData(const QVector<QVector<ScheduleDataInfo>> &vlistData)
@@ -473,7 +327,7 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
     }
     emit signalScheduleShow(false);
     DGraphicsView::mouseDoubleClickEvent(event);
-    CAllDayEventWidgetItem *item = dynamic_cast<CAllDayEventWidgetItem *>(itemAt(event->pos()));
+    CAllDayScheduleItem *item = dynamic_cast<CAllDayScheduleItem *>(itemAt(event->pos()));
     if (item == nullptr) {
         m_createDate.setDate(m_coorManage->getsDate(mapFrom(this, event->pos())));
         m_createDate.setTime(QTime::currentTime());
@@ -502,21 +356,16 @@ void CAllDayEventWeekView::wheelEvent(QWheelEvent *event)
     DGraphicsView::wheelEvent(event);
 }
 
-void CAllDayEventWeekView::paintEvent(QPaintEvent *event)
-{
-    QPainter painter(viewport());
-    //绘制背景
-    paintBackground(painter);
-    painter.end();
-    QGraphicsView::paintEvent(event);
-}
-
 void CAllDayEventWeekView::updateDateShow()
 {
-    m_Scene->setSceneRect(0,
-                          0,
-                          m_Scene->width(),
-                          (itemHeight + 1) * m_vlistData.size());
+    qreal sceneHeight;
+    qreal itemsHeight = (itemHeight + 1) * m_vlistData.size();
+    if (itemsHeight < 32) {
+        sceneHeight = 29;
+    } else {
+        sceneHeight = itemsHeight + 6;
+    }
+    setSceneRect(0, 0, m_Scene->width(), sceneHeight);
 
     for (int i = 0; i < m_baseShowItem.count(); i++) {
         delete m_baseShowItem[i];
@@ -524,6 +373,10 @@ void CAllDayEventWeekView::updateDateShow()
     m_baseShowItem.clear();
     for (int i = 0; i < m_vlistData.size(); ++i) {
         createItemWidget(i);
+    }
+    //更新每个背景上的日程标签
+    for (int i = 0; i < m_backgroundItem.size(); ++i) {
+        m_backgroundItem.at(i)->updateShowItem();
     }
 }
 
@@ -536,7 +389,7 @@ void CAllDayEventWeekView::createItemWidget(int index, bool average)
         drawrect.setY(2 + (itemHeight + 1) * index);
         drawrect.setHeight(itemHeight);
 
-        CAllDayEventWidgetItem *gwi = new CAllDayEventWidgetItem(drawrect, nullptr, m_editType);
+        CAllDayScheduleItem *gwi = new CAllDayScheduleItem(drawrect, nullptr);
         gwi->setData(m_vlistData[index].at(i));
         m_Scene->addItem(gwi);
         m_baseShowItem.append(gwi);
@@ -553,47 +406,6 @@ void CAllDayEventWeekView::updateItemHeightByFontSize()
     int h = fm.height();
     if (itemHeight != h) {
         itemHeight = h;
-    }
-}
-
-void CAllDayEventWeekView::paintBackground(QPainter &painter)
-{
-    // 绘制Rect的宽度
-    const int t_width = viewport()->width() - 2;
-    // 需要处理的天数
-    const qint64 m_TotalDay = m_beginDate.daysTo(m_endDate) + 1;
-    // 左边距
-    const int m_leftMagin = 0;
-    // 每天的宽度
-    const qreal intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
-    // 每天X坐标点偏移
-    const qreal XPointOffset = 1.5;
-    // 分割线颜色
-    QColor m_linecolor = "#000000";
-    m_linecolor.setAlphaF(0.05);
-    if (m_TotalDay > 1) {
-        painter.save();
-        painter.setPen(Qt::SolidLine);
-        painter.setPen(m_linecolor);
-        //绘制分割线
-        for (int i = 1; i < 7; ++i) {
-            painter.drawLine(QPointF(i * intenval + m_leftMagin + XPointOffset, 1),
-                             QPointF(i * intenval + m_leftMagin + XPointOffset, this->height()));
-        }
-        painter.restore();
-        painter.save();
-        //绘制周六周日背景色
-        painter.setBrush(m_weekColor);
-        painter.setPen(Qt::NoPen);
-        painter.setRenderHint(QPainter::Antialiasing);
-        for (int i = 0; i != 7; ++i) {
-            int d = m_beginDate.addDays(i).dayOfWeek();
-            if (d == 7 || d == 6) {
-                painter.drawRect(
-                    QRectF(m_leftMagin + i * intenval + XPointOffset, 0, intenval, this->height()));
-            }
-        }
-        painter.restore();
     }
 }
 

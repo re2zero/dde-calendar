@@ -24,7 +24,7 @@
 
 test_graphicsview::test_graphicsview()
 {
-    cGraphicsView = new CGraphicsView(nullptr, 0);
+    cGraphicsView = new CGraphicsView(nullptr, CGraphicsView::WeekView);
 }
 
 test_graphicsview::~test_graphicsview()
@@ -173,13 +173,6 @@ TEST_F(test_graphicsview, slotScrollBar)
 TEST_F(test_graphicsview, slotUpdateScene)
 {
     cGraphicsView->slotUpdateScene();
-}
-
-//void CGraphicsView::paintBackground(QPainter &painter)
-TEST_F(test_graphicsview, paintBackground)
-{
-    QPainter painter;
-    cGraphicsView->paintBackground(painter);
 }
 
 //void CGraphicsView::scrollBarValueChangedSlot()

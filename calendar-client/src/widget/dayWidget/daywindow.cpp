@@ -254,7 +254,7 @@ void CDayWindow::initUI()
     QVBoxLayout *leftLayout = new QVBoxLayout;
     leftLayout->setMargin(0);
     leftLayout->setSpacing(0);
-    m_scheduleView = new CScheduleView(this, 1);
+    m_scheduleView = new CScheduleView(this, ScheduleViewType::DayView);
     m_scheduleView->setviewMagin(72, 109, 20, 0);
     m_scheduleView->setCurrentDate(getCurrendDateTime());
     leftLayout->addLayout(titleLayout);

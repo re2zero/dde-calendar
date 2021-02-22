@@ -21,8 +21,9 @@
 
 #include "src/scheduledatainfo.h"
 #include "draginfographicsview.h"
+#include "graphicsItem/cweekdaybackgrounditem.h"
+#include "cweekdaygraphicsview.h"
 
-#include <DGraphicsView>
 #include <DMenu>
 
 #include <QGraphicsScene>
@@ -41,11 +42,11 @@ typedef struct _tagScheduleclassificationInfo {
 
 class CScheduleCoorManage;
 class CScheduleItem;
-class CGraphicsView : public DragInfoGraphicsView
+class CGraphicsView : public CWeekDayGraphicsview
 {
     Q_OBJECT
 public:
-    CGraphicsView(QWidget *parent, int viewType = 0);
+    CGraphicsView(QWidget *parent, ViewType Type = WeekView);
     ~CGraphicsView() override;
     void setMargins(int left, int top, int right, int bottom);
     QMargins getMargins()
@@ -53,13 +54,7 @@ public:
         return m_margins;
     }
     void updateHigh();
-    void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
-    void setRange(QDate begin, QDate end);
     void setCurrentDate(const QDateTime &currentDate);
-    CScheduleCoorManage *getCoorManage()
-    {
-        return m_coorManage;
-    }
     void setInfo(const QVector<ScheduleDataInfo> &info);
     void addSchduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
     void deleteSchduleItem(CScheduleItem *item);
@@ -92,13 +87,6 @@ public:
     void updateInfo() override;
 protected:
     void paintEvent(QPaintEvent *event) override;
-
-private:
-    /**
-     * @brief paintBackground 绘制背景--周试图周六周天的背景色和每天的分割线
-     * @param painter painter对象
-     */
-    void paintBackground(QPainter &painter);
 public slots:
     void scrollBarValueChangedSlot();
     void slotDoubleEvent(int type);
@@ -113,7 +101,6 @@ private:
     QDateTime TimeRounding(const QDateTime &time);
     void centerOnScene(const QPointF &pos);
     void setSceneHeightScale(const QPointF &pos);
-
 public:
     void setTheMe(int type = 0) override;
 
@@ -133,7 +120,6 @@ protected:
     QDateTime getDragScheduleInfoEndTime(const QDateTime &moveDateTime) override;
 
 private:
-    CScheduleCoorManage *m_coorManage = nullptr;
     QVector<CScheduleItem *> m_vScheduleItem;
     QMargins m_margins; //四周空白
     bool m_LRFlag; //水平线
@@ -141,10 +127,7 @@ private:
     bool m_TBFlag; //垂直线
     QPen m_TBPen; //垂直线画笔
     QVector<int> m_vLRLarge; //大刻度像素位置
-    QVector<int> m_vTBLarge; //大刻度像素位置
-    qreal m_dayInterval;
     qreal m_timeInterval;
-    qint64 m_totalDay;
     qreal m_sceneHeightScale = 0;
 
     QColor m_weekcolor = "#4F9BFF";
@@ -152,13 +135,8 @@ private:
     int m_cuttrnttimetype = 0;
     QTimer *m_timer = nullptr;
     QMutex m_Mutex;
-    int m_viewType = 0;
     bool m_updateDflag = false;
-    int m_rightmagin = 0;
-
     QVector<ScheduleDataInfo> m_scheduleInfo;
-    QDate m_beginDate;
-    QDate m_endDate;
     QDateTime m_currentDate;
     int m_minTime; //最小高度对应的最小时间
     int m_sMaxNum = 4;

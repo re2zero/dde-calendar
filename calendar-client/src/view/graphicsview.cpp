@@ -24,6 +24,10 @@
 #include "schedulectrldlg.h"
 #include "myscheduleview.h"
 #include "constants.h"
+#include "cscenetabkeydeal.h"
+#include "ckeyenabledeal.h"
+#include "ckeyleftdeal.h"
+#include "ckeyrightdeal.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -40,16 +44,13 @@
 #include <QtMath>
 
 DGUI_USE_NAMESPACE
-CGraphicsView::CGraphicsView(QWidget *parent, int viewType)
-    : DragInfoGraphicsView(parent)
-    , m_viewType(viewType)
+CGraphicsView::CGraphicsView(QWidget *parent, ViewType Type)
+    : CWeekDayGraphicsview(parent, Type)
 {
-    m_coorManage = new CScheduleCoorManage;
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_dayInterval = width();
     m_timeInterval = height() / 24.0;
 
-    m_Scene->setSceneRect(0, 0, width(), height());
+    setSceneRect(0, 0, width(), height());
     m_LRPen.setColor(QColor(255, 255, 255));
     m_LRPen.setStyle(Qt::SolidLine);
     m_TBPen.setColor(QColor(255, 255, 255));
@@ -82,9 +83,6 @@ CGraphicsView::~CGraphicsView()
     m_timer->stop();
     m_timer->deleteLater();
     clearSchdule();
-
-    delete m_coorManage;
-    m_coorManage = nullptr;
 }
 
 void CGraphicsView::setMargins(int left, int top, int right, int bottom)
@@ -115,9 +113,7 @@ void CGraphicsView::setTheMe(int type)
         m_LRPen.setColor(linecolor);
         m_TBPen.setColor(linecolor);
     }
-    DragInfoGraphicsView::setTheMe(type);
-    scene()->update();
-    update();
+    CWeekDayGraphicsview::setTheMe(type);
 }
 
 void CGraphicsView::slotCreate(const QDateTime &date)
@@ -141,30 +137,6 @@ void CGraphicsView::updateHigh()
 {
     scene()->update();
     update();
-}
-
-void CGraphicsView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)
-{
-    m_MoveDate.setDate(begindate.addMonths(-2));
-    m_beginDate = begindate;
-    m_endDate = enddate;
-    w = w - rightmagin - 2;
-    m_Scene->setSceneRect(0, 0, w, h);
-    m_coorManage->setRange(w, h, begindate, enddate, rightmagin);
-    m_rightmagin = rightmagin;
-    qint64 totalDay = begindate.daysTo(enddate) + 1;
-    m_dayInterval = w * 1.0 / totalDay;
-    m_timeInterval = h / 24.0;
-    m_totalDay = totalDay;
-}
-
-void CGraphicsView::setRange(QDate begin, QDate end)
-{
-    m_MoveDate.setDate(begin.addMonths(-2));
-    m_beginDate = begin;
-    m_endDate = end;
-    getCoorManage()->setDateRange(begin, end);
-    this->scene()->update();
 }
 
 void CGraphicsView::setCurrentDate(const QDateTime &currentDate)
@@ -271,6 +243,10 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
                 }
             }
         }
+    }
+    //更新每个背景上的日程标签
+    for (int i = 0; i < m_backgroundItem.size(); ++i) {
+        m_backgroundItem.at(i)->updateShowItem();
     }
 }
 
@@ -545,8 +521,6 @@ Others:         无
 void CGraphicsView::paintEvent(QPaintEvent *event)
 {
     QPainter t_painter(viewport());
-    //绘制背景
-    paintBackground(t_painter);
     int t_width = viewport()->width() + 2;
     //绘制水平线
     if (m_LRFlag) {
@@ -579,57 +553,14 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     DragInfoGraphicsView::paintEvent(event);
 }
 
-void CGraphicsView::paintBackground(QPainter &painter)
-{
-    // 绘制Rect的宽度
-    const int t_width = viewport()->width() - 2;
-    // 需要处理的天数
-    const qint64 m_TotalDay = m_beginDate.daysTo(m_endDate) + 1;
-    // 左边距
-    const int m_leftMagin = 0;
-    // 每天的宽度
-    const qreal intenval = 1.0 * (t_width - m_leftMagin) / m_TotalDay;
-    // 每天X坐标点偏移
-    const qreal XPointOffset = 1.5;
-    if (m_TotalDay > 1) {
-        painter.save();
-        //设置分割颜色
-        painter.setPen(m_LRPen);
-        //绘制分割线
-        for (int i = 1; i < 7; ++i) {
-            painter.drawLine(QPointF(i * intenval + m_leftMagin + XPointOffset, 1),
-                             QPointF(i * intenval + m_leftMagin + XPointOffset, this->height()));
-        }
-        painter.restore();
-        painter.save();
-        //绘制周六周日背景色
-        painter.setBrush(m_weekcolor);
-        painter.setPen(Qt::NoPen);
-        painter.setRenderHint(QPainter::Antialiasing);
-        for (int i = 0; i != 7; ++i) {
-            int d = m_beginDate.addDays(i).dayOfWeek();
-            if (d == 7 || d == 6) {
-                painter.drawRect(
-                    QRectF(m_leftMagin + i * intenval + XPointOffset, 0, intenval, this->height()));
-            }
-        }
-        painter.restore();
-    }
-}
-
 void CGraphicsView::scrollBarValueChangedSlot()
 {
     QMutexLocker locker(&m_Mutex);
     int viewHeight = viewport()->height();
     m_vLRLarge.clear();
-    m_vTBLarge.clear();
     QPointF leftToprealPos = mapToScene(QPoint(0, 0));
     QPointF leftBttomrealPos = mapToScene(QPoint(0, viewHeight));
-
-    for (qreal i = m_dayInterval; i < scene()->width(); i = i + m_dayInterval) {
-        m_vTBLarge.append(qFloor(i));
-    }
-
+    m_timeInterval = m_Scene->height() / 24.0;
     qreal beginpos = static_cast<qreal>(qFloor(leftToprealPos.y() / m_timeInterval) * m_timeInterval);
 
     if (beginpos < leftToprealPos.y()) {
