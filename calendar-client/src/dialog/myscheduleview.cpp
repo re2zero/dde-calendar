@@ -227,6 +227,8 @@ void CMyScheduleView::initUI()
     mainLayout->setSpacing(0);
 
     area = new QScrollArea(this);
+    //设置日程显示区域不能选中
+    area->setFocusPolicy(Qt::FocusPolicy::NoFocus);
     area->setFrameShape(QFrame::NoFrame);
     area->setFixedWidth(363);
     area->setBackgroundRole(QPalette::Background);

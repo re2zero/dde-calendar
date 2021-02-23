@@ -51,7 +51,7 @@ signals:
     void signalScheduleUpdate(int id = 0);
 public slots:
     //对话框按钮点击处理
-    void slotBtClick(int buttonIndex, QString buttonName);
+    void slotBtClick(int buttonIndex, const QString &buttonName);
     void slotTextChange();
     void slotendrepeatTextchange();
     void slotBDateEidtInfo(const QDate &date);

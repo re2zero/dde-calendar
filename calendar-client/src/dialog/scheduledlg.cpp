@@ -59,7 +59,6 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
         m_titleLabel->setText(tr("Edit Event"));
     }
 
-    setFocusPolicy(Qt::WheelFocus);
     setFixedSize(438, 470);
     //焦点设置到输入框
     m_textEdit->setFocus();
@@ -255,7 +254,7 @@ bool CScheduleDlg::clickOkBtn()
     return true;
 }
 
-void CScheduleDlg::slotBtClick(int buttonIndex, QString buttonName)
+void CScheduleDlg::slotBtClick(int buttonIndex, const QString &buttonName)
 {
     Q_UNUSED(buttonName)
     //是否隐藏对话框
@@ -934,5 +933,10 @@ void CScheduleDlg::setTabFouseOrder()
     setTabOrder(m_endTimeEdit, m_rmindCombox);
     setTabOrder(m_rmindCombox, m_beginrepeatCombox);
     setTabOrder(m_beginrepeatCombox, m_endrepeatCombox);
-    setTabOrder(m_endrepeatCombox, m_endrepeattimes);
+    //结束于次数，设置tab顺序
+    if (m_ScheduleDataInfo.getRepetitionRule().getRuleType() == RepetitionRule::RRuleEndType::RRuleType_FREQ)
+        setTabOrder(m_endrepeatCombox, m_endrepeattimes);
+    //结束于日期，设置tab顺序
+    if (m_ScheduleDataInfo.getRepetitionRule().getRuleType() == RepetitionRule::RRuleEndType::RRuleType_DATE)
+        setTabOrder(m_endrepeatCombox, m_endRepeatDate);
 }
