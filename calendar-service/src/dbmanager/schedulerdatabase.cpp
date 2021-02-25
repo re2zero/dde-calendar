@@ -121,11 +121,10 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString
     if (psearch->CanQueryByPinyin(strKey)) {
         //可以按照拼音查询
         QString pinyin = psearch->CreatePinyinQuery(strKey.toLower());
-        strsql = QString("select * from jobs where title like '%%1%' or title_pinyin like '%%2%' ").arg(key).arg(pinyin);
+        strsql = QString("select * from jobs where instr(UPPER(title), UPPER('%1')) OR title_pinyin LIKE '%2'").arg(key).arg(pinyin);
     } else if (!key.isEmpty()) {
         //按照key查询
-        //添加/和escape处理转意字符
-        strsql = QString("select * from jobs where title like '%/%1%' escape '/' ").arg(key);
+        strsql = QString("select * from jobs where instr(UPPER(title), UPPER('%1'))").arg(key);
     } else {
         //如果没有key，则搜索所有
         strsql = QString("select * from jobs ");
@@ -135,7 +134,6 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString
     if (!strsort.isEmpty()) {
         strsql.append(QString("order by %1").arg(strsort));
     }
-
     if (query.exec(strsql)) {
         while (query.next()) {
             Job jb;
