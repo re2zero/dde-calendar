@@ -26,12 +26,12 @@
 
 CSceneBackgroundItem::CSceneBackgroundItem(QGraphicsItem *parent)
     : CFocusItem(parent)
-    , m_showItemIndex(-1)
     , m_backgroundNum(0)
     , m_leftItem(nullptr)
     , m_rightItem(nullptr)
     , m_upItem(nullptr)
     , m_downItem(nullptr)
+    , m_showItemIndex(-1)
 {
     //设置item类型为背景显示
     setItemType(CBACK);
@@ -55,7 +55,7 @@ CFocusItem *CSceneBackgroundItem::setNextItemFocusAndGetNextItem()
     } else {
         //若该背景上有显示的item
         //若显示的item未设置foucs则取消背景focus效果
-        if (m_showItemIndex == -1) {
+        if (m_showItemIndex == -1 && getItemFoucs()) {
             this->setItemFocus(false);
         }
         //若显示的item有设置foucs则取消该item focus效果
@@ -97,12 +97,8 @@ bool compareItemData(CFocusItem *itemfirst, CFocusItem *itemsecond)
  */
 void CSceneBackgroundItem::updateShowItem()
 {
-    //如果当前显示的子item索引不为-1则表示当前焦点在该背景上,设置改背景焦点显示效果
-    if (m_showItemIndex >= 0) {
-        m_showItemIndex = -1;
-        setItemFocus(true);
-    }
     m_item.clear();
+    //缩小背景矩阵,防止获取到其他背景上的item
     QRectF offsetRect = this->rect().marginsRemoved(QMarginsF(1, 1, 1, 1));
     QList<QGraphicsItem *> mlistitem = this->scene()->items(offsetRect);
     for (int i = 0; i < mlistitem.count(); ++i) {
@@ -112,6 +108,12 @@ void CSceneBackgroundItem::updateShowItem()
         }
     }
     std::sort(m_item.begin(), m_item.end(), compareItemData);
+    updateCurrentItemShow();
+}
+
+int CSceneBackgroundItem::getShowItemCount()
+{
+    return m_item.size();
 }
 
 /**
@@ -152,7 +154,12 @@ void CSceneBackgroundItem::setItemFocus(bool isFocus)
  */
 void CSceneBackgroundItem::initState()
 {
-    setItemFocus(false);
+    if (getItemFoucs()) {
+        setItemFocus(false);
+    }
+    if (m_showItemIndex > -1 && m_showItemIndex < m_item.size()) {
+        m_item.at(m_showItemIndex)->setItemFocus(false);
+    }
     m_showItemIndex = -1;
 }
 
@@ -216,4 +223,17 @@ CSceneBackgroundItem *CSceneBackgroundItem::getDownItem() const
 void CSceneBackgroundItem::setDownItem(CSceneBackgroundItem *downItem)
 {
     m_downItem = downItem;
+}
+
+void CSceneBackgroundItem::updateCurrentItemShow()
+{
+    if (m_showItemIndex >= 0) {
+        if (m_item.size() > 0) {
+            m_showItemIndex = m_showItemIndex < m_item.size() ? m_showItemIndex : 0;
+            m_item.at(m_showItemIndex)->setItemFocus(true);
+        } else {
+            m_showItemIndex = -1;
+            setItemFocus(true);
+        }
+    }
 }

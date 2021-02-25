@@ -24,7 +24,7 @@
 
 test_graphicsview::test_graphicsview()
 {
-    cGraphicsView = new CGraphicsView(nullptr, CGraphicsView::WeekView);
+    cGraphicsView = new CGraphicsView(nullptr, CGraphicsView::WeekPos);
 }
 
 test_graphicsview::~test_graphicsview()

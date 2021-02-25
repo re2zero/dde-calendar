@@ -77,6 +77,19 @@ void CWeekDayBackgroundItem::paint(QPainter *painter, const QStyleOptionGraphics
     }
 }
 
+void CWeekDayBackgroundItem::updateCurrentItemShow()
+{
+    if (m_showItemIndex >= 0) {
+        if (m_item.size() > 0) {
+            m_showItemIndex = m_showItemIndex < m_item.size() ? m_showItemIndex : 0;
+            m_item.at(m_showItemIndex)->setItemFocus(true);
+        } else {
+            m_showItemIndex = -1;
+            setItemFocus(true);
+        }
+    }
+}
+
 bool CWeekDayBackgroundItem::showFocus() const
 {
     return m_showFocus;
@@ -85,6 +98,31 @@ bool CWeekDayBackgroundItem::showFocus() const
 void CWeekDayBackgroundItem::setShowFocus(bool showFocus)
 {
     m_showFocus = showFocus;
+}
+
+void CWeekDayBackgroundItem::setItemFocus(bool isFocus)
+{
+    //如果改背景不接受焦点切第一次设置进入该背景则设置该背景上第一个item接收focus
+    if (m_showFocus == false && m_showItemIndex < 0) {
+        if (hasNextSubItem()) {
+            ++m_showItemIndex;
+            m_item.at(m_showItemIndex)->setItemFocus(isFocus);
+        }
+    } else {
+        CSceneBackgroundItem::setItemFocus(isFocus);
+    }
+}
+
+bool CWeekDayBackgroundItem::hasNextSubItem()
+{
+    bool result = true;
+    if (m_showItemIndex < 0 && getShowItemCount() == 0) {
+        return false;
+    }
+    if (m_showItemIndex == getShowItemCount() - 1) {
+        return false;
+    }
+    return result;
 }
 
 bool CWeekDayBackgroundItem::drawDividingLine() const

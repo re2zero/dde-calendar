@@ -34,6 +34,8 @@ public:
     CFocusItem *setNextItemFocusAndGetNextItem() override;
     //更新在此背景上显示的item
     void updateShowItem();
+    //获取在此背景上显示item的数目
+    int getShowItemCount();
     //设置背景编号
     void setBackgroundNum(int num);
     //获取背景编号
@@ -64,16 +66,20 @@ public:
     CSceneBackgroundItem *getDownItem() const;
     void setDownItem(CSceneBackgroundItem *downItem);
 
+protected:
+    virtual void updateCurrentItemShow();
+signals:
+    void setChangeFocuse();
+
 private:
-    QVector<CFocusItem *> m_item {};
-    int m_showItemIndex;
     int m_backgroundNum;
     CSceneBackgroundItem *m_leftItem;
     CSceneBackgroundItem *m_rightItem;
     CSceneBackgroundItem *m_upItem;
     CSceneBackgroundItem *m_downItem;
-
 protected:
+    QVector<CFocusItem *> m_item {};
+    int m_showItemIndex;
     QDate m_Date;
 };
 

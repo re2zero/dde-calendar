@@ -23,12 +23,16 @@
 
 #include "ckeypressdealbase.h"
 
+/**
+ * @brief The CSceneTabKeyDeal class
+ * 场景tab切换处理
+ */
 class CSceneTabKeyDeal : public CKeyPressDealBase
 {
 public:
     explicit CSceneTabKeyDeal(QGraphicsScene *scene = nullptr);
-
 protected:
+    //焦点切换处理
     bool focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *scene) override;
 };
 

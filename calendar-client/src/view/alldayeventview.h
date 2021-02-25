@@ -36,7 +36,7 @@ class CAllDayEventWeekView : public CWeekDayGraphicsview
 {
     Q_OBJECT
 public:
-    CAllDayEventWeekView(QWidget *parent = nullptr, ViewType type = WeekView);
+    CAllDayEventWeekView(QWidget *parent = nullptr, ViewPosition type = WeekPos);
     ~CAllDayEventWeekView() override;
     void setDayData(const QVector<QVector<ScheduleDataInfo>> &vlistData);
     void setInfo(const QVector<ScheduleDataInfo> &info);

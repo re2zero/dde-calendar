@@ -24,10 +24,6 @@
 #include "scheduledatamanage.h"
 #include "constants.h"
 #include "scheduledaterangeinfo.h"
-#include "cscenetabkeydeal.h"
-#include "ckeyenabledeal.h"
-#include "ckeyleftdeal.h"
-#include "ckeyrightdeal.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -290,8 +286,8 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const Schedu
     emit signalUpdatePaint(m_topMagin);
 }
 
-CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, ViewType type)
-    : CWeekDayGraphicsview(parent, type)
+CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, ViewPosition type)
+    : CWeekDayGraphicsview(parent, type, ViewType::ALLDayView)
 {
     updateItemHeightByFontSize();
     m_coorManage = new CScheduleCoorManage;

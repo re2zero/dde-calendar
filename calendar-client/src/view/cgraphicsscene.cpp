@@ -21,7 +21,6 @@
 #include "cgraphicsscene.h"
 
 #include "graphicsItem/cscenebackgrounditem.h"
-#include "cscenetabkeydeal.h"
 
 #include <QEvent>
 #include <QKeyEvent>
@@ -33,6 +32,8 @@ CGraphicsScene::CGraphicsScene(QObject *parent)
     , firstfocusItem(nullptr)
     , currentFocusItem(nullptr)
     , m_keyPrxy(nullptr)
+    , m_activeSwitching(false)
+    , m_sceneType(MonthScene)
 {
 }
 
@@ -87,38 +88,91 @@ void CGraphicsScene::setNextPage(const QDate &focusDate)
 
 bool CGraphicsScene::event(QEvent *event)
 {
+    bool dealResult = false;
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-        if (m_keyPrxy != nullptr && m_keyPrxy->keyPressDeal(keyEvent)) {
-            return true;
+        if (m_keyPrxy != nullptr && m_keyPrxy->keyPressDeal(keyEvent->key())) {
+            dealResult = true;
         }
     }
-    return QGraphicsScene::event(event);
+
+    if (event->type() == QEvent::FocusIn) {
+        dealResult = focusInDeal(event);
+    }
+
+    if (event->type() == QEvent::FocusOut) {
+        dealResult = focusOutDeal(event);
+    }
+    return dealResult ? true : QGraphicsScene::event(event);
 }
 
-void CGraphicsScene::focusInEvent(QFocusEvent *event)
+bool CGraphicsScene::focusInDeal(QEvent *event)
 {
-    Q_UNUSED(event);
-    if (firstfocusItem != nullptr && Qt::TabFocusReason == event->reason()) {
-        currentFocusItem = firstfocusItem;
+    bool dealResult = true;
+    QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
+    if (firstfocusItem != nullptr && Qt::TabFocusReason == focusEvent->reason()) {
+        if (currentFocusItem == nullptr) {
+            currentFocusItem = firstfocusItem;
+            CFocusItem *item = dynamic_cast<CFocusItem *>(currentFocusItem);
+            item->setItemFocus(true);
+        } else {
+            dealResult = m_keyPrxy->keyPressDeal(Qt::Key_Tab);
+        }
+    }
+    if (currentFocusItem != nullptr && Qt::ActiveWindowFocusReason == focusEvent->reason()) {
         CFocusItem *item = dynamic_cast<CFocusItem *>(currentFocusItem);
         item->setItemFocus(true);
     }
-    if (currentFocusItem != nullptr && Qt::ActiveWindowFocusReason == event->reason()) {
-        CFocusItem *item = dynamic_cast<CFocusItem *>(currentFocusItem);
-        item->setItemFocus(true);
-    }
+    return dealResult;
 }
 
-void CGraphicsScene::focusOutEvent(QFocusEvent *event)
+bool CGraphicsScene::focusOutDeal(QEvent *event)
+{
+    QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
+    if (currentFocusItem != nullptr) {
+        CSceneBackgroundItem *item = dynamic_cast<CSceneBackgroundItem *>(currentFocusItem);
+        if (Qt::ActiveWindowFocusReason == focusEvent->reason()) {
+            item->setItemFocus(false);
+        } else {
+            item->initState();
+            //如果为被动切换焦点则初始化当前焦点item
+            if (getActiveSwitching() == false) {
+                currentFocusItem = nullptr;
+            } else {
+                setActiveSwitching(false);
+            }
+        }
+    }
+    return true;
+}
+
+CGraphicsScene::SceneType CGraphicsScene::getSceneType() const
+{
+    return m_sceneType;
+}
+
+void CGraphicsScene::setSceneType(const SceneType &sceneType)
+{
+    m_sceneType = sceneType;
+}
+
+void CGraphicsScene::currentItemInit()
 {
     if (currentFocusItem != nullptr) {
         CSceneBackgroundItem *item = dynamic_cast<CSceneBackgroundItem *>(currentFocusItem);
-        if (Qt::ActiveWindowFocusReason == event->reason()) {
-            item->setItemFocus(false);
-        } else {
-            currentFocusItem = nullptr;
+        if (item != nullptr) {
             item->initState();
         }
+        currentFocusItem = nullptr;
     }
+}
+
+bool CGraphicsScene::getActiveSwitching() const
+{
+    return m_activeSwitching;
+}
+
+void CGraphicsScene::setActiveSwitching(bool activeSwitching)
+{
+    m_activeSwitching = activeSwitching;
 }

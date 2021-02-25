@@ -28,14 +28,14 @@
 #include <QDate>
 
 DWIDGET_USE_NAMESPACE
-#define ScheduleViewType CWeekDayGraphicsview::ViewType
+#define ScheduleViewPos CWeekDayGraphicsview::ViewPosition
 class CAllDayEventWeekView;
 class QVBoxLayout;
 class CScheduleView : public DFrame
 {
     Q_OBJECT
 public:
-    CScheduleView(QWidget *parent = nullptr, ScheduleViewType viewType = ScheduleViewType::WeekView);
+    CScheduleView(QWidget *parent = nullptr, ScheduleViewPos viewType = ScheduleViewPos::WeekPos);
     ~CScheduleView() override;
     void setviewMagin(int left, int top, int right, int bttom);
     void setRange(int w, int h, QDate begin, QDate end);
@@ -67,6 +67,8 @@ public slots:
     void slotScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
     void slotUpdatePaint(const int topM);
     void slotUpdateScene();
+    //焦点切换到某个视图
+    void slotSwitchView(const QDate &focusDate, CWeekDayGraphicsview::ViewType viewtype);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -96,7 +98,7 @@ private:
     QDate m_endDate;
     // 0: 周  1:日
     //    int m_viewType = 0;
-    ScheduleViewType m_viewType;
+    ScheduleViewPos m_viewPos;
     int m_sMaxNum = 4;
     QColor m_linecolor = Qt::lightGray;
     QColor m_ALLDayColor = "#303030";

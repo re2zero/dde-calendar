@@ -24,10 +24,6 @@
 #include "schedulectrldlg.h"
 #include "myscheduleview.h"
 #include "constants.h"
-#include "cscenetabkeydeal.h"
-#include "ckeyenabledeal.h"
-#include "ckeyleftdeal.h"
-#include "ckeyrightdeal.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -44,8 +40,8 @@
 #include <QtMath>
 
 DGUI_USE_NAMESPACE
-CGraphicsView::CGraphicsView(QWidget *parent, ViewType Type)
-    : CWeekDayGraphicsview(parent, Type)
+CGraphicsView::CGraphicsView(QWidget *parent, ViewPosition Type)
+    : CWeekDayGraphicsview(parent, Type, ViewType::PartTimeView)
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_timeInterval = height() / 24.0;

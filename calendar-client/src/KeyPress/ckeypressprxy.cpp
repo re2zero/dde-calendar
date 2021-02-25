@@ -40,12 +40,12 @@ CKeyPressPrxy::~CKeyPressPrxy()
  * @param event
  * @return
  */
-bool CKeyPressPrxy::keyPressDeal(QKeyEvent *event)
+bool CKeyPressPrxy::keyPressDeal(int key)
 {
-    bool result = m_keyEventMap.contains(event->key());
+    bool result = m_keyEventMap.contains(key);
     if (result) {
         //如果有注册对应的key事件 开始处理
-        result = m_keyEventMap[event->key()]->dealEvent();
+        result = m_keyEventMap[key]->dealEvent();
     }
     return result;
 }

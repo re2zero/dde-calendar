@@ -37,14 +37,15 @@ DGUI_USE_NAMESPACE
 
 static int hourTextWidth = 50;
 static int hourTextHeight = 20;
-CScheduleView::CScheduleView(QWidget *parent, ScheduleViewType viewType)
+CScheduleView::CScheduleView(QWidget *parent, ScheduleViewPos viewType)
     : DFrame(parent)
-    , m_viewType(viewType)
+    , m_viewPos(viewType)
     , m_touchGesture(this)
 {
     initUI();
     initConnection();
     setLineWidth(0);
+    setFocusPolicy(Qt::TabFocus);
 }
 
 CScheduleView::~CScheduleView()
@@ -74,7 +75,7 @@ void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
     m_graphicsView->setRange(w, scheduleViewHegith(), begin, end, m_rightmagin);
     m_alldaylist->setRange(w, 22, m_beginDate, m_endDate, m_rightmagin);
 
-    if (m_viewType == ScheduleViewType::DayView)
+    if (m_viewPos == ScheduleViewPos::DayPos)
         m_currteDate = begin;
     update();
 }
@@ -219,7 +220,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                     continue;
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                          hourTextWidth, hourTextHeight);
-                if (rr.intersects(tinrect) && m_viewType == ScheduleViewType::DayView && m_beginDate == QDate::currentDate()) {
+                if (rr.intersects(tinrect) && m_viewPos == ScheduleViewPos::DayPos && m_beginDate == QDate::currentDate()) {
                     continue;
                 }
                 painter.drawText(
@@ -229,7 +230,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             }
             painter.restore();
 
-            if (m_viewType == ScheduleViewType::DayView && m_beginDate == QDate::currentDate()) {
+            if (m_viewPos == ScheduleViewPos::DayPos && m_beginDate == QDate::currentDate()) {
                 painter.save();
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
@@ -278,7 +279,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 QRect rr((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                          hourTextWidth + 2, hourTextHeight);
 
-                if (rr.intersects(tinrect) && m_viewType == ScheduleViewType::DayView && m_beginDate == QDate::currentDate())
+                if (rr.intersects(tinrect) && m_viewPos == ScheduleViewPos::DayPos && m_beginDate == QDate::currentDate())
                     continue;
 
                 painter.drawText(
@@ -288,7 +289,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
             }
             painter.restore();
 
-            if (m_viewType == ScheduleViewType::DayView && m_beginDate == QDate::currentDate()) {
+            if (m_viewPos == ScheduleViewPos::DayPos && m_beginDate == QDate::currentDate()) {
                 painter.save();
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
@@ -332,7 +333,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
 
 void CScheduleView::resizeEvent(QResizeEvent *event)
 {
-    if (m_viewType == ScheduleViewType::WeekView) {
+    if (m_viewPos == ScheduleViewPos::WeekPos) {
         m_sMaxNum = ((width() - m_leftMagin) / 7) / 27;
     } else {
     }
@@ -381,6 +382,13 @@ bool CScheduleView::event(QEvent *e)
         }
         return true;
     } else {
+        if (e->type() == QEvent::FocusIn) {
+            QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(e);
+            if (focusEvent->reason() == Qt::TabFocusReason) {
+                m_graphicsView->setFocus(Qt::TabFocusReason);
+            }
+            return true;
+        }
         return DFrame::event(e);
     }
 }
@@ -390,11 +398,11 @@ void CScheduleView::initUI()
     m_layout = new QVBoxLayout;
     m_layout->setSpacing(0);
     m_layout->setMargin(0);
-    m_alldaylist = new CAllDayEventWeekView(this, m_viewType);
+    m_alldaylist = new CAllDayEventWeekView(this, m_viewPos);
     m_layout->addWidget(m_alldaylist);
     m_layout->addSpacing(1);
-    m_graphicsView = new CGraphicsView(this, m_viewType);
-    const int miniHeight = m_viewType == ScheduleViewType::WeekView ? 300 : 380;
+    m_graphicsView = new CGraphicsView(this, m_viewPos);
+    const int miniHeight = m_viewPos == ScheduleViewPos::WeekPos ? 300 : 380;
     m_graphicsView->setMinimumHeight(miniHeight);
     connect(m_graphicsView, SIGNAL(signalsPosHours(QVector<int>, QVector<int>, int)), this,
             SLOT(slotPosHours(QVector<int>, QVector<int>, int)));
@@ -436,6 +444,11 @@ void CScheduleView::initConnection()
     QShortcut *dshortcut = new QShortcut(this);
     dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
     connect(dshortcut, SIGNAL(activated()), this, SLOT(slotDeleteitem()));
+
+    connect(m_alldaylist, &CAllDayEventWeekView::signaleSwitchToView, this, &CScheduleView::slotSwitchView);
+    connect(m_graphicsView, &CGraphicsView::signaleSwitchToView, this, &CScheduleView::slotSwitchView);
+
+    connect(m_alldaylist, &CAllDayEventWeekView::signalViewFocusInit, m_graphicsView, &CGraphicsView::slotViewInit);
 }
 
 /**
@@ -449,7 +462,7 @@ void CScheduleView::slotDeleteitem()
 
 void CScheduleView::slotCurrentScheduleDate(QDate date)
 {
-    if (m_viewType == ScheduleViewType::DayView)
+    if (m_viewPos == ScheduleViewPos::DayPos)
         return;
     emit signalsCurrentScheduleDate(date);
 }
@@ -485,6 +498,21 @@ void CScheduleView::slotUpdateScene()
 {
     m_graphicsView->slotUpdateScene();
     m_alldaylist->slotUpdateScene();
+}
+
+/**
+ * @brief CScheduleView::slotSwitchView     焦点切换到某个视图
+ * @param viewtype
+ */
+void CScheduleView::slotSwitchView(const QDate &focusDate, CWeekDayGraphicsview::ViewType viewtype)
+{
+    if (viewtype == CWeekDayGraphicsview::ALLDayView) {
+        m_alldaylist->setCurrentFocusItem(focusDate);
+        m_alldaylist->setFocus(Qt::TabFocusReason);
+    } else {
+        m_graphicsView->setCurrentFocusItem(focusDate);
+        m_graphicsView->setFocus(Qt::TabFocusReason);
+    }
 }
 
 /**
@@ -541,7 +569,7 @@ int CScheduleView::scheduleViewHegith()
 {
     qreal mheight = 0;
 
-    if (m_viewType == ScheduleViewType::DayView) {
+    if (m_viewPos == ScheduleViewPos::DayPos) {
         mheight = 24 * (0.0968 * height() + 0.5);
     } else {
         mheight = 24 * (0.083 * height() + 0.5);

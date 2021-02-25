@@ -33,29 +33,45 @@ class CWeekDayGraphicsview : public DragInfoGraphicsView
 {
     Q_OBJECT
 public:
-    enum ViewType {
-        WeekView //周视图
+    enum ViewPosition {
+        WeekPos //周视图
         ,
-        DayView //日视图
+        DayPos //日视图
+    };
+    enum ViewType {
+        ALLDayView //全天
+        ,
+        PartTimeView //非全天
     };
 
 public:
-    explicit CWeekDayGraphicsview(QWidget *parent = nullptr, ViewType edittype = WeekView);
+    explicit CWeekDayGraphicsview(QWidget *parent = nullptr, ViewPosition viewPos = WeekPos, ViewType viewtype = ALLDayView);
     ~CWeekDayGraphicsview() override;
     void setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin);
     void setRange(QDate begin, QDate end);
     void setTheMe(int type = 0) override;
     CScheduleCoorManage *getCoorManage() const;
+    //设置当前焦点背景item
+    void setCurrentFocusItem(const QDate &focusDate);
 
 protected:
     //设置场景的矩阵
     void setSceneRect(qreal x, qreal y, qreal w, qreal h);
     //创建背景显示项
     void createBackgroundItem();
-signals:
 
+private:
+    //设置背景时间
+    void setBackgroundDate();
+signals:
+    void signaleSwitchToView(const QDate &focusDate, ViewType type);
+    void signalViewFocusInit();
 public slots:
+    void slotSwitchView(const QDate &focusDate);
+    void slotViewInit();
+
 protected:
+    ViewPosition m_viewPos;
     ViewType m_viewType;
     QDate m_beginDate;
     QDate m_endDate;

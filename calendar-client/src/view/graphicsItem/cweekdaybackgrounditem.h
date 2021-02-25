@@ -35,13 +35,22 @@ public:
     explicit CWeekDayBackgroundItem(QGraphicsItem *parent = nullptr);
     //设置主题
     void setTheMe(int type = 0);
+    //是否绘制分割线
     bool drawDividingLine() const;
+    //设置是否绘制分割线
     void setDrawDividingLine(bool drawDividingLine);
+    //获取改背景是否焦点显示
     bool showFocus() const;
+    //设置该背景是否焦点显示
     void setShowFocus(bool showFocus);
+    //设置item是否获取focus
+    void setItemFocus(bool isFocus) override;
+    //在该背景上是否还有下一个需要焦点切换的item
+    bool hasNextSubItem();
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    void updateCurrentItemShow() override;
 signals:
 
 public slots:

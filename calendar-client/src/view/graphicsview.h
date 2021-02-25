@@ -46,7 +46,7 @@ class CGraphicsView : public CWeekDayGraphicsview
 {
     Q_OBJECT
 public:
-    CGraphicsView(QWidget *parent, ViewType Type = WeekView);
+    explicit CGraphicsView(QWidget *parent, ViewPosition Type = WeekPos);
     ~CGraphicsView() override;
     void setMargins(int left, int top, int right, int bottom);
     QMargins getMargins()
