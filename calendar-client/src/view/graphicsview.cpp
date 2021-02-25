@@ -718,10 +718,16 @@ void CGraphicsView::setTime(QTime time)
 {
     int viewWidth = viewport()->width();
     int viewHeight = viewport()->height();
-
+    //设置定位的时间位置,原始时间太靠下
+    QTime ontime = time;
+    if (ontime.hour() + 4 >= 24) {
+        ontime = QTime(20, 0);
+    } else {
+        ontime = ontime.addSecs(14400);
+    }
     QPoint newCenter(viewWidth / 2, viewHeight / 2);
     QPointF centerpos = mapToScene(newCenter);
-    centerpos = QPointF(centerpos.x(), static_cast<qreal>(m_coorManage->getHeight(time)));
+    centerpos = QPointF(centerpos.x(), static_cast<qreal>(m_coorManage->getHeight(ontime)));
     centerOnScene(centerpos);
 }
 
