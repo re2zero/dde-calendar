@@ -180,7 +180,8 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     } break;
     }
     m_priindex = type == 0 ? m_priindex : type;
-    CConfigSettings::setOption("base.view", type);
+    //为了与老版本配置兼容
+    CConfigSettings::setOption("base.view", type + 1);
 }
 
 void Calendarmainwindow::updateHigh()

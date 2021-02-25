@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
     bool isOk = false;
     int viewtype = CConfigSettings::value("base.view").toInt(&isOk);
     if (!isOk)
-        viewtype = 1;
+        viewtype = 2;
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
     //获取应用配置
@@ -97,7 +97,8 @@ int main(int argc, char *argv[])
     dbus.registerService("com.deepin.Calendar");
     dbus.registerObject("/com/deepin/Calendar", &ww);
     ww.slotTheme(DApplicationHelper::instance()->themeType());
-    ww.viewWindow(viewtype);
+    //为了与老版本配置兼容
+    ww.viewWindow(viewtype - 1);
     ww.show();
 
     PERF_PRINT_END("POINT-01");
