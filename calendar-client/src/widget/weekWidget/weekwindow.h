@@ -84,6 +84,8 @@ public slots:
     void slotIsDragging(bool &isDragging);
     //切换日视图并设置选择时间
     void slotViewSelectDate(const QDate &date);
+    void slotSwitchPrePage();
+    void slotSwitchNextPage();
 public slots:
     //隐藏日程浮框
     void slotScheduleHide();

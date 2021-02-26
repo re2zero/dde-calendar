@@ -34,6 +34,7 @@ CGraphicsScene::CGraphicsScene(QObject *parent)
     , m_keyPrxy(nullptr)
     , m_activeSwitching(false)
     , m_sceneType(MonthScene)
+    , m_isShowCurrentItem(false)
 {
 }
 
@@ -111,8 +112,11 @@ bool CGraphicsScene::focusInDeal(QEvent *event)
     bool dealResult = true;
     QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
     if (firstfocusItem != nullptr && Qt::TabFocusReason == focusEvent->reason()) {
-        if (currentFocusItem == nullptr) {
-            currentFocusItem = firstfocusItem;
+        //        qDebug() << m_isShowCurrentItem;
+        if (m_isShowCurrentItem || currentFocusItem == nullptr) {
+            if (currentFocusItem == nullptr) {
+                currentFocusItem = firstfocusItem;
+            }
             CFocusItem *item = dynamic_cast<CFocusItem *>(currentFocusItem);
             item->setItemFocus(true);
         } else {
@@ -138,12 +142,24 @@ bool CGraphicsScene::focusOutDeal(QEvent *event)
             //如果为被动切换焦点则初始化当前焦点item
             if (getActiveSwitching() == false) {
                 currentFocusItem = nullptr;
+                //通知另外一个视图初始化状态,因为全天和非全天之间tab切换保存了当前item信息
+                emit signalViewFocusInit();
             } else {
                 setActiveSwitching(false);
             }
         }
     }
     return true;
+}
+
+bool CGraphicsScene::getIsShowCurrentItem() const
+{
+    return m_isShowCurrentItem;
+}
+
+void CGraphicsScene::setIsShowCurrentItem(bool isShowCurrentItem)
+{
+    m_isShowCurrentItem = isShowCurrentItem;
 }
 
 CGraphicsScene::SceneType CGraphicsScene::getSceneType() const

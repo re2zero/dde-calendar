@@ -26,6 +26,10 @@
 #include "ckeyenabledeal.h"
 #include "ckeyleftdeal.h"
 #include "ckeyrightdeal.h"
+#include "calldaykeyleftdeal.h"
+#include "calldaykeyrightdeal.h"
+
+#include <QDebug>
 
 CWeekDayGraphicsview::CWeekDayGraphicsview(QWidget *parent, ViewPosition viewPos, ViewType viewtype)
     : DragInfoGraphicsView(parent)
@@ -40,8 +44,13 @@ CWeekDayGraphicsview::CWeekDayGraphicsview(QWidget *parent, ViewPosition viewPos
     CKeyPressPrxy *m_keyPrxy = new CKeyPressPrxy();
     m_keyPrxy->addkeyPressDeal(new CWeekDaySceneTabKeyDeal(m_Scene));
     m_keyPrxy->addkeyPressDeal(new CKeyEnableDeal(m_Scene));
-    m_keyPrxy->addkeyPressDeal(new CKeyLeftDeal(m_Scene));
-    m_keyPrxy->addkeyPressDeal(new CKeyRightDeal(m_Scene));
+    if (m_viewType == ALLDayView) {
+        m_keyPrxy->addkeyPressDeal(new CAllDayKeyLeftDeal(m_Scene));
+        m_keyPrxy->addkeyPressDeal(new CAllDayKeyRightDeal(m_Scene));
+    } else {
+        m_keyPrxy->addkeyPressDeal(new CKeyLeftDeal(m_Scene));
+        m_keyPrxy->addkeyPressDeal(new CKeyRightDeal(m_Scene));
+    }
     m_Scene->setKeyPressPrxy(m_keyPrxy);
     connect(m_Scene, &CGraphicsScene::signalSwitchView, this, &CWeekDayGraphicsview::slotSwitchView);
     connect(m_Scene, &CGraphicsScene::signalViewFocusInit, this, &CWeekDayGraphicsview::signalViewFocusInit);
@@ -93,11 +102,12 @@ CScheduleCoorManage *CWeekDayGraphicsview::getCoorManage() const
     return m_coorManage;
 }
 
-void CWeekDayGraphicsview::setCurrentFocusItem(const QDate &focusDate)
+void CWeekDayGraphicsview::setCurrentFocusItem(const QDate &focusDate, bool setItemFocus)
 {
     qint64 offset = m_backgroundItem.first()->getDate().daysTo(focusDate);
     if (offset >= 0 && offset < m_backgroundItem.size()) {
         m_Scene->setCurrentFocusItem(m_backgroundItem.at(static_cast<int>(offset)));
+        m_Scene->setIsShowCurrentItem(setItemFocus);
     } else {
         qWarning() << "set CurrentFocusItem Error,offset:" << offset << ",focusDate:" << focusDate << ",firstDate:" << m_backgroundItem.first()->getDate();
     }
@@ -147,6 +157,17 @@ void CWeekDayGraphicsview::createBackgroundItem()
     }
 }
 
+void CWeekDayGraphicsview::setSceneCurrentItemFocus(const QDate &focusDate)
+{
+    int offset = static_cast<int>(m_backgroundItem.first()->getDate().daysTo(focusDate));
+    if (offset >= 0 && offset < m_backgroundItem.size()) {
+        m_Scene->setCurrentFocusItem(m_backgroundItem.at(offset));
+        m_Scene->currentFocusItemUpdate();
+    } else {
+        qWarning() << "Switching time range error! focusDate:" << focusDate << " first item date:" << m_backgroundItem.first()->getDate();
+    }
+}
+
 /**
  * @brief CWeekDayGraphicsview::setBackgroundDate       设置背景时间
  */
@@ -157,12 +178,12 @@ void CWeekDayGraphicsview::setBackgroundDate()
     }
 }
 
-void CWeekDayGraphicsview::slotSwitchView(const QDate &focusDate)
+void CWeekDayGraphicsview::slotSwitchView(const QDate &focusDate, bool setItemFocus)
 {
     if (m_viewType == ALLDayView) {
-        emit signaleSwitchToView(focusDate, PartTimeView);
+        emit signaleSwitchToView(focusDate, PartTimeView, setItemFocus);
     } else {
-        emit signaleSwitchToView(focusDate, ALLDayView);
+        emit signaleSwitchToView(focusDate, ALLDayView, setItemFocus);
     }
 }
 

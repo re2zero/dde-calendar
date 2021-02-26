@@ -52,22 +52,23 @@ public:
     void setTheMe(int type = 0) override;
     CScheduleCoorManage *getCoorManage() const;
     //设置当前焦点背景item
-    void setCurrentFocusItem(const QDate &focusDate);
+    void setCurrentFocusItem(const QDate &focusDate, bool setItemFocus = false);
 
 protected:
     //设置场景的矩阵
     void setSceneRect(qreal x, qreal y, qreal w, qreal h);
     //创建背景显示项
     void createBackgroundItem();
+    void setSceneCurrentItemFocus(const QDate &focusDate) override;
 
 private:
     //设置背景时间
     void setBackgroundDate();
 signals:
-    void signaleSwitchToView(const QDate &focusDate, ViewType type);
+    void signaleSwitchToView(const QDate &focusDate, ViewType type, bool setItemFocus);
     void signalViewFocusInit();
 public slots:
-    void slotSwitchView(const QDate &focusDate);
+    void slotSwitchView(const QDate &focusDate, bool setItemFocus);
     void slotViewInit();
 
 protected:

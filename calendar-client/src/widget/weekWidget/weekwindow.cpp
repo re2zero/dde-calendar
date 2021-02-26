@@ -203,6 +203,9 @@ void CWeekWindow::initConnection()
     connect(m_weekHeadView, &CWeekHeadView::signalAngleDelta, this, &CWeekWindow::slotAngleDelta);
     //双击"..."标签切换日视图
     connect(m_scheduleView, &CScheduleView::signalsCurrentScheduleDate, this, &CWeekWindow::slotViewSelectDate);
+
+    connect(m_scheduleView, &CScheduleView::signalSwitchPrePage, this, &CWeekWindow::slotSwitchPrePage);
+    connect(m_scheduleView, &CScheduleView::signalSwitchNextPage, this, &CWeekWindow::slotSwitchNextPage);
 }
 
 /**
@@ -401,6 +404,16 @@ void CWeekWindow::slotViewSelectDate(const QDate &date)
         updateData();
         emit signalSwitchView(3);
     }
+}
+
+void CWeekWindow::slotSwitchPrePage()
+{
+    slotprev();
+}
+
+void CWeekWindow::slotSwitchNextPage()
+{
+    slotnext();
 }
 
 /**

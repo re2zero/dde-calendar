@@ -34,7 +34,8 @@ class CGraphicsScene : public QGraphicsScene
 public:
     enum SceneType { MonthScene,
                      AllDayScene,
-                     PartTimeScene }; //月场景,全天场景,非全天场景
+                     PartTimeScene
+    }; //月场景,全天场景,非全天场景
 public:
     explicit CGraphicsScene(QObject *parent = nullptr);
     ~CGraphicsScene() override;
@@ -64,6 +65,9 @@ public:
     void setSceneType(const SceneType &sceneType);
     void currentItemInit();
 
+    bool getIsShowCurrentItem() const;
+    void setIsShowCurrentItem(bool isShowCurrentItem);
+
 protected:
     bool event(QEvent *event) override;
 
@@ -73,16 +77,16 @@ private:
 signals:
     void signalSwitchPrePage(const QDate &focusDate);
     void signalSwitchNextPage(const QDate &focusDate);
-    void signalSwitchView(const QDate &focusDate);
+    void signalSwitchView(const QDate &focusDate, bool setItemFocus = false);
     //通知另一个视图初始化
     void signalViewFocusInit();
-
 private:
     QGraphicsItem *firstfocusItem;
     QGraphicsItem *currentFocusItem;
     CKeyPressPrxy *m_keyPrxy;
     bool m_activeSwitching; //是否为主动切换焦点
     SceneType m_sceneType;
+    bool m_isShowCurrentItem; //true 当前item获取焦点  false 当前item的下一个item获取焦点
 };
 
 #endif // CGRAPHICSSCENE_H

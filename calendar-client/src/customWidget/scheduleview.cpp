@@ -449,6 +449,11 @@ void CScheduleView::initConnection()
     connect(m_graphicsView, &CGraphicsView::signaleSwitchToView, this, &CScheduleView::slotSwitchView);
 
     connect(m_alldaylist, &CAllDayEventWeekView::signalViewFocusInit, m_graphicsView, &CGraphicsView::slotViewInit);
+
+    connect(m_alldaylist, &CAllDayEventWeekView::signalSwitchPrePage, this, &CScheduleView::signalSwitchPrePage);
+    connect(m_alldaylist, &CAllDayEventWeekView::signalSwitchNextPage, this, &CScheduleView::signalSwitchNextPage);
+    connect(m_graphicsView, &CAllDayEventWeekView::signalSwitchPrePage, this, &CScheduleView::signalSwitchPrePage);
+    connect(m_graphicsView, &CAllDayEventWeekView::signalSwitchNextPage, this, &CScheduleView::signalSwitchNextPage);
 }
 
 /**
@@ -504,13 +509,13 @@ void CScheduleView::slotUpdateScene()
  * @brief CScheduleView::slotSwitchView     焦点切换到某个视图
  * @param viewtype
  */
-void CScheduleView::slotSwitchView(const QDate &focusDate, CWeekDayGraphicsview::ViewType viewtype)
+void CScheduleView::slotSwitchView(const QDate &focusDate, CWeekDayGraphicsview::ViewType viewtype, bool setItemFocus)
 {
     if (viewtype == CWeekDayGraphicsview::ALLDayView) {
-        m_alldaylist->setCurrentFocusItem(focusDate);
+        m_alldaylist->setCurrentFocusItem(focusDate, setItemFocus);
         m_alldaylist->setFocus(Qt::TabFocusReason);
     } else {
-        m_graphicsView->setCurrentFocusItem(focusDate);
+        m_graphicsView->setCurrentFocusItem(focusDate, setItemFocus);
         m_graphicsView->setFocus(Qt::TabFocusReason);
     }
 }

@@ -57,6 +57,8 @@ signals:
      * @param delta     滚动相对量
      */
     void signalAngleDelta(int delta);
+    void signalSwitchPrePage();
+    void signalSwitchNextPage();
 public slots:
     void slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void setDate(QDate date);
@@ -68,7 +70,7 @@ public slots:
     void slotUpdatePaint(const int topM);
     void slotUpdateScene();
     //焦点切换到某个视图
-    void slotSwitchView(const QDate &focusDate, CWeekDayGraphicsview::ViewType viewtype);
+    void slotSwitchView(const QDate &focusDate, CWeekDayGraphicsview::ViewType viewtype, bool setItemFocus);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
