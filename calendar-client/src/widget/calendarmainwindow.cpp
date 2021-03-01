@@ -170,10 +170,9 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     } else {
         m_stackWidget->setCurrentIndex(type);
     }
-    //获取焦点
-    m_buttonBox->button(type)->setFocus();
     //设置选中
     m_buttonBox->button(type)->setChecked(true);
+    m_buttonBox->button(type)->setFocus();
     switch (type) {
     case DDECalendar::CalendarYearWindow: {
         //更新界面显示
@@ -333,8 +332,6 @@ void Calendarmainwindow::initUI()
     CDynamicIcon::getInstance()->setTitlebar(this->titlebar());
     CDynamicIcon::getInstance()->setIcon();
 
-    QStringList titlelist;
-    titlelist << tr("Y") << tr("M") << tr("W") << tr("D");
     m_buttonBox = new DButtonBox(this);
     m_buttonBox->setObjectName("ButtonBox");
     m_buttonBox->setAccessibleName("ButtonBox");
@@ -658,23 +655,6 @@ void Calendarmainwindow::slotViewtransparentFrame(const bool isShow)
             m_transparentFrame->hide();
         --showFrameCount;
     }
-    //获取当前视图
-    int index = m_stackWidget->currentIndex();
-    //设置焦点
-    switch (index) {
-    case DDECalendar::CalendarYearWindow: {
-        m_yearwindow->setFocus();
-    } break;
-    case DDECalendar::CalendarMonthWindow: {
-        m_monthWindow->setFocus();
-    } break;
-    case DDECalendar::CalendarWeekWindow: {
-        m_weekWindow->setFocus();
-    } break;
-    case DDECalendar::CalendarDayWindow: {
-        m_DayWindow->setFocus();
-    } break;
-    }
 }
 
 /**
@@ -683,6 +663,8 @@ void Calendarmainwindow::slotViewtransparentFrame(const bool isShow)
 void Calendarmainwindow::slotSetButtonBox()
 {
     m_buttonBox->setEnabled(true);
+    //获取焦点
+    m_buttonBox->button(m_buttonBox->checkedId())->setFocus();
 }
 
 /**

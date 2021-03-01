@@ -38,6 +38,7 @@
 #include <QSpacerItem>
 #include <QPainterPath>
 #include <QMouseEvent>
+#include <QtGlobal>
 
 DGUI_USE_NAMESPACE
 CDayMonthView::CDayMonthView(QWidget *parent)
@@ -60,13 +61,10 @@ CDayMonthView::~CDayMonthView()
 
 void CDayMonthView::setShowDate(const QVector<QDate> &showDate, const QDate &selectDate, const QDate &currentDate)
 {
-    m_showDays = showDate;
     m_selectDate = selectDate;
     m_currentDate = currentDate;
-    //当前选择index
-    m_selectedCell = m_showDays.indexOf(m_selectDate);
+    m_dayMonthWidget->setShowDate(showDate, selectDate, currentDate);
     updateDateShow();
-    update();
 }
 
 void CDayMonthView::setLunarVisible(bool visible)
@@ -81,7 +79,7 @@ void CDayMonthView::setLunarVisible(bool visible)
 
 void CDayMonthView::setTheMe(int type)
 {
-    m_themetype = type;
+    m_dayMonthWidget->setTheMe(type);
     if (type == 0 || type == 1) {
         DPalette anipa = this->palette();
         QColor tbcolor = "#FFFFFF";
@@ -139,14 +137,9 @@ void CDayMonthView::setTheMe(int type)
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0081FF";
-
-        m_defaultTextColor = Qt::black;
-        m_currentDayTextColor = todayColor;
         m_weekendsTextColor = Qt::black;
-        m_selectedTextColor = Qt::white;
         m_festivalTextColor = Qt::black;
-        m_notCurrentTextColor = "#b2b2b2";
-        m_ceventColor = QColor(255, 93, 0);
+
     } else if (type == 2) {
         DPalette anipa = this->palette();
         QColor tbcolor = "#282828";
@@ -198,15 +191,8 @@ void CDayMonthView::setTheMe(int type)
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0059D2";
-
-        m_defaultTextColor = "#C0C6D4";
-        m_currentDayTextColor = todayColor;
         m_weekendsTextColor = Qt::black;
-        m_selectedTextColor = "#B8D3FF";
         m_festivalTextColor = Qt::black;
-        m_notCurrentTextColor = "#C0C6D4";
-        m_notCurrentTextColor.setAlphaF(0.5);
-        m_ceventColor = QColor(204, 77, 3);
     }
     update();
 }
@@ -229,36 +215,11 @@ void CDayMonthView::setHuangliInfo(const CaHuangLiDayInfo &huangliInfo)
 
 void CDayMonthView::setHasScheduleFlag(const QVector<bool> &hasScheduleFlag)
 {
-    m_vlineflag = hasScheduleFlag;
-    update();
-}
-
-bool CDayMonthView::eventFilter(QObject *o, QEvent *e)
-{
-    if (m_showDays.size() != 42)
-        return false;
-    QWidget *cell = qobject_cast<QWidget *>(o);
-    if (cell && m_cellList.contains(cell)) {
-        const int pos = m_cellList.indexOf(cell);
-        QDate date = m_showDays[pos];
-        //如果需要显示时间小于1900年则退出
-        if (date.year() < DDECalendar::QueryEarliestYear)
-            return false;
-        if (e->type() == QEvent::Paint) {
-            paintCell(cell);
-        } else if (e->type() == QEvent::MouseButtonPress) {
-            QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(e);
-            if (mouseEvent->button() == Qt::LeftButton) {
-                cellClicked(cell);
-            }
-        }
-    }
-    return false;
+    m_dayMonthWidget->setHasScheduleFlag(hasScheduleFlag);
 }
 
 void CDayMonthView::initUI()
 {
-    m_dayNumFont.setPixelSize(DDECalendar::FontSizeTwelve);
     m_today = new CTodayButton;
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
@@ -297,28 +258,15 @@ void CDayMonthView::initUI()
     titleLayout->addWidget(m_nextButton);
     titleLayout->addStretch();
     titleLayout->addWidget(m_today, 0, Qt::AlignRight);
-    // cells grid
-    m_gridLayout = new QGridLayout;
-    m_gridLayout->setMargin(0);
-    m_gridLayout->setSpacing(0);
 
-    for (int r = 0; r != 6; ++r) {
-        for (int c = 0; c != 7; ++c) {
-            QWidget *cell = new QWidget;
-            cell->setFixedSize(DDEDayCalendar::DCellWidth, DDEDayCalendar::DCellHeight);
-            cell->installEventFilter(this);
-            cell->setFocusPolicy(Qt::ClickFocus);
-            m_gridLayout->addWidget(cell, r, c);
-            m_cellList.append(cell);
-        }
-    }
     //上半部分
     m_upLayout = new QVBoxLayout;
     m_upLayout->setMargin(0);
     m_upLayout->setSpacing(0);
     m_upLayout->setContentsMargins(22, 9, 0, 7);
     m_upLayout->addLayout(titleLayout);
-    m_upLayout->addLayout(m_gridLayout);
+    m_dayMonthWidget = new CDayMonthWidget();
+    m_upLayout->addWidget(m_dayMonthWidget);
 
     //中间部分
     QVBoxLayout *midLayout = new QVBoxLayout;
@@ -386,7 +334,7 @@ void CDayMonthView::initUI()
     m_hhLayout = new QVBoxLayout;
     m_hhLayout->setMargin(0);
     m_hhLayout->setSpacing(0);
-    m_hhLayout->addLayout(m_upLayout);
+    m_hhLayout->addLayout(m_upLayout, 6);
     m_hhLayout->addLayout(midLayout);
 
     m_splitline = new DHorizontalLine;
@@ -412,6 +360,7 @@ void CDayMonthView::initConnection()
     connect(m_prevButton, &DIconButton::clicked, this, &CDayMonthView::slotprev);
     connect(m_today, &CTodayButton::clicked, this, &CDayMonthView::slottoday);
     connect(m_nextButton, &DIconButton::clicked, this, &CDayMonthView::slotnext);
+    connect(m_dayMonthWidget, &CDayMonthWidget::signalChangeSelectDate, this, &CDayMonthView::signalChangeSelectDate);
 }
 
 /**
@@ -446,18 +395,166 @@ void CDayMonthView::updateDateLunarDay()
     m_yiLabel->setHuangLiText(yilist);
     m_jiLabel->setHuangLiText(jilist, 1);
 }
-const QString CDayMonthView::getCellDayNum(int pos)
+
+void CDayMonthView::changeSelectDate(const QDate &date)
+{
+    emit signalChangeSelectDate(date);
+}
+
+void CDayMonthView::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+    int leftmagin = qRound(width() * 0.0332 + 0.5);
+    int rightmagin = leftmagin;
+    int topmagin = qRound(height() * 0.0164 + 0.5);
+    int buttonmagin = topmagin;
+    m_upLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
+    m_splitline->setFixedWidth(qRound(0.6925 * width() + 0.5));
+
+    int hleftmagin = qRound(width() * 0.026 + 0.5);
+    int hrightmagin = hleftmagin;
+    int htopmagin = qRound(height() * 0.01773 + 0.5);
+    int hbuttonmagin = htopmagin;
+    int lw = width() - hleftmagin * 2;
+    int lh = qRound(height() * 0.0992);
+    m_yiLabel->setFixedSize(lw, lh);
+    m_yidownLayout->setContentsMargins(hleftmagin, qRound(htopmagin * 0.5), hrightmagin, 0);
+    m_jiLabel->setFixedSize(lw, lh);
+    m_jidownLayout->setContentsMargins(hleftmagin, htopmagin, hrightmagin, hbuttonmagin);
+}
+
+void CDayMonthView::wheelEvent(QWheelEvent *event)
+{
+    //如果是拖拽则退出
+    bool isDragging = false;
+    emit signalIsDragging(isDragging);
+    if (isDragging)
+        return;
+    if (event->delta() < 0) {
+        //切换前一天
+        changeSelectDate(m_selectDate.addDays(1));
+    } else {
+        //切换后一天
+        changeSelectDate(m_selectDate.addDays(-1));
+    }
+}
+
+void CDayMonthView::paintEvent(QPaintEvent *e)
+{
+    Q_UNUSED(e);
+    int labelwidth = width();
+    int labelheight = height();
+    DPalette anipa = this->palette();
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
+    painter.save();
+    painter.setBrush(anipa.background());
+    painter.setPen(Qt::NoPen);
+    QPainterPath painterPath;
+    painterPath.moveTo(0, 0);
+    painterPath.lineTo(0, labelheight);
+    //  如果有搜索界面则为右边为直角否则为圆角
+    if (!m_searchflag) {
+        painterPath.lineTo(labelwidth - m_radius, labelheight);
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+        painterPath.lineTo(labelwidth, m_radius);
+        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
+    } else {
+        painterPath.lineTo(labelwidth, labelheight);
+        painterPath.lineTo(labelwidth, 0);
+    }
+    painterPath.lineTo(0, 0);
+    painterPath.closeSubpath();
+    painter.drawPath(painterPath);
+    painter.restore();
+}
+
+void CDayMonthView::slotprev()
+{
+    changeSelectDate(m_selectDate.addMonths(-1));
+}
+
+void CDayMonthView::slotnext()
+{
+    changeSelectDate(m_selectDate.addMonths(1));
+}
+
+void CDayMonthView::slottoday()
+{
+    changeSelectDate(m_currentDate);
+}
+
+CDayMonthWidget::CDayMonthWidget(QWidget *parent)
+    : QWidget(parent)
+    , m_isFocus(false)
+{
+    m_gridLayout = new QGridLayout;
+    m_gridLayout->setMargin(0);
+    m_gridLayout->setSpacing(0);
+    m_dayNumFont.setPixelSize(DDECalendar::FontSizeTwelve);
+    for (int r = 0; r != 6; ++r) {
+        for (int c = 0; c != 7; ++c) {
+            QWidget *cell = new QWidget;
+            cell->installEventFilter(this);
+            m_gridLayout->addWidget(cell, r, c, 1, 1);
+            m_cellList.append(cell);
+        }
+    }
+    this->setLayout(m_gridLayout);
+    setFocusPolicy(Qt::StrongFocus);
+}
+
+CDayMonthWidget::~CDayMonthWidget()
+{
+}
+
+void CDayMonthWidget::setTheMe(int type)
+{
+    m_currentDayTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+    if (type == 0 || type == 1) {
+        m_defaultTextColor = Qt::black;
+        m_selectedTextColor = Qt::white;
+        m_notCurrentTextColor = "#b2b2b2";
+        m_ceventColor = QColor(255, 93, 0);
+    } else if (type == 2) {
+        m_defaultTextColor = "#C0C6D4";
+        m_selectedTextColor = "#B8D3FF";
+        m_notCurrentTextColor = "#C0C6D4";
+        m_notCurrentTextColor.setAlphaF(0.5);
+        m_ceventColor = QColor(204, 77, 3);
+    }
+    update();
+}
+
+void CDayMonthWidget::setShowDate(const QVector<QDate> &showDate, const QDate &selectDate, const QDate &currentDate)
+{
+    m_showDays = showDate;
+    m_selectDate = selectDate;
+    m_currentDate = currentDate;
+    //当前选择index
+    m_selectedCell = m_showDays.indexOf(m_selectDate);
+    update();
+}
+
+void CDayMonthWidget::setHasScheduleFlag(const QVector<bool> &hasScheduleFlag)
+{
+    m_vlineflag = hasScheduleFlag;
+    update();
+}
+
+const QString CDayMonthWidget::getCellDayNum(int pos)
 {
     return QString::number(m_showDays[pos].day());
 }
 
-const QDate CDayMonthView::getCellDate(int pos)
+const QDate CDayMonthWidget::getCellDate(int pos)
 {
     return m_showDays[pos];
 }
-void CDayMonthView::paintCell(QWidget *cell)
+
+void CDayMonthWidget::paintCell(QWidget *cell)
 {
-    const QRect rect(0, 0, cellwidth, cellheight);
+    const QRect rect = cell->rect();
 
     const int pos = m_cellList.indexOf(cell);
     const bool isSelectedCell = pos == m_selectedCell;
@@ -468,22 +565,26 @@ void CDayMonthView::paintCell(QWidget *cell)
 
     // draw selected cell background circle
     if (isSelectedCell) {
-        int min = 0;
-        //高度和宽度最小的一个
-        min = cell->height() < cell->width() ? cell->height() : cell->width();
-        //最终rect
-        QRectF fillRect;
-        //宽度小于高度时的rect
-        QRectF rectByWidth = QRectF(cell->width() * 0.15, (cell->height() - cell->width() * 0.75) / 2.0, min * 0.7, min * 0.7);
-        //高度小于宽度时的rect
-        QRectF rectByHeight = QRectF((cell->width() - cell->height() * 0.75) / 2.0, cell->height() * 0.15, min * 0.7, min * 0.7);
-        //判断最终rect是哪一个
-        fillRect = cell->height() < cell->width() ? rectByHeight : rectByWidth;
+        const qreal r = rect.width() > rect.height() ? rect.height() * 0.9 : rect.width() * 0.9;
+        const qreal x = rect.x() + (rect.width() - r) / 2;
+        const qreal y = rect.y() + (rect.height() - r) / 2;
+        QRectF fillRect = QRectF(x, y, r, r).marginsRemoved(QMarginsF(1.5, 1.5, 1.5, 1.5));
         painter.save();
         painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(fillRect);
         painter.restore();
+        if (m_isFocus) {
+            //绘制焦点获取效果
+            QPen pen;
+            pen.setWidth(2);
+            pen.setColor(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
+            painter.setPen(pen);
+            //在原有的选中效果外面再绘制一圈
+            QRectF foucsRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
+            painter.setBrush(Qt::NoBrush);
+            painter.drawEllipse(foucsRect);
+        }
     }
 
     painter.setPen(Qt::SolidLine);
@@ -517,7 +618,6 @@ void CDayMonthView::paintCell(QWidget *cell)
             painter.setBrush(QBrush(m_ceventColor));
             painter.setPen(Qt::NoPen);
             int r = cell->width() * (4 / 25);
-
             if (r < 4) {
                 r = 4;
             } else if (r > 7) {
@@ -527,11 +627,88 @@ void CDayMonthView::paintCell(QWidget *cell)
             painter.restore();
         }
     }
-
-    painter.end();
 }
 
-void CDayMonthView::cellClicked(QWidget *cell)
+bool CDayMonthWidget::eventFilter(QObject *o, QEvent *e)
+{
+    if (m_showDays.size() != 42)
+        return false;
+    QWidget *cell = qobject_cast<QWidget *>(o);
+    if (cell && m_cellList.contains(cell)) {
+        const int pos = m_cellList.indexOf(cell);
+        QDate date = m_showDays[pos];
+        //如果需要显示时间小于1900年则退出
+        if (date.year() < DDECalendar::QueryEarliestYear)
+            return false;
+        if (e->type() == QEvent::Paint) {
+            paintCell(cell);
+        } else if (e->type() == QEvent::MouseButtonPress) {
+            QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(e);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                cellClicked(cell);
+            }
+        }
+    }
+    return false;
+}
+
+void CDayMonthWidget::resizeEvent(QResizeEvent *event)
+{
+    //获取每个时间widget的高度和宽度
+    qreal width = this->width() / 7;
+    qreal height = this->height() / 6;
+    const qreal r = width > height ? height * 0.9 : width * 0.9;
+    //根据高度和宽度设置时间字体的大小
+    m_dayNumFont.setPixelSize(qRound(12 + (r - 18) * 6 / 17.0));
+    QWidget::resizeEvent(event);
+}
+
+void CDayMonthWidget::focusInEvent(QFocusEvent *event)
+{
+    switch (event->reason()) {
+    case Qt::TabFocusReason:
+    case Qt::BacktabFocusReason:
+    case Qt::ActiveWindowFocusReason:
+        m_isFocus = true;
+        break;
+    default:
+        break;
+    };
+    update();
+}
+
+void CDayMonthWidget::focusOutEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event)
+    m_isFocus = false;
+    update();
+}
+
+void CDayMonthWidget::keyPressEvent(QKeyEvent *event)
+{
+    if (m_isFocus) {
+        switch (event->key()) {
+        case Qt::Key_Left:
+            emit signalChangeSelectDate(m_selectDate.addDays(-1));
+            break;
+        case Qt::Key_Right:
+            emit signalChangeSelectDate(m_selectDate.addDays(1));
+            break;
+        case Qt::Key_Up:
+            emit signalChangeSelectDate(m_selectDate.addDays(-7));
+            break;
+        case Qt::Key_Down:
+            emit signalChangeSelectDate(m_selectDate.addDays(7));
+            break;
+        default:
+
+            break;
+        }
+    }
+    QWidget::keyPressEvent(event);
+}
+
+void CDayMonthWidget::cellClicked(QWidget *cell)
 {
     const int pos = m_cellList.indexOf(cell);
     if (pos == -1)
@@ -539,108 +716,9 @@ void CDayMonthView::cellClicked(QWidget *cell)
     setSelectedCell(pos);
 }
 
-void CDayMonthView::setSelectedCell(int index)
+void CDayMonthWidget::setSelectedCell(int index)
 {
     if (m_selectedCell == index)
         return;
-    changeSelectDate(m_showDays.at(index));
-}
-
-void CDayMonthView::changeSelectDate(const QDate &date)
-{
-    emit signalChangeSelectDate(date);
-}
-
-void CDayMonthView::resizeEvent(QResizeEvent *event)
-{
-    Q_UNUSED(event);
-    cellwidth = qRound(width() * 0.1005 + 0.5);
-    cellheight = qRound(height() * 0.0496 + 0.5);
-    m_gridLayout->setHorizontalSpacing(qRound(width() * 0.0287 + 0.5));
-    m_gridLayout->setVerticalSpacing(0);
-    int leftmagin = qRound(width() * 0.0332 + 0.5);
-    int rightmagin = leftmagin;
-    int topmagin = qRound(height() * 0.0164 + 0.5);
-    int buttonmagin = topmagin;
-    m_upLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
-    m_dayNumFont.setPixelSize(qRound(12 + (width() - 347) / 71.66));
-
-    for (int i(0); i != DDEDayCalendar::PainterCellNum; ++i) {
-        m_cellList.at(i)->setFixedSize(cellwidth, cellheight);
-        m_cellList.at(i)->update();
-    }
-    m_splitline->setFixedWidth(qRound(0.6925 * width() + 0.5));
-
-    int hleftmagin = qRound(width() * 0.026 + 0.5);
-    int hrightmagin = hleftmagin;
-    int htopmagin = qRound(height() * 0.01773 + 0.5);
-    int hbuttonmagin = htopmagin;
-    int lw = width() - hleftmagin * 2;
-    int lh = qRound(height() * 0.0992);
-    m_yiLabel->setFixedSize(lw, lh);
-    m_yidownLayout->setContentsMargins(hleftmagin, qRound(htopmagin * 0.5), hrightmagin, 0);
-    m_jiLabel->setFixedSize(lw, lh);
-    m_jidownLayout->setContentsMargins(hleftmagin, htopmagin, hrightmagin, hbuttonmagin);
-}
-
-void CDayMonthView::wheelEvent(QWheelEvent *event)
-{
-    //如果是拖拽则退出
-    bool isDragging = false;
-    emit signalIsDragging(isDragging);
-    if (isDragging)
-        return;
-    if (event->delta() < 0) {
-        //切换前一天
-        changeSelectDate(m_selectDate.addDays(1));
-
-    } else {
-        //切换后一天
-        changeSelectDate(m_selectDate.addDays(-1));
-    }
-}
-
-void CDayMonthView::paintEvent(QPaintEvent *e)
-{
-    Q_UNUSED(e);
-    int labelwidth = width();
-    int labelheight = height();
-    DPalette anipa = this->palette();
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
-    painter.save();
-    painter.setBrush(anipa.background());
-    painter.setPen(Qt::NoPen);
-    QPainterPath painterPath;
-    painterPath.moveTo(0, 0);
-    painterPath.lineTo(0, labelheight);
-//  如果有搜索界面则为右边为直角否则为圆角
-    if (!m_searchflag) {
-        painterPath.lineTo(labelwidth - m_radius, labelheight);
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
-        painterPath.lineTo(labelwidth, m_radius);
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, 0, m_radius * 2, m_radius * 2), 0, 90);
-    } else {
-        painterPath.lineTo(labelwidth, labelheight);
-        painterPath.lineTo(labelwidth, 0);
-    }
-    painterPath.lineTo(0, 0);
-    painterPath.closeSubpath();
-    painter.drawPath(painterPath);
-    painter.restore();
-}
-
-void CDayMonthView::slotprev()
-{
-    changeSelectDate(m_selectDate.addMonths(-1));
-}
-
-void CDayMonthView::slotnext()
-{
-    changeSelectDate(m_selectDate.addMonths(1));
-}
-
-void CDayMonthView::slottoday()
-{
-    changeSelectDate(m_currentDate);
+    emit signalChangeSelectDate(m_showDays.at(index));
 }

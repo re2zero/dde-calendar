@@ -382,13 +382,6 @@ bool CScheduleView::event(QEvent *e)
         }
         return true;
     } else {
-        if (e->type() == QEvent::FocusIn) {
-            QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(e);
-            if (focusEvent->reason() == Qt::TabFocusReason) {
-                m_graphicsView->setFocus(Qt::TabFocusReason);
-            }
-            return true;
-        }
         return DFrame::event(e);
     }
 }
@@ -411,6 +404,8 @@ void CScheduleView::initUI()
     m_graphicsView->scrollBarValueChangedSlot();
 
     m_ScheduleRemindWidget = new SchecduleRemindWidget(this);
+    // move focus to m_graphicsView
+    setFocusProxy(m_graphicsView);
 }
 
 void CScheduleView::initConnection()

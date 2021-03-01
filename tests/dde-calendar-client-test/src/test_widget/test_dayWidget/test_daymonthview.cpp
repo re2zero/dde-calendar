@@ -109,47 +109,10 @@ TEST_F(test_daymonthview, setHasScheduleFlag)
     mDayMonthView->setHasScheduleFlag(dayMonthViewGetLineFlag());
 }
 
-//void CDayMonthView::updateDateShow()
-TEST_F(test_daymonthview, updateDateShow)
-{
-    mDayMonthView->setShowDate(dayMonthviewGetDayList(), QDate::currentDate(), QDate::currentDate());
-    mDayMonthView->updateDateShow();
-    mDayMonthView->setShowDate(dayMonthviewGetDayList(), QDate::currentDate().addDays(1), QDate::currentDate().addDays(1));
-    mDayMonthView->updateDateShow();
-}
-
 //void CDayMonthView::updateDateLunarDay()
 TEST_F(test_daymonthview, updateDateLunarDay)
 {
     mDayMonthView->updateDateLunarDay();
-}
-
-//const QString CDayMonthView::getCellDayNum(int pos)
-TEST_F(test_daymonthview, getCellDayNum)
-{
-    mDayMonthView->setShowDate(dayMonthviewGetDayList(), QDate::currentDate(), QDate::currentDate());
-    mDayMonthView->getCellDayNum(2);
-}
-
-//const QDate CDayMonthView::getCellDate(int pos)
-TEST_F(test_daymonthview, getCellDate)
-{
-    mDayMonthView->setShowDate(dayMonthviewGetDayList(), QDate::currentDate(), QDate::currentDate());
-    mDayMonthView->getCellDate(2);
-}
-
-//void CDayMonthView::cellClicked(QWidget *cell)
-TEST_F(test_daymonthview, cellDlicked)
-{
-    QWidget *widget;
-    mDayMonthView->cellClicked(widget);
-}
-
-//void CDayMonthView::setSelectedCell(int index)
-TEST_F(test_daymonthview, setSelectedCell)
-{
-    mDayMonthView->setShowDate(dayMonthviewGetDayList(), QDate::currentDate().addDays(1), QDate::currentDate().addDays(1));
-    mDayMonthView->setSelectedCell(4);
 }
 
 //void CDayMonthView::changeSelectDate(const QDate &date)

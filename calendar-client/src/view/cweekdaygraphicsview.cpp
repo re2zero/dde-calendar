@@ -132,6 +132,12 @@ void CWeekDayGraphicsview::createBackgroundItem()
         backgroundItem->setZValue(-1);
         m_backgroundItem.append(backgroundItem);
         m_Scene->addItem(backgroundItem);
+        //如果为非全天则设置背景焦点获取显示
+        if (m_viewType == PartTimeView) {
+            backgroundItem->setShowFocus(true);
+        }
+        //设置编号
+        backgroundItem->setBackgroundNum(0);
     } else {
         //周视图
         for (int i = 0; i < DDEWeekCalendar::AFewDaysofWeek; ++i) {

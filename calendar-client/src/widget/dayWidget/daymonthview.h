@@ -34,9 +34,10 @@
 #include <QVBoxLayout>
 
 DWIDGET_USE_NAMESPACE
-class QLabel;
+
 class CDayHuangLiLabel;
 class CTodayButton;
+class CDayMonthWidget;
 class CDayMonthView: public CustomFrame
 {
     Q_OBJECT
@@ -58,10 +59,6 @@ signals:
     //选择时间改变信号
     void signalChangeSelectDate(const QDate &date);
 public slots:
-    //点击月显示时间修改选择时间
-    void cellClicked(QWidget *cell);
-    //设置选择项修改选择时间
-    void setSelectedCell(int index);
     //上一个月
     void slotprev();
     //下一个月
@@ -69,16 +66,10 @@ public slots:
     //返回当前时间
     void slottoday();
 private:
-    const QString getCellDayNum(int pos);
-    const QDate getCellDate(int pos);
-    void paintCell(QWidget *cell);
-    bool eventFilter(QObject *o, QEvent *e) override;
     void initUI();
     void initConnection();
     void updateDateShow();
     void updateDateLunarDay();
-private slots:
-
 private:
     void changeSelectDate(const QDate &date);
 protected:
@@ -96,27 +87,15 @@ private:
     CustomFrame *m_currentLuna = nullptr;
     CDayHuangLiLabel *m_yiLabel = nullptr;
     CDayHuangLiLabel *m_jiLabel = nullptr;
-    QList<QWidget *> m_cellList;
-    QVector<QDate> m_showDays;
     QDate m_selectDate;
     QDate m_currentDate;
     int m_selectedCell = 0;
-    QFont m_dayNumFont;
-
     QColor m_topBorderColor = Qt::red;
     QColor m_backgroundCircleColor = "#2ca7f8";
-    QColor m_defaultTextColor = Qt::black;
-    QColor m_currentDayTextColor = "#2ca7f8";
     QColor m_weekendsTextColor = Qt::black;
-    QColor m_selectedTextColor = Qt::white;
     QColor m_festivalTextColor = Qt::black;
-    QColor m_notCurrentTextColor = "#b2b2b2";
-
     int m_firstWeekDay;
     bool m_huanglistate = true;
-    QGridLayout *m_gridLayout = nullptr;
-    int cellwidth = 20;
-    int cellheight = 20;
     QVBoxLayout *m_hhLayout = nullptr;
     QVBoxLayout *m_upLayout = nullptr;
     DHorizontalLine *m_splitline = nullptr;
@@ -124,12 +103,57 @@ private:
     QVBoxLayout *m_jidownLayout = nullptr;
     QStringList m_weeklist;
     CaHuangLiDayInfo    m_huangliInfo;
-
-    int                   m_themetype  = 1;
+    CDayMonthWidget *m_dayMonthWidget;
     const int m_radius = 8;
     bool m_searchflag = false;
-    QColor m_ceventColor = "#FF5D00";
-    QVector<bool> m_vlineflag; //节假日和日程标识
 };
 
+class CDayMonthWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit CDayMonthWidget(QWidget *parent = nullptr);
+    ~CDayMonthWidget() override;
+    void setTheMe(int type = 0);
+    //设置显示时间,选择时间和当前时间
+    void setShowDate(const QVector<QDate> &showDate, const QDate &selectDate, const QDate &currentDate);
+    void setHasScheduleFlag(const QVector<bool> &hasScheduleFlag);
+
+private:
+    const QString getCellDayNum(int pos);
+    const QDate getCellDate(int pos);
+    void paintCell(QWidget *cell);
+
+protected:
+    bool eventFilter(QObject *o, QEvent *e) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+signals:
+    //选择时间改变信号
+    void signalChangeSelectDate(const QDate &date);
+public slots:
+    //点击月显示时间修改选择时间
+    void cellClicked(QWidget *cell);
+    //设置选择项修改选择时间
+    void setSelectedCell(int index);
+
+private:
+    QList<QWidget *> m_cellList;
+    QVector<QDate> m_showDays;
+    int m_selectedCell = 0;
+    QDate m_selectDate;
+    QDate m_currentDate;
+    QGridLayout *m_gridLayout = nullptr;
+    QVector<bool> m_vlineflag; //节假日和日程标识
+
+    QColor m_selectedTextColor = Qt::white;
+    QColor m_currentDayTextColor = "#2ca7f8";
+    QColor m_defaultTextColor = Qt::black;
+    QColor m_notCurrentTextColor = "#b2b2b2";
+    QColor m_ceventColor = "#FF5D00";
+    QFont m_dayNumFont;
+    bool m_isFocus;
+};
 #endif // YEARVIEW_H

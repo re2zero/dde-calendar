@@ -70,7 +70,6 @@ public:
 
 protected:
     bool event(QEvent *event) override;
-
 private:
     bool focusInDeal(QEvent *event);
     bool focusOutDeal(QEvent *event);
