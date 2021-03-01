@@ -49,6 +49,7 @@ CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
     //设置对象名称和辅助显示名称
     this->setObjectName("CScheduleDataItem");
     this->setAccessibleName("CScheduleDataItem");
+
     m_editAction = new QAction(tr("Edit"), this);
     m_deleteAction = new QAction(tr("Delete"), this);
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
@@ -59,6 +60,8 @@ CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
                      &CScheduleSearchItem::setTheMe);
     m_mouseStatus = M_NONE;
     installEventFilter(this);
+    //设置焦点类型
+    setFocusPolicy(Qt::FocusPolicy::TabFocus);
 }
 
 void CScheduleSearchItem::setBackgroundColor(QColor color1)
@@ -149,8 +152,8 @@ void CScheduleSearchItem::slotDelete()
 void CScheduleSearchItem::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e);
-    int labelwidth = width();
-    int labelheight = height();
+    int labelwidth = width() - 2;
+    int labelheight = height() - 2;
     QPainter painter(this);
     QColor bcolor = m_Backgroundcolor;
     QColor textcolor = m_ttextcolor;
@@ -176,7 +179,14 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
     painter.setBrush(QBrush(bcolor));
-    painter.setPen(Qt::NoPen);
+    if (hasFocus()) {
+        //设置焦点绘制的pen
+        QPen pen;
+        pen.setColor(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
+        pen.setWidth(2);
+        painter.setPen(pen);
+    } else
+        painter.setPen(Qt::NoPen);
     QPainterPath painterPath;
     painterPath.moveTo(m_radius, m_borderframew);
 
@@ -186,7 +196,7 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
         painterPath.lineTo(m_borderframew, m_borderframew);
         painterPath.lineTo(m_borderframew, m_radius);
     }
-    painterPath.lineTo(0, labelheight - m_radius);
+    painterPath.lineTo(1, labelheight - m_radius);
 
     if (m_roundtype == 1 || m_roundtype == 2) {
         painterPath.arcTo(QRect(m_borderframew, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
@@ -340,6 +350,35 @@ bool CScheduleSearchItem::eventFilter(QObject *o, QEvent *e)
     update();
     return false;
 }
+
+void CScheduleSearchItem::focusInEvent(QFocusEvent *e)
+{
+    //只针对tab的情况生效
+    if (e->reason() == Qt::TabFocusReason) {
+        emit signalSelectSchedule(m_ScheduleInfo);
+        emit signalSelectCurrentItem(this, false);
+    }
+    DLabel::focusInEvent(e);
+}
+
+void CScheduleSearchItem::focusOutEvent(QFocusEvent *e)
+{
+    //只针对tab的情况生效
+    if (e->reason() == Qt::TabFocusReason)
+        emit signalSelectCurrentItem(this, true);
+    DLabel::focusOutEvent(e);
+}
+
+void CScheduleSearchItem::keyPressEvent(QKeyEvent *event)
+{
+    //回车显示我的日程详情
+    if (event->key() == Qt::Key_Return) {
+        CMyScheduleView dlg(m_ScheduleInfo, this);
+        dlg.exec();
+    }
+    DLabel::keyPressEvent(event);
+}
+
 CScheduleSearchView::CScheduleSearchView(QWidget *parent)
     : DWidget(parent)
 {
@@ -353,8 +392,8 @@ CScheduleSearchView::CScheduleSearchView(QWidget *parent)
     // set default row
     m_gradientItemList->setCurrentRow(0);
     setLayout(layout);
-    setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
+    setMouseTracking(true);
     m_bBackgroundcolor.setAlphaF(0.03);
     m_gradientItemList->setLineWidth(0);
     m_labellist.clear();
@@ -421,11 +460,21 @@ void CScheduleSearchView::setMaxWidth(const int w)
 }
 
 /**
+ * @brief CScheduleSearchView::getHasScheduleShow 是否搜索到日程
+ */
+bool CScheduleSearchView::getHasScheduleShow()
+{
+    return hasScheduleShow;
+}
+
+/**
  * @brief CScheduleSearchView::updateDateShow   更新搜索日程显示
  */
 void CScheduleSearchView::updateDateShow()
 {
     m_currentItem = nullptr;
+    //是否搜索到日程标志
+    hasScheduleShow = true;
 
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
@@ -435,6 +484,7 @@ void CScheduleSearchView::updateDateShow()
     }
     m_gradientItemList->clear();
     m_labellist.clear();
+    m_scheduleSearchItem.clear();
     //找最近日程
     QDate tcurrentdata = QDate::currentDate();
     //搜索日程过滤排序
@@ -485,6 +535,7 @@ void CScheduleSearchView::updateDateShow()
         }
     }
     if (m_gradientItemList->count() == 0) {
+        hasScheduleShow = false;
         QListWidgetItem *listItem = new QListWidgetItem(m_gradientItemList);
         DLabel *gwi = new DLabel();
         QFont font;
@@ -539,8 +590,11 @@ void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, in
     gwi->setFixedSize(m_maxWidth - 25, 35);
     gwi->setData(gd, date);
     gwi->setRoundtype(rtype);
+    //将搜索到的日程添加到容器
+    m_scheduleSearchItem.append(gwi);
     connect(gwi, &CScheduleSearchItem::signalSelectSchedule, this, &CScheduleSearchView::slotSelectSchedule);
     connect(gwi, &CScheduleSearchItem::signalViewtransparentFrame, this, &CScheduleSearchView::signalViewtransparentFrame);
+    connect(gwi, &CScheduleSearchItem::signalSelectCurrentItem, this, &CScheduleSearchView::slotSelectCurrentItem);
 
     QListWidgetItem *listItem = new QListWidgetItem;
     listItem->setSizeHint(QSize(m_maxWidth - 25, 36)); //每次改变Item的高度
@@ -618,6 +672,28 @@ void CScheduleSearchView::updateSearch()
     }
 }
 
+/**
+ * @brief CScheduleSearchView::slotSelectCurrentItem 设置选中的item为嘴上面一个,实现滚动效果
+ * @param item 选中的item
+ * @param itemFocusOut 是否是focusout事件
+ */
+void CScheduleSearchView::slotSelectCurrentItem(CScheduleSearchItem *item, bool itemFocusOut)
+{
+    for (int i = 0; i < m_gradientItemList->count(); i++) {
+        QListWidgetItem *citem = m_gradientItemList->item(i);
+        if (item == m_gradientItemList->itemWidget(citem)) {
+            m_selectItem = item;
+            //设置选中的item为最上面一个
+            m_gradientItemList->scrollToItem(m_gradientItemList->item(i), QAbstractItemView::PositionAtTop);
+            if (i == m_gradientItemList->count() - 1 && itemFocusOut && !keyPressUP) {
+                //最后一个item,发送信号将焦点传递给搜索框
+                emit signalSelectCurrentItem();
+            }
+        }
+    }
+    keyPressUP = false;
+}
+
 void CScheduleSearchView::resizeEvent(QResizeEvent *event)
 {
     for (int i = 0; i < m_gradientItemList->count(); i++) {
@@ -645,6 +721,24 @@ void CScheduleSearchView::resizeEvent(QResizeEvent *event)
 void CScheduleSearchView::mousePressEvent(QMouseEvent *event)
 {
     DWidget::mousePressEvent(event);
+}
+
+void CScheduleSearchView::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Up) {
+        //上键,选中上一个item
+        keyPressUP = true;
+        int selectNum = m_scheduleSearchItem.indexOf(m_selectItem);
+        if (selectNum > 0)
+            m_scheduleSearchItem.at(selectNum - 1)->setFocus(Qt::TabFocusReason);
+    }
+    if (event->key() == Qt::Key_Down) {
+        //下键,选中下一个item
+        int selectNum = m_scheduleSearchItem.indexOf(m_selectItem);
+        if (selectNum < m_scheduleSearchItem.count() - 1)
+            m_scheduleSearchItem.at(selectNum + 1)->setFocus(Qt::TabFocusReason);
+    }
+    DWidget::keyPressEvent(event);
 }
 
 CScheduleSearchDateItem::CScheduleSearchDateItem(QWidget *parent)

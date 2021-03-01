@@ -147,6 +147,14 @@ void Calendarmainwindow::slotCurrentDateUpdate()
 }
 
 /**
+ * @brief Calendarmainwindow::slotSetSearchFocus 设置搜索框焦点
+ */
+void Calendarmainwindow::slotSetSearchFocus()
+{
+    m_searchEdit->setFocus(Qt::TabFocusReason);
+}
+
+/**
  * @brief Calendarmainwindow::viewWindow        切换视图
  * @param type                                  视图索引
  * @param showAnimation                         是否显示动画
@@ -471,6 +479,7 @@ void Calendarmainwindow::initConnection()
     connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide, this, &Calendarmainwindow::setScheduleHide);
     //界面弹出对话框设置背景阴影
     connect(m_scheduleSearchView, &CScheduleSearchView::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectCurrentItem, this, &Calendarmainwindow::slotSetSearchFocus);
     connect(m_yearwindow, &CYearWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
     connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
     connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
@@ -557,6 +566,9 @@ void Calendarmainwindow::slotSreturnPressed()
         m_contentBackground->setVisible(true);
     }
     m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
+    //有日程展示,设置搜索列表焦点
+    if (m_scheduleSearchView->getHasScheduleShow())
+        m_scheduleSearchView->setFocus(Qt::TabFocusReason);
     updateHigh();
 }
 
@@ -580,13 +592,18 @@ void Calendarmainwindow::slotStextChanged()
 }
 
 /**
- * @brief Calendarmainwindow::slotStextfocusChanged     搜索框有焦点时隐藏提示框
+ * @brief Calendarmainwindow::slotStextfocusChanged     搜索框有焦点时隐藏提示框并设置搜索日程焦点
  * @param onFocus
  */
 void Calendarmainwindow::slotStextfocusChanged(bool onFocus)
 {
     if (onFocus) {
         setScheduleHide();
+    } else {
+        //设置搜索日程展示列表焦点
+        if (m_contentBackground->isVisible() && m_scheduleSearchView->getHasScheduleShow()) {
+            m_scheduleSearchView->setFocus(Qt::TabFocusReason);
+        }
     }
 }
 

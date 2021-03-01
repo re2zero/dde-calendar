@@ -60,6 +60,7 @@ public slots:
     void onViewShortcut();
     //更新当前时间
     void slotCurrentDateUpdate();
+    void slotSetSearchFocus();
 private:
     void initUI();
     void initConnection();

@@ -44,19 +44,23 @@ public:
     //清空搜索
     void clearSearch();
     void setMaxWidth(const int w);
+    bool getHasScheduleShow();
 signals:
     void signalSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
     void signalScheduleHide();
+    void signalSelectCurrentItem();
 public slots:
     //需要搜索日程关键字
     void slotsetSearch(QString str);
     void slotSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     //更新搜索信息
     void updateSearch();
+    void slotSelectCurrentItem(CScheduleSearchItem *item, bool itemFocusOut);
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDataInfo info, QDate date, int rtype);
@@ -76,6 +80,10 @@ private:
     QListWidgetItem *m_currentItem = nullptr;
     int m_maxWidth = 200;
     QString     m_searchStr{""};
+    bool   hasScheduleShow = false;
+    bool    keyPressUP = false;
+    CScheduleSearchItem *m_selectItem = nullptr;
+    QVector<CScheduleSearchItem *> m_scheduleSearchItem{};
 };
 
 class CScheduleListWidget : public DListWidget
@@ -118,6 +126,7 @@ signals:
     void signalsEdit(CScheduleSearchItem *item);
     void signalSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
+    void signalSelectCurrentItem(CScheduleSearchItem *item, bool foucusOutStatus);
 public slots:
     void slotEdit();
     void slotDelete();
@@ -130,7 +139,9 @@ protected:
     void enterEvent(QEvent *event) override;
     void leaveEvent(QEvent *event) override;
     bool eventFilter(QObject *o, QEvent *e) override;
-
+    void focusInEvent(QFocusEvent *e) override;
+    void focusOutEvent(QFocusEvent *e) override;
+    void keyPressEvent(QKeyEvent *event) override;
 private:
     struct ColorStatus {
         QColor background;
@@ -153,7 +164,7 @@ private:
     DMenu *m_rightMenu = nullptr;
     int m_roundtype = 1;
     const int m_radius = 8;
-    const int m_borderframew = 0;
+    const int m_borderframew = 1;
 };
 class CScheduleSearchDateItem : public DLabel
 {
