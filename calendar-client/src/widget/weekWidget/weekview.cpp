@@ -32,57 +32,44 @@
 #include <QWheelEvent>
 #include <QtGlobal>
 #include <QMouseEvent>
+#include <QKeyEvent>
 
 DWIDGET_USE_NAMESPACE
 
 CWeekView::CWeekView(const GetWeekNumOfYear &getWeekNumOfYear, QWidget *parent)
     : QWidget(parent)
-    , m_getWeekNumOfYear(getWeekNumOfYear)
     , m_touchGesture(this)
+    , m_weekNumWidget(nullptr)
 {
-    m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
-    m_dayNumFont.setWeight(QFont::Light);
-    // cells grid
     QHBoxLayout *hboxLayout = new QHBoxLayout;
     hboxLayout->setMargin(0);
     hboxLayout->setSpacing(0);
 
-    for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
-        QWidget *cell = new QWidget;
-        cell->setFixedSize(DDEWeekCalendar::WWeekCellWidth, DDEWeekCalendar::WWeekCellHeight);
-    }
     //上一周按钮
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     m_prevButton->setFixedSize(36, 36);
     connect(m_prevButton, &DIconButton::clicked, this, &CWeekView::signalBtnPrev);
+
+    m_weekNumWidget = new CWeekNumWidget(getWeekNumOfYear, this);
     //下一周按钮
     m_nextButton = new DIconButton(DStyle::SP_ArrowRight, this);
     m_nextButton->setFixedSize(36, 36);
     connect(m_nextButton, &DIconButton::clicked, this, &CWeekView::signalBtnNext);
 
     hboxLayout->addWidget(m_prevButton);
-    //显示周数的widget
-    for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
-        QWidget *cell = new QWidget;
-        //设置事件过滤器
-        cell->installEventFilter(this);
-        cell->setFocusPolicy(Qt::ClickFocus);
-        hboxLayout->addWidget(cell);
-        m_cellList.append(cell);
-    }
+    hboxLayout->addWidget(m_weekNumWidget);
     hboxLayout->addWidget(m_nextButton);
     //设置布局
     setLayout(hboxLayout);
     setMinimumWidth(150);
+
+    connect(m_weekNumWidget, &CWeekNumWidget::signalsSelectDate, this, &CWeekView::signalsSelectDate);
+    connect(m_weekNumWidget, &CWeekNumWidget::signalBtnPrev, this, &CWeekView::signalBtnPrev);
+    connect(m_weekNumWidget, &CWeekNumWidget::signalBtnNext, this, &CWeekView::signalBtnNext);
 }
 
 CWeekView::~CWeekView()
 {
-    for (int i = 0; i < DDEWeekCalendar::NumWeeksDisplayed; i++) {
-        m_cellList.at(i)->removeEventFilter(this);
-        delete m_cellList.at(i);
-    }
-    m_cellList.clear();
 }
 
 /**
@@ -91,8 +78,7 @@ CWeekView::~CWeekView()
  */
 void CWeekView::setSelectDate(const QDate date)
 {
-    m_selectDate = date;
-    updateDate();
+    m_weekNumWidget->setSelectDate(date);
 }
 
 /**
@@ -101,7 +87,7 @@ void CWeekView::setSelectDate(const QDate date)
  */
 void CWeekView::setCurrent(const QDateTime &dateTime)
 {
-    m_currentDate = dateTime;
+    m_weekNumWidget->setCurrent(dateTime);
 }
 
 /**
@@ -110,137 +96,9 @@ void CWeekView::setCurrent(const QDateTime &dateTime)
  */
 void CWeekView::setTheMe(int type)
 {
-    m_themetype = type;
-
-    if (type == 0 || type == 1) {
-        m_defaultTextColor = Qt::black;
-        m_backgrounddefaultColor = Qt::white;
-        m_currentDayTextColor = Qt::white;
-        m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-        m_fillColor = "#FFFFFF";
-    } else if (type == 2) {
-        m_defaultTextColor = "#C0C6D4";
-        m_backgrounddefaultColor = "#FFFFFF";
-        m_backgrounddefaultColor.setAlphaF(0.05);
-        m_currentDayTextColor = "#B8D3FF";
-        m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-        m_fillColor = "#000000";
-        m_fillColor.setAlphaF(0.05);
-    }
+    m_weekNumWidget->setTheMe(type);
 }
 
-void CWeekView::paintCell(QWidget *cell)
-{
-    const QRect rect(0, 0, cell->width(), cell->height());
-    const int pos = m_cellList.indexOf(cell);
-    //计算当前日期周数
-    const int _showWeekNum = m_getWeekNumOfYear(m_days[pos]);
-    const int _currentWeekNum = m_getWeekNumOfYear(m_currentDate.date());
-
-    const bool isCurrentDay = _showWeekNum == _currentWeekNum && m_days[pos].year() == m_currentDate.date().year();
-    const bool isSelectDay = m_days[pos].weekNumber() == m_selectDate.weekNumber();
-
-    QPainter painter(cell);
-    painter.setRenderHints(QPainter::Antialiasing);
-    painter.save();
-    painter.setBrush(QBrush(m_fillColor));
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(rect); //画矩形
-    painter.restore();
-    painter.setPen(Qt::SolidLine);
-
-    const QString dayNum = QString::number(_showWeekNum);
-
-    if (isSelectDay) {
-        QRect fillRect((cell->width() - 24) / 2, (cell->height() - 32) / 2 + 4, 24, 24);
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(fillRect);
-        painter.restore();
-        painter.setPen(m_currentDayTextColor);
-        painter.setFont(m_dayNumFont);
-        painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
-    } else {
-        if (isCurrentDay) {
-            painter.setPen(m_backgroundcurrentDayColor);
-        } else {
-            painter.setPen(m_defaultTextColor);
-        }
-        painter.setFont(m_dayNumFont);
-        painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
-    }
-    painter.end();
-}
-
-/**
- * @brief eventFilter 过滤器
- * @param o 事件对象
- * @param e 事件类型
- * @return  false
- */
-bool CWeekView::eventFilter(QObject *o, QEvent *e)
-{
-    QWidget *cell = qobject_cast<QWidget *>(o);
-    if (cell && m_cellList.contains(cell)) {
-        const int pos = m_cellList.indexOf(cell);
-        //获取每个cell的时间,如果小于1900年则过滤显示和点击操作
-        if (m_days[pos].year() < DDECalendar::QueryEarliestYear)
-            return false;
-        if (e->type() == QEvent::Paint) {
-            paintCell(cell);
-        } else if (e->type() == QEvent::MouseButtonPress) {
-            QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(e);
-            if (mouseEvent->button() == Qt::LeftButton) {
-                cellClicked(cell);
-            }
-        }
-    }
-    return false;
-}
-
-void CWeekView::cellClicked(QWidget *cell)
-{
-    const int pos = m_cellList.indexOf(cell);
-
-    if (pos == -1)
-        return;
-
-    setSelectedCell(pos);
-    update();
-}
-
-/**
- * @brief setSelectedCell   设置被选择的周数
- * @param index             周数所在的索引
- */
-void CWeekView::setSelectedCell(int index)
-{
-    if (m_selectedCell == index)
-        return;
-
-    const int prevPos = m_selectedCell;
-    m_selectedCell = index;
-
-    m_cellList.at(prevPos)->update();
-    m_cellList.at(index)->update();
-    m_selectDate = m_days[index];
-    const QString dayNum = QString::number(m_getWeekNumOfYear(m_selectDate));
-    if (m_days[index].year() < DDECalendar::QueryEarliestYear && dayNum != "1")
-        return;
-    emit signalsSelectDate(m_days[index]);
-}
-
-void CWeekView::updateDate()
-{
-    for (int i = 0 ; i < DDEWeekCalendar::NumWeeksDisplayed; ++i) {
-        m_days[i]  = m_selectDate.addDays((i - 4) * DDEWeekCalendar::AFewDaysofWeek);
-        if (m_days[i] == m_selectDate)
-            m_selectedCell = i;
-    }
-    update();
-}
 /**
  * @brief wheelEvent 鼠标滚轮切换上一周下一周
  * @param event 鼠标滚轮事件
@@ -295,7 +153,64 @@ bool CWeekView::event(QEvent *e)
     }
 }
 
-void CWeekView::resizeEvent(QResizeEvent *event)
+CWeekNumWidget::CWeekNumWidget(const GetWeekNumOfYear &getWeekNumOfYear, QWidget *parent)
+    : QWidget(parent)
+    , m_getWeekNumOfYear(getWeekNumOfYear)
+    , m_isFocus(false)
+{
+    m_dayNumFont.setPixelSize(DDECalendar::FontSizeSixteen);
+    m_dayNumFont.setWeight(QFont::Light);
+    setFocusPolicy(Qt::StrongFocus);
+
+    QHBoxLayout *hboxLayout = new QHBoxLayout;
+    hboxLayout->setSpacing(0);
+    hboxLayout->setMargin(0);
+    //显示周数的widget
+    for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
+        QWidget *cell = new QWidget;
+        //设置事件过滤器
+        cell->installEventFilter(this);
+        hboxLayout->addWidget(cell, Qt::AlignTop);
+        m_cellList.append(cell);
+    }
+    this->setLayout(hboxLayout);
+}
+
+CWeekNumWidget::~CWeekNumWidget()
+{
+}
+
+void CWeekNumWidget::setSelectDate(const QDate date)
+{
+    m_selectDate = date;
+    updateDate();
+}
+
+void CWeekNumWidget::setCurrent(const QDateTime &dateTime)
+{
+    m_currentDate = dateTime;
+}
+
+void CWeekNumWidget::setTheMe(int type)
+{
+    if (type == 0 || type == 1) {
+        m_defaultTextColor = Qt::black;
+        m_backgrounddefaultColor = Qt::white;
+        m_currentDayTextColor = Qt::white;
+        m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+        m_fillColor = "#FFFFFF";
+    } else if (type == 2) {
+        m_defaultTextColor = "#C0C6D4";
+        m_backgrounddefaultColor = "#FFFFFF";
+        m_backgrounddefaultColor.setAlphaF(0.05);
+        m_currentDayTextColor = "#B8D3FF";
+        m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
+        m_fillColor = "#000000";
+        m_fillColor.setAlphaF(0.05);
+    }
+}
+
+void CWeekNumWidget::resizeEvent(QResizeEvent *event)
 {
     //获取当前所有cell的宽度
     const int _allCellWidth = width() - 36 * 2;
@@ -320,5 +235,157 @@ void CWeekView::resizeEvent(QResizeEvent *event)
     }
     QWidget::resizeEvent(event);
     //更新显示
+    update();
+}
+
+void CWeekNumWidget::focusInEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event)
+    m_isFocus = true;
+    update();
+}
+
+void CWeekNumWidget::focusOutEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event);
+    m_isFocus = false;
+    update();
+}
+
+void CWeekNumWidget::paintCell(QWidget *cell)
+{
+    const QRect rect(0, 0, cell->width(), cell->height());
+    const int pos = m_cellList.indexOf(cell);
+    //计算当前日期周数
+    const int _showWeekNum = m_getWeekNumOfYear(m_days[pos]);
+    const int _currentWeekNum = m_getWeekNumOfYear(m_currentDate.date());
+
+    const bool isCurrentDay = _showWeekNum == _currentWeekNum && m_days[pos].year() == m_currentDate.date().year();
+    const bool isSelectDay = m_days[pos].weekNumber() == m_selectDate.weekNumber();
+
+    QPainter painter(cell);
+    painter.setRenderHints(QPainter::Antialiasing);
+    painter.save();
+    painter.setBrush(QBrush(m_fillColor));
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(rect); //画矩形
+    painter.restore();
+    painter.setPen(Qt::SolidLine);
+
+    const QString dayNum = QString::number(_showWeekNum);
+
+    if (isSelectDay) {
+        QRect fillRect((cell->width() - 24) / 2, (cell->height() - 32) / 2 + 4, 24, 24);
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(fillRect);
+
+        if (m_isFocus) {
+            //绘制焦点获取效果
+            QPen pen;
+            pen.setWidth(2);
+            pen.setColor(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
+            painter.setPen(pen);
+            //在原有的选中效果外面再绘制一圈
+            QRectF foucsRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
+            painter.setBrush(Qt::NoBrush);
+            painter.drawEllipse(foucsRect);
+        }
+        painter.restore();
+        painter.setPen(m_currentDayTextColor);
+        painter.setFont(m_dayNumFont);
+        painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
+
+    } else {
+        if (isCurrentDay) {
+            painter.setPen(m_backgroundcurrentDayColor);
+        } else {
+            painter.setPen(m_defaultTextColor);
+        }
+        painter.setFont(m_dayNumFont);
+        painter.drawText(QRect(0, 0, cell->width(), cell->height()), Qt::AlignCenter, dayNum);
+    }
+    painter.end();
+}
+
+bool CWeekNumWidget::eventFilter(QObject *o, QEvent *e)
+{
+    QWidget *cell = qobject_cast<QWidget *>(o);
+    if (cell && m_cellList.contains(cell)) {
+        const int pos = m_cellList.indexOf(cell);
+        //获取每个cell的时间,如果小于1900年则过滤显示和点击操作
+        if (m_days[pos].year() < DDECalendar::QueryEarliestYear)
+            return false;
+        if (e->type() == QEvent::Paint) {
+            paintCell(cell);
+        } else if (e->type() == QEvent::MouseButtonPress) {
+            QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(e);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                cellClicked(cell);
+            }
+        }
+    }
+    return false;
+}
+
+/**
+ * @brief setSelectedCell   设置被选择的周数
+ * @param index             周数所在的索引
+ */
+void CWeekNumWidget::setSelectedCell(int index)
+{
+    if (m_selectedCell == index)
+        return;
+
+    const int prevPos = m_selectedCell;
+    m_selectedCell = index;
+
+    m_cellList.at(prevPos)->update();
+    m_cellList.at(index)->update();
+    m_selectDate = m_days[index];
+    const QString dayNum = QString::number(m_getWeekNumOfYear(m_selectDate));
+    if (m_days[index].year() < DDECalendar::QueryEarliestYear && dayNum != "1")
+        return;
+    emit signalsSelectDate(m_days[index]);
+}
+
+void CWeekNumWidget::updateDate()
+{
+    for (int i = 0 ; i < DDEWeekCalendar::NumWeeksDisplayed; ++i) {
+        m_days[i]  = m_selectDate.addDays((i - 4) * DDEWeekCalendar::AFewDaysofWeek);
+        if (m_days[i] == m_selectDate)
+            m_selectedCell = i;
+    }
+    update();
+}
+
+bool CWeekNumWidget::event(QEvent *e)
+{
+    if (e->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(e);
+        if (focusWidget() == this) {
+            //如果焦点在该widget上,可以左右键切换时间
+            if (keyEvent->key() == Qt::Key_Left) {
+                emit signalBtnPrev();
+            }
+
+            if (keyEvent->key() == Qt::Key_Right) {
+                emit signalBtnNext();
+            }
+        }
+    }
+    return DWidget::event(e);
+}
+
+void CWeekNumWidget::cellClicked(QWidget *cell)
+{
+    const int pos = m_cellList.indexOf(cell);
+
+    if (pos == -1)
+        return;
+
+    setSelectedCell(pos);
     update();
 }

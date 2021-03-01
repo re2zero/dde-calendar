@@ -55,22 +55,3 @@ TEST_F(test_weekview, setTheMe)
     mWeekView->setTheMe(1);
     mWeekView->setTheMe(2);
 }
-
-//void CWeekView::cellClicked(QWidget *cell)
-TEST_F(test_weekview, cellClicked)
-{
-    QWidget w;
-    mWeekView->cellClicked(&w);
-}
-
-//void CWeekView::setSelectedCell(int index)
-TEST_F(test_weekview, setSelextedCell)
-{
-    mWeekView->setSelectedCell(4);
-}
-
-//void CWeekView::updateDate()
-TEST_F(test_weekview, updateDate)
-{
-    mWeekView->updateDate();
-}

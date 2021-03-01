@@ -30,9 +30,12 @@
 DWIDGET_USE_NAMESPACE
 
 typedef int(*GetWeekNumOfYear)(const QDate &);
+
 /**
  * @brief The CWeekView class
+ * 周数显示类
  */
+class CWeekNumWidget;
 class CWeekView : public QWidget
 {
     Q_OBJECT
@@ -45,12 +48,6 @@ public:
     void setCurrent(const QDateTime &dateTime);
     //根据系统主题类型设置颜色
     void setTheMe(int type = 0);
-public slots:
-    /**
-     * @brief cellClicked 选择点击的日期
-     * @param cell 周数所在的widget
-     */
-    void cellClicked(QWidget *cell);
 signals:
     /**
      * @brief signalsSelectDate     选择日期的信号
@@ -77,27 +74,58 @@ protected:
      */
     void wheelEvent(QWheelEvent *event) override;
     bool event(QEvent *e) override;
-    void resizeEvent(QResizeEvent *event) override;
-private:
-    /**
-     * @brief paintCell 绘制周数
-     * @param cell 周数所在的widget
-     */
-    void paintCell(QWidget *cell);
 
-    bool eventFilter(QObject *o, QEvent *e) override;
-    //设置被选择的周数
-    void setSelectedCell(int index);
-    /**
-     * @brief updateDate 更新数据
-     */
-    void updateDate();
 private:
-    QList<QWidget *> m_cellList;
     //上一周按钮
     DIconButton *m_prevButton = nullptr;
     //下一周按钮
     DIconButton *m_nextButton = nullptr;
+
+    //触摸手势处理
+    touchGestureOperation m_touchGesture;
+
+    CWeekNumWidget *m_weekNumWidget;
+};
+
+class CWeekNumWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit CWeekNumWidget(const GetWeekNumOfYear &getWeekNumOfYear, QWidget *parent);
+    ~CWeekNumWidget() override;
+    //设置选择时间，并更新
+    void setSelectDate(const QDate date);
+    //设置当前时间
+    void setCurrent(const QDateTime &dateTime);
+    //根据系统主题类型设置颜色
+    void setTheMe(int type = 0);
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
+    bool event(QEvent *e) override;
+    bool eventFilter(QObject *o, QEvent *e) override;
+private:
+    //绘制周数
+    void paintCell(QWidget *cell);
+    //设置被选择的周数
+    void setSelectedCell(int index);
+    //更新数据
+    void updateDate();
+signals:
+    //选择日期的信号
+    void signalsSelectDate(const QDate &date);
+    //前一周按钮信号
+    void signalBtnPrev();
+    //后一周按钮信号
+    void signalBtnNext();
+public slots:
+    //选择点击的日期
+    void cellClicked(QWidget *cell);
+
+private:
+    QList<QWidget *> m_cellList;
     //选择的日期
     QDate m_selectDate;
     QDate m_days[10];
@@ -107,18 +135,12 @@ private:
     QDateTime m_currentDate;
 
     GetWeekNumOfYear  m_getWeekNumOfYear;
-
-
     QColor m_defaultTextColor = Qt::black;
     QColor m_backgrounddefaultColor = Qt::white;
     QColor m_currentDayTextColor = Qt::white;
     QColor m_backgroundcurrentDayColor = "#0081FF";
     QColor m_fillColor = Qt::white;
-    int m_themetype = 1;
-    /**
-     * @brief m_touchGesture        触摸手势处理
-     */
-    touchGestureOperation m_touchGesture;
+    bool m_isFocus;
 };
 
 #endif // MONTDAYVIEW_H
