@@ -153,7 +153,8 @@ void Calendarmainwindow::slotCurrentDateUpdate()
  */
 void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
 {
-    if (type < 0 || type > m_stackWidget->count()) {
+    if (type < 0 || type >= m_stackWidget->count()) {
+        qWarning() << "set view error,set index:" << type;
         return;
     }
     if (showAnimation) {
