@@ -317,6 +317,14 @@ void CDayWindow::setMakeTime(QMap<QDate, QVector<ScheduleDataInfo> > &info)
             //如果日程开始日期为选择日期则获取日程开始的时间
             if (_partTimeScheduleVector.begin()->getBeginDateTime().date() == getSelectDate()) {
                 m_makeTime = _partTimeScheduleVector.begin()->getBeginDateTime().time();
+                //设置定位的时间位置,原始时间太靠下,现向上偏移2小时
+                QTime ontime = m_makeTime;
+                if (ontime.hour() + 4 >= 24) {
+                    ontime = QTime(20, 0);
+                } else {
+                    ontime = ontime.addSecs(14400);
+                }
+                m_makeTime = ontime;
             } else {
                 m_makeTime.setHMS(0, 0, 0, 0);
             }
