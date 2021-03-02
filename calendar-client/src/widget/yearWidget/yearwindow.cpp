@@ -493,6 +493,7 @@ void CYearWindow::updateShowDate(const bool isUpdateBar)
 {
     Q_UNUSED(isUpdateBar);
     QMap<int, QVector<QDate> > _yearShowData = m_calendarManager->getCalendarDateDataManage()->getYearDate();
+    m_Scheduleview->setTimeFormat(m_calendarManager->getCalendarDateDataManage()->getTimeFormat());
     m_yearWidget->setShowDate(getSelectDate(), _yearShowData);
 }
 

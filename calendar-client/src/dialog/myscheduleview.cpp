@@ -47,9 +47,10 @@ CMyScheduleView::CMyScheduleView(const ScheduleDataInfo &schduleInfo, QWidget *p
     AutoFeed(m_scheduleInfo.getTitleName());
 
     if (m_scheduleInfo.getType() == DDECalendar::FestivalTypeID) {
-        m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString(("yyyy-MM-dd")));
+        m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString(m_dateFormat));
     } else {
-        m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString("yyyy-MM-dd hh:mm") + " ~ " + m_scheduleInfo.getEndDateTime().toString("yyyy-MM-dd hh:mm"));
+        m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString(m_dateFormat + " " + m_timeFormat) + " ~ "
+                             + m_scheduleInfo.getEndDateTime().toString(m_dateFormat + " " + m_timeFormat));
     }
 }
 
@@ -168,6 +169,19 @@ bool CMyScheduleView::eventFilter(QObject *o, QEvent *e)
         return true;
     }
     return DCalendarDDialog::eventFilter(o, e);
+}
+
+/**
+ * @brief CMyScheduleView::updateDateTimeFormat 更新显示时间格式
+ */
+void CMyScheduleView::updateDateTimeFormat()
+{
+    if (m_scheduleInfo.getType() == DDECalendar::FestivalTypeID) {
+        m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString(m_dateFormat));
+    } else {
+        m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString(m_dateFormat + " " + m_timeFormat) + " ~ "
+                             + m_scheduleInfo.getEndDateTime().toString(m_dateFormat + " " + m_timeFormat));
+    }
 }
 
 /**

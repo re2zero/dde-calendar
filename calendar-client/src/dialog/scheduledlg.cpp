@@ -494,6 +494,16 @@ void CScheduleDlg::changeEvent(QEvent *event)
     m_endrepeatLabel->setText(str_endrepeatLabel);
 }
 
+/**
+ * @brief CScheduleDlg::updateDateTimeFormat 更新日期显示格式
+ */
+void CScheduleDlg::updateDateTimeFormat()
+{
+    m_beginDateEdit->setDisplayFormat(m_dateFormat);
+    m_endDateEdit->setDisplayFormat(m_dateFormat);
+    m_endRepeatDate->setDisplayFormat(m_dateFormat);
+}
+
 void CScheduleDlg::initUI()
 {
     //设置对象名称和辅助显示名称
@@ -632,7 +642,7 @@ void CScheduleDlg::initUI()
     m_beginTimeEdit->setAccessibleName("ScheduleBeginTimeEdit");
     m_beginTimeEdit->setFixedSize(141, 36);
     m_beginDateEdit->setCalendarPopup(true);
-    m_beginDateEdit->setDisplayFormat("yyyy-MM-dd");
+    m_beginDateEdit->setDisplayFormat(m_dateFormat);
     beginLabellayout->addWidget(m_beginTimeLabel);
     beginLabellayout->addWidget(m_beginDateEdit);
     beginLabellayout->addSpacing(8);
@@ -663,7 +673,7 @@ void CScheduleDlg::initUI()
     m_endTimeEdit->setAccessibleName("ScheduleEndTimeEdit");
     m_endTimeEdit->setFixedSize(141, 36);
     m_endDateEdit->setCalendarPopup(true);
-    m_endDateEdit->setDisplayFormat("yyyy-MM-dd");
+    m_endDateEdit->setDisplayFormat(m_dateFormat);
 
     enQLabellayout->addWidget(m_endTimeLabel);
     enQLabellayout->addWidget(m_endDateEdit);
@@ -783,7 +793,7 @@ void CScheduleDlg::initUI()
     m_endRepeatDate->setCalendarPopup(true);
     m_endRepeatDate->setFixedSize(141, 36);
     m_endRepeatDate->setDate(QDate::currentDate());
-    m_endRepeatDate->setDisplayFormat("yyyy-MM-dd");
+    m_endRepeatDate->setDisplayFormat(m_dateFormat);
     m_endRepeatDate->setCurrentSectionIndex(2);
     QFont enddatefont;
     enddatefont.setWeight(QFont::Medium);

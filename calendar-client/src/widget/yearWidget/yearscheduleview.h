@@ -76,6 +76,8 @@ public:
      * @return 日期
      */
     QDate getCurrentDate();
+
+    void setTimeFormat(QString format = "h:mm");
 private:
     /**
      * @brief updateDateShow 调整最多展示日程为五个，并设置浮框大小
@@ -104,6 +106,7 @@ private:
     QColor m_btimecolor = "#526A7F";
     QColor m_bttextcolor = "#414D68";
     QFont m_textfont;
+    QString m_timeFormat = "h:mm";
 };
 
 class CYearScheduleOutView : public DArrowRectangle
@@ -136,6 +139,7 @@ public:
     void setCurrentDate(QDate cdate);
     //设置箭头方向
     void setDirection(ArrowDirection value);
+    void setTimeFormat(QString format);
 signals:
     /**
      * @brief signalsViewSelectDate 跳转视图信号

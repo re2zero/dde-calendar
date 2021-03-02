@@ -41,6 +41,7 @@ public:
     void setData(const ScheduleDataInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
     //设置箭头方向
     void setDirection(ArrowDirection value);
+    void setTimeFormat(QString timeformat);
 signals:
 
 public slots:
@@ -58,6 +59,7 @@ public:
     ~CenterWidget() override;
     void setData(const ScheduleDataInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
     void setTheMe(const int type = 0);
+    void setTimeFormat(QString timeFormat = "h:mm");
 private:
     void UpdateTextList();
 protected:
@@ -72,6 +74,7 @@ private:
     CSchedulesColor gdcolor;
     QColor textColor;
     QColor timeColor;
+    QString m_timeFormat;
 };
 
 #endif // SchecduleRemindWidget_H

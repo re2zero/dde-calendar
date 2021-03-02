@@ -64,6 +64,7 @@ private:
 protected:
     void showEvent(QShowEvent *event) override;
     bool eventFilter(QObject *o, QEvent *e) override;
+    void updateDateTimeFormat() override;
 private:
     QLabel *m_scheduleLabel = nullptr;
     QLabel *m_timeLabel = nullptr;

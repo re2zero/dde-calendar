@@ -23,6 +23,7 @@
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
 #include "constants.h"
+#include "calendarmanage.h"
 
 #include <DPalette>
 #include <DHorizontalLine>
@@ -41,6 +42,7 @@ CScheduleView::CScheduleView(QWidget *parent, ScheduleViewPos viewType)
     : DFrame(parent)
     , m_viewPos(viewType)
     , m_touchGesture(this)
+    , m_timeFormat(CalendarManager::getInstance()->getCalendarDateDataManage()->getTimeFormat())
 {
     initUI();
     initConnection();
@@ -156,6 +158,16 @@ void CScheduleView::setShowScheduleInfo(const QMap<QDate, QVector<ScheduleDataIn
     updateSchedule();
 }
 
+/**
+ * @brief CScheduleView::setTimeFormat 设置日期显示格式
+ * @param timeformat 日期格式
+ */
+void CScheduleView::setTimeFormat(QString timeformat)
+{
+    m_timeFormat = timeformat;
+    m_ScheduleRemindWidget->setTimeFormat(timeformat);
+}
+
 void CScheduleView::setDate(QDate date)
 {
     m_currteDate = date;
@@ -234,7 +246,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.save();
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
-                QString str = QTime::currentTime().toString("AP hh:mm");
+                QString str = QTime::currentTime().toString("AP " + m_timeFormat);
                 painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5,
                                        m_topMagin - 8 + m_vPos[m_vPos.count() - 1], hourTextWidth,
                                        hourTextHeight),
@@ -258,7 +270,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth + 2, hourTextHeight),
-                    Qt::AlignCenter, QTime(m_vHours[i], 0).toString("HH:mm"));
+                    Qt::AlignCenter, QTime(m_vHours[i], 0).toString(m_timeFormat));
             }
             painter.restore();
         } else {
@@ -285,7 +297,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.drawText(
                     QRect((m_leftMagin - hourTextWidth) / 2 - 5, m_topMagin - 8 + m_vPos[i],
                           hourTextWidth + 2, hourTextHeight),
-                    Qt::AlignCenter, QTime(m_vHours[i], 0).toString("HH:mm"));
+                    Qt::AlignCenter, QTime(m_vHours[i], 0).toString(m_timeFormat));
             }
             painter.restore();
 
@@ -293,7 +305,7 @@ void CScheduleView::paintEvent(QPaintEvent *event)
                 painter.save();
                 painter.setFont(font);
                 painter.setPen(m_currenttimecolor);
-                QString str = QTime::currentTime().toString("hh:mm");
+                QString str = QTime::currentTime().toString(m_timeFormat);
 
                 if (m_topMagin - 8 + m_vPos[m_vPos.count() - 1] >= m_topMagin)
                     painter.drawText(QRect((m_leftMagin - hourTextWidth) / 2 - 5,

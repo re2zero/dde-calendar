@@ -216,6 +216,75 @@ int CalendarDateDataManager::getWeekNumOfYear(const QDate &date)
     return  _weekNum;
 }
 
+/**
+ * @brief CalendarDateDataManager::setTimeFormatChanged 根据value设置短时间显示格式
+ * @param value
+ */
+void CalendarDateDataManager::setTimeFormatChanged(int value)
+{
+    if (value) {
+        m_timeFormat = "hh:mm";
+    } else {
+        m_timeFormat = "h:mm";
+    }
+}
+
+/**
+ * @brief CalendarDateDataManager::setDateFormatChanged 根据value设置短日期显示格式
+ * @param value
+ */
+void CalendarDateDataManager::setDateFormatChanged(int value)
+{
+    switch (value) {
+    case 0: {
+        m_dateFormat = "yyyy/M/d";
+    } break;
+    case 1: {
+        m_dateFormat = "yyyy-M-d";
+    } break;
+    case 2: {
+        m_dateFormat = "yyyy.M.d";
+    } break;
+    case 3: {
+        m_dateFormat = "yyyy/MM/dd";
+    } break;
+    case 4: {
+        m_dateFormat = "yyyy-MM-dd";
+    } break;
+    case 5: {
+        m_dateFormat = "yyyy.MM.dd";
+    } break;
+    case 6: {
+        m_dateFormat = "yy/M/d";
+    } break;
+    case 7: {
+        m_dateFormat = "yy-M-d";
+    } break;
+    case 8: {
+        m_dateFormat = "yy.M.d";
+    } break;
+    default: {
+        m_dateFormat = "yyyy-MM-dd";
+    } break;
+    }
+}
+
+/**
+ * @brief CalendarDateDataManager::getTimeFormat 获取短时间格式
+ */
+QString CalendarDateDataManager::getTimeFormat()
+{
+    return m_timeFormat;
+}
+
+/**
+ * @brief CalendarDateDataManager::getDateFormat 获取短日期格式
+ */
+QString CalendarDateDataManager::getDateFormat()
+{
+    return m_dateFormat;
+}
+
 void CalendarDateDataManager::setYearBeginAndEndDate(const int year)
 {
     m_showDateRange.showYear = year;

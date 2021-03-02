@@ -37,12 +37,18 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     bool eventFilter(QObject *o, QEvent *e) override;
+    virtual void updateDateTimeFormat();
 private:
     //移动到上一层窗口中间显示
     void moveCentorShow();
 signals:
 
 public slots:
+    void setTimeFormat(int value);
+    void setDateFormat(int value);
+protected:
+    QString m_timeFormat = "hh:mm";
+    QString m_dateFormat = "yyyy-MM-dd";
 };
 
 #endif // DCALENDARDDIALOG_H

@@ -53,6 +53,8 @@ public:
 private:
     //根据字体大小,宽度和高度将标题切换为多行
     void splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm);
+private slots:
+    void timeFormatChanged(int value);
 private:
     //绘制item显示效果
     void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;
@@ -61,6 +63,7 @@ private:
     int m_type = 0;
     int m_totalNum;
     QColor m_transparentcolor;
+    QString m_timeFormat = "h:mm";
 };
 
 #endif // SCHEDULEITEM_H

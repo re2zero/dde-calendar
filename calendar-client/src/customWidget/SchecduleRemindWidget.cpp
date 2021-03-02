@@ -73,6 +73,15 @@ void SchecduleRemindWidget::setDirection(DArrowRectangle::ArrowDirection value)
     this->setContent(m_centerWidget);
 }
 
+/**
+ * @brief SchecduleRemindWidget::setTimeFormat 设置日期显示格式
+ * @param timeformat 日期格式
+ */
+void SchecduleRemindWidget::setTimeFormat(QString timeformat)
+{
+    m_centerWidget->setTimeFormat(timeformat);
+}
+
 CenterWidget::CenterWidget(DWidget *parent)
     : DFrame(parent)
     , textwidth(0)
@@ -108,6 +117,16 @@ void CenterWidget::setTheMe(const int type)
         textColor = QColor("#414D68");
         textColor.setAlphaF(1);
     }
+    update();
+}
+
+/**
+ * @brief CenterWidget::setTimeFormat 设置日期显示格式
+ * @param timeFormat 日期格式
+ */
+void CenterWidget::setTimeFormat(QString timeFormat)
+{
+    m_timeFormat = timeFormat;
     update();
 }
 
@@ -165,7 +184,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     painter.setFont(timeFont);
     QString timestr;
     QLocale locale;
-    timestr = m_ScheduleInfo.getBeginDateTime().time().toString("AP h:mm");
+    timestr = m_ScheduleInfo.getBeginDateTime().time().toString("AP " + m_timeFormat);
 
     QFontMetrics metrics(timeFont);
     if (m_ScheduleInfo.getAllDay())

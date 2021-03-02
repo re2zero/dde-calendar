@@ -54,6 +54,9 @@ public:
     CScheduleTask *getScheduleTask() const;
     //获取是否显示农历信息
     bool getShowLunar() const;
+signals:
+    void signalTimeFormatChanged(int value);
+    void signalDateFormatChanged(int value);
 private:
     explicit CalendarManager(QObject *parent = nullptr);
     ~CalendarManager();
@@ -77,6 +80,9 @@ public slots:
     void slotJobsUpdated();
     //
     void slotUpdateSearchSchedule();
+
+    void slotTimeFormatChanged(int value);
+    void slotDateFormatChanged(int value);
 private:
     static CalendarManager      *m_scheduleManager;
     CalendarDateDataManager     *m_dateManage;

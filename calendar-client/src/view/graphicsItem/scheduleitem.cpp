@@ -19,6 +19,7 @@
 #include "scheduleitem.h"
 #include "schedulecoormanage.h"
 #include "scheduledatamanage.h"
+#include "calendarmanage.h"
 
 #include <DFontSizeManager>
 
@@ -39,8 +40,10 @@ CScheduleItem::CScheduleItem(QRectF rect, QGraphicsItem *parent, int type)
     , m_type(type)
     , m_totalNum(0)
     , m_transparentcolor("#000000")
+    , m_timeFormat(CalendarManager::getInstance()->getCalendarDateDataManage()->getTimeFormat())
 {
     m_transparentcolor.setAlphaF(0.05);
+    connect(CalendarManager::getInstance(), &CalendarManager::signalTimeFormatChanged, this, &CScheduleItem::timeFormatChanged);
 }
 
 CScheduleItem::~CScheduleItem()
@@ -150,6 +153,19 @@ void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList
 }
 
 /**
+ * @brief CScheduleItem::timeFormatChanged 更新时间显示格式
+ */
+void CScheduleItem::timeFormatChanged(int value)
+{
+    if (value) {
+        m_timeFormat = "hh:mm";
+    } else {
+        m_timeFormat = "h:mm";
+    }
+    update();
+}
+
+/**
  * @brief CScheduleItem::paintBackground        绘制item显示效果
  * @param painter
  * @param rect
@@ -244,7 +260,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
             painter->setPen(gdcolor.timeColor);
 
             QTime stime = m_vScheduleInfo.getBeginDateTime().time();
-            QString str = stime.toString("AP h:mm");
+            QString str = stime.toString("AP " + m_timeFormat);
             QFontMetrics fontmetris(font);
             qreal drawTextWidth = rect.width() - m_offset * 2;
 

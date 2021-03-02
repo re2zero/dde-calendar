@@ -21,10 +21,15 @@
 #include "dcalendarddialog.h"
 
 #include "constants.h"
+#include "calendarmanage.h"
 
 DCalendarDDialog::DCalendarDDialog(QWidget *parent)
     : DDialog(parent)
+    , m_timeFormat(CalendarManager::getInstance()->getCalendarDateDataManage()->getTimeFormat())
+    , m_dateFormat(CalendarManager::getInstance()->getCalendarDateDataManage()->getDateFormat())
 {
+    connect(CalendarManager::getInstance(), &CalendarManager::signalTimeFormatChanged, this, &DCalendarDDialog::setTimeFormat);
+    connect(CalendarManager::getInstance(), &CalendarManager::signalDateFormatChanged, this, &DCalendarDDialog::setDateFormat);
 }
 
 int DCalendarDDialog::exec()
@@ -64,6 +69,11 @@ bool DCalendarDDialog::eventFilter(QObject *o, QEvent *e)
 #endif
 }
 
+void DCalendarDDialog::updateDateTimeFormat()
+{
+
+}
+
 /**
  * @brief CMySchceduleView::moveCentorShow      在顶层窗口居中显示
  */
@@ -85,4 +95,57 @@ void DCalendarDDialog::moveCentorShow()
     const QPoint global = _parentWidget->mapToGlobal(_parentWidget->rect().center());
     //居中显示
     move(global.x() - width() / 2, global.y() - height() / 2);
+}
+
+/**
+ * @brief DCalendarDDialog::setTimeFormat 设置短时间格式,并更新显示
+ */
+void DCalendarDDialog::setTimeFormat(int value)
+{
+    if (value) {
+        m_timeFormat = "hh:mm";
+    } else {
+        m_timeFormat = "h:mm";
+    }
+    updateDateTimeFormat();
+}
+
+/**
+ * @brief DCalendarDDialog::setTimeFormat 设置短日期格式,并更新显示
+ */
+void DCalendarDDialog::setDateFormat(int value)
+{
+    switch (value) {
+    case 0: {
+        m_dateFormat = "yyyy/M/d";
+    } break;
+    case 1: {
+        m_dateFormat = "yyyy-M-d";
+    } break;
+    case 2: {
+        m_dateFormat = "yyyy.M.d";
+    } break;
+    case 3: {
+        m_dateFormat = "yyyy/MM/dd";
+    } break;
+    case 4: {
+        m_dateFormat = "yyyy-MM-dd";
+    } break;
+    case 5: {
+        m_dateFormat = "yyyy.MM.dd";
+    } break;
+    case 6: {
+        m_dateFormat = "yy/M/d";
+    } break;
+    case 7: {
+        m_dateFormat = "yy-M-d";
+    } break;
+    case 8: {
+        m_dateFormat = "yy.M.d";
+    } break;
+    default: {
+        m_dateFormat = "yyyy-MM-dd";
+    } break;
+    }
+    updateDateTimeFormat();
 }

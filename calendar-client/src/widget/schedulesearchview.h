@@ -130,6 +130,7 @@ signals:
 public slots:
     void slotEdit();
     void slotDelete();
+    void slotTimeFormatChanged(int value);
 protected:
     void paintEvent(QPaintEvent *e) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
@@ -165,6 +166,7 @@ private:
     int m_roundtype = 1;
     const int m_radius = 8;
     const int m_borderframew = 1;
+    QString m_timeFormat = "hh:mm";
 };
 class CScheduleSearchDateItem : public DLabel
 {

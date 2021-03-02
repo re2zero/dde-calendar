@@ -68,6 +68,11 @@ public:
     static QDate getFirstDayOfWeek(const QDate &date);
     //根据日期获取该日期处于该年第多少周
     static int getWeekNumOfYear(const QDate &date);
+
+    void setTimeFormatChanged(int value);
+    void setDateFormatChanged(int value);
+    QString getTimeFormat();
+    QString getDateFormat();
 private:
     void setYearBeginAndEndDate(const int year);
 private:
@@ -97,6 +102,8 @@ private:
      */
     QString                 m_weekDayFormat{"ddd"};
     ShowDateRange           m_showDateRange;
+    QString                 m_timeFormat = "h:mm";
+    QString                 m_dateFormat = "yyyy-MM-dd";
 };
 
 #endif // CALENDARDATEDATAMANAGE_H

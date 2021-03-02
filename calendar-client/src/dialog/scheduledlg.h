@@ -63,6 +63,7 @@ protected:
     void showEvent(QShowEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
     void changeEvent(QEvent *event) override;
+    void updateDateTimeFormat();
 private:
     void initUI();
     void initConnection();

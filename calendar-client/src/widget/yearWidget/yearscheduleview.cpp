@@ -152,6 +152,12 @@ QDate CYearScheduleView::getCurrentDate()
     return m_currentDate;
 }
 
+void CYearScheduleView::setTimeFormat(QString format)
+{
+    m_timeFormat = format;
+    update();
+}
+
 void CYearScheduleView::updateDateShow()
 {
     int sviewNum = 0;
@@ -249,7 +255,7 @@ void CYearScheduleView::paintItem(QPainter &painter, ScheduleDataInfo info, int 
                 if (m_currentDate > info.getBeginDateTime().date()) {
                     str = tr("All Day");
                 } else {
-                    str = info.getBeginDateTime().time().toString("hh:mm");
+                    str = info.getBeginDateTime().time().toString(m_timeFormat);
                 }
             }
             painter.drawText(QRect(width() - 70, bheight, 57, labelheight - 2), Qt::AlignRight | Qt::AlignVCenter, str);
@@ -323,6 +329,11 @@ void CYearScheduleOutView::setDirection(DArrowRectangle::ArrowDirection value)
     this->setArrowDirection(value);
     //设置内容窗口
     this->setContent(yearscheduleview);
+}
+
+void CYearScheduleOutView::setTimeFormat(QString format)
+{
+    yearscheduleview->setTimeFormat(format);
 }
 
 void CYearScheduleOutView::mousePressEvent(QMouseEvent *event)

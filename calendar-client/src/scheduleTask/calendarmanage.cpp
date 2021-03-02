@@ -140,6 +140,12 @@ void CalendarManager::initData()
     m_showLunar = QLocale::system().language() == QLocale::Chinese;
     //获取每周第一天
     const int _weekFirstDay = m_timeDateDbus->weekBegins();
+    //获取时间日期格式
+    const int _timeFormat = m_timeDateDbus->shortTimeFormat();
+    const int _dateFormat = m_timeDateDbus->shortDateFormat();
+    //设置时间日期格式
+    m_dateManage->setTimeFormatChanged(_timeFormat);
+    m_dateManage->setDateFormatChanged(_dateFormat);
     setWeekBegins(_weekFirstDay);
 }
 
@@ -149,6 +155,10 @@ void CalendarManager::initData()
 void CalendarManager::initConnection()
 {
     connect(m_timeDateDbus, &DaemonTimeDate::WeekBeginsChanged, this, &CalendarManager::WeekBeginsChanged);
+    connect(m_timeDateDbus, &DaemonTimeDate::ShortTimeFormatChanged, this, &CalendarManager::slotTimeFormatChanged);
+    connect(m_timeDateDbus, &DaemonTimeDate::ShortTimeFormatChanged, this, &CalendarManager::signalTimeFormatChanged);
+    connect(m_timeDateDbus, &DaemonTimeDate::ShortDateFormatChanged, this, &CalendarManager::slotDateFormatChanged);
+    connect(m_timeDateDbus, &DaemonTimeDate::ShortDateFormatChanged, this, &CalendarManager::signalDateFormatChanged);
     connect(m_scheduleTask, &CScheduleTask::signalUpdateScheduleShow, this, &CalendarManager::slotGetScheduleSuccess);
     connect(m_scheduleTask, &CScheduleTask::signalLunarGetSuccess, this, &CalendarManager::slotGetLunarSuccess);
     connect(m_scheduleTask, &CScheduleTask::jobsUpdate, this, &CalendarManager::slotJobsUpdated);
@@ -243,4 +253,27 @@ void CalendarManager::slotUpdateSearchSchedule()
     for (int i = 0; i < m_showWidget.size(); ++i) {
         m_showWidget.at(i)->updateSearchScheduleInfo();
     }
+}
+
+/**
+ * @brief CalendarManager::slotTimeFormatChanged 更新时间显示格式
+ * @param value
+ */
+void CalendarManager::slotTimeFormatChanged(int value)
+{
+    QString timeFormat;
+    m_dateManage->setTimeFormatChanged(value);
+    //更新显示界面
+    for (int i = 0; i < m_showWidget.size(); ++i) {
+        m_showWidget.at(i)->updateData();
+    }
+}
+
+/**
+ * @brief CalendarManager::slotDateFormatChanged 更新日期显示格式
+ * @param value
+ */
+void CalendarManager::slotDateFormatChanged(int value)
+{
+    m_dateManage->setDateFormatChanged(value);
 }

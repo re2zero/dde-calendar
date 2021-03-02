@@ -63,6 +63,7 @@ public:
     void setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchScheduleInfo);
     //设置当前时间
     void setCurrentDate(const QDate &currentDate);
+    void setRemindWidgetTimeFormat(QString timeformat);
 signals:
     /**
      * @brief signalViewtransparentFrame 设置窗口的焦点

@@ -193,6 +193,11 @@ void CMonthView::setCurrentDate(const QDate &currentDate)
     m_weekIndicator->setCurrentDate(currentDate);
 }
 
+void CMonthView::setRemindWidgetTimeFormat(QString timeformat)
+{
+    m_remindWidget->setTimeFormat(timeformat);
+}
+
 void CMonthView::setLunarVisible(bool visible)
 {
     m_monthGraphicsView->setLunarVisible(visible);

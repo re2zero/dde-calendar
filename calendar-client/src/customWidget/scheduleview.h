@@ -49,6 +49,7 @@ public:
     void setCurrentDate(const QDateTime &currentDate);
     //设置显示日程
     void setShowScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo> > &scheduleInfo);
+    void setTimeFormat(QString timeformat);
 signals:
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
@@ -117,6 +118,7 @@ private:
      */
     touchGestureOperation m_touchGesture;
     QColor              m_outerBorderColor;             //外边框背景色
+    QString m_timeFormat;
 };
 
 #endif // SCHEDULEVIEW_H

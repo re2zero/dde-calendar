@@ -45,6 +45,7 @@ DGUI_USE_NAMESPACE
 CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
     : DLabel(parent)
     , m_rightMenu(new DMenu(this))
+    , m_timeFormat(CalendarManager::getInstance()->getCalendarDateDataManage()->getTimeFormat())
 {
     //设置对象名称和辅助显示名称
     this->setObjectName("CScheduleDataItem");
@@ -55,6 +56,8 @@ CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
     setTheMe(DGuiApplicationHelper::instance()->themeType());
+    QObject::connect(CalendarManager::getInstance(), &CalendarManager::signalTimeFormatChanged,
+                     this, &CScheduleSearchItem::slotTimeFormatChanged);
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
                      this,
                      &CScheduleSearchItem::setTheMe);
@@ -149,6 +152,19 @@ void CScheduleSearchItem::slotDelete()
     emit signalViewtransparentFrame(0);
 }
 
+/**
+ * @brief CScheduleSearchItem::slotTimeFormatChanged 更新时间显示格式
+ */
+void CScheduleSearchItem::slotTimeFormatChanged(int value)
+{
+    if (value) {
+        m_timeFormat = "hh:mm";
+    } else {
+        m_timeFormat = "h:mm";
+    }
+    update();
+}
+
 void CScheduleSearchItem::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e);
@@ -235,11 +251,11 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     QString datestr;
 
     if (begindate == enddate) {
-        datestr = m_ScheduleInfo.getBeginDateTime().toString("hh:mm")
-                  + "-" + m_ScheduleInfo.getEndDateTime().toString("hh:mm");
+        datestr = m_ScheduleInfo.getBeginDateTime().toString(m_timeFormat)
+                  + "-" + m_ScheduleInfo.getEndDateTime().toString(m_timeFormat);
     } else {
-        datestr = m_ScheduleInfo.getBeginDateTime().toString("hh:mm")
-                  + "-" + m_ScheduleInfo.getEndDateTime().toString("hh:mm");
+        datestr = m_ScheduleInfo.getBeginDateTime().toString(m_timeFormat)
+                  + "-" + m_ScheduleInfo.getEndDateTime().toString(m_timeFormat);
     }
 
     QFontMetrics fm1(m_timefont);
