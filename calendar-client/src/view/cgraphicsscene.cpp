@@ -95,6 +95,13 @@ bool CGraphicsScene::event(QEvent *event)
         if (m_keyPrxy != nullptr && m_keyPrxy->keyPressDeal(keyEvent->key())) {
             dealResult = true;
         }
+        if (keyEvent->modifiers() == Qt::ALT && keyEvent->key() == Qt::Key_M) {
+            CSceneBackgroundItem *item = dynamic_cast<CSceneBackgroundItem *>(currentFocusItem);
+            if (item != nullptr && item->getFocusItem()->getItemType() == CFocusItem::CITEM) {
+                dealResult = true;
+                emit signalContextMenu(item->getFocusItem());
+            }
+        }
     }
 
     if (event->type() == QEvent::FocusIn) {

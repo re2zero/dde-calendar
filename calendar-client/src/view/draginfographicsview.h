@@ -177,6 +177,7 @@ public slots:
     void slotDeleteItem();
     void slotSwitchPrePage(const QDate &focusDate);
     void slotSwitchNextPage(const QDate &focusDate);
+    void slotContextMenu(CFocusItem *item);
 
 protected:
     //设置场景数据切换后当前item焦点

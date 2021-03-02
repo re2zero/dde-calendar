@@ -86,6 +86,7 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     connect(m_Scene, &CGraphicsScene::signalSwitchPrePage, this, &DragInfoGraphicsView::slotSwitchPrePage);
     connect(m_Scene, &CGraphicsScene::signalSwitchNextPage, this, &DragInfoGraphicsView::slotSwitchNextPage);
     connect(m_Scene, &CGraphicsScene::signalGotoDayView, this, &DragInfoGraphicsView::signalGotoDayView);
+    connect(m_Scene, &CGraphicsScene::signalContextMenu, this, &DragInfoGraphicsView::slotContextMenu);
 }
 
 DragInfoGraphicsView::~DragInfoGraphicsView()
@@ -830,6 +831,37 @@ void DragInfoGraphicsView::slotSwitchNextPage(const QDate &focusDate)
 {
     emit signalSwitchNextPage();
     setSceneCurrentItemFocus(focusDate);
+}
+
+void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
+{
+    DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(item);
+    if (infoitem != nullptr) {
+        //快捷键调出右击菜单
+        m_rightMenu->clear();
+        m_rightMenu->addAction(m_editAction);
+        m_rightMenu->addAction(m_deleteAction);
+        QPointF itemPos = QPointF(infoitem->rect().x() + infoitem->rect().width() / 2, infoitem->rect().y() + infoitem->rect().height() / 2);
+        QPointF scene_pos = infoitem->mapToScene(itemPos);
+        QPointF view_pos = mapFromScene(scene_pos);
+        QPoint screen_pos = mapToGlobal(view_pos.toPoint());
+        QAction *action_t = m_rightMenu->exec(screen_pos);
+
+        if (action_t == m_editAction) {
+            emit signalViewtransparentFrame(1);
+            CScheduleDlg dlg(0, this);
+            dlg.setData(infoitem->getData());
+            if (dlg.exec() == DDialog::Accepted) {
+                emit signalsUpdateShcedule();
+            }
+            emit signalViewtransparentFrame(0);
+        } else if (action_t == m_deleteAction) {
+            DeleteItem(infoitem->getData());
+        } else {
+            qDebug() << Q_FUNC_INFO;
+        }
+        setFocus(Qt::TabFocusReason);
+    }
 }
 
 void DragInfoGraphicsView::setSceneCurrentItemFocus(const QDate &focusDate)

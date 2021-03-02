@@ -28,6 +28,8 @@
  * @brief The CGraphicsScene class
  *
  */
+
+class CFocusItem;
 class CGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
@@ -81,6 +83,8 @@ signals:
     void signalViewFocusInit();
     //切换到日视图
     void signalGotoDayView(const QDate &date);
+    //快捷键触发右击
+    void signalContextMenu(CFocusItem *item);
 
 private:
     QGraphicsItem *firstfocusItem;
