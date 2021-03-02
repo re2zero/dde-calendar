@@ -212,8 +212,8 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
 
             for (int m = 0; m < info.count(); m++) {
                 int tnum = info.at(m).vData.count();
-
-                if (m_viewType == 0) {
+                //如果为周视图则要显示一个位置显示日程的数目
+                if (m_viewPos == WeekPos) {
                     if (tnum > m_sMaxNum) {
                         tnum = m_sMaxNum;
                         for (int n = 0; n < tnum - 1; n++) {
@@ -283,6 +283,9 @@ void CGraphicsView::addSchduleItem(const ScheduleDataInfo &info, QDate date, int
                                     info.getEndDateTime(), index, totalNum, maxnum,
                                     viewtype),
         nullptr, type);
+    if (type == 1) {
+        item->setItemType(CFocusItem::COTHER);
+    }
     m_Scene->addItem(item);
     item->setData(info, date, totalNum);
     m_vScheduleItem.append(item);
@@ -410,7 +413,7 @@ void CGraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
         return;
     }
     if (item->getType() == 1) {
-        emit signalsCurrentScheduleDate(item->getdate());
+        emit signalsCurrentScheduleDate(item->getDate());
         return;
     }
     emit signalViewtransparentFrame(1);

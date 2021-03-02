@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QGraphicsRectItem>
 #include <QPen>
+#include <QDate>
 
 class CFocusItem : public QObject
     , public QGraphicsRectItem
@@ -52,6 +53,17 @@ public:
     virtual CFocusItem *setNextItemFocusAndGetNextItem();
     //获取系统活动色
     QColor getSystemActiveColor();
+    //设置显示日期
+    void setDate(const QDate &date);
+    //获取显示日期
+    QDate getDate() const
+    {
+        return m_Date;
+    }
+
+protected:
+    QDate m_Date;
+
 private:
     CFocusItem *m_NextFocusItem;
     CItemType m_itemType;

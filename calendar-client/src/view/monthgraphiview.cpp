@@ -108,7 +108,7 @@ void CMonthGraphiview::setDate(const QVector<QDate> &showDate)
         m_currentMonth = showDate.at(0).month();
     }
     for (int i = 0; i < m_DayItem.size(); ++i) {
-        m_DayItem.at(i)->setData(showDate.at(i));
+        m_DayItem.at(i)->setDate(showDate.at(i));
         m_DayItem.at(i)->setCurrentMonth(showDate.at(i).month() == m_currentMonth);
     }
     m_shceludelistdata.clear();

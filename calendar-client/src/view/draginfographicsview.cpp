@@ -85,6 +85,7 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
 
     connect(m_Scene, &CGraphicsScene::signalSwitchPrePage, this, &DragInfoGraphicsView::slotSwitchPrePage);
     connect(m_Scene, &CGraphicsScene::signalSwitchNextPage, this, &DragInfoGraphicsView::slotSwitchNextPage);
+    connect(m_Scene, &CGraphicsScene::signalGotoDayView, this, &DragInfoGraphicsView::signalGotoDayView);
 }
 
 DragInfoGraphicsView::~DragInfoGraphicsView()

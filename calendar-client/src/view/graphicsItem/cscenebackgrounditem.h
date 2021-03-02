@@ -46,13 +46,6 @@ public:
     void initState();
     //获取当前焦点的item
     CFocusItem *getFocusItem();
-    //设置显示日期
-    void setData(const QDate &date);
-    //获取显示日期
-    QDate getDate() const
-    {
-        return m_Date;
-    }
 
     CSceneBackgroundItem *getLeftItem() const;
     void setLeftItem(CSceneBackgroundItem *leftItem);
@@ -70,7 +63,6 @@ protected:
     virtual void updateCurrentItemShow();
 signals:
     void setChangeFocuse();
-
 private:
     int m_backgroundNum;
     CSceneBackgroundItem *m_leftItem;
@@ -80,7 +72,6 @@ private:
 protected:
     QVector<CFocusItem *> m_item {};
     int m_showItemIndex;
-    QDate m_Date;
 };
 
 #endif // CSCENEBACKGROUNDITEM_H

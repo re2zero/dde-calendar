@@ -119,7 +119,7 @@ void CWeekDayGraphicsview::setSceneRect(qreal x, qreal y, qreal w, qreal h)
     const qreal backgroundItemHeight = h;
     const qreal backgroundItemWidth = w / m_backgroundItem.size();
     for (int i = 0; i < m_backgroundItem.size(); ++i) {
-        m_backgroundItem.at(i)->setData(m_beginDate.addDays(i));
+        m_backgroundItem.at(i)->setDate(m_beginDate.addDays(i));
         m_backgroundItem.at(i)->setRect(x + backgroundItemWidth * i, 0, backgroundItemWidth, backgroundItemHeight);
     }
 }
@@ -180,7 +180,7 @@ void CWeekDayGraphicsview::setSceneCurrentItemFocus(const QDate &focusDate)
 void CWeekDayGraphicsview::setBackgroundDate()
 {
     for (int i = 0; i < m_backgroundItem.size(); ++i) {
-        m_backgroundItem.at(i)->setData(m_beginDate.addDays(i));
+        m_backgroundItem.at(i)->setDate(m_beginDate.addDays(i));
     }
 }
 

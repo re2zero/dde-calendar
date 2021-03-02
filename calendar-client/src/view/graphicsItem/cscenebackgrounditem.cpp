@@ -176,15 +176,6 @@ CFocusItem *CSceneBackgroundItem::getFocusItem()
     }
 }
 
-/**
- * @brief CMonthDayItem::setData 设置显示日期
- * @param date
- */
-void CSceneBackgroundItem::setData(const QDate &date)
-{
-    m_Date = date;
-}
-
 CSceneBackgroundItem *CSceneBackgroundItem::getLeftItem() const
 {
     return m_leftItem;

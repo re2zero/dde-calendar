@@ -44,16 +44,6 @@ public:
     void setText(QColor tcolor, QFont font);
     //设置字体大小
     void setSizeType(DFontSizeManager::SizeType sizeType);
-    //设置属于哪一天
-    void setDate(QDate date)
-    {
-        m_date = date;
-    }
-    //获取显示多少项
-    QDate getDate() const
-    {
-        return m_date;
-    }
     //设置显示多少项
     void setData(int num)
     {
@@ -69,7 +59,6 @@ private:
     QColor m_textcolor;
     QFont m_font;
     int m_num;
-    QDate m_date;
     DFontSizeManager::SizeType m_SizeType = DFontSizeManager::T8;
 };
 #endif // CMONTHSCHEDULENUMITEM_H

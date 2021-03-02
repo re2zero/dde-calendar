@@ -79,6 +79,9 @@ signals:
     void signalSwitchView(const QDate &focusDate, bool setItemFocus = false);
     //通知另一个视图初始化
     void signalViewFocusInit();
+    //切换到日视图
+    void signalGotoDayView(const QDate &date);
+
 private:
     QGraphicsItem *firstfocusItem;
     QGraphicsItem *currentFocusItem;

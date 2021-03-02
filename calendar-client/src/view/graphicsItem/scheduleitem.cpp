@@ -60,7 +60,7 @@ void CScheduleItem::setData(const ScheduleDataInfo &info, QDate date, int totalN
 {
     m_vScheduleInfo = info;
     m_totalNum = totalNum;
-    m_date = date;
+    setDate(date);
     update();
 }
 
@@ -254,7 +254,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
 
         //绘制日程起始时间
-        if (m_vScheduleInfo.getBeginDateTime().date() == m_date) {
+        if (m_vScheduleInfo.getBeginDateTime().date() == getDate()) {
             painter->save();
             painter->setFont(font);
             painter->setPen(gdcolor.timeColor);

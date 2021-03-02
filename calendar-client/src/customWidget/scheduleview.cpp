@@ -428,6 +428,8 @@ void CScheduleView::initConnection()
             &CScheduleView::slotupdateSchedule);
     connect(m_graphicsView, &CGraphicsView::signalsCurrentScheduleDate, this,
             &CScheduleView::slotCurrentScheduleDate);
+    connect(m_graphicsView, &CGraphicsView::signalGotoDayView, this,
+            &CScheduleView::slotCurrentScheduleDate);
 
     connect(m_alldaylist, &CAllDayEventWeekView::signalViewtransparentFrame, this,
             &CScheduleView::signalViewtransparentFrame);

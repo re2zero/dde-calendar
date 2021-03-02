@@ -53,6 +53,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     connect(m_monthGraphicsView, &CMonthGraphiview::signalAngleDelta, this, &CMonthView::signalAngleDelta);
     connect(m_monthGraphicsView, &CMonthGraphiview::signalSwitchPrePage, this, &CMonthView::signalSwitchPrePage);
     connect(m_monthGraphicsView, &CMonthGraphiview::signalSwitchNextPage, this, &CMonthView::signalSwitchNextPage);
+    connect(m_monthGraphicsView, &CMonthGraphiview::signalGotoDayView, this, &CMonthView::signalsViewSelectDate);
     //新建最终布局
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->setMargin(0);

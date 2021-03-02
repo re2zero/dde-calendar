@@ -100,3 +100,8 @@ QColor CFocusItem::getSystemActiveColor()
 {
     return CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
 }
+
+void CFocusItem::setDate(const QDate &date)
+{
+    m_Date = date;
+}

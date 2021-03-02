@@ -55,8 +55,9 @@ bool CKeyEnableDeal::focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *s
             CMyScheduleView dlg(scheduleItem->getData(), parentWidget);
             dlg.exec();
         } break;
-        default:
-            break;
+        default: {
+            scene->signalGotoDayView(focusItem->getDate());
+        } break;
         }
     }
     return result;
