@@ -74,6 +74,11 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 private slots:
     void slotIsDragging(bool &isDragging);
+    //切换选择时间
+    void slotSwitchPrePage();
+    //切换选择时间
+    void slotSwitchNextPage();
+
 private:
     CDayMonthView *m_daymonthView = nullptr;
     CustomFrame *m_leftground = nullptr;

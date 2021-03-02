@@ -294,6 +294,8 @@ void CDayWindow::initConnection()
     connect(m_daymonthView, &CDayMonthView::signalIsDragging, this, &CDayWindow::slotIsDragging);
     connect(m_daymonthView, &CDayMonthView::signalChangeSelectDate, this, &CDayWindow::slotChangeSelectDate);
     connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CDayWindow::signalViewtransparentFrame);
+    connect(m_scheduleView, &CScheduleView::signalSwitchPrePage, this, &CDayWindow::slotSwitchPrePage);
+    connect(m_scheduleView, &CScheduleView::signalSwitchNextPage, this, &CDayWindow::slotSwitchNextPage);
 }
 
 /**
@@ -370,4 +372,20 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
 void CDayWindow::slotIsDragging(bool &isDragging)
 {
     isDragging = m_scheduleView->IsDragging();
+}
+
+/**
+ * @brief CDayWindow::slotSwitchPrePage     切换选择时间
+ */
+void CDayWindow::slotSwitchPrePage()
+{
+    slotChangeSelectDate(getSelectDate().addDays(-1));
+}
+
+/**
+ * @brief CDayWindow::slotSwitchNextPage    切换选择时间
+ */
+void CDayWindow::slotSwitchNextPage()
+{
+    slotChangeSelectDate(getSelectDate().addDays(1));
 }
