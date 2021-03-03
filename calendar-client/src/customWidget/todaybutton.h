@@ -38,6 +38,8 @@ protected:
     void focusOutEvent(QFocusEvent *event) override;
     void enterEvent(QEvent *event) override;
     void leaveEvent(QEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+
 private:
     QColor                   m_bnormalColor = "#FFFFFF";
     QColor                   m_bhoverColor = "#FFFFFF";

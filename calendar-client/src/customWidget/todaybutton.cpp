@@ -111,3 +111,12 @@ void CTodayButton::leaveEvent(QEvent *event)
     setPalette(todaypa);
     DPushButton::leaveEvent(event);
 }
+
+void CTodayButton::keyPressEvent(QKeyEvent *event)
+{
+    //添加回车点击效果处理
+    if (event->key() == Qt::Key_Return) {
+        click();
+    }
+    DPushButton::keyPressEvent(event);
+}
