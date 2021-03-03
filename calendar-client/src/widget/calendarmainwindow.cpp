@@ -30,6 +30,7 @@
 #include "cdynamicicon.h"
 #include "constants.h"
 #include "scheduledlg.h"
+#include "ctitlewidget.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -75,7 +76,6 @@ Calendarmainwindow::Calendarmainwindow(QWidget *w)
     connect(viewshortcut, SIGNAL(activated()), this, SLOT(onViewShortcut()));
 
     setTitlebarShadowEnabled(true);
-    setFocusPolicy(Qt::ClickFocus);
     //获取屏幕大小
     QSize deskSize = QApplication::desktop()->size();
     //设置最大尺寸为屏幕尺寸
@@ -227,19 +227,6 @@ void Calendarmainwindow::slotTheme(int type)
     }
 
     if (type == 1) {
-
-        DPalette pl = m_yearButton->palette();
-        pl.setColor(DPalette::ButtonText, QColor("#414D68"));
-        pl.setColor(DPalette::Light, QColor("#E6E6E6"));
-        pl.setColor(DPalette::Dark, QColor("#E3E3E3"));
-        QColor sbcolor("#000000");
-        sbcolor.setAlphaF(0.08);
-        pl.setColor(DPalette::Shadow, sbcolor);
-        m_yearButton->setPalette(pl);
-        m_monthButton->setPalette(pl);
-        m_weekButton->setPalette(pl);
-        m_dayButton->setPalette(pl);
-
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#F8F8F8");
         m_contentBackground->setPalette(anipa);
@@ -251,19 +238,7 @@ void Calendarmainwindow::slotTheme(int type)
         tframepa.setColor(DPalette::Background, tColor);
         m_transparentFrame->setPalette(tframepa);
         m_transparentFrame->setBackgroundRole(DPalette::Background);
-
     } else {
-        DPalette pl = m_yearButton->palette();
-        pl.setColor(DPalette::ButtonText, QColor("#C0C6D4"));
-        pl.setColor(DPalette::Light, QColor("#484848"));
-        pl.setColor(DPalette::Dark, QColor("#414141"));
-        QColor sbcolor("#000000");
-        sbcolor.setAlphaF(0.08);
-        pl.setColor(DPalette::Shadow, sbcolor);
-        m_yearButton->setPalette(pl);
-        m_monthButton->setPalette(pl);
-        m_weekButton->setPalette(pl);
-        m_dayButton->setPalette(pl);
         DPalette anipa = m_contentBackground->palette();
         anipa.setColor(DPalette::Background, "#252525");
         m_contentBackground->setPalette(anipa);
@@ -290,8 +265,9 @@ void Calendarmainwindow::OpenSchedule(QString job)
         return;
     ScheduleDataInfo out;
     out = ScheduleDataInfo::JsonStrToSchedule(job);
-    m_dayButton->setFocus();
-    m_dayButton->setChecked(true);
+
+    m_buttonBox->button(DDECalendar::CalendarDayWindow)->setFocus();
+    m_buttonBox->button(DDECalendar::CalendarDayWindow)->setFocus();
     //切换到日视图
     m_stackWidget->setCurrentIndex(DDECalendar::CalendarDayWindow);
     //设置选择时间
@@ -325,92 +301,17 @@ void Calendarmainwindow::initUI()
     //1.5秒更新当前时间
     m_currentDateUpdateTimer->start(1500);
 
-    QFrame *titleframe = new QFrame(this);
-    titleframe->setAccessibleName("TitleFrame");
-    titleframe->setObjectName("titleframe");
-    titleframe->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     CDynamicIcon::getInstance()->setTitlebar(this->titlebar());
     CDynamicIcon::getInstance()->setIcon();
 
-    m_buttonBox = new DButtonBox(this);
-    m_buttonBox->setObjectName("ButtonBox");
-    m_buttonBox->setAccessibleName("ButtonBox");
-    m_buttonBox->setAccessibleDescription("Year, month, week, day button box");
+    CTitleWidget *titleWidget = new CTitleWidget(this);
+    titleWidget->setFocusPolicy(Qt::TabFocus);
+    this->titlebar()->setCustomWidget(titleWidget);
+    setTabOrder(this->titlebar(), titleWidget);
 
-    m_yearButton = new DButtonBoxButton(tr("Y"), this);
-    //设置年辅助技术显示名称
-    m_yearButton->setObjectName("YearButton");
-    m_yearButton->setAccessibleName("YearButton");
-
-    QFont viewfont;
-    viewfont.setWeight(QFont::Medium);
-    viewfont.setPixelSize(DDECalendar::FontSizeFourteen);
-
-    m_yearButton->setFixedSize(50, 36);
-    m_monthButton = new DButtonBoxButton(tr("M"), this);
-    //设置月辅助技术显示名称
-    m_monthButton->setObjectName("MonthButton");
-    m_monthButton->setAccessibleName("MonthButton");
-    m_monthButton->setFixedSize(50, 36);
-    m_weekButton = new DButtonBoxButton(tr("W"), this);
-    //设置周辅助技术显示名称
-    m_weekButton->setObjectName("WeekButton");
-    m_weekButton->setAccessibleName("WeekButton");
-    m_weekButton->setFixedSize(50, 36);
-    m_dayButton = new DButtonBoxButton(tr("D"), this);
-    //设置日辅助技术显示名称
-    m_dayButton->setObjectName("DayButton");
-    m_dayButton->setAccessibleName("DayButton");
-    m_dayButton->setFixedSize(50, 36);
-    m_yearButton->setFont(viewfont);
-    m_monthButton->setFont(viewfont);
-    m_weekButton->setFont(viewfont);
-    m_dayButton->setFont(viewfont);
-
-    QList<DButtonBoxButton *> btlist;
-    btlist.append(m_yearButton);
-    btlist.append(m_monthButton);
-    btlist.append(m_weekButton);
-    btlist.append(m_dayButton);
-    m_buttonBox->setButtonList(btlist, true);
-
-    m_buttonBox->setId(m_yearButton, DDECalendar::CalendarYearWindow);
-    m_buttonBox->setId(m_monthButton, DDECalendar::CalendarMonthWindow);
-    m_buttonBox->setId(m_weekButton, DDECalendar::CalendarWeekWindow);
-    m_buttonBox->setId(m_dayButton, DDECalendar::CalendarDayWindow);
-    m_buttonBox->setFixedSize(200, 36);
-
-    QHBoxLayout *titleLayout = new QHBoxLayout;
-    titleLayout->setMargin(0);
-    titleLayout->setSpacing(0);
-    titleLayout->addSpacing(8);
-    titleLayout->addWidget(m_buttonBox);
-    titleLayout->addSpacing(52);
-    m_searchEdit = new DSearchEdit(this);
-    //设置搜索框辅助技术显示名称
-    m_searchEdit->setObjectName("SearchEdit");
-    m_searchEdit->setAccessibleName("SearchEdit");
-    DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
-    m_searchEdit->setFixedHeight(36);
-    m_searchEdit->setMinimumWidth(240);
-    m_searchEdit->setMaximumWidth(354);
-    m_searchEdit->setFont(viewfont);
-    titleLayout->addStretch();
-    titleframe->setLayout(titleLayout);
-
-    DTitlebar *titlebar = this->titlebar();
-    titlebar->setObjectName("TitleBar");
-    titlebar->setAccessibleName("TitleBar");
-    titlebar->setFixedHeight(50);
-    titlebar->addWidget(titleframe, Qt::AlignLeft | Qt::AlignVCenter);
-    titlebar->setCustomWidget(m_searchEdit, true);
-    //新建日程快捷按钮
-    m_newScheduleBtn = new DToolButton(this);
-    DStyle style;
-    m_newScheduleBtn->setFixedSize(36, 36);
-    //设置+
-    m_newScheduleBtn->setIcon(style.standardIcon(DStyle::SP_IncreaseElement));
-    titlebar->addWidget(m_newScheduleBtn, Qt::AlignRight);
+    m_searchEdit = titleWidget->searchEdit();
+    m_buttonBox = titleWidget->buttonBox();
+    m_newScheduleBtn = titleWidget->newScheduleBtn();
 
     m_stackWidget = new AnimationStackedWidget();
     m_stackWidget->setObjectName("StackedWidget");
@@ -453,8 +354,6 @@ void Calendarmainwindow::initUI()
     maincentralWidget->setLayout(tmainLayout);
 
     setCentralWidget(maincentralWidget);
-    m_yearButton->setFocus();
-    m_yearButton->setChecked(true);
     m_transparentFrame = new DFrame(this);
     m_transparentFrame->setAutoFillBackground(true);
     m_transparentFrame->hide();

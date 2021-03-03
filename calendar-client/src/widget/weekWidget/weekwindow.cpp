@@ -32,6 +32,7 @@
 #include <QDate>
 #include <QHBoxLayout>
 #include <QMouseEvent>
+#include <QShortcut>
 
 DGUI_USE_NAMESPACE
 CWeekWindow::CWeekWindow(QWidget *parent)
@@ -181,6 +182,9 @@ void CWeekWindow::initUI()
     ssLayout->setContentsMargins(0, 0, 0, 10);
     m_tmainLayout->addLayout(ssLayout);
     this->setLayout(m_tmainLayout);
+
+    setTabOrder(m_weekview, m_today);
+    setTabOrder(m_today, m_scheduleView);
 }
 
 /**

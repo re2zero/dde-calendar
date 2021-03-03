@@ -97,10 +97,6 @@ private:
     DLabel *m_icon = nullptr;
     AnimationStackedWidget *m_stackWidget = nullptr;
     DButtonBox *m_buttonBox = nullptr;
-    DButtonBoxButton *m_yearButton = nullptr;
-    DButtonBoxButton *m_monthButton = nullptr;
-    DButtonBoxButton *m_weekButton = nullptr;
-    DButtonBoxButton *m_dayButton = nullptr;
     DSearchEdit *m_searchEdit = nullptr;
     CYearWindow *m_yearwindow = nullptr;
     CMonthWindow *m_monthWindow = nullptr;
