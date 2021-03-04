@@ -106,7 +106,7 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     layout->addStretch();
     layout->addWidget(m_newScheduleBtn, Qt::AlignRight);
     this->setLayout(layout);
-    setFocusProxy(m_buttonBox);
+    setFocusProxy(m_yearButton);
 }
 
 DButtonBox *CTitleWidget::buttonBox() const

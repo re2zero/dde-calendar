@@ -56,8 +56,9 @@ DWIDGET_USE_NAMESPACE
 static const int CalendarMWidth = 860;
 static const int CalendarMHeight = 634;
 
-Calendarmainwindow::Calendarmainwindow(QWidget *w)
+Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     : DMainWindow(w)
+    , m_defaultIndex(index)
 {
     setContentsMargins(QMargins(0, 0, 0, 0));
     initUI();
@@ -409,6 +410,14 @@ void Calendarmainwindow::createview()
     m_DayWindow = new CDayWindow;
     m_DayWindow->updateData();
     m_stackWidget->addWidget(m_DayWindow);
+
+    //如果默认视图不在范围内则设置为月窗口显示
+    if (m_defaultIndex < 0 || m_defaultIndex >= m_stackWidget->count()) {
+        m_defaultIndex = 1;
+        qWarning() << "set default view index beyound,index:" << m_defaultIndex;
+    }
+    m_stackWidget->setCurrentIndex(m_defaultIndex);
+    m_buttonBox->button(m_defaultIndex)->setChecked(true);
 }
 
 /**

@@ -86,8 +86,8 @@ int main(int argc, char *argv[])
     DLogManager::registerFileAppender();
     //获取应用配置
     DApplicationSettings applicationset(app);
-
-    Calendarmainwindow ww;
+    //为了与老版本配置兼容
+    Calendarmainwindow ww(viewtype - 1);
     ExportedInterface einterface(&ww);
     einterface.registerAction("CREATE", "create a new schedule");
     einterface.registerAction("VIEW", "check a date on calendar");
@@ -97,8 +97,6 @@ int main(int argc, char *argv[])
     dbus.registerService("com.deepin.Calendar");
     dbus.registerObject("/com/deepin/Calendar", &ww);
     ww.slotTheme(DApplicationHelper::instance()->themeType());
-    //为了与老版本配置兼容
-    ww.viewWindow(viewtype - 1);
     ww.show();
 
     PERF_PRINT_END("POINT-01");

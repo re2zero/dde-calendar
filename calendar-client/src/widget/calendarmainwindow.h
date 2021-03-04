@@ -47,7 +47,7 @@ class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
 public:
-    explicit Calendarmainwindow(QWidget *w = nullptr);
+    explicit Calendarmainwindow(int index, QWidget *w = nullptr);
     ~Calendarmainwindow() override;
     void viewWindow(int type, const bool showAnimation = false);
     void updateHigh();
@@ -112,6 +112,8 @@ private:
     QPropertyAnimation *m_animation = nullptr;
     QTimer *m_currentDateUpdateTimer = nullptr;
     DToolButton *m_newScheduleBtn {nullptr}; //全局的新建日程按钮
+    //日历打开默认显示视图
+    int m_defaultIndex;
 };
 
 #endif // CALENDARMAINWINDOW_H
