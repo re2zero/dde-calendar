@@ -36,14 +36,14 @@
         <translation>%1 دىن %2 گىچە</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="272"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="283"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="273"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="284"/>
         <source>Today</source>
         <translation>بۈگۈن</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="275"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="286"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="276"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="287"/>
         <source>Tomorrow</source>
         <translation>ئەتە</translation>
     </message>

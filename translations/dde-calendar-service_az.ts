@@ -36,14 +36,14 @@
         <translation>%1 ilə %2 arası</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="272"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="283"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="273"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="284"/>
         <source>Today</source>
         <translation>Bu gün</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="275"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="286"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="276"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="287"/>
         <source>Tomorrow</source>
         <translation>Sabah</translation>
     </message>
