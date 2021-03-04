@@ -341,14 +341,14 @@ void CScheduleSearchItem::mouseReleaseEvent(QMouseEvent *event)
 
 void CScheduleSearchItem::enterEvent(QEvent *event)
 {
-    Q_UNUSED(event);
+    DLabel::enterEvent(event);
     m_mouseStatus = M_HOVER;
     update();
 }
 
 void CScheduleSearchItem::leaveEvent(QEvent *event)
 {
-    Q_UNUSED(event);
+    DLabel::leaveEvent(event);
     m_mouseStatus = M_NONE;
     update();
 }
