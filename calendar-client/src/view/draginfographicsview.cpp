@@ -846,6 +846,9 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
 {
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(item);
     if (infoitem != nullptr) {
+        //如果为节假日则退出不展示右击菜单
+        if (infoitem->getData().getType() == 4)
+            return;
         //快捷键调出右击菜单
         m_rightMenu->clear();
         m_rightMenu->addAction(m_editAction);
