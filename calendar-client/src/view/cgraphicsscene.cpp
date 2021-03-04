@@ -118,7 +118,7 @@ bool CGraphicsScene::focusInDeal(QEvent *event)
 {
     bool dealResult = true;
     QFocusEvent *focusEvent = dynamic_cast<QFocusEvent *>(event);
-    if (firstfocusItem != nullptr && Qt::TabFocusReason == focusEvent->reason()) {
+    if (firstfocusItem != nullptr && (Qt::TabFocusReason == focusEvent->reason() || Qt::BacktabFocusReason == focusEvent->reason())) {
         if (m_isShowCurrentItem || currentFocusItem == nullptr) {
             if (currentFocusItem == nullptr) {
                 currentFocusItem = firstfocusItem;
