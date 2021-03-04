@@ -33,10 +33,10 @@ bool CAllDayKeyRightDeal::focusItemDeal(CSceneBackgroundItem *item, CGraphicsSce
     CWeekDayBackgroundItem *backgroundItem = dynamic_cast<CWeekDayBackgroundItem *>(item);
     backgroundItem->initState();
     //如果没有下一个则切换时间
+    scene->setActiveSwitching(true);
     if (backgroundItem->getRightItem() == nullptr) {
-        scene->setPrePage(item->getDate().addDays(1));
+        scene->setNextPage(item->getDate().addDays(1), true);
     } else {
-        scene->setActiveSwitching(true);
         scene->signalSwitchView(backgroundItem->getDate().addDays(1), true);
     }
     return true;

@@ -77,14 +77,24 @@ void CGraphicsScene::currentFocusItemUpdate()
     }
 }
 
-void CGraphicsScene::setPrePage(const QDate &focusDate)
+/**
+ * @brief CGraphicsScene::setPrePage        切换上一页
+ * @param focusDate                         切换焦点时间
+ * @param isSwitchView                      是否切换视图
+ */
+void CGraphicsScene::setPrePage(const QDate &focusDate, bool isSwitchView)
 {
-    emit signalSwitchPrePage(focusDate);
+    emit signalSwitchPrePage(focusDate, isSwitchView);
 }
 
-void CGraphicsScene::setNextPage(const QDate &focusDate)
+/**
+ * @brief CGraphicsScene::setPrePage        切换下一页
+ * @param focusDate                         切换焦点时间
+ * @param isSwitchView                      是否切换视图
+ */
+void CGraphicsScene::setNextPage(const QDate &focusDate, bool isSwitchView)
 {
-    emit signalSwitchNextPage(focusDate);
+    emit signalSwitchNextPage(focusDate, isSwitchView);
 }
 
 bool CGraphicsScene::event(QEvent *event)

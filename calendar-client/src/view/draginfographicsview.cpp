@@ -821,16 +821,25 @@ void DragInfoGraphicsView::slotDeleteItem()
     }
 }
 
-void DragInfoGraphicsView::slotSwitchPrePage(const QDate &focusDate)
+void DragInfoGraphicsView::slotSwitchPrePage(const QDate &focusDate, bool isSwitchView)
 {
     emit signalSwitchPrePage();
-    setSceneCurrentItemFocus(focusDate);
+    if (isSwitchView) {
+        m_Scene->signalSwitchView(focusDate, true);
+    } else {
+        setSceneCurrentItemFocus(focusDate);
+    }
 }
 
-void DragInfoGraphicsView::slotSwitchNextPage(const QDate &focusDate)
+void DragInfoGraphicsView::slotSwitchNextPage(const QDate &focusDate, bool isSwitchView)
 {
     emit signalSwitchNextPage();
-    setSceneCurrentItemFocus(focusDate);
+    //如果需要切换视图则
+    if (isSwitchView) {
+        m_Scene->signalSwitchView(focusDate, true);
+    } else {
+        setSceneCurrentItemFocus(focusDate);
+    }
 }
 
 void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)

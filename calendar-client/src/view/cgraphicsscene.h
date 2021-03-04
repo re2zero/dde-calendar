@@ -54,9 +54,9 @@ public:
     //更新当前item焦点效果显示
     void currentFocusItemUpdate();
     //设置上一页时间
-    void setPrePage(const QDate &focusDate);
+    void setPrePage(const QDate &focusDate, bool isSwitchView = false);
     //设置下一页时间
-    void setNextPage(const QDate &focusDate);
+    void setNextPage(const QDate &focusDate, bool isSwitchView = false);
     //获取是否为主动切换
     bool getActiveSwitching() const;
     //设置是否为主动切换
@@ -76,8 +76,8 @@ private:
     bool focusInDeal(QEvent *event);
     bool focusOutDeal(QEvent *event);
 signals:
-    void signalSwitchPrePage(const QDate &focusDate);
-    void signalSwitchNextPage(const QDate &focusDate);
+    void signalSwitchPrePage(const QDate &focusDate, bool isSwitchView = false);
+    void signalSwitchNextPage(const QDate &focusDate, bool isSwitchView = false);
     void signalSwitchView(const QDate &focusDate, bool setItemFocus = false);
     //通知另一个视图初始化
     void signalViewFocusInit();

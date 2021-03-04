@@ -175,8 +175,8 @@ signals:
 public slots:
     //删除日程
     void slotDeleteItem();
-    void slotSwitchPrePage(const QDate &focusDate);
-    void slotSwitchNextPage(const QDate &focusDate);
+    void slotSwitchPrePage(const QDate &focusDate, bool isSwitchView = false);
+    void slotSwitchNextPage(const QDate &focusDate, bool isSwitchView = false);
     void slotContextMenu(CFocusItem *item);
 
 protected:
