@@ -248,8 +248,8 @@ bool CScheduleDlg::clickOkBtn()
         //创建日程
         _scheduleOperation.createSchedule(_newSchedule);
     } else if (m_type == 0) {
-        //修改日程
-        _scheduleOperation.changeSchedule(_newSchedule, m_ScheduleDataInfo);
+        //修改日程,根据返回的参数判断是否关闭对话框
+        return _scheduleOperation.changeSchedule(_newSchedule, m_ScheduleDataInfo);
     }
     return true;
 }
