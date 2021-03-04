@@ -40,6 +40,7 @@
 #include <QPainterPath>
 #include <QMouseEvent>
 #include <QContextMenuEvent>
+#include <QShortcut>
 
 DGUI_USE_NAMESPACE
 CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
@@ -56,6 +57,7 @@ CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
     setTheMe(DGuiApplicationHelper::instance()->themeType());
+    connect(this, &CScheduleSearchItem::signalSchotCutClicked, this, &CScheduleSearchItem::slotSchotCutClicked);
     QObject::connect(CalendarManager::getInstance(), &CalendarManager::signalTimeFormatChanged,
                      this, &CScheduleSearchItem::slotTimeFormatChanged);
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
@@ -163,6 +165,24 @@ void CScheduleSearchItem::slotTimeFormatChanged(int value)
         m_timeFormat = "h:mm";
     }
     update();
+}
+
+void CScheduleSearchItem::slotSchotCutClicked()
+{
+    //选中该item时才可以使用快捷键
+    if (hasFocus()) {
+        //节日日程不能使用
+        if (m_ScheduleInfo.getType() == DDECalendar::FestivalTypeID)
+            return;
+        m_rightMenu->clear();
+        m_rightMenu->addAction(m_editAction);
+        m_rightMenu->addAction(m_deleteAction);
+        //获取item坐标,并转换为全局坐标
+        QPointF itemPos = QPointF(this->rect().x() + this->rect().width() / 2,
+                                  this->rect().y() + this->rect().height() / 2);
+        QPoint shoutCurPos = mapToGlobal(itemPos.toPoint());
+        m_rightMenu->exec(shoutCurPos);
+    }
 }
 
 void CScheduleSearchItem::paintEvent(QPaintEvent *e)
@@ -414,6 +434,10 @@ CScheduleSearchView::CScheduleSearchView(QWidget *parent)
     m_gradientItemList->setLineWidth(0);
     m_labellist.clear();
 
+    QShortcut *shortcut = new QShortcut(this);
+    shortcut->setKey(QKeySequence(QLatin1String("Alt+M")));
+    connect(shortcut, SIGNAL(activated()), this, SIGNAL(signalSchotCutClicked()));
+
     connect(m_gradientItemList, &CScheduleListWidget::signalListWidgetScheduleHide, this, &CScheduleSearchView::signalScheduleHide);
     CScheduleTask *_scheduleTask = CalendarManager::getInstance()->getScheduleTask();
     connect(_scheduleTask, &CScheduleTask::jobsUpdate, this, &CScheduleSearchView::updateSearch);
@@ -591,7 +615,7 @@ void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, in
     ScheduleDataInfo &gd = info;
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.getType());
 
-    CScheduleSearchItem *gwi = new CScheduleSearchItem();
+    CScheduleSearchItem *gwi = new CScheduleSearchItem(this);
     QFont font;
     font.setPixelSize(DDECalendar::FontSizeFourteen);
     font.setWeight(QFont::Normal);
@@ -611,6 +635,7 @@ void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, in
     connect(gwi, &CScheduleSearchItem::signalSelectSchedule, this, &CScheduleSearchView::slotSelectSchedule);
     connect(gwi, &CScheduleSearchItem::signalViewtransparentFrame, this, &CScheduleSearchView::signalViewtransparentFrame);
     connect(gwi, &CScheduleSearchItem::signalSelectCurrentItem, this, &CScheduleSearchView::slotSelectCurrentItem);
+    connect(this, &CScheduleSearchView::signalSchotCutClicked, gwi, &CScheduleSearchItem::signalSchotCutClicked);
 
     QListWidgetItem *listItem = new QListWidgetItem;
     listItem->setSizeHint(QSize(m_maxWidth - 25, 36)); //每次改变Item的高度

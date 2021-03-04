@@ -50,6 +50,7 @@ signals:
     void signalViewtransparentFrame(int type);
     void signalScheduleHide();
     void signalSelectCurrentItem();
+    void signalSchotCutClicked();
 public slots:
     //需要搜索日程关键字
     void slotsetSearch(QString str);
@@ -127,10 +128,12 @@ signals:
     void signalSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
     void signalSelectCurrentItem(CScheduleSearchItem *item, bool foucusOutStatus);
+    void signalSchotCutClicked();
 public slots:
     void slotEdit();
     void slotDelete();
     void slotTimeFormatChanged(int value);
+    void slotSchotCutClicked();
 protected:
     void paintEvent(QPaintEvent *e) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
