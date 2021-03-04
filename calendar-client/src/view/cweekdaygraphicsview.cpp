@@ -67,7 +67,8 @@ void CWeekDayGraphicsview::setRange(int w, int h, QDate begindate, QDate enddate
     m_MoveDate.setDate(begindate.addMonths(-2));
     m_beginDate = begindate;
     m_endDate = enddate;
-    if (m_viewPos == WeekPos) {
+    //如果为全天区域
+    if (m_viewType == ALLDayView) {
         w -= 2;
     } else {
         w = w - rightmagin - 2;
