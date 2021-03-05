@@ -34,11 +34,6 @@ class CGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    enum SceneType { MonthScene,
-                     AllDayScene,
-                     PartTimeScene
-    }; //月场景,全天场景,非全天场景
-public:
     explicit CGraphicsScene(QObject *parent = nullptr);
     ~CGraphicsScene() override;
     //设置Scene的第一个focus item
@@ -61,14 +56,12 @@ public:
     bool getActiveSwitching() const;
     //设置是否为主动切换
     void setActiveSwitching(bool activeSwitching);
-    //获取场景类型
-    SceneType getSceneType() const;
-    //设置场景类型
-    void setSceneType(const SceneType &sceneType);
     void currentItemInit();
 
     bool getIsShowCurrentItem() const;
     void setIsShowCurrentItem(bool isShowCurrentItem);
+
+    void setIsContextMenu(bool isContextMenu);
 
 protected:
     bool event(QEvent *event) override;
@@ -91,7 +84,7 @@ private:
     QGraphicsItem *currentFocusItem;
     CKeyPressPrxy *m_keyPrxy;
     bool m_activeSwitching; //是否为主动切换焦点
-    SceneType m_sceneType;
+    bool m_isContextMenu; //是否为右击菜单切换焦点
     bool m_isShowCurrentItem; //true 当前item获取焦点  false 当前item的下一个item获取焦点
 };
 

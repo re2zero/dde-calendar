@@ -33,7 +33,7 @@ CGraphicsScene::CGraphicsScene(QObject *parent)
     , currentFocusItem(nullptr)
     , m_keyPrxy(nullptr)
     , m_activeSwitching(false)
-    , m_sceneType(MonthScene)
+    , m_isContextMenu(false)
     , m_isShowCurrentItem(false)
 {
 }
@@ -105,6 +105,10 @@ bool CGraphicsScene::event(QEvent *event)
         if (m_keyPrxy != nullptr && m_keyPrxy->keyPressDeal(keyEvent->key())) {
             dealResult = true;
         }
+        //如果为左右键处理则设置为true
+        if (dealResult == false && (keyEvent->key() == Qt::Key_Left || keyEvent->key() == Qt::Key_Right)) {
+            dealResult = true;
+        }
         if (keyEvent->modifiers() == Qt::ALT && keyEvent->key() == Qt::Key_M) {
             CSceneBackgroundItem *item = dynamic_cast<CSceneBackgroundItem *>(currentFocusItem);
             if (item != nullptr && item->getFocusItem()->getItemType() == CFocusItem::CITEM) {
@@ -154,18 +158,28 @@ bool CGraphicsScene::focusOutDeal(QEvent *event)
         if (Qt::ActiveWindowFocusReason == focusEvent->reason()) {
             item->setItemFocus(false);
         } else {
-            item->initState();
-            //如果为被动切换焦点则初始化当前焦点item
-            if (getActiveSwitching() == false) {
-                currentFocusItem = nullptr;
-                //通知另外一个视图初始化状态,因为全天和非全天之间tab切换保存了当前item信息
-                emit signalViewFocusInit();
+            //如果为右击菜单则更新焦点显示效果
+            if (m_isContextMenu) {
+                item->setItemFocus(false);
             } else {
-                setActiveSwitching(false);
+                item->initState();
+                //如果为被动切换焦点则初始化当前焦点item
+                if (getActiveSwitching() == false) {
+                    currentFocusItem = nullptr;
+                    //通知另外一个视图初始化状态,因为全天和非全天之间tab切换保存了当前item信息
+                    emit signalViewFocusInit();
+                } else {
+                    setActiveSwitching(false);
+                }
             }
         }
     }
     return true;
+}
+
+void CGraphicsScene::setIsContextMenu(bool isContextMenu)
+{
+    m_isContextMenu = isContextMenu;
 }
 
 bool CGraphicsScene::getIsShowCurrentItem() const
@@ -176,16 +190,6 @@ bool CGraphicsScene::getIsShowCurrentItem() const
 void CGraphicsScene::setIsShowCurrentItem(bool isShowCurrentItem)
 {
     m_isShowCurrentItem = isShowCurrentItem;
-}
-
-CGraphicsScene::SceneType CGraphicsScene::getSceneType() const
-{
-    return m_sceneType;
-}
-
-void CGraphicsScene::setSceneType(const SceneType &sceneType)
-{
-    m_sceneType = sceneType;
 }
 
 void CGraphicsScene::currentItemInit()

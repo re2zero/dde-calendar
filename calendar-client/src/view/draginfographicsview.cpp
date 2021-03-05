@@ -850,6 +850,7 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
         if (infoitem->getData().getType() == 4)
             return;
         //快捷键调出右击菜单
+        m_Scene->setIsContextMenu(true);
         m_rightMenu->clear();
         m_rightMenu->addAction(m_editAction);
         m_rightMenu->addAction(m_deleteAction);
@@ -869,10 +870,9 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
             emit signalViewtransparentFrame(0);
         } else if (action_t == m_deleteAction) {
             DeleteItem(infoitem->getData());
-        } else {
-            qDebug() << Q_FUNC_INFO;
         }
-        setFocus(Qt::TabFocusReason);
+        m_Scene->setIsContextMenu(false);
+        m_Scene->currentFocusItemUpdate();
     }
 }
 
