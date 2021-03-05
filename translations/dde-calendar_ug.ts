@@ -521,7 +521,7 @@
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="54"/>
         <source>W</source>
-        <translation type="unfinished"/>
+        <translation>ھەپتە</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="60"/>
@@ -534,7 +534,7 @@
     <message>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="110"/>
         <source>Week</source>
-        <translation>Week</translation>
+        <translation>ھەپتە</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="327"/>

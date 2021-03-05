@@ -192,7 +192,7 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="361"/>
         <source>On start day (9:00 AM)</source>
-        <translation>ལས་རིམ་འགོ་ཚུགས་པའི་ཉིན།（སྔ་དྲོའི་ཆུ་ཚོད་9པ།）</translation>
+        <translation>ལས་རིམ་འགོ་ཚུགས་པའི་ཉིན།（9:00སྔ་དྲོའི་ཆུ་ཚོད།）</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="465"/>
@@ -335,7 +335,7 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="776"/>
         <source>time(s)</source>
-        <translation>ཐེངས་གྲངས།</translation>
+        <translation>ཐེངས་གྲངས།(ཐེངས)</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="825"/>
