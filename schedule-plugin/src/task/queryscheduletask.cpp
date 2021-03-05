@@ -419,10 +419,3 @@ bool queryScheduleTask::queryOverDueDate(QueryJsonData *queryJsonData)
     }
     return overduedate;
 }
-
-#ifdef LOG_PRINT
-void queryScheduleTask::logPrint(const JsonData *jsonData)
-{
-    Q_UNUSED(jsonData)
-}
-#endif

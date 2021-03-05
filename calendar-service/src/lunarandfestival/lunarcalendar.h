@@ -33,7 +33,7 @@ public:
     lunarInfo SolarDayToLunarDay(qint32 month, qint32 day);
 
 private:
-    LunarCalendar(qint32 year);
+    explicit LunarCalendar(qint32 year);
     void calcProcData();
     void fillMonths();
     void calcLeapMonth();

@@ -27,7 +27,7 @@ class CustomFrame : public QFrame
 {
     Q_OBJECT
 public:
-    CustomFrame(QWidget *parent = nullptr);
+    explicit CustomFrame(QWidget *parent = nullptr);
     void setBColor(QColor normalC);
     void setRoundState(bool lstate, bool tstate, bool rstate, bool bstate);
     void setTextStr(const QFont &font, const QColor &tc, const QString &strc, int flag = Qt::AlignCenter);

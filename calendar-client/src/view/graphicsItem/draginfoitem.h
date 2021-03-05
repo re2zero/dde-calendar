@@ -72,7 +72,8 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 protected:
-    virtual void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) = 0;
+    virtual void paintBackground(QPainter *painter, const QRectF &rect, const bool isPixMap = false) = 0;
+
 protected:
     ScheduleDataInfo                   m_vScheduleInfo;
     QFont                               m_font;

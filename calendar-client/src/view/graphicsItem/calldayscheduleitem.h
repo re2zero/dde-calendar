@@ -31,7 +31,7 @@ public:
     bool hasSelectSchedule(const ScheduleDataInfo &info);
 
 protected:
-    void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;
+    void paintBackground(QPainter *painter, const QRectF &rect, const bool isPixMap = false) override;
 };
 
 #endif // CALLDAYSCHEDULEITEM_H

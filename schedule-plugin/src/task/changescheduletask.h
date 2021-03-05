@@ -28,7 +28,7 @@ class changeScheduleTask : public scheduleBaseTask
 {
     Q_OBJECT
 public:
-    changeScheduleTask(CSchedulesDBus *dbus);
+    explicit changeScheduleTask(CSchedulesDBus *dbus);
     Reply getFeedbackByQuerySchedule(const QVector<ScheduleDtailInfo> &infoVector) override;
     Reply getReplyBySelectSchedule(const ScheduleDtailInfo &info) override;
     Reply InitState(const JsonData *jsonData, bool isUpdateState = false) override;
@@ -54,7 +54,7 @@ private:
      * @param reply                                 修改的回复
      * @return                                      下一个状态
      */
-    scheduleState *getNextStateBySelectScheduleInfo(const ScheduleDtailInfo &info,CLocalData *localData,Reply &reply);
+    scheduleState *getNextStateBySelectScheduleInfo(const ScheduleDtailInfo &info, CLocalData *localData, Reply &reply);
     /**
      * @brief getNewInfo        根据修改信息获取新的日程信息
      * @return                  在时间范围内返回true

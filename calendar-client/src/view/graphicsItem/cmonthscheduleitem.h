@@ -36,7 +36,7 @@ public:
     QPixmap getPixmap();
 
 private:
-    void paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap = false) override;
+    void paintBackground(QPainter *painter, const QRectF &rect, const bool isPixMap = false) override;
 
 private:
     QPoint m_pos;

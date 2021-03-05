@@ -171,7 +171,7 @@ void CScheduleItem::timeFormatChanged(int value)
  * @param rect
  * @param isPixMap
  */
-void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
+void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const bool isPixMap)
 {
     Q_UNUSED(isPixMap);
     CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());

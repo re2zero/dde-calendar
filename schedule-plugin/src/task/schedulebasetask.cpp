@@ -39,9 +39,6 @@ scheduleBaseTask::~scheduleBaseTask()
 
 Reply scheduleBaseTask::SchedulePress(semanticAnalysisTask &semanticTask)
 {
-#ifdef LOG_PRINT
-    logPrint(semanticTask.getJsonData());
-#endif
     Reply reply;
     if (m_State != nullptr) {
         if (semanticTask.Intent() == JSON_NO_INTENT) {

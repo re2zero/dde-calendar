@@ -29,7 +29,7 @@ class queryScheduleTask : public scheduleBaseTask
 {
     Q_OBJECT
 public:
-    queryScheduleTask(CSchedulesDBus *dbus);
+    explicit queryScheduleTask(CSchedulesDBus *dbus);
     Reply SchedulePress(semanticAnalysisTask &semanticTask) override;
 
 private:
@@ -101,9 +101,6 @@ private:
 
 
 protected:
-#ifdef LOG_PRINT
-    void logPrint(const JsonData *jsonData) override;
-#endif
 };
 
 #endif // QUERYSCHEDULETASK_H

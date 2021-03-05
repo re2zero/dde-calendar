@@ -47,9 +47,6 @@ signals:
     void signaleSendMessage(Reply reply);
 
 protected:
-#ifdef LOG_PRINT
-    virtual void logPrint(const JsonData *jsonData) = 0;
-#endif
     void updateState();
     /**
      * @brief errorMessage   用户输入无法匹配返回错误消息提示

@@ -459,17 +459,17 @@
 <context>
     <name>CScheduleSearchDateItem</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="804"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="829"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="804"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="829"/>
         <source>M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="804"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="829"/>
         <source>D</source>
         <translation type="unfinished"></translation>
     </message>
@@ -477,17 +477,17 @@
 <context>
     <name>CScheduleSearchItem</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="54"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="55"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="55"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="56"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="267"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="287"/>
         <source>All Day</source>
         <translation type="unfinished"></translation>
     </message>
@@ -495,7 +495,7 @@
 <context>
     <name>CScheduleSearchView</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="576"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="600"/>
         <source>No search results</source>
         <translation type="unfinished"></translation>
     </message>
@@ -582,7 +582,7 @@
 <context>
     <name>Calendarmainwindow</name>
     <message>
-        <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="66"/>
+        <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="67"/>
         <source>Calendar</source>
         <translation type="unfinished"></translation>
     </message>

@@ -29,7 +29,7 @@ class cancelScheduleTask : public scheduleBaseTask
 {
     Q_OBJECT
 public:
-    cancelScheduleTask(CSchedulesDBus *dbus);
+    explicit cancelScheduleTask(CSchedulesDBus *dbus);
     Reply getFeedbackByQuerySchedule(const QVector<ScheduleDtailInfo> &infoVector) override;
     Reply getReplyBySelectSchedule(const ScheduleDtailInfo &info) override;
     Reply InitState(const JsonData *jsonData, bool isUpdateState = false) override;

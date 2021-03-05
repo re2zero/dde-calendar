@@ -27,7 +27,7 @@
 class LabelWidget : public QLabel
 {
 public:
-    LabelWidget(QWidget *parent = nullptr);
+    explicit LabelWidget(QWidget *parent = nullptr);
     ~LabelWidget() override;
 protected:
     void paintEvent(QPaintEvent *ev) override;

@@ -54,7 +54,6 @@ public:
 public:
     void setTheMe(int type = 0);
     CSchedulesColor getColorByTypeId(const int &id);
-
 private:
     CSchedulesColor LifeScheduleColour() const;
 

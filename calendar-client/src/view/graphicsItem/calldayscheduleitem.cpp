@@ -32,7 +32,7 @@ bool CAllDayScheduleItem::hasSelectSchedule(const ScheduleDataInfo &info)
     return info == m_vScheduleInfo;
 }
 
-void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
+void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const bool isPixMap)
 {
     Q_UNUSED(isPixMap);
     m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);

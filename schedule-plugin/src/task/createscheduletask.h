@@ -29,7 +29,7 @@ class createScheduleTask : public scheduleBaseTask
 {
     Q_OBJECT
 public:
-    createScheduleTask(CSchedulesDBus *dbus);
+    explicit createScheduleTask(CSchedulesDBus *dbus);
     Reply SchedulePress(semanticAnalysisTask &semanticTask) override;
 
 private:

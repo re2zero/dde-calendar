@@ -38,7 +38,7 @@ class CScheduleSearchView : public DWidget
 {
     Q_OBJECT
 public:
-    CScheduleSearchView(QWidget *parent = nullptr);
+    explicit CScheduleSearchView(QWidget *parent = nullptr);
     ~CScheduleSearchView() override;
     void setTheMe(int type = 0);
     //清空搜索
@@ -91,7 +91,7 @@ class CScheduleListWidget : public DListWidget
 {
     Q_OBJECT
 public:
-    CScheduleListWidget(QWidget *parent = nullptr);
+    explicit CScheduleListWidget(QWidget *parent = nullptr);
     ~CScheduleListWidget() override;
 signals:
     void signalListWidgetScheduleHide();

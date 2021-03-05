@@ -42,7 +42,7 @@ QPixmap CMonthScheduleItem::getPixmap()
     return pixmap;
 }
 
-void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const int isPixMap)
+void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const bool isPixMap)
 {
     qreal labelwidth = rect.width();
     qreal labelheight = rect.height();
