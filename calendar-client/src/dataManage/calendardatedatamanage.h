@@ -72,6 +72,7 @@ public:
     void setTimeFormatChanged(int value);
     void setDateFormatChanged(int value);
     QString getTimeFormat();
+    int getTimeFormatValue();
     QString getDateFormat();
 private:
     void setYearBeginAndEndDate(const int year);
@@ -104,6 +105,7 @@ private:
     ShowDateRange           m_showDateRange;
     QString                 m_timeFormat = "h:mm";
     QString                 m_dateFormat = "yyyy-MM-dd";
+    int                     m_timeFormatValue = 0;
 };
 
 #endif // CALENDARDATEDATAMANAGE_H

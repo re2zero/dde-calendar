@@ -22,15 +22,20 @@
 #include <QEvent>
 #include <QFocusEvent>
 
+#include <QVBoxLayout>
+#include "calendarmanage.h"
+
 //视图容器最大高度
 const int viewContainerMaxHeight = 305;
 
 CTimeEdit::CTimeEdit(QWidget *parent)
     : DComboBox(parent)
+    , m_timeFormat(CalendarManager::getInstance()->getCalendarDateDataManage()->getTimeFormat())
+    , m_timeFormatValue(CalendarManager::getInstance()->getCalendarDateDataManage()->getTimeFormatValue())
+    , m_timeEdit(new TimeEdit)
 {
     initUI();
     initConnection();
-    setFocus(Qt::MouseFocusReason);
 }
 
 CTimeEdit::~CTimeEdit()
@@ -41,15 +46,15 @@ void CTimeEdit::setTime(QTime time)
 {
     m_time = time;
     setSelectItem();
-    m_timeEdit->setText(time.toString("hh:mm"));
+    m_timeEdit->getLineEdit()->setText(time.toString(m_timeFormat));
 }
 
 QTime CTimeEdit::getTime()
 {
     //获取显示的text
-    QString timetext = m_timeEdit->lineEdit()->displayText();
+    QString timetext = m_timeEdit->getLineEdit()->displayText();
     //将text转换为时间
-    m_time = QTime::fromString(timetext, "hh:mm");
+    m_time = QTime::fromString(timetext, m_timeFormat);
     return m_time;
 }
 
@@ -74,47 +79,62 @@ void CTimeEdit::setSelectItem()
         }
     }
     //获取该时间对应的index
-    int index = m_strList.indexOf(QTime(hour, minute).toString("hh:mm"));
+    int index = m_strList.indexOf(QTime(hour, minute).toString(m_timeFormat));
     //设置下拉列表当前index
     setCurrentIndex(index);
 }
 
+void CTimeEdit::setTimeFormat(int value)
+{
+    //清除列表
+    clear();
+    m_strList.clear();
+    //根据value值,设置时间显示格式
+    if (value) {
+        m_timeFormat = "hh:mm";
+        for (int i = 0; i < 24; i++) {
+            m_strList << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(0, 2, 10, QLatin1Char('0'));
+            m_strList << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(30);
+        }
+        addItems(m_strList);
+        m_timeEdit->setDisplayFormat(m_timeFormat);
+    } else {
+        m_timeFormat = "h:mm";
+        for (int i = 0; i < 24; i++) {
+            m_strList << QString("%1:%2").arg(i, 1, 10, QLatin1Char('0')).arg(0, 2, 10, QLatin1Char('0'));
+            m_strList << QString("%1:%2").arg(i, 1, 10, QLatin1Char('0')).arg(30);
+        }
+        addItems(m_strList);
+        m_timeEdit->setDisplayFormat(m_timeFormat);
+    }
+}
+
 void CTimeEdit::initUI()
 {
+    int timeFormatValue = 2;
+    //设置下拉列表时间显示格式
+    if (m_timeFormatValue) {
+        timeFormatValue = 2;
+    } else {
+        timeFormatValue = 1;
+    }
     //关闭自动补全
     this->setAutoCompletion(false);
-    m_timeEdit = new DLineEdit(this);
-    m_timeEdit->lineEdit()->setInputMask("00:00;0");
-    m_timeEdit->setClearButtonEnabled(false);
-    QRegExpValidator *validator = nullptr;
-    QRegExp rx("0[0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]");
-    validator = new QRegExpValidator(rx, this);
-    m_timeEdit->lineEdit()->setValidator(validator);
-    setLineEdit(m_timeEdit->lineEdit());
+    m_timeEdit->setTime(QTime::currentTime());
+    m_timeEdit->setDisplayFormat(m_timeFormat);
+    setLineEdit(m_timeEdit->getLineEdit());
     for (int i = 0; i < 24; i++) {
-        m_strList << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(0, 2, 10, QLatin1Char('0'));
-        m_strList << QString("%1:%2").arg(i, 2, 10, QLatin1Char('0')).arg(30);
+        m_strList << QString("%1:%2").arg(i, timeFormatValue, 10, QLatin1Char('0')).arg(0, 2, 10, QLatin1Char('0'));
+        m_strList << QString("%1:%2").arg(i, timeFormatValue, 10, QLatin1Char('0')).arg(30);
     }
-    this->addItems(m_strList);
+    addItems(m_strList);
+    m_timeEdit->setParent(this);
 }
 
 void CTimeEdit::initConnection()
 {
-    m_timeEdit->disconnect(SIGNAL(returnPressed()));
-    m_timeEdit->disconnect(SIGNAL(editingFinished()));
-    m_timeEdit->disconnect(SIGNAL(selectionChanged()));
-    m_timeEdit->disconnect(SIGNAL(textChanged(const QString &)));
-    m_timeEdit->disconnect(SIGNAL(textEdited(const QString &)));
-    m_timeEdit->disconnect(SIGNAL(cursorPositionChanged(int, int)));
-
-    disconnect(SIGNAL(activated(int)));
-    disconnect(SIGNAL(activated(const QString &)));
-    disconnect(SIGNAL(currentIndexChanged(int)));
-    disconnect(SIGNAL(currentIndexChanged(const QString &)));
-    disconnect(SIGNAL(currentTextChanged(const QString &)));
-    disconnect(SIGNAL(editTextChanged(const QString &)));
-    disconnect(SIGNAL(highlighted(int)));
-    disconnect(SIGNAL(highlighted(const QString &)));
+    connect(m_timeEdit, &TimeEdit::signalFocusOut, this, &CTimeEdit::signalFocusOut);
+    connect(CalendarManager::getInstance(), &CalendarManager::signalTimeFormatChanged, this, &CTimeEdit::setTimeFormat);
 }
 
 void CTimeEdit::showPopup()
@@ -138,9 +158,33 @@ void CTimeEdit::showPopup()
 
 void CTimeEdit::focusInEvent(QFocusEvent *event)
 {
-    DComboBox::focusInEvent(event);
-    //如果为tab焦点进入则选中时间
+//    如果为tab焦点进入则选中时间
     if (event->reason() == Qt::TabFocusReason) {
-        this->lineEdit()->selectAll();
+        m_timeEdit->setFocus(Qt::TabFocusReason);
     }
+    QComboBox::focusInEvent(event);
+}
+
+TimeEdit::TimeEdit(QWidget *parent)
+    : QTimeEdit(parent)
+{
+    setButtonSymbols(QTimeEdit::NoButtons);
+}
+
+/**
+ * @brief TimeEdit::getLineEdit获取lineedit
+ */
+QLineEdit *TimeEdit::getLineEdit()
+{
+    return lineEdit();
+}
+
+/**
+ * @brief TimeEdit::focusOutEvent focusout事件
+ */
+void TimeEdit::focusOutEvent(QFocusEvent *event)
+{
+    //发送focusout信号到dialog
+    emit signalFocusOut();
+    QTimeEdit::focusOutEvent(event);
 }

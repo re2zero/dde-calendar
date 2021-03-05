@@ -222,6 +222,7 @@ int CalendarDateDataManager::getWeekNumOfYear(const QDate &date)
  */
 void CalendarDateDataManager::setTimeFormatChanged(int value)
 {
+    m_timeFormatValue = value;
     if (value) {
         m_timeFormat = "hh:mm";
     } else {
@@ -275,6 +276,14 @@ void CalendarDateDataManager::setDateFormatChanged(int value)
 QString CalendarDateDataManager::getTimeFormat()
 {
     return m_timeFormat;
+}
+
+/**
+ * @brief CalendarDateDataManager::getTimeFormatValue 获取时间格式的value
+ */
+int CalendarDateDataManager::getTimeFormatValue()
+{
+    return m_timeFormatValue;
 }
 
 /**

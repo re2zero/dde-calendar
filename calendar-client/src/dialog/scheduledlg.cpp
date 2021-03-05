@@ -419,6 +419,18 @@ void CScheduleDlg::sloteRpeatactivated(int index)
     }
 }
 
+void CScheduleDlg::slotBeginTimeFocusOut()
+{
+    //设置结束日期focus
+    m_endDateEdit->setFocus(Qt::TabFocusReason);
+}
+
+void CScheduleDlg::slotEndTimeFocusOut()
+{
+    //设置提醒focus
+    m_rmindCombox->setFocus(Qt::TabFocusReason);
+}
+
 bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
 {
     if (obj == m_textEdit) {
@@ -540,7 +552,7 @@ void CScheduleDlg::initUI()
     m_typeLabel->setFont(mlabelF);
     m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_typeLabel->setFixedSize(78, 36);
-    m_typeComBox = new DComboBox();
+    m_typeComBox = new DComboBox(this);
     //设置对象名称和辅助显示名称
     m_typeComBox->setObjectName("ScheduleTypeCombobox");
     m_typeComBox->setAccessibleName("ScheduleTypeCombobox");
@@ -569,7 +581,7 @@ void CScheduleDlg::initUI()
     QVBoxLayout *conttelabellayout = new QVBoxLayout;
     conttelabellayout->setSpacing(0);
     conttelabellayout->setMargin(0);
-    m_contentLabel = new QLabel();
+    m_contentLabel = new QLabel(this);
     DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T6);
     QFontMetrics fontWidth_contentlabel(mlabelF);
     QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
@@ -601,7 +613,7 @@ void CScheduleDlg::initUI()
     QHBoxLayout *alldayLabellayout = new QHBoxLayout;
     alldayLabellayout->setSpacing(0);
     alldayLabellayout->setMargin(0);
-    m_adllDayLabel = new QLabel();
+    m_adllDayLabel = new QLabel(this);
     m_adllDayLabel->setToolTip(tr("All Day"));
     DFontSizeManager::instance()->bind(m_adllDayLabel, DFontSizeManager::T6);
     QFontMetrics fontWidth_allDayLabel(mlabelF);
@@ -621,7 +633,7 @@ void CScheduleDlg::initUI()
     QHBoxLayout *beginLabellayout = new QHBoxLayout;
     beginLabellayout->setSpacing(0);
     beginLabellayout->setMargin(0);
-    m_beginTimeLabel = new QLabel();
+    m_beginTimeLabel = new QLabel(this);
     m_beginTimeLabel->setToolTip(tr("Starts"));
     DFontSizeManager::instance()->bind(m_beginTimeLabel, DFontSizeManager::T6);
     QFontMetrics fontWidth_beginTimeLabel(mlabelF);
@@ -653,7 +665,7 @@ void CScheduleDlg::initUI()
     QHBoxLayout *enQLabellayout = new QHBoxLayout;
     enQLabellayout->setSpacing(0);
     enQLabellayout->setMargin(0);
-    m_endTimeLabel = new QLabel();
+    m_endTimeLabel = new QLabel(this);
     m_endTimeLabel->setToolTip(tr("Ends"));
     DFontSizeManager::instance()->bind(m_endTimeLabel, DFontSizeManager::T6);
     QFontMetrics fontWidth_endTimeLabel(mlabelF);
@@ -696,7 +708,7 @@ void CScheduleDlg::initUI()
     m_remindSetLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_remindSetLabel->setFixedWidth(78);
 
-    m_rmindCombox = new DComboBox();
+    m_rmindCombox = new DComboBox(this);
     //设置对象名称和辅助显示名称
     m_rmindCombox->setObjectName("RmindComboBox");
     m_rmindCombox->setAccessibleName("RmindComboBox");
@@ -719,7 +731,7 @@ void CScheduleDlg::initUI()
     m_beginrepeatLabel->setFont(mlabelF);
     m_beginrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_beginrepeatLabel->setFixedWidth(78);
-    m_beginrepeatCombox = new DComboBox();
+    m_beginrepeatCombox = new DComboBox(this);
     //设置对象名称和辅助显示名称
     m_beginrepeatCombox->setObjectName("BeginRepeatComboBox");
     m_beginrepeatCombox->setAccessibleName("BeginRepeatComboBox");
@@ -747,7 +759,7 @@ void CScheduleDlg::initUI()
     m_endrepeatLabel->setFont(mlabelF);
     m_endrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_endrepeatLabel->setFixedWidth(78);
-    m_endrepeatCombox = new DComboBox();
+    m_endrepeatCombox = new DComboBox(this);
     //设置对象名称和辅助显示名称
     m_endrepeatCombox->setObjectName("EndRepeatComboBox");
     m_endrepeatCombox->setAccessibleName("EndRepeatComboBox");
@@ -841,6 +853,9 @@ void CScheduleDlg::initConnection()
     connect(m_endrepeatCombox, QOverload<int>::of(&QComboBox::activated), this,
             &CScheduleDlg::sloteRpeatactivated);
     connect(m_beginDateEdit, &DDateEdit::userDateChanged, this, &CScheduleDlg::slotBDateEidtInfo);
+
+    connect(m_beginTimeEdit, &CTimeEdit::signalFocusOut, this, &CScheduleDlg::slotBeginTimeFocusOut);
+    connect(m_endTimeEdit, &CTimeEdit::signalFocusOut, this, &CScheduleDlg::slotEndTimeFocusOut);
 
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("ESC")));
@@ -938,9 +953,9 @@ void CScheduleDlg::setTabFouseOrder()
     setTabOrder(m_textEdit, m_allDayCheckbox);
     setTabOrder(m_allDayCheckbox, m_beginDateEdit);
     setTabOrder(m_beginDateEdit, m_beginTimeEdit);
-    setTabOrder(m_beginTimeEdit, m_endDateEdit);
+//    setTabOrder(m_beginTimeEdit, m_endDateEdit);
     setTabOrder(m_endDateEdit, m_endTimeEdit);
-    setTabOrder(m_endTimeEdit, m_rmindCombox);
+//    setTabOrder(m_endTimeEdit, m_rmindCombox);
     setTabOrder(m_rmindCombox, m_beginrepeatCombox);
     setTabOrder(m_beginrepeatCombox, m_endrepeatCombox);
     //结束于次数，设置tab顺序
