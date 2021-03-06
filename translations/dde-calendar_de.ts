@@ -234,7 +234,7 @@
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="489"/>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="717"/>
         <source>Repeat:</source>
-        <translation type="unfinished"/>
+        <translation>Wiederholung:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="493"/>
@@ -290,7 +290,7 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="714"/>
         <source>Repeat</source>
-        <translation type="unfinished"/>
+        <translation>Wiederholung</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="728"/>
@@ -320,7 +320,7 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="745"/>
         <source>End Repeat</source>
-        <translation type="unfinished"/>
+        <translation>Wiederholung beenden</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="756"/>
@@ -335,7 +335,7 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="776"/>
         <source>time(s)</source>
-        <translation type="unfinished"/>
+        <translation>mal</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="825"/>
@@ -511,22 +511,22 @@
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="37"/>
         <source>Y</source>
-        <translation type="unfinished"/>
+        <translation>J</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="48"/>
         <source>M</source>
-        <translation type="unfinished"/>
+        <translation>M</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="54"/>
         <source>W</source>
-        <translation type="unfinished"/>
+        <translation>W</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="60"/>
         <source>D</source>
-        <translation type="unfinished"/>
+        <translation>T</translation>
     </message>
 </context>
 <context>
