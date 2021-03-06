@@ -47,8 +47,6 @@ public:
     ~CTimeEdit() override;
     void setTime(QTime time);
     QTime getTime();
-    //根据当前编辑框设置下拉选中item
-    void setSelectItem();
 public slots:
     void setTimeFormat(int value);
 signals:

@@ -45,7 +45,6 @@ CTimeEdit::~CTimeEdit()
 void CTimeEdit::setTime(QTime time)
 {
     m_time = time;
-    setSelectItem();
     m_timeEdit->getLineEdit()->setText(time.toString(m_timeFormat));
 }
 
@@ -56,32 +55,6 @@ QTime CTimeEdit::getTime()
     //将text转换为时间
     m_time = QTime::fromString(timetext, m_timeFormat);
     return m_time;
-}
-
-/**
- * @brief CTimeEdit::setSelectItem
- * 根据当前编辑框设置下拉选中item
- */
-void CTimeEdit::setSelectItem()
-{
-    int hour = m_time.hour();
-    int minute = m_time.minute();
-    //取30分钟倍数的时间
-    minute = minute / 30 * 30;
-    minute += m_time.minute() % 30 == 0 ? 0 : 30;
-    //如果分钟为60则小时+1;
-    if (minute == 60) {
-        minute = 0;
-        //如果为24时则设置为23:30
-        if (++hour == 24) {
-            hour = 23;
-            minute = 30;
-        }
-    }
-    //获取该时间对应的index
-    int index = m_strList.indexOf(QTime(hour, minute).toString(m_timeFormat));
-    //设置下拉列表当前index
-    setCurrentIndex(index);
 }
 
 void CTimeEdit::setTimeFormat(int value)

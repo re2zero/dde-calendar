@@ -42,11 +42,3 @@ TEST_F(test_timeedit, getTime)
 {
     mTimeEdit->getTime();
 }
-
-//void CTimeEdit::setSelectItem()
-TEST_F(test_timeedit, setSelectItem)
-{
-    mTimeEdit->setTime(QTime(23, 59, 59));
-    mTimeEdit->setSelectItem();
-}
-
