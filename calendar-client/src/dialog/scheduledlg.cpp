@@ -419,18 +419,6 @@ void CScheduleDlg::sloteRpeatactivated(int index)
     }
 }
 
-void CScheduleDlg::slotBeginTimeFocusOut()
-{
-    //设置结束日期focus
-    m_endDateEdit->setFocus(Qt::TabFocusReason);
-}
-
-void CScheduleDlg::slotEndTimeFocusOut()
-{
-    //设置提醒focus
-    m_rmindCombox->setFocus(Qt::TabFocusReason);
-}
-
 bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
 {
     if (obj == m_textEdit) {
@@ -853,10 +841,6 @@ void CScheduleDlg::initConnection()
     connect(m_endrepeatCombox, QOverload<int>::of(&QComboBox::activated), this,
             &CScheduleDlg::sloteRpeatactivated);
     connect(m_beginDateEdit, &DDateEdit::userDateChanged, this, &CScheduleDlg::slotBDateEidtInfo);
-
-    connect(m_beginTimeEdit, &CTimeEdit::signalFocusOut, this, &CScheduleDlg::slotBeginTimeFocusOut);
-    connect(m_endTimeEdit, &CTimeEdit::signalFocusOut, this, &CScheduleDlg::slotEndTimeFocusOut);
-
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("ESC")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(close()));

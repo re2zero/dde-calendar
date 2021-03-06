@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include "ccustomtimeedit.h"
+
 #include <DComboBox>
 #include <DLineEdit>
 #include <DListWidget>
@@ -26,18 +28,6 @@
 #include <QTimeEdit>
 
 DWIDGET_USE_NAMESPACE
-
-class TimeEdit : public QTimeEdit
-{
-    Q_OBJECT
-public:
-    TimeEdit(QWidget *parent = nullptr);
-    QLineEdit *getLineEdit();
-signals:
-    void signalFocusOut();
-protected:
-    void focusOutEvent(QFocusEvent *event) override;
-};
 
 class CTimeEdit : public DComboBox
 {
@@ -49,6 +39,8 @@ public:
     QTime getTime();
 public slots:
     void setTimeFormat(int value);
+    //焦点获取效果绘制
+    void slotFocusDraw(bool showFocus);
 signals:
     void signalFocusOut();
 private:
@@ -57,10 +49,13 @@ private:
 protected:
     void showPopup() override;
     void focusInEvent(QFocusEvent *event) override;
+    void paintEvent(QPaintEvent *e) override;
+
 private:
     QString m_timeFormat = "hh:mm";
     int m_timeFormatValue = 0;
     QTime m_time;
     QStringList m_strList;
-    TimeEdit *m_timeEdit = nullptr;
+    CCustomTimeEdit *m_timeEdit = nullptr;
+    bool m_hasFocus;
 };

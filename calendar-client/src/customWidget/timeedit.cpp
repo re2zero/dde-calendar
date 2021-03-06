@@ -21,6 +21,7 @@
 #include <QRegExpValidator>
 #include <QEvent>
 #include <QFocusEvent>
+#include <QPainter>
 
 #include <QVBoxLayout>
 #include "calendarmanage.h"
@@ -32,7 +33,8 @@ CTimeEdit::CTimeEdit(QWidget *parent)
     : DComboBox(parent)
     , m_timeFormat(CalendarManager::getInstance()->getCalendarDateDataManage()->getTimeFormat())
     , m_timeFormatValue(CalendarManager::getInstance()->getCalendarDateDataManage()->getTimeFormatValue())
-    , m_timeEdit(new TimeEdit)
+    , m_timeEdit(new CCustomTimeEdit)
+    , m_hasFocus(false)
 {
     initUI();
     initConnection();
@@ -40,6 +42,7 @@ CTimeEdit::CTimeEdit(QWidget *parent)
 
 CTimeEdit::~CTimeEdit()
 {
+    delete m_timeEdit;
 }
 
 void CTimeEdit::setTime(QTime time)
@@ -82,6 +85,12 @@ void CTimeEdit::setTimeFormat(int value)
     }
 }
 
+void CTimeEdit::slotFocusDraw(bool showFocus)
+{
+    m_hasFocus = showFocus;
+    update();
+}
+
 void CTimeEdit::initUI()
 {
     int timeFormatValue = 2;
@@ -106,8 +115,8 @@ void CTimeEdit::initUI()
 
 void CTimeEdit::initConnection()
 {
-    connect(m_timeEdit, &TimeEdit::signalFocusOut, this, &CTimeEdit::signalFocusOut);
     connect(CalendarManager::getInstance(), &CalendarManager::signalTimeFormatChanged, this, &CTimeEdit::setTimeFormat);
+    connect(m_timeEdit, &CCustomTimeEdit::signalUpdateFocus, this, &CTimeEdit::slotFocusDraw);
 }
 
 void CTimeEdit::showPopup()
@@ -131,33 +140,22 @@ void CTimeEdit::showPopup()
 
 void CTimeEdit::focusInEvent(QFocusEvent *event)
 {
-//    如果为tab焦点进入则选中时间
+    DComboBox::focusInEvent(event);
+    //    如果为tab焦点进入则选中时间
     if (event->reason() == Qt::TabFocusReason) {
         m_timeEdit->setFocus(Qt::TabFocusReason);
     }
-    QComboBox::focusInEvent(event);
 }
 
-TimeEdit::TimeEdit(QWidget *parent)
-    : QTimeEdit(parent)
+void CTimeEdit::paintEvent(QPaintEvent *e)
 {
-    setButtonSymbols(QTimeEdit::NoButtons);
-}
-
-/**
- * @brief TimeEdit::getLineEdit获取lineedit
- */
-QLineEdit *TimeEdit::getLineEdit()
-{
-    return lineEdit();
-}
-
-/**
- * @brief TimeEdit::focusOutEvent focusout事件
- */
-void TimeEdit::focusOutEvent(QFocusEvent *event)
-{
-    //发送focusout信号到dialog
-    emit signalFocusOut();
-    QTimeEdit::focusOutEvent(event);
+    DComboBox::paintEvent(e);
+    //如果有焦点则设置焦点显示效果
+    if (m_hasFocus) {
+        QPainter painter(this);
+        QStyleOptionFocusRect option;
+        option.initFrom(this);
+        option.backgroundColor = palette().color(QPalette::Background);
+        style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter, this);
+    }
 }
