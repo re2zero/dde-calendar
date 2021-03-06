@@ -111,7 +111,7 @@ private:
     int m_scheduleSearchViewMaxWidth;
     QPropertyAnimation *m_animation = nullptr;
     QTimer *m_currentDateUpdateTimer = nullptr;
-    DToolButton *m_newScheduleBtn {nullptr}; //全局的新建日程按钮
+    DIconButton *m_newScheduleBtn {nullptr}; //全局的新建日程按钮
     //日历打开默认显示视图
     int m_defaultIndex;
 };

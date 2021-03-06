@@ -24,7 +24,7 @@
 #include <QWidget>
 #include <DButtonBox>
 #include <DSearchEdit>
-#include <DToolButton>
+#include <DIconButton>
 
 DWIDGET_USE_NAMESPACE
 
@@ -38,7 +38,7 @@ public:
 
     DSearchEdit *searchEdit() const;
 
-    DToolButton *newScheduleBtn() const;
+    DIconButton *newScheduleBtn() const;
 
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
@@ -49,7 +49,7 @@ public slots:
 private:
     DButtonBox *m_buttonBox {};
     DSearchEdit *m_searchEdit {};
-    DToolButton *m_newScheduleBtn {}; //全局的新建日程按钮
+    DIconButton *m_newScheduleBtn {}; //全局的新建日程按钮
 };
 
 #endif // CTITLEWIDGET_H
