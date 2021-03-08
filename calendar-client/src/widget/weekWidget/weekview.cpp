@@ -213,7 +213,7 @@ void CWeekNumWidget::setTheMe(int type)
 void CWeekNumWidget::resizeEvent(QResizeEvent *event)
 {
     //获取当前所有cell的宽度
-    const int _allCellWidth = width() - 36 * 2;
+    const int _allCellWidth = width();
     //获取当前cell的宽度
     int w = _allCellWidth / DDEWeekCalendar::NumWeeksDisplayed;
     //最小显示的宽度
