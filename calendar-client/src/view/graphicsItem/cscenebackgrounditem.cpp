@@ -75,21 +75,22 @@ CFocusItem *CSceneBackgroundItem::setNextItemFocusAndGetNextItem()
  * @param itemsecond
  * @return
  */
-bool compareItemData(CFocusItem *itemfirst, CFocusItem *itemsecond)
+bool compareItemData(const CFocusItem *itemfirst, const CFocusItem *itemsecond)
 {
     if (itemfirst->rect() == itemsecond->rect()) {
         return false;
     }
-    if (itemfirst->y() - itemsecond->y() < 0.01) {
-        if (itemfirst->x() < itemsecond->x()) {
-            return false;
-        } else {
+    //根据从上倒下从左至右的规则对矩阵的x,y坐标进行对比排序
+    if (qAbs(itemfirst->rect().y() - itemsecond->rect().y()) < 0.01) {
+        if (itemfirst->rect().x() < itemsecond->rect().x()) {
             return true;
+        } else {
+            return false;
         }
-    } else if (itemfirst->y() < itemsecond->y()) {
-        return false;
-    } else {
+    } else if (itemfirst->rect().y() < itemsecond->rect().y()) {
         return true;
+    } else {
+        return false;
     }
 }
 /**
@@ -107,7 +108,7 @@ void CSceneBackgroundItem::updateShowItem()
             m_item.append(item);
         }
     }
-    std::sort(m_item.begin(), m_item.end(), compareItemData);
+    qSort(m_item.begin(), m_item.end(), compareItemData);
     updateCurrentItemShow();
 }
 
