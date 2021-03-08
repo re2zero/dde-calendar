@@ -33,10 +33,12 @@ public:
     explicit CCustomTimeEdit(QWidget *parent = nullptr);
     //获取编辑框
     QLineEdit *getLineEdit();
-
 protected:
     void focusInEvent(QFocusEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 signals:
     void signalUpdateFocus(bool showFocus);
 };

@@ -143,7 +143,7 @@ void CTimeEdit::focusInEvent(QFocusEvent *event)
     DComboBox::focusInEvent(event);
     //    如果为tab焦点进入则选中时间
     if (event->reason() == Qt::TabFocusReason) {
-        m_timeEdit->setFocus(Qt::TabFocusReason);
+        lineEdit()->setFocus(Qt::TabFocusReason);
     }
 }
 

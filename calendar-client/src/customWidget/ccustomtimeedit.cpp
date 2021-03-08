@@ -20,10 +20,15 @@
    */
 #include "ccustomtimeedit.h"
 
+#include <QMouseEvent>
+#include <QLineEdit>
+#include <QKeyEvent>
+
 CCustomTimeEdit::CCustomTimeEdit(QWidget *parent)
     : QTimeEdit(parent)
 {
     setButtonSymbols(QTimeEdit::NoButtons);
+//    lineEdit()->installEventFilter(this);
 }
 
 /**
@@ -45,4 +50,30 @@ void CCustomTimeEdit::focusOutEvent(QFocusEvent *event)
 {
     QTimeEdit::focusOutEvent(event);
     emit signalUpdateFocus(false);
+}
+
+void CCustomTimeEdit::mousePressEvent(QMouseEvent *event)
+{
+    //设置父类widget焦点
+    parentWidget()->setFocus(Qt::TabFocusReason);
+    //设置点击位置的光标
+    lineEdit()->setCursorPosition(lineEdit()->cursorPositionAt(event->pos()));
+    QAbstractSpinBox::mousePressEvent(event);
+}
+
+void CCustomTimeEdit::keyPressEvent(QKeyEvent *event)
+{
+    QTimeEdit::keyPressEvent(event);
+    //鼠标左右键,切换光标位置
+    if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Right) {
+        parentWidget()->setFocus(Qt::TabFocusReason);
+        lineEdit()->setCursorPosition(currentSectionIndex());
+    }
+}
+
+void CCustomTimeEdit::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QTimeEdit::mouseDoubleClickEvent(event);
+    //鼠标双击,选中section
+    setSelectedSection(currentSection());
 }
