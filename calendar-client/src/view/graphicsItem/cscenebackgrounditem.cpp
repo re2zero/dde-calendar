@@ -24,7 +24,7 @@
 #include <QDebug>
 #include <QMarginsF>
 
-CSceneBackgroundItem::CSceneBackgroundItem(QGraphicsItem *parent)
+CSceneBackgroundItem::CSceneBackgroundItem(ItemOnView view, QGraphicsItem *parent)
     : CFocusItem(parent)
     , m_backgroundNum(0)
     , m_leftItem(nullptr)
@@ -32,6 +32,7 @@ CSceneBackgroundItem::CSceneBackgroundItem(QGraphicsItem *parent)
     , m_upItem(nullptr)
     , m_downItem(nullptr)
     , m_showItemIndex(-1)
+    , m_itemOfView(view)
 {
     //设置item类型为背景显示
     setItemType(CBACK);
@@ -228,4 +229,9 @@ void CSceneBackgroundItem::updateCurrentItemShow()
             setItemFocus(true);
         }
     }
+}
+
+CSceneBackgroundItem::ItemOnView CSceneBackgroundItem::getItemOfView() const
+{
+    return m_itemOfView;
 }

@@ -29,7 +29,15 @@ class CSceneBackgroundItem : public CFocusItem
 {
     Q_OBJECT
 public:
-    explicit CSceneBackgroundItem(QGraphicsItem *parent = nullptr);
+    //属于哪个视图的背景
+    enum ItemOnView {
+        OnMonthView,
+        OnWeekView,
+        OnDayView
+    };
+
+public:
+    explicit CSceneBackgroundItem(ItemOnView view, QGraphicsItem *parent = nullptr);
     //设置下一个item focus状态并获取下一个Item
     CFocusItem *setNextItemFocusAndGetNextItem() override;
     //更新在此背景上显示的item
@@ -58,6 +66,8 @@ public:
 
     CSceneBackgroundItem *getDownItem() const;
     void setDownItem(CSceneBackgroundItem *downItem);
+    //获取该背景属于哪个视图
+    ItemOnView getItemOfView() const;
 
 protected:
     virtual void updateCurrentItemShow();
@@ -72,6 +82,7 @@ private:
 protected:
     QVector<CFocusItem *> m_item {};
     int m_showItemIndex;
+    ItemOnView m_itemOfView;
 };
 
 #endif // CSCENEBACKGROUNDITEM_H

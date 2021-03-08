@@ -25,7 +25,7 @@
 #include <QMarginsF>
 
 CWeekDayBackgroundItem::CWeekDayBackgroundItem(QGraphicsItem *parent)
-    : CSceneBackgroundItem(parent)
+    : CSceneBackgroundItem(CSceneBackgroundItem::OnWeekView, parent)
     , m_drawDividingLine(false)
     , m_showFocus(false)
 {

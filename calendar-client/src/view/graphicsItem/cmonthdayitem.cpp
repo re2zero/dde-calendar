@@ -31,7 +31,7 @@ DWIDGET_USE_NAMESPACE
 
 bool CMonthDayItem::m_LunarVisible = false;
 CMonthDayItem::CMonthDayItem(QGraphicsItem *parent)
-    : CSceneBackgroundItem(parent)
+    : CSceneBackgroundItem(CSceneBackgroundItem::OnMonthView, parent)
     , m_DayLunar("")
     , m_DayStatus(H_NONE)
 {

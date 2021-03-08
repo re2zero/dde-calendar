@@ -48,7 +48,20 @@ bool CKeyEnableDeal::focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *s
         switch (focusItem->getItemType()) {
         case CFocusItem::CBACK: {
             CSceneBackgroundItem *backgroundItem = dynamic_cast<CSceneBackgroundItem *>(focusItem);
-            createSchedule(backgroundItem->getDate(), parentWidget);
+            QDateTime createDateTime;
+            //设置创建时间
+            createDateTime.setDate(backgroundItem->getDate());
+            createDateTime.setTime(QTime(0, 0, 0));
+            //如果为月视图背景则根据是否为当前时间设置不一样的创建时间
+            if (backgroundItem != nullptr && backgroundItem->getItemOfView() == CSceneBackgroundItem::OnMonthView) {
+                QDateTime currentDateTime = QDateTime::currentDateTime();
+                if (backgroundItem->getDate() == currentDateTime.date()) {
+                    createDateTime.setTime(currentDateTime.time());
+                } else {
+                    createDateTime.setTime(QTime(8, 0, 0));
+                }
+            }
+            createSchedule(createDateTime, parentWidget);
         } break;
         case CFocusItem::CITEM: {
             DragInfoItem *scheduleItem = dynamic_cast<DragInfoItem *>(focusItem);
@@ -68,11 +81,10 @@ bool CKeyEnableDeal::focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *s
  * @param createDate
  * @param parent
  */
-void CKeyEnableDeal::createSchedule(const QDate &createDate, QWidget *parent)
+void CKeyEnableDeal::createSchedule(const QDateTime &createDate, QWidget *parent)
 {
     CScheduleDlg dlg(1, parent);
-    QDateTime setDate(createDate, QTime(0, 0, 0));
-    dlg.setDate(setDate);
+    dlg.setDate(createDate);
     dlg.setAllDay(true);
     dlg.exec();
 }

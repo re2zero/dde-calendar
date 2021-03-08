@@ -39,7 +39,7 @@ protected:
     bool focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *scene) override;
 private:
     //创建日程
-    void createSchedule(const QDate &createDate, QWidget *parent);
+    void createSchedule(const QDateTime &createDate, QWidget *parent);
 };
 
 #endif // CKEYENABLEDEAL_H
