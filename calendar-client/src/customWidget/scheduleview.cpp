@@ -336,11 +336,12 @@ void CScheduleView::paintEvent(QPaintEvent *event)
     //绘制间隔线矩阵
     painter.drawRect(QRectF(0, point_y, this->width() - m_rightmagin - 2, 1));
     painter.restore();
-    //绘制右侧背景色（否则会有一个竖线的白色背景，不协调）
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(m_outerBorderColor);
-    painter.drawRect(QRectF(this->width() - 1, 0, this->width(), this->height()));
-    painter.end();
+    if (m_viewPos == ScheduleViewPos::WeekPos) {
+        //如果为周视图绘制右侧背景色（否则会有一个竖线的白色背景，不协调）
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(m_outerBorderColor);
+        painter.drawRect(QRectF(this->width() - 1, 0, this->width(), this->height()));
+    }
 }
 
 void CScheduleView::resizeEvent(QResizeEvent *event)
