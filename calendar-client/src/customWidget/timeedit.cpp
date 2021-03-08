@@ -62,6 +62,8 @@ QTime CTimeEdit::getTime()
 
 void CTimeEdit::setTimeFormat(int value)
 {
+    //获取edit的当前时间
+    QTime editCurrentTime = getTime();
     //清除列表
     clear();
     m_strList.clear();
@@ -83,6 +85,8 @@ void CTimeEdit::setTimeFormat(int value)
         addItems(m_strList);
         m_timeEdit->setDisplayFormat(m_timeFormat);
     }
+    //设置改变格式后的时间
+    setTime(editCurrentTime);
 }
 
 void CTimeEdit::slotFocusDraw(bool showFocus)
