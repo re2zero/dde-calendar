@@ -118,6 +118,7 @@ public:
     void setData(ScheduleDataInfo vScheduleInfo, QDate date);
     void setRoundtype(int rtype);
     void setTheMe(int type = 0);
+    void setDurationSize(QFont font);
     const ScheduleDataInfo &getData() const
     {
         return m_ScheduleInfo;
@@ -170,6 +171,7 @@ private:
     const int m_radius = 8;
     const int m_borderframew = 1;
     QString m_timeFormat = "hh:mm";
+    int m_durationSize = 0;
 };
 class CScheduleSearchDateItem : public DLabel
 {

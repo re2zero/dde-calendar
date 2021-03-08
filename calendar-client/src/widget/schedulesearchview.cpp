@@ -83,6 +83,8 @@ void CScheduleSearchItem::setText(QColor tcolor, QFont font)
 {
     m_ttextcolor = tcolor;
     m_tfont = font;
+    //设置时间显示宽度
+    setDurationSize(font);
 }
 
 void CScheduleSearchItem::setTimeC(QColor tcolor, QFont font)
@@ -135,6 +137,17 @@ void CScheduleSearchItem::setTheMe(int type)
         m_hovercolor.textColor = "#414D68";
         m_hovercolor.textColor.setAlphaF(1);
     }
+}
+
+/**
+ * @brief CScheduleSearchItem::setDurationSize 根据时间字体font设置时间宽度
+ */
+void CScheduleSearchItem::setDurationSize(QFont font)
+{
+    QFontMetrics fm1(font);
+    QString currentTimeStr = QTime::currentTime().toString("hh:mm");
+    //设置时间显示最大宽度
+    m_durationSize = fm1.horizontalAdvance(currentTimeStr + "-" + currentTimeStr);
 }
 void CScheduleSearchItem::slotEdit()
 {
@@ -278,22 +291,19 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
                   + "-" + m_ScheduleInfo.getEndDateTime().toString(m_timeFormat);
     }
 
-    QFontMetrics fm1(m_timefont);
-    int durationSize = 0;
-    durationSize = fm1.horizontalAdvance(datestr);
     int flag = Qt::AlignLeft | Qt::AlignVCenter;
 
     if (m_ScheduleInfo.getAllDay()) {
         datestr = tr("All Day");
     }
-    painter.drawText(QRect(12, 8, durationSize, labelheight - 16), flag, datestr);
+    painter.drawText(QRect(12, 8, m_durationSize, labelheight - 16), flag, datestr);
 
     painter.save();
     bcolor = m_splitlinecolor;
     QPen pen(bcolor);
     pen.setWidth(2);
     painter.setPen(pen);
-    painter.drawLine(durationSize + 17, 0, durationSize + 17, labelheight);
+    painter.drawLine(m_durationSize + 17, 0, m_durationSize + 17, labelheight);
     painter.restore();
 
     painter.setFont(m_tfont);
@@ -318,7 +328,7 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
         tstr = tstr + "...";
     }
 
-    painter.drawText(QRect(durationSize + 17 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, tstr);
+    painter.drawText(QRect(m_durationSize + 17 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, tstr);
     painter.end();
 }
 void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)
