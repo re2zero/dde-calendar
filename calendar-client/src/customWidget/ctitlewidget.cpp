@@ -29,7 +29,7 @@
 CTitleWidget::CTitleWidget(QWidget *parent)
     : QWidget(parent)
 {
-    m_buttonBox = new DButtonBox(this);
+    m_buttonBox = new CButtonBox(this);
     m_buttonBox->setObjectName("ButtonBox");
     m_buttonBox->setAccessibleName("ButtonBox");
     m_buttonBox->setAccessibleDescription("Year, month, week, day button box");
@@ -106,7 +106,8 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     layout->addStretch();
     layout->addWidget(m_newScheduleBtn, Qt::AlignRight);
     this->setLayout(layout);
-    setFocusProxy(m_yearButton);
+    //设置焦点代理为buttonBox
+    setFocusProxy(m_buttonBox);
 }
 
 DButtonBox *CTitleWidget::buttonBox() const

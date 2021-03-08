@@ -18,39 +18,16 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef CTITLEWIDGET_H
-#define CTITLEWIDGET_H
-
 #include "cbuttonbox.h"
 
-#include <QWidget>
-#include <DSearchEdit>
-#include <DIconButton>
-
-DWIDGET_USE_NAMESPACE
-
-class CTitleWidget : public QWidget
+CButtonBox::CButtonBox(QWidget *parent)
+    : DButtonBox(parent)
 {
-    Q_OBJECT
-public:
-    explicit CTitleWidget(QWidget *parent = nullptr);
+}
 
-    DButtonBox *buttonBox() const;
-
-    DSearchEdit *searchEdit() const;
-
-    DIconButton *newScheduleBtn() const;
-
-protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-
-signals:
-
-public slots:
-private:
-    CButtonBox *m_buttonBox {};
-    DSearchEdit *m_searchEdit {};
-    DIconButton *m_newScheduleBtn {}; //全局的新建日程按钮
-};
-
-#endif // CTITLEWIDGET_H
+void CButtonBox::focusInEvent(QFocusEvent *event)
+{
+    DButtonBox::focusInEvent(event);
+    //设置当前选中想为焦点
+    this->button(checkedId())->setFocus();
+}

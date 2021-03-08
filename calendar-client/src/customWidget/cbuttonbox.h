@@ -18,39 +18,24 @@
    * You should have received a copy of the GNU General Public License
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
-#ifndef CTITLEWIDGET_H
-#define CTITLEWIDGET_H
+#ifndef CBUTTONBOX_H
+#define CBUTTONBOX_H
 
-#include "cbuttonbox.h"
-
-#include <QWidget>
-#include <DSearchEdit>
-#include <DIconButton>
+#include <DButtonBox>
 
 DWIDGET_USE_NAMESPACE
 
-class CTitleWidget : public QWidget
+class CButtonBox : public DButtonBox
 {
     Q_OBJECT
 public:
-    explicit CTitleWidget(QWidget *parent = nullptr);
-
-    DButtonBox *buttonBox() const;
-
-    DSearchEdit *searchEdit() const;
-
-    DIconButton *newScheduleBtn() const;
+    explicit CButtonBox(QWidget *parent = nullptr);
 
 protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-
+    void focusInEvent(QFocusEvent *event);
 signals:
 
 public slots:
-private:
-    CButtonBox *m_buttonBox {};
-    DSearchEdit *m_searchEdit {};
-    DIconButton *m_newScheduleBtn {}; //全局的新建日程按钮
 };
 
-#endif // CTITLEWIDGET_H
+#endif // CBUTTONBOX_H
