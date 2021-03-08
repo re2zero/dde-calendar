@@ -348,7 +348,9 @@ void CScheduleView::resizeEvent(QResizeEvent *event)
 {
     if (m_viewPos == ScheduleViewPos::WeekPos) {
         m_sMaxNum = ((width() - m_leftMagin) / 7) / 27;
-    } else {
+        if (m_sMaxNum < 4) {
+            m_sMaxNum = 4;
+        }
     }
     m_graphicsView->setMaxNum(m_sMaxNum);
     m_graphicsView->setRange(width() - m_leftMagin,

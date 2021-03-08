@@ -220,7 +220,13 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
                             addSchduleItem(info.at(m).vData.at(n), currentDate, n + 1,
                                            tnum, 0, m_viewType, m_sMaxNum);
                         }
-                        ScheduleDataInfo tdetaliinfo = info.at(m).vData.at(tnum - 2);
+                        //添加“...”item
+                        int index = tnum - 2;
+                        if (index < 0) {
+                            qWarning() << "week view create error,tnum -2 :" << index;
+                            index = 1;
+                        }
+                        ScheduleDataInfo tdetaliinfo = info.at(m).vData.at(index);
                         tdetaliinfo.setTitleName("...");
                         tdetaliinfo.setType(3);
                         addSchduleItem(tdetaliinfo, currentDate, tnum, tnum, 1,
