@@ -418,6 +418,10 @@ void Calendarmainwindow::createview()
     }
     m_stackWidget->setCurrentIndex(m_defaultIndex);
     m_buttonBox->button(m_defaultIndex)->setChecked(true);
+    //如果为日视图则设置非全天时间定位
+    if (m_defaultIndex == DDECalendar::CalendarDayWindow) {
+        m_DayWindow->setTime();
+    }
 }
 
 /**
