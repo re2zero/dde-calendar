@@ -289,16 +289,19 @@ void CScheduleDlg::slotTextChange()
         //设置纯文本显示原始内容
         tStitlename.replace("\n", "");
         m_textEdit->setPlainText(tStitlename);
+        //将焦点移动到最后
+        m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
         //因设置text会再次触发textchange信号,在此直接return
         return;
     }
     //如果长度大于最大长度则显示原来的字符
     if (length > maxLength) {
         m_textEdit->setPlainText(m_context);
+        //将焦点移动到最后
+        m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
         return;
     }
-    //将焦点移动到最后
-    m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+
     m_context = m_textEdit->toPlainText();
 }
 
