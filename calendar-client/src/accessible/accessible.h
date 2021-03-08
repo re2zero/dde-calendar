@@ -1,3 +1,23 @@
+/*
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     chenhaifeng  <chenhaifeng@uniontech.com>
+*
+* Maintainer: chenhaifeng  <chenhaifeng@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #ifndef ACCESSIBLE_H
 #define ACCESSIBLE_H
 
@@ -38,16 +58,16 @@
 DWIDGET_USE_NAMESPACE
 //using namespace DCC_NAMESPACE;
 
-SET_FORM_ACCESSIBLE(CYearWindow,"YearWidget");
-SET_FORM_ACCESSIBLE(CMonthWindow,"MonthWidget");
-SET_FORM_ACCESSIBLE(CWeekWindow,"WeekWidget");
-SET_FORM_ACCESSIBLE(CDayWindow,"DayWidget");
-SET_FORM_ACCESSIBLE(SchecduleRemindWidget,"ScheduleRemindWidget");
-SET_FORM_ACCESSIBLE(CAllDayEventWeekView,"AllDayGraphiview");
-SET_FORM_ACCESSIBLE(CMonthGraphiview,"MonthGraphiview");
-SET_FORM_ACCESSIBLE(CGraphicsView,"PartTimeGraphiview");
-SET_FORM_ACCESSIBLE(CustomFrame,"CustomFrame");
-SET_FORM_ACCESSIBLE(AnimationStackedWidget,"AnimationStackedWidget");
+SET_FORM_ACCESSIBLE(CYearWindow, "YearWidget");
+SET_FORM_ACCESSIBLE(CMonthWindow, "MonthWidget");
+SET_FORM_ACCESSIBLE(CWeekWindow, "WeekWidget");
+SET_FORM_ACCESSIBLE(CDayWindow, "DayWidget");
+SET_FORM_ACCESSIBLE(SchecduleRemindWidget, "ScheduleRemindWidget");
+SET_FORM_ACCESSIBLE(CAllDayEventWeekView, "AllDayGraphiview");
+SET_FORM_ACCESSIBLE(CMonthGraphiview, "MonthGraphiview");
+SET_FORM_ACCESSIBLE(CGraphicsView, "PartTimeGraphiview");
+SET_FORM_ACCESSIBLE(CustomFrame, "CustomFrame");
+SET_FORM_ACCESSIBLE(AnimationStackedWidget, "AnimationStackedWidget");
 
 // Qt控件
 SET_FORM_ACCESSIBLE(QFrame, m_w->objectName().isEmpty() ? "frame" : m_w->objectName())
@@ -77,19 +97,19 @@ SET_FORM_ACCESSIBLE(DFileDialog, m_w->objectName().isEmpty() ? "DFileDialog" : m
 QAccessibleInterface *accessibleFactory(const QString &classname, QObject *object)
 {
     QAccessibleInterface *interface = nullptr;
-    
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CYearWindow);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CMonthWindow);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CWeekWindow);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CDayWindow);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),SchecduleRemindWidget);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CAllDayEventWeekView);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CMonthGraphiview);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CGraphicsView);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),CustomFrame);
-    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""),AnimationStackedWidget);
 
-//      Qt 控件
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), CYearWindow);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), CMonthWindow);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), CWeekWindow);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), CDayWindow);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), SchecduleRemindWidget);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), CAllDayEventWeekView);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), CMonthGraphiview);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), CGraphicsView);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), CustomFrame);
+    USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), AnimationStackedWidget);
+
+    //      Qt 控件
     USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), QFrame);
     USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), QWidget);
     USE_ACCESSIBLE(QString(classname).replace("dccV20::", ""), QPushButton);
