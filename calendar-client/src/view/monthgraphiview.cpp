@@ -180,7 +180,9 @@ void CMonthGraphiview::setSearchScheduleInfo(const QVector<ScheduleDataInfo> &se
 
 void CMonthGraphiview::updateSize()
 {
-    m_Scene->setSceneRect(this->viewport()->rect());
+    //场景的大小和位置
+    QRectF sceneRect(0, 0, viewport()->rect().width(), viewport()->rect().height());
+    m_Scene->setSceneRect(sceneRect);
     qreal w = m_Scene->width() / DDEMonthCalendar::AFewDaysofWeek;
     qreal h = m_Scene->height() / DDEMonthCalendar::LinesNumofMonth;
     QRectF rect ;
@@ -408,10 +410,9 @@ void CMonthGraphiview::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CMonthGraphiview::resizeEvent(QResizeEvent *event)
 {
-    Q_UNUSED(event);
+    DragInfoGraphicsView::resizeEvent(event);
     updateSize();
     updateInfo();
-    //    m_Scene->currentFocusItemUpdate();
 }
 void CMonthGraphiview::changeEvent(QEvent *event)
 {
