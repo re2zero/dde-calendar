@@ -502,6 +502,8 @@ CDayMonthWidget::CDayMonthWidget(QWidget *parent)
     }
     this->setLayout(m_gridLayout);
     setFocusPolicy(Qt::StrongFocus);
+    //设置最大高度
+    setMaximumHeight(250);
 }
 
 CDayMonthWidget::~CDayMonthWidget()
