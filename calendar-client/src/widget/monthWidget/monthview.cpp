@@ -67,7 +67,6 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 
     m_remindWidget = new SchecduleRemindWidget(this);
     setMouseTracking(true);
-    setFocusPolicy(Qt::StrongFocus);
 }
 
 CMonthView::~CMonthView()
