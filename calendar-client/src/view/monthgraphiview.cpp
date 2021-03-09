@@ -107,10 +107,16 @@ void CMonthGraphiview::setDate(const QVector<QDate> &showDate)
     } else {
         m_currentMonth = showDate.at(0).month();
     }
+    //根据当前时间设置当前场景的第一个焦点item
+    int currentIndex = 0;
     for (int i = 0; i < m_DayItem.size(); ++i) {
         m_DayItem.at(i)->setDate(showDate.at(i));
         m_DayItem.at(i)->setCurrentMonth(showDate.at(i).month() == m_currentMonth);
+        if (showDate.at(i) == getCurrentDate()) {
+            currentIndex = i;
+        }
     }
+    m_Scene->setFirstFocusItem(m_DayItem.at(currentIndex));
     m_shceludelistdata.clear();
     this->scene()->update();
 }

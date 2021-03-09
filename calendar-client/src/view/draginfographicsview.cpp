@@ -880,3 +880,13 @@ void DragInfoGraphicsView::setSceneCurrentItemFocus(const QDate &focusDate)
 {
     Q_UNUSED(focusDate);
 }
+
+QDate DragInfoGraphicsView::getCurrentDate() const
+{
+    return m_currentDate;
+}
+
+void DragInfoGraphicsView::setCurrentDate(const QDate &currentDate)
+{
+    m_currentDate = currentDate;
+}

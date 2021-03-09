@@ -192,6 +192,7 @@ void CMonthView::setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchSc
 void CMonthView::setCurrentDate(const QDate &currentDate)
 {
     m_weekIndicator->setCurrentDate(currentDate);
+    m_monthGraphicsView->setCurrentDate(currentDate);
 }
 
 void CMonthView::setRemindWidgetTimeFormat(QString timeformat)

@@ -114,6 +114,9 @@ public:
     //设置搜索选中日程
     virtual void setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo);
 
+    QDate getCurrentDate() const;
+    void setCurrentDate(const QDate &currentDate);
+
 protected:
     virtual void setDragPixmap(QDrag *drag, DragInfoItem *item);
     virtual void slotCreate(const QDateTime &date);
@@ -244,6 +247,7 @@ protected:
     bool                m_rightShowRadius{false};       //右下角显示圆角
     QColor              m_outerBorderColor;             //外边框背景色
     QString m_buildName;
+    QDate m_currentDate;
 };
 
 #endif // DRAGINFOGRAPHICSVIEW_H
