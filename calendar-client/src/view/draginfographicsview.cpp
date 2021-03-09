@@ -24,6 +24,7 @@
 #include "myscheduleview.h"
 #include "constants.h"
 #include "cscheduleoperation.h"
+#include "graphicsItem/cscenebackgrounditem.h"
 
 #include <DMenu>
 
@@ -810,6 +811,17 @@ void DragInfoGraphicsView::slotDeleteItem()
 {
     //获取选中日程
     ScheduleDataInfo _pressSchedule = DragInfoItem::getPressSchedule();
+    //根据焦点状态获取当前焦点的item
+    CSceneBackgroundItem *backgroundItem = dynamic_cast<CSceneBackgroundItem *>(m_Scene->getCurrentFocusItem());
+    if (backgroundItem != nullptr) {
+        DragInfoItem *dfocusItem = dynamic_cast<DragInfoItem *>(backgroundItem->getFocusItem());
+        if (dfocusItem != nullptr && dfocusItem->getItemType() == CFocusItem::CITEM) {
+            if (dfocusItem->getItemFoucs()) {
+                _pressSchedule = dfocusItem->getData();
+            }
+        }
+    }
+
     //判断是否有效,如果为有效日程且日程类型不为节日或纪念日则删除
     if (_pressSchedule.isValid() && _pressSchedule.getType() != 4) {
         CScheduleOperation _scheduleOperation(this);
