@@ -141,6 +141,10 @@ bool CGraphicsScene::focusInDeal(QEvent *event)
             item->setItemFocus(true);
         } else {
             dealResult = m_keyPrxy->keyPressDeal(Qt::Key_Tab);
+            //如果切换过来需要设置下一个item焦点，但是已经没有下一个item时，发送焦点切换信号
+            if (currentFocusItem == nullptr) {
+                emit signalsetNextFocus();
+            }
         }
     }
     if (currentFocusItem != nullptr && Qt::ActiveWindowFocusReason == focusEvent->reason()) {

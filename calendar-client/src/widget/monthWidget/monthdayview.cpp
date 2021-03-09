@@ -145,7 +145,7 @@ CMonthWidget::CMonthWidget(QWidget *parent)
         m_MonthItem.append(monthrect);
     }
     //获取Tab焦点
-    setFocusPolicy(Qt::TabFocus);
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 CMonthWidget::~CMonthWidget()

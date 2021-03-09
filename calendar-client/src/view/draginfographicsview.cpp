@@ -88,6 +88,7 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     connect(m_Scene, &CGraphicsScene::signalSwitchNextPage, this, &DragInfoGraphicsView::slotSwitchNextPage);
     connect(m_Scene, &CGraphicsScene::signalGotoDayView, this, &DragInfoGraphicsView::signalGotoDayView);
     connect(m_Scene, &CGraphicsScene::signalContextMenu, this, &DragInfoGraphicsView::slotContextMenu);
+    connect(m_Scene, &CGraphicsScene::signalsetNextFocus, this, &DragInfoGraphicsView::slotsetNextFoucs);
 }
 
 DragInfoGraphicsView::~DragInfoGraphicsView()
@@ -886,6 +887,14 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
         m_Scene->setIsContextMenu(false);
         m_Scene->currentFocusItemUpdate();
     }
+}
+
+/**
+ * @brief DragInfoGraphicsView::slotsetNextFoucs    切换到下一个焦点
+ */
+void DragInfoGraphicsView::slotsetNextFoucs()
+{
+    focusNextPrevChild(true);
 }
 
 void DragInfoGraphicsView::setSceneCurrentItemFocus(const QDate &focusDate)

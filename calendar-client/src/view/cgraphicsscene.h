@@ -78,6 +78,8 @@ signals:
     void signalGotoDayView(const QDate &date);
     //快捷键触发右击
     void signalContextMenu(CFocusItem *item);
+    //切换焦点到下一个wieget
+    void signalsetNextFocus();
 
 private:
     QGraphicsItem *firstfocusItem;

@@ -60,7 +60,7 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <location filename="../calendar-client/src/view/graphicsview.cpp" line="640"/>
+        <location filename="../calendar-client/src/view/graphicsview.cpp" line="646"/>
         <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -121,7 +121,7 @@
     <name>CScheduleDlg</name>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="47"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="590"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="593"/>
         <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -141,206 +141,206 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="824"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="827"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="337"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="360"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="727"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="755"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="340"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="363"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="730"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="758"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="338"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="341"/>
         <source>At time of event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="339"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="342"/>
         <source>15 minutes before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="340"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="343"/>
         <source>30 minutes before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="341"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="344"/>
         <source>1 hour before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="342"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="362"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="345"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="365"/>
         <source>1 day before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="343"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="363"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="346"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="366"/>
         <source>2 days before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="344"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="364"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="347"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="367"/>
         <source>1 week before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="361"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="364"/>
         <source>On start day (9:00 AM)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="465"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="538"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="468"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="541"/>
         <source>Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="469"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="575"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="472"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="578"/>
         <source>Description:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="473"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="608"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="476"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="611"/>
         <source>All Day:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="477"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="628"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="480"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="631"/>
         <source>Starts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="481"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="660"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="484"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="663"/>
         <source>Ends:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="485"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="692"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="488"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="695"/>
         <source>Remind Me:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="489"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="717"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="492"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="720"/>
         <source>Repeat:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="493"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="744"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="496"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="747"/>
         <source>End Repeat:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="535"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="538"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="552"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="555"/>
         <source>Work</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="556"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="559"/>
         <source>Life</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="561"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="564"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="578"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="581"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="605"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="608"/>
         <source>All Day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="625"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="628"/>
         <source>Starts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="657"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="660"/>
         <source>Ends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="693"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="696"/>
         <source>Remind Me</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="714"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="717"/>
         <source>Repeat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="728"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="731"/>
         <source>Daily</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="729"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="732"/>
         <source>Weekdays</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="730"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="733"/>
         <source>Weekly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="731"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="734"/>
         <source>Monthly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="732"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="735"/>
         <source>Yearly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="745"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="748"/>
         <source>End Repeat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="756"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="759"/>
         <source>After</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="757"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="760"/>
         <source>On</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="776"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="779"/>
         <source>time(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="825"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="828"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -459,17 +459,17 @@
 <context>
     <name>CScheduleSearchDateItem</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="829"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="837"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="829"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="837"/>
         <source>M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="829"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="837"/>
         <source>D</source>
         <translation type="unfinished"></translation>
     </message>
@@ -487,7 +487,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="287"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="296"/>
         <source>All Day</source>
         <translation type="unfinished"></translation>
     </message>
@@ -495,7 +495,7 @@
 <context>
     <name>CScheduleSearchView</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="600"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="609"/>
         <source>No search results</source>
         <translation type="unfinished"></translation>
     </message>
@@ -561,7 +561,7 @@
 <context>
     <name>CYearWindow</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="639"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="642"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -598,22 +598,22 @@
 <context>
     <name>DragInfoGraphicsView</name>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="59"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="60"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="60"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="61"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="61"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="62"/>
         <source>New event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="717"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="719"/>
         <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -621,7 +621,7 @@
 <context>
     <name>Return</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="635"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="638"/>
         <source>Today</source>
         <comment>Return</comment>
         <translation type="unfinished"></translation>
@@ -679,7 +679,7 @@
 <context>
     <name>YearFrame</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="954"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="957"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -693,8 +693,8 @@
         <location filename="../calendar-client/src/widget/monthWidget/monthwindow.cpp" line="254"/>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="69"/>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="322"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="289"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="633"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="292"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="636"/>
         <source>Today</source>
         <comment>Today</comment>
         <translation type="unfinished"></translation>
