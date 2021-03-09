@@ -57,7 +57,6 @@ CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
     connect(m_editAction, SIGNAL(triggered(bool)), this, SLOT(slotEdit()));
     connect(m_deleteAction, SIGNAL(triggered(bool)), this, SLOT(slotDelete()));
     setTheMe(DGuiApplicationHelper::instance()->themeType());
-    connect(this, &CScheduleSearchItem::signalSchotCutClicked, this, &CScheduleSearchItem::slotSchotCutClicked);
     QObject::connect(CalendarManager::getInstance(), &CalendarManager::signalTimeFormatChanged,
                      this, &CScheduleSearchItem::slotTimeFormatChanged);
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::paletteTypeChanged,
@@ -422,6 +421,10 @@ void CScheduleSearchItem::keyPressEvent(QKeyEvent *event)
         CMyScheduleView dlg(m_ScheduleInfo, this);
         dlg.exec();
     }
+    //获取Alt+m显示右击菜单
+    if (event->modifiers() == Qt::ALT && event->key() == Qt::Key_M) {
+        slotSchotCutClicked();
+    }
     DLabel::keyPressEvent(event);
 }
 
@@ -443,10 +446,6 @@ CScheduleSearchView::CScheduleSearchView(QWidget *parent)
     m_bBackgroundcolor.setAlphaF(0.03);
     m_gradientItemList->setLineWidth(0);
     m_labellist.clear();
-
-    QShortcut *shortcut = new QShortcut(this);
-    shortcut->setKey(QKeySequence(QLatin1String("Alt+M")));
-    connect(shortcut, SIGNAL(activated()), this, SIGNAL(signalSchotCutClicked()));
 
     connect(m_gradientItemList, &CScheduleListWidget::signalListWidgetScheduleHide, this, &CScheduleSearchView::signalScheduleHide);
     CScheduleTask *_scheduleTask = CalendarManager::getInstance()->getScheduleTask();
@@ -645,7 +644,6 @@ void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, in
     connect(gwi, &CScheduleSearchItem::signalSelectSchedule, this, &CScheduleSearchView::slotSelectSchedule);
     connect(gwi, &CScheduleSearchItem::signalViewtransparentFrame, this, &CScheduleSearchView::signalViewtransparentFrame);
     connect(gwi, &CScheduleSearchItem::signalSelectCurrentItem, this, &CScheduleSearchView::slotSelectCurrentItem);
-    connect(this, &CScheduleSearchView::signalSchotCutClicked, gwi, &CScheduleSearchItem::signalSchotCutClicked);
 
     QListWidgetItem *listItem = new QListWidgetItem;
     listItem->setSizeHint(QSize(m_maxWidth - 25, 36)); //每次改变Item的高度

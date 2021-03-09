@@ -129,7 +129,6 @@ signals:
     void signalSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
     void signalSelectCurrentItem(CScheduleSearchItem *item, bool foucusOutStatus);
-    void signalSchotCutClicked();
 public slots:
     void slotEdit();
     void slotDelete();
