@@ -129,8 +129,10 @@ void CTimeEdit::showPopup()
     //获取下拉视图容器
     QFrame *viewContainer = this->findChild<QFrame *>();
     if (viewContainer) {
-        //如果显示视图容器则设置最大高度
+        //如果显示视图容器则设置高度
         viewContainer->setFixedHeight(viewContainerMaxHeight);
+        //设置最大高度
+        viewContainer->setMaximumHeight(viewContainerMaxHeight + 1);
         //获取combobox底部坐标
         QPoint showPoint = mapToGlobal(this->rect().bottomLeft());
         //控制视图容器宽度
