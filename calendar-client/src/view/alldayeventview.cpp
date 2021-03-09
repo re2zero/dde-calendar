@@ -361,6 +361,8 @@ void CAllDayEventWeekView::updateDateShow()
     } else {
         sceneHeight = itemsHeight + 6;
     }
+    //如果设置场景的高度小于viewport的高度则设置场景的高度为viewport的高度
+    sceneHeight = sceneHeight < viewport()->height() ? viewport()->height() : sceneHeight;
     setSceneRect(0, 0, m_Scene->width(), sceneHeight);
 
     for (int i = 0; i < m_baseShowItem.count(); i++) {
