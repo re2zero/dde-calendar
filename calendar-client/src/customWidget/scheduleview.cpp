@@ -475,6 +475,8 @@ void CScheduleView::slotDeleteitem()
 {
     //"delete"快捷键删除日程，因为只有一个点击选中日程所以全天或非全天只需要有一个删除就可以了
     m_graphicsView->slotDeleteItem();
+    //因添加了对焦点选中item的快捷删除，添加对全天选中日程的删除
+    m_alldaylist->slotDeleteItem();
 }
 
 void CScheduleView::slotCurrentScheduleDate(QDate date)
