@@ -1,4 +1,4 @@
-# Calendar|../common/dde_calendar_96.svg|
+# Calendar|dde-calendar|
 
 ## Overview
 
@@ -41,18 +41,20 @@ Monthly view is defaulted and you can click to switch between different views.
 - The date starts from the year **1900** and you cannot view dates earlier than that year during date switching. 
 - In the monthly and weekly view, the display of Saturday and Sunday is different from that of days between Monday to Friday. 
 
-| View         | Feature                                                      |
-| ------------ | ------------------------------------------------------------ |
-| Yearly View  | Display the months and days of the whole year.               |
-| Monthly View | Display the holiday information and schedule.                |
-| Weekly View  | Display the schedule of this week.                           |
-| Daily View   | Display the holiday information and detailed schedule arrangements. |
+| View         | Feature                                        |
+| ------------ | ---------------------------------------------- |
+| Yearly View  | Display the months and days of the whole year. |
+| Monthly View | Display the holiday information and schedule.  |
+| Weekly View  | Display the schedule of this week.             |
+| Daily View   | Display the detailed schedule arrangements.    |
 
 ### Create Events
 
 1. Select a date in the monthly, weekly or daily view.
 2. Double-click, or right-click to select **New event** in the blank area on a date and a **New Event** window will pop up.
 3. Set the schedule type, description, time, and reminder, etc.
+
+> ![tips](../common/tips.svg)Tips: You can also click the ![add](../common/add_normal.svg) icon in the menu bar to create events.
 
 ![0|create](fig/create.png)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -72,7 +74,7 @@ Monthly view is defaulted and you can click to switch between different views.
 
 4.  Click **Save** to create the event.
 
- > ![tips](../common/tips.svg) Tips: 
+ > ![notes](../common/notes.svg) Notes: 
  >
  > - You can drag the event label to a specified time or date.
  > - You can perform multiple operations such as creating, searching, canceling events with Desktop AI Assistant.
@@ -96,13 +98,19 @@ When you are editing an event, different prompt information will be displayed ac
 
 ### Set an All-day or Multiple-day Event
 
-Check **All Day**, set the **Starts** and **Ends **and you are able to set an all-day or consecutive all-day events when creating or editing an event.
+Set the **Starts** and **Ends** and you are able to set an all-day or consecutive multiple-day events when creating or editing an event.
 
 ### Set Repeating Events
 
 1. Click the drop-down list on the right of **Repeat** and select an option as needed when creating or editing an event.
    
 2. Click the drop-down list on the right of **End Repeat** and select the end time of the schedule.
+
+### Search Events
+
+1. In the top search box of the Calendar interface, you can click![search](../common/search.svg)to enter keywords.
+2. Press the **Enter** key on the keyboard for searching.
+3. Click ![0|close](../common/close_icon.svg) or delete the entered information in the search box to clear the current keywords or cancel the search. 
 
 ### View Events
 
@@ -121,11 +129,6 @@ Description of icons contained in the prompt information is listed as below.
 | One day before start   | The reminder is set to one week ahead of the schedule.       |
 | Close                  | Turn off the prompt information.                             |
 
-### Search Events
-
-1. In the top search box of the Calendar interface, you can click![search](../common/search.svg)to enter keywords.
-2. Press the **Enter** key on the keyboard for searching.
-3. Click ![0|close](../common/close_icon.svg) or delete the entered information in the search box to clear the current keywords or cancel the search. 
 
 ### Delete Events
 
