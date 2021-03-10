@@ -336,9 +336,6 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
         dlg.exec();
         emit signalViewtransparentFrame(0);
         disconnect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
-        if (item == nullptr) {
-            return;
-        }
     }
 }
 

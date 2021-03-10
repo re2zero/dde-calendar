@@ -429,10 +429,6 @@ void CGraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
     dlg.exec();
     emit signalViewtransparentFrame(0);
     disconnect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
-
-    if (item == nullptr) {
-        return;
-    }
 }
 
 void CGraphicsView::mousePressEvent(QMouseEvent *event)

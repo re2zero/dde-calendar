@@ -70,8 +70,8 @@ class CaHuangLiDayInfo
 {
 public:
     CaHuangLiDayInfo()
-        : mWorktime(0)
-        , mLunarLeapMonth(0)
+        : mLunarLeapMonth(0)
+        , mWorktime(0)
     {
     }
     static void registerMetaType();

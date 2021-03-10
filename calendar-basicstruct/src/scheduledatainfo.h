@@ -43,7 +43,7 @@ public:
     //获取日程ID
     int getID() const;
     //设置日程ID
-    void setID(int getID);
+    void setID(int scheduleID);
     //获取开始时间
     QDateTime &getBeginDateTime();
     QDateTime getBeginDateTime() const;

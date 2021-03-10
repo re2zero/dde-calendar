@@ -51,11 +51,11 @@ int ScheduleDataInfo::getID() const
 
 /**
  * @brief setScheduleID             设置日程ID
- * @param ScheduleID                日程id
+ * @param scheduleID                日程id
  */
-void ScheduleDataInfo::setID(int ScheduleID)
+void ScheduleDataInfo::setID(int scheduleID)
 {
-    m_ScheduleID = ScheduleID;
+    m_ScheduleID = scheduleID;
 }
 
 /**

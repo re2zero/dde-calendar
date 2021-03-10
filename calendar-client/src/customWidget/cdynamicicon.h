@@ -37,6 +37,10 @@ class CDynamicIcon
 private:
     explicit CDynamicIcon(int width, int height);
     ~CDynamicIcon();
+    //禁用拷贝构造，拷贝赋值
+    CDynamicIcon(const CDynamicIcon &) = delete;
+    CDynamicIcon &operator=(const CDynamicIcon &) = delete;
+
 public:
     static CDynamicIcon *getInstance();
     static void releaseInstance();

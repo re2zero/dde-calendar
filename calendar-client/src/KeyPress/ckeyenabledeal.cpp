@@ -48,20 +48,23 @@ bool CKeyEnableDeal::focusItemDeal(CSceneBackgroundItem *item, CGraphicsScene *s
         switch (focusItem->getItemType()) {
         case CFocusItem::CBACK: {
             CSceneBackgroundItem *backgroundItem = dynamic_cast<CSceneBackgroundItem *>(focusItem);
-            QDateTime createDateTime;
-            //设置创建时间
-            createDateTime.setDate(backgroundItem->getDate());
-            createDateTime.setTime(QTime(0, 0, 0));
-            //如果为月视图背景则根据是否为当前时间设置不一样的创建时间
-            if (backgroundItem != nullptr && backgroundItem->getItemOfView() == CSceneBackgroundItem::OnMonthView) {
-                QDateTime currentDateTime = QDateTime::currentDateTime();
-                if (backgroundItem->getDate() == currentDateTime.date()) {
-                    createDateTime.setTime(currentDateTime.time());
-                } else {
-                    createDateTime.setTime(QTime(8, 0, 0));
+            if (backgroundItem != nullptr) {
+                QDateTime createDateTime;
+                //设置创建时间
+                createDateTime.setDate(backgroundItem->getDate());
+                createDateTime.setTime(QTime(0, 0, 0));
+                //如果为月视图背景则根据是否为当前时间设置不一样的创建时间
+                if (backgroundItem->getItemOfView() == CSceneBackgroundItem::OnMonthView) {
+                    QDateTime currentDateTime = QDateTime::currentDateTime();
+                    //如果为当前时间则设置创建开始时间为当前时间
+                    if (backgroundItem->getDate() == currentDateTime.date()) {
+                        createDateTime.setTime(currentDateTime.time());
+                    } else {
+                        createDateTime.setTime(QTime(8, 0, 0));
+                    }
                 }
+                createSchedule(createDateTime, parentWidget);
             }
-            createSchedule(createDateTime, parentWidget);
         } break;
         case CFocusItem::CITEM: {
             DragInfoItem *scheduleItem = dynamic_cast<DragInfoItem *>(focusItem);
