@@ -41,8 +41,8 @@ public:
     QRectF getAllDayDrawRegion(QDate begin, QDate end);
     QDateTime getDate(QPointF pos);
     QDate getsDate(QPointF pos);
-    float getHeight(const QTime &time);
-    QDate getBegindate()
+    float getHeight(const QTime &time) const;
+    QDate getBegindate() const
     {
         return m_begindate;
     }

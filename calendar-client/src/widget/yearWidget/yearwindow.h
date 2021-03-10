@@ -177,13 +177,6 @@ signals:
      *          0:点击时间  1:双击时间  2: 双击月
      */
     void signalMousePress(const QDate &selectDate, const int pressType = 0);
-
-public slots:
-    /**
-     * @brief slotSelectInfo 设置是否选择了日期的标志
-     * @param flag 是否选择了如期
-     */
-    void slotSelectInfo(bool flag);
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
 private:

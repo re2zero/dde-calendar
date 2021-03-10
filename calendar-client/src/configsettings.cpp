@@ -56,11 +56,6 @@ void CConfigSettings::init()
     }
 }
 
-QPointer<QSettings> CConfigSettings::settings()
-{
-    return m_settings;
-}
-
 void CConfigSettings::sync()
 {
     m_settings->sync();

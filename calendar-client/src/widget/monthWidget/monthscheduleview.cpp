@@ -71,17 +71,6 @@ void CMonthScheduleView::setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, 
     updateData();
 }
 
-void CMonthScheduleView::slotdeleteitem(CMonthScheduleItem *item)
-{
-    emit signalsUpdateShcedule(item->getData().getID());
-}
-
-void CMonthScheduleView::slotedititem(CMonthScheduleItem *item, int type)
-{
-    Q_UNUSED(type);
-    emit signalsUpdateShcedule(item->getData().getID());
-}
-
 void CMonthScheduleView::slotFontChange()
 {
     QFont font;

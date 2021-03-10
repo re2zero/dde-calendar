@@ -65,9 +65,6 @@ signals:
     void signalSwitchView(const int viewIndex = 0);
     //弹出对话框设置背景底色
     void signalViewtransparentFrame(int type);
-public slots:
-    //更新界面日程数据显示
-    void slotScheduleShowUpdate();
 protected:
     static CalendarManager *m_calendarManager;
     QString             m_lunarYear;

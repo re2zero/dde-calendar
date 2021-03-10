@@ -153,11 +153,3 @@ CaHuangLiDayInfo CScheduleBaseWidget::getLunarInfo()
     m_lunarDay = QString("-农历%0%1-").arg(interator.value().mLunarMonthName).arg(interator.value().mLunarDayName);
     return interator.value();
 }
-
-/**
- * @brief CScheduleBaseWidget::slotScheduleShowUpdate       更新界面日程数据显示
- */
-void CScheduleBaseWidget::slotScheduleShowUpdate()
-{
-    updateShowSchedule();
-}

@@ -196,18 +196,6 @@ TEST_F(test_monthscheduleview, setData)
     mMonthScheduleView->setData(mapScheduleInfo, 1);
 }
 
-//void CMonthScheduleView::slotdeleteitem(CMonthScheduleWidgetItem *item)
-TEST_F(test_monthscheduleview, slotdeleteitem)
-{
-    mMonthScheduleView->slotdeleteitem(mMonthScheduleWidgetItem);
-}
-
-//void CMonthScheduleView::slotedititem(CMonthScheduleWidgetItem *item, int type)
-TEST_F(test_monthscheduleview, slotedititem)
-{
-    mMonthScheduleView->slotedititem(mMonthScheduleWidgetItem, 1);
-}
-
 //void CMonthScheduleView::slotFontChange()
 TEST_F(test_monthscheduleview, slotFontChange)
 {

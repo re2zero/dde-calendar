@@ -57,10 +57,7 @@ signals:
     void signalUpdateUI(int type);
     void signalPressScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
 public slots:
-    void slotdeleteitem(CMonthScheduleItem *item);
-    void slotedititem(CMonthScheduleItem *item, int type = 0);
     void slotFontChange();
-
 private:
     void updateDateShow(QVector<QVector<MScheduleDateRangeInfo>> &vCMDaySchedule, QVector<QGraphicsRectItem *> &schudeleShowItem);
     void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum, QVector<QGraphicsRectItem *> &schudeleShowItem);

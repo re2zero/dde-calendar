@@ -962,12 +962,6 @@ void YearFrame::setYearShow()
     }
 }
 
-
-void YearFrame::slotSelectInfo(bool flag)
-{
-    m_selectFlag = flag;
-}
-
 /**
  * @brief YearFrame::eventFilter 事件过滤器，获取选中monthview的index
  */

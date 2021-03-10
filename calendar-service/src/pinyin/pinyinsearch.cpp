@@ -108,7 +108,7 @@ QString pinyinsearch::CreatePinyin(const QString &zh)
  * @param pinyin 拼音
  * @return 按照汉字划分好的拼音字符串
  */
-QString pinyinsearch::CreatePinyinQuery(QString pinyin)
+QString pinyinsearch::CreatePinyinQuery(QString pinyin) const
 {
     QString expr;
     //对传入的拼音进行划分，例如：“nihao”->"[%ni%][%hao%]"
@@ -141,7 +141,7 @@ QString pinyinsearch::CreatePinyinQuery(QString pinyin)
  * @param pinyin 拼音
  * @return 拼音的正则表达式
  */
-QString pinyinsearch::CreatePinyinRegexp(QString pinyin)
+QString pinyinsearch::CreatePinyinRegexp(QString pinyin) const
 {
     QString expr;
     while (pinyin.size() > 0) {

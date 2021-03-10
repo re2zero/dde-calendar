@@ -273,7 +273,7 @@ void CalendarDateDataManager::setDateFormatChanged(int value)
 /**
  * @brief CalendarDateDataManager::getTimeFormat 获取短时间格式
  */
-QString CalendarDateDataManager::getTimeFormat()
+QString CalendarDateDataManager::getTimeFormat() const
 {
     return m_timeFormat;
 }
@@ -281,7 +281,7 @@ QString CalendarDateDataManager::getTimeFormat()
 /**
  * @brief CalendarDateDataManager::getTimeFormatValue 获取时间格式的value
  */
-int CalendarDateDataManager::getTimeFormatValue()
+int CalendarDateDataManager::getTimeFormatValue() const
 {
     return m_timeFormatValue;
 }
@@ -289,7 +289,7 @@ int CalendarDateDataManager::getTimeFormatValue()
 /**
  * @brief CalendarDateDataManager::getDateFormat 获取短日期格式
  */
-QString CalendarDateDataManager::getDateFormat()
+QString CalendarDateDataManager::getDateFormat() const
 {
     return m_dateFormat;
 }

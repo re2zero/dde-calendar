@@ -153,7 +153,7 @@ void LunarCalendar::calcLeapMonth()
     }
 }
 
-qint32 LunarCalendar::getSolarTermInfo(qint32 month, qint32 day)
+qint32 LunarCalendar::getSolarTermInfo(qint32 month, qint32 day) const
 {
     int index = 2 * month - 1;
     qint32 SolarTerm = -1;

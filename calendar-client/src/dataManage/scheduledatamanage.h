@@ -52,13 +52,12 @@ class CScheduleDataManage
 public:
     static CScheduleDataManage *getScheduleDataManage();
     CSchedulesColor getScheduleColorByType(int type);
-    QColor getSystemActiveColor();
+    static QColor getSystemActiveColor();
     void setTheMe(int type = 0);
-    int getTheme()
+    int getTheme() const
     {
         return m_theme;
     }
-    void clear();
 private:
     CScheduleDataManage();
     ~CScheduleDataManage();

@@ -41,13 +41,6 @@ QDateTime Utils::fromconvertData(QString str)
     return QDateTime::fromString(liststr.at(0), "yyyy-MM-ddThh:mm:ss");
 }
 
-QString Utils::toconvertIGData(QDateTime date)
-{
-    QDateTime datetimeutc = QDateTime::fromTime_t(0);
-    QString str = date.toString("yyyy-MM-ddThh:mm:ss") + "Z" + datetimeutc.toString("hh:mm");
-    return str;
-}
-
 QDateTime Utils::fromconvertiIGData(QString str)
 {
     QStringList liststr = str.split("Z", QString::SkipEmptyParts);

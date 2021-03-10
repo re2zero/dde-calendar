@@ -31,7 +31,6 @@ public:
     Utils();
     static QString toconvertData(QDateTime date);
     static QDateTime fromconvertData(QString str);
-    static QString toconvertIGData(QDateTime date);
     static QDateTime fromconvertiIGData(QString str);
     static QJsonObject JobToObject(const Job &job);
 };

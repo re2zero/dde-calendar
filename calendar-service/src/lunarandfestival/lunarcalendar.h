@@ -37,7 +37,7 @@ private:
     void calcProcData();
     void fillMonths();
     void calcLeapMonth();
-    qint32 getSolarTermInfo(qint32 month, qint32 day);
+    qint32 getSolarTermInfo(qint32 month, qint32 day) const;
 
 public:
 private:

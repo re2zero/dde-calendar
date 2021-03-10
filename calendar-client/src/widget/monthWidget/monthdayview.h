@@ -128,7 +128,7 @@ public:
     //绘制
     void paintItem(QPainter *painter, const QRectF &rect);
     //设置设备缩放比例
-    void setDevicePixelRatio(const qreal pixel);
+    static void setDevicePixelRatio(const qreal pixel);
     //设置主题
     static void setTheMe(int type);
     //设置选择的矩阵

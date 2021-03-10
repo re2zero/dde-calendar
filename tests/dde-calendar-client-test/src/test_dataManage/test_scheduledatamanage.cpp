@@ -57,12 +57,6 @@ TEST_F(test_scheduledatamanage, getScheduleDataManage)
     datamanage->getScheduleDataManage();
 }
 
-//void CScheduleDataManage::clear()
-TEST_F(test_scheduledatamanage, clear)
-{
-    datamanage->clear();
-}
-
 //QColor CScheduleDataManage::getSystemActiveColor()
 TEST_F(test_scheduledatamanage, getSystemActiveColor)
 {

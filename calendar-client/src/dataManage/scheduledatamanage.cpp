@@ -349,10 +349,6 @@ CScheduleDataManage *CScheduleDataManage::getScheduleDataManage()
     return m_vscheduleDataManage;
 }
 
-void CScheduleDataManage::clear()
-{
-}
-
 CScheduleDataManage::CScheduleDataManage()
 {
 //    m_GetAllYearScheduleInfo = new YearScheduleInfo();

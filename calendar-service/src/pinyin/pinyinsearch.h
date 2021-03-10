@@ -29,13 +29,13 @@ class pinyinsearch
 public:
     static pinyinsearch *getPinPinSearch();
     /* 判断字符串是否只可以进行拼音查询 */
-    bool CanQueryByPinyin(QString str);
+    static bool CanQueryByPinyin(QString str);
     /* 创建拼音字符串 */
-    QString CreatePinyin(const QString &zh);
+    static QString CreatePinyin(const QString &zh);
     /* 构造拼音查询表达式 */
-    QString CreatePinyinQuery(QString pinyin);
+    QString CreatePinyinQuery(QString pinyin) const;
     /* 构造拼音查询正则表达式 */
-    QString CreatePinyinRegexp(QString pinyin);
+    QString CreatePinyinRegexp(QString pinyin) const;
     /* 判断汉字和拼音是否匹配 */
     bool PinyinMatch(const QString &zh, const QString &py);
 
@@ -43,11 +43,11 @@ private:
     /* 初始化合法拼音表 */
     pinyinsearch();
     //获取汉字对应的拼音，不带音调
-    QList<QStringList> Pinyin(QString str);
+    static QList<QStringList> Pinyin(QString str);
     //找到汉字对应的拼音
-    QStringList SinglePinyin(QString index);
+    static QStringList SinglePinyin(QString index);
     //去掉拼音中的音调
-    QStringList RemoveYin(QStringList pinyin);
+    static QStringList RemoveYin(QStringList pinyin);
     /* 单个合法拼音的最大长度 */
     int singlePinyinMaxLength = 0;
     /* 合法单拼音表 */
