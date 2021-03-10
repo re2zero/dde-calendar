@@ -130,6 +130,7 @@ void CWeekDayGraphicsview::createBackgroundItem()
     if (m_viewPos == DayPos) {
         //日视图
         CWeekDayBackgroundItem *backgroundItem = new CWeekDayBackgroundItem();
+        connect(backgroundItem, &CWeekDayBackgroundItem::signalPosOnView, this, &CWeekDayGraphicsview::slotPosOnView);
         backgroundItem->setZValue(-1);
         m_backgroundItem.append(backgroundItem);
         m_Scene->addItem(backgroundItem);
@@ -143,6 +144,7 @@ void CWeekDayGraphicsview::createBackgroundItem()
         //周视图
         for (int i = 0; i < DDEWeekCalendar::AFewDaysofWeek; ++i) {
             CWeekDayBackgroundItem *item = new CWeekDayBackgroundItem();
+            connect(item, &CWeekDayBackgroundItem::signalPosOnView, this, &CWeekDayGraphicsview::slotPosOnView);
             item->setZValue(-1);
             if (m_backgroundItem.size() > 0) {
                 //设置对应左右和下一个                            关系
@@ -197,4 +199,11 @@ void CWeekDayGraphicsview::slotSwitchView(const QDate &focusDate, bool setItemFo
 void CWeekDayGraphicsview::slotViewInit()
 {
     m_Scene->currentItemInit();
+}
+
+void CWeekDayGraphicsview::slotPosOnView(const qreal y)
+{
+    //定位到当前焦点的item
+    QPointF point(m_Scene->width() / 2, y);
+    centerOn(point);
 }

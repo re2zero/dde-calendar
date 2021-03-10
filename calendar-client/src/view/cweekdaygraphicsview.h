@@ -70,6 +70,7 @@ signals:
 public slots:
     void slotSwitchView(const QDate &focusDate, bool setItemFocus);
     void slotViewInit();
+    void slotPosOnView(const qreal y);
 
 protected:
     ViewPosition m_viewPos;

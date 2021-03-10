@@ -83,6 +83,8 @@ void CWeekDayBackgroundItem::updateCurrentItemShow()
         if (m_item.size() > 0) {
             m_showItemIndex = m_showItemIndex < m_item.size() ? m_showItemIndex : 0;
             m_item.at(m_showItemIndex)->setItemFocus(true);
+            //定位到当前焦点item
+            emit signalPosOnView(m_item.at(m_showItemIndex)->rect().y());
         } else {
             m_showItemIndex = -1;
             setItemFocus(true);

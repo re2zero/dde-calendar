@@ -52,7 +52,7 @@ protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void updateCurrentItemShow() override;
 signals:
-
+    void signalPosOnView(const qreal y);
 public slots:
 private:
     bool m_drawDividingLine; //是否绘制分割线
