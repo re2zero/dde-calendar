@@ -73,6 +73,8 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void changeEvent(QEvent *event) override;
     void wheelEvent(QWheelEvent *) override;
+    //更新背景上显示的item
+    void updateBackgroundShowItem() override;
 
 protected:
     void setSceneCurrentItemFocus(const QDate &focusDate) override;

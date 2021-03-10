@@ -155,6 +155,8 @@ protected:
     virtual void slideEvent(QPointF &startPoint, QPointF &stopPort);
     //更新日程显示
     virtual void updateInfo();
+    //更新背景上显示的item
+    virtual void updateBackgroundShowItem() = 0;
 signals:
     /**
      * @brief signalAngleDelta      发送滚动信号滚动相对量

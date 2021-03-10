@@ -258,11 +258,9 @@ void CMonthGraphiview::updateInfo()
     }
     viewport()->update();
     update();
-    for (int i = 0; i < m_DayItem.size(); ++i) {
-        m_DayItem.at(i)->updateShowItem();
-    }
+    //更新背景上显示的item
+    updateBackgroundShowItem();
 }
-
 
 QPointF CMonthGraphiview::getItemPos(const QPoint &p, const QRectF &itemRect)
 {
@@ -432,6 +430,16 @@ void CMonthGraphiview::wheelEvent(QWheelEvent *e)
     //如果滚动为上下则发送信号
     if (e->orientation() == Qt::Orientation::Vertical) {
         emit signalAngleDelta(e->angleDelta().y());
+    }
+}
+
+/**
+ * @brief CMonthGraphiview::updateBackgroundShowItem    更新背景上显示的item
+ */
+void CMonthGraphiview::updateBackgroundShowItem()
+{
+    for (int i = 0; i < m_DayItem.size(); ++i) {
+        m_DayItem.at(i)->updateShowItem();
     }
 }
 

@@ -247,9 +247,7 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
         }
     }
     //更新每个背景上的日程标签
-    for (int i = 0; i < m_backgroundItem.size(); ++i) {
-        m_backgroundItem.at(i)->updateShowItem();
-    }
+    updateBackgroundShowItem();
 }
 
 QDateTime CGraphicsView::getPosDate(const QPoint &p)

@@ -178,6 +178,16 @@ void CWeekDayGraphicsview::setSceneCurrentItemFocus(const QDate &focusDate)
 }
 
 /**
+ * @brief CWeekDayGraphicsview::updateBackgroundShowItem        更新背景上显示的item
+ */
+void CWeekDayGraphicsview::updateBackgroundShowItem()
+{
+    for (int i = 0; i < m_backgroundItem.size(); ++i) {
+        m_backgroundItem.at(i)->updateShowItem();
+    }
+}
+
+/**
  * @brief CWeekDayGraphicsview::setBackgroundDate       设置背景时间
  */
 void CWeekDayGraphicsview::setBackgroundDate()

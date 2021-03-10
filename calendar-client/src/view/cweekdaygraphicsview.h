@@ -60,6 +60,8 @@ protected:
     //创建背景显示项
     void createBackgroundItem();
     void setSceneCurrentItemFocus(const QDate &focusDate) override;
+    //更新背景上显示的item
+    void updateBackgroundShowItem() override;
 
 private:
     //设置背景时间

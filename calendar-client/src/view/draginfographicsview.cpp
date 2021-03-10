@@ -255,6 +255,8 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
                 m_MoveDate = gDate;
                 m_DragScheduleInfo = getScheduleInfo(m_PressDate, m_MoveDate);
                 upDateInfoShow(IsCreate, m_DragScheduleInfo);
+                //更新背景上显示的item
+                updateBackgroundShowItem();
                 setPressSelectInfo(m_DragScheduleInfo);
             }
         }
