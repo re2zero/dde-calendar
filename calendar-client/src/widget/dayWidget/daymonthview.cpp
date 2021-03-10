@@ -570,7 +570,7 @@ void CDayMonthWidget::paintCell(QWidget *cell)
         const qreal r = rect.width() > rect.height() ? rect.height() * 0.9 : rect.width() * 0.9;
         const qreal x = rect.x() + (rect.width() - r) / 2;
         const qreal y = rect.y() + (rect.height() - r) / 2;
-        QRectF fillRect = QRectF(x, y, r, r).marginsRemoved(QMarginsF(1.5, 1.5, 1.5, 1.5));
+        QRectF fillRect = QRectF(x, y, r, r).marginsRemoved(QMarginsF(1.5, 2.5, 1.5, 1.5));
         painter.save();
         painter.setBrush(QBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor()));
         painter.setPen(Qt::NoPen);
