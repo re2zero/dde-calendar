@@ -90,6 +90,10 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
         int state = CConfigSettings::value("base.state").toInt(&isOk);
         if (!arrybyte.isEmpty() && isOk) {
             Qt::WindowStates winStates = static_cast<Qt::WindowStates>(state);
+            //如果上次窗口的状态为最小化，则设置窗口状态为普通状态
+            if (winStates == Qt::WindowState::WindowMinimized) {
+                winStates = Qt::WindowState::WindowNoState;
+            }
             setWindowState(winStates);
             if (winStates != Qt::WindowState::WindowMaximized) {
                 restoreGeometry(arrybyte);
@@ -102,6 +106,13 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
 
 Calendarmainwindow::~Calendarmainwindow()
 {
+    //在窗口关闭时保存当前窗口状态
+    if (windowState() == Qt::WindowState::WindowMinimized) {
+        //如果为最小化则保存状态为普通状态
+        CConfigSettings::setOption("base.state", 0);
+    } else {
+        CConfigSettings::setOption("base.state", int(windowState()));
+    }
     CDynamicIcon::releaseInstance();
 }
 
@@ -444,7 +455,6 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
     setScheduleHide();
     DMainWindow::resizeEvent(event);
     CConfigSettings::setOption("base.geometry", saveGeometry());
-    CConfigSettings::setOption("base.state", int(windowState()));
 }
 
 /**
