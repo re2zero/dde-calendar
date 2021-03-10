@@ -52,8 +52,15 @@ void CConfigSettings::init()
     if (m_settings == nullptr) {
         auto configFilepath = DStandardPaths::standardLocations(QStandardPaths::AppConfigLocation).value(0) + "/config.ini";
         m_settings = new QSettings(configFilepath, QSettings::IniFormat);
-        ;
     }
+}
+
+/**
+ * @brief CConfigSettings::releaseInstance  释放配置指针
+ */
+void CConfigSettings::releaseInstance()
+{
+    delete m_settings;
 }
 
 void CConfigSettings::sync()

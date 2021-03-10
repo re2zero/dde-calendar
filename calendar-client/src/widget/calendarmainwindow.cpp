@@ -114,6 +114,7 @@ Calendarmainwindow::~Calendarmainwindow()
         CConfigSettings::setOption("base.state", int(windowState()));
     }
     CDynamicIcon::releaseInstance();
+    CConfigSettings::releaseInstance();
 }
 
 void Calendarmainwindow::onViewShortcut()

@@ -32,6 +32,8 @@ public:
     explicit CConfigSettings(QObject *parent = nullptr);
     ~CConfigSettings();
     static void init();
+    //释放配置指针
+    static void releaseInstance();
     static void sync();
     static QVariant value(const QString &key);
     static void setOption(const QString &key, const QVariant &value);
