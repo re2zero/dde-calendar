@@ -307,8 +307,10 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
 
     painter.setFont(m_tfont);
     painter.setPen(textcolor);
-    int tilenameW = labelwidth - 91;
+    QString ellipsis = "...";
     QFontMetrics fm = painter.fontMetrics();
+    //整个label宽度-文字起始位置
+    int tilenameW = labelwidth - (m_durationSize + 26);
     QString tStitlename = m_ScheduleInfo.getTitleName();
     tStitlename.replace("\n", "");
     QString str = tStitlename;
@@ -316,7 +318,9 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
 
     for (int i = 0; i < str.count(); i++) {
         tstr.append(str.at(i));
-        int widthT = fm.width(tstr) + 5;
+        tstr.append(ellipsis);
+        int widthT = fm.width(tstr);
+        tstr.remove(ellipsis);
         if (widthT >= tilenameW) {
             tstr.chop(1);
             break;
