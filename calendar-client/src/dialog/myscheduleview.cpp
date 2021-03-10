@@ -52,6 +52,7 @@ CMyScheduleView::CMyScheduleView(const ScheduleDataInfo &schduleInfo, QWidget *p
         m_timeLabel->setText(m_scheduleInfo.getBeginDateTime().toString(m_dateFormat + " " + m_timeFormat) + " ~ "
                              + m_scheduleInfo.getEndDateTime().toString(m_dateFormat + " " + m_timeFormat));
     }
+    focusNextPrevChild(false);
 }
 
 CMyScheduleView::~CMyScheduleView()

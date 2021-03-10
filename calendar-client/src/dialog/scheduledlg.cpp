@@ -62,6 +62,7 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     setFixedSize(438, 470);
     //焦点设置到输入框
     m_textEdit->setFocus();
+    focusNextPrevChild(true);
 }
 
 CScheduleDlg::~CScheduleDlg()

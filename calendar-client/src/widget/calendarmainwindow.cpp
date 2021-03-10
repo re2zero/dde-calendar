@@ -320,6 +320,8 @@ void Calendarmainwindow::initUI()
     titleWidget->setFocusPolicy(Qt::TabFocus);
     this->titlebar()->setCustomWidget(titleWidget);
     setTabOrder(this->titlebar(), titleWidget);
+    //设置状态栏焦点代理为标题窗口
+    this->titlebar()->setFocusProxy(titleWidget);
 
     m_searchEdit = titleWidget->searchEdit();
     m_buttonBox = titleWidget->buttonBox();
