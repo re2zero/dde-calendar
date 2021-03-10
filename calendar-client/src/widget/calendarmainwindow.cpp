@@ -106,15 +106,8 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
 
 Calendarmainwindow::~Calendarmainwindow()
 {
-    //在窗口关闭时保存当前窗口状态
-    if (windowState() == Qt::WindowState::WindowMinimized) {
-        //如果为最小化则保存状态为普通状态
-        CConfigSettings::setOption("base.state", 0);
-    } else {
-        CConfigSettings::setOption("base.state", int(windowState()));
-    }
-    CDynamicIcon::releaseInstance();
     CConfigSettings::releaseInstance();
+    CDynamicIcon::releaseInstance();
 }
 
 void Calendarmainwindow::onViewShortcut()
@@ -458,6 +451,18 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
     setScheduleHide();
     DMainWindow::resizeEvent(event);
     CConfigSettings::setOption("base.geometry", saveGeometry());
+}
+
+void Calendarmainwindow::closeEvent(QCloseEvent *event)
+{
+    DMainWindow::closeEvent(event);
+    //在窗口关闭时保存当前窗口状态
+    if (windowState() == Qt::WindowState::WindowMinimized) {
+        //如果为最小化则保存状态为普通状态
+        CConfigSettings::setOption("base.state", 0);
+    } else {
+        CConfigSettings::setOption("base.state", int(windowState()));
+    }
 }
 
 /**

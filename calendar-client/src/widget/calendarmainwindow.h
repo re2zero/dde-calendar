@@ -68,6 +68,7 @@ private:
     void createview();
 protected:
     void resizeEvent(QResizeEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void changeEvent(QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
