@@ -39,7 +39,6 @@ CScheduleCtrlDlg::CScheduleCtrlDlg(QWidget *parent)
     initConnection();
     setTheMe(DGuiApplicationHelper::instance()->themeType());
     resize(380, 260);
-    setFocusPolicy(Qt::ClickFocus);
 }
 
 void CScheduleCtrlDlg::initUI()
@@ -94,7 +93,6 @@ void CScheduleCtrlDlg::initUI()
     gwi->setPalette(anipa);
     gwi->setBackgroundRole(DPalette::Background);
     addContent(gwi, Qt::AlignCenter);
-    setFocus();
 }
 
 void CScheduleCtrlDlg::initConnection()

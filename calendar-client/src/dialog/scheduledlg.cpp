@@ -62,7 +62,6 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     setFixedSize(438, 470);
     //焦点设置到输入框
     m_textEdit->setFocus();
-    focusNextPrevChild(true);
 }
 
 CScheduleDlg::~CScheduleDlg()
@@ -269,8 +268,11 @@ void CScheduleDlg::slotBtClick(int buttonIndex, const QString &buttonName)
         //确定
         m_setAccept = clickOkBtn();
         //如果确定创建(修改)成功则关闭对话框
-        if (m_setAccept)
+        if (m_setAccept) {
             close();
+        } else {
+            setFocusProxy(getButton(1));
+        }
         break;
     }
     default:
