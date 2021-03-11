@@ -93,6 +93,9 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
             //如果上次窗口的状态为最小化，则设置窗口状态为普通状态
             if (winStates == Qt::WindowState::WindowMinimized) {
                 winStates = Qt::WindowState::WindowNoState;
+            } else if (winStates == (Qt::WindowState::WindowMinimized | Qt::WindowState::WindowMaximized)) {
+                //如果状态为 最小&最大 则启动时设置为最大
+                winStates = Qt::WindowState::WindowMaximized;
             }
             setWindowState(winStates);
             if (winStates != Qt::WindowState::WindowMaximized) {
@@ -455,14 +458,9 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 
 void Calendarmainwindow::closeEvent(QCloseEvent *event)
 {
-    DMainWindow::closeEvent(event);
     //在窗口关闭时保存当前窗口状态
-    if (windowState() == Qt::WindowState::WindowMinimized) {
-        //如果为最小化则保存状态为普通状态
-        CConfigSettings::setOption("base.state", 0);
-    } else {
-        CConfigSettings::setOption("base.state", int(windowState()));
-    }
+    CConfigSettings::setOption("base.state", int(windowState()));
+    DMainWindow::closeEvent(event);
 }
 
 /**
