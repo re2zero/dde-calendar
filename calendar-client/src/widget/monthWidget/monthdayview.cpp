@@ -139,6 +139,7 @@ bool CMonthDayView::event(QEvent *e)
  */
 CMonthWidget::CMonthWidget(QWidget *parent)
     : QWidget(parent)
+    , m_isFocus(false)
 {
     for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
         CMonthRect *monthrect = new CMonthRect(this);
@@ -184,7 +185,7 @@ void CMonthWidget::mousePressEvent(QMouseEvent *event)
     }
     if (event->button() == Qt::RightButton)
         return;
-
+    m_isFocus = false;
     mousePress(event->pos());
 }
 
@@ -195,8 +196,7 @@ void CMonthWidget::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
 
     for (int i = 0; i < m_MonthItem.size(); ++i) {
-        m_MonthItem.at(i)->paintItem(&painter,
-                                     m_MonthItem.at(i)->rect());
+        m_MonthItem.at(i)->paintItem(&painter, m_MonthItem.at(i)->rect(), m_isFocus);
     }
 }
 
@@ -247,6 +247,29 @@ void CMonthWidget::keyPressEvent(QKeyEvent *event)
         setDate(m_days);
         emit signalsSelectDate(setdate);
     }
+}
+
+void CMonthWidget::focusInEvent(QFocusEvent *event)
+{
+    QWidget::focusInEvent(event);
+    switch (event->reason()) {
+    case Qt::TabFocusReason:
+    case Qt::BacktabFocusReason:
+    case Qt::ActiveWindowFocusReason:
+        m_isFocus = true;
+        break;
+    default:
+        m_isFocus = false;
+        break;
+    };
+    update();
+}
+
+void CMonthWidget::focusOutEvent(QFocusEvent *event)
+{
+    QWidget::focusOutEvent(event);
+    m_isFocus = false;
+    update();
 }
 
 void CMonthWidget::mousePress(const QPoint &point)
@@ -374,7 +397,7 @@ void CMonthRect::setRect(qreal x, qreal y, qreal w, qreal h)
  * @param painter
  * @param rect
  */
-void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
+void CMonthRect::paintItem(QPainter *painter, const QRectF &rect, bool drawFocus)
 {
     m_selectColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
 
@@ -396,7 +419,7 @@ void CMonthRect::paintItem(QPainter *painter, const QRectF &rect)
         painter->setPen(Qt::NoPen);
         painter->drawEllipse(fillRect);
         //如果有焦点，绘制tab选中效果
-        if (m_parentWidget && m_parentWidget->hasFocus()) {
+        if (drawFocus) {
             QPen pen;
             pen.setWidth(2);
             pen.setColor(m_selectColor);

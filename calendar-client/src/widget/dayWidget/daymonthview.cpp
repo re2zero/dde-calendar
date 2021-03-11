@@ -674,6 +674,7 @@ void CDayMonthWidget::focusInEvent(QFocusEvent *event)
         m_isFocus = true;
         break;
     default:
+        m_isFocus = false;
         break;
     };
     update();
@@ -708,6 +709,12 @@ void CDayMonthWidget::keyPressEvent(QKeyEvent *event)
         }
     }
     QWidget::keyPressEvent(event);
+}
+
+void CDayMonthWidget::mousePressEvent(QMouseEvent *event)
+{
+    QWidget::mousePressEvent(event);
+    m_isFocus = false;
 }
 
 void CDayMonthWidget::cellClicked(QWidget *cell)

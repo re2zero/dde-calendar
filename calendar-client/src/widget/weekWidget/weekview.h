@@ -106,6 +106,8 @@ protected:
     void focusOutEvent(QFocusEvent *event) override;
     bool event(QEvent *e) override;
     bool eventFilter(QObject *o, QEvent *e) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
 private:
     //绘制周数
     void paintCell(QWidget *cell);

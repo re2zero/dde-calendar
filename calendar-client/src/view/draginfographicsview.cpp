@@ -89,6 +89,7 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     connect(m_Scene, &CGraphicsScene::signalGotoDayView, this, &DragInfoGraphicsView::signalGotoDayView);
     connect(m_Scene, &CGraphicsScene::signalContextMenu, this, &DragInfoGraphicsView::slotContextMenu);
     connect(m_Scene, &CGraphicsScene::signalsetNextFocus, this, &DragInfoGraphicsView::slotsetNextFoucs);
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 DragInfoGraphicsView::~DragInfoGraphicsView()
@@ -110,6 +111,7 @@ void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
         return;
     }
     mousePress(event->pos());
+    m_Scene->currentItemInit();
     //更新其它view中item状态显示
     emit signalSceneUpdate();
 }

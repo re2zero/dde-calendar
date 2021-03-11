@@ -240,14 +240,23 @@ void CWeekNumWidget::resizeEvent(QResizeEvent *event)
 
 void CWeekNumWidget::focusInEvent(QFocusEvent *event)
 {
-    Q_UNUSED(event)
-    m_isFocus = true;
+    QWidget::focusInEvent(event);
+    switch (event->reason()) {
+    case Qt::TabFocusReason:
+    case Qt::BacktabFocusReason:
+    case Qt::ActiveWindowFocusReason:
+        m_isFocus = true;
+        break;
+    default:
+        m_isFocus = false;
+        break;
+    };
     update();
 }
 
 void CWeekNumWidget::focusOutEvent(QFocusEvent *event)
 {
-    Q_UNUSED(event);
+    QWidget::focusOutEvent(event);
     m_isFocus = false;
     update();
 }
@@ -328,6 +337,12 @@ bool CWeekNumWidget::eventFilter(QObject *o, QEvent *e)
         }
     }
     return false;
+}
+
+void CWeekNumWidget::mousePressEvent(QMouseEvent *event)
+{
+    QWidget::mousePressEvent(event);
+    m_isFocus = false;
 }
 
 /**

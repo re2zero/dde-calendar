@@ -91,6 +91,8 @@ protected:
      */
     void mouseMoveEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 private:
     void mousePress(const QPoint &point);
@@ -109,6 +111,7 @@ private:
     int m_touchState {0};
     //触摸点击坐标
     QPoint m_touchBeginPoint;
+    bool m_isFocus;
 };
 
 class CMonthRect
@@ -126,7 +129,7 @@ public:
     //设置矩阵大小
     inline void setRect(qreal x, qreal y, qreal w, qreal h);
     //绘制
-    void paintItem(QPainter *painter, const QRectF &rect);
+    void paintItem(QPainter *painter, const QRectF &rect, bool drawFocus = false);
     //设置设备缩放比例
     static void setDevicePixelRatio(const qreal pixel);
     //设置主题
