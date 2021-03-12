@@ -68,7 +68,7 @@
     <message>
         <location filename="../calendar-client/src/view/graphicsItem/cmonthschedulenumitem.cpp" line="96"/>
         <source>%1 more</source>
-        <translation type="unfinished"/>
+        <translation>Nog %1 andere</translation>
     </message>
 </context>
 <context>
@@ -511,22 +511,22 @@
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="37"/>
         <source>Y</source>
-        <translation type="unfinished"/>
+        <translation>J</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="48"/>
         <source>M</source>
-        <translation type="unfinished"/>
+        <translation>M</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="54"/>
         <source>W</source>
-        <translation type="unfinished"/>
+        <translation>W</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/ctitlewidget.cpp" line="60"/>
         <source>D</source>
-        <translation type="unfinished"/>
+        <translation>D</translation>
     </message>
 </context>
 <context>

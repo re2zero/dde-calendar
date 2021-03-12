@@ -459,7 +459,15 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 void Calendarmainwindow::closeEvent(QCloseEvent *event)
 {
     //在窗口关闭时保存当前窗口状态
-    CConfigSettings::setOption("base.state", int(windowState()));
+    //过滤最小化状态
+    if (windowState() == Qt::WindowState::WindowMinimized) {
+        CConfigSettings::setOption("base.state", 0);
+    } else if (windowState() == (Qt::WindowState::WindowMinimized | Qt::WindowState::WindowMaximized)) {
+        CConfigSettings::setOption("base.state", int(Qt::WindowState::WindowMaximized));
+    } else {
+        CConfigSettings::setOption("base.state", int(windowState()));
+    }
+
     DMainWindow::closeEvent(event);
 }
 
