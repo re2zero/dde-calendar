@@ -290,7 +290,6 @@ CAllDayEventWeekView::CAllDayEventWeekView(QWidget *parent, ViewPosition type)
     : CWeekDayGraphicsview(parent, type, ViewType::ALLDayView)
 {
     updateItemHeightByFontSize();
-    m_coorManage = new CScheduleCoorManage;
     //设置创建名称
     setBuildName("ALL VIEW");
 }
