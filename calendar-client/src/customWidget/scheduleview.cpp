@@ -570,17 +570,6 @@ void CScheduleView::updateAllday()
     m_graphicsView->resize(m_graphicsView->width(), this->height() - m_alldaylist->height());
 }
 
-int CScheduleView::checkDay(int weekday)
-{
-    if (weekday <= 0)
-        return weekday += 7;
-
-    if (weekday > 7)
-        return weekday -= 7;
-
-    return weekday;
-}
-
 int CScheduleView::scheduleViewHegith()
 {
     qreal mheight = 0;

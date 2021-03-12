@@ -58,7 +58,6 @@ public:
     void setActiveSwitching(bool activeSwitching);
     void currentItemInit();
 
-    bool getIsShowCurrentItem() const;
     void setIsShowCurrentItem(bool isShowCurrentItem);
 
     void setIsContextMenu(bool isContextMenu);

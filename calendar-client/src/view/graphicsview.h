@@ -57,7 +57,6 @@ public:
     void setCurrentDate(const QDateTime &currentDate);
     void setInfo(const QVector<ScheduleDataInfo> &info);
     void addSchduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
-    void deleteSchduleItem(CScheduleItem *item);
     //设置搜索选中日程
     void setSelectSearchSchedule(const ScheduleDataInfo &info) override;
     void clearSchdule();
@@ -81,8 +80,6 @@ public:
     void wheelEvent(QWheelEvent *event) override;
 #endif
     void resizeEvent(QResizeEvent *event) override;
-    //获取大刻度显示
-    void getLargeScaleFlag(bool &LRFlag, bool &TBFlag);
     void setTime(QTime time);
     void updateInfo() override;
 protected:
@@ -96,7 +93,6 @@ signals:
     void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
     void signalsCurrentScheduleDate(QDate date);
 private:
-    int checkDay(int weekday);
     void TimeRound(QDateTime &dtime);
     QDateTime TimeRounding(const QDateTime &time);
     void centerOnScene(const QPointF &pos);

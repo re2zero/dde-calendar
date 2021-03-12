@@ -52,8 +52,6 @@ public:
     static QVector<QDate> getMonthDate(const int &year, const int &month);
     //获取一周的所有时间
     static QVector<QDate> getWeekDate(const QDate &date);
-    //根据选择时间获取当天日期
-    QDate getDayDateBySelectDate() const;
     //设置每周以周几作为每周第一天
     void setWeekFirstDay(const Qt::DayOfWeek &firstDay);
     //获取每周以周几作为每周第一天

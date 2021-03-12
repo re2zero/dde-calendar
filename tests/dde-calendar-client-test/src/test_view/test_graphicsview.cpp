@@ -140,14 +140,6 @@ TEST_F(test_graphicsview, addSchduleItem)
     cGraphicsView->addSchduleItem(info, date, index, totalNum, type, viewtype, maxnum);
 }
 
-//void CGraphicsView::deleteSchduleItem(CScheduleItem *item)
-TEST_F(test_graphicsview, deleteSchduleItem)
-{
-//    CScheduleItem *item = nullptr;
-//    item->m_vScheduleInfo.setID(0);
-//    cGraphicsView->deleteSchduleItem(item);
-}
-
 //void CGraphicsView::scheduleClassificationType(QVector<ScheduleDataInfo> &scheduleInfolist, QList<ScheduleclassificationInfo> &info)
 TEST_F(test_graphicsview, scheduleClassificationType)
 {
@@ -179,19 +171,6 @@ TEST_F(test_graphicsview, slotUpdateScene)
 TEST_F(test_graphicsview, scrollBarValueChangedSlot)
 {
     cGraphicsView->scrollBarValueChangedSlot();
-}
-
-//int CGraphicsView::checkDay(int weekday)
-TEST_F(test_graphicsview, checkDay)
-{
-    int weekday = 0;
-    cGraphicsView->checkDay(weekday);
-
-    weekday = 1;
-    cGraphicsView->checkDay(weekday);
-
-    weekday = 8;
-    cGraphicsView->checkDay(weekday);
 }
 
 //ScheduleDataInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
@@ -254,14 +233,6 @@ TEST_F(test_graphicsview, getDragScheduleInfoEndTime)
 TEST_F(test_graphicsview, keepCenterOnScene)
 {
     cGraphicsView->keepCenterOnScene();
-}
-
-//void CGraphicsView::getLargeScaleFlag(bool &LRFlag, bool &TBFlag)
-TEST_F(test_graphicsview, getLargeScaleFlag)
-{
-    bool LRFlag = false;
-    bool TBFlag = false;
-    cGraphicsView->getLargeScaleFlag(LRFlag, TBFlag);
 }
 
 //void CGraphicsView::setTime(QTime time)

@@ -76,12 +76,6 @@ TEST_F(test_scheduledlg, setDate)
     mScheduleDlg->setDate(datetime2);
 }
 
-//ScheduleDataInfo CScheduleDlg::getScheduleData()
-TEST_F(test_scheduledlg, getScheduleData)
-{
-    mScheduleDlg->getScheduleData();
-}
-
 //void CScheduleDlg::setAllDay(bool flag)
 TEST_F(test_scheduledlg, setAllDay)
 {

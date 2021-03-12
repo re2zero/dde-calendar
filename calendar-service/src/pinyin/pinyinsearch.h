@@ -37,7 +37,7 @@ public:
     /* 构造拼音查询正则表达式 */
     QString CreatePinyinRegexp(QString pinyin) const;
     /* 判断汉字和拼音是否匹配 */
-    bool PinyinMatch(const QString &zh, const QString &py);
+    bool PinyinMatch(const QString &zh, const QString &py) const;
 
 private:
     /* 初始化合法拼音表 */

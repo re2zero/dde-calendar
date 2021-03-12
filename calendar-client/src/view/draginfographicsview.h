@@ -106,10 +106,6 @@ private:
 protected:
     //删除日程
     void DeleteItem(const ScheduleDataInfo &info);
-    //设置创建者名称
-    void setBuildName(const QString &buildName);
-    //获取创建名称
-    QString getBuildName() const;
 public:
     //设置搜索选中日程
     virtual void setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo);
@@ -250,7 +246,6 @@ protected:
     bool                m_leftShowRadius{false};        //左下角显示圆角
     bool                m_rightShowRadius{false};       //右下角显示圆角
     QColor              m_outerBorderColor;             //外边框背景色
-    QString m_buildName;
     QDate m_currentDate;
 };
 

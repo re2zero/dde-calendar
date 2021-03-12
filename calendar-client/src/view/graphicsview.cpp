@@ -64,8 +64,6 @@ CGraphicsView::CGraphicsView(QWidget *parent, ViewPosition Type)
 
     connect(this->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValueChangedSlot()));
     connect(this->verticalScrollBar(), &QScrollBar::sliderPressed, this, &CGraphicsView::slotScrollBar);
-    //设置创建名称
-    setBuildName("PART TIME VIEW");
 
     //如果为周视图
     if (m_viewType == 0) {
@@ -293,21 +291,6 @@ void CGraphicsView::addSchduleItem(const ScheduleDataInfo &info, QDate date, int
     m_Scene->addItem(item);
     item->setData(info, date, totalNum);
     m_vScheduleItem.append(item);
-}
-
-void CGraphicsView::deleteSchduleItem(CScheduleItem *item)
-{
-    int id = item->getData().getID();
-
-    for (int i = 0; i < m_vScheduleItem.size(); i++) {
-        if (m_vScheduleItem[i]->getData().getID() == id) {
-            m_vScheduleItem.remove(i);
-            m_Scene->removeItem(item);
-            delete m_vScheduleItem[i];
-            m_vScheduleItem[i] = nullptr;
-            i--;
-        }
-    }
 }
 
 /**
@@ -590,17 +573,6 @@ void CGraphicsView::scrollBarValueChangedSlot()
     update();
 }
 
-int CGraphicsView::checkDay(int weekday)
-{
-    if (weekday <= 0)
-        return weekday += 7;
-
-    if (weekday > 7)
-        return weekday -= 7;
-
-    return weekday;
-}
-
 CGraphicsView::PosInItem CGraphicsView::getPosInItem(const QPoint &p, const QRectF &itemRect)
 {
     QPointF scenePos = this->mapToScene(p);
@@ -704,17 +676,6 @@ void CGraphicsView::keepCenterOnScene()
     pos.setX(this->viewport()->width() / 2);
     pos.setY(this->scene()->height() * m_sceneHeightScale);
     centerOnScene(pos);
-}
-
-/**
- * @brief CGraphicsView::getLargeScaleFlag      获取大刻度显示
- * @param LRFlag                                水平刻度
- * @param TBFlag                                垂直刻度
- */
-void CGraphicsView::getLargeScaleFlag(bool &LRFlag, bool &TBFlag)
-{
-    LRFlag = m_LRFlag;
-    TBFlag = m_TBFlag;
 }
 
 void CGraphicsView::setTime(QTime time)

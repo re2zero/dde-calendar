@@ -186,11 +186,6 @@ void CGraphicsScene::setIsContextMenu(bool isContextMenu)
     m_isContextMenu = isContextMenu;
 }
 
-bool CGraphicsScene::getIsShowCurrentItem() const
-{
-    return m_isShowCurrentItem;
-}
-
 void CGraphicsScene::setIsShowCurrentItem(bool isShowCurrentItem)
 {
     m_isShowCurrentItem = isShowCurrentItem;

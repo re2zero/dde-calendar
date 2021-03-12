@@ -41,8 +41,6 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
     //设置显示左右下角圆角
     setShowRadius(true, true);
 
-    //设置创建名称
-    setBuildName("MONTH VIEW");
     m_MonthScheduleView = new CMonthScheduleView(this, m_Scene);
     connect(this, &CMonthGraphiview::signalFontChange, m_MonthScheduleView, &CMonthScheduleView::slotFontChange);
 

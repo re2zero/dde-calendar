@@ -280,17 +280,10 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     painter.setFont(m_timefont);
     painter.setPen(timecolor);
 
-    QDate begindate = m_ScheduleInfo.getBeginDateTime().date();
-    QDate enddate = m_ScheduleInfo.getEndDateTime().date();
     QString datestr;
 
-    if (begindate == enddate) {
-        datestr = m_ScheduleInfo.getBeginDateTime().toString(m_timeFormat)
-                  + "-" + m_ScheduleInfo.getEndDateTime().toString(m_timeFormat);
-    } else {
-        datestr = m_ScheduleInfo.getBeginDateTime().toString(m_timeFormat)
-                  + "-" + m_ScheduleInfo.getEndDateTime().toString(m_timeFormat);
-    }
+    datestr = m_ScheduleInfo.getBeginDateTime().toString(m_timeFormat)
+              + "-" + m_ScheduleInfo.getEndDateTime().toString(m_timeFormat);
 
     int flag = Qt::AlignLeft | Qt::AlignVCenter;
 
@@ -701,12 +694,7 @@ QListWidgetItem *CScheduleSearchView::createItemWidget(QDate date)
     gwi->setText(m_ltextcolor, font);
 
     if (date == QDate::currentDate()) {
-        int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-        if (themtype == 2) {
-            gwi->setText(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor(), font);
-        } else {
-            gwi->setText(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor(), font);
-        }
+        gwi->setText(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor(), font);
     }
     gwi->setFixedSize(m_maxWidth - 25, 35);
     gwi->setDate(date);

@@ -198,13 +198,6 @@ TEST_F(test_scheduleview, updateAllday)
     mScheduleView->updateAllday();
 }
 
-//int CScheduleView::checkDay(int weekday)
-TEST_F(test_scheduleview, checkDay)
-{
-    mScheduleView->checkDay(-1);
-    mScheduleView->checkDay(8);
-}
-
 //int CScheduleView::scheduleViewHegith()
 TEST_F(test_scheduleview, scheduleViewHegith)
 {

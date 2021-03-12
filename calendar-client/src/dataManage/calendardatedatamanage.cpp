@@ -121,14 +121,7 @@ QVector<QDate> CalendarDateDataManager::getWeekDate(const QDate &date)
     }
     return _resultDate;
 }
-/**
- * @brief getDayDateBySelectDate    根据选择时间获取当天日期
- * @return                  返回选择时间
- */
-QDate CalendarDateDataManager::getDayDateBySelectDate() const
-{
-    return m_selectDate;
-}
+
 /**
  * @brief setWeekFirstDay           设置每周以周几作为每周第一天
  * @param firstDay                  每周第一天

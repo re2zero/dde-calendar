@@ -83,13 +83,6 @@ TEST_F(test_calendardatedatamanage, getWeekDate)
     QVector<QDate> dateV = calendarDateDataManager->getWeekDate(selectDate);
 }
 
-//QDate CalendarDateDataManager::getDayDateBySelectDate() const
-TEST_F(test_calendardatedatamanage, getDayDateBySelectDate)
-{
-    QDate dateV;
-    dateV = calendarDateDataManager->getDayDateBySelectDate();
-}
-
 //void CalendarDateDataManager::setWeekFirstDay(const Qt::DayOfWeek &firstDay)
 TEST_F(test_calendardatedatamanage, setWeekFirstDay)
 {

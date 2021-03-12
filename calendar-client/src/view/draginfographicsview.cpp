@@ -658,16 +658,6 @@ void DragInfoGraphicsView::DeleteItem(const ScheduleDataInfo &info)
     emit signalViewtransparentFrame(0);
 }
 
-void DragInfoGraphicsView::setBuildName(const QString &buildName)
-{
-    m_buildName = buildName;
-}
-
-QString DragInfoGraphicsView::getBuildName() const
-{
-    return m_buildName;
-}
-
 /**
  * @brief DragInfoGraphicsView::setSelectSearchSchedule     设置选中搜索日程
  * @param scheduleInfo

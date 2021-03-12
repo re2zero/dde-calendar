@@ -169,7 +169,7 @@ QString pinyinsearch::CreatePinyinRegexp(QString pinyin) const
  * @param py 汉字对应的拼音
  * @return bool值
  */
-bool pinyinsearch::PinyinMatch(const QString &zh, const QString &py)
+bool pinyinsearch::PinyinMatch(const QString &zh, const QString &py) const
 {
     //获取汉字的拼音
     QString zhPinyin = CreatePinyin(zh);

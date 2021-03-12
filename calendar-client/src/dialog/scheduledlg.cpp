@@ -124,11 +124,6 @@ void CScheduleDlg::setDate(const QDateTime &date)
     m_endRepeatDate->setMinimumDate(date.date());
 }
 
-ScheduleDataInfo CScheduleDlg::getScheduleData()
-{
-    return m_ScheduleDataInfo;
-}
-
 void CScheduleDlg::setAllDay(bool flag)
 {
     m_allDayCheckbox->setChecked(flag);

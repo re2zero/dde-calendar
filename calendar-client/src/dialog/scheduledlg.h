@@ -41,7 +41,6 @@ public:
     ~CScheduleDlg() override;
     void setData(const ScheduleDataInfo &info);
     void setDate(const QDateTime &date);
-    ScheduleDataInfo getScheduleData();
     void setAllDay(bool flag);
 private:
     //确定按钮处理

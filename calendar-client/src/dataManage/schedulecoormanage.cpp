@@ -106,7 +106,7 @@ QRectF CScheduleCoorManage::getDrawRegion(QDateTime begintime, QDateTime endtime
     return rect;
 }
 
-QRectF CScheduleCoorManage::getDrawRegion(QDate date, QDateTime begintime, QDateTime endtime, int index, int coount, int maxnum, int type)
+QRectF CScheduleCoorManage::getDrawRegion(QDate date, QDateTime begintime, QDateTime endtime, int index, int coount, int maxNum, int type)
 {
     QRectF rect;
     QString bb = begintime.toString("yyyyMMddhhmmsszzz");
@@ -139,10 +139,10 @@ QRectF CScheduleCoorManage::getDrawRegion(QDate date, QDateTime begintime, QDate
     qreal posX = m_width * (1.0 * (beginday - 1) / m_totalDay) + (index - 1) * rWidth;
     qreal posY = m_height * (ScheduleBT / 86400.0);
 
-    if (coount > maxnum && type == 0) {
+    if (coount > maxNum && type == 0) {
         qreal sscale = 27.0 / (m_width * (1.0 * day / m_totalDay));
 
-        if (index < maxnum + 1) {
+        if (index < maxNum + 1) {
             rWidth = m_width * (1.0 * day / m_totalDay) * sscale + 0.5;
             posX = m_width * (1.0 * (beginday - 1) / m_totalDay) + (index - 1) * rWidth;
         } else {

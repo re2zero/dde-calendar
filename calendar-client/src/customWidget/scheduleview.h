@@ -83,7 +83,6 @@ private:
     void initConnection();
     void updateSchedule();
     void updateAllday();
-    int checkDay(int weekday);
     int scheduleViewHegith();
 
 private:
