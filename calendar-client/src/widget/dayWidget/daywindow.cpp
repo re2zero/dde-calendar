@@ -314,30 +314,31 @@ void CDayWindow::setMakeTime(QMap<QDate, QVector<ScheduleDataInfo> > &info)
 {
     if (info.contains(getSelectDate())) {
         QVector<ScheduleDataInfo> _scheduleVector = info[getSelectDate()];
-        QVector<ScheduleDataInfo> _partTimeScheduleVector;
+        //设置当前第一个非全天默认时间
+        QDateTime firstscheduleBeginTime(getSelectDate().addDays(1), QTime(0, 0, 0));
         //获取非全天日程
         for (int i = 0 ; i < _scheduleVector.size(); ++i) {
-            if (!_scheduleVector.at(i).getAllDay())
-                _partTimeScheduleVector.append(_scheduleVector.at(i));
-        }
-        if (_partTimeScheduleVector.size() == 0) {
-            m_makeTime.setHMS(13, 0, 0, 0);
-        } else {
-            std::sort(_partTimeScheduleVector.begin(), _partTimeScheduleVector.end());
-            //如果日程开始日期为选择日期则获取日程开始的时间
-            if (_partTimeScheduleVector.begin()->getBeginDateTime().date() == getSelectDate()) {
-                m_makeTime = _partTimeScheduleVector.begin()->getBeginDateTime().time();
-                //设置定位的时间位置,原始时间太靠下,现向上偏移2小时
-                QTime ontime = m_makeTime;
-                if (ontime.hour() + 4 >= 24) {
-                    ontime = QTime(20, 0);
-                } else {
-                    ontime = ontime.addSecs(14400);
+            if (!_scheduleVector.at(i).getAllDay()) {
+                if (firstscheduleBeginTime > _scheduleVector.at(i).getBeginDateTime()) {
+                    firstscheduleBeginTime = _scheduleVector.at(i).getBeginDateTime();
                 }
-                m_makeTime = ontime;
-            } else {
-                m_makeTime.setHMS(0, 0, 0, 0);
             }
+        }
+        //如果为默认时间则表示当天没有非全天日程
+        if (firstscheduleBeginTime.date() > getSelectDate()) {
+            m_makeTime.setHMS(13, 0, 0, 0);
+        } else if (firstscheduleBeginTime.date() == getSelectDate()) {
+            m_makeTime = firstscheduleBeginTime.time();
+            //设置定位的时间位置,原始时间太靠下,现向上偏移2小时
+            QTime ontime = m_makeTime;
+            if (ontime.hour() + 4 >= 24) {
+                ontime = QTime(20, 0);
+            } else {
+                ontime = ontime.addSecs(14400);
+            }
+            m_makeTime = ontime;
+        } else {
+            m_makeTime.setHMS(0, 0, 0, 0);
         }
     } else {
         m_makeTime.setHMS(13, 0, 0, 0);
