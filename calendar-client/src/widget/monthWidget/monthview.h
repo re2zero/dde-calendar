@@ -64,6 +64,7 @@ public:
     //设置当前时间
     void setCurrentDate(const QDate &currentDate);
     void setRemindWidgetTimeFormat(QString timeformat);
+    void deletselectschedule();
 signals:
     /**
      * @brief signalViewtransparentFrame 设置窗口的焦点

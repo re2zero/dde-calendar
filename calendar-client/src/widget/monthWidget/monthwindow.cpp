@@ -230,6 +230,14 @@ void CMonthWindow::setSearchWFlag(bool flag)
 }
 
 /**
+ * @brief CMonthWindow::deleteselectSchedule 快捷键删除日程
+ */
+void CMonthWindow::deleteselectSchedule()
+{
+    m_monthView->deletselectschedule();
+}
+
+/**
  * @brief previousMonth 选择上一个月份
  */
 void CMonthWindow::previousMonth()

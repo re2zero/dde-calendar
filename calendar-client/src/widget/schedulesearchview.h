@@ -45,6 +45,8 @@ public:
     void clearSearch();
     void setMaxWidth(const int w);
     bool getHasScheduleShow();
+    bool getScheduleStatus();
+    void deleteSchedule();
 signals:
     void signalSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
@@ -80,8 +82,9 @@ private:
     QColor m_ltextcolor = "#001A2E";
     QListWidgetItem *m_currentItem = nullptr;
     int m_maxWidth = 200;
+    int currentDItemIndex = -1;
     QString     m_searchStr{""};
-    bool   hasScheduleShow = false;
+    bool    hasScheduleShow = false;
     bool    keyPressUP = false;
     CScheduleSearchItem *m_selectItem = nullptr;
     QVector<CScheduleSearchItem *> m_scheduleSearchItem{};

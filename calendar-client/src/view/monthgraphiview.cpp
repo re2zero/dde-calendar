@@ -40,9 +40,6 @@ CMonthGraphiview::CMonthGraphiview(QWidget *parent)
 {
     //设置显示左右下角圆角
     setShowRadius(true, true);
-    QShortcut *shortcut = new QShortcut(parent);
-    shortcut->setKey(QKeySequence(QLatin1String("Delete")));
-    connect(shortcut, &QShortcut::activated, this,  &CMonthGraphiview::slotDeleteItem);
 
     //设置创建名称
     setBuildName("MONTH VIEW");

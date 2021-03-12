@@ -199,6 +199,14 @@ void CMonthView::setRemindWidgetTimeFormat(QString timeformat)
     m_remindWidget->setTimeFormat(timeformat);
 }
 
+/**
+ * @brief CMonthView::deletselectschedule 快捷键删除日程
+ */
+void CMonthView::deletselectschedule()
+{
+    m_monthGraphicsView->slotDeleteItem();
+}
+
 void CMonthView::setLunarVisible(bool visible)
 {
     m_monthGraphicsView->setLunarVisible(visible);

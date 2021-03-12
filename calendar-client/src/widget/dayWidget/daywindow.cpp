@@ -201,6 +201,14 @@ void CDayWindow::setSelectSearchScheduleInfo(const ScheduleDataInfo &info)
     m_scheduleView->setSelectSchedule(info);
 }
 
+/**
+ * @brief CDayWindow::deleteselectSchedule 快捷键删除日程
+ */
+void CDayWindow::deleteselectSchedule()
+{
+    m_scheduleView->slotDeleteitem();
+}
+
 void CDayWindow::setSearchWFlag(bool flag)
 {
     m_searchfalg = flag;

@@ -390,6 +390,14 @@ void CWeekWindow::setSelectSearchScheduleInfo(const ScheduleDataInfo &info)
 }
 
 /**
+ * @brief CWeekWindow::deleteselectSchedule 快捷键删除日程
+ */
+void CWeekWindow::deleteselectSchedule()
+{
+    m_scheduleView->slotDeleteitem();
+}
+
+/**
  * @brief CWeekWindow::slotIsDragging                   判断是否可以拖拽
  * @param isDragging
  */

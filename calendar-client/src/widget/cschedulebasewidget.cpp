@@ -139,6 +139,11 @@ void CScheduleBaseWidget::updateSearchScheduleInfo()
 
 }
 
+void CScheduleBaseWidget::deleteselectSchedule()
+{
+
+}
+
 /**
  * @brief CScheduleBaseWidget::getLunarInfo 获取选择时间的农历信息
  * @return

@@ -68,6 +68,8 @@ public:
     void updateShowLunar() override;
     //设置选中搜索日程
     void setSelectSearchScheduleInfo(const ScheduleDataInfo &info) override;
+    //删除选中日程
+    void deleteselectSchedule() override;
 signals:
     /**
      * @brief signalCurrentDate 设置时间信号

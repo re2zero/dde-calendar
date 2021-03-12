@@ -57,6 +57,8 @@ public:
     virtual void updateShowLunar() = 0;
     //设置选中搜索日程
     virtual void setSelectSearchScheduleInfo(const ScheduleDataInfo &info) = 0;
+    //删除选中日程
+    virtual void deleteselectSchedule();
 protected:
     //获取选择时间的农历信息
     CaHuangLiDayInfo getLunarInfo();

@@ -93,7 +93,8 @@ private slots:
     void slotSwitchView(const int viewIndex);
     //新建日程
     void slotNewSchedule();
-
+    //快捷键删除选中日程
+    void slotDeleteitem();
 private:
     DLabel *m_icon = nullptr;
     AnimationStackedWidget *m_stackWidget = nullptr;

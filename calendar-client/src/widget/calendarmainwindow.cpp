@@ -370,6 +370,11 @@ void Calendarmainwindow::initUI()
     m_transparentFrame->hide();
 
     m_animation = new QPropertyAnimation(this);
+
+    //delete快捷键
+    QShortcut *dshortcut = new QShortcut(this);
+    dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
+    connect(dshortcut, &QShortcut::activated, this, &Calendarmainwindow::slotDeleteitem);
 }
 
 void Calendarmainwindow::initConnection()
@@ -646,6 +651,20 @@ void Calendarmainwindow::slotNewSchedule()
     //设置开始时间
     _scheduleDig.setDate(_beginTime);
     _scheduleDig.exec();
+}
+
+void Calendarmainwindow::slotDeleteitem()
+{
+    if (m_scheduleSearchView->getHasScheduleShow() && m_scheduleSearchView->getScheduleStatus()) {
+        //删除选中的schedule
+        m_scheduleSearchView->deleteSchedule();
+    } else {
+        //获取当前的
+        CScheduleBaseWidget *widget = qobject_cast<CScheduleBaseWidget *>(m_stackWidget->currentWidget());
+        if (widget) {
+            widget->deleteselectSchedule();
+        }
+    }
 }
 
 void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)

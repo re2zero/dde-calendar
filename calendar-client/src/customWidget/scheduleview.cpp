@@ -453,9 +453,6 @@ void CScheduleView::initConnection()
     connect(m_graphicsView, &CGraphicsView::signalSceneUpdate,
             this, &CScheduleView::slotUpdateScene);
 
-    QShortcut *dshortcut = new QShortcut(this);
-    dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
-    connect(dshortcut, SIGNAL(activated()), this, SLOT(slotDeleteitem()));
 
     connect(m_alldaylist, &CAllDayEventWeekView::signaleSwitchToView, this, &CScheduleView::slotSwitchView);
     connect(m_graphicsView, &CGraphicsView::signaleSwitchToView, this, &CScheduleView::slotSwitchView);

@@ -62,6 +62,8 @@ public:
     void setSelectSearchScheduleInfo(const ScheduleDataInfo &info) override;
     //设置是否显示搜索界面
     void setSearchWFlag(bool flag);
+    //删除选中日程
+    void deleteselectSchedule() override;
 public slots:
     //选择上一个月份
     void previousMonth();

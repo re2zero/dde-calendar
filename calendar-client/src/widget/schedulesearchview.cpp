@@ -164,6 +164,8 @@ void CScheduleSearchItem::slotDelete()
     CScheduleOperation _scheduleOperation(this);
     _scheduleOperation.deleteSchedule(m_ScheduleInfo);
     emit signalViewtransparentFrame(0);
+    //删除日程后，将焦点设置给父类
+    parentWidget()->setFocus(Qt::TabFocusReason);
 }
 
 /**
@@ -402,8 +404,8 @@ bool CScheduleSearchItem::eventFilter(QObject *o, QEvent *e)
 
 void CScheduleSearchItem::focusInEvent(QFocusEvent *e)
 {
-    //只针对tab的情况生效
-    if (e->reason() == Qt::TabFocusReason) {
+    //focusin
+    if (e->reason() == Qt::TabFocusReason || e->reason() == Qt::ActiveWindowFocusReason) {
         emit signalSelectSchedule(m_ScheduleInfo);
         emit signalSelectCurrentItem(this, false);
     }
@@ -445,7 +447,6 @@ CScheduleSearchView::CScheduleSearchView(QWidget *parent)
     // set default row
     m_gradientItemList->setCurrentRow(0);
     setLayout(layout);
-    setFocusPolicy(Qt::StrongFocus);
     setMouseTracking(true);
     m_bBackgroundcolor.setAlphaF(0.03);
     m_gradientItemList->setLineWidth(0);
@@ -518,6 +519,26 @@ void CScheduleSearchView::setMaxWidth(const int w)
 bool CScheduleSearchView::getHasScheduleShow()
 {
     return hasScheduleShow;
+}
+
+/**
+ * @brief CScheduleSearchView::getScheduleStatus 获取当前item是否有焦点
+ */
+bool CScheduleSearchView::getScheduleStatus()
+{
+    return m_scheduleSearchItem.contains(m_selectItem);
+}
+
+/**
+ * @brief CScheduleSearchView::deleteSchedule 删除选中item
+ */
+void CScheduleSearchView::deleteSchedule()
+{
+    currentDItemIndex = m_scheduleSearchItem.indexOf(m_selectItem);
+    //节日日程不可操作
+    if (m_selectItem->getData().getType() == DDECalendar::FestivalTypeID)
+        return;
+    m_selectItem->slotDelete();
 }
 
 /**
@@ -618,8 +639,21 @@ void CScheduleSearchView::updateDateShow()
         m_gradientItemList->setItemWidget(listItem, gwi);
         m_labellist.append(gwi);
     }
+
     if (m_currentItem != nullptr) {
         m_gradientItemList->scrollToItem(m_currentItem, QAbstractItemView::PositionAtTop);
+    }
+
+    if (currentDItemIndex >= 0 && m_scheduleSearchItem.size() > 0) {
+        //删除日程后,重新设置焦点
+        if (currentDItemIndex < m_scheduleSearchItem.size()) {
+            m_scheduleSearchItem.at(currentDItemIndex)->setFocus(Qt::TabFocusReason);
+            m_selectItem = m_scheduleSearchItem.at(currentDItemIndex);
+        } else {
+            m_scheduleSearchItem.last()->setFocus(Qt::TabFocusReason);
+            m_selectItem = m_scheduleSearchItem.last();
+        }
+        currentDItemIndex = -1;
     }
 }
 
