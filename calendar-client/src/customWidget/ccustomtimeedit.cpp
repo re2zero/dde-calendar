@@ -27,8 +27,9 @@
 CCustomTimeEdit::CCustomTimeEdit(QWidget *parent)
     : QTimeEdit(parent)
 {
+    //设置edit最大宽度，不影响其他控件使用
+    setMaximumWidth(100);
     setButtonSymbols(QTimeEdit::NoButtons);
-//    lineEdit()->installEventFilter(this);
 }
 
 /**
