@@ -493,10 +493,10 @@ void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDataInfo &
         m_ScheduleRemindWidget->setData(out, gdcolor);
 
         if ((pos22.x() + m_ScheduleRemindWidget->width() + 15) > w->width()) {
-            m_ScheduleRemindWidget->setArrowDirection(DArrowRectangle::ArrowRight);
+            m_ScheduleRemindWidget->setDirection(DArrowRectangle::ArrowRight);
             m_ScheduleRemindWidget->show(pos22.x() - 15, pos22.y());
         } else {
-            m_ScheduleRemindWidget->setArrowDirection(DArrowRectangle::ArrowLeft);
+            m_ScheduleRemindWidget->setDirection(DArrowRectangle::ArrowLeft);
             m_ScheduleRemindWidget->show(pos22.x() + 15, pos22.y());
         }
     } else {
