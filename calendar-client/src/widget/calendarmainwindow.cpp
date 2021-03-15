@@ -31,6 +31,7 @@
 #include "constants.h"
 #include "scheduledlg.h"
 #include "ctitlewidget.h"
+#include "tabletconfig.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -77,14 +78,13 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     connect(viewshortcut, SIGNAL(activated()), this, SLOT(onViewShortcut()));
 
     setTitlebarShadowEnabled(true);
-    //获取屏幕大小
-    QSize deskSize = QApplication::desktop()->size();
-    //设置最大尺寸为屏幕尺寸
-    setMaximumSize(deskSize);
+    //获取桌面窗口大小
+    QDesktopWidget *desktopwidget = QApplication::desktop();
+    //若分辨率改变则重新设置最大尺寸
+    connect(desktopwidget, &QDesktopWidget::resized, this, &Calendarmainwindow::slotSetMaxSize);
+    slotSetMaxSize();
     //如果为平板模式则使其大小为屏幕大小
-    if (DDECalendar::isTable) {
-        setFixedSize(deskSize);
-    } else {
+    if (!TabletConfig::isTablet()) {
         QByteArray arrybyte = CConfigSettings::value("base.geometry").toByteArray();
         bool isOk = false;
         int state = CConfigSettings::value("base.state").toInt(&isOk);
@@ -660,10 +660,26 @@ void Calendarmainwindow::slotDeleteitem()
     }
 }
 
+/**
+ * @brief Calendarmainwindow::slotSetMaxSize    根据屏幕分辨率调整窗口最大尺寸
+ * @param size
+ */
+void Calendarmainwindow::slotSetMaxSize(int size)
+{
+    Q_UNUSED(size);
+    //获取屏幕大小
+    QSize deskSize = QApplication::desktop()->size();
+    //设置最大尺寸为屏幕尺寸
+    setMaximumSize(deskSize);
+    if (TabletConfig::isTablet()) {
+        setFixedSize(deskSize);
+    }
+}
+
 void Calendarmainwindow::mouseMoveEvent(QMouseEvent *event)
 {
     //如果为平板模式则不可移动
-    if (DDECalendar::isTable) {
+    if (TabletConfig::isTablet()) {
         Q_UNUSED(event);
     } else {
         DMainWindow::mouseMoveEvent(event);

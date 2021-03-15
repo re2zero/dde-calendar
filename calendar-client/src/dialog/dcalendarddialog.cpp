@@ -22,7 +22,7 @@
 
 #include "constants.h"
 #include "calendarmanage.h"
-
+#include "tabletconfig.h"
 #include <DTitlebar>
 
 DCalendarDDialog::DCalendarDDialog(QWidget *parent)
@@ -50,7 +50,7 @@ int DCalendarDDialog::exec()
 void DCalendarDDialog::mouseMoveEvent(QMouseEvent *event)
 {
     //如果为平板模式使其不可移动
-    if (DDECalendar::isTable) {
+    if (TabletConfig::isTablet()) {
         Q_UNUSED(event);
     } else {
         DDialog::mouseMoveEvent(event);

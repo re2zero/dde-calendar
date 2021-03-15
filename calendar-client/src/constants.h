@@ -66,8 +66,6 @@ static const int OneWeekBeforeWithMinutes = 10080;
 static const int NewScheduleLabelWidth = 70;
 
 static const int QuarterOfAnhourWithMinute = 15;
-//是否为平板模式
-static bool isTable = false;
 } // namespace DDECalendar
 namespace DDEYearCalendar {
 

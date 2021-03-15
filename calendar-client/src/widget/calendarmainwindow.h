@@ -94,6 +94,9 @@ private slots:
     void slotNewSchedule();
     //快捷键删除选中日程
     void slotDeleteitem();
+    //设置最大大小
+    void slotSetMaxSize(int size = 0);
+
 private:
     DLabel *m_icon = nullptr;
     AnimationStackedWidget *m_stackWidget = nullptr;
