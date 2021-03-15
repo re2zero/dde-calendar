@@ -103,7 +103,6 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
             }
         }
     }
-
     Dtk::Widget::moveToCenter(this);
 }
 
@@ -458,13 +457,8 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
     setSearchWidth(m_scheduleSearchViewMaxWidth);
     setScheduleHide();
     DMainWindow::resizeEvent(event);
-    CConfigSettings::setOption("base.geometry", saveGeometry());
-}
-
-void Calendarmainwindow::closeEvent(QCloseEvent *event)
-{
-    //在窗口关闭时保存当前窗口状态
     //过滤最小化状态
+    //因为需保存最大和普通状态，顾在窗口调整大小时保持窗口状态
     if (windowState() == Qt::WindowState::WindowMinimized) {
         CConfigSettings::setOption("base.state", 0);
     } else if (windowState() == (Qt::WindowState::WindowMinimized | Qt::WindowState::WindowMaximized)) {
@@ -472,8 +466,7 @@ void Calendarmainwindow::closeEvent(QCloseEvent *event)
     } else {
         CConfigSettings::setOption("base.state", int(windowState()));
     }
-
-    DMainWindow::closeEvent(event);
+    CConfigSettings::setOption("base.geometry", saveGeometry());
 }
 
 /**
