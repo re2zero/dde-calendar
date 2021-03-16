@@ -141,7 +141,7 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="824"/>
         <source>Cancel</source>
-        <translation>Vazgeç</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="337"/>
@@ -365,7 +365,7 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="226"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="258"/>
         <source>Cancel</source>
-        <translation>Vazgeç</translation>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="62"/>

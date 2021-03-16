@@ -326,7 +326,7 @@ void CDayWindow::setMakeTime(QMap<QDate, QVector<ScheduleDataInfo> > &info)
         }
         //如果为默认时间则表示当天没有非全天日程
         if (firstscheduleBeginTime.date() > getSelectDate()) {
-            m_makeTime.setHMS(13, 0, 0, 0);
+            m_makeTime.setHMS(12, 30, 0, 0);
         } else if (firstscheduleBeginTime.date() == getSelectDate()) {
             m_makeTime = firstscheduleBeginTime.time();
             //设置定位的时间位置,原始时间太靠下,现向上偏移2小时
@@ -341,7 +341,8 @@ void CDayWindow::setMakeTime(QMap<QDate, QVector<ScheduleDataInfo> > &info)
             m_makeTime.setHMS(0, 0, 0, 0);
         }
     } else {
-        m_makeTime.setHMS(13, 0, 0, 0);
+        //将定位的默认时间显示出8点
+        m_makeTime.setHMS(12, 30, 0, 0);
     }
 }
 

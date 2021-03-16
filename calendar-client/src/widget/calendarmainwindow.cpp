@@ -274,7 +274,9 @@ void Calendarmainwindow::OpenSchedule(QString job)
     ScheduleDataInfo out;
     out = ScheduleDataInfo::JsonStrToSchedule(job);
 
-    m_buttonBox->button(DDECalendar::CalendarDayWindow)->setFocus();
+    //设置被选中
+    m_buttonBox->button(DDECalendar::CalendarDayWindow)->setChecked(true);
+    //设置获取焦点
     m_buttonBox->button(DDECalendar::CalendarDayWindow)->setFocus();
     //切换到日视图
     m_stackWidget->setCurrentIndex(DDECalendar::CalendarDayWindow);

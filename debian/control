@@ -23,7 +23,8 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
- dde-api
+ dde-api,
+ libdframeworkdbus2 (>= 5.3.0.34)
 Description: Calendar is a smart daily planner to schedule all things in life.
  Calendar is a small management tool for personal life that combines time 
  and events and integrates the function of memorizing and scheduling.
