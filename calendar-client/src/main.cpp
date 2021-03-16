@@ -45,10 +45,11 @@ int main(int argc, char *argv[])
 #else
     app = DApplication::globalApplication(argc, argv);
 #endif
-//获取设置是否为平板模式
-#if (DTK_VERSION >= DTK_VERSION_CHECK(5, 4, 7, 0))
-    TabletConfig::setIsTablet(DGuiApplicationHelper::isTabletEnvironment());
-#endif
+
+    ////获取设置是否为平板模式
+    //#if (DTK_VERSION >= DTK_VERSION_CHECK(5, 4, 7, 0))
+    //    TabletConfig::setIsTablet(DGuiApplicationHelper::isTabletEnvironment());
+    //#endif
 
     QAccessible::installFactory(accessibleFactory);
     app->setOrganizationName("deepin");
