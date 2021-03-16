@@ -106,7 +106,8 @@ void CTimeEdit::initUI()
     }
     //关闭自动补全
     this->setAutoCompletion(false);
-    m_timeEdit->setTime(QTime::currentTime());
+    //设置edit的宽度
+    m_timeEdit->getLineEdit()->setFixedWidth(100);
     m_timeEdit->setDisplayFormat(m_timeFormat);
     setLineEdit(m_timeEdit->getLineEdit());
     for (int i = 0; i < 24; i++) {
