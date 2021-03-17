@@ -68,7 +68,8 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     setWindowTitle(tr("Calendar"));
     new CalendarAdaptor(this);
     resize(CalendarMWidth, CalendarMHeight);
-
+    //接收点击焦点
+    setFocusPolicy(Qt::ClickFocus);
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("Ctrl+F")));
     connect(shortcut, SIGNAL(activated()), this, SLOT(slotSearchEdit()));
