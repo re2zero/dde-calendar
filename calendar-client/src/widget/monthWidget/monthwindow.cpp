@@ -315,6 +315,8 @@ void CMonthWindow::initUI()
     yeartitleLayout->addWidget(m_today, 0, Qt::AlignRight);
 
     m_monthView = new CMonthView(this);
+    m_monthView->setObjectName("monthViewWidget");
+    m_monthView->setAccessibleName("monthViewWidget");
     m_monthView->setCurrentDate(getCurrendDateTime().date());
     QVBoxLayout *mhLayout = new QVBoxLayout;
     mhLayout->setMargin(0);

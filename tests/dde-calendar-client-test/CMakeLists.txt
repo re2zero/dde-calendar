@@ -6,6 +6,7 @@ ADD_COMPILE_OPTIONS(-fno-access-control)
 
 set(APP_CLIENT_DIR "${CMAKE_SOURCE_DIR}/calendar-client")
 set(APP_RES_DIR "${APP_CLIENT_DIR}/assets")
+set(APP_QRC "${APP_RES_DIR}/resources.qrc")
 set(APP_BIN_NAME "dde-calendar-test")
 set(PROJECT_NAME_TEST ${APP_BIN_NAME})
 
@@ -19,6 +20,7 @@ find_package(DtkWidget REQUIRED)
 find_package(DtkGui REQUIRED)
 find_package(DFrameworkdbus REQUIRED)
 find_package(GTest REQUIRED)
+find_package(Qt5Test REQUIRED)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -50,7 +52,7 @@ file(GLOB_RECURSE Calendar_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 include_directories(../../calendar-basicstruct/)
 
 # Tell CMake to create the executable
-add_executable(${APP_BIN_NAME} ${Calendar_TEST_SRC} ${Calendar_SRC})
+add_executable(${APP_BIN_NAME} ${Calendar_TEST_SRC} ${Calendar_SRC} ${APP_QRC})
 
 target_include_directories(${APP_BIN_NAME} PUBLIC ${DtkWidget_INCLUDE_DIRS} ${OBJECT_BINARY_DIR})
 
@@ -64,6 +66,7 @@ target_link_libraries(${APP_BIN_NAME}
     ${DFrameworkdbus_LIBRARIES}
     ${GTEST_LIBRARIES}
     ${GTEST_MAIN_LIBRARIES}
+    Qt5::Test
     pthread
     basestruct
 )

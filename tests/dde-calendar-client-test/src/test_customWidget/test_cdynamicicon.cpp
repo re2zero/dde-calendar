@@ -31,18 +31,6 @@ test_cdynamicicon::~test_cdynamicicon()
     mDynamicicon = nullptr;
 }
 
-//CDynamicIcon *CDynamicIcon::getInstance()
-TEST_F(test_cdynamicicon, getInstance)
-{
-    mDynamicicon->getInstance();
-}
-
-//void CDynamicIcon::releaseInstance()
-TEST_F(test_cdynamicicon, releaseInstance)
-{
-    mDynamicicon->releaseInstance();
-}
-
 //void CDynamicIcon::setDate(const QDate &date)
 TEST_F(test_cdynamicicon, setDate)
 {

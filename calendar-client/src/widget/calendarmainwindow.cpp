@@ -414,9 +414,13 @@ void Calendarmainwindow::initConnection()
 void Calendarmainwindow::createview()
 {
     m_yearwindow = new CYearWindow(this);
+    m_yearwindow->setObjectName("yearwindow");
+    m_yearwindow->setAccessibleName("yearwindow");
     m_yearwindow->updateData();
     m_stackWidget->addWidget(m_yearwindow);
     m_monthWindow = new CMonthWindow(this);
+    m_monthWindow->setObjectName("monthWindow");
+    m_monthWindow->setAccessibleName("monthWindow");
     m_monthWindow->updateData();
     m_stackWidget->addWidget(m_monthWindow);
 

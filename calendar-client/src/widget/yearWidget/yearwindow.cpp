@@ -283,6 +283,8 @@ TouchGestureData CYearWindow::calculateAzimuthAngle(QPointF &startPoint,  QPoint
 void CYearWindow::initUI()
 {
     m_today = new LabelWidget(this);
+    m_today->setObjectName("yearToDay");
+    m_today->setAccessibleName("yearToDay");
     m_today->installEventFilter(this);
 
     QFont todayfont;

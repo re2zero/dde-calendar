@@ -46,6 +46,7 @@ CScheduleDBus *CScheduleDBus::getInstance()
 void CScheduleDBus::releaseInstance()
 {
     delete m_scheduleDBus;
+    m_scheduleDBus = nullptr;
 }
 
 CScheduleDBus::~CScheduleDBus()

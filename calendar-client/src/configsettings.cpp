@@ -61,6 +61,7 @@ void CConfigSettings::init()
 void CConfigSettings::releaseInstance()
 {
     delete m_settings;
+    m_settings = nullptr;
 }
 
 void CConfigSettings::sync()

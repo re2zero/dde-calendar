@@ -18,17 +18,22 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifndef TESTMAINWINDOWGUI_H
+#define TESTMAINWINDOWGUI_H
+
+#include "calendarmainwindow.h"
 #include "gtest/gtest.h"
-#include <QDebug>
-#include <DApplication>
+#include <QtTest/QTest>
+#include <QObject>
 
-DWIDGET_USE_NAMESPACE
-
-int main(int argc, char **argv)
+class testMainWindowGUI : public QObject
+    , public ::testing::Test
 {
-    qputenv("QT_QPA_PLATFORM", "offscreen");
-    DApplication application(argc, argv);
-    ::testing::InitGoogleTest(&argc, argv);
-    int ret = RUN_ALL_TESTS();
-    return ret;
-}
+public:
+    testMainWindowGUI();
+    ~testMainWindowGUI();
+    //protected:
+    //    Calendarmainwindow *mainWindow = nullptr;
+};
+
+#endif // TESTMAINWINDOWGUI_H

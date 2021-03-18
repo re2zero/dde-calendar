@@ -34,8 +34,10 @@ CScheduleBaseWidget::CScheduleBaseWidget(QWidget *parent)
 CScheduleBaseWidget::~CScheduleBaseWidget()
 {
     m_calendarManager->removeShowWidget(this);
-    if (m_calendarManager->getShowWidgetSize() == 0)
+    if (m_calendarManager->getShowWidgetSize() == 0) {
         CalendarManager::releaseInstance();
+        m_calendarManager = nullptr;
+    }
 }
 
 /**
