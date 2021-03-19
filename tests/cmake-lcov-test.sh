@@ -1,30 +1,23 @@
-#!/bin/bash
-workspace=$1
+utdir=build-ut
+rm -r $utdir
+rm -r ../$utdir
+mkdir ../$utdir
+cd ../$utdir
 
-cd $workspace
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make -j16
 
-dpkg-buildpackage -b -d -uc -us
+./tests/dde-calendar-client-test/dde-calendar-test --gtest_output=xml:./report/report.xml
+./tests/dde-calendar-service-test/dde-calendar-service-test --gtest_output=xml:./report/report.xml
 
-project_path=$(cd `dirname $0`; pwd)
-#获取工程名
-project_name="${project_path##*/}"
-echo "project name is: $project_name"
+workdir=$(cd ../$(dirname $0)/$utdir; pwd)
 
-#获取打包生成文件夹路径
-pathname=$(find . -name obj*)
+mkdir -p report
+lcov -d $workdir -c -o ./report/coverage.info
 
-echo $pathname
+lcov --extract ./report/coverage.info '*/calendar-basicstruct/*' '*/calendar-client/*' '*/calendar-service/*' '*/schedule-plugin/*' -o ./report/coverage.info
+lcov --remove ./report/coverage.info '*/tests/*' -o  ./report/coverage.info
 
-cd $pathname/tests
-
-mkdir -p coverage
-
-lcov -d ../ -c -o ./coverage/coverage.info
-
-lcov --extract ./coverage/coverage.info '*/calendar-basicstruct/*' '*/calendar-client/*' '*/calendar-service/*' '*/schedule-plugin/*' -o ./coverage/coverage.info
-lcov --remove ./coverage/coverage.info '*/tests/*' -o  ./coverage/coverage.info
-
-mkdir ../report
-genhtml -o ../report ./coverage/coverage.info
+genhtml -o ./report ./report/coverage.info
 
 exit 0
