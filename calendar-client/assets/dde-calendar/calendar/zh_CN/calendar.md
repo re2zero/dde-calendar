@@ -14,8 +14,8 @@
 
 ### 运行日历
 
-1. 单击桌面底部的 ![deepin_launcher](../common/deepin_launcher.svg) ，进入启动器界面。
-2. 上下滚动鼠标滚轮浏览或通过搜索，找到日历 ![draw](../common/dde_calendar.svg)单击运行。
+1. 单击任务栏上的启动器图标 ![deepin_launcher](../common/deepin_launcher.svg) ，进入启动器界面。
+2. 上下滚动鼠标滚轮浏览或通过搜索，找到日历图标 ![draw](../common/dde_calendar.svg)，单击运行。
 3. 右键单击 ![draw](../common/dde_calendar.svg) ，您可以：
 
    - 单击 **发送到桌面**，在桌面创建快捷方式。
@@ -26,12 +26,12 @@
 ### 关闭日历
 
 - 在日历界面单击 ![close_icon](../common/close_icon.svg) ，退出日历。
-- 在任务栏右键单击 ![draw](../common/dde_calendar.svg) ，选择 **关闭所有** 来退出日历。
-- 在日历界面单击 ![icon_menu](../common/icon_menu.svg) ，选择 **退出** 来退出日历。
+- 在任务栏右键单击 ![draw](../common/dde_calendar.svg) ，选择 **关闭所有**，退出日历。
+- 在日历界面单击 ![icon_menu](../common/icon_menu.svg) ，选择 **退出** ，退出日历。
 
 ### 查看快捷键
 
-在日历界面上，按下 **Ctrl + Shift + ?** 组合键来查看快捷键，熟练地使用快捷键，将大大提升您的操作效率。
+在日历界面，使用快捷键 **Ctrl + Shift + ?** 打开快捷键预览界面，熟练地使用快捷键，将大大提升您的操作效率。
 
 ![0|view](fig/hotkey.png)
 
@@ -60,7 +60,7 @@
 2. 双击日期空白处或者单击鼠标右键 **新建日程**，弹出 **新建日程** 窗口。
 3. 设置日程类型、内容、时间、提醒等信息。
 
-> ![tips](../common/tips.svg)窍门：您也可以单击菜单栏上的按钮 ![plus](../common/add_normal.svg) 新建日程。
+> ![tips](../common/tips.svg)窍门：您也可以单击菜单栏上的按钮 ![plus](../common/+.svg) 新建日程。
 
 ![0|create](fig/create.png)
 
@@ -83,9 +83,7 @@
 
 4. 单击 **保存**，创建日程。
    
-   > ![notes](../common/notes.svg)说明：
-   > - 支持将日程标签拖拽到指定的日期或时间上。
-   > - 支持唤起桌面语音助手来新建日程、查询日程、取消日程等。
+   > ![notes](../common/notes.svg)说明：支持将日程标签拖拽到指定的日期或时间上。
 
 
 
@@ -166,7 +164,7 @@
 
 ### 主题
 
-窗口主题包含浅色主题、深色主题和跟随系统主题。
+窗口主题包含浅色主题、深色主题和系统主题。
 
 1. 在日历界面，单击![icon_menu](../common/icon_menu.svg) 。
 2. 选择 **主题**，选择一个主题颜色。

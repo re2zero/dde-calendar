@@ -13,8 +13,8 @@
 
 ### 運行日曆
 
-1. 點擊桌面底部的 ![deepin_launcher](../common/deepin_launcher.svg)，進入啟動器界面。
-2. 上下滾動鼠標滾輪瀏覽或通過搜索，找到日曆 ![draw](../common/dde_calendar.svg) 點擊運行。
+1. 單擊任務欄上的啟動器圖標 ![deepin_launcher](../common/deepin_launcher.svg)，進入啟動器界面。
+2. 上下滾動鼠標滾輪瀏覽或通過搜索，找到日曆圖標 ![draw](../common/dde_calendar.svg)，單擊運行。
 3. 右鍵單擊 ![draw](../common/dde_calendar.svg)，您可以：
 
    - 單擊 **傳送到桌面**，在桌面創建快捷方式。
@@ -25,12 +25,13 @@
 ### 關閉日曆
 
 - 在日曆界面單擊 ![close_icon](../common/close_icon.svg)，關閉日曆。
-- 在任務欄右鍵單擊 ![draw](../common/dde_calendar.svg)，選擇 **關閉所有** 來關閉日曆。
-- 在日曆界面單擊 ![icon_menu](../common/icon_menu.svg)，選擇 **退出** 來關閉日曆。
+- 在任務欄右鍵單擊 ![draw](../common/dde_calendar.svg)，選擇 **關閉所有**，關閉日曆。
+- 在日曆界面單擊 ![icon_menu](../common/icon_menu.svg)，選擇 **退出**，關閉日曆。
 
 ### 查看快捷鍵
 
-在日曆界面上，按下 **Ctrl + Shift + ?** 組合鍵來查看快捷鍵，熟練地使用快捷鍵，將大大提升您的操作效率。
+在日曆界面，使用快捷鍵 **Ctrl + Shift + ?** 打開快捷鍵預覽界面，熟練地使用快捷鍵，將大大提升您的操作效率。
+
 
 ![0|view](fig/hotkey.png)
 
@@ -59,7 +60,7 @@
 2. 雙擊日期空白處或者單擊右鍵選擇 **新建日程**，彈出 **新建日程** 窗口。
 3. 設置日程類型、內容、時間、提醒等訊息。
 
-> ![tips](../common/tips.svg)竅門：您也可以單擊菜單欄上的按鈕 ![plus](../common/add_normal.svg) 新建日程。
+> ![tips](../common/tips.svg)竅門：您也可以單擊菜單欄上的按鈕 ![plus](../common/+.svg) 新建日程。
 
 ![0|create](fig/create.png)
 
@@ -81,9 +82,8 @@
 
 4. 單擊 **儲存**，創建日程。
 
-> ![notes](../common/notes.svg)說明：
-> - 支持將日程標籤拖拽到指定的日期或時間上。
-> - 支持喚起桌面語音助手來新建日程、查詢日程、取消日程等。
+> ![notes](../common/notes.svg)說明：支持將日程標籤拖拽到指定的日期或時間上。
+
 
 
 ### 更改日程
