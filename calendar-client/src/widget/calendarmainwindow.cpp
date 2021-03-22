@@ -179,9 +179,11 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     } else {
         m_stackWidget->setCurrentIndex(type);
     }
-    //设置选中
-    m_buttonBox->button(type)->setChecked(true);
-    m_buttonBox->button(type)->setFocus();
+    if (m_buttonBox->checkedId() != type) {
+        //设置选中
+        m_buttonBox->button(type)->setChecked(true);
+        m_buttonBox->button(type)->setFocus();
+    }
     switch (type) {
     case DDECalendar::CalendarYearWindow: {
         //更新界面显示
@@ -604,8 +606,6 @@ void Calendarmainwindow::slotViewtransparentFrame(const bool isShow)
 void Calendarmainwindow::slotSetButtonBox()
 {
     m_buttonBox->setEnabled(true);
-    //获取焦点
-    m_buttonBox->button(m_buttonBox->checkedId())->setFocus();
 }
 
 /**
