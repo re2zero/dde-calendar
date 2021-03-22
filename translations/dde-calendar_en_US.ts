@@ -561,7 +561,7 @@
 <context>
     <name>CYearWindow</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="642"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="644"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -621,7 +621,7 @@
 <context>
     <name>Return</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="638"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="640"/>
         <source>Today</source>
         <comment>Return</comment>
         <translation type="unfinished"></translation>
@@ -679,7 +679,7 @@
 <context>
     <name>YearFrame</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="957"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="959"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -693,8 +693,8 @@
         <location filename="../calendar-client/src/widget/monthWidget/monthwindow.cpp" line="262"/>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="69"/>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="322"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="292"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="636"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="294"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="638"/>
         <source>Today</source>
         <comment>Today</comment>
         <translation type="unfinished"></translation>
