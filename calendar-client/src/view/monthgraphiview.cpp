@@ -90,8 +90,6 @@ void CMonthGraphiview::setTheMe(int type)
     for (int i = 0; i < m_DayItem.size(); ++i) {
         m_DayItem.at(i)->setTheMe(type);
     }
-
-    m_MonthScheduleView->setTheMe(type);
 }
 
 void CMonthGraphiview::setDate(const QVector<QDate> &showDate)

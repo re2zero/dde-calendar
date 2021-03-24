@@ -39,7 +39,6 @@ public:
     ~CMonthScheduleView() override;
     void setallsize(int w, int h, int left, int top, int buttom, int itemHeight = 22);
     void setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, int currentMonth);
-    void setTheMe(int type = 0);
     void updateData();
     void updateHigh();
     QVector<QGraphicsRectItem *> getScheduleShowItem() const;

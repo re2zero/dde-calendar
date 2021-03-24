@@ -177,12 +177,6 @@ QVector<MScheduleDateRangeInfo> getScheduleDateRangeInfo()
     return scheduleDateRangeInfo;
 }
 
-//void CMonthScheduleView::setTheMe(int type)
-TEST_F(test_monthscheduleview, setTheMe)
-{
-    mMonthScheduleView->setTheMe(1);
-}
-
 //void CMonthScheduleView::setallsize(int w, int h, int left, int top, int buttom, int itemHeight)
 TEST_F(test_monthscheduleview, setallsize)
 {

@@ -33,11 +33,6 @@
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
-void CMonthScheduleView::setTheMe(int type)
-{
-    Q_UNUSED(type);
-    updateData();
-}
 
 CMonthScheduleView::CMonthScheduleView(QWidget *parent, QGraphicsScene *scene)
     : QObject(parent)
