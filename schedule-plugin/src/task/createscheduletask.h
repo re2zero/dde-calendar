@@ -25,6 +25,10 @@
 #include "../data/createjsondata.h"
 #include "../widget/createschedulewidget.h"
 
+/**
+ * @brief The createScheduleTask class
+ * 创建日程模块
+ */
 class createScheduleTask : public scheduleBaseTask
 {
     Q_OBJECT

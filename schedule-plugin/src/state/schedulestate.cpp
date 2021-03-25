@@ -22,6 +22,8 @@
 
 #include "../task/schedulebasetask.h"
 #include "../data/changejsondata.h"
+#include "../globaldef.h"
+#include "../state/queryschedulestate.h"
 
 scheduleState::scheduleState(CSchedulesDBus *dbus, scheduleBaseTask *task)
     : m_dbus(dbus)
@@ -38,6 +40,13 @@ scheduleState::~scheduleState()
 Reply scheduleState::process(const JsonData *jsonData)
 {
     Reply reply;
+    //如果时间无效
+    if (jsonData->getDateTimeInvalid()) {
+        scheduleState *nextState = new queryScheduleState(m_dbus, m_Task);
+        setNextState(nextState);
+        REPLY_ONLY_TTS(reply, DATETIME_ERR_TTS, DATETIME_ERR_TTS, true);
+        return reply;
+    }
     switch (eventFilter(jsonData)) {
     case Fileter_Err: {
         reply = ErrEvent();
@@ -94,12 +103,11 @@ scheduleState::Filter_Flag scheduleState::changeDateErrJudge(const JsonData *jso
     changejsondata *mchangeJsonData = dynamic_cast<changejsondata *>(queryData);
     if (mchangeJsonData != nullptr) {
         //是否含有修改信息
-        bool hasChangeToData = !mchangeJsonData->toPlaceStr().isEmpty()||
-                mchangeJsonData->toDateTime().suggestDatetime.size() >0;
+        bool hasChangeToData = !mchangeJsonData->toPlaceStr().isEmpty() || mchangeJsonData->toDateTime().suggestDatetime.size() > 0;
         //是否不包含需要修改的信息
-        bool noChangeDate = mchangeJsonData->fromDateTime().suggestDatetime.size() == 0 
-                &&mchangeJsonData->TitleName().isEmpty();
-        if (hasChangeToData &&noChangeDate ) {
+        bool noChangeDate = mchangeJsonData->fromDateTime().suggestDatetime.size() == 0
+                            && mchangeJsonData->TitleName().isEmpty();
+        if (hasChangeToData && noChangeDate) {
             resultFlag = Filter_Flag::Fileter_Err;
         }
     }

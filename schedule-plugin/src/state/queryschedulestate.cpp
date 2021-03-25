@@ -40,7 +40,7 @@ Reply queryScheduleState::getReplyByIntent(bool isOK)
 Reply queryScheduleState::ErrEvent()
 {
     Reply reply;
-    REPLY_ONLY_TTS(reply, CHANGE_INI_ERR_TSS, CHANGE_INI_ERR_TSS, false)
+    REPLY_ONLY_TTS(reply, G_ERR_TTS, G_ERR_TTS, false)
     return reply;
 }
 
@@ -58,7 +58,7 @@ Reply queryScheduleState::normalEvent(const JsonData *jsonData)
             if (m_localData == nullptr)
                 m_localData = new CLocalData();
             if (mchangeJsonData->toDateTime().suggestDatetime.size() > 0) {
-               m_localData->setToTime(mchangeJsonData->toDateTime());
+                m_localData->setToTime(mchangeJsonData->toDateTime());
             }
             if (!mchangeJsonData->toPlaceStr().isEmpty())
                 m_localData->setToTitleName(mchangeJsonData->toPlaceStr());
@@ -74,6 +74,6 @@ scheduleState::Filter_Flag queryScheduleState::eventFilter(const JsonData *jsonD
         return Fileter_Err;
     if (jsonData->offset() > -1 && jsonData->getPropertyStatus() == JsonData::PRO_NONE)
         return Fileter_Err;
-    Filter_Flag  result = changeDateErrJudge(jsonData,Fileter_Normal);
+    Filter_Flag result = changeDateErrJudge(jsonData, Fileter_Normal);
     return result;
 }

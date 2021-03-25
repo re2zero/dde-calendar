@@ -32,6 +32,12 @@ Reply queryScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     //如果转换失败则返回错误消息
     if (queryJsonData == nullptr)
         return errorMessage();
+    //如果时间无效
+    if (queryJsonData->getDateTimeInvalid()) {
+        Reply m_reply;
+        REPLY_ONLY_TTS(m_reply, DATETIME_ERR_TTS, DATETIME_ERR_TTS, true);
+        return m_reply;
+    }
     //查询日程
     if (queryJsonData->offset() > -1
             && queryJsonData->getPropertyStatus() == JsonData::PRO_NONE) {

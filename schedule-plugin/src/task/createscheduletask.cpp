@@ -34,11 +34,15 @@ Reply createScheduleTask::SchedulePress(semanticAnalysisTask &semanticTask)
     //如果转换失败则返回错误消息
     if (createJsonData == nullptr)
         return errorMessage();
-    //查询日程
     Reply m_reply;
     if (createJsonData->getPropertyStatus() != JsonData::PRO_NONE
             || createJsonData->offset() > -1) {
         REPLY_ONLY_TTS(m_reply, CREATE_ERR_TTS, CREATE_ERR_TTS, true);
+        return m_reply;
+    }
+    //如果时间无效
+    if (createJsonData->getDateTimeInvalid()) {
+        REPLY_ONLY_TTS(m_reply, DATETIME_ERR_TTS, DATETIME_ERR_TTS, true);
         return m_reply;
     }
 

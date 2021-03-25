@@ -83,6 +83,8 @@ public:
      * @return  true为原始数据
      */
     virtual bool isVaild() const;
+    //获取时间有效性
+    bool getDateTimeInvalid() const;
 
 protected:
     void contentJsonResolve(const QJsonObject &jsobj);
@@ -128,6 +130,7 @@ private:
     QString m_TitleName {""};
     SemanticsDateTime m_DateTime {};
     int m_offset {-1};
+    bool m_DateTimeInvalid {false};
 };
 
 #endif // JSONDATA_H

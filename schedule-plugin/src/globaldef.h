@@ -80,6 +80,7 @@
 #define JSON_ALL "all"
 #define JSON_THIS "this"
 #define JSON_POSRANK_OFFSET "posRank.offset"
+#define JSON_DateTimeInvalid "datetimeInvalid"
 
 #define JSON_DATE_DELIMITER "/"
 #define JSON_STR_DATE_DELIMITER "-"
@@ -102,6 +103,7 @@
 
 
 #define CREATE_ERR_TTS "新建功能不支持此说法"
+#define DATETIME_ERR_TTS "您成功难住我拉，不存在这个时间呢!"
 #define CANCEL_ERR_TTS "查询功能不支持此说法"
 //没有对应日程的回复语
 #define QUERY_ERR_TTS "您还没有日程提醒，无法寻找对应的日程！"

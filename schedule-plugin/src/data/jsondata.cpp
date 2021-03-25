@@ -63,6 +63,11 @@ void JsonData::JosnResolve(const QJsonObject &jsObj)
                     posRankOffsetResolve(slotsObj);
                     continue;
                 }
+                //如果存在时间无效槽 则表示输入了无效的时间
+                if (slotsObj[JSON_NAME] == JSON_DateTimeInvalid) {
+                    m_DateTimeInvalid = true;
+                    continue;
+                }
                 jsonObjResolve(slotsObj);
             }
         }
@@ -355,6 +360,11 @@ void JsonData::setDefaultValue()
 void JsonData::jsonObjResolve(const QJsonObject &jsobj)
 {
     Q_UNUSED(jsobj);
+}
+
+bool JsonData::getDateTimeInvalid() const
+{
+    return m_DateTimeInvalid;
 }
 
 JsonData::PropertyStatus JsonData::getPropertyStatus() const
