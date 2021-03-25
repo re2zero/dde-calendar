@@ -20,6 +20,8 @@
    */
 #include "cbuttonbox.h"
 
+#include <QFocusEvent>
+
 CButtonBox::CButtonBox(QWidget *parent)
     : DButtonBox(parent)
 {
@@ -28,6 +30,9 @@ CButtonBox::CButtonBox(QWidget *parent)
 void CButtonBox::focusInEvent(QFocusEvent *event)
 {
     DButtonBox::focusInEvent(event);
-    //设置当前选中想为焦点
-    this->button(checkedId())->setFocus();
+    //窗口激活时，不设置buttn焦点显示
+    if (event->reason() != Qt::ActiveWindowFocusReason) {
+        //设置当前选中想为焦点
+        this->button(checkedId())->setFocus();
+    }
 }
