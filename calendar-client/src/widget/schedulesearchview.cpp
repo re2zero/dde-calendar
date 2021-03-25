@@ -65,7 +65,7 @@ CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
     m_mouseStatus = M_NONE;
     installEventFilter(this);
     //设置焦点类型
-    setFocusPolicy(Qt::FocusPolicy::TabFocus);
+    setFocusPolicy(Qt::TabFocus);
 }
 
 void CScheduleSearchItem::setBackgroundColor(QColor color1)
@@ -184,7 +184,7 @@ void CScheduleSearchItem::slotTimeFormatChanged(int value)
 void CScheduleSearchItem::slotSchotCutClicked()
 {
     //选中该item时才可以使用快捷键
-    if (hasFocus()) {
+    if (m_tabFocus) {
         //节日日程不能使用
         if (m_ScheduleInfo.getType() == DDECalendar::FestivalTypeID)
             return;
@@ -229,7 +229,7 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
     painter.setBrush(QBrush(bcolor));
-    if (hasFocus()) {
+    if (m_tabFocus) {
         //设置焦点绘制的pen
         QPen pen;
         pen.setColor(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
@@ -352,6 +352,8 @@ void CScheduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 
 void CScheduleSearchItem::mousePressEvent(QMouseEvent *event)
 {
+    //鼠标点击取消焦点显示
+    m_tabFocus = false;
     if (event->button() == Qt::LeftButton) {
         emit signalSelectSchedule(m_ScheduleInfo);
     }
@@ -397,10 +399,13 @@ bool CScheduleSearchItem::eventFilter(QObject *o, QEvent *e)
 
 void CScheduleSearchItem::focusInEvent(QFocusEvent *e)
 {
-    //focusin
-    if (e->reason() == Qt::TabFocusReason || e->reason() == Qt::ActiveWindowFocusReason) {
+    if (e->reason() == Qt::TabFocusReason || e->reason() == Qt::PopupFocusReason) {
         emit signalSelectSchedule(m_ScheduleInfo);
         emit signalSelectCurrentItem(this, false);
+        m_tabFocus = true;
+    }
+    if (e->reason() == Qt::ActiveWindowFocusReason) {
+        m_tabFocus = m_tabFocusBeforeActive;
     }
     DLabel::focusInEvent(e);
 }
@@ -411,6 +416,8 @@ void CScheduleSearchItem::focusOutEvent(QFocusEvent *e)
     if (e->reason() == Qt::TabFocusReason)
         emit signalSelectCurrentItem(this, true);
     DLabel::focusOutEvent(e);
+    m_tabFocusBeforeActive = m_tabFocus;
+    m_tabFocus = false;
 }
 
 void CScheduleSearchItem::keyPressEvent(QKeyEvent *event)

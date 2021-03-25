@@ -174,6 +174,8 @@ private:
     const int m_borderframew = 1;
     QString m_timeFormat = "hh:mm";
     int m_durationSize = 0;
+    bool m_tabFocus {false};
+    bool m_tabFocusBeforeActive {false}; //保存应用被激活前是否存在tab焦点效果
 };
 class CScheduleSearchDateItem : public DLabel
 {
