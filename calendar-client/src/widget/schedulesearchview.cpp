@@ -496,6 +496,10 @@ void CScheduleSearchView::clearSearch()
 {
     m_searchStr.clear();
     m_vlistData.clear();
+    m_scheduleSearchItem.clear();
+    //窗口隐藏后初始化对应的状态
+    hasScheduleShow = false;
+    m_selectItem = nullptr;
     for (int i = 0; i < m_gradientItemList->count(); i++) {
         QListWidgetItem *item11 = m_gradientItemList->takeItem(i);
         m_gradientItemList->removeItemWidget(item11);
@@ -535,10 +539,10 @@ bool CScheduleSearchView::getScheduleStatus()
 void CScheduleSearchView::deleteSchedule()
 {
     currentDItemIndex = m_scheduleSearchItem.indexOf(m_selectItem);
-    //节日日程不可操作
-    if (m_selectItem->getData().getType() == DDECalendar::FestivalTypeID)
-        return;
-    m_selectItem->slotDelete();
+    //如果存在该item且为节日日程不可操作
+    if (currentDItemIndex >= 0 && m_selectItem->getData().getType() != DDECalendar::FestivalTypeID) {
+        m_selectItem->slotDelete();
+    }
 }
 
 /**
