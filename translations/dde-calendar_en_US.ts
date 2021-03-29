@@ -459,17 +459,17 @@
 <context>
     <name>CScheduleSearchDateItem</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="863"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="874"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="863"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="874"/>
         <source>M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="863"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="874"/>
         <source>D</source>
         <translation type="unfinished"></translation>
     </message>
@@ -495,7 +495,7 @@
 <context>
     <name>CScheduleSearchView</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="627"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="638"/>
         <source>No search results</source>
         <translation type="unfinished"></translation>
     </message>
