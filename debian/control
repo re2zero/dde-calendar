@@ -14,7 +14,7 @@ Build-Depends:
  libdframeworkdbus-dev,
  libgtest-dev,
  qttools5-dev
-Standards-Version: 3.9.6
+Standards-Version: 4.3.0
 Homepage: http://www.deepin.org
 Vcs-Git: https://github.com/linuxdeepin/dde-calendar
 
