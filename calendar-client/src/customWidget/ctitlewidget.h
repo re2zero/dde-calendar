@@ -43,9 +43,9 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-
+    bool eventFilter(QObject *o, QEvent *e) override;
 signals:
-
+    void signalSetButtonFocus();
 public slots:
 private:
     CButtonBox *m_buttonBox {};

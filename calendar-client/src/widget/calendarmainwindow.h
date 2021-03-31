@@ -118,6 +118,7 @@ private:
     DIconButton *m_newScheduleBtn {nullptr}; //全局的新建日程按钮
     //日历打开默认显示视图
     int m_defaultIndex;
+    bool m_setButtonFocus {false};
 };
 
 #endif // CALENDARMAINWINDOW_H

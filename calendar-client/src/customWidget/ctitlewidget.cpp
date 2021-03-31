@@ -25,6 +25,8 @@
 #include <DFontSizeManager>
 
 #include <QHBoxLayout>
+#include <QEvent>
+#include <QKeyEvent>
 
 CTitleWidget::CTitleWidget(QWidget *parent)
     : QWidget(parent)
@@ -39,6 +41,7 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     m_yearButton->setObjectName("YearButton");
     m_yearButton->setAccessibleName("YearButton");
     m_yearButton->setFocusPolicy(Qt::TabFocus);
+    m_yearButton->installEventFilter(this);
 
     QFont viewfont;
     viewfont.setWeight(QFont::Medium);
@@ -51,18 +54,24 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     m_monthButton->setAccessibleName("MonthButton");
     m_monthButton->setFixedSize(50, 36);
     m_monthButton->setFocusPolicy(Qt::TabFocus);
+    m_monthButton->installEventFilter(this);
+
     DButtonBoxButton *m_weekButton = new DButtonBoxButton(tr("W"), this);
     //设置周辅助技术显示名称
     m_weekButton->setObjectName("WeekButton");
     m_weekButton->setAccessibleName("WeekButton");
     m_weekButton->setFixedSize(50, 36);
     m_weekButton->setFocusPolicy(Qt::TabFocus);
+    m_weekButton->installEventFilter(this);
+
     DButtonBoxButton *m_dayButton = new DButtonBoxButton(tr("D"), this);
     //设置日辅助技术显示名称
     m_dayButton->setObjectName("DayButton");
     m_dayButton->setAccessibleName("DayButton");
     m_dayButton->setFixedSize(50, 36);
     m_dayButton->setFocusPolicy(Qt::TabFocus);
+    m_dayButton->installEventFilter(this);
+
     m_yearButton->setFont(viewfont);
     m_monthButton->setFont(viewfont);
     m_weekButton->setFont(viewfont);
@@ -138,4 +147,16 @@ void CTitleWidget::resizeEvent(QResizeEvent *event)
         searchWidth = 354;
     }
     m_searchEdit->setFixedWidth(searchWidth);
+}
+
+bool CTitleWidget::eventFilter(QObject *o, QEvent *e)
+{
+    DButtonBoxButton *btn = qobject_cast<DButtonBoxButton *>(o);
+    if (btn != nullptr && e->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(e);
+        if (keyEvent != nullptr && (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Space)) {
+            emit signalSetButtonFocus();
+        }
+    }
+    return QWidget::eventFilter(o, e);
 }
