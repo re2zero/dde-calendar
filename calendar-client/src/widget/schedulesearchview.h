@@ -60,6 +60,8 @@ public slots:
     //更新搜索信息
     void updateSearch();
     void slotSelectCurrentItem(CScheduleSearchItem *item, bool itemFocusOut);
+    void slotListWidgetClicked();
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
@@ -97,7 +99,7 @@ public:
     explicit CScheduleListWidget(QWidget *parent = nullptr);
     ~CScheduleListWidget() override;
 signals:
-    void signalListWidgetScheduleHide();
+    void signalListWidgetClicked();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

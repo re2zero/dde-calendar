@@ -38,6 +38,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QtMath>
+#include <QDebug>
 
 DGUI_USE_NAMESPACE
 CGraphicsView::CGraphicsView(QWidget *parent, ViewPosition Type)

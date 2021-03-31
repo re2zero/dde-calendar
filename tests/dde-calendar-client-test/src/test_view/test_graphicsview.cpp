@@ -200,7 +200,6 @@ TEST_F(test_graphicsview, JudgeIsCreate)
 {
     QPointF pos(20, 20);
     bool getBool = cGraphicsView->JudgeIsCreate(pos);
-    qInfo() << getBool;
 }
 
 //void CGraphicsView::RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos)
