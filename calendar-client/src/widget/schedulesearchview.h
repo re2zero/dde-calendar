@@ -66,6 +66,8 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void focusInEvent(QFocusEvent *e) override;
+
 private:
     void updateDateShow();
     void createItemWidget(ScheduleDataInfo info, QDate date, int rtype);

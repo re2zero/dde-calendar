@@ -509,9 +509,6 @@ void Calendarmainwindow::slotSreturnPressed()
         m_contentBackground->setVisible(true);
     }
     m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
-    //有日程展示,设置搜索列表焦点
-    if (m_scheduleSearchView->getHasScheduleShow())
-        m_scheduleSearchView->setFocus(Qt::TabFocusReason);
     updateHigh();
 }
 
@@ -718,4 +715,3 @@ void Calendarmainwindow::mousePressEvent(QMouseEvent *event)
     Q_UNUSED(event);
     setScheduleHide();
 }
-

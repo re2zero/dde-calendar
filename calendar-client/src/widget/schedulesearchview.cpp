@@ -842,6 +842,15 @@ void CScheduleSearchView::keyPressEvent(QKeyEvent *event)
     DWidget::keyPressEvent(event);
 }
 
+void CScheduleSearchView::focusInEvent(QFocusEvent *e)
+{
+    if (e->reason() == Qt::TabFocusReason) {
+        if (m_scheduleSearchItem.size() > 0) {
+            m_scheduleSearchItem.first()->setFocus(Qt::TabFocusReason);
+        }
+    }
+}
+
 CScheduleSearchDateItem::CScheduleSearchDateItem(QWidget *parent)
     : DLabel(parent)
 {
