@@ -27,6 +27,7 @@
 #include <QHBoxLayout>
 #include <QEvent>
 #include <QKeyEvent>
+#include <QFocusEvent>
 
 CTitleWidget::CTitleWidget(QWidget *parent)
     : QWidget(parent)
@@ -99,6 +100,7 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     //    m_searchEdit->setMinimumWidth(240);
     //    m_searchEdit->setMaximumWidth(354);
     m_searchEdit->setFont(viewfont);
+    m_searchEdit->lineEdit()->installEventFilter(this);
 
     //新建日程快捷按钮
     m_newScheduleBtn = new DIconButton(this);
@@ -156,6 +158,16 @@ bool CTitleWidget::eventFilter(QObject *o, QEvent *e)
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(e);
         if (keyEvent != nullptr && (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Space)) {
             emit signalSetButtonFocus();
+        }
+    }
+
+    if (m_searchEdit != nullptr && m_searchEdit->lineEdit() == o) {
+        if (e->type() == QEvent::FocusOut) {
+            QFocusEvent *focusOutEvent = dynamic_cast<QFocusEvent *>(e);
+            //如果为tab切换焦点则发送焦点切换信号
+            if (focusOutEvent->reason() == Qt::TabFocusReason) {
+                emit signalSearchFocusSwitch();
+            }
         }
     }
     return QWidget::eventFilter(o, e);

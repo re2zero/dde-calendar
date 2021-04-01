@@ -96,6 +96,7 @@ private slots:
     void slotDeleteitem();
     //设置最大大小
     void slotSetMaxSize(int size = 0);
+    void slotSearchFocusSwitch();
 
 private:
     DLabel *m_icon = nullptr;

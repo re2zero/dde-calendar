@@ -844,6 +844,7 @@ void CScheduleSearchView::keyPressEvent(QKeyEvent *event)
 
 void CScheduleSearchView::focusInEvent(QFocusEvent *e)
 {
+    DWidget::focusInEvent(e);
     if (e->reason() == Qt::TabFocusReason) {
         if (m_scheduleSearchItem.size() > 0) {
             m_scheduleSearchItem.first()->setFocus(Qt::TabFocusReason);

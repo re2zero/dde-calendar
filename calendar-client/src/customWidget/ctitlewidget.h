@@ -46,6 +46,7 @@ protected:
     bool eventFilter(QObject *o, QEvent *e) override;
 signals:
     void signalSetButtonFocus();
+    void signalSearchFocusSwitch();
 public slots:
 private:
     CButtonBox *m_buttonBox {};

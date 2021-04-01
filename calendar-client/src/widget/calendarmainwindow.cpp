@@ -160,7 +160,8 @@ void Calendarmainwindow::slotCurrentDateUpdate()
  */
 void Calendarmainwindow::slotSetSearchFocus()
 {
-    m_searchEdit->setFocus(Qt::TabFocusReason);
+    //设置输入框获取tab焦点
+    m_searchEdit->lineEdit()->setFocus(Qt::TabFocusReason);
 }
 
 /**
@@ -326,6 +327,7 @@ void Calendarmainwindow::initUI()
     connect(titleWidget, &CTitleWidget::signalSetButtonFocus, [=] {
         m_setButtonFocus = true;
     });
+    connect(titleWidget, &CTitleWidget::signalSearchFocusSwitch, this, &Calendarmainwindow::slotSearchFocusSwitch);
 
     m_searchEdit = titleWidget->searchEdit();
     m_buttonBox = titleWidget->buttonBox();
@@ -539,11 +541,6 @@ void Calendarmainwindow::slotStextfocusChanged(bool onFocus)
 {
     if (onFocus) {
         setScheduleHide();
-    } else {
-        //设置搜索日程展示列表焦点
-        if (m_contentBackground->isVisible() && m_scheduleSearchView->getHasScheduleShow()) {
-            m_scheduleSearchView->setFocus(Qt::TabFocusReason);
-        }
     }
 }
 
@@ -688,6 +685,14 @@ void Calendarmainwindow::slotSetMaxSize(int size)
     setMaximumSize(deskSize);
     if (TabletConfig::isTablet()) {
         setFixedSize(deskSize);
+    }
+}
+
+void Calendarmainwindow::slotSearchFocusSwitch()
+{
+    //设置搜索日程展示列表焦点
+    if (m_contentBackground->isVisible() && m_scheduleSearchView->getHasScheduleShow()) {
+        m_scheduleSearchView->setFocus(Qt::TabFocusReason);
     }
 }
 
