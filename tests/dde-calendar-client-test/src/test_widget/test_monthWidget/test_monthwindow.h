@@ -18,20 +18,25 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TESTMAINWINDOWGUI_H
-#define TESTMAINWINDOWGUI_H
+#ifndef TEST_MONTHWINDOW_H
+#define TEST_MONTHWINDOW_H
 
-#include "calendarmainwindow.h"
 #include "gtest/gtest.h"
-#include <QtTest/QTest>
+#include "monthWidget/monthwindow.h"
+
 #include <QObject>
 
-class testMainWindowGUI : public QObject
+class test_monthWindow : public QObject
     , public ::testing::Test
 {
+    Q_OBJECT
 public:
-    testMainWindowGUI();
-    ~testMainWindowGUI();
+    explicit test_monthWindow();
+    void SetUp() override;
+    void TearDown() override;
+
+public:
+    CMonthWindow *m_monthWindow {nullptr};
 };
 
-#endif // TESTMAINWINDOWGUI_H
+#endif // TEST_MONTHWINDOW_H

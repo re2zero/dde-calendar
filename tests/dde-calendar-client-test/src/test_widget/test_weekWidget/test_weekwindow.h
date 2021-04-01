@@ -18,20 +18,27 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TESTMAINWINDOWGUI_H
-#define TESTMAINWINDOWGUI_H
+#ifndef TEST_WEEKWINDOW_H
+#define TEST_WEEKWINDOW_H
 
-#include "calendarmainwindow.h"
 #include "gtest/gtest.h"
-#include <QtTest/QTest>
+#include "weekWidget/weekwindow.h"
+
 #include <QObject>
 
-class testMainWindowGUI : public QObject
+class test_weekWindow : public QObject
     , public ::testing::Test
 {
+    Q_OBJECT
 public:
-    testMainWindowGUI();
-    ~testMainWindowGUI();
+    explicit test_weekWindow();
+    void SetUp() override;
+    void TearDown() override;
+signals:
+
+public slots:
+public:
+    CWeekWindow *m_weekWindow {nullptr};
 };
 
-#endif // TESTMAINWINDOWGUI_H
+#endif // TEST_WEEKWINDOW_H
