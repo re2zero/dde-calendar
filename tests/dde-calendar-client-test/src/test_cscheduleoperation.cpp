@@ -23,6 +23,7 @@
 #include "../third-party_stub/stub.h"
 #include "cscheduledbus.h"
 #include "dialog/dcalendarddialog.h"
+#include "schedulectrldlg.h"
 
 test_cscheduleoperation::test_cscheduleoperation()
 {
@@ -77,6 +78,15 @@ int exec_stub(void *obj)
     return 1;
 }
 
+namespace ScheduleTestBtnNum {
+static int button_num = 0;
+}
+int clickButton_stub(void *obj)
+{
+    Q_UNUSED(obj)
+    return ScheduleTestBtnNum::button_num;
+}
+
 void test_cscheduleoperation::SetUp()
 {
 }
@@ -107,6 +117,7 @@ TEST_F(test_cscheduleoperation, changeSchedule)
     fptr A_foo = (fptr)(&DCalendarDDialog::exec);
     Stub_CScheduleDBus
         stub.set(A_foo, exec_stub);
+    stub.set(ADDR(CScheduleCtrlDlg, clickButton), clickButton_stub);
     ScheduleDataInfo info;
     QDate current = QDate::currentDate();
     info.setBeginDateTime(QDateTime(current, QTime(0, 0, 0)));
@@ -119,6 +130,34 @@ TEST_F(test_cscheduleoperation, changeSchedule)
 
     ScheduleDataInfo newinfo = info;
     newinfo.setTitleName(tr("test"));
+
+    newinfo.setAllDay(false);
+    info.getRepetitionRule().setRuleId(RepetitionRule::RRule_NONE);
+    ScheduleTestBtnNum::button_num = 0;
+    operation.changeSchedule(newinfo, info);
+    ScheduleTestBtnNum::button_num = 1;
+    operation.changeSchedule(newinfo, info);
+
+    newinfo.setAllDay(true);
+    operation.changeSchedule(newinfo, info);
+    ScheduleTestBtnNum::button_num = 0;
+    newinfo.getRepetitionRule().setRuleId(RepetitionRule::RRule_EVEDAY);
+    operation.changeSchedule(newinfo, info);
+    ScheduleTestBtnNum::button_num = 1;
+    operation.changeSchedule(newinfo, info);
+    info.getRepetitionRule().setRuleId(RepetitionRule::RRule_EVEDAY);
+    operation.changeSchedule(newinfo, info);
+    ScheduleTestBtnNum::button_num = 0;
+    operation.changeSchedule(newinfo, info);
+    ScheduleTestBtnNum::button_num = 2;
+    operation.changeSchedule(newinfo, info);
+
+    newinfo.setRecurID(2);
+    ScheduleTestBtnNum::button_num = 0;
+    operation.changeSchedule(newinfo, info);
+    ScheduleTestBtnNum::button_num = 1;
+    operation.changeSchedule(newinfo, info);
+    ScheduleTestBtnNum::button_num = 2;
     operation.changeSchedule(newinfo, info);
 }
 
@@ -128,6 +167,7 @@ TEST_F(test_cscheduleoperation, deleteSchedule)
     fptr A_foo = (fptr)(&DCalendarDDialog::exec);
     Stub_CScheduleDBus
         stub.set(A_foo, exec_stub);
+    stub.set(ADDR(CScheduleCtrlDlg, clickButton), clickButton_stub);
     ScheduleDataInfo info;
     QDate current = QDate::currentDate();
     info.setBeginDateTime(QDateTime(current, QTime(0, 0, 0)));
@@ -137,6 +177,26 @@ TEST_F(test_cscheduleoperation, deleteSchedule)
     info.setRemindData(RemindData(1, QTime(9, 0)));
     info.setID(0);
     info.setRecurID(0);
+    ScheduleTestBtnNum::button_num = 0;
+    operation.deleteSchedule(info);
+    ScheduleTestBtnNum::button_num = 1;
+    operation.deleteSchedule(info);
+
+    //删除重复日程
+    info.getRepetitionRule().setRuleId(RepetitionRule::RRule_EVEDAY);
+    ScheduleTestBtnNum::button_num = 0;
+    operation.deleteSchedule(info);
+    ScheduleTestBtnNum::button_num = 1;
+    operation.deleteSchedule(info);
+    ScheduleTestBtnNum::button_num = 2;
+    operation.deleteSchedule(info);
+
+    info.setRecurID(2);
+    ScheduleTestBtnNum::button_num = 0;
+    operation.deleteSchedule(info);
+    ScheduleTestBtnNum::button_num = 1;
+    operation.deleteSchedule(info);
+    ScheduleTestBtnNum::button_num = 2;
     operation.deleteSchedule(info);
 }
 
