@@ -503,7 +503,7 @@
     <message>
         <location filename="../calendar-client/src/customWidget/scheduleview.cpp" line="326"/>
         <source>ALL DAY</source>
-        <translation>ALL DAY</translation>
+        <translation>پۈتۈن كۈن</translation>
     </message>
 </context>
 <context>
@@ -539,7 +539,7 @@
     <message>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="327"/>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>يىل</translation>
     </message>
 </context>
 <context>
@@ -561,7 +561,7 @@
     <message>
         <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="639"/>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>يىل</translation>
     </message>
 </context>
 <context>
@@ -569,12 +569,12 @@
     <message>
         <location filename="../calendar-client/src/main.cpp" line="54"/>
         <source>Calendar</source>
-        <translation>Calendar</translation>
+        <translation>كالېندار</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/main.cpp" line="57"/>
         <source>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </source>
-        <translation>Calendar is a tool to view dates, and also a smart daily planner to schedule all things in life. </translation>
+        <translation>كالېندار چېسلا كۆرۈش، كۈنتەرتىپ باشقۇرۇشتا ئىشلىتىلىدىغان كىچىك قورال.</translation>
     </message>
 </context>
 <context>
@@ -582,7 +582,7 @@
     <message>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="66"/>
         <source>Calendar</source>
-        <translation>Calendar</translation>
+        <translation>كالېندار</translation>
     </message>
 </context>
 <context>
@@ -590,7 +590,7 @@
     <message>
         <location filename="../calendar-client/src/customWidget/SchecduleRemindWidget.cpp" line="191"/>
         <source>All Day</source>
-        <translation>All Day</translation>
+        <translation>پۈتۈن كۈن</translation>
     </message>
 </context>
 <context>
@@ -608,12 +608,12 @@
     <message>
         <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="61"/>
         <source>New event</source>
-        <translation>New event</translation>
+        <translation>كۈنتەرتىپ قۇرۇش</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="717"/>
         <source>New Event</source>
-        <translation>New Event</translation>
+        <translation>كۈنتەرتىپ قۇرۇش</translation>
     </message>
 </context>
 <context>
@@ -622,7 +622,7 @@
         <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="635"/>
         <source>Today</source>
         <comment>Return</comment>
-        <translation>Today</translation>
+        <translation>بۈگۈنگە قايتىش</translation>
     </message>
 </context>
 <context>
@@ -633,7 +633,7 @@
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="324"/>
         <source>Today</source>
         <comment>Return Today</comment>
-        <translation>Today</translation>
+        <translation>بۈگۈنگە قايتىش</translation>
     </message>
 </context>
 <context>
@@ -641,37 +641,37 @@
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="31"/>
         <source>Help</source>
-        <translation>Help</translation>
+        <translation>ياردەم</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="32"/>
         <source>Delete event</source>
-        <translation>Delete event</translation>
+        <translation>كۈنتەرتىپنى ئۆچۈرۈش</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="35"/>
         <source>Copy</source>
-        <translation>Copy</translation>
+        <translation>كۆچۈرۈش</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="36"/>
         <source>Cut</source>
-        <translation>Cut</translation>
+        <translation>كېسىش</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="37"/>
         <source>Paste</source>
-        <translation>Paste</translation>
+        <translation>چاپلاش</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="40"/>
         <source>Delete</source>
-        <translation>Delete</translation>
+        <translation>ئۆچۈرۈش</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/shortcut.cpp" line="41"/>
         <source>Select all</source>
-        <translation>Select all</translation>
+        <translation>ھەممىنى تاللاش</translation>
     </message>
 </context>
 <context>
@@ -679,7 +679,7 @@
     <message>
         <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="954"/>
         <source>Y</source>
-        <translation>Y</translation>
+        <translation>يىل</translation>
     </message>
 </context>
 <context>
@@ -695,7 +695,7 @@
         <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="633"/>
         <source>Today</source>
         <comment>Today</comment>
-        <translation>Today</translation>
+        <translation>بۈگۈن</translation>
     </message>
 </context>
 </TS>
