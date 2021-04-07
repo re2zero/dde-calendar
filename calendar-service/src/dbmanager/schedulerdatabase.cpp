@@ -30,11 +30,19 @@
 #include <QJsonArray>
 #include <QSqlQuery>
 #include <QFile>
+#include <QDir>
 
 SchedulerDatabase::SchedulerDatabase(QObject *parent)
     : QObject(parent)
 {
-    QString dbpath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/.config/deepin/dde-daemon/calendar/scheduler.db");
+    //旧文件路径
+    QString oldDbPatch = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/.config/deepin/dde-daemon/calendar");
+    QDir dir;
+    //如果该路径不存在，则创建该文件夹
+    if (!dir.exists(oldDbPatch)) {
+        dir.mkpath(oldDbPatch);
+    }
+    QString dbpath = oldDbPatch.append("/scheduler.db");
     OpenSchedulerDatabase(dbpath);
 }
 
