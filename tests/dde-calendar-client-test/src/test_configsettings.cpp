@@ -37,10 +37,22 @@ void stub_Handle()
 
 }
 
+void setValue_stub(void *obj, const QString &key, const QVariant &value) {
+    Q_UNUSED(obj)
+        Q_UNUSED(key)
+            Q_UNUSED(value)}
+
 //void CConfigSettings::sync()
 TEST_F(test_configsettings, sync)
 {
     Stub stub;
     stub.set(ADDR(CConfigSettings, sync), stub_Handle);
     conf->sync();
+}
+
+TEST_F(test_configsettings, setOption)
+{
+    Stub stub;
+    stub.set(ADDR(QSettings, setValue), setValue_stub);
+    conf->setOption("base.state", 0);
 }
