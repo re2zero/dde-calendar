@@ -21,22 +21,63 @@
 #include "test_ckeyenabledeal.h"
 
 #include "../third-party_stub/stub.h"
-#include "gtest/gtest.h"
-#include "view/cgraphicsscene.h"
-#include "KeyPress/ckeyenabledeal.h"
-#include "view/graphicsItem/cweekdaybackgrounditem.h"
-#include "keypressstub.h"
 
-test_CKeyEnableDeal::test_CKeyEnableDeal(QObject *parent)
-    : QObject(parent)
+#include "view/graphicsItem/cweekdaybackgrounditem.h"
+#include "../dialog_stub.h"
+#include "view/graphicsItem/scheduleitem.h"
+
+#include <QGraphicsView>
+
+test_CKeyEnableDeal::test_CKeyEnableDeal()
 {
 }
 
-//TEST(EnableHandle_test, test_CKeyEnableDeal)
-//{
-//    KeyPressStub stub;
-//    CGraphicsScene *scene  = new CGraphicsScene();
-//    CKeyEnableDeal enableDeal(scene);
-//    enableDeal.dealEvent();
-//    delete scene;
-//}
+void test_CKeyEnableDeal::SetUp()
+{
+    delete SceneCurrentItem;
+    SceneCurrentItem = new CSceneBackgroundItem(CSceneBackgroundItem::OnMonthView);
+    calendarDDialogExecStub(stub.getStub());
+    scene = QSharedPointer<CGraphicsScene>(new CGraphicsScene());
+    view = QSharedPointer<QGraphicsView>(new QGraphicsView());
+    view->setScene(scene.get());
+    enableDeal = QSharedPointer<CKeyEnableDeal>(new CKeyEnableDeal(scene.get()));
+}
+
+void test_CKeyEnableDeal::TearDown()
+{
+}
+
+TEST_F(test_CKeyEnableDeal, focusItemDeal_Back)
+{
+    enableDeal->dealEvent();
+}
+
+TEST_F(test_CKeyEnableDeal, focusItemDeal_Back_addDay)
+{
+    itemDate = QDate::currentDate().addDays(1);
+    enableDeal->dealEvent();
+}
+
+CFocusItem *focusItem = nullptr;
+
+CFocusItem *getFocusItem_stub()
+{
+    return focusItem;
+}
+
+TEST_F(test_CKeyEnableDeal, focusItemDeal_Item)
+{
+    QRectF rect(0, 0, 100, 100);
+    focusItem = new CScheduleItem(rect);
+    stub.getStub().set(ADDR(CSceneBackgroundItem, getFocusItem), getFocusItem_stub);
+    focusItemType = CFocusItem::CITEM;
+    enableDeal->dealEvent();
+    delete focusItem;
+    focusItem = nullptr;
+}
+
+TEST_F(test_CKeyEnableDeal, focusItemDeal_Other)
+{
+    focusItemType = CFocusItem::COTHER;
+    enableDeal->dealEvent();
+}

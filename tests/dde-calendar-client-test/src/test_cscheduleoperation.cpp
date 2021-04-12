@@ -24,6 +24,7 @@
 #include "cscheduledbus.h"
 #include "dialog/dcalendarddialog.h"
 #include "schedulectrldlg.h"
+#include "dialog_stub.h"
 
 test_cscheduleoperation::test_cscheduleoperation()
 {
@@ -106,17 +107,15 @@ void test_cscheduleoperation::TearDown()
 
 TEST_F(test_cscheduleoperation, createSchedule)
 {
-    Stub_CScheduleDBus
-        ScheduleDataInfo info;
+    Stub_CScheduleDBus;
+    ScheduleDataInfo info;
     operation.createSchedule(info);
 }
 
 TEST_F(test_cscheduleoperation, changeSchedule)
 {
-    typedef int (*fptr)(DCalendarDDialog *);
-    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
     Stub_CScheduleDBus
-        stub.set(A_foo, exec_stub);
+        calendarDDialogExecStub(stub);
     stub.set(ADDR(CScheduleCtrlDlg, clickButton), clickButton_stub);
     ScheduleDataInfo info;
     QDate current = QDate::currentDate();
@@ -163,10 +162,8 @@ TEST_F(test_cscheduleoperation, changeSchedule)
 
 TEST_F(test_cscheduleoperation, deleteSchedule)
 {
-    typedef int (*fptr)(DCalendarDDialog *);
-    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
     Stub_CScheduleDBus
-        stub.set(A_foo, exec_stub);
+        calendarDDialogExecStub(stub);
     stub.set(ADDR(CScheduleCtrlDlg, clickButton), clickButton_stub);
     ScheduleDataInfo info;
     QDate current = QDate::currentDate();

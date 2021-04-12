@@ -31,12 +31,20 @@ bool scene_activeSwitching = false;
 bool WeekDayBackgroundItem_hasNextItem = false;
 bool WeekDayBackgroundItem_showFocus = false;
 QGraphicsItem *SceneCurrentItem = nullptr;
+CFocusItem::CItemType focusItemType = CFocusItem::CBACK;
+QDate itemDate = QDate::currentDate();
 
 //bbbbbbbbbbbbb CFocusItem stub  bbbbbbbbbbbbbbbbbbbbbb
 bool getItemFoucs_stub()
 {
     return itemFocus;
 }
+
+CFocusItem::CItemType getItemType_stub()
+{
+    return focusItemType;
+}
+
 //eeeeeeeeeeeeeeeeeeeeeee
 
 //  CGraphicsScene stub
@@ -82,16 +90,16 @@ void initState_stub(void *obj) {
 QDate getDate_stub(void *obj)
 {
     Q_UNUSED(obj)
-    return QDate::currentDate();
+    return itemDate;
 }
 
 // SceneTabHandle stub
-bool focusItemDeal_stub(CSceneBackgroundItem *item, CGraphicsScene *scene)
-{
-    Q_UNUSED(item)
-    Q_UNUSED(scene)
-    return false;
-}
+//bool focusItemDeal_stub(CSceneBackgroundItem *item, CGraphicsScene *scene)
+//{
+//    Q_UNUSED(item)
+//    Q_UNUSED(scene)
+//    return false;
+//}
 
 KeyPressStub::KeyPressStub()
 {
@@ -99,6 +107,7 @@ KeyPressStub::KeyPressStub()
     typedef void (*fptr)(CWeekDayBackgroundItem *, bool);
     fptr A_foo = (fptr)(&CWeekDayBackgroundItem::setItemFocus); //obtaining an address
     stub.set(ADDR(CFocusItem, getItemFoucs), getItemFoucs_stub);
+    stub.set(ADDR(CFocusItem, getItemType), getItemType_stub);
     stub.set(A_foo, setItemFocus);
     stub.set(ADDR(CGraphicsScene, setActiveSwitching), setActiveSwitching_stub);
     stub.set(ADDR(CGraphicsScene, signalSwitchView), signalSwitchView_stub);
@@ -107,9 +116,9 @@ KeyPressStub::KeyPressStub()
     stub.set(ADDR(CWeekDayBackgroundItem, showFocus), showFocus_stub);
     stub.set(ADDR(CWeekDayBackgroundItem, initState), initState_stub);
     stub.set(ADDR(CWeekDayBackgroundItem, getDate), getDate_stub);
-    typedef bool (*sceneTabKeyHandle)(CSceneTabKeyDeal *, CSceneBackgroundItem *, CGraphicsScene *);
-    sceneTabKeyHandle SceneTabHandle = (sceneTabKeyHandle)(&CSceneTabKeyDeal::focusItemDeal);
-    stub.set(SceneTabHandle, focusItemDeal_stub);
+    //    typedef bool (*sceneTabKeyHandle)(CSceneTabKeyDeal *, CSceneBackgroundItem *, CGraphicsScene *);
+    //    sceneTabKeyHandle SceneTabHandle = (sceneTabKeyHandle)(&CSceneTabKeyDeal::focusItemDeal);
+    //    stub.set(SceneTabHandle, focusItemDeal_stub);
 }
 
 KeyPressStub::~KeyPressStub()
@@ -118,7 +127,7 @@ KeyPressStub::~KeyPressStub()
     SceneCurrentItem = nullptr;
 }
 
-Stub KeyPressStub::getStub() const
+Stub &KeyPressStub::getStub()
 {
     return stub;
 }

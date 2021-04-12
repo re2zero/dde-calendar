@@ -133,7 +133,7 @@ private:
     QMutex m_Mutex;
     bool m_updateDflag = false;
     QVector<ScheduleDataInfo> m_scheduleInfo;
-    QDateTime m_currentDate;
+    QDateTime m_currentDateTime;
     int m_minTime; //最小高度对应的最小时间
     int m_sMaxNum = 4;
 };

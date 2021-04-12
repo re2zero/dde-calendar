@@ -18,32 +18,29 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef KEYPRESSSTUB_H
-#define KEYPRESSSTUB_H
+#include "test_ckeypressprxy.h"
+#include "ckeyleftdeal.h"
 
-#include "../third-party_stub/stub.h"
-#include "view/graphicsItem/cfocusitem.h"
-
-#include <QObject>
-
-class QGraphicsItem;
-class KeyPressStub
+test_CKeyPressPrxy::test_CKeyPressPrxy()
 {
-public:
-    KeyPressStub();
-    ~KeyPressStub();
-    Stub &getStub();
+    keyPressPrxy = QSharedPointer<CKeyPressPrxy>(new CKeyPressPrxy);
+}
 
-private:
-    Stub stub;
-};
+TEST_F(test_CKeyPressPrxy, keyPressDeal_NoEvent)
+{
+    ASSERT_FALSE(keyPressPrxy->keyPressDeal(Qt::Key_Tab));
+}
 
-extern bool itemFocus;
-extern bool scene_activeSwitching;
-extern bool WeekDayBackgroundItem_hasNextItem;
-extern bool WeekDayBackgroundItem_showFocus;
-extern QGraphicsItem *SceneCurrentItem;
-extern CFocusItem::CItemType focusItemType;
-extern QDate itemDate;
+TEST_F(test_CKeyPressPrxy, keyPressDeal)
+{
+    keyPressPrxy->addkeyPressDeal(new CKeyLeftDeal());
+    ASSERT_FALSE(keyPressPrxy->keyPressDeal(Qt::Key_Left));
+}
 
-#endif // KEYPRESSSTUB_H
+TEST_F(test_CKeyPressPrxy, removeDeal)
+{
+    CKeyLeftDeal *leftDeal = new CKeyLeftDeal();
+    keyPressPrxy->addkeyPressDeal(leftDeal);
+    keyPressPrxy->removeDeal(leftDeal);
+    ASSERT_FALSE(keyPressPrxy->keyPressDeal(Qt::Key_Left));
+}

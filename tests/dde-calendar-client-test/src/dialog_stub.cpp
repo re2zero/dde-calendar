@@ -18,32 +18,23 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef KEYPRESSSTUB_H
-#define KEYPRESSSTUB_H
+#include "dialog_stub.h"
 
-#include "../third-party_stub/stub.h"
-#include "view/graphicsItem/cfocusitem.h"
+#include "dialog/dcalendarddialog.h"
 
 #include <QObject>
 
-class QGraphicsItem;
-class KeyPressStub
+int calendarDDialogExecReturn = 0;
+
+int calendar_DDialog_Exec_stub(void *obj)
 {
-public:
-    KeyPressStub();
-    ~KeyPressStub();
-    Stub &getStub();
+    Q_UNUSED(obj)
+    return calendarDDialogExecReturn;
+}
 
-private:
-    Stub stub;
-};
-
-extern bool itemFocus;
-extern bool scene_activeSwitching;
-extern bool WeekDayBackgroundItem_hasNextItem;
-extern bool WeekDayBackgroundItem_showFocus;
-extern QGraphicsItem *SceneCurrentItem;
-extern CFocusItem::CItemType focusItemType;
-extern QDate itemDate;
-
-#endif // KEYPRESSSTUB_H
+void calendarDDialogExecStub(Stub &stub)
+{
+    typedef int (*fptr)(DCalendarDDialog *);
+    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
+    stub.set(A_foo, calendar_DDialog_Exec_stub);
+}

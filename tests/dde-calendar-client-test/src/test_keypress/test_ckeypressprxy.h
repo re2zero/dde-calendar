@@ -18,32 +18,29 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef KEYPRESSSTUB_H
-#define KEYPRESSSTUB_H
+#ifndef TEST_CKEYPRESSPRXY_H
+#define TEST_CKEYPRESSPRXY_H
 
-#include "../third-party_stub/stub.h"
-#include "view/graphicsItem/cfocusitem.h"
+#include "configsettings.h"
+#include "gtest/gtest.h"
+#include "ckeypressprxy.h"
 
 #include <QObject>
+#include <QSharedPointer>
 
-class QGraphicsItem;
-class KeyPressStub
+class test_CKeyPressPrxy : public QObject
+    , public ::testing::Test
 {
+    Q_OBJECT
 public:
-    KeyPressStub();
-    ~KeyPressStub();
-    Stub &getStub();
+    test_CKeyPressPrxy();
 
-private:
-    Stub stub;
+signals:
+
+public slots:
+
+public:
+    QSharedPointer<CKeyPressPrxy> keyPressPrxy;
 };
 
-extern bool itemFocus;
-extern bool scene_activeSwitching;
-extern bool WeekDayBackgroundItem_hasNextItem;
-extern bool WeekDayBackgroundItem_showFocus;
-extern QGraphicsItem *SceneCurrentItem;
-extern CFocusItem::CItemType focusItemType;
-extern QDate itemDate;
-
-#endif // KEYPRESSSTUB_H
+#endif // TEST_CKEYPRESSPRXY_H

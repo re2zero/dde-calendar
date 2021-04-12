@@ -136,7 +136,7 @@ void CGraphicsView::updateHigh()
 
 void CGraphicsView::setCurrentDate(const QDateTime &currentDate)
 {
-    m_currentDate = currentDate;
+    m_currentDateTime = currentDate;
     scrollBarValueChangedSlot();
 }
 
@@ -522,7 +522,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
                 t_painter.drawLine(QPoint(0, m_vLRLarge[i] - 1), QPoint(t_width, m_vLRLarge[i] - 1));
             t_painter.restore();
 
-            if (m_viewType == 1 && m_coorManage->getBegindate() == m_currentDate.date()) {
+            if (m_viewType == 1 && m_coorManage->getBegindate() == m_currentDateTime.date()) {
                 t_painter.save();
                 QPen pen = m_LRPen;
                 pen.setColor(m_currenttimecolor);
@@ -558,7 +558,7 @@ void CGraphicsView::scrollBarValueChangedSlot()
         vHours.append(qFloor(i / m_timeInterval + 0.5));
     }
 
-    qreal currentTime = static_cast<qreal>(m_coorManage->getHeight(m_currentDate.time()));
+    qreal currentTime = static_cast<qreal>(m_coorManage->getHeight(m_currentDateTime.time()));
 
     if (currentTime > beginpos && currentTime < leftBttomrealPos.y()) {
         m_cuttrnttimetype = 1;

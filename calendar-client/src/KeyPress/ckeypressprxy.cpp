@@ -67,7 +67,7 @@ void CKeyPressPrxy::addkeyPressDeal(CKeyPressDealBase *deal)
 void CKeyPressPrxy::removeDeal(CKeyPressDealBase *deal)
 {
     if (m_keyEventMap.contains(deal->getKey())) {
-        delete m_keyEventMap[deal->getKey()];
         m_keyEventMap.remove(deal->getKey());
+        delete deal;
     }
 }
