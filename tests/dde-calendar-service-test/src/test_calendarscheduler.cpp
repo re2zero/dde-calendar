@@ -274,8 +274,5 @@ TEST_F(test_calendarscheduler, OnModifyJobRemind)
 TEST_F(test_calendarscheduler, GetFestivalId)
 {
     quint32 id = calScheduler->GetFestivalId("国庆节");
-    qInfo() << "啊？ 这特么是国庆节？" << id ;
-
     id = calScheduler->GetFestivalId("春节");
-    qInfo() << "啊？ 这特么是春节？" << id ;
 }

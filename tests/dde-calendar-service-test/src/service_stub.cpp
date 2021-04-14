@@ -18,29 +18,35 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TEST_CSCHEDULEOPERATION_H
-#define TEST_CSCHEDULEOPERATION_H
+#include "service_stub.h"
 
-#include "../third-party_stub/stub.h"
-#include "scheduleTask/cscheduleoperation.h"
-#include "gtest/gtest.h"
+#include "dbusuiopenschedule.h"
+#include "dbusnotify.h"
 
-#include <QObject>
-
-class test_cscheduleoperation : public QObject
-    , public ::testing::Test
+QDBusMessage callWithArgumentList_stub(QDBus::CallMode mode,
+                                       const QString &method,
+                                       const QList<QVariant> &args)
 {
-public:
-    test_cscheduleoperation();
-    ~test_cscheduleoperation();
-    void SetUp() override;
-    void TearDown() override;
+    Q_UNUSED(mode);
+    Q_UNUSED(method);
+    Q_UNUSED(args);
+    QDBusMessage reply;
+    reply.createReply("succ");
+    return reply;
+}
 
-public:
-    CScheduleOperation operation;
+void qDBusAbstractInterface_callWithArgumentList_stub(Stub &stub)
+{
+    stub.set(ADDR(QDBusAbstractInterface, callWithArgumentList), callWithArgumentList_stub);
+    qDBusMessage_type_Stub(stub);
+}
 
-public:
-    Stub stub;
-};
+QDBusMessage::MessageType type_Stub()
+{
+    return QDBusMessage::ReplyMessage;
+}
 
-#endif // TEST_CSCHEDULEOPERATION_H
+void qDBusMessage_type_Stub(Stub &stub)
+{
+    stub.set(ADDR(QDBusMessage, type), type_Stub);
+}

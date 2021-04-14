@@ -20,11 +20,11 @@
 */
 #include "test_cscheduleoperation.h"
 
-#include "../third-party_stub/stub.h"
 #include "cscheduledbus.h"
 #include "dialog/dcalendarddialog.h"
 #include "schedulectrldlg.h"
 #include "dialog_stub.h"
+#include "cscheduledbusstub.h"
 
 test_cscheduleoperation::test_cscheduleoperation()
 {
@@ -34,50 +34,7 @@ test_cscheduleoperation::~test_cscheduleoperation()
 {
 }
 
-qint64 CreateJob_stub(void *obj, const ScheduleDataInfo &info)
-{
-    Q_UNUSED(obj)
-    Q_UNUSED(info)
-    return 1;
-}
 
-bool UpdateJob_stub(void *obj, const ScheduleDataInfo &info)
-{
-    Q_UNUSED(obj)
-    Q_UNUSED(info)
-    return true;
-}
-
-bool DeleteJob_stub(void *obj, qint64 jobId)
-{
-    Q_UNUSED(obj)
-    Q_UNUSED(jobId)
-    return true;
-}
-
-bool GetJob_stub(void *obj, qint64 jobId, ScheduleDataInfo &out)
-{
-    Q_UNUSED(obj)
-    Q_UNUSED(jobId)
-    Q_UNUSED(out)
-    return true;
-}
-
-bool QueryJobs_stub(void *obj, QString key, QDateTime starttime, QDateTime endtime, QMap<QDate, QVector<ScheduleDataInfo>> &out)
-{
-    Q_UNUSED(obj)
-    Q_UNUSED(key)
-    Q_UNUSED(starttime)
-    Q_UNUSED(endtime)
-    Q_UNUSED(out)
-    return true;
-}
-
-int exec_stub(void *obj)
-{
-    Q_UNUSED(obj)
-    return 1;
-}
 
 namespace ScheduleTestBtnNum {
 static int button_num = 0;
@@ -90,16 +47,8 @@ int clickButton_stub(void *obj)
 
 void test_cscheduleoperation::SetUp()
 {
+    cscheduleDbusStub(stub);
 }
-
-//对CScheduleDBus打桩宏定义
-#define Stub_CScheduleDBus \
-    Stub stub; \
-    stub.set(ADDR(CScheduleDBus, CreateJob), CreateJob_stub); \
-    stub.set(ADDR(CScheduleDBus, UpdateJob), UpdateJob_stub); \
-    stub.set(ADDR(CScheduleDBus, DeleteJob), DeleteJob_stub); \
-    stub.set(ADDR(CScheduleDBus, GetJob), GetJob_stub); \
-    stub.set((bool (CScheduleDBus::*)(QString, QDateTime, QDateTime, QMap<QDate, QVector<ScheduleDataInfo>> &))ADDR(CScheduleDBus, QueryJobs), QueryJobs_stub);
 
 void test_cscheduleoperation::TearDown()
 {
@@ -107,15 +56,13 @@ void test_cscheduleoperation::TearDown()
 
 TEST_F(test_cscheduleoperation, createSchedule)
 {
-    Stub_CScheduleDBus;
     ScheduleDataInfo info;
     operation.createSchedule(info);
 }
 
 TEST_F(test_cscheduleoperation, changeSchedule)
 {
-    Stub_CScheduleDBus
-        calendarDDialogExecStub(stub);
+    calendarDDialogExecStub(stub);
     stub.set(ADDR(CScheduleCtrlDlg, clickButton), clickButton_stub);
     ScheduleDataInfo info;
     QDate current = QDate::currentDate();
@@ -162,8 +109,7 @@ TEST_F(test_cscheduleoperation, changeSchedule)
 
 TEST_F(test_cscheduleoperation, deleteSchedule)
 {
-    Stub_CScheduleDBus
-        calendarDDialogExecStub(stub);
+    calendarDDialogExecStub(stub);
     stub.set(ADDR(CScheduleCtrlDlg, clickButton), clickButton_stub);
     ScheduleDataInfo info;
     QDate current = QDate::currentDate();
@@ -199,14 +145,12 @@ TEST_F(test_cscheduleoperation, deleteSchedule)
 
 TEST_F(test_cscheduleoperation, queryScheduleStr)
 {
-    Stub_CScheduleDBus
-        QDateTime currenttime = QDateTime::currentDateTime();
+    QDateTime currenttime = QDateTime::currentDateTime();
     operation.queryScheduleStr("", currenttime, currenttime);
 }
 
 TEST_F(test_cscheduleoperation, deleteOnlyInfo)
 {
-    Stub_CScheduleDBus
-        ScheduleDataInfo info;
+    ScheduleDataInfo info;
     operation.deleteOnlyInfo(info);
 }

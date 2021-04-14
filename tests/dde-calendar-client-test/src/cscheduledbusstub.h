@@ -18,29 +18,11 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TEST_CSCHEDULEOPERATION_H
-#define TEST_CSCHEDULEOPERATION_H
+#ifndef CSCHEDULEDBUSSTUB_H
+#define CSCHEDULEDBUSSTUB_H
 
 #include "../third-party_stub/stub.h"
-#include "scheduleTask/cscheduleoperation.h"
-#include "gtest/gtest.h"
 
-#include <QObject>
+void cscheduleDbusStub(Stub &stub);
 
-class test_cscheduleoperation : public QObject
-    , public ::testing::Test
-{
-public:
-    test_cscheduleoperation();
-    ~test_cscheduleoperation();
-    void SetUp() override;
-    void TearDown() override;
-
-public:
-    CScheduleOperation operation;
-
-public:
-    Stub stub;
-};
-
-#endif // TEST_CSCHEDULEOPERATION_H
+#endif // CSCHEDULEDBUSSTUB_H

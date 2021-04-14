@@ -20,6 +20,8 @@
 */
 #include "test_jobremindmanager.h"
 #include "../third-party_stub/stub.h"
+#include "service_stub.h"
+
 #include <QDBusAbstractInterface>
 #include <QDebug>
 
@@ -93,12 +95,16 @@ QList<Job> createJobs()
 //void JobRemindManager::CallUiOpenSchedule(const Job &job)
 TEST_F(test_jobremindmanager, CallUiOpenSchedule)
 {
+    Stub stub;
+    qDBusAbstractInterface_callWithArgumentList_stub(stub);
     jobRemindManager->CallUiOpenSchedule(createJobs().at(0));
 }
 
 //void JobRemindManager::RemindJob(const Job &job)
 TEST_F(test_jobremindmanager, RemindJob)
 {
+    Stub stub;
+    qDBusAbstractInterface_callWithArgumentList_stub(stub);
     jobRemindManager->RemindJob(createJobs().at(0));
 }
 
@@ -127,7 +133,7 @@ TEST_F(test_jobremindmanager, SetJobRemindTomorrow)
     jobRemindManager->SetJobRemindTomorrow(createJobs().at(0));
 }
 
-//void JobRemindManager::RemindWorkTimeOut()
+////void JobRemindManager::RemindWorkTimeOut()
 TEST_F(test_jobremindmanager, RemindWorkTimeOut)
 {
     jobRemindManager->RemindWorkTimeOut();
@@ -142,6 +148,8 @@ TEST_F(test_jobremindmanager, UpdateRemindJobs)
 //void JobRemindManager::ActionInvoked(quint32 id, const QString &actionKey)
 TEST_F(test_jobremindmanager, ActionInvoked)
 {
+    Stub stub;
+    qDBusAbstractInterface_callWithArgumentList_stub(stub);
     jobRemindManager->RemindJob(createJobs().at(0));
     jobRemindManager->RemindJob(createJobs().at(1));
     jobRemindManager->RemindJob(createJobs().at(2));

@@ -20,6 +20,8 @@
    */
 #include "test_scheduledlg.h"
 
+#include "../cscheduledbusstub.h"
+
 test_scheduledlg::test_scheduledlg()
 {
     mScheduleDlg = new CScheduleDlg(1);
@@ -85,6 +87,8 @@ TEST_F(test_scheduledlg, setAllDay)
 //bool CScheduleDlg::clickOkBtn()
 TEST_F(test_scheduledlg, clickOkBtn)
 {
+    Stub stub;
+    cscheduleDbusStub(stub);
     mScheduleDlg->clickOkBtn();
 }
 
