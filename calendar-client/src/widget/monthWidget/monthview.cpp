@@ -45,15 +45,15 @@ void CMonthView::setTheMe(int type)
 CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
 {
     m_weekIndicator = new CMonthWeekView;
-    m_monthGraphicsView = new CMonthGraphiview(this);
+    m_monthGraphicsView = new CMonthGraphicsview(this);
 
-    connect(m_monthGraphicsView, &CMonthGraphiview::signalsViewSelectDate, this, &CMonthView::signalsViewSelectDate);
-    connect(m_monthGraphicsView, &CMonthGraphiview::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
-    connect(m_monthGraphicsView, &CMonthGraphiview::signalScheduleShow, this, &CMonthView::slotScheduleRemindWidget);
-    connect(m_monthGraphicsView, &CMonthGraphiview::signalAngleDelta, this, &CMonthView::signalAngleDelta);
-    connect(m_monthGraphicsView, &CMonthGraphiview::signalSwitchPrePage, this, &CMonthView::signalSwitchPrePage);
-    connect(m_monthGraphicsView, &CMonthGraphiview::signalSwitchNextPage, this, &CMonthView::signalSwitchNextPage);
-    connect(m_monthGraphicsView, &CMonthGraphiview::signalGotoDayView, this, &CMonthView::signalsViewSelectDate);
+    connect(m_monthGraphicsView, &CMonthGraphicsview::signalsViewSelectDate, this, &CMonthView::signalsViewSelectDate);
+    connect(m_monthGraphicsView, &CMonthGraphicsview::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
+    connect(m_monthGraphicsView, &CMonthGraphicsview::signalScheduleShow, this, &CMonthView::slotScheduleRemindWidget);
+    connect(m_monthGraphicsView, &CMonthGraphicsview::signalAngleDelta, this, &CMonthView::signalAngleDelta);
+    connect(m_monthGraphicsView, &CMonthGraphicsview::signalSwitchPrePage, this, &CMonthView::signalSwitchPrePage);
+    connect(m_monthGraphicsView, &CMonthGraphicsview::signalSwitchNextPage, this, &CMonthView::signalSwitchNextPage);
+    connect(m_monthGraphicsView, &CMonthGraphicsview::signalGotoDayView, this, &CMonthView::signalsViewSelectDate);
     //新建最终布局
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->setMargin(0);
@@ -65,7 +65,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     setLayout(m_mainLayout);
     m_createAction = new QAction(tr("New event"), this);
 
-    m_remindWidget = new SchecduleRemindWidget(this);
+    m_remindWidget = new ScheduleRemindWidget(this);
     setMouseTracking(true);
 }
 

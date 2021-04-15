@@ -236,28 +236,28 @@ void AnimationStackedWidget::paintCurrentWidget(QPainter &paint, int currentInde
     //窗口宽度
     const int widgetWidth = widgetRect.width();
     //窗口高度
-    const int widgetHeigth = widgetRect.height();
+    const int widgetHeight = widgetRect.height();
     QRectF targetRect;
     QRectF sourceRect;
     switch (m_moveOri) {
     case LeftToRight: {
-        targetRect = QRectF(widgetWidth - value, 0, value, widgetHeigth);
-        sourceRect = QRectF(0.0, 0.0, value, widgetHeigth);
+        targetRect = QRectF(widgetWidth - value, 0, value, widgetHeight);
+        sourceRect = QRectF(0.0, 0.0, value, widgetHeight);
     }
     break;
     case RightToLeft: {
-        targetRect = QRectF(0.0, 0.0, value, widgetHeigth);
-        sourceRect = QRectF(widgetWidth - value, 0, value, widgetHeigth);
+        targetRect = QRectF(0.0, 0.0, value, widgetHeight);
+        sourceRect = QRectF(widgetWidth - value, 0, value, widgetHeight);
     }
     break;
     case TopToBottom: {
-        targetRect = QRectF(0.0, widgetHeigth - value, widgetWidth, value);
+        targetRect = QRectF(0.0, widgetHeight - value, widgetWidth, value);
         sourceRect = QRectF(0.0, 0.0, widgetWidth, value);
     }
     break;
     case BottomToTop: {
         targetRect = QRectF(0.0, 0.0, widgetWidth, value);
-        sourceRect = QRectF(0, widgetHeigth - value, widgetWidth, value);
+        sourceRect = QRectF(0, widgetHeight - value, widgetWidth, value);
     }
     break;
     }
@@ -283,28 +283,28 @@ void AnimationStackedWidget::paintNextWidget(QPainter &paint, int nextIndex)
     //窗口宽度
     const int widgetWidth = widgetRect.width();
     //窗口高度
-    const int widgetHeigth = widgetRect.height();
+    const int widgetHeight = widgetRect.height();
     QRectF targetRect;
     QRectF sourceRect;
     switch (m_moveOri) {
     case LeftToRight: {
-        targetRect = QRectF(0.0, 0.0, widgetWidth - value, widgetHeigth);
-        sourceRect = QRectF(value, 0.0, widgetWidth - value, widgetHeigth);
+        targetRect = QRectF(0.0, 0.0, widgetWidth - value, widgetHeight);
+        sourceRect = QRectF(value, 0.0, widgetWidth - value, widgetHeight);
     }
     break;
     case RightToLeft: {
-        targetRect = QRectF(value, 0.0, widgetWidth - value, widgetHeigth);
-        sourceRect = QRectF(0.0, 0.0, widgetWidth - value, widgetHeigth);
+        targetRect = QRectF(value, 0.0, widgetWidth - value, widgetHeight);
+        sourceRect = QRectF(0.0, 0.0, widgetWidth - value, widgetHeight);
     }
     break;
     case TopToBottom: {
-        targetRect = QRectF(0.0, 0.0, widgetWidth, widgetHeigth - value);
-        sourceRect = QRectF(0.0, value,  widgetWidth, widgetHeigth - value);
+        targetRect = QRectF(0.0, 0.0, widgetWidth, widgetHeight - value);
+        sourceRect = QRectF(0.0, value, widgetWidth, widgetHeight - value);
     }
     break;
     case BottomToTop: {
-        targetRect = QRectF(0.0, value,  widgetWidth, widgetHeigth - value);
-        sourceRect = QRectF(0.0, 0.0, widgetWidth, widgetHeigth - value);
+        targetRect = QRectF(0.0, value, widgetWidth, widgetHeight - value);
+        sourceRect = QRectF(0.0, 0.0, widgetWidth, widgetHeight - value);
     }
     break;
     }

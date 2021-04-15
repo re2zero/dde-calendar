@@ -22,7 +22,7 @@
 
 test_scheduleremindwidget::test_scheduleremindwidget()
 {
-    mScheduleRemindWidget = new SchecduleRemindWidget();
+    mScheduleRemindWidget = new ScheduleRemindWidget();
     mCenterWidget = new CenterWidget();
 }
 

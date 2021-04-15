@@ -1,9 +1,9 @@
 /*
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     uniontech  <uniontech@uniontech.com>
+* Author:     chenhaifeng  <chenhaifeng@uniontech.com>
 *
-* Maintainer: uniontech  <chenhaifeng@uniontech.com>
+* Maintainer: chenhaifeng  <chenhaifeng@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SchecduleRemindWidget_H
-#define SchecduleRemindWidget_H
+#ifndef ScheduleRemindWidget_H
+#define ScheduleRemindWidget_H
 
 #include "src/scheduledatainfo.h"
 #include "scheduledatamanage.h"
@@ -31,13 +31,13 @@
 DWIDGET_USE_NAMESPACE
 
 class CenterWidget;
-class SchecduleRemindWidget : public DArrowRectangle
+class ScheduleRemindWidget : public DArrowRectangle
 {
     Q_OBJECT
-    Q_DISABLE_COPY(SchecduleRemindWidget)
+    Q_DISABLE_COPY(ScheduleRemindWidget)
 public:
-    explicit SchecduleRemindWidget(QWidget *parent = nullptr);
-    ~SchecduleRemindWidget() override;
+    explicit ScheduleRemindWidget(QWidget *parent = nullptr);
+    ~ScheduleRemindWidget() override;
     void setData(const ScheduleDataInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
     //设置箭头方向
     void setDirection(ArrowDirection value);
@@ -77,4 +77,4 @@ private:
     QString m_timeFormat;
 };
 
-#endif // SchecduleRemindWidget_H
+#endif // ScheduleRemindWidget_H

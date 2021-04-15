@@ -1,9 +1,9 @@
 /*
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     uniontech  <uniontech@uniontech.com>
+* Author:     chenhaifeng  <chenhaifeng@uniontech.com>
 *
-* Maintainer: uniontech  <chenhaifeng@uniontech.com>
+* Maintainer: chenhaifeng  <chenhaifeng@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "SchecduleRemindWidget.h"
+#include "scheduleRemindWidget.h"
 #include "constants.h"
 
 #include <DGuiApplicationHelper>
@@ -27,7 +27,7 @@
 #include <QtMath>
 
 DGUI_USE_NAMESPACE
-SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
+ScheduleRemindWidget::ScheduleRemindWidget(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWindow, parent)
     , m_centerWidget(new CenterWidget(this))
 {
@@ -48,12 +48,12 @@ SchecduleRemindWidget::SchecduleRemindWidget(QWidget *parent)
     m_centerWidget->setTheMe(DGuiApplicationHelper::instance()->themeType());
 }
 
-SchecduleRemindWidget::~SchecduleRemindWidget()
+ScheduleRemindWidget::~ScheduleRemindWidget()
 {
 
 }
 
-void SchecduleRemindWidget::setData(const ScheduleDataInfo &vScheduleInfo, const CSchedulesColor &gcolor)
+void ScheduleRemindWidget::setData(const ScheduleDataInfo &vScheduleInfo, const CSchedulesColor &gcolor)
 {
     m_centerWidget->setData(vScheduleInfo, gcolor);
     m_ScheduleInfo = vScheduleInfo;
@@ -62,10 +62,10 @@ void SchecduleRemindWidget::setData(const ScheduleDataInfo &vScheduleInfo, const
 }
 
 /**
- * @brief SchecduleRemindWidget::setDirection       设置箭头方向
+ * @brief ScheduleRemindWidget::setDirection       设置箭头方向
  * @param value
  */
-void SchecduleRemindWidget::setDirection(DArrowRectangle::ArrowDirection value)
+void ScheduleRemindWidget::setDirection(DArrowRectangle::ArrowDirection value)
 {
     //设置箭头方向
     this->setArrowDirection(value);
@@ -74,10 +74,10 @@ void SchecduleRemindWidget::setDirection(DArrowRectangle::ArrowDirection value)
 }
 
 /**
- * @brief SchecduleRemindWidget::setTimeFormat 设置日期显示格式
+ * @brief ScheduleRemindWidget::setTimeFormat 设置日期显示格式
  * @param timeformat 日期格式
  */
-void SchecduleRemindWidget::setTimeFormat(QString timeformat)
+void ScheduleRemindWidget::setTimeFormat(QString timeformat)
 {
     m_centerWidget->setTimeFormat(timeformat);
 }

@@ -74,7 +74,7 @@ public:
     //获取日程类型
     int getType() const;
     //设置日程类型
-    void setType(int scheudleType);
+    void setType(int scheduleType);
     //获取日程重复id类型
     int getRecurID() const;
     //设置日程重复id类型
@@ -98,7 +98,7 @@ public:
     //日程数据转换为json形式的字符串
     static QString ScheduleToJsonStr(const ScheduleDataInfo &scheduleJsonData);
     //Json对象转换到日程数据
-    static ScheduleDataInfo JsonToSchedule(const QJsonObject &scheudleJsonObject);
+    static ScheduleDataInfo JsonToSchedule(const QJsonObject &scheduleJsonObject);
     //将json转换为日程
     static ScheduleDataInfo JsonStrToSchedule(const QString &jsonStr);
     //string类型的datetime数据转换为QDateTime
@@ -114,9 +114,9 @@ public:
     bool operator <(const ScheduleDataInfo &info) const;
 private:
     //获取日程提醒规则
-    QString getScheudleRemind() const;
+    QString getScheduleRemind() const;
     //设置日程提醒规则
-    void setScheudleRemind(const QString &scheudleRemind);
+    void setScheduleRemind(const QString &scheduleRemind);
     //获取日程重复规则
     QString getScheduleRRule() const;
     //设置日程重复规则
@@ -143,13 +143,13 @@ private:
      */
     QVector<QDateTime>      m_IgnoreVectorTime;
     /**
-     * @brief m_ScheudleTitleName   日程标题
+     * @brief m_ScheduleTitleName   日程标题
      */
-    QString     m_ScheudleTitleName;
+    QString m_ScheduleTitleName;
     /**
-     * @brief m_ScheudleDescription 日程描述
+     * @brief m_ScheduleDescription 日程描述
      */
-    QString     m_ScheudleDescription;
+    QString m_ScheduleDescription;
     /**
      *@brief m_ScheduleIsAllDay     是否为全天日程
      * true  表示全天
@@ -157,19 +157,19 @@ private:
      */
     bool        m_ScheduleIsAllDay;  //1全天
     /**
-     * @brief m_ScheudleType    日程类型
+     * @brief m_ScheduleType    日程类型
      * 1 工作
      * 2 生活
      * 3 其他
      * 4 节日信息
      */
-    int         m_ScheudleType;    //1工作 2 生活 3其他
+    int m_ScheduleType; //1工作 2 生活 3其他
     /**
-     * @brief m_ScheudleRecurID     日程重复id类型
+     * @brief m_ScheduleRecurID     日程重复id类型
      * 0 原始数据
      * >0   克隆数据
      */
-    int         m_ScheudleRecurID;
+    int m_ScheduleRecurID;
     /**
      * @brief m_ScheduleRemind      提醒规则
      */

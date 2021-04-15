@@ -590,7 +590,7 @@
 <context>
     <name>CenterWidget</name>
     <message>
-        <location filename="../calendar-client/src/customWidget/SchecduleRemindWidget.cpp" line="191"/>
+        <location filename="../calendar-client/src/customWidget/scheduleRemindWidget.cpp" line="191"/>
         <source>All Day</source>
         <translation type="unfinished"></translation>
     </message>

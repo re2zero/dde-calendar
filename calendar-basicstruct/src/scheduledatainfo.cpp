@@ -30,11 +30,11 @@ ScheduleDataInfo::ScheduleDataInfo()
     , m_ScheduleBeginDateTime()
     , m_ScheduleEndDateTime()
     , m_IgnoreVectorTime()
-    , m_ScheudleTitleName("")
-    , m_ScheudleDescription("")
+    , m_ScheduleTitleName("")
+    , m_ScheduleDescription("")
     , m_ScheduleIsAllDay(true)
-    , m_ScheudleType(1)
-    , m_ScheudleRecurID(0)
+    , m_ScheduleType(1)
+    , m_ScheduleRecurID(0)
     , m_ScheduleRRule()
 {
 
@@ -128,39 +128,39 @@ void ScheduleDataInfo::setIgnoreTime(const QVector<QDateTime> &ignoreVectorTime)
 }
 
 /**
- * @brief ScheudleTitleName         获取日程标题
+ * @brief ScheduleTitleName         获取日程标题
  * @return                          日程标题
  */
 QString ScheduleDataInfo::getTitleName() const
 {
-    return m_ScheudleTitleName;
+    return m_ScheduleTitleName;
 }
 
 /**
- * @brief setScheudleTitleName      设置日程标题
- * @param ScheudleTitleName         日程标题
+ * @brief setScheduleTitleName      设置日程标题
+ * @param ScheduleTitleName         日程标题
  */
 void ScheduleDataInfo::setTitleName(const QString &titleName)
 {
-    m_ScheudleTitleName = titleName;
+    m_ScheduleTitleName = titleName;
 }
 
 /**
- * @brief ScheudleDescription       获取日程描述信息
+ * @brief ScheduleDescription       获取日程描述信息
  * @return                          日程描述信息
  */
 QString ScheduleDataInfo::getDescription() const
 {
-    return m_ScheudleDescription;
+    return m_ScheduleDescription;
 }
 
 /**
- * @brief setScheudleDescription    设置日程描述信息
- * @param ScheudleDescription       日程描述信息
+ * @brief setScheduleDescription    设置日程描述信息
+ * @param ScheduleDescription       日程描述信息
  */
 void ScheduleDataInfo::setDescription(const QString &description)
 {
-    m_ScheudleDescription = description;
+    m_ScheduleDescription = description;
 }
 
 /**
@@ -182,39 +182,39 @@ void ScheduleDataInfo::setAllDay(const bool isAllDay)
 }
 
 /**
- * @brief ScheudleType  获取日程类型
+ * @brief ScheduleType  获取日程类型
  * @return      日程类型
  */
 int ScheduleDataInfo::getType() const
 {
-    return m_ScheudleType;
+    return m_ScheduleType;
 }
 
 /**
- * @brief setScheudleType   设置日程类型
- * @param ScheudleType      日程类型
+ * @brief setScheduleType   设置日程类型
+ * @param ScheduleType      日程类型
  */
-void ScheduleDataInfo::setType(int scheudleType)
+void ScheduleDataInfo::setType(int scheduleType)
 {
-    m_ScheudleType = scheudleType;
+    m_ScheduleType = scheduleType;
 }
 
 /**
- * @brief ScheudleRecurID   获取日程重复id类型
+ * @brief ScheduleRecurID   获取日程重复id类型
  * @return                  重复id类型
  */
 int ScheduleDataInfo::getRecurID() const
 {
-    return m_ScheudleRecurID;
+    return m_ScheduleRecurID;
 }
 
 /**
  * @brief setRecurID            设置日程重复id类型
- * @param ScheudleRecurID       重复id类型
+ * @param ScheduleRecurID       重复id类型
  */
 void ScheduleDataInfo::setRecurID(int recurID)
 {
-    m_ScheudleRecurID = recurID;
+    m_ScheduleRecurID = recurID;
 }
 
 /**
@@ -236,21 +236,21 @@ RemindData ScheduleDataInfo::getRemindData() const
 }
 
 /**
- * @brief ScheudleRemind    设置日程提醒规则
+ * @brief ScheduleRemind    设置日程提醒规则
  * @return                  提醒规则
  */
-QString ScheduleDataInfo::getScheudleRemind() const
+QString ScheduleDataInfo::getScheduleRemind() const
 {
     return RemindData::RemindDataToRemindString(m_ScheduleRemind, this->getAllDay());
 }
 
 /**
- * @brief setScheudleRemind     设置日程提醒规则
- * @param ScheudleRemind        提醒规则
+ * @brief setScheduleRemind     设置日程提醒规则
+ * @param ScheduleRemind        提醒规则
  */
-void ScheduleDataInfo::setScheudleRemind(const QString &scheudleRemind)
+void ScheduleDataInfo::setScheduleRemind(const QString &scheduleRemind)
 {
-    m_ScheduleRemind = RemindData::RemindStringToRemindData(scheudleRemind);
+    m_ScheduleRemind = RemindData::RemindStringToRemindData(scheduleRemind);
 }
 
 /**
@@ -349,7 +349,7 @@ QString ScheduleDataInfo::ScheduleToJsonStr(const ScheduleDataInfo &scheduleJson
     QJsonObject _scheduleJsonObject;
     _scheduleJsonObject.insert("ID", scheduleJsonData.getID());
     _scheduleJsonObject.insert("AllDay", scheduleJsonData.getAllDay());
-    _scheduleJsonObject.insert("Remind", scheduleJsonData.getScheudleRemind());
+    _scheduleJsonObject.insert("Remind", scheduleJsonData.getScheduleRemind());
     _scheduleJsonObject.insert("RRule", scheduleJsonData.getScheduleRRule());
     _scheduleJsonObject.insert("Title", scheduleJsonData.getTitleName());
     _scheduleJsonObject.insert("Description", scheduleJsonData.getDescription());
@@ -357,11 +357,11 @@ QString ScheduleDataInfo::ScheduleToJsonStr(const ScheduleDataInfo &scheduleJson
     _scheduleJsonObject.insert("Start", DateTimeToStringDate(scheduleJsonData.getBeginDateTime()));
     _scheduleJsonObject.insert("End", DateTimeToStringDate(scheduleJsonData.getEndDateTime()));
     _scheduleJsonObject.insert("RecurID", scheduleJsonData.getRecurID());
-    QJsonArray _ignorreJsonArrory;
+    QJsonArray _ignoreJsonArray;
     for (int i = 0; i < scheduleJsonData.getIgnoreTime().count(); i++) {
-        _ignorreJsonArrory.append(DateTimeToStringDate(scheduleJsonData.getIgnoreTime().at(i)));
+        _ignoreJsonArray.append(DateTimeToStringDate(scheduleJsonData.getIgnoreTime().at(i)));
     }
-    _scheduleJsonObject.insert("Ignore", _ignorreJsonArrory);
+    _scheduleJsonObject.insert("Ignore", _ignoreJsonArray);
     // 构建 JSON 文档
     QJsonDocument _scheduleJsonDocument;
     _scheduleJsonDocument.setObject(_scheduleJsonObject);
@@ -372,56 +372,56 @@ QString ScheduleDataInfo::ScheduleToJsonStr(const ScheduleDataInfo &scheduleJson
 
 /**
  * @brief JsonToSchedule            Json对象转换到日程数据
- * @param scheudleJsonObject        json对象
+ * @param ScheduleJsonObject        json对象
  * @return      日程数据
  */
-ScheduleDataInfo ScheduleDataInfo::JsonToSchedule(const QJsonObject &scheudleJsonObject)
+ScheduleDataInfo ScheduleDataInfo::JsonToSchedule(const QJsonObject &scheduleJsonObject)
 {
     ScheduleDataInfo _resultSchedule;
     //因为是预先定义好的JSON数据格式，所以这里可以这样读取
     //日程id
-    if (scheudleJsonObject.contains("ID")) {
-        _resultSchedule.setID(scheudleJsonObject.value("ID").toInt());
+    if (scheduleJsonObject.contains("ID")) {
+        _resultSchedule.setID(scheduleJsonObject.value("ID").toInt());
     }
     //日程是否为全天
-    if (scheudleJsonObject.contains("AllDay")) {
-        _resultSchedule.setAllDay(scheudleJsonObject.value("AllDay").toBool());
+    if (scheduleJsonObject.contains("AllDay")) {
+        _resultSchedule.setAllDay(scheduleJsonObject.value("AllDay").toBool());
     }
     //日程提醒规则
-    if (scheudleJsonObject.contains("Remind")) {
-        _resultSchedule.setScheudleRemind(scheudleJsonObject.value("Remind").toString());
+    if (scheduleJsonObject.contains("Remind")) {
+        _resultSchedule.setScheduleRemind(scheduleJsonObject.value("Remind").toString());
     }
     //日程标题
-    if (scheudleJsonObject.contains("Title")) {
-        _resultSchedule.setTitleName(scheudleJsonObject.value("Title").toString());
+    if (scheduleJsonObject.contains("Title")) {
+        _resultSchedule.setTitleName(scheduleJsonObject.value("Title").toString());
     }
     //日程描述
-    if (scheudleJsonObject.contains("Description")) {
-        _resultSchedule.setDescription(scheudleJsonObject.value("Description").toString());
+    if (scheduleJsonObject.contains("Description")) {
+        _resultSchedule.setDescription(scheduleJsonObject.value("Description").toString());
     }
     //日程类型
-    if (scheudleJsonObject.contains("Type")) {
-        _resultSchedule.setType(scheudleJsonObject.value("Type").toInt());
+    if (scheduleJsonObject.contains("Type")) {
+        _resultSchedule.setType(scheduleJsonObject.value("Type").toInt());
     }
     //日程开始时间
-    if (scheudleJsonObject.contains("Start")) {
-        _resultSchedule.setBeginDateTime(StringDateToDateTime(scheudleJsonObject.value("Start").toString()));
+    if (scheduleJsonObject.contains("Start")) {
+        _resultSchedule.setBeginDateTime(StringDateToDateTime(scheduleJsonObject.value("Start").toString()));
     }
     //日程结束时间
-    if (scheudleJsonObject.contains("End")) {
-        _resultSchedule.setEndDateTime(StringDateToDateTime(scheudleJsonObject.value("End").toString()));
+    if (scheduleJsonObject.contains("End")) {
+        _resultSchedule.setEndDateTime(StringDateToDateTime(scheduleJsonObject.value("End").toString()));
     }
     //日程重复ID
-    if (scheudleJsonObject.contains("RecurID")) {
-        _resultSchedule.setRecurID(scheudleJsonObject.value("RecurID").toInt());
+    if (scheduleJsonObject.contains("RecurID")) {
+        _resultSchedule.setRecurID(scheduleJsonObject.value("RecurID").toInt());
     }
     //日程重复规则
-    if (scheudleJsonObject.contains("RRule")) {
-        _resultSchedule.setScheduleRRule(scheudleJsonObject.value("RRule").toString());
+    if (scheduleJsonObject.contains("RRule")) {
+        _resultSchedule.setScheduleRRule(scheduleJsonObject.value("RRule").toString());
     }
     //重复日程忽略日期集
-    if (scheudleJsonObject.contains("Ignore")) {
-        QJsonArray subArray = scheudleJsonObject.value("Ignore").toArray();
+    if (scheduleJsonObject.contains("Ignore")) {
+        QJsonArray subArray = scheduleJsonObject.value("Ignore").toArray();
         QVector<QDateTime> _ignoreDateVector;
         for (int i = 0; i < subArray.size(); i++) {
             QString subObj = subArray.at(i).toString();
@@ -478,24 +478,24 @@ QString ScheduleDataInfo::DateTimeToStringDate(const QDateTime &dateTime)
 QMap<QDate, QVector<ScheduleDataInfo> > ScheduleDataInfo::JsonArrayDataToScheduleMapData(const QJsonArray &jsonArrData)
 {
     QMap<QDate, QVector<ScheduleDataInfo> > _resultMap;
-    QJsonObject _jsonObjScheudleVector;
-    QVector<ScheduleDataInfo> _scheuduleVector;
+    QJsonObject _jsonObjScheduleVector;
+    QVector<ScheduleDataInfo> _scheduleVector;
     QDate _date;
     for (int i = 0; i < jsonArrData.size(); i++) {
-        _jsonObjScheudleVector = jsonArrData.at(i).toObject();
-        _scheuduleVector.clear();
+        _jsonObjScheduleVector = jsonArrData.at(i).toObject();
+        _scheduleVector.clear();
         //因为是预先定义好的JSON数据格式，所以这里可以这样读取
-        if (_jsonObjScheudleVector.contains("Date")) {
-            _date = QDate::fromString(_jsonObjScheudleVector.value("Date").toString(), "yyyy-MM-dd");
+        if (_jsonObjScheduleVector.contains("Date")) {
+            _date = QDate::fromString(_jsonObjScheduleVector.value("Date").toString(), "yyyy-MM-dd");
         }
-        if (_jsonObjScheudleVector.contains("Jobs")) {
-            QJsonArray subarry = _jsonObjScheudleVector.value("Jobs").toArray();
-            for (int j = 0; j < subarry.size(); j++) {
-                QJsonObject _jsonObjectScheudle = subarry.at(j).toObject();
-                _scheuduleVector.append(JsonToSchedule(_jsonObjectScheudle));
+        if (_jsonObjScheduleVector.contains("Jobs")) {
+            QJsonArray subArray = _jsonObjScheduleVector.value("Jobs").toArray();
+            for (int j = 0; j < subArray.size(); j++) {
+                QJsonObject _jsonObjectSchedule = subArray.at(j).toObject();
+                _scheduleVector.append(JsonToSchedule(_jsonObjectSchedule));
             }
         }
-        _resultMap[_date] = _scheuduleVector;
+        _resultMap[_date] = _scheduleVector;
     }
     return _resultMap;
 }
@@ -583,7 +583,7 @@ QDebug operator<<(QDebug debug, const ScheduleDataInfo &scheduleJsonData)
           << QString("Description:") << scheduleJsonData.getDescription() << QString(",")
           << QString("Type:") << scheduleJsonData.getType() << QString(",")
           << QString("RRule:") << scheduleJsonData.getScheduleRRule() << QString(",")
-          << QString("Remind:") << scheduleJsonData.getScheudleRemind() << QString(",")
+          << QString("Remind:") << scheduleJsonData.getScheduleRemind() << QString(",")
           << QString("RecurID:") << scheduleJsonData.getRecurID()
           << ")";
     return debug;

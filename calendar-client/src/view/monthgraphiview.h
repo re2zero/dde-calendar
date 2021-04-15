@@ -41,12 +41,12 @@ DWIDGET_USE_NAMESPACE
 
 class CMonthScheduleView;
 
-class CMonthGraphiview : public DragInfoGraphicsView
+class CMonthGraphicsview : public DragInfoGraphicsView
 {
     Q_OBJECT
 public:
-    explicit CMonthGraphiview(QWidget *parent = nullptr);
-    ~CMonthGraphiview() override;
+    explicit CMonthGraphicsview(QWidget *parent = nullptr);
+    ~CMonthGraphicsview() override;
     void setTheMe(int type = 0) override;
 public:
     void setDate(const QVector<QDate> &showDate);

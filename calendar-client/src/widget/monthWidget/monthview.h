@@ -21,7 +21,7 @@
 #define MONTHVIEW_H
 
 #include "monthweekview.h"
-#include "SchecduleRemindWidget.h"
+#include "scheduleRemindWidget.h"
 #include "monthgraphiview.h"
 #include "src/scheduledatainfo.h"
 
@@ -120,7 +120,7 @@ protected:
 private:
     ScheduleDataInfo getScheduleInfo(const QDate &beginDate, const QDate &endDate);
 private:
-    CMonthGraphiview                *m_monthGraphicsView = nullptr;
+    CMonthGraphicsview *m_monthGraphicsView = nullptr;
     QVector<QDate>                  m_showDate;
     QDate                           m_currentDate;
     QDate                           m_createDate;
@@ -131,7 +131,7 @@ private:
     int                             m_leftmaagin = 0;
     int                             m_topmagin = 0;
     bool                            m_sflag = true;
-    SchecduleRemindWidget           *m_remindWidget = nullptr;
+    ScheduleRemindWidget *m_remindWidget = nullptr;
 
     QPoint                  m_PressPoint;
     bool                    isCreate;

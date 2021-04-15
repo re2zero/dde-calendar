@@ -23,7 +23,7 @@
 
 #include <QObject>
 #include <gtest/gtest.h>
-#include "customWidget/SchecduleRemindWidget.h"
+#include "customWidget/scheduleRemindWidget.h"
 
 class test_scheduleremindwidget : public::QObject, public::testing::Test
 {
@@ -31,7 +31,7 @@ public:
     test_scheduleremindwidget();
     ~test_scheduleremindwidget();
 protected:
-    SchecduleRemindWidget *mScheduleRemindWidget = nullptr;
+    ScheduleRemindWidget *mScheduleRemindWidget = nullptr;
     CenterWidget *mCenterWidget = nullptr;
 };
 

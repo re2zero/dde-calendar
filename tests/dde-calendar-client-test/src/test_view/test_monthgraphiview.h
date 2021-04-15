@@ -31,7 +31,7 @@ public:
     test_monthgraphiview();
     ~test_monthgraphiview();
 protected:
-    CMonthGraphiview *cMonthGraphiview = nullptr;
+    CMonthGraphicsview *cMonthGraphiview = nullptr;
 };
 
 #endif // TEST_MONTHGRAPHVIEW_H

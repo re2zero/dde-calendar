@@ -22,7 +22,7 @@
 
 test_monthgraphiview::test_monthgraphiview()
 {
-    cMonthGraphiview = new CMonthGraphiview();
+    cMonthGraphiview = new CMonthGraphicsview();
 }
 
 test_monthgraphiview::~test_monthgraphiview()

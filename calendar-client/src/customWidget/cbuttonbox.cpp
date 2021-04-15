@@ -30,7 +30,7 @@ CButtonBox::CButtonBox(QWidget *parent)
 void CButtonBox::focusInEvent(QFocusEvent *event)
 {
     DButtonBox::focusInEvent(event);
-    //窗口激活时，不设置buttn焦点显示
+    //窗口激活时，不设置Button焦点显示
     if (event->reason() != Qt::ActiveWindowFocusReason) {
         //设置当前选中想为焦点
         this->button(checkedId())->setFocus();

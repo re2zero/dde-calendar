@@ -77,15 +77,15 @@ QTime RemindData::getRemindTime() const
  */
 RemindData RemindData::RemindStringToRemindData(const QString &remindStr)
 {
-    RemindData _restuleRemindData;
+    RemindData _resultRemindData;
     if (!remindStr.isEmpty()) {
         QStringList liststr = remindStr.split(";", QString::SkipEmptyParts);
-        _restuleRemindData.setRemindNum(liststr.at(0).toInt());
+        _resultRemindData.setRemindNum(liststr.at(0).toInt());
         if (liststr.size() > 1) {
-            _restuleRemindData.setRemindTime(QTime::fromString(liststr.at(1), "hh:mm"));
+            _resultRemindData.setRemindTime(QTime::fromString(liststr.at(1), "hh:mm"));
         }
     }
-    return _restuleRemindData;
+    return _resultRemindData;
 }
 
 /**
@@ -96,12 +96,12 @@ RemindData RemindData::RemindStringToRemindData(const QString &remindStr)
  */
 QString RemindData::RemindDataToRemindString(const RemindData &remindData, const bool isAllDay)
 {
-    QString _restuleStr{""};
+    QString _resultStr {""};
     if (remindData.getRemindNum() != -1) {
-        _restuleStr += QString::number(remindData.getRemindNum());
+        _resultStr += QString::number(remindData.getRemindNum());
         if (isAllDay) {
-            _restuleStr += QString(";%1").arg(remindData.getRemindTime().toString("hh:mm"));
+            _resultStr += QString(";%1").arg(remindData.getRemindTime().toString("hh:mm"));
         }
     }
-    return _restuleStr;
+    return _resultStr;
 }

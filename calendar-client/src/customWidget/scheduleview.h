@@ -19,7 +19,7 @@
 #ifndef SCHEDULEVIEW_H
 #define SCHEDULEVIEW_H
 #include "src/scheduledatainfo.h"
-#include "SchecduleRemindWidget.h"
+#include "scheduleRemindWidget.h"
 #include "../widget/touchgestureoperation.h"
 #include "graphicsview.h"
 
@@ -108,7 +108,7 @@ private:
     QColor m_currenttimecolor = "#F74444";
     int m_cuttrnttimetype = 0;
     QVBoxLayout *m_layout = nullptr;
-    SchecduleRemindWidget *m_ScheduleRemindWidget = nullptr;
+    ScheduleRemindWidget *m_ScheduleRemindWidget = nullptr;
     int m_minTime; //最小高度对应的最小时间
     QFont font;
     const int m_radius = 8;

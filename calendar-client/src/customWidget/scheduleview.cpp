@@ -418,7 +418,7 @@ void CScheduleView::initUI()
     setLayout(m_layout);
     m_graphicsView->scrollBarValueChangedSlot();
 
-    m_ScheduleRemindWidget = new SchecduleRemindWidget(this);
+    m_ScheduleRemindWidget = new ScheduleRemindWidget(this);
     // move focus to m_graphicsView
     setFocusProxy(m_graphicsView);
 }

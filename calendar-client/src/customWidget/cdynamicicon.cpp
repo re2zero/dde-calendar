@@ -138,11 +138,11 @@ void CDynamicIcon::paintPixmap(QPixmap *pixmap)
 
     //draw background
     qreal backgroundwidget = pixmap->size().width() * BackgroundRatio;
-    qreal backgroundheigth = pixmap->size().height() * BackgroundRatio;
+    qreal backgroundHeight = pixmap->size().height() * BackgroundRatio;
     QRectF backgroundRect = QRectF((pixmap->size().width() - backgroundwidget) / 2,
-                                   (pixmap->size().height() - backgroundheigth) / 2,
+                                   (pixmap->size().height() - backgroundHeight) / 2,
                                    backgroundwidget,
-                                   backgroundheigth);
+                                   backgroundHeight);
     m_backgroundrenderer->render(&painter, backgroundRect);
 
     //draw month
