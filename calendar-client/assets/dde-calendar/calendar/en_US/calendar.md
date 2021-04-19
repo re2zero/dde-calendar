@@ -10,7 +10,7 @@ Calendar is a useful tool to manage your personal life. By relating events with 
 
 ## Guide
 
-You can run, close or create a shortcut for calendar by the following ways.
+You can run, close or create a shortcut for Calendar by the following ways.
 
 ### Run Calender
 
@@ -39,7 +39,7 @@ On the Calendar interface, press **Ctrl + Shift + ?** on the keyboard to view sh
 
 ## Operations
 
-Calendar can be divided into yearly view, monthly view, weekly view and daily view, displaying date attributes by different views.
+Calendar can be divided into yearly view, monthly view, weekly view and daily view.
 
 Monthly view is defaulted and you can click to switch between different views.
 
@@ -50,15 +50,15 @@ Monthly view is defaulted and you can click to switch between different views.
 | View         | Feature                                        |
 | ------------ | ---------------------------------------------- |
 | Yearly View  | Display the months and days of the whole year. |
-| Monthly View | Display the holiday information and schedule.  |
-| Weekly View  | Display the schedule of this week.             |
+| Monthly View | Display the days and schedule of the month.    |
+| Weekly View  | Display the days and schedule of the week.     |
 | Daily View   | Display the detailed schedule arrangements.    |
 
 ### Create Events
 
 1. Select a date in the monthly, weekly or daily view.
 
-2. Double-click, or right-click to select **New Event** in the blank area on a date and a **New event** window will pop up.
+2. Double-click, or right-click to select **New event** in the blank area on a date and a **New Event** window will pop up.
 
 3.  Set the schedule type, description, time, reminder, etc.
 
@@ -72,7 +72,7 @@ Monthly view is defaulted and you can click to switch between different views.
    
       - When all day is checked:
          - You can only select dates as starts and ends and cannot set hours and minutes. 
-         - Remind me: Never, On start day (9:00 AM), 1 day before (the default setting), 2 days before and 1 week before
+         - Remind Me: Never, On start day (9:00 AM), 1 day before (the default setting), 2 days before and 1 week before
       
       - When all day is not checked:
          - You can select dates, hours and minutes as starts and ends.
@@ -86,11 +86,11 @@ Monthly view is defaulted and you can click to switch between different views.
 
 4.  Click **Save** to create the event.
 
-> ![notes](../common/notes.svg)Notes: you can drag the event label to a specified time or date.
+> ![notes](../common/notes.svg)Notes: You can drag the event label to a specified time or date.
 
 ### Edit Events
 
-1. Right-click a date with schedule in the monthly, weekly or daily view.
+1. Double-click or right-click a date with schedule in the monthly, weekly or daily view.
 2.  Select **Edit** and the **Edit Event** dialogue will pop up.
 3.  Set properties for the event under editing.  
 4.  Click **Save**. 
@@ -122,6 +122,7 @@ Set the **Starts** and **Ends** and you are able to set an all-day or consecutiv
 2.  Press the **Enter** key on the keyboard for searching.
    
 3.  Click ![0|close](../common/close_icon.svg) or delete the entered information in the search box to clear the current keywords or cancel the search. 
+
 ### View Events
 
 Double-click an event title in the monthly, weekly or daily view and the **My Event** window will pop up. You can view events, [Edit Events](#Edit Events) or [Delete Events](#Delete Events). 
@@ -142,7 +143,7 @@ Description of icons contained in the prompt information is listed as below.
 
 ### Delete Events
 
-1.  Right-click a date with event in the monthly, weekly or daily view.
+1.   Double-click or right-click a date with event in the monthly, weekly or daily view.
 2.  Click **Delete** and a **You are deleting an event** prompt box will pop up.
 3.  Confirm the prompt information and delete the event.
 
