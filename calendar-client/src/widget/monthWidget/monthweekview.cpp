@@ -54,12 +54,12 @@ void CMonthWeekView::setFirstDay(const Qt::DayOfWeek weekday)
 void CMonthWeekView::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
-        m_backgroudColor = "#75C18E";
-        m_backgroudColor.setAlphaF(0.1);
+        m_backgroundColor = "#75C18E";
+        m_backgroundColor.setAlphaF(0.1);
 
     } else if (type == 2) {
-        m_backgroudColor = "#82AEC1";
-        m_backgroudColor.setAlphaF(0.10);
+        m_backgroundColor = "#82AEC1";
+        m_backgroundColor.setAlphaF(0.10);
     }
     for (int i = 0 ; i < m_weekRect.size(); ++i) {
         m_weekRect.at(i)->setTheMe(type);
@@ -118,7 +118,7 @@ void CMonthWeekView::paintEvent(QPaintEvent *event)
     painterPath.arcTo(QRect(this->width() - m_radius, 0, m_radius, m_radius), 0, 90);
     painterPath.lineTo(m_radius, 0);
     painterPath.arcTo(QRect(0, 0, m_radius, m_radius), 90, 90);
-    painter.setBrush(m_backgroudColor);
+    painter.setBrush(m_backgroundColor);
     painter.setPen(Qt::NoPen);
     painter.drawPath(painterPath);
     for (int i = 0 ; i < m_weekRect.size(); ++i) {

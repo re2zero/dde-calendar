@@ -37,7 +37,7 @@ class CScheduleView : public DFrame
 public:
     CScheduleView(QWidget *parent = nullptr, ScheduleViewPos viewType = ScheduleViewPos::WeekPos);
     ~CScheduleView() override;
-    void setviewMagin(int left, int top, int right, int bttom);
+    void setviewMargin(int left, int top, int right, int bottom);
     void setRange(int w, int h, QDate begin, QDate end);
     void setRange(QDate begin, QDate end);
     void setTheMe(int type = 0);
@@ -61,7 +61,7 @@ signals:
     void signalSwitchPrePage();
     void signalSwitchNextPage();
 public slots:
-    void slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
+    void slotPosHours(QVector<int> vPos, QVector<int> vHours, int currentTimeType = 0);
     void setDate(QDate date);
     void slotupdateSchedule();
     //快捷键删除日程
@@ -83,7 +83,7 @@ private:
     void initConnection();
     void updateSchedule();
     void updateAllday();
-    int scheduleViewHegith();
+    int scheduleViewHeight();
 
 private:
     CGraphicsView *m_graphicsView = nullptr;
@@ -91,9 +91,9 @@ private:
     QVector<int> m_vHours;
     CAllDayEventWeekView *m_alldaylist = nullptr;
     QMap<QDate, QVector<ScheduleDataInfo> >     m_showSchedule{};
-    int m_leftMagin;
-    int m_topMagin;
-    int m_rightmagin = 0;
+    int m_leftMargin;
+    int m_topMargin;
+    int m_rightMargin = 0;
     qint64 m_TotalDay;
     QDate m_currteDate;
     QDate m_beginDate;
@@ -106,7 +106,7 @@ private:
     QColor m_ALLDayColor = "#303030";
     QColor m_timeColor = "#7D7D7D";
     QColor m_currenttimecolor = "#F74444";
-    int m_cuttrnttimetype = 0;
+    int m_currentTimeType = 0;
     QVBoxLayout *m_layout = nullptr;
     ScheduleRemindWidget *m_ScheduleRemindWidget = nullptr;
     int m_minTime; //最小高度对应的最小时间

@@ -68,9 +68,9 @@ public:
     void setTheMe(int type = 0);
     /**
      * @brief setCurrentDate 设置日程所在当天的日期
-     * @param cdate 日期
+     * @param cDate 日期
      */
-    void setCurrentDate(QDate cdate);
+    void setCurrentDate(QDate cDate);
     /**
      * @brief getCurrentDate 获取日程所在当天的日期
      * @return 日期
@@ -104,7 +104,7 @@ private:
     QVector<ScheduleDataInfo> m_vlistData;
     QDate m_currentDate;
     QColor m_btimecolor = "#526A7F";
-    QColor m_bttextcolor = "#414D68";
+    QColor m_btTextColor = "#414D68";
     QFont m_textfont;
     QString m_timeFormat = "h:mm";
 };
@@ -134,9 +134,9 @@ public:
     void setTheMe(int type = 0);
     /**
      * @brief setCurrentDate 设置日程所在当天的日期
-     * @param cdate 日期
+     * @param cDate 日期
      */
-    void setCurrentDate(QDate cdate);
+    void setCurrentDate(QDate cDate);
     //设置箭头方向
     void setDirection(ArrowDirection value);
     void setTimeFormat(QString format);

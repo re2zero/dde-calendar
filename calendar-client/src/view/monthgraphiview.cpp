@@ -44,7 +44,7 @@ CMonthGraphicsview::CMonthGraphicsview(QWidget *parent)
     m_MonthScheduleView = new CMonthScheduleView(this, m_Scene);
     connect(this, &CMonthGraphicsview::signalFontChange, m_MonthScheduleView, &CMonthScheduleView::slotFontChange);
 
-    for (int i = 0; i < DDEMonthCalendar::ItemSizeofMonthDay; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::ItemSizeOfMonthDay; ++i) {
         CMonthDayItem *item = new CMonthDayItem();
         item->setZValue(-1);
         if (m_DayItem.size() > 0) {
@@ -110,7 +110,7 @@ void CMonthGraphicsview::setDate(const QVector<QDate> &showDate)
         }
     }
     m_Scene->setFirstFocusItem(m_DayItem.at(currentIndex));
-    m_shceludelistdata.clear();
+    m_schedulelistdata.clear();
     this->scene()->update();
 }
 
@@ -135,27 +135,27 @@ void CMonthGraphicsview::setLunarVisible(bool visible)
 }
 
 /**
- * @brief CMonthGraphiview::setScheduleInfo 设置日程信息
+ * @brief CMonthGraphicsview::setScheduleInfo 设置日程信息
  * @param info
  */
 void CMonthGraphicsview::setScheduleInfo(const QMap<QDate, QVector<ScheduleDataInfo>> &info)
 {
-    m_shceludelistdata = info;
+    m_schedulelistdata = info;
     updateInfo();
 }
 
 /**
- * @brief CMonthGraphiview::setSelectSearchSchedule     设置选择搜索日程
+ * @brief CMonthGraphicsview::setSelectSearchSchedule     设置选择搜索日程
  * @param scheduleInfo
  */
 void CMonthGraphicsview::setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo)
 {
     DragInfoGraphicsView::setSelectSearchSchedule(scheduleInfo);
     //获取所有的日程item
-    QVector<QGraphicsRectItem *> mscheduleShowBtn = m_MonthScheduleView->getScheduleShowItem();
+    QVector<QGraphicsRectItem *> mScheduleShowBtn = m_MonthScheduleView->getScheduleShowItem();
 
-    for (int i = 0; i < mscheduleShowBtn.size(); ++i) {
-        CMonthScheduleItem *item = dynamic_cast<CMonthScheduleItem *>(mscheduleShowBtn.at(i));
+    for (int i = 0; i < mScheduleShowBtn.size(); ++i) {
+        CMonthScheduleItem *item = dynamic_cast<CMonthScheduleItem *>(mScheduleShowBtn.at(i));
 
         if (item == nullptr) continue;
 
@@ -168,7 +168,7 @@ void CMonthGraphicsview::setSelectSearchSchedule(const ScheduleDataInfo &schedul
 }
 
 /**
- * @brief CMonthGraphiview::setSearchScheduleInfo       设置搜索日程信息
+ * @brief CMonthGraphicsview::setSearchScheduleInfo       设置搜索日程信息
  * @param searchScheduleInfo
  */
 void CMonthGraphicsview::setSearchScheduleInfo(const QVector<ScheduleDataInfo> &searchScheduleInfo)
@@ -182,15 +182,15 @@ void CMonthGraphicsview::updateSize()
     //场景的大小和位置
     QRectF sceneRect(0, 0, viewport()->rect().width(), viewport()->rect().height());
     m_Scene->setSceneRect(sceneRect);
-    qreal w = m_Scene->width() / DDEMonthCalendar::AFewDaysofWeek;
-    qreal h = m_Scene->height() / DDEMonthCalendar::LinesNumofMonth;
+    qreal w = m_Scene->width() / DDEMonthCalendar::AFewDaysOfWeek;
+    qreal h = m_Scene->height() / DDEMonthCalendar::LinesNumOfMonth;
     QRectF rect ;
     int w_offset = 0;
     int h_offset = 0;
 
     for (int i = 0 ; i < m_DayItem.size(); ++i) {
-        h_offset = i / DDEMonthCalendar::AFewDaysofWeek;
-        w_offset = i % DDEMonthCalendar::AFewDaysofWeek;
+        h_offset = i / DDEMonthCalendar::AFewDaysOfWeek;
+        w_offset = i % DDEMonthCalendar::AFewDaysOfWeek;
         rect.setRect(w * w_offset,
                      h * h_offset,
                      w,
@@ -227,7 +227,7 @@ void CMonthGraphicsview::updateLunar()
 }
 
 /**
- * @brief CMonthGraphiview::updateInfo      更新日程数据显示
+ * @brief CMonthGraphicsview::updateInfo      更新日程数据显示
  */
 void CMonthGraphicsview::updateInfo()
 {
@@ -236,7 +236,7 @@ void CMonthGraphicsview::updateInfo()
     m_MonthScheduleView->setallsize(this->viewport()->width(),
                                     this->viewport()->height(),
                                     0, 0, 0, h);
-    m_MonthScheduleView->setData(m_shceludelistdata, 1);
+    m_MonthScheduleView->setData(m_schedulelistdata, 1);
 
     switch (m_DragStatus) {
     case IsCreate:
@@ -267,12 +267,12 @@ CMonthGraphicsview::PosInItem CMonthGraphicsview::getPosInItem(const QPoint &p, 
     QPointF scenePos = this->mapToScene(p);
     QPointF itemPos = QPointF(scenePos.x() - itemRect.x(),
                               scenePos.y() - itemRect.y());
-    qreal bottomy = itemRect.width() - itemPos.x();
+    qreal bottomY = itemRect.width() - itemPos.x();
 
     if (itemPos.x() < 5) {
         return LEFT;
     }
-    if (bottomy < 5) {
+    if (bottomY < 5) {
         return RIGHT;
     }
     return MIDDLE;
@@ -302,8 +302,8 @@ QDateTime CMonthGraphicsview::getPosDate(const QPoint &p)
         y = p.y();
     }
 
-    int xoffset = qFloor(x / (rect.width() / DDEMonthCalendar::AFewDaysofWeek)) % DDEMonthCalendar::AFewDaysofWeek;
-    int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumofMonth)) % DDEMonthCalendar::LinesNumofMonth;
+    int xoffset = qFloor(x / (rect.width() / DDEMonthCalendar::AFewDaysOfWeek)) % DDEMonthCalendar::AFewDaysOfWeek;
+    int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumOfMonth)) % DDEMonthCalendar::LinesNumOfMonth;
 
     return  QDateTime(m_DayItem[xoffset + yoffset * 7]->getDate(),
                       QTime(0, 0, 0));
@@ -382,7 +382,7 @@ void CMonthGraphicsview::mouseDoubleClickEvent(QMouseEvent *event)
 
     if (infoitem != nullptr) {
         CMyScheduleView dlg(infoitem->getData(), this);
-        connect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CMonthGraphicsview::signalsUpdateShcedule);
+        connect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CMonthGraphicsview::signalsUpdateSchedule);
         connect(&dlg, &CMyScheduleView::signalViewtransparentFrame,
                 this, &CMonthGraphicsview::signalViewtransparentFrame);
         dlg.exec();
@@ -427,7 +427,7 @@ void CMonthGraphicsview::wheelEvent(QWheelEvent *e)
 }
 
 /**
- * @brief CMonthGraphiview::updateBackgroundShowItem    更新背景上显示的item
+ * @brief CMonthGraphicsview::updateBackgroundShowItem    更新背景上显示的item
  */
 void CMonthGraphicsview::updateBackgroundShowItem()
 {
@@ -497,12 +497,12 @@ void CMonthGraphicsview::MoveInfoProcess(ScheduleDataInfo &info, const QPointF &
         y = pos.y();
     }
 
-    int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumofMonth)) % DDEMonthCalendar::LinesNumofMonth;
+    int yoffset = qFloor(y / (rect.height() / DDEMonthCalendar::LinesNumOfMonth)) % DDEMonthCalendar::LinesNumOfMonth;
     m_MonthScheduleView->updateDate(yoffset, info);
 }
 
 /**
- * @brief CMonthGraphiview::getDragScheduleInfoBeginTime        获取移动开始时间
+ * @brief CMonthGraphicsview::getDragScheduleInfoBeginTime        获取移动开始时间
  * @param moveDateTime
  * @return
  */
@@ -518,7 +518,7 @@ QDateTime CMonthGraphicsview::getDragScheduleInfoBeginTime(const QDateTime &move
 }
 
 /**
- * @brief CMonthGraphiview::getDragScheduleInfoEndTime      获取结束时间
+ * @brief CMonthGraphicsview::getDragScheduleInfoEndTime      获取结束时间
  * @param moveDateTime
  * @return
  */
@@ -550,7 +550,7 @@ void CMonthGraphicsview::slotCreate(const QDateTime &date)
     dlg.setAllDay(true);
 
     if (dlg.exec() == DDialog::Accepted) {
-        emit signalsUpdateShcedule();
+        emit signalsUpdateSchedule();
         emit signalsScheduleUpdate(0);
     }
     emit signalViewtransparentFrame(0);

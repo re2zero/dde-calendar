@@ -35,7 +35,7 @@ CFocusItem::CItemType focusItemType = CFocusItem::CBACK;
 QDate itemDate = QDate::currentDate();
 
 //bbbbbbbbbbbbb CFocusItem stub  bbbbbbbbbbbbbbbbbbbbbb
-bool getItemFoucs_stub()
+bool getItemFocus_stub()
 {
     return itemFocus;
 }
@@ -106,7 +106,7 @@ KeyPressStub::KeyPressStub()
     SceneCurrentItem = new CWeekDayBackgroundItem();
     typedef void (*fptr)(CWeekDayBackgroundItem *, bool);
     fptr A_foo = (fptr)(&CWeekDayBackgroundItem::setItemFocus); //obtaining an address
-    stub.set(ADDR(CFocusItem, getItemFoucs), getItemFoucs_stub);
+    stub.set(ADDR(CFocusItem, getItemFocus), getItemFocus_stub);
     stub.set(ADDR(CFocusItem, getItemType), getItemType_stub);
     stub.set(A_foo, setItemFocus);
     stub.set(ADDR(CGraphicsScene, setActiveSwitching), setActiveSwitching_stub);

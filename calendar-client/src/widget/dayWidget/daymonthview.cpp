@@ -81,36 +81,36 @@ void CDayMonthView::setTheMe(int type)
 {
     m_dayMonthWidget->setTheMe(type);
     if (type == 0 || type == 1) {
-        DPalette anipa = this->palette();
-        QColor tbcolor = "#FFFFFF";
-        anipa.setColor(DPalette::Background, tbcolor);
-        setPalette(anipa);
+        DPalette aniPa = this->palette();
+        QColor tbColor = "#FFFFFF";
+        aniPa.setColor(DPalette::Background, tbColor);
+        setPalette(aniPa);
         setBackgroundRole(DPalette::Background);
-        setBColor(tbcolor);
+        setBColor(tbColor);
 
-        DPalette todaypa = m_today->palette();
+        DPalette todayPa = m_today->palette();
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-        todaypa.setColor(DPalette::ButtonText, todayColor);
-        todaypa.setColor(DPalette::Dark, Qt::white);
-        todaypa.setColor(DPalette::Light, Qt::white);
-        QColor sbcolor("#002A57");
-        sbcolor.setAlphaF(0.05);
-        todaypa.setColor(DPalette::Shadow, sbcolor);
-        m_today->setPalette(todaypa);
+        todayPa.setColor(DPalette::ButtonText, todayColor);
+        todayPa.setColor(DPalette::Dark, Qt::white);
+        todayPa.setColor(DPalette::Light, Qt::white);
+        QColor sbColor("#002A57");
+        sbColor.setAlphaF(0.05);
+        todayPa.setColor(DPalette::Shadow, sbColor);
+        m_today->setPalette(todayPa);
         QColor todayhover = "#000000";
         todayhover.setAlphaF(0.1);
         QColor todaypress = "#000000";
         todaypress.setAlphaF(0.2);
         m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
         m_today->setTColor(todayColor, "#001A2E", "#0081FF");
-        m_today->setshadowColor(sbcolor);
-        DPalette prevpa = m_prevButton->palette();
-        prevpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
-        prevpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        m_today->setshadowColor(sbColor);
+        DPalette prevPalette = m_prevButton->palette();
+        prevPalette.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        prevPalette.setColor(DPalette::Light, QColor("#E3E3E3"));
 
-        DPalette nextvpa = m_nextButton->palette();
-        nextvpa.setColor(DPalette::Dark, QColor("#E6E6E6"));
-        nextvpa.setColor(DPalette::Light, QColor("#E3E3E3"));
+        DPalette nextPa = m_nextButton->palette();
+        nextPa.setColor(DPalette::Dark, QColor("#E6E6E6"));
+        nextPa.setColor(DPalette::Light, QColor("#E3E3E3"));
 
         m_currentMouth->setTextColor(QColor("#3B3B3B"));
 
@@ -122,18 +122,18 @@ void CDayMonthView::setTheMe(int type)
 
         m_currentYear->setTextColor(QColor("#414D68"));
 
-        QFont hlabelF;
-        hlabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+        QFont hLabelF;
+        hLabelF.setPixelSize(DDECalendar::FontSizeFourteen);
 
-        QColor yicolor = QColor("#75C18E");
-        yicolor.setAlphaF(0.1);
-        m_yiLabel->setbackgroundColor(yicolor);
-        m_yiLabel->setTextInfo(QColor("#7B7B7B"), hlabelF);
+        QColor yiColor = QColor("#75C18E");
+        yiColor.setAlphaF(0.1);
+        m_yiLabel->setbackgroundColor(yiColor);
+        m_yiLabel->setTextInfo(QColor("#7B7B7B"), hLabelF);
 
-        QColor jicolor = QColor("#C17575");
-        jicolor.setAlphaF(0.1);
-        m_jiLabel->setbackgroundColor(jicolor);
-        m_jiLabel->setTextInfo(QColor("#7B7B7B"), hlabelF);
+        QColor jiColor = QColor("#C17575");
+        jiColor.setAlphaF(0.1);
+        m_jiLabel->setbackgroundColor(jiColor);
+        m_jiLabel->setTextInfo(QColor("#7B7B7B"), hLabelF);
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0081FF";
@@ -141,31 +141,31 @@ void CDayMonthView::setTheMe(int type)
         m_festivalTextColor = Qt::black;
 
     } else if (type == 2) {
-        DPalette anipa = this->palette();
-        QColor tbcolor = "#282828";
-        anipa.setColor(DPalette::Background, tbcolor);
-        setPalette(anipa);
+        DPalette aniPa = this->palette();
+        QColor tbColor = "#282828";
+        aniPa.setColor(DPalette::Background, tbColor);
+        setPalette(aniPa);
         setBackgroundRole(DPalette::Background);
-        setBColor(tbcolor);
+        setBColor(tbColor);
 
-        DPalette todaypa = m_today->palette();
+        DPalette todayPa = m_today->palette();
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-        todaypa.setColor(DPalette::ButtonText, todayColor);
-        todaypa.setColor(DPalette::Light, "#484848");
-        todaypa.setColor(DPalette::Dark, "#414141");
-        QColor sbcolor("#000000");
-        sbcolor.setAlphaF(0.05);
-        todaypa.setColor(DPalette::Shadow, sbcolor);
-        m_today->setPalette(todaypa);
+        todayPa.setColor(DPalette::ButtonText, todayColor);
+        todayPa.setColor(DPalette::Light, "#484848");
+        todayPa.setColor(DPalette::Dark, "#414141");
+        QColor sbColor("#000000");
+        sbColor.setAlphaF(0.05);
+        todayPa.setColor(DPalette::Shadow, sbColor);
+        m_today->setPalette(todayPa);
         m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
         m_today->setTColor(todayColor, "#FFFFFF", "#0081FF");
-        m_today->setshadowColor(sbcolor);
-        DPalette prevpa = m_prevButton->palette();
-        prevpa.setColor(DPalette::Dark, QColor("#484848"));
-        prevpa.setColor(DPalette::Light, QColor("#414141"));
-        DPalette nextvpa = m_nextButton->palette();
-        nextvpa.setColor(DPalette::Dark, QColor("#484848"));
-        nextvpa.setColor(DPalette::Light, QColor("#414141"));
+        m_today->setshadowColor(sbColor);
+        DPalette prevPalette = m_prevButton->palette();
+        prevPalette.setColor(DPalette::Dark, QColor("#484848"));
+        prevPalette.setColor(DPalette::Light, QColor("#414141"));
+        DPalette nextPa = m_nextButton->palette();
+        nextPa.setColor(DPalette::Dark, QColor("#484848"));
+        nextPa.setColor(DPalette::Light, QColor("#414141"));
 
         m_currentMouth->setTextColor(QColor("#C0C6D4"));
 
@@ -176,18 +176,18 @@ void CDayMonthView::setTheMe(int type)
         m_currentLuna->setTextColor(QColor("#C0C6D4"));
 
         m_currentYear->setTextColor(QColor("#C0C6D4"));
-        QFont hlabelF;
-        hlabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+        QFont hLabelF;
+        hLabelF.setPixelSize(DDECalendar::FontSizeFourteen);
 
-        QColor yicolor = QColor("#2F8C4D");
-        yicolor.setAlphaF(0.2);
-        m_yiLabel->setbackgroundColor(yicolor);
-        m_yiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
+        QColor yiColor = QColor("#2F8C4D");
+        yiColor.setAlphaF(0.2);
+        m_yiLabel->setbackgroundColor(yiColor);
+        m_yiLabel->setTextInfo(QColor("#C0C6D4"), hLabelF);
 
-        QColor jicolor = QColor("#A43B3B");
-        jicolor.setAlphaF(0.2);
-        m_jiLabel->setbackgroundColor(jicolor);
-        m_jiLabel->setTextInfo(QColor("#C0C6D4"), hlabelF);
+        QColor jiColor = QColor("#A43B3B");
+        jiColor.setAlphaF(0.2);
+        m_jiLabel->setbackgroundColor(jiColor);
+        m_jiLabel->setTextInfo(QColor("#C0C6D4"), hLabelF);
 
         m_topBorderColor = Qt::red;
         m_backgroundCircleColor = "#0059D2";
@@ -204,12 +204,12 @@ void CDayMonthView::setSearchFlag(bool flag)
 }
 
 /**
- * @brief CDayMonthView::setHuangliInfo     设置黄历信息
- * @param huangliInfo
+ * @brief CDayMonthView::setHuangLiInfo     设置黄历信息
+ * @param huangLiInfo
  */
-void CDayMonthView::setHuangliInfo(const CaHuangLiDayInfo &huangliInfo)
+void CDayMonthView::setHuangLiInfo(const CaHuangLiDayInfo &huangLiInfo)
 {
-    m_huangliInfo = huangliInfo;
+    m_huangLiInfo = huangLiInfo;
     updateDateLunarDay();
 }
 
@@ -222,19 +222,19 @@ void CDayMonthView::initUI()
 {
     m_today = new CTodayButton;
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
-    m_today->setFixedSize(100, DDEDayCalendar::D_MLableHeight);
-    DPalette todaypa = m_today->palette();
+    m_today->setFixedSize(100, DDEDayCalendar::D_MLabelHeight);
+    DPalette todayPa = m_today->palette();
     QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-    todaypa.setColor(DPalette::ButtonText, todayColor);
-    todaypa.setColor(DPalette::Dark, Qt::white);
-    todaypa.setColor(DPalette::Light, Qt::white);
-    QColor sbcolor("#002A57");
-    sbcolor.setAlphaF(0.05);
-    todaypa.setColor(DPalette::Shadow, sbcolor);
+    todayPa.setColor(DPalette::ButtonText, todayColor);
+    todayPa.setColor(DPalette::Dark, Qt::white);
+    todayPa.setColor(DPalette::Light, Qt::white);
+    QColor sbColor("#002A57");
+    sbColor.setAlphaF(0.05);
+    todayPa.setColor(DPalette::Shadow, sbColor);
     QFont todayfont;
     todayfont.setPixelSize(DDECalendar::FontSizeFourteen);
     m_today->setFont(todayfont);
-    m_today->setPalette(todaypa);
+    m_today->setPalette(todayPa);
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     m_prevButton->setFixedSize(36, 36);
 
@@ -247,7 +247,7 @@ void CDayMonthView::initUI()
     titleLayout->setContentsMargins(0, 0, 0, 3);
     //add separator line
     m_currentMouth = new CustomFrame(this);
-    m_currentMouth->setFixedSize(74, DDEDayCalendar::D_MLableHeight);
+    m_currentMouth->setFixedSize(74, DDEDayCalendar::D_MLabelHeight);
     QFont mlabelF;
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
@@ -274,62 +274,62 @@ void CDayMonthView::initUI()
     midLayout->setSpacing(0);
     midLayout->setContentsMargins(0, 0, 0, 20);
     m_currentDay = new CustomFrame(this);
-    m_currentDay->setFixedHeight(DDEDayCalendar::DDLableHeight);
+    m_currentDay->setFixedHeight(DDEDayCalendar::DDLabelHeight);
     m_currentDay->setMinimumWidth(width());
     m_currentDay->setTextAlign(Qt::AlignCenter);
-    QFont daylabelF;
-    daylabelF.setWeight(QFont::Medium);
-    daylabelF.setPixelSize(DDECalendar::FontSizeOneHundred);
-    m_currentDay->setTextFont(daylabelF);
+    QFont dayLabelF;
+    dayLabelF.setWeight(QFont::Medium);
+    dayLabelF.setPixelSize(DDECalendar::FontSizeOneHundred);
+    m_currentDay->setTextFont(dayLabelF);
     midLayout->addWidget(m_currentDay);
 
     m_currentWeek = new CustomFrame(this);
-    m_currentWeek->setFixedHeight(DDEDayCalendar::DWLableHeight);
+    m_currentWeek->setFixedHeight(DDEDayCalendar::DWLabelHeight);
     m_currentWeek->setTextAlign(Qt::AlignCenter);
-    QFont wlabelF;
-    wlabelF.setPixelSize(DDECalendar::FontSizeSixteen);
-    m_currentWeek->setTextFont(wlabelF);
+    QFont wLabelF;
+    wLabelF.setPixelSize(DDECalendar::FontSizeSixteen);
+    m_currentWeek->setTextFont(wLabelF);
     midLayout->addWidget(m_currentWeek);
     midLayout->addSpacing(2);
 
     m_currentYear = new CustomFrame(this);
-    m_currentYear->setFixedHeight(DDEDayCalendar::DWLableHeight);
+    m_currentYear->setFixedHeight(DDEDayCalendar::DWLabelHeight);
     m_currentYear->setTextAlign(Qt::AlignCenter);
-    m_currentYear->setTextFont(wlabelF);
+    m_currentYear->setTextFont(wLabelF);
     midLayout->addWidget(m_currentYear);
     midLayout->addSpacing(2);
 
     m_currentLuna = new CustomFrame(this);
-    m_currentLuna->setFixedHeight(DDEDayCalendar::DHualiInfoLableHeight);
+    m_currentLuna->setFixedHeight(DDEDayCalendar::DHuangLiInfoLabelHeight);
     m_currentLuna->setTextAlign(Qt::AlignCenter);
-    QFont hlabelF;
-    hlabelF.setPixelSize(DDECalendar::FontSizeTwelve);
-    m_currentLuna->setTextFont(hlabelF);
+    QFont hLabelF;
+    hLabelF.setPixelSize(DDECalendar::FontSizeTwelve);
+    m_currentLuna->setTextFont(hLabelF);
     midLayout->addWidget(m_currentLuna);
 
-    m_yidownLayout = new QVBoxLayout;
-    m_yidownLayout->setMargin(0);
-    m_yidownLayout->setSpacing(0);
-    m_yidownLayout->setContentsMargins(10, 5, 10, 0);
-    hlabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+    m_yiDownLayout = new QVBoxLayout;
+    m_yiDownLayout->setMargin(0);
+    m_yiDownLayout->setSpacing(0);
+    m_yiDownLayout->setContentsMargins(10, 5, 10, 0);
+    hLabelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_yiLabel = new CDayHuangLiLabel(this);
     m_yiLabel->setbackgroundColor(QColor("#75C18E"));
-    m_yiLabel->setTextInfo(QColor("#7B7B7B "), hlabelF);
-    m_yiLabel->setFixedSize(DDEDayCalendar::DHualiDtailLableWidth, DDEDayCalendar::DHualiDtailLableHeight);
+    m_yiLabel->setTextInfo(QColor("#7B7B7B "), hLabelF);
+    m_yiLabel->setFixedSize(DDEDayCalendar::DHuangLiLabelWidth, DDEDayCalendar::DHuangLiLabelHeight);
     m_yiLabel->setHuangLiText(QStringList());
-    m_yidownLayout->addWidget(m_yiLabel);
+    m_yiDownLayout->addWidget(m_yiLabel);
 
-    m_jidownLayout = new QVBoxLayout;
-    m_jidownLayout->setMargin(0);
-    m_jidownLayout->setSpacing(0);
-    m_jidownLayout->setContentsMargins(10, 10, 10, 10);
+    m_jiDownLayout = new QVBoxLayout;
+    m_jiDownLayout->setMargin(0);
+    m_jiDownLayout->setSpacing(0);
+    m_jiDownLayout->setContentsMargins(10, 10, 10, 10);
 
     m_jiLabel = new CDayHuangLiLabel(this);
     m_jiLabel->setbackgroundColor(QColor("#C17575"));
-    m_jiLabel->setTextInfo(QColor("#7B7B7B "), hlabelF);
-    m_jiLabel->setFixedSize(DDEDayCalendar::DHualiDtailLableWidth, DDEDayCalendar::DHualiDtailLableHeight);
+    m_jiLabel->setTextInfo(QColor("#7B7B7B "), hLabelF);
+    m_jiLabel->setFixedSize(DDEDayCalendar::DHuangLiLabelWidth, DDEDayCalendar::DHuangLiLabelHeight);
     m_jiLabel->setHuangLiText(QStringList(), 1);
-    m_jidownLayout->addWidget(m_jiLabel);
+    m_jiDownLayout->addWidget(m_jiLabel);
 
     m_hhLayout = new QVBoxLayout;
     m_hhLayout->setMargin(0);
@@ -348,8 +348,8 @@ void CDayMonthView::initUI()
     hlineLayout->addWidget(m_splitline);
     hlineLayout->addStretch(1);
     m_hhLayout->addLayout(hlineLayout);
-    m_hhLayout->addLayout(m_yidownLayout);
-    m_hhLayout->addLayout(m_jidownLayout);
+    m_hhLayout->addLayout(m_yiDownLayout);
+    m_hhLayout->addLayout(m_jiDownLayout);
     m_hhLayout->addStretch();
 
     setLayout(m_hhLayout);
@@ -389,11 +389,11 @@ void CDayMonthView::updateDateShow()
 void CDayMonthView::updateDateLunarDay()
 {
     if (!m_huanglistate) return;
-    m_currentLuna->setTextStr(m_huangliInfo.mGanZhiYear + "年 " + "【" + m_huangliInfo.mZodiac + "年】" + m_huangliInfo.mGanZhiMonth + "月 " + m_huangliInfo.mGanZhiDay + "日 ");
-    QStringList yilist = m_huangliInfo.mSuit.split(".", QString::SkipEmptyParts);
-    QStringList jilist = m_huangliInfo.mAvoid.split(".", QString::SkipEmptyParts);
-    m_yiLabel->setHuangLiText(yilist);
-    m_jiLabel->setHuangLiText(jilist, 1);
+    m_currentLuna->setTextStr(m_huangLiInfo.mGanZhiYear + "年 " + "【" + m_huangLiInfo.mZodiac + "年】" + m_huangLiInfo.mGanZhiMonth + "月 " + m_huangLiInfo.mGanZhiDay + "日 ");
+    QStringList yiList = m_huangLiInfo.mSuit.split(".", QString::SkipEmptyParts);
+    QStringList jiList = m_huangLiInfo.mAvoid.split(".", QString::SkipEmptyParts);
+    m_yiLabel->setHuangLiText(yiList);
+    m_jiLabel->setHuangLiText(jiList, 1);
 }
 
 void CDayMonthView::changeSelectDate(const QDate &date)
@@ -404,23 +404,23 @@ void CDayMonthView::changeSelectDate(const QDate &date)
 void CDayMonthView::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
-    int leftmagin = qRound(width() * 0.0332 + 0.5);
-    int rightmagin = leftmagin;
-    int topmagin = qRound(height() * 0.0164 + 0.5);
-    int buttonmagin = topmagin;
-    m_upLayout->setContentsMargins(leftmagin, topmagin, rightmagin, buttonmagin);
+    int leftMargin = qRound(width() * 0.0332 + 0.5);
+    int rightMargin = leftMargin;
+    int topMargin = qRound(height() * 0.0164 + 0.5);
+    int bottonMargin = topMargin;
+    m_upLayout->setContentsMargins(leftMargin, topMargin, rightMargin, bottonMargin);
     m_splitline->setFixedWidth(qRound(0.6925 * width() + 0.5));
 
-    int hleftmagin = qRound(width() * 0.026 + 0.5);
-    int hrightmagin = hleftmagin;
-    int htopmagin = qRound(height() * 0.01773 + 0.5);
-    int hbuttonmagin = htopmagin;
-    int lw = width() - hleftmagin * 2;
+    int hLeftMargin = qRound(width() * 0.026 + 0.5);
+    int hRightMargin = hLeftMargin;
+    int hTopMargin = qRound(height() * 0.01773 + 0.5);
+    int hBottonMargin = hTopMargin;
+    int lw = width() - hLeftMargin * 2;
     int lh = qRound(height() * 0.0992);
     m_yiLabel->setFixedSize(lw, lh);
-    m_yidownLayout->setContentsMargins(hleftmagin, qRound(htopmagin * 0.5), hrightmagin, 0);
+    m_yiDownLayout->setContentsMargins(hLeftMargin, qRound(hTopMargin * 0.5), hRightMargin, 0);
     m_jiLabel->setFixedSize(lw, lh);
-    m_jidownLayout->setContentsMargins(hleftmagin, htopmagin, hrightmagin, hbuttonmagin);
+    m_jiDownLayout->setContentsMargins(hLeftMargin, hTopMargin, hRightMargin, hBottonMargin);
 }
 
 void CDayMonthView::wheelEvent(QWheelEvent *event)
@@ -444,11 +444,11 @@ void CDayMonthView::paintEvent(QPaintEvent *e)
     Q_UNUSED(e);
     int labelwidth = width();
     int labelheight = height();
-    DPalette anipa = this->palette();
+    DPalette aniPa = this->palette();
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
     painter.save();
-    painter.setBrush(anipa.background());
+    painter.setBrush(aniPa.background());
     painter.setPen(Qt::NoPen);
     QPainterPath painterPath;
     painterPath.moveTo(0, 0);
@@ -583,9 +583,9 @@ void CDayMonthWidget::paintCell(QWidget *cell)
             pen.setColor(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
             painter.setPen(pen);
             //在原有的选中效果外面再绘制一圈
-            QRectF foucsRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
+            QRectF focusRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
             painter.setBrush(Qt::NoBrush);
-            painter.drawEllipse(foucsRect);
+            painter.drawEllipse(focusRect);
         }
     }
 

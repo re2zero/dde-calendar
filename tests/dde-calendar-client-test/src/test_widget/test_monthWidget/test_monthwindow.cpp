@@ -46,7 +46,7 @@ TEST_F(test_monthWindow, setTheMe)
 }
 
 namespace MonthWindow {
-void deletselectschedule_Stub(void *obj)
+void deleteselectschedule_Stub(void *obj)
 {
     Q_UNUSED(obj)
 }
@@ -55,7 +55,7 @@ void deletselectschedule_Stub(void *obj)
 TEST_F(test_monthWindow, deleteselectSchedule)
 {
     Stub stub;
-    stub.set(ADDR(CMonthView, deletselectschedule), MonthWindow::deletselectschedule_Stub);
+    stub.set(ADDR(CMonthView, deleteSelectSchedule), MonthWindow::deleteselectschedule_Stub);
     m_monthWindow->deleteselectSchedule();
 }
 

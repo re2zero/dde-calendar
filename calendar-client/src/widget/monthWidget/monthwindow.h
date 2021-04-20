@@ -110,8 +110,8 @@ private:
     QLabel                  *m_YearLunarLabel = nullptr;
     QSpacerItem             *m_spaceitem = nullptr;
     DWidget                 *m_gridWidget = nullptr;
-    bool                    m_searchfalg = false;
-    QHBoxLayout             *m_tmainLayout = nullptr;
+    bool m_searchFlag = false;
+    QHBoxLayout *m_tMainLayout = nullptr;
 };
 
 #endif // YEARWINDOW_H

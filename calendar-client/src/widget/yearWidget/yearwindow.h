@@ -50,7 +50,7 @@ struct TouchGestureData {
         T_RIGHT,        //往右
         T_BOTTOM        //往下
     }; //手势移动状态
-    qreal lenght{0};        //手势移动距离
+    qreal length {0}; //手势移动距离
     qreal angle{0};         //手势移动角度
     TouchMovingDirection movingDirection{T_NONE};       // 手势移动方向
 };
@@ -137,15 +137,15 @@ private:
     YearFrame       *m_secondYearWidget = nullptr;
     CustomFrame     *m_todayFrame = nullptr;
     AnimationStackedWidget  *m_StackedWidget = nullptr;
-    QVBoxLayout         *m_tmainLayout = nullptr;
+    QVBoxLayout *m_tMainLayout = nullptr;
     QString             m_searchText;
-    bool                m_searchfalg = false;
+    bool m_searchFlag = false;
     DWidget             *m_topWidget = nullptr;
     //触摸开始坐标
     QPointF             m_touchBeginPoint;
     //触摸状态 0：初始状态 1:点击 2：移动
     int                 m_touchState{0};
-    CYearScheduleOutView *m_Scheduleview{nullptr};
+    CYearScheduleOutView *m_scheduleView {nullptr};
 };
 
 class YearFrame : public DFrame
@@ -184,7 +184,7 @@ private:
     QLabel                      *m_YearLabel = nullptr;
     QLabel                      *m_YearLunarLabel = nullptr;
     QDate                       m_selectDate;
-    bool                        m_searchfalg = false;
+    bool m_searchFlag = false;
     bool                        m_selectFlag = false;
     QString                     m_LunarYear;
     QString                     m_LunarDay;

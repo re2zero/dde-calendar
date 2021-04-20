@@ -44,7 +44,7 @@ public:
     //设置item是否获取focus
     virtual void setItemFocus(bool isFocus);
     //获取该item是否focus
-    bool getItemFoucs() const;
+    bool getItemFocus() const;
     //设置item类型
     void setItemType(CItemType itemType);
     //获取item类型

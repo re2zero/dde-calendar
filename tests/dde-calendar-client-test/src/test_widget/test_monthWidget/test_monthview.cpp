@@ -105,25 +105,25 @@ QVector<QDate> MonthviewGetDayList()
     return dateList;
 }
 
-QMap<QDate, CaHuangLiDayInfo> MonthViewGetHuangliDayInfo()
+QMap<QDate, CaHuangLiDayInfo> MonthViewGetHuangLiDayInfo()
 {
-    QMap<QDate, CaHuangLiDayInfo> huanglidayinfo {};
-    CaHuangLiDayInfo huangliinfo1 {};
-    huangliinfo1.mGanZhiYear = "辛丑牛年"; //年干支
-    huangliinfo1.mGanZhiMonth = "庚寅月"; //月干支
-    huangliinfo1.mGanZhiDay = "辛卯日"; //日干支
-    huangliinfo1.mLunarMonthName = "正月"; //农历月名称
-    huangliinfo1.mLunarDayName = "初一"; //农历日名称
-    huangliinfo1.mLunarLeapMonth = 4; //闰月
-    huangliinfo1.mZodiac = "牛"; //生肖
-    huangliinfo1.mTerm = ""; //农历节气
-    huangliinfo1.mSolarFestival = "国庆节"; //阳历节日
-    huangliinfo1.mLunarFestival = "除夕"; //农历节日
-    huangliinfo1.mSuit = "嫁娶"; //黄历宜
-    huangliinfo1.mAvoid = "入土"; //黄历忌
+    QMap<QDate, CaHuangLiDayInfo> huangLiDayinfo {};
+    CaHuangLiDayInfo huangLiInfo1 {};
+    huangLiInfo1.mGanZhiYear = "辛丑牛年"; //年干支
+    huangLiInfo1.mGanZhiMonth = "庚寅月"; //月干支
+    huangLiInfo1.mGanZhiDay = "辛卯日"; //日干支
+    huangLiInfo1.mLunarMonthName = "正月"; //农历月名称
+    huangLiInfo1.mLunarDayName = "初一"; //农历日名称
+    huangLiInfo1.mLunarLeapMonth = 4; //闰月
+    huangLiInfo1.mZodiac = "牛"; //生肖
+    huangLiInfo1.mTerm = ""; //农历节气
+    huangLiInfo1.mSolarFestival = "国庆节"; //阳历节日
+    huangLiInfo1.mLunarFestival = "除夕"; //农历节日
+    huangLiInfo1.mSuit = "嫁娶"; //黄历宜
+    huangLiInfo1.mAvoid = "入土"; //黄历忌
 
-    huanglidayinfo.insert(QDate::currentDate(), huangliinfo1);
-    return huanglidayinfo;
+    huangLiDayinfo.insert(QDate::currentDate(), huangLiInfo1);
+    return huangLiDayinfo;
 }
 
 //void CMonthView::setTheMe(int type)
@@ -160,10 +160,10 @@ TEST_F(test_monthview, setShowDate)
     mMonthView->setShowDate(MonthviewGetDayList());
 }
 
-//void CMonthView::setHuangliInfo(const QMap<QDate, CaHuangLiDayInfo> &huangliInfo)
-TEST_F(test_monthview, setHuangliInfo)
+//void CMonthView::setHuangLiInfo(const QMap<QDate, CaHuangLiDayInfo> &huangLiInfo)
+TEST_F(test_monthview, setHuangLiInfo)
 {
-    mMonthView->setHuangliInfo(MonthViewGetHuangliDayInfo());
+    mMonthView->setHuangLiInfo(MonthViewGetHuangLiDayInfo());
 }
 
 //void CMonthView::setFestival(const QMap<QDate, int> &festivalInfo)

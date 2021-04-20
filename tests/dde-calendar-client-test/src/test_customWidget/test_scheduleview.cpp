@@ -58,10 +58,10 @@ QVector<ScheduleDataInfo> getScheduleData()
     return scheduleList;
 }
 
-//void CScheduleView::setviewMagin(int left, int top, int right, int bttom)
-TEST_F(test_scheduleview, setviewMagin)
+//void CScheduleView::setviewMargin(int left, int top, int right, int bottom)
+TEST_F(test_scheduleview, setviewMargin)
 {
-    mScheduleView->setviewMagin(8, 8, 4, 4);
+    mScheduleView->setviewMargin(8, 8, 4, 4);
 }
 
 //void CScheduleView::setRange(int w, int h, QDate begin, QDate end)
@@ -142,7 +142,7 @@ TEST_F(test_scheduleview, slotupdateSchedule)
     mScheduleView->slotupdateSchedule();
 }
 
-//void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype)
+//void CScheduleView::slotPosHours(QVector<int> vPos, QVector<int> vHours, int currentTimeType)
 TEST_F(test_scheduleview, slotPosHours)
 {
     QVector<int> pos;
@@ -198,9 +198,9 @@ TEST_F(test_scheduleview, updateAllday)
     mScheduleView->updateAllday();
 }
 
-//int CScheduleView::scheduleViewHegith()
-TEST_F(test_scheduleview, scheduleViewHegith)
+//int CScheduleView::scheduleViewHeight()
+TEST_F(test_scheduleview, scheduleViewHeight)
 {
-    mScheduleView->scheduleViewHegith();
+    mScheduleView->scheduleViewHeight();
 }
 

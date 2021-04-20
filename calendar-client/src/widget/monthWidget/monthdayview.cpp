@@ -37,13 +37,13 @@ CMonthDayView::CMonthDayView(QWidget *parent)
     : DFrame(parent)
     , m_touchGesture(this)
 {
-    QHBoxLayout *hboxLayout = new QHBoxLayout;
-    hboxLayout->setMargin(0);
-    hboxLayout->setSpacing(0);
-    hboxLayout->setContentsMargins(10, 0, 10, 0);
+    QHBoxLayout *hBoxLayout = new QHBoxLayout;
+    hBoxLayout->setMargin(0);
+    hBoxLayout->setSpacing(0);
+    hBoxLayout->setContentsMargins(10, 0, 10, 0);
     m_monthWidget = new CMonthWidget(this);
-    hboxLayout->addWidget(m_monthWidget);
-    setLayout(hboxLayout);
+    hBoxLayout->addWidget(m_monthWidget);
+    setLayout(hBoxLayout);
     setFrameRounded(true);
     setLineWidth(0);
     setWindowFlags(Qt::FramelessWindowHint);
@@ -61,7 +61,7 @@ CMonthDayView::~CMonthDayView()
 void CMonthDayView::setSelectDate(const QDate &date)
 {
     m_selectDate = date;
-    for (int i  = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::MonthNumOfYear; ++i) {
         m_days[i] = m_selectDate.addMonths(i - 5);
     }
     m_monthWidget->setDate(m_days);
@@ -74,23 +74,23 @@ void CMonthDayView::setSelectDate(const QDate &date)
  */
 void CMonthDayView::setTheMe(int type)
 {
-    QColor frameclor;
+    QColor frameColor;
     if (type == 0 || type == 1) {
-        frameclor = "#FFFFFF";
+        frameColor = "#FFFFFF";
     } else if (type == 2) {
-        frameclor = "#FFFFFF";
-        frameclor.setAlphaF(0.05);
+        frameColor = "#FFFFFF";
+        frameColor.setAlphaF(0.05);
     }
-    DPalette anipa = palette();
-    anipa.setColor(DPalette::Background, frameclor);
-    setPalette(anipa);
+    DPalette aniPa = palette();
+    aniPa.setColor(DPalette::Background, frameColor);
+    setPalette(aniPa);
     setBackgroundRole(DPalette::Background);
     CMonthRect::setTheMe(type);
 }
 
-void CMonthDayView::setsearchfalg(bool flag)
+void CMonthDayView::setSearchflag(bool flag)
 {
-    m_searchfalg = flag;
+    m_searchFlag = flag;
 }
 
 void CMonthDayView::wheelEvent(QWheelEvent *e)
@@ -141,7 +141,7 @@ CMonthWidget::CMonthWidget(QWidget *parent)
     : QWidget(parent)
     , m_isFocus(false)
 {
-    for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::MonthNumOfYear; ++i) {
         CMonthRect *monthrect = new CMonthRect(this);
         m_MonthItem.append(monthrect);
     }
@@ -151,7 +151,7 @@ CMonthWidget::CMonthWidget(QWidget *parent)
 
 CMonthWidget::~CMonthWidget()
 {
-    for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::MonthNumOfYear; ++i) {
         CMonthRect *monthrect = m_MonthItem.at(i);
         delete  monthrect;
     }
@@ -161,7 +161,7 @@ CMonthWidget::~CMonthWidget()
 
 void CMonthWidget::setDate(const QDate date[12])
 {
-    for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::MonthNumOfYear; ++i) {
         m_MonthItem.at(i)->setDate(date[i]);
     }
     CMonthRect::setSelectRect(m_MonthItem.at(5));
@@ -321,7 +321,7 @@ int CMonthWidget::getMousePosItem(const QPointF &pos)
  */
 void CMonthWidget::updateShowDate(const QDate &selectDate)
 {
-    for (int i = 0; i < DDEMonthCalendar::MonthNumofYear; ++i) {
+    for (int i = 0; i < DDEMonthCalendar::MonthNumOfYear; ++i) {
         m_days[i] = selectDate.addMonths(i - 5);
     }
 }
@@ -425,9 +425,9 @@ void CMonthRect::paintItem(QPainter *painter, const QRectF &rect, bool drawFocus
             pen.setColor(m_selectColor);
             painter->setPen(pen);
             //在原有的选中效果外面再绘制一圈
-            QRectF foucsRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
+            QRectF focusRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
             painter->setBrush(Qt::NoBrush);
-            painter->drawEllipse(foucsRect);
+            painter->drawEllipse(focusRect);
         }
         painter->setRenderHint(QPainter::HighQualityAntialiasing);
         painter->setPen(m_currentDayTextColor);
@@ -460,7 +460,7 @@ void CMonthRect::setDevicePixelRatio(const qreal pixel)
 void CMonthRect::setTheMe(int type)
 {
     m_themetype = type;
-    QColor frameclor;
+    QColor frameColor;
 
     if (type == 0 || type == 1) {
         m_defaultTextColor = Qt::black;
@@ -468,7 +468,7 @@ void CMonthRect::setTheMe(int type)
         m_currentDayTextColor = Qt::white;
         m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_fillColor = "#FFFFFF";
-        frameclor = m_fillColor;
+        frameColor = m_fillColor;
         m_fillColor.setAlphaF(0);
     } else if (type == 2) {
         m_defaultTextColor = "#C0C6D4";
@@ -479,7 +479,7 @@ void CMonthRect::setTheMe(int type)
         m_backgroundcurrentDayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
         m_fillColor = "#FFFFFF";
         m_fillColor.setAlphaF(0.05);
-        frameclor = m_fillColor;
+        frameColor = m_fillColor;
         m_fillColor.setAlphaF(0);
     }
 }

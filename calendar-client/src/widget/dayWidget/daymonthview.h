@@ -51,7 +51,7 @@ public:
     void setTheMe(int type = 0);
     void setSearchFlag(bool flag);
     //设置黄历信息
-    void setHuangliInfo(const CaHuangLiDayInfo &huangliInfo);
+    void setHuangLiInfo(const CaHuangLiDayInfo &huangLiInfo);
     void setHasScheduleFlag(const QVector<bool> &hasScheduleFlag);
 signals:
     //判断是否为拖拽
@@ -99,10 +99,10 @@ private:
     QVBoxLayout *m_hhLayout = nullptr;
     QVBoxLayout *m_upLayout = nullptr;
     DHorizontalLine *m_splitline = nullptr;
-    QVBoxLayout *m_yidownLayout = nullptr;
-    QVBoxLayout *m_jidownLayout = nullptr;
+    QVBoxLayout *m_yiDownLayout = nullptr;
+    QVBoxLayout *m_jiDownLayout = nullptr;
     QStringList m_weeklist;
-    CaHuangLiDayInfo    m_huangliInfo;
+    CaHuangLiDayInfo m_huangLiInfo;
     CDayMonthWidget *m_dayMonthWidget;
     const int m_radius = 8;
     bool m_searchflag = false;

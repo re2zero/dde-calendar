@@ -54,7 +54,7 @@ public:
     //设置显示日期
     void setShowDate(const QVector<QDate> &showDate);
     //设置黄历信息
-    void setHuangliInfo(const QMap<QDate, CaHuangLiDayInfo> &huangliInfo);
+    void setHuangLiInfo(const QMap<QDate, CaHuangLiDayInfo> &huangLiInfo);
     //设置班休信息
     void setFestival(const QMap<QDate, int> &festivalInfo);
     //设置显示日程
@@ -64,7 +64,7 @@ public:
     //设置当前时间
     void setCurrentDate(const QDate &currentDate);
     void setRemindWidgetTimeFormat(QString timeformat);
-    void deletselectschedule();
+    void deleteSelectSchedule();
 signals:
     /**
      * @brief signalViewtransparentFrame 设置窗口的焦点
@@ -128,8 +128,8 @@ private:
     int                             m_firstWeekDay = 0;
     QAction                         *m_createAction = nullptr; // 创建日程
     QVBoxLayout                     *m_mainLayout = nullptr;
-    int                             m_leftmaagin = 0;
-    int                             m_topmagin = 0;
+    int m_leftMargin = 0;
+    int m_topMargin = 0;
     bool                            m_sflag = true;
     ScheduleRemindWidget *m_remindWidget = nullptr;
 

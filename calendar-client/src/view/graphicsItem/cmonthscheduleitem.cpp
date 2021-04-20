@@ -48,11 +48,11 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
     qreal labelheight = rect.height();
     m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
+    CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
     QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
-    QColor color1 = gdcolor.gradientFromC;
-    QColor color2 = gdcolor.gradientToC;
-    QColor textcolor = gdcolor.textColor;
+    QColor color1 = gdColor.gradientFromC;
+    QColor color2 = gdColor.gradientToC;
+    QColor textcolor = gdColor.textColor;
 
     //判断是否为选中日程
     if (m_vScheduleInfo == m_pressInfo) {
@@ -72,15 +72,15 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
     }
 
     if (m_vSelectflag) {
-        color1 = gdcolor.pressgradientFromC;
-        color2 = gdcolor.pressgradientToC;
+        color1 = gdColor.pressgradientFromC;
+        color2 = gdColor.pressgradientToC;
         textcolor.setAlphaF(0.4);
     } else if (m_vHoverflag) {
-        color1 = gdcolor.hovergradientFromC;
-        color2 = gdcolor.hovergradientToC;
+        color1 = gdColor.hovergradientFromC;
+        color2 = gdColor.hovergradientToC;
     } else if (m_vHighflag) {
-        color1 = gdcolor.hightlightgradientFromC;
-        color2 = gdcolor.hightlightgradientToC;
+        color1 = gdColor.hightlightgradientFromC;
+        color2 = gdColor.hightlightgradientToC;
     }
 
     linearGradient.setColorAt(0, color1);
@@ -93,7 +93,7 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
     painter->save();
     //将直线开始点设为0，终点设为1，然后分段设置颜色
     painter->setBrush(linearGradient);
-    if (getItemFoucs() && isPixMap == false) {
+    if (getItemFocus() && isPixMap == false) {
         QPen framePen;
         framePen.setWidth(2);
         framePen.setColor(getSystemActiveColor());
@@ -109,12 +109,12 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
     painter->setPen(textcolor);
     QFontMetrics fm = painter->fontMetrics();
 
-    QString tStitlename = m_vScheduleInfo.getTitleName();
-    tStitlename.replace("\n", "");
-    QString str = tStitlename;
+    QString tSTitleName = m_vScheduleInfo.getTitleName();
+    tSTitleName.replace("\n", "");
+    QString str = tSTitleName;
     //右侧偏移8
     qreal textWidth = labelwidth - m_pos.x() - m_offset * 2 - 8;
-    QString tstr;
+    QString tStr;
     int _rightOffset = fm.width("...");
     //显示宽度  左侧偏移13右侧偏移8
     qreal _showWidth = textWidth;
@@ -122,29 +122,29 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
     if (fm.width(str) > _showWidth) {
         _showWidth -= _rightOffset;
         for (int i = 0; i < str.count(); i++) {
-            tstr.append(str.at(i));
-            int widthT = fm.width(tstr);
+            tStr.append(str.at(i));
+            int widthT = fm.width(tStr);
             //如果宽度大于显示长度则去除最后添加的字符
             if (widthT > _showWidth) {
-                tstr.chop(1);
+                tStr.chop(1);
                 break;
             }
         }
-        if (tstr != str) {
-            tstr = tstr + "...";
+        if (tStr != str) {
+            tStr = tStr + "...";
         }
     } else {
-        tstr = str;
+        tStr = str;
     }
 
     painter->drawText(QRectF(rect.x() + m_pos.x(),
                              rect.y() + 1,
                              textWidth,
                              labelheight - m_pos.y() + 3),
-                      Qt::AlignLeft | Qt::AlignVCenter, tstr);
+                      Qt::AlignLeft | Qt::AlignVCenter, tStr);
 
     if (m_vHoverflag && !m_vSelectflag) {
-        QRectF trect = QRectF(rect.x() + 2.5, rect.y() + 2.5, labelwidth - 3, labelheight - 3);
+        QRectF tRect = QRectF(rect.x() + 2.5, rect.y() + 2.5, labelwidth - 3, labelheight - 3);
         painter->save();
         painter->setRenderHints(QPainter::Antialiasing);
         QPen pen;
@@ -163,7 +163,7 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
         pen.setStyle(Qt::SolidLine);
         painter->setBrush(Qt::NoBrush);
         painter->setPen(pen);
-        painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
+        painter->drawRoundedRect(tRect, rect.height() / 3, rect.height() / 3);
         painter->restore();
     }
 

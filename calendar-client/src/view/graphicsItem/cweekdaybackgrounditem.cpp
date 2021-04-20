@@ -64,7 +64,7 @@ void CWeekDayBackgroundItem::paint(QPainter *painter, const QStyleOptionGraphics
             painter->drawRect(this->rect());
         }
     }
-    if (m_showFocus && getItemFoucs()) {
+    if (m_showFocus && getItemFocus()) {
         QPen framePen;
         //设置边框宽度
         framePen.setWidth(2);

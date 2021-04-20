@@ -181,9 +181,9 @@ void CDayWindow::updateShowSchedule()
  */
 void CDayWindow::updateShowLunar()
 {
-    CaHuangLiDayInfo _huangliInfo = getLunarInfo();
-    m_LunarLabel->setText(_huangliInfo.mLunarMonthName + _huangliInfo.mLunarDayName);
-    m_daymonthView->setHuangliInfo(_huangliInfo);
+    CaHuangLiDayInfo _huangLiInfo = getLunarInfo();
+    m_LunarLabel->setText(_huangLiInfo.mLunarMonthName + _huangLiInfo.mLunarDayName);
+    m_daymonthView->setHuangLiInfo(_huangLiInfo);
 }
 
 /**
@@ -211,7 +211,7 @@ void CDayWindow::deleteselectSchedule()
 
 void CDayWindow::setSearchWFlag(bool flag)
 {
-    m_searchfalg = flag;
+    m_searchFlag = flag;
     m_daymonthView->setSearchFlag(flag);
 }
 
@@ -231,7 +231,7 @@ void CDayWindow::initUI()
     titleLayout->setContentsMargins(10, 9, 0, 3);
 
     m_YearLabel = new QLabel();
-    m_YearLabel->setMinimumHeight(DDEDayCalendar::D_YLableHeight);
+    m_YearLabel->setMinimumHeight(DDEDayCalendar::D_YLabelHeight);
     QFont labelF;
     labelF.setWeight(QFont::Medium);
     labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
@@ -242,7 +242,7 @@ void CDayWindow::initUI()
     titleLayout->addWidget(m_YearLabel);
     m_LunarLabel = new QLabel();
     titleLayout->addSpacing(15);
-    m_LunarLabel->setFixedHeight(DDEDayCalendar::D_YLableHeight);
+    m_LunarLabel->setFixedHeight(DDEDayCalendar::D_YLabelHeight);
     labelF.setPixelSize(DDECalendar::FontSizeFourteen);
     m_LunarLabel->setFont(labelF);
     m_LunarLabel->setAlignment(Qt::AlignCenter);
@@ -252,7 +252,7 @@ void CDayWindow::initUI()
     titleLayout->addWidget(m_LunarLabel);
     m_SolarDay = new QLabel();
     labelF.setPixelSize(DDECalendar::FontSizeTen);
-    m_SolarDay->setFixedHeight(DDEDayCalendar::D_YLableHeight);
+    m_SolarDay->setFixedHeight(DDEDayCalendar::D_YLabelHeight);
     m_SolarDay->setFont(labelF);
     m_SolarDay->setAlignment(Qt::AlignCenter);
     DPalette spa = m_SolarDay->palette();
@@ -265,7 +265,7 @@ void CDayWindow::initUI()
     leftLayout->setMargin(0);
     leftLayout->setSpacing(0);
     m_scheduleView = new CScheduleView(this, ScheduleViewPos::DayPos);
-    m_scheduleView->setviewMagin(72, 109, 20, 0);
+    m_scheduleView->setviewMargin(72, 109, 20, 0);
     m_scheduleView->setCurrentDate(getCurrendDateTime());
     leftLayout->addLayout(titleLayout);
     leftLayout->addWidget(m_scheduleView);
@@ -275,17 +275,17 @@ void CDayWindow::initUI()
 
     m_daymonthView = new CDayMonthView(this);
 
-    QHBoxLayout *lfetmainLayout = new QHBoxLayout;
-    lfetmainLayout->setMargin(0);
-    lfetmainLayout->setSpacing(1);
-    lfetmainLayout->setContentsMargins(0, 0, 0, 0);
-    lfetmainLayout->addLayout(leftLayout);
-    lfetmainLayout->addWidget(m_verline);
+    QHBoxLayout *leftMainLayout = new QHBoxLayout;
+    leftMainLayout->setMargin(0);
+    leftMainLayout->setSpacing(1);
+    leftMainLayout->setContentsMargins(0, 0, 0, 0);
+    leftMainLayout->addLayout(leftLayout);
+    leftMainLayout->addWidget(m_verline);
 
-    lfetmainLayout->addWidget(m_daymonthView);
+    leftMainLayout->addWidget(m_daymonthView);
     m_leftground = new CustomFrame();
     m_leftground->setRoundState(true, true, true, true);
-    m_leftground->setLayout(lfetmainLayout);
+    m_leftground->setLayout(leftMainLayout);
     m_leftground->setBColor("#FFFFFF");
 
     m_mainLayout = new QHBoxLayout;
@@ -330,13 +330,13 @@ void CDayWindow::setMakeTime(QMap<QDate, QVector<ScheduleDataInfo> > &info)
         } else if (firstscheduleBeginTime.date() == getSelectDate()) {
             m_makeTime = firstscheduleBeginTime.time();
             //设置定位的时间位置,原始时间太靠下,现向上偏移2小时
-            QTime ontime = m_makeTime;
-            if (ontime.hour() + 4 >= 24) {
-                ontime = QTime(20, 0);
+            QTime onTime = m_makeTime;
+            if (onTime.hour() + 4 >= 24) {
+                onTime = QTime(20, 0);
             } else {
-                ontime = ontime.addSecs(14400);
+                onTime = onTime.addSecs(14400);
             }
-            m_makeTime = ontime;
+            m_makeTime = onTime;
         } else {
             m_makeTime.setHMS(0, 0, 0, 0);
         }
@@ -369,7 +369,7 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     qreal dw = 0.4046 * width();
     int dh = height() - 20;
 
-    if (m_searchfalg) {
+    if (m_searchFlag) {
         m_mainLayout->setContentsMargins(10, 10, 0, 10);
     } else {
         m_mainLayout->setContentsMargins(10, 10, 10, 10);

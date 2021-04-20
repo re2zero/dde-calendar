@@ -112,30 +112,30 @@ QMap<QDate, QVector<ScheduleDataInfo>> getMonthMapScheduleDInfo(int getDays)
 {
     QDate currentDate = QDate::currentDate();
     QVector<ScheduleDataInfo> scheduleInfo {};
-    QMap<QDate, QVector<ScheduleDataInfo>> scheduleDateInof {};
+    QMap<QDate, QVector<ScheduleDataInfo>> scheduleDateInfo {};
     switch (getDays) {
     case 0: {
         scheduleInfo.append(getMonthScheduleDInfo().at(0));
-        scheduleDateInof[currentDate] = scheduleInfo;
+        scheduleDateInfo[currentDate] = scheduleInfo;
     } break;
     case 1: {
         scheduleInfo.append(getMonthScheduleDInfo().at(1));
-        scheduleDateInof[currentDate.addDays(1)] = scheduleInfo;
+        scheduleDateInfo[currentDate.addDays(1)] = scheduleInfo;
     } break;
     case 2: {
         scheduleInfo.append(getMonthScheduleDInfo().at(2));
-        scheduleDateInof[currentDate.addDays(2)] = scheduleInfo;
+        scheduleDateInfo[currentDate.addDays(2)] = scheduleInfo;
     } break;
     default: {
         scheduleInfo.append(getMonthScheduleDInfo().at(3));
-        scheduleDateInof[currentDate.addDays(3)] = scheduleInfo;
+        scheduleDateInfo[currentDate.addDays(3)] = scheduleInfo;
         scheduleInfo.append(getMonthScheduleDInfo().at(4));
-        scheduleDateInof[currentDate.addDays(4)] = scheduleInfo;
+        scheduleDateInfo[currentDate.addDays(4)] = scheduleInfo;
         scheduleInfo.append(getMonthScheduleDInfo().at(5));
-        scheduleDateInof[currentDate.addDays(5)] = scheduleInfo;
+        scheduleDateInfo[currentDate.addDays(5)] = scheduleInfo;
     } break;
     }
-    return scheduleDateInof;
+    return scheduleDateInfo;
 }
 
 QVector<MScheduleDateRangeInfo> getScheduleDateRangeInfo()
@@ -150,22 +150,22 @@ QVector<MScheduleDateRangeInfo> getScheduleDateRangeInfo()
 
     //    MScheduleDateRangeInfo scheduledaterangeinfo2;
     //    scheduledaterangeinfo2.num = 2;
-    //    scheduledaterangeinfo2.bdate = QDate(2021, 1, 23);
-    //    scheduledaterangeinfo2.edate = QDate(2021, 1, 24);
+    //    scheduledaterangeinfo2.bDate = QDate(2021, 1, 23);
+    //    scheduledaterangeinfo2.eDate = QDate(2021, 1, 24);
     //    scheduledaterangeinfo2.state = false;
     //    scheduledaterangeinfo2.tData = getMonthScheduleDInfo().at(1);
 
     //    MScheduleDateRangeInfo scheduledaterangeinfo3;
     //    scheduledaterangeinfo3.num = 2;
-    //    scheduledaterangeinfo3.bdate = QDate(2021, 1, 25);
-    //    scheduledaterangeinfo3.edate = QDate(2021, 1, 26);
+    //    scheduledaterangeinfo3.bDate = QDate(2021, 1, 25);
+    //    scheduledaterangeinfo3.eDate = QDate(2021, 1, 26);
     //    scheduledaterangeinfo3.state = false;
     //    scheduledaterangeinfo3.tData = getMonthScheduleDInfo().at(2);
 
     //    MScheduleDateRangeInfo scheduledaterangeinfo4;
     //    scheduledaterangeinfo4.num = 2;
-    //    scheduledaterangeinfo4.bdate = QDate(2021, 1, 27);
-    //    scheduledaterangeinfo4.edate = QDate(2021, 1, 28);
+    //    scheduledaterangeinfo4.bDate = QDate(2021, 1, 27);
+    //    scheduledaterangeinfo4.eDate = QDate(2021, 1, 28);
     //    scheduledaterangeinfo4.state = false;
     //    scheduledaterangeinfo4.tData = getMonthScheduleDInfo().at(3);
 
@@ -232,7 +232,7 @@ TEST_F(test_monthscheduleview, updatedate)
     mMonthScheduleView->updateDate(2, getMonthScheduleDInfo().first());
 }
 
-//void CMonthScheduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>> &vCMDaySchedule, QVector<QGraphicsRectItem *> &schudeleShowItem)
+//void CMonthScheduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>> &vCMDaySchedule, QVector<QGraphicsRectItem *> &scheduleShowItem)
 TEST_F(test_monthscheduleview, updateDateShow)
 {
     QVector<MScheduleDateRangeInfo> scheduleinfo = getScheduleDateRangeInfo();
@@ -244,8 +244,8 @@ TEST_F(test_monthscheduleview, updateDateShow)
     mMonthScheduleView->updateDateShow(m_scheduledaterangeinfo, m_scheduleshowinfo);
 }
 
-//void CMonthScheduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum, QVector<QGraphicsRectItem *> &schudeleShowItem)
-TEST_F(test_monthscheduleview, createScheduleOtemWidget)
+//void CMonthScheduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, int cNum, QVector<QGraphicsRectItem *> &scheduleShowItem)
+TEST_F(test_monthscheduleview, createScheduleItemWidget)
 {
     QVector<MScheduleDateRangeInfo> scheduledaterangeinfo = getScheduleDateRangeInfo();
     QVector<QGraphicsRectItem *> m_scheduleshowinfo {};
@@ -253,7 +253,7 @@ TEST_F(test_monthscheduleview, createScheduleOtemWidget)
     mMonthScheduleView->createScheduleItemWidget(scheduledaterangeinfo.first(), 1, m_scheduleshowinfo);
 }
 
-//void CMonthScheduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum, QVector<QGraphicsRectItem *> &schudeleShowItem)
+//void CMonthScheduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, int cNum, QVector<QGraphicsRectItem *> &scheduleShowItem)
 TEST_F(test_monthscheduleview, createScheduleNumWidget)
 {
     MScheduleDateRangeInfo scheduledaterangeinfo = getScheduleDateRangeInfo().first();

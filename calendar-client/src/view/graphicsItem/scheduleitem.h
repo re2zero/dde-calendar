@@ -48,7 +48,7 @@ public:
     }
 private:
     //根据字体大小,宽度和高度将标题切换为多行
-    void splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm);
+    void splitText(QFont font, int w, int h, QString str, QStringList &listStr, QFontMetrics &fontM);
 private slots:
     void timeFormatChanged(int value);
 private:

@@ -77,7 +77,7 @@ CGraphicsView::~CGraphicsView()
 {
     m_timer->stop();
     m_timer->deleteLater();
-    clearSchdule();
+    clearSchedule();
 }
 
 void CGraphicsView::setMargins(int left, int top, int right, int bottom)
@@ -118,7 +118,7 @@ void CGraphicsView::slotCreate(const QDateTime &date)
     dlg.setDate(date);
 
     if (dlg.exec() == DDialog::Accepted) {
-        emit signalsUpdateShcedule();
+        emit signalsUpdateSchedule();
     }
     emit signalViewtransparentFrame(0);
 }
@@ -160,7 +160,7 @@ bool MScheduleTimeThan(const ScheduleDataInfo &s1, const ScheduleDataInfo &s2)
 
 void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, const ScheduleDataInfo &info)
 {
-    clearSchdule();
+    clearSchedule();
     QVector<ScheduleDataInfo> vListData;
     vListData = m_scheduleInfo;
 
@@ -210,36 +210,36 @@ void CGraphicsView::upDateInfoShow(const CGraphicsView::DragStatus &status, cons
             scheduleClassificationType(currentInfo, info);
 
             for (int m = 0; m < info.count(); m++) {
-                int tnum = info.at(m).vData.count();
+                int tNum = info.at(m).vData.count();
                 //如果为周视图则要显示一个位置显示日程的数目
                 if (m_viewPos == WeekPos) {
-                    if (tnum > m_sMaxNum) {
-                        tnum = m_sMaxNum;
-                        for (int n = 0; n < tnum - 1; n++) {
-                            addSchduleItem(info.at(m).vData.at(n), currentDate, n + 1,
-                                           tnum, 0, m_viewType, m_sMaxNum);
+                    if (tNum > m_sMaxNum) {
+                        tNum = m_sMaxNum;
+                        for (int n = 0; n < tNum - 1; n++) {
+                            addScheduleItem(info.at(m).vData.at(n), currentDate, n + 1,
+                                            tNum, 0, m_viewType, m_sMaxNum);
                         }
                         //添加“...”item
-                        int index = tnum - 2;
+                        int index = tNum - 2;
                         if (index < 0) {
-                            qWarning() << "week view create error,tnum -2 :" << index;
+                            qWarning() << "week view create error,tNum -2 :" << index;
                             index = 1;
                         }
                         ScheduleDataInfo tdetaliinfo = info.at(m).vData.at(index);
                         tdetaliinfo.setTitleName("...");
                         tdetaliinfo.setType(3);
-                        addSchduleItem(tdetaliinfo, currentDate, tnum, tnum, 1,
-                                       m_viewType, m_sMaxNum);
+                        addScheduleItem(tdetaliinfo, currentDate, tNum, tNum, 1,
+                                        m_viewType, m_sMaxNum);
                     } else {
-                        for (int n = 0; n < tnum; n++) {
-                            addSchduleItem(info.at(m).vData.at(n), currentDate, n + 1,
-                                           tnum, 0, m_viewType, m_sMaxNum);
+                        for (int n = 0; n < tNum; n++) {
+                            addScheduleItem(info.at(m).vData.at(n), currentDate, n + 1,
+                                            tNum, 0, m_viewType, m_sMaxNum);
                         }
                     }
                 } else {
-                    for (int n = 0; n < tnum; n++) {
-                        addSchduleItem(info.at(m).vData.at(n), currentDate, n + 1,
-                                       tnum, 0, m_viewType, m_sMaxNum);
+                    for (int n = 0; n < tNum; n++) {
+                        addScheduleItem(info.at(m).vData.at(n), currentDate, n + 1,
+                                        tNum, 0, m_viewType, m_sMaxNum);
                     }
                 }
             }
@@ -279,7 +279,7 @@ void CGraphicsView::MoveInfoProcess(ScheduleDataInfo &info, const QPointF &pos)
     upDateInfoShow(ChangeWhole, info);
 }
 
-void CGraphicsView::addSchduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
+void CGraphicsView::addScheduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
 {
     CScheduleItem *item = new CScheduleItem(
         m_coorManage->getDrawRegion(date, info.getBeginDateTime(),
@@ -314,7 +314,7 @@ void CGraphicsView::setSelectSearchSchedule(const ScheduleDataInfo &info)
     }
 }
 
-void CGraphicsView::clearSchdule()
+void CGraphicsView::clearSchedule()
 {
     for (int i = 0; i < m_vScheduleItem.size(); i++) {
         m_Scene->removeItem(m_vScheduleItem.at(i));
@@ -389,13 +389,13 @@ void CGraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
     CScheduleItem *item = dynamic_cast<CScheduleItem *>(itemAt(event->pos()));
 
     if (item == nullptr) {
-        QPointF senceposs = mapToScene(event->pos());
+        QPointF scenePoss = mapToScene(event->pos());
         emit signalViewtransparentFrame(1);
         CScheduleDlg dlg(1, this);
-        QDateTime tDatatime = m_coorManage->getDate(senceposs);
+        QDateTime tDatatime = m_coorManage->getDate(scenePoss);
         dlg.setDate(tDatatime);
         if (dlg.exec() == DDialog::Accepted) {
-            emit signalsUpdateShcedule();
+            emit signalsUpdateSchedule();
         }
         emit signalViewtransparentFrame(0);
         return;
@@ -439,7 +439,7 @@ void CGraphicsView::slotDoubleEvent(int type)
 {
     Q_UNUSED(type);
     m_updateDflag = true;
-    emit signalsUpdateShcedule();
+    emit signalsUpdateSchedule();
 }
 
 void CGraphicsView::slotScrollBar()
@@ -507,7 +507,7 @@ void CGraphicsView::paintEvent(QPaintEvent *event)
     int t_width = viewport()->width() + 2;
     //绘制水平线
     if (m_LRFlag) {
-        if (m_cuttrnttimetype == 0) {
+        if (m_currentTimeType == 0) {
             t_painter.save();
             t_painter.setPen(m_LRPen);
 
@@ -542,7 +542,7 @@ void CGraphicsView::scrollBarValueChangedSlot()
     int viewHeight = viewport()->height();
     m_vLRLarge.clear();
     QPointF leftToprealPos = mapToScene(QPoint(0, 0));
-    QPointF leftBttomrealPos = mapToScene(QPoint(0, viewHeight));
+    QPointF leftbottomrealPos = mapToScene(QPoint(0, viewHeight));
     m_timeInterval = m_Scene->height() / 24.0;
     qreal beginpos = static_cast<qreal>(qFloor(leftToprealPos.y() / m_timeInterval) * m_timeInterval);
 
@@ -552,23 +552,23 @@ void CGraphicsView::scrollBarValueChangedSlot()
 
     QVector<int> vHours;
 
-    for (qreal i = beginpos; i < leftBttomrealPos.y(); i = i + m_timeInterval) {
-        QPoint point = mapFromScene(leftBttomrealPos.x(), i);
+    for (qreal i = beginpos; i < leftbottomrealPos.y(); i = i + m_timeInterval) {
+        QPoint point = mapFromScene(leftbottomrealPos.x(), i);
         m_vLRLarge.append(point.y());
         vHours.append(qFloor(i / m_timeInterval + 0.5));
     }
 
     qreal currentTime = static_cast<qreal>(m_coorManage->getHeight(m_currentDateTime.time()));
 
-    if (currentTime > beginpos && currentTime < leftBttomrealPos.y()) {
-        m_cuttrnttimetype = 1;
-        QPoint point = mapFromScene(leftBttomrealPos.x(), currentTime);
+    if (currentTime > beginpos && currentTime < leftbottomrealPos.y()) {
+        m_currentTimeType = 1;
+        QPoint point = mapFromScene(leftbottomrealPos.x(), currentTime);
         m_vLRLarge.append(point.y());
         vHours.append(qFloor(currentTime / m_timeInterval + 0.5));
-        emit signalsPosHours(m_vLRLarge, vHours, m_cuttrnttimetype);
+        emit signalsPosHours(m_vLRLarge, vHours, m_currentTimeType);
     } else {
-        m_cuttrnttimetype = 0;
-        emit signalsPosHours(m_vLRLarge, vHours, m_cuttrnttimetype);
+        m_currentTimeType = 0;
+        emit signalsPosHours(m_vLRLarge, vHours, m_currentTimeType);
     }
     scene()->update();
     update();
@@ -579,12 +579,12 @@ CGraphicsView::PosInItem CGraphicsView::getPosInItem(const QPoint &p, const QRec
     QPointF scenePos = this->mapToScene(p);
     QPointF itemPos = QPointF(scenePos.x() - itemRect.x(),
                               scenePos.y() - itemRect.y());
-    qreal bottomy = itemRect.height() - itemPos.y();
+    qreal bottomY = itemRect.height() - itemPos.y();
 
     if (itemPos.y() < 5) {
         return TOP;
     }
-    if (bottomy < 5) {
+    if (bottomY < 5) {
         return BOTTOM;
     }
 
@@ -631,8 +631,8 @@ void CGraphicsView::RightClickToCreate(QGraphicsItem *listItem, const QPoint &po
     Q_UNUSED(listItem);
     m_rightMenu->clear();
     m_rightMenu->addAction(m_createAction);
-    QPointF senceposs = mapToScene(pos);
-    m_createDate = m_coorManage->getDate(senceposs);
+    QPointF scenePoss = mapToScene(pos);
+    m_createDate = m_coorManage->getDate(scenePoss);
     m_rightMenu->exec(QCursor::pos());
 }
 

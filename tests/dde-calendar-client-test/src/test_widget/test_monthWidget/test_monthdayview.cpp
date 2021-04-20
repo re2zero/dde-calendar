@@ -50,10 +50,10 @@ TEST_F(test_monthdayview, setTheMe)
     mMonthDayView->setTheMe(2);
 }
 
-//void CMonthDayView::setsearchfalg(bool flag)
-TEST_F(test_monthdayview, setsearchfalg)
+//void CMonthDayView::setSearchflag(bool flag)
+TEST_F(test_monthdayview, setSearchflag)
 {
-    mMonthDayView->setsearchfalg(false);
+    mMonthDayView->setSearchflag(false);
 }
 
 //void CMonthWidget::setDate(const QDate date[12])

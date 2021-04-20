@@ -86,10 +86,10 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     slotSetMaxSize();
     //如果为平板模式则使其大小为屏幕大小
     if (!TabletConfig::isTablet()) {
-        QByteArray arrybyte = CConfigSettings::value("base.geometry").toByteArray();
+        QByteArray arrayByte = CConfigSettings::value("base.geometry").toByteArray();
         bool isOk = false;
         int state = CConfigSettings::value("base.state").toInt(&isOk);
-        if (!arrybyte.isEmpty() && isOk) {
+        if (!arrayByte.isEmpty() && isOk) {
             Qt::WindowStates winStates = static_cast<Qt::WindowStates>(state);
             //如果上次窗口的状态为最小化，则设置窗口状态为普通状态
             if (winStates == Qt::WindowState::WindowMinimized) {
@@ -100,7 +100,7 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
             }
             setWindowState(winStates);
             if (winStates != Qt::WindowState::WindowMaximized) {
-                restoreGeometry(arrybyte);
+                restoreGeometry(arrayByte);
             }
         }
     }
@@ -292,7 +292,7 @@ void Calendarmainwindow::OpenSchedule(QString job)
     //弹出编辑对话框
     CMyScheduleView dlg(out, this);
     dlg.exec();
-    slotWUpdateShcedule();
+    slotWUpdateSchedule();
 }
 
 void Calendarmainwindow::ActiveWindow()
@@ -340,11 +340,11 @@ void Calendarmainwindow::initUI()
     m_stackWidget->setContentsMargins(0, 0, 0, 0);
     m_stackWidget->setDuration(250);
     createview();
-    QHBoxLayout *tmainLayout = new QHBoxLayout;
-    tmainLayout->setMargin(0);
-    tmainLayout->setSpacing(0);
-    tmainLayout->setContentsMargins(0, 0, 0, 0);
-    tmainLayout->addWidget(m_stackWidget);
+    QHBoxLayout *tMainLayout = new QHBoxLayout;
+    tMainLayout->setMargin(0);
+    tMainLayout->setSpacing(0);
+    tMainLayout->setContentsMargins(0, 0, 0, 0);
+    tMainLayout->addWidget(m_stackWidget);
     m_contentBackground = new DFrame;
     m_contentBackground->setAccessibleName("ScheduleSearchWidgetBackgroundFrame");
     m_contentBackground->setObjectName("ScheduleSearchWidgetBackgroundFrame");
@@ -365,13 +365,13 @@ void Calendarmainwindow::initUI()
     ssLayout->setContentsMargins(0, 10, 0, 10);
     ssLayout->addWidget(m_scheduleSearchView);
     m_contentBackground->setLayout(ssLayout);
-    tmainLayout->addWidget(m_contentBackground);
+    tMainLayout->addWidget(m_contentBackground);
     m_contentBackground->setVisible(false);
 
     DWidget *maincentralWidget = new DWidget(this);
     maincentralWidget->setAccessibleName("mainCentralWidget");
 
-    maincentralWidget->setLayout(tmainLayout);
+    maincentralWidget->setLayout(tMainLayout);
 
     setCentralWidget(maincentralWidget);
     m_transparentFrame = new DFrame(this);
@@ -381,9 +381,9 @@ void Calendarmainwindow::initUI()
     m_animation = new QPropertyAnimation(this);
 
     //delete快捷键
-    QShortcut *dshortcut = new QShortcut(this);
-    dshortcut->setKey(QKeySequence(QLatin1String("Delete")));
-    connect(dshortcut, &QShortcut::activated, this, &Calendarmainwindow::slotDeleteitem);
+    QShortcut *dShortcut = new QShortcut(this);
+    dShortcut->setKey(QKeySequence(QLatin1String("Delete")));
+    connect(dShortcut, &QShortcut::activated, this, &Calendarmainwindow::slotDeleteitem);
 }
 
 void Calendarmainwindow::initConnection()
@@ -442,7 +442,7 @@ void Calendarmainwindow::createview()
     //如果默认视图不在范围内则设置为月窗口显示
     if (m_defaultIndex < 0 || m_defaultIndex >= m_stackWidget->count()) {
         m_defaultIndex = 1;
-        qWarning() << "set default view index beyound,index:" << m_defaultIndex;
+        qWarning() << "set default view index beyond,index:" << m_defaultIndex;
     }
     m_stackWidget->setCurrentIndex(m_defaultIndex);
     m_buttonBox->button(m_defaultIndex)->setChecked(true);
@@ -495,7 +495,7 @@ void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
     viewWindow(index, true);
 }
 
-void Calendarmainwindow::slotWUpdateShcedule()
+void Calendarmainwindow::slotWUpdateSchedule()
 {
     if (m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_scheduleSearchView->slotsetSearch(m_searchEdit->text());

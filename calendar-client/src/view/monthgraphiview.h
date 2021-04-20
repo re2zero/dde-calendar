@@ -111,6 +111,6 @@ private:
     QMap<QDate, int>                    m_festivallist;
     int                                 m_currentMonth;
     CMonthScheduleView                  *m_MonthScheduleView = nullptr;
-    QMap<QDate, QVector<ScheduleDataInfo> >      m_shceludelistdata;
+    QMap<QDate, QVector<ScheduleDataInfo>> m_schedulelistdata;
 };
 #endif // MONTHGRAPHIVIEW_H

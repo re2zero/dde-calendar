@@ -68,30 +68,30 @@ void CWeekWindow::initUI()
 {
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedSize(DDEWeekCalendar::WTodayWindth, DDEWeekCalendar::WTodayHeight);
-    DPalette todaypa = m_today->palette();
+    DPalette todayPa = m_today->palette();
     QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-    todaypa.setColor(DPalette::ButtonText, todayColor);
-    todaypa.setColor(DPalette::Dark, Qt::white);
-    todaypa.setColor(DPalette::Light, Qt::white);
-    QColor sbcolor("#002A57");
-    sbcolor.setAlphaF(0.05);
-    todaypa.setColor(DPalette::Shadow, sbcolor);
+    todayPa.setColor(DPalette::ButtonText, todayColor);
+    todayPa.setColor(DPalette::Dark, Qt::white);
+    todayPa.setColor(DPalette::Light, Qt::white);
+    QColor sbColor("#002A57");
+    sbColor.setAlphaF(0.05);
+    todayPa.setColor(DPalette::Shadow, sbColor);
     QFont todayfont;
     todayfont.setWeight(QFont::Medium);
     todayfont.setPixelSize(DDECalendar::FontSizeFourteen);
     m_today->setFont(todayfont);
-    m_today->setPalette(todaypa);
+    m_today->setPalette(todayPa);
     //新建年份label
     m_YearLabel = new QLabel();
-    m_YearLabel->setFixedHeight(DDEWeekCalendar::W_YLableHeight);
+    m_YearLabel->setFixedHeight(DDEWeekCalendar::W_YLabelHeight);
 
     QFont t_labelF;
     t_labelF.setWeight(QFont::Medium);
     t_labelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
     m_YearLabel->setFont(t_labelF);
-    DPalette Lunadpa = m_YearLabel->palette();
-    Lunadpa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
-    m_YearLabel->setPalette(Lunadpa);
+    DPalette LunaPa = m_YearLabel->palette();
+    LunaPa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
+    m_YearLabel->setPalette(LunaPa);
 
     m_YearLunarLabel = new QLabel(this);
     m_YearLunarLabel->setFixedSize(DDEWeekCalendar::W_YLunatLabelWindth, DDEWeekCalendar::W_YLunatLabelHeight);
@@ -99,7 +99,7 @@ void CWeekWindow::initUI()
     m_weekview  = new CWeekView(&CalendarDateDataManager::getWeekNumOfYear, this);
 
     m_weekLabel = new QLabel();
-    m_weekLabel->setFixedHeight(DDEWeekCalendar::W_YLableHeight);
+    m_weekLabel->setFixedHeight(DDEWeekCalendar::W_YLabelHeight);
     QFont weeklabelF;
     weeklabelF.setWeight(QFont::Medium);
     weeklabelF.setPixelSize(DDECalendar::FontSizeFourteen);
@@ -109,10 +109,10 @@ void CWeekWindow::initUI()
     m_weekLabel->setPalette(wpa);
     m_weekLabel->setText(tr("Week"));
 
-    QFont ylabelF;
-    ylabelF.setWeight(QFont::Medium);
-    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
-    m_YearLunarLabel->setFont(ylabelF);
+    QFont yLabelF;
+    yLabelF.setWeight(QFont::Medium);
+    yLabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+    m_YearLunarLabel->setFont(yLabelF);
     DPalette YearLpa = m_YearLunarLabel->palette();
     YearLpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
 
@@ -136,7 +136,7 @@ void CWeekWindow::initUI()
     m_todayframe->setContentsMargins(0, 0, 0, 0);
     m_todayframe->setRoundState(true, true, true, true);
     m_todayframe->setBColor(Qt::white);
-    m_todayframe->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_todayframe->setFixedHeight(DDEYearCalendar::Y_MLabelHeight);
     m_todayframe->setboreder(1);
     QHBoxLayout *todaylayout = new QHBoxLayout;
     todaylayout->setMargin(0);
@@ -154,34 +154,34 @@ void CWeekWindow::initUI()
 
     m_weekHeadView = new CWeekHeadView(this);
     m_scheduleView = new CScheduleView(this);
-    m_scheduleView->setviewMagin(73, 109 + 30, 0, 0);
+    m_scheduleView->setviewMargin(73, 109 + 30, 0, 0);
     m_scheduleView->setRange(763, 1032, QDate(2019, 8, 12), QDate(2019, 8, 18));
 
-    m_mainhLayout = new QVBoxLayout;
-    m_mainhLayout->setMargin(0);
-    m_mainhLayout->setSpacing(0);
-    m_mainhLayout->setContentsMargins(8, 20, 0, 9);
-    m_mainhLayout->addWidget(m_weekHeadView);
-    m_mainhLayout->addWidget(m_scheduleView);
+    m_mainHLayout = new QVBoxLayout;
+    m_mainHLayout->setMargin(0);
+    m_mainHLayout->setSpacing(0);
+    m_mainHLayout->setContentsMargins(8, 20, 0, 9);
+    m_mainHLayout->addWidget(m_weekHeadView);
+    m_mainHLayout->addWidget(m_scheduleView);
     QVBoxLayout *hhLayout = new QVBoxLayout;
     hhLayout->setMargin(0);
     hhLayout->setSpacing(0);
     hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addLayout(yeartitleLayout);
-    hhLayout->addLayout(m_mainhLayout);
+    hhLayout->addLayout(m_mainHLayout);
 
-    m_tmainLayout = new QHBoxLayout;
-    m_tmainLayout->setMargin(0);
-    m_tmainLayout->setSpacing(0);
-    m_tmainLayout->setContentsMargins(0, 0, 10, 0);
-    m_tmainLayout->addLayout(hhLayout);
+    m_tMainLayout = new QHBoxLayout;
+    m_tMainLayout->setMargin(0);
+    m_tMainLayout->setSpacing(0);
+    m_tMainLayout->setContentsMargins(0, 0, 10, 0);
+    m_tMainLayout->addLayout(hhLayout);
 
     QVBoxLayout *ssLayout = new QVBoxLayout;
     ssLayout->setMargin(0);
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 0, 0, 10);
-    m_tmainLayout->addLayout(ssLayout);
-    this->setLayout(m_tmainLayout);
+    m_tMainLayout->addLayout(ssLayout);
+    this->setLayout(m_tMainLayout);
 
     setTabOrder(m_weekview, m_today);
     setTabOrder(m_today, m_scheduleView);
@@ -219,31 +219,31 @@ void CWeekWindow::initConnection()
 void CWeekWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
-        DPalette todaypa = m_today->palette();
+        DPalette todayPa = m_today->palette();
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-        todaypa.setColor(DPalette::ButtonText, todayColor);
-        todaypa.setColor(DPalette::Dark, Qt::white);
-        todaypa.setColor(DPalette::Light, Qt::white);
-        QColor sbcolor("#002A57");
-        sbcolor.setAlphaF(0.05);
-        todaypa.setColor(DPalette::Shadow, sbcolor);
-        m_today->setPalette(todaypa);
+        todayPa.setColor(DPalette::ButtonText, todayColor);
+        todayPa.setColor(DPalette::Dark, Qt::white);
+        todayPa.setColor(DPalette::Light, Qt::white);
+        QColor sbColor("#002A57");
+        sbColor.setAlphaF(0.05);
+        todayPa.setColor(DPalette::Shadow, sbColor);
+        m_today->setPalette(todayPa);
         QColor todayhover = "#000000";
         todayhover.setAlphaF(0.1);
         QColor todaypress = "#000000";
         todaypress.setAlphaF(0.2);
         m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
         m_today->setTColor(todayColor, "#001A2E", "#0081FF");
-        m_today->setshadowColor(sbcolor);
+        m_today->setshadowColor(sbColor);
         //返回今天按钮的背景色
         m_todayframe->setBColor(Qt::white);
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(pa);
         m_YearLabel->setForegroundRole(DPalette::WindowText);
-        DPalette Lunapa = m_YearLunarLabel->palette();
-        Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-        m_YearLunarLabel->setPalette(Lunapa);
+        DPalette LunaPa = m_YearLunarLabel->palette();
+        LunaPa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+        m_YearLunarLabel->setPalette(LunaPa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
 
         DPalette wpa = m_weekLabel->palette();
@@ -251,30 +251,30 @@ void CWeekWindow::setTheMe(int type)
         m_weekLabel->setPalette(wpa);
         m_weekLabel->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
-        DPalette todaypa = m_today->palette();
+        DPalette todayPa = m_today->palette();
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-        todaypa.setColor(DPalette::ButtonText, todayColor);
-        todaypa.setColor(DPalette::Dark, "#414141");
-        todaypa.setColor(DPalette::Light, "#484848");
-        QColor sbcolor("#000000");
-        sbcolor.setAlphaF(0.05);
-        todaypa.setColor(DPalette::Shadow, sbcolor);
-        m_today->setPalette(todaypa);
+        todayPa.setColor(DPalette::ButtonText, todayColor);
+        todayPa.setColor(DPalette::Dark, "#414141");
+        todayPa.setColor(DPalette::Light, "#484848");
+        QColor sbColor("#000000");
+        sbColor.setAlphaF(0.05);
+        todayPa.setColor(DPalette::Shadow, sbColor);
+        m_today->setPalette(todayPa);
         m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
         m_today->setTColor(todayColor, "#FFFFFF", "#0081FF");
-        m_today->setshadowColor(sbcolor);
+        m_today->setshadowColor(sbColor);
         //设置返回今天按钮的背景色
-        QColor bcolor = "#FFFFFF";
-        bcolor.setAlphaF(0.05);
-        m_todayframe->setBColor(bcolor);
+        QColor bColor = "#FFFFFF";
+        bColor.setAlphaF(0.05);
+        m_todayframe->setBColor(bColor);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(pa);
         m_YearLabel->setForegroundRole(DPalette::WindowText);
-        DPalette Lunapa = m_YearLunarLabel->palette();
-        Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
-        m_YearLunarLabel->setPalette(Lunapa);
+        DPalette LunaPa = m_YearLunarLabel->palette();
+        LunaPa.setColor(DPalette::WindowText, QColor("#798BA8"));
+        m_YearLunarLabel->setPalette(LunaPa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
         DPalette wpa = m_weekLabel->palette();
         wpa.setColor(DPalette::WindowText, QColor("#717171"));
@@ -301,7 +301,7 @@ void CWeekWindow::setTime(QTime time)
  */
 void CWeekWindow::setSearchWFlag(bool flag)
 {
-    m_searchfalg = flag;
+    m_searchFlag = flag;
     update();
 }
 
@@ -376,8 +376,8 @@ void CWeekWindow::updateShowLunar()
 {
     getLunarInfo();
     m_YearLunarLabel->setText(m_lunarYear);
-    QMap<QDate, CaHuangLiDayInfo> _weekHuangliInfo = m_calendarManager->getScheduleTask()->getHuangliInfo(m_startDate, m_stopDate);
-    m_weekHeadView->setHunagliInfo(_weekHuangliInfo);
+    QMap<QDate, CaHuangLiDayInfo> _weekHuangLiInfo = m_calendarManager->getScheduleTask()->getHuangLiInfo(m_startDate, m_stopDate);
+    m_weekHeadView->setHunagLiInfo(_weekHuangLiInfo);
 }
 
 /**
@@ -508,26 +508,26 @@ void CWeekWindow::slotScheduleHide()
  */
 void CWeekWindow::resizeEvent(QResizeEvent *event)
 {
-    qreal headh = height() * 0.0924 + 0.5;
+    qreal headH = height() * 0.0924 + 0.5;
     qreal dw = width() * 0.4186 + 0.5;
     int dh = 36;
     int winframe = 10;
-    m_mainhLayout->setContentsMargins(10, 20, 0, 10);
+    m_mainHLayout->setContentsMargins(10, 20, 0, 10);
 
-    if (m_searchfalg) {
-        m_tmainLayout->setContentsMargins(0, 0, 0, 0);
+    if (m_searchFlag) {
+        m_tMainLayout->setContentsMargins(0, 0, 0, 0);
     } else {
         winframe += 10;
-        m_tmainLayout->setContentsMargins(0, 0, 10, 0);
+        m_tMainLayout->setContentsMargins(0, 0, 10, 0);
     }
 
     //添加2个按钮的宽度 36+36。原来m_weekview 不包含前后按钮
-    if (!m_searchfalg) {
+    if (!m_searchFlag) {
         m_weekview->setFixedSize(qRound(dw + 72), dh);
     } else {
         m_weekview->setFixedSize(qRound(dw - 100 + 72), dh);
     }
-    m_weekHeadView->setFixedSize(width() - winframe, qRound(headh));
+    m_weekHeadView->setFixedSize(width() - winframe, qRound(headH));
     QWidget::resizeEvent(event);
 }
 

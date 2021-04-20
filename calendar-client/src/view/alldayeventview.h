@@ -89,4 +89,4 @@ private:
     bool m_updateDflag = false;
 };
 
-#endif // CSHCEDULEDAYVIEW_H
+#endif // CSCHEDULEDAYVIEW_H

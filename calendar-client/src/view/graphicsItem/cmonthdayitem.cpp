@@ -153,9 +153,9 @@ void CMonthDayItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     if (m_Date == QDate::currentDate()) {
         //设置不透明度为1
         painter->setOpacity(1);
-        QFont tfont = m_dayNumFont;
-        tfont.setPixelSize(DDECalendar::FontSizeTwenty);
-        painter->setFont(tfont);
+        QFont tFont = m_dayNumFont;
+        tFont.setPixelSize(DDECalendar::FontSizeTwenty);
+        painter->setFont(tFont);
         painter->setPen(m_dayNumCurrentColor);
         painter->save();
         painter->setBrush(QBrush(m_currentColor));
@@ -180,7 +180,7 @@ void CMonthDayItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         QFontMetrics metrics(m_LunerFont);
         int Lunarwidth = metrics.width(m_DayLunar);
         qreal filleRectX = this->rect().width() - 12 - 3 - (58 + Lunarwidth) / 2;
-        QRectF fillRectt(this->rect().x() + filleRectX,
+        QRectF fillRectT(this->rect().x() + filleRectX,
                          this->rect().y() + 9,
                          12,
                          12);
@@ -190,11 +190,11 @@ void CMonthDayItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
             switch (m_DayStatus) {
             case H_WORK: {
                 QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/ban.svg");
-                painter->drawPixmap(fillRectt.toRect(), pixmap);
+                painter->drawPixmap(fillRectT.toRect(), pixmap);
             } break;
             case H_REST: {
                 QPixmap pixmap = DHiDPIHelper::loadNxPixmap(":/resources/icon/xiu.svg");
-                painter->drawPixmap(fillRectt.toRect(), pixmap);
+                painter->drawPixmap(fillRectT.toRect(), pixmap);
             } break;
             default:
                 break;
@@ -207,7 +207,7 @@ void CMonthDayItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
                           Qt::AlignCenter, m_DayLunar);
     }
     //如果有焦点则绘制焦点效果
-    if (getItemFoucs()) {
+    if (getItemFocus()) {
         const int offset = 1;
         //获取tab图形
         QRectF drawRect(rect().x() + offset, rect().y() + offset, rect().width() - offset * 2, rect().height() - offset * 2);

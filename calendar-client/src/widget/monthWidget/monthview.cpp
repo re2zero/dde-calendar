@@ -83,9 +83,9 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDataI
     if (isShow) {
         //获取当前鼠标位置
         QPoint remindPos = QCursor::pos();
-        CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-                                      out.getType());
-        m_remindWidget->setData(out, gdcolor);
+        CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
+            out.getType());
+        m_remindWidget->setData(out, gdColor);
         //获取屏幕大小
         QRect desktopRect = QApplication::desktop()->rect();
         //根据提示框在屏幕的位置设置箭头方向
@@ -105,12 +105,12 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDataI
 void CMonthView::resizeEvent(QResizeEvent *event)
 {
     DWidget::resizeEvent(event);
-    int leftmagin = 10;
-    int topmagin = 10;
-    m_leftmaagin = leftmagin;
-    m_topmagin = topmagin;
-    m_mainLayout->setContentsMargins(leftmagin, topmagin, 0, 10);
-    m_weekIndicator->setFixedSize(width() - leftmagin, static_cast<int>(height() * 0.1042 + 0.5));
+    int leftMargin = 10;
+    int topMargin = 10;
+    m_leftMargin = leftMargin;
+    m_topMargin = topMargin;
+    m_mainLayout->setContentsMargins(leftMargin, topMargin, 0, 10);
+    m_weekIndicator->setFixedSize(width() - leftMargin, static_cast<int>(height() * 0.1042 + 0.5));
 }
 
 void CMonthView::mousePressEvent(QMouseEvent *event)
@@ -149,12 +149,12 @@ void CMonthView::setShowDate(const QVector<QDate> &showDate)
 }
 
 /**
- * @brief CMonthView::setHuangliInfo        设置黄历信息
- * @param huangliInfo
+ * @brief CMonthView::setHuangLiInfo        设置黄历信息
+ * @param huangLiInfo
  */
-void CMonthView::setHuangliInfo(const QMap<QDate, CaHuangLiDayInfo> &huangliInfo)
+void CMonthView::setHuangLiInfo(const QMap<QDate, CaHuangLiDayInfo> &huangLiInfo)
 {
-    m_monthGraphicsView->setLunarInfo(huangliInfo);
+    m_monthGraphicsView->setLunarInfo(huangLiInfo);
 }
 
 /**
@@ -200,9 +200,9 @@ void CMonthView::setRemindWidgetTimeFormat(QString timeformat)
 }
 
 /**
- * @brief CMonthView::deletselectschedule 快捷键删除日程
+ * @brief CMonthView::deleteSelectSchedule 快捷键删除日程
  */
-void CMonthView::deletselectschedule()
+void CMonthView::deleteSelectSchedule()
 {
     m_monthGraphicsView->slotDeleteItem();
 }

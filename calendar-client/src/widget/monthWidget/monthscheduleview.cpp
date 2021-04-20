@@ -53,10 +53,10 @@ void CMonthScheduleView::setallsize(int w, int h, int left, int top, int buttom,
 {
     m_width = w;
     m_height = h;
-    m_buttommagin = buttom;
-    m_leftMagin = left;
-    m_topMagin = top;
-    m_cNum = static_cast<int>(((m_height - m_topMagin - m_buttommagin) / 6.0 + 0.5 - 27) / (itemHeight + 1));
+    m_bottomMargin = buttom;
+    m_leftMargin = left;
+    m_topMargin = top;
+    m_cNum = static_cast<int>(((m_height - m_topMargin - m_bottomMargin) / 6.0 + 0.5 - 27) / (itemHeight + 1));
 }
 
 void CMonthScheduleView::setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, int currentMonth)
@@ -91,7 +91,7 @@ void CMonthScheduleView::updateData()
         m_weekSchedule[i]->clearItem();
     }
     //保护数据防止越界
-    if (m_data.count() != DDEMonthCalendar::ItemSizeofMonthDay || m_cNum < 1)
+    if (m_data.count() != DDEMonthCalendar::ItemSizeOfMonthDay || m_cNum < 1)
         return;
     //开始结束时间
     QMap<QDate, QVector<ScheduleDataInfo> >::iterator _iter = m_data.begin();
@@ -101,7 +101,7 @@ void CMonthScheduleView::updateData()
     m_beginDate = begindate;
     m_endDate = enddate;
     for (int i = 0; i < m_weekSchedule.size(); ++i) {
-        m_weekSchedule[i]->setHeight(m_ItemHeight, qRound((m_height - m_topMagin - m_buttommagin) / 6.0 - 27));
+        m_weekSchedule[i]->setHeight(m_ItemHeight, qRound((m_height - m_topMargin - m_bottomMargin) / 6.0 - 27));
         m_weekSchedule[i]->setData(m_data, begindate.addDays(i * 7), begindate.addDays(i * 7 + 6));
         QVector<QVector<MScheduleDateRangeInfo>> mSchedule = m_weekSchedule[i]->getMScheduleInfo();
         updateDateShow(mSchedule, m_weekSchedule[i]->getScheduleShowItem());
@@ -165,26 +165,26 @@ void CMonthScheduleView::updateDate(const int row, const ScheduleDataInfo &info)
         updateDateShow(mSchedule, m_weekSchedule[i]->getScheduleShowItem());
     }
 }
-void CMonthScheduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>> &vCMDaySchedule, QVector<QGraphicsRectItem *> &schudeleShowItem)
+void CMonthScheduleView::updateDateShow(QVector<QVector<MScheduleDateRangeInfo>> &vCMDaySchedule, QVector<QGraphicsRectItem *> &scheduleShowItem)
 {
     for (int i = 0; i < vCMDaySchedule.count(); i++) {
         for (int j = 0; j < vCMDaySchedule[i].count(); j++) {
             if (vCMDaySchedule[i].at(j).state) {
-                createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1, schudeleShowItem);
+                createScheduleNumWidget(vCMDaySchedule[i].at(j), i + 1, scheduleShowItem);
             } else {
-                createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1, schudeleShowItem);
+                createScheduleItemWidget(vCMDaySchedule[i].at(j), i + 1, scheduleShowItem);
             }
         }
     }
 }
 
-void CMonthScheduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum, QVector<QGraphicsRectItem *> &schudeleShowItem)
+void CMonthScheduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, int cNum, QVector<QGraphicsRectItem *> &scheduleShowItem)
 {
     ScheduleDataInfo gd = info.tData;
     QPoint pos;
     int fw;
     int fh;
-    computePos(cnum, info.bdate, info.edate, pos, fw, fh);
+    computePos(cNum, info.bdate, info.edate, pos, fw, fh);
     CMonthScheduleItem *gwi = new CMonthScheduleItem(QRect(pos.x(), pos.y(), fw, fh), nullptr);
     m_Scene->addItem(gwi);
 
@@ -192,17 +192,17 @@ void CMonthScheduleView::createScheduleItemWidget(MScheduleDateRangeInfo info, i
 
     QColor TransparentC = "#000000";
     TransparentC.setAlphaF(0.05);
-    schudeleShowItem.append(gwi);
+    scheduleShowItem.append(gwi);
 }
 
-void CMonthScheduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum, QVector<QGraphicsRectItem *> &schudeleShowItem)
+void CMonthScheduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, int cNum, QVector<QGraphicsRectItem *> &scheduleShowItem)
 {
     int type = CScheduleDataManage::getScheduleDataManage()->getTheme();
     CMonthScheduleNumItem *gwi = new CMonthScheduleNumItem(nullptr);
     QPoint pos;
     int fw;
     int fh;
-    computePos(cnum, info.bdate, info.edate, pos, fw, fh);
+    computePos(cNum, info.bdate, info.edate, pos, fw, fh);
     QColor gradientFromC = "#000000";
     gradientFromC.setAlphaF(0.00);
     gwi->setColor(gradientFromC, gradientFromC);
@@ -222,19 +222,19 @@ void CMonthScheduleView::createScheduleNumWidget(MScheduleDateRangeInfo info, in
     gwi->setRect(pos.x(), pos.y(), fw, fh);
     gwi->setData(info.num);
     gwi->setDate(info.bdate);
-    schudeleShowItem.append(gwi);
+    scheduleShowItem.append(gwi);
 }
 
-void CMonthScheduleView::computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh)
+void CMonthScheduleView::computePos(int cNum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh)
 {
-    int brow = static_cast<int>((m_beginDate.daysTo(bgeindate)) / DDEMonthCalendar::AFewDaysofWeek);
-    int bcol = (m_beginDate.daysTo(bgeindate)) % DDEMonthCalendar::AFewDaysofWeek;
-    int ecol = (m_beginDate.daysTo(enddate)) % DDEMonthCalendar::AFewDaysofWeek;
+    int brow = static_cast<int>((m_beginDate.daysTo(bgeindate)) / DDEMonthCalendar::AFewDaysOfWeek);
+    int bcol = (m_beginDate.daysTo(bgeindate)) % DDEMonthCalendar::AFewDaysOfWeek;
+    int ecol = (m_beginDate.daysTo(enddate)) % DDEMonthCalendar::AFewDaysOfWeek;
 
-    fw = static_cast<int>((ecol - bcol + 1) * ((m_width - m_leftMagin) / 7.0) - 11);
+    fw = static_cast<int>((ecol - bcol + 1) * ((m_width - m_leftMargin) / 7.0) - 11);
     fh = m_ItemHeight;
-    int x = static_cast<int>(m_leftMagin + bcol * ((m_width - m_leftMagin) / 7.0) + 5);
-    int y = static_cast<int>(m_topMagin + ((m_height - m_topMagin - m_buttommagin) * brow / 6.0 + 0.5) + 27 + (cnum - 1) * fh + 2.9);
+    int x = static_cast<int>(m_leftMargin + bcol * ((m_width - m_leftMargin) / 7.0) + 5);
+    int y = static_cast<int>(m_topMargin + ((m_height - m_topMargin - m_bottomMargin) * brow / 6.0 + 0.5) + 27 + (cNum - 1) * fh + 2.9);
     pos = QPoint(x, y);
 }
 
@@ -293,10 +293,10 @@ void CWeekScheduleView::changeDate(const ScheduleDataInfo &info)
     updateSchedule(true);
 }
 
-void CWeekScheduleView::setHeight(const int ScheduleHeight, const int DayHeigth)
+void CWeekScheduleView::setHeight(const int ScheduleHeight, const int dayHeight)
 {
     m_ScheduleHeight = ScheduleHeight;
-    m_DayHeight = DayHeigth;
+    m_DayHeight = dayHeight;
     setMaxNum();
 }
 

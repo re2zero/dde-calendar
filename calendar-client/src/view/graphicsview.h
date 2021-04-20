@@ -56,10 +56,10 @@ public:
     void updateHigh();
     void setCurrentDate(const QDateTime &currentDate);
     void setInfo(const QVector<ScheduleDataInfo> &info);
-    void addSchduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
+    void addScheduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);
     //设置搜索选中日程
     void setSelectSearchSchedule(const ScheduleDataInfo &info) override;
-    void clearSchdule();
+    void clearSchedule();
 
     void setMinTime(const int &minTime)
     {
@@ -90,7 +90,7 @@ public slots:
     void slotScrollBar();
     void slotUpdateScene();
 signals:
-    void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int cuttrnttimetype = 0);
+    void signalsPosHours(QVector<int> vPos, QVector<int> vHours, int currentTimeType = 0);
     void signalsCurrentScheduleDate(QDate date);
 private:
     void TimeRound(QDateTime &dtime);
@@ -128,7 +128,7 @@ private:
 
     QColor m_weekcolor = "#4F9BFF";
     QColor m_currenttimecolor = "#F74444";
-    int m_cuttrnttimetype = 0;
+    int m_currentTimeType = 0;
     QTimer *m_timer = nullptr;
     QMutex m_Mutex;
     bool m_updateDflag = false;

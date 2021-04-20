@@ -48,30 +48,30 @@ CWeekHeadView::CWeekHeadView(QWidget *parent)
     m_monthFont.setPixelSize(DDECalendar::FontSizeTwenty);
 
     // cells grid
-    QHBoxLayout *hboxLayout = new QHBoxLayout;
-    hboxLayout->setMargin(0);
-    hboxLayout->setSpacing(0);
+    QHBoxLayout *hBoxLayout = new QHBoxLayout;
+    hBoxLayout->setMargin(0);
+    hBoxLayout->setSpacing(0);
 
     m_monthLabel = new CustomFrame(this);
-    m_monthLabel->setFixedWidth(DDEWeekCalendar::WMCellHeadrWidth - 5);
+    m_monthLabel->setFixedWidth(DDEWeekCalendar::WMCellHeaderWidth - 5);
     m_monthLabel->setRoundState(true, false, false, false);
     QFont mlabelF;
     mlabelF.setWeight(QFont::Medium);
     mlabelF.setPixelSize(DDECalendar::FontSizeTwenty);
     m_monthLabel->setTextFont(mlabelF);
-    hboxLayout->addWidget(m_monthLabel);
-    hboxLayout->setStretch(0, 0);
-    hboxLayout->setSpacing(0);
+    hBoxLayout->addWidget(m_monthLabel);
+    hBoxLayout->setStretch(0, 0);
+    hBoxLayout->setSpacing(0);
 
     for (int c = 0; c != DDEWeekCalendar::AFewDaysofWeek; ++c) {
         QWidget *cell = new QWidget(this);
         cell->installEventFilter(this);
         cell->setFocusPolicy(Qt::ClickFocus);
-        hboxLayout->addWidget(cell);
+        hBoxLayout->addWidget(cell);
         m_cellList.append(cell);
     }
 
-    setLayout(hboxLayout);
+    setLayout(hBoxLayout);
 }
 
 CWeekHeadView::~CWeekHeadView()
@@ -89,9 +89,9 @@ void CWeekHeadView::setTheMe(int type)
 
     if (type == 0 || type == 1) {
         QColor textC = "#000000";
-        QColor textbC(230, 238, 242);
+        QColor textBC(230, 238, 242);
 
-        m_monthLabel->setBColor(textbC);
+        m_monthLabel->setBColor(textBC);
         m_monthLabel->setTextColor(textC);
 
         m_backgroundCircleColor = "#0081FF";
@@ -103,12 +103,12 @@ void CWeekHeadView::setTheMe(int type)
         m_currentDayTextColor = "#FFFFFF";
         m_defaultLunarColor = "#898989";
         m_currentMonthColor = "#000000";
-        m_backgroudColor = "#E6EEF2";
+        m_backgroundColor = "#E6EEF2";
         m_solofestivalLunarColor = "#4DFF7272";
     } else if (type == 2) {
-        QColor textbC = "#82AEC1";
-        textbC.setAlphaF(0.1);
-        m_monthLabel->setBColor(textbC);
+        QColor textBC = "#82AEC1";
+        textBC.setAlphaF(0.1);
+        m_monthLabel->setBColor(textBC);
         m_monthLabel->setTextColor("#BF1D63");
         m_backgroundCircleColor = "#0059D2";
         m_backgroundShowColor = "#002AAF";
@@ -120,8 +120,8 @@ void CWeekHeadView::setTheMe(int type)
         m_defaultLunarColor = "#6886BA";
 
         m_currentMonthColor = "#000000";
-        m_backgroudColor = "#82AEC1";
-        m_backgroudColor.setAlphaF(0.1);
+        m_backgroundColor = "#82AEC1";
+        m_backgroundColor.setAlphaF(0.1);
         m_solofestivalLunarColor = "#4DFF7272";
     }
     m_weekendsTextColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
@@ -144,11 +144,11 @@ void CWeekHeadView::setWeekDay(QVector<QDate> vDays, const QDate &selectDate)
 
 /**
  * @brief CWeekHeadView::setHunagliInfo     设置黄历信息
- * @param huangliInfo
+ * @param huangLiInfo
  */
-void CWeekHeadView::setHunagliInfo(const QMap<QDate, CaHuangLiDayInfo> &huangliInfo)
+void CWeekHeadView::setHunagLiInfo(const QMap<QDate, CaHuangLiDayInfo> &huangLiInfo)
 {
-    m_huangliInfo = huangliInfo;
+    m_huangLiInfo = huangLiInfo;
     update();
 }
 
@@ -219,7 +219,7 @@ const QString CWeekHeadView::getLunar(int pos)
 {
     CaHuangLiDayInfo info ;
     if (pos >= 0 && pos < m_days.size()) {
-        info = m_huangliInfo[m_days[pos]];
+        info = m_huangLiInfo[m_days[pos]];
         if (info.mLunarDayName == "初一") {
             info.mLunarDayName =  info.mLunarMonthName;
         }
@@ -246,10 +246,10 @@ void CWeekHeadView::paintCell(QWidget *cell)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
     //根据周几设置不一样的背景色
-    if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek) {
+    if (d == DDEWeekCalendar::FirstDayOfWeekend || d == DDEWeekCalendar::AFewDaysofWeek) {
         painter.setBrush(QBrush(m_Background_Weekend_Color));
     } else {
-        painter.setBrush(QBrush(m_backgroudColor));
+        painter.setBrush(QBrush(m_backgroundColor));
     }
     if (m_cellList.last() != cell) {
         painter.drawRect(rect); //画矩形
@@ -316,7 +316,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     } else if (isCurrentDay) {
         painter.setPen(m_weekendsTextColor);
     } else {
-        if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
+        if (d == DDEWeekCalendar::FirstDayOfWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
@@ -326,7 +326,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
     if (m_showState & ShowLunar) {
         painter.drawText(QRect(bw - 1, bh, 24, 24), Qt::AlignCenter, dayNum);
-        if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
+        if (d == DDEWeekCalendar::FirstDayOfWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
@@ -334,7 +334,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     } else {
         QFontMetrics fm1 = painter.fontMetrics();
         painter.drawText(QRect(cell->width() - (cell->width() / 2) - 4, bh - 1, 36, 26), Qt::AlignCenter, dayNum);
-        if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
+        if (d == DDEWeekCalendar::FirstDayOfWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
             painter.setPen(m_weekendsTextColor);
         else
             painter.setPen(m_defaultTextColor);
@@ -349,7 +349,7 @@ void CWeekHeadView::paintCell(QWidget *cell)
     // draw text of day type
     if (m_showState & ShowLunar) {
         if (cell->width() > 100) {
-            if (d == DDEWeekCalendar::FirstDayofWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
+            if (d == DDEWeekCalendar::FirstDayOfWeekend || d == DDEWeekCalendar::AFewDaysofWeek)
                 painter.setPen(m_weekendsTextColor);
             else
                 painter.setPen(m_defaultLunarColor);

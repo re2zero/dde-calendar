@@ -46,12 +46,12 @@ void CMonthScheduleNumItem::setColor(QColor color1, QColor color2)
 
 /**
  * @brief CMonthScheduleNumItem::setText        这是字体颜色
- * @param tcolor
+ * @param tColor
  * @param font
  */
-void CMonthScheduleNumItem::setText(QColor tcolor, QFont font)
+void CMonthScheduleNumItem::setText(QColor tColor, QFont font)
 {
-    m_textcolor = tcolor;
+    m_textcolor = tColor;
     m_font = font;
 }
 
@@ -70,8 +70,8 @@ void CMonthScheduleNumItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     Q_UNUSED(widget);
     qreal labelwidth = this->rect().width();
     qreal labelheight = this->rect().height() - 6;
-    qreal rectx = this->rect().x();
-    qreal recty = this->rect().y();
+    qreal rectX = this->rect().x();
+    qreal rectY = this->rect().y();
     //绘制背景
     m_font = DFontSizeManager::instance()->get(m_SizeType, m_font);
     //将直线开始点设为0，终点设为1，然后分段设置颜色
@@ -81,7 +81,7 @@ void CMonthScheduleNumItem::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     painter->setRenderHints(QPainter::Antialiasing);
     painter->setBrush(linearGradient);
-    if (getItemFoucs()) {
+    if (getItemFocus()) {
         QPen framePen;
         framePen.setWidth(2);
         framePen.setColor(getSystemActiveColor());
@@ -94,19 +94,18 @@ void CMonthScheduleNumItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     painter->setFont(m_font);
     painter->setPen(m_textcolor);
     QString str = QString(tr("%1 more")).arg(m_num) + "...";
-    QFont tfont = m_font;
     QFontMetrics fm = painter->fontMetrics();
-    QString tstr;
+    QString tStr;
     for (int i = 0; i < str.count(); i++) {
-        tstr.append(str.at(i));
-        int widthT = fm.width(tstr) + 5;
+        tStr.append(str.at(i));
+        int widthT = fm.width(tStr) + 5;
         if (widthT >= labelwidth) {
-            tstr.chop(2);
+            tStr.chop(2);
             break;
         }
     }
-    if (tstr != str) {
-        tstr = tstr + "...";
+    if (tStr != str) {
+        tStr = tStr + "...";
     }
-    painter->drawText(QRectF(rectx, recty, labelwidth, labelheight + 4), Qt::AlignCenter, tstr);
+    painter->drawText(QRectF(rectX, rectY, labelwidth, labelheight + 4), Qt::AlignCenter, tStr);
 }

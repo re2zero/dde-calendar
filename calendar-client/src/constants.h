@@ -69,8 +69,8 @@ static const int QuarterOfAnhourWithMinute = 15;
 } // namespace DDECalendar
 namespace DDEYearCalendar {
 
-static const int RectSizeofEveyMonth = 42;
-static const int FrameSizeofEveryYear = 12;
+static const int RectSizeOfEveryMonth = 42;
+static const int FrameSizeOfEveryYear = 12;
 
 static const int YearScheduleListMaxcount = 5;
 static const int YHeaderItemWidth = 20;
@@ -81,19 +81,19 @@ static const int YCellHeight = 20;
 
 static const int YCellHighlightWidth = 26;
 static const int YCellHighlightHeight = 20;
-static const int Y_MLableHeight = 36;
-static const int Y_YLableHeight = 45;
+static const int Y_MLabelHeight = 36;
+static const int Y_YLabelHeight = 45;
 
 static const int Y_MWindowWidth = 202;
 static const int Y_MWindowHeight = 159;
 } // namespace DDEYearCalendar
 namespace DDEMonthCalendar {
-static const int ItemSizeofMonthDay = 42;
+static const int ItemSizeOfMonthDay = 42;
 
-static const int AFewDaysofWeek = 7;
-static const int LinesNumofMonth = 6;
+static const int AFewDaysOfWeek = 7;
+static const int LinesNumOfMonth = 6;
 
-static const int MonthNumofYear = 12;
+static const int MonthNumOfYear = 12;
 
 static const int MHeaderItemWidth = 60;
 static const int MHeaderItemHeight = 33;
@@ -112,9 +112,9 @@ static const int MDayCellWidth = 36;
 static const int MDayCellHeight = 36;
 
 static const int M_YTopHeight = 76;
-static const int M_YLableHeight = 36;
-static const int M_YLunatLabelWindth = 66;
-static const int M_YLunatLabelHeight = 20;
+static const int M_YLabelHeight = 36;
+static const int M_YLunaLabelWindth = 66;
+static const int M_YLunaLabelHeight = 20;
 
 static const int MTodayWindth = 100;
 static const int MTodayHeight = 36;
@@ -123,7 +123,7 @@ static const int M_MWindowWidth = 202;
 static const int M_MWindowHeight = 162;
 }
 namespace DDEWeekCalendar {
-static const int FirstDayofWeekend = 6;
+static const int FirstDayOfWeekend = 6;
 static const int AFewDaysofWeek = 7;
 
 static const int NumWeeksDisplayed = 10;
@@ -131,7 +131,7 @@ static const int NumWeeksDisplayed = 10;
 static const int WCellHeaderItemWidth = 109;
 static const int WCellHeaderItemHeight = 54;
 
-static const int WMCellHeadrWidth = 80;
+static const int WMCellHeaderWidth = 80;
 
 static const int MCellHighlightWidth = 120;
 static const int MCellHighlightHeight = 74;
@@ -139,7 +139,7 @@ static const int MCellHighlightHeight = 74;
 static const int WWeekCellWidth = 36;
 static const int WWeekCellHeight = 36;
 
-static const int W_YLableHeight = 36;
+static const int W_YLabelHeight = 36;
 static const int W_YLunatLabelWindth = 66;
 static const int W_YLunatLabelHeight = 20;
 
@@ -157,13 +157,13 @@ static const int DCellHeight = 28;
 
 static const int DCellHighlightWidth = 33;
 static const int DCellHighlightHeight = 26;
-static const int D_MLableHeight = 36;
-static const int D_YLableHeight = 36;
-static const int DDLableHeight = 117;
-static const int DWLableHeight = 22;
-static const int DHualiInfoLableHeight = 17;
-static const int DHualiDtailLableHeight = 56;
-static const int DHualiDtailLableWidth = 330;
+static const int D_MLabelHeight = 36;
+static const int D_YLabelHeight = 36;
+static const int DDLabelHeight = 117;
+static const int DWLabelHeight = 22;
+static const int DHuangLiInfoLabelHeight = 17;
+static const int DHuangLiLabelHeight = 56;
+static const int DHuangLiLabelWidth = 330;
 static const int D_MWindowWidth = 350;
 static const int D_MWindowHeight = 564;
 }

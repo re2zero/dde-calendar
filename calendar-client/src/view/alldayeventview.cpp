@@ -69,7 +69,7 @@ void CAllDayEventWeekView::slotCreate(const QDateTime &date)
     dlg.setDate(date);
     dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
-        emit signalsUpdateShcedule();
+        emit signalsUpdateSchedule();
     }
     emit signalViewtransparentFrame(0);
 }
@@ -310,7 +310,7 @@ void CAllDayEventWeekView::setInfo(const QVector<ScheduleDataInfo> &info)
 void CAllDayEventWeekView::slotDoubleEvent()
 {
     m_updateDflag = true;
-    emit signalsUpdateShcedule();
+    emit signalsUpdateSchedule();
 }
 
 void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)

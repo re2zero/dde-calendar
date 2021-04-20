@@ -90,7 +90,7 @@ private:
     QLabel *m_SolarDay = nullptr;
     CScheduleView *m_scheduleView = nullptr;
     QString m_searchText;
-    bool m_searchfalg = false;
+    bool m_searchFlag = false;
     QHBoxLayout *m_mainLayout = nullptr;
     QTime           m_makeTime{};   //界面显示定位时间位置
 };

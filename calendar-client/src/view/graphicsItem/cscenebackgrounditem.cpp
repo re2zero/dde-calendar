@@ -55,11 +55,11 @@ CFocusItem *CSceneBackgroundItem::setNextItemFocusAndGetNextItem()
         NextFocus = CFocusItem::setNextItemFocusAndGetNextItem();
     } else {
         //若该背景上有显示的item
-        //若显示的item未设置foucs则取消背景focus效果
-        if (m_showItemIndex == -1 && getItemFoucs()) {
+        //若显示的item未设置focus则取消背景focus效果
+        if (m_showItemIndex == -1 && getItemFocus()) {
             this->setItemFocus(false);
         }
-        //若显示的item有设置foucs则取消该item focus效果
+        //若显示的item有设置focus则取消该item focus效果
         if (m_showItemIndex >= 0) {
             m_item.at(m_showItemIndex)->setItemFocus(false);
         }
@@ -156,7 +156,7 @@ void CSceneBackgroundItem::setItemFocus(bool isFocus)
  */
 void CSceneBackgroundItem::initState()
 {
-    if (getItemFoucs()) {
+    if (getItemFocus()) {
         setItemFocus(false);
     }
     if (m_showItemIndex > -1 && m_showItemIndex < m_item.size()) {

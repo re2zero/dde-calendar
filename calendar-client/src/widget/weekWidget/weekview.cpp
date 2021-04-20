@@ -41,9 +41,9 @@ CWeekView::CWeekView(const GetWeekNumOfYear &getWeekNumOfYear, QWidget *parent)
     , m_touchGesture(this)
     , m_weekNumWidget(nullptr)
 {
-    QHBoxLayout *hboxLayout = new QHBoxLayout;
-    hboxLayout->setMargin(0);
-    hboxLayout->setSpacing(0);
+    QHBoxLayout *hBoxLayout = new QHBoxLayout;
+    hBoxLayout->setMargin(0);
+    hBoxLayout->setSpacing(0);
 
     //上一周按钮
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
@@ -56,11 +56,11 @@ CWeekView::CWeekView(const GetWeekNumOfYear &getWeekNumOfYear, QWidget *parent)
     m_nextButton->setFixedSize(36, 36);
     connect(m_nextButton, &DIconButton::clicked, this, &CWeekView::signalBtnNext);
 
-    hboxLayout->addWidget(m_prevButton);
-    hboxLayout->addWidget(m_weekNumWidget);
-    hboxLayout->addWidget(m_nextButton);
+    hBoxLayout->addWidget(m_prevButton);
+    hBoxLayout->addWidget(m_weekNumWidget);
+    hBoxLayout->addWidget(m_nextButton);
     //设置布局
-    setLayout(hboxLayout);
+    setLayout(hBoxLayout);
     setMinimumWidth(150);
 
     connect(m_weekNumWidget, &CWeekNumWidget::signalsSelectDate, this, &CWeekView::signalsSelectDate);
@@ -162,18 +162,18 @@ CWeekNumWidget::CWeekNumWidget(const GetWeekNumOfYear &getWeekNumOfYear, QWidget
     m_dayNumFont.setWeight(QFont::Light);
     setFocusPolicy(Qt::StrongFocus);
 
-    QHBoxLayout *hboxLayout = new QHBoxLayout;
-    hboxLayout->setSpacing(0);
-    hboxLayout->setMargin(0);
+    QHBoxLayout *hBoxLayout = new QHBoxLayout;
+    hBoxLayout->setSpacing(0);
+    hBoxLayout->setMargin(0);
     //显示周数的widget
     for (int c = 0; c != DDEWeekCalendar::NumWeeksDisplayed; ++c) {
         QWidget *cell = new QWidget;
         //设置事件过滤器
         cell->installEventFilter(this);
-        hboxLayout->addWidget(cell, Qt::AlignTop);
+        hBoxLayout->addWidget(cell, Qt::AlignTop);
         m_cellList.append(cell);
     }
-    this->setLayout(hboxLayout);
+    this->setLayout(hBoxLayout);
 }
 
 CWeekNumWidget::~CWeekNumWidget()
@@ -219,19 +219,19 @@ void CWeekNumWidget::resizeEvent(QResizeEvent *event)
     //最小显示的宽度
     const int _minWidget = 36;
     //默认都显示
-    QVector<bool> vindex(10, true);
+    QVector<bool> vIndex(10, true);
     //cell的宽度小于最小宽度则隐藏部分显示
     if (w < _minWidget) {
         //计算前后需要隐藏的个数
         int t_num = qRound((_minWidget * DDEWeekCalendar::NumWeeksDisplayed - _allCellWidth) / _minWidget / 2.0);
         for (int i = 0; i < t_num; i++) {
-            vindex[i] = false;
-            vindex[9 - i] = false;
+            vIndex[i] = false;
+            vIndex[9 - i] = false;
         }
     }
     //设置是否显示
     for (int i = 0; i < DDEWeekCalendar::NumWeeksDisplayed; i++) {
-        m_cellList[i]->setVisible(vindex[i]);
+        m_cellList[i]->setVisible(vIndex[i]);
     }
     QWidget::resizeEvent(event);
     //更新显示
@@ -298,9 +298,9 @@ void CWeekNumWidget::paintCell(QWidget *cell)
             pen.setColor(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
             painter.setPen(pen);
             //在原有的选中效果外面再绘制一圈
-            QRectF foucsRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
+            QRectF focusRect(fillRect.x() - 2, fillRect.y() - 2, fillRect.width() + 4, fillRect.height() + 4);
             painter.setBrush(Qt::NoBrush);
-            painter.drawEllipse(foucsRect);
+            painter.drawEllipse(focusRect);
         }
         painter.restore();
         painter.setPen(m_currentDayTextColor);

@@ -38,7 +38,7 @@ QColor                      CMonthDayRect::m_selectedTextColor;
 MonthBrefWidget::MonthBrefWidget(QWidget *parent)
     : QWidget(parent)
 {
-    for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; ++i) {
+    for (int i = 0; i < DDEYearCalendar::RectSizeOfEveryMonth; ++i) {
         CMonthDayRect *item = new CMonthDayRect();
         m_DayItem.append(item);
     }
@@ -84,8 +84,8 @@ void MonthBrefWidget::setTheMe(int type)
  */
 void MonthBrefWidget::setLintFlag(const QVector<bool> &lineFlag)
 {
-    if (lineFlag.size() == DDEYearCalendar::RectSizeofEveyMonth) {
-        for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; ++i) {
+    if (lineFlag.size() == DDEYearCalendar::RectSizeOfEveryMonth) {
+        for (int i = 0; i < DDEYearCalendar::RectSizeOfEveryMonth; ++i) {
             m_DayItem.at(i)->setLineFlag(lineFlag.at(i));
         }
     }
@@ -98,8 +98,8 @@ void MonthBrefWidget::setLintFlag(const QVector<bool> &lineFlag)
  */
 void MonthBrefWidget::setSearchScheduleFlag(const QVector<bool> &searchFlag)
 {
-    if (searchFlag.size() == DDEYearCalendar::RectSizeofEveyMonth) {
-        for (int i = 0; i < DDEYearCalendar::RectSizeofEveyMonth; ++i) {
+    if (searchFlag.size() == DDEYearCalendar::RectSizeOfEveryMonth) {
+        for (int i = 0; i < DDEYearCalendar::RectSizeOfEveryMonth; ++i) {
             m_DayItem.at(i)->setSearchScheduleFlag(searchFlag.at(i));
         }
     }

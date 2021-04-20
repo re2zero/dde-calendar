@@ -37,13 +37,13 @@ void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect,
     Q_UNUSED(isPixMap);
     m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
     painter->setRenderHints(QPainter::Antialiasing);
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
+    CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
     QRectF drawrect = rect;
     QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
 
-    QColor color1 = gdcolor.gradientFromC;
-    QColor color2 = gdcolor.gradientToC;
-    QColor textcolor = gdcolor.textColor;
+    QColor color1 = gdColor.gradientFromC;
+    QColor color2 = gdColor.gradientToC;
+    QColor textcolor = gdColor.textColor;
 
     //判断是否为选中日程
     if (m_vScheduleInfo == m_pressInfo) {
@@ -59,14 +59,14 @@ void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect,
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
     if (m_vHoverflag) {
-        color1 = gdcolor.hovergradientFromC;
-        color2 = gdcolor.hovergradientToC;
+        color1 = gdColor.hovergradientFromC;
+        color2 = gdColor.hovergradientToC;
     } else if (m_vHighflag) {
-        color1 = gdcolor.hightlightgradientFromC;
-        color2 = gdcolor.hightlightgradientToC;
+        color1 = gdColor.hightlightgradientFromC;
+        color2 = gdColor.hightlightgradientToC;
     } else if (m_vSelectflag) {
-        color1 = gdcolor.pressgradientFromC;
-        color2 = gdcolor.pressgradientToC;
+        color1 = gdColor.pressgradientFromC;
+        color2 = gdColor.pressgradientToC;
         textcolor.setAlphaF(0.4);
     }
     linearGradient.setColorAt(0, color1);
@@ -77,7 +77,7 @@ void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect,
                              drawrect.height() - 2);
     //将直线开始点设为0，终点设为1，然后分段设置颜色
     painter->setBrush(linearGradient);
-    if (getItemFoucs() && isPixMap == false) {
+    if (getItemFocus() && isPixMap == false) {
         QPen framePen;
         framePen.setWidth(2);
         framePen.setColor(getSystemActiveColor());
@@ -89,10 +89,10 @@ void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect,
     painter->setFont(m_font);
     painter->setPen(textcolor);
     QFontMetrics fm = painter->fontMetrics();
-    QString tStitlename = m_vScheduleInfo.getTitleName();
-    tStitlename.replace("\n", "");
-    QString str = tStitlename;
-    QString tstr;
+    QString tSTitleName = m_vScheduleInfo.getTitleName();
+    tSTitleName.replace("\n", "");
+    QString str = tSTitleName;
+    QString tStr;
     int _rightOffset = fm.width("...");
     //显示宽度  左侧偏移13右侧偏移8
     qreal _showWidth = fillRect.width() - 13 - 8 - m_offset * 2;
@@ -100,25 +100,25 @@ void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect,
     if (fm.width(str) > _showWidth) {
         _showWidth -= _rightOffset;
         for (int i = 0; i < str.count(); i++) {
-            tstr.append(str.at(i));
-            int widthT = fm.width(tstr);
+            tStr.append(str.at(i));
+            int widthT = fm.width(tStr);
             //如果宽度大于显示长度则去除最后添加的字符
             if (widthT > _showWidth) {
-                tstr.chop(1);
+                tStr.chop(1);
                 break;
             }
         }
-        if (tstr != str) {
-            tstr = tstr + "...";
+        if (tStr != str) {
+            tStr = tStr + "...";
         }
     } else {
-        tstr = str;
+        tStr = str;
     }
 
     painter->drawText(QRectF(fillRect.topLeft().x() + 13, fillRect.y(), fillRect.width(), fillRect.height()),
-                      Qt::AlignLeft | Qt::AlignVCenter, tstr);
+                      Qt::AlignLeft | Qt::AlignVCenter, tStr);
     if (m_vHoverflag && !m_vSelectflag) {
-        QRectF trect = QRectF(fillRect.x() + 0.5, fillRect.y() + 0.5, fillRect.width() - 1, fillRect.height() - 1);
+        QRectF tRect = QRectF(fillRect.x() + 0.5, fillRect.y() + 0.5, fillRect.width() - 1, fillRect.height() - 1);
         painter->save();
 
         QPen pen;
@@ -135,7 +135,7 @@ void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect,
         pen.setStyle(Qt::SolidLine);
         painter->setBrush(Qt::NoBrush);
         painter->setPen(pen);
-        painter->drawRoundedRect(trect, rect.height() / 3, rect.height() / 3);
+        painter->drawRoundedRect(tRect, rect.height() / 3, rect.height() / 3);
         painter->restore();
     }
     if (m_vSelectflag) {

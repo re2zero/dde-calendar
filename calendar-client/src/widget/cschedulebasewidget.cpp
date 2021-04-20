@@ -152,9 +152,9 @@ void CScheduleBaseWidget::deleteselectSchedule()
  */
 CaHuangLiDayInfo CScheduleBaseWidget::getLunarInfo()
 {
-    QMap<QDate, CaHuangLiDayInfo> _huangliInfo = m_calendarManager->getScheduleTask()->getHuangliInfo(getSelectDate(), getSelectDate());
-    QMap<QDate, CaHuangLiDayInfo>::const_iterator interator = _huangliInfo.constBegin();
-    if (interator == _huangliInfo.constEnd())
+    QMap<QDate, CaHuangLiDayInfo> _huangLiInfo = m_calendarManager->getScheduleTask()->getHuangLiInfo(getSelectDate(), getSelectDate());
+    QMap<QDate, CaHuangLiDayInfo>::const_iterator interator = _huangLiInfo.constBegin();
+    if (interator == _huangLiInfo.constEnd())
         return CaHuangLiDayInfo();
     m_lunarYear = QString("-%0%1年-").arg(interator.value().mGanZhiYear).arg(interator.value().mZodiac);
     m_lunarDay = QString("-农历%0%1-").arg(interator.value().mLunarMonthName).arg(interator.value().mLunarDayName);

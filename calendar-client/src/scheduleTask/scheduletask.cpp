@@ -56,7 +56,7 @@ void CScheduleTask::updateInfo(const QDate &startDate, const QDate &stopDate, co
     m_queryScheduleInfo.clear();
     m_fullInfo.clear();
     if (isGetLunar) {
-        m_huangliInfo.clear();
+        m_huangLiInfo.clear();
         m_festivalInfo.clear();
     }
     addQueryRange(startDate, stopDate, isGetLunar);
@@ -103,20 +103,20 @@ QMap<QDate, bool> CScheduleTask::getDateHasSchedule() const
 }
 
 /**
- * @brief CScheduleTask::getHuangliInfo         获取缓存中农历信息
+ * @brief CScheduleTask::getHuangLiInfo         获取缓存中农历信息
  * @param startDate
  * @param stopDate
  * @return
  */
-QMap<QDate, CaHuangLiDayInfo> CScheduleTask::getHuangliInfo(const QDate &startDate, const QDate &stopDate)
+QMap<QDate, CaHuangLiDayInfo> CScheduleTask::getHuangLiInfo(const QDate &startDate, const QDate &stopDate)
 {
     QMap<QDate, CaHuangLiDayInfo> _resultInfo{};
     qint64 _offsetDay = startDate.daysTo(stopDate);
     QDate _infoDate = startDate;
     for (int i = 0; i <= _offsetDay; ++i) {
         _infoDate = startDate.addDays(i);
-        if (m_huangliInfo.contains(_infoDate)) {
-            _resultInfo[_infoDate] = m_huangliInfo[_infoDate];
+        if (m_huangLiInfo.contains(_infoDate)) {
+            _resultInfo[_infoDate] = m_huangLiInfo[_infoDate];
         }
     }
     return _resultInfo;
@@ -221,7 +221,7 @@ void CScheduleTask::slotGetSchedule(const QMap<QDate, QVector<ScheduleDataInfo> 
 
 void CScheduleTask::slotGetLunar(const QMap<QDate, CaHuangLiDayInfo> &lunarInfo, const QMap<QDate, int> &festivalInfo)
 {
-    m_huangliInfo = lunarInfo;
+    m_huangLiInfo = lunarInfo;
     m_festivalInfo = festivalInfo;
     emit signalLunarGetSuccess();
 }
@@ -317,7 +317,7 @@ void DataGetWork::queryLunarInfo(const QueryRange &queryRange)
 {
     bool _fill = false;
     CaHuangLiMonthInfo _monthInfo;
-    QMap<QDate, CaHuangLiDayInfo> _huangliYear{};
+    QMap<QDate, CaHuangLiDayInfo> _huangLiYear {};
     QMap<QDate, int> _festivalYear{};
     quint32 _year ;
     quint32 _month ;
@@ -336,7 +336,7 @@ void DataGetWork::queryLunarInfo(const QueryRange &queryRange)
         QDate _getDate(_beginDate.year(), _beginDate.month(), 1);
         Q_ASSERT(_monthInfo.mDays == _monthInfo.mCaLunarDayInfo.size());
         for (int j = 0; j < _monthInfo.mDays; ++j) {
-            _huangliYear[_getDate.addDays(j)] = _monthInfo.mCaLunarDayInfo.at(j);
+            _huangLiYear[_getDate.addDays(j)] = _monthInfo.mCaLunarDayInfo.at(j);
         }
     }
     QDate _queryDate;
@@ -345,7 +345,7 @@ void DataGetWork::queryLunarInfo(const QueryRange &queryRange)
         _queryDate  = queryRange._startDate.addDays(i);
         _festivalYear[_queryDate] = getFestivalInfoByDate(_queryDate, _festivallist);
     }
-    emit signalGetLunar(_huangliYear, _festivalYear);
+    emit signalGetLunar(_huangLiYear, _festivalYear);
 }
 
 char DataGetWork::getFestivalInfoByDate(const QDate &date, const QVector<FestivalInfo> &festivalInfo)

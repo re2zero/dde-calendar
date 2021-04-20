@@ -53,10 +53,10 @@ void CFocusItem::setItemFocus(bool isFocus)
 }
 
 /**
- * @brief CFocusItem::getItemFoucs      获取该item是否focus
+ * @brief CFocusItem::getItemFocus      获取该item是否focus
  * @return
  */
-bool CFocusItem::getItemFoucs() const
+bool CFocusItem::getItemFocus() const
 {
     return m_isFocus;
 }

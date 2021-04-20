@@ -72,7 +72,8 @@ public:
 protected:
     virtual void updateCurrentItemShow();
 signals:
-    void setChangeFocuse();
+    void setChangeFocus();
+
 private:
     int m_backgroundNum;
     CSceneBackgroundItem *m_leftItem;

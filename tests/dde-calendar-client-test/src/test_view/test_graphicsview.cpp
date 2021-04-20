@@ -62,16 +62,16 @@ TEST_F(test_graphicsview, MeetCreationConditions)
     cGraphicsView->MeetCreationConditions(date);
 }
 
-//void CGraphicsView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)
+//void CGraphicsView::setRange(int w, int h, QDate begindate, QDate enddate, int rightMargin)
 TEST_F(test_graphicsview, setRange)
 {
     int w = 20;
     int h = 20;
     QDate begindate(2020, 11, 11);
     QDate enddate(2020, 11, 31);
-    int rightmagin = 10;
+    int rightMargin = 10;
 
-    cGraphicsView->setRange(w, h, begindate, enddate, rightmagin);
+    cGraphicsView->setRange(w, h, begindate, enddate, rightMargin);
     cGraphicsView->setRange(begindate, enddate);
 }
 
@@ -127,8 +127,8 @@ TEST_F(test_graphicsview, getPosDate)
 //    cGraphicsView->ShowSchedule(infoitem);
 //}
 
-//void CGraphicsView::addSchduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
-TEST_F(test_graphicsview, addSchduleItem)
+//void CGraphicsView::addScheduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
+TEST_F(test_graphicsview, addScheduleItem)
 {
     ScheduleDataInfo info = ScheduleDataInfo{};
     QDate date(2020, 12, 28);
@@ -137,7 +137,7 @@ TEST_F(test_graphicsview, addSchduleItem)
     int type = 2;
     int viewtype = 1;
     int maxnum = 3;
-    cGraphicsView->addSchduleItem(info, date, index, totalNum, type, viewtype, maxnum);
+    cGraphicsView->addScheduleItem(info, date, index, totalNum, type, viewtype, maxnum);
 }
 
 //void CGraphicsView::scheduleClassificationType(QVector<ScheduleDataInfo> &scheduleInfolist, QList<ScheduleclassificationInfo> &info)

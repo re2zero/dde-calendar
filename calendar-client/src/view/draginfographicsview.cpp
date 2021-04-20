@@ -88,7 +88,7 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     connect(m_Scene, &CGraphicsScene::signalSwitchNextPage, this, &DragInfoGraphicsView::slotSwitchNextPage);
     connect(m_Scene, &CGraphicsScene::signalGotoDayView, this, &DragInfoGraphicsView::signalGotoDayView);
     connect(m_Scene, &CGraphicsScene::signalContextMenu, this, &DragInfoGraphicsView::slotContextMenu);
-    connect(m_Scene, &CGraphicsScene::signalsetNextFocus, this, &DragInfoGraphicsView::slotsetNextFoucs);
+    connect(m_Scene, &CGraphicsScene::signalsetNextFocus, this, &DragInfoGraphicsView::slotsetNextFocus);
     setFocusPolicy(Qt::StrongFocus);
 }
 
@@ -339,7 +339,7 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
                 CScheduleDlg dlg(0, this);
                 dlg.setData(infoitem->getData());
                 if (dlg.exec() == DDialog::Accepted) {
-                    emit signalsUpdateShcedule();
+                    emit signalsUpdateSchedule();
                 }
                 emit signalViewtransparentFrame(0);
             } else if (action_t == m_deleteAction) {
@@ -414,7 +414,7 @@ void DragInfoGraphicsView::dropEvent(QDropEvent *event)
         if (event->source() != this || m_MoveDate != m_PressDate) {
             updateScheduleInfo(m_DragScheduleInfo);
         } else {
-            emit signalsUpdateShcedule();
+            emit signalsUpdateSchedule();
         }
         m_DragStatus = NONE;
         m_MoveDate = m_MoveDate.addMonths(-2);
@@ -694,7 +694,7 @@ void DragInfoGraphicsView::slotCreate(const QDateTime &date)
     dlg.setAllDay(true);
 
     if (dlg.exec() == DDialog::Accepted) {
-        emit signalsUpdateShcedule();
+        emit signalsUpdateSchedule();
     }
     emit signalViewtransparentFrame(0);
 }
@@ -809,10 +809,10 @@ void DragInfoGraphicsView::slotDeleteItem()
     //根据焦点状态获取当前焦点的item
     CSceneBackgroundItem *backgroundItem = dynamic_cast<CSceneBackgroundItem *>(m_Scene->getCurrentFocusItem());
     if (backgroundItem != nullptr) {
-        DragInfoItem *dfocusItem = dynamic_cast<DragInfoItem *>(backgroundItem->getFocusItem());
-        if (dfocusItem != nullptr && dfocusItem->getItemType() == CFocusItem::CITEM) {
-            if (dfocusItem->getItemFoucs()) {
-                _pressSchedule = dfocusItem->getData();
+        DragInfoItem *dFocusItem = dynamic_cast<DragInfoItem *>(backgroundItem->getFocusItem());
+        if (dFocusItem != nullptr && dFocusItem->getItemType() == CFocusItem::CITEM) {
+            if (dFocusItem->getItemFocus()) {
+                _pressSchedule = dFocusItem->getData();
             }
         }
     }
@@ -872,7 +872,7 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
             CScheduleDlg dlg(0, this);
             dlg.setData(infoitem->getData());
             if (dlg.exec() == DDialog::Accepted) {
-                emit signalsUpdateShcedule();
+                emit signalsUpdateSchedule();
             }
             emit signalViewtransparentFrame(0);
         } else if (action_t == m_deleteAction) {
@@ -884,9 +884,9 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
 }
 
 /**
- * @brief DragInfoGraphicsView::slotsetNextFoucs    切换到下一个焦点
+ * @brief DragInfoGraphicsView::slotsetNextFocus    切换到下一个焦点
  */
-void DragInfoGraphicsView::slotsetNextFoucs()
+void DragInfoGraphicsView::slotsetNextFocus()
 {
     focusNextPrevChild(true);
 }

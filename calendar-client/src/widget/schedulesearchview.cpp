@@ -78,17 +78,17 @@ void CScheduleSearchItem::setSplitLineColor(QColor color1)
     m_splitlinecolor = color1;
 }
 
-void CScheduleSearchItem::setText(QColor tcolor, QFont font)
+void CScheduleSearchItem::setText(QColor tColor, QFont font)
 {
-    m_ttextcolor = tcolor;
-    m_tfont = font;
+    m_tTextColor = tColor;
+    m_tFont = font;
     //设置时间显示宽度
     setDurationSize(font);
 }
 
-void CScheduleSearchItem::setTimeC(QColor tcolor, QFont font)
+void CScheduleSearchItem::setTimeC(QColor tColor, QFont font)
 {
-    m_timecolor = tcolor;
+    m_timecolor = tColor;
     m_timefont = font;
 }
 
@@ -209,30 +209,30 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     int labelwidth = width() - 2;
     int labelheight = height() - 2;
     QPainter painter(this);
-    QColor bcolor = m_Backgroundcolor;
-    QColor textcolor = m_ttextcolor;
+    QColor bColor = m_Backgroundcolor;
+    QColor textcolor = m_tTextColor;
     QColor timecolor = m_timecolor;
 
     switch (m_mouseStatus) {
     case M_NONE: {
-        bcolor = m_Backgroundcolor;
-        textcolor = m_ttextcolor;
+        bColor = m_Backgroundcolor;
+        textcolor = m_tTextColor;
         timecolor = m_timecolor;
     } break;
     case M_HOVER: {
-        bcolor = m_hovercolor.background;
+        bColor = m_hovercolor.background;
         textcolor = m_hovercolor.textColor;
         timecolor = m_hovercolor.timeColor;
     } break;
     case M_PRESS: {
-        bcolor = m_presscolor.background;
+        bColor = m_presscolor.background;
         textcolor = m_presscolor.textColor;
         timecolor = m_presscolor.timeColor;
     } break;
     }
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
-    painter.setBrush(QBrush(bcolor));
+    painter.setBrush(QBrush(bColor));
     if (m_tabFocus) {
         //设置焦点绘制的pen
         QPen pen;
@@ -297,40 +297,40 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     painter.drawText(QRect(12, 8, m_durationSize, labelheight - 16), flag, datestr);
 
     painter.save();
-    bcolor = m_splitlinecolor;
-    QPen pen(bcolor);
+    bColor = m_splitlinecolor;
+    QPen pen(bColor);
     pen.setWidth(2);
     painter.setPen(pen);
     painter.drawLine(m_durationSize + 17, 0, m_durationSize + 17, labelheight);
     painter.restore();
 
-    painter.setFont(m_tfont);
+    painter.setFont(m_tFont);
     painter.setPen(textcolor);
     QString ellipsis = "...";
     QFontMetrics fm = painter.fontMetrics();
     //整个label宽度-文字起始位置
     int tilenameW = labelwidth - (m_durationSize + 26);
-    QString tStitlename = m_ScheduleInfo.getTitleName();
-    tStitlename.replace("\n", "");
-    QString str = tStitlename;
-    QString tstr;
+    QString tSTitleName = m_ScheduleInfo.getTitleName();
+    tSTitleName.replace("\n", "");
+    QString str = tSTitleName;
+    QString tStr;
 
     for (int i = 0; i < str.count(); i++) {
-        tstr.append(str.at(i));
-        tstr.append(ellipsis);
-        int widthT = fm.width(tstr);
-        tstr.remove(ellipsis);
+        tStr.append(str.at(i));
+        tStr.append(ellipsis);
+        int widthT = fm.width(tStr);
+        tStr.remove(ellipsis);
         if (widthT >= tilenameW) {
-            tstr.chop(1);
+            tStr.chop(1);
             break;
         }
     }
 
-    if (tstr != str) {
-        tstr = tstr + "...";
+    if (tStr != str) {
+        tStr = tStr + "...";
     }
 
-    painter.drawText(QRect(m_durationSize + 17 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, tstr);
+    painter.drawText(QRect(m_durationSize + 17 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, tStr);
     painter.end();
 }
 void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)
@@ -478,17 +478,17 @@ void CScheduleSearchView::setTheMe(int type)
         m_bBackgroundcolor = "#000000";
         m_bBackgroundcolor.setAlphaF(0.03);
         m_btimecolor = "#526A7F";
-        m_bttextcolor = "#414D68";
+        m_btTextColor = "#414D68";
         m_lBackgroundcolor = Qt::white;
-        m_ltextcolor = "#001A2E";
+        m_lTextColor = "#001A2E";
     } else if (type == 2) {
         m_bBackgroundcolor = "#FFFFFF";
         m_bBackgroundcolor.setAlphaF(0.05);
         m_btimecolor = "#6D7C88";
-        m_bttextcolor = "#C0C6D4";
+        m_btTextColor = "#C0C6D4";
         m_lBackgroundcolor = "#FFFFFF";
         m_lBackgroundcolor.setAlphaF(0.0);
-        m_ltextcolor = "#C0C6D4";
+        m_lTextColor = "#C0C6D4";
     }
     updateDateShow();
 }
@@ -568,15 +568,15 @@ void CScheduleSearchView::updateDateShow()
     m_labellist.clear();
     m_scheduleSearchItem.clear();
     //找最近日程
-    QDate tcurrentdata = QDate::currentDate();
+    QDate tCurrentData = QDate::currentDate();
     //搜索日程过滤排序
     QMap<QDate, QVector<ScheduleDataInfo> > m_showData;
     qint64 offset = 1000;
-    QDate topdate = tcurrentdata;
+    QDate topdate = tCurrentData;
     QMap<QDate, QVector<ScheduleDataInfo> >::const_iterator  _iterator = m_vlistData.constBegin();
     QVector<ScheduleDataInfo> _showInfo{};
     for (; _iterator != m_vlistData.constEnd(); ++_iterator) {
-        qint64 d = qAbs(_iterator.key().daysTo(tcurrentdata));
+        qint64 d = qAbs(_iterator.key().daysTo(tCurrentData));
         _showInfo.clear();
         for (int i = 0 ; i < _iterator.value().size(); ++i) {
             //如果开始时间日期为显示日期则加入显示,过滤夸天不在显示日期的日程
@@ -595,12 +595,12 @@ void CScheduleSearchView::updateDateShow()
             m_showData[_iterator.key()] = _showInfo;
         }
     }
-    tcurrentdata = topdate;
+    tCurrentData = topdate;
     QMap<QDate, QVector<ScheduleDataInfo> >::const_iterator  _showIterator = m_showData.constBegin();
     for (; _showIterator != m_showData.constEnd(); ++_showIterator) {
         //创建显示日期项
         QListWidgetItem *dateItem = createItemWidget(_showIterator.key());
-        if (_showIterator.key() == tcurrentdata) {
+        if (_showIterator.key() == tCurrentData) {
             m_currentItem = dateItem;
         }
         if (_showIterator.value().size() == 1) {
@@ -623,7 +623,7 @@ void CScheduleSearchView::updateDateShow()
         QFont font;
         font.setPixelSize(DDECalendar::FontSizeTwenty);
         gwi->setAlignment(Qt::AlignCenter);
-        DPalette daypa = gwi->palette();
+        DPalette dayPalette = gwi->palette();
         QColor textcolor;
         int themtype = CScheduleDataManage::getScheduleDataManage()->getTheme();
         if (themtype == 2) {
@@ -633,9 +633,9 @@ void CScheduleSearchView::updateDateShow()
             textcolor = "#000000";
             textcolor.setAlphaF(0.3);
         }
-        daypa.setColor(DPalette::WindowText, textcolor);
-        daypa.setColor(DPalette::Window, m_lBackgroundcolor);
-        gwi->setPalette(daypa);
+        dayPalette.setColor(DPalette::WindowText, textcolor);
+        dayPalette.setColor(DPalette::Window, m_lBackgroundcolor);
+        gwi->setPalette(dayPalette);
         gwi->setForegroundRole(DPalette::WindowText);
         gwi->setFont(font);
         gwi->move(this->width() - 70, this->height() - 196);
@@ -668,17 +668,17 @@ void CScheduleSearchView::updateDateShow()
 void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, int rtype)
 {
     ScheduleDataInfo &gd = info;
-    CSchedulesColor gdcolor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.getType());
+    CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.getType());
 
     CScheduleSearchItem *gwi = new CScheduleSearchItem(this);
     QFont font;
     font.setPixelSize(DDECalendar::FontSizeFourteen);
     font.setWeight(QFont::Normal);
     gwi->setBackgroundColor(m_bBackgroundcolor);
-    QColor scolor = gdcolor.Purecolor;
-    scolor.setAlphaF(1.0);
-    gwi->setSplitLineColor(gdcolor.splitColor);
-    gwi->setText(m_bttextcolor, font);
+    QColor sColor = gdColor.Purecolor;
+    sColor.setAlphaF(1.0);
+    gwi->setSplitLineColor(gdColor.splitColor);
+    gwi->setText(m_btTextColor, font);
     font.setPixelSize(DDECalendar::FontSizeTwelve);
 
     gwi->setTimeC(m_btimecolor, font);
@@ -706,7 +706,7 @@ QListWidgetItem *CScheduleSearchView::createItemWidget(QDate date)
     font.setWeight(QFont::Medium);
     font.setPixelSize(DDECalendar::FontSizeSixteen);
     gwi->setBackgroundColor(m_lBackgroundcolor);
-    gwi->setText(m_ltextcolor, font);
+    gwi->setText(m_lTextColor, font);
 
     if (date == QDate::currentDate()) {
         gwi->setText(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor(), font);
@@ -736,14 +736,14 @@ void CScheduleSearchView::slotsetSearch(QString str)
         return;
     m_searchStr = str;
     QDateTime date = QDateTime::currentDateTime();
-    QDateTime bdate = date.addMonths(-6);
+    QDateTime bDate = date.addMonths(-6);
 
-    if (bdate.date() < QDate(1900, 1, 1)) {
-        bdate.setDate(QDate(1900, 1, 1));
+    if (bDate.date() < QDate(1900, 1, 1)) {
+        bDate.setDate(QDate(1900, 1, 1));
     }
-    QDateTime edate = date.addMonths(6);
+    QDateTime eDate = date.addMonths(6);
     //查询搜索
-    m_vlistData = CalendarManager::getInstance()->getScheduleTask()->getSearchScheduleInfo(str, bdate, edate);
+    m_vlistData = CalendarManager::getInstance()->getScheduleTask()->getSearchScheduleInfo(str, bDate, eDate);
     updateDateShow();
 }
 
@@ -770,8 +770,8 @@ void CScheduleSearchView::updateSearch()
 void CScheduleSearchView::slotSelectCurrentItem(CScheduleSearchItem *item, bool itemFocusOut)
 {
     for (int i = 0; i < m_gradientItemList->count(); i++) {
-        QListWidgetItem *citem = m_gradientItemList->item(i);
-        if (item == m_gradientItemList->itemWidget(citem)) {
+        QListWidgetItem *cItem = m_gradientItemList->item(i);
+        if (item == m_gradientItemList->itemWidget(cItem)) {
             m_selectItem = item;
             //设置选中的item为最上面一个
             m_gradientItemList->scrollToItem(m_gradientItemList->item(i), QAbstractItemView::PositionAtTop);
@@ -866,9 +866,9 @@ void CScheduleSearchDateItem::setBackgroundColor(QColor color1)
     m_Backgroundcolor = color1;
 }
 
-void CScheduleSearchDateItem::setText(QColor tcolor, QFont font)
+void CScheduleSearchDateItem::setText(QColor tColor, QFont font)
 {
-    m_textcolor = tcolor;
+    m_textcolor = tColor;
     m_font = font;
 }
 

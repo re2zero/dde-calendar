@@ -65,30 +65,30 @@ void CMonthWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-        DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, todayColor);
-        todaypa.setColor(DPalette::Dark, Qt::white);
-        todaypa.setColor(DPalette::Light, Qt::white);
-        QColor sbcolor("#002A57");
-        sbcolor.setAlphaF(0.05);
-        todaypa.setColor(DPalette::Shadow, sbcolor);
-        m_today->setPalette(todaypa);
+        DPalette todayPa = m_today->palette();
+        todayPa.setColor(DPalette::ButtonText, todayColor);
+        todayPa.setColor(DPalette::Dark, Qt::white);
+        todayPa.setColor(DPalette::Light, Qt::white);
+        QColor sbColor("#002A57");
+        sbColor.setAlphaF(0.05);
+        todayPa.setColor(DPalette::Shadow, sbColor);
+        m_today->setPalette(todayPa);
         QColor todayhover = "#000000";
         todayhover.setAlphaF(0.1);
         QColor todaypress = "#000000";
         todaypress.setAlphaF(0.2);
         m_today->setBColor("#FFFFFF", todayhover, todaypress, "#FFFFFF", todayhover, todaypress);
         m_today->setTColor(todayColor, "#001A2E", "#0081FF");
-        m_today->setshadowColor(sbcolor);
+        m_today->setshadowColor(sbColor);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
         m_YearLabel->setPalette(pa);
         m_YearLabel->setForegroundRole(DPalette::WindowText);
 
-        DPalette Lunapa = m_YearLunarLabel->palette();
-        Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-        m_YearLunarLabel->setPalette(Lunapa);
+        DPalette LunaPa = m_YearLunarLabel->palette();
+        LunaPa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+        m_YearLunarLabel->setPalette(LunaPa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
 
         DPalette gpa = m_gridWidget->palette();
@@ -97,26 +97,26 @@ void CMonthWindow::setTheMe(int type)
         m_gridWidget->setBackgroundRole(DPalette::Background);
     } else if (type == 2) {
         QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-        DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::ButtonText, todayColor);
-        todaypa.setColor(DPalette::Light, "#484848");
-        todaypa.setColor(DPalette::Dark, "#414141");
-        QColor sbcolor("#000000");
-        sbcolor.setAlphaF(0.05);
-        todaypa.setColor(DPalette::Shadow, sbcolor);
-        m_today->setPalette(todaypa);
+        DPalette todayPa = m_today->palette();
+        todayPa.setColor(DPalette::ButtonText, todayColor);
+        todayPa.setColor(DPalette::Light, "#484848");
+        todayPa.setColor(DPalette::Dark, "#414141");
+        QColor sbColor("#000000");
+        sbColor.setAlphaF(0.05);
+        todayPa.setColor(DPalette::Shadow, sbColor);
+        m_today->setPalette(todayPa);
 
         m_today->setBColor("#484848", "#727272", "#242424", "#414141", "#535353", "#282828");
         m_today->setTColor(todayColor, "#FFFFFF", "#0081FF");
-        m_today->setshadowColor(sbcolor);
+        m_today->setshadowColor(sbColor);
 
         DPalette pa = m_YearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(pa);
         m_YearLabel->setForegroundRole(DPalette::WindowText);
-        DPalette Lunapa = m_YearLunarLabel->palette();
-        Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
-        m_YearLunarLabel->setPalette(Lunapa);
+        DPalette LunaPa = m_YearLunarLabel->palette();
+        LunaPa.setColor(DPalette::WindowText, QColor("#798BA8"));
+        m_YearLunarLabel->setPalette(LunaPa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
 
         DPalette gpa = m_gridWidget->palette();
@@ -196,8 +196,8 @@ void CMonthWindow::updateShowLunar()
     m_YearLunarLabel->setText(m_lunarYear);
     QMap<QDate, int> _monthFestivalInfo = m_calendarManager->getScheduleTask()->getFestivalInfo(m_startDate, m_stopDate);
     m_monthView->setFestival(_monthFestivalInfo);
-    QMap<QDate, CaHuangLiDayInfo>  _monthHuangliInfo = m_calendarManager->getScheduleTask()->getHuangliInfo(m_startDate, m_stopDate);
-    m_monthView->setHuangliInfo(_monthHuangliInfo);
+    QMap<QDate, CaHuangLiDayInfo> _monthHuangLiInfo = m_calendarManager->getScheduleTask()->getHuangLiInfo(m_startDate, m_stopDate);
+    m_monthView->setHuangLiInfo(_monthHuangLiInfo);
 }
 
 /**
@@ -225,8 +225,8 @@ void CMonthWindow::setSelectSearchScheduleInfo(const ScheduleDataInfo &info)
  */
 void CMonthWindow::setSearchWFlag(bool flag)
 {
-    m_searchfalg = flag;
-    m_monthDayView->setsearchfalg(flag);
+    m_searchFlag = flag;
+    m_monthDayView->setSearchflag(flag);
 }
 
 /**
@@ -234,7 +234,7 @@ void CMonthWindow::setSearchWFlag(bool flag)
  */
 void CMonthWindow::deleteselectSchedule()
 {
-    m_monthView->deletselectschedule();
+    m_monthView->deleteSelectSchedule();
 }
 
 /**
@@ -262,34 +262,34 @@ void CMonthWindow::initUI()
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedSize(DDEMonthCalendar::MTodayWindth, DDEMonthCalendar::MTodayHeight);
     QColor todayColor = CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor();
-    DPalette todaypa = m_today->palette();
-    todaypa.setColor(DPalette::ButtonText, todayColor);
-    todaypa.setColor(DPalette::Dark, Qt::white);
-    todaypa.setColor(DPalette::Light, Qt::white);
+    DPalette todayPa = m_today->palette();
+    todayPa.setColor(DPalette::ButtonText, todayColor);
+    todayPa.setColor(DPalette::Dark, Qt::white);
+    todayPa.setColor(DPalette::Light, Qt::white);
 
-    QColor sbcolor("#002A57");
-    sbcolor.setAlphaF(0.05);
-    todaypa.setColor(DPalette::Shadow, sbcolor);
+    QColor sbColor("#002A57");
+    sbColor.setAlphaF(0.05);
+    todayPa.setColor(DPalette::Shadow, sbColor);
     QFont todayfont;
     todayfont.setWeight(QFont::Medium);
     todayfont.setPixelSize(DDECalendar::FontSizeFourteen);
     m_today->setFont(todayfont);
-    m_today->setPalette(todaypa);
+    m_today->setPalette(todayPa);
     m_YearLabel = new QLabel();
-    m_YearLabel->setFixedHeight(DDEMonthCalendar::M_YLableHeight);
+    m_YearLabel->setFixedHeight(DDEMonthCalendar::M_YLabelHeight);
     m_YearLunarLabel = new QLabel();
-    m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
+    m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunaLabelWindth, DDEMonthCalendar::M_YLunaLabelHeight);
 
-    QFont ylabelF;
-    ylabelF.setWeight(QFont::Medium);
-    ylabelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
-    m_YearLabel->setFont(ylabelF);
+    QFont yLabelF;
+    yLabelF.setWeight(QFont::Medium);
+    yLabelF.setPixelSize(DDECalendar::FontSizeTwentyfour);
+    m_YearLabel->setFont(yLabelF);
     DPalette pa = m_YearLabel->palette();
     pa.setColor(DPalette::WindowText, QColor("#3B3B3B"));
     m_YearLabel->setPalette(pa);
 
-    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
-    m_YearLunarLabel->setFont(ylabelF);
+    yLabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+    m_YearLunarLabel->setFont(yLabelF);
     DPalette Lunarpa = m_YearLunarLabel->palette();
     Lunarpa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
     m_YearLunarLabel->setPalette(Lunarpa);
@@ -335,19 +335,19 @@ void CMonthWindow::initUI()
 
     hhLayout->addWidget(m_gridWidget);
 
-    m_tmainLayout = new QHBoxLayout;
-    m_tmainLayout->setMargin(0);
-    m_tmainLayout->setSpacing(0);
-    m_tmainLayout->setContentsMargins(0, 0, 10, 0);
-    m_tmainLayout->addLayout(hhLayout);
+    m_tMainLayout = new QHBoxLayout;
+    m_tMainLayout->setMargin(0);
+    m_tMainLayout->setSpacing(0);
+    m_tMainLayout->setContentsMargins(0, 0, 10, 0);
+    m_tMainLayout->addLayout(hhLayout);
 
     QVBoxLayout *ssLayout = new QVBoxLayout;
     ssLayout->setMargin(0);
     ssLayout->setSpacing(0);
     ssLayout->setContentsMargins(0, 10, 0, 10);
-    m_tmainLayout->addLayout(ssLayout);
+    m_tMainLayout->addLayout(ssLayout);
 
-    this->setLayout(m_tmainLayout);
+    this->setLayout(m_tMainLayout);
 }
 
 /**
@@ -441,10 +441,10 @@ void CMonthWindow::resizeEvent(QResizeEvent *event)
 {
     qreal dw = width() * 0.5023 + 0.5;
     int dh = 36;
-    if (m_searchfalg) {
-        m_tmainLayout->setContentsMargins(0, 0, 0, 0);
+    if (m_searchFlag) {
+        m_tMainLayout->setContentsMargins(0, 0, 0, 0);
     } else {
-        m_tmainLayout->setContentsMargins(0, 0, 10, 0);
+        m_tMainLayout->setContentsMargins(0, 0, 10, 0);
     }
     m_monthDayView->setFixedSize(qRound(dw), dh);
     QWidget::resizeEvent(event);

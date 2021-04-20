@@ -119,11 +119,10 @@ private:
     CWeekView         *m_weekview = nullptr;
     CustomFrame *m_todayframe = nullptr;
     CScheduleView *m_scheduleView = nullptr;
-    QSpacerItem *m_spaceitem = nullptr;
-    QVBoxLayout *m_mainhLayout = nullptr;
+    QVBoxLayout *m_mainHLayout = nullptr;
     QString m_searchText;
-    QHBoxLayout *m_tmainLayout = nullptr;
-    bool m_searchfalg = false;
+    QHBoxLayout *m_tMainLayout = nullptr;
+    bool m_searchFlag = false;
     QDate       m_startDate;
     QDate       m_stopDate;
 };

@@ -57,7 +57,7 @@ public:
     //设置一周的时间
     void setWeekDay(QVector<QDate> vDays, const QDate &selectDate);
     //设置黄历信息
-    void setHunagliInfo(const QMap<QDate, CaHuangLiDayInfo> &huangliInfo);
+    void setHunagLiInfo(const QMap<QDate, CaHuangLiDayInfo> &huangLiInfo);
 signals:
     /**
      * @brief signalsViewSelectDate 选择日期的信号
@@ -92,7 +92,7 @@ private:
     QVector<QDate>         m_days;
     ShowState m_showState = Normal;
     int m_selectedCell = 0;
-    QMap<QDate, CaHuangLiDayInfo>    m_huangliInfo;
+    QMap<QDate, CaHuangLiDayInfo> m_huangLiInfo;
 
     QFont m_dayNumFont;
     QFont m_monthFont;
@@ -104,7 +104,7 @@ private:
     QColor m_defaultLunarColor = "#898989";
     QColor m_weekendsTextColor = "#0887FF";
     QColor m_currentMonthColor = "#000000";
-    QColor m_backgroudColor = "#E6EEF2";
+    QColor m_backgroundColor = "#E6EEF2";
     /**
      * @brief m_Background_Weekend_Color 周六周日背景色
      */

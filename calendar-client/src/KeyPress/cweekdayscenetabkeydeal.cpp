@@ -33,7 +33,7 @@ bool CWeekDaySceneTabKeyDeal::focusItemDeal(CSceneBackgroundItem *item, CGraphic
     CWeekDayBackgroundItem *focusItem = dynamic_cast<CWeekDayBackgroundItem *>(item);
     if (focusItem != nullptr) {
         //如果当前背景是焦点显示则切换到另一个视图
-        if (focusItem->getItemFoucs()) {
+        if (focusItem->getItemFocus()) {
             focusItem->setItemFocus(false);
             scene->setActiveSwitching(true);
             scene->signalSwitchView(focusItem->getDate());

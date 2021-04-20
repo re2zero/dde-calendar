@@ -50,7 +50,7 @@ public:
     void changeDate(const ScheduleDataInfo &info);
     void updateDate(const int row, const ScheduleDataInfo &info);
 signals:
-    void signalsUpdateShcedule(int id = 0);
+    void signalsUpdateSchedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
     void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
@@ -58,23 +58,22 @@ signals:
 public slots:
     void slotFontChange();
 private:
-    void updateDateShow(QVector<QVector<MScheduleDateRangeInfo>> &vCMDaySchedule, QVector<QGraphicsRectItem *> &schudeleShowItem);
-    void createScheduleItemWidget(MScheduleDateRangeInfo info, int cnum, QVector<QGraphicsRectItem *> &schudeleShowItem);
-    void createScheduleNumWidget(MScheduleDateRangeInfo info, int cnum, QVector<QGraphicsRectItem *> &schudeleShowItem);
-    void computePos(int cnum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh);
+    void updateDateShow(QVector<QVector<MScheduleDateRangeInfo>> &vCMDaySchedule, QVector<QGraphicsRectItem *> &scheduleShowItem);
+    void createScheduleItemWidget(MScheduleDateRangeInfo info, int cNum, QVector<QGraphicsRectItem *> &scheduleShowItem);
+    void createScheduleNumWidget(MScheduleDateRangeInfo info, int cNum, QVector<QGraphicsRectItem *> &scheduleShowItem);
+    void computePos(int cNum, QDate bgeindate, QDate enddate, QPoint &pos, int &fw, int &fh);
 
 private:
     QMap<QDate, QVector<ScheduleDataInfo> > m_data;
     int m_cNum = 2; //日程层数
-    QWidget *m_parernt = nullptr;
     int m_currentMonth = 0;
     QDate m_beginDate;
     QDate m_endDate;
     int m_width = 0;
     int m_height = 0;
-    int m_leftMagin = 0;
-    int m_topMagin = 0;
-    int m_buttommagin = 0;
+    int m_leftMargin = 0;
+    int m_topMargin = 0;
+    int m_bottomMargin = 0;
     QVector<CWeekScheduleView *> m_weekSchedule;
     int m_ItemHeight = 22;
     QGraphicsScene *m_Scene = nullptr;
@@ -93,7 +92,7 @@ public:
     void setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, const QDate  &startDate, const QDate &stopDate);
     bool addData(const ScheduleDataInfo &info);
     void changeDate(const ScheduleDataInfo &info);
-    void setHeight(const int ScheduleHeight, const int DayHeigth);
+    void setHeight(const int ScheduleHeight, const int dayHeight);
     QVector<RowScheduleInfo> getMScheduleInfo() const
     {
         return m_MScheduleInfo;

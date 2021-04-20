@@ -45,7 +45,7 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
 private:
-    QColor                      m_backgroudColor;
+    QColor m_backgroundColor;
     QVector<WeekRect *>         m_weekRect;
     int                         m_radius = 8;
     Qt::DayOfWeek               m_firstWeek{Qt::Sunday};

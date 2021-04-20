@@ -24,6 +24,7 @@
 #include "ckeypressprxy.h"
 
 #include <QGraphicsScene>
+
 /**
  * @brief The CGraphicsScene class
  *
@@ -61,7 +62,6 @@ public:
     void setIsShowCurrentItem(bool isShowCurrentItem);
 
     void setIsContextMenu(bool isContextMenu);
-
 protected:
     bool event(QEvent *event) override;
 private:
@@ -77,7 +77,7 @@ signals:
     void signalGotoDayView(const QDate &date);
     //快捷键触发右击
     void signalContextMenu(CFocusItem *item);
-    //切换焦点到下一个wieget
+    //切换焦点到下一个widget
     void signalsetNextFocus();
 
 private:

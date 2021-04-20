@@ -52,7 +52,7 @@ public:
     //获取日期是否含有日程标志
     QMap<QDate, bool> getDateHasSchedule() const;
     //获取缓存中农历信息
-    QMap<QDate, CaHuangLiDayInfo> getHuangliInfo(const QDate &startDate, const QDate &stopDate);
+    QMap<QDate, CaHuangLiDayInfo> getHuangLiInfo(const QDate &startDate, const QDate &stopDate);
     //获取缓存中班休信息
     QMap<QDate, int> getFestivalInfo(const QDate &startDate, const QDate &stopDate);
     //获取搜索信息
@@ -89,7 +89,7 @@ private:
     //一年是否含有日程
     QMap<QDate, bool>               m_fullInfo{};
     //一年的黄历信息
-    QMap<QDate, CaHuangLiDayInfo>   m_huangliInfo{};
+    QMap<QDate, CaHuangLiDayInfo> m_huangLiInfo {};
     //一年的班休信息
     QMap<QDate, int>                m_festivalInfo{};
     //搜索的日程信息

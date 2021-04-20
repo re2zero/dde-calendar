@@ -76,7 +76,7 @@ private slots:
     void setScheduleHide();
     //点击按钮切换视图
     void slotstackWClicked(QAbstractButton *bt);
-    void slotWUpdateShcedule();
+    void slotWUpdateSchedule();
     void slotSreturnPressed();
     void slotStextChanged();
     //搜索框有焦点时隐藏提示框

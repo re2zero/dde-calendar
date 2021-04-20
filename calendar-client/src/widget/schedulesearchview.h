@@ -81,9 +81,9 @@ private:
     QDate m_currentDate;
     QColor m_bBackgroundcolor = "#000000";
     QColor m_btimecolor = "#526A7F";
-    QColor m_bttextcolor = "#414D68";
+    QColor m_btTextColor = "#414D68";
     QColor m_lBackgroundcolor = Qt::white;
-    QColor m_ltextcolor = "#001A2E";
+    QColor m_lTextColor = "#001A2E";
     QListWidgetItem *m_currentItem = nullptr;
     int m_maxWidth = 200;
     int currentDItemIndex = -1;
@@ -120,8 +120,8 @@ public:
     explicit CScheduleSearchItem(QWidget *parent = nullptr);
     void setBackgroundColor(QColor color1);
     void setSplitLineColor(QColor color1);
-    void setText(QColor tcolor, QFont font);
-    void setTimeC(QColor tcolor, QFont font);
+    void setText(QColor tColor, QFont font);
+    void setTimeC(QColor tColor, QFont font);
     void setData(ScheduleDataInfo vScheduleInfo, QDate date);
     void setRoundtype(int rtype);
     void setTheMe(int type = 0);
@@ -135,7 +135,7 @@ signals:
     void signalsEdit(CScheduleSearchItem *item);
     void signalSelectSchedule(const ScheduleDataInfo &scheduleInfo);
     void signalViewtransparentFrame(int type);
-    void signalSelectCurrentItem(CScheduleSearchItem *item, bool foucusOutStatus);
+    void signalSelectCurrentItem(CScheduleSearchItem *item, bool focusOutStatus);
 public slots:
     void slotEdit();
     void slotDelete();
@@ -168,8 +168,8 @@ private:
     QColor m_timecolor;
     QColor m_splitlinecolor;
     QFont m_timefont;
-    QColor m_ttextcolor;
-    QFont m_tfont;
+    QColor m_tTextColor;
+    QFont m_tFont;
     QDate m_date;
     MouseStatus m_mouseStatus;
     DMenu *m_rightMenu = nullptr;
@@ -188,7 +188,7 @@ class CScheduleSearchDateItem : public DLabel
 public:
     explicit CScheduleSearchDateItem(QWidget *parent = nullptr);
     void setBackgroundColor(QColor color1);
-    void setText(QColor tcolor, QFont font);
+    void setText(QColor tColor, QFont font);
     void setDate(QDate date);
 signals:
     void signalLabelScheduleHide();

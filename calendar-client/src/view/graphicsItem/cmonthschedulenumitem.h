@@ -41,7 +41,7 @@ public:
     //背景色
     void setColor(QColor color1, QColor color2);
     //设置字体颜色
-    void setText(QColor tcolor, QFont font);
+    void setText(QColor tColor, QFont font);
     //设置字体大小
     void setSizeType(DFontSizeManager::SizeType sizeType);
     //设置显示多少项

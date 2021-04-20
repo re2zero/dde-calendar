@@ -113,11 +113,11 @@ void CYearWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
     m_topWidget->setGeometry(0, 0, this->width(), DDEMonthCalendar::M_YTopHeight);
-    if (m_searchfalg) {
-        m_tmainLayout->setContentsMargins(10, 0, 2, 0);
+    if (m_searchFlag) {
+        m_tMainLayout->setContentsMargins(10, 0, 2, 0);
         m_topWidget->setContentsMargins(10, 0, 2, 0);
     } else {
-        m_tmainLayout->setContentsMargins(10, 0, 10, 0);
+        m_tMainLayout->setContentsMargins(10, 0, 10, 0);
         m_topWidget->setContentsMargins(10, 0, 10, 0);
     }
 }
@@ -273,7 +273,7 @@ TouchGestureData CYearWindow::calculateAzimuthAngle(QPointF &startPoint,  QPoint
         }
     }
     _result.angle = angle;
-    _result.lenght = line;
+    _result.length = line;
     return  _result;
 }
 
@@ -294,23 +294,23 @@ void CYearWindow::initUI()
     m_today->setText(QCoreApplication::translate("today", "Today", "Today"));
     m_today->setFixedWidth(88);
     m_today->setAutoFillBackground(true);
-    m_today->setFixedHeight(DDEYearCalendar::Y_MLableHeight - 4);
+    m_today->setFixedHeight(DDEYearCalendar::Y_MLabelHeight - 4);
     m_prevButton = new DIconButton(DStyle::SP_ArrowLeft, this);
     //设置对象名称和辅助显示名称
     m_prevButton->setObjectName("PrevButton");
     m_prevButton->setAccessibleName("PrevButton");
-    m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
-    m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_prevButton->setFixedWidth(DDEYearCalendar::Y_MLabelHeight);
+    m_prevButton->setFixedHeight(DDEYearCalendar::Y_MLabelHeight);
 
     m_nextButton = new DIconButton(DStyle::SP_ArrowRight, this);
     //设置对象名称和辅助显示名称
     m_nextButton->setObjectName("NextButton");
     m_nextButton->setAccessibleName("NextButton");
-    m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLableHeight);
-    m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_nextButton->setFixedWidth(DDEYearCalendar::Y_MLabelHeight);
+    m_nextButton->setFixedHeight(DDEYearCalendar::Y_MLabelHeight);
 
     m_yearLabel = new QLabel(this);
-    m_yearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
+    m_yearLabel->setFixedHeight(DDEYearCalendar::Y_YLabelHeight);
 
     QFont t_labelF;
     t_labelF.setWeight(QFont::Medium);
@@ -321,20 +321,20 @@ void CYearWindow::initUI()
     m_yearLabel->setPalette(pa);
 
     m_yearLunarLabel = new QLabel(this);
-    m_yearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
+    m_yearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunaLabelWindth, DDEMonthCalendar::M_YLunaLabelHeight);
 
-    QFont ylabelF;
-    ylabelF.setWeight(QFont::Medium);
-    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
-    m_yearLunarLabel->setFont(ylabelF);
-    DPalette Lunapa = m_yearLunarLabel->palette();
-    Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-    m_yearLunarLabel->setPalette(Lunapa);
+    QFont yLabelF;
+    yLabelF.setWeight(QFont::Medium);
+    yLabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+    m_yearLunarLabel->setFont(yLabelF);
+    DPalette LunaPa = m_yearLunarLabel->palette();
+    LunaPa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+    m_yearLunarLabel->setPalette(LunaPa);
 
     m_yearLunarDayLabel = new QLabel(this);
-    m_yearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunatLabelHeight);
-    m_yearLunarDayLabel->setFont(ylabelF);
-    m_yearLunarDayLabel->setPalette(Lunapa);
+    m_yearLunarDayLabel->setFixedSize(108, DDEMonthCalendar::M_YLunaLabelHeight);
+    m_yearLunarDayLabel->setFont(yLabelF);
+    m_yearLunarDayLabel->setPalette(LunaPa);
     m_yearLunarDayLabel->setAlignment(Qt::AlignRight);
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
@@ -356,7 +356,7 @@ void CYearWindow::initUI()
     m_todayFrame->setContentsMargins(0, 0, 0, 0);
     m_todayFrame->setRoundState(true, true, true, true);
     m_todayFrame->setBColor(Qt::white);
-    m_todayFrame->setFixedHeight(DDEYearCalendar::Y_MLableHeight);
+    m_todayFrame->setFixedHeight(DDEYearCalendar::Y_MLabelHeight);
     m_todayFrame->setboreder(1);
     QHBoxLayout *todaylayout = new QHBoxLayout;
     todaylayout->setMargin(0);
@@ -393,17 +393,17 @@ void CYearWindow::initUI()
     hhLayout->setContentsMargins(0, 0, 0, 0);
     hhLayout->addWidget(m_StackedWidget);
 
-    m_tmainLayout = new QVBoxLayout;
-    m_tmainLayout->setMargin(0);
-    m_tmainLayout->setSpacing(0);
-    m_tmainLayout->setContentsMargins(10, 0, 10, 0);
-    m_tmainLayout->addLayout(hhLayout);
-    this->setLayout(m_tmainLayout);
+    m_tMainLayout = new QVBoxLayout;
+    m_tMainLayout->setMargin(0);
+    m_tMainLayout->setSpacing(0);
+    m_tMainLayout->setContentsMargins(10, 0, 10, 0);
+    m_tMainLayout->addLayout(hhLayout);
+    this->setLayout(m_tMainLayout);
 
     m_topWidget = new DWidget(this);
     m_topWidget->setLayout(yeartitleLayout);
 
-    m_Scheduleview = new CYearScheduleOutView(this);
+    m_scheduleView = new CYearScheduleOutView(this);
 }
 
 /**
@@ -416,8 +416,8 @@ void CYearWindow::initConnection()
     connect(m_StackedWidget, &AnimationStackedWidget::signalIsFinished, this, &CYearWindow::setYearData);
     connect(m_firstYearWidget, &YearFrame::signalMousePress, this, &CYearWindow::slotMousePress);
     connect(m_secondYearWidget, &YearFrame::signalMousePress, this, &CYearWindow::slotMousePress);
-    connect(m_Scheduleview, &CYearScheduleOutView::signalsViewSelectDate, this, &CYearWindow::slotMousePress);
-    connect(m_Scheduleview, &CYearScheduleOutView::signalViewtransparentFrame, this, &CYearWindow::signalViewtransparentFrame);
+    connect(m_scheduleView, &CYearScheduleOutView::signalsViewSelectDate, this, &CYearWindow::slotMousePress);
+    connect(m_scheduleView, &CYearScheduleOutView::signalViewtransparentFrame, this, &CYearWindow::signalViewtransparentFrame);
 }
 
 /**
@@ -427,10 +427,10 @@ void CYearWindow::initConnection()
 void CYearWindow::setTheMe(int type)
 {
     if (type == 0 || type == 1) {
-        DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::WindowText, QColor("#000000"));
-        todaypa.setColor(DPalette::Background, Qt::white);
-        m_today->setPalette(todaypa);
+        DPalette todayPa = m_today->palette();
+        todayPa.setColor(DPalette::WindowText, QColor("#000000"));
+        todayPa.setColor(DPalette::Background, Qt::white);
+        m_today->setPalette(todayPa);
         m_today->setForegroundRole(DPalette::WindowText);
         m_today->setBackgroundRole(DPalette::Background);
 
@@ -441,40 +441,40 @@ void CYearWindow::setTheMe(int type)
         m_yearLabel->setPalette(pa);
         m_yearLabel->setForegroundRole(DPalette::WindowText);
 
-        DPalette Lunapa = m_yearLunarLabel->palette();
-        Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-        m_yearLunarLabel->setPalette(Lunapa);
+        DPalette LunaPa = m_yearLunarLabel->palette();
+        LunaPa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+        m_yearLunarLabel->setPalette(LunaPa);
         m_yearLunarLabel->setForegroundRole(DPalette::WindowText);
 
-        m_yearLunarDayLabel->setPalette(Lunapa);
+        m_yearLunarDayLabel->setPalette(LunaPa);
         m_yearLunarDayLabel->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
-        DPalette todaypa = m_today->palette();
-        todaypa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
-        QColor tbcolor = "#414141";
-        tbcolor.setAlphaF(0.0);
-        todaypa.setColor(DPalette::Background, tbcolor);
-        m_today->setPalette(todaypa);
+        DPalette todayPa = m_today->palette();
+        todayPa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
+        QColor tbColor = "#414141";
+        tbColor.setAlphaF(0.0);
+        todayPa.setColor(DPalette::Background, tbColor);
+        m_today->setPalette(todayPa);
         m_today->setForegroundRole(DPalette::WindowText);
         m_today->setBackgroundRole(DPalette::Background);
-        QColor tbcolor2 = "#414141";
-        tbcolor2.setAlphaF(0.3);
-        m_todayFrame->setBColor(tbcolor2);
+        QColor tbColor2 = "#414141";
+        tbColor2.setAlphaF(0.3);
+        m_todayFrame->setBColor(tbColor2);
         DPalette pa = m_yearLabel->palette();
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_yearLabel->setPalette(pa);
         m_yearLabel->setForegroundRole(DPalette::WindowText);
-        DPalette Lunapa = m_yearLunarLabel->palette();
-        Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
-        m_yearLunarLabel->setPalette(Lunapa);
+        DPalette LunaPa = m_yearLunarLabel->palette();
+        LunaPa.setColor(DPalette::WindowText, QColor("#798BA8"));
+        m_yearLunarLabel->setPalette(LunaPa);
         m_yearLunarLabel->setForegroundRole(DPalette::WindowText);
-        m_yearLunarDayLabel->setPalette(Lunapa);
+        m_yearLunarDayLabel->setPalette(LunaPa);
         m_yearLunarDayLabel->setForegroundRole(DPalette::WindowText);
     }
     m_firstYearWidget->setTheMe(type);
     m_secondYearWidget->setTheMe(type);
     //设置提示框主题类型
-    m_Scheduleview->setTheMe(type);
+    m_scheduleView->setTheMe(type);
 
     DPalette palette = m_topWidget->palette();
     palette.setBrush(DPalette::WindowText, palette.color(DPalette::Window));
@@ -488,7 +488,7 @@ void CYearWindow::setTheMe(int type)
  */
 void CYearWindow::setSearchWFlag(bool flag)
 {
-    m_searchfalg = flag;
+    m_searchFlag = flag;
 }
 
 /**
@@ -498,7 +498,7 @@ void CYearWindow::updateShowDate(const bool isUpdateBar)
 {
     Q_UNUSED(isUpdateBar);
     QMap<int, QVector<QDate> > _yearShowData = m_calendarManager->getCalendarDateDataManage()->getYearDate();
-    m_Scheduleview->setTimeFormat(m_calendarManager->getCalendarDateDataManage()->getTimeFormat());
+    m_scheduleView->setTimeFormat(m_calendarManager->getCalendarDateDataManage()->getTimeFormat());
     m_yearWidget->setShowDate(getSelectDate(), _yearShowData);
 }
 
@@ -549,7 +549,7 @@ void CYearWindow::setSelectSearchScheduleInfo(const ScheduleDataInfo &info)
  */
 void CYearWindow::slotSetScheduleHide()
 {
-    m_Scheduleview->hide();
+    m_scheduleView->hide();
 }
 
 /**
@@ -667,22 +667,22 @@ void CYearWindow::slotMousePress(const QDate &selectDate, const int pressType)
     switch (pressType) {
     case 0: {
         // 0:单击
-        QVector<ScheduleDataInfo> _shceduleInfo{};
+        QVector<ScheduleDataInfo> _scheduleInfo {};
         //获取选择日期的日程信息
         QMap<QDate, QVector<ScheduleDataInfo> > showInfo = m_calendarManager->getScheduleTask()->getScheduleInfo(selectDate, selectDate);
         if (showInfo.begin() != showInfo.end()) {
-            _shceduleInfo = showInfo.begin().value();
+            _scheduleInfo = showInfo.begin().value();
         }
-        m_Scheduleview->setCurrentDate(selectDate);
-        m_Scheduleview->setData(_shceduleInfo);
+        m_scheduleView->setCurrentDate(selectDate);
+        m_scheduleView->setData(_scheduleInfo);
         QPoint pos22 = QCursor::pos();
         QDesktopWidget *w = QApplication::desktop();
-        if (pos22.x() + 10 + m_Scheduleview->width() < w->width()) {
-            m_Scheduleview->setDirection(DArrowRectangle::ArrowLeft);
-            m_Scheduleview->show(pos22.x() + 10, pos22.y());
+        if (pos22.x() + 10 + m_scheduleView->width() < w->width()) {
+            m_scheduleView->setDirection(DArrowRectangle::ArrowLeft);
+            m_scheduleView->show(pos22.x() + 10, pos22.y());
         } else {
-            m_Scheduleview->setDirection(DArrowRectangle::ArrowRight);
-            m_Scheduleview->show(pos22.x() - 10, pos22.y());
+            m_scheduleView->setDirection(DArrowRectangle::ArrowRight);
+            m_scheduleView->show(pos22.x() - 10, pos22.y());
         }
         break;
     }
@@ -742,7 +742,7 @@ YearFrame::YearFrame(DWidget *parent)
     }
 
     m_YearLabel = new QLabel(this);
-    m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLableHeight);
+    m_YearLabel->setFixedHeight(DDEYearCalendar::Y_YLabelHeight);
 
     QFont t_labelF;
     t_labelF.setWeight(QFont::Medium);
@@ -753,15 +753,15 @@ YearFrame::YearFrame(DWidget *parent)
     m_YearLabel->setPalette(pa);
 
     m_YearLunarLabel = new QLabel();
-    m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunatLabelWindth, DDEMonthCalendar::M_YLunatLabelHeight);
+    m_YearLunarLabel->setFixedSize(DDEMonthCalendar::M_YLunaLabelWindth, DDEMonthCalendar::M_YLunaLabelHeight);
 
-    QFont ylabelF;
-    ylabelF.setWeight(QFont::Medium);
-    ylabelF.setPixelSize(DDECalendar::FontSizeFourteen);
-    m_YearLunarLabel->setFont(ylabelF);
-    DPalette Lunapa = m_YearLunarLabel->palette();
-    Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-    m_YearLunarLabel->setPalette(Lunapa);
+    QFont yLabelF;
+    yLabelF.setWeight(QFont::Medium);
+    yLabelF.setPixelSize(DDECalendar::FontSizeFourteen);
+    m_YearLunarLabel->setFont(yLabelF);
+    DPalette LunaPa = m_YearLunarLabel->palette();
+    LunaPa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+    m_YearLunarLabel->setPalette(LunaPa);
 
     QHBoxLayout *yeartitleLayout = new QHBoxLayout;
     yeartitleLayout->setMargin(0);
@@ -809,7 +809,7 @@ void YearFrame::setShowDate(const QDate &selectDate, const QMap<int, QVector<QDa
     Q_ASSERT(showDate.size() == 12);
     m_selectDate = selectDate;
     QDate _showMonth(m_selectDate.year(), 1, 1);
-    for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
+    for (int i = 0; i < DDEYearCalendar::FrameSizeOfEveryYear; i++) {
         QDate _setShowMonth = _showMonth.addMonths(i);
         m_monthViewList.at(i)->setShowDate(_setShowMonth, showDate[i + 1]);
     }
@@ -874,9 +874,9 @@ void YearFrame::setTheMe(int type)
         m_YearLabel->setPalette(pa);
         m_YearLabel->setForegroundRole(DPalette::WindowText);
 
-        DPalette Lunapa = m_YearLunarLabel->palette();
-        Lunapa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
-        m_YearLunarLabel->setPalette(Lunapa);
+        DPalette LunaPa = m_YearLunarLabel->palette();
+        LunaPa.setColor(DPalette::WindowText, QColor("#8A8A8A"));
+        m_YearLunarLabel->setPalette(LunaPa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
     } else if (type == 2) {
         DPalette gpa = palette();
@@ -888,13 +888,13 @@ void YearFrame::setTheMe(int type)
         pa.setColor(DPalette::WindowText, QColor("#C0C6D4"));
         m_YearLabel->setPalette(pa);
         m_YearLabel->setForegroundRole(DPalette::WindowText);
-        DPalette Lunapa = m_YearLunarLabel->palette();
-        Lunapa.setColor(DPalette::WindowText, QColor("#798BA8"));
-        m_YearLunarLabel->setPalette(Lunapa);
+        DPalette LunaPa = m_YearLunarLabel->palette();
+        LunaPa.setColor(DPalette::WindowText, QColor("#798BA8"));
+        m_YearLunarLabel->setPalette(LunaPa);
         m_YearLunarLabel->setForegroundRole(DPalette::WindowText);
     }
 
-    for (int i = 0; i < DDEYearCalendar::FrameSizeofEveryYear; i++) {
+    for (int i = 0; i < DDEYearCalendar::FrameSizeOfEveryYear; i++) {
         m_monthViewList.at(i)->setTheMe(type);
     }
 }

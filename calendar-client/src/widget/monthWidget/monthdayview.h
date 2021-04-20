@@ -42,7 +42,8 @@ public:
     void setSelectDate(const QDate &date);
     //设置主题颜色
     void setTheMe(int type = 0);
-    void setsearchfalg(bool flag);
+    void setSearchflag(bool flag);
+
 protected:
     void wheelEvent(QWheelEvent *e) override;
     bool event(QEvent *e) override;
@@ -65,7 +66,7 @@ private:
 
     int                         m_fixwidth = 200;
     int                         m_realwidth = 100;
-    bool                        m_searchfalg = false;
+    bool m_searchFlag = false;
 };
 
 class CMonthRect;
