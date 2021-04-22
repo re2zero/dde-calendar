@@ -53,6 +53,9 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in config.h @ONLY)
 
 file(GLOB_RECURSE Calendar_Service_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
+list(APPEND CMAKE_MODULE_PATH "${ASAN_CMAKE_DIR}")
+include(asan)
+
 add_executable(${APP_BIN_NAME} ${Calendar_Service_TEST_SRC} ${CALENDARSERVICE_SRCS})
 
 target_link_libraries(${APP_BIN_NAME} 
@@ -62,6 +65,3 @@ target_link_libraries(${APP_BIN_NAME}
     pthread
     basestruct
 )
-
-# 设置添加gocv相关信息的输出
-set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")

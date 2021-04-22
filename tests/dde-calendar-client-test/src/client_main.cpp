@@ -19,7 +19,11 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "gtest/gtest.h"
-#include <QDebug>
+
+#if defined(CMAKE_SAFETYTEST_ARG_ON)
+#include <sanitizer/asan_interface.h>
+#endif
+
 #include <DApplication>
 
 DWIDGET_USE_NAMESPACE
@@ -30,5 +34,10 @@ int main(int argc, char **argv)
     DApplication application(argc, argv);
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();
+
+#if defined(CMAKE_SAFETYTEST_ARG_ON)
+    __sanitizer_set_report_path("calendar_client_asan.log");
+#endif
+
     return ret;
 }

@@ -547,13 +547,13 @@
 <context>
     <name>CYearScheduleView</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="253"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="256"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="251"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="254"/>
         <source>All Day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="273"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearscheduleview.cpp" line="271"/>
         <source>No event</source>
         <translation type="unfinished"></translation>
     </message>

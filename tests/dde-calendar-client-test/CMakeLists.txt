@@ -51,6 +51,9 @@ endforeach()
 file(GLOB_RECURSE Calendar_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 include_directories(../../calendar-basicstruct/)
 
+list(APPEND CMAKE_MODULE_PATH "${ASAN_CMAKE_DIR}")
+include(asan)
+
 # Tell CMake to create the executable
 add_executable(${APP_BIN_NAME} ${Calendar_TEST_SRC} ${Calendar_SRC} ${APP_QRC})
 
@@ -70,6 +73,3 @@ target_link_libraries(${APP_BIN_NAME}
     pthread
     basestruct
 )
-
-# 设置添加gocv相关信息的输出
-set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")

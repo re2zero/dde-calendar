@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 project(dde-calendar-test)
 
+set(ASAN_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 ADD_SUBDIRECTORY(dde-calendar-client-test)
 
 ADD_SUBDIRECTORY(dde-calendar-service-test)
