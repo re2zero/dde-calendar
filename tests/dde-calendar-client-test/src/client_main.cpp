@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     int ret = RUN_ALL_TESTS();
 
 #if defined(CMAKE_SAFETYTEST_ARG_ON)
-    __sanitizer_set_report_path("calendar_client_asan.log");
+    __sanitizer_set_report_path("asan.log");
 #endif
 
     return ret;
