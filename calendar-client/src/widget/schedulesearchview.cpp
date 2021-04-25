@@ -579,8 +579,8 @@ void CScheduleSearchView::updateDateShow()
         qint64 d = qAbs(_iterator.key().daysTo(tCurrentData));
         _showInfo.clear();
         for (int i = 0 ; i < _iterator.value().size(); ++i) {
-            //如果开始时间日期为显示日期则加入显示,过滤夸天不在显示日期的日程
-            if (_iterator.value().at(i).getBeginDateTime().date() == _iterator.key()) {
+            //如果开始时间日期为显示日期则显示,跨天日程只显示一个
+            if (_iterator.value().at(i).getBeginDateTime().date() == _iterator.key() || _iterator == m_vlistData.constBegin()) {
                 _showInfo.append(_iterator.value().at(i));
             }
         }
