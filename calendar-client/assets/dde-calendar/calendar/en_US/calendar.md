@@ -14,8 +14,8 @@ You can run, close or create a shortcut for Calendar by the following ways.
 
 ### Run Calender
 
-1.  Click ![deepin_launcher](../common/deepin_launcher.svg) in the dock to enter the Launcher interface.
-2.  Locate ![draw](../common/dde_calendar.svg) by scrolling the mouse wheel or searching "calendar" in the Launcher interface and click it to run.
+1.  Click the Launcher icon ![deepin_launcher](../common/deepin_launcher.svg) in the dock to enter the Launcher interface.
+2.  Locate Calendar ![draw](../common/dde_calendar.svg) by scrolling the mouse wheel or searching "calendar" in the Launcher interface and click it to run.
 3.  Right-click ![draw](../common/dde_calendar.svg) and you can:
 
    - Click **Send to desktop** to create a desktop shortcut.
@@ -47,6 +47,8 @@ Monthly view is defaulted and you can click to switch between different views.
 -  The date starts from the year **1900** and you cannot view dates earlier than that year during date switching. 
 - In the monthly and weekly view, the display of Saturday and Sunday is different from that of days between Monday to Friday. 
 
+> ![notes](../common/notes.svg) Notes: Monday is displayed as the first day of a week by default and you can change the display order of a week as needed in **Control Center** > **Date and Time** > **Time Format**.
+
 | View         | Feature                                        |
 | ------------ | ---------------------------------------------- |
 | Yearly View  | Display the months and days of the whole year. |
@@ -62,7 +64,7 @@ Monthly view is defaulted and you can click to switch between different views.
 
 3.  Set the schedule type, description, time, reminder, etc.
 
-> ![tips](../common/tips.svg)Tips: You can also click the ![add](../common/add_normal.svg) icon in the menu bar to create events.
+> ![tips](../common/tips.svg)Tips: You can also click the ![add](../common/+.svg) icon in the menu bar to create events.
 
    ![0|create](fig/create.png)
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -105,7 +107,7 @@ During event editing, different prompt information will be displayed according t
 | All Future Events | All the future events on and after the selected date will be changed and the events before the selected date will remain unchanged. |
 | Change All        | All repeating events will be changed.                        |
 
-### Set an All-day or Multiple-day Event
+### Set All-day or Multiple-day Events
 
 Set the **Starts** and **Ends** and you are able to set an all-day or consecutive multiple-day events when creating or editing an event.
 
@@ -149,7 +151,7 @@ Description of icons contained in the prompt information is listed as below.
 
 You can also click **Cancel** to cancel the operation.
 
-Description of icons contained in the prompt information for repeating and non-repeating events when deleting an event is listed as below.
+Description of icons contained in the prompt information for repeating and non-repeating events when you are deleting an event is listed as below.
 
 | Icon                     | Description                                                  |
 | ------------------------ | ------------------------------------------------------------ |
