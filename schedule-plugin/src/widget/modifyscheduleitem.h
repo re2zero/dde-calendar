@@ -51,7 +51,7 @@ signals:
     void signalSendSelectScheduleIndex(int index);
 public slots:
 private:
-    int m_Index {1};
+    int m_Index = 1;
     const int m_IndexWidth {16};
     const int m_IndexX {14};
     QColor m_LineColor {"#000000"};
