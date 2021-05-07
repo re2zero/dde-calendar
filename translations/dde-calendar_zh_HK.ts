@@ -260,7 +260,7 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="561"/>
         <source>Other</source>
-        <translation>其他應用</translation>
+        <translation>其他</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="578"/>
