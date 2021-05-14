@@ -46,6 +46,8 @@ void CalendarAdaptor::ActiveWindow()
 void CalendarAdaptor::RaiseWindow()
 {
     QWidget *pp = qobject_cast<QWidget *>(parent());
+    //取消最小化状态
+    pp->setWindowState(pp->windowState() & ~Qt::WindowState::WindowMinimized);
     pp->activateWindow();
     pp->raise();
 }
