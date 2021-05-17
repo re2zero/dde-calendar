@@ -449,6 +449,7 @@ void CGraphicsView::slotScrollBar()
 
 void CGraphicsView::slotUpdateScene()
 {
+    pressScheduleInit();
     this->scene()->update();
 }
 

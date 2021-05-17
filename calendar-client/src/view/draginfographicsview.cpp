@@ -393,7 +393,6 @@ void DragInfoGraphicsView::dragMoveEvent(QDragMoveEvent *event)
     QDateTime gDate =  getPosDate(event->pos());
     QJsonParseError json_error;
     QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
-
     if (json_error.error != QJsonParseError::NoError) {
         return;
     }
@@ -614,6 +613,7 @@ void DragInfoGraphicsView::mousePress(const QPoint &point)
     setPressSelectInfo(ScheduleDataInfo());
     //设置拖拽日程为无效日程
     m_DragScheduleInfo = ScheduleDataInfo();
+    pressScheduleInit();
     QGraphicsItem *listItem = itemAt(point);
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
@@ -894,6 +894,14 @@ void DragInfoGraphicsView::slotsetNextFocus()
 void DragInfoGraphicsView::setSceneCurrentItemFocus(const QDate &focusDate)
 {
     Q_UNUSED(focusDate);
+}
+
+/**
+ * @brief DragInfoGraphicsView::pressScheduleInit 初始化点击日程
+ */
+void DragInfoGraphicsView::pressScheduleInit()
+{
+    m_PressScheduleInfo = ScheduleDataInfo();
 }
 
 QDate DragInfoGraphicsView::getCurrentDate() const

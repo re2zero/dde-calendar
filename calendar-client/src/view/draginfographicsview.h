@@ -109,7 +109,8 @@ protected:
 public:
     //设置搜索选中日程
     virtual void setSelectSearchSchedule(const ScheduleDataInfo &scheduleInfo);
-
+    //初始化点击日程
+    void pressScheduleInit();
     QDate getCurrentDate() const;
     void setCurrentDate(const QDate &currentDate);
 

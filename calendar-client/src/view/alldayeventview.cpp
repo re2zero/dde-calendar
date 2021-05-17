@@ -422,5 +422,6 @@ QDateTime CAllDayEventWeekView::getPosDate(const QPoint &p)
 
 void CAllDayEventWeekView::slotUpdateScene()
 {
+    pressScheduleInit();
     this->scene()->update();
 }
