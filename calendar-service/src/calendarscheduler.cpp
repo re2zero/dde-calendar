@@ -64,6 +64,8 @@ CalendarScheduler::~CalendarScheduler()
         threadremind->quit();
         threadremind->wait();
     }
+    //清空黄历数据
+    logOffEmptyData();
     delete m_jobremindmanager;
 }
 

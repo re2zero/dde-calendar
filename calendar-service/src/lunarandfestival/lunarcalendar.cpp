@@ -39,6 +39,19 @@ LunarCalendar *LunarCalendar::GetLunarCalendar(qint32 year)
     return plcal;
 }
 
+/**
+ * @brief LunarCalendar::LogOffEmptyData    //清空数据
+ */
+void LunarCalendar::LogOffEmptyData()
+{
+    QMap<int, LunarCalendar *>::iterator it = glYearCache.begin();
+    for (; it != glYearCache.end(); ++it) {
+        delete it.value();
+        it.value() = nullptr;
+    }
+    glYearCache.clear();
+}
+
 //指定年份内公历日期转换为农历日
 lunarInfo LunarCalendar::SolarDayToLunarDay(qint32 month, qint32 day)
 {

@@ -30,6 +30,8 @@ class LunarCalendar
 {
 public:
     static LunarCalendar *GetLunarCalendar(qint32 year);
+    //程序退出时情况数据
+    static void LogOffEmptyData();
     lunarInfo SolarDayToLunarDay(qint32 month, qint32 day);
 
 private:

@@ -211,3 +211,8 @@ QList<stDayFestival> FilterDayFestival(QList<stDayFestival> &festivaldays, const
 
     return m_festivaldays;
 }
+
+void logOffEmptyData()
+{
+    LunarCalendar::LogOffEmptyData();
+}
