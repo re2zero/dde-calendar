@@ -124,7 +124,6 @@ void Calendarmainwindow::slotViewShortcut()
     shortcutString << "-b" << param1 << param2;
 
     QProcess *shortcutViewProc = new QProcess(this);
-    shortcutViewProc->startDetached("killall deepin-shortcut-viewer");
     shortcutViewProc->startDetached("deepin-shortcut-viewer", shortcutString);
 
     connect(shortcutViewProc, SIGNAL(finished(int)), shortcutViewProc, SLOT(deleteLater()));
