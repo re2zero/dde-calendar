@@ -90,8 +90,13 @@ int main(int argc, char *argv[])
         einterface.registerAction("QUERY", "find a schedule information");
         einterface.registerAction("CANCEL", "cancel a schedule");
         QDBusConnection dbus = QDBusConnection::sessionBus();
-        dbus.registerService("com.deepin.Calendar");
-        dbus.registerObject("/com/deepin/Calendar", &ww);
+        //如果注册失败打印出失败信息
+        if (!dbus.registerService("com.deepin.Calendar")) {
+            qWarning() << "registerService Error:" << dbus.lastError();
+        }
+        if (!dbus.registerObject("/com/deepin/Calendar", &ww)) {
+            qWarning() << "registerObject Error:" << dbus.lastError();
+        }
         ww.slotTheme(DApplicationHelper::instance()->themeType());
         ww.show();
         PERF_PRINT_END("POINT-01");
