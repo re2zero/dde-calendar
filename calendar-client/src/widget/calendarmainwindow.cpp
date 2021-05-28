@@ -295,15 +295,6 @@ void Calendarmainwindow::OpenSchedule(QString job)
     slotWUpdateSchedule();
 }
 
-void Calendarmainwindow::ActiveWindow()
-{
-    raise();
-}
-
-void Calendarmainwindow::RaiseWindow()
-{
-    raise();
-}
 void Calendarmainwindow::initUI()
 {
     //设置主窗口辅助技术显示名称和描述

@@ -55,8 +55,6 @@ public:
 public slots:
     void slotTheme(int type);
     void OpenSchedule(QString job);
-    void ActiveWindow();
-    void RaiseWindow();
     void onViewShortcut();
     //更新当前时间
     void slotCurrentDateUpdate();
