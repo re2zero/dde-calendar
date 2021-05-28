@@ -40,7 +40,7 @@ public:
     void setallsize(int w, int h, int left, int top, int buttom, int itemHeight = 22);
     void setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, int currentMonth);
     void updateData();
-    void updateHigh();
+    void updateHeight();
     QVector<QGraphicsRectItem *> getScheduleShowItem() const;
     int getScheduleHeight() const
     {

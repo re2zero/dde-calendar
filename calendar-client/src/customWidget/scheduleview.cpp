@@ -132,10 +132,10 @@ void CScheduleView::setSelectSchedule(const ScheduleDataInfo &scheduleInfo)
     }
 }
 
-void CScheduleView::updateHigh()
+void CScheduleView::updateHeight()
 {
-    m_graphicsView->updateHigh();
-    m_alldaylist->updateHigh();
+    m_graphicsView->updateHeight();
+    m_alldaylist->updateHeight();
 }
 
 bool CScheduleView::IsDragging()

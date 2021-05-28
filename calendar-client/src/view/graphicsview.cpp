@@ -128,7 +128,7 @@ bool CGraphicsView::MeetCreationConditions(const QDateTime &date)
     return qAbs(date.daysTo(m_PressDate) < 7);
 }
 
-void CGraphicsView::updateHigh()
+void CGraphicsView::updateHeight()
 {
     scene()->update();
     update();

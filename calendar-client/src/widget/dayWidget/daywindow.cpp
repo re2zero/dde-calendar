@@ -94,11 +94,11 @@ void CDayWindow::setTime(const QTime time)
 }
 
 /**
- * @brief CDayWindow::updateHigh            更新全天和非全天高度
+ * @brief CDayWindow::updateHeight            更新全天和非全天高度
  */
-void CDayWindow::updateHigh()
+void CDayWindow::updateHeight()
 {
-    m_scheduleView->updateHigh();
+    m_scheduleView->updateHeight();
 }
 
 /**

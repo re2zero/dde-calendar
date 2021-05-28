@@ -108,7 +108,7 @@ void CMonthScheduleView::updateData()
     }
 }
 
-void CMonthScheduleView::updateHigh()
+void CMonthScheduleView::updateHeight()
 {
     for (int j = 0; j < m_weekSchedule.size(); ++j) {
         for (int i = 0; i < m_weekSchedule[j]->getScheduleShowItem().count(); i++) {

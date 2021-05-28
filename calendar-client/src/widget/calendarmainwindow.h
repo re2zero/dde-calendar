@@ -50,7 +50,7 @@ public:
     explicit Calendarmainwindow(int index, QWidget *w = nullptr);
     ~Calendarmainwindow() override;
     void viewWindow(int type, const bool showAnimation = false);
-    void updateHigh();
+    void updateHeight();
     void setSearchWidth(int w);
 public slots:
     void slotTheme(int type);

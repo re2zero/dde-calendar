@@ -124,7 +124,7 @@ QDateTime CAllDayEventWeekView::getDragScheduleInfoEndTime(const QDateTime &move
     return m_InfoBeginTime.daysTo(m_MoveDate) < 0 ? QDateTime(m_InfoBeginTime.date(), QTime(23, 59, 0)) : QDateTime(moveDateTime.date(), QTime(23, 59, 0));
 }
 
-void CAllDayEventWeekView::updateHigh()
+void CAllDayEventWeekView::updateHeight()
 {
     for (int i = 0; i < m_baseShowItem.count(); i++) {
         m_baseShowItem.at(i)->update();

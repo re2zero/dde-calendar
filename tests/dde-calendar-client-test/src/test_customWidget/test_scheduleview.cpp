@@ -104,10 +104,10 @@ TEST_F(test_scheduleview, setSelectSchedule)
     mScheduleView->setSelectSchedule(scheduleinfo);
 }
 
-//void CScheduleView::updateHigh()
-TEST_F(test_scheduleview, updateHigh)
+//void CScheduleView::updateHeight()
+TEST_F(test_scheduleview, updateHeight)
 {
-    mScheduleView->updateHigh();
+    mScheduleView->updateHeight();
 }
 
 //bool CScheduleView::IsDragging()

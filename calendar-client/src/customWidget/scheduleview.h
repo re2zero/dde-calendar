@@ -44,7 +44,7 @@ public:
     void setLunarVisible(bool state);
     void setTime(QTime time);
     void setSelectSchedule(const ScheduleDataInfo &scheduleInfo);
-    void updateHigh();
+    void updateHeight();
     bool IsDragging();
     void setCurrentDate(const QDateTime &currentDate);
     //设置显示日程

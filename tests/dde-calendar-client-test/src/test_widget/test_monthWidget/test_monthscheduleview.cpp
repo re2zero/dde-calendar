@@ -202,10 +202,10 @@ TEST_F(test_monthscheduleview, updateDate)
     mMonthScheduleView->updateData();
 }
 
-//void CMonthScheduleView::updateHigh()
-TEST_F(test_monthscheduleview, updateHigh)
+//void CMonthScheduleView::updateHeight()
+TEST_F(test_monthscheduleview, updateHeight)
 {
-    mMonthScheduleView->updateHigh();
+    mMonthScheduleView->updateHeight();
 }
 
 //QVector<QGraphicsRectItem *> CMonthScheduleView::getScheduleShowItem() const

@@ -203,7 +203,7 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     CConfigSettings::setOption("base.view", type + 1);
 }
 
-void Calendarmainwindow::updateHigh()
+void Calendarmainwindow::updateHeight()
 {
     int index = m_stackWidget->currentIndex();
 
@@ -218,10 +218,10 @@ void Calendarmainwindow::updateHigh()
     case DDECalendar::CalendarMonthWindow: {
     } break;
     case DDECalendar::CalendarWeekWindow: {
-        m_weekWindow->updateHigh();
+        m_weekWindow->updateHeight();
     } break;
     case DDECalendar::CalendarDayWindow: {
-        m_DayWindow->updateHigh();
+        m_DayWindow->updateHeight();
     } break;
     }
 }
@@ -500,7 +500,7 @@ void Calendarmainwindow::slotWUpdateSchedule()
     if (m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
     }
-    updateHigh();
+    updateHeight();
     return;
 }
 
@@ -511,7 +511,7 @@ void Calendarmainwindow::slotSreturnPressed()
         m_contentBackground->setVisible(true);
     }
     m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
-    updateHigh();
+    updateHeight();
 }
 
 void Calendarmainwindow::slotStextChanged()
@@ -530,7 +530,7 @@ void Calendarmainwindow::slotStextChanged()
         m_contentBackground->setVisible(false);
         m_opensearchflag = false;
     }
-    updateHigh();
+    updateHeight();
 }
 
 /**

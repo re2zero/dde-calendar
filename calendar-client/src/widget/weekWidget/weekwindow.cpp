@@ -306,11 +306,11 @@ void CWeekWindow::setSearchWFlag(bool flag)
 }
 
 /**
- * @brief CWeekWindow::updateHigh       更新全天区域高度
+ * @brief CWeekWindow::updateHeight       更新全天区域高度
  */
-void CWeekWindow::updateHigh()
+void CWeekWindow::updateHeight()
 {
-    m_scheduleView->updateHigh();
+    m_scheduleView->updateHeight();
 }
 
 /**
