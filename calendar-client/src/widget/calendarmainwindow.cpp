@@ -76,7 +76,7 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
 
     QShortcut *viewshortcut = new QShortcut(this);
     viewshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Shift+/")));
-    connect(viewshortcut, SIGNAL(activated()), this, SLOT(onViewShortcut()));
+    connect(viewshortcut, SIGNAL(activated()), this, SLOT(slotViewShortcut()));
 
     setTitlebarShadowEnabled(true);
     //获取桌面窗口大小
@@ -113,7 +113,7 @@ Calendarmainwindow::~Calendarmainwindow()
     CDynamicIcon::releaseInstance();
 }
 
-void Calendarmainwindow::onViewShortcut()
+void Calendarmainwindow::slotViewShortcut()
 {
     QRect rect = window()->geometry();
     QPoint pos(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
@@ -270,7 +270,7 @@ void Calendarmainwindow::slotTheme(int type)
     m_scheduleSearchView->setTheMe(type);
 }
 
-void Calendarmainwindow::OpenSchedule(QString job)
+void Calendarmainwindow::slotOpenSchedule(QString job)
 {
     if (job.isEmpty())
         return;

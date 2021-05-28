@@ -54,8 +54,8 @@ public:
     void setSearchWidth(int w);
 public slots:
     void slotTheme(int type);
-    void OpenSchedule(QString job);
-    void onViewShortcut();
+    void slotOpenSchedule(QString job);
+    void slotViewShortcut();
     //更新当前时间
     void slotCurrentDateUpdate();
     void slotSetSearchFocus();
