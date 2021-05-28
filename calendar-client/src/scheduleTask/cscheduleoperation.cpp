@@ -58,7 +58,7 @@ bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
             msgBox.setText(
                 tr("All occurrences of a repeating event must have the same all-day status."));
             msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
-            msgBox.addPushButton(tr("Cancel"), true);
+            msgBox.addPushButton(tr("Cancel", "button"), true);
             msgBox.addWaringButton(tr("Change All"), true);
             msgBox.exec();
 
@@ -73,7 +73,7 @@ bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
             CScheduleCtrlDlg msgBox(m_widget);
             msgBox.setText(tr("You are changing the repeating rule of this event."));
             msgBox.setInformativeText(tr("Do you want to change all occurrences?"));
-            msgBox.addPushButton(tr("Cancel"), true);
+            msgBox.addPushButton(tr("Cancel", "button"), true);
             msgBox.addWaringButton(tr("Change All"), true);
             msgBox.exec();
             if (msgBox.clickButton() == 0) {
@@ -101,8 +101,8 @@ bool CScheduleOperation::deleteSchedule(const ScheduleDataInfo &scheduleInfo)
         CScheduleCtrlDlg msgBox(m_widget);
         msgBox.setText(tr("You are deleting an event."));
         msgBox.setInformativeText(tr("Are you sure you want to delete this event?"));
-        msgBox.addPushButton(tr("Cancel"), true);
-        msgBox.addWaringButton(tr("Delete"), true);
+        msgBox.addPushButton(tr("Cancel", "button"), true);
+        msgBox.addWaringButton(tr("Delete", "button"), true);
         msgBox.exec();
         if (msgBox.clickButton() == 0) {
             return false;
@@ -116,7 +116,7 @@ bool CScheduleOperation::deleteSchedule(const ScheduleDataInfo &scheduleInfo)
             CScheduleCtrlDlg msgBox(m_widget);
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete all occurrences of this event, or only the selected occurrence?"));
-            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Cancel", "button"));
             msgBox.addPushButton(tr("Delete All"));
             msgBox.addWaringButton(tr("Delete Only This Event"));
             msgBox.exec();
@@ -139,7 +139,7 @@ bool CScheduleOperation::deleteSchedule(const ScheduleDataInfo &scheduleInfo)
             CScheduleCtrlDlg msgBox(m_widget);
             msgBox.setText(tr("You are deleting an event."));
             msgBox.setInformativeText(tr("Do you want to delete this and all future occurrences of this event, or only the selected occurrence?"));
-            msgBox.addPushButton(tr("Cancel"));
+            msgBox.addPushButton(tr("Cancel", "button"));
             msgBox.addPushButton(tr("Delete All Future Events"));
             msgBox.addWaringButton(tr("Delete Only This Event"));
             msgBox.exec();
@@ -223,7 +223,7 @@ bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
         msgBox.setInformativeText(
             tr("Do you want to change only this occurrence of the event, or all "
                "occurrences?"));
-        msgBox.addPushButton(tr("Cancel"));
+        msgBox.addPushButton(tr("Cancel", "button"));
         msgBox.addPushButton(tr("All"));
         msgBox.addsuggestButton(tr("Only This Event"));
         msgBox.exec();
@@ -255,7 +255,7 @@ bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
         msgBox.setInformativeText(
             tr("Do you want to change only this occurrence of the event, or this and "
                "all future occurrences?"));
-        msgBox.addPushButton(tr("Cancel"));
+        msgBox.addPushButton(tr("Cancel", "button"));
         msgBox.addPushButton(tr("All Future Events"));
         msgBox.addsuggestButton(tr("Only This Event"));
         msgBox.exec();

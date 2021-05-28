@@ -86,16 +86,16 @@ void JobRemindManager::RemindJob(const Job &job)
             bool bmax = GetRemindLaterDuration(job.RemindLaterCount, duration);
             QStringList actionlist;
             if (nDays >= 3 && job.RemindLaterCount == 1) {
-                actionlist << notifyActKeyRemind1DayBefore << tr("One day before start") << notifyActKeyClose << tr("Close");
+                actionlist << notifyActKeyRemind1DayBefore << tr("One day before start") << notifyActKeyClose << tr("Close", "button");
             } else if ((nDays == 1 || nDays == 2) && bmax) {
-                actionlist << notifyActKeyRemindTomorrow << tr("Remind me tomorrow") << notifyActKeyClose << tr("Close");
+                actionlist << notifyActKeyRemindTomorrow << tr("Remind me tomorrow") << notifyActKeyClose << tr("Close", "button");
             } else {
                 QDateTime tm = QDateTime::currentDateTime();
                 tm = tm.addMSecs(duration);
                 if (tm < job.Start) {
-                    actionlist << notifyActKeyRemindLater << tr("Remind me later") << notifyActKeyClose << tr("Close");
+                    actionlist << notifyActKeyRemindLater << tr("Remind me later") << notifyActKeyClose << tr("Close", "button");
                 } else {
-                    actionlist << notifyActKeyClose << tr("Close");
+                    actionlist << notifyActKeyClose << tr("Close", "button");
                 }
             }
             QString title(tr("Schedule Reminder"));

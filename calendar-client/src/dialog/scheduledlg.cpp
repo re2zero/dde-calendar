@@ -159,7 +159,7 @@ bool CScheduleDlg::clickOkBtn()
         DCalendarDDialog *prompt = new DCalendarDDialog(this);
         prompt->setIcon(QIcon(":/resources/icon/warning.svg"));
         prompt->setMessage(tr("End time must be greater than start time"));
-        prompt->addButton(tr("OK"), true, DDialog::ButtonNormal);
+        prompt->addButton(tr("OK", "button"), true, DDialog::ButtonNormal);
         prompt->exec();
         return false;
     }
@@ -822,8 +822,8 @@ void CScheduleDlg::initUI()
     if (m_type == 1)
         slotallDayStateChanged(0);
     //添加按钮
-    addButton(tr("Cancel"));
-    addButton(tr("Save"), false, DDialog::ButtonRecommend);
+    addButton(tr("Cancel", "button"));
+    addButton(tr("Save", "button"), false, DDialog::ButtonRecommend);
 }
 
 void CScheduleDlg::initConnection()

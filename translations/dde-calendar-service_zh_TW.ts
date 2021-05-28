@@ -12,7 +12,8 @@
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="96"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="98"/>
         <source>Close</source>
-        <translation>關閉</translation>
+        <comment>button</comment>
+        <translation>關 閉</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="91"/>

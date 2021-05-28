@@ -60,7 +60,7 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <location filename="../calendar-client/src/view/graphicsview.cpp" line="613"/>
+        <location filename="../calendar-client/src/view/graphicsview.cpp" line="614"/>
         <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -97,11 +97,6 @@
 <context>
     <name>CMyScheduleView</name>
     <message>
-        <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="280"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="237"/>
         <source>My Event</source>
         <translation type="unfinished"></translation>
@@ -109,11 +104,19 @@
     <message>
         <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="276"/>
         <source>OK</source>
+        <comment>button</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="280"/>
+        <source>Delete</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/myscheduleview.cpp" line="281"/>
         <source>Edit</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -138,11 +141,7 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="162"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="825"/>
-        <source>Cancel</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -340,8 +339,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="825"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="826"/>
         <source>Save</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -356,17 +362,6 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="60"/>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="75"/>
         <source>Do you want to change all occurrences?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="61"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="76"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="104"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="119"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="142"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="226"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="258"/>
-        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -393,8 +388,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="61"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="76"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="104"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="119"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="142"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="226"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="258"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="105"/>
         <source>Delete</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -273,12 +273,12 @@ void CMyScheduleView::initUI()
     mainLayout->addWidget(m_timeLabel);
 
     if (m_scheduleInfo.getType() == DDECalendar::FestivalTypeID) {
-        addButton(tr("OK"), false, DDialog::ButtonNormal);
+        addButton(tr("OK", "button"), false, DDialog::ButtonNormal);
         QAbstractButton *button_ok = getButton(0);
         button_ok->setFixedSize(360, 36);
     } else {
-        addButton(tr("Delete"), false, DDialog::ButtonNormal);
-        addButton(tr("Edit"), false, DDialog::ButtonRecommend);
+        addButton(tr("Delete", "button"), false, DDialog::ButtonNormal);
+        addButton(tr("Edit", "button"), false, DDialog::ButtonRecommend);
         for (int i = 0; i < buttonCount(); i++) {
             QAbstractButton *button = getButton(i);
             button->setFixedSize(165, 36);
