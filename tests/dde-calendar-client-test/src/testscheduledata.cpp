@@ -1,9 +1,9 @@
 /*
-* Copyright (C) 2019 ~ 2021 Uniontech Software Technology Co.,Ltd.
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     zhengxiaokang <zhengxiaokang@uniontech.com>
+* Author:     chenhaifeng  <chenhaifeng@uniontech.com>
 *
-* Maintainer: zhengxiaokang <zhengxiaokang@uniontech.com>
+* Maintainer: chenhaifeng  <chenhaifeng@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,13 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "test_scheduleitem.h"
+#include "testscheduledata.h"
 
-#include <QPainter>
-
-test_scheduleitem::test_scheduleitem()
+TestScheduleData::TestScheduleData()
 {
-    QRectF rectf;
-    mScheduleItem = new CScheduleItem(rectf);
 }
 
-test_scheduleitem::~test_scheduleitem()
-{
-    delete mScheduleItem;
-    mScheduleItem = nullptr;
-}
-
-QVector<ScheduleDataInfo> getScheduleItemDInfo()
+QVector<ScheduleDataInfo> TestDataInfo::getScheduleItemDInfo()
 {
     QVector<ScheduleDataInfo> scheduleDate {};
     ScheduleDataInfo schedule1, schedule2, schedule3, schedule4, schedule5, scheduleFes;
@@ -95,48 +85,4 @@ QVector<ScheduleDataInfo> getScheduleItemDInfo()
     scheduleDate.append(schedule5);
     scheduleDate.append(scheduleFes);
     return scheduleDate;
-}
-
-//void CScheduleItem::setData(const ScheduleDataInfo &info, QDate date, int totalNum)
-TEST_F(test_scheduleitem, setData)
-{
-    ScheduleDataInfo scheduleinof = getScheduleItemDInfo().first();
-    mScheduleItem->setData(scheduleinof, QDate::currentDate(), 4);
-}
-
-//bool CScheduleItem::hasSelectSchedule(const ScheduleDataInfo &info)
-TEST_F(test_scheduleitem, hasSelectSchedule)
-{
-    ScheduleDataInfo scheduleinfo1 = getScheduleItemDInfo().first();
-    ScheduleDataInfo scheduleinfo2 = getScheduleItemDInfo().at(1);
-    mScheduleItem->setData(scheduleinfo1, QDate::currentDate(), 4);
-    bool res = mScheduleItem->hasSelectSchedule(scheduleinfo1);
-    EXPECT_TRUE(res);
-    res = mScheduleItem->hasSelectSchedule(scheduleinfo2);
-    EXPECT_FALSE(res);
-}
-
-//void CScheduleItem::splitText(QFont font, int w, int h, QString str, QStringList &liststr, QFontMetrics &fontm)
-TEST_F(test_scheduleitem, splitText)
-{
-    QFont font;
-    QString str = "helo";
-    QStringList strlist("hello,word!");
-    QFontMetrics fontmetrics(font);
-    mScheduleItem->splitText(font, 10, 12, str, strlist, fontmetrics);
-    mScheduleItem->splitText(font, 40, 40, str, strlist, fontmetrics);
-}
-
-//paintBackground
-TEST_F(test_scheduleitem, paintBackground)
-{
-    QRectF rectf(0, 0, 100, 100);
-    mScheduleItem->setRect(rectf);
-    mScheduleItem->setData(getScheduleItemDInfo().first(), QDate::currentDate(), 4);
-    QPixmap pixmap(rectf.toRect().size());
-    pixmap.fill(Qt::transparent);
-    QPainter painter(&pixmap);
-    mScheduleItem->m_vHighflag = true;
-    mScheduleItem->m_vSelectflag = false;
-    mScheduleItem->paintBackground(&painter, pixmap.rect(), true);
 }

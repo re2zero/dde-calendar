@@ -1,9 +1,9 @@
 /*
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     hejinghai <hejinghai@uniontech.com>
+* Author:     chenhaifeng  <chenhaifeng@uniontech.com>
 *
-* Maintainer: hejinghai <hejinghai@uniontech.com>
+* Maintainer: chenhaifeng  <chenhaifeng@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,28 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TEST_CALENDARMAINWINDOW_H
-#define TEST_CALENDARMAINWINDOW_H
+#ifndef TEST_CALLDAYSCHEDULEITEM_H
+#define TEST_CALLDAYSCHEDULEITEM_H
 
-#include "calendarmainwindow.h"
 #include "gtest/gtest.h"
+#include "graphicsItem/calldayscheduleitem.h"
+
 #include <QObject>
 
-class test_calendarmainwindow : public QObject, public::testing::Test
+class test_CAlldayscheduleitem : public QObject
+    , public ::testing::Test
 {
+    Q_OBJECT
 public:
-    test_calendarmainwindow();
-    ~test_calendarmainwindow();
-protected:
-    Calendarmainwindow *mainWindow = nullptr;
+    test_CAlldayscheduleitem();
+    void SetUp() override;
+    void TearDown() override;
+signals:
+
+public slots:
+public:
+    CAllDayScheduleItem *m_allItem;
+    QRectF m_rectF;
 };
 
-#endif // TEST_CALENDARMAINWINDOW_H
+#endif // TEST_CALLDAYSCHEDULEITEM_H

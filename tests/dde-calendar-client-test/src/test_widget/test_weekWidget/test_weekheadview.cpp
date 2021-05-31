@@ -111,3 +111,11 @@ TEST_F(test_weekheadview, getLunar)
     mWeekHeadView->setHunagLiInfo(getHuangLiDayInfo());
     mWeekHeadView->getLunar(1);
 }
+
+TEST_F(test_weekheadview, getPixmap)
+{
+    mWeekHeadView->setWeekDay(getDayList(), QDate::currentDate());
+    mWeekHeadView->setFixedSize(600, 80);
+    QPixmap pixmap(mWeekHeadView->size());
+    mWeekHeadView->render(&pixmap);
+}

@@ -18,24 +18,27 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "dialog_stub.h"
+#ifndef TEST_DAYWINDOW_H
+#define TEST_DAYWINDOW_H
 
-#include "dialog/dcalendarddialog.h"
-#include "dialog/myscheduleview.h"
+#include "gtest/gtest.h"
+#include "dayWidget/daywindow.h"
 
 #include <QObject>
 
-int calendarDDialogExecReturn = 0;
-
-int calendar_DDialog_Exec_stub(void *obj)
+class test_dayWindow : public QObject
+    , public ::testing::Test
 {
-    Q_UNUSED(obj)
-    return calendarDDialogExecReturn;
-}
+    Q_OBJECT
+public:
+    test_dayWindow();
+    void SetUp() override;
+    void TearDown() override;
+signals:
 
-void calendarDDialogExecStub(Stub &stub)
-{
-    typedef int (*fptr)(DCalendarDDialog *);
-    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
-    stub.set(A_foo, calendar_DDialog_Exec_stub);
-}
+public slots:
+public:
+    CDayWindow *m_dayWindow;
+};
+
+#endif // TEST_DAYWINDOW_H

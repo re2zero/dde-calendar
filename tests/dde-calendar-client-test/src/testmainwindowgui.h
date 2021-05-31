@@ -23,6 +23,8 @@
 
 #include "calendarmainwindow.h"
 #include "gtest/gtest.h"
+#include "../third-party_stub/stub.h"
+
 #include <QtTest/QTest>
 #include <QObject>
 
@@ -31,7 +33,11 @@ class testMainWindowGUI : public QObject
 {
 public:
     testMainWindowGUI();
-    ~testMainWindowGUI();
+    void SetUp() override;
+    void TearDown() override;
+
+public:
+    Stub stub;
 };
 
 #endif // TESTMAINWINDOWGUI_H

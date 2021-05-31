@@ -100,3 +100,10 @@ TEST_F(test_yearview, getStartAndStopDate)
     bool result = cYearView->getStartAndStopDate(startDate, stopDate);
     EXPECT_TRUE(result);
 }
+
+TEST_F(test_yearview, paintEvent)
+{
+    cYearView->setFixedSize(600, 600);
+    QPixmap pixmap(cYearView->size());
+    cYearView->render(&pixmap);
+}

@@ -55,3 +55,11 @@ TEST_F(test_weekview, setTheMe)
     mWeekView->setTheMe(1);
     mWeekView->setTheMe(2);
 }
+
+TEST_F(test_weekview, getPixmap)
+{
+    mWeekView->setSelectDate(QDate::currentDate());
+    mWeekView->setFixedSize(600, 50);
+    QPixmap pixmap(mWeekView->size());
+    mWeekView->render(&pixmap);
+}

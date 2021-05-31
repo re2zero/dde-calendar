@@ -281,3 +281,11 @@ TEST_F(test_yearscheduleview, setCurrentOutDate)
 {
     zYearScheduleOutView->setCurrentDate(QDate(2021, 1, 6));
 }
+
+TEST_F(test_yearscheduleview, paintEvent)
+{
+    QPixmap pixmap(cYearScheduleView->size());
+    QVector<ScheduleDataInfo> scheduleInfo = getScheduleDataInfo();
+    cYearScheduleView->setData(scheduleInfo);
+    cYearScheduleView->render(&pixmap);
+}

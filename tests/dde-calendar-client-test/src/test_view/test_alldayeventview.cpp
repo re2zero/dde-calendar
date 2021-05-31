@@ -19,6 +19,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "test_alldayeventview.h"
+#include "../dialog_stub.h"
+
+#include <QTest>
 
 test_alldayeventview::test_alldayeventview()
 {
@@ -210,4 +213,34 @@ TEST_F(test_alldayeventview, upDateInfoShow)
 {
     cAllDayEventWeekView->setInfo(getTestScheduleDataInfo());
     cAllDayEventWeekView->upDateInfoShow(DragInfoGraphicsView::DragStatus::ChangeEnd, getTestScheduleDataInfo().at(1));
+}
+
+//
+TEST_F(test_alldayeventview, getPixmap)
+{
+    cAllDayEventWeekView->setFixedSize(500, 800);
+    QPixmap pixmap(cAllDayEventWeekView->size());
+    pixmap = cAllDayEventWeekView->grab();
+}
+
+//
+TEST_F(test_alldayeventview, eventTest)
+{
+    QTest::keyEvent(QTest::Press, cAllDayEventWeekView, Qt::Key::Key_Enter);
+    cAllDayEventWeekView->setFixedSize(500, 100);
+    QTest::mouseDClick(cAllDayEventWeekView, Qt::LeftButton, Qt::NoModifier, QPoint(200, 50));
+}
+
+//slotCreate
+TEST_F(test_alldayeventview, slotCreate)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    cAllDayEventWeekView->slotCreate(QDateTime::currentDateTime());
+}
+
+//getDragScheduleInfoBeginTime
+TEST_F(test_alldayeventview, getDragScheduleInfoBeginTime)
+{
+    cAllDayEventWeekView->getDragScheduleInfoBeginTime(QDateTime::currentDateTime());
 }

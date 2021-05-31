@@ -18,24 +18,21 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "dialog_stub.h"
+#ifndef TESTSCHEDULEDATA_H
+#define TESTSCHEDULEDATA_H
 
-#include "dialog/dcalendarddialog.h"
-#include "dialog/myscheduleview.h"
+#include "src/scheduledatainfo.h"
 
-#include <QObject>
+#include <QVector>
 
-int calendarDDialogExecReturn = 0;
-
-int calendar_DDialog_Exec_stub(void *obj)
+class TestScheduleData
 {
-    Q_UNUSED(obj)
-    return calendarDDialogExecReturn;
+public:
+    TestScheduleData();
+};
+
+namespace TestDataInfo {
+QVector<ScheduleDataInfo> getScheduleItemDInfo();
 }
 
-void calendarDDialogExecStub(Stub &stub)
-{
-    typedef int (*fptr)(DCalendarDDialog *);
-    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
-    stub.set(A_foo, calendar_DDialog_Exec_stub);
-}
+#endif // TESTSCHEDULEDATA_H

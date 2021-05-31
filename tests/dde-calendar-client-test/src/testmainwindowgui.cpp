@@ -23,13 +23,36 @@
 #include "view/monthgraphiview.h"
 #include "yearWidget/yearwindow.h"
 #include "monthWidget/monthwindow.h"
+#include "dialog_stub.h"
+#include "testscheduledata.h"
 
 testMainWindowGUI::testMainWindowGUI()
 {
     CConfigSettings::init();
 }
 
-testMainWindowGUI::~testMainWindowGUI()
+QVariant getSetView(const QString &str)
+{
+    QVariant variant;
+    if (str == "base.geometry") {
+        QByteArray byteArray("\x01\xD9\xD0\xCB\x00\x02\x00\x00\x00\x00\x02\x12\x00\x00\x00\xF3\x00\x00\x05m\x00\x00\x03l\x00\x00\x02\x12\x00\x00\x00\xF3\x00\x00\x05m\x00\x00\x03l\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80");
+        variant.setValue(byteArray);
+    } else if (str == "base.state") {
+        variant.setValue(1);
+
+    } else if (str == "base.view") {
+        variant.setValue(2);
+    }
+    return variant;
+}
+
+void testMainWindowGUI::SetUp()
+{
+    Stub stub;
+    stub.set(ADDR(CConfigSettings, value), getSetView);
+}
+
+void testMainWindowGUI::TearDown()
 {
 }
 
@@ -76,4 +99,110 @@ TEST_F(testMainWindowGUI, weekGUIKeyTest)
 TEST_F(testMainWindowGUI, dayGUIKeyTest)
 {
     Calendarmainwindow mainWindow(3);
+}
+
+TEST_F(testMainWindowGUI, slotCurrentDateUpdate)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotCurrentDateUpdate();
+}
+
+//slotSetSearchFocus
+TEST_F(testMainWindowGUI, slotSetSearchFocus)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotSetSearchFocus();
+}
+
+//viewWindow
+TEST_F(testMainWindowGUI, viewWindow)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.viewWindow(3, false);
+    mainWindow.viewWindow(0, true);
+}
+
+//setSearchWidth
+TEST_F(testMainWindowGUI, setSearchWidth)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.setSearchWidth(500);
+}
+
+//slotTheme
+TEST_F(testMainWindowGUI, slotTheme)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotTheme(0);
+    mainWindow.slotTheme(1);
+    mainWindow.slotTheme(2);
+}
+
+//slotOpenSchedule
+TEST_F(testMainWindowGUI, slotOpenSchedule)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    Calendarmainwindow mainWindow(1);
+    QString job = ScheduleDataInfo::ScheduleToJsonStr(TestDataInfo::getScheduleItemDInfo().first());
+    mainWindow.slotOpenSchedule(job);
+}
+
+//slotWUpdateSchedule
+TEST_F(testMainWindowGUI, slotWUpdateSchedule)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotWUpdateSchedule();
+}
+
+//slotStextChanged
+TEST_F(testMainWindowGUI, slotStextChanged)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotStextChanged();
+}
+
+//slotStextfocusChanged
+TEST_F(testMainWindowGUI, slotStextfocusChanged)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotStextfocusChanged(true);
+}
+
+//slotDeleteitem
+TEST_F(testMainWindowGUI, slotDeleteitem)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotDeleteitem();
+}
+
+//slotNewSchedule
+TEST_F(testMainWindowGUI, slotNewSchedule)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotNewSchedule();
+}
+
+//slotSwitchView
+TEST_F(testMainWindowGUI, slotSwitchView)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotSwitchView(0);
+    mainWindow.slotSwitchView(1);
+    mainWindow.slotSwitchView(2);
+    mainWindow.slotSwitchView(3);
+}
+
+//slotViewtransparentFrame
+TEST_F(testMainWindowGUI, slotViewtransparentFrame)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotViewtransparentFrame(true);
+    mainWindow.slotViewtransparentFrame(false);
 }

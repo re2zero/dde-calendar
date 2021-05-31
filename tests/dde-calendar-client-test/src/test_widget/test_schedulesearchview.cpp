@@ -23,7 +23,9 @@
 #include "../calendar-basicstruct/src/utils.h"
 #include "../third-party_stub/addr_pri.h"
 #include "scheduleTask/cscheduledbus.h"
+#include "scheduleTask/scheduletask.h"
 #include "constants.h"
+#include "../testscheduledata.h"
 
 QVector<ScheduleDataInfo> getScheduleDInfo()
 {
@@ -140,24 +142,23 @@ bool stub_QueryJobs(const QString &key, QDateTime starttime, QDateTime endtime, 
     return true;
 }
 
-//ACCESS_PRIVATE_FUN(CScheduleDBus, QString(QString), QueryJobs);
-
 test_schedulesearchview::test_schedulesearchview()
 {
-    //    Stub stub;
-    //    QString key = "jie";
-    //    QDateTime start = QDateTime::currentDateTime();
-    //    QDateTime end = start.addDays(1);
-    //    call_private_fun::CScheduleDBusQueryJobs(key);
-    //    auto cs = get_private_fun::CScheduleDBusQueryJobs();
-    //    stub.set(cs, stub_QueryJobs);
+}
+
+test_schedulesearchview::~test_schedulesearchview()
+{
+}
+
+void test_schedulesearchview::SetUp()
+{
     mScheduleSearchView = new CScheduleSearchView();
     mScheduleSearchDateItem = new CScheduleSearchDateItem();
     mScheduleListWidget = new CScheduleListWidget();
     mScheduleSearchItem = new CScheduleSearchItem();
 }
 
-test_schedulesearchview::~test_schedulesearchview()
+void test_schedulesearchview::TearDown()
 {
     delete mScheduleSearchView;
     mScheduleSearchView = nullptr;
@@ -331,4 +332,28 @@ TEST_F(test_schedulesearchview, slotDelete)
 TEST_F(test_schedulesearchview, getDate)
 {
     mScheduleSearchItem->getData();
+}
+
+QMap<QDate, QVector<ScheduleDataInfo>> stub_getSearchScheduleInfo(void *obj, const QString &key, const QDateTime &startTime, const QDateTime &endTime)
+{
+    Q_UNUSED(obj)
+    Q_UNUSED(key)
+    Q_UNUSED(startTime)
+    Q_UNUSED(endTime)
+    QMap<QDate, QVector<ScheduleDataInfo>> searchScheduleInfo {};
+    searchScheduleInfo[QDate::currentDate()] = TestDataInfo::getScheduleItemDInfo();
+    return searchScheduleInfo;
+}
+
+//
+TEST_F(test_schedulesearchview, getPixmap)
+{
+    Stub stub;
+
+    stub.set((QMap<QDate, QVector<ScheduleDataInfo>>(CScheduleTask::*)(const QString &, const QDateTime &, const QDateTime &))ADDR(CScheduleTask, getSearchScheduleInfo), stub_getSearchScheduleInfo);
+
+    mScheduleSearchView->slotsetSearch("xjrc");
+    mScheduleSearchView->setFixedSize(300, 800);
+    QPixmap pixmap(mScheduleListWidget->size());
+    pixmap = mScheduleSearchView->grab();
 }

@@ -18,24 +18,32 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "dialog_stub.h"
+#ifndef TEST_CWEEKDAYBACKGROUNDITEM_H
+#define TEST_CWEEKDAYBACKGROUNDITEM_H
 
-#include "dialog/dcalendarddialog.h"
-#include "dialog/myscheduleview.h"
+#include "graphicsItem/cweekdaybackgrounditem.h"
+#include "gtest/gtest.h"
 
 #include <QObject>
 
-int calendarDDialogExecReturn = 0;
-
-int calendar_DDialog_Exec_stub(void *obj)
+class test_CWeekDayBackgroundItem : public QObject
+    , public testing::Test
 {
-    Q_UNUSED(obj)
-    return calendarDDialogExecReturn;
-}
+    Q_OBJECT
+public:
+    test_CWeekDayBackgroundItem();
+    // Sets up the test fixture.
+    void SetUp() override;
 
-void calendarDDialogExecStub(Stub &stub)
-{
-    typedef int (*fptr)(DCalendarDDialog *);
-    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
-    stub.set(A_foo, calendar_DDialog_Exec_stub);
-}
+    // Tears down the test fixture.
+    void TearDown() override;
+
+signals:
+
+public slots:
+
+public:
+    CWeekDayBackgroundItem *m_weekItem;
+};
+
+#endif // TEST_CWEEKDAYBACKGROUNDITEM_H
