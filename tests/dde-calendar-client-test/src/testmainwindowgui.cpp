@@ -26,6 +26,8 @@
 #include "dialog_stub.h"
 #include "testscheduledata.h"
 
+#include <QProcess>
+
 testMainWindowGUI::testMainWindowGUI()
 {
     CConfigSettings::init();
@@ -205,4 +207,21 @@ TEST_F(testMainWindowGUI, slotViewtransparentFrame)
     Calendarmainwindow mainWindow(1);
     mainWindow.slotViewtransparentFrame(true);
     mainWindow.slotViewtransparentFrame(false);
+}
+
+bool stub_startDetached(const QString &program, const QStringList &arguments)
+{
+    Q_UNUSED(program)
+    Q_UNUSED(arguments)
+    return true;
+}
+
+//slotViewShortcut
+TEST_F(testMainWindowGUI, slotViewShortcut)
+{
+    Stub stub;
+    stub.set((bool (*)(const QString &, const QStringList &))ADDR(QProcess, startDetached),
+             stub_startDetached);
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotViewShortcut();
 }
