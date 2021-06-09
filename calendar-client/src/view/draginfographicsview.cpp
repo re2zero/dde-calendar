@@ -287,11 +287,7 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
         if (!m_PressRect.contains(event->pos())) {
             //拖拽前设置是否已经更新日程界面标志为否
             m_hasUpdateMark = false;
-            //TODO 拖拽结束后还会返回到鼠标移动事件???
             m_Drag->exec(Qt::MoveAction);
-            //TODO 调试发现exec后代码有时候会执行2遍，先标记下，以后研究,现判断m_Drag是否为nullptr，若为空指针则表示执行过一遍直接退出
-            if (m_Drag == nullptr)
-                return;
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
@@ -492,8 +488,9 @@ void DragInfoGraphicsView::setPressSelectInfo(const ScheduleDataInfo &info)
  */
 void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
 {
-    emit signalViewtransparentFrame(1);
     CScheduleOperation _scheduleOperation(this);
+    //根据是否弹框决定是否设置阴影
+    connect(&_scheduleOperation, &CScheduleOperation::signalViewtransparentFrame, this, &DragInfoGraphicsView::signalViewtransparentFrame);
     if (_scheduleOperation.changeSchedule(info, m_PressScheduleInfo)) {
         //如果日程修改成功则更新更新标志
         m_hasUpdateMark = true;
@@ -501,7 +498,6 @@ void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
         //如果取消更新则主动更新显示
         updateInfo();
     }
-    emit signalViewtransparentFrame(0);
 }
 
 void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)

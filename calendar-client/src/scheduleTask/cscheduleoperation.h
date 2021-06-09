@@ -56,7 +56,7 @@ private:
     //修改重复规则
     void changeRepetitionRule(ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
 signals:
-
+    void signalViewtransparentFrame(const int id = 0);
 public slots:
 private:
     CScheduleDBus                   *m_DBusManager = nullptr;
