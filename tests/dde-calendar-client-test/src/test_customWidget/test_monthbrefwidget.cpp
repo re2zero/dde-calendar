@@ -183,3 +183,12 @@ TEST_F(test_monthbrefwidget, setSystemActiveColor)
 {
     mMonthDayRect->setSystemActiveColor(Qt::red);
 }
+
+//getPixmap
+TEST_F(test_monthbrefwidget, getPixmap)
+{
+    mMonthBrefWidget->setFixedSize(800, 500);
+    mMonthBrefWidget->setDate(QDate::currentDate().month(), getDateList());
+    QPixmap pixmap(mMonthBrefWidget->size());
+    mMonthBrefWidget->render(&pixmap);
+}

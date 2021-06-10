@@ -20,6 +20,8 @@
    */
 #include "test_timeedit.h"
 
+#include <QPixmap>
+
 test_timeedit::test_timeedit()
 {
     mTimeEdit = new CTimeEdit();
@@ -41,4 +43,25 @@ TEST_F(test_timeedit, setTime)
 TEST_F(test_timeedit, getTime)
 {
     mTimeEdit->getTime();
+}
+
+//setTimeFormat
+TEST_F(test_timeedit, setTimeFormat)
+{
+    mTimeEdit->setTimeFormat(1);
+    mTimeEdit->setTimeFormat(0);
+}
+
+//slotFocusDraw
+TEST_F(test_timeedit, slotFocusDraw)
+{
+    mTimeEdit->slotFocusDraw(false);
+}
+
+//getPixmap
+TEST_F(test_timeedit, getPixmap)
+{
+    mTimeEdit->setFixedSize(200, 50);
+    QPixmap pixmap(mTimeEdit->size());
+    mTimeEdit->render(&pixmap);
 }

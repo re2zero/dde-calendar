@@ -244,3 +244,8 @@ TEST_F(test_alldayeventview, getDragScheduleInfoBeginTime)
 {
     cAllDayEventWeekView->getDragScheduleInfoBeginTime(QDateTime::currentDateTime());
 }
+
+//mouseEventTest
+TEST_F(test_alldayeventview, mouseEventTest)
+{
+}

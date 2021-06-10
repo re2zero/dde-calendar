@@ -204,3 +204,10 @@ TEST_F(test_scheduleview, scheduleViewHeight)
     mScheduleView->scheduleViewHeight();
 }
 
+//getPixmap
+TEST_F(test_scheduleview, getPixmap)
+{
+    mScheduleView->setFixedSize(800, 500);
+    QPixmap pixmap(mScheduleView->size());
+    mScheduleView->render(&pixmap);
+}

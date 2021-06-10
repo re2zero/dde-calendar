@@ -20,6 +20,8 @@
    */
 #include "test_todaybutton.h"
 
+#include <QTest>
+
 test_todaybutton::test_todaybutton()
 {
     mTodayButton = new CTodayButton();
@@ -49,4 +51,31 @@ TEST_F(test_todaybutton, setshadowColor)
     mTodayButton->setshadowColor("#FFFFFF");
 }
 
-//
+//test mouse event
+TEST_F(test_todaybutton, mouseEventTest)
+{
+    QTest::mousePress(mTodayButton, Qt::LeftButton);
+    QTest::mouseRelease(mTodayButton, Qt::LeftButton);
+
+    QWidget *testWidget = new QWidget();
+    CTodayButton *toDayButton = new CTodayButton(testWidget);
+    toDayButton->setGeometry(10, 10, 20, 20);
+    testWidget->setFixedSize(50, 50);
+    toDayButton->setFocus(Qt::TabFocusReason);
+    QTest::mouseMove(testWidget, QPoint(2, 2));
+    QTest::mouseMove(testWidget, QPoint(15, 15));
+    QTest::mouseMove(testWidget, QPoint(45, 45));
+    QTest::keyClick(testWidget, Qt::Key_Tab);
+    QTest::keyClick(testWidget->focusWidget(), Qt::Key_Tab);
+    QTest::keyClick(testWidget->focusWidget(), Qt::Key_Tab);
+    delete testWidget;
+}
+
+//test key event
+TEST_F(test_todaybutton, keyEventTest)
+{
+    QTest::keyClick(mTodayButton, Qt::Key_Enter);
+    QTest::keyClick(mTodayButton, Qt::Key_Tab);
+}
+
+//QTEST_MAIN(testGUI_toDayButton)

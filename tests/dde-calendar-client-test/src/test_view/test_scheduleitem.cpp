@@ -20,6 +20,8 @@
 */
 #include "test_scheduleitem.h"
 
+#include "../third-party_stub/stub.h"
+
 #include <QPainter>
 
 test_scheduleitem::test_scheduleitem()
@@ -127,6 +129,11 @@ TEST_F(test_scheduleitem, splitText)
     mScheduleItem->splitText(font, 40, 40, str, strlist, fontmetrics);
 }
 
+bool getItemFocus_Stub()
+{
+    return true;
+}
+
 //paintBackground
 TEST_F(test_scheduleitem, paintBackground)
 {
@@ -138,5 +145,9 @@ TEST_F(test_scheduleitem, paintBackground)
     QPainter painter(&pixmap);
     mScheduleItem->m_vHighflag = true;
     mScheduleItem->m_vSelectflag = false;
+    mScheduleItem->paintBackground(&painter, pixmap.rect(), true);
+    Stub stub;
+    stub.set(ADDR(CFocusItem, getItemFocus), getItemFocus_Stub);
+    mScheduleItem->m_vSelectflag = true;
     mScheduleItem->paintBackground(&painter, pixmap.rect(), true);
 }

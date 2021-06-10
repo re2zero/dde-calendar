@@ -93,3 +93,11 @@ TEST_F(test_scheduleremindwidget, updateTextList)
 {
     mCenterWidget->UpdateTextList();
 }
+
+//getPixmap
+TEST_F(test_scheduleremindwidget, getPixmap)
+{
+    mCenterWidget->setFixedSize(800, 500);
+    QPixmap pixmap(mCenterWidget->size());
+    mCenterWidget->render(&pixmap);
+}

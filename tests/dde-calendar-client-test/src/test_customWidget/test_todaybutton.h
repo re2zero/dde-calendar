@@ -27,6 +27,7 @@
 
 class test_todaybutton : public::QObject, public::testing::Test
 {
+    Q_OBJECT
 public:
     test_todaybutton();
     ~test_todaybutton();
