@@ -369,6 +369,8 @@ void DragInfoGraphicsView::dragEnterEvent(QDragEnterEvent *event)
             event->ignore();
         } else {
             event->accept();
+            //设置被修改的日程原始信息
+            m_PressScheduleInfo = info;
         }
     } else {
         event->ignore();
