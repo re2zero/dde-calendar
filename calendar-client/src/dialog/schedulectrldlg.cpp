@@ -47,14 +47,6 @@ void CScheduleCtrlDlg::initUI()
     setOnButtonClickedClose(false);
     QIcon t_icon(CDynamicIcon::getInstance()->getPixmap());// = QIcon::fromTheme("dde-calendar");
     setIcon(t_icon);
-    m_Title = new QLabel();
-    m_Title->setFixedHeight(48);
-    m_Title->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-
-    QFont labelTitle;
-    labelTitle.setWeight(QFont::Bold);
-    labelTitle.setPixelSize(17);
-    m_Title->setFont(labelTitle);
 
     m_mainBoxLayout = new QVBoxLayout();
     m_mainBoxLayout->setMargin(0);
@@ -73,7 +65,7 @@ void CScheduleCtrlDlg::initUI()
     m_seconLabel = new QLabel();
     m_seconLabel->setFixedWidth(350);
     m_seconLabel->setAlignment(Qt::AlignCenter);
-    labelTitle.setWeight(QFont::Bold);
+
     DFontSizeManager::instance()->bind(m_seconLabel, DFontSizeManager::T6);
     m_seconLabel->setForegroundRole(DPalette::WindowText);
     //设置字重

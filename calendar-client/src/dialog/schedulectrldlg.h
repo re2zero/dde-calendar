@@ -62,13 +62,8 @@ private slots:
 private:
     QLabel                           *m_firstLabel = nullptr;
     QLabel                           *m_seconLabel = nullptr;
-    QLabel *m_icon = nullptr;
-    QLabel *m_Title = nullptr;
     int                              m_id = -1;
-    QButtonGroup *m_Buttongroup = nullptr;
-    QVector<QPushButton *> m_buttonlist;
     QVBoxLayout *m_mainBoxLayout = nullptr;
-    QHBoxLayout *m_btBoxLayout = nullptr;
     DFrame *gwi = nullptr;
     QFont labelF;
     QFont labelT;
