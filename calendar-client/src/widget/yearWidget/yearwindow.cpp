@@ -75,8 +75,7 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
                 slottoday();
             }
         }
-    }
-    if (watched == m_yearWidget) {
+    } else if (watched == m_yearWidget) {
         //上下键切换年份
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent *key = static_cast<QKeyEvent *>(event);
@@ -212,15 +211,6 @@ void CYearWindow::tapGestureTriggered(QTapGesture *tap)
 void CYearWindow::panTriggered(QPanGesture *pan)
 {
     switch (pan->state()) {
-    case Qt::NoGesture: {
-        break;
-    }
-    case Qt::GestureStarted: {
-        break;
-    }
-    case Qt::GestureUpdated: {
-        break;
-    }
     case Qt::GestureFinished: {
         QPointF zeroPoint(0, 0);
         QPointF offset = pan->offset();
@@ -935,7 +925,7 @@ void YearFrame::setSearchSchedule(const QMap<QDate, QVector<ScheduleDataInfo> > 
  */
 void YearFrame::setViewFocus(int index)
 {
-    if (index >= 0) {
+    if (index >= 0 && index < m_monthViewList.size()) {
         //设置选中view的焦点类型
         m_monthViewList.at(index)->setFocus(Qt::FocusReason::TabFocusReason);
     }

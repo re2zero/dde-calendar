@@ -38,7 +38,7 @@ public:
     /**
       * @brief ~CYearScheduleView 析构函数
       */
-    ~CYearScheduleView();
+    ~CYearScheduleView() override;
     /**
      * @brief setData 设置日程信息，并全天日程置于非全天日程之前
      * @param vListData 日程信息
@@ -77,7 +77,8 @@ public:
      */
     QDate getCurrentDate();
 
-    void setTimeFormat(QString format = "h:mm");
+    void setTimeFormat(const QString &format = "h:mm");
+
 private:
     /**
      * @brief updateDateShow 调整最多展示日程为五个，并设置浮框大小
@@ -136,10 +137,10 @@ public:
      * @brief setCurrentDate 设置日程所在当天的日期
      * @param cDate 日期
      */
-    void setCurrentDate(QDate cDate);
+    void setCurrentDate(const QDate &cDate);
     //设置箭头方向
     void setDirection(ArrowDirection value);
-    void setTimeFormat(QString format);
+    void setTimeFormat(const QString &format);
 signals:
     /**
      * @brief signalsViewSelectDate 跳转视图信号

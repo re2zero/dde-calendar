@@ -117,7 +117,6 @@ void CYearScheduleView::setData(QVector<ScheduleDataInfo> &vListData)
 void CYearScheduleView::clearData()
 {
     m_vlistData.clear();
-    return;
 }
 
 void CYearScheduleView::showWindow()
@@ -152,7 +151,7 @@ QDate CYearScheduleView::getCurrentDate()
     return m_currentDate;
 }
 
-void CYearScheduleView::setTimeFormat(QString format)
+void CYearScheduleView::setTimeFormat(const QString &format)
 {
     m_timeFormat = format;
     update();
@@ -171,8 +170,6 @@ void CYearScheduleView::updateDateShow()
     if (!m_vlistData.isEmpty())
         setFixedSize(240, 45 + (sViewNum - 1) * 29);
     update();
-
-    return;
 }
 
 void CYearScheduleView::paintEvent(QPaintEvent *event)
@@ -311,7 +308,7 @@ void CYearScheduleOutView::setTheMe(int type)
     }
 }
 
-void CYearScheduleOutView::setCurrentDate(QDate cDate)
+void CYearScheduleOutView::setCurrentDate(const QDate &cDate)
 {
     currentdate = cDate;
     yearscheduleview->setCurrentDate(cDate);
@@ -329,7 +326,7 @@ void CYearScheduleOutView::setDirection(DArrowRectangle::ArrowDirection value)
     this->setContent(yearscheduleview);
 }
 
-void CYearScheduleOutView::setTimeFormat(QString format)
+void CYearScheduleOutView::setTimeFormat(const QString &format)
 {
     yearscheduleview->setTimeFormat(format);
 }
