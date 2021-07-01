@@ -70,7 +70,7 @@ public:
      * @brief setCurrentDate 设置日程所在当天的日期
      * @param cDate 日期
      */
-    void setCurrentDate(QDate cDate);
+    void setCurrentDate(const QDate &cdate);
     /**
      * @brief getCurrentDate 获取日程所在当天的日期
      * @return 日期
@@ -78,6 +78,8 @@ public:
     QDate getCurrentDate();
 
     void setTimeFormat(const QString &format = "h:mm");
+    //判断点击位置是否包含对应的日程信息
+    int getPressScheduleIndex();
 
 private:
     /**
@@ -108,6 +110,7 @@ private:
     QColor m_btTextColor = "#414D68";
     QFont m_textfont;
     QString m_timeFormat = "h:mm";
+    QVector<QRect> m_drawRect;
 };
 
 class CYearScheduleOutView : public DArrowRectangle

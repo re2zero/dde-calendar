@@ -141,9 +141,9 @@ void CYearScheduleView::setTheMe(int type)
     }
 }
 
-void CYearScheduleView::setCurrentDate(QDate cDate)
+void CYearScheduleView::setCurrentDate(const QDate &cdate)
 {
-    m_currentDate = cDate;
+    m_currentDate = cdate;
 }
 
 QDate CYearScheduleView::getCurrentDate()
@@ -155,6 +155,23 @@ void CYearScheduleView::setTimeFormat(const QString &format)
 {
     m_timeFormat = format;
     update();
+}
+
+int CYearScheduleView::getPressScheduleIndex()
+{
+    int resutle = -1;
+    //获取全局坐标
+    QPoint currentPos = QCursor::pos();
+    //转换为当前坐标
+    currentPos = this->mapFromGlobal(currentPos);
+    for (int i = 0; i < m_drawRect.size(); ++i) {
+        //若坐标在绘制标签中则更新返回值
+        if (m_drawRect.at(i).contains(currentPos)) {
+            resutle = i;
+            break;
+        }
+    }
+    return resutle;
 }
 
 void CYearScheduleView::updateDateShow()
@@ -170,6 +187,12 @@ void CYearScheduleView::updateDateShow()
     if (!m_vlistData.isEmpty())
         setFixedSize(240, 45 + (sViewNum - 1) * 29);
     update();
+    m_drawRect.clear();
+    //对绘制标签矩阵进行缓存
+    for (int i = 0; i < m_vlistData.size(); i++) {
+        m_drawRect.append(QRect(30, 10 + i * 29, width() - 50, 26));
+    }
+    return;
 }
 
 void CYearScheduleView::paintEvent(QPaintEvent *event)
@@ -333,40 +356,24 @@ void CYearScheduleOutView::setTimeFormat(const QString &format)
 
 void CYearScheduleOutView::mousePressEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event);
-    QPoint pos = QCursor::pos();
-    pos = this->mapFromGlobal(pos);
-    QVector<QRect> rect_press;
-    int listShow = 0;
+    Q_UNUSED(event)
+    //获取当前点击的标签编号
+    int currentIndex = yearscheduleview->getPressScheduleIndex();
 
-    if (!scheduleinfoList.isEmpty()) {
-        if (scheduleinfoList.size() < DDEYearCalendar::YearScheduleListMaxcount)
-            listShow = scheduleinfoList.size();
-        else
-            listShow = DDEYearCalendar::YearScheduleListMaxcount;
-    }
-    for (int i = 0; i < listShow; i++) {
-        if (this->arrowDirection() == DArrowRectangle::ArrowLeft)
-            rect_press.append(QRect(35, 20 + i * 30, width() - 50, 20));
-        else
-            rect_press.append(QRect(20, 20 + i * 30, width() - 50, 20));
-    }
-    for (int i = 0; i < listShow; i++) {
-        if (rect_press.at(i).contains(pos)) {
-            if (i > 3 && list_count > DDEYearCalendar::YearScheduleListMaxcount) {
-                emit signalsViewSelectDate(currentdate);
-                this->hide();
-                //跳转到周视图
-            } else {
-                //如果日程类型不为节假日或纪念日则显示编辑框
-                if (scheduleinfoList.at(i).getType() != DDECalendar::FestivalTypeID) {
-                    emit signalViewtransparentFrame(1);
-                    //因为提示框会消失，所以设置CScheduleDlg的父类为主窗口
-                    CScheduleDlg dlg(0, qobject_cast<QWidget *>(this->parent()));
-                    dlg.setData(scheduleinfoList.at(i));
-                    dlg.exec();
-                    emit signalViewtransparentFrame(0);
-                }
+    if (currentIndex > -1 && currentIndex < scheduleinfoList.size()) {
+        if (currentIndex > 3 && list_count > DDEYearCalendar::YearScheduleListMaxcount) {
+            emit signalsViewSelectDate(currentdate);
+            this->hide();
+            //跳转到周视图
+        } else {
+            //如果日程类型不为节假日或纪念日则显示编辑框
+            if (scheduleinfoList.at(currentIndex).getType() != DDECalendar::FestivalTypeID) {
+                emit signalViewtransparentFrame(1);
+                //因为提示框会消失，所以设置CScheduleDlg的父类为主窗口
+                CScheduleDlg dlg(0, qobject_cast<QWidget *>(this->parent()));
+                dlg.setData(scheduleinfoList.at(currentIndex));
+                dlg.exec();
+                emit signalViewtransparentFrame(0);
             }
         }
     }
