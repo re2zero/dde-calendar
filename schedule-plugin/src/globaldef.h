@@ -178,7 +178,7 @@
 //未来半年开始时间和结束时间
 #define TIME_FRAME_IN_THE_NEXT_SIX_MONTHT \
     QDateTime beginTime = QDateTime::currentDateTime(); \
-    QDateTime endTime = QDateTime::currentDateTime().addDays(180);
+    QDateTime endTime = QDateTime::currentDateTime().addMonths(6);
 
 //modifyScheduleItem
 #define MODIFY_ITEM_HEIGHT 48
