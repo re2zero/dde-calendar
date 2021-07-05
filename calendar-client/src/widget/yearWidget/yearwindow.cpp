@@ -69,7 +69,7 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
         }
         if (event->type() == QEvent::KeyPress) {
             //点击 回车键 返回今天
-            QKeyEvent *key = static_cast<QKeyEvent *>(event);
+            QKeyEvent *key = dynamic_cast<QKeyEvent *>(event);
             if (key->key() == Qt::Key_Return) {
                 //返回今天
                 slottoday();
@@ -78,7 +78,7 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
     } else if (watched == m_yearWidget) {
         //上下键切换年份
         if (event->type() == QEvent::KeyPress) {
-            QKeyEvent *key = static_cast<QKeyEvent *>(event);
+            QKeyEvent *key = dynamic_cast<QKeyEvent *>(event);
             if (key->key() == Qt::Key_Up) {
                 //上一年
                 slotprev();
@@ -159,7 +159,7 @@ void CYearWindow::mouseReleaseEvent(QMouseEvent *event)
 bool CYearWindow::event(QEvent *e)
 {
     if (e->type() == QEvent::Gesture)
-        return gestureEvent(static_cast<QGestureEvent *>(e));
+        return gestureEvent(dynamic_cast<QGestureEvent *>(e));
     return QWidget::event(e);
 }
 
@@ -171,9 +171,9 @@ bool CYearWindow::event(QEvent *e)
 bool CYearWindow::gestureEvent(QGestureEvent *event)
 {
     if (QGesture *tap = event->gesture(Qt::TapGesture))
-        tapGestureTriggered(static_cast<QTapGesture *>(tap));
+        tapGestureTriggered(dynamic_cast<QTapGesture *>(tap));
     if (QGesture *pan = event->gesture(Qt::PanGesture))
-        panTriggered(static_cast<QPanGesture *>(pan));
+        panTriggered(dynamic_cast<QPanGesture *>(pan));
     return true;
 }
 

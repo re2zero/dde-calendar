@@ -424,7 +424,7 @@ bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
 {
     if (obj == m_textEdit) {
         if (pEvent->type() == QEvent::KeyPress) {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(pEvent);
+            QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(pEvent);
             if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
                 return true;
             }
