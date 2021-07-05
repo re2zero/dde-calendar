@@ -713,7 +713,7 @@ void CYearWindow::wheelEvent(QWheelEvent *event)
 }
 
 YearFrame::YearFrame(DWidget *parent)
-    : DFrame(parent)
+    : QWidget(parent)
 {
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setMargin(0);
@@ -780,7 +780,6 @@ YearFrame::YearFrame(DWidget *parent)
     hhLayout->addLayout(gridLayout);
     this->setLayout(hhLayout);
     setContentsMargins(0, 0, 0, 10);
-    setFrameRounded(true);
 }
 
 YearFrame::~YearFrame()
