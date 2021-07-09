@@ -357,7 +357,9 @@ void CScheduleOperation::changeRepetitionRule(ScheduleDataInfo &newinfo, const S
     default: {
         //如果该日程结束类型为永不和结束于日期则修改结束日期
         newinfo.getRepetitionRule().setRuleType(RepetitionRule::RRuleType_DATE);
-        newinfo.getRepetitionRule().setEndDate(oldinfo.getBeginDateTime().addDays(-1));
+        //设置结束日期，默认为0点
+        QDateTime endDate(QDate(oldinfo.getBeginDateTime().date().addDays(-1)), QTime());
+        newinfo.getRepetitionRule().setEndDate(endDate);
         break;
     }
     }
