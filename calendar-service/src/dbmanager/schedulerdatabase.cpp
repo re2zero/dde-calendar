@@ -275,10 +275,16 @@ void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
     m_database.setDatabaseName(dbpath);
     //这里用QFile来修改日历数据库文件的权限
     QFile file(dbpath);
+    //如果不存在该文件则创建
+    if (!file.exists()) {
+        m_database.open();
+        m_database.close();
+    }
     //将权限修改为600（对文件的所有者可以读写，其他用户不可读不可写）
-    file.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
-    m_database.open();
-    if (m_database.isOpen()) {
+    if (!file.setPermissions(QFile::WriteOwner | QFile::ReadOwner)) {
+        qWarning() << "权限设置失败，错误:" << file.errorString();
+    }
+    if (m_database.open()) {
         const QStringList tables = m_database.tables();
         if (tables.size() < 1) {
             CreateTables();
