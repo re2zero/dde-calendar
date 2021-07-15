@@ -21,13 +21,22 @@
 #include "test_configsettings.h"
 
 test_configsettings::test_configsettings()
-    : conf(new CConfigSettings)
 {
-
 }
 
 test_configsettings::~test_configsettings()
 {
+}
+
+void test_configsettings::SetUp()
+{
+    conf = new CConfigSettings();
+    CConfigSettings::init();
+}
+
+void test_configsettings::TearDown()
+{
+    CConfigSettings::releaseInstance();
     delete conf;
     conf = nullptr;
 }
