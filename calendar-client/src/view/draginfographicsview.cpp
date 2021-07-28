@@ -313,13 +313,15 @@ void DragInfoGraphicsView::wheelEvent(QWheelEvent *event)
 void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 {
     DGraphicsView::contextMenuEvent(event);
-
-    if (m_DragStatus == IsCreate) {
+    //如果不为默认状态则不执行右击事件
+    if (m_DragStatus != NONE) {
         return;
     }
     emit signalScheduleShow(false);
     m_press = false;
     m_DragStatus = NONE;
+    //触摸状态恢复为默认状态
+    m_touchState = TS_NONE;
     QGraphicsItem *listItem = itemAt(event->pos());
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
