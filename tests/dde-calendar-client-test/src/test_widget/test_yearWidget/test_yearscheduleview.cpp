@@ -25,11 +25,19 @@
 
 test_yearscheduleview::test_yearscheduleview()
 {
+}
+
+test_yearscheduleview::~test_yearscheduleview()
+{
+}
+
+void test_yearscheduleview::SetUp()
+{
     cYearScheduleView = new CYearScheduleView();
     zYearScheduleOutView = new CYearScheduleOutView();
 }
 
-test_yearscheduleview::~test_yearscheduleview()
+void test_yearscheduleview::TearDown()
 {
     delete cYearScheduleView;
     cYearScheduleView = nullptr;
@@ -288,4 +296,8 @@ TEST_F(test_yearscheduleview, paintEvent)
     QVector<ScheduleDataInfo> scheduleInfo = getScheduleDataInfo();
     cYearScheduleView->setData(scheduleInfo);
     cYearScheduleView->render(&pixmap);
+}
+
+TEST_F(test_yearscheduleview, mousePressEvent)
+{
 }

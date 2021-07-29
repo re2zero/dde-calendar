@@ -20,18 +20,26 @@
 */
 #include "test_yearview.h"
 
+#include "../third-party_stub/stub.h"
+#include <QTest>
+
 test_yearview::test_yearview()
 {
-    cYearView = new CYearView();
-    cMonthBrefWidget = new MonthBrefWidget();
 }
 
 test_yearview::~test_yearview()
 {
+}
+
+void test_yearview::SetUp()
+{
+    cYearView = new CYearView();
+}
+
+void test_yearview::TearDown()
+{
     delete cYearView;
     cYearView = nullptr;
-    delete cMonthBrefWidget;
-    cMonthBrefWidget = nullptr;
 }
 
 QVector<QDate> getListDate()
@@ -90,6 +98,10 @@ TEST_F(test_yearview, setHasSearchScheduleFlag)
     cYearView->setHasSearchScheduleFlag(listLintFlag);
 }
 
+void setDate_Stub(const int showMonth, const QVector<QDate> &showDate) {
+    Q_UNUSED(showMonth)
+        Q_UNUSED(showDate)}
+
 //bool CYearView::getStartAndStopDate(QDate &startDate, QDate &stopDate)
 TEST_F(test_yearview, getStartAndStopDate)
 {
@@ -99,11 +111,33 @@ TEST_F(test_yearview, getStartAndStopDate)
     cYearView->setShowDate(getListDate().first(), getListDate());
     bool result = cYearView->getStartAndStopDate(startDate, stopDate);
     EXPECT_TRUE(result);
+
+    QVector<QDate> listDate {};
+    Stub stub;
+    stub.set(ADDR(MonthBrefWidget, setDate), setDate_Stub);
+    cYearView->setShowDate(getListDate().first(), listDate);
+    bool result_false = cYearView->getStartAndStopDate(startDate, stopDate);
+    EXPECT_FALSE(result_false);
+}
+
+bool hasFocus_Stub()
+{
+    return true;
 }
 
 TEST_F(test_yearview, paintEvent)
 {
+    Stub stub;
+    stub.set(ADDR(QWidget, hasFocus), hasFocus_Stub);
     cYearView->setFixedSize(600, 600);
     QPixmap pixmap(cYearView->size());
     cYearView->render(&pixmap);
+}
+
+TEST_F(test_yearview, guitest)
+{
+    QWidget *currentMonth = cYearView->findChild<QWidget *>("currentMouth");
+    if (currentMonth) {
+        QTest::mouseDClick(currentMonth, Qt::LeftButton);
+    }
 }

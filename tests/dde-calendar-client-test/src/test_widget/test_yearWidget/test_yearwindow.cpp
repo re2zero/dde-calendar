@@ -43,4 +43,28 @@ TEST_F(test_yearwindow, setTheMe)
     mYearWindow->setTheMe(type);
 }
 
+TEST_F(test_yearwindow, slotMousePress)
+{
+    QDate currentDate = QDate::currentDate();
+    mYearWindow->slotMousePress(currentDate, 0);
+    mYearWindow->slotMousePress(currentDate, 1);
+    mYearWindow->slotMousePress(currentDate, 2);
+    mYearWindow->slotMousePress(currentDate, 3);
+    mYearWindow->slotMousePress(currentDate, 4);
+}
 
+TEST_F(test_yearwindow, calculateAzimuthAngle)
+{
+    QPointF startPoint(0, 0);
+    QPointF stopPoint(30, 20);
+    mYearWindow->calculateAzimuthAngle(startPoint, stopPoint);
+    stopPoint.setX(20);
+    stopPoint.setY(30);
+    mYearWindow->calculateAzimuthAngle(startPoint, stopPoint);
+    stopPoint.setX(-20);
+    stopPoint.setY(30);
+    mYearWindow->calculateAzimuthAngle(startPoint, stopPoint);
+    stopPoint.setX(-30);
+    stopPoint.setY(20);
+    mYearWindow->calculateAzimuthAngle(startPoint, stopPoint);
+}

@@ -70,8 +70,6 @@ TEST_F(testMainWindowGUI, yearGUITest)
 
         if (m_prevButton != nullptr) {
             QTest::mouseClick(m_prevButton, Qt::LeftButton);
-            QTest::mouseClick(m_prevButton, Qt::LeftButton);
-            QTest::mouseClick(m_prevButton, Qt::LeftButton);
         }
 
         if (m_today != nullptr) {
@@ -80,9 +78,26 @@ TEST_F(testMainWindowGUI, yearGUITest)
 
         if (m_nextButton != nullptr) {
             QTest::mouseClick(m_nextButton, Qt::LeftButton);
-            QTest::mouseClick(m_nextButton, Qt::LeftButton);
-            QTest::mouseClick(m_nextButton, Qt::LeftButton);
         }
+        //获取QStackedWidget
+        QStackedWidget *stackedWidget = myYearWindow->findChild<QStackedWidget *>();
+        if (stackedWidget) {
+            QWidget *currentWidget = stackedWidget->currentWidget();
+            if (currentWidget) {
+                currentWidget->setFocus();
+                QTest::keyPress(currentWidget, Qt::Key_Up);
+            }
+            currentWidget = stackedWidget->currentWidget();
+            if (currentWidget) {
+                currentWidget->setFocus();
+                QTest::keyPress(currentWidget, Qt::Key_Down);
+            }
+        }
+        //year_resizeEvent
+        myYearWindow->setSearchWFlag(true);
+        mainWindow.resize(1000, 400);
+        myYearWindow->setSearchWFlag(false);
+        mainWindow.resize(700, 400);
     }
 }
 
