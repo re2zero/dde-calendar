@@ -33,18 +33,17 @@ public:
 
     virtual void SetUp()
     {
-        widget1 = new QWidget();
-        widget2 = new QWidget();
+        mAnimationStackedWidget = new AnimationStackedWidget();
+        widget1 = new QWidget(mAnimationStackedWidget);
+        widget2 = new QWidget(mAnimationStackedWidget);
         mAnimationStackedWidget->addWidget(widget1);
         mAnimationStackedWidget->addWidget(widget2);
     }
 
     virtual void TearDown()
     {
-        delete widget1;
-        widget1 = nullptr;
-        delete widget2;
-        widget2 = nullptr;
+        delete mAnimationStackedWidget;
+        mAnimationStackedWidget = nullptr;
     }
 protected:
     AnimationStackedWidget *mAnimationStackedWidget = nullptr;

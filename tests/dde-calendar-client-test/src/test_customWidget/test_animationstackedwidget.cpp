@@ -22,13 +22,12 @@
 
 test_animationstackedwidget::test_animationstackedwidget()
 {
-    mAnimationStackedWidget = new AnimationStackedWidget();
+
 }
 
 test_animationstackedwidget::~test_animationstackedwidget()
 {
-    delete mAnimationStackedWidget;
-    mAnimationStackedWidget = nullptr;
+
 }
 
 //void AnimationStackedWidget::setDuration(int duration)
@@ -92,3 +91,22 @@ TEST_F(test_animationstackedwidget, setOffset)
     mAnimationStackedWidget->setOffset(2.0);
 }
 
+TEST_F(test_animationstackedwidget,animationtest)
+{
+    mAnimationStackedWidget->setCurrentIndex(0);
+    mAnimationStackedWidget->setDuration(250);
+    mAnimationStackedWidget->setCurrent(1);
+    mAnimationStackedWidget->setFixedSize(500, 800);
+    QPixmap pixmap(mAnimationStackedWidget->size());
+    for (int i = 0; i <10; ++i) {
+        mAnimationStackedWidget->setOffset(i);
+        pixmap = mAnimationStackedWidget->grab();
+    }
+
+    mAnimationStackedWidget->setCurrentIndex(1);
+    mAnimationStackedWidget->setCurrent(0);
+    for (int i = 0; i <10; ++i) {
+        mAnimationStackedWidget->setOffset(i);
+        pixmap = mAnimationStackedWidget->grab();
+    }
+}

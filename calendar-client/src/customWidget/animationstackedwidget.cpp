@@ -259,11 +259,8 @@ void AnimationStackedWidget::paintCurrentWidget(QPainter &paint, int currentInde
         targetRect = QRectF(0.0, 0.0, widgetWidth, value);
         sourceRect = QRectF(0, widgetHeight - value, widgetWidth, value);
     }
-    break;
     }
-    paint.drawPixmap(targetRect,
-                     currentPixmap,
-                     sourceRect);
+    paint.drawPixmap(targetRect,currentPixmap, sourceRect);
 }
 
 /**
@@ -306,11 +303,8 @@ void AnimationStackedWidget::paintNextWidget(QPainter &paint, int nextIndex)
         targetRect = QRectF(0.0, value, widgetWidth, widgetHeight - value);
         sourceRect = QRectF(0.0, 0.0, widgetWidth, widgetHeight - value);
     }
-    break;
     }
-    paint.drawPixmap(targetRect,
-                     nextPixmap,
-                     sourceRect);
+    paint.drawPixmap(targetRect,nextPixmap,sourceRect);
 }
 
 /**

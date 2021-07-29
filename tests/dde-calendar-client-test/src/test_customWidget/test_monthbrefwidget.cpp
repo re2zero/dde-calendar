@@ -20,13 +20,28 @@
    */
 #include "test_monthbrefwidget.h"
 
+#include <QResizeEvent>
+#include <QApplication>
+#include <QMouseEvent>
+#include <QTest>
+
 test_monthbrefwidget::test_monthbrefwidget()
+{
+
+}
+
+test_monthbrefwidget::~test_monthbrefwidget()
+{
+
+}
+
+void test_monthbrefwidget::SetUp()
 {
     mMonthBrefWidget = new MonthBrefWidget();
     mMonthDayRect = new CMonthDayRect();
 }
 
-test_monthbrefwidget::~test_monthbrefwidget()
+void test_monthbrefwidget::TearDown()
 {
     delete mMonthBrefWidget;
     mMonthBrefWidget = nullptr;
@@ -191,4 +206,19 @@ TEST_F(test_monthbrefwidget, getPixmap)
     mMonthBrefWidget->setDate(QDate::currentDate().month(), getDateList());
     QPixmap pixmap(mMonthBrefWidget->size());
     mMonthBrefWidget->render(&pixmap);
+}
+
+TEST_F(test_monthbrefwidget,resizeEvent)
+{
+    mMonthBrefWidget->setFixedSize(QSize(600,500));
+    QResizeEvent resizeEvent(QSize(600,501),QSize(600,500));
+    QApplication::sendEvent(mMonthBrefWidget, &resizeEvent);
+}
+
+TEST_F(test_monthbrefwidget,mouseEvent)
+{
+    mMonthBrefWidget->setFixedSize(QSize(600,500));
+    mMonthBrefWidget->setDate(QDate::currentDate().month(), getDateList());
+    QTest::mouseDClick(mMonthBrefWidget,Qt::MouseButton::LeftButton);
+    QTest::mouseRelease(mMonthBrefWidget,Qt::MouseButton::LeftButton);
 }

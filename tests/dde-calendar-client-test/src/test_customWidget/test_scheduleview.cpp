@@ -207,6 +207,20 @@ TEST_F(test_scheduleview, scheduleViewHeight)
 //getPixmap
 TEST_F(test_scheduleview, getPixmap)
 {
+    QVector<int> pos;
+    pos.append(1);
+    pos.append(2);
+    pos.append(3);
+    pos.append(4);
+
+    QVector<int> hours;
+    hours.append(4);
+    hours.append(8);
+    hours.append(16);
+    hours.append(20);
+
+    mScheduleView->slotPosHours(pos, hours, 1);
+
     mScheduleView->setFixedSize(800, 500);
     QPixmap pixmap(mScheduleView->size());
     mScheduleView->render(&pixmap);

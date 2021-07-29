@@ -21,13 +21,21 @@
 #include "test_todaybutton.h"
 
 #include <QTest>
+#include <QFocusEvent>
+#include <QEnterEvent>
+//#include <QLeaveEvent>
 
 test_todaybutton::test_todaybutton()
+{
+
+}
+
+void test_todaybutton::SetUp()
 {
     mTodayButton = new CTodayButton();
 }
 
-test_todaybutton::~test_todaybutton()
+void test_todaybutton::TearDown()
 {
     delete mTodayButton;
     mTodayButton = nullptr;
@@ -79,3 +87,23 @@ TEST_F(test_todaybutton, keyEventTest)
 }
 
 //QTEST_MAIN(testGUI_toDayButton)
+TEST_F(test_todaybutton,focusOutEvent)
+{
+    mTodayButton->setFocus();
+    QFocusEvent focusEvent_out( QEvent::FocusOut,Qt::FocusReason::TabFocusReason);
+    QApplication::sendEvent(mTodayButton,&focusEvent_out);
+}
+
+TEST_F(test_todaybutton,enterEvent)
+{
+    QEnterEvent enterEvent(QPointF(10,2),QPointF(11,3),QPointF(12,4));
+    QApplication::sendEvent(mTodayButton,&enterEvent);
+    QEvent event(QEvent::Leave);
+    QApplication::sendEvent(mTodayButton,&event);
+}
+
+TEST_F(test_todaybutton,keypressEvent)
+{
+    QKeyEvent keyevent(QEvent::KeyPress,Qt::Key_Return,Qt::NoModifier);
+    QApplication::sendEvent(mTodayButton,&keyevent);
+}

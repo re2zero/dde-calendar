@@ -21,6 +21,8 @@
 #include "test_timeedit.h"
 
 #include <QPixmap>
+#include <QFocusEvent>
+#include <QApplication>
 
 test_timeedit::test_timeedit()
 {
@@ -61,7 +63,14 @@ TEST_F(test_timeedit, slotFocusDraw)
 //getPixmap
 TEST_F(test_timeedit, getPixmap)
 {
+    mTimeEdit->slotFocusDraw(true);
     mTimeEdit->setFixedSize(200, 50);
     QPixmap pixmap(mTimeEdit->size());
     mTimeEdit->render(&pixmap);
+}
+
+TEST_F(test_timeedit,focusInEvent)
+{
+    QFocusEvent focusEvent_in( QEvent::FocusIn,Qt::FocusReason::TabFocusReason);
+    QApplication::sendEvent(mTimeEdit,&focusEvent_in);
 }
