@@ -96,7 +96,6 @@ TEST_F(test_monthgraphiview, getPosDate)
 {
     QPoint p(100, 100);
     QDateTime datetime = cMonthGraphiview->getPosDate(p);
-    qInfo() << datetime;
 }
 
 ////void CMonthGraphiview::upDateInfoShow(const CMonthGraphiview::DragStatus &status, const ScheduleDataInfo &info)

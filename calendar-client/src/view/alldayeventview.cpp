@@ -416,8 +416,7 @@ CAllDayEventWeekView::PosInItem CAllDayEventWeekView::getPosInItem(const QPoint 
 
 QDateTime CAllDayEventWeekView::getPosDate(const QPoint &p)
 {
-    return QDateTime(m_coorManage->getsDate(mapFrom(this, p)),
-                     QTime(0, 0, 0));
+    return QDateTime(m_coorManage->getsDate(mapFrom(this, p)), QTime(0, 0, 0));
 }
 
 void CAllDayEventWeekView::slotUpdateScene()

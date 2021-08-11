@@ -23,12 +23,17 @@
 
 test_calendardatedatamanage::test_calendardatedatamanage()
 {
+}
+
+void test_calendardatedatamanage::SetUp()
+{
     calendarDateDataManager = new CalendarDateDataManager();
 }
 
-test_calendardatedatamanage::~test_calendardatedatamanage()
+void test_calendardatedatamanage::TearDown()
 {
     delete calendarDateDataManager;
+    calendarDateDataManager = nullptr;
 }
 
 /**
@@ -134,4 +139,18 @@ TEST_F(test_calendardatedatamanage, getWeekNumOfYear)
     int weekNum = 0;
     weekNum = calendarDateDataManager->getWeekNumOfYear(date);
     assert(weeknum == weekNum);
+}
+
+TEST_F(test_calendardatedatamanage, setDateFormatChanged)
+{
+    for (int i = 0; i < 10; ++i) {
+        calendarDateDataManager->setDateFormatChanged(i);
+    }
+}
+
+//setTimeFormatChanged
+TEST_F(test_calendardatedatamanage, setTimeFormatChanged)
+{
+    calendarDateDataManager->setTimeFormatChanged(0);
+    calendarDateDataManager->setTimeFormatChanged(1);
 }

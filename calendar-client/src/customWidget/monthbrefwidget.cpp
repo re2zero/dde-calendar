@@ -491,10 +491,7 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
             } else if (r > 7) {
                 ellipse_r = 7;
             }
-            painter->drawEllipse(QRectF(rect.width() - ellipse_r + rect.x(),
-                                        rect.y(),
-                                        ellipse_r,
-                                        ellipse_r));
+            painter->drawEllipse(QRectF(rect.width() - ellipse_r + rect.x(), rect.y(), ellipse_r, ellipse_r));
             painter->restore();
         }
     }

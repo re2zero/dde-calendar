@@ -22,13 +22,20 @@
 #include "../dialog_stub.h"
 
 #include <QTest>
+#include <QEvent>
+#include <QMenu>
 
 test_alldayeventview::test_alldayeventview()
 {
-    cAllDayEventWeekView = new CAllDayEventWeekView();
 }
 
-test_alldayeventview::~test_alldayeventview()
+void test_alldayeventview::SetUp()
+{
+    cAllDayEventWeekView = new CAllDayEventWeekView();
+    cAllDayEventWeekView->setFixedSize(QSize(800, 300));
+}
+
+void test_alldayeventview::TearDown()
 {
     delete cAllDayEventWeekView;
     cAllDayEventWeekView = nullptr;
@@ -189,8 +196,8 @@ TEST_F(test_alldayeventview, createItemWidget)
 
     cAllDayEventWeekView->setDayData(vlistData);
 
-    int w = 3;
-    int h = 2;
+    int w = 1000;
+    int h = 900;
     QDate begindate(2020, 12, 01);
     QDate enddate(2020, 12, 21);
     int rightmagin = 2;
@@ -199,6 +206,9 @@ TEST_F(test_alldayeventview, createItemWidget)
     int index = 0;
     bool average = true;
     cAllDayEventWeekView->createItemWidget(index, average);
+    cAllDayEventWeekView->updateHeight();
+    //setSelectSearchSchedule
+    cAllDayEventWeekView->setSelectSearchSchedule(getTestScheduleDataInfo().at(1));
 }
 
 //void CAllDayEventWeekView::updateItemHeightByFontSize()
@@ -213,6 +223,9 @@ TEST_F(test_alldayeventview, upDateInfoShow)
 {
     cAllDayEventWeekView->setInfo(getTestScheduleDataInfo());
     cAllDayEventWeekView->upDateInfoShow(DragInfoGraphicsView::DragStatus::ChangeEnd, getTestScheduleDataInfo().at(1));
+    cAllDayEventWeekView->upDateInfoShow(DragInfoGraphicsView::DragStatus::ChangeBegin, getTestScheduleDataInfo().at(1));
+    cAllDayEventWeekView->upDateInfoShow(DragInfoGraphicsView::DragStatus::ChangeWhole, getTestScheduleDataInfo().at(1));
+    cAllDayEventWeekView->upDateInfoShow(DragInfoGraphicsView::DragStatus::IsCreate, getTestScheduleDataInfo().at(1));
 }
 
 //
@@ -234,6 +247,7 @@ TEST_F(test_alldayeventview, eventTest)
 //slotCreate
 TEST_F(test_alldayeventview, slotCreate)
 {
+    calendarDDialogExecReturn = 1;
     Stub stub;
     calendarDDialogExecStub(stub);
     cAllDayEventWeekView->slotCreate(QDateTime::currentDateTime());
@@ -245,7 +259,133 @@ TEST_F(test_alldayeventview, getDragScheduleInfoBeginTime)
     cAllDayEventWeekView->getDragScheduleInfoBeginTime(QDateTime::currentDateTime());
 }
 
-//mouseEventTest
-TEST_F(test_alldayeventview, mouseEventTest)
+//changeEvent
+TEST_F(test_alldayeventview, changeEvent)
 {
+    QEvent event(QEvent::FontChange);
+    QApplication::sendEvent(cAllDayEventWeekView, &event);
+}
+
+//mousePressEvent
+TEST_F(test_alldayeventview, mousePressEvent)
+{
+    QMouseEvent event(QEvent::MouseButtonPress, QPointF(32, 13), QPointF(646, 438), QPointF(646, 438),
+                      Qt::LeftButton, Qt::LeftButton, Qt::NoModifier, Qt::MouseEventSynthesizedByQt);
+    QApplication::sendEvent(cAllDayEventWeekView->viewport(), &event);
+}
+
+TEST_F(test_alldayeventview, JudgeIsCreate)
+{
+    QPointF point(32, 13);
+    cAllDayEventWeekView->JudgeIsCreate(point);
+}
+
+QAction *stub_exec(const QPoint &pos, QAction *at = nullptr)
+{
+    Q_UNUSED(pos)
+    Q_UNUSED(at)
+    return nullptr;
+}
+
+//RightClickToCreate
+TEST_F(test_alldayeventview, RightClickToCreate)
+{
+    Stub stub;
+    stub.set((QAction * (QMenu::*)(const QPoint &, QAction *)) ADDR(QMenu, exec), stub_exec);
+    cAllDayEventWeekView->RightClickToCreate(nullptr, QPoint(30, 50));
+}
+
+//MoveInfoProcess
+TEST_F(test_alldayeventview, MoveInfoProcess)
+{
+    ScheduleDataInfo info;
+    QDateTime currentTime = QDateTime::currentDateTime();
+    info.setBeginDateTime(currentTime);
+    info.setEndDateTime(currentTime.addDays(1));
+    info.setAllDay(true);
+    cAllDayEventWeekView->MoveInfoProcess(info, QPointF(0, 0));
+    info.setAllDay(false);
+    cAllDayEventWeekView->MoveInfoProcess(info, QPointF(0, 0));
+}
+
+//getDragScheduleInfoEndTime
+TEST_F(test_alldayeventview, getDragScheduleInfoEndTime)
+{
+    cAllDayEventWeekView->getDragScheduleInfoEndTime(QDateTime::currentDateTime());
+}
+
+//slotUpdateScene
+TEST_F(test_alldayeventview, slotUpdateScene)
+{
+    cAllDayEventWeekView->slotUpdateScene();
+}
+
+TEST_F(test_alldayeventview, updateInfo)
+{
+    cAllDayEventWeekView->updateInfo();
+    cAllDayEventWeekView->m_DragStatus = DragInfoGraphicsView::IsCreate;
+    cAllDayEventWeekView->updateInfo();
+}
+
+//mouseDoubleClickEvent
+TEST_F(test_alldayeventview, mouseDoubleClickEvent)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    QTest::mouseDClick(cAllDayEventWeekView->viewport(), Qt::LeftButton);
+}
+
+//
+TEST_F(test_alldayeventview, setSceneRect)
+{
+    cAllDayEventWeekView->setSceneRect(20, 20, 1000, 1500);
+    cAllDayEventWeekView->updateBackgroundShowItem();
+}
+
+//slotPosOnView
+TEST_F(test_alldayeventview, slotPosOnView)
+{
+    cAllDayEventWeekView->slotPosOnView(1);
+}
+
+//mouseReleaseEvent
+TEST_F(test_alldayeventview, mouseReleaseEvent)
+{
+    QMouseEvent event(QEvent::MouseButtonRelease, QPointF(32, 13), QPointF(646, 438), QPointF(646, 438),
+                      Qt::RightButton, Qt::RightButton, Qt::NoModifier, Qt::MouseEventSynthesizedByQt);
+    QApplication::sendEvent(cAllDayEventWeekView->viewport(), &event);
+}
+
+//mouseReleaseEvent
+TEST_F(test_alldayeventview, mouseReleaseEvent1)
+{
+    cAllDayEventWeekView->m_TouchBeginTime = QDateTime::currentDateTime().toMSecsSinceEpoch() - 10;
+    QMouseEvent event(QEvent::MouseButtonRelease, QPointF(32, 13), QPointF(646, 438), QPointF(646, 438),
+                      Qt::LeftButton, Qt::LeftButton, Qt::NoModifier, Qt::MouseEventSynthesizedByQt);
+    QApplication::sendEvent(cAllDayEventWeekView->viewport(), &event);
+}
+
+//mouseMoveEvent
+TEST_F(test_alldayeventview, mouseMoveEvent)
+{
+    cAllDayEventWeekView->m_touchState = DragInfoGraphicsView::TS_PRESS;
+    QTest::mouseMove(cAllDayEventWeekView->viewport());
+}
+
+//wheelEvent
+TEST_F(test_alldayeventview, wheelEvent)
+{
+    QEvent event(QEvent::Wheel);
+    QApplication::sendEvent(cAllDayEventWeekView->viewport(), &event);
+}
+
+//contextMenuEvent
+TEST_F(test_alldayeventview, contextMenuEvent)
+{
+    //    QEvent event(QEvent::ContextMenu);
+    QContextMenuEvent event(QContextMenuEvent::Mouse, QPoint(20, 20), QPoint(120, 120), Qt::NoModifier);
+    Stub stub;
+    stub.set((QAction * (QMenu::*)(const QPoint &, QAction *)) ADDR(QMenu, exec), stub_exec);
+    calendarDDialogExecStub(stub);
+    QApplication::sendEvent(cAllDayEventWeekView->viewport(), &event);
 }

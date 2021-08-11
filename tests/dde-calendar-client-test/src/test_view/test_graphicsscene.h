@@ -1,9 +1,9 @@
 /*
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     hejinghai <hejinghai@uniontech.com>
+* Author:     chenhaifeng  <chenhaifeng@uniontech.com>
 *
-* Maintainer: hejinghai <hejinghai@uniontech.com>
+* Maintainer: chenhaifeng  <chenhaifeng@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,28 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TEST_CALENDARDATEDATAMANAGE_H
-#define TEST_CALENDARDATEDATAMANAGE_H
+#ifndef TEST_GRAPHICSSCENE_H
+#define TEST_GRAPHICSSCENE_H
 
-#include "calendardatedatamanage.h"
 #include "gtest/gtest.h"
+#include "cgraphicsscene.h"
+
 #include <QObject>
 
-class test_calendardatedatamanage : public QObject, public::testing::Test
+class test_graphicsscene : public QObject
+    , public ::testing::Test
 {
+    Q_OBJECT
 public:
-    test_calendardatedatamanage();
+    test_graphicsscene();
+
     void SetUp() override;
     void TearDown() override;
+signals:
 
-protected:
-    CalendarDateDataManager *calendarDateDataManager = nullptr;
+public slots:
+public:
+    CGraphicsScene *m_Scene = nullptr;
 };
 
-#endif // TEST_CALENDARDATEDATAMANAGE_H
+#endif // TEST_GRAPHICSSCENE_H

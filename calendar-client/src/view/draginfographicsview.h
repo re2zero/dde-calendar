@@ -223,7 +223,7 @@ protected:
     /**
      * @brief m_touchState          触摸状态
      */
-    TouchState m_touchState;
+    TouchState m_touchState = TS_NONE;
     /**
      * @brief m_touchDragMoveState      触摸拖拽移动状态
      * 0 原始状态

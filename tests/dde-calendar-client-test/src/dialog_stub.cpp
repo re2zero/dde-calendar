@@ -35,7 +35,7 @@ int calendar_DDialog_Exec_stub(void *obj)
 
 void calendarDDialogExecStub(Stub &stub)
 {
-    typedef int (*fptr)(DCalendarDDialog *);
-    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
+    typedef int (*fptr)(DDialog *);
+    fptr A_foo = (fptr)(&DDialog::exec);
     stub.set(A_foo, calendar_DDialog_Exec_stub);
 }
