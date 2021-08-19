@@ -7,14 +7,13 @@ Calendar is a useful tool to manage your personal life. By relating events with 
 ![0|main](fig/main.png)
 
 
-
 ## Guide
 
 You can run, close or create a shortcut for Calendar by the following ways.
 
 ### Run Calender
 
-1.  Click the Launcher icon ![deepin_launcher](../common/deepin_launcher.svg) in the dock to enter the Launcher interface.
+1.  Click the Launcher icon ![deepin_launcher](../common/deepin_launcher.svg) in the Dock to enter the Launcher interface.
 2.  Locate Calendar ![draw](../common/dde_calendar.svg) by scrolling the mouse wheel or searching "calendar" in the Launcher interface and click it to run.
 3.  Right-click ![draw](../common/dde_calendar.svg) and you can:
 
@@ -26,7 +25,7 @@ You can run, close or create a shortcut for Calendar by the following ways.
 ### Exit Calendar
 
 - On the Calendar interface, click ![close_icon](../common/close_icon.svg) to exit calendar.
-- Right-click ![draw](../common/dde_calendar.svg) in the dock and select **Close All** to exit.
+- Right-click ![draw](../common/dde_calendar.svg) in the Dock and select **Close All** to exit.
 - Click ![icon_menu](../common/icon_menu.svg) on the Calendar interface and select **Exit** to exit.
 
 ### View Shortcuts
@@ -59,9 +58,7 @@ Monthly view is defaulted and you can click to switch between different views.
 ### Create Events
 
 1. Select a date in the monthly, weekly or daily view.
-
 2. Double-click, or right-click to select **New event** in the blank area on a date and a **New Event** window will pop up.
-
 3.  Set the schedule type, description, time, reminder, etc.
 
 > ![tips](../common/tips.svg)Tips: You can also click the ![add](../common/+.svg) icon in the menu bar to create events.
@@ -81,14 +78,13 @@ Monthly view is defaulted and you can click to switch between different views.
          - Remind Me: Never, At time of event, 15 minutes before, 30 minutes before, 1 hour before, 1 day before, 2 days before and 1 week before. 
    
    - Repeat: Never, Daily, Weekdays, Weekly, Monthly or Yearly.
-   
    - End Repeat: Never, after n time(s) or on the date selected.
 
- > ![notes](../common/notes.svg)Notes: Only when you enable the **Repeat** feature can **End Repeat** be displayed.
+   > ![notes](../common/notes.svg)Notes: Only when you enable the **Repeat** feature can **End Repeat** be displayed.
 
 4.  Click **Save** to create the event.
 
-> ![notes](../common/notes.svg)Notes: You can drag the event label to a specified time or date.
+   > ![notes](../common/notes.svg)Notes: You can drag the event label to a specified time or date.
 
 ### Edit Events
 
@@ -96,7 +92,7 @@ Monthly view is defaulted and you can click to switch between different views.
 2.  Select **Edit** and the **Edit Event** dialogue will pop up.
 3.  Set properties for the event under editing.  
 4.  Click **Save**. 
-5.  If it is set as an all day event or a repeated event, a prompt box will pop up for you to confirm information and then complete editing. 
+5.  If it is set as an all-day event or a repeated event, a prompt box will pop up for you to confirm information and then complete editing. 
 
 During event editing, different prompt information will be displayed according to the changes of content. Description of icons contained in the prompt information is listed as below.
 

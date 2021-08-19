@@ -168,27 +168,27 @@
 
 窗口主题包含浅色主题、深色主题和系统主题。
 
-1. 在日历界面，单击![icon_menu](../common/icon_menu.svg) 。
+1. 在日历界面，单击 ![icon_menu](../common/icon_menu.svg)。
 2. 选择 **主题**，选择一个主题颜色。
 
 ### 帮助
 
 查看帮助手册，进一步了解和使用日历。
 
-1. 在日历界面，单击 ![icon_menu](../common/icon_menu.svg) 。
+1. 在日历界面，单击 ![icon_menu](../common/icon_menu.svg)。
 2. 选择 **帮助**。
 3. 查看日历的帮助手册。
 
 
 ### 关于
 
-1. 在日历界面，单击 ![icon_menu](../common/icon_menu.svg) 。
+1. 在日历界面，单击 ![icon_menu](../common/icon_menu.svg)。
 2. 选择 **关于**。
 3. 查看日历的版本和介绍。
 
 
 ### 退出
 
-1. 在日历界面，单击 ![icon_menu](../common/icon_menu.svg) 。
+1. 在日历界面，单击 ![icon_menu](../common/icon_menu.svg)。
 2. 选择 **退出**。
 
