@@ -5,6 +5,10 @@ project(dde-calendar-service)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
+
+#安全编译参数
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
+
 set(APP_RES_DIR "assets")
 set(APP_SERVICE "${APP_RES_DIR}/data/com.deepin.dataserver.Calendar.service")
 set(AUTOSTART_DESKTOP "${APP_RES_DIR}/dde-calendar-service.desktop")
