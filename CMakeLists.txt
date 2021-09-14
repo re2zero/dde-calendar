@@ -1,51 +1,19 @@
 cmake_minimum_required(VERSION 3.7)
-
-if (NOT DEFINED VERSION)
-    set(VERSION 1.2.2)
-endif ()
-
-#common resource names
-set(APP_RES_DIR "assets")
-set(APP_BIN_NAME "dde-calendar")
-set(APP_TRANS_SCRIPT "${APP_RES_DIR}/translate_generation.sh")
-set(APP_DESKTOP "${APP_RES_DIR}/dde-calendar.desktop")
-set(APP_QRC "${APP_RES_DIR}/resources.qrc")
-set(APP_SERVICE "${APP_RES_DIR}/dbus/com.deepin.Calendar.service")
-
-project(${APP_BIN_NAME})
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_FLAGS "-Wl,--as-needed -fPIE")
-set(CMAKE_EXE_LINKER_FLAGS "-pie")
-
-
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw_64")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mieee")
-elseif (${CMAKE_SYSTEM_PROCESSOR} MATCHES "mips64")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ftree-vectorize -march=loongson3a -mhard-float -mno-micromips -mno-mips16 -flax-vector-conversions -mloongson-ext2 -mloongson-mmi -Wl,--as-needed")
-endif ()
+project(dde-calendar)
 
 #compile flags
 if (CMAKE_BUILD_TYPE MATCHES Debug)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -Wextra")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra")
-
-  # Enable Qt builtin debug mode
+# Enable Qt builtin debug mode
   add_definitions("-DQT_MESSAGELOGCONTEXT")
 else()
   # -Wl, -O2 Enable linker optimizations
   # -Wl, --gc-sections Remove unused code resulting from -fdsta-sections and
   # -ffunction-sections
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O2 -Wl,-O1 -Wl,--gc-sections")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -Wl,-O1 -Wl,--gc-sections")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O2 -Wl,--gc-sections")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -Wl,--gc-sections")
 endif()
-
-#Generate the qm file
-execute_process(COMMAND bash ${APP_TRANS_SCRIPT}
-                    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/")
 
 macro(SUBDIRLIST result curdir)
     file(GLOB children RELATIVE ${curdir} ${curdir}/*)
@@ -58,56 +26,49 @@ macro(SUBDIRLIST result curdir)
     set(${result} ${dirlist})
 endmacro()
 
-configure_file(${APP_RES_DIR}/environments.h.in environments.h @ONLY)
+ADD_SUBDIRECTORY(calendar-basicstruct)
+ADD_SUBDIRECTORY(calendar-client)
+ADD_SUBDIRECTORY(calendar-service)
+ADD_SUBDIRECTORY(schedule-plugin)
+ADD_SUBDIRECTORY(tests)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-SUBDIRLIST(all_src ${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-#Include all app own subdirectorys
-foreach(subdir ${all_src})
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/${subdir})
+#前后端都有翻译所以将翻译放到更高层级
+find_package(Qt5LinguistTools REQUIRED)
+#lupdate start
+#此处其实只有当没有自动翻译需要手动翻译.ts文件才有意义可以创建不同语言名称的ts文件，下同
+set(TS_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/translations/${PROJECT_NAME}_en_US.ts"
+)
+find_program(LUPDATE_EXECUTABLE lupdate)
+foreach(_ts_file ${TS_FILES})
+    execute_process(
+        COMMAND ${LUPDATE_EXECUTABLE} -recursive ${CMAKE_CURRENT_SOURCE_DIR}/calendar-client -ts ${_ts_file})
 endforeach()
 
-file(GLOB_RECURSE Calendar_SRC ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
-
-find_package(PkgConfig REQUIRED)
-find_package(DtkCore REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Svg REQUIRED)
-find_package(Qt5DBus REQUIRED)
-find_package(Qt5Svg REQUIRED)
-find_package(DtkWidget REQUIRED)
-find_package(DtkGui REQUIRED)
-find_package(DFrameworkdbus REQUIRED)
-
-include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
-
-# Tell CMake to create the executable
-add_executable(${PROJECT_NAME} ${Calendar_SRC} ${APP_QRC})
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${DtkWidget_INCLUDE_DIRS} ${OBJECT_BINARY_DIR})
-
-target_link_libraries(${PROJECT_NAME}
-    ${DtkWidget_LIBRARIES}
-    ${DtkCore_LIBRARIES}
-    ${DtkGui_LIBRARIES}
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5Svg_LIBRARIES}
-    ${Qt5DBus_LIBRARIES}
-    ${DFrameworkdbus_LIBRARIES}
+set(TS_SERVICEFILES
+     "${CMAKE_CURRENT_SOURCE_DIR}/translations/${PROJECT_NAME}-service_en_US.ts"
 )
+foreach(_ts_file ${TS_SERVICEFILES})
+    execute_process(
+        COMMAND ${LUPDATE_EXECUTABLE} -recursive ${CMAKE_CURRENT_SOURCE_DIR}/calendar-service -ts ${_ts_file})
+endforeach()
+#lupdate end
 
-set(CMAKE_INSTALL_PREFIX /usr)
+file (GLOB DTNG_TS_FILES translations/*.ts)
 
-# Install files
-install(TARGETS dde-calendar DESTINATION bin)
+#lrelease start
+#发布qm文件
+find_program(LRELEASE_EXECUTABLE lrelease)
+foreach(_ts_file ${DTNG_TS_FILES})
+        execute_process(COMMAND ${LRELEASE_EXECUTABLE}   ${_ts_file})
+endforeach()
+#lrelease end
 
-file(GLOB APP_QM_FILES "translations/*.qm")
-
-#install(FILES /usr/share/icons/bloom/apps/96/dde-calendar.svg
-#        DESTINATION /share/icons/hicolor/scalable/apps/)
-install(FILES ${APP_QM_FILES} DESTINATION share/dde-calendar/translations)
-install(FILES ${APP_DESKTOP} DESTINATION share/applications)
-install(FILES ${APP_SERVICE} DESTINATION share/dbus-1/services)
+qt5_create_translation(DTNG_QM_FILES
+    ${DTNG_TS_FILES}
+     ${DTNG_QM_FILES}
+     )
+     
+ set(CMAKE_INSTALL_PREFIX /usr)
+ file(GLOB APP_QM_FILES "translations/*.qm")
+ install(FILES ${APP_QM_FILES} DESTINATION share/dde-calendar/translations)
