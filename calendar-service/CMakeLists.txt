@@ -13,6 +13,7 @@ set(APP_RES_DIR "assets")
 set(APP_SERVICE "${APP_RES_DIR}/data/com.deepin.dataserver.Calendar.service")
 set(AUTOSTART_DESKTOP "${APP_RES_DIR}/dde-calendar-service.desktop")
 set(HUANGLIDB "${APP_RES_DIR}/data/huangli.db")
+set(APP_QRC "${APP_RES_DIR}/resources.qrc")
 
 
 # Find the library
@@ -43,7 +44,7 @@ file(GLOB_RECURSE CALENDARSERVICE_SRCS ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 
 include_directories(../calendar-basicstruct/)
 
-add_executable(${PROJECT_NAME} ${CALENDARSERVICE_SRCS})
+add_executable(${PROJECT_NAME} ${CALENDARSERVICE_SRCS} ${APP_QRC})
 
 target_link_libraries(${PROJECT_NAME} ${LINK_LIBS} basestruct)
 
