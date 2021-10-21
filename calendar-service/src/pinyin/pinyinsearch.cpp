@@ -25,6 +25,7 @@
 #include <QRegularExpression>
 #include <QFile>
 #include <QTextStream>
+#include <QDebug>
 
 pinyinsearch *pinyinsearch::m_pinyinsearch = nullptr;
 QMap<int, QString> pinyinsearch::pinyinDictVector {};
@@ -95,8 +96,10 @@ void pinyinsearch::initDict()
 
     QFile file(kDictFile);
 
-    if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "open dictFile error :" << file.error();
         return;
+    }
 
     QByteArray content = file.readAll();
     file.close();

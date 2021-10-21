@@ -41,10 +41,12 @@ foreach(subdir ${all_src})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/${subdir})
 endforeach()
 file(GLOB_RECURSE CALENDARSERVICE_SRCS ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
+#添加资源文件
+QT5_ADD_RESOURCES(CALENDARSERVICE_SRCS ${APP_QRC})
 
 include_directories(../calendar-basicstruct/)
 
-add_executable(${PROJECT_NAME} ${CALENDARSERVICE_SRCS} ${APP_QRC})
+add_executable(${PROJECT_NAME} ${CALENDARSERVICE_SRCS})
 
 target_link_libraries(${PROJECT_NAME} ${LINK_LIBS} basestruct)
 
