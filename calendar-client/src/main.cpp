@@ -77,9 +77,9 @@ int main(int argc, char *argv[])
         _commandLine.process(*app);
 
         app->setAutoActivateWindows(true);
-        CConfigSettings::init();
+
         bool isOk = false;
-        int viewtype = CConfigSettings::value("base.view").toInt(&isOk);
+        int viewtype = CConfigSettings::getInstance()->value("base.view").toInt(&isOk);
         if (!isOk)
             viewtype = 2;
         DLogManager::registerConsoleAppender();

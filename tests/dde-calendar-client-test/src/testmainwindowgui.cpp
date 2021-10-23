@@ -30,7 +30,6 @@
 
 testMainWindowGUI::testMainWindowGUI()
 {
-    CConfigSettings::init();
 }
 
 QVariant getSetView(const QString &str)

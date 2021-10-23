@@ -84,32 +84,36 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     //若分辨率改变则重新设置最大尺寸
     connect(desktopwidget, &QDesktopWidget::resized, this, &Calendarmainwindow::slotSetMaxSize);
     slotSetMaxSize();
-    //如果为平板模式则使其大小为屏幕大小
-    if (!TabletConfig::isTablet()) {
-        QByteArray arrayByte = CConfigSettings::value("base.geometry").toByteArray();
+
+    //兼容以前的配置信息
+    if (CConfigSettings::getInstance()->contains("base.geometry")) {
+        QByteArray arrayByte = CConfigSettings::getInstance()->value("base.geometry").toByteArray();
         bool isOk = false;
-        int state = CConfigSettings::value("base.state").toInt(&isOk);
-        if (!arrayByte.isEmpty() && isOk) {
-            Qt::WindowStates winStates = static_cast<Qt::WindowStates>(state);
-            //如果上次窗口的状态为最小化，则设置窗口状态为普通状态
-            if (winStates == Qt::WindowState::WindowMinimized) {
-                winStates = Qt::WindowState::WindowNoState;
-            } else if (winStates == (Qt::WindowState::WindowMinimized | Qt::WindowState::WindowMaximized)) {
-                //如果状态为 最小&最大 则启动时设置为最大
-                winStates = Qt::WindowState::WindowMaximized;
-            }
-            setWindowState(winStates);
-            if (winStates != Qt::WindowState::WindowMaximized) {
-                restoreGeometry(arrayByte);
-            }
+        int state = CConfigSettings::getInstance()->value("base.state").toInt(&isOk);
+        Qt::WindowStates winStates = static_cast<Qt::WindowStates>(state);
+        if (winStates.testFlag(Qt::WindowMaximized)) {
+            showMaximized();
+        } else {
+            restoreGeometry(arrayByte);
+            Dtk::Widget::moveToCenter(this);
         }
+        //移除旧的配置信息
+        CConfigSettings::getInstance()->remove("base.geometry");
+        CConfigSettings::getInstance()->remove("base.state");
+    } else if (CConfigSettings::getInstance()->contains("base.windowWidth")) {
+        //获取窗口的宽度和高度
+        int width = CConfigSettings::getInstance()->value("base.windowWidth").toInt();
+        int height = CConfigSettings::getInstance()->value("base.windowHeight").toInt();
+        QRect rect(0, 0, width, height);
+        rect.moveCenter(desktopwidget->geometry().center());
+        this->setGeometry(rect);
+    } else {
+        Dtk::Widget::moveToCenter(this);
     }
-    Dtk::Widget::moveToCenter(this);
 }
 
 Calendarmainwindow::~Calendarmainwindow()
 {
-    CConfigSettings::releaseInstance();
     CDynamicIcon::releaseInstance();
 }
 
@@ -199,7 +203,7 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     }
     m_priindex = type == 0 ? m_priindex : type;
     //为了与老版本配置兼容
-    CConfigSettings::setOption("base.view", type + 1);
+    CConfigSettings::getInstance()->setOption("base.view", type + 1);
 }
 
 void Calendarmainwindow::updateHeight()
@@ -314,7 +318,7 @@ void Calendarmainwindow::initUI()
     //设置状态栏焦点代理为标题窗口
     this->titlebar()->setFocusProxy(titleWidget);
     //接收设置按键焦点
-    connect(titleWidget, &CTitleWidget::signalSetButtonFocus, [=] {
+    connect(titleWidget, &CTitleWidget::signalSetButtonFocus, [ = ] {
         m_setButtonFocus = true;
     });
     connect(titleWidget, &CTitleWidget::signalSearchFocusSwitch, this, &Calendarmainwindow::slotSearchFocusSwitch);
@@ -461,16 +465,9 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
     setSearchWidth(m_scheduleSearchViewMaxWidth);
     setScheduleHide();
     DMainWindow::resizeEvent(event);
-    //过滤最小化状态
-    //因为需保存最大和普通状态，顾在窗口调整大小时保持窗口状态
-    if (windowState() == Qt::WindowState::WindowMinimized) {
-        CConfigSettings::setOption("base.state", 0);
-    } else if (windowState() == (Qt::WindowState::WindowMinimized | Qt::WindowState::WindowMaximized)) {
-        CConfigSettings::setOption("base.state", int(Qt::WindowState::WindowMaximized));
-    } else {
-        CConfigSettings::setOption("base.state", int(windowState()));
-    }
-    CConfigSettings::setOption("base.geometry", saveGeometry());
+    //保存窗口大小
+    CConfigSettings::getInstance()->setOption("base.windowWidth", event->size().width());
+    CConfigSettings::getInstance()->setOption("base.windowHeight", event->size().height());
 }
 
 /**
