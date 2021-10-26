@@ -130,6 +130,8 @@ void CTimeEdit::showPopup()
     //获取下拉视图容器
     QFrame *viewContainer = this->findChild<QFrame *>();
     if (viewContainer) {
+        //移动前先隐藏
+        viewContainer->hide();
         //如果显示视图容器则设置高度
         viewContainer->setFixedHeight(viewContainerMaxHeight);
         //设置最大高度
@@ -140,6 +142,8 @@ void CTimeEdit::showPopup()
         viewContainer->setFixedWidth(this->width());
         //将视图容器移动到combobox的底部
         viewContainer->move(showPoint.x(), showPoint.y());
+        //显示
+        viewContainer->show();
     }
     //因改变了容器的高度，所以需要重新定位当前位置
     this->view()->scrollTo(this->view()->currentIndex());
