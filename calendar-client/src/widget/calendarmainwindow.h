@@ -69,6 +69,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void changeEvent(QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    bool event(QEvent *event) override;
 private slots:
     //隐藏提示框
     void setScheduleHide();

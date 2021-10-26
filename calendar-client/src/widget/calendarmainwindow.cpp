@@ -707,3 +707,12 @@ void Calendarmainwindow::mousePressEvent(QMouseEvent *event)
     Q_UNUSED(event);
     setScheduleHide();
 }
+
+bool Calendarmainwindow::event(QEvent *event)
+{
+    //如果窗口移动，隐藏日程悬浮框
+    if (event->type() == QEvent::Move) {
+        setScheduleHide();
+    }
+    return DMainWindow::event(event);
+}
