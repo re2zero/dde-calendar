@@ -24,6 +24,7 @@
 #include "scheduledatamanage.h"
 #include "constants.h"
 #include "calendarmanage.h"
+#include "calendarglobalenv.h"
 
 #include <DPalette>
 #include <DHorizontalLine>
@@ -486,9 +487,11 @@ void CScheduleView::slotCurrentScheduleDate(QDate date)
 void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDataInfo &out)
 {
     if (isShow) {
-        QPoint pos22 = QCursor::pos();
+        QVariant variant;
+        CalendarGlobalEnv::getGlobalEnv()->getValueByKey(DDECalendar::CursorPointKey, variant);
+        QPoint pos22 = variant.value<QPoint>();
         CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-            out.getType());
+                                      out.getType());
         QDesktopWidget *w = QApplication::desktop();
         m_ScheduleRemindWidget->setData(out, gdColor);
 

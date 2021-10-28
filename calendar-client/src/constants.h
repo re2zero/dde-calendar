@@ -20,7 +20,11 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <QString>
+
 namespace DDECalendar {
+//光标坐标关键字
+const QString   CursorPointKey = "CursorPoint";
 static const int HeaderItemWidth = 80;
 static const int HeaderItemHeight = 40;
 

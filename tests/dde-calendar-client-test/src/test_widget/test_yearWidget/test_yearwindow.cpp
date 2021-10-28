@@ -19,9 +19,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "test_yearwindow.h"
+#include "customWidget/customframe.h"
+#include "widget/yearWidget/yearscheduleview.h"
+#include "calendarglobalenv.h"
+#include "constants.h"
 
 test_yearwindow::test_yearwindow()
 {
+    CalendarGlobalEnv::getGlobalEnv()->registerKey(DDECalendar::CursorPointKey, QPoint(20, 20));
     mYearWindow = new CYearWindow();
     dateaManger = new CalendarDateDataManager();
 }
@@ -45,8 +50,10 @@ TEST_F(test_yearwindow, setTheMe)
 
 TEST_F(test_yearwindow, slotMousePress)
 {
+    CalendarGlobalEnv::getGlobalEnv()->reviseValue(DDECalendar::CursorPointKey, QPoint(20, 20));
     QDate currentDate = QDate::currentDate();
     mYearWindow->slotMousePress(currentDate, 0);
+    ASSERT_EQ(mYearWindow->getSelectDate(), currentDate);
     mYearWindow->slotMousePress(currentDate, 1);
     mYearWindow->slotMousePress(currentDate, 2);
     mYearWindow->slotMousePress(currentDate, 3);

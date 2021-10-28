@@ -25,6 +25,7 @@
 #include "constants.h"
 #include "cscheduleoperation.h"
 #include "graphicsItem/cscenebackgrounditem.h"
+#include "calendarglobalenv.h"
 
 #include <DMenu>
 
@@ -509,6 +510,8 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
     m_PressPos = pos;
     m_PressDate = getPosDate(pos);
     m_MoveDate = m_PressDate.addMonths(-2);
+
+    CalendarGlobalEnv::getGlobalEnv()->reviseValue(DDECalendar::CursorPointKey, mapToGlobal(pos));
 
     if (item != nullptr) {
         PosInItem mpressstatus = getPosInItem(pos, item->boundingRect());

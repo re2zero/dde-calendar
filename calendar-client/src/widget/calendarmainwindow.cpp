@@ -32,6 +32,7 @@
 #include "scheduledlg.h"
 #include "ctitlewidget.h"
 #include "tabletconfig.h"
+#include "calendarglobalenv.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -110,6 +111,9 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     } else {
         Dtk::Widget::moveToCenter(this);
     }
+
+    //注册光标位置
+    CalendarGlobalEnv::getGlobalEnv()->registerKey(DDECalendar::CursorPointKey, QPoint());
 }
 
 Calendarmainwindow::~Calendarmainwindow()

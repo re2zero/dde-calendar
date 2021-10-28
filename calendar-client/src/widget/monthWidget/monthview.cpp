@@ -20,6 +20,7 @@
 #include "monthview.h"
 #include "scheduledlg.h"
 #include "scheduledatamanage.h"
+#include "calendarglobalenv.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -82,9 +83,11 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDataI
 {
     if (isShow) {
         //获取当前鼠标位置
-        QPoint remindPos = QCursor::pos();
+        QVariant variant;
+        CalendarGlobalEnv::getGlobalEnv()->getValueByKey(DDECalendar::CursorPointKey, variant);
+        QPoint remindPos = variant.value<QPoint>();
         CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-            out.getType());
+                                      out.getType());
         m_remindWidget->setData(out, gdColor);
         //获取屏幕大小
         QRect desktopRect = QApplication::desktop()->rect();

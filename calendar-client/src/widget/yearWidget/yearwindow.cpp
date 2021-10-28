@@ -24,6 +24,7 @@
 #include "constants.h"
 #include "schedulesearchview.h"
 #include "yearscheduleview.h"
+#include "calendarglobalenv.h"
 
 #include <DPalette>
 #include <DHiDPIHelper>
@@ -665,7 +666,10 @@ void CYearWindow::slotMousePress(const QDate &selectDate, const int pressType)
         }
         m_scheduleView->setCurrentDate(selectDate);
         m_scheduleView->setData(_scheduleInfo);
-        QPoint pos22 = QCursor::pos();
+        //使用设置的显示坐标
+        QVariant variant;
+        CalendarGlobalEnv::getGlobalEnv()->getValueByKey(DDECalendar::CursorPointKey, variant);
+        QPoint pos22 = variant.value<QPoint>();
         QDesktopWidget *w = QApplication::desktop();
         if (pos22.x() + 10 + m_scheduleView->width() < w->width()) {
             m_scheduleView->setDirection(DArrowRectangle::ArrowLeft);
