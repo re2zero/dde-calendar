@@ -358,6 +358,8 @@ void CDayWindow::slotScheduleHide()
 void CDayWindow::slotChangeSelectDate(const QDate &date)
 {
     if (setSelectDate(date, true)) {
+        //隐藏日程悬浮框
+        slotScheduleHide();
         updateShowDate();
         setTime();
     }
