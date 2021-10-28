@@ -339,6 +339,9 @@ void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)
 
     if (m_ScheduleInfo.getType() == DDECalendar::FestivalTypeID)
         return;
+    //在有些环境中弹出右击菜单不会触发leaveEvent，主动更新leave对应的事件处理
+    m_mouseStatus = M_NONE;
+    update();
     m_rightMenu->clear();
     m_rightMenu->addAction(m_editAction);
     m_rightMenu->addAction(m_deleteAction);
