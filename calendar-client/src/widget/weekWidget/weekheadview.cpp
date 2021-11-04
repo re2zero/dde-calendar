@@ -343,8 +343,8 @@ void CWeekHeadView::paintCell(QWidget *cell)
 
         while (fm.width(dayWeek) > cell->width() / 2)
             dayWeek.chop(1);
-
-        painter.drawText(QRect(0, bh, (cell->width() / 2), 26), Qt::AlignRight, dayWeek);
+        //水平右对齐，上下居中
+        painter.drawText(QRect(0, bh, (cell->width() / 2), 26), Qt::AlignRight | Qt::AlignVCenter, dayWeek);
     }
     // draw text of day type
     if (m_showState & ShowLunar) {
@@ -364,9 +364,10 @@ void CWeekHeadView::paintCell(QWidget *cell)
                 } else {
                     str_dayLunar = dayLunar;
                 }
-                painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, str_dayLunar);
+                //水平左对齐，上下居中
+                painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft | Qt::AlignVCenter, str_dayLunar);
             } else {
-                painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft, dayLunar);
+                painter.drawText(QRect(bw + 52 + 10, bh, 50, 25), Qt::AlignLeft | Qt::AlignVCenter, dayLunar);
             }
         }
     }
