@@ -26,11 +26,13 @@
 #include "gtest/gtest.h"
 #include <QObject>
 
-class test_calendarscheduler : public QObject, public::testing::Test
+class ut_calendarscheduler : public ::testing::Test
 {
 public:
-    test_calendarscheduler();
-    ~test_calendarscheduler();
+    ut_calendarscheduler();
+    void SetUp() override;
+    void TearDown() override;
+
 protected:
     CalendarScheduler *calScheduler = nullptr;
 };
