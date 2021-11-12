@@ -245,17 +245,17 @@ TEST_F(test_schedulerdatabase, DeleteType)
     sDb->DeleteType(6);
 }
 
-//void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
-TEST_F(test_schedulerdatabase, OpenSchedulerDatabase)
-{
-    QString dbpath = "";
-    sDb->OpenSchedulerDatabase(dbpath);
+////void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
+//TEST_F(test_schedulerdatabase, OpenSchedulerDatabase)
+//{
+//    QString dbpath = "";
+//    sDb->OpenSchedulerDatabase(dbpath);
 
-    dbpath = "123123";
-    sDb->OpenSchedulerDatabase(dbpath);
+//    dbpath = "123123";
+//    sDb->OpenSchedulerDatabase(dbpath);
 
-    dbpath = "%s%s%s%s%s%s";
-    sDb->OpenSchedulerDatabase(dbpath);
+//    dbpath = "%s%s%s%s%s%s";
+//    sDb->OpenSchedulerDatabase(dbpath);
 
-    sDb->OpenSchedulerDatabase(SD_DATABASE_DIR);
-}
+//    sDb->OpenSchedulerDatabase(SD_DATABASE_DIR);
+//}
