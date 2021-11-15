@@ -90,17 +90,17 @@ TEST_F(test_huanglidatabase, QueryHuangLiByDays)
     assert(hl2Suit == hl2.Suit && hl2Avoid == hl2.Avoid);
 }
 
-//bool HuangLiDataBase::OpenHuangliDatabase(const QString &dbpath)
-TEST_F(test_huanglidatabase, OpenHuangliDatabase)
-{
-    QString dbpath = "";
-    hlDb->OpenHuangliDatabase(dbpath);
+////bool HuangLiDataBase::OpenHuangliDatabase(const QString &dbpath)
+//TEST_F(test_huanglidatabase, OpenHuangliDatabase)
+//{
+//    QString dbpath = "";
+//    hlDb->OpenHuangliDatabase(dbpath);
 
-    dbpath = "123123";
-    hlDb->OpenHuangliDatabase(dbpath);
+//    dbpath = "123123";
+//    hlDb->OpenHuangliDatabase(dbpath);
 
-    dbpath = "%s%s%s%s%s%s";
-    hlDb->OpenHuangliDatabase(dbpath);
+//    dbpath = "%s%s%s%s%s%s";
+//    hlDb->OpenHuangliDatabase(dbpath);
 
-    hlDb->OpenHuangliDatabase(HL_DATABASE_DIR);
-}
+//    hlDb->OpenHuangliDatabase(HL_DATABASE_DIR);
+//}
