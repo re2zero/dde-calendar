@@ -12,6 +12,7 @@
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="96"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="98"/>
         <source>Close</source>
+        <comment>button</comment>
         <translation>Sulje</translation>
     </message>
     <message>

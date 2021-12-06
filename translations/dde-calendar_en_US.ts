@@ -76,12 +76,12 @@
 <context>
     <name>CMonthView</name>
     <message>
-        <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="66"/>
+        <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="67"/>
         <source>New event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="225"/>
+        <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="228"/>
         <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -467,17 +467,17 @@
 <context>
     <name>CScheduleSearchDateItem</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="899"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="902"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="899"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="902"/>
         <source>M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="899"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="902"/>
         <source>D</source>
         <translation type="unfinished"></translation>
     </message>
@@ -503,7 +503,7 @@
 <context>
     <name>CScheduleSearchView</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="642"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="645"/>
         <source>No search results</source>
         <translation type="unfinished"></translation>
     </message>
@@ -511,7 +511,7 @@
 <context>
     <name>CScheduleView</name>
     <message>
-        <location filename="../calendar-client/src/customWidget/scheduleview.cpp" line="326"/>
+        <location filename="../calendar-client/src/customWidget/scheduleview.cpp" line="327"/>
         <source>ALL DAY</source>
         <translation type="unfinished"></translation>
     </message>
@@ -569,7 +569,7 @@
 <context>
     <name>CYearWindow</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="634"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="635"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -590,7 +590,7 @@
 <context>
     <name>Calendarmainwindow</name>
     <message>
-        <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="68"/>
+        <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="69"/>
         <source>Calendar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -606,22 +606,22 @@
 <context>
     <name>DragInfoGraphicsView</name>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="60"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="61"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="61"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="62"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="62"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="63"/>
         <source>New event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="713"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="716"/>
         <source>New Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -629,7 +629,7 @@
 <context>
     <name>Return</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="630"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="631"/>
         <source>Today</source>
         <comment>Return</comment>
         <translation type="unfinished"></translation>
@@ -687,7 +687,7 @@
 <context>
     <name>YearFrame</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="948"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="952"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
@@ -701,8 +701,8 @@
         <location filename="../calendar-client/src/widget/monthWidget/monthwindow.cpp" line="262"/>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="69"/>
         <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="322"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="284"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="628"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="285"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="629"/>
         <source>Today</source>
         <comment>Today</comment>
         <translation type="unfinished"></translation>

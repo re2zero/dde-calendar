@@ -12,17 +12,18 @@
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="96"/>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="98"/>
         <source>Close</source>
+        <comment>button</comment>
         <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="91"/>
         <source>Remind me tomorrow</source>
-        <translation>Rappeler-le moi demain</translation>
+        <translation>Rappelez-le moi demain</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="96"/>
         <source>Remind me later</source>
-        <translation>Rappeler-le moi plus tard</translation>
+        <translation>Rappelez-le moi plus tard</translation>
     </message>
     <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="101"/>
