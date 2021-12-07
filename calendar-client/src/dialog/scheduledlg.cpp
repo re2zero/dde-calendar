@@ -58,8 +58,7 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     } else {
         m_titleLabel->setText(tr("Edit Event"));
     }
-
-    setFixedSize(438, 470);
+    setFixedSize(438, 480);
     //焦点设置到输入框
     m_textEdit->setFocus();
 }
@@ -391,14 +390,14 @@ void CScheduleDlg::slotbRpeatactivated(int index)
 {
     if (index > 0) {
         m_endrepeatWidget->setVisible(true);
-        setFixedSize(438, 506);
+        setFixedSize(438, 520);
         if (m_endrepeatCombox->currentIndex() == 1) {
             //如果结束重复于次数，判断次数是否为空
             slotendrepeatTextchange();
         }
     } else {
         m_endrepeatWidget->setVisible(false);
-        setFixedSize(438, 470);
+        setFixedSize(438, 480);
         //重复类型为“从不”时，使能保存按钮
         QAbstractButton *m_OkBt = getButton(1);
         m_OkBt->setEnabled(true);
@@ -415,6 +414,11 @@ void CScheduleDlg::sloteRpeatactivated(int index)
         m_endRepeatDate->setVisible(false);
         //重复结束于次数，判断次数是否为空
         slotendrepeatTextchange();
+        QFont mlabelF;
+        mlabelF.setWeight(QFont::Medium);
+        QFontMetrics fontWidth_endrepeattimesLabel(mlabelF);
+        QString endrepeattimesStr = fontWidth_endrepeattimesLabel.elidedText(tr("time(s)"), Qt::ElideRight, m_endrepeattimesLabel->width());
+        m_endrepeattimesLabel->setText(endrepeattimesStr);
     } else {
         m_endrepeattimesWidget->setVisible(false);
         m_endRepeatDate->setVisible(true);
@@ -499,6 +503,13 @@ void CScheduleDlg::changeEvent(QEvent *event)
     QFontMetrics fontWidth_endrepeatLabel(mlabelF);
     QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
     m_endrepeatLabel->setText(str_endrepeatLabel);
+
+    if (m_endrepeattimesWidget->isVisible()) {
+        //如果结束与次数显示,则根据label大小设置显示内容
+        QFontMetrics fontWidth_endrepeattimesLabel(mlabelF);
+        QString endrepeattimesStr = fontWidth_endrepeattimesLabel.elidedText(tr("time(s)"), Qt::ElideRight, m_endrepeattimesLabel->width());
+        m_endrepeattimesLabel->setText(endrepeattimesStr);
+    }
 }
 
 /**
@@ -513,6 +524,9 @@ void CScheduleDlg::updateDateTimeFormat()
 
 void CScheduleDlg::initUI()
 {
+    const int label_Fixed_Width = 78;
+    const int item_Fixed_Height = 36;
+
     //设置对象名称和辅助显示名称
     this->setObjectName("ScheduleEditDialog");
     this->setAccessibleName("ScheduleEditDialog");
@@ -535,291 +549,313 @@ void CScheduleDlg::initUI()
     QVBoxLayout *maintlayout = new QVBoxLayout;
     maintlayout->setMargin(0);
     maintlayout->setSpacing(10);
-    QHBoxLayout *typelayout = new QHBoxLayout;
-    typelayout->setSpacing(0);
-    typelayout->setMargin(0);
-    m_typeLabel = new QLabel();
-    m_typeLabel->setToolTip(tr("Type"));
-    DFontSizeManager::instance()->bind(m_typeLabel, DFontSizeManager::T6);
-    QFontMetrics fontWidth_typeLabel(mlabelF);
-    QString str_typelabel = fontWidth_typeLabel.elidedText(tr("Type:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
-    m_typeLabel->setText(str_typelabel);
-    m_typeLabel->setFont(mlabelF);
-    m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_typeLabel->setFixedSize(78, 36);
-    m_typeComBox = new DComboBox(this);
-    //设置对象名称和辅助显示名称
-    m_typeComBox->setObjectName("ScheduleTypeCombobox");
-    m_typeComBox->setAccessibleName("ScheduleTypeCombobox");
-    m_typeComBox->setFixedSize(319, 36);
-    m_typeComBox->setIconSize(QSize(24, 24));
-    m_typeComBox->insertItem(0,
-                             QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
-                                   .scaled(QSize(24, 24) * devicePixelRatioF())),
-                             tr("Work"));
-    m_typeComBox->insertItem(1,
-                             QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg")
-                                   .scaled(QSize(24, 24) * devicePixelRatioF())),
-                             tr("Life"));
-    m_typeComBox->insertItem(
-        2,
-        QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg")
-              .scaled(QSize(24, 24) * devicePixelRatioF())),
-        tr("Other"));
-    typelayout->addWidget(m_typeLabel);
-    typelayout->addWidget(m_typeComBox);
-    maintlayout->addLayout(typelayout);
-
-    QHBoxLayout *contentLabellayout = new QHBoxLayout;
-    contentLabellayout->setSpacing(0);
-    contentLabellayout->setMargin(0);
-    QVBoxLayout *conttelabellayout = new QVBoxLayout;
-    conttelabellayout->setSpacing(0);
-    conttelabellayout->setMargin(0);
-    m_contentLabel = new QLabel(this);
-    DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T6);
-    QFontMetrics fontWidth_contentlabel(mlabelF);
-    QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
-    m_contentLabel->setText(str_contentlabel);
-    m_contentLabel->setFont(mlabelF);
-    m_contentLabel->setToolTip(tr("Description"));
-    m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_contentLabel->setFixedWidth(78);
-    conttelabellayout->addWidget(m_contentLabel);
-    conttelabellayout->addStretch();
-    m_textEdit = new DTextEdit(this);
-    //设置对象名称和辅助显示名称
-    m_textEdit->setObjectName("ScheduleTitleEdit");
-    m_textEdit->setAccessibleName("ScheduleTitleEdit");
-    m_textEdit->setFixedSize(319, 86);
-    m_textEdit->setAcceptRichText(false);
-
-    m_textEdit->setPlaceholderText(tr("New Event"));
-    //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
-    QWidget *mpContentWidget = m_textEdit->viewport();
-    //设置事件过滤器
-    m_textEdit->installEventFilter(this);
-    mpContentWidget->installEventFilter(this);
-
-    contentLabellayout->addLayout(conttelabellayout);
-    contentLabellayout->addWidget(m_textEdit);
-    maintlayout->addLayout(contentLabellayout);
-
-    QHBoxLayout *alldayLabellayout = new QHBoxLayout;
-    alldayLabellayout->setSpacing(0);
-    alldayLabellayout->setMargin(0);
-    m_adllDayLabel = new QLabel(this);
-    m_adllDayLabel->setToolTip(tr("All Day"));
-    DFontSizeManager::instance()->bind(m_adllDayLabel, DFontSizeManager::T6);
-    QFontMetrics fontWidth_allDayLabel(mlabelF);
-    QString str_allDayLabel = fontWidth_allDayLabel.elidedText(tr("All Day:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
-    m_adllDayLabel->setText(str_allDayLabel);
-    m_adllDayLabel->setFont(mlabelF);
-    m_adllDayLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_adllDayLabel->setFixedWidth(78);
-    m_allDayCheckbox = new DCheckBox(this);
-    //设置对象名称和辅助显示名称
-    m_allDayCheckbox->setObjectName("AllDayCheckBox");
-    m_allDayCheckbox->setAccessibleName("AllDayCheckBox");
-    alldayLabellayout->addWidget(m_adllDayLabel);
-    alldayLabellayout->addWidget(m_allDayCheckbox);
-    maintlayout->addLayout(alldayLabellayout);
-
-    QHBoxLayout *beginLabellayout = new QHBoxLayout;
-    beginLabellayout->setSpacing(0);
-    beginLabellayout->setMargin(0);
-    m_beginTimeLabel = new QLabel(this);
-    m_beginTimeLabel->setToolTip(tr("Starts"));
-    DFontSizeManager::instance()->bind(m_beginTimeLabel, DFontSizeManager::T6);
-    QFontMetrics fontWidth_beginTimeLabel(mlabelF);
-    QString str_beginTimeLabel = fontWidth_beginTimeLabel.elidedText(tr("Starts:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
-    m_beginTimeLabel->setText(str_beginTimeLabel);
-    m_beginTimeLabel->setFont(mlabelF);
-    m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_beginTimeLabel->setFixedSize(78, 36);
-    m_beginDateEdit = new QDateEdit(this);
-    //设置对象名称和辅助显示名称
-    m_beginDateEdit->setObjectName("ScheduleBeginDateEdit");
-    m_beginDateEdit->setAccessibleName("ScheduleBeginDateEdit");
-    m_beginDateEdit->setFixedSize(175, 36);
-
-    m_beginTimeEdit = new CTimeEdit(this);
-    //设置对象名称和辅助显示名称
-    m_beginTimeEdit->setObjectName("ScheduleBeginTimeEdit");
-    m_beginTimeEdit->setAccessibleName("ScheduleBeginTimeEdit");
-    m_beginTimeEdit->setFixedSize(141, 36);
-    m_beginDateEdit->setCalendarPopup(true);
-    m_beginDateEdit->setDisplayFormat(m_dateFormat);
-    beginLabellayout->addWidget(m_beginTimeLabel);
-    beginLabellayout->addWidget(m_beginDateEdit);
-    beginLabellayout->addSpacing(8);
-    beginLabellayout->addWidget(m_beginTimeEdit);
-    beginLabellayout->addStretch();
-    maintlayout->addLayout(beginLabellayout);
-
-    QHBoxLayout *enQLabellayout = new QHBoxLayout;
-    enQLabellayout->setSpacing(0);
-    enQLabellayout->setMargin(0);
-    m_endTimeLabel = new QLabel(this);
-    m_endTimeLabel->setToolTip(tr("Ends"));
-    DFontSizeManager::instance()->bind(m_endTimeLabel, DFontSizeManager::T6);
-    QFontMetrics fontWidth_endTimeLabel(mlabelF);
-    QString str_endTimeLabel = fontWidth_endTimeLabel.elidedText(tr("Ends:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
-    m_endTimeLabel->setText(str_endTimeLabel);
-    m_endTimeLabel->setFont(mlabelF);
-    m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_endTimeLabel->setFixedSize(78, 36);
-    m_endDateEdit = new QDateEdit(this);
-    //设置对象名称和辅助显示名称
-    m_endDateEdit->setObjectName("ScheduleEndDateEdit");
-    m_endDateEdit->setAccessibleName("ScheduleEndDateEdit");
-    m_endDateEdit->setFixedSize(175, 36);
-    m_endTimeEdit = new CTimeEdit(this);
-    //设置对象名称和辅助显示名称
-    m_endTimeEdit->setObjectName("ScheduleEndTimeEdit");
-    m_endTimeEdit->setAccessibleName("ScheduleEndTimeEdit");
-    m_endTimeEdit->setFixedSize(141, 36);
-    m_endDateEdit->setCalendarPopup(true);
-    m_endDateEdit->setDisplayFormat(m_dateFormat);
-
-    enQLabellayout->addWidget(m_endTimeLabel);
-    enQLabellayout->addWidget(m_endDateEdit);
-    enQLabellayout->addSpacing(8);
-
-    enQLabellayout->addWidget(m_endTimeEdit);
-    enQLabellayout->addStretch();
-    maintlayout->addLayout(enQLabellayout);
-
-    QHBoxLayout *rminQLabellayout = new QHBoxLayout;
-    rminQLabellayout->setSpacing(0);
-    rminQLabellayout->setMargin(0);
-    m_remindSetLabel = new QLabel();
-    DFontSizeManager::instance()->bind(m_remindSetLabel, DFontSizeManager::T6);
-    QFontMetrics fontWidth_remindSetLabel(mlabelF);
-    QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
-    m_remindSetLabel->setToolTip(tr("Remind Me"));
-    m_remindSetLabel->setText(str_remindSetLabel);
-    m_remindSetLabel->setFont(mlabelF);
-    m_remindSetLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_remindSetLabel->setFixedWidth(78);
-
-    m_rmindCombox = new DComboBox(this);
-    //设置对象名称和辅助显示名称
-    m_rmindCombox->setObjectName("RmindComboBox");
-    m_rmindCombox->setAccessibleName("RmindComboBox");
-    m_rmindCombox->setFixedSize(175, 36);
-    m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    rminQLabellayout->addWidget(m_remindSetLabel);
-    rminQLabellayout->addWidget(m_rmindCombox);
-    rminQLabellayout->addStretch();
-    maintlayout->addLayout(rminQLabellayout);
-
-    QHBoxLayout *repeatLabellayout = new QHBoxLayout;
-    repeatLabellayout->setSpacing(0);
-    repeatLabellayout->setMargin(0);
-    m_beginrepeatLabel = new QLabel();
-    m_beginrepeatLabel->setToolTip(tr("Repeat"));
-    DFontSizeManager::instance()->bind(m_beginrepeatLabel, DFontSizeManager::T6);
-    QFontMetrics fontWidth_beginRepeatLabel(mlabelF);
-    QString str_beginRepeatLabel = fontWidth_beginRepeatLabel.elidedText(tr("Repeat:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
-    m_beginrepeatLabel->setText(str_beginRepeatLabel);
-    m_beginrepeatLabel->setFont(mlabelF);
-    m_beginrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_beginrepeatLabel->setFixedWidth(78);
-    m_beginrepeatCombox = new DComboBox(this);
-    //设置对象名称和辅助显示名称
-    m_beginrepeatCombox->setObjectName("BeginRepeatComboBox");
-    m_beginrepeatCombox->setAccessibleName("BeginRepeatComboBox");
-    m_beginrepeatCombox->setFixedSize(175, 36);
-    m_beginrepeatCombox->addItem(tr("Never"));
-    m_beginrepeatCombox->addItem(tr("Daily"));
-    m_beginrepeatCombox->addItem(tr("Weekdays"));
-    m_beginrepeatCombox->addItem(tr("Weekly"));
-    m_beginrepeatCombox->addItem(tr("Monthly"));
-    m_beginrepeatCombox->addItem(tr("Yearly"));
-    repeatLabellayout->addWidget(m_beginrepeatLabel);
-    repeatLabellayout->addWidget(m_beginrepeatCombox);
-    repeatLabellayout->addStretch();
-    maintlayout->addLayout(repeatLabellayout);
-
-    QHBoxLayout *endrepeatLabellayout = new QHBoxLayout;
-    endrepeatLabellayout->setSpacing(0);
-    endrepeatLabellayout->setMargin(0);
-    m_endrepeatLabel = new QLabel();
-    DFontSizeManager::instance()->bind(m_endrepeatLabel, DFontSizeManager::T6);
-    QFontMetrics fontWidth_endrepeatLabel(mlabelF);
-    QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
-    m_endrepeatLabel->setToolTip(tr("End Repeat"));
-    m_endrepeatLabel->setText(str_endrepeatLabel);
-    m_endrepeatLabel->setFont(mlabelF);
-    m_endrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_endrepeatLabel->setFixedWidth(78);
-    m_endrepeatCombox = new DComboBox(this);
-    //设置对象名称和辅助显示名称
-    m_endrepeatCombox->setObjectName("EndRepeatComboBox");
-    m_endrepeatCombox->setAccessibleName("EndRepeatComboBox");
-    m_endrepeatCombox->setFixedSize(175, 36);
-    m_endrepeatCombox->addItem(tr("Never"));
-    m_endrepeatCombox->addItem(tr("After"));
-    m_endrepeatCombox->addItem(tr("On"));
-    endrepeatLabellayout->addWidget(m_endrepeatLabel);
-    endrepeatLabellayout->addWidget(m_endrepeatCombox);
-    endrepeatLabellayout->addSpacing(8);
-
-    QHBoxLayout *endrepeattimeslayout = new QHBoxLayout;
-    endrepeattimeslayout->setSpacing(0);
-    endrepeattimeslayout->setMargin(0);
-    endrepeattimeslayout->setContentsMargins(10, 0, 0, 0);
-    m_endrepeattimes = new DLineEdit(this);
-    //设置对象名称和辅助显示名称
-    m_endrepeattimes->setObjectName("EndRepeatTimeEidt");
-    m_endrepeattimes->setAccessibleName("EndRepeatTimeEidt");
-    m_endrepeattimes->setFixedSize(71, 36);
-    m_endrepeattimes->setText(QString::number(10));
-    m_endrepeattimes->setClearButtonEnabled(false);
-    QRegExp rx("^[1-9]\\d{0,2}$");
-    QValidator *validator = new QRegExpValidator(rx, this);
-    m_endrepeattimes->lineEdit()->setValidator(validator);
-    m_endrepeattimesLabel = new QLabel(tr("time(s)"));
-    m_endrepeattimesLabel->setFont(mlabelF);
-    m_endrepeattimesLabel->setFixedHeight(36);
-    endrepeattimeslayout->addWidget(m_endrepeattimes);
-    endrepeattimeslayout->addWidget(m_endrepeattimesLabel);
-    m_endrepeattimesWidget = new DWidget;
-    //设置对象名称和辅助显示名称
-    m_endrepeattimesWidget->setObjectName("EndRepeatTimeWidget");
-    m_endrepeattimesWidget->setAccessibleName("EndRepeatTimeWidget");
-    m_endrepeattimesWidget->setLayout(endrepeattimeslayout);
-    m_endrepeattimesWidget->setVisible(false);
-    endrepeatLabellayout->addWidget(m_endrepeattimesWidget);
-
-    m_endRepeatDate = new DDateEdit;
-    //设置对象名称和辅助显示名称
-    m_endRepeatDate->setObjectName("EndRepeatDateEdit");
-    m_endRepeatDate->setAccessibleName("EndRepeatDateEdit");
-    m_endRepeatDate->setCalendarPopup(true);
-    m_endRepeatDate->setFixedSize(141, 36);
-    m_endRepeatDate->setDate(QDate::currentDate());
-    m_endRepeatDate->setDisplayFormat(m_dateFormat);
-    m_endRepeatDate->setCurrentSectionIndex(2);
-    QFont enddatefont;
-    enddatefont.setWeight(QFont::Medium);
-    m_endRepeatDate->setFont(enddatefont);
-    endrepeatLabellayout->addWidget(m_endRepeatDate);
-    endrepeatLabellayout->addStretch();
-    m_endRepeatDate->setVisible(false);
-    m_endrepeatWidget = new DWidget;
-    //设置对象名称和辅助显示名称
-    m_endrepeatWidget->setObjectName("EndRepeatDateWidget");
-    m_endrepeatWidget->setAccessibleName("EndRepeatDateWidget");
-    m_endrepeatWidget->setLayout(endrepeatLabellayout);
-    maintlayout->addWidget(m_endrepeatWidget);
-    m_endrepeatWidget->setVisible(false);
-
-    for (int i = 0; i < buttonCount(); i++) {
-        QAbstractButton *button = getButton(i);
-        button->setFixedSize(189, 36);
+    //类型
+    {
+        QHBoxLayout *typelayout = new QHBoxLayout;
+        typelayout->setSpacing(0);
+        typelayout->setMargin(0);
+        m_typeLabel = new QLabel();
+        m_typeLabel->setToolTip(tr("Type"));
+        DFontSizeManager::instance()->bind(m_typeLabel, DFontSizeManager::T6);
+        QFontMetrics fontWidth_typeLabel(mlabelF);
+        QString str_typelabel = fontWidth_typeLabel.elidedText(tr("Type:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
+        m_typeLabel->setText(str_typelabel);
+        m_typeLabel->setFont(mlabelF);
+        m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_typeLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+        m_typeComBox = new DComboBox(this);
+        //设置对象名称和辅助显示名称
+        m_typeComBox->setObjectName("ScheduleTypeCombobox");
+        m_typeComBox->setAccessibleName("ScheduleTypeCombobox");
+        m_typeComBox->setFixedSize(319, item_Fixed_Height);
+        m_typeComBox->setIconSize(QSize(24, 24));
+        m_typeComBox->insertItem(0,
+                                 QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
+                                       .scaled(QSize(24, 24) * devicePixelRatioF())),
+                                 tr("Work"));
+        m_typeComBox->insertItem(1,
+                                 QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg")
+                                       .scaled(QSize(24, 24) * devicePixelRatioF())),
+                                 tr("Life"));
+        m_typeComBox->insertItem(
+            2,
+            QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg")
+                  .scaled(QSize(24, 24) * devicePixelRatioF())),
+            tr("Other"));
+        typelayout->addWidget(m_typeLabel);
+        typelayout->addWidget(m_typeComBox);
+        typelayout->addStretch();
+        maintlayout->addLayout(typelayout);
     }
+    //内容
+    {
+        QHBoxLayout *contentLabellayout = new QHBoxLayout;
+        contentLabellayout->setSpacing(0);
+        contentLabellayout->setMargin(0);
+
+        m_contentLabel = new QLabel(this);
+        DFontSizeManager::instance()->bind(m_contentLabel, DFontSizeManager::T6);
+        QFontMetrics fontWidth_contentlabel(mlabelF);
+        QString str_contentlabel = fontWidth_contentlabel.elidedText(tr("Description:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
+        m_contentLabel->setText(str_contentlabel);
+        m_contentLabel->setFont(mlabelF);
+        m_contentLabel->setToolTip(tr("Description"));
+        m_contentLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_contentLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+
+        m_textEdit = new DTextEdit(this);
+        //设置对象名称和辅助显示名称
+        m_textEdit->setObjectName("ScheduleTitleEdit");
+        m_textEdit->setAccessibleName("ScheduleTitleEdit");
+        m_textEdit->setFixedSize(319, 86);
+        m_textEdit->setAcceptRichText(false);
+
+        m_textEdit->setPlaceholderText(tr("New Event"));
+        //设置关联控件，用于QTextEdit控件捕获MouseButtonPress等事件
+        QWidget *mpContentWidget = m_textEdit->viewport();
+        //设置事件过滤器
+        m_textEdit->installEventFilter(this);
+        mpContentWidget->installEventFilter(this);
+
+        contentLabellayout->addWidget(m_contentLabel, 0, Qt::AlignTop);
+        contentLabellayout->addWidget(m_textEdit);
+        contentLabellayout->addStretch();
+        maintlayout->addLayout(contentLabellayout);
+    }
+
+    //全天
+    {
+        QHBoxLayout *alldayLabellayout = new QHBoxLayout;
+        alldayLabellayout->setSpacing(0);
+        alldayLabellayout->setMargin(0);
+        m_adllDayLabel = new QLabel(this);
+        m_adllDayLabel->setToolTip(tr("All Day"));
+        DFontSizeManager::instance()->bind(m_adllDayLabel, DFontSizeManager::T6);
+        QFontMetrics fontWidth_allDayLabel(mlabelF);
+        QString str_allDayLabel = fontWidth_allDayLabel.elidedText(tr("All Day:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
+        m_adllDayLabel->setText(str_allDayLabel);
+        m_adllDayLabel->setFont(mlabelF);
+        m_adllDayLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_adllDayLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+        m_allDayCheckbox = new DCheckBox(this);
+        //设置对象名称和辅助显示名称
+        m_allDayCheckbox->setObjectName("AllDayCheckBox");
+        m_allDayCheckbox->setAccessibleName("AllDayCheckBox");
+        alldayLabellayout->addWidget(m_adllDayLabel);
+        alldayLabellayout->addWidget(m_allDayCheckbox);
+        maintlayout->addLayout(alldayLabellayout);
+    }
+
+    //开始时间
+    {
+        QHBoxLayout *beginLabellayout = new QHBoxLayout;
+        beginLabellayout->setSpacing(0);
+        beginLabellayout->setMargin(0);
+        m_beginTimeLabel = new QLabel(this);
+        m_beginTimeLabel->setToolTip(tr("Starts"));
+        DFontSizeManager::instance()->bind(m_beginTimeLabel, DFontSizeManager::T6);
+        QFontMetrics fontWidth_beginTimeLabel(mlabelF);
+        QString str_beginTimeLabel = fontWidth_beginTimeLabel.elidedText(tr("Starts:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
+        m_beginTimeLabel->setText(str_beginTimeLabel);
+        m_beginTimeLabel->setFont(mlabelF);
+        m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_beginTimeLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+        m_beginDateEdit = new QDateEdit(this);
+        //设置对象名称和辅助显示名称
+        m_beginDateEdit->setObjectName("ScheduleBeginDateEdit");
+        m_beginDateEdit->setAccessibleName("ScheduleBeginDateEdit");
+        m_beginDateEdit->setFixedSize(175, item_Fixed_Height);
+
+        m_beginTimeEdit = new CTimeEdit(this);
+        //设置对象名称和辅助显示名称
+        m_beginTimeEdit->setObjectName("ScheduleBeginTimeEdit");
+        m_beginTimeEdit->setAccessibleName("ScheduleBeginTimeEdit");
+        m_beginTimeEdit->setFixedSize(141, item_Fixed_Height);
+        m_beginDateEdit->setCalendarPopup(true);
+        m_beginDateEdit->setDisplayFormat(m_dateFormat);
+        beginLabellayout->addWidget(m_beginTimeLabel);
+        beginLabellayout->addWidget(m_beginDateEdit);
+        beginLabellayout->addSpacing(8);
+        beginLabellayout->addWidget(m_beginTimeEdit);
+        beginLabellayout->addStretch();
+        maintlayout->addLayout(beginLabellayout);
+    }
+
+    //结束时间
+    {
+        QHBoxLayout *enQLabellayout = new QHBoxLayout;
+        enQLabellayout->setSpacing(0);
+        enQLabellayout->setMargin(0);
+        m_endTimeLabel = new QLabel(this);
+        m_endTimeLabel->setToolTip(tr("Ends"));
+        DFontSizeManager::instance()->bind(m_endTimeLabel, DFontSizeManager::T6);
+        QFontMetrics fontWidth_endTimeLabel(mlabelF);
+        QString str_endTimeLabel = fontWidth_endTimeLabel.elidedText(tr("Ends:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
+        m_endTimeLabel->setText(str_endTimeLabel);
+        m_endTimeLabel->setFont(mlabelF);
+        m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_endTimeLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+        m_endDateEdit = new QDateEdit(this);
+        //设置对象名称和辅助显示名称
+        m_endDateEdit->setObjectName("ScheduleEndDateEdit");
+        m_endDateEdit->setAccessibleName("ScheduleEndDateEdit");
+        m_endDateEdit->setFixedSize(175, item_Fixed_Height);
+        m_endTimeEdit = new CTimeEdit(this);
+        //设置对象名称和辅助显示名称
+        m_endTimeEdit->setObjectName("ScheduleEndTimeEdit");
+        m_endTimeEdit->setAccessibleName("ScheduleEndTimeEdit");
+        m_endTimeEdit->setFixedSize(141, item_Fixed_Height);
+        m_endDateEdit->setCalendarPopup(true);
+        m_endDateEdit->setDisplayFormat(m_dateFormat);
+
+        enQLabellayout->addWidget(m_endTimeLabel);
+        enQLabellayout->addWidget(m_endDateEdit);
+        enQLabellayout->addSpacing(8);
+
+        enQLabellayout->addWidget(m_endTimeEdit);
+        enQLabellayout->addStretch();
+        maintlayout->addLayout(enQLabellayout);
+    }
+
+    //提醒
+    {
+        QHBoxLayout *rminQLabellayout = new QHBoxLayout;
+        rminQLabellayout->setSpacing(0);
+        rminQLabellayout->setMargin(0);
+        m_remindSetLabel = new QLabel();
+        DFontSizeManager::instance()->bind(m_remindSetLabel, DFontSizeManager::T6);
+        QFontMetrics fontWidth_remindSetLabel(mlabelF);
+        QString str_remindSetLabel = fontWidth_remindSetLabel.elidedText(tr("Remind Me:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
+        m_remindSetLabel->setToolTip(tr("Remind Me"));
+        m_remindSetLabel->setText(str_remindSetLabel);
+        m_remindSetLabel->setFont(mlabelF);
+        m_remindSetLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_remindSetLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+
+        m_rmindCombox = new DComboBox(this);
+        //设置对象名称和辅助显示名称
+        m_rmindCombox->setObjectName("RmindComboBox");
+        m_rmindCombox->setAccessibleName("RmindComboBox");
+        m_rmindCombox->setFixedSize(175, item_Fixed_Height);
+        m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        rminQLabellayout->addWidget(m_remindSetLabel);
+        rminQLabellayout->addWidget(m_rmindCombox);
+        rminQLabellayout->addStretch();
+        maintlayout->addLayout(rminQLabellayout);
+    }
+
+    //重复
+    {
+        QHBoxLayout *repeatLabellayout = new QHBoxLayout;
+        repeatLabellayout->setSpacing(0);
+        repeatLabellayout->setMargin(0);
+        m_beginrepeatLabel = new QLabel();
+        m_beginrepeatLabel->setToolTip(tr("Repeat"));
+        DFontSizeManager::instance()->bind(m_beginrepeatLabel, DFontSizeManager::T6);
+        QFontMetrics fontWidth_beginRepeatLabel(mlabelF);
+        QString str_beginRepeatLabel = fontWidth_beginRepeatLabel.elidedText(tr("Repeat:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
+        m_beginrepeatLabel->setText(str_beginRepeatLabel);
+        m_beginrepeatLabel->setFont(mlabelF);
+        m_beginrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_beginrepeatLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+        m_beginrepeatCombox = new DComboBox(this);
+        //设置对象名称和辅助显示名称
+        m_beginrepeatCombox->setObjectName("BeginRepeatComboBox");
+        m_beginrepeatCombox->setAccessibleName("BeginRepeatComboBox");
+        m_beginrepeatCombox->setFixedSize(175, item_Fixed_Height);
+        m_beginrepeatCombox->addItem(tr("Never"));
+        m_beginrepeatCombox->addItem(tr("Daily"));
+        m_beginrepeatCombox->addItem(tr("Weekdays"));
+        m_beginrepeatCombox->addItem(tr("Weekly"));
+        m_beginrepeatCombox->addItem(tr("Monthly"));
+        m_beginrepeatCombox->addItem(tr("Yearly"));
+        repeatLabellayout->addWidget(m_beginrepeatLabel);
+        repeatLabellayout->addWidget(m_beginrepeatCombox);
+        repeatLabellayout->addStretch();
+        maintlayout->addLayout(repeatLabellayout);
+    }
+
+    //结束重复
+    {
+        QHBoxLayout *endrepeatLabellayout = new QHBoxLayout;
+        endrepeatLabellayout->setSpacing(0);
+        endrepeatLabellayout->setMargin(0);
+        m_endrepeatLabel = new QLabel();
+        DFontSizeManager::instance()->bind(m_endrepeatLabel, DFontSizeManager::T6);
+        QFontMetrics fontWidth_endrepeatLabel(mlabelF);
+        QString str_endrepeatLabel = fontWidth_endrepeatLabel.elidedText(tr("End Repeat:"), Qt::ElideRight, DDECalendar::NewScheduleLabelWidth);
+        m_endrepeatLabel->setToolTip(tr("End Repeat"));
+        m_endrepeatLabel->setText(str_endrepeatLabel);
+        m_endrepeatLabel->setFont(mlabelF);
+        m_endrepeatLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_endrepeatLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+        m_endrepeatCombox = new DComboBox(this);
+        //设置对象名称和辅助显示名称
+        m_endrepeatCombox->setObjectName("EndRepeatComboBox");
+        m_endrepeatCombox->setAccessibleName("EndRepeatComboBox");
+        m_endrepeatCombox->setFixedSize(175, item_Fixed_Height);
+        m_endrepeatCombox->addItem(tr("Never"));
+        m_endrepeatCombox->addItem(tr("After"));
+        m_endrepeatCombox->addItem(tr("On"));
+        endrepeatLabellayout->addWidget(m_endrepeatLabel);
+        endrepeatLabellayout->addWidget(m_endrepeatCombox);
+        endrepeatLabellayout->addSpacing(8);
+
+        QHBoxLayout *endrepeattimeslayout = new QHBoxLayout;
+        endrepeattimeslayout->setSpacing(0);
+        endrepeattimeslayout->setMargin(0);
+        endrepeattimeslayout->setContentsMargins(0, 0, 0, 0);
+        m_endrepeattimes = new DLineEdit(this);
+        //设置对象名称和辅助显示名称
+        m_endrepeattimes->setObjectName("EndRepeatTimeEidt");
+        m_endrepeattimes->setAccessibleName("EndRepeatTimeEidt");
+        m_endrepeattimes->setFixedSize(71, item_Fixed_Height);
+        m_endrepeattimes->setText(QString::number(10));
+        m_endrepeattimes->setClearButtonEnabled(false);
+        QRegExp rx("^[1-9]\\d{0,2}$");
+        QValidator *validator = new QRegExpValidator(rx, this);
+        m_endrepeattimes->lineEdit()->setValidator(validator);
+        m_endrepeattimesLabel = new QLabel(tr("time(s)"));
+        m_endrepeattimesLabel->setToolTip(tr("time(s)"));
+        m_endrepeattimesLabel->setFont(mlabelF);
+        m_endrepeattimesLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        m_endrepeattimesLabel->setFixedHeight(item_Fixed_Height);
+        endrepeattimeslayout->addWidget(m_endrepeattimes);
+        endrepeattimeslayout->addWidget(m_endrepeattimesLabel);
+        m_endrepeattimesWidget = new DWidget;
+        //设置对象名称和辅助显示名称
+        m_endrepeattimesWidget->setObjectName("EndRepeatTimeWidget");
+        m_endrepeattimesWidget->setAccessibleName("EndRepeatTimeWidget");
+        m_endrepeattimesWidget->setLayout(endrepeattimeslayout);
+        m_endrepeattimesWidget->setVisible(false);
+        m_endrepeattimesWidget->setFixedSize(141, item_Fixed_Height);
+        endrepeatLabellayout->addWidget(m_endrepeattimesWidget);
+
+        m_endRepeatDate = new DDateEdit;
+        //设置对象名称和辅助显示名称
+        m_endRepeatDate->setObjectName("EndRepeatDateEdit");
+        m_endRepeatDate->setAccessibleName("EndRepeatDateEdit");
+        m_endRepeatDate->setCalendarPopup(true);
+        m_endRepeatDate->setFixedSize(141, item_Fixed_Height);
+        m_endRepeatDate->setDate(QDate::currentDate());
+        m_endRepeatDate->setDisplayFormat(m_dateFormat);
+        m_endRepeatDate->setCurrentSectionIndex(2);
+        QFont enddatefont;
+        enddatefont.setWeight(QFont::Medium);
+        m_endRepeatDate->setFont(enddatefont);
+        endrepeatLabellayout->addWidget(m_endRepeatDate);
+        endrepeatLabellayout->addStretch();
+        m_endRepeatDate->setVisible(false);
+        m_endrepeatWidget = new DWidget;
+        //设置对象名称和辅助显示名称
+        m_endrepeatWidget->setObjectName("EndRepeatDateWidget");
+        m_endrepeatWidget->setAccessibleName("EndRepeatDateWidget");
+        m_endrepeatWidget->setLayout(endrepeatLabellayout);
+        m_endrepeatWidget->setFixedWidth(410);
+        maintlayout->addWidget(m_endrepeatWidget);
+        m_endrepeatWidget->setVisible(false);
+    }
+
     m_gwi = new DFrame(this);
     m_gwi->setFrameShape(QFrame::NoFrame);
     m_gwi->setLayout(maintlayout);
@@ -830,6 +866,10 @@ void CScheduleDlg::initUI()
     //添加按钮
     addButton(tr("Cancel", "button"));
     addButton(tr("Save", "button"), false, DDialog::ButtonRecommend);
+    for (int i = 0; i < buttonCount(); i++) {
+        QAbstractButton *button = getButton(i);
+        button->setFixedSize(189, 36);
+    }
 }
 
 void CScheduleDlg::initConnection()
