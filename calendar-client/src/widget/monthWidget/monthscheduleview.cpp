@@ -234,7 +234,8 @@ void CMonthScheduleView::computePos(int cNum, QDate bgeindate, QDate enddate, QP
     fw = static_cast<int>((ecol - bcol + 1) * ((m_width - m_leftMargin) / 7.0) - 11);
     fh = m_ItemHeight;
     int x = static_cast<int>(m_leftMargin + bcol * ((m_width - m_leftMargin) / 7.0) + 5);
-    int y = static_cast<int>(m_topMargin + ((m_height - m_topMargin - m_bottomMargin) * brow / 6.0 + 0.5) + 27 + (cNum - 1) * fh + 2.9);
+    //根据UI图调整item坐标
+    int y = static_cast<int>(m_topMargin + ((m_height - m_topMargin - m_bottomMargin)/ 6.0)* brow + 27 + (cNum - 1) * fh);
     pos = QPoint(x, y);
 }
 
