@@ -167,8 +167,8 @@ void Calendarmainwindow::slotCurrentDateUpdate()
  */
 void Calendarmainwindow::slotSetSearchFocus()
 {
-    //设置输入框获取tab焦点
-    m_searchEdit->lineEdit()->setFocus(Qt::TabFocusReason);
+    //设置输入框获取焦点
+    slotSearchEdit();
 }
 
 /**
