@@ -340,7 +340,7 @@
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="831"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Storno</translation>
+        <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="832"/>
@@ -395,7 +395,7 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="270"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Storno</translation>
+        <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="110"/>

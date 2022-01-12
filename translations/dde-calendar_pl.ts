@@ -354,7 +354,7 @@
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="60"/>
         <source>All occurrences of a repeating event must have the same all-day status.</source>
-        <translation>Wszystkie wystąpienia powtarzającego się wydarzenia muszą mieć ten sam stan całodniowy.</translation>
+        <translation>Wszystkie wystąpienia powtarzającego się wydarzenia muszą zawierać ten sam stan całodniowy.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="61"/>
