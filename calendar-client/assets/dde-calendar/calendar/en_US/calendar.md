@@ -9,7 +9,7 @@ Calendar is a useful tool to manage your personal life. By relating events with 
 
 ## Guide
 
-You can run, close or create a shortcut for Calendar by the following ways.
+You can run, close or create a desktop shortcut for Calendar by the following ways.
 
 ### Run Calender
 
@@ -80,7 +80,7 @@ Monthly view is defaulted and you can click to switch between different views.
    - Repeat: Never, Daily, Weekdays, Weekly, Monthly or Yearly.
    - End Repeat: Never, after n time(s) or on the date selected.
 
-   > ![notes](../common/notes.svg)Notes: Only when you enable the **Repeat** feature can **End Repeat** be displayed.
+   > ![notes](../common/notes.svg)Notes: Only when you enable the **Repeat** feature, can **End Repeat** be displayed.
 
 4.  Click **Save** to create the event.
 
@@ -133,7 +133,7 @@ Description of icons contained in the prompt information is listed as below.
 
 | Icon                   | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ |
-| Remind me later        | The reminder is set on the current day. After the first reminder is given, click **Remind me later** and you will be reminded 10 minutes later. The following reminder intervals will be increased by 5 minutes each time on the basis of the then reminder internal when you click **Remind me later**. |
+| Remind me later        | The reminder is set on the current day. After the first reminder is given, click **Remind me later** and you will be reminded 10 minutes later. The following reminder intervals will be increased by 5 minutes each time on the basis of the last reminder internal when you click **Remind me later**. |
 | Remind  me    tomorrow | The reminder is set to one day or two days ahead of the schedule. |
 | One day before start   | The reminder is set to one week ahead of the schedule.       |
 | Close                  | Turn off the prompt information.                             |
@@ -162,7 +162,7 @@ On the main menu, you can switch window themes, view help manual and get more in
 
 ### Theme
 
-The window theme provides three theme types, namely Light Theme, Dark Theme and System Theme.
+There are three window themes, namely Light Theme, Dark Theme and System Theme.
 
 1.  On the Calendar interface, click ![icon_menu](../common/icon_menu.svg).
 
