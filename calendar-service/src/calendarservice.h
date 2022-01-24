@@ -64,7 +64,21 @@ public Q_SLOTS:
     Q_SCRIPTABLE void UpdateType(const QString &typeInfo);
     Q_SCRIPTABLE QString QueryJobsWithLimit(const QString &params, qint32 maxNum);
     Q_SCRIPTABLE QString QueryJobsWithRule(const QString &params, const QString &rules);
+    //稍后提醒相关接口
+    Q_SCRIPTABLE void remindJob(const qint64 jobID);
 
+    /**
+     * @brief updateRemindJob
+     * 每隔10分钟更新提醒日程
+     */
+    Q_SCRIPTABLE void updateRemindJob();
+
+    /**
+     * @brief notifyMsgHanding      通知提示框交互处理
+     * @param jobID                 日程id
+     * @param operationNum          操作编号 ， 1：打开日历，2：稍后提醒 3： 明天提醒 4： 提前1天提醒
+     */
+    Q_SCRIPTABLE void notifyMsgHanding(const qint64 jobID,const qint32 operationNum);
 private:
     CalendarScheduler *m_scheduler;
     CalendarHuangLi *m_huangli;

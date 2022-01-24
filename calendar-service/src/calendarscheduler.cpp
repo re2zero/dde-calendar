@@ -30,7 +30,6 @@
 #include <QJsonArray>
 #include <QMutexLocker>
 #include <QThread>
-#include <QTimer>
 #include <QDebug>
 
 #define RECURENCELIMIT 3650 //递归次数限制
@@ -49,12 +48,7 @@ CalendarScheduler::CalendarScheduler(QObject *parent)
     threadremind = new QThread(this);
     m_jobremindmanager->moveToThread(threadremind);
     threadremind->start();
-    m_timeUpdateRemindJobs = new QTimer(this);
-    //轮询间隔十分钟
-    m_timeUpdateRemindJobs->setInterval(UPDATEREMINDJOBTIMEINTERVAL);
     initConnections();
-    UpdateRemindTimeout();
-    m_timeUpdateRemindJobs->start();
 }
 
 CalendarScheduler::~CalendarScheduler()
@@ -71,10 +65,11 @@ CalendarScheduler::~CalendarScheduler()
 
 void CalendarScheduler::initConnections()
 {
-    connect(m_timeUpdateRemindJobs, &QTimer::timeout, this, &CalendarScheduler::UpdateRemindTimeout);
     connect(this, &CalendarScheduler::NotifyUpdateRemindJobs, m_jobremindmanager, &JobRemindManager::UpdateRemindJobs);
     connect(m_jobremindmanager, &JobRemindManager::ModifyJobRemind, this, &CalendarScheduler::OnModifyJobRemind);
     connect(this, &CalendarScheduler::NotifyJobChange, m_jobremindmanager, &JobRemindManager::NotifyJobsChanged);
+    connect(this, &CalendarScheduler::signalRemindJob, m_jobremindmanager, &JobRemindManager::RemindJob);
+    connect(this,&CalendarScheduler::signalNotifyMsgHanding,m_jobremindmanager,&JobRemindManager::notifyMsgHanding);
 }
 
 QString CalendarScheduler::GetType(qint64 id)
@@ -294,6 +289,13 @@ QString CalendarScheduler::QueryJobsWithRule(const QString &params, const QStrin
     jobArrList = FilterDateJobsWrap(jobArrList, start, end);
     QString strJson = JobArrListToJsonStr(jobArrList);
     return strJson;
+}
+
+void CalendarScheduler::remindJob(qint64 id)
+{
+    //根据日程id获取日程信息和稍后提醒次数
+    Job job = m_database->getRemindJob(id);
+    emit signalRemindJob(job);
 }
 
 //检测当前环境是否为中文环境来决定是否开启获取节日日程开关
@@ -662,7 +664,6 @@ QString CalendarScheduler::JobArrListToJsonStr(const QList<stJobArr> &jobArrList
 
 QList<Job> CalendarScheduler::GetRemindJobs(const QDateTime &start, const QDateTime &end)
 {
-    m_timeUpdateRemindJobs->stop();
     QList<Job> jobs;
     jobs = m_database->GetJobsContainRemind();
     QDateTime endDate = start.addDays(8);
@@ -683,7 +684,6 @@ QList<Job> CalendarScheduler::GetRemindJobs(const QDateTime &start, const QDateT
             }
         }
     }
-    m_timeUpdateRemindJobs->start();
     return jobs;
 }
 
@@ -745,10 +745,12 @@ void CalendarScheduler::AfterJobChanged(const QList<qlonglong> &Ids)
 {
     //发送更新jobs信号
     emit JobsUpdated(Ids);
-    emit NotifyJobChange(Ids);
-    QDateTime tmstart = QDateTime::currentDateTime();
-    QDateTime tmend = tmstart.addMSecs(UPDATEREMINDJOBTIMEINTERVAL);
-    emit NotifyUpdateRemindJobs(GetRemindJobs(tmstart, tmend));
+    //获取需要停止的稍后提醒日程
+    QList<Job> jobs = m_database->getRemindJobs(Ids);
+    //删除相应的稍后提醒日程
+    m_database->deleteRemindJob(Ids);
+    emit NotifyJobChange(jobs);
+    UpdateRemindTimeout();
 }
 
 QList<stJobArr> CalendarScheduler::FilterDateJobsWrap(const QList<stJobArr> &arrList, const QDateTime &start, const QDateTime &end)
@@ -780,7 +782,38 @@ void CalendarScheduler::UpdateRemindTimeout()
 {
     QDateTime tmstart = QDateTime::currentDateTime();
     QDateTime tmend = tmstart.addMSecs(UPDATEREMINDJOBTIMEINTERVAL);
-    emit NotifyUpdateRemindJobs(GetRemindJobs(tmstart, tmend));
+    QList<Job> jobList = GetRemindJobs(tmstart, tmend);
+    //获取未提醒的日程信息
+    QList<Job> remindJobList = m_database->getValidRemindJob();
+    //清空数据库
+    //TODO 暂时不清空数据库，若清空会导致通知提醒交互对应的日程信息被删除
+//    m_database->clearRemindJobDatabase();
+
+    //将相应的信息存储到数据库
+    foreach(auto job ,jobList){
+       m_database->saveRemindJob(job);
+    }
+    jobList.append(remindJobList);
+    emit NotifyUpdateRemindJobs(jobList);
+}
+
+void CalendarScheduler::notifyMsgHanding(const qint64 jobID, const int operationNum)
+{
+    Job job = m_database->getRemindJob(jobID);
+    ++job.RemindLaterCount;
+    qint64  Minute = 60*1000;
+    qint64 Hour = Minute*60;
+    qint64 duration = (10 + ((job.RemindLaterCount - 1) * 5)) * Minute; //下一次提醒距离现在的时间间隔，单位毫秒
+    if (duration >= Hour) {
+        duration = Hour;
+    }
+    //更新提醒时间
+    QDateTime currentTime = QDateTime::currentDateTime();
+    //提醒时间为当前时间往后延duration
+    job.RemidTime  = currentTime.addMSecs(duration);
+    //更新数据
+    m_database->updateRemindJob(job);
+    emit signalNotifyMsgHanding(job,operationNum);
 }
 
 void CalendarScheduler::OnModifyJobRemind(const Job &job, const QString &remind)

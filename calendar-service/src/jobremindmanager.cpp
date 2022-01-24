@@ -22,6 +22,7 @@
 #include "src/utils.h"
 #include "dbus/dbusuiopenschedule.h"
 #include "dbus/dbusnotify.h"
+#include "csystemdtimercontrol.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -49,13 +50,6 @@ JobRemindManager::JobRemindManager(QObject *parent)
                                   "/com/deepin/dde/Notification",
                                   QDBusConnection::sessionBus(),
                                   this);
-    initConnections();
-}
-
-void JobRemindManager::initConnections()
-{
-    connect(m_dbusnotify, &DBusNotify::NotificationClosed, this, &JobRemindManager::NotifyClosed);
-    connect(m_dbusnotify, &DBusNotify::ActionInvoked, this, &JobRemindManager::ActionInvoked);
 }
 
 /**
@@ -85,18 +79,35 @@ void JobRemindManager::RemindJob(const Job &job)
             qint64 duration = 0;
             bool bmax = GetRemindLaterDuration(job.RemindLaterCount, duration);
             QStringList actionlist;
+            //default对应的是默认操作，也就是在点击空白区域会出发的操作
+            actionlist<< "default" << "";
+            QVariantMap hints;
+            QString cmd = QString("dbus-send --session --print-reply --dest=com.deepin.dataserver.Calendar "
+                          "/com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.notifyMsgHanding int64:%1").arg(job.ID);
+            hints["x-deepin-action-default"] = QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(1);
+            QString btnName("x-deepin-action-");
+            int operationNum =0;
             if (nDays >= 3 && job.RemindLaterCount == 1) {
                 actionlist << notifyActKeyRemind1DayBefore << tr("One day before start") << notifyActKeyClose << tr("Close", "button");
+                btnName += notifyActKeyRemind1DayBefore;
+                operationNum = 4;
             } else if ((nDays == 1 || nDays == 2) && bmax) {
                 actionlist << notifyActKeyRemindTomorrow << tr("Remind me tomorrow") << notifyActKeyClose << tr("Close", "button");
+                btnName += notifyActKeyRemindTomorrow;
+                operationNum =3;
             } else {
                 QDateTime tm = QDateTime::currentDateTime();
                 tm = tm.addMSecs(duration);
                 if (tm < job.Start) {
                     actionlist << notifyActKeyRemindLater << tr("Remind me later") << notifyActKeyClose << tr("Close", "button");
+                    btnName += notifyActKeyRemindLater;
+                    operationNum = 2;
                 } else {
                     actionlist << notifyActKeyClose << tr("Close", "button");
                 }
+            }
+            if(operationNum !=0){
+                hints[btnName] = QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(operationNum);
             }
             QString title(tr("Schedule Reminder"));
             QString body = GetRemindBody(job, QDateTime::currentDateTime());
@@ -105,18 +116,42 @@ void JobRemindManager::RemindJob(const Job &job)
             quint32 replaces_id = 0;
             qint32 timeout = 0;
             QList<QVariant> argumentList;
-            QVariantMap hits;
-            argumentList << appname << replaces_id << appicon << title << body << actionlist << hits << timeout;
+            argumentList << appname << replaces_id << appicon << title << body << actionlist << hints << timeout;
             qDebug() << __FUNCTION__ << QString("remind now: %1, title:"
                                                 " %2, body: %3")
                      .arg(QDateTime::currentDateTime().toString())
                      .arg(title)
                      .arg(body);
-            int notifyid = m_dbusnotify->Notify(argumentList);
-            m_notifymap.insert(notifyid, job);
+            m_dbusnotify->Notify(argumentList);
+
         } else {
             qDebug() << __FUNCTION__ << QString("remind job failed id=%1").arg(job.ID);
         }
+    }
+}
+
+//通知提示框交互处理
+void JobRemindManager::notifyMsgHanding(const Job &job, const int operationNum)
+{
+    switch (operationNum) {
+    case 1:
+        //打开日历
+        CallUiOpenSchedule(job);
+        break;
+    case 2:
+        //稍后提醒
+        RemindJobLater(job);
+        break;
+    case 3:
+        //明天提醒
+        SetJobRemindOneDayBefore(job);
+        break;
+    case 4:
+        //提前一天提醒
+        SetJobRemindTomorrow(job);
+        break;
+    default:
+        break;
     }
 }
 
@@ -211,13 +246,17 @@ QString JobRemindManager::GetRemindBody(const Job &job, const QDateTime &tm)
  */
 void JobRemindManager::RemindJobLater(const Job &job)
 {
-    qint64 duration = 0;
-    GetRemindLaterDuration(job.RemindLaterCount, duration);
-    QTimer *timer = new QTimer(this);
-    timer->setInterval(static_cast<int>(duration));
-    m_remindlatertimersmap.insert(timer, job);
-    BindToRemindWorkTimeOut(timer);
-    timer->start();
+    CSystemdTimerControl systemdTimerControl;
+    SystemDInfo info;
+    info.jobID = job.ID;
+    info.laterCount = job.RemindLaterCount;
+    info.triggerTimer = job.RemidTime;
+    //停止相应的任务
+    systemdTimerControl.stopSystemdTimerByJobInfo(info);
+    QVector<SystemDInfo> infoVector;
+    infoVector.append(info);
+    //开启新任务
+    systemdTimerControl.buildingConfiggure(infoVector);
 }
 
 /**
@@ -250,12 +289,6 @@ void JobRemindManager::SetJobRemindTomorrow(const Job &job)
         remind = "0;09:00";
     }
     emit ModifyJobRemind(job, remind);
-}
-
-//定时器绑定超时处理槽函数
-void JobRemindManager::BindToRemindWorkTimeOut(QTimer *timer)
-{
-    connect(timer, &QTimer::timeout, this, &JobRemindManager::RemindWorkTimeOut);
 }
 
 QString JobRemindManager::GetBodyTimePart(const QDateTime &nowtime, const QDateTime &jobtime, bool allday, bool isstart)
@@ -291,110 +324,44 @@ QString JobRemindManager::GetBodyTimePart(const QDateTime &nowtime, const QDateT
     return strmsg;
 }
 
-//所有内部定时器超时处理槽函数
-void JobRemindManager::RemindWorkTimeOut()
-{
-    qDebug() << __FUNCTION__;
-    QTimer *timer = qobject_cast<QTimer *>(sender());
-    auto it = m_timejobmap.find(timer);
-    if (it != m_timejobmap.end()) {
-        RemindJob(it.value());
-        it.key()->stop();
-        m_timejobmap.remove(it.key());
-        it.key()->deleteLater();
-    }
-
-    it = m_remindlatertimersmap.find(timer);
-    if (it != m_remindlatertimersmap.end()) {
-        RemindJob(it.value());
-        it.key()->stop();
-        m_remindlatertimersmap.remove(it.key());
-        it.key()->deleteLater();
-    }
-}
-
 /**
  * @brief  UpdateRemindJobs 提醒日程更新槽
  * @param jobs 待提醒日程集合
  */
 void JobRemindManager::UpdateRemindJobs(const QList<Job> &jobs)
 {
-    qDebug() << __FUNCTION__ << jobs.size();
-    auto it = m_timejobmap.begin();
-    for (; it != m_timejobmap.end(); ++it) {
-        it.key()->stop();
-        it.key()->deleteLater();
-        qDebug() << __FUNCTION__ << "******stop job id=" << it.value().ID;
+    CSystemdTimerControl systemdTimerControl;
+    //清空日程提醒
+    systemdTimerControl.stopAllRemindSystemdTimer();
+    systemdTimerControl.removeRemindFile();
+
+    QVector<SystemDInfo> infoVector{};
+    qInfo()<<jobs.size();
+    foreach(auto job ,jobs){
+        SystemDInfo info;
+        info.jobID = job.ID;
+        info.laterCount = job.RemindLaterCount;
+        info.triggerTimer = job.RemidTime;
+        infoVector.append(info);
     }
-    //清空容器
-    m_timejobmap.clear();
-    foreach (Job jb, jobs) {
-        //计算当前距离提醒任务还剩多长时间，单位：毫秒
-        qDebug() << __FUNCTION__ << "RemindTime=" << jb.RemidTime;
-        qint64 msec = QDateTime::currentDateTime().msecsTo(jb.RemidTime);
-        QTimer *timer = new QTimer(this);
-        timer->setInterval(static_cast<int>(msec));
-        m_timejobmap.insert(timer, jb);
-        BindToRemindWorkTimeOut(timer);
-        timer->start();
-        qDebug() << __FUNCTION__ << "******start job id=" << jb.ID << "timeout=" << msec;
-    }
+    systemdTimerControl.buildingConfiggure(infoVector);
 }
 
 //Job被改变删除稍后提醒队列里对应id的Job
-void JobRemindManager::NotifyJobsChanged(const QList<qlonglong> &Ids)
+void JobRemindManager::NotifyJobsChanged(const QList<Job> &jobs)
 {
-    foreach (qlonglong id, Ids) {
-        for (auto it = m_remindlatertimersmap.begin(); it != m_remindlatertimersmap.end(); ++it) {
-            if (it.value().ID == id) {
-                it.key()->stop();
-                it.key()->deleteLater();
-                m_remindlatertimersmap.remove(it.key());
-                break; //一定要跳出
-            }
-        }
-    }
-}
-
-/**
- * @brief  NotifyClosed 关闭消息提醒通知处理函数
- * @param id 该提醒对应的id
- * @param reason 提醒通知关闭的处理方式：关闭/稍后提醒/明天提醒等
- */
-void JobRemindManager::NotifyClosed(quint32 id, quint32 reason)
-{
-    qDebug() << __FUNCTION__ << QString("*********------id=%1 reason=%2").arg(id).arg(reason);
-
-    //点击消息提示框reason==2激活日历窗口，否则直接返回
-    if (static_cast<int>(reason) != notifyCloseReasonDismissedByUser) {
+    if(jobs.size() ==0)
         return;
-    }
-    auto it = m_notifymap.find(static_cast<int>(id));
-    if (it != m_notifymap.end()) {
-        Job job = it.value();
-        CallUiOpenSchedule(job);
-        m_notifymap.remove(it.key());
-    }
-}
+    CSystemdTimerControl systemdTimerControl;
 
-/**
- * @brief  ActionInvoked 关闭消息提醒通知动作响应处理函数
- * @param id 该提醒对应的id
- * @param actionKey 对应动作 close/later/tommorrow/one-day-before
- */
-void JobRemindManager::ActionInvoked(quint32 id, const QString &actionKey)
-{
-    qDebug() << __FUNCTION__ << QString("*********+++++++++id=%1 actionKey=%2").arg(id).arg(actionKey);
-    auto it = m_notifymap.find(static_cast<int>(id));
-    if (it != m_notifymap.end()) {
-        Job job = it.value();
-        if (0 == actionKey.compare(notifyActKeyRemindLater)) {
-            job.RemindLaterCount++;
-            RemindJobLater(job);
-        } else if (0 == actionKey.compare(notifyActKeyRemind1DayBefore)) {
-            SetJobRemindOneDayBefore(job);
-        } else if (0 == actionKey.compare(notifyActKeyRemindTomorrow)) {
-            SetJobRemindTomorrow(job);
-        }
+    QVector<SystemDInfo> infoVector{};
+    qInfo()<<jobs.size();
+    foreach(auto job ,jobs){
+        SystemDInfo info;
+        info.jobID = job.ID;
+        info.laterCount = job.RemindLaterCount;
+        info.triggerTimer = job.RemidTime;
+        infoVector.append(info);
     }
+    systemdTimerControl.stopSystemdTimerByJobInfos(infoVector);
 }

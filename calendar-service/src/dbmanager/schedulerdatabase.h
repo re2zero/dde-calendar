@@ -43,10 +43,47 @@ public:
     QList<Job> GetAllOriginJobs(const QString &key, const QString &strsort = QString());
     QList<Job> GetAllOriginJobsWithRule(const QString &key, const QString &rules);
     QList<Job> GetJobsContainRemind();
+    /**
+     * @brief saveRemindJob     存储提醒日程的相关信息
+     * @param job               提醒日程
+     */
+    void saveRemindJob(const Job & job);
 
+    /**
+     * @brief updateRemindJob       更新对应的稍后提醒日程
+     * @param job
+     */
+    void updateRemindJob(const Job & job);
+
+    void deleteRemindJob(const QList<qlonglong> &Ids);
+
+    QList<Job> getRemindJobs(const QList<qlonglong> &Ids);
+    /**
+     * @brief getValidRemindJob     获取未提醒的稍后提醒日程
+     * @return
+     */
+    QList<Job> getValidRemindJob();
+
+    /**
+     * @brief clearRemindJobDatabase    清空稍后提醒表
+     */
+    void clearRemindJobDatabase();
+
+    /**
+     * @brief getRemindJob
+     * @param id
+     * @return
+     */
+    Job getRemindJob(qint64 id);
 private:
     void CreateTables();
     void OpenSchedulerDatabase(const QString &dbpath);
+    /**
+     * @brief dateTimeToString      将时间转换为string格式
+     * @param dateTime
+     * @return
+     */
+    QString dateTimeToString(const QDateTime &dateTime);
 
 signals:
 

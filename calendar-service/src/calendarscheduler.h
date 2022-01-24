@@ -49,6 +49,15 @@ public:
     QString QueryJobsWithLimit(const QString &params, qint32 maxNum);
     QString QueryJobsWithRule(const QString &params, const QString &rules);
 
+
+    void remindJob(qint64 id);
+    /**
+     * @brief UpdateRemindTimeout
+     * 更新未来10分钟有提醒信息的日程
+     */
+    void UpdateRemindTimeout();
+
+     void notifyMsgHanding(const qint64 jobID,const int operationNum);
 private:
     void initConnections();
     static quint32 GetFestivalId(const QString &name);
@@ -69,18 +78,19 @@ private:
     QList<stJobArr> FilterDateJobsWrap(const QList<stJobArr> &arrList, const QDateTime &start, const QDateTime &end);
 
 signals:
-    void NotifyJobChange(const QList<qlonglong> &Ids);
+    void NotifyJobChange(const QList<Job> &jobs);
     void NotifyUpdateRemindJobs(const QList<Job> &jobs);
     void JobsUpdated(const QList<qlonglong> &Ids);
+    void signalRemindJob(const Job &job);
+    void signalNotifyMsgHanding(const Job &job,const int operationNum);
 
 private slots:
-    void UpdateRemindTimeout();
+
     void OnModifyJobRemind(const Job &job, const QString &remind);
 
 private:
     SchedulerDatabase *m_database;
     JobRemindManager *m_jobremindmanager;
-    QTimer *m_timeUpdateRemindJobs;
     bool m_festivalJobEnabled = false; //是否允许节假日日程
     static QMap<QString, quint32> m_festivalIdMap; //节日对应节日Id
     static quint32 nextFestivalJobId; //下一个节日id

@@ -36,35 +36,33 @@ public:
     explicit JobRemindManager(QObject *parent = nullptr);
 
 private:
-    void initConnections();
     void CallUiOpenSchedule(const Job &job);
-    void RemindJob(const Job &job);
+
     int GetRemindAdvanceDays(const QString &remind);
     bool GetRemindLaterDuration(int count, qint64 &duration);
     QString GetRemindBody(const Job &job, const QDateTime &tm);
     void RemindJobLater(const Job &job);
     void SetJobRemindOneDayBefore(const Job &job);
     void SetJobRemindTomorrow(const Job &job);
-    void BindToRemindWorkTimeOut(QTimer *timer);
     QString GetBodyTimePart(const QDateTime &nowtime, const QDateTime &jobtime, bool allday, bool isstart);
 
 signals:
     void ModifyJobRemind(const Job &job, const QString &remind);
 
 public slots:
-    void RemindWorkTimeOut();
     void UpdateRemindJobs(const QList<Job> &jobs);
-    void NotifyJobsChanged(const QList<qlonglong> &Ids);
-    //通知关闭响应（包含关闭，稍后提示等等）
-    void NotifyClosed(quint32 id, quint32 reason);
-    void ActionInvoked(quint32 id, const QString &actionKey);
+    void NotifyJobsChanged(const QList<Job> &jobs);
+    void RemindJob(const Job &job);
+    /**
+     * @brief notifyMsgHanding      通知提示框交互处理
+     * @param job                   日程信息
+     * @param operationNum          操作编号 1：打开日历，2：稍后提醒 3： 明天提醒 4： 提前1天提醒
+     */
+    void notifyMsgHanding(const Job &job,const int operationNum);
 
 private:
     DbusUIOpenSchedule *m_dbusuiopen; //打开日历前端dbus操作相关
     DBusNotify *m_dbusnotify; //日程提醒dbus操作相关
-    QMap<int, Job> m_notifymap; // key is notification id
-    QMap<QTimer *, Job> m_timejobmap; //key is timer*
-    QMap<QTimer *, Job> m_remindlatertimersmap; //稍后提醒队列,该队列的任务除非被关闭或者达到提醒次数，否则一直存在
 };
 
 #endif // JOBREMINDMANAGER_H

@@ -31,6 +31,7 @@
 #include <QSqlQuery>
 #include <QFile>
 #include <QDir>
+#include <QTimeZone>
 
 SchedulerDatabase::SchedulerDatabase(QObject *parent)
     : QObject(parent)
@@ -242,6 +243,171 @@ QList<Job> SchedulerDatabase::GetJobsContainRemind()
     return jobs;
 }
 
+//存储提醒日程的相关信息
+void SchedulerDatabase::saveRemindJob(const Job &job)
+{
+    QSqlQuery query(m_database);
+    QString strsql = "INSERT INTO jobsReminder (jobid, remindCount, remindTime)"
+                     "values (:jobid, :remindCount, :remindTime)";
+    query.prepare(strsql);
+    int i = 0;
+    query.bindValue(i, job.ID);
+    query.bindValue(++i, job.RemindLaterCount);
+    query.bindValue(++i, job.RemidTime);
+    if (query.exec()) {
+        if (query.isActive()) {
+            query.finish();
+        }
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+}
+
+void SchedulerDatabase::updateRemindJob(const Job &job)
+{
+    QString strsql = QString("UPDATE jobsReminder SET remindCount = '%1' WHERE jobid = %2").arg(job.RemindLaterCount).arg(job.ID);
+    QSqlQuery query(m_database);
+    if (query.exec(strsql)) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qWarning() << __FUNCTION__ << query.lastError();
+    }
+}
+
+void SchedulerDatabase::deleteRemindJob(const QList<qlonglong> &Ids)
+{
+    if (Ids.size() ==0)
+        return;
+    QStringList idList;
+    for (int i = 0 ; i < Ids.size();++i) {
+        idList.append(QString::number(Ids.at(i)));
+    }
+    QSqlQuery query(m_database);
+    QString sql = QString("delete from jobsReminder where  jobsReminder.jobid in ( %1)").arg(idList.join(","));
+    if (query.exec(sql)) {
+        if (query.isActive()) {
+            query.finish();
+        }
+    } else {
+        qWarning() << __FUNCTION__ << query.lastError();
+    }
+}
+
+QList<Job> SchedulerDatabase::getRemindJobs(const QList<qlonglong> &Ids)
+{
+    QList<Job> jobs{};
+    if (Ids.size() ==0)
+        return jobs;
+    QStringList idList;
+    for (int i = 0 ; i < Ids.size();++i) {
+        idList.append(QString::number(Ids.at(i)));
+    }
+    QSqlQuery query(m_database);
+    QString sql("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobs.start,"
+                "jobs.end,jobs.r_rule,jobs.remind,jobs.ignore,jobs.title_pinyin,jobsReminder.remindCount,"
+                "jobsReminder.remindTime from jobs left join jobsReminder on jobs.id = jobsReminder.jobid "
+                "where jobsReminder.jobid in  ");
+    sql +=QString(" (%1)").arg(idList.join(","));
+    if (query.exec(sql)) {
+        while (query.next()) {
+            Job jb;
+            jb.ID = query.value("id").toInt();
+            jb.Type = query.value("type").toInt();
+            jb.Title = query.value("title").toString();
+            jb.Description = query.value("description").toString();
+            jb.AllDay = query.value("all_day").toBool();
+            jb.Start = query.value("start").toDateTime();
+            jb.End = query.value("end").toDateTime();
+            jb.RRule = query.value("r_rule").toString();
+            jb.Remind = query.value("remind").toString();
+            jb.Ignore = query.value("ignore").toString();
+            jb.Title_pinyin = query.value("title_pinyin").toString();
+            jb.RemindLaterCount = query.value("remindCount").toInt();
+            jb.RemidTime = query.value("remindTime").toDateTime();
+            jobs.append(jb);
+        }
+    }
+    return jobs;
+}
+
+QList<Job> SchedulerDatabase::getValidRemindJob()
+{
+    QList<Job> jobs{};
+    QSqlQuery query(m_database);
+    QString sql("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobs.start,"
+                "jobs.end,jobs.r_rule,jobs.remind,jobs.ignore,jobs.title_pinyin,jobsReminder.remindCount,"
+                "jobsReminder.remindTime from jobs left join jobsReminder on jobs.id = jobsReminder.jobid "
+                "where jobsReminder.remindCount > 0 and jobsReminder.remindTime > ");
+    sql +=QString(" '%1'").arg(dateTimeToString(QDateTime::currentDateTime()));
+    if (query.exec(sql)) {
+        while (query.next()) {
+            Job jb;
+            jb.ID = query.value("id").toInt();
+            jb.Type = query.value("type").toInt();
+            jb.Title = query.value("title").toString();
+            jb.Description = query.value("description").toString();
+            jb.AllDay = query.value("all_day").toBool();
+            jb.Start = query.value("start").toDateTime();
+            jb.End = query.value("end").toDateTime();
+            jb.RRule = query.value("r_rule").toString();
+            jb.Remind = query.value("remind").toString();
+            jb.Ignore = query.value("ignore").toString();
+            jb.Title_pinyin = query.value("title_pinyin").toString();
+            jb.RemindLaterCount = query.value("remindCount").toInt();
+            jb.RemidTime = query.value("remindTime").toDateTime();
+            jobs.append(jb);
+        }
+    }
+    return jobs;
+}
+
+void SchedulerDatabase::clearRemindJobDatabase()
+{
+    QSqlQuery query(m_database);
+    QString sql("delete from jobsReminder");
+    if (query.exec(sql)) {
+        if (query.isActive()) {
+            query.finish();
+        }
+    } else {
+        qWarning() << __FUNCTION__ << query.lastError();
+    }
+
+}
+
+Job SchedulerDatabase::getRemindJob(qint64 id)
+{
+    QSqlQuery query(m_database);
+    QString sql("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,"
+                "jobs.start,jobs.end,jobs.r_rule,jobs.remind,jobs.ignore,jobs.title_pinyin,"
+                "jobsReminder.remindCount,jobsReminder.remindTime from jobs inner join jobsReminder "
+                "on jobs.id = jobsReminder.jobid   where jobsReminder.jobid = ");
+    sql += QString::number(id);
+    //id唯一因此此处最多只有一条数据
+    Job jb;
+    if (query.exec(sql) && query.next()) {
+        jb.ID = query.value("id").toInt();
+        jb.Type = query.value("type").toInt();
+        jb.Title = query.value("title").toString();
+        jb.Description = query.value("description").toString();
+        jb.AllDay = query.value("all_day").toBool();
+        jb.Start = query.value("start").toDateTime();
+        jb.End = query.value("end").toDateTime();
+        jb.RRule = query.value("r_rule").toString();
+        jb.Remind = query.value("remind").toString();
+        jb.Ignore = query.value("ignore").toString();
+        jb.Title_pinyin = query.value("title_pinyin").toString();
+        jb.RemindLaterCount = query.value("remindCount").toInt();
+        jb.RemidTime = query.value("remindTime").toDateTime();
+    } else {
+        qWarning() << query.lastError();
+    }
+    return jb;
+}
+
 /**
  * @brief  CreateTables 创建日程相关数据表（新用户创建）
  */
@@ -289,9 +455,25 @@ void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
         if (tables.size() < 1) {
             CreateTables();
         }
+        //如果不存在日程提醒相关的数据库则创建一个（因为需要将程序改成按需运行的程序，所以需要存储相关数据）
+        if(!tables.contains("jobsReminder")){
+            QSqlQuery query(m_database);
+            query.exec("CREATE TABLE \"jobsReminder\" (\"id\" integer primary key autoincrement,"
+                       "\"jobid\" integer,\"remindCount\" integer ,\"remindTime\" datetime) ");
+            if (query.isActive()) {
+                query.finish();
+            }
+            m_database.commit();
+        }
     } else {
         qDebug() << __FUNCTION__ << m_database.lastError();
     }
+}
+
+QString SchedulerDatabase::dateTimeToString(const QDateTime &dateTime)
+{
+    QTime _offsetTime = QTime(0, 0).addSecs(dateTime.timeZone().offsetFromUtc(dateTime));
+    return QString("%1.000+%2").arg(dateTime.toString("yyyy-MM-ddThh:mm:ss")).arg(_offsetTime.toString("hh:mm"));
 }
 
 // 执行删除日程的数据库SQL命令，以ID为依据
