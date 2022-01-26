@@ -35,7 +35,8 @@ public:
     {
         QList<QVariant> argumentList;
         argumentList << strjson;
-        callWithArgumentList(QDBus::Block, QStringLiteral("OpenSchedule"), argumentList);
+        //不需要返回结果，发送完直接结束
+        callWithArgumentList(QDBus::NoBlock, QStringLiteral("OpenSchedule"), argumentList);
     }
 };
 
