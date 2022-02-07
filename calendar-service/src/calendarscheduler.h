@@ -50,14 +50,21 @@ public:
     QString QueryJobsWithRule(const QString &params, const QString &rules);
 
 
-    void remindJob(qint64 id);
-    /**
-     * @brief UpdateRemindTimeout
-     * 更新未来10分钟有提醒信息的日程
-     */
-    void UpdateRemindTimeout();
+    void remindJob(const qint64 id,const qint64 recurID);
 
-     void notifyMsgHanding(const qint64 jobID,const int operationNum);
+    /**
+     * @brief UpdateRemindTimeout       更新未来10分钟有提醒信息的日程
+     * @param isClear                   是否清空日程定时任务数据库
+     */
+    void UpdateRemindTimeout(bool isClear);
+
+    /**
+     * @brief notifyMsgHanding      处理通知弹框信息
+     * @param jobID                 日程ID
+     * @param recurID               重复日程编号
+     * @param operationNum          操作编号
+     */
+    void notifyMsgHanding(const qint64 jobID,const qint64 recurID,const int operationNum);
 private:
     void initConnections();
     static quint32 GetFestivalId(const QString &name);
@@ -83,10 +90,12 @@ signals:
     void JobsUpdated(const QList<qlonglong> &Ids);
     void signalRemindJob(const Job &job);
     void signalNotifyMsgHanding(const Job &job,const int operationNum);
+    void signalCloseNotification(quint32 notifyID);
 
 private slots:
 
     void OnModifyJobRemind(const Job &job, const QString &remind);
+    void saveNotifyID(const Job &job,int notifyid);
 
 private:
     SchedulerDatabase *m_database;

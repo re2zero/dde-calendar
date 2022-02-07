@@ -4,7 +4,6 @@
 #include <QStandardPaths>
 #include <QProcess>
 #include <QFile>
-#include <QDebug>
 
 CSystemdTimerControl::CSystemdTimerControl(QObject *parent)
     : QObject(parent)
@@ -22,34 +21,27 @@ void CSystemdTimerControl::buildingConfiggure(const QVector<SystemDInfo> &infoVe
         return;
     QStringList fileNameList{};
     foreach(auto info ,infoVector){
-        fileNameList.append(QString("job-%1-%2").arg(info.jobID).arg(info.laterCount));
-        createService(fileNameList.last(),info.jobID);
+        fileNameList.append(QString("job-%1-%2-%3").arg(info.jobID).arg(info.recurID).arg(info.laterCount));
+        createService(fileNameList.last(),info);
         createTimer(fileNameList.last(),info.triggerTimer);
     }
-    systemdDaemonReload();
     startSystemdTimer(fileNameList);
-}
-
-void CSystemdTimerControl::systemdDaemonReload()
-{
-    execLinuxCommand("systemctl --user daemon-reload");
 }
 
 void CSystemdTimerControl::stopSystemdTimerByJobInfos(const QVector<SystemDInfo> &infoVector)
 {
     QStringList fileNameList;
     foreach(auto info ,infoVector){
-        fileNameList.append(QString("job-%1-%2").arg(info.jobID).arg(info.laterCount));
+        fileNameList.append(QString("job-%1-%2-%3").arg(info.jobID).arg(info.recurID).arg(info.laterCount));
     }
     stopSystemdTimer(fileNameList);
 }
-
 
 void CSystemdTimerControl::stopSystemdTimerByJobInfo(const SystemDInfo &info)
 {
     QStringList fileName;
     //停止刚刚提醒的稍后提醒，所以需要对提醒次数减一
-    fileName << QString("job-%1-%2").arg(info.jobID).arg(info.laterCount-1);
+    fileName << QString("job-%1-%2-%3").arg(info.jobID).arg(info.recurID).arg(info.laterCount-1);
     stopSystemdTimer(fileName);
 }
 
@@ -92,9 +84,18 @@ void CSystemdTimerControl::removeRemindFile()
     execLinuxCommand(cmd);
 }
 
+void CSystemdTimerControl::startCalendarServiceSystemdTimer()
+{
+    QFileInfo fileInfo(m_systemdPath+"timers.target.wants/com.dde.calendarserver.calendar.timer");
+    //如果没有设置定时任务则开启定时任务
+    if(!fileInfo.exists()){
+        execLinuxCommand("systemctl --user enable com.dde.calendarserver.calendar.timer");
+        execLinuxCommand("systemctl --user start com.dde.calendarserver.calendar.timer");
+    }
+}
+
 void CSystemdTimerControl::createPath()
 {
-    //
     m_systemdPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/.config/systemd/user/");
     QDir dir;
     //如果该路径不存在，则创建该文件夹
@@ -112,17 +113,18 @@ QString CSystemdTimerControl::execLinuxCommand(const QString &command)
     return strResult;
 }
 
-void CSystemdTimerControl::createService(const QString &name, qint64 jobID)
+void CSystemdTimerControl::createService(const QString &name, const SystemDInfo &info)
 {
     QString fileName;
-    QString remindCMD = "dbus-send --session --print-reply --dest=com.deepin.dataserver.Calendar "
-                        "/com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.remindJob int64:";
+    QString remindCMD = QString("dbus-send --session --print-reply --dest=com.deepin.dataserver.Calendar "
+                        "/com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.remindJob int64:%1 int64:%2")
+            .arg(info.jobID).arg(info.recurID);
     fileName = m_systemdPath + name+ ".service";
     QString content;
     content += "[Unit]\n";
     content += "Description = schedule reminder task.\n";
     content += "[Service]\n";
-    content += QString("ExecStart = /bin/bash -c \"%1%2\"\n").arg(remindCMD).arg(jobID);
+    content += QString("ExecStart = /bin/bash -c \"%1\"\n").arg(remindCMD);
     createFile(fileName,content);
 }
 
@@ -142,7 +144,6 @@ void CSystemdTimerControl::createTimer(const QString &name, const QDateTime &tri
 
 void CSystemdTimerControl::createFile(const QString &fileName, const QString &content)
 {
-    qInfo()<<"创建文件:"<<fileName<<QDateTime::currentDateTime();
     QFile file;
     file.setFileName(fileName);
     file.open(QIODevice::ReadWrite|QIODevice::Text);

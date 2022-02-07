@@ -47,6 +47,11 @@ public:
         }
         return notifyid;
     }
+    /**
+     * @brief closeNotification 根据通知ID关闭桌面顶部通知
+     * @param notifyID          通知ID
+     */
+    void closeNotification(quint32 notifyID);
 Q_SIGNALS: // SIGNALS
     Q_SCRIPTABLE void NotificationClosed(quint32 id, quint32 reason);
     Q_SCRIPTABLE void ActionInvoked(quint32 id, const QString &reason);

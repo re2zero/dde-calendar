@@ -37,7 +37,6 @@ static QString notifyActKeyRemindLater("later");
 static QString notifyActKeyRemind1DayBefore("one-day-before");
 static QString notifyActKeyRemindTomorrow("tomorrow");
 static QString layoutHM("15:04");
-static int notifyCloseReasonDismissedByUser = 2;
 
 JobRemindManager::JobRemindManager(QObject *parent)
     : QObject(parent)
@@ -50,6 +49,9 @@ JobRemindManager::JobRemindManager(QObject *parent)
                                   "/com/deepin/dde/Notification",
                                   QDBusConnection::sessionBus(),
                                   this);
+    //若没开启定时任务则开启定时任务
+    CSystemdTimerControl systemdTimer;
+    systemdTimer.startCalendarServiceSystemdTimer();
 }
 
 /**
@@ -83,7 +85,8 @@ void JobRemindManager::RemindJob(const Job &job)
             actionlist<< "default" << "";
             QVariantMap hints;
             QString cmd = QString("dbus-send --session --print-reply --dest=com.deepin.dataserver.Calendar "
-                          "/com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.notifyMsgHanding int64:%1").arg(job.ID);
+                          "/com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.notifyMsgHanding int64:%1 int64:%2 ")
+                    .arg(job.ID).arg(job.RecurID);
             hints["x-deepin-action-default"] = QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(1);
             QString btnName("x-deepin-action-");
             int operationNum =0;
@@ -109,6 +112,7 @@ void JobRemindManager::RemindJob(const Job &job)
             if(operationNum !=0){
                 hints[btnName] = QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(operationNum);
             }
+            hints["x-deepin-action-close"] = QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(5);
             QString title(tr("Schedule Reminder"));
             QString body = GetRemindBody(job, QDateTime::currentDateTime());
             QString appicon("dde-calendar");
@@ -122,8 +126,9 @@ void JobRemindManager::RemindJob(const Job &job)
                      .arg(QDateTime::currentDateTime().toString())
                      .arg(title)
                      .arg(body);
-            m_dbusnotify->Notify(argumentList);
-
+            int notifyid = m_dbusnotify->Notify(argumentList);
+            //将获取到的通知弹框id保存
+            emit saveNotifyID(job,notifyid);
         } else {
             qDebug() << __FUNCTION__ << QString("remind job failed id=%1").arg(job.ID);
         }
@@ -153,6 +158,11 @@ void JobRemindManager::notifyMsgHanding(const Job &job, const int operationNum)
     default:
         break;
     }
+}
+
+void JobRemindManager::closeNotification(quint32 notifyID)
+{
+    m_dbusnotify->closeNotification(notifyID);
 }
 
 /**
@@ -251,6 +261,7 @@ void JobRemindManager::RemindJobLater(const Job &job)
     info.jobID = job.ID;
     info.laterCount = job.RemindLaterCount;
     info.triggerTimer = job.RemidTime;
+    info.recurID = job.RecurID;
     //停止相应的任务
     systemdTimerControl.stopSystemdTimerByJobInfo(info);
     QVector<SystemDInfo> infoVector;
@@ -336,12 +347,12 @@ void JobRemindManager::UpdateRemindJobs(const QList<Job> &jobs)
     systemdTimerControl.removeRemindFile();
 
     QVector<SystemDInfo> infoVector{};
-    qInfo()<<jobs.size();
     foreach(auto job ,jobs){
         SystemDInfo info;
         info.jobID = job.ID;
         info.laterCount = job.RemindLaterCount;
         info.triggerTimer = job.RemidTime;
+        info.recurID = job.RecurID;
         infoVector.append(info);
     }
     systemdTimerControl.buildingConfiggure(infoVector);

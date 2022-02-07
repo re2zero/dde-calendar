@@ -51,13 +51,12 @@ public:
 
     /**
      * @brief updateRemindJob       更新对应的稍后提醒日程
-     * @param job
+     * @param job                   日程信息
      */
     void updateRemindJob(const Job & job);
 
-    void deleteRemindJob(const QList<qlonglong> &Ids);
+    void deleteRemindJobs(const QList<qlonglong> &Ids);
 
-    QList<Job> getRemindJobs(const QList<qlonglong> &Ids);
     /**
      * @brief getValidRemindJob     获取未提醒的稍后提醒日程
      * @return
@@ -74,7 +73,21 @@ public:
      * @param id
      * @return
      */
-    Job getRemindJob(qint64 id);
+    Job getRemindJob(const qint64 id,const qint64 recurid);
+
+    /**
+     * @brief getNotifyID       获取桌面顶部通知ID
+     * @param id                日程ID
+     * @return                  通知ID
+     */
+    QVector<int> getNotifyID(const qint64 id);
+
+    /**
+     * @brief updateNotifyID        更新桌面顶部通知ID
+     * @param jobID                 日程ID
+     * @param notifyid              通知ID
+     */
+    void updateNotifyID(const Job &job,int notifyid);
 private:
     void CreateTables();
     void OpenSchedulerDatabase(const QString &dbpath);

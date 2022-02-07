@@ -48,7 +48,7 @@ private:
 
 signals:
     void ModifyJobRemind(const Job &job, const QString &remind);
-
+    void saveNotifyID(const Job &job,int notifyid);
 public slots:
     void UpdateRemindJobs(const QList<Job> &jobs);
     void NotifyJobsChanged(const QList<Job> &jobs);
@@ -58,8 +58,13 @@ public slots:
      * @param job                   日程信息
      * @param operationNum          操作编号 1：打开日历，2：稍后提醒 3： 明天提醒 4： 提前1天提醒
      */
-    void notifyMsgHanding(const Job &job,const int operationNum);
+    void notifyMsgHanding(const Job &job, const int operationNum);
 
+    /**
+     * @brief closeNotification     关闭桌面顶部通知
+     * @param notifyID              通知ID
+     */
+    void closeNotification(quint32 notifyID);
 private:
     DbusUIOpenSchedule *m_dbusuiopen; //打开日历前端dbus操作相关
     DBusNotify *m_dbusnotify; //日程提醒dbus操作相关

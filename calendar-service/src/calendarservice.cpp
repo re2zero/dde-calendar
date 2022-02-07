@@ -213,24 +213,23 @@ QString CalendarService::QueryJobsWithRule(const QString &params, const QString 
     return scheduleInfo;
 }
 
-void CalendarService::remindJob(const qint64 jobID)
+void CalendarService::remindJob(const qint64 jobID, const qint64 recurID)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    m_scheduler->remindJob(jobID);
+    m_scheduler->remindJob(jobID,recurID);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
 }
 
-void CalendarService::updateRemindJob()
+void CalendarService::updateRemindJob(bool isClear)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    m_scheduler->UpdateRemindTimeout();
+    m_scheduler->UpdateRemindTimeout(isClear);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
 }
 
-void CalendarService::notifyMsgHanding(const qint64 jobID, const qint32 operationNum)
+void CalendarService::notifyMsgHanding(const qint64 jobID, const qint64 recurID, const qint32 operationNum)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    //
-    m_scheduler->notifyMsgHanding(jobID,operationNum);
+    m_scheduler->notifyMsgHanding(jobID,recurID,operationNum);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
 }

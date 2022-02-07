@@ -7,9 +7,10 @@
 
 
 struct SystemDInfo{
-    qint64      jobID;              //日程id
-    qint32      laterCount;         //稍后提醒次数
-    QDateTime   triggerTimer;       //触发时间
+    qint64      jobID = 0;              //日程id
+    qint64      laterCount = 0;         //稍后提醒次数
+    qint64      recurID = 0 ;           //重复日程编号
+    QDateTime   triggerTimer;           //触发时间
 };
 
 /**
@@ -28,12 +29,6 @@ public:
      * @param infoVector
      */
     void buildingConfiggure(const QVector<SystemDInfo> &infoVector);
-
-    /**
-     * @brief systemdDaemonReload
-     * 重新加载配置文件
-     */
-    void systemdDaemonReload();
 
     /**
      * @brief stopSystemdTimerByJobInfos        根据日程信息集，停止相应的任务
@@ -66,6 +61,11 @@ public:
      * @brief removeRemindFile      移除日程定时任务相关文件
      */
     void removeRemindFile();
+
+    /**
+     * @brief startCalendarServiceSystemdTimer      开启日程后端定时器
+     */
+    void startCalendarServiceSystemdTimer();
 private:
     /**
      * @brief removeFile        移除.service和.timer文件
@@ -89,7 +89,7 @@ private:
      * @brief createService
      * 创建 .service文件
      */
-    void createService(const QString &name ,qint64 jobID);
+    void createService(const QString &name ,const SystemDInfo &info);
     /**
      * @brief createTimer
      * 创建 .timer文件

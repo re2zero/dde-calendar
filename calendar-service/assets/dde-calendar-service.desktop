@@ -1,5 +1,5 @@
 [Desktop Entry]
-Exec=/usr/lib/deepin-daemon/dde-calendar-service
+Exec=/bin/bash -c "dbus-send --session --print-reply --dest=com.deepin.dataserver.Calendar /com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.updateRemindJob boolean:true"
 Name=dde-calendar-service
 NoDisplay=true
 Terminal=false
