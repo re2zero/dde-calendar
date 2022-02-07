@@ -95,7 +95,8 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs()
     QList<Job> jobs;
     QSqlQuery query(m_database);
 
-    QString strsql = QString("select * from jobs ");
+    QString strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
+                             " from jobs ");
     if (query.exec(strsql)) {
         while (query.next()) {
             Job jb;
@@ -136,13 +137,16 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString
     if (psearch->CanQueryByPinyin(strKey)) {
         //可以按照拼音查询
         QString pinyin = psearch->CreatePinyinQuery(strKey.toLower());
-        strsql = QString("select * from jobs where instr(UPPER(title), UPPER('%1')) OR title_pinyin LIKE '%2'").arg(key).arg(pinyin);
+        strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
+                         " from jobs where instr(UPPER(title), UPPER('%1')) OR title_pinyin LIKE '%2'").arg(key).arg(pinyin);
     } else if (!key.isEmpty()) {
         //按照key查询
-        strsql = QString("select * from jobs where instr(UPPER(title), UPPER('%1'))").arg(key);
+        strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
+                         " from jobs where instr(UPPER(title), UPPER('%1'))").arg(key);
     } else {
         //如果没有key，则搜索所有
-        strsql = QString("select * from jobs ");
+        strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
+                         " from jobs ");
     }
 
     //排序条件不为空
@@ -201,7 +205,8 @@ QList<Job> SchedulerDatabase::GetAllOriginJobsWithRule(const QString &key, const
         strsql = QString("select id from jobs ");
     }
 
-    strsql = QString("select * from jobs where id in(%1) and %2").arg(strsql).arg(strrule);
+    strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
+                     " from jobs where id in(%1) and %2").arg(strsql).arg(strrule);
 
     if (query.exec(strsql)) {
         while (query.next()) {
@@ -234,7 +239,8 @@ QList<Job> SchedulerDatabase::GetJobsContainRemind()
 {
     QList<Job> jobs;
     QSqlQuery query(m_database);
-    QString strSql("select * from jobs where remind is not null and remind !=' ' ");
+    QString strSql("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
+                   "from jobs where remind is not null and remind !=' ' ");
     if (query.exec(strSql)) {
         while (query.next()) {
             Job jb;
