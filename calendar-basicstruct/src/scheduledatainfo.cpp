@@ -523,8 +523,8 @@ QMap<QDate, QVector<ScheduleDataInfo> > ScheduleDataInfo::StrJsonToRangeInfo(con
 bool ScheduleDataInfo::operator ==(const ScheduleDataInfo &info) const
 {
     if (info.getType() == 4) {
-        return this->getID() == info.getID() && this->getRecurID() == info.getRecurID() &&
-               this->getTitleName() == info.getTitleName() &&
+        //由于后端每次启动设置的节日日程id不一定相同，所以不比较日程id
+        return this->getTitleName() == info.getTitleName() &&
                this->getBeginDateTime() == info.getBeginDateTime();
     } else {
         return this->getID() == info.getID() && this->getRecurID() == info.getRecurID() &&
