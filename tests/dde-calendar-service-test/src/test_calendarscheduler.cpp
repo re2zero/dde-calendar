@@ -265,7 +265,14 @@ TEST_F(ut_calendarscheduler, GetJobs)
     ASSERT_GT(infoMap.size(), 0);
     EXPECT_EQ(infoMap.begin().key(), currentTime.date());
     ASSERT_GT(infoMap.begin().value().size(), 0);
-    EXPECT_EQ(infoMap.begin().value().at(0).getTitleName(), info.getTitleName());
+    //一天中可能有多个日程
+    int num = 0;
+    foreach(auto job , infoMap.begin().value()){
+        if(job.getTitleName() == info.getTitleName()){
+            ++num;
+        }
+    }
+    EXPECT_EQ(num,1);
 }
 
 //QString QueryJobs(const QString &params);
@@ -289,7 +296,14 @@ TEST_F(ut_calendarscheduler, QueryJobs)
     ASSERT_GT(infoMap.size(), 0);
     EXPECT_EQ(infoMap.begin().key(), currentTime.date());
     ASSERT_GT(infoMap.begin().value().size(), 0);
-    EXPECT_EQ(infoMap.begin().value().at(0).getTitleName(), info.getTitleName());
+    //一天中可能有多个日程
+    int num = 0;
+    foreach(auto job , infoMap.begin().value()){
+        if(job.getTitleName() == info.getTitleName()){
+            ++num;
+        }
+    }
+    EXPECT_EQ(num,1);
 }
 
 //QString QueryJobsWithLimit(const QString &params, qint32 maxNum);
