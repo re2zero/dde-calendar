@@ -120,6 +120,7 @@ void CalendarScheduler::DeleteJob(qint64 id)
     }
     QList<qlonglong> ids;
     ids.append(id);
+    m_database->deleteRemindJobs(ids);
     AfterJobChanged(ids);
 }
 
@@ -137,57 +138,11 @@ QString CalendarScheduler::GetJob(qint64 id)
 // 给定日程Json信息，解析为job类型传入数据库
 qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
 {
-    // 现将给的Json信息转为Job类型
-    QJsonParseError json_error;
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(jobInfo.toLocal8Bit(), &json_error));
-
-    if (json_error.error != QJsonParseError::NoError) {
-        return false;
-    }
-
-    QJsonObject rootObj = jsonDoc.object();
-    Job job;
-
-    if (rootObj.contains("ID")) {
-        job.ID = rootObj.value("ID").toInt();
-    }
-    if (rootObj.contains("Type")) {
-        job.Type = rootObj.value("Type").toInt();
-    }
-    if (rootObj.contains("Title")) {
-        job.Title = rootObj.value("Title").toString();
-    }
-    if (rootObj.contains("Description")) {
-        job.Description = rootObj.value("Description").toString();
-    }
-    if (rootObj.contains("AllDay")) {
-        job.AllDay = rootObj.value("AllDay").toBool();
-    }
-    if (rootObj.contains("Start")) {
-        // 此处时间转换为与client同样式
-        job.Start = QDateTime::fromString(rootObj.value("Start").toString(), Qt::ISODate);
-    }
-    if (rootObj.contains("End")) {
-        job.End = QDateTime::fromString(rootObj.value("End").toString(), Qt::ISODate);
-    }
-    if (rootObj.contains("RRule")) {
-        job.RRule = rootObj.value("RRule").toString();
-    }
-    if (rootObj.contains("Remind")) {
-        job.Remind = rootObj.value("Remind").toString();
-    }
-    if (rootObj.contains("Ignore")) {
-        QJsonArray subArray = rootObj.value("Ignore").toArray();
-        QJsonDocument doc;
-        doc.setArray(subArray);
-        job.Ignore = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
-    }
-    //添加title拼音
-    job.Title_pinyin = pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString());
-
+    Job job = josnStringToJob(jobInfo);
     qint64 id = m_database->CreateJob(job);
     QList<qlonglong> ids;
     ids.append(id);
+    m_database->deleteRemindJobs(ids);
     AfterJobChanged(ids);
     return id;
 }
@@ -195,7 +150,73 @@ qint64 CalendarScheduler::CreateJob(const QString &jobInfo)
 // 可将要改动的日程信息直接传入数据库操作层中
 void CalendarScheduler::UpdateJob(const QString &jobInfo)
 {
+    Job oldJob = josnStringToJob(jobInfo);
+    oldJob = josnStringToJob(m_database->GetJob(oldJob.ID));
     qint64 id = m_database->UpdateJob(jobInfo);
+    //获取修改后的日程信息
+    QString newJobInfo = m_database->GetJob(id);
+    Job job = josnStringToJob(newJobInfo);
+    //是否删除日程提醒相关信息
+    bool isDeleteRemindData = true;
+    //获取该日程的提醒信息
+    QList<Job> remindJobs = m_database->getRemindJob(job.ID);
+
+    struct JobIn {
+        qint64 jobID;
+        qint64 recurID;
+    };
+
+    QVector<JobIn> jobInVector;
+
+    //如果重复规则或忽略列表不一样
+    if ((oldJob.RRule != job.RRule || oldJob.Ignore != job.Ignore)) {
+        isDeleteRemindData = false;
+
+        QDateTime endDateTime = job.Start;
+        for (int i = remindJobs.size() - 1 ; i >= 0; --i) {
+            //获取结束时间
+            endDateTime = endDateTime > remindJobs.at(i).Start ? endDateTime : remindJobs.at(i).Start;
+        }
+        if (remindJobs.size() > 0) {
+            //根据起止时间和重复规则，获取生成的日程开始时间
+            QList<stJobTime> jobtimelist = GetJobTimesBetween(job.Start, endDateTime, job);
+            QVector<QDateTime> jobStartDateTime;
+            foreach (auto jobTime, jobtimelist) {
+                jobStartDateTime.append(jobTime.start);
+            }
+            foreach (auto rjob, remindJobs) {
+                //如果生成的开始时间列表内不包含提醒日程的开始时间，则表示该重复日程被删除
+                if (!jobStartDateTime.contains(rjob.Start)) {
+                    int notifyID = m_database->getNotifyID(rjob.ID, rjob.RecurID);
+                    JobIn jobin{ rjob.ID , rjob.RecurID };
+                    //如果改日程已经提醒，且通知弹框未操作
+                    if (notifyID >= 0) {
+                        emit signalCloseNotification(static_cast<quint32>(notifyID));
+                        isDeleteRemindData = true;
+                        jobInVector.append(jobin);
+                    } else if (rjob.Start > QDateTime::currentDateTime()) { //删除没有触发的提醒日程
+                        isDeleteRemindData = true;
+                        jobInVector.append(jobin);
+                    }
+                }
+            }
+        }
+    } else if( oldJob.RRule == job.RRule && job.RRule.isEmpty()){ //不是重复日程
+        int notifyID = m_database->getNotifyID(job.ID, job.RecurID);
+        //如果日程被提醒，且通知弹框未操作,
+        if ( notifyID > 0 ) {
+            isDeleteRemindData = false;
+        }
+        JobIn jobin{ job.ID, job.RecurID};
+        jobInVector.append(jobin);
+    }
+    //是否删除对应的提醒日程数据
+    if(isDeleteRemindData){
+        foreach (auto jobin, jobInVector) {
+            m_database->deleteRemindJobs(jobin.jobID,jobin.recurID);
+        }
+    }
+
     if (-1 != id) {
         QList<qlonglong> ids;
         ids.append(id);
@@ -407,7 +428,6 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
         int dayofweek = jobstart.date().dayOfWeek(); //判断是周几
         if (dayofweek > Qt::Friday && options.rpeat == RepeatType::RepeatWorkDay) //周末并且options为工作日重复
             jobstart.setDate(jobstart.date().addDays(7 - dayofweek + 1)); //在周末设置工作日重复日程，需要重新设置日程开始时间
-
         QDateTime next = jobstart; //next为下一新建日程起始日期
         //只有当下一个新建日程的起始日期小于查询日期的结束日期才会有交集，否则没有意义
         //注意一定要判断是否有交集，因为Job的创建日期可能远远早于查询日期，查询到的是多次重复后与查询时间有交集的
@@ -441,7 +461,7 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             next = GetNextJobStartTimeByRule(options, copystart);
             //判断next是否有效,时间大于RRule的until
             //判断next是否大于查询的截止时间,这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
-            if ((options.type == RepeatOverUntil && next >= options.overdate)
+            if ((options.type == RepeatOverUntil && next.date() >= options.overdate.date())
                     || next.date() > end.date()) {
                 break;
             }
@@ -752,8 +772,6 @@ void CalendarScheduler::AfterJobChanged(const QList<qlonglong> &Ids)
 {
     //发送更新jobs信号
     emit JobsUpdated(Ids);
-    //删除相应的稍后提醒日程
-    m_database->deleteRemindJobs(Ids);
     //停止所有提醒任务，获取未来10分钟内有提醒的日程，更新提醒任务
     UpdateRemindTimeout(false);
 }
@@ -783,6 +801,61 @@ QList<stJobArr> CalendarScheduler::FilterDateJobsWrap(const QList<stJobArr> &arr
     return wraplist;
 }
 
+Job CalendarScheduler::josnStringToJob(const QString &str)
+{
+    // 现将给的Json信息转为Job类型
+
+    Job job;
+    QJsonParseError json_error;
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(str.toLocal8Bit(), &json_error));
+
+    if (json_error.error != QJsonParseError::NoError) {
+        return job;
+    }
+
+    QJsonObject rootObj = jsonDoc.object();
+
+
+    if (rootObj.contains("ID")) {
+        job.ID = rootObj.value("ID").toInt();
+    }
+    if (rootObj.contains("Type")) {
+        job.Type = rootObj.value("Type").toInt();
+    }
+    if (rootObj.contains("Title")) {
+        job.Title = rootObj.value("Title").toString();
+    }
+    if (rootObj.contains("Description")) {
+        job.Description = rootObj.value("Description").toString();
+    }
+    if (rootObj.contains("AllDay")) {
+        job.AllDay = rootObj.value("AllDay").toBool();
+    }
+    if (rootObj.contains("Start")) {
+        // 此处时间转换为与client同样式
+        job.Start = QDateTime::fromString(rootObj.value("Start").toString(), Qt::ISODate);
+    }
+    if (rootObj.contains("End")) {
+        job.End = QDateTime::fromString(rootObj.value("End").toString(), Qt::ISODate);
+    }
+    if (rootObj.contains("RRule")) {
+        job.RRule = rootObj.value("RRule").toString();
+    }
+    if (rootObj.contains("Remind")) {
+        job.Remind = rootObj.value("Remind").toString();
+    }
+    if (rootObj.contains("Ignore")) {
+        QJsonArray subArray = rootObj.value("Ignore").toArray();
+        QJsonDocument doc;
+        doc.setArray(subArray);
+        job.Ignore = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    }
+    //添加title拼音
+    job.Title_pinyin = pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString());
+    return job;
+}
+
+
 void CalendarScheduler::UpdateRemindTimeout(bool isClear)
 {
     QDateTime tmstart = QDateTime::currentDateTime();
@@ -795,9 +868,9 @@ void CalendarScheduler::UpdateRemindTimeout(bool isClear)
         m_database->clearRemindJobDatabase();
         jobList.append(remindJobList);
         foreach(auto job ,jobList){
-           m_database->saveRemindJob(job);
+            m_database->saveRemindJob(job);
         }
-    }else {        
+    }else {
         foreach(auto job ,jobList){
             Job rJob = m_database->getRemindJob(job.ID,job.RecurID);
             //如果提醒日程数据库中不存在此日程相关信息，插入相关信息
@@ -812,7 +885,7 @@ void CalendarScheduler::UpdateRemindTimeout(bool isClear)
 
 void CalendarScheduler::notifyMsgHanding(const qint64 jobID, const qint64 recurID, const int operationNum)
 {
-    Job job = m_database->getRemindJob(jobID,recurID);
+    Job job = m_database->getRemindJob(jobID, recurID);
     //如果相应的日程被删除,则不做处理
     if(job.ID == 0) {
         return;
@@ -871,13 +944,13 @@ void CalendarScheduler::OnModifyJobRemind(const Job &job, const QString &remind)
         newjob.ID = m_database->CreateJob(newjob);
         if (bsuccess && -1 != newjob.ID) {
             ids << job.ID << newjob.ID;
+            m_database->deleteRemindJobs(ids);
             AfterJobChanged(ids);
-            emit JobsUpdated(ids);
         }
     } else {
         ids.append(newjob.ID);
+        m_database->deleteRemindJobs(ids);
         AfterJobChanged(ids);
-        emit JobsUpdated(ids);
     }
 }
 

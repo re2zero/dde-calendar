@@ -84,6 +84,7 @@ private:
     void AfterJobChanged(const QList<qlonglong> &Ids);
     QList<stJobArr> FilterDateJobsWrap(const QList<stJobArr> &arrList, const QDateTime &start, const QDateTime &end);
 
+    Job josnStringToJob(const QString &str);
 signals:
     void NotifyJobChange(const QList<Job> &jobs);
     void NotifyUpdateRemindJobs(const QList<Job> &jobs);

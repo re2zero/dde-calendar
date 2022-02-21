@@ -55,7 +55,18 @@ public:
      */
     void updateRemindJob(const Job & job);
 
+    /**
+     * @brief deleteRemindJobs      根据日程id删除提醒日程信息
+     * @param Ids                   日程id集
+     */
     void deleteRemindJobs(const QList<qlonglong> &Ids);
+
+    /**
+     * @brief deleteRemindJobs      根据日程id和重复id删除提醒日程信息
+     * @param jobID                 日程id
+     * @param recurid               重复id
+     */
+    void deleteRemindJobs(const qlonglong &jobID,const qint64 recurid);
 
     /**
      * @brief getValidRemindJob     获取未提醒的稍后提醒日程
@@ -69,11 +80,19 @@ public:
     void clearRemindJobDatabase();
 
     /**
-     * @brief getRemindJob
-     * @param id
+     * @brief getRemindJob      根据日程id和重复id获取对应的提醒日程
+     * @param id                日程id
+     * @param recurid           重复id
      * @return
      */
     Job getRemindJob(const qint64 id,const qint64 recurid);
+
+    /**
+     * @brief getRemindJob      根据日程id获取对应的提醒日程
+     * @param id                日程id
+     * @return
+     */
+    QList<Job> getRemindJob(const qint64 id);
 
     /**
      * @brief getNotifyID       获取桌面顶部通知ID
@@ -81,6 +100,14 @@ public:
      * @return                  通知ID
      */
     QVector<int> getNotifyID(const qint64 id);
+
+    /**
+     * @brief getNotifyID   获取桌面顶部通知ID
+     * @param jobID         日程ID
+     * @param recurid       重复id
+     * @return
+     */
+    int getNotifyID(const qint64 jobID,const qint64 recurid);
 
     /**
      * @brief updateNotifyID        更新桌面顶部通知ID
