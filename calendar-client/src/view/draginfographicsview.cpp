@@ -64,7 +64,6 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     connect(m_createAction, &QAction::triggered, this,
             static_cast<void (DragInfoGraphicsView::*)()>(&DragInfoGraphicsView::slotCreate));
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     this->setViewportMargins(0, 0, 0, 0);
     setMouseTracking(true);
     viewport()->setMouseTracking(true);
