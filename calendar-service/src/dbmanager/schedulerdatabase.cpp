@@ -292,7 +292,7 @@ void SchedulerDatabase::saveRemindJob(const Job &job)
 void SchedulerDatabase::updateRemindJob(const Job &job)
 {
     //点击稍后提醒后，更新信息并设置通知提醒为-1
-    QString strsql = QString("UPDATE jobsReminder SET remindCount = '%1' , remindTime = '%2' WHERE jobid = %3 and recurid = %4 and notifyid = -1")
+    QString strsql = QString("UPDATE jobsReminder SET remindCount = '%1' , remindTime = '%2', notifyid = -1 WHERE jobid = %3 and recurid = %4 ")
         .arg(job.RemindLaterCount)
         .arg(dateTimeToString(job.RemidTime))
         .arg(job.ID)
