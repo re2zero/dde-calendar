@@ -195,7 +195,8 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     case DDECalendar::CalendarYearWindow: {
         //更新界面显示
         m_yearwindow->updateData();
-    } break;
+    }
+    break;
     case DDECalendar::CalendarMonthWindow: {
     } break;
     case DDECalendar::CalendarWeekWindow: {
@@ -203,7 +204,8 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     case DDECalendar::CalendarDayWindow: {
         m_DayWindow->setTime();
         m_searchflag = true;
-    } break;
+    }
+    break;
     }
     m_priindex = type == 0 ? m_priindex : type;
     //为了与老版本配置兼容
@@ -226,10 +228,12 @@ void Calendarmainwindow::updateHeight()
     } break;
     case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->updateHeight();
-    } break;
+    }
+    break;
     case DDECalendar::CalendarDayWindow: {
         m_DayWindow->updateHeight();
-    } break;
+    }
+    break;
     }
 }
 
@@ -325,7 +329,8 @@ void Calendarmainwindow::initUI()
     connect(titleWidget, &CTitleWidget::signalSetButtonFocus, [ = ] {
         m_setButtonFocus = true;
     });
-    connect(titleWidget, &CTitleWidget::signalSearchFocusSwitch, this, &Calendarmainwindow::slotSearchFocusSwitch);
+    connect(titleWidget, &CTitleWidget::signalSearchFocusSwitch, this,
+            &Calendarmainwindow::slotSearchFocusSwitch);
 
     m_searchEdit = titleWidget->searchEdit();
     m_buttonBox = titleWidget->buttonBox();
@@ -386,25 +391,36 @@ void Calendarmainwindow::initUI()
 
 void Calendarmainwindow::initConnection()
 {
-    connect(m_stackWidget, &AnimationStackedWidget::signalIsFinished, this, &Calendarmainwindow::slotSetButtonBox);
+    connect(m_stackWidget, &AnimationStackedWidget::signalIsFinished, this,
+            &Calendarmainwindow::slotSetButtonBox);
     connect(m_buttonBox, &DButtonBox::buttonClicked, this, &Calendarmainwindow::slotstackWClicked);
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &Calendarmainwindow::slotSreturnPressed);
     connect(m_searchEdit, &DSearchEdit::textChanged, this, &Calendarmainwindow::slotStextChanged);
     connect(m_searchEdit, &DSearchEdit::focusChanged, this, &Calendarmainwindow::slotStextfocusChanged);
     //监听当前应用主题切换事件
-    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &Calendarmainwindow::slotTheme);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this,
+            &Calendarmainwindow::slotTheme);
     //编辑搜索日程刷新界面
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectSchedule, this, &Calendarmainwindow::slotSearchSelectSchedule);
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide, this, &Calendarmainwindow::setScheduleHide);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectSchedule, this,
+            &Calendarmainwindow::slotSearchSelectSchedule);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide, this,
+            &Calendarmainwindow::setScheduleHide);
     //界面弹出对话框设置背景阴影
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectCurrentItem, this, &Calendarmainwindow::slotSetSearchFocus);
-    connect(m_yearwindow, &CYearWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_DayWindow, &CDayWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalViewtransparentFrame, this,
+            &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectCurrentItem, this,
+            &Calendarmainwindow::slotSetSearchFocus);
+    connect(m_yearwindow, &CYearWindow::signalViewtransparentFrame, this,
+            &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this,
+            &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this,
+            &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_DayWindow, &CDayWindow::signalViewtransparentFrame, this,
+            &Calendarmainwindow::slotViewtransparentFrame);
     //更新当前时间
-    connect(m_currentDateUpdateTimer, &QTimer::timeout, this, &Calendarmainwindow::slotCurrentDateUpdate);
+    connect(m_currentDateUpdateTimer, &QTimer::timeout, this,
+            &Calendarmainwindow::slotCurrentDateUpdate);
     //切换视图
     connect(m_yearwindow, &CYearWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
     connect(m_monthWindow, &CMonthWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
@@ -547,10 +563,12 @@ void Calendarmainwindow::slotSearchEdit()
 void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
     //获取当前视图编号
-    CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>(m_stackWidget->currentWidget());
+    CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>
+                                       (m_stackWidget->currentWidget());
     if (_showWidget) {
         //如果日程开始时间年份与选择时间年份不一样则切换年份显示
-        bool changeYear = _showWidget->getSelectDate().year() != scheduleInfo.getBeginDateTime().date().year();
+        bool changeYear = _showWidget->getSelectDate().year() !=
+                          scheduleInfo.getBeginDateTime().date().year();
         //设置选择时间
         if (_showWidget->setSelectDate(scheduleInfo.getBeginDateTime().date(), changeYear)) {
             //更新显示数据

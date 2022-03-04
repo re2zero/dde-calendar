@@ -45,10 +45,41 @@ public:
 private:
     //确定按钮处理
     bool clickOkBtn();
+
+    /**
+     * @brief updateEndTimeListAndTimeDiff      更新结束时间（time），结束时间下拉列表和开始时间和结束时间差
+     * @param begin                             开始时间（DateTime）
+     * @param end                               结束时间 (DateTime）
+     */
+    void updateEndTimeListAndTimeDiff(const QDateTime &begin ,const QDateTime &end);
+
+    /**
+     * @brief updateEndTimeList             更新结束时间下拉列表
+     * @param begin                         开始时间(time)
+     * @param isShowTimeInterval            是否显示时间偏移
+     */
+    void updateEndTimeList(const QTime &begin,bool isShowTimeInterval);
 signals:
     void signalViewtransparentFrame(int type);
     void signalScheduleUpdate(int id = 0);
 public slots:
+    /**
+     * @brief 开始时间改变
+     * 
+     */
+    void slotBeginTimeChange();
+
+    /**
+     * @brief 结束时间改变
+     * 
+     */
+    void slotEndTimeChange();
+
+    /**
+     * @brief 结束日期改变
+     * 
+     */
+    void slotEndDateChange(const QDate &date);
     //对话框按钮点击处理
     void slotBtClick(int buttonIndex, const QString &buttonName);
     void slotTextChange();
@@ -76,6 +107,13 @@ private:
     void setTheMe(const int type);
     //设置tab顺序
     void setTabFouseOrder();
+
+    /**
+     * @brief updateIsOneMoreDay        更新开始时间与结束时间标识是否超过一天
+     * @param begin                     开始时间(datetime)
+     * @param end                       结束时间(datetime)
+     */
+    void updateIsOneMoreDay(const QDateTime &begin, const QDateTime &end);
 
 private:
     QLabel *m_typeLabel = nullptr;
@@ -108,6 +146,8 @@ private:
     QString m_context;
     const bool m_createAllDay;
     bool m_setAccept {false}; //是否设置返回代码为Rejected
+    qint64 m_timeDiff = 0;             //开始时间和结束时间差，不算日期
+    bool m_isMoreThenOneDay = false;
 private:
     //日程
     ScheduleDataInfo m_ScheduleDataInfo;

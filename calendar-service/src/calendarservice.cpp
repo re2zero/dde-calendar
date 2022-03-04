@@ -71,7 +71,7 @@ QString CalendarService::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
     return huangliInfo;
 }
 
-//通过公历回去阴历信息
+//通过公历获取阴历信息
 CaLunarDayInfo CalendarService::GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
