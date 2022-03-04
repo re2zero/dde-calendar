@@ -200,14 +200,23 @@ void CTimeEdit::showPopup()
         viewContainer->setMaximumHeight(viewContainerMaxHeight + 1);
         //获取combobox底部坐标
         QPoint showPoint = mapToGlobal(this->rect().bottomLeft());
-        //控制视图容器宽度
-        viewContainer->setFixedWidth(this->width() + 10);
+        //控制视图容器宽度 ，根据字体大小调整宽度
+        int maxLen = 0;
+        QFontMetrics fontMet(view()->font());
+        for (int i = 0 ; i < count() ; ++i) {
+            int &&itemWidth = fontMet.width(this->itemText(i));
+            maxLen = qMax(maxLen, itemWidth);
+        }
+        maxLen += 45;   //选项前√占用的大小
+        //如果宽度小于box宽度则设置位box宽度
+        maxLen = qMax(maxLen, this->width());
+        viewContainer->setFixedWidth(maxLen);
         //将视图容器移动到combobox的底部
         viewContainer->move(showPoint.x(), showPoint.y());
         //显示
         viewContainer->show();
     }
-//    //因改变了容器的高度，所以需要重新定位当前位置
+    //因改变了容器的高度，所以需要重新定位当前位置
     if (this->view()->currentIndex() == scrollPosition) {
         this->view()->scrollTo(scrollPosition, QAbstractItemView::PositionAtCenter);
     } else {
