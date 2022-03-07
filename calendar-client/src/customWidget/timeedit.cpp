@@ -78,7 +78,7 @@ void CTimeEdit::updateListItem(bool isShowTimeInterval)
         QString timeIntervalStr;
         if ( m_isShowTimeInterval ) {
             if ( timeInterval < 1 ) {
-                timeIntervalStr = tr("(%1mins)").arg(i * 30);
+                timeIntervalStr = tr("(%1 mins)").arg(i * 30);
             } else if (timeInterval == 1) {
                 timeIntervalStr = tr("(%1 hour)").arg(timeInterval);
             } else {

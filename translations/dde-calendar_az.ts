@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="az" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="az">
 <context>
     <name>CDayMonthView</name>
     <message>
@@ -58,7 +58,7 @@
 <context>
     <name>CGraphicsView</name>
     <message>
-        <location filename="../calendar-client/src/view/graphicsview.cpp" line="615"/>
+        <location filename="../calendar-client/src/view/graphicsview.cpp" line="614"/>
         <source>New Event</source>
         <translation>Yeni tədbir</translation>
     </message>
@@ -74,12 +74,12 @@
 <context>
     <name>CMonthView</name>
     <message>
-        <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="66"/>
+        <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="67"/>
         <source>New event</source>
         <translation>Yeni tədbir</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="225"/>
+        <location filename="../calendar-client/src/widget/monthWidget/monthview.cpp" line="228"/>
         <source>New Event</source>
         <translation>Yeni tədbir</translation>
     </message>
@@ -121,229 +121,232 @@
 <context>
     <name>CScheduleDlg</name>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="47"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="597"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="49"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="697"/>
         <source>New Event</source>
         <translation>Yeni tədbir</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="59"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="62"/>
         <source>Edit Event</source>
         <translation>Tədbirə düzəliş etmək</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="161"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="167"/>
         <source>End time must be greater than start time</source>
         <translation>Bitmə tarixi başlama tarixindən böyük olmalıdır</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="162"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="168"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="344"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="367"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="734"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="762"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="415"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="438"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="855"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="887"/>
         <source>Never</source>
         <translation>Heç vaxt</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="345"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="416"/>
         <source>At time of event</source>
         <translation>Tədbir zamanı</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="346"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="417"/>
         <source>15 minutes before</source>
         <translation>15 dəqiqə əvvəl</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="347"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="418"/>
         <source>30 minutes before</source>
         <translation>30 dəqiqə əvvəl</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="348"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="419"/>
         <source>1 hour before</source>
         <translation>1 saat əvvəl</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="349"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="369"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="420"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="440"/>
         <source>1 day before</source>
         <translation>1 gün əvvəl</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="350"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="370"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="421"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="441"/>
         <source>2 days before</source>
         <translation>2 gün əvvəl</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="351"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="371"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="422"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="442"/>
         <source>1 week before</source>
         <translation>1 həftə əvvəl</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="368"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="439"/>
         <source>On start day (9:00 AM)</source>
         <translation>Başlanğıc günü (9:00)</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="472"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="545"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="549"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="643"/>
         <source>Type:</source>
         <translation>Növ:</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="476"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="582"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="554"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="682"/>
         <source>Description:</source>
         <translation>Təsviri:</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="480"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="615"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="559"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="719"/>
         <source>All Day:</source>
         <translation>Bütün gün:</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="484"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="635"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="564"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="743"/>
         <source>Starts:</source>
         <translation>Başlayır:</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="488"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="667"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="569"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="779"/>
         <source>Ends:</source>
         <translation>Başa çatır:</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="492"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="699"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="574"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="815"/>
         <source>Remind Me:</source>
         <translation>Mənə xatırlat:</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="496"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="724"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="579"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="844"/>
         <source>Repeat:</source>
         <translation>Təkrar:</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="500"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="751"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="584"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="875"/>
         <source>End Repeat:</source>
         <translation>Təkrarın sonu:</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="542"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="640"/>
         <source>Type</source>
         <translation>Növ</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="559"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="658"/>
         <source>Work</source>
         <translation>İş</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="563"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="662"/>
         <source>Life</source>
         <translation>Həyat</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="568"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="667"/>
         <source>Other</source>
         <translation>Digər</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="585"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="686"/>
         <source>Description</source>
         <translation>Təsviri</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="612"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="716"/>
         <source>All Day</source>
         <translation>Bütün gün</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="632"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="740"/>
         <source>Starts</source>
         <translation>Başlayır</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="664"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="776"/>
         <source>Ends</source>
         <translation>Başa çatır</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="700"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="817"/>
         <source>Remind Me</source>
         <translation>Mənə xatırlat</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="721"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="841"/>
         <source>Repeat</source>
         <translation>Təkrar</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="735"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="856"/>
         <source>Daily</source>
         <translation>Hər gün</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="736"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="857"/>
         <source>Weekdays</source>
         <translation>Həftənin günləri</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="737"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="858"/>
         <source>Weekly</source>
         <translation>Həftə</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="738"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="859"/>
         <source>Monthly</source>
         <translation>Ay</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="739"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="860"/>
         <source>Yearly</source>
         <translation>İl</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="752"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="877"/>
         <source>End Repeat</source>
         <translation>Təkrarın sonu</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="763"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="888"/>
         <source>After</source>
         <translation>Sonra</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="764"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="889"/>
         <source>On</source>
         <translation>Açıq</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="783"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="492"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="591"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="908"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="909"/>
         <source>time(s)</source>
         <translation>vaxt(lar)</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="831"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="957"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>İmtina</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="832"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="958"/>
         <source>Save</source>
         <comment>button</comment>
         <translation>Saxlayın</translation>
@@ -465,17 +468,17 @@
 <context>
     <name>CScheduleSearchDateItem</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="899"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="902"/>
         <source>Y</source>
         <translation>İl</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="899"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="902"/>
         <source>M</source>
         <translation>Ay</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="899"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="902"/>
         <source>D</source>
         <translation>G</translation>
     </message>
@@ -501,7 +504,7 @@
 <context>
     <name>CScheduleSearchView</name>
     <message>
-        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="642"/>
+        <location filename="../calendar-client/src/widget/schedulesearchview.cpp" line="645"/>
         <source>No search results</source>
         <translation>Axtarış nəticəsiz oldu</translation>
     </message>
@@ -509,9 +512,27 @@
 <context>
     <name>CScheduleView</name>
     <message>
-        <location filename="../calendar-client/src/customWidget/scheduleview.cpp" line="321"/>
+        <location filename="../calendar-client/src/customWidget/scheduleview.cpp" line="327"/>
         <source>ALL DAY</source>
         <translation>BÜTÜN GÜN</translation>
+    </message>
+</context>
+<context>
+    <name>CTimeEdit</name>
+    <message>
+        <location filename="../calendar-client/src/customWidget/timeedit.cpp" line="81"/>
+        <source>(%1 mins)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/customWidget/timeedit.cpp" line="83"/>
+        <source>(%1 hour)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/customWidget/timeedit.cpp" line="85"/>
+        <source>(%1 hours)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -540,12 +561,12 @@
 <context>
     <name>CWeekWindow</name>
     <message>
-        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="109"/>
+        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="110"/>
         <source>Week</source>
         <translation>Həftə</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="326"/>
+        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="327"/>
         <source>Y</source>
         <translation>İl</translation>
     </message>
@@ -567,7 +588,7 @@
 <context>
     <name>CYearWindow</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="634"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="635"/>
         <source>Y</source>
         <translation>İl</translation>
     </message>
@@ -588,7 +609,7 @@
 <context>
     <name>Calendarmainwindow</name>
     <message>
-        <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="68"/>
+        <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="69"/>
         <source>Calendar</source>
         <translation>Təqvim</translation>
     </message>
@@ -604,22 +625,22 @@
 <context>
     <name>DragInfoGraphicsView</name>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="60"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="61"/>
         <source>Edit</source>
         <translation>Düzəlt</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="61"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="62"/>
         <source>Delete</source>
         <translation>Sil</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="62"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="63"/>
         <source>New event</source>
         <translation>Yeni tədbir</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="713"/>
+        <location filename="../calendar-client/src/view/draginfographicsview.cpp" line="715"/>
         <source>New Event</source>
         <translation>Yeni tədbir</translation>
     </message>
@@ -627,7 +648,7 @@
 <context>
     <name>Return</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="630"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="631"/>
         <source>Today</source>
         <comment>Return</comment>
         <translation>Bu gün</translation>
@@ -638,7 +659,7 @@
     <message>
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="382"/>
         <location filename="../calendar-client/src/widget/monthWidget/monthwindow.cpp" line="136"/>
-        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="323"/>
+        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="324"/>
         <source>Today</source>
         <comment>Return Today</comment>
         <translation>Bu gün</translation>
@@ -685,7 +706,7 @@
 <context>
     <name>YearFrame</name>
     <message>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="948"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="952"/>
         <source>Y</source>
         <translation>İl</translation>
     </message>
@@ -697,10 +718,10 @@
         <location filename="../calendar-client/src/widget/dayWidget/daymonthview.cpp" line="380"/>
         <location filename="../calendar-client/src/widget/monthWidget/monthwindow.cpp" line="134"/>
         <location filename="../calendar-client/src/widget/monthWidget/monthwindow.cpp" line="262"/>
-        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="68"/>
-        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="321"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="284"/>
-        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="628"/>
+        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="69"/>
+        <location filename="../calendar-client/src/widget/weekWidget/weekwindow.cpp" line="322"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="285"/>
+        <location filename="../calendar-client/src/widget/yearWidget/yearwindow.cpp" line="629"/>
         <source>Today</source>
         <comment>Today</comment>
         <translation>Bu gün</translation>
