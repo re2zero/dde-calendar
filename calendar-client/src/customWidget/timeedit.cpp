@@ -127,7 +127,10 @@ void CTimeEdit::setSelectItem(const QTime &time)
         QVariant &&userData = itemData(i);
         QTime &&listTime = QTime::fromString(userData.toString(), m_timeFormat);
         int &&timeDiff = qAbs(listTime.msecsTo(time));
-        if ( timeDiff < diff) {
+        //获取时间差较小的值
+        //如果时间小于第一项的时间则不算统计，
+        //比如 第一项时间位01:00 比对时间为00:59，时间差应该为23：59 而不是00：01，所以应该定位到最后一项
+        if ( timeDiff < diff && (!(time < listTime && 0 == i))) {
             diff = timeDiff;
             similarNumber = i;
         }
