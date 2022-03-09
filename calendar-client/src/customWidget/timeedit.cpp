@@ -97,19 +97,18 @@ void CTimeEdit::setTimeFormat(int value)
 {
     //获取edit的当前时间
     QTime editCurrentTime = getTime();
-
+    
     //根据value值,设置时间显示格式
     if (value) {
         m_timeFormat = "hh:mm";
     } else {
         m_timeFormat = "h:mm";
     }
-
+    //先更新列表信息，更新列表信息后再设置编辑框显示时间
+    updateListItem(m_isShowTimeInterval);
     m_timeEdit->setDisplayFormat(m_timeFormat);
-
     //设置改变格式后的时间
     setTime(editCurrentTime);
-    updateListItem(m_isShowTimeInterval);
 }
 
 void CTimeEdit::slotFocusDraw(bool showFocus)
