@@ -522,7 +522,7 @@
     <message>
         <location filename="../calendar-client/src/customWidget/timeedit.cpp" line="81"/>
         <source>(%1 mins)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 minut)</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/timeedit.cpp" line="83"/>

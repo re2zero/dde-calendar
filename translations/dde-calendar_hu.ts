@@ -522,17 +522,17 @@
     <message>
         <location filename="../calendar-client/src/customWidget/timeedit.cpp" line="81"/>
         <source>(%1 mins)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 perc)</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/timeedit.cpp" line="83"/>
         <source>(%1 hour)</source>
-        <translation>%1 óra</translation>
+        <translation>(%1 óra)</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/timeedit.cpp" line="85"/>
         <source>(%1 hours)</source>
-        <translation>%1 óra</translation>
+        <translation>(%1 óra)</translation>
     </message>
 </context>
 <context>
