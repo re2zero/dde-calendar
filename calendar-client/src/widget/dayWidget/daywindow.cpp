@@ -368,7 +368,7 @@ void CDayWindow::slotChangeSelectDate(const QDate &date)
 void CDayWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
-    qreal dw = 0.4046 * width();
+    qreal dw = 0.4 * width();
     int dh = height() - 20;
 
     if (m_searchFlag) {
@@ -376,8 +376,6 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     } else {
         m_mainLayout->setContentsMargins(10, 10, 10, 10);
     }
-    if (dw < 350)
-        dw = 350;
     m_daymonthView->setFixedSize(qRound(dw), dh);
 }
 

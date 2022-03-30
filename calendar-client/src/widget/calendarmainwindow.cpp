@@ -55,8 +55,10 @@
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
-static const int CalendarMWidth = 860;
+static const int CalendarMWidth = 646;
 static const int CalendarMHeight = 634;
+const int CalendarSwitchWidth = 647; //当宽度小于这个尺寸时，标题栏需要切换显示逻辑
+const int CalendarViewSwitchWidth = 804; //当宽度小于这个尺寸时，视图部分需要切换显示逻辑
 
 Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     : DMainWindow(w)
@@ -319,22 +321,22 @@ void Calendarmainwindow::initUI()
     CDynamicIcon::getInstance()->setTitlebar(this->titlebar());
     CDynamicIcon::getInstance()->setIcon();
 
-    CTitleWidget *titleWidget = new CTitleWidget(this);
-    titleWidget->setFocusPolicy(Qt::TabFocus);
-    this->titlebar()->setCustomWidget(titleWidget);
-    setTabOrder(this->titlebar(), titleWidget);
+    m_titleWidget = new CTitleWidget(this);
+    m_titleWidget->setFocusPolicy(Qt::TabFocus);
+    this->titlebar()->setCustomWidget(m_titleWidget);
+    setTabOrder(this->titlebar(), m_titleWidget);
     //设置状态栏焦点代理为标题窗口
-    this->titlebar()->setFocusProxy(titleWidget);
+    this->titlebar()->setFocusProxy(m_titleWidget);
     //接收设置按键焦点
-    connect(titleWidget, &CTitleWidget::signalSetButtonFocus, [ = ] {
+    connect(m_titleWidget, &CTitleWidget::signalSetButtonFocus, [=] {
         m_setButtonFocus = true;
     });
-    connect(titleWidget, &CTitleWidget::signalSearchFocusSwitch, this,
+    connect(m_titleWidget, &CTitleWidget::signalSearchFocusSwitch, this,
             &Calendarmainwindow::slotSearchFocusSwitch);
 
-    m_searchEdit = titleWidget->searchEdit();
-    m_buttonBox = titleWidget->buttonBox();
-    m_newScheduleBtn = titleWidget->newScheduleBtn();
+    m_searchEdit = m_titleWidget->searchEdit();
+    m_buttonBox = m_titleWidget->buttonBox();
+    m_newScheduleBtn = m_titleWidget->newScheduleBtn();
 
     m_stackWidget = new AnimationStackedWidget();
     m_stackWidget->setObjectName("StackedWidget");
@@ -479,12 +481,28 @@ void Calendarmainwindow::setScheduleHide()
 
 void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
+    DMainWindow::resizeEvent(event);
     m_transparentFrame->resize(width(), height() - 50);
-    m_scheduleSearchViewMaxWidth = qRound(0.2325 * width() + 0.5);
+
+    if (width() < CalendarSwitchWidth) {
+        m_titleWidget->setShowState(CTitleWidget::Title_State_Mini);
+    } else {
+        m_titleWidget->setShowState(CTitleWidget::Title_State_Normal);
+    }
+
+    if (width() < CalendarViewSwitchWidth) {
+        m_isNormalStateShow = false;
+        m_stackWidget->setVisible(!m_contentBackground->isVisible());
+        m_scheduleSearchViewMaxWidth = this->width();
+    } else {
+        m_scheduleSearchViewMaxWidth = qRound(0.2325 * width() + 0.5);
+        m_isNormalStateShow = true;
+        m_stackWidget->setVisible(true);
+    }
     m_scheduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
     setSearchWidth(m_scheduleSearchViewMaxWidth);
     setScheduleHide();
-    DMainWindow::resizeEvent(event);
+
     //保存窗口大小
     CConfigSettings::getInstance()->setOption("base.windowWidth", event->size().width());
     CConfigSettings::getInstance()->setOption("base.windowHeight", event->size().height());
@@ -515,6 +533,9 @@ void Calendarmainwindow::slotSreturnPressed()
 {
     if (!m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_opensearchflag = true;
+        if (!m_isNormalStateShow) {
+            m_stackWidget->setVisible(false);
+        }
         m_contentBackground->setVisible(true);
     }
     m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
@@ -535,6 +556,7 @@ void Calendarmainwindow::slotStextChanged()
         m_weekWindow->setSearchWFlag(false);
         m_DayWindow->setSearchWFlag(false);
         m_contentBackground->setVisible(false);
+        m_stackWidget->setVisible(true);
         m_opensearchflag = false;
     }
     updateHeight();
@@ -562,6 +584,9 @@ void Calendarmainwindow::slotSearchEdit()
  */
 void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
+    //如果小尺寸显示模式，在显示搜索窗口的时候，左侧视图会被隐藏，所以不显示动画效果直接退出
+    if (!m_isNormalStateShow)
+        return;
     //获取当前视图编号
     CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>
                                        (m_stackWidget->currentWidget());

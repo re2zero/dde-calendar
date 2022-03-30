@@ -43,6 +43,8 @@ class CDayWindow;
 class CScheduleSearchView;
 class AnimationStackedWidget;
 class CScheduleDataManage;
+class CTitleWidget;
+
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
@@ -106,6 +108,7 @@ private:
     CMonthWindow *m_monthWindow = nullptr;
     CWeekWindow *m_weekWindow = nullptr;
     CDayWindow *m_DayWindow = nullptr;
+    CTitleWidget *m_titleWidget = nullptr;
     bool m_searchflag = false;
     CScheduleSearchView *m_scheduleSearchView = nullptr;
     DFrame *m_contentBackground = nullptr;
@@ -119,6 +122,7 @@ private:
     //日历打开默认显示视图
     int m_defaultIndex;
     bool m_setButtonFocus {false};
+    bool m_isNormalStateShow {true}; //是否为正常状态显示
 };
 
 #endif // CALENDARMAINWINDOW_H

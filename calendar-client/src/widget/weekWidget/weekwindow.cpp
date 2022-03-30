@@ -521,11 +521,11 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
         m_tMainLayout->setContentsMargins(0, 0, 10, 0);
     }
 
-    //添加2个按钮的宽度 36+36。原来m_weekview 不包含前后按钮
+    //添加1个按钮的宽度 36。原来m_weekview 不包含前后按钮(若加2个按钮的宽度，会导致窗口缩小的时候按钮显示不全)
     if (!m_searchFlag) {
-        m_weekview->setFixedSize(qRound(dw + 72), dh);
+        m_weekview->setFixedSize(qRound(dw + 36), dh);
     } else {
-        m_weekview->setFixedSize(qRound(dw - 100 + 72), dh);
+        m_weekview->setFixedSize(qRound(dw - 100 + 36), dh);
     }
     m_weekHeadView->setFixedSize(width() - winframe, qRound(headH));
     QWidget::resizeEvent(event);
