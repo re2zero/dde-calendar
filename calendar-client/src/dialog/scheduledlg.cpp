@@ -746,19 +746,20 @@ void CScheduleDlg::initUI()
         m_beginTimeLabel->setFont(mlabelF);
         m_beginTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         m_beginTimeLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
-        m_beginDateEdit = new QDateEdit(this);
+        m_beginDateEdit = new CDateEdit(this);
+        m_beginDateEdit->setDisplayFormat(m_dateFormat);
         //设置对象名称和辅助显示名称
         m_beginDateEdit->setObjectName("ScheduleBeginDateEdit");
         m_beginDateEdit->setAccessibleName("ScheduleBeginDateEdit");
-        m_beginDateEdit->setFixedSize(175, item_Fixed_Height);
+        m_beginDateEdit->setFixedSize(200, item_Fixed_Height);
+        m_beginDateEdit->setCalendarPopup(true);
 
         m_beginTimeEdit = new CTimeEdit(this);
         //设置对象名称和辅助显示名称
         m_beginTimeEdit->setObjectName("ScheduleBeginTimeEdit");
         m_beginTimeEdit->setAccessibleName("ScheduleBeginTimeEdit");
-        m_beginTimeEdit->setFixedSize(141, item_Fixed_Height);
-        m_beginDateEdit->setCalendarPopup(true);
-        m_beginDateEdit->setDisplayFormat(m_dateFormat);
+        m_beginTimeEdit->setFixedSize(125, item_Fixed_Height);
+
         beginLabellayout->addWidget(m_beginTimeLabel);
         beginLabellayout->addWidget(m_beginDateEdit);
         beginLabellayout->addSpacing(8);
@@ -782,18 +783,19 @@ void CScheduleDlg::initUI()
         m_endTimeLabel->setFont(mlabelF);
         m_endTimeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         m_endTimeLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
-        m_endDateEdit = new QDateEdit(this);
+        m_endDateEdit = new CDateEdit(this);
+        m_endDateEdit->setDisplayFormat(m_dateFormat);
         //设置对象名称和辅助显示名称
         m_endDateEdit->setObjectName("ScheduleEndDateEdit");
         m_endDateEdit->setAccessibleName("ScheduleEndDateEdit");
-        m_endDateEdit->setFixedSize(175, item_Fixed_Height);
+        m_endDateEdit->setFixedSize(200, item_Fixed_Height);
+        m_endDateEdit->setCalendarPopup(true);
+
         m_endTimeEdit = new CTimeEdit(this);
         //设置对象名称和辅助显示名称
         m_endTimeEdit->setObjectName("ScheduleEndTimeEdit");
         m_endTimeEdit->setAccessibleName("ScheduleEndTimeEdit");
-        m_endTimeEdit->setFixedSize(141, item_Fixed_Height);
-        m_endDateEdit->setCalendarPopup(true);
-        m_endDateEdit->setDisplayFormat(m_dateFormat);
+        m_endTimeEdit->setFixedSize(125, item_Fixed_Height);
 
         enQLabellayout->addWidget(m_endTimeLabel);
         enQLabellayout->addWidget(m_endDateEdit);
@@ -824,7 +826,7 @@ void CScheduleDlg::initUI()
         //设置对象名称和辅助显示名称
         m_rmindCombox->setObjectName("RmindComboBox");
         m_rmindCombox->setAccessibleName("RmindComboBox");
-        m_rmindCombox->setFixedSize(175, item_Fixed_Height);
+        m_rmindCombox->setFixedSize(200, item_Fixed_Height);
         m_rmindCombox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         rminQLabellayout->addWidget(m_remindSetLabel);
         rminQLabellayout->addWidget(m_rmindCombox);
@@ -851,7 +853,7 @@ void CScheduleDlg::initUI()
         //设置对象名称和辅助显示名称
         m_beginrepeatCombox->setObjectName("BeginRepeatComboBox");
         m_beginrepeatCombox->setAccessibleName("BeginRepeatComboBox");
-        m_beginrepeatCombox->setFixedSize(175, item_Fixed_Height);
+        m_beginrepeatCombox->setFixedSize(200, item_Fixed_Height);
         m_beginrepeatCombox->addItem(tr("Never"));
         m_beginrepeatCombox->addItem(tr("Daily"));
         m_beginrepeatCombox->addItem(tr("Weekdays"));
