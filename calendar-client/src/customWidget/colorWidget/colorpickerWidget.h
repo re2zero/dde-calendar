@@ -43,6 +43,7 @@ private:
     void setColorHexLineEdit();
 
 signals:
+    void signalSelectedColor(bool, QColor);
 
 public slots:
     /**
@@ -56,6 +57,9 @@ public slots:
      * @brief slotUpdateColor　更新颜色
      */
     void slotUpdateColor(const QColor &color = QColor());
+
+    void slotCancelBtnClicked();
+    void slotEnterBtnClicked();
 
 private:
     ColorLabel *m_colorLabel;

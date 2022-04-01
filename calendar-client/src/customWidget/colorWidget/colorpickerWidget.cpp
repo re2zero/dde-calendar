@@ -42,6 +42,9 @@ CColorPickerWidget::CColorPickerWidget(QWidget *parent)
     initUI();
     moveCentorShow();
     setColorHexLineEdit();
+    setWindowFlag(Qt::Popup);
+    connect(m_cancelBtn, &DPushButton::clicked, this, &CColorPickerWidget::slotCancelBtnClicked);
+    connect(m_enterBtn, &DPushButton::clicked, this, &CColorPickerWidget::slotEnterBtnClicked);
 }
 
 CColorPickerWidget::~CColorPickerWidget()
@@ -189,4 +192,17 @@ void CColorPickerWidget::slotSetColor(const QColor &c)
 
         slotUpdateColor(c);
     }
+}
+
+void CColorPickerWidget::slotCancelBtnClicked()
+{
+    emit signalSelectedColor(false, QColor());
+    close();
+}
+
+void CColorPickerWidget::slotEnterBtnClicked()
+{
+    QColor color("#" + m_colHexLineEdit->text());
+    emit signalSelectedColor(true, color);
+    close();
 }

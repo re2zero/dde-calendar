@@ -1,0 +1,59 @@
+/*
+* Copyright (C) 2019 ~ 2019 UnionTech Software Technology Co.,Ltd.
+*
+* Author:     leilong <leilong@uniontech.com>
+*
+* Maintainer: leilong <leilong@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+#ifndef SCHEDULETYPEEDITDLG_H
+#define SCHEDULETYPEEDITDLG_H
+
+#include "colorseletorwidget.h"
+#include <DDialog>
+#include <DLineEdit>
+
+DWIDGET_USE_NAMESPACE
+
+class ScheduleTypeEditDlg : public DDialog
+{
+    Q_OBJECT
+public:
+    explicit ScheduleTypeEditDlg(QWidget *parent = nullptr);
+    explicit ScheduleTypeEditDlg(QString, QWidget *parent = nullptr);
+    explicit ScheduleTypeEditDlg(QString title, QString scheduleName, QWidget *parent = nullptr);
+
+signals:
+
+public slots:
+    //颜色改变事件
+    void slotColorChange(QColor);
+    //编辑器文本改变事件
+    void slotEditTextChanged(const QString &);
+
+private:
+    void init();
+    void initView();
+    void initData();
+
+private:
+    QString m_scheduleName = ""; //类型名
+    QString m_title = "";   //弹窗名
+    DLineEdit *m_lineEdit = nullptr;    //编辑器
+    QLabel *m_titleLabel = nullptr;     //弹窗名控件
+    ColorSeletorWidget *m_colorSeletor = nullptr; //颜色选择器
+};
+
+#endif // SCHEDULETYPEEDITDLG_H
