@@ -526,23 +526,69 @@ void SchedulerDatabase::CreateTables()
 {
     QSqlQuery query(m_database);
     //table job_types
-    qDebug() << query.exec("CREATE TABLE \"job_types\" (\"id\" integer primary key autoincrement,\"created_at\""
+    qDebug() << query.exec("CREATE TABLE IF NOT EXISTS \"job_types\" (\"id\" integer primary key autoincrement,\"created_at\""
                            " datetime,\"updated_at\" datetime,\"deleted_at\" datetime,\"name\" varchar(255),\"color\" varchar(255) )")
              << query.lastError();
-    qDebug() << query.exec("CREATE INDEX idx_job_types_deleted_at ON \"job_types\"(deleted_at)") << query.lastError();
+    qDebug() << query.exec("CREATE INDEX IF NOT EXISTS idx_job_types_deleted_at ON \"job_types\"(deleted_at)") << query.lastError();
 
     //table jobs
-    qDebug() << query.exec("CREATE TABLE \"jobs\" (\"id\" integer primary key autoincrement,"
+    qDebug() << query.exec("CREATE TABLE IF NOT EXISTS \"jobs\" (\"id\" integer primary key autoincrement,"
                            "\"created_at\" datetime,\"updated_at\" datetime,\"deleted_at\" datetime,"
                            "\"type\" integer,\"title\" varchar(255),\"description\" varchar(255),"
                            "\"all_day\" bool,\"start\" datetime,\"end\" datetime,\"r_rule\" varchar(255),"
                            "\"remind\" varchar(255),\"ignore\" varchar(255) , \"title_pinyin\" varchar(255))")
              << query.lastError();
-    qDebug() << query.exec("CREATE INDEX idx_jobs_deleted_at ON \"jobs\"(deleted_at)") << query.lastError();
+    qDebug() << query.exec("CREATE INDEX  IF NOT EXISTS idx_jobs_deleted_at ON \"jobs\"(deleted_at)") << query.lastError();
+
+    qDebug() << query.exec("CREATE TABLE IF NOT EXISTS JobType (                                                  \
+                                         ID          INTEGER     PRIMARY KEY   AUTOINCREMENT        \
+                                        ,TypeNo      INTEGER     NOT NULL      UNIQUE               \
+                                        ,TypeName    VARCHAR(20) NOT NULL                           \
+                                        ,ColorTypeNo INTEGER     NOT NULL                           \
+                                        ,CreateTime  DATETIME    NOT NULL                           \
+                                        ,Authority   INTEGER     NOT NULL                           \
+                                        )")//Authority：用来标识权限，0：读 1：展示 2：改 4：删
+                << query.lastError();
+    qDebug() << query.exec("CREATE TABLE IF NOT EXISTS  ColorType (                                                \
+                                         ID          INTEGER     PRIMARY KEY   AUTOINCREMENT        \
+                                        ,TypeNo      INTEGER     NOT NULL      UNIQUE               \
+                                        ,ColorHex    CHAR(10)    NOT NULL                           \
+                                        ,Authority   INTEGER     NOT NULL                           \
+                                        )")//Authority：用来标识权限，0：读 1：展示 2：改 4：删
+                << query.lastError();
+
     if (query.isActive()) {
         query.finish();
     }
+
     m_database.commit();
+}
+/**
+ * @brief initJobTypeTables      初始化日程类型，添加默认日程类型、颜色类型
+ * @return                       无
+ */
+void SchedulerDatabase::initJobTypeTables()
+{
+    //getJobTypeByTypeNo(int iTypeNo, JobTypeInfo jobType);
+    JobTypeInfo jobType;
+    if(!getJobTypeByTypeNo(1, jobType) || jobType.getJobTypeNo() > 0){
+        return;
+    }
+    addJobType(1, "Work", 1, 1);
+    addJobType(2, "Life", 2, 1);
+    addJobType(3, "Other", 3, 1);
+
+    addColorType(1, "#ff5e97", 1);
+    addColorType(2, "#ff9436", 1);
+    addColorType(3, "#ffdc00", 1);
+    addColorType(4, "#5bdd80", 1);
+    addColorType(5, "#00b99b", 1);
+    addColorType(6, "#4293ff", 1);
+    addColorType(7, "#5d51ff", 1);
+    addColorType(8, "#a950ff", 1);
+    addColorType(9, "#717171", 1);
+
+    return;
 }
 
 void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
@@ -567,6 +613,8 @@ void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
             CreateTables();
         }
         QSqlQuery query(m_database);
+        //CreateTables();
+        //initJobTypeTables();
         //如果不存在日程提醒相关的数据库则创建一个（因为需要将程序改成按需运行的程序，所以需要存储相关数据）
         if (!tables.contains("jobsReminder")) {
             query.exec("CREATE TABLE \"jobsReminder\" (\"id\" integer primary key autoincrement,"
@@ -638,6 +686,7 @@ void SchedulerDatabase::DeleteType(qint64 id)
         qDebug() << __FUNCTION__ << query.lastError();
     }
 }
+
 
 // 执行添加日程的数据库SQL命令，并返回其ID值
 qint64 SchedulerDatabase::CreateJob(const Job &job)
@@ -782,4 +831,252 @@ void SchedulerDatabase::UpdateType(const QString &typeInfo)
     } else {
         qDebug() << __FUNCTION__ << query.lastError();
     }
+}
+
+/**
+ * @brief getJobTypeByTypeNo    根据类型编号获取日程类型信息
+ * @return
+ */
+bool SchedulerDatabase::getJobTypeByTypeNo(int iTypeNo, JobTypeInfo& jobType)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+
+    QString strsql = QString("   SELECT JobType.TypeNo, JobType.TypeName, JobType.ColorTypeNo, ColorType.ColorHex, JobType.Authority            "
+                             "     FROM JobType LEFT JOIN ColorType               "
+                             "       ON JobType.ColorTypeNo = ColorType.TypeNo    "
+                             "    WHERE JobType.TypeNo = %1                       ").arg(iTypeNo);//单个查询时，不过滤Authority为0的结果
+    bRet = query.exec(strsql);
+    if (bRet) {
+        while (query.next()) {
+            jobType.setJobTypeNo(query.value("TypeNo").toInt());
+            jobType.setJobTypeName(query.value("TypeName").toString());
+            jobType.setColorTypeNo(query.value("ColorTypeNo").toInt());
+            jobType.setColorHex(query.value("ColorHex").toString());
+            jobType.setAuthority(query.value("Authority").toInt());
+        }
+    }
+    if (query.isActive()) {
+        query.finish();
+    }
+    return bRet;
+}
+/**
+ * @brief getJobTypeList        获取日程类型json串
+ * @param 无
+ */
+bool SchedulerDatabase::getJobTypeList(QList<JobTypeInfo>& lstJobType)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+
+    QString strsql = QString("   SELECT JobType.TypeNo, JobType.TypeName, JobType.ColorTypeNo, ColorType.ColorHex, JobType.Authority            "
+                             "     FROM JobType LEFT JOIN ColorType             "
+                             "       ON JobType.ColorTypeNo = ColorType.TypeNo  "
+                             "    WHERE JobType.Authority > 0                   "
+                             " ORDER BY JobType.CreateTime                      ");
+    bRet = query.exec(strsql);
+    if (bRet) {
+        while (query.next()) {
+            JobTypeInfo jobType;
+            jobType.setJobTypeNo(query.value("TypeNo").toInt());
+            jobType.setJobTypeName(query.value("TypeName").toString());
+            jobType.setColorTypeNo(query.value("ColorTypeNo").toInt());
+            jobType.setColorHex(query.value("ColorHex").toString());
+            jobType.setAuthority(query.value("Authority").toInt());
+            lstJobType.append(jobType);
+        }
+    }
+    if (query.isActive()) {
+        query.finish();
+    }
+
+    return bRet;
+}
+/**
+ * @brief addJobType            新增日程类型
+ * @param iTypeNo               日程类型编码
+ * @param strTypeName           日程类型名称
+ * @param iColorTypeNo          日程类型对应颜色编码
+ * @param iAuthority            日程类型读写权限
+ */
+bool SchedulerDatabase::addJobType(const int &iTypeNo, const QString &strTypeName, const int &iColorTypeNo, int iAuthority)
+{
+    bool bRet = false;
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+
+    QSqlQuery query(m_database);
+    QString strsql = "INSERT INTO JobType  (TypeNo,   TypeName,  ColorTypeNo,  CreateTime,  Authority)"
+                     "            VALUES   (:TypeNo, :TypeName, :ColorTypeNo, :CreateTime, :Authority)";
+    query.prepare(strsql);
+    int i = 0;
+    query.bindValue(i, iTypeNo);
+    query.bindValue(++i, strTypeName);
+    query.bindValue(++i, iColorTypeNo);
+    currentDateTime.setOffsetFromUtc(currentDateTime.offsetFromUtc());
+    query.bindValue(++i, currentDateTime);
+    query.bindValue(++i, iAuthority);
+    bRet = query.exec();
+    if (bRet) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    return bRet;
+}
+/**
+ * @brief updateJobType         更新日程类型
+ * @param iTypeNo               日程类型编码
+ * @param strTypeName           日程类型名称
+ * @param iColorTypeNo          日程类型对应颜色编码
+ */
+bool SchedulerDatabase::updateJobType(const int &iTypeNo, const QString &strTypeName, const int &iColorTypeNo)
+{
+    bool bRet = false;
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+
+    QSqlQuery query(m_database);
+    QString strsql = QString("UPDATE JobType                         "
+                             "   SET TypeName = %1, ColorTypeNo = %2 "
+                             " WHERE TypeNo   = %3                   ").arg(strTypeName).arg(iColorTypeNo).arg(iTypeNo);
+    query.prepare(strsql);
+    bRet = query.exec();
+    if (bRet) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    return bRet;
+}
+/**
+ * @brief deleteJobType         删除日程类型
+ * @param strTypeNo             日程类型编码
+ */
+bool SchedulerDatabase::deleteJobType(const int &iTypeNo)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+    QString strsql = QString("DELETE FROM JobType  WHERE TypeNo = %1").arg(iTypeNo);
+
+    query.prepare(strsql);
+    bRet = query.exec();
+    if (bRet) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    return bRet;
+}
+
+/**
+ * @brief getColorTypeList      获取颜色类型json串
+ * @param 无
+ */
+bool SchedulerDatabase::getColorTypeList(QList<JobTypeColorInfo> &lstColorType)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+
+    QString strsql = QString("   SELECT TypeNo, ColorHex      "
+                             "     FROM ColorType             "
+                             " ORDER BY TypeNo");
+    bRet = query.exec(strsql);
+    if (bRet) {
+        while (query.next()) {
+            JobTypeColorInfo colorType;
+            colorType.setTypeNo(query.value("TypeNo").toInt());
+            colorType.setColorHex(query.value("ColorHex").toString());
+            lstColorType.append(colorType);
+        }
+    }
+    if (query.isActive()) {
+        query.finish();
+    }
+
+    return bRet;
+}
+/**
+ * @brief addColorType          新增颜色类型
+ * @param iTypeNo               颜色类型编码
+ * @param strColorHex           颜色16进制编码
+ * @param iAuthority            颜色类型读写权限
+ */
+bool SchedulerDatabase::addColorType(const int &iTypeNo, const QString &strColorHex, const int iAuthority)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+    QString strsql = "INSERT INTO ColorType  (TypeNo, ColorHex, Authority) VALUES(:TypeNo, :ColorHex, :Authority)";
+    query.prepare(strsql);
+    int i = 0;
+    query.bindValue(i, iTypeNo);
+    query.bindValue(++i, strColorHex);
+    query.bindValue(++i, iAuthority);
+    bRet = query.exec();
+    if (bRet) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    return bRet;
+}
+
+/**
+ * @brief updateColorType       更新颜色类型
+ * @param iTypeNo               颜色类型编码
+ * @param strColorHex           颜色16进制编码
+ */
+bool SchedulerDatabase::updateColorType(const int &iTypeNo, const QString &strColorHex)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+    QString strsql = "UPDATE ColorType  SET strColorHex = ? WHERE TypeNo = ?";
+
+    query.prepare(strsql);
+    int i = 0;
+    query.bindValue(i, strColorHex);
+    query.bindValue(++i, iTypeNo);
+    bRet = query.exec();
+    if (bRet) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    return bRet;
+}
+/**
+ * @brief deleteColorType       删除颜色类型
+ * @param iTypeNo               颜色类型编码
+ */
+bool SchedulerDatabase::deleteColorType(const int &iTypeNo)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+    QString strsql = QString("DELETE FROM ColorType  WHERE TypeNo = %1").arg(iTypeNo);
+
+    query.prepare(strsql);
+    bRet = query.exec();
+    if (bRet) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    return bRet;
 }

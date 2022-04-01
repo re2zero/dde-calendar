@@ -22,6 +22,8 @@
 #define SCHEDULETYPEEDITDLG_H
 
 #include "colorseletorwidget.h"
+#include "src/scheduledatainfo.h"
+
 #include <DDialog>
 #include <DLineEdit>
 
@@ -36,12 +38,24 @@ public:
     explicit ScheduleTypeEditDlg(QString title, QString scheduleName, QWidget *parent = nullptr);
 
 signals:
-
+    /**
+     * @brief refreshInfo:刷新信息信号
+     */
+    void signalRefreshScheduleType();
 public slots:
     //颜色改变事件
     void slotColorChange(QColor);
     //编辑器文本改变事件
     void slotEditTextChanged(const QString &);
+    /**
+     * @brief slotBtnCancel 取消按钮
+     */
+    void slotBtnCancel();
+
+    /**
+     * @brief slotBtnNext 保存按钮，检查输入，保存、更新日程类型信息
+     */
+    void slotBtnNext();
 
 private:
     void init();
@@ -49,6 +63,7 @@ private:
     void initData();
 
 private:
+    JobTypeInfo m_jobType;
     QString m_scheduleName = ""; //类型名
     QString m_title = "";   //弹窗名
     DLineEdit *m_lineEdit = nullptr;    //编辑器

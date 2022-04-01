@@ -64,6 +64,15 @@ public Q_SLOTS:
     Q_SCRIPTABLE void UpdateType(const QString &typeInfo);
     Q_SCRIPTABLE QString QueryJobsWithLimit(const QString &params, qint32 maxNum);
     Q_SCRIPTABLE QString QueryJobsWithRule(const QString &params, const QString &rules);
+    //CalendarScheduler: jobtype & color
+    Q_SCRIPTABLE bool CreateJobType(const QString &jobTypeInfo);//
+    Q_SCRIPTABLE bool DeleteJobType(const int &typeNo);
+    Q_SCRIPTABLE bool UpdateJobType(const QString &jobTypeInfo);
+    Q_SCRIPTABLE QString GetJobTypeList();
+    Q_SCRIPTABLE bool CreateColorType(const QString &colorTypeInfo);//
+    Q_SCRIPTABLE bool DeleteColorType(const int &typeNo);
+    Q_SCRIPTABLE bool UpdateColorType(const QString &colorTypeInfo);
+    Q_SCRIPTABLE QString GetColorTypeList();
     //稍后提醒相关接口
     Q_SCRIPTABLE void remindJob(const qint64 jobID,const qint64 recurID);
 

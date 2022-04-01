@@ -21,6 +21,7 @@
 #ifndef SCHEDULERDATABASE_H
 #define SCHEDULERDATABASE_H
 #include "src/commondatastruct.h"
+#include "src/scheduledatainfo.h"
 #include "gtest/gtest_prod.h"
 
 #include <QObject>
@@ -115,8 +116,71 @@ public:
      * @param notifyid              通知ID
      */
     void updateNotifyID(const Job &job,int notifyid);
+
+    /**
+     * @brief getJobTypeByTypeNo    根据类型编号获取日程类型信息
+     * @param iTypeNo               日程类型编号
+     * @param jobType               日程类型信息
+     * @return bool                 操作结果
+     */
+    bool getJobTypeByTypeNo(int iTypeNo, JobTypeInfo& jobType);
+    /**
+     * @brief getJobTypeList        获取日程类型列表
+     * @return
+     */
+    bool getJobTypeList(QList<JobTypeInfo> &lstJobType);
+    /**
+     * @brief addJobType            新增日程类型
+     * @param iTypeNo               日程类型编码
+     * @param strTypeName           日程类型名称
+     * @param iColorTypeNo          日程类型对应颜色编码
+     * @param iAuthority            日程类型读写权限
+     */
+    bool addJobType(const int &iTypeNo, const QString &strTypeName, const int &iColorTypeNo, int iAuthority);
+    /**
+     * @brief updateJobType         更新日程类型
+     * @param iTypeNo               日程类型编码
+     * @param strTypeName           日程类型名称
+     * @param iColorTypeNo          日程类型对应颜色编码
+     */
+    bool updateJobType(const int &iTypeNo, const QString &strTypeName, const int &iColorTypeNo);
+    /**
+     * @brief deleteJobType         删除日程类型
+     * @param strTypeNo             日程类型编码
+     */
+    bool deleteJobType(const int &iTypeNo);
+
+    /**
+     * @brief getColorTypeList      获取颜色类型列表
+     * @param lstColorType          颜色类型列表
+     * @return                      操作结果
+     */
+    bool getColorTypeList(QList<JobTypeColorInfo> &lstColorType);
+    /**
+     * @brief addColorType          新增颜色类型
+     * @param iTypeNo               颜色类型编码
+     * @param strColorHex           颜色16进制编码
+     * @param iAuthority            颜色类型读写权限
+     */
+    bool addColorType(const int &iTypeNo, const QString &strColorHex, const int iAuthority);
+    /**
+     * @brief updateColorType       更新颜色类型
+     * @param iTypeNo               颜色类型编码
+     * @param strColorHex           颜色16进制编码
+     */
+    bool updateColorType(const int &iTypeNo, const QString &strColorHex);
+    /**
+     * @brief deleteColorType       删除颜色类型
+     * @param iTypeNo               颜色类型编码
+     */
+    bool deleteColorType(const int &iTypeNo);
 private:
     void CreateTables();
+    /**
+     * @brief initJobTypeTables      初始化日程类型，添加默认日程类型、颜色类型
+     * @return                       无
+     */
+    void initJobTypeTables();
     void OpenSchedulerDatabase(const QString &dbpath);
     /**
      * @brief dateTimeToString      将时间转换为string格式

@@ -19,9 +19,12 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "scheduletypeeditdlg.h"
+#include "scheduledatamanage.h"
+
+#include <DFrame>
+
 #include <QLabel>
 #include <QRadioButton>
-#include <DFrame>
 
 ScheduleTypeEditDlg::ScheduleTypeEditDlg(QWidget *parent)
     : DDialog(parent)
@@ -111,6 +114,8 @@ void ScheduleTypeEditDlg::initView(){
         QAbstractButton *button = getButton(i);
         button->setFixedSize(170, 36);
     }
+    connect(this->getButton(0), &QPushButton::clicked, this, &ScheduleTypeEditDlg::slotBtnCancel);
+    connect(this->getButton(1), &QPushButton::clicked, this, &ScheduleTypeEditDlg::slotBtnNext);
 }
 
 void ScheduleTypeEditDlg::initData()
@@ -132,3 +137,36 @@ void ScheduleTypeEditDlg::slotEditTextChanged(const QString &text)
     Q_UNUSED(text)
     //文本编辑框中文本改变事件，待类型名合法性判断接口完成后完善
 }
+
+void ScheduleTypeEditDlg::slotBtnCancel()
+{
+    this->close();
+}
+
+void ScheduleTypeEditDlg::slotBtnNext()
+{
+    QString strName = m_lineEdit->text();
+    //1不能为空，2不能全空格，3不能重名
+
+    if(strName.isEmpty()){
+        //名称为空，返回
+        m_lineEdit->showAlertMessage(tr("The name already exists"));
+        return;
+    }
+    if(strName.trimmed().isEmpty()){
+        //名称为全空格，返回
+        m_lineEdit->showAlertMessage(tr("The name already exists"));
+        return;
+    }
+
+    if(JobTypeInfoManager::instance()->isJobTypeNameUsed(strName)){
+        //重名，返回
+        m_lineEdit->showAlertMessage(tr("The name already exists"));
+        return;
+    }
+    //m_colorSeletor->getSelectedColor();
+    //TODO：接口需要重新实现。
+
+
+}
+

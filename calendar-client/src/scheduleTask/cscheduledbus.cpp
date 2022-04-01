@@ -383,3 +383,127 @@ void CScheduleDBus::propertyChanged(const QDBusMessage &msg)
         emit jobsUpdate();
     }
 }
+
+//获取日程类型信息列表
+bool CScheduleDBus::GetJobTypeList(QString &strJson)
+{
+    QDBusPendingCall pCall = asyncCall(QStringLiteral("GetJobTypeList"));
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "GetJobTypeList err ," << reply;
+        return false;
+    }
+    QDBusReply<QString> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    strJson = jobs.value();
+    return  true;
+}
+//新增日程类型信息
+bool CScheduleDBus::AddJobType(QString strJson)
+{
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("CreateColorType"), {QVariant(strJson)});
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "AddJobType err ," << reply << " strJson:" << strJson;
+        return false;
+    }
+    QDBusReply<bool> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    return jobs.value();
+}
+//更新日程类型信息
+bool CScheduleDBus::UpdateJobType(QString strJson)
+{
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("UpdateJobType"), {QVariant(strJson)});
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "UpdateJobType err ," << reply << " strJson:" << strJson;
+        return  false;
+    }
+    QDBusReply<bool> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    return  jobs.value();
+}
+//删除日程类型信息
+bool CScheduleDBus::DeleteJobType(int jobTypeNo)
+{
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("DeleteJobType"), {QVariant(jobTypeNo)});
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "DeleteJobType err ," << reply << " jobTypeNo:" << jobTypeNo;
+        return false;
+    }
+    QDBusReply<bool> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    return jobs.value();
+}
+
+//获取颜色信息列表
+bool CScheduleDBus::GetJobTypeColorList(QString& strJson)
+{
+    QDBusPendingCall pCall = asyncCall(QStringLiteral("GetColorTypeList"));
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "GetColorTypeList err ," << reply;
+        return false;
+    }
+    QDBusReply<QString> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    strJson = jobs.value();
+    return  true;
+}
+//新增颜色信息
+bool CScheduleDBus::AddJobTypeColor(QString strJson)
+{
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("AddJobTypeColor"), {QVariant(strJson)});
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "AddJobTypeColor err ," << reply << " strJson:" << strJson;
+        return  false;
+    }
+    QDBusReply<bool> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    return  jobs.value();
+}
+//更新颜色信息
+bool CScheduleDBus::UpdateJobTypeColor(QString strJson)
+{
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("UpdateJobTypeColor"), {QVariant(strJson)});
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "UpdateJobTypeColor err ," << reply << " strJson:" << strJson;
+        return  false;
+    }
+    QDBusReply<bool> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    return  jobs.value();
+}
+//删除颜色信息
+bool CScheduleDBus::DeleteJobTypeColor(int colorTypeNo)
+{
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("DeleteJobTypeColor"), {QVariant(colorTypeNo)});
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "DeleteJobTypeColor err ," << reply << " colorTypeNo:" << colorTypeNo;
+        return  false;
+    }
+    QDBusReply<bool> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    return  jobs.value();
+}

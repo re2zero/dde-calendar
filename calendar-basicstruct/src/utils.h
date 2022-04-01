@@ -33,6 +33,7 @@ public:
     static QDateTime fromconvertData(QString str);
     static QDateTime fromconvertiIGData(QString str);
     static QJsonObject JobToObject(const Job &job);
+    static bool StringToObject(const QString &jsonStr, QJsonArray &);
 };
 
 #endif // UTILS_H

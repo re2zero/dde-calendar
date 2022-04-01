@@ -33,6 +33,8 @@
 #include <QShortcut>
 #include <QVBoxLayout>
 #include <QKeyEvent>
+#include <QPainter>
+#include <QBitmap>
 
 const int  dialog_width = 468;      //对话框宽度
 
@@ -76,7 +78,7 @@ CScheduleDlg::~CScheduleDlg()
 void CScheduleDlg::setData(const ScheduleDataInfo &info)
 {
     m_ScheduleDataInfo = info;
-    m_typeComBox->setCurrentIndex(info.getType() - 1);
+    m_typeComBox->setCurrentJobTypeNo(info.getType());
     if (m_type == 1) {
         //如果为新建则设置为提示信息
         m_textEdit->setPlaceholderText(info.getTitleName());
@@ -180,8 +182,10 @@ bool CScheduleDlg::clickOkBtn()
         return false;
     }
     //如果类型选项不为负数则设置日程类型
+//    if (m_typeComBox->currentIndex() >= 0)
+//        _newSchedule.setType(m_typeComBox->currentIndex() + 1);
     if (m_typeComBox->currentIndex() >= 0)
-        _newSchedule.setType(m_typeComBox->currentIndex() + 1);
+        _newSchedule.setType(m_typeComBox->getCurrentJobTypeNo());
 
     if (beginDateTime > endDateTime) {
         DCalendarDDialog *prompt = new DCalendarDDialog(this);
@@ -702,25 +706,14 @@ void CScheduleDlg::initUI()
         m_typeLabel->setFont(mlabelF);
         m_typeLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         m_typeLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
-        m_typeComBox = new DComboBox(this);
+        //m_typeComBox = new DComboBox(this);
+        m_typeComBox = new JobTypeComboBox(this);
         //设置对象名称和辅助显示名称
         m_typeComBox->setObjectName("ScheduleTypeCombobox");
         m_typeComBox->setAccessibleName("ScheduleTypeCombobox");
         m_typeComBox->setFixedSize(350, item_Fixed_Height);
         m_typeComBox->setIconSize(QSize(24, 24));
-        m_typeComBox->insertItem(0,
-                                 QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
-                                       .scaled(QSize(24, 24) * devicePixelRatioF())),
-                                 tr("Work"));
-        m_typeComBox->insertItem(1,
-                                 QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_life.svg")
-                                       .scaled(QSize(24, 24) * devicePixelRatioF())),
-                                 tr("Life"));
-        m_typeComBox->insertItem(
-            2,
-            QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_other.svg")
-                  .scaled(QSize(24, 24) * devicePixelRatioF())),
-            tr("Other"));
+        initJobTypeComboBox();//todo
         typelayout->addWidget(m_typeLabel);
         typelayout->addWidget(m_typeComBox);
         typelayout->addStretch();
@@ -1086,7 +1079,85 @@ void CScheduleDlg::initDateEdit()
     m_endDateEdit->setMaximumDate(QDate(DDECalendar::QueryLatestYear, 12, 31));
     return;
 }
+void CScheduleDlg::initJobTypeComboBox()
+{
+#if 0
+    QString strJosn; //typeno, typename, colorhex
 
+    strJosn = "[{\"JobTypeNo\":\"1\",\"JobTypeName\":\"Work\",\"ColorTypeNo\":\"1\",\"ColorHex\":\"f00\",\"Authority\":\"1\"},       \
+                {\"JobTypeNo\":\"2\",\"JobTypeName\":\"Life\",\"ColorTypeNo\":\"2\",\"ColorHex\":\"0f0\",\"Authority\":\"1\"},       \
+                {\"JobTypeNo\":\"3\",\"JobTypeName\":\"Other\",\"ColorTypeNo\":\"3\",\"ColorHex\":\"00f\",\"Authority\":\"1\"},      \
+                {\"JobTypeNo\":\"4\",\"JobTypeName\":\"Study\",\"ColorTypeNo\":\"4\",\"ColorHex\":\"ff0\",\"Authority\":\"7\"},      \
+                {\"JobTypeNo\":\"5\",\"JobTypeName\":\"Games\",\"ColorTypeNo\":\"5\",\"ColorHex\":\"f0f\",\"Authority\":\"7\"}]";
+
+    m_typeComBox->addJobType(strJosn);
+#endif
+    JobTypeInfoManager::instance()->updateInfo();//1.新建日程时更新 2.管理界面更新  =====>>  TODO：2种情况更新即可：1.程序初始化时，更新 2.日程类型增删改时
+    m_typeComBox->updateJobType();
+    return;
+#if 0
+    JobTypeInfo::jsonStrToJobTypeInfoList(strJosn, m_lstJobType);
+    m_typeComBox->setCurrentJobTypeNo(1);
+
+    for (int i = 0;i < m_lstJobType.size();i++) {
+        initJobTypeComboBoxItem(m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
+    }
+    for (int i = 0;i < m_lstJobType.size();i++) {
+        initJobTypeComboBoxItem(m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
+    }
+    for (int i = 0;i < m_lstJobType.size();i++) {
+        initJobTypeComboBoxItem(m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
+    }
+    for (int i = 0;i < m_lstJobType.size();i++) {
+        initJobTypeComboBoxItem(m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
+    }
+
+    QFrame *viewContainer = m_typeComBox->findChild<QFrame *>();
+    if (viewContainer) {
+        //移动前先隐藏
+        //viewContainer->hide();
+        //如果显示视图容器则设置高度
+        viewContainer->setFixedHeight(500);
+        //设置最大高度
+        viewContainer->setMaximumHeight(500 + 1);
+        //获取combobox底部坐标
+        QPoint showPoint = mapToGlobal(this->rect().bottomLeft());
+
+        //将视图容器移动到combobox的底部
+        viewContainer->move(showPoint.x(), showPoint.y());
+        viewContainer->setStyleSheet("");
+        DDateEdit *btn = new DDateEdit();
+        //viewContainer->setLayout();
+
+        //QVBoxLayout *mLayout = qobject_cast<QVBoxLayout *>(viewContainer->layout());
+        //mLayout->addWidget(btn);
+        viewContainer->layout()->addWidget(btn);
+
+        /*
+    fCenter->setFrameShape(QFrame::NoFrame);
+    fCenter->setLayout(mLayout);
+*/
+        //显示
+        //viewContainer->show();
+    }
+    return;
+#endif
+}
+
+void CScheduleDlg::initJobTypeComboBoxItem(QString strColorHex,QString strTypeName)
+{
+    QSize size(24, 24);
+    QPixmap pixmap(size);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.setRenderHints(QPainter::Antialiasing );
+    painter.setBrush(QColor("#" + strColorHex));
+    painter.setPen(Qt::NoPen);
+    painter.drawRoundedRect(0, 0, 24, 24, 8, 8);//8 = (24 - 16) / 2 + 4
+
+    m_typeComBox->addItem(QIcon(pixmap),tr(strTypeName.toLocal8Bit()));//
+    m_typeComBox->setIconSize(QSize(16,16));
+}
 void CScheduleDlg::initRmindRpeatUI()
 {
     if (m_ScheduleDataInfo.getAllDay()) {

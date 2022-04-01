@@ -20,6 +20,7 @@
 */
 #include "calendarscheduler.h"
 #include "src/commondatastruct.h"
+#include "src/scheduledatainfo.h"
 #include "src/utils.h"
 #include "lunarmanager.h"
 #include "pinyin/pinyinsearch.h"
@@ -1020,4 +1021,104 @@ quint32 CalendarScheduler::GetFestivalId(const QString &name)
         nextFestivalJobId--;
     }
     return id;
+}
+
+
+/**
+ * @brief CreateJobType    创建日程类型
+ * param  jobTypeInfo      json格式的日程类型信息
+ * return bool             返回操作结果
+ */
+bool CalendarScheduler::CreateJobType(const QString &jobTypeInfo)
+{
+    JobTypeInfo jobType;
+    if(!JobTypeInfo::jsonStrToJobTypeInfo(jobTypeInfo, jobType)){
+        return false;
+    }
+    return m_database->addJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorTypeNo(), jobType.getAuthority());
+}
+/**
+ * @brief DeleteJobType    删除日程类型
+ * param  typeNo           日程类型编号
+ * return bool             返回操作结果
+ */
+bool CalendarScheduler::DeleteJobType(const int &typeNo)
+{
+    return m_database->deleteJobType(typeNo);
+}
+/**
+ * @brief UpdateJobType    更新日程类型
+ * param  jobTypeInfo      json格式的日程类型信息
+ * return bool             返回操作结果
+ */
+bool CalendarScheduler::UpdateJobType(const QString &jobTypeInfo)
+{
+    JobTypeInfo jobType;
+    if(!JobTypeInfo::jsonStrToJobTypeInfo(jobTypeInfo, jobType)){
+        return false;
+    }
+    return m_database->updateJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorTypeNo());
+}
+/**
+ * @brief GetJobTypeList   获取日程类型字符串
+ * return bool             返回查询结果
+ */
+QString CalendarScheduler::GetJobTypeList()
+{
+    QString strJson;
+    QList<JobTypeInfo> lstJobType;
+    if(m_database->getJobTypeList(lstJobType)){
+        JobTypeInfo::jobTypeInfoListToJosnString(lstJobType, strJson);
+    }
+    return strJson;
+}
+/**
+ * @brief CreateColorType  创建颜色类型
+ * param  colorTypeInfo    json格式的颜色类型信息
+ * return bool             返回操作结果
+ */
+bool CalendarScheduler::CreateColorType(const QString &strColorTypeInfo)
+{
+    JobTypeColorInfo colorType;
+
+    if(!JobTypeInfo::jsonStrToColorTypeInfo(strColorTypeInfo,colorType)){
+        return false;
+    }
+    return m_database->addColorType(colorType.getTypeNo(), colorType.getColorHex(), colorType.getAuthority());
+}
+/**
+ * @brief DeleteColorType  删除颜色类型
+ * param  typeNo           颜色类型编号
+ * return bool             返回操作结果
+ */
+bool CalendarScheduler::DeleteColorType(const int &typeNo)
+{
+    return m_database->deleteColorType(typeNo);
+}
+/**
+ * @brief UpdateColorType  更新日程类型
+ * param  colorTypeInfo    json格式的颜色类型信息
+ * return bool             返回操作结果
+ */
+bool CalendarScheduler::UpdateColorType(const QString &strColorTypeInfo)
+{
+    JobTypeColorInfo colorType;
+
+    if(!JobTypeInfo::jsonStrToColorTypeInfo(strColorTypeInfo,colorType)){
+        return false;
+    }
+    return m_database->updateColorType(colorType.getTypeNo(), colorType.getColorHex());
+}
+/**
+ * @brief GetColorTypeList 获取日程类型字符串
+ * return bool             返回查询结果
+ */
+QString CalendarScheduler::GetColorTypeList()
+{
+    QString strJson = "";
+    QList<JobTypeColorInfo> lstColorType;
+    if(m_database->getColorTypeList(lstColorType)){
+        JobTypeInfo::colorTypeInfoListToJosnString(lstColorType, strJson);
+    }
+    return strJson;
 }

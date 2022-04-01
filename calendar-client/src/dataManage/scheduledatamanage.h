@@ -18,6 +18,7 @@
  */
 #ifndef SCHEDULEDATAMANAGE_H
 #define SCHEDULEDATAMANAGE_H
+#include "src/scheduledatainfo.h"
 
 #include <DGuiApplicationHelper>
 
@@ -66,5 +67,49 @@ private:
     QVector<CSchedulesColor> m_vScheduleColor;
     int m_theme = 0;
     static CScheduleDataManage *m_vscheduleDataManage;
+};
+
+class JobTypeInfoManager{
+private:
+    JobTypeInfoManager();
+public:
+    static JobTypeInfoManager *instance();
+    /**
+     * @brief updateInfo  更新信息
+     */
+    void updateInfo();
+    //查询列表、返回列表
+    QList<JobTypeInfo> getJobTypeList()
+    {
+        return m_lstJobType;
+    }
+
+    QList<JobTypeColorInfo> getJobTypeColorList()
+    {
+        return  m_lstJobTypeColor;
+    }
+
+    /**
+     * @brief isSysJobTypeColor   是否是默认颜色
+     * @param colorTypeNo         颜色类型编号
+     * @return                    是否是默认颜色
+     */
+    bool isSysJobTypeColor(int colorTypeNo);
+    /**
+     * @brief getSysJobTypeColor  获取指定编号的默认颜色
+     * @param colorTypeNo         颜色类型编号
+     * @param jobTypeColorInfo    颜色信息
+     * @return                    操作结果
+     */
+    bool getSysJobTypeColor(int colorTypeNo, JobTypeColorInfo& jobTypeColorInfo);
+    //查询日程类型
+    bool getJobTypeByNo(int iNo, JobTypeInfo& jobType);
+
+    //查询日程类型名称是否重复
+    bool isJobTypeNameUsed(QString strName);
+
+private:
+    QList<JobTypeInfo> m_lstJobType;
+    QList<JobTypeColorInfo> m_lstJobTypeColor;
 };
 #endif // SCHEDULEVIEW_H

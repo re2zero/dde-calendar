@@ -19,6 +19,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "colorseletorwidget.h"
+#include "scheduledatamanage.h"
+#include "src/scheduledatainfo.h"
 #include <QPushButton>
 
 ColorSeletorWidget::ColorSeletorWidget(QWidget *parent) : QWidget(parent)
@@ -38,15 +40,11 @@ void ColorSeletorWidget::initColorButton(int index)
 {
     //留着测试使用，待与后台数据联调时再处理
     reset();
-    addColor(QColor("#FF5E97"));
-    addColor(QColor("#FF9436"));
-    addColor(QColor("#FFDC00"));
-    addColor(QColor("#5BDD80"));
-    addColor(QColor("#00B99B"));
-    addColor(QColor("#4293FF"));
-    addColor(QColor("#5D51FF"));
-    addColor(QColor("#A950FF"));
-    addColor(QColor("#717171"));
+    JobTypeInfoManager::instance()->updateInfo();
+    QList<JobTypeColorInfo> lstColorInfo = JobTypeInfoManager::instance()->getJobTypeColorList();
+    for (JobTypeColorInfo& var: lstColorInfo) {
+        addColor(var.getColorHex(), var.getAuthority() == 1 ? TypeSystem : TypeUser);
+    }
 
     if (index >= 0 && index < m_colorGroup->buttons().size()) {
         m_colorGroup->buttons().at(index)->click();
@@ -65,9 +63,9 @@ void ColorSeletorWidget::reset()
     }
 }
 
-void ColorSeletorWidget::addColor(const QColor& color, const QString& info)
+void ColorSeletorWidget::addColor(const QColor& color, const ColorType colorType, const QString& info)
 {
-    ColorEntity cEntity = {color, info, TypeSystem};
+    ColorEntity cEntity = {color, info, colorType};
     addColor(cEntity);
 }
 

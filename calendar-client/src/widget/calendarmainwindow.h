@@ -28,6 +28,8 @@
 #include <DMainWindow>
 #include <DSearchEdit>
 #include <DToolButton>
+#include <DMenu>
+#include <DSettingsDialog>
 
 #include <QStackedLayout>
 #include <QPropertyAnimation>
@@ -93,6 +95,7 @@ private slots:
     void slotSwitchView(const int viewIndex);
     //新建日程
     void slotNewSchedule();
+    void slotOpenSettingDialog();
     //快捷键删除选中日程
     void slotDeleteitem();
     //设置最大大小
@@ -119,6 +122,7 @@ private:
     QPropertyAnimation *m_animation = nullptr;
     QTimer *m_currentDateUpdateTimer = nullptr;
     DIconButton *m_newScheduleBtn {nullptr}; //全局的新建日程按钮
+    DSettingsDialog *m_dsdSetting {nullptr};
     //日历打开默认显示视图
     int m_defaultIndex;
     bool m_setButtonFocus {false};

@@ -364,3 +364,158 @@ void CScheduleOperation::changeRepetitionRule(ScheduleDataInfo &newinfo, const S
     }
     }
 }
+
+/**
+ * @brief CScheduleOperation::createJobType      创建日程类型
+ * @param newinfo
+ * @param oldinfo
+ */
+bool CScheduleOperation::createJobType(const JobTypeInfo &jobTypeInfo)//新增时，颜色可能是：自定义/默认类型。以“自定义颜色编码默认为0”来区分.
+{
+    //创建日程
+    QString strJson = "";
+    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
+    m_DBusManager->AddJobType(strJson);// no:10,hex:#123
+    return true;
+
+
+    //以“自定义颜色编码默认为0”来区分.
+}
+
+/**
+ * @brief CScheduleOperation::updateJobType      修改日程类型
+ * @param oldJobTypeInfo
+ * @param newJobTypeInfo
+ * 只能更新名称和颜色
+ * 颜色可能是：自定义-自定义、自定义-默认类型、默认类型-默认类型
+ */
+bool CScheduleOperation::updateJobType(const JobTypeInfo &oldJobTypeInfo, const JobTypeInfo &newJobTypeInfo)
+{
+    bool bRet = true;
+
+    if(!JobTypeInfo::isJobTypeInfoUpdated(oldJobTypeInfo, newJobTypeInfo)){
+        return bRet;
+    }
+
+    //1.比较颜色编号，如果变更则
+    int iOldColorTypeNo = oldJobTypeInfo.getColorTypeNo();
+    int iNewColorTypeNo = newJobTypeInfo.getColorTypeNo();
+    if( iOldColorTypeNo != iNewColorTypeNo){
+        if(!JobTypeInfoManager::instance()->isSysJobTypeColor(iOldColorTypeNo)){
+            //删除旧自定义颜色
+            deleteColorType(iOldColorTypeNo);
+        }
+    }
+    else if( oldJobTypeInfo.getColorHex() != newJobTypeInfo.getColorHex()){
+        //编码未变而颜色hex改变时，更新自定义颜色
+        JobTypeColorInfo colorTypeInfo;
+        //getSysJobTypeColor(int colorTypeNo, JobTypeColorInfo& jobTypeColorInfo)
+        if(JobTypeInfoManager::instance()->getSysJobTypeColor(iNewColorTypeNo, colorTypeInfo)){
+            updateColorType(colorTypeInfo);
+        }
+    }
+
+    //更新名称和颜色编号
+    if( (oldJobTypeInfo.getJobTypeName() != newJobTypeInfo.getJobTypeName())
+     || (iOldColorTypeNo != iNewColorTypeNo)){
+        //更新日程类型
+        updateJobType(newJobTypeInfo);
+    }
+    return bRet;
+}
+/**
+ * @brief CScheduleOperation::updateJobType      修改日程类型
+ * @param jobTypeInfo
+ * 只能更新名称和颜色编号
+ */
+bool CScheduleOperation::updateJobType(const JobTypeInfo &jobTypeInfo)
+{
+    //修改日程
+    QString strJson = "";
+    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
+    m_DBusManager->UpdateJobType(strJson);
+    return true;
+}
+
+/**
+ * @brief CScheduleOperation::getJobTypeList      获取日程类型列表
+ * @param lstJobTypeInfo
+ * @return 操作结果
+ */
+bool CScheduleOperation::getJobTypeList(QList<JobTypeInfo> &lstJobTypeInfo)
+{
+    QString strJson;
+    if(!m_DBusManager->GetJobTypeList(strJson)){
+        return false;
+    }
+    JobTypeInfo::jsonStrToJobTypeInfoList(strJson, lstJobTypeInfo);
+    return true;
+}
+
+/**
+ * @brief CScheduleOperation::deleteJobType      删除日程类型
+ * @param iJobTypeNo
+ * @return 操作结果
+ */
+bool CScheduleOperation::deleteJobType(const int iJobTypeNo)
+{
+    //删除日程类型
+    m_DBusManager->DeleteJobType(iJobTypeNo);
+    return true;
+}
+
+/**
+ * @brief CScheduleOperation::createColorType      创建颜色类型
+ * @param colorTypeInfo
+ * 只能更新颜色16进制编码
+ */
+bool CScheduleOperation::createColorType(const JobTypeColorInfo &colorTypeInfo)
+{
+    //创建颜色
+    QString strJson = "";
+    JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson);
+    m_DBusManager->AddJobTypeColor(strJson);
+    return true;
+}
+
+/**
+ * @brief CScheduleOperation::updateColorType      更新颜色类型
+ * @param colorTypeInfo
+ * 只能更新颜色16进制编码
+ */
+bool CScheduleOperation::updateColorType(const JobTypeColorInfo &colorTypeInfo)
+{
+    //修改颜色
+    QString strJson = "";
+    JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson);
+    m_DBusManager->UpdateJobTypeColor(strJson);
+    return true;
+}
+
+/**
+ * @brief CScheduleOperation::getColorTypeList      获取颜色类型列表
+ * @param lstColorTypeInfo
+ * @return 操作结果
+ */
+bool CScheduleOperation::getColorTypeList(QList<JobTypeColorInfo> &lstColorTypeInfo)
+{
+    QString strJson;
+    if(!m_DBusManager->GetJobTypeColorList(strJson)){
+        return false;
+    }
+    JobTypeInfo::jsonStrToColorTypeInfoList(strJson, lstColorTypeInfo);
+    return true;
+}
+
+/**
+ * @brief CScheduleOperation::deleteColorType      删除颜色类型
+ * @param iColorTypeNo
+ * @return 操作结果
+ */
+bool CScheduleOperation::deleteColorType(const int iColorTypeNo)
+{
+    //删除日程类型
+    m_DBusManager->DeleteJobTypeColor(iColorTypeNo);
+    return true;
+}
+

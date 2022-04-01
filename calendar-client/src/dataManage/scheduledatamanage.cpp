@@ -17,6 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scheduledatamanage.h"
+#include "cscheduleoperation.h"
+
+#include <QJsonArray>
+#include <QJsonDocument>
 
 CScheduleDataManage *CScheduleDataManage::m_vscheduleDataManage = new CScheduleDataManage;
 
@@ -404,4 +408,73 @@ CScheduleDataManage::CScheduleDataManage()
 
 CScheduleDataManage::~CScheduleDataManage()
 {
+}
+
+void JobTypeInfoManager::updateInfo()
+{
+    CScheduleOperation so;
+    so.getJobTypeList(this->m_lstJobType);
+    so.getColorTypeList(this->m_lstJobTypeColor);
+    return;
+}
+JobTypeInfoManager::JobTypeInfoManager()               //私有静态构造函数
+{
+}
+JobTypeInfoManager * JobTypeInfoManager::instance()
+{
+    static JobTypeInfoManager instance;             //局部静态变量
+    return &instance;
+}
+/**
+ * @brief isSysJobTypeColor   是否是默认颜色
+ * @param colorTypeNo         颜色类型编号
+ * @return                    是否是默认颜色
+ */
+bool JobTypeInfoManager::isSysJobTypeColor(int colorTypeNo)
+{
+    for(JobTypeColorInfo jobTypeColorInfo: m_lstJobTypeColor){
+        if((jobTypeColorInfo.getTypeNo() == colorTypeNo) && (jobTypeColorInfo.getAuthority() == 1)){//设定1为展示权限
+            return true;
+        }
+    }
+    return  false;
+}
+/**
+ * @brief getSysJobTypeColor  获取指定编号的默认颜色
+ * @param colorTypeNo         颜色类型编号
+ * @param jobTypeColorInfo    颜色信息
+ * @return                    操作结果
+ */
+bool JobTypeInfoManager::getSysJobTypeColor(int colorTypeNo, JobTypeColorInfo& jobTypeColorInfo)
+{
+    for(JobTypeColorInfo _jobTypeColorInfo: m_lstJobTypeColor){
+        if((_jobTypeColorInfo.getTypeNo() == colorTypeNo) && (_jobTypeColorInfo.getAuthority() == 1)){//设定1为展示权限
+            jobTypeColorInfo = _jobTypeColorInfo;
+            return true;
+        }
+    }
+    return  false;
+}
+
+//查询日程类型
+bool JobTypeInfoManager::getJobTypeByNo(int iNo, JobTypeInfo& jobType)
+{
+    for (JobTypeInfo &jb : m_lstJobType) {
+        if(jb.getJobTypeNo() == iNo){
+            jobType = jb;
+            return true;
+        }
+    }
+    return false;
+}
+
+//查询日程类型名称是否重复
+bool JobTypeInfoManager::isJobTypeNameUsed(QString strName)
+{
+    for (JobTypeInfo &jb : m_lstJobType) {
+        if(jb.getJobTypeName() == strName){
+            return true;
+        }
+    }
+    return false;
 }

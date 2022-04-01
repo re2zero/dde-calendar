@@ -19,9 +19,10 @@
 #ifndef SCHEDULEDLG_H
 #define SCHEDULEDLG_H
 
-#include "src/scheduledatainfo.h"
+//#include "src/scheduledatainfo.h"
 #include "dcalendarddialog.h"
 #include "cdateedit.h"
+#include "jobtypecombobox.h"
 
 #include <DCheckBox>
 #include <DDateEdit>
@@ -113,6 +114,8 @@ private:
     void initUI();
     void initConnection();
     void initDateEdit();
+    void initJobTypeComboBox();
+    void initJobTypeComboBoxItem(QString colorHex,QString strTypeName);
     void initRmindRpeatUI();
     /**
      * @brief setTheMe  根据主题type设置颜色
@@ -137,7 +140,8 @@ private:
 
 private:
     QLabel *m_typeLabel = nullptr;
-    DComboBox *m_typeComBox = nullptr;
+    //DComboBox *m_typeComBox = nullptr;
+    JobTypeComboBox *m_typeComBox = nullptr;
     QLabel *m_contentLabel = nullptr;
     DTextEdit *m_textEdit = nullptr;
     QLabel *m_beginTimeLabel = nullptr;
@@ -174,6 +178,7 @@ private:
 private:
     //日程
     ScheduleDataInfo m_ScheduleDataInfo;
+    QList<JobTypeInfo> m_lstJobType;
     int m_type; // 1新建 0 编辑日程
     QDateTime m_currentDate;
     QDateTime m_EndDate;

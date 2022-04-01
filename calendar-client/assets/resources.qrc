@@ -100,5 +100,8 @@
         <file>resources/DynamicIcon/week5.svg</file>
         <file>resources/DynamicIcon/week6.svg</file>
         <file>resources/DynamicIcon/week7.svg</file>
+        <file>resources/icon/create.svg</file>
+        <file>resources/icon/delete.svg</file>
+        <file>resources/icon/edit.svg</file>
     </qresource>
 </RCC>

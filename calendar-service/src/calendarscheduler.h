@@ -21,7 +21,7 @@
 #ifndef CALENDARSCHEDULER_H
 #define CALENDARSCHEDULER_H
 #include "dbmanager/schedulerdatabase.h"
-#include "src/commondatastruct.h"
+#include "src/scheduledatainfo.h"
 
 #include <QObject>
 #include <QMutex>
@@ -49,6 +49,53 @@ public:
     QString QueryJobsWithLimit(const QString &params, qint32 maxNum);
     QString QueryJobsWithRule(const QString &params, const QString &rules);
 
+    //CalendarScheduler: jobtype & color
+    /**
+     * @brief CreateJobType    创建日程类型
+     * param  jobTypeInfo      json格式的日程类型信息
+     * return bool             返回操作结果
+     */
+    bool CreateJobType(const QString &jobTypeInfo);//
+    /**
+     * @brief DeleteJobType    删除日程类型
+     * param  typeNo           日程类型编号
+     * return bool             返回操作结果
+     */
+    bool DeleteJobType(const int &typeNo);
+    /**
+     * @brief UpdateJobType    更新日程类型
+     * param  jobTypeInfo      json格式的日程类型信息
+     * return bool             返回操作结果
+     */
+    bool UpdateJobType(const QString &jobTypeInfo);
+    /**
+     * @brief GetJobTypeList   获取日程类型字符串
+     * return bool             返回查询结果
+     */
+    QString GetJobTypeList();
+    /**
+     * @brief CreateColorType  创建颜色类型
+     * param  colorTypeInfo    json格式的颜色类型信息
+     * return bool             返回操作结果
+     */
+    bool CreateColorType(const QString &colorTypeInfo);
+    /**
+     * @brief DeleteColorType  删除颜色类型
+     * param  typeNo           颜色类型编号
+     * return bool             返回操作结果
+     */
+    bool DeleteColorType(const int &typeNo);
+    /**
+     * @brief UpdateColorType  更新日程类型
+     * param  colorTypeInfo    json格式的颜色类型信息
+     * return bool             返回操作结果
+     */
+    bool UpdateColorType(const QString &colorTypeInfo);
+    /**
+     * @brief GetColorTypeList 获取日程类型字符串
+     * return bool             返回查询结果
+     */
+    QString GetColorTypeList();
 
     void remindJob(const qint64 id,const qint64 recurID);
 
@@ -85,7 +132,7 @@ private:
     QList<stJobArr> FilterDateJobsWrap(const QList<stJobArr> &arrList, const QDateTime &start, const QDateTime &end);
 
     Job josnStringToJob(const QString &str);
-signals:
+    signals:
     void NotifyJobChange(const QList<Job> &jobs);
     void NotifyUpdateRemindJobs(const QList<Job> &jobs);
     void JobsUpdated(const QList<qlonglong> &Ids);
