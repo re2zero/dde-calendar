@@ -19,6 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cdateedit.h"
+#include "lunarcalendarwidget.h"
 
 #include <QCoreApplication>
 #include <QLineEdit>
@@ -58,6 +59,8 @@ void CDateEdit::setLunarCalendarStatus(bool status)
     m_showLunarCalendar = status;
     //刷新时间显示信息
     slotDateEidtInfo(date());
+    //更新日历显示类型
+    updateCalendarWidget();
 }
 
 void CDateEdit::setLunarTextFormat(QTextCharFormat format)
@@ -70,6 +73,13 @@ void CDateEdit::setLunarTextFormat(QTextCharFormat format)
 QTextCharFormat CDateEdit::getsetLunarTextFormat()
 {
     return m_lunarTextFormat;
+}
+
+void CDateEdit::setCalendarPopup(bool enable)
+{
+    QDateEdit::setCalendarPopup(enable);
+    //更新日历显示类型
+    updateCalendarWidget();
 }
 
 void CDateEdit::slotDateEidtInfo(const QDate &date)
@@ -212,6 +222,19 @@ void CDateEdit::setLineEditTextFormat(QLineEdit* lineEdit, const QList<QTextLayo
     QInputMethodEvent event(QString(), attributes);
 
     QCoreApplication::sendEvent(lineEdit, &event);
+}
+
+void CDateEdit::updateCalendarWidget()
+{
+    if(calendarPopup()) {
+        //setCalendarWidget:
+        //The editor does not automatically take ownership of the calendar widget.
+        if(m_showLunarCalendar) {
+            setCalendarWidget(new LunarCalendarWidget(this));
+        } else {
+            setCalendarWidget(new QCalendarWidget(this));
+        }
+    }
 }
 
 

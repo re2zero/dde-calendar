@@ -66,6 +66,12 @@ public:
      * @return
      */
     QTextCharFormat getsetLunarTextFormat();
+    /**
+     * @brief setCalendarPopup
+     * 是否弹出日历选择界面
+     * @param enable
+     */
+    void setCalendarPopup(bool enable);
 
 signals:
 
@@ -85,7 +91,8 @@ private:
     QString getLunarName(const QDate&);
     //设置文本样式
     void setLineEditTextFormat(QLineEdit* lineEdit, const QList<QTextLayout::FormatRange>& formats);
-
+    //更新日历显示类型
+    void updateCalendarWidget();
 private:
     QString m_format = "";      //时间格式化格式
     bool m_showLunarCalendar = false;    //农历显示状态 true：显示 false：不显示
