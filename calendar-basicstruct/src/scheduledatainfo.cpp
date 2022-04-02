@@ -276,6 +276,16 @@ void ScheduleDataInfo::registerMetaType()
     qRegisterMetaType<ScheduleDataInfo>("ScheduleDataInfo");
 }
 
+bool ScheduleDataInfo::getIsLunar() const
+{
+    return m_isLunar;
+}
+
+void ScheduleDataInfo::setIsLunar(bool isLunar)
+{
+    m_isLunar = isLunar;
+}
+
 /**
  * @brief setRepetitionRule     设置重复规则
  * @param rule
@@ -362,6 +372,7 @@ QString ScheduleDataInfo::ScheduleToJsonStr(const ScheduleDataInfo &scheduleJson
         _ignoreJsonArray.append(DateTimeToStringDate(scheduleJsonData.getIgnoreTime().at(i)));
     }
     _scheduleJsonObject.insert("Ignore", _ignoreJsonArray);
+    _scheduleJsonObject.insert("IsLunar", scheduleJsonData.getIsLunar());
     // 构建 JSON 文档
     QJsonDocument _scheduleJsonDocument;
     _scheduleJsonDocument.setObject(_scheduleJsonObject);
@@ -428,6 +439,10 @@ ScheduleDataInfo ScheduleDataInfo::JsonToSchedule(const QJsonObject &scheduleJso
             _ignoreDateVector.append(StringDateToDateTime(subObj));
         }
         _resultSchedule.setIgnoreTime(_ignoreDateVector);
+    }
+    //是否为农历日程
+    if (scheduleJsonObject.contains("IsLunar")) {
+        _resultSchedule.setIsLunar(scheduleJsonObject.value("IsLunar").toBool());
     }
     return _resultSchedule;
 }
@@ -585,6 +600,7 @@ QDebug operator<<(QDebug debug, const ScheduleDataInfo &scheduleJsonData)
           << QString("RRule:") << scheduleJsonData.getScheduleRRule() << QString(",")
           << QString("Remind:") << scheduleJsonData.getScheduleRemind() << QString(",")
           << QString("RecurID:") << scheduleJsonData.getRecurID()
+          << QString("IsLunar:") << scheduleJsonData.getIsLunar()
           << ")";
     return debug;
 }

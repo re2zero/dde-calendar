@@ -36,6 +36,13 @@ typedef struct _lunarInfo {
     int LunarDay = 0; // 农历日
     int MonthZhi = 0; // 农历日所在的月的地支
     int SolarTerm = 0; // 0~23 二十四节气 ，-1 非节气
+    bool operator==(const _lunarInfo &info)
+    {
+        return this->LunarMonthName == info.LunarMonthName
+               && this->LunarYear == info.LunarYear
+               && this->LunarDay == info.LunarDay
+               && this->IsLeap == info.IsLeap;
+    };
 } lunarInfo;
 
 typedef struct _day {

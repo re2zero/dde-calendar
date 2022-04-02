@@ -24,6 +24,7 @@
 #include "lunarmanager.h"
 #include "pinyin/pinyinsearch.h"
 #include "jobremindmanager.h"
+#include "lunardateinfo.h"
 
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -69,9 +70,9 @@ void CalendarScheduler::initConnections()
     connect(m_jobremindmanager, &JobRemindManager::ModifyJobRemind, this, &CalendarScheduler::OnModifyJobRemind);
     connect(this, &CalendarScheduler::NotifyJobChange, m_jobremindmanager, &JobRemindManager::NotifyJobsChanged);
     connect(this, &CalendarScheduler::signalRemindJob, m_jobremindmanager, &JobRemindManager::RemindJob);
-    connect(this,&CalendarScheduler::signalNotifyMsgHanding,m_jobremindmanager,&JobRemindManager::notifyMsgHanding);
-    connect(m_jobremindmanager,&JobRemindManager::saveNotifyID,this,&CalendarScheduler::saveNotifyID);
-    connect(this,&CalendarScheduler::signalCloseNotification,m_jobremindmanager,&JobRemindManager::closeNotification);
+    connect(this, &CalendarScheduler::signalNotifyMsgHanding, m_jobremindmanager, &JobRemindManager::notifyMsgHanding);
+    connect(m_jobremindmanager, &JobRemindManager::saveNotifyID, this, &CalendarScheduler::saveNotifyID);
+    connect(this, &CalendarScheduler::signalCloseNotification, m_jobremindmanager, &JobRemindManager::closeNotification);
 }
 
 QString CalendarScheduler::GetType(qint64 id)
@@ -115,7 +116,7 @@ void CalendarScheduler::DeleteJob(qint64 id)
     m_database->DeleteJob(id);
     //获取通知弹框id
     QVector<int> notifyIDVector = m_database->getNotifyID(id);
-    foreach (auto notifyID,notifyIDVector) {
+    foreach (auto notifyID, notifyIDVector) {
         emit signalCloseNotification(static_cast<quint32>(notifyID));
     }
     QList<qlonglong> ids;
@@ -188,7 +189,7 @@ void CalendarScheduler::UpdateJob(const QString &jobInfo)
                 //如果生成的开始时间列表内不包含提醒日程的开始时间，则表示该重复日程被删除
                 if (!jobStartDateTime.contains(rjob.Start)) {
                     int notifyID = m_database->getNotifyID(rjob.ID, rjob.RecurID);
-                    JobIn jobin{ rjob.ID , rjob.RecurID };
+                    JobIn jobin {rjob.ID, rjob.RecurID};
                     //如果改日程已经提醒，且通知弹框未操作
                     if (notifyID >= 0) {
                         emit signalCloseNotification(static_cast<quint32>(notifyID));
@@ -201,19 +202,19 @@ void CalendarScheduler::UpdateJob(const QString &jobInfo)
                 }
             }
         }
-    } else if( oldJob.RRule == job.RRule && job.RRule.isEmpty()){ //不是重复日程
+    } else if (oldJob.RRule == job.RRule && job.RRule.isEmpty()) { //不是重复日程
         int notifyID = m_database->getNotifyID(job.ID, job.RecurID);
         //如果日程被提醒，且通知弹框未操作,
-        if ( notifyID > 0 ) {
+        if (notifyID > 0) {
             isDeleteRemindData = false;
         }
         JobIn jobin{ job.ID, job.RecurID};
         jobInVector.append(jobin);
     }
     //是否删除对应的提醒日程数据
-    if(isDeleteRemindData){
+    if (isDeleteRemindData) {
         foreach (auto jobin, jobInVector) {
-            m_database->deleteRemindJobs(jobin.jobID,jobin.recurID);
+            m_database->deleteRemindJobs(jobin.jobID, jobin.recurID);
         }
     }
 
@@ -322,7 +323,7 @@ QString CalendarScheduler::QueryJobsWithRule(const QString &params, const QStrin
 void CalendarScheduler::remindJob(const qint64 id, const qint64 recurID)
 {
     //根据日程id获取日程信息和稍后提醒次数
-    Job job = m_database->getRemindJob(id,recurID);
+    Job job = m_database->getRemindJob(id, recurID);
     emit signalRemindJob(job);
 }
 
@@ -418,55 +419,92 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             }
             return jobtimelist;
         }
-
         int count = 0; //当前为日程的第几次重复
         stRRuleOptions options = ParseRRule(job.RRule);
+
         QDateTime jobstart = job.Start; //当前原始job的起始时间
         QDateTime jobend = job.End; //当前原始job的结束时间
         int dateinterval = static_cast<int>(jobstart.secsTo(jobend)); //job的开始结束间隔日期
 
-        int dayofweek = jobstart.date().dayOfWeek(); //判断是周几
-        if (dayofweek > Qt::Friday && options.rpeat == RepeatType::RepeatWorkDay) //周末并且options为工作日重复
-            jobstart.setDate(jobstart.date().addDays(7 - dayofweek + 1)); //在周末设置工作日重复日程，需要重新设置日程开始时间
-        QDateTime next = jobstart; //next为下一新建日程起始日期
-        //只有当下一个新建日程的起始日期小于查询日期的结束日期才会有交集，否则没有意义
-        //注意一定要判断是否有交集，因为Job的创建日期可能远远早于查询日期，查询到的是多次重复后与查询时间有交集的
-        while (true) {
-            QDateTime copystart = next;
-            //这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
-            if (copystart.date() > end.date()) {
-                //起始日期超出查询结束日期直接退出
+        //是否为农历日程
+        if (job.IsLunar) {
+            QVector<QDate> recurJobDates;
+            LunarDateInfo lunardate;
+            //农历日程处理
+            switch (options.rpeat) {
+            case RepeatType::RepeatYearly: {
+                //每年
+                recurJobDates = lunardate.getAllNextYearLunarDayBySolar(start.date(), end.date(), job.Start.date());
+            } break;
+            case RepeatType::RepeatMonthly: {
+                //每月
+                recurJobDates = lunardate.getAllNextMonthLunarDayBySolar(start.date(), end.date(), job.Start.date());
+            } break;
+            default:
                 break;
             }
+            QDateTime recurDateTime;
+            recurDateTime.setTime(job.Start.time());
+            QDateTime copyend;
+            foreach (auto &recurDate, recurJobDates) {
+                recurDateTime.setDate(recurDate);
+                if (!ContainsInIgnoreList(igonrelist, recurDateTime)) {
+                    copyend = recurDateTime.addSecs(dateinterval);
+                    stJobTime jt;
+                    jt.start = recurDateTime;
+                    jt.end = copyend;
+                    jt.recurID = count;
+                    jobtimelist.append(jt);
+                }
+                count++;
+            }
+        } else {
+            //公历日程数据
 
-            QDateTime copyend = next.addSecs(dateinterval);
-            //如果查询时间范围和Job时间范围有交集则保存
-            //另外需要保证该新建任务没有被删除即未被ignore，新建任务重复的规则删除是删除该次重复包含的的所有天，
-            if (OverLap(start, end, copystart, copyend) && !ContainsInIgnoreList(igonrelist, copystart)) {
-                stJobTime jt;
-                jt.start = copystart;
-                jt.end = copyend;
-                jt.recurID = count;
-                jobtimelist.append(jt);
-            }
-            count++;
-            //当结束重复为按多少次结束判断时，检查重复次数是否达到，达到则退出
-            //当重复次数达到最大限制直接返回
-            //options.tcount表示重复的次数，而count表示总次数，所以这里不能有“=”
-            if ((options.type == RepeatOverCount && options.tcount < count)
+            int dayofweek = jobstart.date().dayOfWeek(); //判断是周几
+            if (dayofweek > Qt::Friday && options.rpeat == RepeatType::RepeatWorkDay) //周末并且options为工作日重复
+                jobstart.setDate(jobstart.date().addDays(7 - dayofweek + 1)); //在周末设置工作日重复日程，需要重新设置日程开始时间
+            QDateTime next = jobstart; //next为下一新建日程起始日期
+            //只有当下一个新建日程的起始日期小于查询日期的结束日期才会有交集，否则没有意义
+            //注意一定要判断是否有交集，因为Job的创建日期可能远远早于查询日期，查询到的是多次重复后与查询时间有交集的
+            while (true) {
+                QDateTime copystart = next;
+                //这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
+                if (copystart.date() > end.date()) {
+                    //起始日期超出查询结束日期直接退出
+                    break;
+                }
+
+                QDateTime copyend = next.addSecs(dateinterval);
+                //如果查询时间范围和Job时间范围有交集则保存
+                //另外需要保证该新建任务没有被删除即未被ignore，新建任务重复的规则删除是删除该次重复包含的的所有天，
+                if (OverLap(start, end, copystart, copyend) && !ContainsInIgnoreList(igonrelist, copystart)) {
+                    stJobTime jt;
+                    jt.start = copystart;
+                    jt.end = copyend;
+                    jt.recurID = count;
+                    jobtimelist.append(jt);
+                }
+                count++;
+                //当结束重复为按多少次结束判断时，检查重复次数是否达到，达到则退出
+                //当重复次数达到最大限制直接返回
+                //options.tcount表示重复的次数，而count表示总次数，所以这里不能有“=”
+                if ((options.type == RepeatOverCount && options.tcount < count)
                     || count > RECURENCELIMIT) {
-                break;
-            }
-            //根据rule获取下一个Job的起始日期
-            next = GetNextJobStartTimeByRule(options, copystart);
-            //判断next是否有效,时间大于RRule的until
-            //判断next是否大于查询的截止时间,这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
-            if ((options.type == RepeatOverUntil && next.date() >= options.overdate.date())
+                    break;
+                }
+                //根据rule获取下一个Job的起始日期
+                next = GetNextJobStartTimeByRule(options, copystart);
+                //判断next是否有效,时间大于RRule的until
+                //判断next是否大于查询的截止时间,这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
+                if ((options.type == RepeatOverUntil && next.date() >= options.overdate.date())
                     || next.date() > end.date()) {
-                break;
+                    break;
+                }
+                copystart = next;
             }
-            copystart = next;
         }
+
     } else {
         qDebug() << __FUNCTION__ << "start time later than end time param error! do nothoing";
     }
@@ -852,6 +890,10 @@ Job CalendarScheduler::josnStringToJob(const QString &str)
     }
     //添加title拼音
     job.Title_pinyin = pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString());
+    //是否为农历日程
+    if (rootObj.contains("IsLunar")) {
+        job.IsLunar = rootObj.value("IsLunar").toBool();
+    }
     return job;
 }
 
@@ -863,16 +905,16 @@ void CalendarScheduler::UpdateRemindTimeout(bool isClear)
     QList<Job> jobList = GetRemindJobs(tmstart, tmend);
     //获取未提醒的稍后日程信息
     QList<Job> remindJobList = m_database->getValidRemindJob();
-    if(isClear){
+    if (isClear) {
         //清空数据库
         m_database->clearRemindJobDatabase();
         jobList.append(remindJobList);
-        foreach(auto job ,jobList){
+        foreach (auto job, jobList) {
             m_database->saveRemindJob(job);
         }
-    }else {
-        foreach(auto job ,jobList){
-            Job rJob = m_database->getRemindJob(job.ID,job.RecurID);
+    } else {
+        foreach (auto job, jobList) {
+            Job rJob = m_database->getRemindJob(job.ID, job.RecurID);
             //如果提醒日程数据库中不存在此日程相关信息，插入相关信息
             if (rJob.ID != job.ID || rJob.RecurID != job.RecurID) {
                 m_database->saveRemindJob(job);
@@ -887,14 +929,14 @@ void CalendarScheduler::notifyMsgHanding(const qint64 jobID, const qint64 recurI
 {
     Job job = m_database->getRemindJob(jobID, recurID);
     //如果相应的日程被删除,则不做处理
-    if(job.ID == 0) {
+    if (job.ID == 0) {
         return;
     }
     //如果为稍后提醒操作则需要更新对应的重复次数和提醒时间
-    if ( operationNum == 2 ) {
+    if (operationNum == 2) {
         ++job.RemindLaterCount;
-        qint64  Minute = 60*1000;
-        qint64 Hour = Minute*60;
+        qint64 Minute = 60 * 1000;
+        qint64 Hour = Minute * 60;
         qint64 duration = (10 + ((job.RemindLaterCount - 1) * 5)) * Minute; //下一次提醒距离现在的时间间隔，单位毫秒
         if (duration >= Hour) {
             duration = Hour;
@@ -905,13 +947,13 @@ void CalendarScheduler::notifyMsgHanding(const qint64 jobID, const qint64 recurI
         job.RemidTime  = currentTime.addMSecs(duration);
         //更新数据
         m_database->updateRemindJob(job);
-    }else {
+    } else {
         //删除对应的数据
         QList<qlonglong> Ids;
         Ids.append(jobID);
         m_database->deleteRemindJobs(Ids);
     }
-    emit signalNotifyMsgHanding(job,operationNum);
+    emit signalNotifyMsgHanding(job, operationNum);
 }
 
 void CalendarScheduler::OnModifyJobRemind(const Job &job, const QString &remind)
@@ -956,7 +998,7 @@ void CalendarScheduler::OnModifyJobRemind(const Job &job, const QString &remind)
 
 void CalendarScheduler::saveNotifyID(const Job &job, int notifyid)
 {
-    m_database->updateNotifyID(job,notifyid);
+    m_database->updateNotifyID(job, notifyid);
 }
 
 /**

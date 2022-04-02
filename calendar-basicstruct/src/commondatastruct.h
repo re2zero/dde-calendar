@@ -67,6 +67,7 @@ typedef struct _tagJob {
         , Type {0}
         , RecurID {0}
         , RemindLaterCount {0}
+        , IsLunar {false}
     {
     }
     qint64 ID;
@@ -83,6 +84,7 @@ typedef struct _tagJob {
     QString Title_pinyin {};
     QDateTime RemidTime; //提醒时间
     qint32 RemindLaterCount; //执行稍后提醒次数
+    bool IsLunar;
 } Job;
 
 typedef struct JobArr {

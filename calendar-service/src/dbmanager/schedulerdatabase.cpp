@@ -53,9 +53,9 @@ QString SchedulerDatabase::GetJob(qint64 id)
     QString strjson;
     QSqlQuery query(m_database);
     QString strsql = QString("SELECT id, type, title, description, "
-                             "all_day, start, end, r_rule, remind, ignore"
+                             "all_day, start, end, r_rule, remind, ignore , is_Lunar"
                              " FROM jobs WHERE id = '%1' ")
-                     .arg(id);
+                         .arg(id);
     //id唯一因此此处最多只有一条数据
     if (query.exec(strsql) && query.next()) {
         QJsonDocument doc;
@@ -74,6 +74,7 @@ QString SchedulerDatabase::GetJob(qint64 id)
         obj.insert("Ignore", QJsonDocument::fromJson(query.value("ignore").toString().toUtf8()).array());
         //数据库包含的都是原始数据所以RecurID默认为0
         obj.insert("RecurID", 0);
+        obj.insert("IsLunar", query.value("is_Lunar").toBool());
 
         doc.setObject(obj);
         strjson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
@@ -95,7 +96,7 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs()
     QList<Job> jobs;
     QSqlQuery query(m_database);
 
-    QString strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
+    QString strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin,is_Lunar"
                              " from jobs ");
     if (query.exec(strsql)) {
         while (query.next()) {
@@ -111,6 +112,7 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs()
             jb.Remind = query.value("remind").toString();
             jb.Ignore = query.value("ignore").toString();
             jb.Title_pinyin = query.value("title_pinyin").toString();
+            jb.IsLunar = query.value("is_Lunar").toBool();
             jobs.append(jb);
         }
     }
@@ -133,20 +135,14 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString
     QSqlQuery query(m_database);
     QString strKey = key.trimmed();
     pinyinsearch *psearch = pinyinsearch::getPinPinSearch();
-    QString strsql;
+    QString strsql("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin,is_Lunar from jobs");
     if (psearch->CanQueryByPinyin(strKey)) {
         //可以按照拼音查询
         QString pinyin = psearch->CreatePinyinQuery(strKey.toLower());
-        strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
-                         " from jobs where instr(UPPER(title), UPPER('%1')) OR title_pinyin LIKE '%2'").arg(key).arg(pinyin);
+        strsql += QString(" where instr(UPPER(title), UPPER('%1')) OR title_pinyin LIKE '%2'").arg(key).arg(pinyin);
     } else if (!key.isEmpty()) {
         //按照key查询
-        strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
-                         " from jobs where instr(UPPER(title), UPPER('%1'))").arg(key);
-    } else {
-        //如果没有key，则搜索所有
-        strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
-                         " from jobs ");
+        strsql = QString(" where instr(UPPER(title), UPPER('%1'))").arg(key);
     }
 
     //排序条件不为空
@@ -167,6 +163,7 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString
             jb.Remind = query.value("remind").toString();
             jb.Ignore = query.value("ignore").toString();
             jb.Title_pinyin = query.value("title_pinyin").toString();
+            jb.IsLunar = query.value("is_Lunar").toBool();
             jobs.append(jb);
         }
     }
@@ -205,8 +202,10 @@ QList<Job> SchedulerDatabase::GetAllOriginJobsWithRule(const QString &key, const
         strsql = QString("select id from jobs ");
     }
 
-    strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
-                     " from jobs where id in(%1) and %2").arg(strsql).arg(strrule);
+    strsql = QString("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin,is_Lunar "
+                     " from jobs where id in(%1) and %2")
+                 .arg(strsql)
+                 .arg(strrule);
 
     if (query.exec(strsql)) {
         while (query.next()) {
@@ -222,6 +221,7 @@ QList<Job> SchedulerDatabase::GetAllOriginJobsWithRule(const QString &key, const
             jb.Remind = query.value("remind").toString();
             jb.Ignore = query.value("ignore").toString();
             jb.Title_pinyin = query.value("title_pinyin").toString();
+            jb.IsLunar = query.value("is_Lunar").toBool();
             jobs.append(jb);
         }
     }
@@ -239,7 +239,7 @@ QList<Job> SchedulerDatabase::GetJobsContainRemind()
 {
     QList<Job> jobs;
     QSqlQuery query(m_database);
-    QString strSql("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin "
+    QString strSql("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin,is_Lunar "
                    "from jobs where remind is not null and remind !=' ' ");
     if (query.exec(strSql)) {
         while (query.next()) {
@@ -255,6 +255,7 @@ QList<Job> SchedulerDatabase::GetJobsContainRemind()
             jb.Remind = query.value("remind").toString();
             jb.Ignore = query.value("ignore").toString();
             jb.Title_pinyin = query.value("title_pinyin").toString();
+            jb.IsLunar = query.value("is_Lunar").toBool();
             jobs.append(jb);
         }
     }
@@ -293,10 +294,10 @@ void SchedulerDatabase::updateRemindJob(const Job &job)
 {
     //点击稍后提醒后，更新信息并设置通知提醒为-1
     QString strsql = QString("UPDATE jobsReminder SET remindCount = '%1' , remindTime = '%2', notifyid = -1 WHERE jobid = %3 and recurid = %4 ")
-        .arg(job.RemindLaterCount)
-        .arg(dateTimeToString(job.RemidTime))
-        .arg(job.ID)
-        .arg(job.RecurID);
+                         .arg(job.RemindLaterCount)
+                         .arg(dateTimeToString(job.RemidTime))
+                         .arg(job.ID)
+                         .arg(job.RecurID);
     QSqlQuery query(m_database);
     if (query.exec(strsql)) {
         if (query.isActive()) {
@@ -310,10 +311,10 @@ void SchedulerDatabase::updateRemindJob(const Job &job)
 
 void SchedulerDatabase::deleteRemindJobs(const QList<qlonglong> &Ids)
 {
-    if (Ids.size() ==0)
+    if (Ids.size() == 0)
         return;
     QStringList idList;
-    for (int i = 0 ; i < Ids.size();++i) {
+    for (int i = 0; i < Ids.size(); ++i) {
         idList.append(QString::number(Ids.at(i)));
     }
     QSqlQuery query(m_database);
@@ -331,7 +332,8 @@ void SchedulerDatabase::deleteRemindJobs(const qlonglong &jobID, const qint64 re
 {
     QSqlQuery query(m_database);
     QString sql = QString("delete from jobsReminder where  jobsReminder.jobid = %1 and jobsReminder.recurid = %2")
-                      .arg(jobID).arg(recurid);
+                      .arg(jobID)
+                      .arg(recurid);
     if (query.exec(sql)) {
         if (query.isActive()) {
             query.finish();
@@ -345,11 +347,11 @@ QList<Job> SchedulerDatabase::getValidRemindJob()
 {
     QList<Job> jobs{};
     QSqlQuery query(m_database);
-    QString sql("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobsReminder.jobStartTime as start,"
+    QString sql("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobs.is_Lunar,jobsReminder.jobStartTime as start,"
                 "jobsReminder.jobEndTime as end,jobs.r_rule,jobs.remind,jobs.ignore,jobs.title_pinyin,jobsReminder.remindCount,"
                 "jobsReminder.remindTime , jobsReminder.recurid from jobs left join jobsReminder on jobs.id = jobsReminder.jobid "
                 "where jobsReminder.remindCount > 0 and jobsReminder.remindTime > ");
-    sql +=QString(" '%1'").arg(dateTimeToString(QDateTime::currentDateTime()));
+    sql += QString(" '%1'").arg(dateTimeToString(QDateTime::currentDateTime()));
     if (query.exec(sql)) {
         while (query.next()) {
             Job jb;
@@ -367,6 +369,7 @@ QList<Job> SchedulerDatabase::getValidRemindJob()
             jb.RemindLaterCount = query.value("remindCount").toInt();
             jb.RemidTime = query.value("remindTime").toDateTime();
             jb.RecurID = query.value("recurid").toInt();
+            jb.IsLunar = query.value("is_Lunar").toBool();
             jobs.append(jb);
         }
     }
@@ -393,11 +396,12 @@ void SchedulerDatabase::clearRemindJobDatabase()
 Job SchedulerDatabase::getRemindJob(const qint64 id, const qint64 recurid)
 {
     QSqlQuery query(m_database);
-    QString sql = QString("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,"
+    QString sql = QString("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobs.is_Lunar"
                           "jobsReminder.jobStartTime as start,jobsReminder.jobEndTime as end,jobs.r_rule,jobs.remind,jobs.ignore,jobs.title_pinyin,"
                           "jobsReminder.remindCount,jobsReminder.remindTime , jobsReminder.recurid from jobs inner join jobsReminder "
                           "on jobs.id = jobsReminder.jobid   where jobsReminder.jobid = %1 and jobsReminder.recurid = %2")
-                  .arg(id).arg(recurid);
+                      .arg(id)
+                      .arg(recurid);
 
     //id唯一因此此处最多只有一条数据
     Job jb;
@@ -416,6 +420,7 @@ Job SchedulerDatabase::getRemindJob(const qint64 id, const qint64 recurid)
         jb.RemindLaterCount = query.value("remindCount").toInt();
         jb.RemidTime = query.value("remindTime").toDateTime();
         jb.RecurID = query.value("recurid").toInt();
+        jb.IsLunar = query.value("is_Lunar").toBool();
     } else {
         qWarning() << query.lastError();
     }
@@ -428,11 +433,11 @@ Job SchedulerDatabase::getRemindJob(const qint64 id, const qint64 recurid)
 QList<Job> SchedulerDatabase::getRemindJob(const qint64 id)
 {
     QSqlQuery query(m_database);
-    QString sql = QString("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,"
+    QString sql = QString("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobs.is_Lunar,"
                           "jobsReminder.jobStartTime as start,jobsReminder.jobEndTime as end,jobs.r_rule,jobs.remind,jobs.ignore,jobs.title_pinyin,"
                           "jobsReminder.remindCount,jobsReminder.remindTime , jobsReminder.recurid from jobs inner join jobsReminder "
                           "on jobs.id = jobsReminder.jobid   where jobsReminder.jobid = %1")
-                  .arg(id);
+                      .arg(id);
 
     //id唯一因此此处最多只有一条数据
     QList<Job> jbList;
@@ -452,6 +457,7 @@ QList<Job> SchedulerDatabase::getRemindJob(const qint64 id)
         jb.RemindLaterCount = query.value("remindCount").toInt();
         jb.RemidTime = query.value("remindTime").toDateTime();
         jb.RecurID = query.value("recurid").toInt();
+        jb.IsLunar = query.value("is_Lunar").toBool();
         jbList.append(jb);
     } else {
         qWarning() << query.lastError();
@@ -483,7 +489,8 @@ int SchedulerDatabase::getNotifyID(const qint64 jobID, const qint64 recurid)
     int notifyid = -1;
     QSqlQuery query(m_database);
     QString sql = QString("select distinct jobsReminder.notifyid from jobsReminder where jobsReminder.jobid = %1 and jobsReminder.recurid = %2")
-        .arg(jobID).arg(recurid);
+                      .arg(jobID)
+                      .arg(recurid);
     if (query.exec(sql) && query.next()) {
         notifyid = query.value("notifyid").toInt();
     }
@@ -559,17 +566,36 @@ void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
         if (tables.size() < 1) {
             CreateTables();
         }
+        QSqlQuery query(m_database);
         //如果不存在日程提醒相关的数据库则创建一个（因为需要将程序改成按需运行的程序，所以需要存储相关数据）
-        if(!tables.contains("jobsReminder")){
-            QSqlQuery query(m_database);
+        if (!tables.contains("jobsReminder")) {
             query.exec("CREATE TABLE \"jobsReminder\" (\"id\" integer primary key autoincrement,"
                        "\"jobid\" integer,\"recurid\" integer,\"remindCount\" integer ,\"notifyid\" integer ,"
                        "\"remindTime\" datetime ,\"jobStartTime\" datetime ,\"jobEndTime\" datetime) ");
-            if (query.isActive()) {
-                query.finish();
-            }
-            m_database.commit();
         }
+
+        //jobs需要添加一个是否为农历日程的字段
+        //判断jobs表中是否有该字段，如果有则不处理
+        QString getHasIsLunarField = "select count(1) from sqlite_master where type='table' and "
+                                     "tbl_name = 'jobs' and sql like '%is_Lunar%'";
+        if (query.exec(getHasIsLunarField) && query.next()) {
+            //获取是否存在为农历标识字段，若存在则返回1,不存在则返回0
+            int fieldNum = query.value(0).toInt();
+            if (fieldNum == 0) {
+                //添加字段
+                QString alterField = "alter table jobs add is_Lunar bool default false ";
+                if (!query.exec(alterField)) {
+                    qWarning() << "Failed to add field," << query.lastError();
+                };
+            }
+        } else {
+            qWarning() << "select field failed," << query.lastError();
+        }
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+
     } else {
         qDebug() << __FUNCTION__ << m_database.lastError();
     }
@@ -620,9 +646,9 @@ qint64 SchedulerDatabase::CreateJob(const Job &job)
     currentDateTime.setOffsetFromUtc(currentDateTime.offsetFromUtc());
     QSqlQuery query(m_database);
     QString strsql = "INSERT INTO jobs (created_at, updated_at, type, title,"
-                     "description, all_day, start, end, r_rule, remind, ignore, title_pinyin)"
+                     "description, all_day, start, end, r_rule, remind, ignore, title_pinyin,is_Lunar)"
                      "values (:created_at, :updated_at, :type, :title, :description,"
-                     ":all_day, :start, :end, :r_rule, :remind, :ignore, :title_pinyin)";
+                     ":all_day, :start, :end, :r_rule, :remind, :ignore, :title_pinyin,:is_Lunar)";
     query.prepare(strsql);
     int i = 0;
     query.bindValue(i, currentDateTime);
@@ -638,6 +664,7 @@ qint64 SchedulerDatabase::CreateJob(const Job &job)
     query.bindValue(++i, job.Remind);
     query.bindValue(++i, job.Ignore);
     query.bindValue(++i, job.Title_pinyin);
+    query.bindValue(++i, job.IsLunar);
     if (query.exec()) {
         if (query.isActive()) {
             query.finish();
@@ -683,7 +710,7 @@ qint64 SchedulerDatabase::UpdateJob(const QString &jobInfo)
     QSqlQuery query(m_database);
     QString strsql = "UPDATE jobs SET updated_at = ?, type = ?, title = ?, "
                      "description = ?, all_day = ?, start = ?, end = ?, r_rule = ?, "
-                     "remind = ?, ignore = ?, title_pinyin = ? WHERE id = ?";
+                     "remind = ?, ignore = ?, title_pinyin = ? ,is_Lunar = ? WHERE id = ?";
     query.prepare(strsql);
     qint64 id = rootObj.value("ID").toInt();
     int i = 0;
@@ -699,6 +726,7 @@ qint64 SchedulerDatabase::UpdateJob(const QString &jobInfo)
     query.bindValue(++i, rootObj.value("Remind").toString());
     query.bindValue(++i, QString::fromUtf8(doc.toJson(QJsonDocument::Compact)));
     query.bindValue(++i, pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString()));
+    query.bindValue(++i, rootObj.value("IsLunar").toString());
     query.bindValue(++i, id);
     if (query.exec()) {
         if (query.isActive()) {

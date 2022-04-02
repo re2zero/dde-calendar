@@ -112,6 +112,18 @@ public:
     bool operator ==(const ScheduleDataInfo &info) const;
     //判断日程大小
     bool operator <(const ScheduleDataInfo &info) const;
+    /**
+     * @brief getIsLunar        返回是否为农历日程
+     * @return
+     */
+    bool getIsLunar() const;
+
+    /**
+     * @brief setIsLunar        设置是否为农历日程
+     * @param isLunar
+     */
+    void setIsLunar(bool isLunar);
+
 private:
     //获取日程提醒规则
     QString getScheduleRemind() const;
@@ -181,6 +193,8 @@ private:
      * @brief m_Rule         重复规则
      */
     RepetitionRule  m_ScheduleRRule;
+
+    bool m_isLunar = false; //是否为农历日程
     //客户端使用判断是否为拖拽移动日程
     bool            m_moveInfo{false};
 };
