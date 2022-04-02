@@ -64,7 +64,6 @@ public:
 
     /**
      * @brief getColor 获取对应palette的颜色
-     * @return
      */
     QColor getColor(const QStyleOption *option, DPalette::ColorType type, const QWidget *widget) const;
 
@@ -85,8 +84,26 @@ public:
      */
     void drawItemViewFocus(QPainter *p, const QStyleOption *opt, const QWidget *w) const;
 
+    /**
+     * @brief getLunarYearDesc 获取阴历年描述
+     */
+    QString getLunarYearDesc(const QDate &date) const;
+
+    /**
+     * @brief getLunarDayName 获取阴历日
+     */
+    QString getLunarDayName(const QDate &date) const;
+
+    /**
+     * @brief updateLunarInfo 更新阴历信息
+     */
+    void updateLunarInfo(const QDate &date) const;
+
 protected:
     void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = nullptr) const override;
+
+private:
+    mutable QMap<QDate, CaHuangLiDayInfo> m_caHuangLiDayMap;
 };
 
 QColor CalenderStyle::getColor(const QStyleOption *option, DPalette::ColorType type, const QWidget *widget) const
@@ -169,6 +186,35 @@ void CalenderStyle::drawItemViewFocus(QPainter *p, const QStyleOption *opt, cons
     }
 }
 
+QString CalenderStyle::getLunarDayName(const QDate &date) const
+{
+    updateLunarInfo(date);
+    CaHuangLiDayInfo &info = m_caHuangLiDayMap[date];
+
+    return info.mLunarDayName;
+}
+
+QString CalenderStyle::getLunarYearDesc(const QDate &date) const
+{
+    updateLunarInfo(date);
+    CaHuangLiDayInfo &info = m_caHuangLiDayMap[date];
+
+    return info.mGanZhiYear + info.mZodiac + "年 " + info.mLunarMonthName;
+}
+
+void CalenderStyle::updateLunarInfo(const QDate &date) const
+{
+    if(m_caHuangLiDayMap.count() > 100)
+        m_caHuangLiDayMap.clear();
+
+    if(!m_caHuangLiDayMap.contains(date)) {
+        CaHuangLiDayInfo info;
+        CScheduleDBus::getInstance()->GetHuangLiDay(date, info);
+
+        m_caHuangLiDayMap[date] = info;
+    }
+}
+
 void CalenderStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     const QWidget *w = widget;
@@ -189,29 +235,20 @@ void CalenderStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
                 //获取阳历和阴历
                 QString dayName;
                 QString dayNumber;
-                int indexFirstDay = -1;
-                QDate firstDay = QDate(calendar->yearShown(), calendar->monthShown(), 1);
+                int indexDay1 = -1;
+                QDate dateDay1 = QDate(calendar->yearShown(), calendar->monthShown(), 1);
                 for(int k = 0; k < model->columnCount(); k ++)
                     if(model->data(model->index(1, k)).toInt() == 1)
-                        indexFirstDay = k;
-                int indexDay = (vopt->index.row() - 1) * model->columnCount() + vopt->index.column();
-                QDate selectedDay = firstDay.addDays(indexDay - indexFirstDay);
+                        indexDay1 = k;
+                int indexDayCur = (vopt->index.row() - 1) * model->columnCount() + vopt->index.column();
+
+                QDate curDate = dateDay1.addDays(indexDayCur - indexDay1);
                 dayNumber = vopt->index.data().toString();
-
-                static QMap<QDate, QMap<QString, QString> > CaHuangLiDayMap;
-                if(!CaHuangLiDayMap.contains(selectedDay)) {
-                    CaHuangLiDayInfo info;
-                    CScheduleDBus::getInstance()->GetHuangLiDay(selectedDay, info);
-
-                    CaHuangLiDayMap[selectedDay]["LunarDayName"] = info.mLunarDayName;
-                    CaHuangLiDayMap[selectedDay]["LunarYearDesc"] = info.mGanZhiYear + info.mZodiac + "年 " + info.mLunarMonthName;
-                }
-                dayName = CaHuangLiDayMap[selectedDay]["LunarDayName"];
+                dayName = getLunarDayName(curDate);
                 //更新阴历年描述
-                if(vopt->state & QStyle::State_Selected) {
-                    if(calendar->lunarYearText() != CaHuangLiDayMap[selectedDay]["LunarYearDesc"])
-                        calendar->setLunarYearText(CaHuangLiDayMap[selectedDay]["LunarYearDesc"]);
-                }
+                QDate selectedDate = QDate(calendar->yearShown(), calendar->monthShown(), calendar->selectedDate().day());
+                calendar->setLunarYearText(getLunarYearDesc(selectedDate));
+
                 p->save();
                 p->setClipRect(vopt->rect);
 
@@ -311,6 +348,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent)
 
     QVBoxLayout *layoutV = qobject_cast<QVBoxLayout *>(layout());
     m_lunarLabel = new QLabel(this);
+    m_lunarLabel->setObjectName("lunarLabel");
     m_lunarLabel->setAutoFillBackground(true);
     m_lunarLabel->setBackgroundRole(QPalette::Base);
     m_lunarLabel->setAlignment(Qt::AlignCenter);
@@ -318,6 +356,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent)
 
     //底部留空10px
     QLabel *label = new QLabel(this);
+    m_lunarLabel->setObjectName("BottomSpacingLabel");
     label->setAutoFillBackground(true);
     label->setBackgroundRole(QPalette::Base);
     label->setFixedHeight(BottomSpacing);
@@ -333,7 +372,8 @@ LunarCalendarWidget::~LunarCalendarWidget()
 
 void LunarCalendarWidget::setLunarYearText(const QString &text)
 {
-    m_lunarLabel->setText(text);
+    if(m_lunarLabel->text() != text)
+        m_lunarLabel->setText(text);
 }
 
 QString LunarCalendarWidget::lunarYearText()
