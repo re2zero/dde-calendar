@@ -584,9 +584,6 @@ void Calendarmainwindow::slotSearchEdit()
  */
 void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
-    //如果小尺寸显示模式，在显示搜索窗口的时候，左侧视图会被隐藏，所以不显示动画效果直接退出
-    if (!m_isNormalStateShow)
-        return;
     //获取当前视图编号
     CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>
                                        (m_stackWidget->currentWidget());
