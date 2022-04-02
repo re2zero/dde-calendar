@@ -25,6 +25,8 @@
 
 #include <DHiDPIHelper>
 #include <DFontSizeManager>
+#include <DRadioButton>
+#include <DLabel>
 
 #include <QHBoxLayout>
 #include <QIcon>
@@ -32,7 +34,7 @@
 #include <QVBoxLayout>
 #include <QKeyEvent>
 
-const int  dialog_width = 430;      //对话框宽度
+const int  dialog_width = 468;      //对话框宽度
 
 DGUI_USE_NAMESPACE
 CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
@@ -61,9 +63,10 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     } else {
         m_titleLabel->setText(tr("Edit Event"));
     }
-    setFixedSize(dialog_width, 480);
+    setFixedSize(dialog_width, 524);
     //焦点设置到输入框
     m_textEdit->setFocus();
+    m_solarRadioBtn->click();
 }
 
 CScheduleDlg::~CScheduleDlg()
@@ -462,14 +465,15 @@ void CScheduleDlg::slotbRpeatactivated(int index)
 {
     if (index > 0) {
         m_endrepeatWidget->setVisible(true);
-        setFixedSize(dialog_width, 520);
+        //524: 默认界面高度, 36: 新增控件高度, 10: 上下控件间距
+        setFixedSize(dialog_width, 524 + 36 + 10);
         if (m_endrepeatCombox->currentIndex() == 1) {
             //如果结束重复于次数，判断次数是否为空
             slotendrepeatTextchange();
         }
     } else {
         m_endrepeatWidget->setVisible(false);
-        setFixedSize(dialog_width, 480);
+        setFixedSize(dialog_width, 524);
         //重复类型为“从不”时，使能保存按钮
         QAbstractButton *m_OkBt = getButton(1);
         m_OkBt->setEnabled(true);
@@ -500,6 +504,19 @@ void CScheduleDlg::sloteRpeatactivated(int index)
         //只要不是结束重复于次数，使能保存按钮
         QAbstractButton *m_OkBt = getButton(1);
         m_OkBt->setEnabled(true);
+    }
+}
+
+void CScheduleDlg::slotRadioBtnClicked(int btnId)
+{
+    if (RadioSolarId == btnId) {
+        m_beginDateEdit->setLunarCalendarStatus(false);
+        m_endDateEdit->setLunarCalendarStatus(false);
+        updateRepeatCombox(false);
+    } else if (RadioLunarId == btnId) {
+        m_beginDateEdit->setLunarCalendarStatus(true);
+        m_endDateEdit->setLunarCalendarStatus(true);
+        updateRepeatCombox(true);
     }
 }
 
@@ -650,7 +667,7 @@ void CScheduleDlg::initUI()
         //设置对象名称和辅助显示名称
         m_typeComBox->setObjectName("ScheduleTypeCombobox");
         m_typeComBox->setAccessibleName("ScheduleTypeCombobox");
-        m_typeComBox->setFixedSize(325, item_Fixed_Height);
+        m_typeComBox->setFixedSize(350, item_Fixed_Height);
         m_typeComBox->setIconSize(QSize(24, 24));
         m_typeComBox->insertItem(0,
                                  QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/icon_type_work.svg")
@@ -691,7 +708,7 @@ void CScheduleDlg::initUI()
         //设置对象名称和辅助显示名称
         m_textEdit->setObjectName("ScheduleTitleEdit");
         m_textEdit->setAccessibleName("ScheduleTitleEdit");
-        m_textEdit->setFixedSize(325, 86);
+        m_textEdit->setFixedSize(350, 86);
         m_textEdit->setAcceptRichText(false);
 
         m_textEdit->setPlaceholderText(tr("New Event"));
@@ -731,6 +748,37 @@ void CScheduleDlg::initUI()
         maintlayout->addLayout(alldayLabellayout);
     }
 
+    //时间
+    {
+        DLabel *tLabel = new DLabel(tr("Time:"));
+        tLabel->setToolTip(tr("Time"));
+        DFontSizeManager::instance()->bind(tLabel, DFontSizeManager::T6);
+        tLabel->setElideMode(Qt::ElideRight);
+        tLabel->setFont(mlabelF);
+        tLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        tLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+
+        m_solarRadioBtn = new DRadioButton(tr("Solar"));
+        m_lunarRadioBtn = new DRadioButton(tr("Lunar"));
+        m_solarRadioBtn->setMinimumWidth(80);
+        m_lunarRadioBtn->setMinimumWidth(80);
+
+        m_calendarCategoryRadioGroup = new QButtonGroup(this);
+        m_calendarCategoryRadioGroup->setExclusive(true);
+        m_calendarCategoryRadioGroup->addButton(m_solarRadioBtn, RadioSolarId);
+        m_calendarCategoryRadioGroup->addButton(m_lunarRadioBtn, RadioLunarId);
+
+        QHBoxLayout *tLayout = new QHBoxLayout;
+        tLayout->setSpacing(0);
+        tLayout->setMargin(0);
+        tLayout->addWidget(tLabel);
+        tLayout->addWidget(m_solarRadioBtn);
+        tLayout->addWidget(m_lunarRadioBtn);
+        tLayout->addStretch(1);
+
+        maintlayout->addLayout(tLayout);
+    }
+
     //开始时间
     {
         QHBoxLayout *beginLabellayout = new QHBoxLayout;
@@ -758,7 +806,7 @@ void CScheduleDlg::initUI()
         //设置对象名称和辅助显示名称
         m_beginTimeEdit->setObjectName("ScheduleBeginTimeEdit");
         m_beginTimeEdit->setAccessibleName("ScheduleBeginTimeEdit");
-        m_beginTimeEdit->setFixedSize(125, item_Fixed_Height);
+        m_beginTimeEdit->setFixedSize(140, item_Fixed_Height);
 
         beginLabellayout->addWidget(m_beginTimeLabel);
         beginLabellayout->addWidget(m_beginDateEdit);
@@ -795,7 +843,7 @@ void CScheduleDlg::initUI()
         //设置对象名称和辅助显示名称
         m_endTimeEdit->setObjectName("ScheduleEndTimeEdit");
         m_endTimeEdit->setAccessibleName("ScheduleEndTimeEdit");
-        m_endTimeEdit->setFixedSize(125, item_Fixed_Height);
+        m_endTimeEdit->setFixedSize(140, item_Fixed_Height);
 
         enQLabellayout->addWidget(m_endTimeLabel);
         enQLabellayout->addWidget(m_endDateEdit);
@@ -885,7 +933,7 @@ void CScheduleDlg::initUI()
         //设置对象名称和辅助显示名称
         m_endrepeatCombox->setObjectName("EndRepeatComboBox");
         m_endrepeatCombox->setAccessibleName("EndRepeatComboBox");
-        m_endrepeatCombox->setFixedSize(175, item_Fixed_Height);
+        m_endrepeatCombox->setFixedSize(200, item_Fixed_Height);
         m_endrepeatCombox->addItem(tr("Never"));
         m_endrepeatCombox->addItem(tr("After"));
         m_endrepeatCombox->addItem(tr("On"));
@@ -988,6 +1036,7 @@ void CScheduleDlg::initConnection()
             &CScheduleDlg::slotBeginTimeChange);
     connect(m_endTimeEdit, &CTimeEdit::signaleditingFinished, this, &CScheduleDlg::slotEndTimeChange);
     connect(m_endDateEdit, &QDateEdit::userDateChanged, this, &CScheduleDlg::slotEndDateChange);
+    connect(m_calendarCategoryRadioGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &CScheduleDlg::slotRadioBtnClicked);
 }
 
 void CScheduleDlg::initDateEdit()
@@ -1082,7 +1131,9 @@ void CScheduleDlg::setTabFouseOrder()
 {
     setTabOrder(m_typeComBox, m_textEdit);
     setTabOrder(m_textEdit, m_allDayCheckbox);
-    setTabOrder(m_allDayCheckbox, m_beginDateEdit);
+    setTabOrder(m_allDayCheckbox, m_solarRadioBtn);
+    setTabOrder(m_solarRadioBtn, m_lunarRadioBtn);
+    setTabOrder(m_lunarRadioBtn, m_beginDateEdit);
     setTabOrder(m_beginDateEdit, m_beginTimeEdit);
 //    setTabOrder(m_beginTimeEdit, m_endDateEdit);
     setTabOrder(m_endDateEdit, m_endTimeEdit);
@@ -1104,4 +1155,26 @@ void CScheduleDlg::updateIsOneMoreDay(const QDateTime &begin, const QDateTime &e
     // 一天毫秒数
     static qint64 oneDayMses = 24 * 60 * 60 * 1000;
     m_isMoreThenOneDay = begin.msecsTo(end) >= oneDayMses;
+}
+
+void CScheduleDlg::updateRepeatCombox(bool isLunar)
+{
+    if (nullptr == m_beginrepeatCombox) {
+        return;
+    }
+    m_beginrepeatCombox->clear();
+    if (isLunar) {
+        m_beginrepeatCombox->addItem(tr("Never"));
+        m_beginrepeatCombox->addItem(tr("Monthly"));
+        m_beginrepeatCombox->addItem(tr("Yearly"));
+    } else {
+        m_beginrepeatCombox->addItem(tr("Never"));
+        m_beginrepeatCombox->addItem(tr("Daily"));
+        m_beginrepeatCombox->addItem(tr("Weekdays"));
+        m_beginrepeatCombox->addItem(tr("Weekly"));
+        m_beginrepeatCombox->addItem(tr("Monthly"));
+        m_beginrepeatCombox->addItem(tr("Yearly"));
+    }
+    m_beginrepeatCombox->setCurrentIndex(0);    //默认选择第一个
+    slotbRpeatactivated(0);     //更新“结束重复”状态
 }

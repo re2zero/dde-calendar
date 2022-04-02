@@ -31,6 +31,7 @@
 #include <DComboBox>
 
 #include <QLabel>
+#include <QButtonGroup>
 
 DWIDGET_USE_NAMESPACE
 class CTimeEdit;
@@ -38,6 +39,12 @@ class CScheduleDlg : public DCalendarDDialog
 {
     Q_OBJECT
 public:
+
+    enum ButtonId {
+        RadioSolarId = 0, //公历选择按钮id
+        RadioLunarId      //农历选择按钮id
+    };
+
     CScheduleDlg(int type, QWidget *parent = nullptr, const bool isAllDay = true);
     ~CScheduleDlg() override;
     void setData(const ScheduleDataInfo &info);
@@ -81,6 +88,12 @@ public slots:
      * 
      */
     void slotEndDateChange(const QDate &date);
+    /**
+     * @brief slotRadioBtnClicked
+     * 选择按钮控件点击时间
+     * @param btnId 控件id
+     */
+    void slotRadioBtnClicked(int btnId);
     //对话框按钮点击处理
     void slotBtClick(int buttonIndex, const QString &buttonName);
     void slotTextChange();
@@ -115,6 +128,12 @@ private:
      * @param end                       结束时间(datetime)
      */
     void updateIsOneMoreDay(const QDateTime &begin, const QDateTime &end);
+    /**
+     * @brief updateRepeatCombox
+     * 更新重复下拉列表
+     * @param isLunar   是否是农历 true：是 false：不是
+     */
+    void updateRepeatCombox(bool isLunar = false);
 
 private:
     QLabel *m_typeLabel = nullptr;
@@ -143,6 +162,9 @@ private:
     DWidget *m_endrepeatWidget = nullptr;
     DFrame *m_gwi = nullptr;
     QLabel *m_titleLabel = nullptr;
+    QButtonGroup *m_calendarCategoryRadioGroup = nullptr;    //日历类别选择控件组
+    DRadioButton *m_solarRadioBtn = nullptr;      //公历选择按钮
+    DRadioButton *m_lunarRadioBtn = nullptr;        //农历选择按钮
 
     QString m_context;
     const bool m_createAllDay;
