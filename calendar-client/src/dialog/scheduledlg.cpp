@@ -86,6 +86,13 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
         //光标移动到文末
         m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
     }
+    //根据日程信息，显示是否为农历日程
+    if (m_ScheduleDataInfo.getIsLunar()) {
+        m_lunarRadioBtn->setChecked(true);
+    } else {
+        m_solarRadioBtn->setChecked(true);
+    }
+    slotRadioBtnClicked(m_calendarCategoryRadioGroup->checkedId());
 
     m_beginDateEdit->setDate(info.getBeginDateTime().date());
     m_beginTimeEdit->setTime(info.getBeginDateTime().time());
@@ -150,6 +157,18 @@ bool CScheduleDlg::clickOkBtn()
     beginDateTime.setTime(m_beginTimeEdit->getTime());
     endDateTime.setDate(m_endDateEdit->date());
     endDateTime.setTime(m_endTimeEdit->getTime());
+
+    //设置是否为农历日程
+    switch (m_calendarCategoryRadioGroup->checkedId()) {
+    case 1:
+        //农历日程
+        _newSchedule.setIsLunar(true);
+        break;
+    default:
+        //公历日程
+        _newSchedule.setIsLunar(false);
+        break;
+    }
 
     if (m_textEdit->toPlainText().isEmpty()) {
         _newSchedule.setTitleName(m_textEdit->placeholderText());
@@ -225,8 +244,28 @@ bool CScheduleDlg::clickOkBtn()
     _newSchedule.setRemindData(_remindData);
 
     RepetitionRule _repetitionRule;
-    _repetitionRule.setRuleId(static_cast<RepetitionRule::RRuleID>
-                              (m_beginrepeatCombox->currentIndex()));
+    //根据是否为农历日程，设置对应的重复规则
+    RepetitionRule::RRuleID ruleID;
+    if (_newSchedule.getIsLunar()) {
+        switch (m_beginrepeatCombox->currentIndex()) {
+        case 1:
+            //每月
+            ruleID = RepetitionRule::RRule_EVEMONTH;
+            break;
+        case 2:
+            //每年
+            ruleID = RepetitionRule::RRule_EVEYEAR;
+            break;
+        default:
+            //默认不重复
+            ruleID = RepetitionRule::RRule_NONE;
+            break;
+        }
+
+    } else {
+        ruleID = static_cast<RepetitionRule::RRuleID>(m_beginrepeatCombox->currentIndex());
+    }
+    _repetitionRule.setRuleId(ruleID);
     if (_repetitionRule.getRuleId() > 0) {
         _repetitionRule.setRuleType(static_cast<RepetitionRule::RRuleEndType>
                                     (m_endrepeatCombox->currentIndex()));
@@ -1089,7 +1128,22 @@ void CScheduleDlg::initRmindRpeatUI()
         }
     }
     slotbRpeatactivated(m_ScheduleDataInfo.getRepetitionRule().getRuleId());
-    m_beginrepeatCombox->setCurrentIndex(m_ScheduleDataInfo.getRepetitionRule().getRuleId());
+    RepetitionRule::RRuleID ruleID = m_ScheduleDataInfo.getRepetitionRule().getRuleId();
+    if (m_ScheduleDataInfo.getIsLunar()) {
+        switch (ruleID) {
+        case RepetitionRule::RRule_EVEYEAR:
+            m_beginrepeatCombox->setCurrentIndex(2);
+            break;
+        case RepetitionRule::RRule_EVEMONTH:
+            m_beginrepeatCombox->setCurrentIndex(1);
+            break;
+        default:
+            m_beginrepeatCombox->setCurrentIndex(0);
+            break;
+        }
+    } else {
+        m_beginrepeatCombox->setCurrentIndex(ruleID);
+    }
 
     if (m_ScheduleDataInfo.getRepetitionRule().getRuleId() != 0) {
         if (m_ScheduleDataInfo.getRepetitionRule().getRuleType() == 0) {

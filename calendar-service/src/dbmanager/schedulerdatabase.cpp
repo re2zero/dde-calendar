@@ -726,7 +726,7 @@ qint64 SchedulerDatabase::UpdateJob(const QString &jobInfo)
     query.bindValue(++i, rootObj.value("Remind").toString());
     query.bindValue(++i, QString::fromUtf8(doc.toJson(QJsonDocument::Compact)));
     query.bindValue(++i, pinyinsearch::getPinPinSearch()->CreatePinyin(rootObj.value("Title").toString()));
-    query.bindValue(++i, rootObj.value("IsLunar").toString());
+    query.bindValue(++i, rootObj.value("IsLunar").toBool());
     query.bindValue(++i, id);
     if (query.exec()) {
         if (query.isActive()) {

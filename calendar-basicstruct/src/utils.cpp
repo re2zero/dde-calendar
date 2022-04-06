@@ -67,6 +67,7 @@ QJsonObject Utils::JobToObject(const Job &job)
     //将QString类型转换为QJsonArray类型，方便前端解析
     obj.insert("Ignore", QJsonDocument::fromJson(job.Ignore.toUtf8()).array());
     obj.insert("RecurID", job.RecurID);
+    obj.insert("IsLunar", job.IsLunar);
 
     return obj;
 }
