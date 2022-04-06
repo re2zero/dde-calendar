@@ -19,31 +19,27 @@
 #ifndef COLORPICKERWIDGET_H
 #define COLORPICKERWIDGET_H
 
-#include <DWidget>
+#include "colorlabel.h"
+#include "colorslider.h"
+
+#include <DAbstractDialog>
 #include <DLineEdit>
 #include <DPushButton>
 #include <QLabel>
 
-#include "colorlabel.h"
-#include "colorslider.h"
-
 DWIDGET_USE_NAMESPACE
-class CColorPickerWidget : public DWidget
+class CColorPickerWidget : public DAbstractDialog
 {
     Q_OBJECT
 public:
     explicit CColorPickerWidget(QWidget *parent = nullptr);
     ~CColorPickerWidget();
-protected:
-    void paintEvent(QPaintEvent *e) override;
+
+    QColor getSelectedColor();
+
 private:
-    //移动到上一层窗口中间显示
-    void moveCentorShow();
     void initUI();
     void setColorHexLineEdit();
-
-signals:
-    void signalSelectedColor(bool, QColor);
 
 public slots:
     /**

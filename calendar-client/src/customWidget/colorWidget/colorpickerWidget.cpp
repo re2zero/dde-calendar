@@ -23,6 +23,7 @@
 #include <DFrame>
 #include <DListView>
 #include <DTitlebar>
+#include <DSuggestButton>
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -31,18 +32,19 @@
 DGUI_USE_NAMESPACE
 
 CColorPickerWidget::CColorPickerWidget(QWidget *parent)
-    : DWidget(parent)
+    : DAbstractDialog(parent)
     , m_colorLabel(new ColorLabel(this))
     , m_colorSlider(new ColorSlider(this))
     , m_colHexLineEdit(new DLineEdit(this))
     , m_wordLabel(new DLabel(this))
     , m_cancelBtn(new DPushButton(this))
-    , m_enterBtn(new DPushButton(this))
+    , m_enterBtn(new DSuggestButton(this))
 {
     initUI();
-    moveCentorShow();
+
+    moveToCenter();
     setColorHexLineEdit();
-    setWindowFlag(Qt::Popup);
+
     connect(m_cancelBtn, &DPushButton::clicked, this, &CColorPickerWidget::slotCancelBtnClicked);
     connect(m_enterBtn, &DPushButton::clicked, this, &CColorPickerWidget::slotEnterBtnClicked);
 }
@@ -53,13 +55,23 @@ CColorPickerWidget::~CColorPickerWidget()
 
 void CColorPickerWidget::setColorHexLineEdit()
 {
-    connect(m_colHexLineEdit, &DLineEdit::textChanged, this, [ = ](const QString &) {
-        m_colHexLineEdit->setText(m_colHexLineEdit->text().remove('#'));
-        m_colHexLineEdit->setText(m_colHexLineEdit->text().toLower());
+    connect(m_colHexLineEdit, &DLineEdit::textChanged, this, [&](const QString &text) {
+        QString lowerText = text.toLower();
+        if (lowerText == text) {
+            QRegExp rx("^[0-9a-f]{6}$");
+            if (rx.indexIn(lowerText) == -1) {
+                m_enterBtn->setDisabled(true);
+            } else {
+                m_enterBtn->setDisabled(false);
+            }
+        } else {
+            m_colHexLineEdit->setText(lowerText.toLower());
+        }
     });
 
     m_colHexLineEdit->setText("");
-    QRegExp reg("[0-9A-Ea-e]{6}$");
+    m_enterBtn->setDisabled(true);
+    QRegExp reg("[0-9A-Fa-f]{6}$");
     QValidator *validator = new QRegExpValidator(reg,m_colHexLineEdit->lineEdit());
     m_colHexLineEdit->lineEdit()->setValidator(validator);
     setFocusProxy(m_colHexLineEdit);
@@ -80,33 +92,24 @@ void CColorPickerWidget::initUI()
     connect(m_colorSlider, &ColorSlider::valueChanged, m_colorLabel, [ = ](int val) {
         m_colorLabel->setHue(val);
     });
-    connect(m_colorLabel, &ColorLabel::signalpickedColor, this, [ = ](QColor color) {
-        this->slotSetColor(color);
-    });
-    connect(m_colorLabel, &ColorLabel::signalPreViewColor, this, [ = ](QColor color) {
-        this->slotUpdateColor(color);
-    });
+    connect(m_colorLabel, &ColorLabel::signalpickedColor, this, &CColorPickerWidget::slotSetColor);
+    connect(m_colorLabel, &ColorLabel::signalPreViewColor, this, &CColorPickerWidget::slotUpdateColor);
 
-    QVBoxLayout *mLayout = new QVBoxLayout;
+    QVBoxLayout *mLayout = new QVBoxLayout(this);
     mLayout->setSpacing(12);
-    QHBoxLayout *labelLayout = new QHBoxLayout;
-    QHBoxLayout *sliderLayout = new QHBoxLayout;
-    mLayout->setMargin(10);
-    labelLayout->addWidget(m_colorLabel, 0, Qt::AlignBottom | Qt::AlignLeft);//AlignVCenter | AlignHCenter
-    mLayout->addLayout(labelLayout);
-    sliderLayout->addWidget(m_colorSlider, 0, Qt::AlignBottom | Qt::AlignLeft);//AlignVCenter | AlignHCenter
-    mLayout->addLayout(sliderLayout);
+    mLayout->setContentsMargins(10, 10, 10, 8);
+    mLayout->addWidget(m_colorLabel);
+    mLayout->addWidget(m_colorSlider);
 
     m_wordLabel->setText(tr("Color"));
     m_wordLabel->setFixedWidth(40);
     m_wordLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-    m_colHexLineEdit->setFixedSize(QSize(248,36));//248
+    m_colHexLineEdit->setClearButtonEnabled(false); //不显示清空按钮
     QHBoxLayout *inputLayout = new QHBoxLayout;
     inputLayout->setMargin(0);
     inputLayout->setSpacing(6);
     inputLayout->addWidget(m_wordLabel);
-    inputLayout->addWidget(m_colHexLineEdit);
-    inputLayout->addStretch();
+    inputLayout->addWidget(m_colHexLineEdit, 1);
     mLayout->addLayout(inputLayout);
     mLayout->addSpacing(4);
 
@@ -124,9 +127,7 @@ void CColorPickerWidget::initUI()
     btnLayout->addWidget(line);
     line->show();
     btnLayout->addWidget(m_enterBtn);
-    btnLayout->addStretch();
     mLayout->addLayout(btnLayout);
-    mLayout->addStretch();
     this->setLayout(mLayout);
 
     this->setFocusPolicy(Qt::TabFocus);
@@ -135,41 +136,9 @@ void CColorPickerWidget::initUI()
     setTabOrder(m_enterBtn,m_colorSlider);
 }
 
-void CColorPickerWidget::paintEvent(QPaintEvent *event)
+QColor CColorPickerWidget::getSelectedColor()
 {
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-    bool   darkTheme = DGuiApplicationHelper::instance()->themeType()  == 2;
-    painter.setBrush(QBrush(darkTheme ? "#282828" : "#ffffff"));
-    QPen pen;
-    pen.setWidth(1);
-    pen.setColor(darkTheme ? QColor("#202020") : "#eeeeee");
-    painter.setPen(pen);
-    QRect rect = this->rect();
-    rect.setWidth(rect.width() - 1);
-    rect.setHeight(rect.height() - 1);
-    painter.drawRoundedRect(rect, 10, 10);
-    QWidget::paintEvent(event);
-}
-
-void CColorPickerWidget::moveCentorShow()
-{
-    //需要获取的顶层窗口
-    QWidget *_parentWidget = this;
-    QWidget *tmpWidget = nullptr;
-    do {
-        //获取父类对象，如果为qwiget则赋值否则退出
-        tmpWidget = qobject_cast<QWidget *>(_parentWidget->parent());
-        if (tmpWidget == nullptr) {
-            break;
-        } else {
-            _parentWidget = tmpWidget;
-        }
-    } while (_parentWidget != nullptr);
-    //获取最顶层窗口的中心坐标
-    const QPoint global = _parentWidget->mapToGlobal(_parentWidget->rect().center());
-    //居中显示
-    move(global.x() - width() / 2, global.y() - height() / 2);
+    return QColor("#" + m_colHexLineEdit->text());
 }
 
 void CColorPickerWidget::slotUpdateColor(const QColor &color)
@@ -179,7 +148,7 @@ void CColorPickerWidget::slotUpdateColor(const QColor &color)
     if (color.isValid()) {
         //证明是预览发出信号通知外界
 
-        this->m_colHexLineEdit->setText(c.name());
+        this->m_colHexLineEdit->setText(c.name().remove("#"));
     }
 }
 
@@ -196,13 +165,10 @@ void CColorPickerWidget::slotSetColor(const QColor &c)
 
 void CColorPickerWidget::slotCancelBtnClicked()
 {
-    emit signalSelectedColor(false, QColor());
-    close();
+    reject();
 }
 
 void CColorPickerWidget::slotEnterBtnClicked()
 {
-    QColor color("#" + m_colHexLineEdit->text());
-    emit signalSelectedColor(true, color);
-    close();
+    accept();
 }

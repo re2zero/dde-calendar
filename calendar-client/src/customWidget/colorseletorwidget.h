@@ -94,8 +94,6 @@ public slots:
     void slotButtonClicked(int butId);
     //添加自定义色彩控件点击信号
     void slotAddColorButClicked();
-    //调色板关闭事件
-    void slotPickerColsed(bool, QColor);
 
 private:
     void init();
@@ -111,7 +109,6 @@ private:
     ColorEntity m_colorEntity;      //当前已选择的色彩
     CRadioButton *m_userColorBut = nullptr; //用户自定义的色彩控件
     int m_userColorButId = -1; //用户自定义的色彩控件id
-    CColorPickerWidget *m_colorPicker = nullptr;
 };
 
 #endif // COLORSELETOR_H

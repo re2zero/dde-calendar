@@ -131,9 +131,9 @@ void ColorSeletorWidget::initView()
     hLayout->addStretch(1);
 
     m_colorLayout->setMargin(0);
-    m_colorLayout->setSpacing(5);
+    m_colorLayout->setSpacing(3);
     hLayout->setMargin(0);
-    hLayout->setSpacing(5);
+    hLayout->setSpacing(3);
 
     this->setLayout(hLayout);
 
@@ -151,20 +151,14 @@ void ColorSeletorWidget::slotButtonClicked(int butId)
 
 void ColorSeletorWidget::slotAddColorButClicked()
 {
-    if (nullptr == m_colorPicker) {
-        m_colorPicker = new CColorPickerWidget(this);
-    }
-    connect(m_colorPicker, &CColorPickerWidget::signalSelectedColor, this, &ColorSeletorWidget::slotPickerColsed);
-    m_colorPicker->show();
-}
+    CColorPickerWidget *colorPicker = new CColorPickerWidget(this);
 
-void ColorSeletorWidget::slotPickerColsed(bool finish, QColor color)
-{
-    if (finish) {
+    if (colorPicker->exec()) {
         //设置用户自定义控件颜色
-        setUserColor(color);
+        setUserColor(colorPicker->getSelectedColor());
         m_userColorBut->click();
     }
+    delete colorPicker;
 }
 
 void ColorSeletorWidget::setUserColor(const QColor& color)

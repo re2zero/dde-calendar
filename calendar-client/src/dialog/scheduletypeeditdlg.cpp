@@ -72,17 +72,16 @@ void ScheduleTypeEditDlg::initView(){
 
     QHBoxLayout *eLayout = new QHBoxLayout;
     QLabel *eName = new QLabel(tr("Name:"));
-    eName->setMinimumWidth(42);
-    eName->setMaximumWidth(42);
+    eName->setFixedWidth(42);
 
     m_lineEdit = new DLineEdit();
+    m_lineEdit->setClearButtonEnabled(false); //不显示按钮
     eLayout->addWidget(eName);
     eLayout->addWidget(m_lineEdit, 1);
 
     QHBoxLayout *cLayout = new QHBoxLayout;
     QLabel *cName = new QLabel(tr("Color:"));
-    cName->setMinimumWidth(42);
-    cName->setMaximumWidth(42);
+    cName->setFixedWidth(42);
     m_colorSeletor = new ColorSeletorWidget();
 
     cLayout->addWidget(cName);
@@ -110,7 +109,7 @@ void ScheduleTypeEditDlg::initView(){
     addButton(tr("Save", "button"), false, DDialog::ButtonRecommend);
     for (int i = 0; i < buttonCount(); i++) {
         QAbstractButton *button = getButton(i);
-        button->setFixedSize(189, 36);
+        button->setFixedSize(170, 36);
     }
 }
 
