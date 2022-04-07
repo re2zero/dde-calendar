@@ -27,7 +27,7 @@
 
 #include <DApplication>
 #include <DLog>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DApplicationSettings>
 
 #include <QDBusConnection>
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
         if (!dbus.registerObject("/com/deepin/Calendar", &ww)) {
             qWarning() << "registerObject Error:" << dbus.lastError();
         }
-        ww.slotTheme(DApplicationHelper::instance()->themeType());
+        ww.slotTheme(DGuiApplicationHelper::instance()->themeType());
         ww.show();
         PERF_PRINT_END("POINT-01");
         return app->exec();

@@ -25,6 +25,7 @@
 #include "cscheduleoperation.h"
 #include "scheduledaterangeinfo.h"
 #include "calendarmanage.h"
+#include "calendarglobalenv.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -362,6 +363,10 @@ void CScheduleSearchItem::mousePressEvent(QMouseEvent *event)
     //鼠标点击取消焦点显示
     m_tabFocus = false;
     if (event->button() == Qt::LeftButton) {
+        //注册为鼠标操作
+        if (!CalendarGlobalEnv::getGlobalEnv()->registerKey("SearchItemEvent", "MousePress")) {
+            CalendarGlobalEnv::getGlobalEnv()->reviseValue("SearchItemEvent", "MousePress");
+        }
         emit signalSelectSchedule(m_ScheduleInfo);
     }
     DLabel::mousePressEvent(event);
@@ -407,6 +412,10 @@ bool CScheduleSearchItem::eventFilter(QObject *o, QEvent *e)
 void CScheduleSearchItem::focusInEvent(QFocusEvent *e)
 {
     if (e->reason() == Qt::TabFocusReason) {
+        //注册为键盘操作
+        if (!CalendarGlobalEnv::getGlobalEnv()->registerKey("SearchItemEvent", "Keyboard")) {
+            CalendarGlobalEnv::getGlobalEnv()->reviseValue("SearchItemEvent", "Keyboard");
+        }
         emit signalSelectSchedule(m_ScheduleInfo);
         emit signalSelectCurrentItem(this, false);
         m_tabFocus = true;

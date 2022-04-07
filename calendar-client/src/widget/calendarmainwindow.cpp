@@ -498,6 +498,7 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
         m_scheduleSearchViewMaxWidth = qRound(0.2325 * width() + 0.5);
         m_isNormalStateShow = true;
         m_stackWidget->setVisible(true);
+        m_contentBackground->setVisible(m_opensearchflag);
     }
     m_scheduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
     setSearchWidth(m_scheduleSearchViewMaxWidth);
@@ -533,6 +534,10 @@ void Calendarmainwindow::slotSreturnPressed()
 {
     if (!m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_opensearchflag = true;
+    }
+    //如果为搜索状态
+    if (m_opensearchflag) {
+        //根据显示显示状态，是否显示左侧视图窗口
         if (!m_isNormalStateShow) {
             m_stackWidget->setVisible(false);
         }
@@ -584,6 +589,20 @@ void Calendarmainwindow::slotSearchEdit()
  */
 void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
+    //如果小尺寸显示模式，在显示搜索窗口的时候，左侧视图会被隐藏
+    //如果点击一个搜索结果则隐藏搜索窗口，展示左侧视图
+    if (!m_isNormalStateShow) {
+        //        CalendarGlobalEnv::getGlobalEnv()->registerKey("SearchItemEvent", "Keyboard");
+
+        QVariant variant;
+        CalendarGlobalEnv::getGlobalEnv()->getValueByKey("SearchItemEvent", variant);
+        QString searchItemEvent = variant.toString();
+        //如果为鼠标点击操作
+        if (searchItemEvent == "MousePress") {
+            m_stackWidget->setVisible(true);
+            m_contentBackground->setVisible(false);
+        }
+    }
     //获取当前视图编号
     CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>
                                        (m_stackWidget->currentWidget());
