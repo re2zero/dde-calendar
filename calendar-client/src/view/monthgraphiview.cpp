@@ -211,7 +211,12 @@ void CMonthGraphicsview::updateLunar()
             info = m_lunarCache.value(date);
 
             if (info.mLunarDayName == "初一") {
-                info.mLunarDayName = info.mLunarMonthName + info.mLunarDayName;
+                //如果为闰月只显示月份不显示天
+                if (info.mLunarMonthName.contains("闰")) {
+                    info.mLunarDayName = info.mLunarMonthName;
+                } else {
+                    info.mLunarDayName = info.mLunarMonthName + info.mLunarDayName;
+                }
             }
 
             if (info.mTerm.isEmpty()) {
