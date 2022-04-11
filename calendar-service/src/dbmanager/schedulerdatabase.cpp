@@ -396,7 +396,7 @@ void SchedulerDatabase::clearRemindJobDatabase()
 Job SchedulerDatabase::getRemindJob(const qint64 id, const qint64 recurid)
 {
     QSqlQuery query(m_database);
-    QString sql = QString("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobs.is_Lunar"
+    QString sql = QString("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobs.is_Lunar,"
                           "jobsReminder.jobStartTime as start,jobsReminder.jobEndTime as end,jobs.r_rule,jobs.remind,jobs.ignore,jobs.title_pinyin,"
                           "jobsReminder.remindCount,jobsReminder.remindTime , jobsReminder.recurid from jobs inner join jobsReminder "
                           "on jobs.id = jobsReminder.jobid   where jobsReminder.jobid = %1 and jobsReminder.recurid = %2")

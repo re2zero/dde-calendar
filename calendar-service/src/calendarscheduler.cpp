@@ -898,6 +898,24 @@ Job CalendarScheduler::josnStringToJob(const QString &str)
     return job;
 }
 
+QDateTime CalendarScheduler::getRemindTimeByCount(int count)
+{
+    qint64 Minute = 60 * 1000;
+    qint64 Hour = Minute * 60;
+    qint64 duration = (10 + ((count - 1) * 5)) * Minute; //下一次提醒距离现在的时间间隔，单位毫秒
+    if (duration >= Hour) {
+        duration = Hour;
+    }
+    return getRemindTimeByMesc(duration);
+}
+
+QDateTime CalendarScheduler::getRemindTimeByMesc(qint64 duration)
+{
+    QDateTime currentTime = QDateTime::currentDateTime();
+    currentTime = currentTime.addMSecs(duration);
+    return currentTime;
+}
+
 
 void CalendarScheduler::UpdateRemindTimeout(bool isClear)
 {
@@ -934,25 +952,42 @@ void CalendarScheduler::notifyMsgHanding(const qint64 jobID, const qint64 recurI
         return;
     }
     //如果为稍后提醒操作则需要更新对应的重复次数和提醒时间
-    if (operationNum == 2) {
+    qint64 Minute = 60 * 1000;
+    qint64 Hour = Minute * 60;
+    switch(operationNum) {
+    case 2://稍后提醒
         ++job.RemindLaterCount;
-        qint64 Minute = 60 * 1000;
-        qint64 Hour = Minute * 60;
-        qint64 duration = (10 + ((job.RemindLaterCount - 1) * 5)) * Minute; //下一次提醒距离现在的时间间隔，单位毫秒
-        if (duration >= Hour) {
-            duration = Hour;
-        }
-        //更新提醒时间
-        QDateTime currentTime = QDateTime::currentDateTime();
-        //提醒时间为当前时间往后延duration
-        job.RemidTime  = currentTime.addMSecs(duration);
-        //更新数据
+        job.RemidTime = getRemindTimeByCount(job.RemindLaterCount);
         m_database->updateRemindJob(job);
-    } else {
+        break;
+    case 21://15min后提醒
+        ++job.RemindLaterCount;
+        job.RemidTime = getRemindTimeByMesc(15 * Minute);
+        m_database->updateRemindJob(job);
+        break;
+    case 22://一个小时后提醒
+        ++job.RemindLaterCount;
+        job.RemidTime = getRemindTimeByMesc(Hour);
+        m_database->updateRemindJob(job);
+        break;
+    case 23://四个小时后提醒
+        ++job.RemindLaterCount;
+        job.RemidTime = getRemindTimeByMesc(4 * Hour);
+        m_database->updateRemindJob(job);
+        break;
+    case 3://明天提醒
+        ++job.RemindLaterCount;
+        job.RemidTime = getRemindTimeByMesc(24 * Hour);
+        m_database->updateRemindJob(job);
+        break;
+    case 1://打开日历
+    case 4://提前1天提醒
+    default:
         //删除对应的数据
         QList<qlonglong> Ids;
         Ids.append(jobID);
         m_database->deleteRemindJobs(Ids);
+        break;
     }
     emit signalNotifyMsgHanding(job, operationNum);
 }

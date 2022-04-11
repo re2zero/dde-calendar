@@ -32,8 +32,12 @@
 #define Minute 60 * Second
 #define Hour 60 * Minute
 
+static QString notifyActKeyDefault("default");
 static QString notifyActKeyClose("close");
 static QString notifyActKeyRemindLater("later");
+static QString notifyActKeyRemindAfter15mins("later-15mins");
+static QString notifyActKeyRemindAfter1hour("later-1hour");
+static QString notifyActKeyRemindAfter4hours("later-4hours");
 static QString notifyActKeyRemind1DayBefore("one-day-before");
 static QString notifyActKeyRemindTomorrow("tomorrow");
 static QString layoutHM("15:04");
@@ -81,38 +85,41 @@ void JobRemindManager::RemindJob(const Job &job)
             qint64 duration = 0;
             bool bmax = GetRemindLaterDuration(job.RemindLaterCount, duration);
             QStringList actionlist;
-            //default对应的是默认操作，也就是在点击空白区域会出发的操作
-            actionlist<< "default" << "";
             QVariantMap hints;
             QString cmd = QString("dbus-send --session --print-reply --dest=com.deepin.dataserver.Calendar "
                           "/com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.notifyMsgHanding int64:%1 int64:%2 ")
                     .arg(job.ID).arg(job.RecurID);
-            hints["x-deepin-action-default"] = QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(1);
-            QString btnName("x-deepin-action-");
-            int operationNum =0;
+            auto argMake = [&](int operationNum, const QString &text, const QString &transText){
+                actionlist << text << transText;
+                hints.insert("x-deepin-action-" + text, QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(operationNum));
+            };
             if (nDays >= 3 && job.RemindLaterCount == 1) {
-                actionlist << notifyActKeyRemind1DayBefore << tr("One day before start") << notifyActKeyClose << tr("Close", "button");
-                btnName += notifyActKeyRemind1DayBefore;
-                operationNum = 4;
+                //default对应的是默认操作，也就是在点击空白区域会出发的操作
+                argMake(1, notifyActKeyDefault,                 "");
+                argMake(4, notifyActKeyRemind1DayBefore,        tr("One day before start"));
+                argMake(5, notifyActKeyClose,                   tr("Close", "button"));
             } else if ((nDays == 1 || nDays == 2) && bmax) {
-                actionlist << notifyActKeyRemindTomorrow << tr("Remind me tomorrow") << notifyActKeyClose << tr("Close", "button");
-                btnName += notifyActKeyRemindTomorrow;
-                operationNum =3;
+                argMake(1, notifyActKeyDefault,               "");
+                argMake(3, notifyActKeyRemindTomorrow,          tr("Remind me tomorrow"));
+                argMake(5, notifyActKeyClose,                   tr("Close", "button"));
             } else {
                 QDateTime tm = QDateTime::currentDateTime();
                 tm = tm.addMSecs(duration);
                 if (tm < job.Start) {
-                    actionlist << notifyActKeyRemindLater << tr("Remind me later") << notifyActKeyClose << tr("Close", "button");
-                    btnName += notifyActKeyRemindLater;
-                    operationNum = 2;
+                    argMake(1,  notifyActKeyDefault,            "");
+                    argMake(5,  notifyActKeyClose,              tr("Close", "button"));
+                    argMake(2,  notifyActKeyRemindLater,        tr("Remind me later"));
+                    //后面的actions会在拉列表中显示
+                    argMake(21, notifyActKeyRemindAfter15mins,  tr("15 mins later"));
+                    argMake(22, notifyActKeyRemindAfter1hour,   tr("1 hour later"));
+                    argMake(23, notifyActKeyRemindAfter4hours,  tr("4 hours later"));
+                    argMake(3,  notifyActKeyRemindTomorrow,     tr("Tomorrow"));
                 } else {
-                    actionlist << notifyActKeyClose << tr("Close", "button");
+                    argMake(1,  notifyActKeyDefault,            "");
+                    argMake(5,  notifyActKeyClose,              tr("Close", "button"));
                 }
             }
-            if(operationNum !=0){
-                hints[btnName] = QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(operationNum);
-            }
-            hints["x-deepin-action-close"] = QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(5);
+
             QString title(tr("Schedule Reminder"));
             QString body = GetRemindBody(job, QDateTime::currentDateTime());
             QString appicon("dde-calendar");
@@ -143,16 +150,14 @@ void JobRemindManager::notifyMsgHanding(const Job &job, const int operationNum)
         //打开日历
         CallUiOpenSchedule(job);
         break;
-    case 2:
-        //稍后提醒
+    case 2://稍后提醒
+    case 21://15min后提醒
+    case 22://一个小时后提醒
+    case 23://四个小时后提醒
+    case 3://明天提醒
         RemindJobLater(job);
         break;
-    case 3:
-        //明天提醒
-        SetJobRemindOneDayBefore(job);
-        break;
-    case 4:
-        //提前一天提醒
+    case 4://提前一天提醒
         SetJobRemindTomorrow(job);
         break;
     default:

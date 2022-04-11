@@ -132,7 +132,22 @@ private:
     QList<stJobArr> FilterDateJobsWrap(const QList<stJobArr> &arrList, const QDateTime &start, const QDateTime &end);
 
     Job josnStringToJob(const QString &str);
-    signals:
+
+    /**
+     * @brief getRemindTimeByCount 获取下次提醒时间
+     * @param count 第几次提醒，从1开始
+     * @return
+     */
+    QDateTime getRemindTimeByCount(int count);
+
+    /**
+     * @brief getRemindTimeByMesc 获取下次提醒时间
+     * @param duration 毫秒时长
+     * @return
+     */
+    QDateTime getRemindTimeByMesc(qint64 duration);
+
+signals:
     void NotifyJobChange(const QList<Job> &jobs);
     void NotifyUpdateRemindJobs(const QList<Job> &jobs);
     void JobsUpdated(const QList<qlonglong> &Ids);

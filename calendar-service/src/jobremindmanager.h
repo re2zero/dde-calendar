@@ -56,7 +56,10 @@ public slots:
     /**
      * @brief notifyMsgHanding      通知提示框交互处理
      * @param job                   日程信息
-     * @param operationNum          操作编号 1：打开日历，2：稍后提醒 3： 明天提醒 4： 提前1天提醒
+     * @param operationNum          操作编号
+     *                              1：打开日历，
+     *                              2：稍后提醒 21：15min后提醒 22：一个小时后提醒 23：四个小时后提醒
+     *                              3：明天提醒 4： 提前1天提醒
      */
     void notifyMsgHanding(const Job &job, const int operationNum);
 
