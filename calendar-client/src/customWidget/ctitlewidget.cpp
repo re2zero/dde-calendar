@@ -99,8 +99,10 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     m_searchEdit->setFixedHeight(36);
     m_searchEdit->setFont(viewfont);
     m_searchEdit->lineEdit()->installEventFilter(this);
-
-    connect(m_searchEdit, &DSearchEdit::focusChanged, this, &CTitleWidget::slotSearchEditFocusChanged);
+    connect(m_searchEdit, &DSearchEdit::searchAborted, [&] {
+        //搜索框关闭按钮，清空数据
+        slotSearchEditFocusChanged(false);
+    });
 
     //搜索按钮，在窗口比较小的时候，显示搜索按钮隐藏搜索框
     m_searchPush = new DIconButton(this);
@@ -189,7 +191,7 @@ void CTitleWidget::miniStateShowSearchEdit()
     m_searchPush->hide();
     m_searchEdit->setMaximumWidth(width());
     m_searchEdit->show();
-    setFocusProxy(m_searchEdit);
+    setFocusProxy(m_newScheduleBtn);
 }
 
 void CTitleWidget::normalStateUpdateSearchEditWidth()
@@ -230,6 +232,11 @@ bool CTitleWidget::eventFilter(QObject *o, QEvent *e)
             //如果为tab切换焦点则发送焦点切换信号
             if (focusOutEvent->reason() == Qt::TabFocusReason) {
                 emit signalSearchFocusSwitch();
+            }
+            //根据焦点离开原因，决定是否隐藏搜索框
+            if (focusOutEvent->reason() == Qt::TabFocusReason
+                || focusOutEvent->reason() == Qt::MouseFocusReason) {
+                slotSearchEditFocusChanged(false);
             }
         }
     }
