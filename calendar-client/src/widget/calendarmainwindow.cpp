@@ -284,7 +284,6 @@ void Calendarmainwindow::slotTheme(int type)
         m_transparentFrame->setPalette(tframepa);
         m_transparentFrame->setBackgroundRole(DPalette::Background);
     }
-    CScheduleDataManage::getScheduleDataManage()->setTheMe(type);
     m_yearwindow->setTheMe(type);
     m_monthWindow->setTheMe(type);
     m_weekWindow->setTheMe(type);
@@ -800,30 +799,14 @@ bool Calendarmainwindow::event(QEvent *event)
     return DMainWindow::event(event);
 }
 
-QPair<QWidget *, QWidget *> createFontComBoBoxHandle(QObject *obj)
-{
-    DComboBox *comboBox = new DComboBox;
-    comboBox->setObjectName("SettingsFontFamilyComboBox");//Add by ut001000 renfeixiang 2020-08-14
-
-    QPair<QWidget *, QWidget *> optionWidget =
-        DSettingsWidgetFactory::createStandardItem(QByteArray(), nullptr, comboBox);
-    return optionWidget;
-}
-
 void Calendarmainwindow::slotOpenSettingDialog()
 {
-    if(0){
-        CColorPickerWidget *a = new CColorPickerWidget(this);
-        a->setWindowFlag(Qt::Popup);
-        a->show();
-        return;
-    }
-    if(nullptr == m_dsdSetting){
+    if (nullptr == m_dsdSetting) {
         m_dsdSetting = new DSettingsDialog(this);
         m_dsdSetting->setFixedSize(682, 506);
         m_dsdSetting->widgetFactory()->registerWidget("JobTypeListView", [](QObject *obj) -> QWidget * {
             if (DSettingsOption *option = qobject_cast<DSettingsOption *>(obj)) {
-                //qDebug() << "create custom button:" << option->value();
+                Q_UNUSED(option)
                 JobTypeListView *lv = new JobTypeListView();
                 return lv;
             }
@@ -859,27 +842,24 @@ void Calendarmainwindow::slotOpenSettingDialog()
         m_dsdSetting->updateSettings(settings);
 
         //QList<Widget>
-        QList<QWidget*> lstwidget = m_dsdSetting->findChildren<QWidget *>();
-        if(lstwidget.size()>0){//accessibleName
-            for(QWidget*wid: lstwidget)
-            {
-                qInfo() << wid->accessibleName();
-                if("ContentWidgetForsetting_base.job_type" == wid->accessibleName()){
+        QList<QWidget *> lstwidget = m_dsdSetting->findChildren<QWidget *>();
+        if (lstwidget.size() > 0) { //accessibleName
+            for (QWidget *wid : lstwidget) {
+                if ("ContentWidgetForsetting_base.job_type" == wid->accessibleName()) {
                     DIconButton *m_btnAddType = new DIconButton(this);
                     m_btnAddType->setFixedSize(22, 22);
                     DStyle style;
                     m_btnAddType->setIcon(style.standardIcon(DStyle::SP_IncreaseElement));
                     wid->layout()->addWidget(m_btnAddType);
-                    connect(m_btnAddType, &DIconButton::clicked, this, [=]{
+                    connect(m_btnAddType, &DIconButton::clicked, this, [=] {
                         ScheduleTypeEditDlg a;
                         a.exec();
                     });
                 }
-                if(wid->accessibleName().contains("DefaultWidgetAtContentRow")){
+                if (wid->accessibleName().contains("DefaultWidgetAtContentRow")) {
                     //DefaultWidgetAtContentRow是设置对话框右边每一个option条目对应widget的accessibleName的前缀，所以如果后续有更多条目，需要做修改
                     wid->layout()->setMargin(0);
                 }
-
             }
         }
     }

@@ -28,24 +28,11 @@
 
 DGUI_USE_NAMESPACE
 struct CSchedulesColor {
-    int type;
-    QColor gradientFromC;
-    QColor gradientToC;
-    QColor dotColor;
-    QColor Purecolor;
-    QColor shadowcolor;
-    QColor textColor;
-    QColor timeColor;
-    QColor hightlightgradientFromC;
-    QColor hightlightgradientToC;
-    QColor hightlightPurecolor;
-    QColor hovergradientFromC;
-    QColor hovergradientToC;
-    QColor hoverPurecolor;
-    QColor splitColor;
-    QColor pressgradientFromC;
-    QColor pressgradientToC;
-    QColor pressPurecolor;
+    QColor normalColor; //正常状态颜色
+    QColor hoverColor; //鼠标悬浮颜色
+    QColor pressColor; //鼠标点击颜色
+    QColor hightColor; //高亮色
+    QColor orginalColor; //最初的颜色
 };
 
 class CScheduleDataManage
@@ -54,7 +41,7 @@ public:
     static CScheduleDataManage *getScheduleDataManage();
     CSchedulesColor getScheduleColorByType(int type);
     static QColor getSystemActiveColor();
-    void setTheMe(int type = 0);
+    static QColor getTextColor();
     int getTheme() const
     {
         return m_theme;
@@ -62,14 +49,13 @@ public:
 private:
     CScheduleDataManage();
     ~CScheduleDataManage();
-
 private:
-    QVector<CSchedulesColor> m_vScheduleColor;
     int m_theme = 0;
     static CScheduleDataManage *m_vscheduleDataManage;
 };
 
-class JobTypeInfoManager{
+class JobTypeInfoManager
+{
 private:
     JobTypeInfoManager();
 public:
@@ -101,9 +87,9 @@ public:
      * @param jobTypeColorInfo    颜色信息
      * @return                    操作结果
      */
-    bool getSysJobTypeColor(int colorTypeNo, JobTypeColorInfo& jobTypeColorInfo);
+    bool getSysJobTypeColor(int colorTypeNo, JobTypeColorInfo &jobTypeColorInfo);
     //查询日程类型
-    bool getJobTypeByNo(int iNo, JobTypeInfo& jobType);
+    bool getJobTypeByNo(int iNo, JobTypeInfo &jobType);
 
     //查询日程类型名称是否重复
     bool isJobTypeNameUsed(QString strName);

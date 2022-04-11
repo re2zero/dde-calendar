@@ -229,7 +229,7 @@ void CYearScheduleView::paintItem(QPainter &painter, ScheduleDataInfo info, int 
         if (info.getID() != -1) {
             //圆点m_solocolor
             painter.save();
-            painter.setBrush(QBrush(gdColor.splitColor));
+            painter.setBrush(QBrush(gdColor.orginalColor));
             painter.setPen(Qt::NoPen);
             painter.drawEllipse(QRect(25, bHeight + (labelheight - 8) / 2, 8, 8));
             painter.restore();

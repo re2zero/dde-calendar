@@ -687,9 +687,7 @@ void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, in
     font.setPixelSize(DDECalendar::FontSizeFourteen);
     font.setWeight(QFont::Normal);
     gwi->setBackgroundColor(m_bBackgroundcolor);
-    QColor sColor = gdColor.Purecolor;
-    sColor.setAlphaF(1.0);
-    gwi->setSplitLineColor(gdColor.splitColor);
+    gwi->setSplitLineColor(gdColor.orginalColor);
     gwi->setText(m_btTextColor, font);
     font.setPixelSize(DDECalendar::FontSizeTwelve);
 

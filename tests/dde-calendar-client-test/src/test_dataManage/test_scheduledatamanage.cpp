@@ -30,25 +30,12 @@ test_scheduledatamanage::~test_scheduledatamanage()
     delete datamanage;
 }
 
-//CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
-TEST_F(test_scheduledatamanage, getScheduleColorByType)
-{
-    CSchedulesColor color = datamanage->getScheduleColorByType(1);
-    assert(1 == color.type);
-}
 
 //bool CScheduleDataManage::getSearchResult(QDate date)
 TEST_F(test_scheduledatamanage, getSearchResult)
 {
     //QDate date(2020, 12, 01);
     //datamanage->getSearchResult(date);
-}
-
-//void CScheduleDataManage::setTheMe(int type)
-TEST_F(test_scheduledatamanage, setTheMe)
-{
-    datamanage->setTheMe(1);
-    datamanage->setTheMe(2);
 }
 
 //CScheduleDataManage *CScheduleDataManage::getScheduleDataManage()
