@@ -191,7 +191,8 @@ void CTitleWidget::miniStateShowSearchEdit()
     m_searchPush->hide();
     m_searchEdit->setMaximumWidth(width());
     m_searchEdit->show();
-    setFocusProxy(m_newScheduleBtn);
+    //取消焦点代理
+    setFocusProxy(nullptr);
 }
 
 void CTitleWidget::normalStateUpdateSearchEditWidth()
