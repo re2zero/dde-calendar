@@ -375,6 +375,16 @@ bool CScheduleDBus::GetHuangLiMonth(const quint32 year, const quint32 month, boo
     return _infoIsVaild;
 }
 
+QString CScheduleDBus::getHuangLiShortName(const QDate &date)
+{
+    CaHuangLiDayInfo info;
+    if (GetHuangLiDay(date, info)) {
+        return info.mLunarMonthName + info.mLunarDayName;
+    }
+    return "";
+}
+
+
 void CScheduleDBus::propertyChanged(const QDBusMessage &msg)
 {
     if (msg.type() == QDBusMessage::SignalMessage && msg.member() == "JobsUpdated"
