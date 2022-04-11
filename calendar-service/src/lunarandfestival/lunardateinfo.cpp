@@ -24,72 +24,90 @@
 
 #include <QDebug>
 
+#define RECURENCELIMIT 3650 //递归次数限制
 //农历一年最少有363天
 const int LunarYearMiniDays = 353;
 
-LunarDateInfo::LunarDateInfo()
+LunarDateInfo::LunarDateInfo(const Job &job)
+    : m_job(job)
 {
+    m_options = ParseRRule(m_job.RRule);
+    m_dateInterval = m_job.Start.daysTo(m_job.End);
+}
+
+void LunarDateInfo::setIgnoreList(const QList<QDateTime> &ignore)
+{
+    m_ignoreList = ignore;
+}
+
+QMap<int, QDate> LunarDateInfo::getRRuleStartDate(const QDate &beginDate, const QDate &endDate, const QDate &solarDate)
+{
+    QMap<int, QDate> solar;
+    //不在范围内直接返回,开始时间小于结束时间或者需要计算的起始时间晚于结束时间
+    if (endDate < beginDate || solarDate > endDate) {
+        return solar;
+    }
+
+    m_queryStartDate = beginDate;
+    m_queryEndDate = endDate;
+    //如果日程开始时间在查询起始时间之前
+    if (solarDate > m_queryStartDate) {
+        m_queryStartDate = solarDate;
+    }
+    //如果是农历日程
+    switch (m_options.rpeat) {
+    case RepeatType::RepeatMonthly:
+        //每月
+        solar = getAllNextMonthLunarDayBySolar(solarDate);
+        break;
+    case RepeatType::RepeatYearly:
+        //每年
+        solar = getAllNextYearLunarDayBySolar(solarDate);
+        break;
+    default:
+        //默认不重复
+        break;
+    }
+
+    return solar;
 }
 
 //通过公历时间获取范围内该时间的农历天的具体公历日期
-QVector<QDate> LunarDateInfo::getAllNextMonthLunarDayBySolar(const QDate &beginDate, const QDate &endDate, const QDate &solarDate)
+QMap<int, QDate> LunarDateInfo::getAllNextMonthLunarDayBySolar(const QDate &solarDate)
 {
-    QVector<QDate> solar;
+    QMap<int, QDate> solar;
     //如果需要通过公历信息获取下一个对应农历信息对应的天
-    //不在范围内直接返回
-    if (endDate < beginDate || solarDate > endDate) {
-        qWarning() << QString("开始时间小于结束时间或者需要计算的起始时间晚于结束时间:");
-        qWarning() << "beginDate:" << beginDate
-                   << " endDate:" << endDate
-                   << " solarDate:" << solarDate;
-        return solar;
-    }
+
     LunarCalendar *lunc = LunarCalendar::GetLunarCalendar(solarDate.year());
     lunarInfo info = lunc->SolarDayToLunarDay(solarDate.month(), solarDate.day());
-
-    QDate nextSolar = beginDate;
-    //如果日程开始时间在查询起始时间之前
-    if (solarDate > nextSolar) {
-        nextSolar = solarDate;
-    }
+    //计算时间为日程开始时间
+    QDate nextSolar = solarDate;
+    int count = 0;
     while (true) {
         info = getNextMonthLunarDay(nextSolar, info);
-        //如果超过查询范围则退出
-        if (nextSolar > endDate) {
+
+        //如果超过范围则退出
+        if (addSolarMap(solar, nextSolar, count, info.LunarMonthDays)) {
             break;
         }
-        solar.append(nextSolar);
-        nextSolar = nextSolar.addDays(info.LunarMonthDays);
     }
     return solar;
 }
 
-QVector<QDate> LunarDateInfo::getAllNextYearLunarDayBySolar(const QDate &beginDate, const QDate &endDate, const QDate &solarDate)
+QMap<int, QDate> LunarDateInfo::getAllNextYearLunarDayBySolar(const QDate &solarDate)
 {
-    QVector<QDate> solar;
-    //不在范围内直接返回
-    if (endDate < beginDate || solarDate > endDate) {
-        qWarning() << QString("开始时间小于结束时间或者需要计算的起始时间晚于结束时间:");
-        qWarning() << "beginDate:" << beginDate
-                   << " endDate:" << endDate
-                   << " solarDate:" << solarDate;
-        return solar;
-    }
+    QMap<int, QDate> solar;
 
     //TODO: 需要优化
     //日程的农历日期
     LunarCalendar *solarDateLunar = LunarCalendar::GetLunarCalendar(solarDate.year());
     lunarInfo info = solarDateLunar->SolarDayToLunarDay(solarDate.month(), solarDate.day());
-    QDate bDate = beginDate;
-    //查询起始时间之前的时间不参加计算
-    //如果日程开始时间在查询起始时间之前
-    if (solarDate > bDate) {
-        //更新查询起始时间为开始日程时间
-        bDate = solarDate;
-    }
+    //计算时间为日程开始时间
+    QDate bDate = solarDate;
 
-    //如果日程的开始时间小于查询的起始时间，则从查询起始时间开始计算
-    while (bDate <= endDate) {
+    int count = 0;
+
+    while (bDate <= m_queryEndDate) {
         //开始时间农历日期
         LunarCalendar *lunc = LunarCalendar::GetLunarCalendar(bDate.year());
         lunarInfo startLunarInfo = lunc->SolarDayToLunarDay(bDate.month(), bDate.day());
@@ -114,9 +132,10 @@ QVector<QDate> LunarDateInfo::getAllNextYearLunarDayBySolar(const QDate &beginDa
                     }
                     //如果有这一天则添加对应的日期
                     bDate = bDate.addDays(intervalDay);
-                    solar.append(bDate);
-                    //更新查询开始时间
-                    bDate = bDate.addDays(LunarYearMiniDays);
+                    //如果超过范围则退出
+                    if (addSolarMap(solar, bDate, count, LunarYearMiniDays)) {
+                        break;
+                    }
                     continue;
                 } else {
                     //如果起始农历天在日程农历天之后，则更新到下一年
@@ -172,4 +191,80 @@ lunarInfo LunarDateInfo::getNextMonthLunarDay(QDate &nextDate, const lunarInfo &
         return getNextMonthLunarDay(nextDate, info);
     }
     return nextinfo;
+}
+
+/**
+ * @brief  ParseRRule 解析重复规则
+ * @param rule 规则字符串
+ * @return stRRuleOptions 包含重复规则相关字段的结构体
+ */
+stRRuleOptions LunarDateInfo::ParseRRule(const QString &rule)
+{
+    //无规则的不走这里判断所以此处默认rule不为空
+    //局部变量初始化
+    stRRuleOptions options {};
+    QStringList rruleslist = rule.split(";", QString::SkipEmptyParts);
+    //rpeat重复规则 0 无  1 每天 2 每个工作日 3 每周 4每月 5每年
+    //type结束重复类型 0 永不 1  多少次结束  2 结束日期
+    if (rruleslist.contains("FREQ=DAILY") && rruleslist.contains("BYDAY=MO,TU,WE,TH,FR")) {
+        options.rpeat = RepeatWorkDay;
+    } else if (rruleslist.contains("FREQ=DAILY")) {
+        options.rpeat = RepeatDaily;
+    } else if (rruleslist.contains("FREQ=WEEKLY")) {
+        options.rpeat = RepeatWeekly;
+    } else if (rruleslist.contains("FREQ=MONTHLY")) {
+        options.rpeat = RepeatMonthly;
+    } else if (rruleslist.contains("FREQ=YEARLY")) {
+        options.rpeat = RepeatYearly;
+    }
+
+    for (int i = 0; i < rruleslist.count(); i++) {
+        if (rruleslist.at(i).contains("COUNT=")) {
+            QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
+            options.type = RepeatOverCount;
+            options.tcount = liststr.at(1).toInt() - 1;
+        }
+
+        if (rruleslist.at(i).contains("UNTIL=")) {
+            QStringList liststr = rruleslist.at(i).split("=", QString::SkipEmptyParts);
+            options.type = RepeatOverUntil;
+            options.overdate = QDateTime::fromString(liststr.at(1).left(liststr.at(1).count() - 1), "yyyyMMddThhmmss");
+            options.overdate = options.overdate.addDays(1);
+        }
+    }
+    return options;
+}
+
+bool LunarDateInfo::isWithinTimeFrame(const QDate &solarDate)
+{
+    QDate endDate = solarDate.addDays(m_dateInterval);
+    //如果日程结束时间在查询起始时间之前，或者日程开始时间在查询截止时间之后，说明不在获取范围内
+    return !(endDate < m_queryStartDate || solarDate > m_queryEndDate);
+}
+
+bool LunarDateInfo::addSolarMap(QMap<int, QDate> &solarMap, QDate &nextDate, int &count, const int addDays)
+{
+    //如果获取到的时间在查询范围内
+    if (isWithinTimeFrame(nextDate)) {
+        solarMap[count] = nextDate;
+    }
+    count++;
+    //当结束重复为按多少次结束判断时，检查重复次数是否达到，达到则退出
+    //当重复次数达到最大限制直接返回
+    //options.tcount表示重复的次数，而count表示总次数，所以这里不能有“=”
+    if ((m_options.type == RepeatOverCount && m_options.tcount < count)
+        || count > RECURENCELIMIT) {
+        return true;
+    }
+
+    //更新查询开始时间
+    nextDate = nextDate.addDays(addDays);
+
+    //判断next是否有效,时间大于RRule的until
+    //判断next是否大于查询的截止时间,这里应该比较date，而不是datetime，如果是非全天的日程，这个设计具体时间的问题，会导致返回的job个数出现问题
+    if ((m_options.type == RepeatOverUntil && nextDate >= m_options.overdate.date())
+        || nextDate > m_queryEndDate) {
+        return true;
+    }
+    return false;
 }

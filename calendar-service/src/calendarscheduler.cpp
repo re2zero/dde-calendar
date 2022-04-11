@@ -430,35 +430,25 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
         //是否为农历日程
         if (job.IsLunar) {
             QVector<QDate> recurJobDates;
-            LunarDateInfo lunardate;
-            //农历日程处理
-            switch (options.rpeat) {
-            case RepeatType::RepeatYearly: {
-                //每年
-                recurJobDates = lunardate.getAllNextYearLunarDayBySolar(start.date(), end.date(), job.Start.date());
-            } break;
-            case RepeatType::RepeatMonthly: {
-                //每月
-                recurJobDates = lunardate.getAllNextMonthLunarDayBySolar(start.date(), end.date(), job.Start.date());
-            } break;
-            default:
-                break;
-            }
+            LunarDateInfo lunardate(job);
+            lunardate.setIgnoreList(igonrelist);
+
+            QMap<int, QDate> ruleStartDate = lunardate.getRRuleStartDate(start.date(), end.date(), job.Start.date());
+
             QDateTime recurDateTime;
             recurDateTime.setTime(job.Start.time());
-            QDateTime copyend;
-            foreach (auto &recurDate, recurJobDates) {
-                recurDateTime.setDate(recurDate);
-                if (!ContainsInIgnoreList(igonrelist, recurDateTime)) {
-                    copyend = recurDateTime.addSecs(dateinterval);
-                    stJobTime jt;
-                    jt.start = recurDateTime;
-                    jt.end = copyend;
-                    jt.recurID = count;
-                    jobtimelist.append(jt);
-                }
-                count++;
+            QDateTime copyEnd;
+            QMap<int, QDate>::ConstIterator iter = ruleStartDate.constBegin();
+            for (; iter != ruleStartDate.constEnd(); iter++) {
+                recurDateTime.setDate(iter.value());
+                copyEnd = recurDateTime.addSecs(dateinterval);
+                stJobTime jt;
+                jt.start = recurDateTime;
+                jt.end = copyEnd;
+                jt.recurID = iter.key();
+                jobtimelist.append(jt);
             }
+
         } else {
             //公历日程数据
 
