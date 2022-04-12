@@ -528,33 +528,33 @@ void SchedulerDatabase::CreateTables()
     bool ret;
     //table job_types
     ret = query.exec("CREATE TABLE IF NOT EXISTS \"job_types\" (\"id\" integer primary key autoincrement,\"created_at\""
-                           " datetime,\"updated_at\" datetime,\"deleted_at\" datetime,\"name\" varchar(255),\"color\" varchar(255) )");
-    if (!ret){
+                     " datetime,\"updated_at\" datetime,\"deleted_at\" datetime,\"name\" varchar(255),\"color\" varchar(255) )");
+    if (!ret) {
         qDebug() << query.lastError();
     }
 
     ret = query.exec("CREATE INDEX IF NOT EXISTS idx_job_types_deleted_at ON \"job_types\"(deleted_at)");
-    if (!ret){
+    if (!ret) {
         qDebug() << query.lastError();
     }
     //table jobs
     ret = query.exec("CREATE TABLE IF NOT EXISTS \"jobs\" (\"id\" integer primary key autoincrement,"
-                           "\"created_at\" datetime,\"updated_at\" datetime,\"deleted_at\" datetime,"
-                           "\"type\" integer,\"title\" varchar(255),\"description\" varchar(255),"
-                           "\"all_day\" bool,\"start\" datetime,\"end\" datetime,\"r_rule\" varchar(255),"
-                           "\"remind\" varchar(255),\"ignore\" varchar(255) , \"title_pinyin\" varchar(255))");
-    if (!ret){
+                     "\"created_at\" datetime,\"updated_at\" datetime,\"deleted_at\" datetime,"
+                     "\"type\" integer,\"title\" varchar(255),\"description\" varchar(255),"
+                     "\"all_day\" bool,\"start\" datetime,\"end\" datetime,\"r_rule\" varchar(255),"
+                     "\"remind\" varchar(255),\"ignore\" varchar(255) , \"title_pinyin\" varchar(255))");
+    if (!ret) {
         qDebug() << query.lastError();
     }
     ret = query.exec("CREATE INDEX  IF NOT EXISTS idx_jobs_deleted_at ON \"jobs\"(deleted_at)");
-    if (!ret){
+    if (!ret) {
         qDebug() << query.lastError();
     }
 
     ret = query.exec("CREATE TABLE IF NOT EXISTS \"jobsReminder\" (\"id\" integer primary key autoincrement,"
-               "\"jobid\" integer,\"recurid\" integer,\"remindCount\" integer ,\"notifyid\" integer ,"
-               "\"remindTime\" datetime ,\"jobStartTime\" datetime ,\"jobEndTime\" datetime) ");
-    if (!ret){
+                     "\"jobid\" integer,\"recurid\" integer,\"remindCount\" integer ,\"notifyid\" integer ,"
+                     "\"remindTime\" datetime ,\"jobStartTime\" datetime ,\"jobEndTime\" datetime) ");
+    if (!ret) {
         qDebug() << query.lastError();
     }
 
@@ -567,7 +567,7 @@ void SchedulerDatabase::CreateTables()
                                         ,Authority   INTEGER     NOT NULL                           \
                                         )");//Authority：用来标识权限，0：读 1：展示 2：改 4：删
 
-    if (!ret){
+    if (!ret) {
         qDebug() << query.lastError();
     }
     ret = query.exec("CREATE TABLE IF NOT EXISTS  ColorType (                                                \
@@ -576,7 +576,7 @@ void SchedulerDatabase::CreateTables()
                                         ,ColorHex    CHAR(10)    NOT NULL                           \
                                         ,Authority   INTEGER     NOT NULL                           \
                                         )");//Authority：用来标识权限，0：读 1：展示 2：改 4：删
-    if (!ret){
+    if (!ret) {
         qDebug() << query.lastError();
     }
 
@@ -594,13 +594,13 @@ void SchedulerDatabase::initJobTypeTables()
 {
     //getJobTypeByTypeNo(int iTypeNo, JobTypeInfo jobType);
     JobTypeInfo jobType;
-    if(!getJobTypeByTypeNo(1, jobType) || jobType.getJobTypeNo() > 0){
+    if (!getJobTypeByTypeNo(1, jobType) || jobType.getJobTypeNo() > 0) {
         return;
     }
     addJobType(1, "Work", 1, 1);
-    addJobType(2, "Life", 2, 1);
-    addJobType(3, "Other", 3, 1);
-    addJobType(4, "Festival", 4, 0);
+    addJobType(2, "Life", 7, 1);
+    addJobType(3, "Other", 4, 1);
+    addJobType(4, "Festival", 2, 0);
 
     addColorType(1, "#ff5e97", 1);
     addColorType(2, "#ff9436", 1);
@@ -852,7 +852,7 @@ void SchedulerDatabase::UpdateType(const QString &typeInfo)
  * @brief getJobTypeByTypeNo    根据类型编号获取日程类型信息
  * @return
  */
-bool SchedulerDatabase::getJobTypeByTypeNo(int iTypeNo, JobTypeInfo& jobType)
+bool SchedulerDatabase::getJobTypeByTypeNo(int iTypeNo, JobTypeInfo &jobType)
 {
     bool bRet = false;
     QSqlQuery query(m_database);
@@ -880,7 +880,7 @@ bool SchedulerDatabase::getJobTypeByTypeNo(int iTypeNo, JobTypeInfo& jobType)
  * @brief getJobTypeList        获取日程类型json串
  * @param 无
  */
-bool SchedulerDatabase::getJobTypeList(QList<JobTypeInfo>& lstJobType)
+bool SchedulerDatabase::getJobTypeList(QList<JobTypeInfo> &lstJobType)
 {
     bool bRet = false;
     QSqlQuery query(m_database);

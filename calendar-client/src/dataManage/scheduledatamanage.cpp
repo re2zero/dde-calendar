@@ -37,8 +37,8 @@ CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
         //根据类型关联的颜色编号获取对应的颜色
         isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(typeInfo.getColorTypeNo(), colorinfo);
     } else {
-        //节假日 颜色变化为8
-        isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(8, colorinfo);
+        //节假日 颜色变化为2
+        isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(2, colorinfo);
     }
 
     if (isOk) {
