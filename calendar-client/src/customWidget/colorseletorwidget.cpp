@@ -72,17 +72,15 @@ void ColorSeletorWidget::addColor(const JobTypeColorInfo& cInfo)
     m_colorGroup->addButton(radio, count);
     m_colorLayout->addWidget(radio);
     if (TypeUser == cInfo.getAuthority()) {
+
         m_userColorBtn = radio;             //记录用户色彩指针
         m_userColorBtnId = count;
     }
+    qInfo() << cInfo.getAuthority();
 }
-
 
 JobTypeColorInfo ColorSeletorWidget::getSelectedColorInfo()
 {
-    if (-1 == m_colorInfo.getTypeNo()) {
-        m_colorInfo.setTypeNo(getAutoColorId());
-    }
     return m_colorInfo;
 }
 
@@ -153,7 +151,7 @@ void ColorSeletorWidget::slotAddColorButClicked()
 
     if (colorPicker->exec()) {
         //设置用户自定义控件颜色
-        setUserColor(JobTypeColorInfo(-1, colorPicker->getSelectedColor().name(), TypeUser));
+        setUserColor(JobTypeColorInfo(0, colorPicker->getSelectedColor().name(), TypeUser));
         m_userColorBtn->click();
     }
     delete colorPicker;
@@ -167,16 +165,4 @@ void ColorSeletorWidget::setUserColor(const JobTypeColorInfo& colorInfo)
     m_userColorBtn->setColor(colorInfo.getColorHex());
     m_colorEntityMap[m_userColorBtnId] = colorInfo;
     m_userColorBtn->click();
-}
-
-int ColorSeletorWidget::getAutoColorId()
-{
-    int maxId = 0;
-    QList<JobTypeColorInfo> lstColorInfo = JobTypeInfoManager::instance()->getJobTypeColorList();
-    for (JobTypeColorInfo& var: lstColorInfo) {
-        if (var.getTypeNo() > maxId) {
-            maxId = var.getTypeNo();
-        }
-    }
-    return maxId + 1;
 }

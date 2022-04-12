@@ -525,37 +525,60 @@ void SchedulerDatabase::updateNotifyID(const Job &job, int notifyid)
 void SchedulerDatabase::CreateTables()
 {
     QSqlQuery query(m_database);
+    bool ret;
     //table job_types
-    qDebug() << query.exec("CREATE TABLE IF NOT EXISTS \"job_types\" (\"id\" integer primary key autoincrement,\"created_at\""
-                           " datetime,\"updated_at\" datetime,\"deleted_at\" datetime,\"name\" varchar(255),\"color\" varchar(255) )")
-             << query.lastError();
-    qDebug() << query.exec("CREATE INDEX IF NOT EXISTS idx_job_types_deleted_at ON \"job_types\"(deleted_at)") << query.lastError();
+    ret = query.exec("CREATE TABLE IF NOT EXISTS \"job_types\" (\"id\" integer primary key autoincrement,\"created_at\""
+                           " datetime,\"updated_at\" datetime,\"deleted_at\" datetime,\"name\" varchar(255),\"color\" varchar(255) )");
+    if (!ret){
+        qDebug() << query.lastError();
+    }
 
+    ret = query.exec("CREATE INDEX IF NOT EXISTS idx_job_types_deleted_at ON \"job_types\"(deleted_at)");
+    if (!ret){
+        qDebug() << query.lastError();
+    }
     //table jobs
-    qDebug() << query.exec("CREATE TABLE IF NOT EXISTS \"jobs\" (\"id\" integer primary key autoincrement,"
+    ret = query.exec("CREATE TABLE IF NOT EXISTS \"jobs\" (\"id\" integer primary key autoincrement,"
                            "\"created_at\" datetime,\"updated_at\" datetime,\"deleted_at\" datetime,"
                            "\"type\" integer,\"title\" varchar(255),\"description\" varchar(255),"
                            "\"all_day\" bool,\"start\" datetime,\"end\" datetime,\"r_rule\" varchar(255),"
-                           "\"remind\" varchar(255),\"ignore\" varchar(255) , \"title_pinyin\" varchar(255))")
-             << query.lastError();
-    qDebug() << query.exec("CREATE INDEX  IF NOT EXISTS idx_jobs_deleted_at ON \"jobs\"(deleted_at)") << query.lastError();
+                           "\"remind\" varchar(255),\"ignore\" varchar(255) , \"title_pinyin\" varchar(255))");
+    if (!ret){
+        qDebug() << query.lastError();
+    }
+    ret = query.exec("CREATE INDEX  IF NOT EXISTS idx_jobs_deleted_at ON \"jobs\"(deleted_at)");
+    if (!ret){
+        qDebug() << query.lastError();
+    }
 
-    qDebug() << query.exec("CREATE TABLE IF NOT EXISTS JobType (                                                  \
+    ret = query.exec("CREATE TABLE IF NOT EXISTS \"jobsReminder\" (\"id\" integer primary key autoincrement,"
+               "\"jobid\" integer,\"recurid\" integer,\"remindCount\" integer ,\"notifyid\" integer ,"
+               "\"remindTime\" datetime ,\"jobStartTime\" datetime ,\"jobEndTime\" datetime) ");
+    if (!ret){
+        qDebug() << query.lastError();
+    }
+
+    ret = query.exec("CREATE TABLE IF NOT EXISTS JobType (                                                  \
                                          ID          INTEGER     PRIMARY KEY   AUTOINCREMENT        \
                                         ,TypeNo      INTEGER     NOT NULL      UNIQUE               \
                                         ,TypeName    VARCHAR(20) NOT NULL                           \
                                         ,ColorTypeNo INTEGER     NOT NULL                           \
                                         ,CreateTime  DATETIME    NOT NULL                           \
                                         ,Authority   INTEGER     NOT NULL                           \
-                                        )")//Authority：用来标识权限，0：读 1：展示 2：改 4：删
-                << query.lastError();
-    qDebug() << query.exec("CREATE TABLE IF NOT EXISTS  ColorType (                                                \
+                                        )");//Authority：用来标识权限，0：读 1：展示 2：改 4：删
+
+    if (!ret){
+        qDebug() << query.lastError();
+    }
+    ret = query.exec("CREATE TABLE IF NOT EXISTS  ColorType (                                                \
                                          ID          INTEGER     PRIMARY KEY   AUTOINCREMENT        \
                                         ,TypeNo      INTEGER     NOT NULL      UNIQUE               \
                                         ,ColorHex    CHAR(10)    NOT NULL                           \
                                         ,Authority   INTEGER     NOT NULL                           \
-                                        )")//Authority：用来标识权限，0：读 1：展示 2：改 4：删
-                << query.lastError();
+                                        )");//Authority：用来标识权限，0：读 1：展示 2：改 4：删
+    if (!ret){
+        qDebug() << query.lastError();
+    }
 
     if (query.isActive()) {
         query.finish();
@@ -577,6 +600,7 @@ void SchedulerDatabase::initJobTypeTables()
     addJobType(1, "Work", 1, 1);
     addJobType(2, "Life", 2, 1);
     addJobType(3, "Other", 3, 1);
+    addJobType(4, "Festival", 4, 0);
 
     addColorType(1, "#ff5e97", 1);
     addColorType(2, "#ff9436", 1);
@@ -609,16 +633,9 @@ void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
     }
     if (m_database.open()) {
         const QStringList tables = m_database.tables();
-
         QSqlQuery query(m_database);
         CreateTables();
         initJobTypeTables();
-        //如果不存在日程提醒相关的数据库则创建一个（因为需要将程序改成按需运行的程序，所以需要存储相关数据）
-        if (!tables.contains("jobsReminder")) {
-            query.exec("CREATE TABLE \"jobsReminder\" (\"id\" integer primary key autoincrement,"
-                       "\"jobid\" integer,\"recurid\" integer,\"remindCount\" integer ,\"notifyid\" integer ,"
-                       "\"remindTime\" datetime ,\"jobStartTime\" datetime ,\"jobEndTime\" datetime) ");
-        }
 
         //jobs需要添加一个是否为农历日程的字段
         //判断jobs表中是否有该字段，如果有则不处理
@@ -984,7 +1001,7 @@ bool SchedulerDatabase::getColorTypeList(QList<JobTypeColorInfo> &lstColorType)
     bool bRet = false;
     QSqlQuery query(m_database);
 
-    QString strsql = QString("   SELECT TypeNo, ColorHex      "
+    QString strsql = QString("   SELECT TypeNo, ColorHex, Authority      "
                              "     FROM ColorType             "
                              " ORDER BY TypeNo");
     bRet = query.exec(strsql);
@@ -993,6 +1010,7 @@ bool SchedulerDatabase::getColorTypeList(QList<JobTypeColorInfo> &lstColorType)
             JobTypeColorInfo colorType;
             colorType.setTypeNo(query.value("TypeNo").toInt());
             colorType.setColorHex(query.value("ColorHex").toString());
+            colorType.setAuthority(query.value("Authority").toInt());
             lstColorType.append(colorType);
         }
     }

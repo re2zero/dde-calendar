@@ -96,8 +96,6 @@ private:
 
     //添加色彩控件
     void addColor(const JobTypeColorInfo&);
-    //获取自动id
-    int getAutoColorId();
 
 private:
     QMap<int, JobTypeColorInfo> m_colorEntityMap;    //所有色彩实体

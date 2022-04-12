@@ -370,16 +370,34 @@ void CScheduleOperation::changeRepetitionRule(ScheduleDataInfo &newinfo, const S
  * @param newinfo
  * @param oldinfo
  */
-bool CScheduleOperation::createJobType(const JobTypeInfo &jobTypeInfo)//新增时，颜色可能是：自定义/默认类型。以“自定义颜色编码默认为0”来区分.
+bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，颜色可能是：自定义/默认类型。以“自定义颜色编码默认为0”来区分.
 {
     //创建日程
     QString strJson = "";
-    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
-    m_DBusManager->AddJobType(strJson);// no:10,hex:#123
-    return true;
 
+    int colorTypeNo = jobTypeInfo.getColorTypeNo();
 
     //以“自定义颜色编码默认为0”来区分.
+    if(0 == colorTypeNo){
+        colorTypeNo = JobTypeInfoManager::instance()->getNextColorTypeNo();
+        jobTypeInfo.setColorTypeNo(colorTypeNo);
+        JobTypeColorInfo jobTypeColorInfo;
+        jobTypeColorInfo.setTypeNo(colorTypeNo);
+        jobTypeColorInfo.setColorHex(jobTypeInfo.getColorHex());
+        jobTypeColorInfo.setAuthority(7);//自定义颜色默认权限为7
+        if(!createColorType(jobTypeColorInfo)){
+            return false;
+        }
+    }
+
+    if(0 == jobTypeInfo.getJobTypeNo()){
+        jobTypeInfo.setJobTypeNo(JobTypeInfoManager::instance()->getNextTypeNo());
+        jobTypeInfo.setColorTypeNo(colorTypeNo);
+    }
+    jobTypeInfo.setAuthority(7);//自定义日程类型默认权限为7
+
+    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
+    return m_DBusManager->AddJobType(strJson);// no:10,hex:#123
 }
 
 /**
@@ -389,8 +407,12 @@ bool CScheduleOperation::createJobType(const JobTypeInfo &jobTypeInfo)//新增�
  * 只能更新名称和颜色
  * 颜色可能是：自定义-自定义、自定义-默认类型、默认类型-默认类型
  */
-bool CScheduleOperation::updateJobType(const JobTypeInfo &oldJobTypeInfo, const JobTypeInfo &newJobTypeInfo)
+bool CScheduleOperation::updateJobType(JobTypeInfo &oldJobTypeInfo, JobTypeInfo &newJobTypeInfo)
 {
+    //如果oldJobTypeInfo中typeno为0，则是新增
+    if(0 ==oldJobTypeInfo.getJobTypeNo()){
+        return createJobType(newJobTypeInfo);
+    }
     bool bRet = true;
 
     if(!JobTypeInfo::isJobTypeInfoUpdated(oldJobTypeInfo, newJobTypeInfo)){
@@ -403,7 +425,9 @@ bool CScheduleOperation::updateJobType(const JobTypeInfo &oldJobTypeInfo, const 
     if( iOldColorTypeNo != iNewColorTypeNo){
         if(!JobTypeInfoManager::instance()->isSysJobTypeColor(iOldColorTypeNo)){
             //删除旧自定义颜色
-            deleteColorType(iOldColorTypeNo);
+            if(!deleteColorType(iOldColorTypeNo)){
+                return false;
+            }
         }
     }
     else if( oldJobTypeInfo.getColorHex() != newJobTypeInfo.getColorHex()){
@@ -411,7 +435,18 @@ bool CScheduleOperation::updateJobType(const JobTypeInfo &oldJobTypeInfo, const 
         JobTypeColorInfo colorTypeInfo;
         //getSysJobTypeColor(int colorTypeNo, JobTypeColorInfo& jobTypeColorInfo)
         if(JobTypeInfoManager::instance()->getSysJobTypeColor(iNewColorTypeNo, colorTypeInfo)){
-            updateColorType(colorTypeInfo);
+            if(!updateColorType(colorTypeInfo)){
+                return false;
+            }
+        }
+    }
+    if(0 == iNewColorTypeNo){//如果新编号为0，则是新增自定义颜色。如果是修改自定义颜色，则不会走入本逻辑，而是走上述的else分支
+        iNewColorTypeNo = JobTypeInfoManager::instance()->getNextColorTypeNo();
+        JobTypeColorInfo jobTypeColorInfo;
+        jobTypeColorInfo.setTypeNo(iNewColorTypeNo);
+        jobTypeColorInfo.setColorHex(newJobTypeInfo.getColorHex());
+        if(!createColorType(jobTypeColorInfo)){
+            return false;
         }
     }
 
@@ -419,7 +454,8 @@ bool CScheduleOperation::updateJobType(const JobTypeInfo &oldJobTypeInfo, const 
     if( (oldJobTypeInfo.getJobTypeName() != newJobTypeInfo.getJobTypeName())
      || (iOldColorTypeNo != iNewColorTypeNo)){
         //更新日程类型
-        updateJobType(newJobTypeInfo);
+        newJobTypeInfo.setJobTypeNo(oldJobTypeInfo.getJobTypeNo());
+        bRet = updateJobType(newJobTypeInfo);
     }
     return bRet;
 }
@@ -433,8 +469,7 @@ bool CScheduleOperation::updateJobType(const JobTypeInfo &jobTypeInfo)
     //修改日程
     QString strJson = "";
     JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
-    m_DBusManager->UpdateJobType(strJson);
-    return true;
+    return m_DBusManager->UpdateJobType(strJson);
 }
 
 /**
@@ -460,8 +495,7 @@ bool CScheduleOperation::getJobTypeList(QList<JobTypeInfo> &lstJobTypeInfo)
 bool CScheduleOperation::deleteJobType(const int iJobTypeNo)
 {
     //删除日程类型
-    m_DBusManager->DeleteJobType(iJobTypeNo);
-    return true;
+    return m_DBusManager->DeleteJobType(iJobTypeNo);
 }
 
 /**
@@ -473,9 +507,10 @@ bool CScheduleOperation::createColorType(const JobTypeColorInfo &colorTypeInfo)
 {
     //创建颜色
     QString strJson = "";
-    JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson);
-    m_DBusManager->AddJobTypeColor(strJson);
-    return true;
+    if(!JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson)){
+        return false;
+    }
+    return m_DBusManager->AddJobTypeColor(strJson);
 }
 
 /**
@@ -488,8 +523,7 @@ bool CScheduleOperation::updateColorType(const JobTypeColorInfo &colorTypeInfo)
     //修改颜色
     QString strJson = "";
     JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson);
-    m_DBusManager->UpdateJobTypeColor(strJson);
-    return true;
+    return m_DBusManager->UpdateJobTypeColor(strJson);
 }
 
 /**
@@ -503,8 +537,7 @@ bool CScheduleOperation::getColorTypeList(QList<JobTypeColorInfo> &lstColorTypeI
     if(!m_DBusManager->GetJobTypeColorList(strJson)){
         return false;
     }
-    JobTypeInfo::jsonStrToColorTypeInfoList(strJson, lstColorTypeInfo);
-    return true;
+    return JobTypeInfo::jsonStrToColorTypeInfoList(strJson, lstColorTypeInfo);
 }
 
 /**
@@ -515,7 +548,6 @@ bool CScheduleOperation::getColorTypeList(QList<JobTypeColorInfo> &lstColorTypeI
 bool CScheduleOperation::deleteColorType(const int iColorTypeNo)
 {
     //删除日程类型
-    m_DBusManager->DeleteJobTypeColor(iColorTypeNo);
-    return true;
+    return m_DBusManager->DeleteJobTypeColor(iColorTypeNo);
 }
 

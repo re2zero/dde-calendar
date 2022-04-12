@@ -15,16 +15,18 @@ class JobTypeListView : public DListView
     Q_OBJECT
 public:
     explicit JobTypeListView(QWidget *parent = nullptr);
-    bool addJobType();
+    bool updateJobType();
 
     bool viewportEvent(QEvent *event) override;
 private:
-    void initUI();
-    void addJobTypeItem(int idx, QString strColorHex, QString strJobType);
+    void initUI();//初始化
+    void addJobTypeItem(QString strColorHex, QString strJobType);//新增一行【日程类型】数据
 
 signals:
 
 public slots:
+    void slotUpdateJobType();
+    void slotDeleteJobType();
 
 private:
     QList<JobTypeInfo> m_lstJobType {};

@@ -35,7 +35,6 @@
 #include "tabletconfig.h"
 #include "calendarglobalenv.h"
 
-#include "jobtypelistview.h"
 #include "scheduletypeeditdlg.h"
 
 #include <DHiDPIHelper>
@@ -846,6 +845,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
         if (lstwidget.size() > 0) { //accessibleName
             for (QWidget *wid : lstwidget) {
                 if ("ContentWidgetForsetting_base.job_type" == wid->accessibleName()) {
+
                     DIconButton *m_btnAddType = new DIconButton(this);
                     m_btnAddType->setFixedSize(22, 22);
                     DStyle style;

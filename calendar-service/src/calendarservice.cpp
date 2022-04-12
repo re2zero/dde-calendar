@@ -239,6 +239,7 @@ bool CalendarService::CreateJobType(const QString &jobTypeInfo)
     bool bRet;
     CalendarProgramExitControl::getProgramExitControl()->addExc();
     bRet = m_scheduler->CreateJobType(jobTypeInfo);
+    qInfo() << jobTypeInfo;
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return bRet;
 }
@@ -303,6 +304,7 @@ QString CalendarService::GetColorTypeList()
     QString strJobType;
     CalendarProgramExitControl::getProgramExitControl()->addExc();
     strJobType = m_scheduler->GetColorTypeList();
+    qInfo() << strJobType;
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return strJobType;
 }

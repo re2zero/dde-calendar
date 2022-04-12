@@ -21,6 +21,7 @@
 #define CALENDARMAINWINDOW_H
 
 #include "src/scheduledatainfo.h"
+#include "jobtypelistview.h"
 
 #include <DLabel>
 #include <DButtonBox>
@@ -123,6 +124,7 @@ private:
     QTimer *m_currentDateUpdateTimer = nullptr;
     DIconButton *m_newScheduleBtn {nullptr}; //全局的新建日程按钮
     DSettingsDialog *m_dsdSetting {nullptr};
+    JobTypeListView *m_jobTypeListView {nullptr};
     //日历打开默认显示视图
     int m_defaultIndex;
     bool m_setButtonFocus {false};

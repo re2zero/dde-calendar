@@ -50,10 +50,10 @@ public:
     void deleteOnlyInfo(const ScheduleDataInfo &scheduleInfo);
 
     //创建日程类型
-    bool createJobType(const JobTypeInfo &jobTypeInfo);//新增时，颜色可能是：自定义/默认类型。以“自定义颜色编码默认为0”来区分.
+    bool createJobType(JobTypeInfo &jobTypeInfo);//新增时，颜色可能是：自定义/默认类型。以“自定义颜色编码默认为0”来区分.
     //更新日程类型
     //更新名称和颜色，颜色可能是：自定义-自定义、自定义-默认类型、默认类型-默认类型
-    bool updateJobType(const JobTypeInfo &oldJobTypeInfo, const JobTypeInfo &newJobTypeInfo);
+    bool updateJobType(JobTypeInfo &oldJobTypeInfo, JobTypeInfo &newJobTypeInfo);
     //获取日程类型列表
     bool getJobTypeList(QList<JobTypeInfo> &lstJobTypeInfo);
     //删除日程类型

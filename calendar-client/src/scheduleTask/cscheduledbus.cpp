@@ -413,7 +413,7 @@ bool CScheduleDBus::GetJobTypeList(QString &strJson)
 //新增日程类型信息
 bool CScheduleDBus::AddJobType(QString strJson)
 {
-    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("CreateColorType"), {QVariant(strJson)});
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("CreateJobType"), {QVariant(strJson)});
     pCall.waitForFinished();
     QDBusMessage reply = pCall.reply();
     if (reply.type() != QDBusMessage::ReplyMessage) {
@@ -475,7 +475,7 @@ bool CScheduleDBus::GetJobTypeColorList(QString& strJson)
 //新增颜色信息
 bool CScheduleDBus::AddJobTypeColor(QString strJson)
 {
-    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("AddJobTypeColor"), {QVariant(strJson)});
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("CreateColorType"), {QVariant(strJson)});
     pCall.waitForFinished();
     QDBusMessage reply = pCall.reply();
     if (reply.type() != QDBusMessage::ReplyMessage) {
@@ -490,7 +490,7 @@ bool CScheduleDBus::AddJobTypeColor(QString strJson)
 //更新颜色信息
 bool CScheduleDBus::UpdateJobTypeColor(QString strJson)
 {
-    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("UpdateJobTypeColor"), {QVariant(strJson)});
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("UpdateColorType"), {QVariant(strJson)});
     pCall.waitForFinished();
     QDBusMessage reply = pCall.reply();
     if (reply.type() != QDBusMessage::ReplyMessage) {
@@ -505,7 +505,7 @@ bool CScheduleDBus::UpdateJobTypeColor(QString strJson)
 //删除颜色信息
 bool CScheduleDBus::DeleteJobTypeColor(int colorTypeNo)
 {
-    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("DeleteJobTypeColor"), {QVariant(colorTypeNo)});
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("DeleteColorType"), {QVariant(colorTypeNo)});
     pCall.waitForFinished();
     QDBusMessage reply = pCall.reply();
     if (reply.type() != QDBusMessage::ReplyMessage) {

@@ -129,6 +129,17 @@ bool JobTypeInfoManager::getJobTypeByNo(int iNo, JobTypeInfo &jobType)
     }
     return false;
 }
+//查询日程类型颜色
+bool JobTypeInfoManager::getJobTypeColorByNo(int iNo, JobTypeColorInfo& jobType)
+{
+    for (JobTypeColorInfo &color : m_lstJobTypeColor) {
+        if(color.getTypeNo() == iNo){
+            jobType = color;
+            return true;
+        }
+    }
+    return false;
+}
 
 //查询日程类型名称是否重复
 bool JobTypeInfoManager::isJobTypeNameUsed(QString strName)
@@ -139,4 +150,30 @@ bool JobTypeInfoManager::isJobTypeNameUsed(QString strName)
         }
     }
     return false;
+}
+//获取自定义日程类型下一个编号
+int JobTypeInfoManager::getNextTypeNo()
+{
+    int typeNo = 1;
+
+    for (JobTypeInfo &job : m_lstJobType) {
+        if(job.getJobTypeNo() >= typeNo){
+            typeNo = job.getJobTypeNo() + 1;
+        }
+    }
+    if(4 == typeNo){//节日类型占用
+        typeNo += 1;
+    }
+    return typeNo;
+}
+//获取自定义日程类型颜色下一个编号
+int JobTypeInfoManager::getNextColorTypeNo()
+{
+    int colorTypeNo = 1;
+    for (JobTypeColorInfo &jobColor : m_lstJobTypeColor) {
+        if(jobColor.getTypeNo() >= colorTypeNo){
+            colorTypeNo = jobColor.getTypeNo() + 1;
+        }
+    }
+    return colorTypeNo;
 }

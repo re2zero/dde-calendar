@@ -34,8 +34,8 @@ class ScheduleTypeEditDlg : public DDialog
     Q_OBJECT
 public:
     explicit ScheduleTypeEditDlg(QWidget *parent = nullptr);
-    explicit ScheduleTypeEditDlg(QString, QWidget *parent = nullptr);
-    explicit ScheduleTypeEditDlg(QString title, QString scheduleName, QWidget *parent = nullptr);
+    explicit ScheduleTypeEditDlg(JobTypeInfo &jobTypeOld, QWidget *parent = nullptr);
+    explicit ScheduleTypeEditDlg(QString title, JobTypeInfo &jobTypeOld, QWidget *parent = nullptr);
 
 signals:
     /**
@@ -63,8 +63,9 @@ private:
     void initData();
 
 private:
-    JobTypeInfo m_jobType;
-    QString m_scheduleName = ""; //类型名
+    JobTypeInfo m_jobTypeOld;       //被修改的日程类型
+    JobTypeInfo m_jobTypeNew;       //修改后的日程类型
+    JobTypeColorInfo m_jobTypeColorOld;
     QString m_title = "";   //弹窗名
     DLineEdit *m_lineEdit = nullptr;    //编辑器
     QLabel *m_titleLabel = nullptr;     //弹窗名控件

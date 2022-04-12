@@ -46,8 +46,9 @@ bool JobTypeComboBox::updateJobType()
     for (int i = 0;i < m_lstJobType.size();i++) {
         strColorHex = m_lstJobType[i].getColorHex();
         strJobType = m_lstJobType[i].getJobTypeName();
+
         if(strColorHex.isEmpty() || strJobType.isEmpty()){
-            return false;
+            continue;
         }
         addJobTypeItem(i, m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
     }
