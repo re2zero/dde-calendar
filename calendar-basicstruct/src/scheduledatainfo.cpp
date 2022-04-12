@@ -626,12 +626,14 @@ JobTypeInfo::JobTypeInfo(const JobTypeInfo & _other){
     iAuthority = _other.getAuthority();
 }
 
-JobTypeColorInfo::JobTypeColorInfo()
-    : iTypeNo(0)
-    , strColorHex ("")
-    , iAuthority (0)
+JobTypeColorInfo::JobTypeColorInfo(int typeNo, QString colorHex, int authority)
+    : iTypeNo(typeNo)
+    , strColorHex (colorHex)
+    , iAuthority (authority)
 {
+
 }
+
 /**
  * @brief isJobTypeInfoUpdated        日程类型信息比较
  * @param oldJobType                  旧日程类型信息

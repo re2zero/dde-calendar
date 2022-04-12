@@ -19,14 +19,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cradiobutton.h"
-#include <QPainter>
 #include <DPaletteHelper>
+#include <QPainter>
 
 DWIDGET_USE_NAMESPACE
 
 CRadioButton::CRadioButton(QWidget *parent) : QRadioButton(parent)
 {
-
 }
 
 void CRadioButton::setColor(const QColor& color)

@@ -44,7 +44,7 @@ signals:
     void signalRefreshScheduleType();
 public slots:
     //颜色改变事件
-    void slotColorChange(QColor);
+    void slotColorChange(JobTypeColorInfo);
     //编辑器文本改变事件
     void slotEditTextChanged(const QString &);
     /**

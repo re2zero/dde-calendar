@@ -48,6 +48,7 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     initUI();
     initConnection();
     setTabFouseOrder();
+    languageCheck();
 
     if (type == 1) {
         m_titleLabel->setText(tr("New Event"));
@@ -88,13 +89,12 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
         //光标移动到文末
         m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
     }
-    //根据日程信息，显示是否为农历日程
-    if (m_ScheduleDataInfo.getIsLunar()) {
+    //根据日程信息以及当前语言，设置是否显示农历日程
+    if (m_ScheduleDataInfo.getIsLunar() && m_languageFlag > 0) {
         m_lunarRadioBtn->setChecked(true);
     } else {
         m_solarRadioBtn->setChecked(true);
     }
-    slotRadioBtnClicked(m_calendarCategoryRadioGroup->checkedId());
 
     m_beginDateEdit->setDate(info.getBeginDateTime().date());
     m_beginTimeEdit->setTime(info.getBeginDateTime().time());
@@ -508,19 +508,16 @@ void CScheduleDlg::slotbRpeatactivated(int index)
 {
     if (index > 0) {
         m_endrepeatWidget->setVisible(true);
-        //524: 默认界面高度, 36: 新增控件高度, 10: 上下控件间距
-        setFixedSize(dialog_width, 524 + 36 + 10);
         if (m_endrepeatCombox->currentIndex() == 1) {
             //如果结束重复于次数，判断次数是否为空
             slotendrepeatTextchange();
         }
     } else {
         m_endrepeatWidget->setVisible(false);
-        setFixedSize(dialog_width, 524);
-        //重复类型为“从不”时，使能保存按钮
         QAbstractButton *m_OkBt = getButton(1);
         m_OkBt->setEnabled(true);
     }
+    resize();
 }
 
 void CScheduleDlg::sloteRpeatactivated(int index)
@@ -550,17 +547,65 @@ void CScheduleDlg::sloteRpeatactivated(int index)
     }
 }
 
+void CScheduleDlg::slotTypeRpeatactivated(int index)
+{
+    Q_UNUSED(index);
+    m_colorSeletorWideget->hide();
+    if (m_typeComBox->isEditable()) {
+        m_typeComBox->setIconSize(QSize(0, 0));
+    } else {
+        m_typeComBox->setIconSize(QSize(16,16));
+    }
+
+    resize();
+}
+
 void CScheduleDlg::slotRadioBtnClicked(int btnId)
 {
     if (RadioSolarId == btnId) {
         m_beginDateEdit->setLunarCalendarStatus(false);
         m_endDateEdit->setLunarCalendarStatus(false);
+        m_endRepeatDate->setLunarCalendarStatus(false);
         updateRepeatCombox(false);
     } else if (RadioLunarId == btnId) {
-        m_beginDateEdit->setLunarCalendarStatus(true);
-        m_endDateEdit->setLunarCalendarStatus(true);
+        //只有为中文系列语言时才显示农历
+        if (m_languageFlag == 2) {
+            m_beginDateEdit->setLunarCalendarStatus(true);
+            m_endDateEdit->setLunarCalendarStatus(true);
+            m_endRepeatDate->setLunarCalendarStatus(true);
+        }
         updateRepeatCombox(true);
     }
+}
+
+void CScheduleDlg::slotBtnAddItemClicked()
+{
+    m_colorSeletorWideget->show();
+    resize();
+}
+
+void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
+{
+    if(text.isEmpty()){
+        //名称为空，返回
+        m_jobTypeAlert->showAlertMessage(tr("Enter a name please"));
+        getButtons()[1]->setDisabled(true);
+        return;
+    }
+    if(text.trimmed().isEmpty()){
+        //名称为全空格，返回
+        m_jobTypeAlert->showAlertMessage(tr("The name can not only contain whitespaces"));
+        getButtons()[1]->setDisabled(true);
+        return;
+    }
+
+    if(JobTypeInfoManager::instance()->isJobTypeNameUsed(text)){
+        //重名，返回
+        m_jobTypeAlert->showAlertMessage(tr("The name already exists"));
+        getButtons()[1]->setDisabled(true);
+        return;
+    }
+    getButtons()[1]->setDisabled(false);
 }
 
 bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
@@ -712,13 +757,23 @@ void CScheduleDlg::initUI()
         m_typeComBox->setObjectName("ScheduleTypeCombobox");
         m_typeComBox->setAccessibleName("ScheduleTypeCombobox");
         m_typeComBox->setFixedSize(350, item_Fixed_Height);
-        m_typeComBox->setIconSize(QSize(24, 24));
         initJobTypeComboBox();//todo
+        m_jobTypeAlert = new DAlertControl(m_typeComBox, this);
+
+        m_colorSeletorWideget = new ColorSeletorWidget();
+        m_colorSeletorWideget->hide();
+        QVBoxLayout *vLayout = new QVBoxLayout();
+        vLayout->setSpacing(5);
+        vLayout->setMargin(0);
+        vLayout->addWidget(m_typeComBox);
+        vLayout->addWidget(m_colorSeletorWideget);
+
         typelayout->addWidget(m_typeLabel);
-        typelayout->addWidget(m_typeComBox);
+        typelayout->addLayout(vLayout);
         typelayout->addStretch();
         maintlayout->addLayout(typelayout);
     }
+
     //内容
     {
         QHBoxLayout *contentLabellayout = new QHBoxLayout;
@@ -1000,15 +1055,15 @@ void CScheduleDlg::initUI()
         m_endrepeattimesWidget->setAccessibleName("EndRepeatTimeWidget");
         m_endrepeattimesWidget->setLayout(endrepeattimeslayout);
         m_endrepeattimesWidget->setVisible(false);
-        m_endrepeattimesWidget->setFixedSize(141, item_Fixed_Height);
+        m_endrepeattimesWidget->setFixedSize(140, item_Fixed_Height);
         endrepeatLabellayout->addWidget(m_endrepeattimesWidget);
 
-        m_endRepeatDate = new DDateEdit;
+        m_endRepeatDate = new CDateEdit;
         //设置对象名称和辅助显示名称
         m_endRepeatDate->setObjectName("EndRepeatDateEdit");
         m_endRepeatDate->setAccessibleName("EndRepeatDateEdit");
         m_endRepeatDate->setCalendarPopup(true);
-        m_endRepeatDate->setFixedSize(141, item_Fixed_Height);
+        m_endRepeatDate->setFixedSize(140, item_Fixed_Height);
         m_endRepeatDate->setDate(QDate::currentDate());
         m_endRepeatDate->setDisplayFormat(m_dateFormat);
         m_endRepeatDate->setCurrentSectionIndex(2);
@@ -1023,7 +1078,7 @@ void CScheduleDlg::initUI()
         m_endrepeatWidget->setObjectName("EndRepeatDateWidget");
         m_endrepeatWidget->setAccessibleName("EndRepeatDateWidget");
         m_endrepeatWidget->setLayout(endrepeatLabellayout);
-        m_endrepeatWidget->setFixedWidth(410);
+        m_endrepeatWidget->setFixedWidth(dialog_width);
         maintlayout->addWidget(m_endrepeatWidget);
         m_endrepeatWidget->setVisible(false);
     }
@@ -1059,6 +1114,8 @@ void CScheduleDlg::initConnection()
             &CScheduleDlg::slotbRpeatactivated);
     connect(m_endrepeatCombox, QOverload<int>::of(&QComboBox::activated), this,
             &CScheduleDlg::sloteRpeatactivated);
+    connect(m_typeComBox, QOverload<int>::of(&QComboBox::activated), this,
+            &CScheduleDlg::slotTypeRpeatactivated);
     connect(m_beginDateEdit, &DDateEdit::userDateChanged, this, &CScheduleDlg::slotBDateEidtInfo);
     QShortcut *shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QLatin1String("ESC")));
@@ -1069,6 +1126,8 @@ void CScheduleDlg::initConnection()
     connect(m_endTimeEdit, &CTimeEdit::signaleditingFinished, this, &CScheduleDlg::slotEndTimeChange);
     connect(m_endDateEdit, &QDateEdit::userDateChanged, this, &CScheduleDlg::slotEndDateChange);
     connect(m_calendarCategoryRadioGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &CScheduleDlg::slotRadioBtnClicked);
+    connect(m_typeComBox, &JobTypeComboBox::signalAddTypeBtnClicked, this, &CScheduleDlg::slotBtnAddItemClicked);
+    connect(m_typeComBox, &JobTypeComboBox::editTextChanged, this, &CScheduleDlg::slotTypeEditTextChanged);
 }
 
 void CScheduleDlg::initDateEdit()
@@ -1081,83 +1140,11 @@ void CScheduleDlg::initDateEdit()
 }
 void CScheduleDlg::initJobTypeComboBox()
 {
-#if 0
-    QString strJosn; //typeno, typename, colorhex
-
-    strJosn = "[{\"JobTypeNo\":\"1\",\"JobTypeName\":\"Work\",\"ColorTypeNo\":\"1\",\"ColorHex\":\"f00\",\"Authority\":\"1\"},       \
-                {\"JobTypeNo\":\"2\",\"JobTypeName\":\"Life\",\"ColorTypeNo\":\"2\",\"ColorHex\":\"0f0\",\"Authority\":\"1\"},       \
-                {\"JobTypeNo\":\"3\",\"JobTypeName\":\"Other\",\"ColorTypeNo\":\"3\",\"ColorHex\":\"00f\",\"Authority\":\"1\"},      \
-                {\"JobTypeNo\":\"4\",\"JobTypeName\":\"Study\",\"ColorTypeNo\":\"4\",\"ColorHex\":\"ff0\",\"Authority\":\"7\"},      \
-                {\"JobTypeNo\":\"5\",\"JobTypeName\":\"Games\",\"ColorTypeNo\":\"5\",\"ColorHex\":\"f0f\",\"Authority\":\"7\"}]";
-
-    m_typeComBox->addJobType(strJosn);
-#endif
     JobTypeInfoManager::instance()->updateInfo();//1.新建日程时更新 2.管理界面更新  =====>>  TODO：2种情况更新即可：1.程序初始化时，更新 2.日程类型增删改时
     m_typeComBox->updateJobType();
     return;
-#if 0
-    JobTypeInfo::jsonStrToJobTypeInfoList(strJosn, m_lstJobType);
-    m_typeComBox->setCurrentJobTypeNo(1);
-
-    for (int i = 0;i < m_lstJobType.size();i++) {
-        initJobTypeComboBoxItem(m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
-    }
-    for (int i = 0;i < m_lstJobType.size();i++) {
-        initJobTypeComboBoxItem(m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
-    }
-    for (int i = 0;i < m_lstJobType.size();i++) {
-        initJobTypeComboBoxItem(m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
-    }
-    for (int i = 0;i < m_lstJobType.size();i++) {
-        initJobTypeComboBoxItem(m_lstJobType[i].getColorHex(),m_lstJobType[i].getJobTypeName());
-    }
-
-    QFrame *viewContainer = m_typeComBox->findChild<QFrame *>();
-    if (viewContainer) {
-        //移动前先隐藏
-        //viewContainer->hide();
-        //如果显示视图容器则设置高度
-        viewContainer->setFixedHeight(500);
-        //设置最大高度
-        viewContainer->setMaximumHeight(500 + 1);
-        //获取combobox底部坐标
-        QPoint showPoint = mapToGlobal(this->rect().bottomLeft());
-
-        //将视图容器移动到combobox的底部
-        viewContainer->move(showPoint.x(), showPoint.y());
-        viewContainer->setStyleSheet("");
-        DDateEdit *btn = new DDateEdit();
-        //viewContainer->setLayout();
-
-        //QVBoxLayout *mLayout = qobject_cast<QVBoxLayout *>(viewContainer->layout());
-        //mLayout->addWidget(btn);
-        viewContainer->layout()->addWidget(btn);
-
-        /*
-    fCenter->setFrameShape(QFrame::NoFrame);
-    fCenter->setLayout(mLayout);
-*/
-        //显示
-        //viewContainer->show();
-    }
-    return;
-#endif
 }
 
-void CScheduleDlg::initJobTypeComboBoxItem(QString strColorHex,QString strTypeName)
-{
-    QSize size(24, 24);
-    QPixmap pixmap(size);
-    pixmap.fill(Qt::transparent);
-    QPainter painter(&pixmap);
-    painter.setRenderHints(QPainter::Antialiasing );
-    painter.setBrush(QColor("#" + strColorHex));
-    painter.setPen(Qt::NoPen);
-    painter.drawRoundedRect(0, 0, 24, 24, 8, 8);//8 = (24 - 16) / 2 + 4
-
-    m_typeComBox->addItem(QIcon(pixmap),tr(strTypeName.toLocal8Bit()));//
-    m_typeComBox->setIconSize(QSize(16,16));
-}
 void CScheduleDlg::initRmindRpeatUI()
 {
     if (m_ScheduleDataInfo.getAllDay()) {
@@ -1302,4 +1289,49 @@ void CScheduleDlg::updateRepeatCombox(bool isLunar)
     }
     m_beginrepeatCombox->setCurrentIndex(0);    //默认选择第一个
     slotbRpeatactivated(0);     //更新“结束重复”状态
+}
+
+/**
+ * @brief CScheduleDlg::languageCheck
+ * 系统语言检查，根据语言类型更改控件状态和显示状态，规则如下
+ * 中文环境下所有功能正常显示
+ * 英文环境下可勾选农历日程选项，以农历规则提示，但是时间内容不显示农历
+ * 其他语言环境下只能选择公历且只能以公历显示和提示
+ *
+ */
+void CScheduleDlg::languageCheck()
+{
+    QString langName = QLocale::system().name();
+
+    m_languageFlag = 0;
+
+    if (langName.startsWith("en_")) {
+        //英文环境
+        m_languageFlag = 1;
+    } else if (langName.startsWith("zh_")) {
+        //中文环境
+        m_languageFlag = 2;
+    }
+
+    //非中文和英文环境下禁用农历勾选按钮
+    if (0 == m_languageFlag) {
+        m_solarRadioBtn->click();
+        m_lunarRadioBtn->setDisabled(true);
+    } else {
+        m_lunarRadioBtn->setDisabled(false);
+    }
+}
+
+void CScheduleDlg::resize()
+{
+    int h = 0;
+    if (m_endrepeatWidget->isVisible()) {
+        h += 36 + 10;
+    }
+
+    if (m_colorSeletorWideget->isVisible()) {
+        h += 18 + 5;
+    }
+    //524: 默认界面高度, h: 新增控件高度
+    setFixedSize(dialog_width, 524 + h);
 }

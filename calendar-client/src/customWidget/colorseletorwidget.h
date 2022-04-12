@@ -23,6 +23,8 @@
 
 #include "cradiobutton.h"
 #include "colorWidget/colorpickerWidget.h"
+#include "scheduledatamanage.h"
+#include "src/scheduledatainfo.h"
 #include <QWidget>
 #include <QColor>
 #include <QButtonGroup>
@@ -38,15 +40,8 @@ public:
 
     //色彩类别
     enum ColorType{
-        TypeSystem = 0, //系统默认
-        TypeUser    //用户自定义
-    };
-
-    //色彩实体
-    struct ColorEntity{
-        QColor color;   //颜色
-        QString info;   //描述
-        ColorType type; //类别
+        TypeSystem = 1, //系统默认
+        TypeUser = 7    //用户自定义
     };
 
     /**
@@ -63,11 +58,11 @@ public:
      * @brief getSelectColor
      * @return 当前已选在的色彩
      */
-    QColor getSelectedColor();
+    JobTypeColorInfo getSelectedColorInfo();
     /**
      * @brief setUserColor 设置用户自定义的色彩
      */
-    void setUserColor(const QColor&);
+    void setUserColor(const JobTypeColorInfo&);
     /**
      * @brief selectColor 设置选择的色彩控件
      * @param index 色彩控件位置
@@ -77,7 +72,7 @@ public:
      * @brief selectColor 设置选择的色彩控件
      * @param color 色彩
      */
-    void setSelectedColor(const QColor& color);
+    void setSelectedColor(const JobTypeColorInfo& color);
     /**
      * @brief initColorButton
      * 初始化色彩控件
@@ -87,7 +82,7 @@ public:
 
 signals:
     //选择的色彩改变信号
-    void signalColorChange(QColor);
+    void signalColorChange(JobTypeColorInfo);
 
 public slots:
     //色彩控件点击信号
@@ -100,15 +95,17 @@ private:
     void initView();
 
     //添加色彩控件
-    void addColor(const ColorEntity&);
+    void addColor(const JobTypeColorInfo&);
+    //获取自动id
+    int getAutoColorId();
 
 private:
-    QMap<int, ColorEntity> m_colorEntityMap;    //所有色彩实体
-    QHBoxLayout *m_colorLayout = nullptr;   //色彩控件父类
+    QMap<int, JobTypeColorInfo> m_colorEntityMap;    //所有色彩实体
+    QHBoxLayout *m_colorLayout = nullptr;   //色彩控件布局类
     QButtonGroup *m_colorGroup = nullptr;     //所有色彩控件
-    ColorEntity m_colorEntity;      //当前已选择的色彩
-    CRadioButton *m_userColorBut = nullptr; //用户自定义的色彩控件
-    int m_userColorButId = -1; //用户自定义的色彩控件id
+    JobTypeColorInfo m_colorInfo;      //当前已选择的色彩
+    CRadioButton *m_userColorBtn = nullptr; //用户自定义的色彩控件
+    int m_userColorBtnId = -1; //用户自定义的色彩控件id
 };
 
 #endif // COLORSELETOR_H

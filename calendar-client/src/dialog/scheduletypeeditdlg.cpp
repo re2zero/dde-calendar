@@ -125,10 +125,10 @@ void ScheduleTypeEditDlg::initData()
     m_colorSeletor->initColorButton(0);
 }
 
-void ScheduleTypeEditDlg::slotColorChange(QColor color)
+void ScheduleTypeEditDlg::slotColorChange(JobTypeColorInfo colorInfo)
 {
     QPalette palette = m_lineEdit->palette();
-    palette.setColor(QPalette::Button, color);
+    palette.setColor(QPalette::Button, colorInfo.getColorHex());
     m_lineEdit->setPalette(palette);    //更改文本编辑框颜色
 }
 

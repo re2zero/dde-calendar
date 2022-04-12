@@ -23,6 +23,7 @@
 #include "dcalendarddialog.h"
 #include "cdateedit.h"
 #include "jobtypecombobox.h"
+#include "colorseletorwidget.h"
 
 #include <DCheckBox>
 #include <DDateEdit>
@@ -30,6 +31,7 @@
 #include <DLineEdit>
 #include <DTextEdit>
 #include <DComboBox>
+#include <DAlertControl>
 
 #include <QLabel>
 #include <QButtonGroup>
@@ -95,6 +97,17 @@ public slots:
      * @param btnId 控件id
      */
     void slotRadioBtnClicked(int btnId);
+    /**
+     * @brief slotBtnAddItemClicked
+     * 添加类型事件
+     */
+    void slotBtnAddItemClicked();
+    /**
+     * @brief slotTypeEditTextChanged
+     * 类型下拉选择框文本改变事件
+     */
+    void slotTypeEditTextChanged(const QString &);
+    void slotTypeRpeatactivated(int index);
     //对话框按钮点击处理
     void slotBtClick(int buttonIndex, const QString &buttonName);
     void slotTextChange();
@@ -115,7 +128,6 @@ private:
     void initConnection();
     void initDateEdit();
     void initJobTypeComboBox();
-    void initJobTypeComboBoxItem(QString colorHex,QString strTypeName);
     void initRmindRpeatUI();
     /**
      * @brief setTheMe  根据主题type设置颜色
@@ -137,11 +149,20 @@ private:
      * @param isLunar   是否是农历 true：是 false：不是
      */
     void updateRepeatCombox(bool isLunar = false);
+    /**
+     * @brief languageCheck
+     * 系统语言检查，根据语言类型更改控件状态和显示状态
+     */
+    void languageCheck();
+
+    void resize();
 
 private:
     QLabel *m_typeLabel = nullptr;
     //DComboBox *m_typeComBox = nullptr;
     JobTypeComboBox *m_typeComBox = nullptr;
+    DAlertControl *m_jobTypeAlert = nullptr;   //日程类型提示框
+    ColorSeletorWidget *m_colorSeletorWideget = nullptr; //颜色选择器
     QLabel *m_contentLabel = nullptr;
     DTextEdit *m_textEdit = nullptr;
     QLabel *m_beginTimeLabel = nullptr;
@@ -162,7 +183,7 @@ private:
     DLineEdit *m_endrepeattimes = nullptr;
     QLabel *m_endrepeattimesLabel = nullptr;
     DWidget *m_endrepeattimesWidget;
-    DDateEdit *m_endRepeatDate = nullptr;
+    CDateEdit *m_endRepeatDate = nullptr;
     DWidget *m_endrepeatWidget = nullptr;
     DFrame *m_gwi = nullptr;
     QLabel *m_titleLabel = nullptr;
@@ -175,6 +196,7 @@ private:
     bool m_setAccept {false}; //是否设置返回代码为Rejected
     qint64 m_timeDiff = 0;             //开始时间和结束时间差，不算日期
     bool m_isMoreThenOneDay = false;
+    int m_languageFlag = 0;       //系统语言环境标记 2: 中文系列 1：英文系列 0：其他语言
 private:
     //日程
     ScheduleDataInfo m_ScheduleDataInfo;

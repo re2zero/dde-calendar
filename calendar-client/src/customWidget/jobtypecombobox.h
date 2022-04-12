@@ -23,6 +23,7 @@ public:
     void setCurrentJobTypeNo(int strJobTypeNo);
 
 signals:
+    void signalAddTypeBtnClicked();
 
 public slots:
 

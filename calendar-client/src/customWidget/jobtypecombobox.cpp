@@ -55,14 +55,14 @@ bool JobTypeComboBox::updateJobType()
 }
 void JobTypeComboBox::addJobTypeItem(int idx, QString strColorHex, QString strJobType)
 {
-    QSize size(24, 24);
+    QSize size(16, 16);
     QPixmap pixmap(size);
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
     painter.setRenderHints(QPainter::Antialiasing );
     painter.setBrush(QColor(strColorHex));
     painter.setPen(Qt::NoPen);
-    painter.drawRoundedRect(0, 0, 24, 24, 8, 8);//8 = (24 - 16) / 2 + 4
+    painter.drawRoundedRect(0, 0, 16, 16, 4, 4);
 
     insertItem(idx, QIcon(pixmap),tr(strJobType.toLocal8Bit()));//
 }
@@ -75,6 +75,8 @@ void JobTypeComboBox::initUI()
 
 void JobTypeComboBox::showPopup()
 {
+    //重置icon大小
+    setIconSize(QSize(16,16));
     DComboBox::showPopup();
 
     setEditable(false);
@@ -110,6 +112,8 @@ void JobTypeComboBox::showPopup()
             QBoxLayout *layout = qobject_cast<QBoxLayout *>(viewContainer->layout());
             layout->insertWidget(index+1,m_btnAdd);
             viewContainer->setFixedHeight(viewContainer->height() + 34 + 10);
+
+            connect(m_btnAdd, &QPushButton::clicked, this, &JobTypeComboBox::slotBtnAddItemClicked);
         }
         if(m_btnAdd) {
             bool darkTheme = DGuiApplicationHelper::instance()->themeType()  == 2;
@@ -120,16 +124,17 @@ void JobTypeComboBox::showPopup()
             else {
                 //m_btnAdd->setStyleSheet("border:none;background:#fff;");
             }
-            connect(m_btnAdd, &QPushButton::clicked, this, &JobTypeComboBox::slotBtnAddItemClicked);
         }
     }
 }
 
 void JobTypeComboBox::slotBtnAddItemClicked()
 {
+    JobTypeComboBox::hidePopup();
+    setIconSize(QSize(0, 0));
     setEditable(true);
     setCurrentText("");
-    JobTypeComboBox::hidePopup();
+    emit signalAddTypeBtnClicked();
     return;
 }
 

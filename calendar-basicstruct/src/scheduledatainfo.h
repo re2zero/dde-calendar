@@ -209,7 +209,7 @@ class JobTypeColorInfo
  * 2.提供查、增、删、改接口
 */
 public:
-    JobTypeColorInfo();
+    JobTypeColorInfo(int typeNo = 0, QString colorHex = "", int authority = 0);
 
     void setTypeNo(int typeNo)
     {

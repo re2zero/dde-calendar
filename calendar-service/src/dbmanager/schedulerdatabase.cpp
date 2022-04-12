@@ -609,12 +609,10 @@ void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
     }
     if (m_database.open()) {
         const QStringList tables = m_database.tables();
-        if (tables.size() < 1) {
-            CreateTables();
-        }
+
         QSqlQuery query(m_database);
-        //CreateTables();
-        //initJobTypeTables();
+        CreateTables();
+        initJobTypeTables();
         //如果不存在日程提醒相关的数据库则创建一个（因为需要将程序改成按需运行的程序，所以需要存储相关数据）
         if (!tables.contains("jobsReminder")) {
             query.exec("CREATE TABLE \"jobsReminder\" (\"id\" integer primary key autoincrement,"
