@@ -33,9 +33,10 @@ class ScheduleTypeEditDlg : public DDialog
 {
     Q_OBJECT
 public:
+    //新增
     explicit ScheduleTypeEditDlg(QWidget *parent = nullptr);
-    explicit ScheduleTypeEditDlg(JobTypeInfo &jobTypeOld, QWidget *parent = nullptr);
-    explicit ScheduleTypeEditDlg(QString title, JobTypeInfo &jobTypeOld, QWidget *parent = nullptr);
+    //iJobTypeNo==0 ？ 新增 or 修改
+    explicit ScheduleTypeEditDlg(const JobTypeInfo &jobTypeOld, QWidget *parent = nullptr);
 
 signals:
     /**

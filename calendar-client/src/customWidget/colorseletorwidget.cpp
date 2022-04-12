@@ -32,7 +32,7 @@ void ColorSeletorWidget::init()
     m_colorGroup = new QButtonGroup(this);
     m_colorGroup->setExclusive(true);
     connect(m_colorGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &ColorSeletorWidget::slotButtonClicked);
-    initColorButton(0);
+    initColorButton();
 }
 
 void ColorSeletorWidget::initColorButton(int index)

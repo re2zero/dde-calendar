@@ -807,6 +807,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
             if (DSettingsOption *option = qobject_cast<DSettingsOption *>(obj)) {
                 Q_UNUSED(option)
                 JobTypeListView *lv = new JobTypeListView();
+                lv->setObjectName("JobTypeListView");
                 return lv;
             }
             return nullptr;
@@ -845,15 +846,22 @@ void Calendarmainwindow::slotOpenSettingDialog()
         if (lstwidget.size() > 0) { //accessibleName
             for (QWidget *wid : lstwidget) {
                 if ("ContentWidgetForsetting_base.job_type" == wid->accessibleName()) {
+                    JobTypeListView *view = m_dsdSetting->findChild<JobTypeListView *>("JobTypeListView");
+                    if(!view)
+                        return;
+                    DIconButton *addButton = new DIconButton(DStyle::SP_IncreaseElement, nullptr);
+                    addButton->setFixedSize(22, 22);
+                    wid->layout()->addWidget(addButton);
+                    addButton->setEnabled(view->canAdd());
 
-                    DIconButton *m_btnAddType = new DIconButton(this);
-                    m_btnAddType->setFixedSize(22, 22);
-                    DStyle style;
-                    m_btnAddType->setIcon(style.standardIcon(DStyle::SP_IncreaseElement));
-                    wid->layout()->addWidget(m_btnAddType);
-                    connect(m_btnAddType, &DIconButton::clicked, this, [=] {
+                    //当日常类型超过上限时，更新button的状态
+                    connect(view, &JobTypeListView::signalAddStatusChanged, addButton, &DIconButton::setEnabled);
+                    //新增类型
+                    connect(addButton, &DIconButton::clicked, this, [=] {
                         ScheduleTypeEditDlg a;
                         a.exec();
+                        if(view)
+                            view->updateJobType();
                     });
                 }
                 if (wid->accessibleName().contains("DefaultWidgetAtContentRow")) {

@@ -23,6 +23,8 @@
 #include "cscheduleoperation.h"
 
 #include <DFrame>
+#include <DTitlebar>
+#include <DIconButton>
 
 #include <QLabel>
 #include <QRadioButton>
@@ -34,18 +36,10 @@ ScheduleTypeEditDlg::ScheduleTypeEditDlg(QWidget *parent)
     init();
 }
 
-ScheduleTypeEditDlg::ScheduleTypeEditDlg(JobTypeInfo &jobTypeOld, QWidget *parent)
+ScheduleTypeEditDlg::ScheduleTypeEditDlg(const JobTypeInfo &jobTypeOld, QWidget *parent)
     : DDialog(parent)
     , m_jobTypeOld(jobTypeOld)
     , m_title(tr("Edit event type"))
-{
-    init();
-}
-
-ScheduleTypeEditDlg::ScheduleTypeEditDlg(QString title, JobTypeInfo &jobTypeOld, QWidget *parent)
-    : DDialog(parent)
-    , m_jobTypeOld(jobTypeOld)
-    , m_title(title)
 {
     init();
 }

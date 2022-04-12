@@ -4,6 +4,7 @@
 #include "scheduledatamanage.h"
 
 #include <DListView>
+#include <DIconButton>
 
 #include <QWidget>
 #include <QList>
@@ -15,21 +16,32 @@ class JobTypeListView : public DListView
     Q_OBJECT
 public:
     explicit JobTypeListView(QWidget *parent = nullptr);
+    ~JobTypeListView();
     bool updateJobType();
 
+    /**
+     * @brief canAdd 是否可以继续新增类型
+     */
+    bool canAdd();
+protected:
     bool viewportEvent(QEvent *event) override;
 private:
     void initUI();//初始化
-    void addJobTypeItem(QString strColorHex, QString strJobType);//新增一行【日程类型】数据
+    /**
+     * @brief addJobTypeItem 添加item
+     */
+    void addJobTypeItem(const JobTypeInfo &info);//新增一行【日程类型】数据
 
 signals:
-
+    /**
+     * @brief signalAddStatusChanged 信号：是否可以继续新增类型
+     */
+    void signalAddStatusChanged(bool);
 public slots:
     void slotUpdateJobType();
     void slotDeleteJobType();
 
 private:
-    QList<JobTypeInfo> m_lstJobType {};
     QStandardItemModel *m_modelJobType {nullptr};
     int m_iIndexCurrentHover = -1;
 };

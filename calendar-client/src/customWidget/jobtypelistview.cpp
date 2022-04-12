@@ -4,23 +4,36 @@
 
 #include <DHiDPIHelper>
 #include <DStyle>
+#include <DIconButton>
 
 #include <QPainter>
+
+Q_DECLARE_METATYPE(JobTypeInfo)
+//Qt::UserRole + 1,会影响item的高度
+static const int RoleJobTypeInfo = Qt::UserRole + 2;
 
 JobTypeListView::JobTypeListView(QWidget *parent) : DListView(parent)
 {
     initUI();
 }
+
+JobTypeListView::~JobTypeListView()
+{
+}
+
 void JobTypeListView::initUI()
 {
     setIconSize(QSize(16, 16));
     setContentsMargins(0, 0, 0, 0);
     setSpacing(0);
     setItemSpacing(10);
-    setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     m_modelJobType = new QStandardItemModel();
     setModel(m_modelJobType);
+    setEditTriggers(QListView::NoEditTriggers);
+    setSelectionMode(QListView::NoSelection);
+
+    //
     updateJobType();
 }
 
@@ -87,14 +100,14 @@ bool JobTypeListView::viewportEvent(QEvent *event)
                     actionEdit->setIcon(ds->standardIcon(DStyle::SP_AddButton));
                     actionEdit->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/edit.svg"));
                     actionEdit->setParent(this);
-                    //connect(actionEdit, QOverload<bool>::of(&QAction::triggered), this, &JobTypeListView::slotCheckJobType);
                     connect(actionEdit, &QAction::triggered, this, &JobTypeListView::slotUpdateJobType);
 
                     auto actionDelete = new DViewItemAction(Qt::AlignVCenter, QSize(), QSize(), true);
                     actionDelete->setIcon(ds->standardIcon(DStyle::SP_AddButton));
                     actionDelete->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/delete.svg"));
                     actionDelete->setParent(this);
-                    connect(actionEdit, &QAction::triggered, this, &JobTypeListView::slotDeleteJobType);
+                    connect(actionDelete, &QAction::triggered, this, &JobTypeListView::slotDeleteJobType);
+
                     itemJobType->setActionList(Qt::Edge::RightEdge, {actionEdit, actionDelete});
                 }
             }
@@ -107,42 +120,57 @@ bool JobTypeListView::updateJobType()
     m_modelJobType->clear();//先清理
     QString strColorHex;
     QString strJobType;
-    m_lstJobType = JobTypeInfoManager::instance()->getJobTypeList();
-    for (int i = 0; i < m_lstJobType.size(); i++) {
-        strColorHex = m_lstJobType[i].getColorHex();
-        strJobType = m_lstJobType[i].getJobTypeName();
-        if (strColorHex.isEmpty() || strJobType.isEmpty()) {
+    QList<JobTypeInfo> lstJobType = JobTypeInfoManager::instance()->getJobTypeList();
+    for (int i = 0;i < lstJobType.size();i++) {
+        strColorHex = lstJobType[i].getColorHex();
+        strJobType = lstJobType[i].getJobTypeName();
+        if(strColorHex.isEmpty() || strJobType.isEmpty()){
             continue;
         }
-        addJobTypeItem(m_lstJobType[i].getColorHex(), m_lstJobType[i].getJobTypeName());
+        addJobTypeItem(lstJobType[i]);
     }
 
-    setFixedHeight((m_lstJobType.size() - 1) * (36 + 10 + 3)); //默认是高度36，space：10
+    setFixedHeight(m_modelJobType->rowCount() * (36 + 10 + 3));//默认是高度36，space：10
+
+    emit signalAddStatusChanged(canAdd());
     return true;
 }
 
-void JobTypeListView::addJobTypeItem(QString strColorHex, QString strJobType)
+bool JobTypeListView::canAdd()
+{
+    //最多20个类型
+    return m_modelJobType->rowCount() < 20;
+
+}
+
+void JobTypeListView::addJobTypeItem(const JobTypeInfo &info)
 {
     QSize size(24, 24);
     QPixmap pixmap(size);
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
-    painter.setRenderHints(QPainter::Antialiasing);
-    painter.setBrush(QColor(strColorHex));
+    painter.setRenderHints(QPainter::Antialiasing );
+    painter.setBrush(QColor(info.getColorHex()));
     painter.setPen(Qt::NoPen);
     painter.drawRoundedRect(0, 0, 24, 24, 12, 12);//圆
 
-    DStandardItem *itemJobType = new DStandardItem(QIcon(pixmap), strJobType);
+    DStandardItem *item = new DStandardItem(QIcon(pixmap), info.getJobTypeName());
+    item->setData(QVariant::fromValue(info), RoleJobTypeInfo);
 
-    //m_modelJobType->insertRow(idx,itemJobType);
-    m_modelJobType->appendRow(itemJobType);
-    //connect(this, &QAbstractItemView::mouseMoveEvent, this, [=]{})
+    m_modelJobType->appendRow(item);
 }
 
 void JobTypeListView::slotUpdateJobType()
 {
-    int index = indexAt(mapFromGlobal(QCursor::pos())).row();
-    ScheduleTypeEditDlg a(m_lstJobType[index]);
+    int index =  indexAt(mapFromGlobal(QCursor::pos())).row();
+    if(index < 0 || index >= m_modelJobType->rowCount())
+        return;
+    QStandardItem *item = m_modelJobType->item(index);
+    if(!item)
+        return;
+
+    JobTypeInfo info = item->data(RoleJobTypeInfo).value<JobTypeInfo>();
+    ScheduleTypeEditDlg a(info);
     a.exec();
     updateJobType();//更新item
     return;
@@ -151,17 +179,21 @@ void JobTypeListView::slotUpdateJobType()
 void JobTypeListView::slotDeleteJobType()
 {
     int index =  indexAt(mapFromGlobal(QCursor::pos())).row();
-    int colorTypeNo = m_lstJobType[index].getColorTypeNo();
-    int typeNo = m_lstJobType[index].getJobTypeNo();
+    if(index < 0 || index >= m_modelJobType->rowCount())
+        return;
+    QStandardItem *item = m_modelJobType->item(index);
+    if(!item)
+        return;
+
+    JobTypeInfo info = item->data(RoleJobTypeInfo).value<JobTypeInfo>();
+    int colorTypeNo = info.getColorTypeNo();
+    int typeNo = info.getJobTypeNo();
 
     CScheduleOperation so;
     so.deleteJobType(typeNo);
-
-    if (!JobTypeInfoManager::instance()->isSysJobTypeColor(colorTypeNo)) {
+    if(!JobTypeInfoManager::instance()->isSysJobTypeColor(colorTypeNo)){
         //不是默认颜色类型，需要删除颜色类型
         so.deleteColorType(colorTypeNo);
     }
     updateJobType();//更新item
-
-    return;
 }
