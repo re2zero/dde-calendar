@@ -27,11 +27,22 @@ CScheduleDataManage *CScheduleDataManage::m_vscheduleDataManage = new CScheduleD
 CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
 {
     CSchedulesColor color;
-    JobTypeColorInfo info;
-    //根据类型获取对应的颜色
-    bool isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(type, info);
+    JobTypeColorInfo colorinfo;
+    bool isOk = false;
+    if (type != 4) {
+        //如果不是节假日
+        JobTypeInfo typeInfo;
+        //根据类型获取日程类型信息getJobTypeByNo
+        JobTypeInfoManager::instance()->getJobTypeByNo(type, typeInfo);
+        //根据类型关联的颜色编号获取对应的颜色
+        isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(typeInfo.getColorTypeNo(), colorinfo);
+    } else {
+        //节假日 颜色变化为8
+        isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(8, colorinfo);
+    }
+
     if (isOk) {
-        color.orginalColor = QColor(info.getColorHex());
+        color.orginalColor = QColor(colorinfo.getColorHex());
         color.normalColor = color.orginalColor;
         color.normalColor.setAlphaF(0.2);
         color.pressColor = color.orginalColor;
@@ -47,6 +58,7 @@ CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
         //获取颜色失败
         qWarning() << "get type color fail ,type:" << type;
     }
+
     return color;
 }
 
