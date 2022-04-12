@@ -325,7 +325,7 @@ bool ScheduleDataInfo::isValid() const
     if (!getEndDateTime().isValid()) {
         return  false;
     }
-    if (getType() < 1 || getType() > 3) {
+    if (getType() < 1) {
         return  false;
     }
     return true;
@@ -607,14 +607,24 @@ QDebug operator<<(QDebug debug, const ScheduleDataInfo &scheduleJsonData)
 /**
  * @brief JobTypeInfo           构造函数
  */
-JobTypeInfo::JobTypeInfo()
-: iJobTypeNo(0)
-, strJobTypeName ("")
-, iColorTypeNo (0)
-, strColorHex ("")
-, iAuthority (0)
+JobTypeInfo::JobTypeInfo(int typeNo, QString typeName, int colorTypeNo, QString colorHex, int authority)
+: iJobTypeNo(typeNo)
+, strJobTypeName (typeName)
+, iColorTypeNo (colorTypeNo)
+, strColorHex (colorHex)
+, iAuthority (authority)
 {
 }
+
+JobTypeInfo::JobTypeInfo(int typeNo, QString typeName, const JobTypeColorInfo& colorInfo)
+    : iJobTypeNo(typeNo)
+    , strJobTypeName (typeName)
+    , iColorTypeNo (colorInfo.getTypeNo())
+    , strColorHex (colorInfo.getColorHex())
+    , iAuthority (colorInfo.getAuthority())
+{
+}
+
 /**
  * @brief JobTypeInfo           构造函数
  */

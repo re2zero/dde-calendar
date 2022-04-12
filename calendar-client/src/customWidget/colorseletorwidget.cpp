@@ -41,7 +41,9 @@ void ColorSeletorWidget::initColorButton(int index)
     JobTypeInfoManager::instance()->updateInfo();
     QList<JobTypeColorInfo> lstColorInfo = JobTypeInfoManager::instance()->getJobTypeColorList();
     for (JobTypeColorInfo& var: lstColorInfo) {
-        addColor(var);
+        if (TypeSystem == var.getAuthority()) {
+            addColor(var);
+        }
     }
 
     if (index >= 0 && index < m_colorGroup->buttons().size()) {
@@ -72,11 +74,9 @@ void ColorSeletorWidget::addColor(const JobTypeColorInfo& cInfo)
     m_colorGroup->addButton(radio, count);
     m_colorLayout->addWidget(radio);
     if (TypeUser == cInfo.getAuthority()) {
-
         m_userColorBtn = radio;             //记录用户色彩指针
         m_userColorBtnId = count;
     }
-    qInfo() << cInfo.getAuthority();
 }
 
 JobTypeColorInfo ColorSeletorWidget::getSelectedColorInfo()
@@ -159,6 +159,9 @@ void ColorSeletorWidget::slotAddColorButClicked()
 
 void ColorSeletorWidget::setUserColor(const JobTypeColorInfo& colorInfo)
 {
+    if (TypeUser != colorInfo.getAuthority()) {
+        return;
+    }
     if (nullptr == m_userColorBtn) {
         addColor(colorInfo);
     }

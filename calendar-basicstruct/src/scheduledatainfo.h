@@ -259,7 +259,8 @@ class JobTypeInfo
  * 2.提供查、增、删、改接口
 */
 public:
-    JobTypeInfo();
+    JobTypeInfo(int typeNo = 0, QString typeName = "", int colorTypeNo = 0, QString colorHex = "", int authority = 0);
+    JobTypeInfo(int typeNo, QString typeName, const JobTypeColorInfo& colorInfo = JobTypeColorInfo());
     JobTypeInfo(const JobTypeInfo&);
     JobTypeInfo &operator=(const JobTypeInfo *info)
     {

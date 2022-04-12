@@ -35,6 +35,7 @@ void JobTypeComboBox::setCurrentJobTypeNo(int strJobTypeNo)
     }
     return;
 }
+
 bool JobTypeComboBox::updateJobType()
 {
     QString strColorHex;

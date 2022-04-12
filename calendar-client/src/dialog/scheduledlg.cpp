@@ -183,9 +183,13 @@ bool CScheduleDlg::clickOkBtn()
         return false;
     }
     //如果类型选项不为负数则设置日程类型
-//    if (m_typeComBox->currentIndex() >= 0)
-//        _newSchedule.setType(m_typeComBox->currentIndex() + 1);
-    if (m_typeComBox->currentIndex() >= 0)
+    if (m_typeComBox->isEditable()) {
+        JobTypeInfo jobType(0, m_typeComBox->lineEdit()->text(), m_colorSeletorWideget->getSelectedColorInfo());
+        //创建日程类型
+        if (CScheduleOperation().createJobType(jobType)) {
+            _newSchedule.setType(jobType.getJobTypeNo());
+        }
+    } else if (m_typeComBox->currentIndex() >= 0)
         _newSchedule.setType(m_typeComBox->getCurrentJobTypeNo());
 
     if (beginDateTime > endDateTime) {
@@ -307,6 +311,7 @@ bool CScheduleDlg::clickOkBtn()
     if (m_type == 1) {
         //创建日程
         _scheduleOperation.createSchedule(_newSchedule);
+
     } else if (m_type == 0) {
         //修改日程,根据返回的参数判断是否关闭对话框
         return _scheduleOperation.changeSchedule(_newSchedule, m_ScheduleDataInfo);
@@ -854,12 +859,12 @@ void CScheduleDlg::initUI()
         tLabel->setElideMode(Qt::ElideRight);
         tLabel->setFont(mlabelF);
         tLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-        tLabel->setFixedSize(label_Fixed_Width, item_Fixed_Height);
+        tLabel->setFixedSize(DDECalendar::NewScheduleLabelWidth, item_Fixed_Height);
 
         m_solarRadioBtn = new DRadioButton(tr("Solar"));
         m_lunarRadioBtn = new DRadioButton(tr("Lunar"));
-        m_solarRadioBtn->setMinimumWidth(80);
-        m_lunarRadioBtn->setMinimumWidth(80);
+        m_solarRadioBtn->setMinimumWidth(72);
+        m_lunarRadioBtn->setMinimumWidth(72);
 
         m_calendarCategoryRadioGroup = new QButtonGroup(this);
         m_calendarCategoryRadioGroup->setExclusive(true);
@@ -867,7 +872,7 @@ void CScheduleDlg::initUI()
         m_calendarCategoryRadioGroup->addButton(m_lunarRadioBtn, RadioLunarId);
 
         QHBoxLayout *tLayout = new QHBoxLayout;
-        tLayout->setSpacing(0);
+        tLayout->setSpacing(8);
         tLayout->setMargin(0);
         tLayout->addWidget(tLabel);
         tLayout->addWidget(m_solarRadioBtn);
