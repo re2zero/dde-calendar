@@ -58,7 +58,8 @@ public:
     bool getJobTypeList(QList<JobTypeInfo> &lstJobTypeInfo);
     //删除日程类型
     bool deleteJobType(const int iJobTypeNo);
-
+    //获取日程类型是否被使用
+    bool isJobTypeUsed(const int iJobTypeNo);
     //创建颜色类型
     bool createColorType(const JobTypeColorInfo &colorTypeInfo);
     //更新颜色类型

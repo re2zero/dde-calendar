@@ -190,6 +190,7 @@ void JobTypeListView::slotDeleteJobType()
     int typeNo = info.getJobTypeNo();
 
     CScheduleOperation so;
+    qInfo() << so.isJobTypeUsed(typeNo);
     so.deleteJobType(typeNo);
     if(!JobTypeInfoManager::instance()->isSysJobTypeColor(colorTypeNo)){
         //不是默认颜色类型，需要删除颜色类型

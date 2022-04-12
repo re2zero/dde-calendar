@@ -129,6 +129,12 @@ public:
      * @return
      */
     bool getJobTypeList(QList<JobTypeInfo> &lstJobType);
+
+    /**
+     * @brief isJobTypeUsed        查询日程类型是否被使用
+     * @return
+     */
+    bool isJobTypeUsed(int iTypeNo);
     /**
      * @brief addJobType            新增日程类型
      * @param iTypeNo               日程类型编码

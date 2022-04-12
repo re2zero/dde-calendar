@@ -461,6 +461,24 @@ bool CScheduleDBus::DeleteJobType(int jobTypeNo)
         return false;
     return jobs.value();
 }
+/**
+ * @brief isJobTypeUsed    获取日程类型是否被使用
+ * return bool             返回是否被使用
+ */
+bool CScheduleDBus::isJobTypeUsed(int jobTypeNo)
+{
+    QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("isJobTypeUsed"), {QVariant(jobTypeNo)});
+    pCall.waitForFinished();
+    QDBusMessage reply = pCall.reply();
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << "isJobTypeUsed err ," << reply << " jobTypeNo:" << jobTypeNo;
+        return false;
+    }
+    QDBusReply<bool> jobs =  reply;
+    if (!jobs.isValid())
+        return false;
+    return jobs.value();
+}
 
 //获取颜色信息列表
 bool CScheduleDBus::GetJobTypeColorList(QString &strJson)

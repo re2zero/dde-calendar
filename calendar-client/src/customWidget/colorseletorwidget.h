@@ -99,9 +99,9 @@ private:
 
 private:
     QMap<int, JobTypeColorInfo> m_colorEntityMap;    //所有色彩实体
-    QHBoxLayout *m_colorLayout = nullptr;   //色彩控件布局类
+    QHBoxLayout *m_colorLayout = nullptr;     //色彩控件布局类
     QButtonGroup *m_colorGroup = nullptr;     //所有色彩控件
-    JobTypeColorInfo m_colorInfo;      //当前已选择的色彩
+    JobTypeColorInfo m_colorInfo;             //当前已选择的色彩
     CRadioButton *m_userColorBtn = nullptr; //用户自定义的色彩控件
     int m_userColorBtnId = -1; //用户自定义的色彩控件id
 };

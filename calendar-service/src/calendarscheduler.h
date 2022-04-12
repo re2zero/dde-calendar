@@ -74,6 +74,11 @@ public:
      */
     QString GetJobTypeList();
     /**
+     * @brief isJobTypeUsed    获取日程类型是否被使用
+     * return bool             返回是否被使用
+     */
+    bool isJobTypeUsed(int iTypeNo);
+    /**
      * @brief CreateColorType  创建颜色类型
      * param  colorTypeInfo    json格式的颜色类型信息
      * return bool             返回操作结果

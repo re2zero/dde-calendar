@@ -909,6 +909,30 @@ bool SchedulerDatabase::getJobTypeList(QList<JobTypeInfo> &lstJobType)
     return bRet;
 }
 /**
+ * @brief isJobTypeUsed        查询日程类型是否被使用
+ * @return
+ */
+bool SchedulerDatabase::isJobTypeUsed(int iTypeNo)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+
+    QString strsql = QString("   SELECT count(1) FROM jobs WHERE type = %1").arg(iTypeNo);
+    if (query.exec(strsql) && query.next()) {
+        //获取是否存在为农历标识字段，若存在则返回1,不存在则返回0
+        int fieldNum = query.value(0).toInt();
+        if (fieldNum > 0) {
+            //被使用
+            bRet = true;
+        }
+    }
+    if (query.isActive()) {
+        query.finish();
+    }
+
+    return bRet;
+}
+/**
  * @brief addJobType            新增日程类型
  * @param iTypeNo               日程类型编码
  * @param strTypeName           日程类型名称

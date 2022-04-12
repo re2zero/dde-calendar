@@ -270,6 +270,18 @@ QString CalendarService::GetJobTypeList()
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return strJobType;
 }
+/**
+ * @brief isJobTypeUsed    获取日程类型是否被使用
+ * return bool             返回是否被使用
+ */
+bool CalendarService::isJobTypeUsed(const int &typeNo)
+{
+    bool bRet;
+    CalendarProgramExitControl::getProgramExitControl()->addExc();
+    bRet = m_scheduler->isJobTypeUsed(typeNo);
+    CalendarProgramExitControl::getProgramExitControl()->reduce();
+    return bRet;
+}
 // 根据日程json创建颜色类型信息，并返回操作结果
 bool CalendarService::CreateColorType(const QString &colorTypeInfo)
 {

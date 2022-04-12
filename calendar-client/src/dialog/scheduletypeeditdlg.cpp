@@ -118,9 +118,15 @@ void ScheduleTypeEditDlg::initData()
     m_titleLabel->setText(m_title);
     m_lineEdit->setText(m_jobTypeOld.getJobTypeName());
     this->getButton(1)->setEnabled(!m_jobTypeOld.getJobTypeName().isEmpty());//如果是新增，则保存按钮默认不可用
-    if(nullptr !=m_colorSeletor){
+    if(nullptr != m_colorSeletor){
         JobTypeInfoManager::instance()->getJobTypeColorByNo(m_jobTypeOld.getJobTypeNo(), m_jobTypeColorOld);
-        m_colorSeletor->setSelectedColor(m_jobTypeColorOld);
+        if( 0 < m_jobTypeColorOld.getTypeNo()){
+            //todo:
+            //1.新建时，默认选中上次选中的默认颜色后的一个
+            //2.自定义颜色，如果m_jobTypeColorOld不是自定义颜色，则把用户上一次保存的自定义颜色加到选择器的自定义颜色
+            m_colorSeletor->setSelectedColor(m_jobTypeColorOld);//设置选中颜色setSelectedColor
+            //setUserColor用来添加自定义颜色
+        }
     }
 }
 

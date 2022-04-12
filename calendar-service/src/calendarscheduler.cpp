@@ -1110,6 +1110,15 @@ QString CalendarScheduler::GetJobTypeList()
     }
     return strJson;
 }
+
+/**
+ * @brief isJobTypeUsed    获取日程类型是否被使用
+ * return bool             返回是否被使用
+ */
+bool CalendarScheduler::isJobTypeUsed(int iTypeNo)
+{
+    return m_database->isJobTypeUsed(iTypeNo);
+}
 /**
  * @brief CreateColorType  创建颜色类型
  * param  colorTypeInfo    json格式的颜色类型信息

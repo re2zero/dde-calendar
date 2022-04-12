@@ -22,6 +22,7 @@
 
 #include "cscheduledbus.h"
 #include "schedulectrldlg.h"
+#include "configsettings.h"
 
 CScheduleOperation::CScheduleOperation(QWidget *parent)
     : QObject(parent)
@@ -397,7 +398,13 @@ bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，�
     jobTypeInfo.setAuthority(7);//自定义日程类型默认权限为7
 
     JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
-    return m_DBusManager->AddJobType(strJson);// no:10,hex:#123
+    bool bRet = m_DBusManager->AddJobType(strJson);// no:10,hex:#123
+    if(bRet){
+        if(JobTypeInfoManager::instance()->isSysJobTypeColor(jobTypeInfo.getColorTypeNo())){//如果是系统默认颜色，缓存编号
+            CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorTypeNo());
+        }
+    }
+    return bRet;
 }
 
 /**
@@ -456,6 +463,9 @@ bool CScheduleOperation::updateJobType(JobTypeInfo &oldJobTypeInfo, JobTypeInfo 
         //更新日程类型
         newJobTypeInfo.setJobTypeNo(oldJobTypeInfo.getJobTypeNo());
         bRet = updateJobType(newJobTypeInfo);
+        if(bRet && JobTypeInfoManager::instance()->isSysJobTypeColor(iNewColorTypeNo)){//如果是系统默认颜色，缓存编号
+            CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", iNewColorTypeNo);
+        }
     }
     return bRet;
 }
@@ -497,6 +507,16 @@ bool CScheduleOperation::deleteJobType(const int iJobTypeNo)
     //删除日程类型
     return m_DBusManager->DeleteJobType(iJobTypeNo);
 }
+/**
+ * @brief CScheduleOperation::isJobTypeUsed      获取日程类型是否被使用
+ * @param iJobTypeNo
+ * @return 操作结果
+ */
+bool CScheduleOperation::isJobTypeUsed(const int iJobTypeNo)
+{
+    //获取日程类型是否被使用
+    return m_DBusManager->isJobTypeUsed(iJobTypeNo);
+}
 
 /**
  * @brief CScheduleOperation::createColorType      创建颜色类型
@@ -505,12 +525,20 @@ bool CScheduleOperation::deleteJobType(const int iJobTypeNo)
  */
 bool CScheduleOperation::createColorType(const JobTypeColorInfo &colorTypeInfo)
 {
+    bool ret;
     //创建颜色
     QString strJson = "";
     if(!JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson)){
         return false;
     }
-    return m_DBusManager->AddJobTypeColor(strJson);
+
+    ret = m_DBusManager->AddJobTypeColor(strJson);
+    if(ret){
+        if(7 == colorTypeInfo.getAuthority()){
+            CConfigSettings::getInstance()->setOption("LastUserColor",colorTypeInfo.getColorHex());
+        }
+    }
+    return ret;
 }
 
 /**
@@ -520,10 +548,17 @@ bool CScheduleOperation::createColorType(const JobTypeColorInfo &colorTypeInfo)
  */
 bool CScheduleOperation::updateColorType(const JobTypeColorInfo &colorTypeInfo)
 {
+    bool ret;
     //修改颜色
     QString strJson = "";
     JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson);
-    return m_DBusManager->UpdateJobTypeColor(strJson);
+    ret = m_DBusManager->UpdateJobTypeColor(strJson);
+    if(ret){
+        if(7 == colorTypeInfo.getAuthority()){
+            CConfigSettings::getInstance()->setOption("LastUserColor",colorTypeInfo.getColorHex());
+        }
+    }
+    return ret;
 }
 
 /**

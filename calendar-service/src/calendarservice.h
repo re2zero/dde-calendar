@@ -71,6 +71,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE bool DeleteJobType(const int &typeNo);
     Q_SCRIPTABLE bool UpdateJobType(const QString &jobTypeInfo);
     Q_SCRIPTABLE QString GetJobTypeList();
+    Q_SCRIPTABLE bool isJobTypeUsed(const int &typeNo);
     Q_SCRIPTABLE bool CreateColorType(const QString &colorTypeInfo);//
     Q_SCRIPTABLE bool DeleteColorType(const int &typeNo);
     Q_SCRIPTABLE bool UpdateColorType(const QString &colorTypeInfo);

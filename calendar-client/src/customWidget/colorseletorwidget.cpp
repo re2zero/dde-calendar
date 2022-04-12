@@ -68,7 +68,7 @@ void ColorSeletorWidget::addColor(const JobTypeColorInfo &cInfo)
     count++;
     m_colorEntityMap[count] = cInfo;      //映射id与控件
     CRadioButton *radio = new CRadioButton(this);
-    radio->setColor(cInfo.getColorHex());         //设置控件颜色
+    radio->setColor(QColor(cInfo.getColorHex()));         //设置控件颜色
     radio->setFixedSize(18, 18);
     m_colorGroup->addButton(radio, count);
     m_colorLayout->addWidget(radio);
@@ -96,6 +96,7 @@ void ColorSeletorWidget::setSelectedColor(int index)
 void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
 {
     bool isFind = false;
+
     //遍历所有控件
     for (QAbstractButton *but : m_colorGroup->buttons()) {
         if (nullptr != but && qobject_cast<CRadioButton *>(but)->getColor().name() == colorInfo.getColorHex()) {
@@ -103,7 +104,7 @@ void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
             isFind = true;
         }
     }
-    if (!isFind) {
+    if (!isFind ) {
         setUserColor(colorInfo);
     }
 }

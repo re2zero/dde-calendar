@@ -78,7 +78,8 @@ public:
     bool UpdateJobType(QString strJson);
     //删除日程类型信息
     bool DeleteJobType(int jobTypeNo);
-
+    //获取日程类型是否被使用
+    bool isJobTypeUsed(int jobTypeNo);
     //获取颜色信息列表
     bool GetJobTypeColorList(QString &strJson);
     //新增颜色信息
