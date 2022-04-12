@@ -66,7 +66,7 @@ void ColorSeletorWidget::addColor(const JobTypeColorInfo &cInfo)
 {
     static int count = 0;   //静态变量，充当色彩控件id
     count++;
-    m_colorEntityMap[count] = cInfo;      //映射id与控件
+    m_colorEntityMap.insert(count, cInfo);      //映射id与控件
     CRadioButton *radio = new CRadioButton(this);
     radio->setColor(QColor(cInfo.getColorHex()));         //设置控件颜色
     radio->setFixedSize(18, 18);
@@ -83,7 +83,7 @@ JobTypeColorInfo ColorSeletorWidget::getSelectedColorInfo()
     return m_colorInfo;
 }
 
-void ColorSeletorWidget::setSelectedColor(int index)
+void ColorSeletorWidget::setSelectedColorByIndex(int index)
 {
     if (index >= 0 && index < m_colorGroup->buttons().size()) {
         QAbstractButton *but = m_colorGroup->buttons().at(index);
@@ -93,7 +93,27 @@ void ColorSeletorWidget::setSelectedColor(int index)
     }
 }
 
-void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
+void ColorSeletorWidget::setSelectedColorById(int colorId)
+{
+    auto iterator = m_colorEntityMap.begin();
+    while(iterator != m_colorEntityMap.end()) {
+        if (iterator.value().getTypeNo() == colorId) {
+            //向后移一位
+            iterator++;
+            if (iterator == m_colorEntityMap.end() || iterator.key() == m_userColorBtnId) {
+                iterator = m_colorEntityMap.begin();
+            }
+            QAbstractButton *btn = m_colorGroup->button(iterator.key());
+            if (btn) {
+                btn->click();
+            }
+            break;
+        }
+        iterator++;
+    }
+}
+
+void ColorSeletorWidget::setSelectedColorByIndex(const JobTypeColorInfo &colorInfo)
 {
     bool isFind = false;
 
@@ -102,6 +122,7 @@ void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
         if (nullptr != but && qobject_cast<CRadioButton *>(but)->getColor().name() == colorInfo.getColorHex()) {
             but->click();
             isFind = true;
+            break;
         }
     }
     if (!isFind ) {

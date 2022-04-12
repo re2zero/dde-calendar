@@ -1,7 +1,6 @@
 #include "jobtypecombobox.h"
 
 #include <DLineEdit>
-#include <DHiDPIHelper>
 
 #include <QWidget>
 #include <QLayout>
@@ -81,33 +80,18 @@ void JobTypeComboBox::showPopup()
     DComboBox::showPopup();
 
     setEditable(false);
+
+    if (m_lstJobType.size() >= 20) {
+        return;
+    }
+
     //获取下拉视图容器
     QFrame *viewContainer = findChild<QFrame *>();
     if (viewContainer) {
         QAbstractItemView *view = viewContainer->findChild<QAbstractItemView *>();
 
-        if ((m_btnAdd == nullptr) && view) {
-            QHBoxLayout *layoutAddType = new QHBoxLayout();
-            QLabel *lblAddType = new QLabel();
-            lblAddType->setFixedSize(100, 34);
-            lblAddType->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-            lblAddType->setText(tr("New event type"));
-
-            lblAddType->setFixedSize(200, 34);
-            layoutAddType->setSpacing(0);
-            layoutAddType->setMargin(0);
-            layoutAddType->setAlignment(Qt::AlignLeft);
-            DIconButton *iconBtnAddType = new DIconButton(this);
-            iconBtnAddType->setFixedSize(16, 16);
-            iconBtnAddType->setFlat(true);
-            iconBtnAddType->setIcon(QIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/create.svg")));
-            layoutAddType->setContentsMargins(33, 0, 0, 0);
-            layoutAddType->addWidget(iconBtnAddType);
-            layoutAddType->addSpacing(5);
-            layoutAddType->addWidget(lblAddType);
-            m_btnAdd = new DPushButton();
-            m_btnAdd->setFixedHeight(34);
-            m_btnAdd->setLayout(layoutAddType);
+        if((m_btnAdd == nullptr) && view){
+            m_btnAdd = new CPushButton();
 
             int index = viewContainer->layout()->indexOf(view);
             QBoxLayout *layout = qobject_cast<QBoxLayout *>(viewContainer->layout());
@@ -115,15 +99,6 @@ void JobTypeComboBox::showPopup()
             viewContainer->setFixedHeight(viewContainer->height() + 34 + 10);
 
             connect(m_btnAdd, &QPushButton::clicked, this, &JobTypeComboBox::slotBtnAddItemClicked);
-        }
-        if (m_btnAdd) {
-            bool darkTheme = DGuiApplicationHelper::instance()->themeType()  == 2;
-            if (darkTheme) {
-                m_btnAdd->setBackgroundRole(QPalette::Base);
-                m_btnAdd->setFlat(true);
-            } else {
-                //m_btnAdd->setStyleSheet("border:none;background:#fff;");
-            }
         }
     }
 }

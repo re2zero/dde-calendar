@@ -64,15 +64,20 @@ public:
      */
     void setUserColor(const JobTypeColorInfo&);
     /**
-     * @brief selectColor 设置选择的色彩控件
+     * @brief setSelectedColorByIndex 设置选择的色彩控件
      * @param index 色彩控件位置
      */
-    void setSelectedColor(int index);
+    void setSelectedColorByIndex(int index);
+    /**
+     * @brief setSelectedColorById 设置选择的色彩控件
+     * @param colorId 色彩id
+     */
+    void setSelectedColorById(int colorId);
     /**
      * @brief selectColor 设置选择的色彩控件
      * @param color 色彩
      */
-    void setSelectedColor(const JobTypeColorInfo& color);
+    void setSelectedColorByIndex(const JobTypeColorInfo& color);
     /**
      * @brief initColorButton
      * 初始化色彩控件

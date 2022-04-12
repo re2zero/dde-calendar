@@ -23,6 +23,7 @@
 #include "constants.h"
 #include "cscheduleoperation.h"
 #include "cdynamicicon.h"
+#include "configsettings.h"
 
 #include <DHiDPIHelper>
 #include <DFontSizeManager>
@@ -50,6 +51,7 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     initConnection();
     setTabFouseOrder();
     languageCheck();
+    initColor();
 
     if (type == 1) {
         m_titleLabel->setText(tr("New Event"));
@@ -1334,6 +1336,23 @@ void CScheduleDlg::languageCheck()
         m_lunarRadioBtn->setDisabled(true);
     } else {
         m_lunarRadioBtn->setDisabled(false);
+    }
+}
+
+void CScheduleDlg::initColor()
+{
+    if (CConfigSettings::getInstance()->contains("LastUserColor")){
+        QString colorName = CConfigSettings::getInstance()->value("LastUserColor").toString();
+        if (!colorName.isEmpty()) {
+            m_colorSeletorWideget->setUserColor(JobTypeColorInfo(0, colorName, 7));
+        }
+    }
+
+    if (CConfigSettings::getInstance()->contains("LastSysColorTypeNo")){
+        int colorId = CConfigSettings::getInstance()->value("LastSysColorTypeNo").toInt();
+        if (colorId > 0) {
+            m_colorSeletorWideget->setSelectedColorById(colorId);
+        }
     }
 }
 

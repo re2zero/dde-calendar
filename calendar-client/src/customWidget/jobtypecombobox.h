@@ -3,13 +3,9 @@
 
 #include "src/scheduledatainfo.h"
 #include "scheduledatamanage.h"
+#include "cpushbutton.h"
 
 #include <DComboBox>
-#include <DIconButton>
-#include <DPushButton>
-
-#include <QLabel>
-#include <QHBoxLayout>
 DWIDGET_USE_NAMESPACE
 
 class JobTypeComboBox : public DComboBox
@@ -36,7 +32,7 @@ private:
     void addJobTypeItem(int idx, QString strColorHex, QString strJobType);
 
 private:
-    DPushButton *m_btnAdd {nullptr};
+    CPushButton *m_btnAdd {nullptr};
     QList<JobTypeInfo> m_lstJobType;
 };
 

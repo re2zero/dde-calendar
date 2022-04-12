@@ -125,6 +125,7 @@ protected:
 
 private:
     void initUI();
+    void initColor();
     void initConnection();
     void initDateEdit();
     void initJobTypeComboBox();

@@ -21,6 +21,7 @@
 #include "scheduletypeeditdlg.h"
 #include "scheduledatamanage.h"
 #include "cscheduleoperation.h"
+#include "configsettings.h"
 
 #include <DFrame>
 #include <DTitlebar>
@@ -47,7 +48,6 @@ ScheduleTypeEditDlg::ScheduleTypeEditDlg(const JobTypeInfo &jobTypeOld, QWidget 
 void ScheduleTypeEditDlg::init()
 {
     initView();
-    connect(m_colorSeletor, &ColorSeletorWidget::signalColorChange, this, &ScheduleTypeEditDlg::slotColorChange);
     connect(m_lineEdit, &DLineEdit::textChanged, this, &ScheduleTypeEditDlg::slotEditTextChanged);
     initData();
 }
@@ -118,23 +118,30 @@ void ScheduleTypeEditDlg::initData()
     m_titleLabel->setText(m_title);
     m_lineEdit->setText(m_jobTypeOld.getJobTypeName());
     this->getButton(1)->setEnabled(!m_jobTypeOld.getJobTypeName().isEmpty());//如果是新增，则保存按钮默认不可用
-    if(nullptr !=m_colorSeletor){
+    if(nullptr != m_colorSeletor){
         JobTypeInfoManager::instance()->getJobTypeColorByNo(m_jobTypeOld.getColorTypeNo(), m_jobTypeColorOld);
+
+        if (CConfigSettings::getInstance()->contains("LastUserColor")){
+            QString colorName = CConfigSettings::getInstance()->value("LastUserColor").toString();
+            if (!colorName.isEmpty()) {
+                m_colorSeletor->setUserColor(JobTypeColorInfo(0, colorName, 7));
+            }
+        }
+
+        if (CConfigSettings::getInstance()->contains("LastSysColorTypeNo")){
+            int colorId = CConfigSettings::getInstance()->value("LastSysColorTypeNo").toInt();
+            if (colorId > 0) {
+                m_colorSeletor->setSelectedColorById(colorId);
+            }
+        }
         if( 0 < m_jobTypeColorOld.getTypeNo()){
             //todo:
             //1.新建时，默认选中上次选中的默认颜色后的一个
             //2.自定义颜色，如果m_jobTypeColorOld不是自定义颜色，则把用户上一次保存的自定义颜色加到选择器的自定义颜色
-            m_colorSeletor->setSelectedColor(m_jobTypeColorOld);//设置选中颜色setSelectedColor
+            m_colorSeletor->setSelectedColorByIndex(m_jobTypeColorOld);//设置选中颜色setSelectedColor
             //setUserColor用来添加自定义颜色
         }
     }
-}
-
-void ScheduleTypeEditDlg::slotColorChange(JobTypeColorInfo colorInfo)
-{
-    QPalette palette = m_lineEdit->palette();
-    palette.setColor(QPalette::Button, colorInfo.getColorHex());
-    m_lineEdit->setPalette(palette);    //更改文本编辑框颜色
 }
 
 void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
