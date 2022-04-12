@@ -32,6 +32,7 @@ CScheduleTask::CScheduleTask(QObject *parent)
     connect(m_work, &DataGetWork::signalGetSchedule, this, &CScheduleTask::slotGetSchedule);
     connect(m_work, &DataGetWork::signalGetLunar, this, &CScheduleTask::slotGetLunar);
     connect(m_DBusManager, &CScheduleDBus::jobsUpdate, this, &CScheduleTask::jobsUpdate);
+    connect(m_DBusManager, &CScheduleDBus::jobsTypeOrColorUpdate, this, &CScheduleTask::jobsTypeOrColorUpdate);
     m_work->moveToThread(&m_workerThread);
     m_workerThread.start();
 }

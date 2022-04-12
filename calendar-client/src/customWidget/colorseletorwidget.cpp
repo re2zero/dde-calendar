@@ -38,7 +38,6 @@ void ColorSeletorWidget::init()
 void ColorSeletorWidget::initColorButton(int index)
 {
     reset();
-    JobTypeInfoManager::instance()->updateInfo();
     QList<JobTypeColorInfo> lstColorInfo = JobTypeInfoManager::instance()->getJobTypeColorList();
     for (JobTypeColorInfo& var: lstColorInfo) {
         if (TypeSystem == var.getAuthority()) {
@@ -55,15 +54,15 @@ void ColorSeletorWidget::reset()
 {
     //清空所有的色彩实体和控件
     m_colorEntityMap.clear();
-    QList<QAbstractButton*> buttons = m_colorGroup->buttons();
-    for (QAbstractButton* btn : buttons) {
+    QList<QAbstractButton *> buttons = m_colorGroup->buttons();
+    for (QAbstractButton *btn : buttons) {
         m_colorGroup->removeButton(btn);
         m_colorLayout->removeWidget(btn);
         delete btn;
     }
 }
 
-void ColorSeletorWidget::addColor(const JobTypeColorInfo& cInfo)
+void ColorSeletorWidget::addColor(const JobTypeColorInfo &cInfo)
 {
     static int count = 0;   //静态变量，充当色彩控件id
     count++;
@@ -87,19 +86,19 @@ JobTypeColorInfo ColorSeletorWidget::getSelectedColorInfo()
 void ColorSeletorWidget::setSelectedColor(int index)
 {
     if (index >= 0 && index < m_colorGroup->buttons().size()) {
-        QAbstractButton* but = m_colorGroup->buttons().at(index);
+        QAbstractButton *but = m_colorGroup->buttons().at(index);
         if (nullptr != but) {
             but->click();
         }
     }
 }
 
-void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo& colorInfo)
+void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
 {
     bool isFind = false;
     //遍历所有控件
-    for (QAbstractButton* but: m_colorGroup->buttons()) {
-        if (nullptr != but && qobject_cast<CRadioButton*>(but)->getColor().name() == colorInfo.getColorHex()) {
+    for (QAbstractButton *but : m_colorGroup->buttons()) {
+        if (nullptr != but && qobject_cast<CRadioButton *>(but)->getColor().name() == colorInfo.getColorHex()) {
             but->click();
             isFind = true;
         }
@@ -157,7 +156,7 @@ void ColorSeletorWidget::slotAddColorButClicked()
     delete colorPicker;
 }
 
-void ColorSeletorWidget::setUserColor(const JobTypeColorInfo& colorInfo)
+void ColorSeletorWidget::setUserColor(const JobTypeColorInfo &colorInfo)
 {
     if (TypeUser != colorInfo.getAuthority()) {
         return;

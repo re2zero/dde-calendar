@@ -42,6 +42,7 @@ CalendarService::CalendarService(QObject *parent)
 void CalendarService::initConnections()
 {
     connect(m_scheduler, &CalendarScheduler::JobsUpdated, this, &CalendarService::JobsUpdated);
+    connect(m_scheduler, &CalendarScheduler::JobTypeOrColorUpdated, this, &CalendarService::JobTypeOrColorUpdated);
 }
 
 //获取指定公历月的假日信息
@@ -66,7 +67,7 @@ QString CalendarService::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
 QString CalendarService::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    QString huangliInfo =m_huangli->GetHuangLiMonth(year, month, fill);
+    QString huangliInfo = m_huangli->GetHuangLiMonth(year, month, fill);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return huangliInfo;
 }
@@ -84,7 +85,7 @@ CaLunarDayInfo CalendarService::GetLunarInfoBySolar(quint32 year, quint32 month,
 CaLunarMonthInfo CalendarService::GetLunarMonthCalendar(quint32 year, quint32 month, bool fill)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    CaLunarMonthInfo huangliInfo= m_huangli->GetLunarCalendarMonth(year, month, fill);
+    CaLunarMonthInfo huangliInfo = m_huangli->GetLunarCalendarMonth(year, month, fill);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return huangliInfo;
 }
@@ -176,7 +177,7 @@ QString CalendarService::GetTypes()
 QString CalendarService::QueryJobs(const QString &params)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    QString scheduleInfo =m_scheduler->QueryJobs(params);
+    QString scheduleInfo = m_scheduler->QueryJobs(params);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return scheduleInfo;
 }
@@ -200,7 +201,7 @@ void CalendarService::UpdateType(const QString &typeInfo)
 QString CalendarService::QueryJobsWithLimit(const QString &params, qint32 maxNum)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    QString scheduleInfo =m_scheduler->QueryJobsWithLimit(params, maxNum);
+    QString scheduleInfo = m_scheduler->QueryJobsWithLimit(params, maxNum);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return scheduleInfo;
 }
@@ -208,7 +209,7 @@ QString CalendarService::QueryJobsWithLimit(const QString &params, qint32 maxNum
 QString CalendarService::QueryJobsWithRule(const QString &params, const QString &rules)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    QString scheduleInfo =m_scheduler->QueryJobsWithRule(params, rules);
+    QString scheduleInfo = m_scheduler->QueryJobsWithRule(params, rules);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return scheduleInfo;
 }
@@ -216,7 +217,7 @@ QString CalendarService::QueryJobsWithRule(const QString &params, const QString 
 void CalendarService::remindJob(const qint64 jobID, const qint64 recurID)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    m_scheduler->remindJob(jobID,recurID);
+    m_scheduler->remindJob(jobID, recurID);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
 }
 
@@ -230,7 +231,7 @@ void CalendarService::updateRemindJob(bool isClear)
 void CalendarService::notifyMsgHanding(const qint64 jobID, const qint64 recurID, const qint32 operationNum)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
-    m_scheduler->notifyMsgHanding(jobID,recurID,operationNum);
+    m_scheduler->notifyMsgHanding(jobID, recurID, operationNum);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
 }
 // 根据日程json创建日程类型信息，并返回操作结果
@@ -239,7 +240,6 @@ bool CalendarService::CreateJobType(const QString &jobTypeInfo)
     bool bRet;
     CalendarProgramExitControl::getProgramExitControl()->addExc();
     bRet = m_scheduler->CreateJobType(jobTypeInfo);
-    qInfo() << jobTypeInfo;
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return bRet;
 }
@@ -267,7 +267,6 @@ QString CalendarService::GetJobTypeList()
     QString strJobType;
     CalendarProgramExitControl::getProgramExitControl()->addExc();
     strJobType = m_scheduler->GetJobTypeList();
-    qInfo() << strJobType;
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return strJobType;
 }
@@ -304,7 +303,6 @@ QString CalendarService::GetColorTypeList()
     QString strJobType;
     CalendarProgramExitControl::getProgramExitControl()->addExc();
     strJobType = m_scheduler->GetColorTypeList();
-    qInfo() << strJobType;
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return strJobType;
 }

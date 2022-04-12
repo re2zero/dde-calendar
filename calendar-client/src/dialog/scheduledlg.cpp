@@ -570,7 +570,7 @@ void CScheduleDlg::slotTypeRpeatactivated(int index)
     if (m_typeComBox->isEditable()) {
         m_typeComBox->setIconSize(QSize(0, 0));
     } else {
-        m_typeComBox->setIconSize(QSize(16,16));
+        m_typeComBox->setIconSize(QSize(16, 16));
     }
 
     resize();
@@ -602,20 +602,20 @@ void CScheduleDlg::slotBtnAddItemClicked()
 
 void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
 {
-    if(text.isEmpty()){
+    if (text.isEmpty()) {
         //名称为空，返回
         m_jobTypeAlert->showAlertMessage(tr("Enter a name please"));
         getButtons()[1]->setDisabled(true);
         return;
     }
-    if(text.trimmed().isEmpty()){
+    if (text.trimmed().isEmpty()) {
         //名称为全空格，返回
         m_jobTypeAlert->showAlertMessage(tr("The name can not only contain whitespaces"));
         getButtons()[1]->setDisabled(true);
         return;
     }
 
-    if(JobTypeInfoManager::instance()->isJobTypeNameUsed(text)){
+    if (JobTypeInfoManager::instance()->isJobTypeNameUsed(text)) {
         //重名，返回
         m_jobTypeAlert->showAlertMessage(tr("The name already exists"));
         getButtons()[1]->setDisabled(true);
@@ -1156,7 +1156,6 @@ void CScheduleDlg::initDateEdit()
 }
 void CScheduleDlg::initJobTypeComboBox()
 {
-    JobTypeInfoManager::instance()->updateInfo();//1.新建日程时更新 2.管理界面更新  =====>>  TODO：2种情况更新即可：1.程序初始化时，更新 2.日程类型增删改时
     m_typeComBox->updateJobType();
     return;
 }

@@ -944,7 +944,7 @@ void CalendarScheduler::notifyMsgHanding(const qint64 jobID, const qint64 recurI
     //如果为稍后提醒操作则需要更新对应的重复次数和提醒时间
     qint64 Minute = 60 * 1000;
     qint64 Hour = Minute * 60;
-    switch(operationNum) {
+    switch (operationNum) {
     case 2://稍后提醒
         ++job.RemindLaterCount;
         job.RemidTime = getRemindTimeByCount(job.RemindLaterCount);
@@ -1057,10 +1057,15 @@ quint32 CalendarScheduler::GetFestivalId(const QString &name)
 bool CalendarScheduler::CreateJobType(const QString &jobTypeInfo)
 {
     JobTypeInfo jobType;
-    if(!JobTypeInfo::jsonStrToJobTypeInfo(jobTypeInfo, jobType)){
+    if (!JobTypeInfo::jsonStrToJobTypeInfo(jobTypeInfo, jobType)) {
         return false;
     }
-    return m_database->addJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorTypeNo(), jobType.getAuthority());
+
+    bool isSuccess = m_database->addJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorTypeNo(), jobType.getAuthority());
+    if (isSuccess) {
+        emit JobTypeOrColorUpdated();
+    }
+    return isSuccess;
 }
 /**
  * @brief DeleteJobType    删除日程类型
@@ -1069,7 +1074,11 @@ bool CalendarScheduler::CreateJobType(const QString &jobTypeInfo)
  */
 bool CalendarScheduler::DeleteJobType(const int &typeNo)
 {
-    return m_database->deleteJobType(typeNo);
+    bool isSuccess = m_database->deleteJobType(typeNo);
+    if (isSuccess) {
+        emit JobTypeOrColorUpdated();
+    }
+    return isSuccess;
 }
 /**
  * @brief UpdateJobType    更新日程类型
@@ -1079,10 +1088,14 @@ bool CalendarScheduler::DeleteJobType(const int &typeNo)
 bool CalendarScheduler::UpdateJobType(const QString &jobTypeInfo)
 {
     JobTypeInfo jobType;
-    if(!JobTypeInfo::jsonStrToJobTypeInfo(jobTypeInfo, jobType)){
+    if (!JobTypeInfo::jsonStrToJobTypeInfo(jobTypeInfo, jobType)) {
         return false;
     }
-    return m_database->updateJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorTypeNo());
+    bool isSuccess = m_database->updateJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorTypeNo());
+    if (isSuccess) {
+        emit JobTypeOrColorUpdated();
+    }
+    return isSuccess;
 }
 /**
  * @brief GetJobTypeList   获取日程类型字符串
@@ -1092,7 +1105,7 @@ QString CalendarScheduler::GetJobTypeList()
 {
     QString strJson;
     QList<JobTypeInfo> lstJobType;
-    if(m_database->getJobTypeList(lstJobType)){
+    if (m_database->getJobTypeList(lstJobType)) {
         JobTypeInfo::jobTypeInfoListToJosnString(lstJobType, strJson);
     }
     return strJson;
@@ -1106,10 +1119,14 @@ bool CalendarScheduler::CreateColorType(const QString &strColorTypeInfo)
 {
     JobTypeColorInfo colorType;
 
-    if(!JobTypeInfo::jsonStrToColorTypeInfo(strColorTypeInfo,colorType)){
+    if (!JobTypeInfo::jsonStrToColorTypeInfo(strColorTypeInfo, colorType)) {
         return false;
     }
-    return m_database->addColorType(colorType.getTypeNo(), colorType.getColorHex(), colorType.getAuthority());
+    bool isSuccess = m_database->addColorType(colorType.getTypeNo(), colorType.getColorHex(), colorType.getAuthority());
+    if (isSuccess) {
+        emit JobTypeOrColorUpdated();
+    }
+    return isSuccess;
 }
 /**
  * @brief DeleteColorType  删除颜色类型
@@ -1118,7 +1135,11 @@ bool CalendarScheduler::CreateColorType(const QString &strColorTypeInfo)
  */
 bool CalendarScheduler::DeleteColorType(const int &typeNo)
 {
-    return m_database->deleteColorType(typeNo);
+    bool isSuccess = m_database->deleteColorType(typeNo);
+    if (isSuccess) {
+        emit JobTypeOrColorUpdated();
+    }
+    return isSuccess;
 }
 /**
  * @brief UpdateColorType  更新日程类型
@@ -1129,10 +1150,14 @@ bool CalendarScheduler::UpdateColorType(const QString &strColorTypeInfo)
 {
     JobTypeColorInfo colorType;
 
-    if(!JobTypeInfo::jsonStrToColorTypeInfo(strColorTypeInfo,colorType)){
+    if (!JobTypeInfo::jsonStrToColorTypeInfo(strColorTypeInfo, colorType)) {
         return false;
     }
-    return m_database->updateColorType(colorType.getTypeNo(), colorType.getColorHex());
+    bool isSuccess = m_database->updateColorType(colorType.getTypeNo(), colorType.getColorHex());
+    if (isSuccess) {
+        emit JobTypeOrColorUpdated();
+    }
+    return isSuccess;
 }
 /**
  * @brief GetColorTypeList 获取日程类型字符串
@@ -1142,7 +1167,7 @@ QString CalendarScheduler::GetColorTypeList()
 {
     QString strJson = "";
     QList<JobTypeColorInfo> lstColorType;
-    if(m_database->getColorTypeList(lstColorType)){
+    if (m_database->getColorTypeList(lstColorType)) {
         JobTypeInfo::colorTypeInfoListToJosnString(lstColorType, strJson);
     }
     return strJson;

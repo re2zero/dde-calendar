@@ -41,6 +41,8 @@ private:
     void initConnections();
 Q_SIGNALS:
     Q_SCRIPTABLE void JobsUpdated(const QList<qlonglong> &Ids);
+    //日程类型发生改变
+    Q_SCRIPTABLE void JobTypeOrColorUpdated();
 
 public Q_SLOTS:
     //LunarCalendar
@@ -74,7 +76,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE bool UpdateColorType(const QString &colorTypeInfo);
     Q_SCRIPTABLE QString GetColorTypeList();
     //稍后提醒相关接口
-    Q_SCRIPTABLE void remindJob(const qint64 jobID,const qint64 recurID);
+    Q_SCRIPTABLE void remindJob(const qint64 jobID, const qint64 recurID);
 
     /**
      * @brief updateRemindJob       每隔10分钟更新提醒日程
@@ -87,7 +89,8 @@ public Q_SLOTS:
      * @param jobID                 日程id
      * @param operationNum          操作编号 ， 1：打开日历，2：稍后提醒 3： 明天提醒 4： 提前1天提醒 5:关闭按钮
      */
-    Q_SCRIPTABLE void notifyMsgHanding(const qint64 jobID,const qint64 recurID,const qint32 operationNum);
+    Q_SCRIPTABLE void notifyMsgHanding(const qint64 jobID, const qint64 recurID, const qint32 operationNum);
+
 private:
     CalendarScheduler *m_scheduler;
     CalendarHuangLi *m_huangli;

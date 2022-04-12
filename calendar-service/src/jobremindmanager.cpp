@@ -87,9 +87,10 @@ void JobRemindManager::RemindJob(const Job &job)
             QStringList actionlist;
             QVariantMap hints;
             QString cmd = QString("dbus-send --session --print-reply --dest=com.deepin.dataserver.Calendar "
-                          "/com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.notifyMsgHanding int64:%1 int64:%2 ")
-                    .arg(job.ID).arg(job.RecurID);
-            auto argMake = [&](int operationNum, const QString &text, const QString &transText){
+                                  "/com/deepin/dataserver/Calendar com.deepin.dataserver.Calendar.notifyMsgHanding int64:%1 int64:%2 ")
+                              .arg(job.ID)
+                              .arg(job.RecurID);
+            auto argMake = [&](int operationNum, const QString &text, const QString &transText) {
                 actionlist << text << transText;
                 hints.insert("x-deepin-action-" + text, QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(operationNum));
             };
@@ -135,7 +136,7 @@ void JobRemindManager::RemindJob(const Job &job)
                      .arg(body);
             int notifyid = m_dbusnotify->Notify(argumentList);
             //将获取到的通知弹框id保存
-            emit saveNotifyID(job,notifyid);
+            emit saveNotifyID(job, notifyid);
         } else {
             qDebug() << __FUNCTION__ << QString("remind job failed id=%1").arg(job.ID);
         }
@@ -352,7 +353,7 @@ void JobRemindManager::UpdateRemindJobs(const QList<Job> &jobs)
     systemdTimerControl.removeRemindFile();
 
     QVector<SystemDInfo> infoVector{};
-    foreach(auto job ,jobs){
+    foreach (auto job, jobs) {
         SystemDInfo info;
         info.jobID = job.ID;
         info.laterCount = job.RemindLaterCount;
@@ -366,13 +367,12 @@ void JobRemindManager::UpdateRemindJobs(const QList<Job> &jobs)
 //Job被改变删除稍后提醒队列里对应id的Job
 void JobRemindManager::NotifyJobsChanged(const QList<Job> &jobs)
 {
-    if(jobs.size() ==0)
+    if (jobs.size() == 0)
         return;
     CSystemdTimerControl systemdTimerControl;
 
     QVector<SystemDInfo> infoVector{};
-    qInfo()<<jobs.size();
-    foreach(auto job ,jobs){
+    foreach (auto job, jobs) {
         SystemDInfo info;
         info.jobID = job.ID;
         info.laterCount = job.RemindLaterCount;

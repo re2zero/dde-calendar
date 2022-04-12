@@ -75,6 +75,8 @@ signals:
     void signalLunarGetSuccess();
     //日程更新信号
     void jobsUpdate();
+
+    void jobsTypeOrColorUpdate();
 public slots:
     //接收查询的日程信息
     void slotGetSchedule(const QMap<QDate, QVector<ScheduleDataInfo> > &scheduleInfo, const QMap<QDate, bool> &hasSchedule);

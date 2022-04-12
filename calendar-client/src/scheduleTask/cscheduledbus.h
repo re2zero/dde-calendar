@@ -80,7 +80,7 @@ public:
     bool DeleteJobType(int jobTypeNo);
 
     //获取颜色信息列表
-    bool GetJobTypeColorList(QString& strJson);
+    bool GetJobTypeColorList(QString &strJson);
     //新增颜色信息
     bool AddJobTypeColor(QString strJson);
     //更新颜色信息
@@ -89,6 +89,8 @@ public:
     bool DeleteJobTypeColor(int colorTypeNo);
 signals:
     void jobsUpdate();
+    //日程类型或颜色更新
+    void jobsTypeOrColorUpdate();
 public slots:
     void propertyChanged(const QDBusMessage &msg);
 private:

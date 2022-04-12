@@ -387,10 +387,16 @@ QString CScheduleDBus::getHuangLiShortName(const QDate &date)
 
 void CScheduleDBus::propertyChanged(const QDBusMessage &msg)
 {
-    if (msg.type() == QDBusMessage::SignalMessage && msg.member() == "JobsUpdated"
-            && msg.path() == this->path() && msg.interface() == this->interface()) {
-        //日程更新信号
-        emit jobsUpdate();
+    if (msg.type() == QDBusMessage::SignalMessage && msg.path() == this->path() && msg.interface() == this->interface()) {
+        if (msg.member() == "JobsUpdated") {
+            //日程更新信号
+            emit jobsUpdate();
+        }
+
+        if (msg.member() == "JobTypeOrColorUpdated") {
+            //日程类型或颜色更新
+            emit jobsTypeOrColorUpdate();
+        }
     }
 }
 
@@ -457,7 +463,7 @@ bool CScheduleDBus::DeleteJobType(int jobTypeNo)
 }
 
 //获取颜色信息列表
-bool CScheduleDBus::GetJobTypeColorList(QString& strJson)
+bool CScheduleDBus::GetJobTypeColorList(QString &strJson)
 {
     QDBusPendingCall pCall = asyncCall(QStringLiteral("GetColorTypeList"));
     pCall.waitForFinished();

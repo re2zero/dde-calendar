@@ -27,8 +27,9 @@ CScheduleDataManage *CScheduleDataManage::m_vscheduleDataManage = new CScheduleD
 CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
 {
     CSchedulesColor color;
-    JobTypeInfo info;
-    bool isOk = JobTypeInfoManager::instance()->getJobTypeByNo(type, info);
+    JobTypeColorInfo info;
+    //根据类型获取对应的颜色
+    bool isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(type, info);
     if (isOk) {
         color.orginalColor = QColor(info.getColorHex());
         color.normalColor = color.orginalColor;
@@ -130,10 +131,10 @@ bool JobTypeInfoManager::getJobTypeByNo(int iNo, JobTypeInfo &jobType)
     return false;
 }
 //查询日程类型颜色
-bool JobTypeInfoManager::getJobTypeColorByNo(int iNo, JobTypeColorInfo& jobType)
+bool JobTypeInfoManager::getJobTypeColorByNo(int iNo, JobTypeColorInfo &jobType)
 {
     for (JobTypeColorInfo &color : m_lstJobTypeColor) {
-        if(color.getTypeNo() == iNo){
+        if (color.getTypeNo() == iNo) {
             jobType = color;
             return true;
         }
@@ -157,11 +158,11 @@ int JobTypeInfoManager::getNextTypeNo()
     int typeNo = 1;
 
     for (JobTypeInfo &job : m_lstJobType) {
-        if(job.getJobTypeNo() >= typeNo){
+        if (job.getJobTypeNo() >= typeNo) {
             typeNo = job.getJobTypeNo() + 1;
         }
     }
-    if(4 == typeNo){//节日类型占用
+    if (4 == typeNo) { //节日类型占用
         typeNo += 1;
     }
     return typeNo;
@@ -171,7 +172,7 @@ int JobTypeInfoManager::getNextColorTypeNo()
 {
     int colorTypeNo = 1;
     for (JobTypeColorInfo &jobColor : m_lstJobTypeColor) {
-        if(jobColor.getTypeNo() >= colorTypeNo){
+        if (jobColor.getTypeNo() >= colorTypeNo) {
             colorTypeNo = jobColor.getTypeNo() + 1;
         }
     }

@@ -20,6 +20,7 @@
 */
 #include "calendarmanage.h"
 #include "cschedulebasewidget.h"
+#include "scheduledatamanage.h"
 
 #include <QDBusConnection>
 
@@ -124,6 +125,8 @@ CalendarManager::CalendarManager(QObject *parent)
 {
     initData();
     initConnection();
+    //更新日程类型和颜色
+    updateJobTypeColor();
 }
 
 CalendarManager::~CalendarManager()
@@ -162,6 +165,7 @@ void CalendarManager::initConnection()
     connect(m_scheduleTask, &CScheduleTask::signalUpdateScheduleShow, this, &CalendarManager::slotGetScheduleSuccess);
     connect(m_scheduleTask, &CScheduleTask::signalLunarGetSuccess, this, &CalendarManager::slotGetLunarSuccess);
     connect(m_scheduleTask, &CScheduleTask::jobsUpdate, this, &CalendarManager::slotJobsUpdated);
+    connect(m_scheduleTask, &CScheduleTask::jobsTypeOrColorUpdate, this, &CalendarManager::slotUpdateJobTypeColor);
     connect(m_scheduleTask, &CScheduleTask::signalUpdateSearchSchedule, this, &CalendarManager::slotUpdateSearchSchedule);
 }
 
@@ -198,6 +202,11 @@ void CalendarManager::updateJobs()
     ShowDateRange _showDateRange = m_dateManage->getShowDateRange();
     //获取显示年份前后一个月数据
     m_scheduleTask->updateInfo(_showDateRange.startDate.addDays(-42), _showDateRange.stopDate.addDays(42), m_showLunar);
+}
+
+void CalendarManager::updateJobTypeColor()
+{
+    JobTypeInfoManager::instance()->updateInfo();
 }
 
 /**
@@ -253,6 +262,11 @@ void CalendarManager::slotUpdateSearchSchedule()
     for (int i = 0; i < m_showWidget.size(); ++i) {
         m_showWidget.at(i)->updateSearchScheduleInfo();
     }
+}
+
+void CalendarManager::slotUpdateJobTypeColor()
+{
+    updateJobTypeColor();
 }
 
 /**

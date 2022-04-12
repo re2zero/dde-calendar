@@ -97,7 +97,7 @@ public:
      */
     QString GetColorTypeList();
 
-    void remindJob(const qint64 id,const qint64 recurID);
+    void remindJob(const qint64 id, const qint64 recurID);
 
     /**
      * @brief UpdateRemindTimeout       更新未来10分钟有提醒信息的日程
@@ -111,7 +111,8 @@ public:
      * @param recurID               重复日程编号
      * @param operationNum          操作编号
      */
-    void notifyMsgHanding(const qint64 jobID,const qint64 recurID,const int operationNum);
+    void notifyMsgHanding(const qint64 jobID, const qint64 recurID, const int operationNum);
+
 private:
     void initConnections();
     static quint32 GetFestivalId(const QString &name);
@@ -151,14 +152,16 @@ signals:
     void NotifyJobChange(const QList<Job> &jobs);
     void NotifyUpdateRemindJobs(const QList<Job> &jobs);
     void JobsUpdated(const QList<qlonglong> &Ids);
+    //日程类型发生改变
+    void JobTypeOrColorUpdated();
     void signalRemindJob(const Job &job);
-    void signalNotifyMsgHanding(const Job &job,const int operationNum);
+    void signalNotifyMsgHanding(const Job &job, const int operationNum);
     void signalCloseNotification(quint32 notifyID);
 
 private slots:
 
     void OnModifyJobRemind(const Job &job, const QString &remind);
-    void saveNotifyID(const Job &job,int notifyid);
+    void saveNotifyID(const Job &job, int notifyid);
 
 private:
     SchedulerDatabase *m_database;
