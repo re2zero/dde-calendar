@@ -17,7 +17,6 @@ class JobTypeListView : public DListView
 public:
     explicit JobTypeListView(QWidget *parent = nullptr);
     ~JobTypeListView();
-    bool updateJobType();
 
     /**
      * @brief canAdd 是否可以继续新增类型
@@ -40,6 +39,7 @@ signals:
 public slots:
     void slotUpdateJobType();
     void slotDeleteJobType();
+    bool updateJobType();
 
 private:
     QStandardItemModel *m_modelJobType {nullptr};

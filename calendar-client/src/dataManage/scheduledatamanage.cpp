@@ -90,6 +90,10 @@ void JobTypeInfoManager::updateInfo()
     CScheduleOperation so;
     so.getJobTypeList(this->m_lstJobType);
     so.getColorTypeList(this->m_lstJobTypeColor);
+    
+    for(auto k = noticeObjBill.begin(); k != noticeObjBill.end(); k ++) {
+        QMetaObject::invokeMethod(k.key(), k.value());
+    }
     return;
 }
 JobTypeInfoManager::JobTypeInfoManager()               //私有静态构造函数
@@ -189,4 +193,14 @@ int JobTypeInfoManager::getNextColorTypeNo()
         }
     }
     return colorTypeNo;
+}
+
+void JobTypeInfoManager::addToNoticeBill(QObject *obj, const QByteArray &method)
+{
+    noticeObjBill.insert(obj, method);
+}
+
+void JobTypeInfoManager::removeFromNoticeBill(QObject *obj)
+{
+    noticeObjBill.remove(obj);
 }

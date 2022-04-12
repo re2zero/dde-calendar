@@ -11,6 +11,7 @@
 Q_DECLARE_METATYPE(JobTypeInfo)
 //Qt::UserRole + 1,会影响item的高度
 static const int RoleJobTypeInfo = Qt::UserRole + 2;
+static const int RoleJobTypeEditable = Qt::UserRole + 3;
 
 JobTypeListView::JobTypeListView(QWidget *parent) : DListView(parent)
 {
@@ -19,6 +20,7 @@ JobTypeListView::JobTypeListView(QWidget *parent) : DListView(parent)
 
 JobTypeListView::~JobTypeListView()
 {
+    JobTypeInfoManager::instance()->removeFromNoticeBill(this);
 }
 
 void JobTypeListView::initUI()
@@ -35,6 +37,9 @@ void JobTypeListView::initUI()
 
     //
     updateJobType();
+
+    //添加到通知单列表
+    JobTypeInfoManager::instance()->addToNoticeBill(this, "updateJobType");
 }
 
 bool JobTypeListView::viewportEvent(QEvent *event)
@@ -63,13 +68,9 @@ bool JobTypeListView::viewportEvent(QEvent *event)
         if (indexCurrentHover != m_iIndexCurrentHover) {
             DStandardItem *itemJobType;
 
-            QStandardItemModel *itemModel = qobject_cast<QStandardItemModel *>(model());
-            if (nullptr == itemModel) {
-                return true;
-            }
             //隐藏此前鼠标悬浮行的图标
             if (m_iIndexCurrentHover >= 0) {
-                itemJobType = dynamic_cast<DStandardItem *>(itemModel->item(m_iIndexCurrentHover));
+                itemJobType = dynamic_cast<DStandardItem *>(m_modelJobType->item(m_iIndexCurrentHover));
                 if (nullptr == itemJobType) {
                     return true;
                 }
@@ -85,7 +86,7 @@ bool JobTypeListView::viewportEvent(QEvent *event)
             //展示此前鼠标悬浮行的图标
             m_iIndexCurrentHover = indexCurrentHover;
             //qInfo() << "HoverMove" << indexAt(static_cast<QHoverEvent*>(event)->pos());
-            itemJobType = static_cast<DStandardItem *>(itemModel->item(m_iIndexCurrentHover));
+            itemJobType = static_cast<DStandardItem *>(m_modelJobType->item(m_iIndexCurrentHover));
             if (nullptr == itemJobType) {
                 return true;
             }
@@ -96,6 +97,8 @@ bool JobTypeListView::viewportEvent(QEvent *event)
             } else {
                 // 设置其他style时，转换指针为空
                 if (DStyle *ds = qobject_cast<DStyle *>(style())) {
+                    if(!itemJobType->data(RoleJobTypeEditable).toBool())
+                        return true;
                     auto actionEdit = new DViewItemAction(Qt::AlignVCenter, QSize(), QSize(), true);
                     actionEdit->setIcon(ds->standardIcon(DStyle::SP_AddButton));
                     actionEdit->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/edit.svg"));
@@ -156,6 +159,7 @@ void JobTypeListView::addJobTypeItem(const JobTypeInfo &info)
 
     DStandardItem *item = new DStandardItem(QIcon(pixmap), info.getJobTypeName());
     item->setData(QVariant::fromValue(info), RoleJobTypeInfo);
+    item->setData(info.getAuthority() > 1, RoleJobTypeEditable);
 
     m_modelJobType->appendRow(item);
 }

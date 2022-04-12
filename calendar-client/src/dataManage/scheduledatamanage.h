@@ -101,8 +101,13 @@ public:
     //获取自定义日程类型颜色下一个编号
     int getNextColorTypeNo();
 
+    //通知单,添加回调函数
+    void addToNoticeBill(QObject *obj, const QByteArray &method);
+    //通知单,移除回调函数
+    void removeFromNoticeBill(QObject *obj);
 private:
     QList<JobTypeInfo> m_lstJobType;
     QList<JobTypeColorInfo> m_lstJobTypeColor;
+    QMap<QObject *, QByteArray> noticeObjBill;//当日程类型改变时，会触发notice对应的回调函数
 };
 #endif // SCHEDULEVIEW_H

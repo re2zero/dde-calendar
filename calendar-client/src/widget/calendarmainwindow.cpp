@@ -860,8 +860,6 @@ void Calendarmainwindow::slotOpenSettingDialog()
                     connect(addButton, &DIconButton::clicked, this, [=] {
                         ScheduleTypeEditDlg a;
                         a.exec();
-                        if(view)
-                            view->updateJobType();
                     });
                 }
                 if (wid->accessibleName().contains("DefaultWidgetAtContentRow")) {
