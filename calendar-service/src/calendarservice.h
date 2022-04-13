@@ -72,9 +72,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE bool UpdateJobType(const QString &jobTypeInfo);
     Q_SCRIPTABLE QString GetJobTypeList();
     Q_SCRIPTABLE bool isJobTypeUsed(const int &typeNo);
-    Q_SCRIPTABLE bool CreateColorType(const QString &colorTypeInfo);//
-    Q_SCRIPTABLE bool DeleteColorType(const int &typeNo);
-    Q_SCRIPTABLE bool UpdateColorType(const QString &colorTypeInfo);
+
     Q_SCRIPTABLE QString GetColorTypeList();
     //稍后提醒相关接口
     Q_SCRIPTABLE void remindJob(const qint64 jobID, const qint64 recurID);

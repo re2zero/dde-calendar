@@ -60,14 +60,8 @@ public:
     bool deleteJobType(const int iJobTypeNo);
     //获取日程类型是否被使用
     bool isJobTypeUsed(const int iJobTypeNo);
-    //创建颜色类型
-    bool createColorType(const JobTypeColorInfo &colorTypeInfo);
-    //更新颜色类型
-    bool updateColorType(const JobTypeColorInfo &colorTypeInfo);
     //获取颜色类型列表
     bool getColorTypeList(QList<JobTypeColorInfo> &lstColorTypeInfo);
-    //删除颜色类型
-    bool deleteColorType(const int iColorTypeNo);
 private:
     //修改重复日程
     bool changeRecurInfo(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);

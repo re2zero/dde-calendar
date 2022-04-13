@@ -866,8 +866,8 @@ bool SchedulerDatabase::getJobTypeByTypeNo(int iTypeNo, JobTypeInfo &jobType)
         while (query.next()) {
             jobType.setJobTypeNo(query.value("TypeNo").toInt());
             jobType.setJobTypeName(query.value("TypeName").toString());
-            jobType.setColorTypeNo(query.value("ColorTypeNo").toInt());
-            jobType.setColorHex(query.value("ColorHex").toString());
+            jobType.getColorInfo().setTypeNo(query.value("ColorTypeNo").toInt());
+            jobType.getColorInfo().setColorHex(query.value("ColorHex").toString());
             jobType.setAuthority(query.value("Authority").toInt());
         }
     }
@@ -896,8 +896,8 @@ bool SchedulerDatabase::getJobTypeList(QList<JobTypeInfo> &lstJobType)
             JobTypeInfo jobType;
             jobType.setJobTypeNo(query.value("TypeNo").toInt());
             jobType.setJobTypeName(query.value("TypeName").toString());
-            jobType.setColorTypeNo(query.value("ColorTypeNo").toInt());
-            jobType.setColorHex(query.value("ColorHex").toString());
+            jobType.getColorInfo().setTypeNo(query.value("ColorTypeNo").toInt());
+            jobType.getColorInfo().setColorHex(query.value("ColorHex").toString());
             jobType.setAuthority(query.value("Authority").toInt());
             lstJobType.append(jobType);
         }

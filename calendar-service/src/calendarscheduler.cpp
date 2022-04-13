@@ -1061,7 +1061,8 @@ bool CalendarScheduler::CreateJobType(const QString &jobTypeInfo)
         return false;
     }
 
-    bool isSuccess = m_database->addJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorTypeNo(), jobType.getAuthority());
+    //TODO:添加日程类型颜色的相关处理
+    bool isSuccess = m_database->addJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorInfo().getTypeNo(), jobType.getAuthority());
     if (isSuccess) {
         emit JobTypeOrColorUpdated();
     }
@@ -1074,6 +1075,7 @@ bool CalendarScheduler::CreateJobType(const QString &jobTypeInfo)
  */
 bool CalendarScheduler::DeleteJobType(const int &typeNo)
 {
+    //TODO:添加日程类型颜色的相关处理
     bool isSuccess = m_database->deleteJobType(typeNo);
     if (isSuccess) {
         emit JobTypeOrColorUpdated();
@@ -1091,7 +1093,8 @@ bool CalendarScheduler::UpdateJobType(const QString &jobTypeInfo)
     if (!JobTypeInfo::jsonStrToJobTypeInfo(jobTypeInfo, jobType)) {
         return false;
     }
-    bool isSuccess = m_database->updateJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorTypeNo());
+    //TODO:添加日程类型颜色的相关处理
+    bool isSuccess = m_database->updateJobType(jobType.getJobTypeNo(), jobType.getJobTypeName(), jobType.getColorInfo().getTypeNo());
     if (isSuccess) {
         emit JobTypeOrColorUpdated();
     }

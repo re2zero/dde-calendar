@@ -282,33 +282,7 @@ bool CalendarService::isJobTypeUsed(const int &typeNo)
     CalendarProgramExitControl::getProgramExitControl()->reduce();
     return bRet;
 }
-// 根据日程json创建颜色类型信息，并返回操作结果
-bool CalendarService::CreateColorType(const QString &colorTypeInfo)
-{
-    bool bRet;
-    CalendarProgramExitControl::getProgramExitControl()->addExc();
-    bRet = m_scheduler->CreateColorType(colorTypeInfo);
-    CalendarProgramExitControl::getProgramExitControl()->reduce();
-    return bRet;
-}
-// 根据颜色typeNo删除日程类型信息，并返回操作结果
-bool CalendarService::DeleteColorType(const int &typeNo)
-{
-    bool bRet;
-    CalendarProgramExitControl::getProgramExitControl()->addExc();
-    bRet = m_scheduler->DeleteColorType(typeNo);
-    CalendarProgramExitControl::getProgramExitControl()->reduce();
-    return bRet;
-}
-// 根据颜色json修改日程类型信息，并返回操作结果
-bool CalendarService::UpdateColorType(const QString &colorTypeInfo)
-{
-    bool bRet;
-    CalendarProgramExitControl::getProgramExitControl()->addExc();
-    bRet = m_scheduler->UpdateColorType(colorTypeInfo);
-    CalendarProgramExitControl::getProgramExitControl()->reduce();
-    return bRet;
-}
+
 // 返回类型列表
 QString CalendarService::GetColorTypeList()
 {

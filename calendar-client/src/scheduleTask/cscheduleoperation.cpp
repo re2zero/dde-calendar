@@ -376,31 +376,28 @@ bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，�
     //创建日程
     QString strJson = "";
 
-    int colorTypeNo = jobTypeInfo.getColorTypeNo();
+    int colorTypeNo = jobTypeInfo.getColorInfo().getTypeNo();
 
     //以“自定义颜色编码默认为0”来区分.
-    if(0 == colorTypeNo){
+    if (0 == colorTypeNo) {
         colorTypeNo = JobTypeInfoManager::instance()->getNextColorTypeNo();
-        jobTypeInfo.setColorTypeNo(colorTypeNo);
+        jobTypeInfo.getColorInfo().setTypeNo(colorTypeNo);
         JobTypeColorInfo jobTypeColorInfo;
         jobTypeColorInfo.setTypeNo(colorTypeNo);
-        jobTypeColorInfo.setColorHex(jobTypeInfo.getColorHex());
+        jobTypeColorInfo.setColorHex(jobTypeInfo.getColorInfo().getColorHex());
         jobTypeColorInfo.setAuthority(7);//自定义颜色默认权限为7
-        if(!createColorType(jobTypeColorInfo)){
-            return false;
-        }
     }
 
-    if(0 == jobTypeInfo.getJobTypeNo()){
+    if (0 == jobTypeInfo.getJobTypeNo()) {
         jobTypeInfo.setJobTypeNo(JobTypeInfoManager::instance()->getNextTypeNo());
-        jobTypeInfo.setColorTypeNo(colorTypeNo);
+        jobTypeInfo.getColorInfo().setTypeNo(colorTypeNo);
     }
     jobTypeInfo.setAuthority(7);//自定义日程类型默认权限为7
 
-    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
+    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo, strJson);
     bool bRet = m_DBusManager->AddJobType(strJson);// no:10,hex:#123
-    if(bRet){
-        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorTypeNo());
+    if (bRet) {
+        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorInfo().getTypeNo());
     }
     return bRet;
 }
@@ -415,55 +412,21 @@ bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，�
 bool CScheduleOperation::updateJobType(JobTypeInfo &oldJobTypeInfo, JobTypeInfo &newJobTypeInfo)
 {
     //如果oldJobTypeInfo中typeno为0，则是新增
-    if(0 ==oldJobTypeInfo.getJobTypeNo()){
+    if (0 == oldJobTypeInfo.getJobTypeNo()) {
         return createJobType(newJobTypeInfo);
     }
     bool bRet = true;
-
-    if(!JobTypeInfo::isJobTypeInfoUpdated(oldJobTypeInfo, newJobTypeInfo)){
+    //如果修改的日程类型没有改变则不处理
+    if (oldJobTypeInfo == newJobTypeInfo) {
         return bRet;
     }
 
-    //1.比较颜色编号，如果变更则
-    int iOldColorTypeNo = oldJobTypeInfo.getColorTypeNo();
-    int iNewColorTypeNo = newJobTypeInfo.getColorTypeNo();
-    if( iOldColorTypeNo != iNewColorTypeNo){
-        if(!JobTypeInfoManager::instance()->isSysJobTypeColor(iOldColorTypeNo)){
-            //删除旧自定义颜色
-            if(!deleteColorType(iOldColorTypeNo)){
-                return false;
-            }
-        }
-    }
-    else if( oldJobTypeInfo.getColorHex() != newJobTypeInfo.getColorHex()){
-        //编码未变而颜色hex改变时，更新自定义颜色
-        JobTypeColorInfo colorTypeInfo;
-        //getSysJobTypeColor(int colorTypeNo, JobTypeColorInfo& jobTypeColorInfo)
-        if(JobTypeInfoManager::instance()->getSysJobTypeColor(iNewColorTypeNo, colorTypeInfo)){
-            if(!updateColorType(colorTypeInfo)){
-                return false;
-            }
-        }
-    }
-    if(0 == iNewColorTypeNo){//如果新编号为0，则是新增自定义颜色。如果是修改自定义颜色，则不会走入本逻辑，而是走上述的else分支
-        iNewColorTypeNo = JobTypeInfoManager::instance()->getNextColorTypeNo();
-        JobTypeColorInfo jobTypeColorInfo;
-        jobTypeColorInfo.setTypeNo(iNewColorTypeNo);
-        jobTypeColorInfo.setColorHex(newJobTypeInfo.getColorHex());
-        if(!createColorType(jobTypeColorInfo)){
-            return false;
-        }
-    }
-
-    //更新名称和颜色编号
-    if( (oldJobTypeInfo.getJobTypeName() != newJobTypeInfo.getJobTypeName())
-     || (iOldColorTypeNo != iNewColorTypeNo)){
-        //更新日程类型
-        newJobTypeInfo.setJobTypeNo(oldJobTypeInfo.getJobTypeNo());
-        bRet = updateJobType(newJobTypeInfo);
-        if(bRet){//如果是系统默认颜色，缓存编号
-            CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", iNewColorTypeNo);
-        }
+    //更新日程类型
+    newJobTypeInfo.setJobTypeNo(oldJobTypeInfo.getJobTypeNo());
+    bRet = updateJobType(newJobTypeInfo);
+    //如果更新成功，且是系统默认颜色，缓存编号
+    if (bRet) {
+        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", newJobTypeInfo.getColorInfo().getTypeNo());
     }
     return bRet;
 }
@@ -476,7 +439,7 @@ bool CScheduleOperation::updateJobType(const JobTypeInfo &jobTypeInfo)
 {
     //修改日程
     QString strJson = "";
-    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
+    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo, strJson);
     return m_DBusManager->UpdateJobType(strJson);
 }
 
@@ -488,7 +451,7 @@ bool CScheduleOperation::updateJobType(const JobTypeInfo &jobTypeInfo)
 bool CScheduleOperation::getJobTypeList(QList<JobTypeInfo> &lstJobTypeInfo)
 {
     QString strJson;
-    if(!m_DBusManager->GetJobTypeList(strJson)){
+    if (!m_DBusManager->GetJobTypeList(strJson)) {
         return false;
     }
     JobTypeInfo::jsonStrToJobTypeInfoList(strJson, lstJobTypeInfo);
@@ -517,49 +480,6 @@ bool CScheduleOperation::isJobTypeUsed(const int iJobTypeNo)
 }
 
 /**
- * @brief CScheduleOperation::createColorType      创建颜色类型
- * @param colorTypeInfo
- * 只能更新颜色16进制编码
- */
-bool CScheduleOperation::createColorType(const JobTypeColorInfo &colorTypeInfo)
-{
-    bool ret;
-    //创建颜色
-    QString strJson = "";
-    if(!JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson)){
-        return false;
-    }
-
-    ret = m_DBusManager->AddJobTypeColor(strJson);
-    if(ret){
-        if(7 == colorTypeInfo.getAuthority()){
-            CConfigSettings::getInstance()->setOption("LastUserColor",colorTypeInfo.getColorHex());
-        }
-    }
-    return ret;
-}
-
-/**
- * @brief CScheduleOperation::updateColorType      更新颜色类型
- * @param colorTypeInfo
- * 只能更新颜色16进制编码
- */
-bool CScheduleOperation::updateColorType(const JobTypeColorInfo &colorTypeInfo)
-{
-    bool ret;
-    //修改颜色
-    QString strJson = "";
-    JobTypeInfo::colorTypeInfoToJsonStr(colorTypeInfo,strJson);
-    ret = m_DBusManager->UpdateJobTypeColor(strJson);
-    if(ret){
-        if(7 == colorTypeInfo.getAuthority()){
-            CConfigSettings::getInstance()->setOption("LastUserColor",colorTypeInfo.getColorHex());
-        }
-    }
-    return ret;
-}
-
-/**
  * @brief CScheduleOperation::getColorTypeList      获取颜色类型列表
  * @param lstColorTypeInfo
  * @return 操作结果
@@ -567,20 +487,8 @@ bool CScheduleOperation::updateColorType(const JobTypeColorInfo &colorTypeInfo)
 bool CScheduleOperation::getColorTypeList(QList<JobTypeColorInfo> &lstColorTypeInfo)
 {
     QString strJson;
-    if(!m_DBusManager->GetJobTypeColorList(strJson)){
+    if (!m_DBusManager->GetJobTypeColorList(strJson)) {
         return false;
     }
     return JobTypeInfo::jsonStrToColorTypeInfoList(strJson, lstColorTypeInfo);
 }
-
-/**
- * @brief CScheduleOperation::deleteColorType      删除颜色类型
- * @param iColorTypeNo
- * @return 操作结果
- */
-bool CScheduleOperation::deleteColorType(const int iColorTypeNo)
-{
-    //删除日程类型
-    return m_DBusManager->DeleteJobTypeColor(iColorTypeNo);
-}
-

@@ -97,7 +97,7 @@ bool JobTypeListView::viewportEvent(QEvent *event)
             } else {
                 // 设置其他style时，转换指针为空
                 if (DStyle *ds = qobject_cast<DStyle *>(style())) {
-                    if(!itemJobType->data(RoleJobTypeEditable).toBool())
+                    if (!itemJobType->data(RoleJobTypeEditable).toBool())
                         return true;
                     auto actionEdit = new DViewItemAction(Qt::AlignVCenter, QSize(), QSize(), true);
                     actionEdit->setIcon(ds->standardIcon(DStyle::SP_AddButton));
@@ -124,10 +124,10 @@ bool JobTypeListView::updateJobType()
     QString strColorHex;
     QString strJobType;
     QList<JobTypeInfo> lstJobType = JobTypeInfoManager::instance()->getJobTypeList();
-    for (int i = 0;i < lstJobType.size();i++) {
+    for (int i = 0; i < lstJobType.size(); i++) {
         strColorHex = lstJobType[i].getColorHex();
         strJobType = lstJobType[i].getJobTypeName();
-        if(strColorHex.isEmpty() || strJobType.isEmpty()){
+        if (strColorHex.isEmpty() || strJobType.isEmpty()) {
             continue;
         }
         addJobTypeItem(lstJobType[i]);
@@ -152,7 +152,7 @@ void JobTypeListView::addJobTypeItem(const JobTypeInfo &info)
     QPixmap pixmap(size);
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
-    painter.setRenderHints(QPainter::Antialiasing );
+    painter.setRenderHints(QPainter::Antialiasing);
     painter.setBrush(QColor(info.getColorHex()));
     painter.setPen(Qt::NoPen);
     painter.drawRoundedRect(0, 0, 24, 24, 12, 12);//圆
@@ -167,10 +167,10 @@ void JobTypeListView::addJobTypeItem(const JobTypeInfo &info)
 void JobTypeListView::slotUpdateJobType()
 {
     int index =  indexAt(mapFromGlobal(QCursor::pos())).row();
-    if(index < 0 || index >= m_modelJobType->rowCount())
+    if (index < 0 || index >= m_modelJobType->rowCount())
         return;
     QStandardItem *item = m_modelJobType->item(index);
-    if(!item)
+    if (!item)
         return;
 
     JobTypeInfo info = item->data(RoleJobTypeInfo).value<JobTypeInfo>();
@@ -183,22 +183,22 @@ void JobTypeListView::slotUpdateJobType()
 void JobTypeListView::slotDeleteJobType()
 {
     int index =  indexAt(mapFromGlobal(QCursor::pos())).row();
-    if(index < 0 || index >= m_modelJobType->rowCount())
+    if (index < 0 || index >= m_modelJobType->rowCount())
         return;
     QStandardItem *item = m_modelJobType->item(index);
-    if(!item)
+    if (!item)
         return;
 
     JobTypeInfo info = item->data(RoleJobTypeInfo).value<JobTypeInfo>();
-    int colorTypeNo = info.getColorTypeNo();
     int typeNo = info.getJobTypeNo();
 
     CScheduleOperation so;
-    qInfo() << so.isJobTypeUsed(typeNo);
+    //TODO:根据日程类型是否被使用，判断是否弹出提示对话框
     so.deleteJobType(typeNo);
-    if(!JobTypeInfoManager::instance()->isSysJobTypeColor(colorTypeNo)){
-        //不是默认颜色类型，需要删除颜色类型
-        so.deleteColorType(colorTypeNo);
-    }
+    //TODO:日程类型颜色的删除不是由客户端处理
+    //    if(!JobTypeInfoManager::instance()->isSysJobTypeColor(colorTypeNo)){
+    //        //不是默认颜色类型，需要删除颜色类型
+    //        so.deleteColorType(colorTypeNo);
+    //    }
     updateJobType();//更新item
 }

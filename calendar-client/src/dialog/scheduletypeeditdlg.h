@@ -38,6 +38,12 @@ public:
     //iJobTypeNo==0 ？ 新增 or 修改
     explicit ScheduleTypeEditDlg(const JobTypeInfo &jobTypeOld, QWidget *parent = nullptr);
 
+private:
+    enum DialogType { //对话框类型
+        DialogNewType, //新建日程类型
+        DialogEditType //编辑日程类型
+    };
+
 signals:
     /**
      * @brief refreshInfo:刷新信息信号
@@ -64,11 +70,11 @@ private:
 private:
     JobTypeInfo m_jobTypeOld;       //被修改的日程类型
     JobTypeInfo m_jobTypeNew;       //修改后的日程类型
-    JobTypeColorInfo m_jobTypeColorOld;
     QString m_title = "";   //弹窗名
     DLineEdit *m_lineEdit = nullptr;    //编辑器
     QLabel *m_titleLabel = nullptr;     //弹窗名控件
     ColorSeletorWidget *m_colorSeletor = nullptr; //颜色选择器
+    DialogType m_dialogType;
 };
 
 #endif // SCHEDULETYPEEDITDLG_H

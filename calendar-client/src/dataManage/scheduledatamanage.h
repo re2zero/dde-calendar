@@ -89,12 +89,14 @@ public:
      */
     bool getSysJobTypeColor(int colorTypeNo, JobTypeColorInfo &jobTypeColorInfo);
     //查询日程类型
-    bool getJobTypeByNo(int iNo, JobTypeInfo& jobType);
+    bool getJobTypeByNo(int iNo, JobTypeInfo &jobType);
     //查询日程类型颜色
-    bool getJobTypeColorByNo(int iNo, JobTypeColorInfo& jobType);
+    bool getJobTypeColorByNo(int iNo, JobTypeColorInfo &jobType);
 
     //查询日程类型名称是否重复
     bool isJobTypeNameUsed(QString strName);
+    //根据日程类型信息判断修改的日程类型名称是否与其它日程类型名称重复
+    bool isJobTypeNameUsed(const JobTypeInfo &info);
 
     //获取自定义日程类型下一个编号
     int getNextTypeNo();

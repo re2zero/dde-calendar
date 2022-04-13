@@ -33,9 +33,10 @@ CSchedulesColor CScheduleDataManage::getScheduleColorByType(int type)
         //如果不是节假日
         JobTypeInfo typeInfo;
         //根据类型获取日程类型信息getJobTypeByNo
-        JobTypeInfoManager::instance()->getJobTypeByNo(type, typeInfo);
+        isOk = JobTypeInfoManager::instance()->getJobTypeByNo(type, typeInfo);
         //根据类型关联的颜色编号获取对应的颜色
-        isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(typeInfo.getColorTypeNo(), colorinfo);
+        colorinfo = typeInfo.getColorInfo();
+
     } else {
         //节假日 颜色变化为2
         isOk = JobTypeInfoManager::instance()->getJobTypeColorByNo(2, colorinfo);
@@ -90,8 +91,8 @@ void JobTypeInfoManager::updateInfo()
     CScheduleOperation so;
     so.getJobTypeList(this->m_lstJobType);
     so.getColorTypeList(this->m_lstJobTypeColor);
-    
-    for(auto k = noticeObjBill.begin(); k != noticeObjBill.end(); k ++) {
+
+    for (auto k = noticeObjBill.begin(); k != noticeObjBill.end(); k++) {
         QMetaObject::invokeMethod(k.key(), k.value());
     }
     return;
@@ -163,6 +164,17 @@ bool JobTypeInfoManager::isJobTypeNameUsed(QString strName)
 {
     for (JobTypeInfo &jb : m_lstJobType) {
         if (jb.getJobTypeName() == strName) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool JobTypeInfoManager::isJobTypeNameUsed(const JobTypeInfo &info)
+{
+    for (JobTypeInfo &jb : m_lstJobType) {
+        //
+        if (jb.getJobTypeName() == info.getJobTypeName() && jb.getJobTypeNo() != info.getJobTypeNo()) {
             return true;
         }
     }

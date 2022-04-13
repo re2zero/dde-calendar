@@ -203,13 +203,13 @@ Q_DECLARE_METATYPE(ScheduleDataInfo);
 
 class JobTypeColorInfo
 {
-/*
- *功能：
- * 1.保存日程颜色信息，包括TypeNo、ColorHex、Authority
- * 2.提供查、增、删、改接口
-*/
+    /*
+     *功能：
+     * 1.保存日程颜色信息，包括TypeNo、ColorHex、Authority
+     * 2.提供查、增、删、改接口
+    */
 public:
-    JobTypeColorInfo(int typeNo = 0, QString colorHex = "", int authority = 0);
+    explicit JobTypeColorInfo(int typeNo = 0, QString colorHex = "", int authority = 0);
 
     void setTypeNo(int typeNo)
     {
@@ -246,6 +246,12 @@ public:
 
         return *this;
     }
+    bool operator==(const JobTypeColorInfo &info)
+    {
+        return iTypeNo == info.iTypeNo && strColorHex == info.strColorHex
+               && iAuthority == info.iAuthority;
+    }
+
 private:
     int iTypeNo;
     QString strColorHex;
@@ -254,23 +260,35 @@ private:
 
 class JobTypeInfo
 {
-/*功能：
- * 1.保存日程类型信息，包括JobTypeNo、JobTypeName、ColorTypeNo、ColorHex、Authority
- * 2.提供查、增、删、改接口
-*/
+    /*功能：
+     * 1.保存日程类型信息，包括JobTypeNo、JobTypeName、ColorTypeNo、ColorHex、Authority
+     * 2.提供查、增、删、改接口
+    */
 public:
     JobTypeInfo(int typeNo = 0, QString typeName = "", int colorTypeNo = 0, QString colorHex = "", int authority = 0);
-    JobTypeInfo(int typeNo, QString typeName, const JobTypeColorInfo& colorInfo = JobTypeColorInfo());
-    JobTypeInfo(const JobTypeInfo&);
+    JobTypeInfo(int typeNo, QString typeName, const JobTypeColorInfo &colorInfo = JobTypeColorInfo());
+    JobTypeInfo(const JobTypeInfo &);
     JobTypeInfo &operator=(const JobTypeInfo *info)
     {
         iJobTypeNo = info->getJobTypeNo();
         strJobTypeName = info->getJobTypeName();
-        iColorTypeNo = info->getColorTypeNo();
-        strColorHex = info->getColorHex();
+        m_ColorInfo = info->m_ColorInfo;
         iAuthority = info->getAuthority();
 
         return *this;
+    }
+
+    bool operator==(const JobTypeInfo &info)
+    {
+        return this->iJobTypeNo == info.iJobTypeNo
+               && this->strJobTypeName == info.strJobTypeName
+               && this->m_ColorInfo == info.m_ColorInfo
+               && this->iAuthority == info.iAuthority;
+    }
+
+    bool operator!=(const JobTypeInfo &info)
+    {
+        return !(*this == info);
     }
 
     void setJobTypeNo(int typeNo)
@@ -296,22 +314,20 @@ public:
     //设置颜色编码，默认为0。新建日程类型时，如果是选择自定义颜色，请不设置，或设置为0。
     void setColorTypeNo(int typeNo)
     {
-        iColorTypeNo = typeNo;
-        return;
+        m_ColorInfo.setTypeNo(typeNo);
     }
     int getColorTypeNo() const
     {
-        return iColorTypeNo;
+        return m_ColorInfo.getTypeNo();
     }
 
-    void setColorHex(QString colorHex)
+    void setColorHex(const QString &colorHex)
     {
-        strColorHex = colorHex;
-        return;
+        m_ColorInfo.setColorHex(colorHex);
     }
     QString getColorHex() const
     {
-        return strColorHex;
+        return m_ColorInfo.getColorHex();
     }
 
     void setAuthority(int authority)
@@ -323,41 +339,43 @@ public:
     {
         return iAuthority;//系统默认日程类型设置权限为1，用户自定义为7.1:2:4分别对应——展示:改:删除
     }
-    //比较日程类型信息是否变化
-    static bool isJobTypeInfoUpdated(const JobTypeInfo& oldJobType, const JobTypeInfo& newJobType);
 
     //将json转换为日程列表
-    static bool jsonStrToJobTypeInfoList(const QString &strJson, QList<JobTypeInfo>& lstJobType);
+    static bool jsonStrToJobTypeInfoList(const QString &strJson, QList<JobTypeInfo> &lstJobType);
 
     //将json转换为一条日程记录
-    static bool jsonStrToJobTypeInfo(const QString &strJson, JobTypeInfo& jobType);
+    static bool jsonStrToJobTypeInfo(const QString &strJson, JobTypeInfo &jobType);
 
     //将一条日程记录转换为json
-    static bool jobTypeInfoToJsonStr(const JobTypeInfo& jobType, QString &strJson);
+    static bool jobTypeInfoToJsonStr(const JobTypeInfo &jobType, QString &strJson);
 
     //日程列表转Json串
-    static bool jobTypeInfoListToJosnString(const QList<JobTypeInfo>& lstJobType, QString &strJson);
+    static bool jobTypeInfoListToJosnString(const QList<JobTypeInfo> &lstJobType, QString &strJson);
 
     //将json转换为颜色列表
-    static bool jsonStrToColorTypeInfoList(const QString &strJson, QList<JobTypeColorInfo>& lstJobType);
+    static bool jsonStrToColorTypeInfoList(const QString &strJson, QList<JobTypeColorInfo> &lstJobType);
 
     //将json转换为一条颜色记录
-    static bool jsonStrToColorTypeInfo(const QString &strJson, JobTypeColorInfo& colorType);
+    static bool jsonStrToColorTypeInfo(const QString &strJson, JobTypeColorInfo &colorType);
 
     //将一条颜色记录转换为json
-    static bool colorTypeInfoToJsonStr(const JobTypeColorInfo& colorType, QString &strJson);
+    static bool colorTypeInfoToJsonStr(const JobTypeColorInfo &colorType, QString &strJson);
     /**
      * @brief colorTypeToJosnString  颜色列表转Json串
      * param  lstColorType           JobType日程类型信息列表
      * param  strJson              json格式的日程类型信息
      * return bool                 返回操作结果
      */
-    static bool colorTypeInfoListToJosnString(const QList<JobTypeColorInfo>& lstColorType, QString &strJson);
+    static bool colorTypeInfoListToJosnString(const QList<JobTypeColorInfo> &lstColorType, QString &strJson);
+
+    JobTypeColorInfo getColorInfo() const;
+    JobTypeColorInfo &getColorInfo();
+    void setColorInfo(const JobTypeColorInfo &ColorInfo);
+
 private:
     int iJobTypeNo;         //日程类型编号
     QString strJobTypeName; //日程类型名称
-    int iColorTypeNo;       //颜色编号
-    QString strColorHex;    //颜色16进制编码
+    JobTypeColorInfo m_ColorInfo; //日程颜色信息
     int iAuthority;         //权限
 };
 

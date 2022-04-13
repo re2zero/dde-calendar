@@ -608,57 +608,38 @@ QDebug operator<<(QDebug debug, const ScheduleDataInfo &scheduleJsonData)
  * @brief JobTypeInfo           构造函数
  */
 JobTypeInfo::JobTypeInfo(int typeNo, QString typeName, int colorTypeNo, QString colorHex, int authority)
-: iJobTypeNo(typeNo)
-, strJobTypeName (typeName)
-, iColorTypeNo (colorTypeNo)
-, strColorHex (colorHex)
-, iAuthority (authority)
+    : iJobTypeNo(typeNo)
+    , strJobTypeName(typeName)
+    , m_ColorInfo(colorTypeNo, colorHex)
+    , iAuthority(authority)
 {
 }
 
-JobTypeInfo::JobTypeInfo(int typeNo, QString typeName, const JobTypeColorInfo& colorInfo)
+JobTypeInfo::JobTypeInfo(int typeNo, QString typeName, const JobTypeColorInfo &colorInfo)
     : iJobTypeNo(typeNo)
-    , strJobTypeName (typeName)
-    , iColorTypeNo (colorInfo.getTypeNo())
-    , strColorHex (colorInfo.getColorHex())
-    , iAuthority (colorInfo.getAuthority())
+    , strJobTypeName(typeName)
+    , m_ColorInfo(colorInfo)
+    , iAuthority(colorInfo.getAuthority())
 {
 }
 
 /**
  * @brief JobTypeInfo           构造函数
  */
-JobTypeInfo::JobTypeInfo(const JobTypeInfo & _other){
+JobTypeInfo::JobTypeInfo(const JobTypeInfo &_other)
+{
     iJobTypeNo = _other.getJobTypeNo();
     strJobTypeName = _other.getJobTypeName();
-    iColorTypeNo = _other.getColorTypeNo();
-    strColorHex = _other.getColorHex();
+    m_ColorInfo = _other.getColorInfo();
     iAuthority = _other.getAuthority();
 }
 
 JobTypeColorInfo::JobTypeColorInfo(int typeNo, QString colorHex, int authority)
     : iTypeNo(typeNo)
-    , strColorHex (colorHex)
-    , iAuthority (authority)
+    , strColorHex(colorHex)
+    , iAuthority(authority)
 {
 
-}
-
-/**
- * @brief isJobTypeInfoUpdated        日程类型信息比较
- * @param oldJobType                  旧日程类型信息
- * @param newJobType                  新日程类型信息
- *
- * 只比较名称和颜色，颜色比较编号和16进制编码
- */
-bool JobTypeInfo::isJobTypeInfoUpdated(const JobTypeInfo& oldJobType, const JobTypeInfo& newJobType)
-{
-    if((oldJobType.getJobTypeName() != newJobType.getJobTypeName())
-            || (oldJobType.getColorTypeNo() != newJobType.getColorTypeNo())
-            || (oldJobType.getColorHex() != newJobType.getColorHex())){
-        return true;
-    }
-    return false;
 }
 
 /**
@@ -666,7 +647,7 @@ bool JobTypeInfo::isJobTypeInfoUpdated(const JobTypeInfo& oldJobType, const JobT
  * @param jsonStr                     json串
  * @param QList<JobTypeInfo>          日程类型列表
  */
-bool JobTypeInfo::jsonStrToJobTypeInfoList(const QString &strJson, QList<JobTypeInfo>& lstJobType)
+bool JobTypeInfo::jsonStrToJobTypeInfoList(const QString &strJson, QList<JobTypeInfo> &lstJobType)
 {
     QJsonArray ja;
     Utils::StringToObject(strJson, ja);
@@ -709,11 +690,11 @@ bool JobTypeInfo::jsonStrToJobTypeInfoList(const QString &strJson, QList<JobType
  * @param jsonStr                     json串
  * @param lstJobType                  一条日程类型记录
  */
-bool JobTypeInfo::jsonStrToJobTypeInfo(const QString &strJson, JobTypeInfo& jobType)
+bool JobTypeInfo::jsonStrToJobTypeInfo(const QString &strJson, JobTypeInfo &jobType)
 {
     QJsonArray ja;
     Utils::StringToObject(strJson, ja);
-    if(ja.size() < 1){
+    if (ja.size() < 1) {
         return false;
     }
 
@@ -739,12 +720,11 @@ bool JobTypeInfo::jsonStrToJobTypeInfo(const QString &strJson, JobTypeInfo& jobT
     if (_jsonObj.contains("Authority")) {
         jobType.setAuthority(_jsonObj.value("Authority").toInt());
     }
-
     return true;
 }
 
 //将一条日程记录转换为json
-bool JobTypeInfo::jobTypeInfoToJsonStr(const JobTypeInfo& jobType, QString &strJson)
+bool JobTypeInfo::jobTypeInfoToJsonStr(const JobTypeInfo &jobType, QString &strJson)
 {
     QJsonArray jsonArray;
     QJsonDocument doc;
@@ -766,7 +746,7 @@ bool JobTypeInfo::jobTypeInfoToJsonStr(const JobTypeInfo& jobType, QString &strJ
 * param  strJson                      json格式的日程类型信息
 * return bool                         返回操作结果
 */
-bool JobTypeInfo::jobTypeInfoListToJosnString(const QList<JobTypeInfo>& lstJobType, QString &strJson)
+bool JobTypeInfo::jobTypeInfoListToJosnString(const QList<JobTypeInfo> &lstJobType, QString &strJson)
 {
     QJsonArray jsonArray;
     QJsonDocument doc;
@@ -790,7 +770,7 @@ bool JobTypeInfo::jobTypeInfoListToJosnString(const QList<JobTypeInfo>& lstJobTy
  * @param jsonStr                     json串
  * @param QList<JobTypeInfo>          颜色列表
  */
-bool JobTypeInfo::jsonStrToColorTypeInfoList(const QString &strJson, QList<JobTypeColorInfo>& lstColorType)
+bool JobTypeInfo::jsonStrToColorTypeInfoList(const QString &strJson, QList<JobTypeColorInfo> &lstColorType)
 {
     QJsonArray ja;
     Utils::StringToObject(strJson, ja);
@@ -825,11 +805,11 @@ bool JobTypeInfo::jsonStrToColorTypeInfoList(const QString &strJson, QList<JobTy
  * @param jsonStr                     json串
  * @param colorTypeInfo               颜色信息
  */
-bool JobTypeInfo::jsonStrToColorTypeInfo(const QString &strJson, JobTypeColorInfo& colorTypeInfo)
+bool JobTypeInfo::jsonStrToColorTypeInfo(const QString &strJson, JobTypeColorInfo &colorTypeInfo)
 {
     QJsonArray ja;
     Utils::StringToObject(strJson, ja);
-    if(ja.size() < 1){
+    if (ja.size() < 1) {
         return false;
     }
 
@@ -856,7 +836,7 @@ bool JobTypeInfo::jsonStrToColorTypeInfo(const QString &strJson, JobTypeColorInf
  * @param jsonStr                     json串
  * @param colorTypeInfo               颜色信息
  */
-bool JobTypeInfo::colorTypeInfoToJsonStr(const JobTypeColorInfo& colorType, QString &strJson)
+bool JobTypeInfo::colorTypeInfoToJsonStr(const JobTypeColorInfo &colorType, QString &strJson)
 {
     QJsonArray jsonArray;
     QJsonDocument doc;
@@ -875,7 +855,7 @@ bool JobTypeInfo::colorTypeInfoToJsonStr(const JobTypeColorInfo& colorType, QStr
  * param  strJson                json格式的日程类型信息
  * return bool                   返回操作结果
  */
-bool JobTypeInfo::colorTypeInfoListToJosnString(const QList<JobTypeColorInfo>& lstColorType, QString &strJson)
+bool JobTypeInfo::colorTypeInfoListToJosnString(const QList<JobTypeColorInfo> &lstColorType, QString &strJson)
 {
     QJsonArray jsonArray;
     QJsonDocument doc;
@@ -891,3 +871,17 @@ bool JobTypeInfo::colorTypeInfoListToJosnString(const QList<JobTypeColorInfo>& l
     return true;
 }
 
+JobTypeColorInfo JobTypeInfo::getColorInfo() const
+{
+    return m_ColorInfo;
+}
+
+JobTypeColorInfo &JobTypeInfo::getColorInfo()
+{
+    return m_ColorInfo;
+}
+
+void JobTypeInfo::setColorInfo(const JobTypeColorInfo &ColorInfo)
+{
+    m_ColorInfo = ColorInfo;
+}

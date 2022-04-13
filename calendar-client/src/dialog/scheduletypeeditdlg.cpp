@@ -33,6 +33,7 @@
 ScheduleTypeEditDlg::ScheduleTypeEditDlg(QWidget *parent)
     : DDialog(parent)
     , m_title(tr("New event type"))
+    , m_dialogType(DialogNewType)
 {
     init();
 }
@@ -40,7 +41,10 @@ ScheduleTypeEditDlg::ScheduleTypeEditDlg(QWidget *parent)
 ScheduleTypeEditDlg::ScheduleTypeEditDlg(const JobTypeInfo &jobTypeOld, QWidget *parent)
     : DDialog(parent)
     , m_jobTypeOld(jobTypeOld)
+    , m_jobTypeNew(jobTypeOld)
     , m_title(tr("Edit event type"))
+    , m_dialogType(DialogEditType)
+
 {
     init();
 }
@@ -48,11 +52,15 @@ ScheduleTypeEditDlg::ScheduleTypeEditDlg(const JobTypeInfo &jobTypeOld, QWidget 
 void ScheduleTypeEditDlg::init()
 {
     initView();
-    connect(m_lineEdit, &DLineEdit::textChanged, this, &ScheduleTypeEditDlg::slotEditTextChanged);
     initData();
+    //默认焦点在日程名称输入框中
+    m_lineEdit->setFocus();
+    //先初始化数据再关联信号，初始状态下不提示
+    connect(m_lineEdit, &DLineEdit::textChanged, this, &ScheduleTypeEditDlg::slotEditTextChanged);
 }
 
-void ScheduleTypeEditDlg::initView(){
+void ScheduleTypeEditDlg::initView()
+{
     setFixedSize(QSize(400, 220));
 
     m_titleLabel = new QLabel(this);
@@ -118,29 +126,27 @@ void ScheduleTypeEditDlg::initData()
     m_titleLabel->setText(m_title);
     m_lineEdit->setText(m_jobTypeOld.getJobTypeName());
     this->getButton(1)->setEnabled(!m_jobTypeOld.getJobTypeName().isEmpty());//如果是新增，则保存按钮默认不可用
-    if(nullptr != m_colorSeletor){
-        JobTypeInfoManager::instance()->getJobTypeColorByNo(m_jobTypeOld.getColorTypeNo(), m_jobTypeColorOld);
-
-        if (CConfigSettings::getInstance()->contains("LastUserColor")){
+    switch (m_dialogType) {
+    case DialogEditType: {
+        //编辑日程类型
+        m_colorSeletor->setSelectedColorByIndex(m_jobTypeOld.getColorInfo());
+    } break;
+    default: {
+        //默认新建日程类型
+        if (CConfigSettings::getInstance()->contains("LastUserColor")) {
             QString colorName = CConfigSettings::getInstance()->value("LastUserColor").toString();
             if (!colorName.isEmpty()) {
                 m_colorSeletor->setUserColor(JobTypeColorInfo(0, colorName, 7));
             }
         }
 
-        if (CConfigSettings::getInstance()->contains("LastSysColorTypeNo")){
+        if (CConfigSettings::getInstance()->contains("LastSysColorTypeNo")) {
             int colorId = CConfigSettings::getInstance()->value("LastSysColorTypeNo").toInt();
             if (colorId > 0) {
                 m_colorSeletor->setSelectedColorById(colorId);
             }
         }
-        if( 0 < m_jobTypeColorOld.getTypeNo()){
-            //todo:
-            //1.新建时，默认选中上次选中的默认颜色后的一个
-            //2.自定义颜色，如果m_jobTypeColorOld不是自定义颜色，则把用户上一次保存的自定义颜色加到选择器的自定义颜色
-            m_colorSeletor->setSelectedColorByIndex(m_jobTypeColorOld);//设置选中颜色setSelectedColor
-            //setUserColor用来添加自定义颜色
-        }
+    } break;
     }
 }
 
@@ -148,27 +154,34 @@ void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
 {
     //文本编辑框中文本改变事件
     //1不能为空，2不能全空格，3不能重名
-    if(strName.isEmpty()){
+    if (strName.isEmpty()) {
         //名称为空，返回
         m_lineEdit->showAlertMessage(tr("Enter a name please"));
+        m_lineEdit->setAlert(true);
         this->getButton(1)->setEnabled(false);
         return;
     }
-    if(strName.trimmed().isEmpty()){
+    if (strName.trimmed().isEmpty()) {
         //名称为全空格，返回
         m_lineEdit->showAlertMessage(tr("The name can not only contain whitespaces"));
+        m_lineEdit->setAlert(true);
         this->getButton(1)->setEnabled(false);
         return;
     }
+    m_jobTypeNew.setJobTypeName(strName);
+    //在编辑日程状态下不对编辑的日程类型名做重名处理
+    bool isUsed = m_dialogType == DialogEditType ? JobTypeInfoManager::instance()->isJobTypeNameUsed(m_jobTypeNew)
+                                                 : JobTypeInfoManager::instance()->isJobTypeNameUsed(strName);
 
-    if(JobTypeInfoManager::instance()->isJobTypeNameUsed(strName)){
+    if (isUsed) {
         //重名，返回
         m_lineEdit->showAlertMessage(tr("The name already exists"));
+        m_lineEdit->setAlert(true);
         this->getButton(1)->setEnabled(false);
         return;
     }
+    m_lineEdit->setAlert(false);
     this->getButton(1)->setEnabled(true);
-    m_jobTypeNew.setJobTypeName(strName);
     return;
 }
 
@@ -179,15 +192,11 @@ void ScheduleTypeEditDlg::slotBtnCancel()
 
 void ScheduleTypeEditDlg::slotBtnNext()
 {
-    QString strName = m_lineEdit->text();
-    if(strName != m_jobTypeOld.getJobTypeName()){
-        CScheduleOperation so;
-        //先修改颜色
-        JobTypeColorInfo colorInfoNew = m_colorSeletor->getSelectedColorInfo();
-        m_jobTypeNew.setColorTypeNo(colorInfoNew.getTypeNo());
-        m_jobTypeNew.setColorHex(colorInfoNew.getColorHex());
+    //先修改颜色
+    m_jobTypeNew.setColorInfo(m_colorSeletor->getSelectedColorInfo());
 
-        so.updateJobType(m_jobTypeOld, m_jobTypeNew);//更新日程类型
-    }
+    CScheduleOperation so;
+    //更新或创建日程类型
+    so.updateJobType(m_jobTypeOld, m_jobTypeNew);
 }
 
