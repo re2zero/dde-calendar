@@ -1,6 +1,7 @@
 #include "jobtypelistview.h"
 #include "cscheduleoperation.h"
 #include "scheduletypeeditdlg.h"
+#include "schedulectrldlg.h"
 
 #include <DHiDPIHelper>
 #include <DStyle>
@@ -29,12 +30,13 @@ void JobTypeListView::initUI()
     setContentsMargins(0, 0, 0, 0);
     setSpacing(0);
     setItemSpacing(10);
+    setBackgroundType(DStyledItemDelegate::BackgroundType::RoundedBackground);
+    setBackgroundRole(DPalette::Background);
 
     m_modelJobType = new QStandardItemModel();
     setModel(m_modelJobType);
     setEditTriggers(QListView::NoEditTriggers);
     setSelectionMode(QListView::NoSelection);
-
     //
     updateJobType();
 
@@ -127,7 +129,8 @@ bool JobTypeListView::updateJobType()
     for (int i = 0; i < lstJobType.size(); i++) {
         strColorHex = lstJobType[i].getColorHex();
         strJobType = lstJobType[i].getJobTypeName();
-        if (strColorHex.isEmpty() || strJobType.isEmpty()) {
+
+        if(strColorHex.isEmpty() || strJobType.isEmpty()){
             continue;
         }
         addJobTypeItem(lstJobType[i]);
@@ -143,7 +146,6 @@ bool JobTypeListView::canAdd()
 {
     //最多20个类型
     return m_modelJobType->rowCount() < 20;
-
 }
 
 void JobTypeListView::addJobTypeItem(const JobTypeInfo &info)
@@ -193,12 +195,18 @@ void JobTypeListView::slotDeleteJobType()
     int typeNo = info.getJobTypeNo();
 
     CScheduleOperation so;
-    //TODO:根据日程类型是否被使用，判断是否弹出提示对话框
-    so.deleteJobType(typeNo);
-    //TODO:日程类型颜色的删除不是由客户端处理
-    //    if(!JobTypeInfoManager::instance()->isSysJobTypeColor(colorTypeNo)){
-    //        //不是默认颜色类型，需要删除颜色类型
-    //        so.deleteColorType(colorTypeNo);
-    //    }
+    if(so.isJobTypeUsed(typeNo)){
+        CScheduleCtrlDlg msgBox(this);
+        msgBox.setText(tr("You are deleting an event type."));
+        msgBox.setInformativeText(tr("All events under this type will be deleted and cannot be recoveredx?"));
+        msgBox.addPushButton(tr("Cancel", "button"), true);
+        msgBox.addWaringButton(tr("Delete", "button"), true);
+        msgBox.exec();
+        if (msgBox.clickButton() == 0) {
+            return;
+        } else if (msgBox.clickButton() == 1) {
+            so.deleteJobType(typeNo);      //删除日程类型时，后端会删除关联日程
+        }
+    }
     updateJobType();//更新item
 }

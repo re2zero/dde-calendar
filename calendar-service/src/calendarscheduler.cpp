@@ -1078,6 +1078,11 @@ bool CalendarScheduler::CreateJobType(const QString &jobTypeInfo)
  */
 bool CalendarScheduler::DeleteJobType(const int &typeNo)
 {
+    bool isExists = m_database->isJobTypeUsed(typeNo);
+    if(isExists){
+        m_database->DeleteJobsByJobType(typeNo);
+        emit JobsUpdated(QList<qlonglong>());
+    }
     JobTypeInfo oldInfo;
     //获取原始的日程类型信息
     m_database->getJobTypeByTypeNo(typeNo, oldInfo);

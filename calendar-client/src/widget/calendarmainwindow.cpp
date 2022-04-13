@@ -338,7 +338,7 @@ void Calendarmainwindow::initUI()
     this->titlebar()->setQuitMenuVisible(true);//先设置后，才可以获取menu内容。因为setQuitMenuVisible接口中进行了action的添加操作
     QMenu *menuTitleBar = this->titlebar()->menu();
 
-    QAction *pSetting = new QAction(tr("Settings"), menuTitleBar);
+    QAction *pSetting = new QAction(tr("Manage"), menuTitleBar);
     //menuTitleBar->addAction(pSetting);
     menuTitleBar->insertSeparator(menuTitleBar->actions()[0]);
     menuTitleBar->insertAction(menuTitleBar->actions()[0], pSetting);
@@ -812,15 +812,15 @@ void Calendarmainwindow::slotOpenSettingDialog()
             }
             return nullptr;
         });
-        QString strJson = "{                                                                                     \
+        QString strJson = QString("{                                                                                     \
                           \"groups\": [                                                                          \
                               {                                                                                  \
                                   \"key\":  \"setting_base\",                                                    \
-                                  \"name\": \"Calendar Settings\",                                               \
+                                  \"name\": \"%1\",                                               \
                                   \"groups\": [                                                                  \
                                       {                                                                          \
-                                          \"key\":  \"job_type\",                                                \
-                                          \"name\": \"Job Type\",                                                \
+                                          \"key\":  \"event_types\",                                                \
+                                          \"name\": \"%2\",                                                \
                                           \"options\": [                                                         \
                                               {                                                                  \
                                                   \"key\":  \"JobTypeListView\",                               \
@@ -833,7 +833,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
                                   ]                                                                              \
                               }                                                                                  \
                             ]                                                                                    \
-                      }";
+                      }").arg(tr("Manage calendar")).arg(tr("Event types"));
 
         auto settings = Dtk::Core::DSettings::fromJson(strJson.toLatin1());
         //settings->setBackend(&backend);
@@ -845,7 +845,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
         QList<QWidget *> lstwidget = m_dsdSetting->findChildren<QWidget *>();
         if (lstwidget.size() > 0) { //accessibleName
             for (QWidget *wid : lstwidget) {
-                if ("ContentWidgetForsetting_base.job_type" == wid->accessibleName()) {
+                if ("ContentWidgetForsetting_base.event_types" == wid->accessibleName()) {
                     JobTypeListView *view = m_dsdSetting->findChild<JobTypeListView *>("JobTypeListView");
                     if(!view)
                         return;

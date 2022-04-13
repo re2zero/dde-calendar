@@ -933,6 +933,25 @@ bool SchedulerDatabase::isJobTypeUsed(int iTypeNo)
 
     return bRet;
 }
+
+bool SchedulerDatabase::DeleteJobsByJobType(int iTypeNo)
+{
+    bool bRet = false;
+    QSqlQuery query(m_database);
+
+    QString strsql = QString("DELETE FROM jobs  WHERE type = %1").arg(iTypeNo);
+    query.prepare(strsql);
+    bRet = query.exec();
+    if (bRet) {
+        if (query.isActive()) {
+            query.finish();
+        }
+        m_database.commit();
+    } else {
+        qDebug() << __FUNCTION__ << query.lastError();
+    }
+    return bRet;
+}
 /**
  * @brief addJobType            新增日程类型
  * @param iTypeNo               日程类型编码

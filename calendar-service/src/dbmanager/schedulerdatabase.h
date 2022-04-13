@@ -136,6 +136,11 @@ public:
      */
     bool isJobTypeUsed(int iTypeNo);
     /**
+     * @brief DeleteJobsByJobType        删除使用指定日程类型的全部日程
+     * @return
+     */
+    bool DeleteJobsByJobType(int iTypeNo);
+    /**
      * @brief addJobType            新增日程类型
      * @param iTypeNo               日程类型编码
      * @param strTypeName           日程类型名称
