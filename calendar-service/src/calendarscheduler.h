@@ -73,29 +73,13 @@ public:
      * return bool             返回查询结果
      */
     QString GetJobTypeList();
+
     /**
      * @brief isJobTypeUsed    获取日程类型是否被使用
      * return bool             返回是否被使用
      */
     bool isJobTypeUsed(int iTypeNo);
-    /**
-     * @brief CreateColorType  创建颜色类型
-     * param  colorTypeInfo    json格式的颜色类型信息
-     * return bool             返回操作结果
-     */
-    bool CreateColorType(const QString &colorTypeInfo);
-    /**
-     * @brief DeleteColorType  删除颜色类型
-     * param  typeNo           颜色类型编号
-     * return bool             返回操作结果
-     */
-    bool DeleteColorType(const int &typeNo);
-    /**
-     * @brief UpdateColorType  更新日程类型
-     * param  colorTypeInfo    json格式的颜色类型信息
-     * return bool             返回操作结果
-     */
-    bool UpdateColorType(const QString &colorTypeInfo);
+
     /**
      * @brief GetColorTypeList 获取日程类型字符串
      * return bool             返回查询结果

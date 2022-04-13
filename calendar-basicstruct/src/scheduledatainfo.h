@@ -238,6 +238,13 @@ public:
     {
         return iAuthority;//系统默认颜色设置权限为1，用户自定义为7.1:2:4分别对应——展示:改:删除
     }
+
+    //颜色是否为系统默认颜色
+    bool isSysColorInfo() const
+    {
+        return (iTypeNo > 0 && iTypeNo < 10);
+    }
+
     JobTypeColorInfo &operator=(const JobTypeColorInfo *info)
     {
         iTypeNo = info->getTypeNo();
@@ -250,6 +257,10 @@ public:
     {
         return iTypeNo == info.iTypeNo && strColorHex == info.strColorHex
                && iAuthority == info.iAuthority;
+    }
+    bool operator!=(const JobTypeColorInfo &info)
+    {
+        return !(*this == info);
     }
 
 private:

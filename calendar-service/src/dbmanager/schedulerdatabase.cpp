@@ -896,8 +896,8 @@ bool SchedulerDatabase::getJobTypeList(QList<JobTypeInfo> &lstJobType)
             JobTypeInfo jobType;
             jobType.setJobTypeNo(query.value("TypeNo").toInt());
             jobType.setJobTypeName(query.value("TypeName").toString());
-            jobType.getColorInfo().setTypeNo(query.value("ColorTypeNo").toInt());
-            jobType.getColorInfo().setColorHex(query.value("ColorHex").toString());
+            jobType.setColorTypeNo(query.value("ColorTypeNo").toInt());
+            jobType.setColorHex(query.value("ColorHex").toString());
             jobType.setAuthority(query.value("Authority").toInt());
             lstJobType.append(jobType);
         }
@@ -908,6 +908,7 @@ bool SchedulerDatabase::getJobTypeList(QList<JobTypeInfo> &lstJobType)
 
     return bRet;
 }
+
 /**
  * @brief isJobTypeUsed        查询日程类型是否被使用
  * @return
@@ -975,12 +976,14 @@ bool SchedulerDatabase::addJobType(const int &iTypeNo, const QString &strTypeNam
 bool SchedulerDatabase::updateJobType(const int &iTypeNo, const QString &strTypeName, const int &iColorTypeNo)
 {
     bool bRet = false;
-    QDateTime currentDateTime = QDateTime::currentDateTime();
 
     QSqlQuery query(m_database);
     QString strsql = QString("UPDATE JobType                         "
-                             "   SET TypeName = %1, ColorTypeNo = %2 "
-                             " WHERE TypeNo   = %3                   ").arg(strTypeName).arg(iColorTypeNo).arg(iTypeNo);
+                             "   SET TypeName = '%1', ColorTypeNo = %2 "
+                             " WHERE TypeNo   = %3                   ")
+                         .arg(strTypeName)
+                         .arg(iColorTypeNo)
+                         .arg(iTypeNo);
     query.prepare(strsql);
     bRet = query.exec();
     if (bRet) {
@@ -989,7 +992,8 @@ bool SchedulerDatabase::updateJobType(const int &iTypeNo, const QString &strType
         }
         m_database.commit();
     } else {
-        qDebug() << __FUNCTION__ << query.lastError();
+        qWarning() << Q_FUNC_INFO << query.lastError();
+        qWarning() << strsql;
     }
     return bRet;
 }

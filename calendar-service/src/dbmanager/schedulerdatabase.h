@@ -48,13 +48,13 @@ public:
      * @brief saveRemindJob     存储提醒日程的相关信息
      * @param job               提醒日程
      */
-    void saveRemindJob(const Job & job);
+    void saveRemindJob(const Job &job);
 
     /**
      * @brief updateRemindJob       更新对应的稍后提醒日程
      * @param job                   日程信息
      */
-    void updateRemindJob(const Job & job);
+    void updateRemindJob(const Job &job);
 
     /**
      * @brief deleteRemindJobs      根据日程id删除提醒日程信息
@@ -67,7 +67,7 @@ public:
      * @param jobID                 日程id
      * @param recurid               重复id
      */
-    void deleteRemindJobs(const qlonglong &jobID,const qint64 recurid);
+    void deleteRemindJobs(const qlonglong &jobID, const qint64 recurid);
 
     /**
      * @brief getValidRemindJob     获取未提醒的稍后提醒日程
@@ -86,7 +86,7 @@ public:
      * @param recurid           重复id
      * @return
      */
-    Job getRemindJob(const qint64 id,const qint64 recurid);
+    Job getRemindJob(const qint64 id, const qint64 recurid);
 
     /**
      * @brief getRemindJob      根据日程id获取对应的提醒日程
@@ -108,14 +108,14 @@ public:
      * @param recurid       重复id
      * @return
      */
-    int getNotifyID(const qint64 jobID,const qint64 recurid);
+    int getNotifyID(const qint64 jobID, const qint64 recurid);
 
     /**
      * @brief updateNotifyID        更新桌面顶部通知ID
      * @param jobID                 日程ID
      * @param notifyid              通知ID
      */
-    void updateNotifyID(const Job &job,int notifyid);
+    void updateNotifyID(const Job &job, int notifyid);
 
     /**
      * @brief getJobTypeByTypeNo    根据类型编号获取日程类型信息
@@ -123,7 +123,7 @@ public:
      * @param jobType               日程类型信息
      * @return bool                 操作结果
      */
-    bool getJobTypeByTypeNo(int iTypeNo, JobTypeInfo& jobType);
+    bool getJobTypeByTypeNo(int iTypeNo, JobTypeInfo &jobType);
     /**
      * @brief getJobTypeList        获取日程类型列表
      * @return
