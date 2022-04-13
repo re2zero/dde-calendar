@@ -95,6 +95,13 @@ void ColorSeletorWidget::setSelectedColorByIndex(int index)
 
 void ColorSeletorWidget::setSelectedColorById(int colorId)
 {
+    //如果是用户自定义颜色则直接选中
+    if ((colorId > 9 || colorId < 1) && m_userColorBtn) {
+        m_userColorBtn->click();
+        return;
+    }
+
+    //系统颜色则向后移一位
     auto iterator = m_colorEntityMap.begin();
     while(iterator != m_colorEntityMap.end()) {
         if (iterator.value().getTypeNo() == colorId) {

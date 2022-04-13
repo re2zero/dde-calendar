@@ -400,9 +400,7 @@ bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，�
     JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo,strJson);
     bool bRet = m_DBusManager->AddJobType(strJson);// no:10,hex:#123
     if(bRet){
-        if(JobTypeInfoManager::instance()->isSysJobTypeColor(jobTypeInfo.getColorTypeNo())){//如果是系统默认颜色，缓存编号
-            CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorTypeNo());
-        }
+        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorTypeNo());
     }
     return bRet;
 }
@@ -463,7 +461,7 @@ bool CScheduleOperation::updateJobType(JobTypeInfo &oldJobTypeInfo, JobTypeInfo 
         //更新日程类型
         newJobTypeInfo.setJobTypeNo(oldJobTypeInfo.getJobTypeNo());
         bRet = updateJobType(newJobTypeInfo);
-        if(bRet && JobTypeInfoManager::instance()->isSysJobTypeColor(iNewColorTypeNo)){//如果是系统默认颜色，缓存编号
+        if(bRet){//如果是系统默认颜色，缓存编号
             CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", iNewColorTypeNo);
         }
     }
