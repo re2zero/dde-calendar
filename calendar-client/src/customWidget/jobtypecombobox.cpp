@@ -1,12 +1,7 @@
 #include "jobtypecombobox.h"
 
-#include <DLineEdit>
-
-#include <QWidget>
 #include <QLayout>
 #include <QPainter>
-#include <QEvent>
-#include <QFocusEvent>
 #include <QAbstractItemView>
 
 JobTypeComboBox::JobTypeComboBox(QWidget *parent) : DComboBox(parent)
@@ -42,6 +37,7 @@ bool JobTypeComboBox::updateJobType()
 
     m_lstJobType = JobTypeInfoManager::instance()->getJobTypeList();
 
+    clear(); //更新前先清空原有列表
     for (int i = 0; i < m_lstJobType.size(); i++) {
         strColorHex = m_lstJobType[i].getColorHex();
         strJobType = m_lstJobType[i].getJobTypeName();
@@ -64,8 +60,9 @@ void JobTypeComboBox::addJobTypeItem(int idx, QString strColorHex, QString strJo
     painter.setPen(Qt::NoPen);
     painter.drawRoundedRect(0, 0, 16, 16, 4, 4);
 
-    insertItem(idx, QIcon(pixmap), tr(strJobType.toLocal8Bit())); //
+    insertItem(idx, QIcon(pixmap), tr(strJobType.toLocal8Bit()));
 }
+
 void JobTypeComboBox::initUI()
 {
     setEditable(false);
@@ -73,33 +70,47 @@ void JobTypeComboBox::initUI()
     view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 }
 
+void JobTypeComboBox::addCustomWidget(QFrame *viewContainer)
+{
+    if (viewContainer) {
+        if(nullptr == m_customWidget){
+            //获取原控件布局
+            QBoxLayout *layout = qobject_cast<QBoxLayout *>(viewContainer->layout());
+
+            //自定义控件
+            QVBoxLayout *hLayout = new QVBoxLayout;
+            DPushButton *splitter = new DPushButton(this);
+            CPushButton *btnAdd = new CPushButton();
+            splitter->setFixedHeight(2);
+            hLayout->addWidget(splitter);
+            hLayout->addWidget(btnAdd);
+            hLayout->setContentsMargins(0, 0, 0, 0);
+            hLayout->setSpacing(0);
+            m_customWidget = new QWidget(this);
+            m_customWidget->setFixedHeight(35);
+            m_customWidget->setLayout(hLayout);
+            //添加自定义控件到最后
+            layout->insertWidget(-1, m_customWidget);
+            viewContainer->setFixedHeight(viewContainer->height() + m_customWidget->height());
+            //重置高度
+            connect(btnAdd, &QPushButton::clicked, this, &JobTypeComboBox::slotBtnAddItemClicked);
+        }
+    }
+}
+
 void JobTypeComboBox::showPopup()
 {
     //重置icon大小
     setIconSize(QSize(16, 16));
     DComboBox::showPopup();
-
     setEditable(false);
-
-    if (m_lstJobType.size() >= 20) {
-        return;
-    }
 
     //获取下拉视图容器
     QFrame *viewContainer = findChild<QFrame *>();
-    if (viewContainer) {
-        QAbstractItemView *view = viewContainer->findChild<QAbstractItemView *>();
 
-        if((m_btnAdd == nullptr) && view){
-            m_btnAdd = new CPushButton();
-
-            int index = viewContainer->layout()->indexOf(view);
-            QBoxLayout *layout = qobject_cast<QBoxLayout *>(viewContainer->layout());
-            layout->insertWidget(index + 1, m_btnAdd);
-            viewContainer->setFixedHeight(viewContainer->height() + 34 + 10);
-
-            connect(m_btnAdd, &QPushButton::clicked, this, &JobTypeComboBox::slotBtnAddItemClicked);
-        }
+    if (m_lstJobType.size() < 20) {
+        //添加自定义布局
+        addCustomWidget(viewContainer);
     }
 }
 

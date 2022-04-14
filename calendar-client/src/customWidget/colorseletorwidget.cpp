@@ -120,10 +120,13 @@ void ColorSeletorWidget::setSelectedColorById(int colorId)
     }
 }
 
-void ColorSeletorWidget::setSelectedColorByIndex(const JobTypeColorInfo &colorInfo)
+void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
 {
-    bool isFind = false;
+    if (TypeUser == colorInfo.getAuthority()) {
+        setUserColor(colorInfo);
+    }
 
+    bool isFind = false;
     //遍历所有控件
     for (QAbstractButton *but : m_colorGroup->buttons()) {
         if (nullptr != but && qobject_cast<CRadioButton *>(but)->getColor().name() == colorInfo.getColorHex()) {
@@ -133,7 +136,7 @@ void ColorSeletorWidget::setSelectedColorByIndex(const JobTypeColorInfo &colorIn
         }
     }
     if (!isFind ) {
-        setUserColor(colorInfo);
+        setUserColor(JobTypeColorInfo(0, colorInfo.getColorHex(), 7));
     }
 }
 

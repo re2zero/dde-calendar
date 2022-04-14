@@ -573,8 +573,8 @@ void CScheduleDlg::slotTypeRpeatactivated(int index)
         m_typeComBox->setIconSize(QSize(0, 0));
     } else {
         m_typeComBox->setIconSize(QSize(16, 16));
+        m_typeEditStatus = false;
     }
-
     resize();
 }
 
@@ -599,11 +599,16 @@ void CScheduleDlg::slotRadioBtnClicked(int btnId)
 void CScheduleDlg::slotBtnAddItemClicked()
 {
     m_colorSeletorWideget->show();
+    m_typeEditStatus = true;
     resize();
 }
 
 void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
 {
+    //非编辑状态
+    if (!m_typeEditStatus) {
+        return;
+    }
     if (text.isEmpty()) {
         //名称为空，返回
         m_jobTypeAlert->showAlertMessage(tr("Enter a name please"));
@@ -1159,7 +1164,6 @@ void CScheduleDlg::initDateEdit()
 void CScheduleDlg::initJobTypeComboBox()
 {
     m_typeComBox->updateJobType();
-    return;
 }
 
 void CScheduleDlg::initRmindRpeatUI()
@@ -1341,18 +1345,16 @@ void CScheduleDlg::languageCheck()
 
 void CScheduleDlg::initColor()
 {
-    if (CConfigSettings::getInstance()->contains("LastUserColor")){
-        QString colorName = CConfigSettings::getInstance()->value("LastUserColor").toString();
-        if (!colorName.isEmpty()) {
-            m_colorSeletorWideget->setUserColor(JobTypeColorInfo(0, colorName, 7));
-        }
+    //将用户上一次选择的自定义颜色添加进去
+    QString colorName = CConfigSettings::getInstance()->value("LastUserColor", "").toString();
+    if (!colorName.isEmpty()) {
+        m_colorSeletorWideget->setUserColor(JobTypeColorInfo(0, colorName, 7));
     }
 
-    if (CConfigSettings::getInstance()->contains("LastSysColorTypeNo")){
-        int colorId = CConfigSettings::getInstance()->value("LastSysColorTypeNo").toInt();
-        if (colorId > 0) {
-            m_colorSeletorWideget->setSelectedColorById(colorId);
-        }
+    //选中上一次选中的颜色
+    int colorId = CConfigSettings::getInstance()->value("LastSysColorTypeNo", -1).toInt();
+    if (colorId > 0) {
+        m_colorSeletorWideget->setSelectedColorById(colorId);
     }
 }
 

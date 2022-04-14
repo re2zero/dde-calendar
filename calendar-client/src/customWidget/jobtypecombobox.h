@@ -30,9 +30,10 @@ protected slots:
 private:
     void initUI();
     void addJobTypeItem(int idx, QString strColorHex, QString strJobType);
+    void addCustomWidget(QFrame *);
 
 private:
-    CPushButton *m_btnAdd {nullptr};
+    QWidget *m_customWidget {nullptr};
     QList<JobTypeInfo> m_lstJobType;
 };
 

@@ -205,6 +205,7 @@ private:
     int m_type; // 1新建 0 编辑日程
     QDateTime m_currentDate;
     QDateTime m_EndDate;
+    bool m_typeEditStatus = false; //日程类型编辑状态
 };
 
 #endif // SCHEDULEDLG_H

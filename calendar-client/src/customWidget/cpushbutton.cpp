@@ -39,16 +39,27 @@ CPushButton::CPushButton(QWidget *parent) : QPushButton(parent)
 
 void CPushButton::mousePressEvent(QMouseEvent *event)
 {
-    pressed = true;
+    Q_UNUSED(event);
+    m_pressed = true;
+    update();
+}
+
+void CPushButton::mouseMoveEvent(QMouseEvent *event)
+{
+    if (rect().contains(event->pos())) {
+        m_pressed = true;
+    } else {
+        m_pressed = false;
+    }
     update();
 }
 
 void CPushButton::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (pressed && rect().contains(event->pos())){
+    if (m_pressed && rect().contains(event->pos())){
         emit clicked();
     }
-    pressed = false;
+    m_pressed = false;
     update();
 }
 
@@ -61,9 +72,11 @@ void CPushButton::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
 
-    if (pressed) {
+    if (m_pressed) {
+        //背景设置为高亮色
         painter.setBrush(palette.highlight());
     } else {
+        //背景透明
         painter.setBrush(QBrush("#00000000"));
     }
 

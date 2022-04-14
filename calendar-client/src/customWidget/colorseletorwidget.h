@@ -77,7 +77,7 @@ public:
      * @brief selectColor 设置选择的色彩控件
      * @param color 色彩
      */
-    void setSelectedColorByIndex(const JobTypeColorInfo& color);
+    void setSelectedColor(const JobTypeColorInfo& color);
     /**
      * @brief initColorButton
      * 初始化色彩控件

@@ -64,9 +64,9 @@ void CConfigSettings::sync()
     m_settings->sync();
 }
 
-QVariant CConfigSettings::value(const QString &key)
+QVariant CConfigSettings::value(const QString &key, const QVariant &defaultValue)
 {
-    return m_settings->value(key);
+    return m_settings->value(key, defaultValue);
 }
 
 //设置对应key的值

@@ -382,11 +382,11 @@ bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，�
     if (0 == colorTypeNo) {
         colorTypeNo = JobTypeInfoManager::instance()->getNextColorTypeNo();
         jobTypeInfo.getColorInfo().setTypeNo(colorTypeNo);
-        JobTypeColorInfo jobTypeColorInfo;
-        jobTypeColorInfo.setTypeNo(colorTypeNo);
-        jobTypeColorInfo.setColorHex(jobTypeInfo.getColorInfo().getColorHex());
-        jobTypeColorInfo.setAuthority(7);//自定义颜色默认权限为7
+        //保存新选择的颜色值
+        CConfigSettings::getInstance()->setOption("LastUserColor", jobTypeInfo.getColorInfo().getColorHex());
     }
+    //保存选择的颜色编号
+    CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorInfo().getTypeNo());
 
     if (0 == jobTypeInfo.getJobTypeNo()) {
         jobTypeInfo.setJobTypeNo(JobTypeInfoManager::instance()->getNextTypeNo());
@@ -395,11 +395,7 @@ bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，�
     jobTypeInfo.setAuthority(7);//自定义日程类型默认权限为7
 
     JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo, strJson);
-    bool bRet = m_DBusManager->AddJobType(strJson);// no:10,hex:#123
-    if (bRet) {
-        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorInfo().getTypeNo());
-    }
-    return bRet;
+    return m_DBusManager->AddJobType(strJson);// no:10,hex:#123
 }
 
 /**
@@ -423,6 +419,18 @@ bool CScheduleOperation::updateJobType(JobTypeInfo &oldJobTypeInfo, JobTypeInfo 
 
     //更新日程类型
     newJobTypeInfo.setJobTypeNo(oldJobTypeInfo.getJobTypeNo());
+    //以“自定义颜色编码默认为0”来区分.
+    if (0 == newJobTypeInfo.getColorTypeNo()) {
+        //配置新颜色编号
+        if (oldJobTypeInfo.getColorTypeNo() > 9) {
+            newJobTypeInfo.getColorInfo().setTypeNo(oldJobTypeInfo.getColorTypeNo());
+        } else {
+            newJobTypeInfo.getColorInfo().setTypeNo(JobTypeInfoManager::instance()->getNextColorTypeNo());
+        }
+        //保存新选择的颜色值
+        CConfigSettings::getInstance()->setOption("LastUserColor", newJobTypeInfo.getColorInfo().getColorHex());
+    }
+
     bRet = updateJobType(newJobTypeInfo);
     //如果更新成功，且是系统默认颜色，缓存编号
     if (bRet) {

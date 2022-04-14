@@ -126,25 +126,23 @@ void ScheduleTypeEditDlg::initData()
     m_titleLabel->setText(m_title);
     m_lineEdit->setText(m_jobTypeOld.getJobTypeName());
     this->getButton(1)->setEnabled(!m_jobTypeOld.getJobTypeName().isEmpty());//如果是新增，则保存按钮默认不可用
+
+    //将用户上一次选择的自定义颜色添加进去
+    QString colorName = CConfigSettings::getInstance()->value("LastUserColor", "").toString();
+    if (!colorName.isEmpty()) {
+        m_colorSeletor->setUserColor(JobTypeColorInfo(0, colorName, 7));
+    }
+
     switch (m_dialogType) {
     case DialogEditType: {
         //编辑日程类型
-        m_colorSeletor->setSelectedColorByIndex(m_jobTypeOld.getColorInfo());
+        m_colorSeletor->setSelectedColor(m_jobTypeOld.getColorInfo());
     } break;
     default: {
-        //默认新建日程类型
-        if (CConfigSettings::getInstance()->contains("LastUserColor")) {
-            QString colorName = CConfigSettings::getInstance()->value("LastUserColor").toString();
-            if (!colorName.isEmpty()) {
-                m_colorSeletor->setUserColor(JobTypeColorInfo(0, colorName, 7));
-            }
-        }
-
-        if (CConfigSettings::getInstance()->contains("LastSysColorTypeNo")) {
-            int colorId = CConfigSettings::getInstance()->value("LastSysColorTypeNo").toInt();
-            if (colorId > 0) {
-                m_colorSeletor->setSelectedColorById(colorId);
-            }
+        //默认新建日程，选中上一次选中的颜色
+        int colorId = CConfigSettings::getInstance()->value("LastSysColorTypeNo", -1).toInt();
+        if (colorId > 0) {
+            m_colorSeletor->setSelectedColorById(colorId);
         }
     } break;
     }

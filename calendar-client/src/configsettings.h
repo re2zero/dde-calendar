@@ -35,7 +35,7 @@ public:
      * @param key           对应的key
      * @return
      */
-    QVariant value(const QString &key);
+    QVariant value(const QString &key, const QVariant &defaultValue = QVariant());
     /**
      * @brief setOption     设置对应key的值
      * @param key
