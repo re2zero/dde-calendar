@@ -948,7 +948,8 @@ bool SchedulerDatabase::DeleteJobsByJobType(int iTypeNo)
         }
         m_database.commit();
     } else {
-        qDebug() << __FUNCTION__ << query.lastError();
+        qWarning() << __FUNCTION__ << query.lastError();
+        qWarning()<<strsql;
     }
     return bRet;
 }

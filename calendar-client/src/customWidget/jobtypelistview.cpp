@@ -8,13 +8,15 @@
 #include <DIconButton>
 
 #include <QPainter>
+#include <QHeaderView>
 
 Q_DECLARE_METATYPE(JobTypeInfo)
 //Qt::UserRole + 1,会影响item的高度
 static const int RoleJobTypeInfo = Qt::UserRole + 2;
 static const int RoleJobTypeEditable = Qt::UserRole + 3;
+static const int RoleJobTypeLine = Qt::UserRole + 4;
 
-JobTypeListView::JobTypeListView(QWidget *parent) : DListView(parent)
+JobTypeListView::JobTypeListView(QWidget *parent) : QTableView(parent)
 {
     initUI();
 }
@@ -26,17 +28,20 @@ JobTypeListView::~JobTypeListView()
 
 void JobTypeListView::initUI()
 {
-    setIconSize(QSize(16, 16));
-    setContentsMargins(0, 0, 0, 0);
-    setSpacing(0);
-    setItemSpacing(10);
-    setBackgroundType(DStyledItemDelegate::BackgroundType::RoundedBackground);
-    setBackgroundRole(DPalette::Background);
-
-    m_modelJobType = new QStandardItemModel();
+    m_modelJobType = new QStandardItemModel(this);
     setModel(m_modelJobType);
     setEditTriggers(QListView::NoEditTriggers);
+    setFrameStyle(QFrame::NoFrame);
+    setEditTriggers(QListView::NoEditTriggers);
     setSelectionMode(QListView::NoSelection);
+    setFocusPolicy(Qt::NoFocus);
+    setItemDelegate(new JobTypeListViewStyle(this));
+    setShowGrid(false);
+
+    verticalHeader()->setMinimumSectionSize(0);
+    horizontalHeader()->setStretchLastSection(true);
+    horizontalHeader()->hide();
+    verticalHeader()->hide();
     //
     updateJobType();
 
@@ -46,7 +51,7 @@ void JobTypeListView::initUI()
 
 bool JobTypeListView::viewportEvent(QEvent *event)
 {
-    DListView::viewportEvent(event);
+    QTableView::viewportEvent(event);
 
     int indexCurrentHover;
 
@@ -73,13 +78,13 @@ bool JobTypeListView::viewportEvent(QEvent *event)
             //隐藏此前鼠标悬浮行的图标
             if (m_iIndexCurrentHover >= 0) {
                 itemJobType = dynamic_cast<DStandardItem *>(m_modelJobType->item(m_iIndexCurrentHover));
-                if (nullptr == itemJobType) {
-                    return true;
+                if (nullptr != itemJobType) {
+                    for (DViewItemAction *a : itemJobType->actionList(Qt::Edge::RightEdge)) {
+                        a->setVisible(false);
+                    }
                 }
                 //typedef QList<DViewItemAction *> DViewItemActionList;
-                for (DViewItemAction *a : itemJobType->actionList(Qt::Edge::RightEdge)) {
-                    a->setVisible(false);
-                }
+
             }
 
             if (indexCurrentHover < 0) {
@@ -87,8 +92,7 @@ bool JobTypeListView::viewportEvent(QEvent *event)
             }
             //展示此前鼠标悬浮行的图标
             m_iIndexCurrentHover = indexCurrentHover;
-            //qInfo() << "HoverMove" << indexAt(static_cast<QHoverEvent*>(event)->pos());
-            itemJobType = static_cast<DStandardItem *>(m_modelJobType->item(m_iIndexCurrentHover));
+            itemJobType = dynamic_cast<DStandardItem *>(m_modelJobType->item(m_iIndexCurrentHover));
             if (nullptr == itemJobType) {
                 return true;
             }
@@ -101,14 +105,12 @@ bool JobTypeListView::viewportEvent(QEvent *event)
                 if (DStyle *ds = qobject_cast<DStyle *>(style())) {
                     if (!itemJobType->data(RoleJobTypeEditable).toBool())
                         return true;
-                    auto actionEdit = new DViewItemAction(Qt::AlignVCenter, QSize(), QSize(), true);
-                    actionEdit->setIcon(ds->standardIcon(DStyle::SP_AddButton));
+                    auto actionEdit = new DViewItemAction(Qt::AlignVCenter, QSize(20, 20), QSize(20, 20), true);
                     actionEdit->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/edit.svg"));
                     actionEdit->setParent(this);
                     connect(actionEdit, &QAction::triggered, this, &JobTypeListView::slotUpdateJobType);
 
-                    auto actionDelete = new DViewItemAction(Qt::AlignVCenter, QSize(), QSize(), true);
-                    actionDelete->setIcon(ds->standardIcon(DStyle::SP_AddButton));
+                    auto actionDelete = new DViewItemAction(Qt::AlignVCenter, QSize(20, 20), QSize(20, 20), true);
                     actionDelete->setIcon(DHiDPIHelper::loadNxPixmap(":/resources/icon/delete.svg"));
                     actionDelete->setParent(this);
                     connect(actionDelete, &QAction::triggered, this, &JobTypeListView::slotDeleteJobType);
@@ -122,22 +124,15 @@ bool JobTypeListView::viewportEvent(QEvent *event)
 }
 bool JobTypeListView::updateJobType()
 {
-    m_modelJobType->clear();//先清理
-    QString strColorHex;
-    QString strJobType;
+    m_modelJobType->removeRows(0, m_modelJobType->rowCount());//先清理
+    m_iIndexCurrentHover = -1;
     QList<JobTypeInfo> lstJobType = JobTypeInfoManager::instance()->getJobTypeList();
+    int viewHeight = 0;
     for (int i = 0; i < lstJobType.size(); i++) {
-        strColorHex = lstJobType[i].getColorHex();
-        strJobType = lstJobType[i].getJobTypeName();
-
-        if(strColorHex.isEmpty() || strJobType.isEmpty()){
-            continue;
-        }
-        addJobTypeItem(lstJobType[i]);
+        viewHeight += addJobTypeItem(lstJobType[i]);
     }
 
-    setFixedHeight(m_modelJobType->rowCount() * (36 + 10 + 3));//默认是高度36，space：10
-
+    setFixedHeight(viewHeight);
     emit signalAddStatusChanged(canAdd());
     return true;
 }
@@ -148,22 +143,31 @@ bool JobTypeListView::canAdd()
     return m_modelJobType->rowCount() < 20;
 }
 
-void JobTypeListView::addJobTypeItem(const JobTypeInfo &info)
+int JobTypeListView::addJobTypeItem(const JobTypeInfo &info)
 {
-    QSize size(24, 24);
-    QPixmap pixmap(size);
-    pixmap.fill(Qt::transparent);
-    QPainter painter(&pixmap);
-    painter.setRenderHints(QPainter::Antialiasing);
-    painter.setBrush(QColor(info.getColorHex()));
-    painter.setPen(Qt::NoPen);
-    painter.drawRoundedRect(0, 0, 24, 24, 12, 12);//圆
-
-    DStandardItem *item = new DStandardItem(QIcon(pixmap), info.getJobTypeName());
+    int itemHeight = 0;
+    DStandardItem *item = new DStandardItem;
     item->setData(QVariant::fromValue(info), RoleJobTypeInfo);
     item->setData(info.getAuthority() > 1, RoleJobTypeEditable);
+    item->setData(false, RoleJobTypeLine);
 
+    //首个 非默认日程类型，前面 添加分割线
+    if(m_modelJobType->rowCount() > 1
+            && !m_modelJobType->item(m_modelJobType->rowCount() - 1)->data(RoleJobTypeEditable).toBool()
+            && item->data(RoleJobTypeEditable).toBool()) {
+        DStandardItem *itemLine = new DStandardItem;
+        itemLine->setData(QVariant(), RoleJobTypeInfo);
+        itemLine->setData(false, RoleJobTypeEditable);
+        itemLine->setData(true, RoleJobTypeLine);
+        m_modelJobType->appendRow(itemLine);
+        setRowHeight(m_modelJobType->rowCount() - 1, 19);
+        itemHeight += 19;
+    }
     m_modelJobType->appendRow(item);
+    setRowHeight(m_modelJobType->rowCount() - 1, 46);
+    itemHeight += 46;
+
+    return itemHeight;
 }
 
 void JobTypeListView::slotUpdateJobType()
@@ -184,10 +188,7 @@ void JobTypeListView::slotUpdateJobType()
 
 void JobTypeListView::slotDeleteJobType()
 {
-    int index =  indexAt(mapFromGlobal(QCursor::pos())).row();
-    if (index < 0 || index >= m_modelJobType->rowCount())
-        return;
-    QStandardItem *item = m_modelJobType->item(index);
+    DStandardItem *item = dynamic_cast<DStandardItem *>(m_modelJobType->item(m_iIndexCurrentHover));
     if (!item)
         return;
 
@@ -207,6 +208,40 @@ void JobTypeListView::slotDeleteJobType()
         } else if (msgBox.clickButton() == 1) {
             so.deleteJobType(typeNo);      //删除日程类型时，后端会删除关联日程
         }
+    } else {
+        so.deleteJobType(typeNo);
     }
-    updateJobType();//更新item
 }
+
+
+void JobTypeListViewStyle::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionViewItem opt = option;
+
+    //draw line
+    bool isDrawLine = index.data(RoleJobTypeLine).toBool();
+    if(isDrawLine) {
+        painter->save();
+        painter->setPen(qApp->palette().color(QPalette::Button));
+        int y = opt.rect.y() + opt.rect.height() / 2;
+        int x = opt.rect.x();
+        painter->drawLine(x, y, x + opt.rect.width(), y);
+        painter->restore();
+        return;
+    }
+    opt.rect.adjust(0, 5, 0, -5);
+    DStyledItemDelegate::paint(painter, opt, index);
+    JobTypeInfo info = index.data(RoleJobTypeInfo).value<JobTypeInfo>();
+
+    //draw icon
+    painter->save();
+    painter->setPen(QPen(QColor(0, 0, 0, int(255 * 0.1)), 2));
+    painter->setBrush(QColor(info.getColorHex()));
+    painter->drawEllipse(QRect(opt.rect.x() + 12, opt.rect.y() + 10, 16, 16));
+
+    //draw text
+    painter->setPen(qApp->palette().color(QPalette::Text));
+    painter->drawText(opt.rect.adjusted(38, 0, 0, 0), Qt::AlignVCenter | Qt::AlignLeft, info.getJobTypeName());
+    painter->restore();
+}
+

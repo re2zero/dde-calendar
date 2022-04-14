@@ -206,7 +206,7 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
         //更新界面显示
         m_yearwindow->updateData();
     }
-    break;
+        break;
     case DDECalendar::CalendarMonthWindow: {
     } break;
     case DDECalendar::CalendarWeekWindow: {
@@ -215,7 +215,7 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
         m_DayWindow->setTime();
         m_searchflag = true;
     }
-    break;
+        break;
     }
     m_priindex = type == 0 ? m_priindex : type;
     //为了与老版本配置兼容
@@ -239,11 +239,11 @@ void Calendarmainwindow::updateHeight()
     case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->updateHeight();
     }
-    break;
+        break;
     case DDECalendar::CalendarDayWindow: {
         m_DayWindow->updateHeight();
     }
-    break;
+        break;
     }
 }
 
@@ -623,11 +623,11 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &schedu
     }
     //获取当前视图编号
     CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>
-                                       (m_stackWidget->currentWidget());
+            (m_stackWidget->currentWidget());
     if (_showWidget) {
         //如果日程开始时间年份与选择时间年份不一样则切换年份显示
         bool changeYear = _showWidget->getSelectDate().year() !=
-                          scheduleInfo.getBeginDateTime().date().year();
+                scheduleInfo.getBeginDateTime().date().year();
         //设置选择时间
         if (_showWidget->setSelectDate(scheduleInfo.getBeginDateTime().date(), changeYear)) {
             //更新显示数据
@@ -802,6 +802,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
 {
     if (nullptr == m_dsdSetting) {
         m_dsdSetting = new DSettingsDialog(this);
+        m_dsdSetting->setIcon(CDynamicIcon::getInstance()->getPixmap());
         m_dsdSetting->setFixedSize(682, 506);
         m_dsdSetting->widgetFactory()->registerWidget("JobTypeListView", [](QObject *obj) -> QWidget * {
             if (DSettingsOption *option = qobject_cast<DSettingsOption *>(obj)) {
@@ -812,34 +813,19 @@ void Calendarmainwindow::slotOpenSettingDialog()
             }
             return nullptr;
         });
-        QString strJson = QString("{                                                                                     \
-                          \"groups\": [                                                                          \
-                              {                                                                                  \
-                                  \"key\":  \"setting_base\",                                                    \
-                                  \"name\": \"%1\",                                               \
-                                  \"groups\": [                                                                  \
-                                      {                                                                          \
-                                          \"key\":  \"event_types\",                                                \
-                                          \"name\": \"%2\",                                                \
-                                          \"options\": [                                                         \
-                                              {                                                                  \
-                                                  \"key\":  \"JobTypeListView\",                               \
-                                                  \"type\": \"JobTypeListView\",                                 \
-                                                  \"name\": \"JobTypeListView\",                                    \
-                                                  \"default\": \"\"                                              \
-                                              }                                                                  \
-                                          ]                                                                      \
-                                      }                                                                          \
-                                  ]                                                                              \
-                              }                                                                                  \
-                            ]                                                                                    \
-                      }").arg(tr("Manage calendar")).arg(tr("Event types"));
+        QString strJson = QString(R"(
+                                  {"groups":[{"key":"setting_base","name":"%1","groups":[{"key":"event_types","name":"%2","options":[{"key":"JobTypeListView","type":"JobTypeListView","name":"JobTypeListView","default":""}]}]}]}
+                                  )")
+                .arg(tr("Manage calendar"))
+                .arg(tr("Event types"));
 
         auto settings = Dtk::Core::DSettings::fromJson(strJson.toLatin1());
         //settings->setBackend(&backend);
         m_dsdSetting->setObjectName("SettingDialog");
 
         m_dsdSetting->updateSettings(settings);
+        //恢复默认设置按钮不显示
+        m_dsdSetting->setResetVisible(false);
 
         //QList<Widget>
         QList<QWidget *> lstwidget = m_dsdSetting->findChildren<QWidget *>();

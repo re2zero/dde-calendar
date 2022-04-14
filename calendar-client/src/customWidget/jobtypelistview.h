@@ -1,4 +1,4 @@
-#ifndef JOBTYPELISTVIEW_H
+﻿#ifndef JOBTYPELISTVIEW_H
 #define JOBTYPELISTVIEW_H
 
 #include "scheduledatamanage.h"
@@ -8,10 +8,11 @@
 
 #include <QWidget>
 #include <QList>
+#include <QTableView>
 
 DWIDGET_USE_NAMESPACE
 
-class JobTypeListView : public DListView
+class JobTypeListView : public QTableView
 {
     Q_OBJECT
 public:
@@ -28,8 +29,9 @@ private:
     void initUI();//初始化
     /**
      * @brief addJobTypeItem 添加item
+     * @return 返回item的高度
      */
-    void addJobTypeItem(const JobTypeInfo &info);//新增一行【日程类型】数据
+    int addJobTypeItem(const JobTypeInfo &info);//新增一行【日程类型】数据
 
 signals:
     /**
@@ -44,6 +46,20 @@ public slots:
 private:
     QStandardItemModel *m_modelJobType {nullptr};
     int m_iIndexCurrentHover = -1;
+};
+
+class JobTypeListViewStyle : public DStyledItemDelegate
+{
+    Q_OBJECT
+public:
+    explicit JobTypeListViewStyle(QAbstractItemView *parent = nullptr)
+        : DStyledItemDelegate(parent) {}
+
+protected:
+    // painting
+    void paint(QPainter *painter,
+               const QStyleOptionViewItem &option,
+               const QModelIndex &index) const override;
 };
 
 #endif // JOBTYPELISTVIEW_H
