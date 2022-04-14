@@ -27,23 +27,14 @@ CScheduleTask::CScheduleTask(QObject *parent)
 {
     m_DBusManager = CScheduleDBus::getInstance();
     m_work = new DataGetWork(m_DBusManager);
-    connect(&m_workerThread, &QThread::started, m_work, &DataGetWork::startQuery);
-    connect(&m_workerThread, &QThread::finished, m_work, &QObject::deleteLater);
     connect(m_work, &DataGetWork::signalGetSchedule, this, &CScheduleTask::slotGetSchedule);
     connect(m_work, &DataGetWork::signalGetLunar, this, &CScheduleTask::slotGetLunar);
     connect(m_DBusManager, &CScheduleDBus::jobsUpdate, this, &CScheduleTask::jobsUpdate);
     connect(m_DBusManager, &CScheduleDBus::jobsTypeOrColorUpdate, this, &CScheduleTask::jobsTypeOrColorUpdate);
-    m_work->moveToThread(&m_workerThread);
-    m_workerThread.start();
 }
 
 CScheduleTask::~CScheduleTask()
 {
-    m_work->setStop(true);
-    if (m_workerThread.isRunning()) {
-        m_workerThread.quit();
-        m_workerThread.wait();
-    }
     CScheduleDBus::releaseInstance();
 }
 
@@ -239,30 +230,17 @@ DataGetWork::~DataGetWork()
 }
 
 /**
- * @brief DataGetWork::setStop      设置日程停止
- * @param isStop
- */
-void DataGetWork::setStop(bool isStop)
-{
-    m_stop = isStop;
-    m_waitCondition.wakeAll();
-}
-
-/**
  * @brief DataGetWork::addQueryRange        添加查询范围
  * @param startDate                         开始时间
  * @param stopDate                          结束时间
  */
 void DataGetWork::addQueryRange(const QDate &startDate, const QDate &stopDate, const bool isGetLunar)
 {
-    m_mutex.lock();
     QueryRange _queryRange{startDate, stopDate};
     m_isGetLunar = isGetLunar;
     //添加查询
     m_queryScheduleRange.append(_queryRange);
-    m_mutex.unlock();
-    //唤起线程
-    m_waitCondition.wakeAll();
+    startQuery();
 }
 
 /**
@@ -270,27 +248,18 @@ void DataGetWork::addQueryRange(const QDate &startDate, const QDate &stopDate, c
  */
 void DataGetWork::startQuery()
 {
-    while (!m_stop) {
-        //如果需要查询日期的缓存不为空则开始查询
-        if (m_queryScheduleRange.size() > 0) {
-            QueryRange _queryRange;
-            m_mutex.lock();
-            //获取最后一个
-            _queryRange = m_queryScheduleRange.last();
-            //清空
-            m_queryScheduleRange.clear();
-            m_mutex.unlock();
-            //是否获取农历信息
-            if (m_isGetLunar) {
-                queryLunarInfo(_queryRange);
-            }
-            queryScheduleInfo(_queryRange);
-        } else {
-            //否则线程挂起
-            m_mutex.lock();
-            m_waitCondition.wait(&m_mutex);
-            m_mutex.unlock();
+    //如果需要查询日期的缓存不为空则开始查询
+    if (m_queryScheduleRange.size() > 0) {
+        QueryRange _queryRange;
+        //获取最后一个
+        _queryRange = m_queryScheduleRange.last();
+        //清空
+        m_queryScheduleRange.clear();
+        //是否获取农历信息
+        if (m_isGetLunar) {
+            queryLunarInfo(_queryRange);
         }
+        queryScheduleInfo(_queryRange);
     }
 }
 

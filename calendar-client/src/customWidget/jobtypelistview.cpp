@@ -102,6 +102,7 @@ bool JobTypeListView::viewportEvent(QEvent *event)
             } else {
                 // 设置其他style时，转换指针为空
                 if (DStyle *ds = qobject_cast<DStyle *>(style())) {
+                    Q_UNUSED(ds)
                     if (!itemJobType->data(RoleJobTypeEditable).toBool())
                         return true;
                     auto actionEdit = new DViewItemAction(Qt::AlignVCenter, QSize(20, 20), QSize(20, 20), true);
@@ -151,9 +152,9 @@ int JobTypeListView::addJobTypeItem(const JobTypeInfo &info)
     item->setData(false, RoleJobTypeLine);
 
     //首个 非默认日程类型，前面 添加分割线
-    if(m_modelJobType->rowCount() > 1
-            && !m_modelJobType->item(m_modelJobType->rowCount() - 1)->data(RoleJobTypeEditable).toBool()
-            && item->data(RoleJobTypeEditable).toBool()) {
+    if (m_modelJobType->rowCount() > 1
+        && !m_modelJobType->item(m_modelJobType->rowCount() - 1)->data(RoleJobTypeEditable).toBool()
+        && item->data(RoleJobTypeEditable).toBool()) {
         DStandardItem *itemLine = new DStandardItem;
         itemLine->setData(QVariant(), RoleJobTypeInfo);
         itemLine->setData(false, RoleJobTypeEditable);
@@ -195,7 +196,7 @@ void JobTypeListView::slotDeleteJobType()
     int typeNo = info.getJobTypeNo();
 
     CScheduleOperation so;
-    if(so.isJobTypeUsed(typeNo)){
+    if (so.isJobTypeUsed(typeNo)) {
         CScheduleCtrlDlg msgBox(this);
         msgBox.setText(tr("You are deleting an event type."));
         msgBox.setInformativeText(tr("All events under this type will be deleted and cannot be recoveredx?"));
@@ -219,7 +220,7 @@ void JobTypeListViewStyle::paint(QPainter *painter, const QStyleOptionViewItem &
 
     //draw line
     bool isDrawLine = index.data(RoleJobTypeLine).toBool();
-    if(isDrawLine) {
+    if (isDrawLine) {
         int y = opt.rect.y() + opt.rect.height() / 2;
         int x = opt.rect.x();
         int w = x + opt.rect.width();

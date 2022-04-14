@@ -107,8 +107,6 @@ public:
     explicit DataGetWork(CScheduleDBus *_DataManage);
     ~DataGetWork();
 public:
-    //设置日程停止
-    void setStop(bool isStop);
     //添加查询时间范围
     void addQueryRange(const QDate &startDate, const QDate &stopDate, const bool isGetLunar);
 private:
@@ -126,10 +124,7 @@ public slots:
     void startQuery();
 private:
     CScheduleDBus           *m_DataManage = nullptr;
-    QMutex                  m_mutex;
-    bool                    m_stop{false};
     QVector<QueryRange>     m_queryScheduleRange{};
-    QWaitCondition          m_waitCondition;
     bool                    m_isGetLunar{false};
 };
 
