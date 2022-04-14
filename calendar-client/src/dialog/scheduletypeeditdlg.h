@@ -75,6 +75,7 @@ private:
     QLabel *m_titleLabel = nullptr;     //弹窗名控件
     ColorSeletorWidget *m_colorSeletor = nullptr; //颜色选择器
     DialogType m_dialogType;
+    QString m_typeText; //输入框上一次输入后的文本
 };
 
 #endif // SCHEDULETYPEEDITDLG_H

@@ -71,7 +71,7 @@ void CColorPickerWidget::setColorHexLineEdit()
 
     m_colHexLineEdit->setText("");
     m_enterBtn->setDisabled(true);
-    QRegExp reg("[0-9A-Fa-f]{6}$");
+    QRegExp reg("^[0-9A-Fa-f]{6}$");
     QValidator *validator = new QRegExpValidator(reg,m_colHexLineEdit->lineEdit());
     m_colHexLineEdit->lineEdit()->setValidator(validator);
     setFocusProxy(m_colHexLineEdit);

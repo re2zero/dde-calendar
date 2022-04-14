@@ -193,6 +193,7 @@ private:
     DRadioButton *m_lunarRadioBtn = nullptr;        //农历选择按钮
 
     QString m_context;
+    QString m_TypeContext;  //类型输入框上一次输入后的字符
     const bool m_createAllDay;
     bool m_setAccept {false}; //是否设置返回代码为Rejected
     qint64 m_timeDiff = 0;             //开始时间和结束时间差，不算日期

@@ -7,6 +7,10 @@
 JobTypeComboBox::JobTypeComboBox(QWidget *parent) : DComboBox(parent)
 {
     initUI();
+    //不启用自动匹配
+    setAutoCompletion(false);
+    //设置不接受回车键插入
+    setInsertPolicy(QComboBox::NoInsert);
 }
 
 JobTypeComboBox::~JobTypeComboBox()

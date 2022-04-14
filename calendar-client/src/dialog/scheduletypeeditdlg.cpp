@@ -150,6 +150,14 @@ void ScheduleTypeEditDlg::initData()
 
 void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
 {
+    //最大限制20个字符，超出后过滤掉
+    if (strName.length() > 20) {
+        m_lineEdit->setText(m_typeText);
+        return;
+    } else {
+        m_typeText = strName;
+    }
+
     //文本编辑框中文本改变事件
     //1不能为空，2不能全空格，3不能重名
     if (strName.isEmpty()) {

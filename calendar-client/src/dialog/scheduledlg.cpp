@@ -94,9 +94,9 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
     }
     //根据日程信息以及当前语言，设置是否显示农历日程
     if (m_ScheduleDataInfo.getIsLunar() && m_languageFlag > 0) {
-        m_lunarRadioBtn->setChecked(true);
+        m_lunarRadioBtn->click();
     } else {
-        m_solarRadioBtn->setChecked(true);
+        m_solarRadioBtn->click();
     }
 
     m_beginDateEdit->setDate(info.getBeginDateTime().date());
@@ -568,13 +568,16 @@ void CScheduleDlg::sloteRpeatactivated(int index)
 void CScheduleDlg::slotTypeRpeatactivated(int index)
 {
     Q_UNUSED(index);
-    m_colorSeletorWideget->hide();
     if (m_typeComBox->isEditable()) {
         m_typeComBox->setIconSize(QSize(0, 0));
+        m_colorSeletorWideget->show();
     } else {
         m_typeComBox->setIconSize(QSize(16, 16));
         m_typeEditStatus = false;
+        m_colorSeletorWideget->hide();
     }
+    //保存按钮可用
+    getButtons()[1]->setDisabled(false);
     resize();
 }
 
@@ -605,30 +608,34 @@ void CScheduleDlg::slotBtnAddItemClicked()
 
 void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
 {
-    //非编辑状态
+    //最大限制20个字符，超出后过滤掉
+    if (text.length() > 20) {
+        m_typeComBox->setEditText(m_TypeContext);
+        return;
+    } else {
+        m_TypeContext = text;
+    }
+
+    getButtons()[1]->setDisabled(true);
+
     if (!m_typeEditStatus) {
         return;
     }
+
     if (text.isEmpty()) {
         //名称为空，返回
         m_jobTypeAlert->showAlertMessage(tr("Enter a name please"));
-        getButtons()[1]->setDisabled(true);
-        return;
-    }
-    if (text.trimmed().isEmpty()) {
+    } else if (text.trimmed().isEmpty()) {
         //名称为全空格，返回
         m_jobTypeAlert->showAlertMessage(tr("The name can not only contain whitespaces"));
-        getButtons()[1]->setDisabled(true);
-        return;
-    }
-
-    if (JobTypeInfoManager::instance()->isJobTypeNameUsed(text)) {
+    } else if (JobTypeInfoManager::instance()->isJobTypeNameUsed(text)) {
         //重名，返回
         m_jobTypeAlert->showAlertMessage(tr("The name already exists"));
-        getButtons()[1]->setDisabled(true);
-        return;
+    } else {
+        getButtons()[1]->setDisabled(false);
     }
-    getButtons()[1]->setDisabled(false);
+
+    m_TypeContext = text;
 }
 
 bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
@@ -651,8 +658,10 @@ bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
 
 void CScheduleDlg::showEvent(QShowEvent *event)
 {
-    Q_UNUSED(event);
+    DDialog::showEvent(event);
     emit signalViewtransparentFrame(1);
+    //更新窗口大小
+    resize();
 }
 
 void CScheduleDlg::closeEvent(QCloseEvent *event)
@@ -1308,6 +1317,8 @@ void CScheduleDlg::updateRepeatCombox(bool isLunar)
         m_beginrepeatCombox->addItem(tr("Monthly"));
         m_beginrepeatCombox->addItem(tr("Yearly"));
     }
+    //重置提醒规则和重复规则
+    m_rmindCombox->setCurrentIndex(0);
     m_beginrepeatCombox->setCurrentIndex(0);    //默认选择第一个
     slotbRpeatactivated(0);     //更新“结束重复”状态
 }
