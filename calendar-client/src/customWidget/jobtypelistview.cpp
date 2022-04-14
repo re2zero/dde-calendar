@@ -30,7 +30,6 @@ void JobTypeListView::initUI()
 {
     m_modelJobType = new QStandardItemModel(this);
     setModel(m_modelJobType);
-    setEditTriggers(QListView::NoEditTriggers);
     setFrameStyle(QFrame::NoFrame);
     setEditTriggers(QListView::NoEditTriggers);
     setSelectionMode(QListView::NoSelection);
@@ -221,12 +220,10 @@ void JobTypeListViewStyle::paint(QPainter *painter, const QStyleOptionViewItem &
     //draw line
     bool isDrawLine = index.data(RoleJobTypeLine).toBool();
     if(isDrawLine) {
-        painter->save();
-        painter->setPen(qApp->palette().color(QPalette::Button));
         int y = opt.rect.y() + opt.rect.height() / 2;
         int x = opt.rect.x();
-        painter->drawLine(x, y, x + opt.rect.width(), y);
-        painter->restore();
+        int w = x + opt.rect.width();
+        painter->fillRect(x, y, w, 1, qApp->palette().color(QPalette::Button));
         return;
     }
     opt.rect.adjust(0, 5, 0, -5);

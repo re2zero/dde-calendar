@@ -838,6 +838,10 @@ void Calendarmainwindow::slotOpenSettingDialog()
                     DIconButton *addButton = new DIconButton(DStyle::SP_IncreaseElement, nullptr);
                     addButton->setFixedSize(22, 22);
                     wid->layout()->addWidget(addButton);
+                    //使addButton的右边距等于view的右边距
+                    int leftMargin = wid->layout()->contentsMargins().left();
+                    wid->layout()->setContentsMargins(leftMargin, 0, leftMargin, 0);
+
                     addButton->setEnabled(view->canAdd());
 
                     //当日常类型超过上限时，更新button的状态
