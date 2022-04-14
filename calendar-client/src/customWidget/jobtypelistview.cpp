@@ -139,7 +139,7 @@ bool JobTypeListView::updateJobType()
 bool JobTypeListView::canAdd()
 {
     //最多20个类型
-    return m_modelJobType->rowCount() < 20;
+    return JobTypeInfoManager::instance()->getJobTypeList().count() < 20;
 }
 
 int JobTypeListView::addJobTypeItem(const JobTypeInfo &info)

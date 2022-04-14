@@ -246,7 +246,15 @@ void CalenderStyle::drawControl(QStyle::ControlElement element, const QStyleOpti
                 dayNumber = vopt->index.data().toString();
                 dayName = getLunarDayName(curDate);
                 //更新阴历年描述
-                QDate selectedDate = QDate(calendar->yearShown(), calendar->monthShown(), calendar->selectedDate().day());
+                int selectedYear = calendar->yearShown();
+                int selectedMonth = calendar->monthShown();
+                int selectedDay = calendar->selectedDate().day();
+                QDate selectedDate = QDate(selectedYear, selectedMonth, selectedDay);
+                //如闰月：没有2025/2/29，选择2025/1/29-》点下个月，会出现阴历显示为空的情况
+                if(!selectedDate.isValid() && selectedDay == 29) {
+                    selectedDate = QDate(selectedYear, selectedMonth, 28);
+                }
+
                 calendar->setLunarYearText(getLunarYearDesc(selectedDate));
 
                 p->save();
