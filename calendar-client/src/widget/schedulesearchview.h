@@ -119,7 +119,6 @@ class CScheduleSearchItem : public DLabel
 public:
     explicit CScheduleSearchItem(QWidget *parent = nullptr);
     void setBackgroundColor(QColor color1);
-    void setSplitLineColor(QColor color1);
     void setText(QColor tColor, QFont font);
     void setTimeC(QColor tColor, QFont font);
     void setData(ScheduleDataInfo vScheduleInfo, QDate date);
@@ -166,7 +165,6 @@ private:
     ColorStatus m_presscolor;
     ColorStatus m_hovercolor;
     QColor m_timecolor;
-    QColor m_splitlinecolor;
     QFont m_timefont;
     QColor m_tTextColor;
     QFont m_tFont;

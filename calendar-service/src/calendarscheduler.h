@@ -35,15 +35,10 @@ class CalendarScheduler : public QObject
 public:
     explicit CalendarScheduler(QObject *parent = nullptr);
     ~CalendarScheduler();
-
-    QString GetType(qint64 id);
-    QString GetTypes();
     void DeleteJob(qint64 id);
-    void DeleteType(qint64 id);
     QString GetJob(qint64 id);
     qint64 CreateJob(const QString &jobInfo);
     void UpdateJob(const QString &jobInfo);
-    void UpdateType(const QString &typeInfo);
     QString GetJobs(const QDateTime &start, const QDateTime &end);
     QString QueryJobs(const QString &params);
     QString QueryJobsWithLimit(const QString &params, qint32 maxNum);

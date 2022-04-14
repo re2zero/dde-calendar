@@ -264,13 +264,6 @@ TEST_F(test_schedulesearchview, setBackGroundColor)
     mScheduleSearchItem->setBackgroundColor(color);
 }
 
-//void CScheduleSearchItem::setSplitLineColor(QColor color1)
-TEST_F(test_schedulesearchview, setSplitLineColor)
-{
-    QColor color(240, 100, 100);
-    mScheduleSearchItem->setSplitLineColor(color);
-}
-
 //void CScheduleSearchItem::setText(QColor tcolor, QFont font)
 TEST_F(test_schedulesearchview, setItemText)
 {

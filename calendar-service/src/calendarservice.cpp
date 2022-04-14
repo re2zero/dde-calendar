@@ -115,14 +115,6 @@ void CalendarService::DeleteJob(qint64 id)
     CalendarProgramExitControl::getProgramExitControl()->reduce();
 }
 
-// 根据日程id来删除job类型记录
-void CalendarService::DeleteType(qint64 id)
-{
-    CalendarProgramExitControl::getProgramExitControl()->addExc();
-    m_scheduler->DeleteType(id);
-    CalendarProgramExitControl::getProgramExitControl()->reduce();
-}
-
 QString CalendarService::GetJob(qint64 id)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
@@ -156,24 +148,6 @@ QString CalendarService::GetJobs(quint32 startYear, quint32 startMonth, quint32 
     return scheduleInfo;
 }
 
-//根据id返回指定日程类型
-QString CalendarService::GetType(qint64 id)
-{
-    CalendarProgramExitControl::getProgramExitControl()->addExc();
-    QString scheduleInfo = m_scheduler->GetType(id);
-    CalendarProgramExitControl::getProgramExitControl()->reduce();
-    return scheduleInfo;
-}
-
-//返回所有日程类型
-QString CalendarService::GetTypes()
-{
-    CalendarProgramExitControl::getProgramExitControl()->addExc();
-    QString scheduleInfo = m_scheduler->GetTypes();
-    CalendarProgramExitControl::getProgramExitControl()->reduce();
-    return scheduleInfo;
-}
-
 QString CalendarService::QueryJobs(const QString &params)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
@@ -187,14 +161,6 @@ void CalendarService::UpdateJob(const QString &jobInfo)
 {
     CalendarProgramExitControl::getProgramExitControl()->addExc();
     m_scheduler->UpdateJob(jobInfo);
-    CalendarProgramExitControl::getProgramExitControl()->reduce();
-}
-
-// 传入要改动的日程类型信息来更新数据库
-void CalendarService::UpdateType(const QString &typeInfo)
-{
-    CalendarProgramExitControl::getProgramExitControl()->addExc();
-    m_scheduler->UpdateType(typeInfo);
     CalendarProgramExitControl::getProgramExitControl()->reduce();
 }
 

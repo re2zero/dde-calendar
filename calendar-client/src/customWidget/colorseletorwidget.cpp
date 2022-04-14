@@ -32,14 +32,15 @@ void ColorSeletorWidget::init()
     m_colorGroup = new QButtonGroup(this);
     m_colorGroup->setExclusive(true);
     connect(m_colorGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &ColorSeletorWidget::slotButtonClicked);
-    initColorButton();
+    //默认选中第一个
+    initColorButton(0);
 }
 
 void ColorSeletorWidget::initColorButton(int index)
 {
     reset();
     QList<JobTypeColorInfo> lstColorInfo = JobTypeInfoManager::instance()->getJobTypeColorList();
-    for (JobTypeColorInfo& var: lstColorInfo) {
+    for (JobTypeColorInfo &var : lstColorInfo) {
         if (TypeSystem == var.getAuthority()) {
             addColor(var);
         }
@@ -103,7 +104,7 @@ void ColorSeletorWidget::setSelectedColorById(int colorId)
 
     //系统颜色则向后移一位
     auto iterator = m_colorEntityMap.begin();
-    while(iterator != m_colorEntityMap.end()) {
+    while (iterator != m_colorEntityMap.end()) {
         if (iterator.value().getTypeNo() == colorId) {
             //向后移一位
             iterator++;
@@ -135,7 +136,7 @@ void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
             break;
         }
     }
-    if (!isFind ) {
+    if (!isFind) {
         setUserColor(JobTypeColorInfo(0, colorInfo.getColorHex(), 7));
     }
 }

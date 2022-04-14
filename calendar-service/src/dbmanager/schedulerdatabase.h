@@ -34,12 +34,10 @@ class SchedulerDatabase : public QObject
 public:
     explicit SchedulerDatabase(QObject *parent = nullptr);
     void DeleteJob(qint64 id);
-    void DeleteType(qint64 id);
     QString GetJob(qint64 id);
     qint64 CreateJob(const Job &job);
     qint64 UpdateJob(const QString &jobInfo);
     bool UpdateJobIgnore(const QString &strignore, qint64 id);
-    void UpdateType(const QString &typeInfo);
     QList<Job> GetAllOriginJobs();
     QList<Job> GetAllOriginJobs(const QString &key, const QString &strsort = QString());
     QList<Job> GetAllOriginJobsWithRule(const QString &key, const QString &rules);

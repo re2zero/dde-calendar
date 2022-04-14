@@ -76,42 +76,6 @@ void CalendarScheduler::initConnections()
     connect(this, &CalendarScheduler::signalCloseNotification, m_jobremindmanager, &JobRemindManager::closeNotification);
 }
 
-QString CalendarScheduler::GetType(qint64 id)
-{
-    QString strres;
-    foreach (auto var, globalPredefinedTypes) {
-        if (var.ID == id) {
-            //tojson
-            QJsonObject obj;
-            obj.insert("ID", static_cast<int>(var.ID));
-            obj.insert("Name", var.Name);
-            obj.insert("Color", var.Color);
-            QJsonDocument doc;
-            doc.setObject(obj);
-            strres = QString::fromUtf8(doc.toJson());
-            break;
-        }
-    }
-    return strres;
-}
-
-QString CalendarScheduler::GetTypes()
-{
-    QString strres;
-    QJsonArray jsonArray;
-    QJsonDocument doc;
-    foreach (auto var, globalPredefinedTypes) {
-        QJsonObject obj;
-        obj.insert("ID", static_cast<int>(var.ID));
-        obj.insert("Name", var.Name);
-        obj.insert("Color", var.Color);
-        jsonArray.append(obj);
-    }
-    doc.setArray(jsonArray);
-    strres = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
-    return strres;
-}
-
 void CalendarScheduler::DeleteJob(qint64 id)
 {
     m_database->DeleteJob(id);
@@ -125,12 +89,6 @@ void CalendarScheduler::DeleteJob(qint64 id)
     m_database->deleteRemindJobs(ids);
     AfterJobChanged(ids);
 }
-
-void CalendarScheduler::DeleteType(qint64 id)
-{
-    m_database->DeleteType(id);
-}
-
 
 QString CalendarScheduler::GetJob(qint64 id)
 {
@@ -224,12 +182,6 @@ void CalendarScheduler::UpdateJob(const QString &jobInfo)
         ids.append(id);
         AfterJobChanged(ids);
     }
-}
-
-// 可将要改动的日程类型信息直接传入数据库操作层中
-void CalendarScheduler::UpdateType(const QString &typeInfo)
-{
-    m_database->UpdateType(typeInfo);
 }
 
 /**
@@ -1080,6 +1032,7 @@ bool CalendarScheduler::DeleteJobType(const int &typeNo)
 {
     bool isExists = m_database->isJobTypeUsed(typeNo);
     if(isExists){
+        //TODO:关闭通知弹框
         m_database->DeleteJobsByJobType(typeNo);
         emit JobsUpdated(QList<qlonglong>());
     }

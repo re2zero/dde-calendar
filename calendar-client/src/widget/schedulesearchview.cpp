@@ -74,11 +74,6 @@ void CScheduleSearchItem::setBackgroundColor(QColor color1)
     m_Backgroundcolor = color1;
 }
 
-void CScheduleSearchItem::setSplitLineColor(QColor color1)
-{
-    m_splitlinecolor = color1;
-}
-
 void CScheduleSearchItem::setText(QColor tColor, QFont font)
 {
     m_tTextColor = tColor;
@@ -298,7 +293,8 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     painter.drawText(QRect(12, 8, m_durationSize, labelheight - 16), flag, datestr);
 
     painter.save();
-    bColor = m_splitlinecolor;
+    const CSchedulesColor &gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.getType());
+    bColor = gdColor.orginalColor;
     QPen pen(bColor);
     pen.setWidth(2);
     painter.setPen(pen);
@@ -680,14 +676,12 @@ void CScheduleSearchView::updateDateShow()
 void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, int rtype)
 {
     ScheduleDataInfo &gd = info;
-    CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.getType());
 
     CScheduleSearchItem *gwi = new CScheduleSearchItem(this);
     QFont font;
     font.setPixelSize(DDECalendar::FontSizeFourteen);
     font.setWeight(QFont::Normal);
     gwi->setBackgroundColor(m_bBackgroundcolor);
-    gwi->setSplitLineColor(gdColor.orginalColor);
     gwi->setText(m_btTextColor, font);
     font.setPixelSize(DDECalendar::FontSizeTwelve);
 
@@ -932,10 +926,14 @@ CScheduleListWidget::CScheduleListWidget(QWidget *parent)
     grabGesture(Qt::TapGesture);
     grabGesture(Qt::TapAndHoldGesture);
     grabGesture(Qt::PanGesture);
+
+    //日程类型发生改变，刷新界面
+    JobTypeInfoManager::instance()->addToNoticeBill(this->viewport(), "update");
 }
 
 CScheduleListWidget::~CScheduleListWidget()
 {
+    JobTypeInfoManager::instance()->removeFromNoticeBill(this->viewport());
 }
 
 void CScheduleListWidget::mousePressEvent(QMouseEvent *event)
