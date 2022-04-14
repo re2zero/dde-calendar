@@ -58,7 +58,6 @@ int main(int argc, char *argv[])
 #endif
 
     if (DGuiApplicationHelper::setSingleInstance(app->applicationName(), DGuiApplicationHelper::UserScope)) {
-        QAccessible::installFactory(accessibleFactory);
         app->setOrganizationName("deepin");
         app->setApplicationName("dde-calendar");
         app->loadTranslator();

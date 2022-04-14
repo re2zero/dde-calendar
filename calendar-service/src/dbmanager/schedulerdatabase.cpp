@@ -902,9 +902,30 @@ bool SchedulerDatabase::DeleteJobsByJobType(int iTypeNo)
         m_database.commit();
     } else {
         qWarning() << __FUNCTION__ << query.lastError();
-        qWarning()<<strsql;
+        qWarning() << strsql;
     }
     return bRet;
+}
+
+QVector<qint64> SchedulerDatabase::getJobIDByJobType(int iTypeNo)
+{
+    QVector<qint64> jobsID;
+    QSqlQuery query(m_database);
+
+    QString strsql = QString(" SELECT       \
+                             id             \
+                         FROM               \
+                             jobs           \
+                         WHERE              \
+                             jobs.\"type\" = %1;")
+                         .arg(iTypeNo);
+    if (query.exec(strsql) && query.next()) {
+        jobsID.append(query.value(0).toInt());
+    }
+    if (query.isActive()) {
+        query.finish();
+    }
+    return jobsID;
 }
 /**
  * @brief addJobType            新增日程类型

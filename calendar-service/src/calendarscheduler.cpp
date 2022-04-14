@@ -80,10 +80,7 @@ void CalendarScheduler::DeleteJob(qint64 id)
 {
     m_database->DeleteJob(id);
     //获取通知弹框id
-    QVector<int> notifyIDVector = m_database->getNotifyID(id);
-    foreach (auto notifyID, notifyIDVector) {
-        emit signalCloseNotification(static_cast<quint32>(notifyID));
-    }
+    closeNotification(id);
     QList<qlonglong> ids;
     ids.append(id);
     m_database->deleteRemindJobs(ids);
@@ -858,6 +855,13 @@ QDateTime CalendarScheduler::getRemindTimeByMesc(qint64 duration)
     return currentTime;
 }
 
+void CalendarScheduler::closeNotification(qint64 jobId)
+{
+    QVector<int> notifyIDVector = m_database->getNotifyID(jobId);
+    foreach (auto notifyID, notifyIDVector) {
+        emit signalCloseNotification(static_cast<quint32>(notifyID));
+    }
+}
 
 void CalendarScheduler::UpdateRemindTimeout(bool isClear)
 {
@@ -1031,8 +1035,17 @@ bool CalendarScheduler::CreateJobType(const QString &jobTypeInfo)
 bool CalendarScheduler::DeleteJobType(const int &typeNo)
 {
     bool isExists = m_database->isJobTypeUsed(typeNo);
-    if(isExists){
-        //TODO:关闭通知弹框
+    if (isExists) {
+        //获取需要被删除的日程编号
+        QVector<qint64> jobsID = m_database->getJobIDByJobType(typeNo);
+        QList<qlonglong> ids;
+        foreach (auto &jobID, jobsID) {
+            closeNotification(jobID);
+            ids.append(jobID);
+        }
+        //删除对应的提醒任务
+        m_database->deleteRemindJobs(ids);
+        //根据日程类型删除日程信息
         m_database->DeleteJobsByJobType(typeNo);
         emit JobsUpdated(QList<qlonglong>());
     }

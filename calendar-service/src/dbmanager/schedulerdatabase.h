@@ -138,6 +138,13 @@ public:
      * @return
      */
     bool DeleteJobsByJobType(int iTypeNo);
+
+    /**
+    * @brief getJobIDByJobType          根据日程类型获取对应的日程编号
+    * @param iTypeNo                    日程类型
+    * @return
+    */
+    QVector<qint64> getJobIDByJobType(int iTypeNo);
     /**
      * @brief addJobType            新增日程类型
      * @param iTypeNo               日程类型编码

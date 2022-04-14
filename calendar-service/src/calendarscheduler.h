@@ -132,6 +132,12 @@ private:
      */
     QDateTime getRemindTimeByMesc(qint64 duration);
 
+    /**
+     * @brief closeNotification     关闭通知弹框
+     * @param jobId                 日程id
+     */
+    void closeNotification(qint64 jobId);
+
 signals:
     void NotifyJobChange(const QList<Job> &jobs);
     void NotifyUpdateRemindJobs(const QList<Job> &jobs);
