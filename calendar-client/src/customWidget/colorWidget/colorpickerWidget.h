@@ -42,17 +42,17 @@ private:
     void setColorHexLineEdit();
 
 public slots:
-    /**
-     * @brief slotSetColor 设置颜色
-     * @param c　颜色
-     * @param internalChanged　由内变化
-     */
-    void slotSetColor(const QColor &c);
 
     /**
-     * @brief slotUpdateColor　更新颜色
+     * @brief slotUpdateColor　画板颜色更新事件
      */
     void slotUpdateColor(const QColor &color = QColor());
+    /**
+     * @brief slotHexLineEditChange
+     * 颜色输入框文本更改事件
+     * @param text
+     */
+    void slotHexLineEditChange(const QString &text);
 
     void slotCancelBtnClicked();
     void slotEnterBtnClicked();

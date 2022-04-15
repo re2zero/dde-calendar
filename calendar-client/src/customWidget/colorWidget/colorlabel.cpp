@@ -20,7 +20,6 @@
 */
 #include "colorlabel.h"
 
-#include <QPainter>
 #include <QImage>
 #include <QRgb>
 #include <QBitmap>
@@ -32,7 +31,6 @@ ColorLabel::ColorLabel(DWidget *parent)
     , m_workToPick(/*false*/ true)
     , m_picking(true)
     , m_pressed(false)
-    , m_tipPoint(this->rect().center())
 {
     setMouseTracking(true);
     connect(this, &ColorLabel::clicked, this, [ = ] {
@@ -78,7 +76,7 @@ void ColorLabel::setHue(int hue)
 
 void ColorLabel::pickColor(QPoint pos, bool picked)
 {
-    if (pos.x() < 0 || pos.y() < 0 || pos.x() >= this->width() || pos.y() >= this->height()) {
+    if (!rect().contains(pos)) {
         return;
     }
 
@@ -162,17 +160,16 @@ void ColorLabel::mouseMoveEvent(QMouseEvent *e)
     if (!m_workToPick)
         return;
 
-    if (m_pressed) {
-        m_tipPoint = this->mapFromGlobal(cursor().pos());
-        pickColor(m_tipPoint, false);
-    }
+    pickColor(e->pos(), m_pressed);
+
     update();
-    QLabel::mouseMoveEvent(e);
+    //移动事件不传递到父控件中
+    e->accept();
 }
 
 void ColorLabel::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (m_pressed) {
+    if (m_pressed && rect().contains(e->pos())) {
         m_clickedPos = e->pos();
         emit clicked();
     }

@@ -20,6 +20,7 @@
 */
 #include "cradiobutton.h"
 #include <DPaletteHelper>
+#include <QPainterPath>
 #include <QPainter>
 
 DWIDGET_USE_NAMESPACE

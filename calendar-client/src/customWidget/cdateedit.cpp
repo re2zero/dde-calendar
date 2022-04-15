@@ -23,7 +23,6 @@
 
 #include <QCoreApplication>
 #include <QLineEdit>
-#include <QPainter>
 #include <QDebug>
 
 CDateEdit::CDateEdit(QWidget *parent) : QDateEdit(parent)

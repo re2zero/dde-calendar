@@ -41,12 +41,16 @@ CColorPickerWidget::CColorPickerWidget(QWidget *parent)
     , m_enterBtn(new DSuggestButton(this))
 {
     initUI();
-
-    moveToCenter();
     setColorHexLineEdit();
+    moveToCenter();
 
     connect(m_cancelBtn, &DPushButton::clicked, this, &CColorPickerWidget::slotCancelBtnClicked);
     connect(m_enterBtn, &DPushButton::clicked, this, &CColorPickerWidget::slotEnterBtnClicked);
+    connect(m_colorLabel, &ColorLabel::signalpickedColor, this, &CColorPickerWidget::slotUpdateColor);
+    connect(m_colHexLineEdit, &DLineEdit::textChanged, this, &CColorPickerWidget::slotHexLineEditChange);
+    connect(m_colorSlider, &ColorSlider::valueChanged, this, [this](int val) {
+        m_colorLabel->setHue(val);
+    });
 }
 
 CColorPickerWidget::~CColorPickerWidget()
@@ -55,22 +59,10 @@ CColorPickerWidget::~CColorPickerWidget()
 
 void CColorPickerWidget::setColorHexLineEdit()
 {
-    connect(m_colHexLineEdit, &DLineEdit::textChanged, this, [&](const QString &text) {
-        QString lowerText = text.toLower();
-        if (lowerText == text) {
-            QRegExp rx("^[0-9a-f]{6}$");
-            if (rx.indexIn(lowerText) == -1) {
-                m_enterBtn->setDisabled(true);
-            } else {
-                m_enterBtn->setDisabled(false);
-            }
-        } else {
-            m_colHexLineEdit->setText(lowerText.toLower());
-        }
-    });
-
     m_colHexLineEdit->setText("");
+    //确认按钮初始置灰
     m_enterBtn->setDisabled(true);
+    //输入框输入限制
     QRegExp reg("^[0-9A-Fa-f]{6}$");
     QValidator *validator = new QRegExpValidator(reg,m_colHexLineEdit->lineEdit());
     m_colHexLineEdit->lineEdit()->setValidator(validator);
@@ -88,12 +80,6 @@ void CColorPickerWidget::initUI()
     setFixedSize(314, 276);
     m_colorLabel->setFixedSize(294, 136);
     m_colorSlider->setFixedSize(294,14);
-
-    connect(m_colorSlider, &ColorSlider::valueChanged, m_colorLabel, [ = ](int val) {
-        m_colorLabel->setHue(val);
-    });
-    connect(m_colorLabel, &ColorLabel::signalpickedColor, this, &CColorPickerWidget::slotSetColor);
-    connect(m_colorLabel, &ColorLabel::signalPreViewColor, this, &CColorPickerWidget::slotUpdateColor);
 
     QVBoxLayout *mLayout = new QVBoxLayout(this);
     mLayout->setSpacing(12);
@@ -136,6 +122,21 @@ void CColorPickerWidget::initUI()
     setTabOrder(m_enterBtn,m_colorSlider);
 }
 
+void CColorPickerWidget::slotHexLineEditChange(const QString &text)
+{
+    QString lowerText = text.toLower();
+    if (lowerText == text) {
+        QRegExp rx("^[0-9a-f]{6}$");
+        if (rx.indexIn(lowerText) == -1) {
+            m_enterBtn->setDisabled(true);
+        } else {
+            m_enterBtn->setDisabled(false);
+        }
+    } else {
+        m_colHexLineEdit->setText(lowerText);
+    }
+}
+
 QColor CColorPickerWidget::getSelectedColor()
 {
     return QColor("#" + m_colHexLineEdit->text());
@@ -143,23 +144,8 @@ QColor CColorPickerWidget::getSelectedColor()
 
 void CColorPickerWidget::slotUpdateColor(const QColor &color)
 {
-    QColor c = color.isValid() ? color : curColor;
-
     if (color.isValid()) {
-        //证明是预览发出信号通知外界
-
-        this->m_colHexLineEdit->setText(c.name().remove("#"));
-    }
-}
-
-void CColorPickerWidget::slotSetColor(const QColor &c)
-{
-    bool changed = (c != curColor);
-
-    if (changed) {
-        curColor = c;
-
-        slotUpdateColor(c);
+        this->m_colHexLineEdit->setText(color.name().remove("#"));
     }
 }
 
