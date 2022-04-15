@@ -583,6 +583,14 @@ void CScheduleDlg::slotTypeRpeatactivated(int index)
 
 void CScheduleDlg::slotRadioBtnClicked(int btnId)
 {
+    //btnId的可能值为0和1
+    static int clickedId = -1;
+    //与上一次选项一致不做重置处理
+    if (clickedId == btnId) {
+        return;
+    }
+    clickedId = btnId;
+
     if (RadioSolarId == btnId) {
         m_beginDateEdit->setLunarCalendarStatus(false);
         m_endDateEdit->setLunarCalendarStatus(false);
