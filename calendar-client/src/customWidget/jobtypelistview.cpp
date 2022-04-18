@@ -199,7 +199,7 @@ void JobTypeListView::slotDeleteJobType()
     if (so.isJobTypeUsed(typeNo)) {
         CScheduleCtrlDlg msgBox(this);
         msgBox.setText(tr("You are deleting an event type."));
-        msgBox.setInformativeText(tr("All events under this type will be deleted and cannot be recoveredx?"));
+        msgBox.setInformativeText(tr("All events under this type will be deleted and cannot be recovered."));
         msgBox.addPushButton(tr("Cancel", "button"), true);
         msgBox.addWaringButton(tr("Delete", "button"), true);
         msgBox.exec();
