@@ -68,6 +68,9 @@ static const int CalendarMHeight = 634;
 const int CalendarSwitchWidth = 647; //当宽度小于这个尺寸时，标题栏需要切换显示逻辑
 const int CalendarViewSwitchWidth = 804; //当宽度小于这个尺寸时，视图部分需要切换显示逻辑
 
+const int Calendar_Default_Width = 860; //默认宽度
+const int Calendar_Default_Height = 634; //默认高度
+
 Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     : DMainWindow(w)
     , m_defaultIndex(index)
@@ -116,11 +119,14 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
         int width = CConfigSettings::getInstance()->value("base.windowWidth").toInt();
         int height = CConfigSettings::getInstance()->value("base.windowHeight").toInt();
         QRect rect(0, 0, width, height);
-        rect.moveCenter(desktopwidget->geometry().center());
         this->setGeometry(rect);
     } else {
-        Dtk::Widget::moveToCenter(this);
+        //如果没有相关配置则设置为默认尺寸
+        QRect rect(0, 0, Calendar_Default_Width, Calendar_Default_Height);
+        this->setGeometry(rect);
     }
+    //在屏幕中央显示
+    Dtk::Widget::moveToCenter(this);
 
     //注册光标位置
     CalendarGlobalEnv::getGlobalEnv()->registerKey(DDECalendar::CursorPointKey, QPoint());
@@ -205,8 +211,7 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     case DDECalendar::CalendarYearWindow: {
         //更新界面显示
         m_yearwindow->updateData();
-    }
-        break;
+    } break;
     case DDECalendar::CalendarMonthWindow: {
     } break;
     case DDECalendar::CalendarWeekWindow: {
@@ -214,8 +219,7 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     case DDECalendar::CalendarDayWindow: {
         m_DayWindow->setTime();
         m_searchflag = true;
-    }
-        break;
+    } break;
     }
     m_priindex = type == 0 ? m_priindex : type;
     //为了与老版本配置兼容
@@ -238,12 +242,10 @@ void Calendarmainwindow::updateHeight()
     } break;
     case DDECalendar::CalendarWeekWindow: {
         m_weekWindow->updateHeight();
-    }
-        break;
+    } break;
     case DDECalendar::CalendarDayWindow: {
         m_DayWindow->updateHeight();
-    }
-        break;
+    } break;
     }
 }
 
@@ -622,12 +624,10 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &schedu
         }
     }
     //获取当前视图编号
-    CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>
-            (m_stackWidget->currentWidget());
+    CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>(m_stackWidget->currentWidget());
     if (_showWidget) {
         //如果日程开始时间年份与选择时间年份不一样则切换年份显示
-        bool changeYear = _showWidget->getSelectDate().year() !=
-                scheduleInfo.getBeginDateTime().date().year();
+        bool changeYear = _showWidget->getSelectDate().year() != scheduleInfo.getBeginDateTime().date().year();
         //设置选择时间
         if (_showWidget->setSelectDate(scheduleInfo.getBeginDateTime().date(), changeYear)) {
             //更新显示数据
@@ -816,8 +816,8 @@ void Calendarmainwindow::slotOpenSettingDialog()
         QString strJson = QString(R"(
                                   {"groups":[{"key":"setting_base","name":"%1","groups":[{"key":"event_types","name":"%2","options":[{"key":"JobTypeListView","type":"JobTypeListView","name":"JobTypeListView","default":""}]}]}]}
                                   )")
-                .arg(tr("Manage calendar"))
-                .arg(tr("Event types"));
+                              .arg(tr("Manage calendar"))
+                              .arg(tr("Event types"));
 
         auto settings = Dtk::Core::DSettings::fromJson(strJson.toLatin1());
         //settings->setBackend(&backend);
@@ -833,7 +833,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
             for (QWidget *wid : lstwidget) {
                 if ("ContentWidgetForsetting_base.event_types" == wid->accessibleName()) {
                     JobTypeListView *view = m_dsdSetting->findChild<JobTypeListView *>("JobTypeListView");
-                    if(!view)
+                    if (!view)
                         return;
                     DIconButton *addButton = new DIconButton(DStyle::SP_IncreaseElement, nullptr);
                     addButton->setFixedSize(22, 22);
