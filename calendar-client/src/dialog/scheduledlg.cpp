@@ -448,12 +448,7 @@ void CScheduleDlg::slotTextChange()
 
 void CScheduleDlg::slotendrepeatTextchange()
 {
-    QAbstractButton *m_OkBt = getButton(1);
-
-    if (m_endrepeattimes->text().isEmpty())
-        m_OkBt->setEnabled(false);
-    else
-        m_OkBt->setEnabled(true);
+    setOkBtnEnabled();
 }
 
 void CScheduleDlg::slotBDateEidtInfo(const QDate &date)
@@ -526,15 +521,10 @@ void CScheduleDlg::slotbRpeatactivated(int index)
 {
     if (index > 0) {
         m_endrepeatWidget->setVisible(true);
-        if (m_endrepeatCombox->currentIndex() == 1) {
-            //如果结束重复于次数，判断次数是否为空
-            slotendrepeatTextchange();
-        }
     } else {
         m_endrepeatWidget->setVisible(false);
-        QAbstractButton *m_OkBt = getButton(1);
-        m_OkBt->setEnabled(true);
     }
+    setOkBtnEnabled();
     resize();
 }
 
@@ -546,8 +536,6 @@ void CScheduleDlg::sloteRpeatactivated(int index)
     } else if (index == 1) {
         m_endrepeattimesWidget->setVisible(true);
         m_endRepeatDate->setVisible(false);
-        //重复结束于次数，判断次数是否为空
-        slotendrepeatTextchange();
         QFont mlabelF;
         mlabelF.setWeight(QFont::Medium);
         QFontMetrics fontWidth_endrepeattimesLabel(mlabelF);
@@ -558,11 +546,7 @@ void CScheduleDlg::sloteRpeatactivated(int index)
         m_endrepeattimesWidget->setVisible(false);
         m_endRepeatDate->setVisible(true);
     }
-    if (index != 1) {
-        //只要不是结束重复于次数，使能保存按钮
-        QAbstractButton *m_OkBt = getButton(1);
-        m_OkBt->setEnabled(true);
-    }
+    setOkBtnEnabled();
 }
 
 void CScheduleDlg::slotTypeRpeatactivated(int index)
@@ -1389,4 +1373,28 @@ void CScheduleDlg::resize()
     }
     //524: 默认界面高度, h: 新增控件高度
     setFixedSize(dialog_width, 524 + h);
+}
+
+void CScheduleDlg::setOkBtnEnabled()
+{
+    QAbstractButton *m_OkBt = getButton(1);
+
+    //根据类型输入框的内容判断保存按钮是否有效
+    if (m_OkBt != nullptr && m_typeComBox->lineEdit() != nullptr) {
+        const QString &typeStr = m_typeComBox->lineEdit()->text();
+        if (typeStr.isEmpty() || typeStr.trimmed().isEmpty() || JobTypeInfoManager::instance()->isJobTypeNameUsed(typeStr)) {
+            m_OkBt->setEnabled(false);
+            //若内容无效直接退出，不判断结束次数是否为空
+            return;
+        } else {
+            m_OkBt->setEnabled(true);
+        }
+    }
+    //如果结束与次数为空，则保存按钮置灰
+    if (m_beginrepeatCombox->currentIndex() > 0 && m_endrepeatCombox->currentIndex() == 1) {
+        m_OkBt->setEnabled(!m_endrepeattimes->text().isEmpty());
+    } else {
+        //日期  //永不
+        m_OkBt->setEnabled(true);
+    }
 }
