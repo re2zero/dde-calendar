@@ -142,7 +142,7 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString
         strsql += QString(" where instr(UPPER(title), UPPER('%1')) OR title_pinyin LIKE '%2'").arg(key).arg(pinyin);
     } else if (!key.isEmpty()) {
         //按照key查询
-        strsql = QString(" where instr(UPPER(title), UPPER('%1'))").arg(key);
+        strsql += QString(" where instr(UPPER(title), UPPER('%1'))").arg(key);
     }
 
     //排序条件不为空
