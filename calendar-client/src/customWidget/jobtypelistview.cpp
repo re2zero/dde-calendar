@@ -180,7 +180,7 @@ void JobTypeListView::slotUpdateJobType()
         return;
 
     JobTypeInfo info = item->data(RoleJobTypeInfo).value<JobTypeInfo>();
-    ScheduleTypeEditDlg a(info);
+    ScheduleTypeEditDlg a(info, this);
     a.exec();
     updateJobType();//更新item
     return;

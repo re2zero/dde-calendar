@@ -846,7 +846,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
                     connect(view, &JobTypeListView::signalAddStatusChanged, addButton, &DIconButton::setEnabled);
                     //新增类型
                     connect(addButton, &DIconButton::clicked, this, [=] {
-                        ScheduleTypeEditDlg a;
+                        ScheduleTypeEditDlg a(m_dsdSetting);
                         a.exec();
                     });
                 }
