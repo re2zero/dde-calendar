@@ -560,8 +560,8 @@ void CScheduleDlg::slotTypeRpeatactivated(int index)
         m_typeEditStatus = false;
         m_colorSeletorWideget->hide();
     }
-    //保存按钮可用
-    getButtons()[1]->setDisabled(false);
+    //设置保存按钮状态
+    setOkBtnEnabled();
     resize();
 }
 
@@ -600,18 +600,15 @@ void CScheduleDlg::slotBtnAddItemClicked()
 
 void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
 {
+    if (!m_typeEditStatus) {
+        return;
+    }
     //最大限制20个字符，超出后过滤掉
     if (text.length() > 20) {
         m_typeComBox->setEditText(m_TypeContext);
         return;
     } else {
         m_TypeContext = text;
-    }
-
-    getButtons()[1]->setDisabled(true);
-
-    if (!m_typeEditStatus) {
-        return;
     }
 
     if (text.isEmpty()) {
@@ -623,10 +620,9 @@ void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
     } else if (JobTypeInfoManager::instance()->isJobTypeNameUsed(text)) {
         //重名，返回
         m_jobTypeAlert->showAlertMessage(tr("The name already exists"));
-    } else {
-        getButtons()[1]->setDisabled(false);
     }
 
+    setOkBtnEnabled();
     m_TypeContext = text;
 }
 
