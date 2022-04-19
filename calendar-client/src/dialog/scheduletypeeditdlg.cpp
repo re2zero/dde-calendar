@@ -125,6 +125,7 @@ void ScheduleTypeEditDlg::initData()
 {
     m_titleLabel->setText(m_title);
     m_lineEdit->setText(m_jobTypeOld.getJobTypeName());
+    m_typeText = m_jobTypeOld.getJobTypeName();//编辑时要初始化数据
     this->getButton(1)->setEnabled(!m_jobTypeOld.getJobTypeName().isEmpty());//如果是新增，则保存按钮默认不可用
 
     //将用户上一次选择的自定义颜色添加进去
