@@ -46,6 +46,8 @@ void CDateEdit::setDate(QDate date)
 void CDateEdit::setDisplayFormat(QString format)
 {
     this->m_format = format;
+    //刷新时间显示信息
+    slotDateEidtInfo(date());
 }
 
 QString CDateEdit::displayFormat()
@@ -89,7 +91,6 @@ void CDateEdit::slotDateEidtInfo(const QDate &date)
         m_lunarName = getLunarName(date);
         format += m_lunarName;
     }
-
     //当当前显示格式与应该显示格式一致时不再重新设置
     if (QDateEdit::displayFormat() == format) {
         return;
@@ -99,8 +100,7 @@ void CDateEdit::slotDateEidtInfo(const QDate &date)
     bool hasSelected = lineEdit()->hasSelectedText();   //是否选择状态
     int cPos = 0;
     QDateTimeEdit::Section section = QDateTimeEdit::NoSection;
-    if (hasSelected)
-    {
+    if (hasSelected) {
         section = currentSection();     //选择节
     } else {
         cPos = lineEdit()->cursorPosition();    //光标所在位置
@@ -119,12 +119,12 @@ void CDateEdit::slotDateEidtInfo(const QDate &date)
     slotRefreshLineEditTextFormat(date.toString(format));
 }
 
-void CDateEdit::slotRefreshLineEditTextFormat(const QString& text)
+void CDateEdit::slotRefreshLineEditTextFormat(const QString &text)
 {
     QFont font = lineEdit()->font();
     QFontMetrics fm(font);
     int textWidth = fm.width(text);
-    int maxWidth = lineEdit()->width()-25; //文本能正常显示的最大宽度
+    int maxWidth = lineEdit()->width() - 25; //文本能正常显示的最大宽度
     if (textWidth > maxWidth) {
         setToolTip(text);
     } else {
@@ -168,13 +168,13 @@ void CDateEdit::slotCursorPositionChanged(int oldPos, int newPos)
 
         //新的光标位置与选择区域末尾位置相等则是向后选择，向前选择无需处理
         if (newPos == endPos) {
-            newPos = newPos > maxPos? maxPos : newPos;
-            lineEdit()->setSelection(startPos, newPos-startPos);    //重新设置选择区域
+            newPos = newPos > maxPos ? maxPos : newPos;
+            lineEdit()->setSelection(startPos, newPos - startPos); //重新设置选择区域
         }
     } else {
         //非选择情况当新光标位置大于最大位置时设置到最大位置处，重新设置选中节位最后一节
         if (newPos > maxPos) {
-            setCurrentSectionIndex(sectionCount()-1);
+            setCurrentSectionIndex(sectionCount() - 1);
             lineEdit()->setCursorPosition(maxPos);
         }
     }
@@ -193,29 +193,28 @@ void CDateEdit::slotSelectionChanged()
     }
 }
 
-QString CDateEdit::getLunarName(const QDate& date)
+QString CDateEdit::getLunarName(const QDate &date)
 {
     CaHuangLiDayInfo info;
     CScheduleDBus::getInstance()->GetHuangLiDay(date, info);
     return info.mLunarMonthName + info.mLunarDayName;
 }
 
-void CDateEdit::setLineEditTextFormat(QLineEdit* lineEdit, const QList<QTextLayout::FormatRange>& formats)
+void CDateEdit::setLineEditTextFormat(QLineEdit *lineEdit, const QList<QTextLayout::FormatRange> &formats)
 {
-    if(!lineEdit) {
+    if (!lineEdit) {
         return;
     }
     QList<QInputMethodEvent::Attribute> attributes;
 
-    for(const QTextLayout::FormatRange& fr : formats){
+    for (const QTextLayout::FormatRange &fr : formats) {
+        QInputMethodEvent::AttributeType type = QInputMethodEvent::TextFormat;
 
-    QInputMethodEvent::AttributeType type = QInputMethodEvent::TextFormat;
+        int start = fr.start - lineEdit->cursorPosition();
+        int length = fr.length;
+        QVariant value = fr.format;
 
-    int start = fr.start - lineEdit->cursorPosition();
-    int length = fr.length;
-    QVariant value = fr.format;
-
-    attributes.append(QInputMethodEvent::Attribute(type, start, length, value));
+        attributes.append(QInputMethodEvent::Attribute(type, start, length, value));
     }
 
     QInputMethodEvent event(QString(), attributes);
@@ -225,10 +224,10 @@ void CDateEdit::setLineEditTextFormat(QLineEdit* lineEdit, const QList<QTextLayo
 
 void CDateEdit::updateCalendarWidget()
 {
-    if(calendarPopup()) {
+    if (calendarPopup()) {
         //setCalendarWidget:
         //The editor does not automatically take ownership of the calendar widget.
-        if(m_showLunarCalendar) {
+        if (m_showLunarCalendar) {
             setCalendarWidget(new LunarCalendarWidget(this));
         } else {
             setCalendarWidget(new QCalendarWidget(this));
