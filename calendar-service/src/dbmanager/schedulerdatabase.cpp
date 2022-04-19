@@ -597,9 +597,9 @@ void SchedulerDatabase::initJobTypeTables()
     if (!getJobTypeByTypeNo(1, jobType) || jobType.getJobTypeNo() > 0) {
         return;
     }
-    addJobType(1, "Work", 1, 1);
-    addJobType(2, "Life", 7, 1);
-    addJobType(3, "Other", 4, 1);
+//    addJobType(1, "Work", 1, 1);
+//    addJobType(2, "Life", 7, 1);
+//    addJobType(3, "Other", 4, 1);
     addJobType(4, "Festival", 2, 0);
 
     addColorType(1, "#ff5e97", 1);
@@ -845,6 +845,21 @@ bool SchedulerDatabase::getJobTypeList(QList<JobTypeInfo> &lstJobType)
                              " ORDER BY JobType.CreateTime                      ");
     bRet = query.exec(strsql);
     if (bRet) {
+        QList<QList<QVariant> > lstDefault;
+        lstDefault.append({1, tr("Work"),  1, "#ff5e97", 1});
+        lstDefault.append({2, tr("Life"),  7, "#5d51ff", 1});
+        lstDefault.append({3, tr("Other"), 4, "#5bdd80", 1});
+
+        for (QList<QVariant> lst : lstDefault) {
+            JobTypeInfo jobType;
+            jobType.setJobTypeNo(lst[0].toInt());
+            jobType.setJobTypeName(lst[1].toString());
+            jobType.setColorTypeNo(lst[2].toInt());
+            jobType.setColorHex(lst[3].toString());
+            jobType.setAuthority(lst[4].toInt());
+            lstJobType.append(jobType);
+        }
+
         while (query.next()) {
             JobTypeInfo jobType;
             jobType.setJobTypeNo(query.value("TypeNo").toInt());

@@ -4,17 +4,17 @@
     <message>
         <location filename="../calendar-client/src/customWidget/colorWidget/colorpickerWidget.cpp" line="90"/>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Szín</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/colorWidget/colorpickerWidget.cpp" line="102"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégsem</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/colorWidget/colorpickerWidget.cpp" line="104"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Mentés</translation>
     </message>
 </context>
 <context>
@@ -141,14 +141,14 @@
     <message>
         <location filename="../calendar-client/src/customWidget/cpushbutton.cpp" line="22"/>
         <source>New event type</source>
-        <translation type="unfinished"/>
+        <translation>Új esemény típus</translation>
     </message>
 </context>
 <context>
     <name>CScheduleDlg</name>
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="57"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="841"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="825"/>
         <source>New Event</source>
         <translation>Új esemény</translation>
     </message>
@@ -172,254 +172,242 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="275"/>
         <source>You have selected a leap month, and will be reminded according to the rules of the lunar calendar.</source>
-        <translation type="unfinished"/>
+        <translation>Szökőhónap lett választva, és ezért a holdnaptár szabályai fognak érvényesülni.</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="479"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="502"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1032"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1064"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1317"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1321"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="474"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="497"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1016"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1048"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1301"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1305"/>
         <source>Never</source>
         <translation>Soha</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="480"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="475"/>
         <source>At time of event</source>
         <translation>Az esemény időpontjában</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="481"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="476"/>
         <source>15 minutes before</source>
         <translation>15 perccel előtte</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="482"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="477"/>
         <source>30 minutes before</source>
         <translation>30 perccel előtte</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="483"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="478"/>
         <source>1 hour before</source>
         <translation>1 órával előtte</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="484"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="504"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="479"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="499"/>
         <source>1 day before</source>
         <translation>1 nappal előtte</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="485"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="505"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="480"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="500"/>
         <source>2 days before</source>
         <translation>2 nappal előtte</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="486"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="506"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="481"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="501"/>
         <source>1 week before</source>
         <translation>1 héttel előtte</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="503"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="498"/>
         <source>On start day (9:00 AM)</source>
         <translation>Esemény kezdete napján (De. 09:00)</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="635"/>
-        <source>Enter a name please</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="638"/>
-        <source>The name can not only contain whitespaces</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="641"/>
-        <source>The name already exists</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="694"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="788"/>
-        <source>Type:</source>
-        <translation>Típus:</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="699"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="826"/>
-        <source>Description:</source>
-        <translation>Leírás:</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="704"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="863"/>
-        <source>All Day:</source>
-        <translation>Egész nap:</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="709"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="918"/>
-        <source>Starts:</source>
-        <translation>Kezdés:</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="714"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="955"/>
-        <source>Ends:</source>
-        <translation>Befejezés:</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="719"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="992"/>
-        <source>Remind Me:</source>
-        <translation>Emlékeztessen:</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="724"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1021"/>
-        <source>Repeat:</source>
-        <translation>Ismétlés:</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="729"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1052"/>
-        <source>End Repeat:</source>
-        <translation>Ismétlés vége:</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="785"/>
-        <source>Type</source>
-        <translation>Típus</translation>
-    </message>
-    <message>
-        <source>Work</source>
-        <translation type="vanished">Munka</translation>
-    </message>
-    <message>
-        <source>Life</source>
-        <translation type="vanished">Magénélet</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation type="vanished">Egyéb</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="830"/>
-        <source>Description</source>
-        <translation>Leírás</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="860"/>
-        <source>All Day</source>
-        <translation>Egész nap</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="880"/>
-        <source>Time:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="881"/>
-        <source>Time</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="888"/>
-        <source>Solar</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="889"/>
-        <source>Lunar</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="915"/>
-        <source>Starts</source>
-        <translation>Kezdés</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="952"/>
-        <source>Ends</source>
-        <translation>Befejezés</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="994"/>
-        <source>Remind Me</source>
-        <translation>Emlékeztessen</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1018"/>
-        <source>Repeat</source>
-        <translation>Ismétlés</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1033"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1322"/>
-        <source>Daily</source>
-        <translation>Naponta</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1034"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1323"/>
-        <source>Weekdays</source>
-        <translation>Hétköznapokon</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1035"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1324"/>
-        <source>Weekly</source>
-        <translation>Hetente</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1036"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1318"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1325"/>
-        <source>Monthly</source>
-        <translation>Havonta</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1037"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1319"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1326"/>
-        <source>Yearly</source>
-        <translation>Évente</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1054"/>
-        <source>End Repeat</source>
-        <translation>Ismétlés vége</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1065"/>
-        <source>After</source>
-        <translation>Utána</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1066"/>
-        <source>On</source>
-        <translation>Ekkor</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="554"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="736"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1085"/>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1086"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="542"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="720"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1069"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1070"/>
         <source>time(s)</source>
         <translation>Időpont(ok)</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1134"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="619"/>
+        <source>Enter a name please</source>
+        <translation>Kérem adja meg a nevét</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="622"/>
+        <source>The name can not only contain whitespaces</source>
+        <translation>A név nem tartalmazhat csak szóközöket</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="625"/>
+        <source>The name already exists</source>
+        <translation>Ez a név már létezik</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="678"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="772"/>
+        <source>Type:</source>
+        <translation>Típus:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="683"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="810"/>
+        <source>Description:</source>
+        <translation>Leírás:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="688"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="847"/>
+        <source>All Day:</source>
+        <translation>Egész nap:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="693"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="902"/>
+        <source>Starts:</source>
+        <translation>Kezdés:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="698"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="939"/>
+        <source>Ends:</source>
+        <translation>Befejezés:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="703"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="976"/>
+        <source>Remind Me:</source>
+        <translation>Emlékeztessen:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="708"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1005"/>
+        <source>Repeat:</source>
+        <translation>Ismétlés:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="713"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1036"/>
+        <source>End Repeat:</source>
+        <translation>Ismétlés vége:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="769"/>
+        <source>Type</source>
+        <translation>Típus</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="814"/>
+        <source>Description</source>
+        <translation>Leírás</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="844"/>
+        <source>All Day</source>
+        <translation>Egész nap</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="864"/>
+        <source>Time:</source>
+        <translation>Idő:</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="865"/>
+        <source>Time</source>
+        <translation>Idő</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="872"/>
+        <source>Solar</source>
+        <translation>Nap</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="873"/>
+        <source>Lunar</source>
+        <translation>Hold</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="899"/>
+        <source>Starts</source>
+        <translation>Kezdés</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="936"/>
+        <source>Ends</source>
+        <translation>Befejezés</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="978"/>
+        <source>Remind Me</source>
+        <translation>Emlékeztessen</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1002"/>
+        <source>Repeat</source>
+        <translation>Ismétlés</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1017"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1306"/>
+        <source>Daily</source>
+        <translation>Naponta</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1018"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1307"/>
+        <source>Weekdays</source>
+        <translation>Hétköznapokon</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1019"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1308"/>
+        <source>Weekly</source>
+        <translation>Hetente</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1020"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1302"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1309"/>
+        <source>Monthly</source>
+        <translation>Havonta</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1021"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1303"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1310"/>
+        <source>Yearly</source>
+        <translation>Évente</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1038"/>
+        <source>End Repeat</source>
+        <translation>Ismétlés vége</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1049"/>
+        <source>After</source>
+        <translation>Utána</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1050"/>
+        <source>On</source>
+        <translation>Ekkor</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1118"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Mégsem</translation>
     </message>
     <message>
-        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1135"/>
+        <location filename="../calendar-client/src/dialog/scheduledlg.cpp" line="1119"/>
         <source>Save</source>
         <comment>button</comment>
         <translation>Mentés</translation>
@@ -437,6 +425,18 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="79"/>
         <source>Do you want to change all occurrences?</source>
         <translation>Minden alkalmat módosítani szeretne?</translation>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="63"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="80"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="110"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="127"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="151"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="237"/>
+        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="271"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation>Mégsem</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="64"/>
@@ -460,18 +460,6 @@
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="109"/>
         <source>Are you sure you want to delete this event?</source>
         <translation>Biztosan törli ezt az eseményt?</translation>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="63"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="80"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="110"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="127"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="151"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="237"/>
-        <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="271"/>
-        <source>Cancel</source>
-        <comment>button</comment>
-        <translation>Mégsem</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/scheduleTask/cscheduleoperation.cpp" line="111"/>
@@ -689,17 +677,7 @@
     <message>
         <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="343"/>
         <source>Manage</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="819"/>
-        <source>Manage calendar</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../calendar-client/src/widget/calendarmainwindow.cpp" line="820"/>
-        <source>Event types</source>
-        <translation type="unfinished"/>
+        <translation>Kezelés</translation>
     </message>
 </context>
 <context>
@@ -738,23 +716,36 @@
     <message>
         <location filename="../calendar-client/src/customWidget/jobtypelistview.cpp" line="201"/>
         <source>You are deleting an event type.</source>
-        <translation type="unfinished"/>
+        <translation>Ön töröl egy eseménytípust.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/jobtypelistview.cpp" line="202"/>
         <source>All events under this type will be deleted and cannot be recovered.</source>
-        <translation type="unfinished"/>
+        <translation>Az összes ilyen típusú esemény törlődik, és nem állítható helyre.</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/jobtypelistview.cpp" line="203"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Mégsem</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/customWidget/jobtypelistview.cpp" line="204"/>
         <source>Delete</source>
         <comment>button</comment>
+        <translation>Törlés</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../calendar-client/src/settingstranslation.cpp" line="5"/>
+        <source>Manage calendar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../calendar-client/src/settingstranslation.cpp" line="6"/>
+        <source>Event types</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -783,49 +774,49 @@
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="35"/>
         <source>New event type</source>
-        <translation type="unfinished"/>
+        <translation>Új esemény típus</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="45"/>
         <source>Edit event type</source>
-        <translation type="unfinished"/>
+        <translation>Eseménytípus szerkesztése</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="80"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Név:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="89"/>
         <source>Color:</source>
-        <translation type="unfinished"/>
+        <translation>Szín:</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="114"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Mégsem</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="115"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>Mentés</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="165"/>
         <source>Enter a name please</source>
-        <translation type="unfinished"/>
+        <translation>Kérem adja meg a nevet</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="172"/>
         <source>The name can not only contain whitespaces</source>
-        <translation type="unfinished"/>
+        <translation>A név nem tartalmazhat csak szóközöket</translation>
     </message>
     <message>
         <location filename="../calendar-client/src/dialog/scheduletypeeditdlg.cpp" line="184"/>
         <source>The name already exists</source>
-        <translation type="unfinished"/>
+        <translation>Ez a név már létezik</translation>
     </message>
 </context>
 <context>

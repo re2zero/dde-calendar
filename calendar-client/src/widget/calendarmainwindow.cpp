@@ -814,10 +814,8 @@ void Calendarmainwindow::slotOpenSettingDialog()
             return nullptr;
         });
         QString strJson = QString(R"(
-                                  {"groups":[{"key":"setting_base","name":"%1","groups":[{"key":"event_types","name":"%2","options":[{"key":"JobTypeListView","type":"JobTypeListView","name":"JobTypeListView","default":""}]}]}]}
-                                  )")
-                              .arg(tr("Manage calendar"))
-                              .arg(tr("Event types"));
+                                  {"groups":[{"key":"setting_base","name":"Manage calendar","groups":[{"key":"event_types","name":"Event types","options":[{"key":"JobTypeListView","type":"JobTypeListView","name":"JobTypeListView","default":""}]}]}]}
+                                  )");
 
         auto settings = Dtk::Core::DSettings::fromJson(strJson.toLatin1());
         //settings->setBackend(&backend);
