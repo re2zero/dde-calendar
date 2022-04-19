@@ -36,7 +36,6 @@ class ColorLabel : public DLabel
     Q_OBJECT
 public:
     explicit ColorLabel(DWidget *parent = nullptr);
-    ~ColorLabel();
 
     //h∈(0, 360), s∈(0, 1), v∈(0, 1)
     QColor getColor(qreal h, qreal s, qreal v);
@@ -68,16 +67,6 @@ signals:
 protected:
     void paintEvent(QPaintEvent *);
     /**
-     * @brief enterEvent　鼠标进入事件
-     * @param e　事件
-     */
-    void enterEvent(QEvent *e);
-    /**
-     * @brief leaveEvent　鼠标离开事件
-     * @param e　事件
-     */
-    void leaveEvent(QEvent *e);
-    /**
      * @brief mousePressEvent　鼠标点击事件
      * @param e　鼠标事件
      */
@@ -93,18 +82,18 @@ protected:
      */
     void mouseReleaseEvent(QMouseEvent *e);
 private:
+    /**
+     * @brief pickColorCursor
+     * @return 返回自定义光标
+     */
     QCursor pickColorCursor();
 
 private:
-    //calculate the color's rgb value in pos.
-    QColor calColorAtPoint(QPointF pos);
-    QCursor m_lastCursor;
+    QCursor m_dotCursor; // 圆点光标
     int m_hue =  0;
-    bool m_workToPick;
-    bool m_picking;
-    bool m_pressed;
+    bool m_pressed = false; //鼠标按下状态，用于判断是否发送颜色值
+    bool m_entered = false; //鼠标移入状态，用于判断光标显示类型
     QColor m_pickedColor;
-    QPoint m_clickedPos;
 };
 
 #endif // COLORLABEL_H

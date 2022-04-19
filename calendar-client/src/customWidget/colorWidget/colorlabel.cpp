@@ -28,18 +28,10 @@
 
 ColorLabel::ColorLabel(DWidget *parent)
     : DLabel(parent)
-    , m_workToPick(/*false*/ true)
-    , m_picking(true)
     , m_pressed(false)
 {
     setMouseTracking(true);
-    connect(this, &ColorLabel::clicked, this, [ = ] {
-        if (m_picking && m_workToPick)
-        {
-            pickColor(m_clickedPos, true);
-        }
-    });
-    setCursor(pickColorCursor());
+    m_dotCursor = pickColorCursor();
 }
 
 //h∈(0, 360), s∈(0, 1), v∈(0, 1)
@@ -100,6 +92,12 @@ void ColorLabel::pickColor(QPoint pos, bool picked)
 
 void ColorLabel::paintEvent(QPaintEvent *)
 {
+    if (m_entered) {
+        setCursor(m_dotCursor);
+    } else {
+        setCursor(QCursor());
+    }
+
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
@@ -129,40 +127,22 @@ void ColorLabel::paintEvent(QPaintEvent *)
 
 }
 
-void ColorLabel::enterEvent(QEvent *e)
-{
-    if (!m_workToPick)
-        return;
-
-    m_lastCursor = this->cursor();
-    QLabel::enterEvent(e);
-}
-
-void ColorLabel::leaveEvent(QEvent *e)
-{
-    if (!m_workToPick)
-        return;
-
-    QLabel::leaveEvent(e);
-}
-
 void ColorLabel::mousePressEvent(QMouseEvent *e)
 {
-    if (!m_workToPick)
-        return ;
-
     m_pressed = true;
+    pickColor(e->pos(), m_pressed);
     QLabel::mousePressEvent(e);
 }
 
 void ColorLabel::mouseMoveEvent(QMouseEvent *e)
 {
-    if (!m_workToPick)
-        return;
-
-    pickColor(e->pos(), m_pressed);
-
+    if (rect().contains(e->pos())) {
+        m_entered = true;
+    } else {
+        m_entered = false;
+    }
     update();
+    pickColor(e->pos(), m_pressed);
     //移动事件不传递到父控件中
     e->accept();
 }
@@ -170,16 +150,10 @@ void ColorLabel::mouseMoveEvent(QMouseEvent *e)
 void ColorLabel::mouseReleaseEvent(QMouseEvent *e)
 {
     if (m_pressed && rect().contains(e->pos())) {
-        m_clickedPos = e->pos();
         emit clicked();
     }
-
     m_pressed = false;
     QLabel::mouseReleaseEvent(e);
-}
-
-ColorLabel::~ColorLabel()
-{
 }
 
 QCursor ColorLabel::pickColorCursor()
