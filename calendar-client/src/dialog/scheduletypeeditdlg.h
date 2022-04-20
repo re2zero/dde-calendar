@@ -52,6 +52,12 @@ signals:
 public slots:
     //编辑器文本改变事件
     void slotEditTextChanged(const QString &);
+
+    /**
+     * @brief slotFocusChanged      输入框焦点改变处理
+     * @param onFocus
+     */
+    void slotFocusChanged(bool onFocus);
     /**
      * @brief slotBtnCancel 取消按钮
      */

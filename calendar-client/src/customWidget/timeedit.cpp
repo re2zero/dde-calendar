@@ -71,13 +71,20 @@ QTime CTimeEdit::getTime()
 void CTimeEdit::updateListItem(bool isShowTimeInterval)
 {
     m_isShowTimeInterval = isShowTimeInterval;
+    QTime topTimer(m_miniTime);
+    if (!m_isShowTimeInterval) {
+        // 根据开始时间的分钟数设置结束时间下拉列表的分钟数，当前默认为0,故先注释
+        // int m = m_miniTime.minute() >= 30 ? m_miniTime.minute() - 30 : m_miniTime.minute();
+        int m = 0;
+        topTimer = QTime(0, m);
+    }
     //清除列表
     clear();
     for (int i = 0; i < 48; ++i) {
         qreal timeInterval = i * 0.5;
         QString timeIntervalStr;
-        if ( m_isShowTimeInterval ) {
-            if ( timeInterval < 1 ) {
+        if (m_isShowTimeInterval) {
+            if (timeInterval < 1) {
                 timeIntervalStr = tr("(%1 mins)").arg(i * 30);
             } else if (qFuzzyCompare(timeInterval, 1)) {
                 timeIntervalStr = tr("(%1 hour)").arg(timeInterval);
@@ -87,7 +94,7 @@ void CTimeEdit::updateListItem(bool isShowTimeInterval)
         } else {
             timeIntervalStr = "";
         }
-        QString userData = m_miniTime.addSecs(i * 30 * 60).toString(m_timeFormat);
+        QString userData = topTimer.addSecs(i * 30 * 60).toString(m_timeFormat);
         QString showStr = userData + timeIntervalStr;
         addItem(showStr, userData);
     }
@@ -97,7 +104,6 @@ void CTimeEdit::setTimeFormat(int value)
 {
     //获取edit的当前时间
     QTime editCurrentTime = getTime();
-    
     //根据value值,设置时间显示格式
     if (value) {
         m_timeFormat = "hh:mm";
@@ -129,7 +135,7 @@ void CTimeEdit::setSelectItem(const QTime &time)
         //获取时间差较小的值
         //如果时间小于第一项的时间则不算统计，
         //比如 第一项时间位01:00 比对时间为00:59，时间差应该为23：59 而不是00：01，所以应该定位到最后一项
-        if ( timeDiff < diff && (!(time < listTime && 0 == i))) {
+        if (timeDiff < diff && (!(time < listTime && 0 == i))) {
             diff = timeDiff;
             similarNumber = i;
         }
@@ -145,7 +151,7 @@ void CTimeEdit::setSelectItem(const QTime &time)
 void CTimeEdit::slotSetPlainText(const QString &arg)
 {
     QString userData = currentData().toString();
-    if ( userData.isEmpty()) {
+    if (userData.isEmpty()) {
         this->lineEdit()->setText(arg);
     } else {
         this->lineEdit()->setText(userData);

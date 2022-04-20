@@ -556,6 +556,8 @@ void CScheduleDlg::slotTypeRpeatactivated(int index)
         m_typeComBox->setIconSize(QSize(0, 0));
         m_colorSeletorWideget->show();
     } else {
+        //若下拉选择隐藏提醒消息
+        m_jobTypeAlert->hideAlertMessage();
         m_typeComBox->setIconSize(QSize(16, 16));
         m_typeEditStatus = false;
         m_colorSeletorWideget->hide();
@@ -595,6 +597,14 @@ void CScheduleDlg::slotBtnAddItemClicked()
 {
     m_colorSeletorWideget->show();
     m_typeEditStatus = true;
+    //添加日程类型的时候需要判断保存按钮是否可用
+    setOkBtnEnabled();
+    connect(m_typeComBox->lineEdit(), &QLineEdit::editingFinished, this, [&]() {
+        //如果为编辑模式且内容为空
+        if (m_typeComBox->isEditable() && m_typeComBox->lineEdit()->text().isEmpty()) {
+            m_typeComBox->editTextChanged(m_typeComBox->currentText());
+        }
+    });
     resize();
 }
 

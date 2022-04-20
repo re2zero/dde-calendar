@@ -57,6 +57,7 @@ void ScheduleTypeEditDlg::init()
     m_lineEdit->setFocus();
     //先初始化数据再关联信号，初始状态下不提示
     connect(m_lineEdit, &DLineEdit::textChanged, this, &ScheduleTypeEditDlg::slotEditTextChanged);
+    connect(m_lineEdit, &DLineEdit::focusChanged, this, &ScheduleTypeEditDlg::slotFocusChanged);
 }
 
 void ScheduleTypeEditDlg::initView()
@@ -190,6 +191,14 @@ void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
     m_lineEdit->setAlert(false);
     this->getButton(1)->setEnabled(true);
     return;
+}
+
+void ScheduleTypeEditDlg::slotFocusChanged(bool onFocus)
+{
+    //如果焦点移出,且输入内容为空
+    if (!onFocus && m_lineEdit->text().isEmpty()) {
+        emit m_lineEdit->textChanged("");
+    }
 }
 
 void ScheduleTypeEditDlg::slotBtnCancel()

@@ -35,7 +35,7 @@ JobTypeComboBox::JobTypeComboBox(QWidget *parent) : DComboBox(parent)
     setAutoCompletion(false);
     //设置不接受回车键插入
     setInsertPolicy(QComboBox::NoInsert);
-    connect(this, QOverload<int>::of(&QComboBox::highlighted), [this](int index){
+    connect(this, QOverload<int>::of(&QComboBox::highlighted), [this](int index) {
         view()->setFocus();
         m_hoverSelectedIndex = index;
     });
@@ -98,7 +98,7 @@ void JobTypeComboBox::addJobTypeItem(int idx, QString strColorHex, QString strJo
     QPainterPath path;
     path.addRoundedRect(0, 0, 64, 64, 16, 16);
     path.addRoundedRect(4, 4, 56, 56, 16, 16);
-    painter.setBrush(QColor(0, 0, 0, 255/10));
+    painter.setBrush(QColor(0, 0, 0, 255 / 10));
     painter.drawPath(path);
 
     insertItem(idx, QIcon(pixmap), tr(strJobType.toLocal8Bit()));
@@ -117,7 +117,7 @@ void JobTypeComboBox::setItemSelectable(bool status)
         return;
     }
     //更改当前列表框里的高亮项的可选择状态设置，将其设置为不可选中状态可实现失去选中效果，待聚焦后再恢复过来
-    QStandardItemModel *pItemModel = qobject_cast<QStandardItemModel*>(model());
+    QStandardItemModel *pItemModel = qobject_cast<QStandardItemModel *>(model());
     pItemModel->item(m_hoverSelectedIndex)->setSelectable(status);
 
     //设置“添加按键”按钮的高亮状态
@@ -129,7 +129,7 @@ void JobTypeComboBox::setItemSelectable(bool status)
 void JobTypeComboBox::addCustomWidget(QFrame *viewContainer)
 {
     if (viewContainer) {
-        if(nullptr == m_customWidget){
+        if (nullptr == m_customWidget) {
             //获取原控件布局
             QBoxLayout *layout = qobject_cast<QBoxLayout *>(viewContainer->layout());
             //自定义控件
@@ -168,8 +168,11 @@ void JobTypeComboBox::showPopup()
     //重置icon大小
     setItemSelectable(true);
     setIconSize(QSize(16, 16));
-    DComboBox::showPopup();
+    //设置为不可编辑模式
     setEditable(false);
+    emit activated(0);
+    DComboBox::showPopup();
+
     //获取下拉视图容器
     QFrame *viewContainer = findChild<QFrame *>();
     if (m_lstJobType.size() < 20) {
@@ -178,7 +181,7 @@ void JobTypeComboBox::showPopup()
     }
 }
 
-bool JobTypeComboBox::eventFilter(QObject* obj, QEvent* event)
+bool JobTypeComboBox::eventFilter(QObject *obj, QEvent *event)
 {
     if (view() == obj && (event->type() == QEvent::Enter)) {
         view()->setFocus();
@@ -191,14 +194,14 @@ bool JobTypeComboBox::eventFilter(QObject* obj, QEvent* event)
         //“添加按键”控件焦点进入事件
         setItemSelectable(false);
     } else if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* kEvent = dynamic_cast<QKeyEvent*>(event);
+        QKeyEvent *kEvent = dynamic_cast<QKeyEvent *>(event);
         if (view() == obj && kEvent->key() == Qt::Key_Down) {
             //焦点在列表框时的下方向按键按下事件
             if (m_addBtn->isHighlight()) {
                 return true;
             }
 
-            if (m_hoverSelectedIndex == m_itemNumIndex-1) {
+            if (m_hoverSelectedIndex == m_itemNumIndex - 1) {
                 //列表框到达最后一项时的下方向按键按下事件
                 //将焦点转移到“添加按键”控件上
                 m_addBtn->setFocus();

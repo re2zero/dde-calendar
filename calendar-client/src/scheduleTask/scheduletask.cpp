@@ -35,6 +35,7 @@ CScheduleTask::CScheduleTask(QObject *parent)
 
 CScheduleTask::~CScheduleTask()
 {
+    delete m_work;
     CScheduleDBus::releaseInstance();
 }
 
