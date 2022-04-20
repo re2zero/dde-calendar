@@ -162,10 +162,10 @@ QMap<int, QDate> LunarDateInfo::getAllNextYearLunarDayBySolar(const QDate &solar
             int offsetMiniDay = 0;
             if (offsetMonth > 1) {
                 //如果间隔大于一个月
-                offsetMiniDay = (info.LunarMonthName - startLunarInfo.LunarMonthName) * 28 - startLunarInfo.LunarMonthName + info.LunarMonthName;
+                offsetMiniDay = (info.LunarMonthName - startLunarInfo.LunarMonthName) * 28 - startLunarInfo.LunarDay + info.LunarDay;
             } else {
                 //如果间隔等于一个月，因为前面已经判断了是否为同一个月，所以不存在间隔为0的情况
-                offsetMiniDay = startLunarInfo.LunarMonthDays - -startLunarInfo.LunarMonthName + info.LunarMonthName;
+                offsetMiniDay = startLunarInfo.LunarMonthDays - startLunarInfo.LunarDay + info.LunarDay;
             }
 
             bDate = bDate.addDays(offsetMiniDay);
