@@ -50,11 +50,6 @@ public:
      */
     void reset();
     /**
-     * @brief addColor 添加系统色彩控件
-     * @param info  色彩描述
-     */
-    void addColor(const QColor&, const ColorType colorType, const QString& info = "");
-    /**
      * @brief getSelectColor
      * @return 当前已选在的色彩
      */

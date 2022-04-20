@@ -61,6 +61,11 @@ void ColorSeletorWidget::reset()
         m_colorLayout->removeWidget(btn);
         delete btn;
     }
+    if (m_userColorBtn) {
+        delete m_userColorBtn;
+    }
+    m_userColorBtn = nullptr;
+    m_userColorBtnId = -1;
 }
 
 void ColorSeletorWidget::addColor(const JobTypeColorInfo &cInfo)
@@ -137,7 +142,7 @@ void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
         }
     }
     if (!isFind) {
-        setUserColor(JobTypeColorInfo(0, colorInfo.getColorHex(), 7));
+        setUserColor(JobTypeColorInfo(0, colorInfo.getColorHex(), TypeUser));
     }
 }
 
