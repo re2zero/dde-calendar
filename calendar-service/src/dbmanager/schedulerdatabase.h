@@ -190,6 +190,9 @@ public:
      * @param iTypeNo               颜色类型编码
      */
     bool deleteColorType(const int &iTypeNo);
+    QString getDbPath() const;
+    void setDbPath(const QString &dbPath);
+
 private:
     void CreateTables();
     /**
@@ -197,7 +200,7 @@ private:
      * @return                       无
      */
     void initJobTypeTables();
-    void OpenSchedulerDatabase(const QString &dbpath);
+    void OpenSchedulerDatabase();
     /**
      * @brief dateTimeToString      将时间转换为string格式
      * @param dateTime
@@ -211,7 +214,7 @@ public slots:
 
 private:
     QSqlDatabase m_database;
-    FRIEND_TEST(test_schedulerdatabase, dbOparetion);
+    QString m_dbPath;
 };
 
 #endif // SCHEDULERDATABASE_H

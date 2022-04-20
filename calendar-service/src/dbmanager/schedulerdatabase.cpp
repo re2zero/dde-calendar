@@ -35,6 +35,7 @@
 
 SchedulerDatabase::SchedulerDatabase(QObject *parent)
     : QObject(parent)
+    , m_dbPath("")
 {
     //旧文件路径
     QString oldDbPatch = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/.config/deepin/dde-daemon/calendar");
@@ -43,8 +44,8 @@ SchedulerDatabase::SchedulerDatabase(QObject *parent)
     if (!dir.exists(oldDbPatch)) {
         dir.mkpath(oldDbPatch);
     }
-    QString dbpath = oldDbPatch.append("/scheduler.db");
-    OpenSchedulerDatabase(dbpath);
+    m_dbPath = oldDbPatch.append("/scheduler.db");
+    OpenSchedulerDatabase();
 }
 
 //通过id获取日程信息
@@ -615,13 +616,15 @@ void SchedulerDatabase::initJobTypeTables()
     return;
 }
 
-void SchedulerDatabase::OpenSchedulerDatabase(const QString &dbpath)
+void SchedulerDatabase::OpenSchedulerDatabase()
 {
     // 重复调用QSQLITE会导致数据库连接覆盖导致失败，需指定每部分的连接名称
     m_database = QSqlDatabase::addDatabase("QSQLITE", "SchedulerDatabase");
+    const QString &dbpath = getDbPath();
     m_database.setDatabaseName(dbpath);
     //这里用QFile来修改日历数据库文件的权限
-    QFile file(dbpath);
+    QFile file;
+    file.setFileName(dbpath);
     //如果不存在该文件则创建
     if (!file.exists()) {
         m_database.open();
@@ -668,6 +671,16 @@ QString SchedulerDatabase::dateTimeToString(const QDateTime &dateTime)
 {
     QTime _offsetTime = QTime(0, 0).addSecs(dateTime.timeZone().offsetFromUtc(dateTime));
     return QString("%1.000+%2").arg(dateTime.toString("yyyy-MM-ddThh:mm:ss")).arg(_offsetTime.toString("hh:mm"));
+}
+
+QString SchedulerDatabase::getDbPath() const
+{
+    return m_dbPath;
+}
+
+void SchedulerDatabase::setDbPath(const QString &dbPath)
+{
+    m_dbPath = dbPath;
 }
 
 // 执行删除日程的数据库SQL命令，以ID为依据

@@ -36,7 +36,6 @@ class LunarDateInfo
 {
 public:
     explicit LunarDateInfo(const Job &job);
-    void setIgnoreList(const QList<QDateTime> &ignore);
     /**
      * @brief getRRuleStartDate         获取重复农历日程开始时间(公历)集
      * @param beginDate                 查询的起始时间
@@ -98,7 +97,6 @@ private:
     QDate m_queryStartDate;
     QDate m_queryEndDate;
     qint64 m_dateInterval; //日程开始结束间隔天数
-    QList<QDateTime> m_ignoreList;
 };
 
 #endif // LUNARDATEINFO_H

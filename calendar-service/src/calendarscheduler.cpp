@@ -380,7 +380,6 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
         if (job.IsLunar) {
             QVector<QDate> recurJobDates;
             LunarDateInfo lunardate(job);
-            lunardate.setIgnoreList(igonrelist);
 
             QMap<int, QDate> ruleStartDate = lunardate.getRRuleStartDate(start.date(), end.date(), job.Start.date());
 
@@ -390,6 +389,9 @@ QList<stJobTime> CalendarScheduler::GetJobTimesBetween(const QDateTime &start, c
             QMap<int, QDate>::ConstIterator iter = ruleStartDate.constBegin();
             for (; iter != ruleStartDate.constEnd(); iter++) {
                 recurDateTime.setDate(iter.value());
+                //如果在忽略时间列表中,则忽略
+                if (igonrelist.contains(recurDateTime))
+                    continue;
                 copyEnd = recurDateTime.addSecs(dateinterval);
                 stJobTime jt;
                 jt.start = recurDateTime;

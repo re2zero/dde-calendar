@@ -35,11 +35,6 @@ LunarDateInfo::LunarDateInfo(const Job &job)
     m_dateInterval = m_job.Start.daysTo(m_job.End);
 }
 
-void LunarDateInfo::setIgnoreList(const QList<QDateTime> &ignore)
-{
-    m_ignoreList = ignore;
-}
-
 QMap<int, QDate> LunarDateInfo::getRRuleStartDate(const QDate &beginDate, const QDate &endDate, const QDate &solarDate)
 {
     QMap<int, QDate> solar;
