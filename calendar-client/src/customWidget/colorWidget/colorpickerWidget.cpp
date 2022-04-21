@@ -64,7 +64,7 @@ void CColorPickerWidget::setColorHexLineEdit()
     m_enterBtn->setDisabled(true);
     //输入框输入限制
     QRegExp reg("^[0-9A-Fa-f]{6}$");
-    QValidator *validator = new QRegExpValidator(reg,m_colHexLineEdit->lineEdit());
+    QValidator *validator = new QRegExpValidator(reg, m_colHexLineEdit->lineEdit());
     m_colHexLineEdit->lineEdit()->setValidator(validator);
     setFocusProxy(m_colHexLineEdit);
 }
@@ -79,7 +79,7 @@ void CColorPickerWidget::initUI()
     mlabelContext.setWeight(QFont::Medium);
     setFixedSize(314, 276);
     m_colorLabel->setFixedSize(294, 136);
-    m_colorSlider->setFixedSize(294,14);
+    m_colorSlider->setFixedSize(294, 14);
 
     QVBoxLayout *mLayout = new QVBoxLayout(this);
     mLayout->setSpacing(12);
@@ -99,9 +99,9 @@ void CColorPickerWidget::initUI()
     mLayout->addLayout(inputLayout);
     mLayout->addSpacing(4);
 
-    m_cancelBtn->setText(tr("Cancel"));
+    m_cancelBtn->setText(tr("Cancel", "button"));
     m_cancelBtn->setFixedSize(140, 36);
-    m_enterBtn->setText(tr("Save"));
+    m_enterBtn->setText(tr("Save", "button"));
     m_enterBtn->setFixedSize(140, 36);
     QHBoxLayout *btnLayout = new QHBoxLayout;
     btnLayout->setMargin(0);
@@ -109,7 +109,7 @@ void CColorPickerWidget::initUI()
     btnLayout->addWidget(m_cancelBtn);
     DVerticalLine *line = new DVerticalLine(this);
     line->setObjectName("VLine");
-    line->setFixedSize(3,28);
+    line->setFixedSize(3, 28);
     btnLayout->addWidget(line);
     line->show();
     btnLayout->addWidget(m_enterBtn);
@@ -117,9 +117,9 @@ void CColorPickerWidget::initUI()
     this->setLayout(mLayout);
 
     this->setFocusPolicy(Qt::TabFocus);
-    setTabOrder(m_colHexLineEdit,m_cancelBtn);
-    setTabOrder(m_cancelBtn,m_enterBtn);
-    setTabOrder(m_enterBtn,m_colorSlider);
+    setTabOrder(m_colHexLineEdit, m_cancelBtn);
+    setTabOrder(m_cancelBtn, m_enterBtn);
+    setTabOrder(m_enterBtn, m_colorSlider);
 }
 
 void CColorPickerWidget::slotHexLineEditChange(const QString &text)

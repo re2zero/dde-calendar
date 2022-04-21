@@ -41,13 +41,6 @@
         <translation>4小时后</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="117"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="326"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="337"/>
-        <source>Tomorrow</source>
-        <translation>明天</translation>
-    </message>
-    <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="124"/>
         <source>Schedule Reminder</source>
         <translation>日程提醒</translation>
@@ -64,21 +57,28 @@
         <source>Today</source>
         <translation>今天</translation>
     </message>
+    <message>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="117"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="326"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="337"/>
+        <source>Tomorrow</source>
+        <translation>明天</translation>
+    </message>
 </context>
 <context>
     <name>SchedulerDatabase</name>
     <message>
-        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="849"/>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="862"/>
         <source>Work</source>
         <translation>工作</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="850"/>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="863"/>
         <source>Life</source>
         <translation>生活</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="851"/>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="864"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>

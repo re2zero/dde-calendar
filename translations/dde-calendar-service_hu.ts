@@ -65,4 +65,22 @@
         <translation>Holnap</translation>
     </message>
 </context>
+<context>
+    <name>SchedulerDatabase</name>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="862"/>
+        <source>Work</source>
+        <translation>Munka</translation>
+    </message>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="863"/>
+        <source>Life</source>
+        <translation>Magénélet</translation>
+    </message>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="864"/>
+        <source>Other</source>
+        <translation>Egyéb</translation>
+    </message>
+</context>
 </TS>

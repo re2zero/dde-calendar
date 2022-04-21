@@ -65,4 +65,22 @@
         <translation>Взавтра</translation>
     </message>
 </context>
+<context>
+    <name>SchedulerDatabase</name>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="862"/>
+        <source>Work</source>
+        <translation>Робота</translation>
+    </message>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="863"/>
+        <source>Life</source>
+        <translation>Життя</translation>
+    </message>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="864"/>
+        <source>Other</source>
+        <translation>Інше</translation>
+    </message>
+</context>
 </TS>

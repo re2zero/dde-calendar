@@ -41,13 +41,6 @@
         <translation>4 hours later</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="117"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="326"/>
-        <location filename="../calendar-service/src/jobremindmanager.cpp" line="337"/>
-        <source>Tomorrow</source>
-        <translation>Tomorrow</translation>
-    </message>
-    <message>
         <location filename="../calendar-service/src/jobremindmanager.cpp" line="124"/>
         <source>Schedule Reminder</source>
         <translation>Schedule Reminder</translation>
@@ -64,21 +57,28 @@
         <source>Today</source>
         <translation>Today</translation>
     </message>
+    <message>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="117"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="326"/>
+        <location filename="../calendar-service/src/jobremindmanager.cpp" line="337"/>
+        <source>Tomorrow</source>
+        <translation>Tomorrow</translation>
+    </message>
 </context>
 <context>
     <name>SchedulerDatabase</name>
     <message>
-        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="849"/>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="862"/>
         <source>Work</source>
         <translation>Work</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="850"/>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="863"/>
         <source>Life</source>
         <translation>Life</translation>
     </message>
     <message>
-        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="851"/>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="864"/>
         <source>Other</source>
         <translation>Other</translation>
     </message>

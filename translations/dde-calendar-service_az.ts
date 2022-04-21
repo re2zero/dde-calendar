@@ -65,4 +65,22 @@
         <translation>Sabah</translation>
     </message>
 </context>
+<context>
+    <name>SchedulerDatabase</name>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="862"/>
+        <source>Work</source>
+        <translation>İş</translation>
+    </message>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="863"/>
+        <source>Life</source>
+        <translation>Həyat</translation>
+    </message>
+    <message>
+        <location filename="../calendar-service/src/dbmanager/schedulerdatabase.cpp" line="864"/>
+        <source>Other</source>
+        <translation>Başqa</translation>
+    </message>
+</context>
 </TS>
