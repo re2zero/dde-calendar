@@ -25,7 +25,7 @@ test_colorlabel::test_colorlabel(QObject *parent) : QObject(parent)
 
 }
 
-TEST_F(test_colorlabel, setDuration_001)
+TEST_F(test_colorlabel, getColor_001)
 {
     ColorLabel *colorLabel = new ColorLabel();
     EXPECT_EQ(colorLabel->getColor(0, 0, 0).name(), "#000000");
@@ -39,7 +39,11 @@ TEST_F(test_colorlabel, setDuration_001)
     EXPECT_EQ(colorLabel->getColor(1, 0.5, 0.5).name(), "#3f7e7f");
     EXPECT_EQ(colorLabel->getColor(10, 0, 0).name(), "#000000");
     EXPECT_EQ(colorLabel->getColor(60, 0, 0).name(), "#000000");
-    EXPECT_EQ(colorLabel->getColor(71, 0, 0).name(), "#000000");
+    EXPECT_EQ(colorLabel->getColor(120, 0, 0).name(), "#000000");
+    EXPECT_EQ(colorLabel->getColor(180, 0, 0).name(), "#000000");
+    EXPECT_EQ(colorLabel->getColor(241, 0, 0).name(), "#000000");
+    EXPECT_EQ(colorLabel->getColor(305, 0, 0).name(), "#000000");
+    EXPECT_EQ(colorLabel->getColor(360, 0, 0).name(), "#000000");
     delete colorLabel;
 }
 

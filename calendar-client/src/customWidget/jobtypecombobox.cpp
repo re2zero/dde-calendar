@@ -24,6 +24,7 @@
 
 #include <QLayout>
 #include <QPainter>
+#include <QPainterPath>
 #include <QKeyEvent>
 #include <QAbstractItemView>
 #include <QStandardItemModel>
@@ -49,6 +50,10 @@ JobTypeComboBox::~JobTypeComboBox()
 
 int JobTypeComboBox::getCurrentJobTypeNo()
 {
+    if (this->currentIndex() < 0 || this->currentIndex() >=  m_lstJobType.size())
+    {
+        return -1;
+    }
     return m_lstJobType[this->currentIndex()].getJobTypeNo();
 }
 
@@ -76,6 +81,8 @@ bool JobTypeComboBox::updateJobType()
         strJobType = m_lstJobType[m_itemNumIndex].getJobTypeName();
 
         if (strColorHex.isEmpty() || strJobType.isEmpty()) {
+            m_lstJobType.removeAt(m_itemNumIndex);
+            m_itemNumIndex--;
             continue;
         }
         addJobTypeItem(m_itemNumIndex, m_lstJobType[m_itemNumIndex].getColorHex(), m_lstJobType[m_itemNumIndex].getJobTypeName());
