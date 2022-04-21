@@ -1313,8 +1313,7 @@ void CScheduleDlg::updateRepeatCombox(bool isLunar)
         m_beginrepeatCombox->addItem(tr("Monthly"));
         m_beginrepeatCombox->addItem(tr("Yearly"));
     }
-    //重置提醒规则和重复规则
-    m_rmindCombox->setCurrentIndex(0);
+    //重置重复规则
     m_beginrepeatCombox->setCurrentIndex(0);    //默认选择第一个
     slotbRpeatactivated(0);     //更新“结束重复”状态
 }
