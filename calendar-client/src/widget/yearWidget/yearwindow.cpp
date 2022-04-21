@@ -408,7 +408,6 @@ void CYearWindow::initConnection()
     connect(m_firstYearWidget, &YearFrame::signalMousePress, this, &CYearWindow::slotMousePress);
     connect(m_secondYearWidget, &YearFrame::signalMousePress, this, &CYearWindow::slotMousePress);
     connect(m_scheduleView, &CYearScheduleOutView::signalsViewSelectDate, this, &CYearWindow::slotMousePress);
-    connect(m_scheduleView, &CYearScheduleOutView::signalViewtransparentFrame, this, &CYearWindow::signalViewtransparentFrame);
 }
 
 /**

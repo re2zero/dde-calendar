@@ -388,8 +388,6 @@ void CMonthGraphicsview::mouseDoubleClickEvent(QMouseEvent *event)
     if (infoitem != nullptr) {
         CMyScheduleView dlg(infoitem->getData(), this);
         connect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CMonthGraphicsview::signalsUpdateSchedule);
-        connect(&dlg, &CMyScheduleView::signalViewtransparentFrame,
-                this, &CMonthGraphicsview::signalViewtransparentFrame);
         dlg.exec();
         return;
     }
@@ -540,7 +538,6 @@ QDateTime CMonthGraphicsview::getDragScheduleInfoEndTime(const QDateTime &moveDa
 
 void CMonthGraphicsview::slotCreate(const QDateTime &date)
 {
-    emit signalViewtransparentFrame(1);
     CScheduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(date.date());
@@ -558,5 +555,4 @@ void CMonthGraphicsview::slotCreate(const QDateTime &date)
         emit signalsUpdateSchedule();
         emit signalsScheduleUpdate(0);
     }
-    emit signalViewtransparentFrame(0);
 }

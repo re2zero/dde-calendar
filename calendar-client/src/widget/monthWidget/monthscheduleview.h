@@ -52,7 +52,6 @@ public:
 signals:
     void signalsUpdateSchedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
-    void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
     void signalPressScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
 public slots:

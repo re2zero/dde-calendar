@@ -52,7 +52,6 @@ public:
     void setTimeFormat(QString timeformat);
 signals:
     void signalsCurrentScheduleDate(QDate date);
-    void signalViewtransparentFrame(int type);
     /**
      * @brief signalAngleDelta      发送滚动信号滚动相对量
      * @param delta     滚动相对量

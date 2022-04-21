@@ -162,7 +162,6 @@ signals:
     void signalAngleDelta(int delta);
     //更新获取日程信息
     void signalsUpdateSchedule();
-    void signalViewtransparentFrame(const int id = 0);
     /**
      * @brief signalScheduleShow        发送日程提示框信号
      * @param isShow                    是否显示

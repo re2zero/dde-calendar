@@ -67,11 +67,6 @@ public:
     void deleteSelectSchedule();
 signals:
     /**
-     * @brief signalViewtransparentFrame 设置窗口的焦点
-     * @param type
-     */
-    void signalViewtransparentFrame(int type);
-    /**
      * @brief signalsViewSelectDate 切换视图
      * @param date 日期
      */

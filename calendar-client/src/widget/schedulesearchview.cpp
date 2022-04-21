@@ -146,20 +146,16 @@ void CScheduleSearchItem::setDurationSize(QFont font)
 }
 void CScheduleSearchItem::slotEdit()
 {
-    emit signalViewtransparentFrame(1);
     CScheduleDlg dlg(0, this);
     dlg.setData(m_ScheduleInfo);
     dlg.exec();
-    emit signalViewtransparentFrame(0);
 }
 
 void CScheduleSearchItem::slotDelete()
 {
-    emit signalViewtransparentFrame(1);
     //删除日程
     CScheduleOperation _scheduleOperation(this);
     bool _isDelete = _scheduleOperation.deleteSchedule(m_ScheduleInfo);
-    emit signalViewtransparentFrame(0);
     //删除日程后，将焦点设置给父类
     if (_isDelete) {
         parentWidget()->setFocus(Qt::TabFocusReason);
@@ -348,10 +344,8 @@ void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)
 void CScheduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
-    emit signalViewtransparentFrame(1);
     CMyScheduleView dlg(m_ScheduleInfo, this);
     dlg.exec();
-    emit signalViewtransparentFrame(0);
 }
 
 void CScheduleSearchItem::mousePressEvent(QMouseEvent *event)
@@ -692,7 +686,6 @@ void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, in
     //将搜索到的日程添加到容器
     m_scheduleSearchItem.append(gwi);
     connect(gwi, &CScheduleSearchItem::signalSelectSchedule, this, &CScheduleSearchView::slotSelectSchedule);
-    connect(gwi, &CScheduleSearchItem::signalViewtransparentFrame, this, &CScheduleSearchView::signalViewtransparentFrame);
     connect(gwi, &CScheduleSearchItem::signalSelectCurrentItem, this, &CScheduleSearchView::slotSelectCurrentItem);
 
     QListWidgetItem *listItem = new QListWidgetItem;

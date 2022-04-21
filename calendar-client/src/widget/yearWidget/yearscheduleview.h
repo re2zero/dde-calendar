@@ -154,8 +154,6 @@ signals:
      * @brief signalupdateschedule 更新日程信息的信号
      */
     void signalupdateschedule();
-    //弹出对话框设置背景底色
-    void signalViewtransparentFrame(int type);
 private:
     CYearScheduleView *yearscheduleview = nullptr;
     QVector<ScheduleDataInfo> scheduleinfoList;

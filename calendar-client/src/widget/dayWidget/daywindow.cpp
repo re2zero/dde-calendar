@@ -301,7 +301,6 @@ void CDayWindow::initConnection()
 {
     connect(m_daymonthView, &CDayMonthView::signalIsDragging, this, &CDayWindow::slotIsDragging);
     connect(m_daymonthView, &CDayMonthView::signalChangeSelectDate, this, &CDayWindow::slotChangeSelectDate);
-    connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CDayWindow::signalViewtransparentFrame);
     connect(m_scheduleView, &CScheduleView::signalSwitchPrePage, this, &CDayWindow::slotSwitchPrePage);
     connect(m_scheduleView, &CScheduleView::signalSwitchNextPage, this, &CDayWindow::slotSwitchNextPage);
 }

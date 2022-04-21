@@ -427,19 +427,10 @@ void Calendarmainwindow::initConnection()
             &Calendarmainwindow::slotSearchSelectSchedule);
     connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide, this,
             &Calendarmainwindow::setScheduleHide);
-    //界面弹出对话框设置背景阴影
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalViewtransparentFrame, this,
-            &Calendarmainwindow::slotViewtransparentFrame);
+
     connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectCurrentItem, this,
             &Calendarmainwindow::slotSetSearchFocus);
-    connect(m_yearwindow, &CYearWindow::signalViewtransparentFrame, this,
-            &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this,
-            &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this,
-            &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_DayWindow, &CDayWindow::signalViewtransparentFrame, this,
-            &Calendarmainwindow::slotViewtransparentFrame);
+
     //更新当前时间
     connect(m_currentDateUpdateTimer, &QTimer::timeout, this,
             &Calendarmainwindow::slotCurrentDateUpdate);
@@ -652,16 +643,12 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &schedu
  */
 void Calendarmainwindow::slotViewtransparentFrame(const bool isShow)
 {
-    static int showFrameCount = 0;
     if (isShow) {
         m_transparentFrame->resize(width(), height() - 50);
         m_transparentFrame->move(0, 50);
         m_transparentFrame->show();
-        ++showFrameCount;
     } else {
-        if (showFrameCount == 1)
-            m_transparentFrame->hide();
-        --showFrameCount;
+        m_transparentFrame->hide();
     }
 }
 
@@ -721,9 +708,7 @@ void Calendarmainwindow::slotNewSchedule()
     CScheduleDlg _scheduleDig(1, this, false);
     //设置开始时间
     _scheduleDig.setDate(_beginTime);
-    slotViewtransparentFrame(true);
     _scheduleDig.exec();
-    slotViewtransparentFrame(false);
 }
 
 void Calendarmainwindow::slotDeleteitem()
@@ -794,6 +779,15 @@ bool Calendarmainwindow::event(QEvent *event)
     //如果窗口移动，隐藏日程悬浮框
     if (event->type() == QEvent::Move) {
         setScheduleHide();
+    }
+
+    //如果为活动窗口则显示视图阴影
+    if (event->type() == QEvent::WindowActivate) {
+        slotViewtransparentFrame(false);
+    }
+    //如果不为活动窗口则隐藏视图阴影
+    if (event->type() == QEvent::WindowDeactivate) {
+        slotViewtransparentFrame(true);
     }
     return DMainWindow::event(event);
 }

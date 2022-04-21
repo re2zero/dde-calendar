@@ -65,8 +65,6 @@ protected:
 signals:
     //切换视图信号    0:跳转上一个视图  1：月视图  2：周视图 3:日视图
     void signalSwitchView(const int viewIndex = 0);
-    //弹出对话框设置背景底色
-    void signalViewtransparentFrame(int type);
 protected:
     static CalendarManager *m_calendarManager;
     QString             m_lunarYear;

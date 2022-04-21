@@ -64,14 +64,12 @@ bool CAllDayEventWeekView::MeetCreationConditions(const QDateTime &date)
 
 void CAllDayEventWeekView::slotCreate(const QDateTime &date)
 {
-    emit signalViewtransparentFrame(1);
     CScheduleDlg dlg(1, this);
     dlg.setDate(date);
     dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsUpdateSchedule();
     }
-    emit signalViewtransparentFrame(0);
 }
 
 bool CAllDayEventWeekView::IsEqualtime(const QDateTime &timeFirst, const QDateTime &timeSecond)
@@ -326,12 +324,10 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
         m_createDate.setTime(QTime::currentTime());
         slotCreate(m_createDate);
     } else {
-        emit signalViewtransparentFrame(1);
         m_updateDflag = false;
         CMyScheduleView dlg(item->getData(), this);
         connect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
         dlg.exec();
-        emit signalViewtransparentFrame(0);
         disconnect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
     }
 }

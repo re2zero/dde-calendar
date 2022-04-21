@@ -71,7 +71,6 @@ private:
      */
     void updateEndTimeList(const QTime &begin, bool isShowTimeInterval);
 signals:
-    void signalViewtransparentFrame(int type);
     void signalScheduleUpdate(int id = 0);
 public slots:
     /**

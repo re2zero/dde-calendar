@@ -198,7 +198,6 @@ void CWeekWindow::initConnection()
     //周数信息区域后按钮点击事件关联触发后一周
     connect(m_weekview, &CWeekView::signalBtnNext, this, &CWeekWindow::slotnext);
     connect(m_weekview, &CWeekView::signalsSelectDate, this, &CWeekWindow::slotSelectDate);
-    connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CWeekWindow::signalViewtransparentFrame);
     connect(m_weekHeadView, &CWeekHeadView::signalsViewSelectDate, this, &CWeekWindow::slotViewSelectDate);
     connect(m_weekview, &CWeekView::signalIsDragging, this, &CWeekWindow::slotIsDragging);
     //日程信息区域滚动信号关联

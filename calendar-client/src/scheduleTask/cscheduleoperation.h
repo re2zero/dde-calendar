@@ -72,7 +72,6 @@ private:
     //更新日程类型(这里的接口是私有的，供updateJobType同名接口调用，在另一接口中做修改的逻辑，这里实现功能)
     bool updateJobType(const JobTypeInfo &jobTypeInfo);
 signals:
-    void signalViewtransparentFrame(const int id = 0);
 public slots:
 private:
     CScheduleDBus                   *m_DBusManager = nullptr;

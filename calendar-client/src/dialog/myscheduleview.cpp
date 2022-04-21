@@ -49,11 +49,6 @@ CMyScheduleView::CMyScheduleView(const ScheduleDataInfo &schduleInfo, QWidget *p
     focusNextPrevChild(false);
 }
 
-CMyScheduleView::~CMyScheduleView()
-{
-    emit signalViewtransparentFrame(0);
-}
-
 /**
  * @brief CMyScheduleView::AutoFeed     字体改变更改界面显示
  * @param text
@@ -96,40 +91,40 @@ void CMyScheduleView::slotAutoFeed(const QFont &font)
     }
 
     if (strList.count() * h > 100) {
-           m_scheduleLabelH = 100;
-       } else {
-           int minH = 17;
-           m_scheduleLabelH = strList.count() * h;
-           m_scheduleLabelH = m_scheduleLabelH >= minH ? m_scheduleLabelH : minH;
-       }
-       //更新控件高度
-       area->setFixedHeight(m_scheduleLabelH);
-       m_scheduleLabel->setText(resultStr);
+        m_scheduleLabelH = 100;
+    } else {
+        int minH = 17;
+        m_scheduleLabelH = strList.count() * h;
+        m_scheduleLabelH = m_scheduleLabelH >= minH ? m_scheduleLabelH : minH;
+    }
+    //更新控件高度
+    area->setFixedHeight(m_scheduleLabelH);
+    m_scheduleLabel->setText(resultStr);
 
-       if (m_scheduleInfo.getIsLunar()) {
-           QString timeName = m_timeLabel->text();
-           int index = timeName.indexOf("~");
-           //重新计算法字符串像素长度
-           if (index != -1) {
-               timeName[index-1] = ' ';
-               QFontMetrics fm(m_timeLabel->font());
-               int textWidth = fm.width(m_timeLabel->text());
-               if (textWidth > m_timeLabel->width()) {
-                   timeName[index-1] = '\n';
-                   m_timeLabelH = 58;
-               } else {
-                   m_timeLabelH = 26;
-               }
-               m_timeLabel->setText(timeName);
-           }
-       } else {
-           m_timeLabelH = 26;
-       }
-       //更新控件高度
-       m_timeLabel->setFixedHeight(m_timeLabelH);
+    if (m_scheduleInfo.getIsLunar()) {
+        QString timeName = m_timeLabel->text();
+        int index = timeName.indexOf("~");
+        //重新计算法字符串像素长度
+        if (index != -1) {
+            timeName[index - 1] = ' ';
+            QFontMetrics fm(m_timeLabel->font());
+            int textWidth = fm.width(m_timeLabel->text());
+            if (textWidth > m_timeLabel->width()) {
+                timeName[index - 1] = '\n';
+                m_timeLabelH = 58;
+            } else {
+                m_timeLabelH = 26;
+            }
+            m_timeLabel->setText(timeName);
+        }
+    } else {
+        m_timeLabelH = 26;
+    }
+    //更新控件高度
+    m_timeLabel->setFixedHeight(m_timeLabelH);
 
-       //更新界面高度
-       setFixedHeight(m_defaultH + m_timeLabelH + m_scheduleLabelH);
+    //更新界面高度
+    setFixedHeight(m_defaultH + m_timeLabelH + m_scheduleLabelH);
 }
 
 /**
@@ -181,12 +176,6 @@ void CMyScheduleView::setPaletteTextColor(QWidget *widget, QColor textColor)
     widget->setPalette(palette);
 }
 
-void CMyScheduleView::showEvent(QShowEvent *event)
-{
-    Q_UNUSED(event);
-    emit signalViewtransparentFrame(1);
-}
-
 /**
  * @brief CMyScheduleView::updateDateTimeFormat 更新显示时间格式
  */
@@ -202,7 +191,7 @@ void CMyScheduleView::updateDateTimeFormat()
     slotAutoFeed();
 }
 
-QString CMyScheduleView::getDataByFormat(const QDate& date, QString format)
+QString CMyScheduleView::getDataByFormat(const QDate &date, QString format)
 {
     QString name = date.toString(format);
     if (m_scheduleInfo.getIsLunar()) {

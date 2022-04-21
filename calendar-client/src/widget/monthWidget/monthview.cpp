@@ -49,7 +49,6 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_monthGraphicsView = new CMonthGraphicsview(this);
 
     connect(m_monthGraphicsView, &CMonthGraphicsview::signalsViewSelectDate, this, &CMonthView::signalsViewSelectDate);
-    connect(m_monthGraphicsView, &CMonthGraphicsview::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
     connect(m_monthGraphicsView, &CMonthGraphicsview::signalScheduleShow, this, &CMonthView::slotScheduleRemindWidget);
     connect(m_monthGraphicsView, &CMonthGraphicsview::signalAngleDelta, this, &CMonthView::signalAngleDelta);
     connect(m_monthGraphicsView, &CMonthGraphicsview::signalSwitchPrePage, this, &CMonthView::signalSwitchPrePage);

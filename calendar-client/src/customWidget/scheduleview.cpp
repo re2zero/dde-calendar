@@ -435,10 +435,6 @@ void CScheduleView::initConnection()
     connect(m_graphicsView, &CGraphicsView::signalGotoDayView, this,
             &CScheduleView::slotCurrentScheduleDate);
 
-    connect(m_alldaylist, &CAllDayEventWeekView::signalViewtransparentFrame, this,
-            &CScheduleView::signalViewtransparentFrame);
-    connect(m_graphicsView, &CGraphicsView::signalViewtransparentFrame, this,
-            &CScheduleView::signalViewtransparentFrame);
     //切换前后时间信号关联
     connect(m_graphicsView, &CAllDayEventWeekView::signalAngleDelta, this, &CScheduleView::signalAngleDelta);
     connect(m_alldaylist, &CAllDayEventWeekView::signalAngleDelta, this, &CScheduleView::signalAngleDelta);

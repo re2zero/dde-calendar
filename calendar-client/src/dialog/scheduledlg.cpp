@@ -657,7 +657,6 @@ bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
 void CScheduleDlg::showEvent(QShowEvent *event)
 {
     DDialog::showEvent(event);
-    emit signalViewtransparentFrame(1);
     //更新窗口大小
     resize();
 }
@@ -671,7 +670,6 @@ void CScheduleDlg::closeEvent(QCloseEvent *event)
     } else {
         reject();
     }
-    emit signalViewtransparentFrame(0);
 }
 
 void CScheduleDlg::changeEvent(QEvent *event)
