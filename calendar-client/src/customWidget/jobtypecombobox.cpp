@@ -27,6 +27,7 @@
 #include <QKeyEvent>
 #include <QAbstractItemView>
 #include <QStandardItemModel>
+#include <QPainterPath>
 
 JobTypeComboBox::JobTypeComboBox(QWidget *parent) : DComboBox(parent)
 {
