@@ -351,7 +351,7 @@ QList<Job> SchedulerDatabase::getValidRemindJob()
     QString sql("select jobs.id, jobs.all_day,jobs.type,jobs.title,jobs.description,jobs.is_Lunar,jobsReminder.jobStartTime as start,"
                 "jobsReminder.jobEndTime as end,jobs.r_rule,jobs.remind,jobs.ignore,jobs.title_pinyin,jobsReminder.remindCount,"
                 "jobsReminder.remindTime , jobsReminder.recurid from jobs left join jobsReminder on jobs.id = jobsReminder.jobid "
-                "where jobsReminder.remindCount > 0 and jobsReminder.remindTime > ");
+                "where jobsReminder.remindTime > ");
     sql += QString(" '%1'").arg(dateTimeToString(QDateTime::currentDateTime()));
     if (query.exec(sql)) {
         while (query.next()) {

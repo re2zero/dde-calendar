@@ -118,7 +118,7 @@ TEST_F(test_jobremindmanager, GetRemindAdvanceDays)
 //void JobRemindManager::RemindJobLater(const Job &job)
 TEST_F(test_jobremindmanager, RemindJobLater)
 {
-    jobRemindManager->RemindJobLater(createJobs().at(0));
+    jobRemindManager->RemindJobLater(createJobs().at(0), 1);
 }
 
 //void JobRemindManager::SetJobRemindOneDayBefore(const Job &job)

@@ -870,8 +870,21 @@ void CalendarScheduler::UpdateRemindTimeout(bool isClear)
     QDateTime tmstart = QDateTime::currentDateTime();
     QDateTime tmend = tmstart.addMSecs(UPDATEREMINDJOBTIMEINTERVAL);
     QList<Job> jobList = GetRemindJobs(tmstart, tmend);
-    //获取未提醒的稍后日程信息
+    //获取未提醒的
     QList<Job> remindJobList = m_database->getValidRemindJob();
+    //获取未提醒的稍后日程信息,由于15分钟后，1xxx后等不会修改提醒次数
+    //所以需要根据提醒时间，日程id，日程重复id来判断是否是没有被触发点提醒日程
+    for (int i = 0; i < jobList.size(); i++) {
+        for (int j = jobList.size() - 1; j < 0; j--) {
+            if (remindJobList.at(j).ID == jobList.at(i).ID
+                && remindJobList.at(j).RecurID == jobList.at(i).RecurID
+                && remindJobList.at(j).RemidTime == jobList.at(i).RemidTime)
+                //如果该日程没有被触发提醒过(创建后没有被提醒，而不是提醒后点了15分钟后等不改变提醒次数的日程)
+                //则移除
+                remindJobList.removeAt(j);
+        }
+    }
+
     if (isClear) {
         //清空数据库
         m_database->clearRemindJobDatabase();
@@ -909,22 +922,18 @@ void CalendarScheduler::notifyMsgHanding(const qint64 jobID, const qint64 recurI
         m_database->updateRemindJob(job);
         break;
     case 21://15min后提醒
-        ++job.RemindLaterCount;
         job.RemidTime = getRemindTimeByMesc(15 * Minute);
         m_database->updateRemindJob(job);
         break;
     case 22://一个小时后提醒
-        ++job.RemindLaterCount;
         job.RemidTime = getRemindTimeByMesc(Hour);
         m_database->updateRemindJob(job);
         break;
     case 23://四个小时后提醒
-        ++job.RemindLaterCount;
         job.RemidTime = getRemindTimeByMesc(4 * Hour);
         m_database->updateRemindJob(job);
         break;
     case 3://明天提醒
-        ++job.RemindLaterCount;
         job.RemidTime = getRemindTimeByMesc(24 * Hour);
         m_database->updateRemindJob(job);
         break;

@@ -41,14 +41,14 @@ private:
     int GetRemindAdvanceDays(const QString &remind);
     bool GetRemindLaterDuration(int count, qint64 &duration);
     QString GetRemindBody(const Job &job, const QDateTime &tm);
-    void RemindJobLater(const Job &job);
+    void RemindJobLater(const Job &job, const int operationNum);
     void SetJobRemindOneDayBefore(const Job &job);
     void SetJobRemindTomorrow(const Job &job);
     QString GetBodyTimePart(const QDateTime &nowtime, const QDateTime &jobtime, bool allday, bool isstart);
 
 signals:
     void ModifyJobRemind(const Job &job, const QString &remind);
-    void saveNotifyID(const Job &job,int notifyid);
+    void saveNotifyID(const Job &job, int notifyid);
 public slots:
     void UpdateRemindJobs(const QList<Job> &jobs);
     void NotifyJobsChanged(const QList<Job> &jobs);

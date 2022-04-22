@@ -94,19 +94,21 @@ void JobRemindManager::RemindJob(const Job &job)
                 actionlist << text << transText;
                 hints.insert("x-deepin-action-" + text, QString("/bin/bash,-c,%1 int32:%2").arg(cmd).arg(operationNum));
             };
-            if (nDays >= 3 && job.RemindLaterCount == 1) {
-                //default对应的是默认操作，也就是在点击空白区域会出发的操作
-                argMake(1, notifyActKeyDefault,                 "");
-                argMake(4, notifyActKeyRemind1DayBefore,        tr("One day before start"));
-                argMake(5, notifyActKeyClose,                   tr("Close", "button"));
-            } else if ((nDays == 1 || nDays == 2) && bmax) {
-                argMake(1, notifyActKeyDefault,               "");
-                argMake(3, notifyActKeyRemindTomorrow,          tr("Remind me tomorrow"));
-                argMake(5, notifyActKeyClose,                   tr("Close", "button"));
-            } else {
-                QDateTime tm = QDateTime::currentDateTime();
-                tm = tm.addMSecs(duration);
-                if (tm < job.Start) {
+
+            QDateTime tm = QDateTime::currentDateTime();
+            if (tm < job.Start) {
+                if (nDays >= 3 && job.RemindLaterCount == 1) {
+                    //default对应的是默认操作，也就是在点击空白区域会出发的操作
+                    argMake(1, notifyActKeyDefault, "");
+                    argMake(5, notifyActKeyClose, tr("Close", "button"));
+                    argMake(4, notifyActKeyRemind1DayBefore, tr("One day before start"));
+
+                } else if ((nDays == 1 || nDays == 2) && bmax) {
+                    argMake(1, notifyActKeyDefault, "");
+                    argMake(5, notifyActKeyClose, tr("Close", "button"));
+                    argMake(3, notifyActKeyRemindTomorrow, tr("Remind me tomorrow"));
+
+                } else {
                     argMake(1,  notifyActKeyDefault,            "");
                     argMake(5,  notifyActKeyClose,              tr("Close", "button"));
                     argMake(2,  notifyActKeyRemindLater,        tr("Remind me later"));
@@ -115,10 +117,10 @@ void JobRemindManager::RemindJob(const Job &job)
                     argMake(22, notifyActKeyRemindAfter1hour,   tr("1 hour later"));
                     argMake(23, notifyActKeyRemindAfter4hours,  tr("4 hours later"));
                     argMake(3,  notifyActKeyRemindTomorrow,     tr("Tomorrow"));
-                } else {
-                    argMake(1,  notifyActKeyDefault,            "");
-                    argMake(5,  notifyActKeyClose,              tr("Close", "button"));
                 }
+            } else {
+                argMake(1, notifyActKeyDefault, "");
+                argMake(5, notifyActKeyClose, tr("Close", "button"));
             }
 
             QString title(tr("Schedule Reminder"));
@@ -156,7 +158,7 @@ void JobRemindManager::notifyMsgHanding(const Job &job, const int operationNum)
     case 22://一个小时后提醒
     case 23://四个小时后提醒
     case 3://明天提醒
-        RemindJobLater(job);
+        RemindJobLater(job, operationNum);
         break;
     case 4://提前一天提醒
         SetJobRemindTomorrow(job);
@@ -260,16 +262,27 @@ QString JobRemindManager::GetRemindBody(const Job &job, const QDateTime &tm)
  * @brief  RemindJobLater 稍后提醒
  * @param job 日程信息结构体
  */
-void JobRemindManager::RemindJobLater(const Job &job)
+void JobRemindManager::RemindJobLater(const Job &job, const int operationNum)
 {
     CSystemdTimerControl systemdTimerControl;
     SystemDInfo info;
     info.jobID = job.ID;
-    info.laterCount = job.RemindLaterCount;
+    //如果是稍后提醒则设置对应的重复次数
+    if (operationNum == 2) {
+        info.laterCount = job.RemindLaterCount;
+    } else {
+        //如果不是稍后提醒，因为次数没有增加所以停止任务的时候需要加一以保证能够停止上次的任务
+        info.laterCount = job.RemindLaterCount + 1;
+    }
     info.triggerTimer = job.RemidTime;
     info.recurID = job.RecurID;
     //停止相应的任务
     systemdTimerControl.stopSystemdTimerByJobInfo(info);
+
+    if (operationNum != 2) {
+        //如果不是稍后提醒，还原成原来的提醒次数
+        info.laterCount--;
+    }
     QVector<SystemDInfo> infoVector;
     infoVector.append(info);
     //开启新任务
