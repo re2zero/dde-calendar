@@ -59,6 +59,7 @@
 #include <QMenuBar>
 #include <QMouseEvent>
 #include <QColorDialog>
+#include <QApplication>
 
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
@@ -440,6 +441,8 @@ void Calendarmainwindow::initConnection()
     connect(m_weekWindow, &CWeekWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
     //按钮关联新建日程
     connect(m_newScheduleBtn, &DToolButton::clicked, this, &Calendarmainwindow::slotNewSchedule);
+
+    connect(qApp, &QGuiApplication::applicationStateChanged, this, &Calendarmainwindow::slotapplicationStateChanged);
 }
 
 /**
@@ -790,6 +793,17 @@ bool Calendarmainwindow::event(QEvent *event)
         slotViewtransparentFrame(true);
     }
     return DMainWindow::event(event);
+}
+
+void Calendarmainwindow::slotapplicationStateChanged(Qt::ApplicationState state)
+{
+    static QDateTime currentDateTime = QDateTime::currentDateTime();
+    //TODO:目前没有找到窗口显示不是激活状态的原因（会先激活然后为非激活状态）。
+    //当间隔时间少于10毫秒且状态为非激活时，将窗口设置显示在最顶端并设置激活状态
+    if (state == Qt::ApplicationInactive && currentDateTime.msecsTo(QDateTime::currentDateTime()) < 10) {
+        activateWindow();
+        raise();
+    }
 }
 
 void Calendarmainwindow::slotOpenSettingDialog()

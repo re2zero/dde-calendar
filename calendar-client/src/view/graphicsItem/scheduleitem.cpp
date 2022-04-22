@@ -240,7 +240,10 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
     QPen pen(gdColor.orginalColor);
     pen.setWidth(2);
     painter->setPen(pen);
-    painter->drawLine(rect.topLeft(), rect.bottomLeft());
+    //左侧绘制竖线
+    QPointF top(rect.topLeft().x(), rect.topLeft().y() + 1);
+    QPointF bottom(rect.bottomLeft().x(), rect.bottomLeft().y() - 1);
+    painter->drawLine(top, bottom);
     painter->restore();
     int tMargin = 10;
 

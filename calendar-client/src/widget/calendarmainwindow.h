@@ -76,6 +76,8 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     bool event(QEvent *event) override;
 private slots:
+    //获取程序状态
+    void slotapplicationStateChanged(Qt::ApplicationState state);
     //隐藏提示框
     void setScheduleHide();
     //点击按钮切换视图
