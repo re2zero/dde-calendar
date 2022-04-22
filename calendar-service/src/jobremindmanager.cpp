@@ -97,11 +97,14 @@ void JobRemindManager::RemindJob(const Job &job)
 
             QDateTime tm = QDateTime::currentDateTime();
             if (tm < job.Start) {
+                //如果提醒规则大于3天且是第二次提醒
                 if (nDays >= 3 && job.RemindLaterCount == 1) {
                     //default对应的是默认操作，也就是在点击空白区域会出发的操作
                     argMake(1, notifyActKeyDefault, "");
                     argMake(5, notifyActKeyClose, tr("Close", "button"));
-                    argMake(4, notifyActKeyRemind1DayBefore, tr("One day before start"));
+                    //当前时间与开始时间间隔大于1天
+                    if (tm < job.Start.addDays(-1))
+                        argMake(4, notifyActKeyRemind1DayBefore, tr("One day before start"));
 
                 } else if ((nDays == 1 || nDays == 2) && bmax) {
                     argMake(1, notifyActKeyDefault, "");
@@ -158,10 +161,8 @@ void JobRemindManager::notifyMsgHanding(const Job &job, const int operationNum)
     case 22://一个小时后提醒
     case 23://四个小时后提醒
     case 3://明天提醒
-        RemindJobLater(job, operationNum);
-        break;
     case 4://提前一天提醒
-        SetJobRemindTomorrow(job);
+        RemindJobLater(job, operationNum);
         break;
     default:
         break;
@@ -287,38 +288,6 @@ void JobRemindManager::RemindJobLater(const Job &job, const int operationNum)
     infoVector.append(info);
     //开启新任务
     systemdTimerControl.buildingConfiggure(infoVector);
-}
-
-/**
- * @brief  SetJobRemindOneDayBefore 设置提醒为日程开始一天前
- * @param job 日程信息结构体
- */
-void JobRemindManager::SetJobRemindOneDayBefore(const Job &job)
-{
-    Job jj = job;
-    // 非全天，提醒改成24小时前
-    // 全天，提醒改成一天前的09:00。
-    QString remind = "1440";
-    if (jj.AllDay) {
-        remind = "1;09:00";
-    }
-    emit ModifyJobRemind(job, remind);
-}
-
-/**
- * @brief  SetJobRemindTomorrow 设置提醒为明天
- * @param job 日程信息结构体
- */
-void JobRemindManager::SetJobRemindTomorrow(const Job &job)
-{
-    Job jj = job;
-    // 非全天，提醒改成1小时前；
-    // 全天，提醒改成当天09:00。
-    QString remind = "60";
-    if (jj.AllDay) {
-        remind = "0;09:00";
-    }
-    emit ModifyJobRemind(job, remind);
 }
 
 QString JobRemindManager::GetBodyTimePart(const QDateTime &nowtime, const QDateTime &jobtime, bool allday, bool isstart)

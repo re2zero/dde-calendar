@@ -121,18 +121,6 @@ TEST_F(test_jobremindmanager, RemindJobLater)
     jobRemindManager->RemindJobLater(createJobs().at(0), 1);
 }
 
-//void JobRemindManager::SetJobRemindOneDayBefore(const Job &job)
-TEST_F(test_jobremindmanager, SetJobRemindOneDayBefore)
-{
-    jobRemindManager->SetJobRemindOneDayBefore(createJobs().at(0));
-}
-
-//void JobRemindManager::SetJobRemindTomorrow(const Job &job)
-TEST_F(test_jobremindmanager, SetJobRemindTomorrow)
-{
-    jobRemindManager->SetJobRemindTomorrow(createJobs().at(0));
-}
-
 //void JobRemindManager::UpdateRemindJobs(const QList<Job> &jobs)
 TEST_F(test_jobremindmanager, UpdateRemindJobs)
 {

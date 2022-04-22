@@ -939,6 +939,16 @@ void CalendarScheduler::notifyMsgHanding(const qint64 jobID, const qint64 recurI
         break;
     case 1://打开日历
     case 4://提前1天提醒
+        if (job.AllDay) {
+            //如果为全天则提醒时间为一天前9点提醒
+            job.RemidTime.setTime(QTime(9, 0));
+        } else {
+            //如果为非全天，则为开始时间的一天前
+            job.RemidTime.setTime(job.Start.time());
+        }
+        job.RemidTime.setDate(job.Start.date().addDays(-1));
+        m_database->updateRemindJob(job);
+        break;
     default:
         //删除对应的数据
         QList<qlonglong> Ids;
