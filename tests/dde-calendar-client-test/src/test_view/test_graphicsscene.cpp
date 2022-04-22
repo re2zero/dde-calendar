@@ -87,6 +87,12 @@ TEST_F(test_graphicsscene, focusOutDeal1)
     QApplication::sendEvent(m_Scene, &event);
 }
 
+TEST_F(test_graphicsscene, event)
+{
+    QFocusEvent event(QEvent::FocusOut);
+    m_Scene->event(&event);
+}
+
 //setIsContextMenu
 TEST_F(test_graphicsscene, setIsContextMenu)
 {

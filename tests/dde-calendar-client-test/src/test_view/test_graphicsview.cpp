@@ -20,6 +20,8 @@
 */
 #include "test_graphicsview.h"
 #include "graphicsItem/scheduleitem.h"
+#include "../third-party_stub/stub.h"
+#include "../dialog_stub.h"
 #include <QGraphicsView>
 
 test_graphicsview::test_graphicsview()
@@ -60,6 +62,11 @@ TEST_F(test_graphicsview, MeetCreationConditions)
     QDateTime date = QDateTime::fromString(strDate, "yyyy-MM-dd hh:mm:ss");
 
     cGraphicsView->MeetCreationConditions(date);
+}
+
+TEST_F(test_graphicsview, updateHeight_01)
+{
+    cGraphicsView->updateHeight();
 }
 
 //void CGraphicsView::setRange(int w, int h, QDate begindate, QDate enddate, int rightMargin)
@@ -127,21 +134,47 @@ TEST_F(test_graphicsview, getPosDate)
 //    cGraphicsView->ShowSchedule(infoitem);
 //}
 
+TEST_F(test_graphicsview, MoveInfoProcess_01)
+{
+    ScheduleDataInfo info = ScheduleDataInfo{};
+    QPointF pos(1, 1);
+    info.setAllDay(true);
+    cGraphicsView->MoveInfoProcess(info, pos);
+    EXPECT_FALSE(info.getAllDay());
+}
+
+TEST_F(test_graphicsview, MoveInfoProcess_02)
+{
+    ScheduleDataInfo info = ScheduleDataInfo{};
+    QPointF pos(1, 1);
+    info.setAllDay(false);
+    cGraphicsView->MoveInfoProcess(info, pos);
+    EXPECT_FALSE(info.getAllDay());
+}
+
 //void CGraphicsView::addScheduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum)
-TEST_F(test_graphicsview, addScheduleItem)
+TEST_F(test_graphicsview, addScheduleItem_01)
 {
     ScheduleDataInfo info = ScheduleDataInfo{};
     QDate date(2020, 12, 28);
     int index = 1;
     int totalNum = 2;
-    int type = 2;
+    int type = 1;
     int viewtype = 1;
     int maxnum = 3;
     cGraphicsView->addScheduleItem(info, date, index, totalNum, type, viewtype, maxnum);
 }
 
+TEST_F(test_graphicsview, clearSchedule_01)
+{
+    cGraphicsView->clearSchedule();
+
+    EXPECT_TRUE(cGraphicsView->m_updateDflag);
+    EXPECT_TRUE(cGraphicsView->m_vScheduleItem.isEmpty());
+}
+
 //void CGraphicsView::scheduleClassificationType(QVector<ScheduleDataInfo> &scheduleInfolist, QList<ScheduleclassificationInfo> &info)
-TEST_F(test_graphicsview, scheduleClassificationType)
+TEST_F(test_graphicsview, schedusleClassificationType)
 {
     QVector<ScheduleDataInfo> scheduleInfolist = QVector<ScheduleDataInfo> {};
     QList<ScheduleclassificationInfo> info = QList<ScheduleclassificationInfo> {};
@@ -168,13 +201,13 @@ TEST_F(test_graphicsview, slotUpdateScene)
 }
 
 //void CGraphicsView::scrollBarValueChangedSlot()
-TEST_F(test_graphicsview, scrollBarValueChangedSlot)
+TEST_F(test_graphicsview, scrollBarValueChangedSlot_01)
 {
     cGraphicsView->scrollBarValueChangedSlot();
 }
 
 //ScheduleDataInfo CGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
-TEST_F(test_graphicsview, getScheduleInfo)
+TEST_F(test_graphicsview, getScheduleInfo_01)
 {
     QString begin = "2020-12-01 12:24:36";
     QDateTime begindate = QDateTime::fromString(begin, "yyyy-MM-dd hh:mm:ss");
@@ -182,6 +215,16 @@ TEST_F(test_graphicsview, getScheduleInfo)
     QDateTime enddate = QDateTime::fromString(end, "yyyy-MM-dd hh:mm:ss");
 
     cGraphicsView->getScheduleInfo(begindate, enddate);
+}
+
+TEST_F(test_graphicsview, getScheduleInfo_02)
+{
+    QString begin = "2020-12-01 12:24:36";
+    QDateTime begindate = QDateTime::fromString(begin, "yyyy-MM-dd hh:mm:ss");
+    QString end = "2020-12-21 12:24:36";
+    QDateTime enddate = QDateTime::fromString(end, "yyyy-MM-dd hh:mm:ss");
+
+    cGraphicsView->getScheduleInfo(enddate, begindate);
 }
 
 //bool CGraphicsView::IsEqualtime(const QDateTime &timeFirst, const QDateTime &timeSecond)
@@ -248,10 +291,28 @@ TEST_F(test_graphicsview, updateInfo)
     cGraphicsView->updateInfo();
 }
 
-////void CGraphicsView::mousePressEvent(QMouseEvent *event)
-//TEST_F(test_graphicsview, mousePressEvent)
-//{
-//    QMouseEvent *event;
-//    cGraphicsView->mousePressEvent(event);
-//    assert(1 == 1);
-//}
+TEST_F(test_graphicsview, mouseDoubleClickEvent_01)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    QMouseEvent event(QEvent::MouseButtonDblClick, QPointF(1, 1), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    cGraphicsView->mouseDoubleClickEvent(&event);
+}
+
+TEST_F(test_graphicsview, mousePressEvent_01)
+{
+    QMouseEvent event(QEvent::MouseButtonPress, QPointF(1, 1), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    cGraphicsView->mousePressEvent(&event);
+}
+
+TEST_F(test_graphicsview, mouseMoveEvent_01)
+{
+    QMouseEvent event(QEvent::MouseButtonPress, QPointF(1, 1), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    cGraphicsView->mouseMoveEvent(&event);
+}
+
+TEST_F(test_graphicsview, resizeEvent_01)
+{
+    QResizeEvent event(QSize(50, 50), QSize(100, 100));
+    cGraphicsView->resizeEvent(&event);
+}
