@@ -116,7 +116,6 @@ void JobTypeComboBox::initUI()
 {
     setEditable(false);
     setIconSize(QSize(16, 16));
-    view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 }
 
 void JobTypeComboBox::setItemSelectable(bool status)
@@ -156,10 +155,6 @@ void JobTypeComboBox::addCustomWidget(QFrame *viewContainer)
             //添加自定义控件到最后
             layout->insertWidget(-1, m_customWidget);
             viewContainer->setFixedHeight(viewContainer->height() + m_customWidget->height());
-            //设置最大高度为400
-            if (viewContainer->height() > 400) {
-                viewContainer->setFixedHeight(400);
-            }
             //设置可接受tab焦点
             m_addBtn->setFocusPolicy(Qt::TabFocus);
             setTabOrder(view(), m_addBtn);
@@ -183,10 +178,22 @@ void JobTypeComboBox::showPopup()
 
     //获取下拉视图容器
     QFrame *viewContainer = findChild<QFrame *>();
-    if (m_lstJobType.size() < 20) {
+    if (nullptr == m_customWidget) {
         //添加自定义布局
         addCustomWidget(viewContainer);
     }
+
+    if (m_customWidget && m_lstJobType.size() >= 20) {
+        m_customWidget->hide();
+    }
+
+    //设置最大高度为400
+    if (viewContainer->height() > 400) {
+        viewContainer->setFixedHeight(400);
+    }
+    //重新调整选中项的位置
+    view()->scrollTo(view()->currentIndex(), QAbstractItemView::PositionAtCenter);
+
 }
 
 bool JobTypeComboBox::eventFilter(QObject *obj, QEvent *event)
