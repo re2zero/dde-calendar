@@ -107,8 +107,8 @@ Monthly view is defaulted and you can click to switch between different views.
            </ul></li>
    </ul>
    <ul>
-     <li>Time<ul>  <li>Soloar: Starts and ends are displayed in solor time only.</li>
-   <li>Lunar: Starts and ends are displayed both in solor time and lunar time.</li>
+     <li>Time<ul>  <li>Solar: Starts and ends are displayed in solar time only.</li>
+   <li>Lunar: Starts and ends are displayed both in solar time and lunar time.</li>
          </ul></li>
    </ul>  </td>
 </tr>
@@ -129,6 +129,7 @@ Options for <b>Repeat</b> with <b>Lunar</b> checked: Never, Monthly, Yearly.</td
    <td>Only when you enable the <b>Repeat</b> feature, can <b>End Repeat</b> be displayed. The options for <b>End Repeat</b> are Never, after n time(s) or on the date selected. </td>
 </tr> 
 </table>
+
 
 
 
