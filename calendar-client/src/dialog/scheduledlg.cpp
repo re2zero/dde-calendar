@@ -1087,7 +1087,6 @@ void CScheduleDlg::initUI()
         m_endrepeatWidget->setObjectName("EndRepeatDateWidget");
         m_endrepeatWidget->setAccessibleName("EndRepeatDateWidget");
         m_endrepeatWidget->setLayout(endrepeatLabellayout);
-        m_endrepeatWidget->setFixedWidth(dialog_width);
         maintlayout->addWidget(m_endrepeatWidget);
         m_endrepeatWidget->setVisible(false);
     }
