@@ -152,34 +152,41 @@ void ScheduleTypeEditDlg::initData()
 
 void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
 {
+    QString tStitlename = strName;
+    //去除回车字符
+    if (tStitlename.contains("\n")) {
+        //设置纯文本显示原始内容
+        tStitlename.replace("\n", "");
+    }
     //最大限制20个字符，超出后过滤掉
-    if (strName.length() > 20) {
+    if (tStitlename.length() > 20) {
         m_lineEdit->setText(m_typeText);
         return;
     } else {
-        m_typeText = strName;
+        m_typeText = tStitlename;
+        m_lineEdit->setText(m_typeText);
     }
 
     //文本编辑框中文本改变事件
     //1不能为空，2不能全空格，3不能重名
-    if (strName.isEmpty()) {
+    if (tStitlename.isEmpty()) {
         //名称为空，返回
         m_lineEdit->showAlertMessage(tr("Enter a name please"));
         m_lineEdit->setAlert(true);
         this->getButton(1)->setEnabled(false);
         return;
     }
-    if (strName.trimmed().isEmpty()) {
+    if (tStitlename.trimmed().isEmpty()) {
         //名称为全空格，返回
         m_lineEdit->showAlertMessage(tr("The name can not only contain whitespaces"));
         m_lineEdit->setAlert(true);
         this->getButton(1)->setEnabled(false);
         return;
     }
-    m_jobTypeNew.setJobTypeName(strName);
+    m_jobTypeNew.setJobTypeName(tStitlename);
     //在编辑日程状态下不对编辑的日程类型名做重名处理
     bool isUsed = m_dialogType == DialogEditType ? JobTypeInfoManager::instance()->isJobTypeNameUsed(m_jobTypeNew)
-                                                 : JobTypeInfoManager::instance()->isJobTypeNameUsed(strName);
+                                                 : JobTypeInfoManager::instance()->isJobTypeNameUsed(tStitlename);
 
     if (isUsed) {
         //重名，返回

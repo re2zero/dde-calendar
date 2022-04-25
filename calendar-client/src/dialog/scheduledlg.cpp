@@ -594,27 +594,34 @@ void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
     if (!m_typeEditStatus) {
         return;
     }
+    QString tStitlename = text;
+    //去除回车字符
+    if (tStitlename.contains("\n")) {
+        //设置纯文本显示原始内容
+        tStitlename.replace("\n", "");
+    }
     //最大限制20个字符，超出后过滤掉
-    if (text.length() > 20) {
+    if (tStitlename.length() > 20) {
         m_typeComBox->setEditText(m_TypeContext);
         return;
     } else {
-        m_TypeContext = text;
+        m_TypeContext = tStitlename;
+        m_typeComBox->setEditText(m_TypeContext);
     }
 
-    if (text.isEmpty()) {
+    if (tStitlename.isEmpty()) {
         //名称为空，返回
         m_jobTypeAlert->showAlertMessage(tr("Enter a name please"));
-    } else if (text.trimmed().isEmpty()) {
+    } else if (tStitlename.trimmed().isEmpty()) {
         //名称为全空格，返回
         m_jobTypeAlert->showAlertMessage(tr("The name can not only contain whitespaces"));
-    } else if (JobTypeInfoManager::instance()->isJobTypeNameUsed(text)) {
+    } else if (JobTypeInfoManager::instance()->isJobTypeNameUsed(tStitlename)) {
         //重名，返回
         m_jobTypeAlert->showAlertMessage(tr("The name already exists"));
     }
 
     setOkBtnEnabled();
-    m_TypeContext = text;
+    m_TypeContext = tStitlename;
 }
 
 bool CScheduleDlg::eventFilter(QObject *obj, QEvent *pEvent)
