@@ -800,9 +800,16 @@ void Calendarmainwindow::slotapplicationStateChanged(Qt::ApplicationState state)
     static QDateTime currentDateTime = QDateTime::currentDateTime();
     //TODO:目前没有找到窗口显示不是激活状态的原因（会先激活然后为非激活状态）。
     //当间隔时间少于10毫秒且状态为非激活时，将窗口设置显示在最顶端并设置激活状态
-    if (state == Qt::ApplicationInactive && currentDateTime.msecsTo(QDateTime::currentDateTime()) < 10) {
-        activateWindow();
-        raise();
+    if (state == Qt::ApplicationInactive) {
+        //获取当前时间
+        QDateTime currentTime = QDateTime::currentDateTime();
+        //考虑到会修改系统时间的情况，时间差在0～30毫秒内才会设置
+        if (currentDateTime.msecsTo(currentTime) < 30 && currentDateTime.msecsTo(currentTime) >= 0) {
+            activateWindow();
+            raise();
+        }
+        //断开信号连接
+        disconnect(qApp, &QGuiApplication::applicationStateChanged, this, &Calendarmainwindow::slotapplicationStateChanged);
     }
 }
 
