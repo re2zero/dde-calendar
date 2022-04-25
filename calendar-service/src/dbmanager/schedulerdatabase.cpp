@@ -1000,13 +1000,13 @@ bool SchedulerDatabase::updateJobType(const int &iTypeNo, const QString &strType
     bool bRet = false;
 
     QSqlQuery query(m_database);
-    QString strsql = QString("UPDATE JobType                         "
-                             "   SET TypeName = '%1', ColorTypeNo = %2 "
-                             " WHERE TypeNo   = %3                   ")
-                         .arg(strTypeName)
-                         .arg(iColorTypeNo)
-                         .arg(iTypeNo);
+    //使用占位符的方式更新数据库
+    QString strsql = "UPDATE JobType SET TypeName = ?,ColorTypeNo = ? WHERE TypeNo = ?";
     query.prepare(strsql);
+    int i = 0;
+    query.bindValue(i, strTypeName);
+    query.bindValue(++i, iColorTypeNo);
+    query.bindValue(++i, iTypeNo);
     bRet = query.exec();
     if (bRet) {
         if (query.isActive()) {
