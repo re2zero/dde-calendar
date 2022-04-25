@@ -849,7 +849,8 @@ void Calendarmainwindow::slotOpenSettingDialog()
                     if (!view)
                         return;
                     DIconButton *addButton = new DIconButton(DStyle::SP_IncreaseElement, nullptr);
-                    addButton->setFixedSize(22, 22);
+                    //跟UI沟通size设置为20*20
+                    addButton->setFixedSize(20, 20);
                     wid->layout()->addWidget(addButton);
                     //使addButton的右边距等于view的右边距
                     int leftMargin = wid->layout()->contentsMargins().left();
@@ -872,6 +873,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
             }
         }
     }
-
-    m_dsdSetting->exec();
+    //内容定位到顶端
+    m_dsdSetting->scrollToGroup("setting_base");
+    m_dsdSetting->show();
 }
