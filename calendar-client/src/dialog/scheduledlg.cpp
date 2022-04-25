@@ -50,7 +50,6 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     initUI();
     initConnection();
     setTabFouseOrder();
-    languageCheck();
     initColor();
 
     if (type == 1) {
@@ -72,7 +71,6 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
     setFixedSize(dialog_width, 524);
     //焦点设置到输入框
     m_textEdit->setFocus();
-    m_solarRadioBtn->click();
 }
 
 CScheduleDlg::~CScheduleDlg()
@@ -92,12 +90,6 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
         //光标移动到文末
         m_textEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
     }
-    //根据日程信息以及当前语言，设置是否显示农历日程
-    if (m_ScheduleDataInfo.getIsLunar() && m_languageFlag > 0) {
-        m_lunarRadioBtn->click();
-    } else {
-        m_solarRadioBtn->click();
-    }
 
     m_beginDateEdit->setDate(info.getBeginDateTime().date());
     m_beginTimeEdit->setTime(info.getBeginDateTime().time());
@@ -112,6 +104,7 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
     updateEndTimeListAndTimeDiff(m_currentDate, m_EndDate);
     slotallDayStateChanged(info.getAllDay());
     initRmindRpeatUI();
+    setShowState(info.getIsLunar());
 }
 
 void CScheduleDlg::setDate(const QDateTime &date)
@@ -143,6 +136,7 @@ void CScheduleDlg::setDate(const QDateTime &date)
     m_endTimeEdit->setTime(m_EndDate.time());
     m_endRepeatDate->setMinimumDate(date.date());
     updateEndTimeListAndTimeDiff(m_currentDate, m_EndDate);
+    setShowState(false);
 }
 
 void CScheduleDlg::setAllDay(bool flag)
@@ -569,28 +563,15 @@ void CScheduleDlg::slotTypeRpeatactivated(int index)
 
 void CScheduleDlg::slotRadioBtnClicked(int btnId)
 {
-    //btnId的可能值为0和1
-    static int clickedId = -1;
     //与上一次选项一致不做重置处理
-    if (clickedId == btnId) {
+    if (m_prevCheckRadioID == btnId) {
         return;
     }
-    clickedId = btnId;
-
-    if (RadioSolarId == btnId) {
-        m_beginDateEdit->setLunarCalendarStatus(false);
-        m_endDateEdit->setLunarCalendarStatus(false);
-        m_endRepeatDate->setLunarCalendarStatus(false);
-        updateRepeatCombox(false);
-    } else if (RadioLunarId == btnId) {
-        //只有为中文系列语言时才显示农历
-        if (m_languageFlag == 2) {
-            m_beginDateEdit->setLunarCalendarStatus(true);
-            m_endDateEdit->setLunarCalendarStatus(true);
-            m_endRepeatDate->setLunarCalendarStatus(true);
-        }
-        updateRepeatCombox(true);
-    }
+    m_prevCheckRadioID = btnId;
+    bool jobIsLunar = RadioLunarId == btnId;
+    setShowState(jobIsLunar);
+    //更新重复规则下拉显示和保存按钮的显示状态
+    updateRepeatCombox(jobIsLunar);
 }
 
 void CScheduleDlg::slotBtnAddItemClicked()
@@ -1319,34 +1300,65 @@ void CScheduleDlg::updateRepeatCombox(bool isLunar)
 }
 
 /**
- * @brief CScheduleDlg::languageCheck
+ * @brief CScheduleDlg::isShowLunar
  * 系统语言检查，根据语言类型更改控件状态和显示状态，规则如下
  * 中文环境下所有功能正常显示
- * 英文环境下可勾选农历日程选项，以农历规则提示，但是时间内容不显示农历
- * 其他语言环境下只能选择公历且只能以公历显示和提示
- *
  */
-void CScheduleDlg::languageCheck()
+bool CScheduleDlg::isShowLunar()
 {
-    QString langName = QLocale::system().name();
+    return QLocale::system().name().startsWith("zh_");
+}
 
-    m_languageFlag = 0;
-
-    if (langName.startsWith("en_")) {
-        //英文环境
-        m_languageFlag = 1;
-    } else if (langName.startsWith("zh_")) {
-        //中文环境
-        m_languageFlag = 2;
-    }
-
-    //非中文和英文环境下禁用农历勾选按钮
-    if (0 == m_languageFlag) {
-        m_solarRadioBtn->click();
-        m_lunarRadioBtn->setDisabled(true);
+/**
+ * @brief CScheduleDlg::setShowState
+ * @param jobIsLunar
+ * 非中文环境下若新建日程则不农历按钮置灰不可选
+ * 非中文环境下若编辑农历日程则仅公历按钮可选，其他的都置灰,当选择公历后,控件都可使用
+ */
+void CScheduleDlg::setShowState(bool jobIsLunar)
+{
+    //如果不显示农历
+    if (isShowLunar()) {
+        m_lunarRadioBtn->setEnabled(true);
+        m_beginDateEdit->setLunarCalendarStatus(jobIsLunar);
+        m_endDateEdit->setLunarCalendarStatus(jobIsLunar);
+        m_endRepeatDate->setLunarCalendarStatus(jobIsLunar);
     } else {
-        m_lunarRadioBtn->setDisabled(false);
+        //在不显示农历环境下,取消农历显示
+        m_beginDateEdit->setLunarCalendarStatus(false);
+        m_endDateEdit->setLunarCalendarStatus(false);
+        m_endRepeatDate->setLunarCalendarStatus(false);
+        m_lunarRadioBtn->setEnabled(false);
+        //在不显示农历情况下，需要根据编辑日程是否为农历日程来判断显示状态
+        setWidgetEnabled(!jobIsLunar);
+        //只有在不显示农历情况下才会根据是否显示农历来设置按钮状态
+        //在不显示农历情况下是无法切换到农历的，所以只有在切换公历和编辑日程时才会设置
+        getButton(1)->setEnabled(!jobIsLunar);
     }
+
+    if (jobIsLunar) {
+        //为农历日程
+        m_lunarRadioBtn->setChecked(true);
+    } else {
+        //公历日程
+        m_solarRadioBtn->setChecked(true);
+    }
+}
+
+void CScheduleDlg::setWidgetEnabled(bool isEnabled)
+{
+    m_typeComBox->setEnabled(isEnabled);
+    m_textEdit->setEnabled(isEnabled);
+    m_allDayCheckbox->setEnabled(isEnabled);
+    m_beginDateEdit->setEnabled(isEnabled);
+    m_beginTimeEdit->setEnabled(isEnabled);
+    m_endDateEdit->setEnabled(isEnabled);
+    m_endTimeEdit->setEnabled(isEnabled);
+    m_rmindCombox->setEnabled(isEnabled);
+    m_beginrepeatCombox->setEnabled(isEnabled);
+    m_endrepeatCombox->setEnabled(isEnabled);
+    m_endrepeattimes->setEnabled(isEnabled);
+    m_endRepeatDate->setEnabled(isEnabled);
 }
 
 void CScheduleDlg::initColor()

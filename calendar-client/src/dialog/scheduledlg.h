@@ -150,10 +150,18 @@ private:
      */
     void updateRepeatCombox(bool isLunar = false);
     /**
-     * @brief languageCheck
-     * 系统语言检查，根据语言类型更改控件状态和显示状态
+     * @brief isShowLunar
+     * 系统语言检查，根据语言类型判断是否显示农历信息
      */
-    void languageCheck();
+    bool isShowLunar();
+
+    /**
+     * @brief setShowState      设置显示状态
+     * @param jobIsLunar        日程是否为农历
+     */
+    void setShowState(bool jobIsLunar);
+
+    void setWidgetEnabled(bool isEnabled);
 
     void resize();
 
@@ -202,7 +210,6 @@ private:
     bool m_setAccept {false}; //是否设置返回代码为Rejected
     qint64 m_timeDiff = 0;             //开始时间和结束时间差，不算日期
     bool m_isMoreThenOneDay = false;
-    int m_languageFlag = 0;       //系统语言环境标记 2: 中文系列 1：英文系列 0：其他语言
 private:
     //日程
     ScheduleDataInfo m_ScheduleDataInfo;
@@ -211,6 +218,7 @@ private:
     QDateTime m_currentDate;
     QDateTime m_EndDate;
     bool m_typeEditStatus = false; //日程类型编辑状态
+    int m_prevCheckRadioID = -1; //上一次点击Radio的id编号
 };
 
 #endif // SCHEDULEDLG_H
