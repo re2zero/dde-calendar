@@ -174,7 +174,7 @@ static const int D_MWindowHeight = 564;
 
 namespace DARROWRECT {
 //提示框圆角
-static const int DRADIUS = 15;
+static const int DRADIUS = 10;
 } // namespace DARROWRECT
 enum Week {
     Monday    = 6,

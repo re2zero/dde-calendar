@@ -312,6 +312,11 @@ void CYearScheduleOutView::setData(QVector<ScheduleDataInfo> &vListData)
     list_count = vListData.size();
     yearscheduleview->setData(vListData);
     yearscheduleview->showWindow();
+    //根据widget的高度调整圆角
+    int value = yearscheduleview->height() / 6;
+    //如果圆角最大为15
+    value = value > 15 ? 15 : value;
+    setRadius(value);
     scheduleinfoList = yearscheduleview->getlistdate();
 }
 
