@@ -529,7 +529,6 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
  */
 void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
 {
-    m_buttonBox->setEnabled(false);
     setScheduleHide();
     int index = m_buttonBox->id(bt);
     viewWindow(index, true);
@@ -660,7 +659,6 @@ void Calendarmainwindow::slotViewtransparentFrame(const bool isShow)
  */
 void Calendarmainwindow::slotSetButtonBox()
 {
-    m_buttonBox->setEnabled(true);
     //如果为键盘操作则切换后设置焦点
     if (m_setButtonFocus) {
         //获取焦点
