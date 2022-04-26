@@ -26,6 +26,8 @@
 #include "cpushbutton.h"
 
 #include <DComboBox>
+#include <DAlertControl>
+
 DWIDGET_USE_NAMESPACE
 
 class JobTypeComboBox : public DComboBox
@@ -38,9 +40,16 @@ public:
     int getCurrentJobTypeNo();
     void setCurrentJobTypeNo(int strJobTypeNo);
 
+    void setAlert(bool isAlert);
+    bool isAlert() const;
+    void showAlertMessage(const QString &text, int duration = 3000);
+    void showAlertMessage(const QString &text, QWidget *follower, int duration = 3000);
+    void setAlertMessageAlignment(Qt::Alignment alignment);
+    void hideAlertMessage();
+
 signals:
     void signalAddTypeBtnClicked();
-
+    void alertChanged(bool alert) const;
 public slots:
 
 protected slots:
@@ -48,7 +57,7 @@ protected slots:
 
 protected:
     void showPopup() override;
-    bool eventFilter(QObject*, QEvent*) override;
+    bool eventFilter(QObject *, QEvent *) override;
 
 private:
     void initUI();
@@ -62,6 +71,8 @@ private:
     QList<JobTypeInfo> m_lstJobType;
     int m_hoverSelectedIndex = -1; //鼠标悬停的选项下标
     int m_itemNumIndex = 0; //item数量
+    DAlertControl *m_control {nullptr};
+    QLineEdit *m_lineEdit {nullptr};
 };
 
 #endif // JOBTYPECOMBOBOX_H

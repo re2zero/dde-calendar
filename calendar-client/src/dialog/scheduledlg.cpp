@@ -543,7 +543,7 @@ void CScheduleDlg::slotTypeRpeatactivated(int index)
         m_colorSeletorWideget->show();
     } else {
         //若下拉选择隐藏提醒消息
-        m_jobTypeAlert->hideAlertMessage();
+        m_typeComBox->hideAlertMessage();
         m_typeComBox->setIconSize(QSize(16, 16));
         m_typeEditStatus = false;
         m_colorSeletorWideget->hide();
@@ -603,13 +603,16 @@ void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
 
     if (tStitlename.isEmpty()) {
         //名称为空，返回
-        m_jobTypeAlert->showAlertMessage(tr("Enter a name please"));
+        m_typeComBox->showAlertMessage(tr("Enter a name please"));
+        m_typeComBox->setAlert(true);
     } else if (tStitlename.trimmed().isEmpty()) {
         //名称为全空格，返回
-        m_jobTypeAlert->showAlertMessage(tr("The name can not only contain whitespaces"));
+        m_typeComBox->showAlertMessage(tr("The name can not only contain whitespaces"));
+        m_typeComBox->setAlert(true);
     } else if (JobTypeInfoManager::instance()->isJobTypeNameUsed(tStitlename)) {
         //重名，返回
-        m_jobTypeAlert->showAlertMessage(tr("The name already exists"));
+        m_typeComBox->showAlertMessage(tr("The name already exists"));
+        m_typeComBox->setAlert(true);
     }
 
     setOkBtnEnabled();
@@ -767,7 +770,6 @@ void CScheduleDlg::initUI()
         m_typeComBox->setAccessibleName("ScheduleTypeCombobox");
         m_typeComBox->setFixedSize(350, item_Fixed_Height);
         initJobTypeComboBox();//todo
-        m_jobTypeAlert = new DAlertControl(m_typeComBox, this);
 
         m_colorSeletorWideget = new ColorSeletorWidget();
         m_colorSeletorWideget->hide();

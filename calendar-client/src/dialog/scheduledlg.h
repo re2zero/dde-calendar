@@ -31,7 +31,6 @@
 #include <DLineEdit>
 #include <DTextEdit>
 #include <DComboBox>
-#include <DAlertControl>
 
 #include <QLabel>
 #include <QButtonGroup>
@@ -174,7 +173,6 @@ private:
     QLabel *m_typeLabel = nullptr;
     //DComboBox *m_typeComBox = nullptr;
     JobTypeComboBox *m_typeComBox = nullptr;
-    DAlertControl *m_jobTypeAlert = nullptr;   //日程类型提示框
     ColorSeletorWidget *m_colorSeletorWideget = nullptr; //颜色选择器
     QLabel *m_contentLabel = nullptr;
     DTextEdit *m_textEdit = nullptr;

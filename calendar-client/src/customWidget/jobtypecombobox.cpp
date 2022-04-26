@@ -21,6 +21,7 @@
 #include "jobtypecombobox.h"
 
 #include <DPushButton>
+#include <DPaletteHelper>
 
 #include <QLayout>
 #include <QPainter>
@@ -29,6 +30,7 @@
 #include <QAbstractItemView>
 #include <QStandardItemModel>
 #include <QPainterPath>
+#include <QLineEdit>
 
 JobTypeComboBox::JobTypeComboBox(QWidget *parent) : DComboBox(parent)
 {
@@ -50,8 +52,7 @@ JobTypeComboBox::~JobTypeComboBox()
 
 int JobTypeComboBox::getCurrentJobTypeNo()
 {
-    if (this->currentIndex() < 0 || this->currentIndex() >=  m_lstJobType.size())
-    {
+    if (this->currentIndex() < 0 || this->currentIndex() >= m_lstJobType.size()) {
         return -1;
     }
     return m_lstJobType[this->currentIndex()].getJobTypeNo();
@@ -66,6 +67,48 @@ void JobTypeComboBox::setCurrentJobTypeNo(int strJobTypeNo)
         }
     }
     return;
+}
+
+void JobTypeComboBox::setAlert(bool isAlert)
+{
+    if (m_control) {
+        //输入框未显示警告色？
+        m_control->setAlert(isAlert);
+    }
+}
+
+bool JobTypeComboBox::isAlert() const
+{
+    if (m_control) {
+        return m_control->isAlert();
+    }
+    return false;
+}
+
+void JobTypeComboBox::showAlertMessage(const QString &text, int duration)
+{
+    showAlertMessage(text, nullptr, duration);
+}
+
+void JobTypeComboBox::showAlertMessage(const QString &text, QWidget *follower, int duration)
+{
+    if (m_control) {
+        m_control->showAlertMessage(text, follower ? follower : this, duration);
+    }
+}
+
+void JobTypeComboBox::setAlertMessageAlignment(Qt::Alignment alignment)
+{
+    if (m_control) {
+        m_control->setMessageAlignment(alignment);
+    }
+}
+
+void JobTypeComboBox::hideAlertMessage()
+{
+    if (m_control) {
+        m_control->hideAlertMessage();
+    }
 }
 
 bool JobTypeComboBox::updateJobType()
@@ -170,9 +213,17 @@ void JobTypeComboBox::showPopup()
 {
     //重置icon大小
     setItemSelectable(true);
-    setIconSize(QSize(16, 16));
+    if (currentIndex() < 0)
+        setCurrentIndex(0);
     //设置为不可编辑模式
     setEditable(false);
+    //下拉模式取消信号关联，并释放警报控制
+    if (m_control) {
+        disconnect(m_control, &DAlertControl::alertChanged, this, &JobTypeComboBox::alertChanged);
+        delete m_control;
+        m_control = nullptr;
+    }
+
     emit activated(0);
     DComboBox::showPopup();
 
@@ -243,9 +294,12 @@ bool JobTypeComboBox::eventFilter(QObject *obj, QEvent *event)
 void JobTypeComboBox::slotBtnAddItemClicked()
 {
     JobTypeComboBox::hidePopup();
-    setIconSize(QSize(0, 0));
+    //设置没有选中，
+    setCurrentIndex(-1);
     setEditable(true);
-    setCurrentText("");
+    //设置为编辑模式后才会创建lineEdit
+    m_control = new DAlertControl(this->lineEdit(), this);
+    connect(m_control, &DAlertControl::alertChanged, this, &JobTypeComboBox::alertChanged);
     emit signalAddTypeBtnClicked();
     return;
 }
