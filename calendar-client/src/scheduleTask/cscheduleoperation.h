@@ -71,6 +71,10 @@ private:
     void changeRepetitionRule(ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
     //更新日程类型(这里的接口是私有的，供updateJobType同名接口调用，在另一接口中做修改的逻辑，这里实现功能)
     bool updateJobType(const JobTypeInfo &jobTypeInfo);
+    //农历每年闰月提示信息
+    void lunarMessageDialogShow(const ScheduleDataInfo &newinfo);
+    //根据新旧日程信息判断是否提示
+    void showLunarMessageDialog(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo);
 signals:
 public slots:
 private:

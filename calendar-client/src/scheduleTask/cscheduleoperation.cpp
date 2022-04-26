@@ -23,6 +23,8 @@
 #include "cscheduledbus.h"
 #include "schedulectrldlg.h"
 #include "configsettings.h"
+#include "dcalendarddialog.h"
+#include "cdynamicicon.h"
 
 CScheduleOperation::CScheduleOperation(QWidget *parent)
     : QObject(parent)
@@ -38,6 +40,10 @@ CScheduleOperation::CScheduleOperation(QWidget *parent)
  */
 bool CScheduleOperation::createSchedule(const ScheduleDataInfo &scheduleInfo)
 {
+    //如果为农历且重复类型为每年
+    if (scheduleInfo.getIsLunar() && RepetitionRule::RRule_EVEYEAR == scheduleInfo.getRepetitionRule().getRuleId()) {
+        lunarMessageDialogShow(scheduleInfo);
+    }
     return m_DBusManager->CreateJob(scheduleInfo);
 }
 
@@ -67,6 +73,7 @@ bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
                 _result = false;
             } else if (msgBox.clickButton() == 1) {
                 //更新日程
+                showLunarMessageDialog(newInfo, oldInfo);
                 _result =  m_DBusManager->UpdateJob(newInfo);
             }
         } else if (oldInfo.getRepetitionRule().getRuleId() != newInfo.getRepetitionRule().getRuleId()) {
@@ -81,6 +88,7 @@ bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
                 _result = false;
             } else if (msgBox.clickButton() == 1) {
                 //更新日程
+                showLunarMessageDialog(newInfo, oldInfo);
                 _result = m_DBusManager->UpdateJob(newInfo);
             }
         } else {
@@ -244,6 +252,7 @@ bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
             //TODO 清空忽略日程
             _scheduleDataInfo.getIgnoreTime().clear();
             //更新日程
+            showLunarMessageDialog(_scheduleDataInfo, oldinfo);
             _result = m_DBusManager->UpdateJob(_scheduleDataInfo);
         } else if (msgBox.clickButton() == 2) {
             //仅修改此日程
@@ -293,6 +302,10 @@ bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
             newschedule.setID(0);
             newschedule.setRepetitionRule(_rule);
             //创建新日程
+            //如果为农历且重复类型为每年
+            if (newschedule.getIsLunar() && RepetitionRule::RRule_EVEYEAR == newschedule.getRepetitionRule().getRuleId()) {
+                lunarMessageDialogShow(newschedule);
+            }
             _result = m_DBusManager->CreateJob(newschedule);
         } else if (msgBox.clickButton() == 2) {
             _result = changeOnlyInfo(newinfo, oldinfo);
@@ -435,6 +448,33 @@ bool CScheduleOperation::updateJobType(const JobTypeInfo &jobTypeInfo)
     QString strJson = "";
     JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo, strJson);
     return m_DBusManager->UpdateJobType(strJson);
+}
+
+void CScheduleOperation::lunarMessageDialogShow(const ScheduleDataInfo &newinfo)
+{
+    //如果该日程为闰月日程，因为对应的闰月需要间隔好多年，所以添加对应的提示信息
+    CaHuangLiDayInfo huangLiInfo;
+    CScheduleDBus::getInstance()->GetHuangLiDay(newinfo.getBeginDateTime().date(), huangLiInfo);
+    if (huangLiInfo.mLunarMonthName.contains("闰")) {
+        DCalendarDDialog prompt(m_widget);
+        prompt.setIcon(QIcon(CDynamicIcon::getInstance()->getPixmap()));
+        prompt.setMessage(tr("You have selected a leap month, and will be reminded according to the rules of the lunar calendar."));
+        prompt.addButton(tr("OK", "button"), true, DDialog::ButtonNormal);
+        prompt.exec();
+    }
+}
+
+void CScheduleOperation::showLunarMessageDialog(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo)
+{
+    //在阴历每年重复情况下如果修改了开始时间或重复规则
+    if (newinfo.getIsLunar() && RepetitionRule::RRule_EVEYEAR == newinfo.getRepetitionRule().getRuleId()) {
+        if (oldinfo.getBeginDateTime().date() != newinfo.getBeginDateTime().date()
+            || oldinfo.getRepetitionRule().getRuleId() != newinfo.getRepetitionRule().getRuleId()
+            || oldinfo.getIsLunar() != newinfo.getIsLunar()) {
+            //判断是否为闰月
+            lunarMessageDialogShow(newinfo);
+        }
+    }
 }
 
 /**

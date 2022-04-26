@@ -103,6 +103,8 @@ void CScheduleDlg::setData(const ScheduleDataInfo &info)
 
     updateEndTimeListAndTimeDiff(m_currentDate, m_EndDate);
     slotallDayStateChanged(info.getAllDay());
+    //根据是否为农历更新重复选项
+    updateRepeatCombox(info.getIsLunar());
     initRmindRpeatUI();
     setShowState(info.getIsLunar());
 }
@@ -260,16 +262,6 @@ bool CScheduleDlg::clickOkBtn()
         case 2: {
             //每年
             ruleID = RepetitionRule::RRule_EVEYEAR;
-            //如果该日程为闰月日程，因为对应的闰月需要间隔好多年，所以添加对应的提示信息
-            CaHuangLiDayInfo huangLiInfo;
-            CScheduleDBus::getInstance()->GetHuangLiDay(beginDateTime.date(), huangLiInfo);
-            if (huangLiInfo.mLunarMonthName.contains("闰")) {
-                DCalendarDDialog *prompt = new DCalendarDDialog(this);
-                prompt->setIcon(QIcon(CDynamicIcon::getInstance()->getPixmap()));
-                prompt->setMessage(tr("You have selected a leap month, and will be reminded according to the rules of the lunar calendar."));
-                prompt->addButton(tr("OK", "button"), true, DDialog::ButtonNormal);
-                prompt->exec();
-            }
         } break;
         default:
             //默认不重复
