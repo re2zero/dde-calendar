@@ -57,6 +57,9 @@ public slots:
     void slotCancelBtnClicked();
     void slotEnterBtnClicked();
 
+protected:
+    void keyPressEvent(QKeyEvent *e) override;
+
 private:
     ColorLabel *m_colorLabel;
     ColorSlider *m_colorSlider;

@@ -27,6 +27,7 @@
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QKeyEvent>
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
@@ -157,4 +158,13 @@ void CColorPickerWidget::slotCancelBtnClicked()
 void CColorPickerWidget::slotEnterBtnClicked()
 {
     accept();
+}
+
+void CColorPickerWidget::keyPressEvent(QKeyEvent *e)
+{
+    if (e->key() == Qt::Key_Enter) {
+        //暂时不处理回车事件
+    } else {
+        DAbstractDialog::keyPressEvent(e);
+    }
 }
