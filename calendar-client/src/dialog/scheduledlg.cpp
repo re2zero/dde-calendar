@@ -754,7 +754,8 @@ void CScheduleDlg::initUI()
     maintlayout->setSpacing(10);
     //类型
     {
-        QHBoxLayout *typelayout = new QHBoxLayout;
+        //使用网格布局
+        QGridLayout *typelayout = new QGridLayout;
         typelayout->setSpacing(0);
         typelayout->setMargin(0);
         m_typeLabel = new QLabel();
@@ -778,15 +779,12 @@ void CScheduleDlg::initUI()
 
         m_colorSeletorWideget = new ColorSeletorWidget();
         m_colorSeletorWideget->hide();
-        QVBoxLayout *vLayout = new QVBoxLayout();
-        vLayout->setSpacing(5);
-        vLayout->setMargin(0);
-        vLayout->addWidget(m_typeComBox);
-        vLayout->addWidget(m_colorSeletorWideget);
 
-        typelayout->addWidget(m_typeLabel);
-        typelayout->addLayout(vLayout);
-        typelayout->addStretch();
+        typelayout->addWidget(m_typeLabel, 0, 0);
+        typelayout->addWidget(m_typeComBox, 0, 1);
+        typelayout->addWidget(m_colorSeletorWideget, 1, 1);
+        //添加垂直间隔
+        typelayout->setVerticalSpacing(5);
         maintlayout->addLayout(typelayout);
     }
 

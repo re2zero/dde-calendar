@@ -29,7 +29,7 @@ CRadioButton::CRadioButton(QWidget *parent) : QRadioButton(parent)
 {
 }
 
-void CRadioButton::setColor(const QColor& color)
+void CRadioButton::setColor(const QColor &color)
 {
     m_color = color;
 }
@@ -55,18 +55,26 @@ void CRadioButton::paintEvent(QPaintEvent *event)
         // 设置画刷颜色
         painter.setBrush(m_color);
         // 绘制圆
-        painter.drawEllipse(QPointF(w/2, h/2), w/2-1, h/2-1);
+        painter.drawEllipse(QPointF(w / 2, h / 2), w / 2 - 1, h / 2 - 1);
+        //绘制黑色描边
+        QPainterPath path;
+        path.addEllipse(0, 0, w, h);
+        path.addEllipse(2, 2, w - 4, h - 4);
+        QColor c = QColor("#000000");
+        c.setAlphaF(0.1);
+        painter.setBrush(c);
+        painter.drawPath(path);
     } else {
         DPalette palette = DPaletteHelper::instance()->palette(this);
         QPainterPath path;
         path.addEllipse(0, 0, w, h);
-        path.addEllipse(2, 2, w-4, h-4);
+        path.addEllipse(2, 2, w - 4, h - 4);
         painter.setBrush(palette.highlight());
         painter.drawPath(path);
 
         // 设置画刷颜色
         painter.setBrush(m_color);
         // 绘制圆
-        painter.drawEllipse(QPointF(w/2, h/2), w/2-3, h/2-3);
+        painter.drawEllipse(QPointF(w / 2, h / 2), w / 2 - 3, h / 2 - 3);
     }
 }
