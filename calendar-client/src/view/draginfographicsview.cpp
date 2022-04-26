@@ -492,7 +492,12 @@ void DragInfoGraphicsView::setPressSelectInfo(const ScheduleDataInfo &info)
  */
 void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
 {
-    CScheduleOperation _scheduleOperation(this);
+    QVariant variant;
+    //获取主窗口指针
+    CalendarGlobalEnv::getGlobalEnv()->getValueByKey("MainWindow", variant);
+    QObject *parent = static_cast<QObject *>(variant.value<void *>());
+    //设置父类为主窗口
+    CScheduleOperation _scheduleOperation(qobject_cast<QWidget *>(parent));
     if (_scheduleOperation.changeSchedule(info, m_PressScheduleInfo)) {
         //如果日程修改成功则更新更新标志
         m_hasUpdateMark = true;

@@ -131,6 +131,8 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
 
     //注册光标位置
     CalendarGlobalEnv::getGlobalEnv()->registerKey(DDECalendar::CursorPointKey, QPoint());
+    //保存主窗口指针
+    CalendarGlobalEnv::getGlobalEnv()->registerKey("MainWindow", QVariant::fromValue(static_cast<void *>(this)));
 }
 
 Calendarmainwindow::~Calendarmainwindow()

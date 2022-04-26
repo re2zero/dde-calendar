@@ -458,8 +458,15 @@ void CScheduleOperation::lunarMessageDialogShow(const ScheduleDataInfo &newinfo)
     if (huangLiInfo.mLunarMonthName.contains("闰")) {
         DCalendarDDialog prompt(m_widget);
         prompt.setIcon(QIcon(CDynamicIcon::getInstance()->getPixmap()));
+        prompt.setDisplayPosition(DAbstractDialog::Center);
         prompt.setMessage(tr("You have selected a leap month, and will be reminded according to the rules of the lunar calendar."));
         prompt.addButton(tr("OK", "button"), true, DDialog::ButtonNormal);
+        if (m_widget) {
+            //获取父窗口的中心坐标
+            const QPoint global = m_widget->mapToGlobal(m_widget->rect().center());
+            //相对父窗口居中显示
+            prompt.move(global.x() - prompt.width() / 2, global.y() - prompt.height() / 2);
+        }
         prompt.exec();
     }
 }
