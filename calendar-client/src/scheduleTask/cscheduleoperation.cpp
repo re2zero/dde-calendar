@@ -384,8 +384,9 @@ bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，�
         //保存新选择的颜色值
         CConfigSettings::getInstance()->setOption("LastUserColor", jobTypeInfo.getColorInfo().getColorHex());
     }
-    //保存选择的颜色编号
-    CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorInfo().getTypeNo());
+    //保存选择的颜色编号,只记录系统默认颜色的编号
+    if (jobTypeInfo.getColorInfo().getTypeNo() < 10)
+        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorInfo().getTypeNo());
 
     if (0 == jobTypeInfo.getJobTypeNo()) {
         jobTypeInfo.setJobTypeNo(JobTypeInfoManager::instance()->getNextTypeNo());
@@ -431,8 +432,8 @@ bool CScheduleOperation::updateJobType(JobTypeInfo &oldJobTypeInfo, JobTypeInfo 
     }
 
     bRet = updateJobType(newJobTypeInfo);
-    //如果更新成功，且是系统默认颜色，缓存编号
-    if (bRet) {
+    //如果更新成功，且是系统默认颜色，缓存编号，只记录系统默认颜色的编号
+    if (bRet && newJobTypeInfo.getColorInfo().getTypeNo() < 10) {
         CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", newJobTypeInfo.getColorInfo().getTypeNo());
     }
     return bRet;
