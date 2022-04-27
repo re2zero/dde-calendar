@@ -137,20 +137,29 @@ QList<Job> SchedulerDatabase::GetAllOriginJobs(const QString &key, const QString
     QString strKey = key.trimmed();
     pinyinsearch *psearch = pinyinsearch::getPinPinSearch();
     QString strsql("select id,type,title,description,all_day,start,end,r_rule,remind,ignore,title_pinyin,is_Lunar from jobs");
+    QMap<QString, QString> sqlBindValue;
     if (psearch->CanQueryByPinyin(strKey)) {
         //可以按照拼音查询
         QString pinyin = psearch->CreatePinyinQuery(strKey.toLower());
-        strsql += QString(" where instr(UPPER(title), UPPER('%1')) OR title_pinyin LIKE '%2'").arg(key).arg(pinyin);
+        strsql += QString(" where instr(UPPER(title), UPPER(:key)) OR title_pinyin LIKE :pinyin");
+        sqlBindValue[":key"] = key;
+        sqlBindValue[":pinyin"] = pinyin;
     } else if (!key.isEmpty()) {
         //按照key查询
-        strsql += QString(" where instr(UPPER(title), UPPER('%1'))").arg(key);
+        strsql += QString(" where instr(UPPER(title), UPPER(:key))");
+        sqlBindValue[":key"] = key;
     }
 
     //排序条件不为空
     if (!strsort.isEmpty()) {
-        strsql.append(QString("order by %1").arg(strsort));
+        strsql.append(QString("order by :strsort "));
+        sqlBindValue[":strsort"] = strsort;
     }
-    if (query.exec(strsql)) {
+    query.prepare(strsql);
+    for (auto iter = sqlBindValue.constBegin(); iter != sqlBindValue.constEnd(); iter++) {
+        query.bindValue(iter.key(), iter.value());
+    }
+    if (query.exec()) {
         while (query.next()) {
             Job jb;
             jb.ID = query.value("id").toInt();
