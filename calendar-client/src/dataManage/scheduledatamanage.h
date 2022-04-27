@@ -42,6 +42,7 @@ public:
     CSchedulesColor getScheduleColorByType(int type);
     static QColor getSystemActiveColor();
     static QColor getTextColor();
+    void setTheMe(int type = 0);
     int getTheme() const
     {
         return m_theme;

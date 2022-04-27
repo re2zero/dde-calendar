@@ -73,6 +73,11 @@ QColor CScheduleDataManage::getTextColor()
     return DGuiApplicationHelper::instance()->applicationPalette().text().color();
 }
 
+void CScheduleDataManage::setTheMe(int type)
+{
+    m_theme = type;
+}
+
 CScheduleDataManage *CScheduleDataManage::getScheduleDataManage()
 {
     return m_vscheduleDataManage;

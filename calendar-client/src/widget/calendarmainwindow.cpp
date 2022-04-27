@@ -288,6 +288,7 @@ void Calendarmainwindow::slotTheme(int type)
         m_transparentFrame->setPalette(tframepa);
         m_transparentFrame->setBackgroundRole(DPalette::Background);
     }
+    CScheduleDataManage::getScheduleDataManage()->setTheMe(type);
     m_yearwindow->setTheMe(type);
     m_monthWindow->setTheMe(type);
     m_weekWindow->setTheMe(type);
