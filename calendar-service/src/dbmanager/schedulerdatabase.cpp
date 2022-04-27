@@ -956,11 +956,16 @@ QVector<qint64> SchedulerDatabase::getJobIDByJobType(int iTypeNo)
                          WHERE              \
                              jobs.\"type\" = %1;")
                          .arg(iTypeNo);
-    if (query.exec(strsql) && query.next()) {
-        jobsID.append(query.value(0).toInt());
-    }
-    if (query.isActive()) {
-        query.finish();
+    if (query.exec(strsql)) {
+        //获取所有的有效数据
+        while (query.next()) {
+            jobsID.append(query.value("id").toInt());
+        }
+        if (query.isActive()) {
+            query.finish();
+        }
+    } else {
+        qWarning() << query.lastError();
     }
     return jobsID;
 }
