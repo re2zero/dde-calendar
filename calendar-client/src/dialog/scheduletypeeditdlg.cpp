@@ -157,6 +157,8 @@ void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
     if (tStitlename.contains("\n")) {
         //设置纯文本显示原始内容
         tStitlename.replace("\n", "");
+        m_lineEdit->setText(tStitlename);
+        return;
     }
     //最大限制20个字符，超出后过滤掉
     if (tStitlename.length() > 20) {
@@ -164,7 +166,6 @@ void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
         return;
     } else {
         m_typeText = tStitlename;
-        m_lineEdit->setText(m_typeText);
     }
 
     //文本编辑框中文本改变事件

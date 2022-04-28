@@ -591,6 +591,8 @@ void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
     if (tStitlename.contains("\n")) {
         //设置纯文本显示原始内容
         tStitlename.replace("\n", "");
+        m_typeComBox->setEditText(tStitlename);
+        return;
     }
     //最大限制20个字符，超出后过滤掉
     if (tStitlename.length() > 20) {
@@ -598,7 +600,6 @@ void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
         return;
     } else {
         m_TypeContext = tStitlename;
-        m_typeComBox->setEditText(m_TypeContext);
     }
 
     if (tStitlename.isEmpty()) {
