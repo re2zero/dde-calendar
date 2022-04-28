@@ -294,7 +294,8 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     QPen pen(bColor);
     pen.setWidth(2);
     painter.setPen(pen);
-    painter.drawLine(m_durationSize + 17, 0, m_durationSize + 17, labelheight);
+    //由于绘制的矩形大小的改变，所以需要调整起始和截止y坐标
+    painter.drawLine(m_durationSize + 17, 2, m_durationSize + 17, labelheight - 1);
     painter.restore();
 
     painter.setFont(m_tFont);
