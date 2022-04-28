@@ -162,7 +162,8 @@ void CColorPickerWidget::slotEnterBtnClicked()
 
 void CColorPickerWidget::keyPressEvent(QKeyEvent *e)
 {
-    if (e->key() == Qt::Key_Enter) {
+    //键盘有两个Enter按键，一个为Enter一个为Return
+    if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return) {
         //暂时不处理回车事件
     } else {
         DAbstractDialog::keyPressEvent(e);
