@@ -58,6 +58,7 @@ void ScheduleTypeEditDlg::init()
     //先初始化数据再关联信号，初始状态下不提示
     connect(m_lineEdit, &DLineEdit::textChanged, this, &ScheduleTypeEditDlg::slotEditTextChanged);
     connect(m_lineEdit, &DLineEdit::focusChanged, this, &ScheduleTypeEditDlg::slotFocusChanged);
+    connect(m_lineEdit, &DLineEdit::editingFinished, this, &ScheduleTypeEditDlg::slotEditingFinished);
 }
 
 void ScheduleTypeEditDlg::initView()
@@ -170,11 +171,14 @@ void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
 
     //文本编辑框中文本改变事件
     //1不能为空，2不能全空格，3不能重名
-    if (tStitlename.isEmpty()) {
+
+    if (m_lineEdit->text().isEmpty()) {
         //名称为空，返回
-        m_lineEdit->showAlertMessage(tr("Enter a name please"));
-        m_lineEdit->setAlert(true);
+        //内容清空时，消除警告色和提示信息
+        m_lineEdit->setAlert(false);
+        m_lineEdit->hideAlertMessage();
         this->getButton(1)->setEnabled(false);
+
         return;
     }
     if (tStitlename.trimmed().isEmpty()) {
@@ -197,6 +201,7 @@ void ScheduleTypeEditDlg::slotEditTextChanged(const QString &strName)
         return;
     }
     m_lineEdit->setAlert(false);
+    m_lineEdit->hideAlertMessage();
     this->getButton(1)->setEnabled(true);
     return;
 }
@@ -224,3 +229,13 @@ void ScheduleTypeEditDlg::slotBtnNext()
     so.updateJobType(m_jobTypeOld, m_jobTypeNew);
 }
 
+void ScheduleTypeEditDlg::slotEditingFinished()
+{
+    //如果编辑结束后内容为空则提示
+    if (m_lineEdit->text().isEmpty()) {
+        //名称为空，返回
+        m_lineEdit->showAlertMessage(tr("Enter a name please"));
+        m_lineEdit->setAlert(true);
+        this->getButton(1)->setEnabled(false);
+    }
+}

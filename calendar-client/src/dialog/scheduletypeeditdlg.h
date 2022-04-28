@@ -67,6 +67,10 @@ public slots:
      * @brief slotBtnNext 保存按钮，检查输入，保存、更新日程类型信息
      */
     void slotBtnNext();
+    /**
+     * @brief slotEditingFinished       编辑框编辑结束后处理
+     */
+    void slotEditingFinished();
 
 private:
     void init();

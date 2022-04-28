@@ -111,6 +111,11 @@ void JobTypeComboBox::hideAlertMessage()
     }
 }
 
+int JobTypeComboBox::getCurrentEditPosition() const
+{
+    return m_newPos;
+}
+
 bool JobTypeComboBox::updateJobType()
 {
     QString strColorHex;
@@ -300,6 +305,24 @@ void JobTypeComboBox::slotBtnAddItemClicked()
     //设置为编辑模式后才会创建lineEdit
     m_control = new DAlertControl(this->lineEdit(), this);
     connect(m_control, &DAlertControl::alertChanged, this, &JobTypeComboBox::alertChanged);
+    connect(lineEdit(), &QLineEdit::editingFinished, this, &JobTypeComboBox::slotEditingFinished);
+    connect(lineEdit(), &QLineEdit::cursorPositionChanged, this, &JobTypeComboBox::slotEditCursorPositionChanged);
     emit signalAddTypeBtnClicked();
     return;
+}
+
+void JobTypeComboBox::slotEditingFinished()
+{
+    int oldPos = m_newPos;
+    QString str = lineEdit()->text();
+    setCurrentIndex(-1);
+    setCurrentText(str);
+    lineEdit()->setCursorPosition(oldPos);
+    emit editingFinished();
+}
+
+void JobTypeComboBox::slotEditCursorPositionChanged(int oldPos, int newPos)
+{
+    m_oldPos = oldPos;
+    m_newPos = newPos;
 }

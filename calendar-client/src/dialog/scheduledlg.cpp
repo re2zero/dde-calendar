@@ -535,6 +535,15 @@ void CScheduleDlg::sloteRpeatactivated(int index)
     setOkBtnEnabled();
 }
 
+void CScheduleDlg::slotJobComboBoxEditingFinished()
+{
+    if (m_typeComBox->lineEdit()->text().isEmpty()) {
+        //名称为空
+        m_typeComBox->showAlertMessage(tr("Enter a name please"));
+        m_typeComBox->setAlert(true);
+    }
+}
+
 void CScheduleDlg::slotTypeRpeatactivated(int index)
 {
     Q_UNUSED(index);
@@ -572,12 +581,6 @@ void CScheduleDlg::slotBtnAddItemClicked()
     m_typeEditStatus = true;
     //添加日程类型的时候需要判断保存按钮是否可用
     setOkBtnEnabled();
-    connect(m_typeComBox->lineEdit(), &QLineEdit::editingFinished, this, [&]() {
-        //如果为编辑模式且内容为空
-        if (m_typeComBox->isEditable() && m_typeComBox->lineEdit()->text().isEmpty()) {
-            m_typeComBox->editTextChanged(m_typeComBox->currentText());
-        }
-    });
     resize();
 }
 
@@ -601,12 +604,8 @@ void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
     } else {
         m_TypeContext = tStitlename;
     }
-
-    if (tStitlename.isEmpty()) {
-        //名称为空，返回
-        m_typeComBox->showAlertMessage(tr("Enter a name please"));
-        m_typeComBox->setAlert(true);
-    } else if (tStitlename.trimmed().isEmpty()) {
+    //如果内容不为空且去除空格内容为空表示为全空格
+    if (!tStitlename.isEmpty() && tStitlename.trimmed().isEmpty()) {
         //名称为全空格，返回
         m_typeComBox->showAlertMessage(tr("The name can not only contain whitespaces"));
         m_typeComBox->setAlert(true);
@@ -614,8 +613,13 @@ void CScheduleDlg::slotTypeEditTextChanged(const QString &text)
         //重名，返回
         m_typeComBox->showAlertMessage(tr("The name already exists"));
         m_typeComBox->setAlert(true);
+    } else {
+        //如果日程类型编辑框存在焦点（没有编辑结束）且有警告则取消警告和提示信息
+        if (m_typeComBox->hasFocus() && m_typeComBox->isAlert()) {
+            m_typeComBox->hideAlertMessage();
+            m_typeComBox->setAlert(false);
+        }
     }
-
     setOkBtnEnabled();
     m_TypeContext = tStitlename;
 }
@@ -1136,6 +1140,7 @@ void CScheduleDlg::initConnection()
     connect(m_calendarCategoryRadioGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &CScheduleDlg::slotRadioBtnClicked);
     connect(m_typeComBox, &JobTypeComboBox::signalAddTypeBtnClicked, this, &CScheduleDlg::slotBtnAddItemClicked);
     connect(m_typeComBox, &JobTypeComboBox::editTextChanged, this, &CScheduleDlg::slotTypeEditTextChanged);
+    connect(m_typeComBox, &JobTypeComboBox::editingFinished, this, &CScheduleDlg::slotJobComboBoxEditingFinished);
 }
 
 void CScheduleDlg::initDateEdit()

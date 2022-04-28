@@ -47,13 +47,18 @@ public:
     void setAlertMessageAlignment(Qt::Alignment alignment);
     void hideAlertMessage();
 
+    int getCurrentEditPosition() const;
+
 signals:
     void signalAddTypeBtnClicked();
     void alertChanged(bool alert) const;
+    void editingFinished();
 public slots:
 
 protected slots:
     void slotBtnAddItemClicked();
+    void slotEditingFinished();
+    void slotEditCursorPositionChanged(int oldPos, int newPos);
 
 protected:
     void showPopup() override;
@@ -73,6 +78,8 @@ private:
     int m_itemNumIndex = 0; //item数量
     DAlertControl *m_control {nullptr};
     QLineEdit *m_lineEdit {nullptr};
+    int m_oldPos = 0;
+    int m_newPos = 0;
 };
 
 #endif // JOBTYPECOMBOBOX_H

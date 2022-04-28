@@ -114,6 +114,8 @@ public slots:
     void slotallDayStateChanged(int state);
     void slotbRpeatactivated(int index);
     void sloteRpeatactivated(int index);
+    void slotJobComboBoxEditingFinished();
+
 protected:
     bool eventFilter(QObject *obj, QEvent *pEvent) override;
     void showEvent(QShowEvent *event) override;
