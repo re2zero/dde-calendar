@@ -217,6 +217,7 @@ void JobTypeComboBox::addCustomWidget(QFrame *viewContainer)
 void JobTypeComboBox::showPopup()
 {
     //重置icon大小
+    setIconSize(QSize(16, 16));
     setItemSelectable(true);
     if (currentIndex() < 0)
         setCurrentIndex(0);
@@ -299,9 +300,11 @@ bool JobTypeComboBox::eventFilter(QObject *obj, QEvent *event)
 void JobTypeComboBox::slotBtnAddItemClicked()
 {
     JobTypeComboBox::hidePopup();
+    setIconSize(QSize(0, 0));
     //设置没有选中，
-    setCurrentIndex(-1);
+    //    setCurrentIndex(-1);
     setEditable(true);
+    setCurrentText("");
     //设置为编辑模式后才会创建lineEdit
     m_control = new DAlertControl(this->lineEdit(), this);
     connect(m_control, &DAlertControl::alertChanged, this, &JobTypeComboBox::alertChanged);
@@ -313,11 +316,13 @@ void JobTypeComboBox::slotBtnAddItemClicked()
 
 void JobTypeComboBox::slotEditingFinished()
 {
-    int oldPos = m_newPos;
-    QString str = lineEdit()->text();
-    setCurrentIndex(-1);
-    setCurrentText(str);
-    lineEdit()->setCursorPosition(oldPos);
+    //TODO:待优化，由于上下按键会匹配下拉列表内容，导致会调整lineEdit显示位置
+    //当前先改回设置显示图标的方法
+    //    int oldPos = m_newPos;
+    //    QString str = lineEdit()->text();
+    //    setCurrentIndex(-1);
+    //    setCurrentText(str);
+    //    lineEdit()->setCursorPosition(oldPos);
     emit editingFinished();
 }
 
