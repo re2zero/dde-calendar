@@ -875,6 +875,8 @@ void Calendarmainwindow::slotOpenSettingDialog()
         }
     }
     //内容定位到顶端
-    m_dsdSetting->scrollToGroup("setting_base");
-    m_dsdSetting->show();
+    m_dsdSetting->exec();
+    //使用晚后释放
+    delete m_dsdSetting;
+    m_dsdSetting = nullptr;
 }
