@@ -241,9 +241,6 @@ void JobTypeListViewStyle::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->setPen(qApp->palette().color(QPalette::Text));
     QFontMetrics fontMetr(painter->font());
 
-    const int &typeNameWidth = fontMetr.width(info.getJobTypeName());
-    //绘制类型名称区域
-    QRect textRect = opt.rect.adjusted(38, 0, 0, 0);
     //如果为焦点,且不为系统自带颜色
     if (opt.state & QStyle::State_HasFocus && !info.getColorInfo().isSysColorInfo()) {
     }

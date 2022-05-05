@@ -1,9 +1,9 @@
 /*
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     chenhaifeng  <chenhaifeng@uniontech.com>
+* Author:     leilong  <leilong@uniontech.com>
 *
-* Maintainer: chenhaifeng  <chenhaifeng@uniontech.com>
+* Maintainer: leilong  <leilong@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,30 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "dialog_stub.h"
+#ifndef TEST_CMONTHSCHEDULENUMITEM_H
+#define TEST_CMONTHSCHEDULENUMITEM_H
 
-#include "dialog/dcalendarddialog.h"
-#include "dialog/myscheduleview.h"
-
+#include "graphicsItem/cmonthschedulenumitem.h"
 #include <QObject>
+#include <gtest/gtest.h>
 
-int calendarDDialogExecReturn = 0;
-
-int calendar_DDialog_Exec_stub(void *obj)
+class test_cmonthschedulenumItem: public::testing::Test
 {
-    Q_UNUSED(obj)
-    return calendarDDialogExecReturn;
-}
-void calendarDDialogExecStub(Stub &stub)
-{
-    typedef int (*fptr)(DDialog *);
-    fptr A_foo = (fptr)(&DDialog::exec);
-    stub.set(A_foo, calendar_DDialog_Exec_stub);
+public:
+    test_cmonthschedulenumItem();
 
-    typedef int (*fptr2)(QDialog *);
-    fptr2 A_foo2 = (fptr2)(&QDialog::exec);
-    stub.set(A_foo2, calendar_DDialog_Exec_stub);
-}
+    virtual void SetUp()
+    {
+        mItem = new CMonthScheduleNumItem();
+    }
+
+    virtual void TearDown()
+    {
+        delete mItem;
+        mItem = nullptr;
+    }
+protected:
+    CMonthScheduleNumItem *mItem = nullptr;
+};
+
+#endif // TEST_CMONTHSCHEDULENUMITEM_H

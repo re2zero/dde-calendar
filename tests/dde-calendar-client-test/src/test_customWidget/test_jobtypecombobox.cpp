@@ -51,6 +51,50 @@ test_jobtypecombobox::test_jobtypecombobox()
 
 }
 
+TEST_F(test_jobtypecombobox, setAlert_001)
+{
+    mWidget->setAlert(true);
+    EXPECT_TRUE(mWidget->m_control->isAlert());
+}
+
+TEST_F(test_jobtypecombobox, isAlert_001)
+{
+    mWidget->setAlert(true);
+    EXPECT_TRUE(mWidget->isAlert());
+}
+
+TEST_F(test_jobtypecombobox, isAlert_002)
+{
+    mWidget->setAlert(false);
+    EXPECT_FALSE(mWidget->isAlert());
+}
+
+TEST_F(test_jobtypecombobox, showAlertMessage_001)
+{
+    mWidget->showAlertMessage("");
+}
+
+TEST_F(test_jobtypecombobox, showAlertMessage_002)
+{
+    mWidget->showAlertMessage("", mWidget);
+}
+
+TEST_F(test_jobtypecombobox, setAlertMessageAlignment_001)
+{
+    mWidget->setAlertMessageAlignment(Qt::AlignLeft);
+    EXPECT_EQ(mWidget->m_control->messageAlignment(), Qt::AlignLeft);
+}
+
+TEST_F(test_jobtypecombobox, hideAlertMessage_001)
+{
+    mWidget->hideAlertMessage();
+}
+
+TEST_F(test_jobtypecombobox, getCurrentEditPositione_001)
+{
+    EXPECT_EQ(mWidget->getCurrentEditPosition(), mWidget->m_newPos);
+}
+
 TEST_F(test_jobtypecombobox, updateJobType_001)
 {
     Stub stub;

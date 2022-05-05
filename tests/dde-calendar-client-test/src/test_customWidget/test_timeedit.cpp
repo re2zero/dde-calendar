@@ -74,3 +74,28 @@ TEST_F(test_timeedit,focusInEvent)
     QFocusEvent focusEvent_in( QEvent::FocusIn,Qt::FocusReason::TabFocusReason);
     QApplication::sendEvent(mTimeEdit,&focusEvent_in);
 }
+
+TEST_F(test_timeedit, slotActivated_01)
+{
+    mTimeEdit->slotActivated("");
+}
+
+TEST_F(test_timeedit, slotEditingFinished_01)
+{
+    mTimeEdit->slotEditingFinished();
+}
+
+TEST_F(test_timeedit, initUI_01)
+{
+    mTimeEdit->initUI();
+}
+
+TEST_F(test_timeedit, initConnection_01)
+{
+    mTimeEdit->initConnection();
+}
+
+TEST_F(test_timeedit, showPopup_01)
+{
+    mTimeEdit->showPopup();
+}

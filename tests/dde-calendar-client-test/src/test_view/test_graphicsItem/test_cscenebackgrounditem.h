@@ -18,32 +18,47 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TEST_JOBTYPECOMBOBOX_H
-#define TEST_JOBTYPECOMBOBOX_H
+#ifndef TEST_CSCENEBACKGROUNDITEM_H
+#define TEST_CSCENEBACKGROUNDITEM_H
 
-#include "jobtypecombobox.h"
-#include <QObject>
-#include <QTest>
+#include "graphicsItem/cscenebackgrounditem.h"
 #include <gtest/gtest.h>
+#include <../third-party_stub/stub.h>
+#include <QObject>
+#include <QGraphicsScene>
 
-class test_jobtypecombobox: public::testing::Test
+static void cscenebackgrounditem_stub_setFocus(bool)
+{
+
+}
+
+class test_cscenebackgrounditem: public::testing::Test
 {
 public:
-    test_jobtypecombobox();
+    test_cscenebackgrounditem();
 
     virtual void SetUp()
     {
-        mWidget = new JobTypeComboBox();
-        mWidget->slotBtnAddItemClicked();
+        mItem = new CSceneBackgroundItem(CSceneBackgroundItem::OnMonthView);
+        mFocusItem  = new CFocusItem();
+        mScene = new QGraphicsScene();
+        mScene->addItem(mItem);
+        mScene->addItem(mFocusItem);
+        mItem->m_item.append(mFocusItem);
+        mItem->m_item.append(mFocusItem);
     }
 
     virtual void TearDown()
     {
-        delete mWidget;
-        mWidget = nullptr;
+        delete mItem;
+        mItem = nullptr;
+        delete mFocusItem;
+        delete mScene;
     }
 protected:
-    JobTypeComboBox *mWidget = nullptr;
+    CSceneBackgroundItem *mItem = nullptr;
+    CFocusItem *mFocusItem = nullptr;
+    QGraphicsScene *mScene = nullptr;
 };
 
-#endif // TEST_JOBTYPECOMBOBOX_H
+#endif // TEST_CSCENEBACKGROUNDITEM_H

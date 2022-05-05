@@ -239,3 +239,85 @@ TEST_F(testMainWindowGUI, slotViewShortcut)
     Calendarmainwindow mainWindow(1);
     mainWindow.slotViewShortcut();
 }
+
+TEST_F(testMainWindowGUI, resizeEvent_01)
+{
+    QResizeEvent event(QSize(10, 10), QSize(100, 100));
+    Calendarmainwindow mainWindow(1);
+    mainWindow.resizeEvent(&event);
+}
+
+TEST_F(testMainWindowGUI, resizeEvent_02)
+{
+    QResizeEvent event(QSize(10, 10), QSize(1000, 1000));
+    Calendarmainwindow mainWindow(1);
+    mainWindow.resize(1000, 1000);
+    mainWindow.resizeEvent(&event);
+}
+
+TEST_F(testMainWindowGUI, slotstackWClicked_01)
+{
+    Calendarmainwindow mainWindow(1);
+    QPushButton btn;
+    mainWindow.m_buttonBox->setId(&btn, 0);
+    mainWindow.slotstackWClicked(&btn);
+}
+
+TEST_F(testMainWindowGUI, slotWUpdateSchedule_01)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.m_opensearchflag = true;
+    mainWindow.m_searchEdit->setText("123");
+    mainWindow.slotWUpdateSchedule();
+}
+
+TEST_F(testMainWindowGUI, slotSreturnPressed_01)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.m_opensearchflag = true;
+    mainWindow.m_searchEdit->setText("123");
+    mainWindow.slotSreturnPressed();
+}
+
+TEST_F(testMainWindowGUI, slotStextChanged_01)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.m_searchEdit->setText("123");
+    mainWindow.slotStextChanged();
+}
+
+TEST_F(testMainWindowGUI, slotStextChanged_02)
+{
+    Calendarmainwindow mainWindow(1);
+    mainWindow.m_searchEdit->setText("");
+    mainWindow.slotStextChanged();
+}
+
+TEST_F(testMainWindowGUI, slotSearchSelectSchedule_02)
+{
+    Calendarmainwindow mainWindow(1);
+    ScheduleDataInfo info;
+    mainWindow.slotSearchSelectSchedule(info);
+}
+
+TEST_F(testMainWindowGUI, mouseMoveEvent_01)
+{
+    Calendarmainwindow mainWindow(1);
+    QMouseEvent event(QMouseEvent::MouseMove, QPointF(), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    mainWindow.mouseMoveEvent(&event);
+}
+
+TEST_F(testMainWindowGUI, changeEvent_01)
+{
+    Calendarmainwindow mainWindow(1);
+    QEvent event(QEvent::ActivationChange);
+    mainWindow.changeEvent(&event);
+}
+
+TEST_F(testMainWindowGUI, slotOpenSettingDialog_01)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    Calendarmainwindow mainWindow(1);
+    mainWindow.slotOpenSettingDialog();
+}
