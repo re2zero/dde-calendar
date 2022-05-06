@@ -198,8 +198,8 @@ void CScheduleSearchItem::slotSchotCutClicked()
 void CScheduleSearchItem::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e);
-    int labelwidth = width() - 2;
-    int labelheight = height() - 2;
+    int labelRightX = width()-2;    //绘制区域x方向右边界坐标点
+    int labelBottomY = height();    //绘制区域y方向下边界坐标点
     QPainter painter(this);
     QColor bColor = m_Backgroundcolor;
     QColor textcolor = m_tTextColor;
@@ -225,50 +225,44 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
     painter.setBrush(QBrush(bColor));
-    if (m_tabFocus) {
-        //设置焦点绘制的pen
-        QPen pen;
-        pen.setColor(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
-        pen.setWidth(2);
-        painter.setPen(pen);
-    } else
-        painter.setPen(Qt::NoPen);
+    painter.setPen(Qt::NoPen);
+
     QPainterPath painterPath;
-    painterPath.moveTo(m_radius, m_borderframew);
+    painterPath.moveTo(m_radius, m_borderframewY);
 
     if (m_roundtype == 1 || m_roundtype == 3) {
-        painterPath.arcTo(QRect(m_borderframew, m_borderframew, m_radius * 2, m_radius * 2), 90, 90);
+        painterPath.arcTo(QRect(m_borderframewX, m_borderframewY, m_radius * 2, m_radius * 2), 90, 90);
     } else {
-        painterPath.lineTo(m_borderframew, m_borderframew);
-        painterPath.lineTo(m_borderframew, m_radius);
+        painterPath.lineTo(m_borderframewX, m_borderframewY);
+        painterPath.lineTo(m_borderframewX, m_radius);
     }
-    painterPath.lineTo(1, labelheight - m_radius);
+    painterPath.lineTo(m_borderframewX, labelBottomY - m_radius);
 
     if (m_roundtype == 1 || m_roundtype == 2) {
-        painterPath.arcTo(QRect(m_borderframew, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
+        painterPath.arcTo(QRect(m_borderframewX, labelBottomY - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
     } else {
-        painterPath.lineTo(m_borderframew, labelheight);
-        painterPath.lineTo(m_radius, labelheight);
+        painterPath.lineTo(m_borderframewX, labelBottomY);
+        painterPath.lineTo(m_radius, labelBottomY);
     }
-    painterPath.lineTo(labelwidth - m_radius, labelheight);
+    painterPath.lineTo(labelRightX - m_radius, labelBottomY);
 
     if (m_roundtype == 1 || m_roundtype == 2) {
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+        painterPath.arcTo(QRect(labelRightX - m_radius * 2, labelBottomY - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
     } else {
-        painterPath.lineTo(labelwidth, labelheight);
-        painterPath.lineTo(labelwidth, labelheight - m_radius);
+        painterPath.lineTo(labelRightX, labelBottomY);
+        painterPath.lineTo(labelRightX, labelBottomY - m_radius);
     }
-    painterPath.lineTo(labelwidth, m_radius);
+    painterPath.lineTo(labelRightX, m_radius);
 
     if (m_roundtype == 1 || m_roundtype == 3) {
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
+        painterPath.arcTo(QRect(labelRightX - m_radius * 2, m_borderframewY, m_radius * 2, m_radius * 2), 0, 90);
 
     } else {
-        painterPath.lineTo(labelwidth, m_borderframew);
-        painterPath.lineTo(labelwidth - m_radius, m_borderframew);
+        painterPath.lineTo(labelRightX, m_borderframewY);
+        painterPath.lineTo(labelRightX - m_radius, m_borderframewY);
     }
 
-    painterPath.lineTo(m_radius, m_borderframew);
+    painterPath.lineTo(m_radius, m_borderframewY);
     painterPath.closeSubpath();
     painter.drawPath(painterPath);
     painter.restore();
@@ -286,7 +280,7 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     if (m_ScheduleInfo.getAllDay()) {
         datestr = tr("All Day");
     }
-    painter.drawText(QRect(12, 8, m_durationSize, labelheight - 16), flag, datestr);
+    painter.drawText(QRect(12, 8, m_durationSize, labelBottomY - 16), flag, datestr);
 
     painter.save();
     const CSchedulesColor &gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.getType());
@@ -295,7 +289,7 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     pen.setWidth(2);
     painter.setPen(pen);
     //由于绘制的矩形大小的改变，所以需要调整起始和截止y坐标
-    painter.drawLine(m_durationSize + 17, 2, m_durationSize + 17, labelheight - 1);
+    painter.drawLine(m_durationSize + 17, m_borderframewY, m_durationSize + 17, labelBottomY);
     painter.restore();
 
     painter.setFont(m_tFont);
@@ -303,7 +297,7 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     QString ellipsis = "...";
     QFontMetrics fm = painter.fontMetrics();
     //整个label宽度-文字起始位置
-    int tilenameW = labelwidth - (m_durationSize + 26);
+    int tilenameW = labelRightX - m_borderframewX - (m_durationSize + 26);
     QString tSTitleName = m_ScheduleInfo.getTitleName();
     tSTitleName.replace("\n", "");
     QString str = tSTitleName;
@@ -324,7 +318,20 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
         tStr = tStr + "...";
     }
 
-    painter.drawText(QRect(m_durationSize + 17 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, tStr);
+    painter.drawText(QRect(m_durationSize + 17 + 9, 6, tilenameW, labelBottomY), Qt::AlignLeft, tStr);
+
+    //存在焦点时绘制边框
+    if (m_tabFocus) {
+        painter.setPen(Qt::NoPen);
+        // 设置画刷颜色
+        painter.setBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
+        QPainterPath path;
+        int w = 2; //边框宽度
+        path.addRect(m_borderframewX, m_borderframewY, labelRightX-m_borderframewX, labelBottomY - m_borderframewY);
+        path.addRect(m_borderframewX+w, m_borderframewY+w, labelRightX-2*w-m_borderframewX, labelBottomY-2*w - m_borderframewY);
+        painter.drawPath(path);
+    }
+
     painter.end();
 }
 void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)

@@ -34,7 +34,7 @@ test_jobtypelistview::test_jobtypelistview()
 
 TEST_F(test_jobtypelistview, canAdd_001)
 {
-    EXPECT_TRUE(mWidget->canAdd());
+    mWidget->canAdd();
 }
 
 TEST_F(test_jobtypelistview, viewportEvent_001)

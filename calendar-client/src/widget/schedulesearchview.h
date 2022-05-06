@@ -171,7 +171,8 @@ private:
     DMenu *m_rightMenu = nullptr;
     int m_roundtype = 1;
     const int m_radius = 8;
-    const int m_borderframew = 1;
+    const int m_borderframewX = 1;  //绘制区域起始位置x坐标点
+    const int m_borderframewY = 0;  //绘制区域起始位置y坐标点
     QString m_timeFormat = "hh:mm";
     int m_durationSize = 0;
     bool m_tabFocus {false};
