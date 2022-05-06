@@ -244,7 +244,15 @@ void JobTypeListViewStyle::paint(QPainter *painter, const QStyleOptionViewItem &
     //如果为焦点,且不为系统自带颜色
     if (opt.state & QStyle::State_HasFocus && !info.getColorInfo().isSysColorInfo()) {
     }
-    painter->drawText(opt.rect.adjusted(38, 0, 0, 0), Qt::AlignVCenter | Qt::AlignLeft, info.getJobTypeName());
+
+    JobTypeListView *view = qobject_cast<JobTypeListView*>(parent());
+    //如果当前的index为hover状态则空出图标位置
+    if (view && view->m_iIndexCurrentHover == index.row()) {
+        painter->drawText(opt.rect.adjusted(38, 0, -60, 0), Qt::AlignVCenter | Qt::AlignLeft, info.getJobTypeName());
+    } else {
+        painter->drawText(opt.rect.adjusted(38, 0, -10, 0), Qt::AlignVCenter | Qt::AlignLeft, info.getJobTypeName());
+    }
+
     painter->restore();
 }
 

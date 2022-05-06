@@ -230,7 +230,7 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     DragInfoItem *item = dynamic_cast<DragInfoItem *>(itemAt(event->pos()));
 
     if (item != nullptr) {
-        if (item->getData().getType() != DDECalendar::FestivalTypeID) {
+        if (isCanDragge(item->getData())) {
             if (m_DragStatus == NONE) {
                 switch (getPosInItem(event->pos(), item->rect())) {
                 case LEFT:
@@ -367,7 +367,8 @@ void DragInfoGraphicsView::dragEnterEvent(QDragEnterEvent *event)
         QJsonObject rootobj = jsonDoc.object();
         ScheduleDataInfo info = ScheduleDataInfo::JsonToSchedule(rootobj);
 
-        if ((event->source() != this && info.getRepetitionRule().getRuleId() > 0) || info.getType() == DDECalendar::FestivalTypeID) {
+        //如果该日程是不能被拖拽的则忽略不接受
+        if ((event->source() != this && info.getRepetitionRule().getRuleId() > 0) || !isCanDragge(info)) {
             event->ignore();
         } else {
             event->accept();
@@ -517,7 +518,7 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
 
     if (item != nullptr) {
         PosInItem mpressstatus = getPosInItem(pos, item->boundingRect());
-        if (mpressstatus != MIDDLE && item->getData().getType() == 4) {
+        if (mpressstatus != MIDDLE && !isCanDragge(item->getData())) {
             return;
         }
         m_DragScheduleInfo = item->getData();
@@ -620,6 +621,10 @@ void DragInfoGraphicsView::mousePress(const QPoint &point)
     QGraphicsItem *listItem = itemAt(point);
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
+    //不满足拖拽条件的日程不进行拖拽事件
+    if (infoitem && !isCanDragge(infoitem->getData())) {
+        return;
+    }
     if (infoitem != nullptr) {
         setPressSelectInfo(infoitem->getData());
         m_press = true;
@@ -798,6 +803,15 @@ void DragInfoGraphicsView::setShowRadius(bool leftShow, bool rightShow)
     m_rightShowRadius = rightShow;
 }
 
+bool DragInfoGraphicsView::isCanDragge(const ScheduleDataInfo &info)
+{
+    if (info.getType() == DDECalendar::FestivalTypeID)
+        return false;
+    if (info.getIsLunar() && !QLocale::system().name().startsWith("zh_"))
+        return false;
+    return true;
+}
+
 /**
  * @brief DragInfoGraphicsView::slotDeleteItem      删除日程
  */
@@ -853,7 +867,7 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(item);
     if (infoitem != nullptr) {
         //如果为节假日则退出不展示右击菜单
-        if (infoitem->getData().getType() == 4)
+        if (infoitem->getData().getType() == DDECalendar::FestivalTypeID)
             return;
         //快捷键调出右击菜单
         m_Scene->setIsContextMenu(true);

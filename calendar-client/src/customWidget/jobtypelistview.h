@@ -12,6 +12,7 @@
 
 DWIDGET_USE_NAMESPACE
 
+class JobTypeListViewStyle;
 class JobTypeListView : public QTableView
 {
     Q_OBJECT
@@ -46,6 +47,8 @@ public slots:
 private:
     QStandardItemModel *m_modelJobType {nullptr};
     int m_iIndexCurrentHover = -1;
+
+    friend JobTypeListViewStyle;
 };
 
 class JobTypeListViewStyle : public DStyledItemDelegate

@@ -60,6 +60,8 @@ public:
 
     int getDragStatus() const;
     void setShowRadius(bool leftShow = false, bool rightShow = false);
+    //判断是否满足拖拽条件
+    bool isCanDragge(const ScheduleDataInfo &info);
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
