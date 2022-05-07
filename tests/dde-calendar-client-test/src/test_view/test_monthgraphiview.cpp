@@ -27,11 +27,6 @@ static void monthgraphiview_stub_void()
 {
 }
 
-static int monthgraphiview_stub_true()
-{
-    return 1;
-}
-
 test_monthgraphiview::test_monthgraphiview()
 {
     cMonthGraphiview = new CMonthGraphicsview();

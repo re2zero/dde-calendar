@@ -21,11 +21,6 @@
 #include "test_labelwidget.h"
 #include "../third-party_stub/stub.h"
 
-static int labelwidget_stub_true()
-{
-    return 1;
-}
-
 test_labelwidget::test_labelwidget()
 {
 

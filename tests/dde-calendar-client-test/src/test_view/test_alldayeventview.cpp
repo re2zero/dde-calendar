@@ -65,12 +65,10 @@ TEST_F(test_alldayeventview, IsEqualtime)
     QString end = "2020-12-21 12:24:36";
     QDateTime enddate = QDateTime::fromString(end, "yyyy-MM-dd hh:mm:ss");
 
-    bool getBool = cAllDayEventWeekView->IsEqualtime(begindate, enddate);
-    assert(false == getBool);
+    assert(false == cAllDayEventWeekView->IsEqualtime(begindate, enddate));
 
     enddate = QDateTime::fromString(begin, "yyyy-MM-dd hh:mm:ss");
-    getBool = cAllDayEventWeekView->IsEqualtime(begindate, enddate);
-    assert(true == getBool);
+    assert(true == cAllDayEventWeekView->IsEqualtime(begindate, enddate));
 }
 
 //void CAllDayEventWeekView::setRange(int w, int h, QDate begindate, QDate enddate, int rightmagin)

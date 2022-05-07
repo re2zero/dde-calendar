@@ -98,12 +98,7 @@ TEST_F(test_calendardatedatamanage, setWeekFirstDay)
 // Qt::DayOfWeek CalendarDateDataManager::getWeekFirstDay()
 TEST_F(test_calendardatedatamanage, getWeekFirstDay)
 {
-    Qt::DayOfWeek firstDay(Qt::Sunday);
-
-    Qt::DayOfWeek getfirstDay;
-    getfirstDay = calendarDateDataManager->getWeekFirstDay();
-    //qInfo() << getfirstDay;
-    assert(firstDay == getfirstDay);
+    assert(Qt::Sunday == calendarDateDataManager->getWeekFirstDay());
 }
 
 //void CalendarDateDataManager::setWeekDayFormatByID(const int &weekDayFormatID)
@@ -134,11 +129,8 @@ TEST_F(test_calendardatedatamanage, getShowDateRange)
 TEST_F(test_calendardatedatamanage, getWeekNumOfYear)
 {
     //2020-12-25 为第52周
-    const int weeknum = 52;
     QDate date(2020, 12, 25);
-    int weekNum = 0;
-    weekNum = calendarDateDataManager->getWeekNumOfYear(date);
-    assert(weeknum == weekNum);
+    assert(52 == calendarDateDataManager->getWeekNumOfYear(date));
 }
 
 TEST_F(test_calendardatedatamanage, setDateFormatChanged)

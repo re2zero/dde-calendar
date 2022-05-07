@@ -19,12 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "test_colorseletorwidget.h"
-#include "../third-party_stub/stub.h"
-
-static int colorseletorwidget_stub_true()
-{
-    return 1;
-}
+#include "../dialog_stub.h"
 
 test_colorseletorwidget::test_colorseletorwidget(QObject *parent) : QObject(parent)
 {
@@ -116,10 +111,9 @@ TEST_F(test_colorseletorwidget, slotButtonClicked_001)
 
 TEST_F(test_colorseletorwidget, slotAddColorButClicked_001)
 {
-    typedef int (*fptr)();
-    fptr A_foo = (fptr)(&QDialog::exec);
+    calendarDDialogExecReturn = 1;
     Stub stub;
-    stub.set(A_foo, colorseletorwidget_stub_true);
+    calendarDDialogExecStub(stub);
 
     mWidget->slotAddColorButClicked();
     EXPECT_TRUE(mWidget->m_userColorBtn->isChecked());

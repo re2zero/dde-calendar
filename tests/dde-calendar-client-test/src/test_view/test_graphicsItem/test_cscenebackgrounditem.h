@@ -27,11 +27,6 @@
 #include <QObject>
 #include <QGraphicsScene>
 
-static void cscenebackgrounditem_stub_setFocus(bool)
-{
-
-}
-
 class test_cscenebackgrounditem: public::testing::Test
 {
 public:

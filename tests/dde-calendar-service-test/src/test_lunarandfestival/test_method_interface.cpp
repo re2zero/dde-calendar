@@ -94,26 +94,18 @@ TEST_F(test_method_interface, GetLunarDayFestival)
 TEST_F(test_method_interface, GetSolarTermName)
 {
     // "小满"
-    int order = 4;
-    QString stName = GetSolarTermName(order);
-    //qInfo() << stName;
+    QString stName = GetSolarTermName(4);
     assert("小满" == stName);
 
     // ""
-    order = 24;
-    stName = GetSolarTermName(order);
-    //qInfo() << stName;
+    stName = GetSolarTermName(24);
     assert("" == stName);
 }
 
 //QString GetGanZhiMonth(int year, int monthzhi)
 TEST_F(test_method_interface, GetGanZhiMonth)
 {
-    // "戊子"
-    int year = 2020;
-    int month = 12;
-    QString ganzhi = GetGanZhiMonth(year, month);
-    //qInfo() << ganzhi;
+    QString ganzhi = GetGanZhiMonth(2020, 12);
     assert("戊子" == ganzhi);
 }
 
@@ -121,9 +113,7 @@ TEST_F(test_method_interface, GetGanZhiMonth)
 TEST_F(test_method_interface, GetGanZhiYear)
 {
     // "庚子"
-    int lunaryear = 2020;
-    QString ganzhi = GetGanZhiYear(lunaryear);
-    //qInfo() << ganzhi;
+    QString ganzhi = GetGanZhiYear(2020);
     assert("庚子" == ganzhi);
 }
 
@@ -131,10 +121,7 @@ TEST_F(test_method_interface, GetGanZhiYear)
 TEST_F(test_method_interface, GetGanZhiDay)
 {
     // "己丑"
-    int year = 2020;;
-    int month = 12;
-    int day = 12;
-    QString ganzhi = GetGanZhiDay(year, month, day);
+    QString ganzhi = GetGanZhiDay(2020, 12, 12);
     assert("己丑" == ganzhi);
 }
 
@@ -142,104 +129,69 @@ TEST_F(test_method_interface, GetGanZhiDay)
 TEST_F(test_method_interface, GetYearZodiac)
 {
     // "鼠"
-    int lunaryear = 2020;
-    QString Zodiac = GetYearZodiac(lunaryear);
-    //qInfo() << Zodiac;
+    QString Zodiac = GetYearZodiac(2020);
     assert("鼠" == Zodiac);
 
     // "猪"
-    lunaryear = 2019;
-    Zodiac = GetYearZodiac(lunaryear);
-    //qInfo() << Zodiac;
+    Zodiac = GetYearZodiac(2019);
     assert("猪" == Zodiac);
 }
 
 //QVector<double> get25SolarTermJDs(int year, int start)
 TEST_F(test_method_interface, get25SolarTermJDs)
 {
-    int year = 0;
-    int start = 0;
-    QVector<double> jds = get25SolarTermJDs(year, start);
-    // TODO
+    QVector<double> jds = get25SolarTermJDs(0, 0);
 }
 
 //double GetSolarTermJD(int year, int order)
 TEST_F(test_method_interface, GetSolarTermJD)
 {
-    int year = 2020;
-    int order = 0; //春分 3月20日
-    double jd = GetSolarTermJD(year, order);
-    assert(2.45893e+06 > jd);
+    //春分 3月20日
+    assert(2.45893e+06 > GetSolarTermJD(2020, 0));
 }
 
 //bool IsLeapYear(int year)
 TEST_F(test_method_interface, IsLeapYear)
 {
-    int leapYear = 2020; // 闰年
-    int notLeapYear = 2019; // 非闰年
-    assert(true == IsLeapYear(leapYear) && false == IsLeapYear(notLeapYear));
+    assert(true == IsLeapYear(2020) && false == IsLeapYear(2019));
 }
 
 // int GetSolarMonthDays(int year, int month)
 TEST_F(test_method_interface, GetSolarMonthDays)
 {
-    int year = 2020;
-    int month = 2;
-    int a = GetSolarMonthDays(year, month);
-    assert(29 == a);
+    assert(29 == GetSolarMonthDays(2020, 2));
 }
 
 //int GetWeekday(int y, int m, int d)
 TEST_F(test_method_interface, GetWeekday)
 {
-    int y = 2020;
-    int m = 2;
-    int d = 29;
-    int a = GetWeekday(y, m, d);
-    assert(6 == a);
+    assert(6 == GetWeekday(2020, 2, 29));
 }
 
 //double DmsToDegrees(int degrees, int mintues, double seconds)
 TEST_F(test_method_interface, DmsToDegrees)
 {
-    int degrees = 4;
-    int mintues = 3;
-    double seconds = 7200;
-    double degress = DmsToDegrees(degrees, mintues, seconds);
-    assert(qAbs(6.05 - degress) < 0.001);
+    assert(qAbs(6.05 - DmsToDegrees(4, 3, 7200)) < 0.001);
 }
 
 //double DmsToSeconds(int d, int m, double s)
 TEST_F(test_method_interface, DmsToSeconds)
 {
-    int d = 4;
-    int m = 3;
-    double s = 7200;
-    double degress = DmsToSeconds(d, m, s);
-    assert(qAbs(21780 - degress) < 0.001);
+    assert(qAbs(21780 - DmsToSeconds(4, 3, 7200)) < 0.001);
 }
 
 //double DmsToRadians(int d, int m, int s)
 TEST_F(test_method_interface, DmsToRadians)
 {
-    int d = 4;
-    int m = 3;
-    int s = 7200;
-    double degress = DmsToRadians(d, m, s);
-    assert(0.105592 <= degress);
+    assert(0.105592 <= DmsToRadians(4, 3, 7200));
 }
 
 //QDateTime GetDateTimeFromJulianDay(double jd)
 TEST_F(test_method_interface, GetDateTimeFromJulianDay)
 {
-    int year = 2020;
-    int order = 0; //春分 3月20日
-    double jd = GetSolarTermJD(year, order);
-
     QString strJulianDay = "周五 3月 20 03:49:33 2020 GMT";
-    QDateTime julianDay = GetDateTimeFromJulianDay(jd);
     //qInfo() << julianDay.toString();
-    assert(strJulianDay.contains(julianDay.toString()));
+    assert(strJulianDay.contains(GetDateTimeFromJulianDay(GetSolarTermJD(2020, 0)).toString()));
 }
 
 //double GetDeltaT(int year, int month)
@@ -250,44 +202,31 @@ TEST_F(test_method_interface, GetDeltaT)
                              1859, 1899, 1919, 1940, 1960,
                              1985, 2004, 2049, 2149, 2150
                             };
-    const int mouth = 6;
     for (int i = 0; i < count; ++i) {
-        GetDeltaT(year[i], mouth);
+        GetDeltaT(year[i], 6);
     }
 }
 
 //double JDBeijingTime2UTC(double bjtJD)
 TEST_F(test_method_interface, JDBeijingTime2UTC)
 {
-    double bjtJD = 1.01;
-    double utc = JDBeijingTime2UTC(bjtJD);
-    assert(0.67667 > utc);
+    assert(0.67667 > JDBeijingTime2UTC(1.01));
 }
 
 //QString GetSolarDayFestival(int year, int month, int day)
 TEST_F(test_method_interface, GetSolarDayFestival)
 {
-    int year = 2020;
-    // 建军节
-    int month = 8;
-    int day = 1;
-    QString getFesStr = GetSolarDayFestival(year, month, day);
+    QString getFesStr = GetSolarDayFestival(2020, 8, 1);
     assert("建军节" == getFesStr);
 
-    // 儿童节
-    month = 6;
-    day = 1;
-    getFesStr = GetSolarDayFestival(year, month, day);
+    getFesStr = GetSolarDayFestival(2020, 6, 1);
     assert("儿童节" == getFesStr);
 }
 
 //double CalcEarthObliquityNutation(double dt)
 TEST_F(test_method_interface, CalcEarthObliquityNutation)
 {
-    double julianDay = 1;
-    double dt = GetJulianCentury(julianDay);
-    CalcEarthObliquityNutation(dt);
-    //qInfo() << ceon;
+    CalcEarthObliquityNutation(GetJulianCentury(1));
 }
 
 //double lightAberration()

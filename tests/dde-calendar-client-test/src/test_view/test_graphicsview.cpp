@@ -242,7 +242,7 @@ TEST_F(test_graphicsview, IsEqualtime)
 TEST_F(test_graphicsview, JudgeIsCreate)
 {
     QPointF pos(20, 20);
-    bool getBool = cGraphicsView->JudgeIsCreate(pos);
+    cGraphicsView->JudgeIsCreate(pos);
 }
 
 //void CGraphicsView::RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos)
