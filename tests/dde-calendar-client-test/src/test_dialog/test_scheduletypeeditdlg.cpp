@@ -61,18 +61,3 @@ TEST_F(test_scheduletypeeditdlg, slotBtnNext_001)
 {
     mWidget->slotBtnNext();
 }
-
-TEST_F(test_scheduletypeeditdlg, init_001)
-{
-    mWidget->init();
-}
-
-TEST_F(test_scheduletypeeditdlg, initView_001)
-{
-    mWidget->initView();
-}
-
-TEST_F(test_scheduletypeeditdlg, initData_001)
-{
-    mWidget->initData();
-}

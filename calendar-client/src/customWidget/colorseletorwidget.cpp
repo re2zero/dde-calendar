@@ -184,14 +184,13 @@ void ColorSeletorWidget::slotButtonClicked(int butId)
 
 void ColorSeletorWidget::slotAddColorButClicked()
 {
-    CColorPickerWidget *colorPicker = new CColorPickerWidget(this);
+    CColorPickerWidget colorPicker;
 
-    if (colorPicker->exec()) {
+    if (colorPicker.exec()) {
         //设置用户自定义控件颜色
-        setUserColor(JobTypeColorInfo(0, colorPicker->getSelectedColor().name(), TypeUser));
+        setUserColor(JobTypeColorInfo(0, colorPicker.getSelectedColor().name(), TypeUser));
         m_userColorBtn->click();
     }
-    delete colorPicker;
 }
 
 void ColorSeletorWidget::setUserColor(const JobTypeColorInfo &colorInfo)

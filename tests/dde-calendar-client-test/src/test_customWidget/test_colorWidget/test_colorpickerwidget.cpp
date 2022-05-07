@@ -33,14 +33,6 @@ TEST_F(test_colorpickerwidget, getSelectedColor_001)
     EXPECT_EQ(mWidget->getSelectedColor(), "#123456") << "text: #123456";
 }
 
-TEST_F(test_colorpickerwidget, initUI_001)
-{
-    mWidget->initUI();
-    EXPECT_EQ(140, mWidget->m_cancelBtn->width()) << "m_cancelBtn->width()";
-    EXPECT_EQ(36, mWidget->m_cancelBtn->height()) << "m_cancelBtn->height()";
-    EXPECT_FALSE(mWidget->m_colHexLineEdit->isClearButtonEnabled()) << "m_colHexLineEdit->isClearButtonEnabled()";
-}
-
 TEST_F(test_colorpickerwidget, setColorHexLineEdit_001)
 {
     mWidget->setColorHexLineEdit();

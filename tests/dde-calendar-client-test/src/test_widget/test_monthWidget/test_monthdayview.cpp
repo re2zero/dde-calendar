@@ -32,16 +32,13 @@ static int monthdayview_stub_int()
     return monthdayview_int;
 }
 
-static bool monthdayview_stub_event(QEvent *)
-{
-    return true;
-}
-
 test_monthdayview::test_monthdayview()
 {
     mMonthDayView = new CMonthDayView();
     mMonthWidget = new CMonthWidget();
     mMonthRect = new CMonthRect();
+    mMonthRect->setDate(QDate());
+    CMonthRect::setSelectRect(mMonthRect);
 }
 
 test_monthdayview::~test_monthdayview()

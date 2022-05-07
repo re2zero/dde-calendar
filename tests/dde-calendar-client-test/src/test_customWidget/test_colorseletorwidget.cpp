@@ -125,16 +125,6 @@ TEST_F(test_colorseletorwidget, slotAddColorButClicked_001)
     EXPECT_TRUE(mWidget->m_userColorBtn->isChecked());
 }
 
-TEST_F(test_colorseletorwidget, init_001)
-{
-    mWidget->init();
-}
-
-TEST_F(test_colorseletorwidget, initView_001)
-{
-    mWidget->initView();
-}
-
 TEST_F(test_colorseletorwidget, addColor_001)
 {
     mWidget->reset();
