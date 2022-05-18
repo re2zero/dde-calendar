@@ -6,6 +6,7 @@
 #define CSCHEDULEBASEWIDGET_H
 
 #include "calendarmanage.h"
+#include "cdialogiconbutton.h"
 
 #include <QWidget>
 
@@ -53,6 +54,8 @@ protected:
     static CalendarManager *m_calendarManager;
     QString             m_lunarYear;
     QString             m_lunarDay;
+
+    CDialogIconButton *m_dialogIconButton = nullptr;    //时间跳转控件
 };
 
 #endif // CSCHEDULEBASEWIDGET_H
