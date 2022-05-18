@@ -15,9 +15,16 @@ Build-Depends:
  qtbase5-dev,
  qttools5-dev,
  qttools5-dev-tools,
+ deepin-gettext-tools,
+ libdframeworkdbus-dev,
+ libgtest-dev,
+ qttools5-dev,
+ libical-dev,
+ libgcrypt20-dev
+Standards-Version: 4.3.0
+Homepage: http://www.deepin.org
+Vcs-Git: https://github.com/linuxdeepin/dde-calendar
 Rules-Requires-Root: no
-Standards-Version: 4.6.1.0
-Homepage: https://github.com/linuxdeepin/dde-calendar
 
 Package: dde-calendar
 Architecture: linux-any

@@ -43,14 +43,15 @@ CScheduleDBus::~CScheduleDBus()
  * @param info                      日程信息
  * @return          -1表示失败， 创建日程ID
  */
-qint64 CScheduleDBus::CreateJob(const ScheduleDataInfo &info)
+qint64 CScheduleDBus::CreateJob(const DSchedule &info)
 {
     if (!info.isValid()) {
         qWarning() << "this is not a valid info :" << info << "  createJob Err";
         return -1;
     }
     QList<QVariant> argumentList;
-    argumentList << QVariant::fromValue(info.ScheduleToJsonStr(info));
+    //TODO:序列化
+    //    argumentList << QVariant::fromValue(info.ScheduleToJsonStr(info));
     QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("CreateJob"), argumentList);
     pCall.waitForFinished();
     QDBusMessage reply = pCall.reply();
@@ -68,7 +69,7 @@ qint64 CScheduleDBus::CreateJob(const ScheduleDataInfo &info)
  * @param endDate                       结束时间
  * @return
  */
-bool CScheduleDBus::GetJobs(const QDate &startDate, const QDate &endDate, QMap<QDate, QVector<ScheduleDataInfo> > &info)
+bool CScheduleDBus::GetJobs(const QDate &startDate, const QDate &endDate, QMap<QDate, QVector<DSchedule>> &info)
 {
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(static_cast<quint32>(startDate.year()))
@@ -88,7 +89,8 @@ bool CScheduleDBus::GetJobs(const QDate &startDate, const QDate &endDate, QMap<Q
 
     if (!jobs.isValid())
         return false;
-    info = ScheduleDataInfo::StrJsonToRangeInfo(jobs.value());
+    //TODO:序列化
+    //    info = ScheduleDataInfo::StrJsonToRangeInfo(jobs.value());
     return  true;
 }
 
@@ -98,7 +100,7 @@ bool CScheduleDBus::GetJobs(const QDate &startDate, const QDate &endDate, QMap<Q
  * @param out                       获取到的日程信息
  * @return
  */
-bool CScheduleDBus::GetJob(qint64 jobId, ScheduleDataInfo &out)
+bool CScheduleDBus::GetJob(qint64 jobId, DSchedule &out)
 {
     QList<QVariant> argumentList;
     argumentList << QVariant::fromValue(jobId);
@@ -112,7 +114,8 @@ bool CScheduleDBus::GetJob(qint64 jobId, ScheduleDataInfo &out)
     QDBusReply<QString> jobs =  reply;
     if (!jobs.isValid())
         return false;
-    out = ScheduleDataInfo::JsonStrToSchedule(jobs.value());
+    //TODO:序列化
+    //    out = ScheduleDataInfo::JsonStrToSchedule(jobs.value());
     return true;
 }
 
@@ -121,10 +124,11 @@ bool CScheduleDBus::GetJob(qint64 jobId, ScheduleDataInfo &out)
  * @param info                          需要更新的日程信息
  * @return
  */
-bool CScheduleDBus::UpdateJob(const ScheduleDataInfo &info)
+bool CScheduleDBus::UpdateJob(const DSchedule &info)
 {
     QList<QVariant> argumentList;
-    argumentList << QVariant::fromValue(ScheduleDataInfo::ScheduleToJsonStr(info));
+    //TODO:序列化
+    //    argumentList << QVariant::fromValue(ScheduleDataInfo::ScheduleToJsonStr(info));
     QDBusPendingCall pCall = asyncCallWithArgumentList(QStringLiteral("UpdateJob"), argumentList);
     pCall.waitForFinished();
     QDBusMessage reply = pCall.reply();
@@ -162,7 +166,7 @@ bool CScheduleDBus::DeleteJob(qint64 jobId)
  * @param out                           查询到的日程
  * @return
  */
-bool CScheduleDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endtime, QMap<QDate, QVector<ScheduleDataInfo> > &out)
+bool CScheduleDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endtime, QMap<QDate, QVector<DSchedule>> &out)
 {
     //若时间无效则退出查询
     if (starttime.isNull() || endtime.isNull()) {
@@ -171,8 +175,9 @@ bool CScheduleDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endtim
     }
     QJsonObject qjson;
     qjson.insert("Key", key);
-    qjson.insert("Start", ScheduleDataInfo::DateTimeToStringDate(starttime));
-    qjson.insert("End", ScheduleDataInfo::DateTimeToStringDate(endtime));
+    //TODO:序列化
+    //    qjson.insert("Start", ScheduleDataInfo::DateTimeToStringDate(starttime));
+    //    qjson.insert("End", ScheduleDataInfo::DateTimeToStringDate(endtime));
     // 构建 JSON 文档
     QJsonDocument qdocument;
     qdocument.setObject(qjson);
@@ -190,7 +195,8 @@ bool CScheduleDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endtim
     QDBusReply<QString> jobs =  reply;
     if (!jobs.isValid())
         return false;
-    out = ScheduleDataInfo::StrJsonToRangeInfo(jobs.value());
+    //TODO:序列化
+    //    out = ScheduleDataInfo::StrJsonToRangeInfo(jobs.value());
     return  true;
 }
 
@@ -212,8 +218,9 @@ bool CScheduleDBus::QueryJobs(QString key, QDateTime starttime, QDateTime endtim
     }
     QJsonObject qjson;
     qjson.insert("Key", key);
-    qjson.insert("Start", ScheduleDataInfo::DateTimeToStringDate(starttime));
-    qjson.insert("End", ScheduleDataInfo::DateTimeToStringDate(endtime));
+    //TODO:时间序列化
+    //    qjson.insert("Start", ScheduleDataInfo::DateTimeToStringDate(starttime));
+    //    qjson.insert("End", ScheduleDataInfo::DateTimeToStringDate(endtime));
     // 构建 JSON 文档
     QJsonDocument qdocument;
     qdocument.setObject(qjson);

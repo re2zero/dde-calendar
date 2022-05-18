@@ -5,7 +5,7 @@
 #ifndef ScheduleRemindWidget_H
 #define ScheduleRemindWidget_H
 
-#include "src/scheduledatainfo.h"
+#include "dschedule.h"
 #include "scheduledatamanage.h"
 
 #include <DWidget>
@@ -22,7 +22,7 @@ class ScheduleRemindWidget : public DArrowRectangle
 public:
     explicit ScheduleRemindWidget(QWidget *parent = nullptr);
     ~ScheduleRemindWidget() override;
-    void setData(const ScheduleDataInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
+    void setData(const DSchedule &vScheduleInfo, const CSchedulesColor &gcolor);
     //设置箭头方向
     void setDirection(ArrowDirection value);
     void setTimeFormat(QString timeformat);
@@ -31,7 +31,7 @@ signals:
 public slots:
 private:
     CenterWidget *m_centerWidget = nullptr;
-    ScheduleDataInfo     m_ScheduleInfo;
+    DSchedule m_ScheduleInfo;
     CSchedulesColor gdcolor;
 };
 
@@ -41,7 +41,7 @@ class CenterWidget : public DFrame
 public:
     explicit CenterWidget(DWidget *parent = nullptr);
     ~CenterWidget() override;
-    void setData(const ScheduleDataInfo  &vScheduleInfo, const CSchedulesColor &gcolor);
+    void setData(const DSchedule &vScheduleInfo, const CSchedulesColor &gcolor);
     void setTheMe(const int type = 0);
     void setTimeFormat(QString timeFormat = "h:mm");
 private:
@@ -54,7 +54,7 @@ private:
     int textwidth;
     int textheight;
     const int textRectWidth = 165;
-    ScheduleDataInfo     m_ScheduleInfo;
+    DSchedule m_ScheduleInfo;
     CSchedulesColor gdcolor;
     QColor textColor;
     QColor timeColor;

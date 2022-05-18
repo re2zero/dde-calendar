@@ -5,7 +5,7 @@
 #ifndef EXPORTEDINTERFACE_H
 #define EXPORTEDINTERFACE_H
 
-#include "src/scheduledatainfo.h"
+#include "dschedule.h"
 
 #include <DExportedInterface>
 
@@ -25,7 +25,8 @@ public:
     explicit ExportedInterface(QObject *parent = nullptr);
     QVariant invoke(const QString &action, const QString &parameters) const override;
 private:
-    bool analysispara(QString &parameters, ScheduleDataInfo &info, Exportpara &para) const;
+    bool analysispara(QString &parameters, DSchedule &info, Exportpara &para) const;
+
 private:
     QObject *m_object = nullptr;
 };

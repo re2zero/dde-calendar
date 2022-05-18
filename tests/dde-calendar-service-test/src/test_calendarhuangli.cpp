@@ -37,7 +37,7 @@ TEST_F(test_calendarhuangli, GetFestivalMonth)
 {
     quint32 year = 2020;
     quint32 month = 12;
-    QString fesMonth = calendarHuangLi->GetFestivalMonth(year, month);
+    QString fesMonth = calendarHuangLi->getFestivalMonth(year, month);
 }
 
 //QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
@@ -52,7 +52,7 @@ TEST_F(test_calendarhuangli, GetHuangLiDay)
     quint32 year = 2020;
     quint32 month = 12;
     quint32 day = 13;
-    QString gethuangli = calendarHuangLi->GetHuangLiDay(year, month, day);
+    QString gethuangli = calendarHuangLi->getHuangLiDay(year, month, day);
     assert(huangli_20201213 == gethuangli);
 
     //2020年12月14日黄历信息
@@ -61,7 +61,7 @@ TEST_F(test_calendarhuangli, GetHuangLiDay)
                                      "\"LunarMonthName\":\"十月\",\"SolarFestival\":\"\",\"Suit\":\"祭祀.入殓.移柩.余事勿取.\",\"Term\":"
                                      "\"\",\"Worktime\":0,\"Zodiac\":\"鼠\"}";
     day = 14;
-    gethuangli = calendarHuangLi->GetHuangLiDay(year, month, day);
+    gethuangli = calendarHuangLi->getHuangLiDay(year, month, day);
     assert(huangli_20201214 == gethuangli);
 }
 
@@ -71,10 +71,10 @@ TEST_F(test_calendarhuangli, GetHuangLiMonth)
     quint32 year = 2020;
     quint32 month = 12;
     bool fill = false;
-    calendarHuangLi->GetHuangLiMonth(year, month, fill);
+    calendarHuangLi->getHuangLiMonth(year, month, fill);
 
     fill = true;
-    calendarHuangLi->GetHuangLiMonth(year, month, fill);
+    calendarHuangLi->getHuangLiMonth(year, month, fill);
 }
 
 //CaLunarDayInfo CalendarHuangLi::GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day)
@@ -83,7 +83,7 @@ TEST_F(test_calendarhuangli, GetLunarInfoBySolar)
     quint32 year = 2020;
     quint32 month = 12;
     quint32 day = 13;
-    CaLunarDayInfo huangliDayInfo = calendarHuangLi->GetLunarInfoBySolar(year, month, day);
+    CaLunarDayInfo huangliDayInfo = calendarHuangLi->getLunarInfoBySolar(year, month, day);
 }
 
 //CaLunarMonthInfo CalendarHuangLi::GetLunarCalendarMonth(quint32 year, quint32 month, bool fill)
@@ -92,8 +92,8 @@ TEST_F(test_calendarhuangli, GetLunarCalendarMonth)
     quint32 year = 2020;
     quint32 month = 12;
     bool fill = false;
-    calendarHuangLi->GetLunarCalendarMonth(year, month, fill);
+    calendarHuangLi->getLunarCalendarMonth(year, month, fill);
 
     fill = true;
-    calendarHuangLi->GetLunarCalendarMonth(year, month, fill);
+    calendarHuangLi->getLunarCalendarMonth(year, month, fill);
 }

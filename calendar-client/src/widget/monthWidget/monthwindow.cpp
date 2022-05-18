@@ -169,7 +169,7 @@ void CMonthWindow::setCurrentDateTime(const QDateTime &currentDate)
  */
 void CMonthWindow::updateShowSchedule()
 {
-    QMap<QDate, QVector<ScheduleDataInfo> > _monthScheduleInfo = m_calendarManager->getScheduleTask()->getScheduleInfo(m_startDate, m_stopDate);
+    QMap<QDate, QVector<DSchedule>> _monthScheduleInfo = m_calendarManager->getScheduleTask()->getScheduleInfo(m_startDate, m_stopDate);
     m_monthView->setScheduleInfo(_monthScheduleInfo);
 }
 
@@ -192,7 +192,7 @@ void CMonthWindow::updateShowLunar()
 void CMonthWindow::updateSearchScheduleInfo()
 {
     //获取搜索日程信息
-    QVector<ScheduleDataInfo> _searchSchedule = m_calendarManager->getScheduleTask()->getSearchScheduleInfoVector();
+    QVector<DSchedule> _searchSchedule = m_calendarManager->getScheduleTask()->getSearchScheduleInfoVector();
     m_monthView->setSearchScheduleInfo(_searchSchedule);
 }
 
@@ -200,7 +200,7 @@ void CMonthWindow::updateSearchScheduleInfo()
  * @brief CMonthWindow::setSelectSearchScheduleInfo     设置选中日程
  * @param info
  */
-void CMonthWindow::setSelectSearchScheduleInfo(const ScheduleDataInfo &info)
+void CMonthWindow::setSelectSearchScheduleInfo(const DSchedule &info)
 {
     m_monthView->setSelectSchedule(info);
 }

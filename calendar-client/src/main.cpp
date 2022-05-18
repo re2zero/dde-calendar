@@ -7,7 +7,6 @@
 #include "exportedinterface.h"
 #include "configsettings.h"
 #include "accessible/accessible.h"
-#include "src/DebugTimeManager.h"
 #include "tabletconfig.h"
 
 #include <DApplication>
@@ -25,7 +24,6 @@ int main(int argc, char *argv[])
     if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
         setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
     }
-    PERF_PRINT_BEGIN("POINT-01", "");
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     //适配deepin-turbo启动加速
     DApplication *app = nullptr;
@@ -87,11 +85,7 @@ int main(int argc, char *argv[])
         }
         ww.slotTheme(DGuiApplicationHelper::instance()->themeType());
         ww.show();
-        PERF_PRINT_END("POINT-01");
         return app->exec();
     }
-
-    PERF_PRINT_END("POINT-01");
-
     return 0;
 }

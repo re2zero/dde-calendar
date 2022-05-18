@@ -5,7 +5,7 @@
 #ifndef SCHEDULEDLG_H
 #define SCHEDULEDLG_H
 
-//#include "src/scheduledatainfo.h"
+#include "dschedule.h"
 #include "dcalendarddialog.h"
 #include "cdateedit.h"
 #include "jobtypecombobox.h"
@@ -35,7 +35,7 @@ public:
 
     CScheduleDlg(int type, QWidget *parent = nullptr, const bool isAllDay = true);
     ~CScheduleDlg() override;
-    void setData(const ScheduleDataInfo &info);
+    void setData(const DSchedule &info);
     void setDate(const QDateTime &date);
     void setAllDay(bool flag);
 private:
@@ -198,8 +198,8 @@ private:
     bool m_isMoreThenOneDay = false;
 private:
     //日程
-    ScheduleDataInfo m_ScheduleDataInfo;
-    QList<JobTypeInfo> m_lstJobType;
+    DSchedule m_ScheduleDataInfo;
+    QList<DScheduleType> m_lstJobType;
     int m_type; // 1新建 0 编辑日程
     QDateTime m_currentDate;
     QDateTime m_EndDate;

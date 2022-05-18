@@ -11,17 +11,17 @@
 
 CalendarHuangLi::CalendarHuangLi(QObject *parent)
     : QObject(parent)
-    , m_database(new HuangLiDataBase(this))
+    , m_database(new DHuangLiDataBase(this))
 {
 }
 
 //获取指定公历月的假日信息
-QString CalendarHuangLi::GetFestivalMonth(quint32 year, quint32 month)
+QString CalendarHuangLi::getFestivalMonth(quint32 year, quint32 month)
 {
-    return m_database->QueryFestivalList(year, static_cast<quint8>(month));
+    return m_database->queryFestivalList(year, static_cast<quint8>(month));
 }
 
-QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
+QString CalendarHuangLi::getHuangLiDay(quint32 year, quint32 month, quint32 day)
 {
     stDay viewday{static_cast<int>(year), static_cast<int>(month), static_cast<int>(day)};
     QList<stDay> viewdate{viewday};
@@ -29,7 +29,7 @@ QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
     //获取阴历信息
     stLunarDayInfo lunardayinfo = SolarToLunar(static_cast<qint32>(year), static_cast<qint32>(month), static_cast<qint32>(day));
     //获取宜忌信息
-    QList<stHuangLi> hllist = m_database->QueryHuangLiByDays(viewdate);
+    QList<stHuangLi> hllist = m_database->queryHuangLiByDays(viewdate);
     //将黄历信息保存到CaHuangLiDayInfo
     hldayinfo.mSuit = hllist.begin()->Suit;
     hldayinfo.mAvoid = hllist.begin()->Avoid;
@@ -48,14 +48,14 @@ QString CalendarHuangLi::GetHuangLiDay(quint32 year, quint32 month, quint32 day)
     return hldayinfo.toJson();
 }
 
-QString CalendarHuangLi::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
+QString CalendarHuangLi::getHuangLiMonth(quint32 year, quint32 month, bool fill)
 {
     CaHuangLiMonthInfo monthinfo;
     SolarMonthInfo solarmonth = GetSolarMonthCalendar(static_cast<qint32>(year), static_cast<qint32>(month), fill);
     LunarMonthInfo lunarmonth = GetLunarMonthCalendar(static_cast<qint32>(year), static_cast<qint32>(month), fill);
     monthinfo.mFirstDayWeek = lunarmonth.FirstDayWeek;
     monthinfo.mDays = lunarmonth.Days;
-    QList<stHuangLi> hllist = m_database->QueryHuangLiByDays(solarmonth.Datas);
+    QList<stHuangLi> hllist = m_database->queryHuangLiByDays(solarmonth.Datas);
     for (int i = 0; i < lunarmonth.Datas.size(); ++i) {
         CaHuangLiDayInfo hldayinfo;
         hldayinfo.mAvoid = hllist.at(i).Avoid;
@@ -81,7 +81,7 @@ QString CalendarHuangLi::GetHuangLiMonth(quint32 year, quint32 month, bool fill)
     return monthinfo.toJson();
 }
 
-CaLunarDayInfo CalendarHuangLi::GetLunarInfoBySolar(quint32 year, quint32 month, quint32 day)
+CaLunarDayInfo CalendarHuangLi::getLunarInfoBySolar(quint32 year, quint32 month, quint32 day)
 {
     CaLunarDayInfo lunardayinfo;
     //获取阴历信息
@@ -102,7 +102,7 @@ CaLunarDayInfo CalendarHuangLi::GetLunarInfoBySolar(quint32 year, quint32 month,
     return lunardayinfo;
 }
 
-CaLunarMonthInfo CalendarHuangLi::GetLunarCalendarMonth(quint32 year, quint32 month, bool fill)
+CaLunarMonthInfo CalendarHuangLi::getLunarCalendarMonth(quint32 year, quint32 month, bool fill)
 {
     CaLunarMonthInfo lunarmonthinfo;
     //获取阴历月信息

@@ -7,7 +7,7 @@
 
 #include "constants.h"
 #include "../touchgestureoperation.h"
-#include "src/dbusdatastruct.h"
+#include "huangliData/dbusdatastruct.h"
 
 #include <DLabel>
 #include <DWidget>

@@ -23,9 +23,9 @@ void ColorSeletorWidget::init()
 void ColorSeletorWidget::initColorButton(int index)
 {
     reset();
-    QList<JobTypeColorInfo> lstColorInfo = JobTypeInfoManager::instance()->getJobTypeColorList();
-    for (JobTypeColorInfo &var : lstColorInfo) {
-        if (TypeSystem == var.getAuthority()) {
+    QList<DTypeColor> lstColorInfo = JobTypeInfoManager::instance()->getJobTypeColorList();
+    for (DTypeColor &var : lstColorInfo) {
+        if (DTypeColor::PriSystem == var.privilege()) {
             addColor(var);
         }
     }
@@ -52,23 +52,24 @@ void ColorSeletorWidget::reset()
     m_userColorBtnId = -1;
 }
 
-void ColorSeletorWidget::addColor(const JobTypeColorInfo &cInfo)
+void ColorSeletorWidget::addColor(const DTypeColor &cInfo)
 {
     static int count = 0;   //静态变量，充当色彩控件id
     count++;
     m_colorEntityMap.insert(count, cInfo);      //映射id与控件
     CRadioButton *radio = new CRadioButton(this);
-    radio->setColor(QColor(cInfo.getColorHex()));         //设置控件颜色
+    radio->setColor(QColor(cInfo.colorCode())); //设置控件颜色
     radio->setFixedSize(18, 18);
     m_colorGroup->addButton(radio, count);
     m_colorLayout->addWidget(radio);
-    if (TypeUser == cInfo.getAuthority()) {
+    //TODO
+    if (DTypeColor::PriUser == cInfo.privilege()) {
         m_userColorBtn = radio;             //记录用户色彩指针
         m_userColorBtnId = count;
     }
 }
 
-JobTypeColorInfo ColorSeletorWidget::getSelectedColorInfo()
+DTypeColor ColorSeletorWidget::getSelectedColorInfo()
 {
     return m_colorInfo;
 }
@@ -94,7 +95,7 @@ void ColorSeletorWidget::setSelectedColorById(int colorId)
     //系统颜色则向后移一位
     auto iterator = m_colorEntityMap.begin();
     while (iterator != m_colorEntityMap.end()) {
-        if (iterator.value().getTypeNo() == colorId) {
+        if (iterator.value().colorID() == colorId) {
             //向后移一位
             iterator++;
             if (iterator == m_colorEntityMap.end() || iterator.key() == m_userColorBtnId) {
@@ -110,23 +111,24 @@ void ColorSeletorWidget::setSelectedColorById(int colorId)
     }
 }
 
-void ColorSeletorWidget::setSelectedColor(const JobTypeColorInfo &colorInfo)
+void ColorSeletorWidget::setSelectedColor(const DTypeColor &colorInfo)
 {
-    if (TypeUser == colorInfo.getAuthority()) {
+    if (DTypeColor::PriUser == colorInfo.privilege()) {
         setUserColor(colorInfo);
     }
 
     bool isFind = false;
     //遍历所有控件
     for (QAbstractButton *but : m_colorGroup->buttons()) {
-        if (nullptr != but && qobject_cast<CRadioButton *>(but)->getColor().name() == colorInfo.getColorHex()) {
+        if (nullptr != but && qobject_cast<CRadioButton *>(but)->getColor().name() == colorInfo.colorCode()) {
             but->click();
             isFind = true;
             break;
         }
     }
     if (!isFind) {
-        setUserColor(JobTypeColorInfo(0, colorInfo.getColorHex(), TypeUser));
+        //TODO:设置颜色
+        //        setUserColor(JobTypeColorInfo(0, colorInfo.getColorHex(), TypeUser));
     }
 }
 
@@ -159,8 +161,8 @@ void ColorSeletorWidget::slotButtonClicked(int butId)
     if (m_colorEntityMap.end() == it) {
         return;
     }
-    JobTypeColorInfo info = it.value();
-    if (info.getColorHex() != m_colorInfo.getColorHex()) {
+    DTypeColor info = it.value();
+    if (info.colorCode() != m_colorInfo.colorCode()) {
         m_colorInfo = info;
         emit signalColorChange(info);
     }
@@ -172,20 +174,21 @@ void ColorSeletorWidget::slotAddColorButClicked()
 
     if (colorPicker.exec()) {
         //设置用户自定义控件颜色
-        setUserColor(JobTypeColorInfo(0, colorPicker.getSelectedColor().name(), TypeUser));
+        //TODO:设置颜色
+        //        setUserColor(JobTypeColorInfo(0, colorPicker->getSelectedColor().name(), TypeUser));
         m_userColorBtn->click();
     }
 }
 
-void ColorSeletorWidget::setUserColor(const JobTypeColorInfo &colorInfo)
+void ColorSeletorWidget::setUserColor(const DTypeColor &colorInfo)
 {
-    if (TypeUser != colorInfo.getAuthority()) {
+    if (DTypeColor::PriUser != colorInfo.privilege()) {
         return;
     }
     if (nullptr == m_userColorBtn) {
         addColor(colorInfo);
     }
-    m_userColorBtn->setColor(colorInfo.getColorHex());
+    m_userColorBtn->setColor(colorInfo.colorCode());
     m_colorEntityMap[m_userColorBtnId] = colorInfo;
     m_userColorBtn->click();
 }
