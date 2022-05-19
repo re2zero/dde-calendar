@@ -53,6 +53,7 @@ public slots:
 private:
     void initUI();
     void initConnection();
+    void initData();
     //创建视图
     void createview();
 protected:
