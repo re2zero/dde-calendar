@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include "cschedulebasewidget.h"
+#include "monthbrefwidget.h"
 CalendarManager *CScheduleBaseWidget::m_calendarManager = nullptr;
 CScheduleBaseWidget::CScheduleBaseWidget(QWidget *parent)
     : QWidget(parent)
