@@ -18,27 +18,37 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DSERVICEBASE_H
-#define DSERVICEBASE_H
+#ifndef DACCOUNTMODULE_H
+#define DACCOUNTMODULE_H
+
+#include "daccount.h"
+#include "daccountdatabase.h"
 
 #include <QObject>
-#include <QDBusContext>
+#include <QSharedPointer>
 
-/**
- * @brief The serviceBase class     服务基类
- */
-class DServiceBase : public QObject
-    , protected QDBusContext
+//帐户模块
+//处理后端数据获取，提醒，上传下载等
+class DAccountModule : public QObject
 {
     Q_OBJECT
 public:
-    explicit DServiceBase(const QString &path, const QString &interface, QObject *parent = nullptr);
-    QString getPath() const;
-    QString getInterface() const;
+    typedef QSharedPointer<DAccountModule> Ptr;
+    typedef QList<Ptr> List;
 
+    explicit DAccountModule(const DAccount::Ptr &account, QObject *parent = nullptr);
+
+    QString getAccountInfo();
+    QString getScheduleTypeList();
+
+    DAccount::Ptr account() const;
+
+signals:
+
+public slots:
 private:
-    QString m_path;
-    QString m_interface;
+    DAccount::Ptr m_account;
+    DAccountDataBase::Ptr m_accountDB;
 };
 
-#endif // DSERVICEBASE_H
+#endif // DACCOUNTMODULE_H
