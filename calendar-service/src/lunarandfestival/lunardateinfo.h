@@ -7,7 +7,7 @@
 
 #include "lunarandfestival.h"
 #include "method_interface.h"
-#include "dschedule.h"
+#include "recurrencerule.h"
 
 #include <QDate>
 #include <QMap>
@@ -19,7 +19,14 @@
 class LunarDateInfo
 {
 public:
-    explicit LunarDateInfo(const DSchedule &job);
+    //农历日程只支持每年和每月
+    enum LunnarRRule {
+        RRule_None, //不重复
+        RRule_Month, //每月
+        RRule_Year, //每年
+    };
+
+    explicit LunarDateInfo(KCalendarCore::RecurrenceRule *rruleStr, const qint64 interval);
     /**
      * @brief getRRuleStartDate         获取重复农历日程开始时间(公历)集
      * @param beginDate                 查询的起始时间
@@ -57,7 +64,7 @@ private:
      * @param rule                  重复规则
      * @return
      */
-    //    stRRuleOptions ParseRRule(const QString &rule);
+    LunnarRRule ParseRRule(const QString &rule);
 
     /**
      * @brief isWithinTimeFrame     是否在查询时间范围内
@@ -76,7 +83,9 @@ private:
     bool addSolarMap(QMap<int, QDate> &solarMap, QDate &nextDate, int &count, const int addDays);
 
 private:
-    DSchedule m_job;
+    KCalendarCore::RecurrenceRule *m_recurenceRule;
+    LunnarRRule m_rruleType;
+
     //    stRRuleOptions m_options;
     QDate m_queryStartDate;
     QDate m_queryEndDate;
