@@ -9,9 +9,9 @@
 #include <QDebug>
 
 bool DragInfoItem::m_press = false;
-DSchedule DragInfoItem::m_HoverInfo;
-DSchedule DragInfoItem::m_pressInfo;
-QVector<DSchedule> DragInfoItem::m_searchScheduleInfo;
+DSchedule::Ptr DragInfoItem::m_HoverInfo;
+DSchedule::Ptr DragInfoItem::m_pressInfo;
+DSchedule::List DragInfoItem::m_searchScheduleInfo;
 
 DragInfoItem::DragInfoItem(QRectF rect, QGraphicsItem *parent)
     : CFocusItem(parent)
@@ -43,12 +43,12 @@ DragInfoItem::~DragInfoItem()
 
 }
 
-void DragInfoItem::setData(const DSchedule &vScheduleInfo)
+void DragInfoItem::setData(const DSchedule::Ptr &vScheduleInfo)
 {
     m_vScheduleInfo = vScheduleInfo;
 }
 
-DSchedule DragInfoItem::getData() const
+DSchedule::Ptr DragInfoItem::getData() const
 {
     return  m_vScheduleInfo;
 }
@@ -62,7 +62,7 @@ void DragInfoItem::setPressFlag(const bool flag)
  * @brief DragInfoItem::setPressSchedule        记录选中日程
  * @param pressSchedule
  */
-void DragInfoItem::setPressSchedule(const DSchedule &pressSchedule)
+void DragInfoItem::setPressSchedule(const DSchedule::Ptr &pressSchedule)
 {
     m_pressInfo = pressSchedule;
 }
@@ -71,7 +71,7 @@ void DragInfoItem::setPressSchedule(const DSchedule &pressSchedule)
  * @brief DragInfoItem::getPressSchedule        获取选中日程
  * @return
  */
-DSchedule DragInfoItem::getPressSchedule()
+DSchedule::Ptr DragInfoItem::getPressSchedule()
 {
     return  m_pressInfo;
 }
@@ -80,7 +80,7 @@ DSchedule DragInfoItem::getPressSchedule()
  * @brief DragInfoItem::setSearchScheduleInfo       设置搜索日程新
  * @param searchScheduleInfo
  */
-void DragInfoItem::setSearchScheduleInfo(const QVector<DSchedule> &searchScheduleInfo)
+void DragInfoItem::setSearchScheduleInfo(const DSchedule::List &searchScheduleInfo)
 {
     m_searchScheduleInfo = searchScheduleInfo;
 }
@@ -135,7 +135,7 @@ void DragInfoItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void DragInfoItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
-    m_HoverInfo = DSchedule();
+    m_HoverInfo = DSchedule::Ptr();
     update();
 }
 

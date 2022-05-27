@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include "scheduledatamanage.h"
+#include "accountmanager.h"
 #include "cscheduleoperation.h"
 
 #include <QJsonArray>
@@ -70,7 +71,7 @@ CScheduleDataManage *CScheduleDataManage::getScheduleDataManage()
     return m_vscheduleDataManage;
 }
 
-CScheduleDataManage::CScheduleDataManage()
+CScheduleDataManage::CScheduleDataManage(QObject *parent) : QObject (parent)
 {
 }
 
@@ -80,16 +81,16 @@ CScheduleDataManage::~CScheduleDataManage()
 
 void JobTypeInfoManager::updateInfo()
 {
-    CScheduleOperation so;
-    so.getJobTypeList(this->m_lstJobType);
-    so.getColorTypeList(this->m_lstJobTypeColor);
+//    CScheduleOperation so;
+//    so.getJobTypeList(this->m_lstJobType);
+//    so.getColorTypeList(this->m_lstJobTypeColor);
 
     for (auto k = noticeObjBill.begin(); k != noticeObjBill.end(); k++) {
         QMetaObject::invokeMethod(k.key(), k.value());
     }
     return;
 }
-JobTypeInfoManager::JobTypeInfoManager()               //私有静态构造函数
+JobTypeInfoManager::JobTypeInfoManager(QObject *parent) : QObject (parent)               //私有静态构造函数
 {
     updateInfo();
 }

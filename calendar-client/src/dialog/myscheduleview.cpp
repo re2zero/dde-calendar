@@ -20,7 +20,7 @@
 #include <QtMath>
 
 DGUI_USE_NAMESPACE
-CMyScheduleView::CMyScheduleView(const DSchedule &schduleInfo, QWidget *parent)
+CMyScheduleView::CMyScheduleView(const DSchedule::Ptr &schduleInfo, QWidget *parent)
     : DCalendarDDialog(parent)
 {
     setContentsMargins(0, 0, 0, 0);
@@ -45,7 +45,7 @@ void CMyScheduleView::slotAutoFeed(const QFont &font)
     if (nullptr == m_timeLabel || nullptr == m_scheduleLabel) {
         return;
     }
-    QString strText = m_scheduleInfo.summary();
+    QString strText = m_scheduleInfo->summary();
     QString resultStr = nullptr;
     QFont labelF;
     labelF.setWeight(QFont::Medium);
@@ -87,7 +87,7 @@ void CMyScheduleView::slotAutoFeed(const QFont &font)
     area->setFixedHeight(m_scheduleLabelH);
     m_scheduleLabel->setText(resultStr);
 
-    if (m_scheduleInfo.lunnar()) {
+    if (m_scheduleInfo->lunnar()) {
         QString timeName = m_timeLabel->text();
         int index = timeName.indexOf("~");
         //重新计算法字符串像素长度
@@ -181,7 +181,7 @@ void CMyScheduleView::updateDateTimeFormat()
 QString CMyScheduleView::getDataByFormat(const QDate &date, QString format)
 {
     QString name = date.toString(format);
-    if (m_scheduleInfo.lunnar()) {
+    if (m_scheduleInfo->lunnar()) {
         //接入农历时间
         name += CScheduleDBus::getInstance()->getHuangLiShortName(date);
     }
@@ -199,9 +199,9 @@ void CMyScheduleView::slotBtClick(int buttonIndex, const QString &buttonName)
     if (buttonIndex == 0) {
         //删除日程
         CScheduleOperation _scheduleOpertion(this);
-        if (_scheduleOpertion.deleteSchedule(m_scheduleInfo)) {
-            accept();
-        };
+//        if (_scheduleOpertion.deleteSchedule(m_scheduleInfo)) {
+//            accept();
+//        };
         return;
     }
     if (buttonIndex == 1) {

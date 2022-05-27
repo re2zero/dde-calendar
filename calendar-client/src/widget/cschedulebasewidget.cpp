@@ -14,7 +14,8 @@ CScheduleBaseWidget::CScheduleBaseWidget(QWidget *parent)
     if (m_calendarManager == nullptr) {
         m_calendarManager = CalendarManager::getInstance();
         //获取一年的日程信息
-        updateDBusData();
+//        updateDBusData();
+        initConnect();
     }
     m_calendarManager->addShowWidget(this);
 }
@@ -26,6 +27,11 @@ CScheduleBaseWidget::~CScheduleBaseWidget()
         CalendarManager::releaseInstance();
         m_calendarManager = nullptr;
     }
+}
+
+void CScheduleBaseWidget::initConnect()
+{
+    connect(ScheduleManager::getInstace(), &ScheduleManager::signalScheduleUpdate, this, &CScheduleBaseWidget::slotScheduleUpdate);
 }
 
 /**
@@ -98,7 +104,7 @@ bool CScheduleBaseWidget::getShowLunar()
 void CScheduleBaseWidget::updateData()
 {
     updateShowDate();
-    updateShowSchedule();
+//    updateShowSchedule();
     updateShowLunar();
     updateSearchScheduleInfo();
 }
@@ -152,4 +158,9 @@ CaHuangLiDayInfo CScheduleBaseWidget::getLunarInfo()
     m_lunarYear = QString("-%0%1年-").arg(interator.value().mGanZhiYear).arg(interator.value().mZodiac);
     m_lunarDay = QString("-农历%0%1-").arg(interator.value().mLunarMonthName).arg(interator.value().mLunarDayName);
     return interator.value();
+}
+
+void CScheduleBaseWidget::slotScheduleUpdate()
+{
+    updateShowSchedule();
 }
