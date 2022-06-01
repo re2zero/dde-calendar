@@ -45,7 +45,7 @@ void CAllDayEventWeekView::changeEvent(QEvent *event)
 
 bool CAllDayEventWeekView::MeetCreationConditions(const QDateTime &date)
 {
-    return qAbs(date.daysTo(m_PressDate) < 7);
+    return qAbs(date.daysTo(m_PressDate)) < 7;
 }
 
 void CAllDayEventWeekView::slotCreate(const QDateTime &date)
