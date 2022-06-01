@@ -82,7 +82,7 @@ void CWeekWindow::initUI()
     m_YearLunarLabel = new QLabel(this);
     m_YearLunarLabel->setFixedSize(DDEWeekCalendar::W_YLunatLabelWindth, DDEWeekCalendar::W_YLunatLabelHeight);
 
-    m_weekview  = new CWeekView(&CalendarDateDataManager::getWeekNumOfYear, this);
+    m_weekview  = new CWeekView(&CalendarManager::getWeekNumOfYear, this);
 
     m_weekLabel = new QLabel();
     m_weekLabel->setFixedHeight(DDEWeekCalendar::W_YLabelHeight);
@@ -316,7 +316,7 @@ void CWeekWindow::setYearData()
 void CWeekWindow::updateShowDate(const bool isUpdateBar)
 {
     setYearData();
-    QVector<QDate> _weekShowData = m_calendarManager->getCalendarDateDataManage()->getWeekDate(getSelectDate());
+    QVector<QDate> _weekShowData = m_calendarManager->getWeekDate(getSelectDate());
     m_weekHeadView->setWeekDay(_weekShowData, getSelectDate());
     //获取一周的开始结束时间
     m_startDate = _weekShowData.first();
@@ -327,7 +327,7 @@ void CWeekWindow::updateShowDate(const bool isUpdateBar)
     }
     //设置全天和非全天显示时间范围
     m_scheduleView->setRange(m_startDate, m_stopDate);
-    m_scheduleView->setTimeFormat(m_calendarManager->getCalendarDateDataManage()->getTimeFormat());
+    m_scheduleView->setTimeFormat(m_calendarManager->getTimeFormat());
     //是否更新显示周数窗口
     if (isUpdateBar) {
         m_weekview->setCurrent(getCurrendDateTime());
@@ -352,10 +352,10 @@ void CWeekWindow::updateShowSchedule()
  */
 void CWeekWindow::updateShowLunar()
 {
-    getLunarInfo();
-    m_YearLunarLabel->setText(m_lunarYear);
-    QMap<QDate, CaHuangLiDayInfo> _weekHuangLiInfo = m_calendarManager->getScheduleTask()->getHuangLiInfo(m_startDate, m_stopDate);
-    m_weekHeadView->setHunagLiInfo(_weekHuangLiInfo);
+//    getLunarInfo();
+//    m_YearLunarLabel->setText(m_lunarYear);
+//    QMap<QDate, CaHuangLiDayInfo> _weekHuangLiInfo = m_calendarManager->getScheduleTask()->getHuangLiInfo(m_startDate, m_stopDate);
+//    m_weekHeadView->setHunagLiInfo(_weekHuangLiInfo);
 }
 
 /**

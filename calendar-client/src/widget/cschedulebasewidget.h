@@ -8,6 +8,7 @@
 #include "calendarmanage.h"
 #include "cdialogiconbutton.h"
 #include "schedulemanager.h"
+#include "lunarmanager.h"
 
 #include <QWidget>
 
