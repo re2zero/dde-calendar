@@ -4,6 +4,7 @@
 
 #include "lunarcalendarwidget.h"
 #include "cscheduledbus.h"
+#include "lunarmanager.h"
 
 #include <DPalette>
 #include <DStyle>
@@ -193,8 +194,7 @@ void CalenderStyle::updateLunarInfo(const QDate &date) const
         m_caHuangLiDayMap.clear();
 
     if (!m_caHuangLiDayMap.contains(date)) {
-        CaHuangLiDayInfo info;
-        CScheduleDBus::getInstance()->GetHuangLiDay(date, info);
+        CaHuangLiDayInfo info = gLunarManager->getHuangLiDay(date);
         m_caHuangLiDayMap[date] = info;
     }
 }

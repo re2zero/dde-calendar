@@ -8,6 +8,7 @@
 #include "cdynamicicon.h"
 #include "constants.h"
 #include "cscheduleoperation.h"
+#include "lunarmanager.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -183,7 +184,7 @@ QString CMyScheduleView::getDataByFormat(const QDate &date, QString format)
     QString name = date.toString(format);
     if (m_scheduleInfo->lunnar()) {
         //接入农历时间
-        name += CScheduleDBus::getInstance()->getHuangLiShortName(date);
+        name += gLunarManager->getHuangLiShortName(date);
     }
     return name;
 }
