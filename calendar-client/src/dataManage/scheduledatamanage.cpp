@@ -17,7 +17,7 @@ CSchedulesColor CScheduleDataManage::getScheduleColorByType(const QString &typeI
 {
     CSchedulesColor color;
     DTypeColor colorinfo;
-    DScheduleType::Ptr type = gAccounManager->getScheduleTypeByScheduleTypeId(typeId);
+    DScheduleType::Ptr type = gAccountManager->getScheduleTypeByScheduleTypeId(typeId);
     QColor typeColor;
     if (nullptr != type) {
         typeColor = type->typeColor().colorCode();
