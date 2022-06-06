@@ -6,6 +6,8 @@
 #define JOBTYPELISTVIEW_H
 
 #include "scheduledatamanage.h"
+#include "daccount.h"
+#include "accountitem.h"
 
 #include <DListView>
 #include <DIconButton>
@@ -28,8 +30,10 @@ public:
      * @brief canAdd 是否可以继续新增类型
      */
     bool canAdd();
+
 protected:
     bool viewportEvent(QEvent *event) override;
+
 private:
     void initUI();//初始化
     /**
@@ -46,13 +50,19 @@ signals:
 public slots:
     void slotUpdateJobType();
     void slotDeleteJobType();
+    void slotAddScheduleType();
+
     bool updateJobType();
+    void updateCalendarAccount(int account_type);
 
 private:
     QStandardItemModel *m_modelJobType {nullptr};
     int m_iIndexCurrentHover = -1;
 
     friend JobTypeListViewStyle;
+
+    DAccount::Type m_account_type = DAccount::Account_Local;
+    AccountItem::Ptr account();
 };
 
 class JobTypeListViewStyle : public DStyledItemDelegate

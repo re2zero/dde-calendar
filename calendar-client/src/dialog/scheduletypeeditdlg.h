@@ -8,6 +8,8 @@
 #include "colorseletorwidget.h"
 #include "dschedule.h"
 #include "dscheduletype.h"
+#include "daccount.h"
+#include "accountitem.h"
 
 #include <DDialog>
 #include <DLineEdit>
@@ -22,6 +24,10 @@ public:
     explicit ScheduleTypeEditDlg(QWidget *parent = nullptr);
     //iJobTypeNo==0 ？ 新增 or 修改
     explicit ScheduleTypeEditDlg(const DScheduleType &jobTypeOld, QWidget *parent = nullptr);
+
+    DScheduleType newJsonType();
+
+    void setAccount(AccountItem::Ptr account);
 
 private:
     enum DialogType { //对话框类型
