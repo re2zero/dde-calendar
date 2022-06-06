@@ -25,7 +25,7 @@ void CSystemdTimerControl::buildingConfiggure(const QVector<SystemDInfo> &infoVe
         return;
     QStringList fileNameList{};
     foreach (auto info, infoVector) {
-        fileNameList.append(QString("calendar-remind-%1-%2").arg(info.alarmID.mid(1, 8)).arg(info.laterCount));
+        fileNameList.append(QString("calendar-remind-%1-%2").arg(info.alarmID.mid(0, 8)).arg(info.laterCount));
         createService(fileNameList.last(), info);
         createTimer(fileNameList.last(), info.triggerTimer);
     }
@@ -36,7 +36,7 @@ void CSystemdTimerControl::stopSystemdTimerByJobInfos(const QVector<SystemDInfo>
 {
     QStringList fileNameList;
     foreach (auto info, infoVector) {
-        fileNameList.append(QString("calendar-remind-%1-%2").arg(info.alarmID.mid(1, 8)).arg(info.laterCount));
+        fileNameList.append(QString("calendar-remind-%1-%2").arg(info.alarmID.mid(0, 8)).arg(info.laterCount));
     }
     stopSystemdTimer(fileNameList);
 }

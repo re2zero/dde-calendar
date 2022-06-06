@@ -294,8 +294,7 @@ void Calendarmainwindow::slotOpenSchedule(QString job)
     if (job.isEmpty())
         return;
     DSchedule::Ptr out;
-    //TODO:数据反序列化
-    //    out = ScheduleDataInfo::JsonStrToSchedule(job);
+    DSchedule::fromJsonString(out, job);
 
     //设置被选中
     m_buttonBox->button(DDECalendar::CalendarDayWindow)->setChecked(true);
@@ -831,9 +830,9 @@ void Calendarmainwindow::slotOpenSettingDialog()
         m_dsdSetting = new DSettingsDialog(this);
         m_dsdSetting->setIcon(CDynamicIcon::getInstance()->getPixmap());
         m_dsdSetting->setFixedSize(682, 506);
-        m_dsdSetting->widgetFactory()->registerWidget("login",Userlogin::createloginButton);
-        m_dsdSetting->widgetFactory()->registerWidget("FirstDayofWeek",Generalsetting::createComboboxFirstDayofWeek);
-        m_dsdSetting->widgetFactory()->registerWidget("Time",Generalsetting::createComboboxTime);
+        m_dsdSetting->widgetFactory()->registerWidget("login", Userlogin::createloginButton);
+        m_dsdSetting->widgetFactory()->registerWidget("FirstDayofWeek", Generalsetting::createComboboxFirstDayofWeek);
+        m_dsdSetting->widgetFactory()->registerWidget("Time", Generalsetting::createComboboxTime);
         m_dsdSetting->widgetFactory()->registerWidget("JobTypeListView", [](QObject *obj) -> QWidget * {
             if (DSettingsOption *option = qobject_cast<DSettingsOption *>(obj)) {
                 Q_UNUSED(option)
@@ -911,7 +910,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
                            }
                        )");
 
-        auto settings= Dtk::Core::DSettings::fromJson(strJson.toLatin1());
+        auto settings = Dtk::Core::DSettings::fromJson(strJson.toLatin1());
 
         //settings->setBackend(&backend);
         m_dsdSetting->setObjectName("SettingDialog");
@@ -979,6 +978,6 @@ void Calendarmainwindow::dropEvent(QDropEvent *event)
     QPoint pos = event->pos();
     int diffPosx = pos.x() - m_startPos.x();
     int diffPosy = pos.y() - m_startPos.y();
-    if ((diffPosx >=16 || diffPosx <= -16) || (diffPosy >= 16 || diffPosy <= -16))
+    if ((diffPosx >= 16 || diffPosx <= -16) || (diffPosy >= 16 || diffPosy <= -16))
         slotNewSchedule();
 }
