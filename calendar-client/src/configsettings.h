@@ -41,10 +41,6 @@ public:
 
     void initSetting();
 
-    //一周首日
-    Qt::DayOfWeek getFirstDayOfWeek();
-    void setFirstDayOfWeek(int);
-
     //账户侧边栏显示状态
     bool getUserSidebarStatus();
     void setUserSidebarStatus(bool);
@@ -62,8 +58,6 @@ protected:
     void releaseInstance();
 private:
     QPointer<QSettings> m_settings;
-
-    int m_firstDayOfWeek = Qt::Sunday;   //一周首日
     bool m_userSidebarStatus = true;    //账户侧边栏显示状态
 };
 

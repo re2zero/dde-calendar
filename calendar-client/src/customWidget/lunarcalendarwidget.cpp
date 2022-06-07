@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include "lunarcalendarwidget.h"
-#include "cscheduledbus.h"
 #include "lunarmanager.h"
 
 #include <DPalette>
