@@ -143,6 +143,11 @@ struct CalendarSettingSettings : public QList<CalendarSettingSetting>
         }
         return arr;
     }
+
+    void removeGroup(const QString &groupName, const QString &groupName2);
+    void removeGroup(const QString &groupName);
+    int indexOf(const CalendarSettingGroups &groups, const QString groupName);
+    int indexOf(const CalendarSettingSettings &groups, const QString groupName);
 };
 
 
@@ -287,7 +292,7 @@ private slots:
     void slotUosManualSync();
 
 signals:
-    void signal_calendarAccountChanged(int account_type);
+    void signal_calendarAccountChanged(QString account_id);
     void signal_addScheduleType();
 };
 

@@ -861,7 +861,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
             "setting_account",            QObject::tr("Account setting"), {
                 {"account",               QObject::tr("Account"),                     {{"login",               "",                                   "login",                ""}}},
                 {"account_sync_items",    QObject::tr("Select items to be synced"),   {{"Account_Calendar",    QObject::tr("Events"),                "SyncTagRadioButton",   ""},
-                                                                                       {"Account_Setting",      QObject::tr("General settings"),      "SyncTagRadioButton",   ""}}},
+                                                                                       {"Account_Setting",     QObject::tr("General settings"),      "SyncTagRadioButton",   ""}}},
                 {"sync_interval",         "",                                         {{"Sync_interval",       QObject::tr("Sync interval"),         "SyncTimeCombobox",     ""}}},
                 {"manual_sync",           "",                                         {{"manual_sync",         "",                                   "ManualSyncButton",     ""}}},
             }
@@ -876,7 +876,7 @@ void Calendarmainwindow::slotOpenSettingDialog()
         static CalendarSettingSetting setting_general = {
             "setting_general",            QObject::tr("General settings"), {
                 {"general",               QObject::tr("General"),                     {{"firstday",            QObject::tr("First day of week"),     "FirstDayofWeek",       "",     "Sunday"},
-                                                                                       {"time",                 QObject::tr("Time"),                  "Time",                 ""}}}
+                                                                                       {"time",                QObject::tr("Time"),                  "Time",                 ""}}}
             }
         };
 
@@ -888,7 +888,13 @@ void Calendarmainwindow::slotOpenSettingDialog()
 
         //社区版不含云同步相关内容
         if(DSysInfo::uosEditionType() == DSysInfo::UosCommunity) {
-            calendarSettings.removeFirst();
+            calendarSettings.removeGroup("setting_account");
+        }
+        //未登录uos账号时，移除部分选项
+        if(!gUosAccountItem) {
+            calendarSettings.removeGroup("setting_account", "account_sync_items");
+            calendarSettings.removeGroup("setting_account", "sync_interval");
+            calendarSettings.removeGroup("setting_account", "manual_sync");
         }
 
         QJsonObject obj;
@@ -939,6 +945,12 @@ void Calendarmainwindow::slotOpenSettingDialog()
     if(bk) {
         bk->setBackgroundRole(QPalette::Base);
     }
+    //首次显示JobTypeListView时，更新日程类型
+    if(DComboBox *combobox = m_dsdSetting->findChild<DComboBox *>("AccountCombobox")) {
+        if(JobTypeListView * listview = m_dsdSetting->findChild<JobTypeListView *>("JobTypeListView")) {
+            listview->updateCalendarAccount(combobox->currentData().toString());
+        }
+    }
 
     //内容定位到顶端
     m_dsdSetting->exec();
@@ -963,21 +975,44 @@ QPair<QWidget *, QWidget *> Calendarmainwindow::createAccountCombobox(QObject *o
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     DComboBox *widget = new DComboBox;
+    widget->setObjectName("AccountCombobox");
     widget->setFixedSize(150, 36);
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, widget);
+ 
+    //更新账户列表
+    auto accountUpdate = [=](){
+        QVariant oldAccountID = widget->currentData();
+        widget->blockSignals(true);
+        widget->clear();
+        for(auto account : gAccountManager->getAccountList()) {
+            switch (account->getAccount()->accountType()) {
+            case DAccount::Account_Local:
+                widget->addItem(tr("Local account"), account->getAccount()->accountID());
+                break;
+            case DAccount::Account_UnionID:
+                widget->addItem(tr("Union ID"), account->getAccount()->accountID());
+                break;
+            case DAccount::Account_CalDav:
+                widget->addItem(tr("Calendar account"), account->getAccount()->accountID());
+                break;
+            }
+        }
+        widget->setCurrentIndex(widget->findData(oldAccountID));
+        if(widget->currentIndex() < 0)
+            widget->setCurrentIndex(0);
+        widget->blockSignals(false);
 
-    for(auto account : gAccountManager->getAccountList()) {
-        if(DAccount::Account_Local == account->getAccount()->accountType()) {
-            widget->addItem(tr("Local account"), DAccount::Account_Local);
-        }
-        if(DAccount::Account_UnionID == account->getAccount()->accountType()) {
-            widget->addItem(tr("Union ID"), DAccount::Account_UnionID);
-        }
-    }
+        emit signal_calendarAccountChanged(widget->currentData().toString());
+    };
     //TODO:控制中心退出账号时，更新账户列表
+    connect(gAccountManager, &AccountManager::signalAccountUpdate, this, accountUpdate);
 
     //TODO:切换账号时，更新日程类型
-    connect(widget, QOverload<int>::of(&DComboBox::currentIndexChanged), this, &Calendarmainwindow::signal_calendarAccountChanged);
+    connect(widget, QOverload<int>::of(&DComboBox::currentIndexChanged), this, [=](int index){
+        emit signal_calendarAccountChanged(widget->itemData(index).toString());
+    });
+
+    accountUpdate();
     return optionWidget;
 }
 
@@ -989,7 +1024,6 @@ QWidget *Calendarmainwindow::createJobTypeListView(QObject *obj)
     Q_UNUSED(obj)
     JobTypeListView *lv = new JobTypeListView;
     lv->setObjectName("JobTypeListView");
-    lv->updateCalendarAccount(DAccount::Account_Local);
     connect(this, &Calendarmainwindow::signal_calendarAccountChanged, lv, &JobTypeListView::updateCalendarAccount);
     connect(this, &Calendarmainwindow::signal_addScheduleType, lv, &JobTypeListView::slotAddScheduleType);
 
@@ -1013,7 +1047,9 @@ QPair<QWidget *, QWidget *> Calendarmainwindow::createSyncFreqCombobox(QObject *
 
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, widget);
 
-    int index = widget->findData(gUosAccountItem->getAccount()->syncFreq());
+    int index = -1;
+    if(gUosAccountItem)
+        index = widget->findData(gUosAccountItem->getAccount()->syncFreq());
     widget->setCurrentIndex(index);
 
     //TODO:更新union账户的的同步频率
@@ -1035,7 +1071,7 @@ QPair<QWidget *, QWidget *> Calendarmainwindow::createSyncTagRadioButton(QObject
         type = DAccount::Account_Setting;
 
     SyncTagRadioButton *widget = new SyncTagRadioButton(type);
-    widget->setFixedSize(16, 16);
+    widget->setFixedWidth(36);
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, widget);
 
     //iconLabel
@@ -1070,13 +1106,20 @@ QWidget *Calendarmainwindow::createManualSyncButton(QObject *obj)
     button->setText(tr("Sync Now"));
 
     QLabel *label = new QLabel;
-    label->setText("last sync time");
+    auto updateLastUpdateText = [=](){
+        if(gUosAccountItem) {
+            label->setText(tr("Last sync") + ":" + gUosAccountItem->getAccount()->dtLastSync().toString("yyyy/MM/dd hh:mm"));
+        }
+    };
+    updateLastUpdateText();
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(button, 0, Qt::AlignCenter);
     layout->addWidget(label, 0, Qt::AlignCenter);
     widget->setLayout(layout);
     connect(button, &QPushButton::clicked, this, &Calendarmainwindow::slotUosManualSync);
+    //TODO: 更新时间
+//    connect(gAccountManager, &AccountManager::syncSuccess, this, updateLastUpdateText);
     //TODO:立刻同步和最后一次同步时间
     return widget;
 }
@@ -1149,12 +1192,16 @@ void Calendarmainwindow::slotSetUosSyncFreq(int freq)
     QComboBox *com = qobject_cast<QComboBox *>(sender());
     if(!com)
         return;
+    if(!gUosAccountItem)
+        return;
     gUosAccountItem->getAccount()->setSyncFreq(DAccount::SyncFreqType(com->itemData(freq).toInt()));
 }
 
 void Calendarmainwindow::slotUosManualSync()
 {
-    gUosAccountItem->getAccount()->syncFreq();
+    if(!gUosAccountItem)
+        return;
+    gAccountManager->downloadByAccountID(gUosAccountItem->getAccount()->accountID());
 }
 
 /**
@@ -1175,8 +1222,11 @@ CalendarSetting::SyncTagRadioButton::SyncTagRadioButton(DAccount::AccountState t
     : QWidget(parent)
     , m_type(type)
 {
+
     setObjectName("SyncTagRadioButton");
-    m_state = gUosAccountItem->getAccount()->accountState();
+    m_state = DAccount::Account_Close;
+    if(gUosAccountItem)
+        m_state = gUosAccountItem->getAccount()->accountState();
     updateState();
 }
 
@@ -1206,6 +1256,8 @@ DAccount::AccountState CalendarSetting::SyncTagRadioButton::type()
 void CalendarSetting::SyncTagRadioButton::setChecked(bool checked)
 {
     if(m_checked == checked)
+        return;
+    if(!gUosAccountItem)
         return;
 
     m_checked = checked;
@@ -1245,4 +1297,47 @@ void CalendarSetting::SyncTagRadioButton::mouseReleaseEvent(QMouseEvent *event)
 {
     QWidget::mouseReleaseEvent(event);
     setChecked(!m_checked);
+}
+
+void CalendarSettingSettings::removeGroup(const QString &groupName, const QString &groupName2)
+{
+    int index = this->indexOf(*this, groupName);
+    if(index < 0)
+        return;
+    CalendarSettingGroups &groups = this->operator[](index)._groups;
+    {
+        int index = indexOf(groups, groupName2);
+        if(index < 0)
+            return;
+        groups.removeAt(index);
+    }
+    if(groups.isEmpty()) {
+        this->removeAt(index);
+    }
+}
+
+void CalendarSettingSettings::removeGroup(const QString &groupName)
+{
+    int index = this->indexOf(*this, groupName);
+    if(index < 0)
+        return;
+    this->removeAt(index);
+}
+
+int CalendarSettingSettings::indexOf(const CalendarSettingGroups &groups, const QString groupName)
+{
+    for(int k = 0; k < groups.count(); k ++) {
+        if(groups[k]._key == groupName)
+            return k;
+    }
+    return -1;
+}
+
+int CalendarSettingSettings::indexOf(const CalendarSettingSettings &groups, const QString groupName)
+{
+    for(int k = 0; k < groups.count(); k ++) {
+        if(groups[k]._key == groupName)
+            return k;
+    }
+    return -1;
 }
