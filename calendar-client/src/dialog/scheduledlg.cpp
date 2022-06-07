@@ -66,7 +66,6 @@ CScheduleDlg::~CScheduleDlg()
 
 void CScheduleDlg::setData(const DSchedule::Ptr &info)
 {
-    qInfo() << info->lunnar();
     m_ScheduleDataInfo = info;
 
     if (m_type == 1) {
