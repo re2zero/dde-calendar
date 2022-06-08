@@ -9,8 +9,8 @@
 #include "../data/clocaldata.h"
 #include "../data/changejsondata.h"
 
-confirwFeedbackState::confirwFeedbackState(CSchedulesDBus *dbus, scheduleBaseTask *task)
-    : scheduleState(dbus, task)
+confirwFeedbackState::confirwFeedbackState(scheduleBaseTask *task)
+    : scheduleState(task)
 {
 }
 
@@ -28,7 +28,7 @@ scheduleState::Filter_Flag confirwFeedbackState::eventFilter(const JsonData *jso
         || jsonData->offset() > 0) {
         return Fileter_Err;
     }
-    Filter_Flag  result = changeDateErrJudge(jsonData,Fileter_Init);
+    Filter_Flag result = changeDateErrJudge(jsonData, Fileter_Init);
     return result;
 }
 

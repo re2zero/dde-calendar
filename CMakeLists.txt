@@ -38,8 +38,6 @@ macro(SUBDIRLIST result curdir)
 endmacro()
 
 ADD_SUBDIRECTORY(3rdparty/kcalendarcore)
-#ADD_SUBDIRECTORY(DCalendarCore)
-#ADD_SUBDIRECTORY(DDav)
 ADD_SUBDIRECTORY(calendar-common)
 ADD_SUBDIRECTORY(calendar-client)
 ADD_SUBDIRECTORY(calendar-service)

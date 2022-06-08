@@ -15,7 +15,7 @@ repeatScheduleWidget::repeatScheduleWidget(repeatScheduleWidget::Operation_type 
 {
 }
 
-void repeatScheduleWidget::setSchedule(const ScheduleDtailInfo &info)
+void repeatScheduleWidget::setSchedule(const DSchedule::Ptr &info)
 {
     m_scheduleInfo.clear();
     m_scheduleInfo.append(info);

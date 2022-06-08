@@ -6,11 +6,12 @@
 #define QUERYSCHEDULESTATE_H
 
 #include "schedulestate.h"
+#include "accountitem.h"
 
 class queryScheduleState : public scheduleState
 {
 public:
-    queryScheduleState(CSchedulesDBus *dbus, scheduleBaseTask *task);
+    explicit queryScheduleState(scheduleBaseTask *task);
     Reply getReplyByIntent(bool isOK) override;
 
 protected:

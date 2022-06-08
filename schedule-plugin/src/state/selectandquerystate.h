@@ -10,7 +10,7 @@
 class SelectAndQueryState : public scheduleState
 {
 public:
-    SelectAndQueryState(CSchedulesDBus *dbus, scheduleBaseTask *task);
+    explicit SelectAndQueryState(scheduleBaseTask *task);
     Reply getReplyByIntent(bool isOK) override;
 
 protected:

@@ -6,8 +6,8 @@
 #define CREATSHCEDULEITEM_H
 
 #include "itemwidget.h"
-#include "../data/schedulestructs.h"
-#include "../data/schedulecolourmanage.h"
+#include "dschedule.h"
+
 #include <QVBoxLayout>
 
 class scheduleitemdate;
@@ -19,17 +19,17 @@ public:
     explicit scheduleitemwidget(QWidget *parent = nullptr);
     ~scheduleitemwidget();
 
-    void setScheduleDtailInfo(QVector<ScheduleDtailInfo> &scheduleInfo);
+    void setScheduleDtailInfo(const DSchedule::List &scheduleInfo);
     void addscheduleitem();
 signals:
-    void signalItemPress(const ScheduleDtailInfo &info);
+    void signalItemPress(const DSchedule::Ptr &info);
 
 private:
     void sortScheduleWithTime();
 
 private:
-    ScheduleDtailInfo m_scheduleDtailInfo;
-    QVector<ScheduleDtailInfo> m_scheduleInfo;
+    DSchedule::Ptr m_scheduleDtailInfo;
+    DSchedule::List m_scheduleInfo;
 };
 
 class scheduleitem : public ItemWidget
@@ -47,7 +47,7 @@ private:
 protected:
     void mousePressEvent(QMouseEvent *event) override;
 signals:
-    void signalItemPress(const ScheduleDtailInfo &info);
+    void signalItemPress(const DSchedule::Ptr &info);
 
 private:
     const int m_timeLeftMargin = 13;
@@ -64,7 +64,7 @@ class scheduleitemdate : public QWidget
     Q_OBJECT
 public:
     explicit scheduleitemdate(QWidget *parent = nullptr);
-    void setScheduleDtailInfo(ScheduleDtailInfo &scheduelDtailInfo);
+    void setScheduleDtailInfo(const DSchedule::Ptr &scheduelDtailInfo);
 
     QColor DetailsColor();
 
@@ -72,7 +72,7 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    ScheduleDtailInfo m_scheduleDtailInfo;
+    DSchedule::Ptr m_scheduleDtailInfo;
     QColor m_DateTimeColor;
 
     const int m_LeftMargin = 13;
