@@ -176,7 +176,7 @@ void CAllDayEventWeekView::upDateInfoShow(const DragStatus &status, const DSched
         break;
     }
 
-    std::sort(vListData.begin(), vListData.end());
+    std::sort(vListData.begin(), vListData.end(), DSchedules::scheduleThan);
 
     QVector<MScheduleDateRangeInfo> vMDaySchedule;
     for (int i = 0; i < vListData.count(); i++) {

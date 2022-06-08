@@ -17,7 +17,7 @@ typedef struct _tagMScheduleDateRangeInfo {
     {
         if (bdate == info.bdate) {
             if (bdate.daysTo(edate) == info.bdate.daysTo(info.edate)) {
-                return tData < info.tData;
+                return *tData.data() < *info.tData.data();
             } else {
                 return bdate.daysTo(edate) > info.bdate.daysTo(info.edate);
             }

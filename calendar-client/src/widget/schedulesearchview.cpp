@@ -592,7 +592,7 @@ void CScheduleSearchView::updateDateShow()
                 topdate = _iterator.key();
             }
             //排序
-            std::sort(_showInfo.begin(), _showInfo.end());
+            std::sort(_showInfo.begin(), _showInfo.end(), DSchedules::scheduleThan);
             m_showData[_iterator.key()] = _showInfo;
         }
     }
@@ -925,7 +925,7 @@ CScheduleListWidget::CScheduleListWidget(QWidget *parent)
     grabGesture(Qt::PanGesture);
 
     //日程类型发生改变，刷新界面
-    connect(gAccountManager, &AccountManager::signalScheduleTypeUpdate, [&](){
+    connect(gAccountManager, &AccountManager::signalScheduleTypeUpdate, [&]() {
         this->viewport()->update();
     });
 }
