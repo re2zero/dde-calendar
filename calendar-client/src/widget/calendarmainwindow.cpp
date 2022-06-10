@@ -26,6 +26,7 @@
 
 #include "scheduletypeeditdlg.h"
 #include "accountmanager.h"
+#include "units.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -1098,12 +1099,11 @@ QWidget *Calendarmainwindow::createManualSyncButton(QObject *obj)
     button->setText(tr("Sync Now"));
 
     QLabel *label = new QLabel;
-    auto updateLastUpdateText = [=]() {
-        if (gUosAccountItem) {
-            label->setText(tr("Last sync") + ":" + gUosAccountItem->getAccount()->dtLastSync().toString("yyyy/MM/dd hh:mm"));
+    auto updateLastUpdateText = [=](const QString &datetime){
+        if(gUosAccountItem) {
+            label->setText(tr("Last sync") + ":" + dtFromString(datetime).toString("yyyy/MM/dd hh:mm"));
         }
     };
-    updateLastUpdateText();
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(button, 0, Qt::AlignCenter);
@@ -1111,7 +1111,10 @@ QWidget *Calendarmainwindow::createManualSyncButton(QObject *obj)
     widget->setLayout(layout);
     connect(button, &QPushButton::clicked, this, &Calendarmainwindow::slotUosManualSync);
     //TODO: 更新时间
-//    connect(gAccountManager, &AccountManager::syncSuccess, this, updateLastUpdateText);
+    if(gUosAccountItem) {
+        updateLastUpdateText(gUosAccountItem->getDtLastUpdate());
+        connect(gUosAccountItem.get(), &AccountItem::signalDtLastUpdate, this, updateLastUpdateText);
+    }
     //TODO:立刻同步和最后一次同步时间
     return widget;
 }
@@ -1127,7 +1130,7 @@ void Calendarmainwindow::slotSetUosSyncFreq(int freq)
         return;
     if (!gUosAccountItem)
         return;
-    gUosAccountItem->getAccount()->setSyncFreq(DAccount::SyncFreqType(com->itemData(freq).toInt()));
+    gUosAccountItem->setSyncFreq(DAccount::SyncFreqType(com->itemData(freq).toInt()));
 }
 
 void Calendarmainwindow::slotUosManualSync()
@@ -1157,23 +1160,26 @@ CalendarSetting::SyncTagRadioButton::SyncTagRadioButton(DAccount::AccountState t
 {
 
     setObjectName("SyncTagRadioButton");
-    m_state = DAccount::Account_Close;
-    if (gUosAccountItem)
+    if (gUosAccountItem) {
+        m_state = DAccount::Account_Close;
         m_state = gUosAccountItem->getAccount()->accountState();
-    updateState();
+        connect(gUosAccountItem.get(), &AccountItem::signalAccountStateChange, this, &SyncTagRadioButton::updateAccountState);
+        updateAccountState(m_state);
+    }
 }
 
-void CalendarSetting::SyncTagRadioButton::updateState()
+void CalendarSetting::SyncTagRadioButton::updateAccountState(DAccount::AccountStates state)
 {
+    m_state = state;
     setChecked(m_state & m_type);
     //TODO:是否联网
-    //    setEnabled((*m_state & DAccount::Account_Open) && m_isOnline);
+    //setEnabled((m_state & DAccount::Account_Open) && m_isOnline);
 }
 
-void CalendarSetting::SyncTagRadioButton::updateState(bool isOnline)
+void CalendarSetting::SyncTagRadioButton::updateOnLineState(bool isOnline)
 {
     m_isOnline = isOnline;
-    updateState();
+    updateAccountState(m_state);
 }
 
 bool CalendarSetting::SyncTagRadioButton::isChecked()
@@ -1209,7 +1215,7 @@ void CalendarSetting::SyncTagRadioButton::setChecked(bool checked)
                 states &= ~rb->type();
         }
     }
-    gUosAccountItem->getAccount()->setAccountState(states);
+    gUosAccountItem->setAccountState(states);
 
 }
 
