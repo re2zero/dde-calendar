@@ -284,8 +284,6 @@ private:
     QPair<QWidget*, QWidget*> createSyncFreqCombobox(QObject *obj);
     QPair<QWidget*, QWidget*> createSyncTagRadioButton(QObject *obj);
     QWidget *createManualSyncButton(QObject *obj);
-    QPair<QWidget*, QWidget*> createComboboxFirstDayofWeek(QObject *obj);
-    QPair<QWidget*, QWidget*> createComboboxTime(QObject *obj);
 
 private slots:
     void slotSetUosSyncFreq(int freq);
