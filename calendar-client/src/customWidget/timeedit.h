@@ -85,7 +85,6 @@ protected:
     void paintEvent(QPaintEvent *e) override;
 private:
     QString m_timeFormat = "hh:mm";
-    int m_timeFormatValue = 0;
     QTime m_time;
     CCustomTimeEdit *m_timeEdit = nullptr;
     bool m_hasFocus;
