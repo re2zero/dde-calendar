@@ -88,6 +88,7 @@ void CMyScheduleView::slotAutoFeed(const QFont &font)
     area->setFixedHeight(m_scheduleLabelH);
     m_scheduleLabel->setText(resultStr);
 
+    m_timeLabelH = 26;
     if (m_scheduleInfo->lunnar()) {
         QString timeName = m_timeLabel->text();
         int index = timeName.indexOf("~");
@@ -102,8 +103,8 @@ void CMyScheduleView::slotAutoFeed(const QFont &font)
             } else {
                 m_timeLabelH = 26;
             }
-            m_timeLabel->setText(timeName);
         }
+        m_timeLabel->setText(timeName);
     } else {
         m_timeLabelH = 26;
     }
