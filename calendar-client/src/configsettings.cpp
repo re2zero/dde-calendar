@@ -5,6 +5,7 @@
 #include "configsettings.h"
 
 #include <DStandardPaths>
+#include <QDebug>
 
 DCORE_USE_NAMESPACE;
 
