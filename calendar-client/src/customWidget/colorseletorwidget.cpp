@@ -4,6 +4,8 @@
 
 #include "colorseletorwidget.h"
 #include "configsettings.h"
+#include "units.h"
+
 #include <QPushButton>
 
 ColorSeletorWidget::ColorSeletorWidget(QWidget *parent) : QWidget(parent)
@@ -21,7 +23,7 @@ void ColorSeletorWidget::init()
     m_colorInfo.reset(new DTypeColor());
 }
 
-void ColorSeletorWidget::resetColorButton(const AccountItem::Ptr& account)
+void ColorSeletorWidget::resetColorButton(const AccountItem::Ptr &account)
 {
     reset();
     if (nullptr == account) {
@@ -72,7 +74,7 @@ void ColorSeletorWidget::addColor(const DTypeColor::Ptr &cInfo)
 {
     static int count = 0;   //静态变量，充当色彩控件id
     count++;
-    m_colorEntityMap.insert(count, cInfo);      //映射id与控件
+    m_colorEntityMap.insert(count, cInfo); //映射id与控件,从1开始
     CRadioButton *radio = new CRadioButton(this);
     radio->setColor(QColor(cInfo->colorCode())); //设置控件颜色
     radio->setFixedSize(18, 18);
@@ -82,10 +84,11 @@ void ColorSeletorWidget::addColor(const DTypeColor::Ptr &cInfo)
 
 DTypeColor::Ptr ColorSeletorWidget::getSelectedColorInfo()
 {
-    if (m_colorInfo->colorID() == 0) {
+    if (m_colorInfo->colorCode().isEmpty()) {
         CConfigSettings::getInstance()->setOption("LastUserColor", m_colorInfo->colorCode());
     }
-    CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", m_colorInfo->colorID());
+    if (m_colorInfo->privilege() == DTypeColor::PriSystem)
+        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", m_colorInfo->colorID());
     return m_colorInfo;
 }
 
@@ -102,7 +105,7 @@ void ColorSeletorWidget::setSelectedColorByIndex(int index)
 void ColorSeletorWidget::setSelectedColorById(int colorId)
 {
     //如果是用户自定义颜色则直接选第一个
-    if ((colorId > 9 || colorId < 1) && m_userColorBtn) {
+    if ((colorId > 8 || colorId < 0) && m_userColorBtn) {
         if (m_colorGroup->buttons().size() > 0) {
             m_colorGroup->buttons().at(0)->click();
         }
@@ -110,25 +113,17 @@ void ColorSeletorWidget::setSelectedColorById(int colorId)
     }
 
     //系统颜色则向后移一位
-    auto iterator = m_colorEntityMap.begin();
-    while (iterator != m_colorEntityMap.end()) {
-        if (iterator.value()->colorID() == colorId) {
-            //向后移一位
-            iterator++;
-            if (iterator == m_colorEntityMap.end() || iterator.key() == m_userColorBtnId) {
-                iterator = m_colorEntityMap.begin();
-            }
-            QAbstractButton *btn = m_colorGroup->button(iterator.key());
-            if (btn) {
-                btn->click();
-            }
-            break;
-        }
-        iterator++;
+    if (colorId == 8) {
+        colorId = 0;
+    } else {
+        ++colorId;
+    }
+    if (m_colorGroup->buttons().size() > 0) {
+        m_colorGroup->buttons().at(colorId)->click();
     }
 }
 
-void ColorSeletorWidget::setSelectedColor(const DTypeColor& colorInfo)
+void ColorSeletorWidget::setSelectedColor(const DTypeColor &colorInfo)
 {
     bool finding = false;
     auto iterator = m_colorEntityMap.begin();
