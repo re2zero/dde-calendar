@@ -42,6 +42,9 @@ int main(int argc, char *argv[])
 #endif
 
     if (DGuiApplicationHelper::setSingleInstance(app->applicationName(), DGuiApplicationHelper::UserScope)) {
+        //准备数据
+        gAccountManager->resetAccount();
+
         app->setOrganizationName("deepin");
         app->setApplicationName("dde-calendar");
         app->loadTranslator();
@@ -86,8 +89,6 @@ int main(int argc, char *argv[])
         }
         ww.slotTheme(DGuiApplicationHelper::instance()->themeType());
         ww.show();
-        //准备数据  TODO:测试稳定后因放在界面构造前面
-        gAccountManager->resetAccount();
         return app->exec();
     }
     return 0;
