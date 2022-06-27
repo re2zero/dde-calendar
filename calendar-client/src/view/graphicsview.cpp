@@ -113,14 +113,12 @@ void CGraphicsView::setTheMe(int type)
 
 void CGraphicsView::slotCreate(const QDateTime &date)
 {
-    emit signalViewtransparentFrame(1);
     CScheduleDlg dlg(1, this);
     dlg.setDate(date);
 
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsUpdateSchedule();
     }
-    emit signalViewtransparentFrame(0);
 }
 
 bool CGraphicsView::MeetCreationConditions(const QDateTime &date)
@@ -128,7 +126,7 @@ bool CGraphicsView::MeetCreationConditions(const QDateTime &date)
     return qAbs(date.daysTo(m_PressDate) < 7);
 }
 
-void CGraphicsView::updateHigh()
+void CGraphicsView::updateHeight()
 {
     scene()->update();
     update();
@@ -390,26 +388,22 @@ void CGraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 
     if (item == nullptr) {
         QPointF scenePoss = mapToScene(event->pos());
-        emit signalViewtransparentFrame(1);
         CScheduleDlg dlg(1, this);
         QDateTime tDatatime = m_coorManage->getDate(scenePoss);
         dlg.setDate(tDatatime);
         if (dlg.exec() == DDialog::Accepted) {
             emit signalsUpdateSchedule();
         }
-        emit signalViewtransparentFrame(0);
         return;
     }
     if (item->getType() == 1) {
         emit signalsCurrentScheduleDate(item->getDate());
         return;
     }
-    emit signalViewtransparentFrame(1);
     m_updateDflag = false;
     CMyScheduleView dlg(item->getData(), this);
     connect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
     dlg.exec();
-    emit signalViewtransparentFrame(0);
     disconnect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CGraphicsView::slotDoubleEvent);
 }
 

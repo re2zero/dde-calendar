@@ -5,10 +5,17 @@ project(dde-calendar-service)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
+
+#安全编译参数
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
+
 set(APP_RES_DIR "assets")
 set(APP_SERVICE "${APP_RES_DIR}/data/com.deepin.dataserver.Calendar.service")
+set(APP_SYSTEMD_SERVICE "${APP_RES_DIR}/data/com.dde.calendarserver.calendar.service")
+set(APP_SYSTEMD_TIMER "${APP_RES_DIR}/data/com.dde.calendarserver.calendar.timer")
 set(AUTOSTART_DESKTOP "${APP_RES_DIR}/dde-calendar-service.desktop")
 set(HUANGLIDB "${APP_RES_DIR}/data/huangli.db")
+set(APP_QRC "${APP_RES_DIR}/resources.qrc")
 
 
 # Find the library
@@ -36,8 +43,13 @@ foreach(subdir ${all_src})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/${subdir})
 endforeach()
 file(GLOB_RECURSE CALENDARSERVICE_SRCS ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
+#添加资源文件
+QT5_ADD_RESOURCES(CALENDARSERVICE_SRCS ${APP_QRC})
 
 include_directories(../calendar-basicstruct/)
+
+#后端程序自动退出宏控制
+add_definitions(-DCALENDAR_SERVICE_AUTO_EXIT)
 
 add_executable(${PROJECT_NAME} ${CALENDARSERVICE_SRCS})
 
@@ -50,3 +62,5 @@ install(TARGETS ${PROJECT_NAME} DESTINATION lib/deepin-daemon/)
 install(FILES ${APP_SERVICE} DESTINATION share/dbus-1/services/)
 install(FILES ${AUTOSTART_DESKTOP} DESTINATION /etc/xdg/autostart/)
 install(FILES ${HUANGLIDB} DESTINATION share/dde-calendar/data/)
+install(FILES ${APP_SYSTEMD_SERVICE} DESTINATION lib/systemd/user/)
+install(FILES ${APP_SYSTEMD_TIMER} DESTINATION lib/systemd/user/)

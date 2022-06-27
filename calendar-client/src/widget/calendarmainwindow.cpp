@@ -22,6 +22,7 @@
 #include "dbuscalendar_adaptor.h"
 #include "widget/weekWidget/weekwindow.h"
 #include "widget/dayWidget/daywindow.h"
+#include "colorWidget/colorpickerWidget.h"
 #include "scheduledatamanage.h"
 #include "myscheduleview.h"
 #include "configsettings.h"
@@ -32,6 +33,9 @@
 #include "scheduledlg.h"
 #include "ctitlewidget.h"
 #include "tabletconfig.h"
+#include "calendarglobalenv.h"
+
+#include "scheduletypeeditdlg.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -39,6 +43,10 @@
 #include <DWidgetUtil>
 #include <DTitlebar>
 #include <DApplicationHelper>
+#include <DSettings>
+#include <DSettingsGroup>
+#include <DSettingsOption>
+#include <DSettingsWidgetFactory>
 
 #include <QDesktopWidget>
 #include <QJsonDocument>
@@ -50,12 +58,19 @@
 #include <QWidget>
 #include <QMenuBar>
 #include <QMouseEvent>
+#include <QColorDialog>
+#include <QApplication>
 
 DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
-static const int CalendarMWidth = 860;
+static const int CalendarMWidth = 646;
 static const int CalendarMHeight = 634;
+const int CalendarSwitchWidth = 647; //当宽度小于这个尺寸时，标题栏需要切换显示逻辑
+const int CalendarViewSwitchWidth = 804; //当宽度小于这个尺寸时，视图部分需要切换显示逻辑
+
+const int Calendar_Default_Width = 860; //默认宽度
+const int Calendar_Default_Height = 634; //默认高度
 
 Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     : DMainWindow(w)
@@ -76,7 +91,7 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
 
     QShortcut *viewshortcut = new QShortcut(this);
     viewshortcut->setKey(QKeySequence(QLatin1String("Ctrl+Shift+/")));
-    connect(viewshortcut, SIGNAL(activated()), this, SLOT(onViewShortcut()));
+    connect(viewshortcut, SIGNAL(activated()), this, SLOT(slotViewShortcut()));
 
     setTitlebarShadowEnabled(true);
     //获取桌面窗口大小
@@ -84,36 +99,48 @@ Calendarmainwindow::Calendarmainwindow(int index, QWidget *w)
     //若分辨率改变则重新设置最大尺寸
     connect(desktopwidget, &QDesktopWidget::resized, this, &Calendarmainwindow::slotSetMaxSize);
     slotSetMaxSize();
-    //如果为平板模式则使其大小为屏幕大小
-    if (!TabletConfig::isTablet()) {
-        QByteArray arrayByte = CConfigSettings::value("base.geometry").toByteArray();
+
+    //兼容以前的配置信息
+    if (CConfigSettings::getInstance()->contains("base.geometry")) {
+        QByteArray arrayByte = CConfigSettings::getInstance()->value("base.geometry").toByteArray();
         bool isOk = false;
-        int state = CConfigSettings::value("base.state").toInt(&isOk);
-        if (!arrayByte.isEmpty() && isOk) {
-            Qt::WindowStates winStates = static_cast<Qt::WindowStates>(state);
-            //如果上次窗口的状态为最小化，则设置窗口状态为普通状态
-            if (winStates == Qt::WindowState::WindowMinimized) {
-                winStates = Qt::WindowState::WindowNoState;
-            } else if (winStates == (Qt::WindowState::WindowMinimized | Qt::WindowState::WindowMaximized)) {
-                //如果状态为 最小&最大 则启动时设置为最大
-                winStates = Qt::WindowState::WindowMaximized;
-            }
-            setWindowState(winStates);
-            if (winStates != Qt::WindowState::WindowMaximized) {
-                restoreGeometry(arrayByte);
-            }
+        int state = CConfigSettings::getInstance()->value("base.state").toInt(&isOk);
+        Qt::WindowStates winStates = static_cast<Qt::WindowStates>(state);
+        if (winStates.testFlag(Qt::WindowMaximized)) {
+            showMaximized();
+        } else {
+            restoreGeometry(arrayByte);
+            Dtk::Widget::moveToCenter(this);
         }
+        //移除旧的配置信息
+        CConfigSettings::getInstance()->remove("base.geometry");
+        CConfigSettings::getInstance()->remove("base.state");
+    } else if (CConfigSettings::getInstance()->contains("base.windowWidth")) {
+        //获取窗口的宽度和高度
+        int width = CConfigSettings::getInstance()->value("base.windowWidth").toInt();
+        int height = CConfigSettings::getInstance()->value("base.windowHeight").toInt();
+        QRect rect(0, 0, width, height);
+        this->setGeometry(rect);
+    } else {
+        //如果没有相关配置则设置为默认尺寸
+        QRect rect(0, 0, Calendar_Default_Width, Calendar_Default_Height);
+        this->setGeometry(rect);
     }
+    //在屏幕中央显示
     Dtk::Widget::moveToCenter(this);
+
+    //注册光标位置
+    CalendarGlobalEnv::getGlobalEnv()->registerKey(DDECalendar::CursorPointKey, QPoint());
+    //保存主窗口指针
+    CalendarGlobalEnv::getGlobalEnv()->registerKey("MainWindow", QVariant::fromValue(static_cast<void *>(this)));
 }
 
 Calendarmainwindow::~Calendarmainwindow()
 {
-    CConfigSettings::releaseInstance();
     CDynamicIcon::releaseInstance();
 }
 
-void Calendarmainwindow::onViewShortcut()
+void Calendarmainwindow::slotViewShortcut()
 {
     QRect rect = window()->geometry();
     QPoint pos(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
@@ -121,10 +148,9 @@ void Calendarmainwindow::onViewShortcut()
     QStringList shortcutString;
     QString param1 = "-j=" + sc.toStr();
     QString param2 = "-p=" + QString::number(pos.x()) + "," + QString::number(pos.y());
-    shortcutString << "-b" << param1 << param2;
+    shortcutString << param1 << param2;
 
     QProcess *shortcutViewProc = new QProcess(this);
-    shortcutViewProc->startDetached("killall deepin-shortcut-viewer");
     shortcutViewProc->startDetached("deepin-shortcut-viewer", shortcutString);
 
     connect(shortcutViewProc, SIGNAL(finished(int)), shortcutViewProc, SLOT(deleteLater()));
@@ -160,8 +186,8 @@ void Calendarmainwindow::slotCurrentDateUpdate()
  */
 void Calendarmainwindow::slotSetSearchFocus()
 {
-    //设置输入框获取tab焦点
-    m_searchEdit->lineEdit()->setFocus(Qt::TabFocusReason);
+    //设置输入框获取焦点
+    slotSearchEdit();
 }
 
 /**
@@ -200,10 +226,10 @@ void Calendarmainwindow::viewWindow(int type, const bool showAnimation)
     }
     m_priindex = type == 0 ? m_priindex : type;
     //为了与老版本配置兼容
-    CConfigSettings::setOption("base.view", type + 1);
+    CConfigSettings::getInstance()->setOption("base.view", type + 1);
 }
 
-void Calendarmainwindow::updateHigh()
+void Calendarmainwindow::updateHeight()
 {
     int index = m_stackWidget->currentIndex();
 
@@ -218,10 +244,10 @@ void Calendarmainwindow::updateHigh()
     case DDECalendar::CalendarMonthWindow: {
     } break;
     case DDECalendar::CalendarWeekWindow: {
-        m_weekWindow->updateHigh();
+        m_weekWindow->updateHeight();
     } break;
     case DDECalendar::CalendarDayWindow: {
-        m_DayWindow->updateHigh();
+        m_DayWindow->updateHeight();
     } break;
     }
 }
@@ -270,7 +296,7 @@ void Calendarmainwindow::slotTheme(int type)
     m_scheduleSearchView->setTheMe(type);
 }
 
-void Calendarmainwindow::OpenSchedule(QString job)
+void Calendarmainwindow::slotOpenSchedule(QString job)
 {
     if (job.isEmpty())
         return;
@@ -294,16 +320,6 @@ void Calendarmainwindow::OpenSchedule(QString job)
     dlg.exec();
     slotWUpdateSchedule();
 }
-
-void Calendarmainwindow::ActiveWindow()
-{
-    raise();
-}
-
-void Calendarmainwindow::RaiseWindow()
-{
-    raise();
-}
 void Calendarmainwindow::initUI()
 {
     //设置主窗口辅助技术显示名称和描述
@@ -317,21 +333,34 @@ void Calendarmainwindow::initUI()
     CDynamicIcon::getInstance()->setTitlebar(this->titlebar());
     CDynamicIcon::getInstance()->setIcon();
 
-    CTitleWidget *titleWidget = new CTitleWidget(this);
-    titleWidget->setFocusPolicy(Qt::TabFocus);
-    this->titlebar()->setCustomWidget(titleWidget);
-    setTabOrder(this->titlebar(), titleWidget);
+    m_titleWidget = new CTitleWidget(this);
+    m_titleWidget->setFocusPolicy(Qt::TabFocus);
+    this->titlebar()->setCustomWidget(m_titleWidget);
+    setTabOrder(this->titlebar(), m_titleWidget);
     //设置状态栏焦点代理为标题窗口
-    this->titlebar()->setFocusProxy(titleWidget);
+    this->titlebar()->setFocusProxy(m_titleWidget);
+    //this->titlebar()->setFocusProxy(titleWidget);
+
+    this->titlebar()->setQuitMenuVisible(true);//先设置后，才可以获取menu内容。因为setQuitMenuVisible接口中进行了action的添加操作
+    QMenu *menuTitleBar = this->titlebar()->menu();
+
+    QAction *pSetting = new QAction(tr("Manage"), menuTitleBar);
+    //menuTitleBar->addAction(pSetting);
+    menuTitleBar->insertSeparator(menuTitleBar->actions()[0]);
+    menuTitleBar->insertAction(menuTitleBar->actions()[0], pSetting);
+
+    connect(pSetting, &QAction::triggered, this, &Calendarmainwindow::slotOpenSettingDialog);
+
     //接收设置按键焦点
-    connect(titleWidget, &CTitleWidget::signalSetButtonFocus, [=] {
+    connect(m_titleWidget, &CTitleWidget::signalSetButtonFocus, [=] {
         m_setButtonFocus = true;
     });
-    connect(titleWidget, &CTitleWidget::signalSearchFocusSwitch, this, &Calendarmainwindow::slotSearchFocusSwitch);
+    connect(m_titleWidget, &CTitleWidget::signalSearchFocusSwitch, this,
+            &Calendarmainwindow::slotSearchFocusSwitch);
 
-    m_searchEdit = titleWidget->searchEdit();
-    m_buttonBox = titleWidget->buttonBox();
-    m_newScheduleBtn = titleWidget->newScheduleBtn();
+    m_searchEdit = m_titleWidget->searchEdit();
+    m_buttonBox = m_titleWidget->buttonBox();
+    m_newScheduleBtn = m_titleWidget->newScheduleBtn();
 
     m_stackWidget = new AnimationStackedWidget();
     m_stackWidget->setObjectName("StackedWidget");
@@ -388,31 +417,35 @@ void Calendarmainwindow::initUI()
 
 void Calendarmainwindow::initConnection()
 {
-    connect(m_stackWidget, &AnimationStackedWidget::signalIsFinished, this, &Calendarmainwindow::slotSetButtonBox);
+    connect(m_stackWidget, &AnimationStackedWidget::signalIsFinished, this,
+            &Calendarmainwindow::slotSetButtonBox);
     connect(m_buttonBox, &DButtonBox::buttonClicked, this, &Calendarmainwindow::slotstackWClicked);
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &Calendarmainwindow::slotSreturnPressed);
     connect(m_searchEdit, &DSearchEdit::textChanged, this, &Calendarmainwindow::slotStextChanged);
     connect(m_searchEdit, &DSearchEdit::focusChanged, this, &Calendarmainwindow::slotStextfocusChanged);
     //监听当前应用主题切换事件
-    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &Calendarmainwindow::slotTheme);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this,
+            &Calendarmainwindow::slotTheme);
     //编辑搜索日程刷新界面
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectSchedule, this, &Calendarmainwindow::slotSearchSelectSchedule);
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide, this, &Calendarmainwindow::setScheduleHide);
-    //界面弹出对话框设置背景阴影
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectCurrentItem, this, &Calendarmainwindow::slotSetSearchFocus);
-    connect(m_yearwindow, &CYearWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_monthWindow, &CMonthWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_weekWindow, &CWeekWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
-    connect(m_DayWindow, &CDayWindow::signalViewtransparentFrame, this, &Calendarmainwindow::slotViewtransparentFrame);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectSchedule, this,
+            &Calendarmainwindow::slotSearchSelectSchedule);
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalScheduleHide, this,
+            &Calendarmainwindow::setScheduleHide);
+
+    connect(m_scheduleSearchView, &CScheduleSearchView::signalSelectCurrentItem, this,
+            &Calendarmainwindow::slotSetSearchFocus);
+
     //更新当前时间
-    connect(m_currentDateUpdateTimer, &QTimer::timeout, this, &Calendarmainwindow::slotCurrentDateUpdate);
+    connect(m_currentDateUpdateTimer, &QTimer::timeout, this,
+            &Calendarmainwindow::slotCurrentDateUpdate);
     //切换视图
     connect(m_yearwindow, &CYearWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
     connect(m_monthWindow, &CMonthWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
     connect(m_weekWindow, &CWeekWindow::signalSwitchView, this, &Calendarmainwindow::slotSwitchView);
     //按钮关联新建日程
     connect(m_newScheduleBtn, &DToolButton::clicked, this, &Calendarmainwindow::slotNewSchedule);
+
+    connect(qApp, &QGuiApplication::applicationStateChanged, this, &Calendarmainwindow::slotapplicationStateChanged);
 }
 
 /**
@@ -465,22 +498,32 @@ void Calendarmainwindow::setScheduleHide()
 
 void Calendarmainwindow::resizeEvent(QResizeEvent *event)
 {
+    DMainWindow::resizeEvent(event);
     m_transparentFrame->resize(width(), height() - 50);
-    m_scheduleSearchViewMaxWidth = qRound(0.2325 * width() + 0.5);
+
+    if (width() < CalendarSwitchWidth) {
+        m_titleWidget->setShowState(CTitleWidget::Title_State_Mini);
+    } else {
+        m_titleWidget->setShowState(CTitleWidget::Title_State_Normal);
+    }
+
+    if (width() < CalendarViewSwitchWidth) {
+        m_isNormalStateShow = false;
+        m_stackWidget->setVisible(!m_contentBackground->isVisible());
+        m_scheduleSearchViewMaxWidth = this->width();
+    } else {
+        m_scheduleSearchViewMaxWidth = qRound(0.2325 * width() + 0.5);
+        m_isNormalStateShow = true;
+        m_stackWidget->setVisible(true);
+        m_contentBackground->setVisible(m_opensearchflag);
+    }
     m_scheduleSearchView->setMaxWidth(m_scheduleSearchViewMaxWidth);
     setSearchWidth(m_scheduleSearchViewMaxWidth);
     setScheduleHide();
-    DMainWindow::resizeEvent(event);
-    //过滤最小化状态
-    //因为需保存最大和普通状态，顾在窗口调整大小时保持窗口状态
-    if (windowState() == Qt::WindowState::WindowMinimized) {
-        CConfigSettings::setOption("base.state", 0);
-    } else if (windowState() == (Qt::WindowState::WindowMinimized | Qt::WindowState::WindowMaximized)) {
-        CConfigSettings::setOption("base.state", int(Qt::WindowState::WindowMaximized));
-    } else {
-        CConfigSettings::setOption("base.state", int(windowState()));
-    }
-    CConfigSettings::setOption("base.geometry", saveGeometry());
+
+    //保存窗口大小
+    CConfigSettings::getInstance()->setOption("base.windowWidth", event->size().width());
+    CConfigSettings::getInstance()->setOption("base.windowHeight", event->size().height());
 }
 
 /**
@@ -489,7 +532,6 @@ void Calendarmainwindow::resizeEvent(QResizeEvent *event)
  */
 void Calendarmainwindow::slotstackWClicked(QAbstractButton *bt)
 {
-    m_buttonBox->setEnabled(false);
     setScheduleHide();
     int index = m_buttonBox->id(bt);
     viewWindow(index, true);
@@ -500,7 +542,7 @@ void Calendarmainwindow::slotWUpdateSchedule()
     if (m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
     }
-    updateHigh();
+    updateHeight();
     return;
 }
 
@@ -508,10 +550,17 @@ void Calendarmainwindow::slotSreturnPressed()
 {
     if (!m_opensearchflag && !m_searchEdit->text().isEmpty()) {
         m_opensearchflag = true;
+    }
+    //如果为搜索状态
+    if (m_opensearchflag) {
+        //根据显示显示状态，是否显示左侧视图窗口
+        if (!m_isNormalStateShow) {
+            m_stackWidget->setVisible(false);
+        }
         m_contentBackground->setVisible(true);
     }
     m_scheduleSearchView->slotsetSearch(m_searchEdit->text());
-    updateHigh();
+    updateHeight();
 }
 
 void Calendarmainwindow::slotStextChanged()
@@ -528,9 +577,10 @@ void Calendarmainwindow::slotStextChanged()
         m_weekWindow->setSearchWFlag(false);
         m_DayWindow->setSearchWFlag(false);
         m_contentBackground->setVisible(false);
+        m_stackWidget->setVisible(true);
         m_opensearchflag = false;
     }
-    updateHigh();
+    updateHeight();
 }
 
 /**
@@ -555,6 +605,20 @@ void Calendarmainwindow::slotSearchEdit()
  */
 void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &scheduleInfo)
 {
+    //如果小尺寸显示模式，在显示搜索窗口的时候，左侧视图会被隐藏
+    //如果点击一个搜索结果则隐藏搜索窗口，展示左侧视图
+    if (!m_isNormalStateShow) {
+        //        CalendarGlobalEnv::getGlobalEnv()->registerKey("SearchItemEvent", "Keyboard");
+
+        QVariant variant;
+        CalendarGlobalEnv::getGlobalEnv()->getValueByKey("SearchItemEvent", variant);
+        QString searchItemEvent = variant.toString();
+        //如果为鼠标点击操作
+        if (searchItemEvent == "MousePress") {
+            m_stackWidget->setVisible(true);
+            m_contentBackground->setVisible(false);
+        }
+    }
     //获取当前视图编号
     CScheduleBaseWidget *_showWidget = dynamic_cast<CScheduleBaseWidget *>(m_stackWidget->currentWidget());
     if (_showWidget) {
@@ -584,16 +648,12 @@ void Calendarmainwindow::slotSearchSelectSchedule(const ScheduleDataInfo &schedu
  */
 void Calendarmainwindow::slotViewtransparentFrame(const bool isShow)
 {
-    static int showFrameCount = 0;
     if (isShow) {
         m_transparentFrame->resize(width(), height() - 50);
         m_transparentFrame->move(0, 50);
         m_transparentFrame->show();
-        ++showFrameCount;
     } else {
-        if (showFrameCount == 1)
-            m_transparentFrame->hide();
-        --showFrameCount;
+        m_transparentFrame->hide();
     }
 }
 
@@ -602,7 +662,6 @@ void Calendarmainwindow::slotViewtransparentFrame(const bool isShow)
  */
 void Calendarmainwindow::slotSetButtonBox()
 {
-    m_buttonBox->setEnabled(true);
     //如果为键盘操作则切换后设置焦点
     if (m_setButtonFocus) {
         //获取焦点
@@ -653,9 +712,7 @@ void Calendarmainwindow::slotNewSchedule()
     CScheduleDlg _scheduleDig(1, this, false);
     //设置开始时间
     _scheduleDig.setDate(_beginTime);
-    slotViewtransparentFrame(true);
     _scheduleDig.exec();
-    slotViewtransparentFrame(false);
 }
 
 void Calendarmainwindow::slotDeleteitem()
@@ -719,4 +776,107 @@ void Calendarmainwindow::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
     setScheduleHide();
+}
+
+bool Calendarmainwindow::event(QEvent *event)
+{
+    //如果窗口移动，隐藏日程悬浮框
+    if (event->type() == QEvent::Move) {
+        setScheduleHide();
+    }
+
+    //如果为活动窗口则显示视图阴影
+    if (event->type() == QEvent::WindowActivate) {
+        slotViewtransparentFrame(false);
+    }
+    //如果不为活动窗口则隐藏视图阴影
+    if (event->type() == QEvent::WindowDeactivate) {
+        slotViewtransparentFrame(true);
+    }
+    return DMainWindow::event(event);
+}
+
+void Calendarmainwindow::slotapplicationStateChanged(Qt::ApplicationState state)
+{
+    static QDateTime currentDateTime = QDateTime::currentDateTime();
+    //TODO:目前没有找到窗口显示不是激活状态的原因（会先激活然后为非激活状态）。
+    //当间隔时间少于10毫秒且状态为非激活时，将窗口设置显示在最顶端并设置激活状态
+    if (state == Qt::ApplicationInactive) {
+        //获取当前时间
+        QDateTime currentTime = QDateTime::currentDateTime();
+        //考虑到会修改系统时间的情况，时间差在0～30毫秒内才会设置
+        if (currentDateTime.msecsTo(currentTime) < 30 && currentDateTime.msecsTo(currentTime) >= 0) {
+            activateWindow();
+            raise();
+        }
+        //断开信号连接
+        disconnect(qApp, &QGuiApplication::applicationStateChanged, this, &Calendarmainwindow::slotapplicationStateChanged);
+    }
+}
+
+void Calendarmainwindow::slotOpenSettingDialog()
+{
+    if (nullptr == m_dsdSetting) {
+        m_dsdSetting = new DSettingsDialog(this);
+        m_dsdSetting->setIcon(CDynamicIcon::getInstance()->getPixmap());
+        m_dsdSetting->setFixedSize(682, 506);
+        m_dsdSetting->widgetFactory()->registerWidget("JobTypeListView", [](QObject *obj) -> QWidget * {
+            if (DSettingsOption *option = qobject_cast<DSettingsOption *>(obj)) {
+                Q_UNUSED(option)
+                JobTypeListView *lv = new JobTypeListView();
+                lv->setObjectName("JobTypeListView");
+                return lv;
+            }
+            return nullptr;
+        });
+        QString strJson = QString(R"(
+                                  {"groups":[{"key":"setting_base","name":"Manage calendar","groups":[{"key":"event_types","name":"Event types","options":[{"key":"JobTypeListView","type":"JobTypeListView","name":"JobTypeListView","default":""}]}]}]}
+                                  )");
+
+        auto settings = Dtk::Core::DSettings::fromJson(strJson.toLatin1());
+        //settings->setBackend(&backend);
+        m_dsdSetting->setObjectName("SettingDialog");
+
+        m_dsdSetting->updateSettings(settings);
+        //恢复默认设置按钮不显示
+        m_dsdSetting->setResetVisible(false);
+
+        //QList<Widget>
+        QList<QWidget *> lstwidget = m_dsdSetting->findChildren<QWidget *>();
+        if (lstwidget.size() > 0) { //accessibleName
+            for (QWidget *wid : lstwidget) {
+                if ("ContentWidgetForsetting_base.event_types" == wid->accessibleName()) {
+                    JobTypeListView *view = m_dsdSetting->findChild<JobTypeListView *>("JobTypeListView");
+                    if (!view)
+                        return;
+                    DIconButton *addButton = new DIconButton(DStyle::SP_IncreaseElement, nullptr);
+                    //跟UI沟通size设置为20*20
+                    addButton->setFixedSize(20, 20);
+                    wid->layout()->addWidget(addButton);
+                    //使addButton的右边距等于view的右边距
+                    int leftMargin = wid->layout()->contentsMargins().left();
+                    wid->layout()->setContentsMargins(leftMargin, 0, leftMargin, 0);
+
+                    addButton->setEnabled(view->canAdd());
+
+                    //当日常类型超过上限时，更新button的状态
+                    connect(view, &JobTypeListView::signalAddStatusChanged, addButton, &DIconButton::setEnabled);
+                    //新增类型
+                    connect(addButton, &DIconButton::clicked, this, [=] {
+                        ScheduleTypeEditDlg a(m_dsdSetting);
+                        a.exec();
+                    });
+                }
+                if (wid->accessibleName().contains("DefaultWidgetAtContentRow")) {
+                    //DefaultWidgetAtContentRow是设置对话框右边每一个option条目对应widget的accessibleName的前缀，所以如果后续有更多条目，需要做修改
+                    wid->layout()->setMargin(0);
+                }
+            }
+        }
+    }
+    //内容定位到顶端
+    m_dsdSetting->exec();
+    //使用晚后释放
+    delete m_dsdSetting;
+    m_dsdSetting = nullptr;
 }

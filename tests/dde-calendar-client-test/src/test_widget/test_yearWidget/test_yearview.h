@@ -31,10 +31,11 @@ class test_yearview : public QObject
 public:
     test_yearview();
     ~test_yearview();
+    void SetUp() override;
+    void TearDown() override;
 
 protected:
     CYearView *cYearView = nullptr;
-    MonthBrefWidget *cMonthBrefWidget = nullptr;
 };
 
 #endif // TEST_YEARVIEW_H

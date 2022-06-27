@@ -24,3 +24,11 @@ DBusNotify::DBusNotify(const QString &service, const QString &path, const QDBusC
     : QDBusAbstractInterface(service, path, staticInterfaceName(), connection, parent)
 {
 }
+
+//根据通知ID关闭桌面顶部通知
+void DBusNotify::closeNotification(quint32 notifyID)
+{
+    QList<QVariant> argumentList;
+    argumentList << notifyID;
+    callWithArgumentList(QDBus::NoBlock, QStringLiteral("CloseNotification"), argumentList);
+}

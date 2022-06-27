@@ -72,8 +72,14 @@ void AnimationStackedWidget::mouseMoveEvent(QMouseEvent *e)
 void AnimationStackedWidget::animationFinished()
 {
     m_IsAnimation = false;
-    this->widget(currentIndex())->show();
     setCurrentIndex(m_NextIndex);
+    //如果有需要跳转的页面
+    if (m_nextGotoIndex != -1) {
+        setCurrent(m_nextGotoIndex);
+        //
+        m_nextGotoIndex = -1;
+        return;
+    }
     emit signalIsFinished();
 }
 
@@ -144,6 +150,7 @@ void AnimationStackedWidget::setCurrentWidget(int &index, int beginWidth)
 {
     //如果正在动画，那么退出
     if (m_IsAnimation) {
+        m_nextGotoIndex = index;
         return;
     }
     //如果索引为当前索引则退出
@@ -259,11 +266,8 @@ void AnimationStackedWidget::paintCurrentWidget(QPainter &paint, int currentInde
         targetRect = QRectF(0.0, 0.0, widgetWidth, value);
         sourceRect = QRectF(0, widgetHeight - value, widgetWidth, value);
     }
-    break;
     }
-    paint.drawPixmap(targetRect,
-                     currentPixmap,
-                     sourceRect);
+    paint.drawPixmap(targetRect, currentPixmap, sourceRect);
 }
 
 /**
@@ -306,11 +310,8 @@ void AnimationStackedWidget::paintNextWidget(QPainter &paint, int nextIndex)
         targetRect = QRectF(0.0, value, widgetWidth, widgetHeight - value);
         sourceRect = QRectF(0.0, 0.0, widgetWidth, widgetHeight - value);
     }
-    break;
     }
-    paint.drawPixmap(targetRect,
-                     nextPixmap,
-                     sourceRect);
+    paint.drawPixmap(targetRect, nextPixmap, sourceRect);
 }
 
 /**

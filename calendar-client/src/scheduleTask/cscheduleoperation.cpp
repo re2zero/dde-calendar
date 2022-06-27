@@ -22,6 +22,9 @@
 
 #include "cscheduledbus.h"
 #include "schedulectrldlg.h"
+#include "configsettings.h"
+#include "dcalendarddialog.h"
+#include "cdynamicicon.h"
 
 CScheduleOperation::CScheduleOperation(QWidget *parent)
     : QObject(parent)
@@ -37,6 +40,10 @@ CScheduleOperation::CScheduleOperation(QWidget *parent)
  */
 bool CScheduleOperation::createSchedule(const ScheduleDataInfo &scheduleInfo)
 {
+    //如果为农历且重复类型为每年
+    if (scheduleInfo.getIsLunar() && RepetitionRule::RRule_EVEYEAR == scheduleInfo.getRepetitionRule().getRuleId()) {
+        lunarMessageDialogShow(scheduleInfo);
+    }
     return m_DBusManager->CreateJob(scheduleInfo);
 }
 
@@ -66,6 +73,7 @@ bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
                 _result = false;
             } else if (msgBox.clickButton() == 1) {
                 //更新日程
+                showLunarMessageDialog(newInfo, oldInfo);
                 _result =  m_DBusManager->UpdateJob(newInfo);
             }
         } else if (oldInfo.getRepetitionRule().getRuleId() != newInfo.getRepetitionRule().getRuleId()) {
@@ -80,6 +88,7 @@ bool CScheduleOperation::changeSchedule(const ScheduleDataInfo &newInfo, const S
                 _result = false;
             } else if (msgBox.clickButton() == 1) {
                 //更新日程
+                showLunarMessageDialog(newInfo, oldInfo);
                 _result = m_DBusManager->UpdateJob(newInfo);
             }
         } else {
@@ -120,7 +129,6 @@ bool CScheduleOperation::deleteSchedule(const ScheduleDataInfo &scheduleInfo)
             msgBox.addPushButton(tr("Delete All"));
             msgBox.addWaringButton(tr("Delete Only This Event"));
             msgBox.exec();
-
             if (msgBox.clickButton() == 0) {
                 return false;
             } else if (msgBox.clickButton() == 1) {
@@ -244,6 +252,7 @@ bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
             //TODO 清空忽略日程
             _scheduleDataInfo.getIgnoreTime().clear();
             //更新日程
+            showLunarMessageDialog(_scheduleDataInfo, oldinfo);
             _result = m_DBusManager->UpdateJob(_scheduleDataInfo);
         } else if (msgBox.clickButton() == 2) {
             //仅修改此日程
@@ -293,6 +302,10 @@ bool CScheduleOperation::changeRecurInfo(const ScheduleDataInfo &newinfo, const 
             newschedule.setID(0);
             newschedule.setRepetitionRule(_rule);
             //创建新日程
+            //如果为农历且重复类型为每年
+            if (newschedule.getIsLunar() && RepetitionRule::RRule_EVEYEAR == newschedule.getRepetitionRule().getRuleId()) {
+                lunarMessageDialogShow(newschedule);
+            }
             _result = m_DBusManager->CreateJob(newschedule);
         } else if (msgBox.clickButton() == 2) {
             _result = changeOnlyInfo(newinfo, oldinfo);
@@ -344,8 +357,180 @@ void CScheduleOperation::changeRepetitionRule(ScheduleDataInfo &newinfo, const S
     default: {
         //如果该日程结束类型为永不和结束于日期则修改结束日期
         newinfo.getRepetitionRule().setRuleType(RepetitionRule::RRuleType_DATE);
-        newinfo.getRepetitionRule().setEndDate(oldinfo.getBeginDateTime().addDays(-1));
+        //设置结束日期，默认为0点
+        QDateTime endDate(QDate(oldinfo.getBeginDateTime().date().addDays(-1)), QTime());
+        newinfo.getRepetitionRule().setEndDate(endDate);
         break;
     }
     }
+}
+
+/**
+ * @brief CScheduleOperation::createJobType      创建日程类型
+ * @param newinfo
+ * @param oldinfo
+ */
+bool CScheduleOperation::createJobType(JobTypeInfo &jobTypeInfo)//新增时，颜色可能是：自定义/默认类型。以“自定义颜色编码默认为0”来区分.
+{
+    //创建日程
+    QString strJson = "";
+
+    int colorTypeNo = jobTypeInfo.getColorInfo().getTypeNo();
+
+    //以“自定义颜色编码默认为0”来区分.
+    if (0 == colorTypeNo) {
+        colorTypeNo = JobTypeInfoManager::instance()->getNextColorTypeNo();
+        jobTypeInfo.getColorInfo().setTypeNo(colorTypeNo);
+        //保存新选择的颜色值
+        CConfigSettings::getInstance()->setOption("LastUserColor", jobTypeInfo.getColorInfo().getColorHex());
+    }
+    //保存选择的颜色编号,只记录系统默认颜色的编号
+    if (jobTypeInfo.getColorInfo().getTypeNo() < 10)
+        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", jobTypeInfo.getColorInfo().getTypeNo());
+
+    if (0 == jobTypeInfo.getJobTypeNo()) {
+        jobTypeInfo.setJobTypeNo(JobTypeInfoManager::instance()->getNextTypeNo());
+        jobTypeInfo.getColorInfo().setTypeNo(colorTypeNo);
+    }
+    jobTypeInfo.setAuthority(7);//自定义日程类型默认权限为7
+
+    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo, strJson);
+    return m_DBusManager->AddJobType(strJson);// no:10,hex:#123
+}
+
+/**
+ * @brief CScheduleOperation::updateJobType      修改日程类型
+ * @param oldJobTypeInfo
+ * @param newJobTypeInfo
+ * 只能更新名称和颜色
+ * 颜色可能是：自定义-自定义、自定义-默认类型、默认类型-默认类型
+ */
+bool CScheduleOperation::updateJobType(JobTypeInfo &oldJobTypeInfo, JobTypeInfo &newJobTypeInfo)
+{
+    //如果oldJobTypeInfo中typeno为0，则是新增
+    if (0 == oldJobTypeInfo.getJobTypeNo()) {
+        return createJobType(newJobTypeInfo);
+    }
+    bool bRet = true;
+    //如果修改的日程类型没有改变则不处理
+    if (oldJobTypeInfo == newJobTypeInfo) {
+        return bRet;
+    }
+
+    //更新日程类型
+    newJobTypeInfo.setJobTypeNo(oldJobTypeInfo.getJobTypeNo());
+    //以“自定义颜色编码默认为0”来区分.
+    if (0 == newJobTypeInfo.getColorTypeNo()) {
+        //配置新颜色编号
+        if (oldJobTypeInfo.getColorTypeNo() > 9) {
+            newJobTypeInfo.getColorInfo().setTypeNo(oldJobTypeInfo.getColorTypeNo());
+        } else {
+            newJobTypeInfo.getColorInfo().setTypeNo(JobTypeInfoManager::instance()->getNextColorTypeNo());
+        }
+        //保存新选择的颜色值
+        CConfigSettings::getInstance()->setOption("LastUserColor", newJobTypeInfo.getColorInfo().getColorHex());
+    }
+
+    bRet = updateJobType(newJobTypeInfo);
+    //如果更新成功，且是系统默认颜色，缓存编号，只记录系统默认颜色的编号
+    if (bRet && newJobTypeInfo.getColorInfo().getTypeNo() < 10) {
+        CConfigSettings::getInstance()->setOption("LastSysColorTypeNo", newJobTypeInfo.getColorInfo().getTypeNo());
+    }
+    return bRet;
+}
+/**
+ * @brief CScheduleOperation::updateJobType      修改日程类型
+ * @param jobTypeInfo
+ * 只能更新名称和颜色编号
+ */
+bool CScheduleOperation::updateJobType(const JobTypeInfo &jobTypeInfo)
+{
+    //修改日程
+    QString strJson = "";
+    JobTypeInfo::jobTypeInfoToJsonStr(jobTypeInfo, strJson);
+    return m_DBusManager->UpdateJobType(strJson);
+}
+
+void CScheduleOperation::lunarMessageDialogShow(const ScheduleDataInfo &newinfo)
+{
+    //如果该日程为闰月日程，因为对应的闰月需要间隔好多年，所以添加对应的提示信息
+    CaHuangLiDayInfo huangLiInfo;
+    CScheduleDBus::getInstance()->GetHuangLiDay(newinfo.getBeginDateTime().date(), huangLiInfo);
+    if (huangLiInfo.mLunarMonthName.contains("闰")) {
+        DCalendarDDialog prompt(m_widget);
+        prompt.setIcon(QIcon(CDynamicIcon::getInstance()->getPixmap()));
+        prompt.setDisplayPosition(DAbstractDialog::Center);
+        prompt.setMessage(tr("You have selected a leap month, and will be reminded according to the rules of the lunar calendar."));
+        prompt.addButton(tr("OK", "button"), true, DDialog::ButtonNormal);
+        if (m_widget) {
+            //获取父窗口的中心坐标
+            const QPoint global = m_widget->mapToGlobal(m_widget->rect().center());
+            //相对父窗口居中显示
+            prompt.move(global.x() - prompt.width() / 2, global.y() - prompt.height() / 2);
+        }
+        prompt.exec();
+    }
+}
+
+void CScheduleOperation::showLunarMessageDialog(const ScheduleDataInfo &newinfo, const ScheduleDataInfo &oldinfo)
+{
+    //在阴历每年重复情况下如果修改了开始时间或重复规则
+    if (newinfo.getIsLunar() && RepetitionRule::RRule_EVEYEAR == newinfo.getRepetitionRule().getRuleId()) {
+        if (oldinfo.getBeginDateTime().date() != newinfo.getBeginDateTime().date()
+            || oldinfo.getRepetitionRule().getRuleId() != newinfo.getRepetitionRule().getRuleId()
+            || oldinfo.getIsLunar() != newinfo.getIsLunar()) {
+            //判断是否为闰月
+            lunarMessageDialogShow(newinfo);
+        }
+    }
+}
+
+/**
+ * @brief CScheduleOperation::getJobTypeList      获取日程类型列表
+ * @param lstJobTypeInfo
+ * @return 操作结果
+ */
+bool CScheduleOperation::getJobTypeList(QList<JobTypeInfo> &lstJobTypeInfo)
+{
+    QString strJson;
+    if (!m_DBusManager->GetJobTypeList(strJson)) {
+        return false;
+    }
+    JobTypeInfo::jsonStrToJobTypeInfoList(strJson, lstJobTypeInfo);
+    return true;
+}
+
+/**
+ * @brief CScheduleOperation::deleteJobType      删除日程类型
+ * @param iJobTypeNo
+ * @return 操作结果
+ */
+bool CScheduleOperation::deleteJobType(const int iJobTypeNo)
+{
+    //删除日程类型
+    return m_DBusManager->DeleteJobType(iJobTypeNo);
+}
+/**
+ * @brief CScheduleOperation::isJobTypeUsed      获取日程类型是否被使用
+ * @param iJobTypeNo
+ * @return 操作结果
+ */
+bool CScheduleOperation::isJobTypeUsed(const int iJobTypeNo)
+{
+    //获取日程类型是否被使用
+    return m_DBusManager->isJobTypeUsed(iJobTypeNo);
+}
+
+/**
+ * @brief CScheduleOperation::getColorTypeList      获取颜色类型列表
+ * @param lstColorTypeInfo
+ * @return 操作结果
+ */
+bool CScheduleOperation::getColorTypeList(QList<JobTypeColorInfo> &lstColorTypeInfo)
+{
+    QString strJson;
+    if (!m_DBusManager->GetJobTypeColorList(strJson)) {
+        return false;
+    }
+    return JobTypeInfo::jsonStrToColorTypeInfoList(strJson, lstColorTypeInfo);
 }

@@ -25,6 +25,7 @@
 #include "cscheduleoperation.h"
 #include "scheduledaterangeinfo.h"
 #include "calendarmanage.h"
+#include "calendarglobalenv.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -71,11 +72,6 @@ CScheduleSearchItem::CScheduleSearchItem(QWidget *parent)
 void CScheduleSearchItem::setBackgroundColor(QColor color1)
 {
     m_Backgroundcolor = color1;
-}
-
-void CScheduleSearchItem::setSplitLineColor(QColor color1)
-{
-    m_splitlinecolor = color1;
 }
 
 void CScheduleSearchItem::setText(QColor tColor, QFont font)
@@ -150,20 +146,16 @@ void CScheduleSearchItem::setDurationSize(QFont font)
 }
 void CScheduleSearchItem::slotEdit()
 {
-    emit signalViewtransparentFrame(1);
     CScheduleDlg dlg(0, this);
     dlg.setData(m_ScheduleInfo);
     dlg.exec();
-    emit signalViewtransparentFrame(0);
 }
 
 void CScheduleSearchItem::slotDelete()
 {
-    emit signalViewtransparentFrame(1);
     //删除日程
     CScheduleOperation _scheduleOperation(this);
     bool _isDelete = _scheduleOperation.deleteSchedule(m_ScheduleInfo);
-    emit signalViewtransparentFrame(0);
     //删除日程后，将焦点设置给父类
     if (_isDelete) {
         parentWidget()->setFocus(Qt::TabFocusReason);
@@ -206,8 +198,8 @@ void CScheduleSearchItem::slotSchotCutClicked()
 void CScheduleSearchItem::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e);
-    int labelwidth = width() - 2;
-    int labelheight = height() - 2;
+    int labelRightX = width()-2;    //绘制区域x方向右边界坐标点
+    int labelBottomY = height();    //绘制区域y方向下边界坐标点
     QPainter painter(this);
     QColor bColor = m_Backgroundcolor;
     QColor textcolor = m_tTextColor;
@@ -233,50 +225,44 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
     painter.setBrush(QBrush(bColor));
-    if (m_tabFocus) {
-        //设置焦点绘制的pen
-        QPen pen;
-        pen.setColor(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
-        pen.setWidth(2);
-        painter.setPen(pen);
-    } else
-        painter.setPen(Qt::NoPen);
+    painter.setPen(Qt::NoPen);
+
     QPainterPath painterPath;
-    painterPath.moveTo(m_radius, m_borderframew);
+    painterPath.moveTo(m_radius, m_borderframewY);
 
     if (m_roundtype == 1 || m_roundtype == 3) {
-        painterPath.arcTo(QRect(m_borderframew, m_borderframew, m_radius * 2, m_radius * 2), 90, 90);
+        painterPath.arcTo(QRect(m_borderframewX, m_borderframewY, m_radius * 2, m_radius * 2), 90, 90);
     } else {
-        painterPath.lineTo(m_borderframew, m_borderframew);
-        painterPath.lineTo(m_borderframew, m_radius);
+        painterPath.lineTo(m_borderframewX, m_borderframewY);
+        painterPath.lineTo(m_borderframewX, m_radius);
     }
-    painterPath.lineTo(1, labelheight - m_radius);
+    painterPath.lineTo(m_borderframewX, labelBottomY - m_radius);
 
     if (m_roundtype == 1 || m_roundtype == 2) {
-        painterPath.arcTo(QRect(m_borderframew, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
+        painterPath.arcTo(QRect(m_borderframewX, labelBottomY - m_radius * 2, m_radius * 2, m_radius * 2), 180, 90);
     } else {
-        painterPath.lineTo(m_borderframew, labelheight);
-        painterPath.lineTo(m_radius, labelheight);
+        painterPath.lineTo(m_borderframewX, labelBottomY);
+        painterPath.lineTo(m_radius, labelBottomY);
     }
-    painterPath.lineTo(labelwidth - m_radius, labelheight);
+    painterPath.lineTo(labelRightX - m_radius, labelBottomY);
 
     if (m_roundtype == 1 || m_roundtype == 2) {
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, labelheight - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
+        painterPath.arcTo(QRect(labelRightX - m_radius * 2, labelBottomY - m_radius * 2, m_radius * 2, m_radius * 2), 270, 90);
     } else {
-        painterPath.lineTo(labelwidth, labelheight);
-        painterPath.lineTo(labelwidth, labelheight - m_radius);
+        painterPath.lineTo(labelRightX, labelBottomY);
+        painterPath.lineTo(labelRightX, labelBottomY - m_radius);
     }
-    painterPath.lineTo(labelwidth, m_radius);
+    painterPath.lineTo(labelRightX, m_radius);
 
     if (m_roundtype == 1 || m_roundtype == 3) {
-        painterPath.arcTo(QRect(labelwidth - m_radius * 2, m_borderframew, m_radius * 2, m_radius * 2), 0, 90);
+        painterPath.arcTo(QRect(labelRightX - m_radius * 2, m_borderframewY, m_radius * 2, m_radius * 2), 0, 90);
 
     } else {
-        painterPath.lineTo(labelwidth, m_borderframew);
-        painterPath.lineTo(labelwidth - m_radius, m_borderframew);
+        painterPath.lineTo(labelRightX, m_borderframewY);
+        painterPath.lineTo(labelRightX - m_radius, m_borderframewY);
     }
 
-    painterPath.lineTo(m_radius, m_borderframew);
+    painterPath.lineTo(m_radius, m_borderframewY);
     painterPath.closeSubpath();
     painter.drawPath(painterPath);
     painter.restore();
@@ -294,14 +280,16 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     if (m_ScheduleInfo.getAllDay()) {
         datestr = tr("All Day");
     }
-    painter.drawText(QRect(12, 8, m_durationSize, labelheight - 16), flag, datestr);
+    painter.drawText(QRect(12, 8, m_durationSize, labelBottomY - 16), flag, datestr);
 
     painter.save();
-    bColor = m_splitlinecolor;
+    const CSchedulesColor &gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_ScheduleInfo.getType());
+    bColor = gdColor.orginalColor;
     QPen pen(bColor);
     pen.setWidth(2);
     painter.setPen(pen);
-    painter.drawLine(m_durationSize + 17, 0, m_durationSize + 17, labelheight);
+    //由于绘制的矩形大小的改变，所以需要调整起始和截止y坐标
+    painter.drawLine(m_durationSize + 17, m_borderframewY, m_durationSize + 17, labelBottomY);
     painter.restore();
 
     painter.setFont(m_tFont);
@@ -309,7 +297,7 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
     QString ellipsis = "...";
     QFontMetrics fm = painter.fontMetrics();
     //整个label宽度-文字起始位置
-    int tilenameW = labelwidth - (m_durationSize + 26);
+    int tilenameW = labelRightX - m_borderframewX - (m_durationSize + 26);
     QString tSTitleName = m_ScheduleInfo.getTitleName();
     tSTitleName.replace("\n", "");
     QString str = tSTitleName;
@@ -330,7 +318,20 @@ void CScheduleSearchItem::paintEvent(QPaintEvent *e)
         tStr = tStr + "...";
     }
 
-    painter.drawText(QRect(m_durationSize + 17 + 9, 6, tilenameW, labelheight), Qt::AlignLeft, tStr);
+    painter.drawText(QRect(m_durationSize + 17 + 9, 6, tilenameW, labelBottomY), Qt::AlignLeft, tStr);
+
+    //存在焦点时绘制边框
+    if (m_tabFocus) {
+        painter.setPen(Qt::NoPen);
+        // 设置画刷颜色
+        painter.setBrush(CScheduleDataManage::getScheduleDataManage()->getSystemActiveColor());
+        QPainterPath path;
+        int w = 2; //边框宽度
+        path.addRect(m_borderframewX, m_borderframewY, labelRightX-m_borderframewX, labelBottomY - m_borderframewY);
+        path.addRect(m_borderframewX+w, m_borderframewY+w, labelRightX-2*w-m_borderframewX, labelBottomY-2*w - m_borderframewY);
+        painter.drawPath(path);
+    }
+
     painter.end();
 }
 void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)
@@ -339,6 +340,9 @@ void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)
 
     if (m_ScheduleInfo.getType() == DDECalendar::FestivalTypeID)
         return;
+    //在有些环境中弹出右击菜单不会触发leaveEvent，主动更新leave对应的事件处理
+    m_mouseStatus = M_NONE;
+    update();
     m_rightMenu->clear();
     m_rightMenu->addAction(m_editAction);
     m_rightMenu->addAction(m_deleteAction);
@@ -348,10 +352,8 @@ void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)
 void CScheduleSearchItem::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
-    emit signalViewtransparentFrame(1);
     CMyScheduleView dlg(m_ScheduleInfo, this);
     dlg.exec();
-    emit signalViewtransparentFrame(0);
 }
 
 void CScheduleSearchItem::mousePressEvent(QMouseEvent *event)
@@ -359,6 +361,10 @@ void CScheduleSearchItem::mousePressEvent(QMouseEvent *event)
     //鼠标点击取消焦点显示
     m_tabFocus = false;
     if (event->button() == Qt::LeftButton) {
+        //注册为鼠标操作
+        if (!CalendarGlobalEnv::getGlobalEnv()->registerKey("SearchItemEvent", "MousePress")) {
+            CalendarGlobalEnv::getGlobalEnv()->reviseValue("SearchItemEvent", "MousePress");
+        }
         emit signalSelectSchedule(m_ScheduleInfo);
     }
     DLabel::mousePressEvent(event);
@@ -404,6 +410,10 @@ bool CScheduleSearchItem::eventFilter(QObject *o, QEvent *e)
 void CScheduleSearchItem::focusInEvent(QFocusEvent *e)
 {
     if (e->reason() == Qt::TabFocusReason) {
+        //注册为键盘操作
+        if (!CalendarGlobalEnv::getGlobalEnv()->registerKey("SearchItemEvent", "Keyboard")) {
+            CalendarGlobalEnv::getGlobalEnv()->reviseValue("SearchItemEvent", "Keyboard");
+        }
         emit signalSelectSchedule(m_ScheduleInfo);
         emit signalSelectCurrentItem(this, false);
         m_tabFocus = true;
@@ -668,16 +678,12 @@ void CScheduleSearchView::updateDateShow()
 void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, int rtype)
 {
     ScheduleDataInfo &gd = info;
-    CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(gd.getType());
 
     CScheduleSearchItem *gwi = new CScheduleSearchItem(this);
     QFont font;
     font.setPixelSize(DDECalendar::FontSizeFourteen);
     font.setWeight(QFont::Normal);
     gwi->setBackgroundColor(m_bBackgroundcolor);
-    QColor sColor = gdColor.Purecolor;
-    sColor.setAlphaF(1.0);
-    gwi->setSplitLineColor(gdColor.splitColor);
     gwi->setText(m_btTextColor, font);
     font.setPixelSize(DDECalendar::FontSizeTwelve);
 
@@ -688,7 +694,6 @@ void CScheduleSearchView::createItemWidget(ScheduleDataInfo info, QDate date, in
     //将搜索到的日程添加到容器
     m_scheduleSearchItem.append(gwi);
     connect(gwi, &CScheduleSearchItem::signalSelectSchedule, this, &CScheduleSearchView::slotSelectSchedule);
-    connect(gwi, &CScheduleSearchItem::signalViewtransparentFrame, this, &CScheduleSearchView::signalViewtransparentFrame);
     connect(gwi, &CScheduleSearchItem::signalSelectCurrentItem, this, &CScheduleSearchView::slotSelectCurrentItem);
 
     QListWidgetItem *listItem = new QListWidgetItem;
@@ -922,10 +927,14 @@ CScheduleListWidget::CScheduleListWidget(QWidget *parent)
     grabGesture(Qt::TapGesture);
     grabGesture(Qt::TapAndHoldGesture);
     grabGesture(Qt::PanGesture);
+
+    //日程类型发生改变，刷新界面
+    JobTypeInfoManager::instance()->addToNoticeBill(this->viewport(), "update");
 }
 
 CScheduleListWidget::~CScheduleListWidget()
 {
+    JobTypeInfoManager::instance()->removeFromNoticeBill(this->viewport());
 }
 
 void CScheduleListWidget::mousePressEvent(QMouseEvent *event)

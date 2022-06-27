@@ -45,9 +45,9 @@ TEST_F(test_weekWindow, setTheMe)
     m_weekWindow->setTheMe(2);
 }
 
-TEST_F(test_weekWindow, updateHigh)
+TEST_F(test_weekWindow, updateHeight)
 {
-    m_weekWindow->updateHigh();
+    m_weekWindow->updateHeight();
 }
 
 TEST_F(test_weekWindow, setTime)

@@ -1,9 +1,9 @@
 /*
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     hejinghai <hejinghai@uniontech.com>
+* Author:     leilong  <leilong@uniontech.com>
 *
-* Maintainer: hejinghai <hejinghai@uniontech.com>
+* Maintainer: leilong  <leilong@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,17 +22,26 @@
 #define TEST_CALENDARSCHEDULER_H
 
 #include "calendarscheduler.h"
-#include "jobremindmanager.h"
-#include "gtest/gtest.h"
 #include <QObject>
+#include <gtest/gtest.h>
 
-class test_calendarscheduler : public QObject, public::testing::Test
+class test_calendarscheduler: public::testing::Test
 {
 public:
     test_calendarscheduler();
-    ~test_calendarscheduler();
+
+    virtual void SetUp()
+    {
+        mCalendar = new CalendarScheduler();
+    }
+
+    virtual void TearDown()
+    {
+        delete mCalendar;
+        mCalendar = nullptr;
+    }
 protected:
-    CalendarScheduler *calScheduler = nullptr;
+    CalendarScheduler *mCalendar = nullptr;
 };
 
 #endif // TEST_CALENDARSCHEDULER_H

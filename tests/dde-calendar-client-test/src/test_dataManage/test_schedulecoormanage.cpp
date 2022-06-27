@@ -154,11 +154,8 @@ TEST_F(test_schedulecoormanage, getsDate)
 //float CScheduleCoorManage::getHeight(const QTime &time)
 TEST_F(test_schedulecoormanage, getHeight)
 {
-    const float Height = 0;
     QTime time(18, 8, 9, 30);
-    float height = cScheduleCoorManage->getHeight(time);
-    qInfo() << height;
-    assert(Height <= height);
+    assert(0 <= cScheduleCoorManage->getHeight(time));
 }
 
 //QDate getBegindate()
@@ -170,6 +167,5 @@ TEST_F(test_schedulecoormanage, getBegindate)
     QDate m_enddate(2020, 12, 31);
     int rightmagin = 1;
     cScheduleCoorManage->setRange(w, h, m_begindate, m_enddate, rightmagin);
-    QDate getbegindate = cScheduleCoorManage->getBegindate();
-    assert(m_begindate == getbegindate);
+    assert(m_begindate == cScheduleCoorManage->getBegindate());
 }

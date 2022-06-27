@@ -19,9 +19,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "test_yearwindow.h"
+#include "customWidget/customframe.h"
+#include "widget/yearWidget/yearscheduleview.h"
+#include "calendarglobalenv.h"
+#include "constants.h"
 
 test_yearwindow::test_yearwindow()
 {
+    CalendarGlobalEnv::getGlobalEnv()->registerKey(DDECalendar::CursorPointKey, QPoint(20, 20));
     mYearWindow = new CYearWindow();
     dateaManger = new CalendarDateDataManager();
 }
@@ -43,90 +48,30 @@ TEST_F(test_yearwindow, setTheMe)
     mYearWindow->setTheMe(type);
 }
 
-//void CYearWindow::setSearchWFlag(bool flag)
-//TEST_F(test_yearwindow, setSearchWFlag)
-//{
-//    bool searchFlag = false;
-//    mYearWindow->setSearchWFlag(searchFlag);
-//}
+TEST_F(test_yearwindow, slotMousePress)
+{
+    CalendarGlobalEnv::getGlobalEnv()->reviseValue(DDECalendar::CursorPointKey, QPoint(20, 20));
+    QDate currentDate = QDate::currentDate();
+    mYearWindow->slotMousePress(currentDate, 0);
+    ASSERT_EQ(mYearWindow->getSelectDate(), currentDate);
+    mYearWindow->slotMousePress(currentDate, 1);
+    mYearWindow->slotMousePress(currentDate, 2);
+    mYearWindow->slotMousePress(currentDate, 3);
+    mYearWindow->slotMousePress(currentDate, 4);
+}
 
-////void CYearWindow::updateShowDate(const bool isUpdateBar)
-//TEST_F(test_yearwindow, updateShowDate)
-//{
-//    bool updateFlag = true;
-//    cYearWindow->updateShowDate(updateFlag);
-//}
-
-////void CYearWindow::updateShowSchedule()
-//TEST_F(test_yearwindow, updateShowSchedule)
-//{
-//    cYearWindow->updateShowSchedule();
-//}
-
-////void CYearWindow::updateShowLunar()
-//TEST_F(test_yearwindow, updateShowLunar)
-//{
-//    cYearWindow->updateShowLunar();
-//}
-
-////void CYearWindow::updateSearchScheduleInfo()
-//TEST_F(test_yearwindow, updateSearchScheduleInfo)
-//{
-//    cYearWindow->updateSearchScheduleInfo();
-//}
-
-////void CYearWindow::slotSetScheduleHide()
-//TEST_F(test_yearwindow, slotSetScheduleHide)
-//{
-//    cYearWindow->slotSetScheduleHide();
-//}
-
-////void CYearWindow::slotprev()
-//TEST_F(test_yearwindow, slotprev)
-//{
-//    mYearWindow->slotprev();
-//}
-
-////void CYearWindow::slotnext()
-//TEST_F(test_yearwindow, slotnext)
-//{
-//    FAIL();
-//    mYearWindow->slotnext();
-//}
-
-////void CYearWindow::slottoday()
-//TEST_F(test_yearwindow, slottoday)
-//{
-//    cYearWindow->slottoday();
-//}
-
-////void CYearWindow::switchYear(const int offsetYear)
-//TEST_F(test_yearwindow, switchYear)
-//{
-//    dateaManger->setSelectDate(QDate::currentDate(), false);
-//    cYearWindow->switchYear(1);
-//    cYearWindow->switchYear(-1);
-//}
-
-////void CYearWindow::setLunarShow()
-//TEST_F(test_yearwindow, setLunarShow)
-//{
-//    cYearWindow->setLunarShow();
-//}
-
-////void CYearWindow::setYearData()
-//TEST_F(test_yearwindow, setYearData)
-//{
-//    dateaManger->setSelectDate(QDate::currentDate(), false);
-//    dateaManger->setCurrentDateTime(QDateTime::currentDateTime());
-//    cYearWindow->setYearData();
-
-//    dateaManger->setCurrentDateTime(QDateTime::currentDateTime().addDays(1));
-//    cYearWindow->setYearData();
-//}
-
-////void CYearWindow::slotMousePress(const QDate &selectDate, const int pressType)
-////TEST_F(test_yearwindow, slotMousePress)
-////{
-////cYearWindow->slotMousePress(QDate::currentDate(), 0);
-////}
+TEST_F(test_yearwindow, calculateAzimuthAngle)
+{
+    QPointF startPoint(0, 0);
+    QPointF stopPoint(30, 20);
+    mYearWindow->calculateAzimuthAngle(startPoint, stopPoint);
+    stopPoint.setX(20);
+    stopPoint.setY(30);
+    mYearWindow->calculateAzimuthAngle(startPoint, stopPoint);
+    stopPoint.setX(-20);
+    stopPoint.setY(30);
+    mYearWindow->calculateAzimuthAngle(startPoint, stopPoint);
+    stopPoint.setX(-30);
+    stopPoint.setY(20);
+    mYearWindow->calculateAzimuthAngle(startPoint, stopPoint);
+}

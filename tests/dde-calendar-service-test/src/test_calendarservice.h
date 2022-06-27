@@ -1,9 +1,9 @@
 /*
 * Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 *
-* Author:     hejinghai <hejinghai@uniontech.com>
+* Author:     leilong  <leilong@uniontech.com>
 *
-* Maintainer: hejinghai <hejinghai@uniontech.com>
+* Maintainer: leilong  <leilong@uniontech.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,26 @@
 #define TEST_CALENDARSERVICE_H
 
 #include "calendarservice.h"
-#include "gtest/gtest.h"
 #include <QObject>
+#include <gtest/gtest.h>
 
-class test_calendarservice : public QObject, public::testing::Test
+class test_calendarservice: public::testing::Test
 {
 public:
     test_calendarservice();
-    ~test_calendarservice();
+
+    virtual void SetUp()
+    {
+        mService = new CalendarService();
+    }
+
+    virtual void TearDown()
+    {
+        delete mService;
+        mService = nullptr;
+    }
 protected:
-    CalendarService *service = nullptr;
+    CalendarService *mService = nullptr;
 };
 
 #endif // TEST_CALENDARSERVICE_H

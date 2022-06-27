@@ -27,7 +27,7 @@
 
 #include <DApplication>
 #include <DLog>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DApplicationSettings>
 
 #include <QDBusConnection>
@@ -36,6 +36,10 @@ DWIDGET_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
+    //在root下或者非deepin/uos环境下运行不会发生异常，需要加上XDG_CURRENT_DESKTOP=Deepin环境变量；
+    if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
+        setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
+    }
     PERF_PRINT_BEGIN("POINT-01", "");
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     //适配deepin-turbo启动加速
@@ -54,7 +58,6 @@ int main(int argc, char *argv[])
 #endif
 
     if (DGuiApplicationHelper::setSingleInstance(app->applicationName(), DGuiApplicationHelper::UserScope)) {
-        QAccessible::installFactory(accessibleFactory);
         app->setOrganizationName("deepin");
         app->setApplicationName("dde-calendar");
         app->loadTranslator();
@@ -73,9 +76,9 @@ int main(int argc, char *argv[])
         _commandLine.process(*app);
 
         app->setAutoActivateWindows(true);
-        CConfigSettings::init();
+
         bool isOk = false;
-        int viewtype = CConfigSettings::value("base.view").toInt(&isOk);
+        int viewtype = CConfigSettings::getInstance()->value("base.view").toInt(&isOk);
         if (!isOk)
             viewtype = 2;
         DLogManager::registerConsoleAppender();
@@ -90,9 +93,14 @@ int main(int argc, char *argv[])
         einterface.registerAction("QUERY", "find a schedule information");
         einterface.registerAction("CANCEL", "cancel a schedule");
         QDBusConnection dbus = QDBusConnection::sessionBus();
-        dbus.registerService("com.deepin.Calendar");
-        dbus.registerObject("/com/deepin/Calendar", &ww);
-        ww.slotTheme(DApplicationHelper::instance()->themeType());
+        //如果注册失败打印出失败信息
+        if (!dbus.registerService("com.deepin.Calendar")) {
+            qWarning() << "registerService Error:" << dbus.lastError();
+        }
+        if (!dbus.registerObject("/com/deepin/Calendar", &ww)) {
+            qWarning() << "registerObject Error:" << dbus.lastError();
+        }
+        ww.slotTheme(DGuiApplicationHelper::instance()->themeType());
         ww.show();
         PERF_PRINT_END("POINT-01");
         return app->exec();

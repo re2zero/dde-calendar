@@ -357,7 +357,6 @@ void CMonthWindow::initConnection()
 {
     connect(m_today, &DPushButton::clicked, this, &CMonthWindow::slottoday);
     connect(m_monthDayView, &CMonthDayView::signalsSelectDate, this, &CMonthWindow::slotSetSelectDate);
-    connect(m_monthView, &CMonthView::signalViewtransparentFrame, this, &CMonthWindow::signalViewtransparentFrame);
     //双击时间修改选择时间和切换到日视图
     connect(m_monthView, &CMonthView::signalsViewSelectDate, this, &CMonthWindow::slotViewSelectDate);
     connect(m_monthView, &CMonthView::signalAngleDelta, this, &CMonthWindow::slotAngleDelta);

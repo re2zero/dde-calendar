@@ -40,31 +40,38 @@ class CMyScheduleView : public DCalendarDDialog
     Q_OBJECT
 public:
     explicit CMyScheduleView(const ScheduleDataInfo &schduleInfo, QWidget *parent = nullptr);
-    ~CMyScheduleView() override;
+
     ScheduleDataInfo getSchedules()
     {
         return  m_scheduleInfo;
     }
 signals:
     void signalsEditorDelete(int type = 0);
-    void signalViewtransparentFrame(int type);
 public slots:
     //按钮点击事件
     void slotBtClick(int buttonIndex, const QString &buttonName);
+
+    void slotAutoFeed(const QFont &font = QFont());
 private:
     //界面初始化
     void initUI();
     void initConnection();
-    //字体改变更改界面显示
-    void AutoFeed(const QString &text);
     //设置label文字颜色
     void setLabelTextColor(const int type);
     //设置调色板颜色
     void setPaletteTextColor(QWidget *widget, QColor textColor);
 protected:
-    void showEvent(QShowEvent *event) override;
-    bool eventFilter(QObject *o, QEvent *e) override;
     void updateDateTimeFormat() override;
+
+private:
+    /**
+     * @brief getDataByFormat
+     * 获取格式化后的事件字符串
+     * @param format 格式化规则
+     * @return 格式化后的字符串
+     */
+    QString getDataByFormat(const QDate &, QString format);
+
 private:
     QLabel *m_scheduleLabel = nullptr;
     QLabel *m_timeLabel = nullptr;
@@ -72,6 +79,9 @@ private:
     ScheduleDataInfo m_scheduleInfo; //日程
     QScrollArea *area = nullptr;
     QFont labelF;
+    int m_defaultH = 117; //时间显示高度
+    int m_timeLabelH = 0; //时间显示高度
+    int m_scheduleLabelH = 0; //日程详情显示高度
 };
 
 #endif // MYSCHEDULEVIEW_H

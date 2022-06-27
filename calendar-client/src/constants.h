@@ -20,7 +20,11 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <QString>
+
 namespace DDECalendar {
+//光标坐标关键字
+const QString   CursorPointKey = "CursorPoint";
 static const int HeaderItemWidth = 80;
 static const int HeaderItemHeight = 40;
 
@@ -170,7 +174,7 @@ static const int D_MWindowHeight = 564;
 
 namespace DARROWRECT {
 //提示框圆角
-static const int DRADIUS = 15;
+static const int DRADIUS = 10;
 } // namespace DARROWRECT
 enum Week {
     Monday    = 6,

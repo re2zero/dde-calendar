@@ -19,7 +19,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "scheduledatainfo.h"
-
+#include "utils.h"
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QTimeZone>
@@ -276,6 +276,16 @@ void ScheduleDataInfo::registerMetaType()
     qRegisterMetaType<ScheduleDataInfo>("ScheduleDataInfo");
 }
 
+bool ScheduleDataInfo::getIsLunar() const
+{
+    return m_isLunar;
+}
+
+void ScheduleDataInfo::setIsLunar(bool isLunar)
+{
+    m_isLunar = isLunar;
+}
+
 /**
  * @brief setRepetitionRule     设置重复规则
  * @param rule
@@ -315,7 +325,7 @@ bool ScheduleDataInfo::isValid() const
     if (!getEndDateTime().isValid()) {
         return  false;
     }
-    if (getType() < 1 || getType() > 3) {
+    if (getType() < 1) {
         return  false;
     }
     return true;
@@ -362,6 +372,7 @@ QString ScheduleDataInfo::ScheduleToJsonStr(const ScheduleDataInfo &scheduleJson
         _ignoreJsonArray.append(DateTimeToStringDate(scheduleJsonData.getIgnoreTime().at(i)));
     }
     _scheduleJsonObject.insert("Ignore", _ignoreJsonArray);
+    _scheduleJsonObject.insert("IsLunar", scheduleJsonData.getIsLunar());
     // 构建 JSON 文档
     QJsonDocument _scheduleJsonDocument;
     _scheduleJsonDocument.setObject(_scheduleJsonObject);
@@ -428,6 +439,10 @@ ScheduleDataInfo ScheduleDataInfo::JsonToSchedule(const QJsonObject &scheduleJso
             _ignoreDateVector.append(StringDateToDateTime(subObj));
         }
         _resultSchedule.setIgnoreTime(_ignoreDateVector);
+    }
+    //是否为农历日程
+    if (scheduleJsonObject.contains("IsLunar")) {
+        _resultSchedule.setIsLunar(scheduleJsonObject.value("IsLunar").toBool());
     }
     return _resultSchedule;
 }
@@ -523,8 +538,8 @@ QMap<QDate, QVector<ScheduleDataInfo> > ScheduleDataInfo::StrJsonToRangeInfo(con
 bool ScheduleDataInfo::operator ==(const ScheduleDataInfo &info) const
 {
     if (info.getType() == 4) {
-        return this->getID() == info.getID() && this->getRecurID() == info.getRecurID() &&
-               this->getTitleName() == info.getTitleName() &&
+        //由于后端每次启动设置的节日日程id不一定相同，所以不比较日程id
+        return this->getTitleName() == info.getTitleName() &&
                this->getBeginDateTime() == info.getBeginDateTime();
     } else {
         return this->getID() == info.getID() && this->getRecurID() == info.getRecurID() &&
@@ -585,6 +600,288 @@ QDebug operator<<(QDebug debug, const ScheduleDataInfo &scheduleJsonData)
           << QString("RRule:") << scheduleJsonData.getScheduleRRule() << QString(",")
           << QString("Remind:") << scheduleJsonData.getScheduleRemind() << QString(",")
           << QString("RecurID:") << scheduleJsonData.getRecurID()
+          << QString("IsLunar:") << scheduleJsonData.getIsLunar()
           << ")";
     return debug;
+}
+/**
+ * @brief JobTypeInfo           构造函数
+ */
+JobTypeInfo::JobTypeInfo(int typeNo, QString typeName, int colorTypeNo, QString colorHex, int authority)
+    : iJobTypeNo(typeNo)
+    , strJobTypeName(typeName)
+    , m_ColorInfo(colorTypeNo, colorHex)
+    , iAuthority(authority)
+{
+}
+
+JobTypeInfo::JobTypeInfo(int typeNo, QString typeName, const JobTypeColorInfo &colorInfo)
+    : iJobTypeNo(typeNo)
+    , strJobTypeName(typeName)
+    , m_ColorInfo(colorInfo)
+    , iAuthority(colorInfo.getAuthority())
+{
+}
+
+/**
+ * @brief JobTypeInfo           构造函数
+ */
+JobTypeInfo::JobTypeInfo(const JobTypeInfo &_other)
+{
+    iJobTypeNo = _other.getJobTypeNo();
+    strJobTypeName = _other.getJobTypeName();
+    m_ColorInfo = _other.getColorInfo();
+    iAuthority = _other.getAuthority();
+}
+
+JobTypeColorInfo::JobTypeColorInfo(int typeNo, QString colorHex, int authority)
+    : iTypeNo(typeNo)
+    , strColorHex(colorHex)
+    , iAuthority(authority)
+{
+
+}
+
+/**
+ * @brief JsonStrToTypeInfo           从json串解析出日程类型列表
+ * @param jsonStr                     json串
+ * @param QList<JobTypeInfo>          日程类型列表
+ */
+bool JobTypeInfo::jsonStrToJobTypeInfoList(const QString &strJson, QList<JobTypeInfo> &lstJobType)
+{
+    QJsonArray ja;
+    Utils::StringToObject(strJson, ja);
+
+    lstJobType.clear();
+    QJsonObject _jsonObj;
+    for (int i = 0; i < ja.size(); i++) {
+        _jsonObj = ja.at(i).toObject();
+        JobTypeInfo _jobtype;
+        //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+        //日程类型编号
+        if (_jsonObj.contains("JobTypeNo")) {
+            _jobtype.setJobTypeNo(_jsonObj.value("JobTypeNo").toInt());
+        }
+        //日程类型名称
+        if (_jsonObj.contains("JobTypeName")) {
+            _jobtype.setJobTypeName(_jsonObj.value("JobTypeName").toString());
+        }
+        //日程类型颜色编号
+        if (_jsonObj.contains("ColorTypeNo")) {
+            _jobtype.setColorTypeNo(_jsonObj.value("ColorTypeNo").toInt());
+        }
+        //日程类型颜色16进制编码
+        if (_jsonObj.contains("ColorHex")) {
+            _jobtype.setColorHex(_jsonObj.value("ColorHex").toString());
+        }
+        //日程类型权限
+        if (_jsonObj.contains("Authority")) {
+            _jobtype.setAuthority(_jsonObj.value("Authority").toInt());
+        }
+
+        lstJobType.push_back(_jobtype);
+    }
+
+    return true;
+}
+
+/**
+ * @brief JsonStrToJobTypeInfo        从json串解析出一条日程类型记录
+ * @param jsonStr                     json串
+ * @param lstJobType                  一条日程类型记录
+ */
+bool JobTypeInfo::jsonStrToJobTypeInfo(const QString &strJson, JobTypeInfo &jobType)
+{
+    QJsonArray ja;
+    Utils::StringToObject(strJson, ja);
+    if (ja.size() < 1) {
+        return false;
+    }
+
+    QJsonObject _jsonObj = ja.at(0).toObject();
+    //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+    //日程类型编号
+    if (_jsonObj.contains("JobTypeNo")) {
+        jobType.setJobTypeNo(_jsonObj.value("JobTypeNo").toInt());
+    }
+    //日程类型名称
+    if (_jsonObj.contains("JobTypeName")) {
+        jobType.setJobTypeName(_jsonObj.value("JobTypeName").toString());
+    }
+    //日程类型颜色编号
+    if (_jsonObj.contains("ColorTypeNo")) {
+        jobType.setColorTypeNo(_jsonObj.value("ColorTypeNo").toInt());
+    }
+    //日程类型颜色16进制编码
+    if (_jsonObj.contains("ColorHex")) {
+        jobType.setColorHex(_jsonObj.value("ColorHex").toString());
+    }
+    //日程类型权限
+    if (_jsonObj.contains("Authority")) {
+        jobType.setAuthority(_jsonObj.value("Authority").toInt());
+    }
+    return true;
+}
+
+//将一条日程记录转换为json
+bool JobTypeInfo::jobTypeInfoToJsonStr(const JobTypeInfo &jobType, QString &strJson)
+{
+    QJsonArray jsonArray;
+    QJsonDocument doc;
+    QJsonObject obj;
+    obj.insert("JobTypeNo",   jobType.getJobTypeNo());
+    obj.insert("JobTypeName", jobType.getJobTypeName());
+    obj.insert("ColorTypeNo", jobType.getColorTypeNo());
+    obj.insert("ColorHex",    jobType.getColorHex());
+    obj.insert("Authority",   jobType.getAuthority());
+    jsonArray.append(obj);
+    doc.setArray(jsonArray);
+    strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    return true;
+}
+
+/**
+* @brief jobTypeInfoListToJosnString  日程列表转Json串
+* param  lstJobType                   JobType日程类型信息列表
+* param  strJson                      json格式的日程类型信息
+* return bool                         返回操作结果
+*/
+bool JobTypeInfo::jobTypeInfoListToJosnString(const QList<JobTypeInfo> &lstJobType, QString &strJson)
+{
+    QJsonArray jsonArray;
+    QJsonDocument doc;
+    foreach (JobTypeInfo _jobType, lstJobType) {
+        QJsonObject obj;
+        obj.insert("JobTypeNo",   _jobType.getJobTypeNo());
+        obj.insert("JobTypeName", _jobType.getJobTypeName());
+        obj.insert("ColorTypeNo", _jobType.getColorTypeNo());
+        obj.insert("ColorHex",    _jobType.getColorHex());
+        obj.insert("Authority",   _jobType.getAuthority());
+        jsonArray.append(obj);
+    }
+    doc.setArray(jsonArray);
+    strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    return true;
+}
+
+
+/**
+ * @brief JsonStrToTypeInfo           从json串解析出颜色列表
+ * @param jsonStr                     json串
+ * @param QList<JobTypeInfo>          颜色列表
+ */
+bool JobTypeInfo::jsonStrToColorTypeInfoList(const QString &strJson, QList<JobTypeColorInfo> &lstColorType)
+{
+    QJsonArray ja;
+    Utils::StringToObject(strJson, ja);
+
+    lstColorType.clear();
+    QJsonObject _jsonObj;
+    for (int i = 0; i < ja.size(); i++) {
+        _jsonObj = ja.at(i).toObject();
+        JobTypeColorInfo _colortype;
+        //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+        //颜色类型编号
+        if (_jsonObj.contains("ColorTypeNo")) {
+            _colortype.setTypeNo(_jsonObj.value("ColorTypeNo").toInt());
+        }
+        //颜色16进制编码
+        if (_jsonObj.contains("ColorHex")) {
+            _colortype.setColorHex(_jsonObj.value("ColorHex").toString());
+        }
+        //颜色类型权限
+        if (_jsonObj.contains("Authority")) {
+            _colortype.setAuthority(_jsonObj.value("Authority").toInt());
+        }
+
+        lstColorType.push_back(_colortype);
+    }
+
+    return true;
+}
+
+/**
+ * @brief JsonStrToTypeInfo           从json串解析出颜色信息
+ * @param jsonStr                     json串
+ * @param colorTypeInfo               颜色信息
+ */
+bool JobTypeInfo::jsonStrToColorTypeInfo(const QString &strJson, JobTypeColorInfo &colorTypeInfo)
+{
+    QJsonArray ja;
+    Utils::StringToObject(strJson, ja);
+    if (ja.size() < 1) {
+        return false;
+    }
+
+    QJsonObject _jsonObj = ja.at(0).toObject();
+    //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+    //颜色类型编号
+    if (_jsonObj.contains("ColorTypeNo")) {
+        colorTypeInfo.setTypeNo(_jsonObj.value("ColorTypeNo").toInt());
+    }
+    //颜色16进制编码
+    if (_jsonObj.contains("ColorHex")) {
+        colorTypeInfo.setColorHex(_jsonObj.value("ColorHex").toString());
+    }
+    //颜色类型权限
+    if (_jsonObj.contains("Authority")) {
+        colorTypeInfo.setAuthority(_jsonObj.value("Authority").toInt());
+    }
+
+    return true;
+}
+
+/**
+ * @brief colorTypeInfoToJsonStr      将一条颜色记录转换为json
+ * @param jsonStr                     json串
+ * @param colorTypeInfo               颜色信息
+ */
+bool JobTypeInfo::colorTypeInfoToJsonStr(const JobTypeColorInfo &colorType, QString &strJson)
+{
+    QJsonArray jsonArray;
+    QJsonDocument doc;
+    QJsonObject obj;
+    obj.insert("ColorTypeNo", colorType.getTypeNo());
+    obj.insert("ColorHex",    colorType.getColorHex());
+    obj.insert("Authority",   colorType.getAuthority());
+    jsonArray.append(obj);
+    doc.setArray(jsonArray);
+    strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    return true;
+}
+/**
+ * @brief colorTypeToJosnString  颜色列表转Json串
+ * param  lstColorType           JobType日程类型信息列表
+ * param  strJson                json格式的日程类型信息
+ * return bool                   返回操作结果
+ */
+bool JobTypeInfo::colorTypeInfoListToJosnString(const QList<JobTypeColorInfo> &lstColorType, QString &strJson)
+{
+    QJsonArray jsonArray;
+    QJsonDocument doc;
+    foreach (JobTypeColorInfo var, lstColorType) {
+        QJsonObject obj;
+        obj.insert("ColorTypeNo", var.getTypeNo());
+        obj.insert("ColorHex",    var.getColorHex());
+        obj.insert("Authority",   var.getAuthority());
+        jsonArray.append(obj);
+    }
+    doc.setArray(jsonArray);
+    strJson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+    return true;
+}
+
+JobTypeColorInfo JobTypeInfo::getColorInfo() const
+{
+    return m_ColorInfo;
+}
+
+JobTypeColorInfo &JobTypeInfo::getColorInfo()
+{
+    return m_ColorInfo;
+}
+
+void JobTypeInfo::setColorInfo(const JobTypeColorInfo &ColorInfo)
+{
+    m_ColorInfo = ColorInfo;
 }

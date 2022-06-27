@@ -97,10 +97,18 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     m_searchEdit->setAccessibleName("SearchEdit");
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
     m_searchEdit->setFixedHeight(36);
-    //    m_searchEdit->setMinimumWidth(240);
-    //    m_searchEdit->setMaximumWidth(354);
     m_searchEdit->setFont(viewfont);
     m_searchEdit->lineEdit()->installEventFilter(this);
+    connect(m_searchEdit, &DSearchEdit::searchAborted, [&] {
+        //搜索框关闭按钮，清空数据
+        slotSearchEditFocusChanged(false);
+    });
+
+    //搜索按钮，在窗口比较小的时候，显示搜索按钮隐藏搜索框
+    m_searchPush = new DIconButton(this);
+    m_searchPush->setFixedSize(36, 36);
+    m_searchPush->setIcon(QIcon::fromTheme("search"));
+    connect(m_searchPush, &DIconButton::clicked, this, &CTitleWidget::slotShowSearchEdit);
 
     //新建日程快捷按钮
     m_newScheduleBtn = new DIconButton(this);
@@ -109,16 +117,32 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     //设置+
     m_newScheduleBtn->setIcon(style.standardIcon(DStyle::SP_IncreaseElement));
 
+    //除新建日程按钮外的控件放在这个widget内，因为这些控件会根据窗口的大小显示变化而变化
+    QWidget *leftWidget = new QWidget(this);
+    {
+        QHBoxLayout *layout = new QHBoxLayout;
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->addWidget(m_buttonBox, Qt::AlignLeft);
+        layout->addStretch();
+        layout->addWidget(m_searchEdit, Qt::AlignCenter);
+        layout->addStretch();
+        layout->addWidget(m_searchPush, Qt::AlignRight);
+        leftWidget->setLayout(layout);
+    }
+
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(m_buttonBox, Qt::AlignLeft);
-    layout->addStretch();
-    layout->addWidget(m_searchEdit, Qt::AlignCenter);
-    layout->addStretch();
+    layout->addWidget(leftWidget);
     layout->addWidget(m_newScheduleBtn, Qt::AlignRight);
     this->setLayout(layout);
     //设置焦点代理为buttonBox
     setFocusProxy(m_buttonBox);
+}
+
+void CTitleWidget::setShowState(CTitleWidget::Title_State state)
+{
+    m_showState = state;
+    stateUpdate();
 }
 
 DButtonBox *CTitleWidget::buttonBox() const
@@ -136,9 +160,43 @@ DIconButton *CTitleWidget::newScheduleBtn() const
     return m_newScheduleBtn;
 }
 
-void CTitleWidget::resizeEvent(QResizeEvent *event)
+void CTitleWidget::stateUpdate()
 {
-    QWidget::resizeEvent(event);
+    switch (m_showState) {
+    case Title_State_Mini: {
+        //如果搜索框没有焦点且搜索框内没有内容则隐藏搜索框显示搜索图标按钮
+        if (m_searchEdit->text().isEmpty() && !m_searchEdit->lineEdit()->hasFocus()) {
+            m_searchPush->show();
+            m_searchEdit->hide();
+        } else {
+            miniStateShowSearchEdit();
+        }
+    } break;
+    default: {
+        m_searchEdit->show();
+        if (m_searchPush->hasFocus()) {
+            m_searchEdit->setFocus();
+        }
+        m_buttonBox->show();
+        m_searchPush->hide();
+        normalStateUpdateSearchEditWidth();
+        setFocusProxy(m_buttonBox);
+    } break;
+    }
+}
+
+void CTitleWidget::miniStateShowSearchEdit()
+{
+    m_buttonBox->hide();
+    m_searchPush->hide();
+    m_searchEdit->setMaximumWidth(width());
+    m_searchEdit->show();
+    //取消焦点代理
+    setFocusProxy(nullptr);
+}
+
+void CTitleWidget::normalStateUpdateSearchEditWidth()
+{
     int padding = qMax(m_buttonBox->width(), m_newScheduleBtn->width());
     //更加widget宽度设置搜索框宽度
     int searchWidth = width() - 2 * padding;
@@ -148,7 +206,15 @@ void CTitleWidget::resizeEvent(QResizeEvent *event)
     } else if (searchWidth > 354) {
         searchWidth = 354;
     }
-    m_searchEdit->setFixedWidth(searchWidth);
+    m_searchEdit->setMaximumWidth(searchWidth);
+}
+
+void CTitleWidget::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    if (m_showState == Title_State_Normal) {
+        normalStateUpdateSearchEditWidth();
+    }
 }
 
 bool CTitleWidget::eventFilter(QObject *o, QEvent *e)
@@ -168,7 +234,33 @@ bool CTitleWidget::eventFilter(QObject *o, QEvent *e)
             if (focusOutEvent->reason() == Qt::TabFocusReason) {
                 emit signalSearchFocusSwitch();
             }
+            //根据焦点离开原因，决定是否隐藏搜索框
+            if (focusOutEvent->reason() == Qt::TabFocusReason
+                || focusOutEvent->reason() == Qt::MouseFocusReason) {
+                slotSearchEditFocusChanged(false);
+            }
         }
     }
     return QWidget::eventFilter(o, e);
+}
+
+void CTitleWidget::slotShowSearchEdit()
+{
+    miniStateShowSearchEdit();
+    m_searchEdit->setFocus();
+}
+
+void CTitleWidget::slotSearchEditFocusChanged(bool onFocus)
+{
+    //如果获取焦点，或者搜索编辑框内容不为空则不处理
+    if (onFocus || !m_searchEdit->text().isEmpty()) {
+        return;
+    }
+    //如果为小窗口模式则隐藏部分控件
+    if (m_showState == Title_State_Mini) {
+        m_buttonBox->show();
+        m_searchEdit->hide();
+        m_searchPush->show();
+        setFocusProxy(m_buttonBox);
+    }
 }

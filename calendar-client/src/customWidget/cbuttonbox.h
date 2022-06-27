@@ -32,7 +32,8 @@ public:
     explicit CButtonBox(QWidget *parent = nullptr);
 
 protected:
-    void focusInEvent(QFocusEvent *event);
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 signals:
 
 public slots:

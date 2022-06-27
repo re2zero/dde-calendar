@@ -24,6 +24,7 @@
 #include "scheduledatamanage.h"
 #include "constants.h"
 #include "calendarmanage.h"
+#include "calendarglobalenv.h"
 
 #include <DPalette>
 #include <DHorizontalLine>
@@ -132,10 +133,10 @@ void CScheduleView::setSelectSchedule(const ScheduleDataInfo &scheduleInfo)
     }
 }
 
-void CScheduleView::updateHigh()
+void CScheduleView::updateHeight()
 {
-    m_graphicsView->updateHigh();
-    m_alldaylist->updateHigh();
+    m_graphicsView->updateHeight();
+    m_alldaylist->updateHeight();
 }
 
 bool CScheduleView::IsDragging()
@@ -434,10 +435,6 @@ void CScheduleView::initConnection()
     connect(m_graphicsView, &CGraphicsView::signalGotoDayView, this,
             &CScheduleView::slotCurrentScheduleDate);
 
-    connect(m_alldaylist, &CAllDayEventWeekView::signalViewtransparentFrame, this,
-            &CScheduleView::signalViewtransparentFrame);
-    connect(m_graphicsView, &CGraphicsView::signalViewtransparentFrame, this,
-            &CScheduleView::signalViewtransparentFrame);
     //切换前后时间信号关联
     connect(m_graphicsView, &CAllDayEventWeekView::signalAngleDelta, this, &CScheduleView::signalAngleDelta);
     connect(m_alldaylist, &CAllDayEventWeekView::signalAngleDelta, this, &CScheduleView::signalAngleDelta);
@@ -486,9 +483,11 @@ void CScheduleView::slotCurrentScheduleDate(QDate date)
 void CScheduleView::slotScheduleShow(const bool isShow, const ScheduleDataInfo &out)
 {
     if (isShow) {
-        QPoint pos22 = QCursor::pos();
+        QVariant variant;
+        CalendarGlobalEnv::getGlobalEnv()->getValueByKey(DDECalendar::CursorPointKey, variant);
+        QPoint pos22 = variant.value<QPoint>();
         CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-            out.getType());
+                                      out.getType());
         QDesktopWidget *w = QApplication::desktop();
         m_ScheduleRemindWidget->setData(out, gdColor);
 

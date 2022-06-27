@@ -118,50 +118,11 @@ TEST_F(test_jobremindmanager, GetRemindAdvanceDays)
 //void JobRemindManager::RemindJobLater(const Job &job)
 TEST_F(test_jobremindmanager, RemindJobLater)
 {
-    jobRemindManager->RemindJobLater(createJobs().at(0));
-}
-
-//void JobRemindManager::SetJobRemindOneDayBefore(const Job &job)
-TEST_F(test_jobremindmanager, SetJobRemindOneDayBefore)
-{
-    jobRemindManager->SetJobRemindOneDayBefore(createJobs().at(0));
-}
-
-//void JobRemindManager::SetJobRemindTomorrow(const Job &job)
-TEST_F(test_jobremindmanager, SetJobRemindTomorrow)
-{
-    jobRemindManager->SetJobRemindTomorrow(createJobs().at(0));
-}
-
-////void JobRemindManager::RemindWorkTimeOut()
-TEST_F(test_jobremindmanager, RemindWorkTimeOut)
-{
-    jobRemindManager->RemindWorkTimeOut();
+    jobRemindManager->RemindJobLater(createJobs().at(0), 1);
 }
 
 //void JobRemindManager::UpdateRemindJobs(const QList<Job> &jobs)
 TEST_F(test_jobremindmanager, UpdateRemindJobs)
 {
     jobRemindManager->UpdateRemindJobs(createJobs());
-}
-
-//void JobRemindManager::ActionInvoked(quint32 id, const QString &actionKey)
-TEST_F(test_jobremindmanager, ActionInvoked)
-{
-    Stub stub;
-    qDBusAbstractInterface_callWithArgumentList_stub(stub);
-    jobRemindManager->RemindJob(createJobs().at(0));
-    jobRemindManager->RemindJob(createJobs().at(1));
-    jobRemindManager->RemindJob(createJobs().at(2));
-    jobRemindManager->ActionInvoked(1, "later");
-    jobRemindManager->ActionInvoked(2, "one-day-before");
-    jobRemindManager->ActionInvoked(3, "tomorrow");
-}
-
-//void JobRemindManager::NotifyClosed(quint32 id, quint32 reason)
-TEST_F(test_jobremindmanager, NotifyClosed)
-{
-    jobRemindManager->NotifyClosed(1, 1);
-    jobRemindManager->NotifyClosed(2, 1);
-    jobRemindManager->NotifyClosed(3, 2);
 }

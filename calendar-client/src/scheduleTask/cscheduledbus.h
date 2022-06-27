@@ -67,8 +67,25 @@ public:
     bool GetHuangLiDay(const QDate &getDay, CaHuangLiDayInfo &out);
     //按月获取农历信息
     bool GetHuangLiMonth(const quint32 year, const quint32 month, bool &fill, CaHuangLiMonthInfo &out);
+    //获取当天的农历月日期和日日期名
+    QString getHuangLiShortName(const QDate &date);
+
+    //获取日程类型信息列表
+    bool GetJobTypeList(QString &strJson);
+    //新增日程类型信息
+    bool AddJobType(QString strJson);
+    //更新日程类型信息
+    bool UpdateJobType(QString strJson);
+    //删除日程类型信息
+    bool DeleteJobType(int jobTypeNo);
+    //获取日程类型是否被使用
+    bool isJobTypeUsed(int jobTypeNo);
+    //获取颜色信息列表
+    bool GetJobTypeColorList(QString &strJson);
 signals:
     void jobsUpdate();
+    //日程类型或颜色更新
+    void jobsTypeOrColorUpdate();
 public slots:
     void propertyChanged(const QDBusMessage &msg);
 private:

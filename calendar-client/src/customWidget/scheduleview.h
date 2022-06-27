@@ -44,7 +44,7 @@ public:
     void setLunarVisible(bool state);
     void setTime(QTime time);
     void setSelectSchedule(const ScheduleDataInfo &scheduleInfo);
-    void updateHigh();
+    void updateHeight();
     bool IsDragging();
     void setCurrentDate(const QDateTime &currentDate);
     //设置显示日程
@@ -52,7 +52,6 @@ public:
     void setTimeFormat(QString timeformat);
 signals:
     void signalsCurrentScheduleDate(QDate date);
-    void signalViewtransparentFrame(int type);
     /**
      * @brief signalAngleDelta      发送滚动信号滚动相对量
      * @param delta     滚动相对量

@@ -32,6 +32,8 @@ public:
     static bool CanQueryByPinyin(QString str);
     /* 创建拼音字符串 */
     static QString CreatePinyin(const QString &zh);
+    //初始化字典
+    static void initDict();
     /* 构造拼音查询表达式 */
     QString CreatePinyinQuery(QString pinyin) const;
     /* 构造拼音查询正则表达式 */
@@ -54,7 +56,7 @@ private:
     QMap<QString, bool> validPinyinMap {};
     static pinyinsearch *m_pinyinsearch;
     //拼音字典
-    static QVector<QMap<int, QString>> pinyinDictVector;
+    static QMap<int, QString> pinyinDictVector;
 };
 
 #endif

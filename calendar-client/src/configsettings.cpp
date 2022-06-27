@@ -21,29 +21,18 @@
 
 #include "configsettings.h"
 
-#include <DSettingsOption>
 #include <DStandardPaths>
-
-#include <QFile>
-#include <QFileInfo>
-#include <QDebug>
-#include <QCoreApplication>
-
-#include <qsettingbackend.h>
 
 DCORE_USE_NAMESPACE;
 
-QPointer<QSettings> CConfigSettings::m_settings = nullptr;
-
-CConfigSettings::CConfigSettings(QObject *parent)
-    : QObject(parent)
+CConfigSettings::CConfigSettings()
 {
-
+    init();
 }
 
 CConfigSettings::~CConfigSettings()
 {
-    qDebug() << "destory";
+    releaseInstance();
 }
 
 void CConfigSettings::init()
@@ -64,17 +53,41 @@ void CConfigSettings::releaseInstance()
     m_settings = nullptr;
 }
 
+CConfigSettings *CConfigSettings::getInstance()
+{
+    static CConfigSettings configSettings;
+    return &configSettings;
+}
+
 void CConfigSettings::sync()
 {
     m_settings->sync();
 }
 
-QVariant CConfigSettings::value(const QString &key)
+QVariant CConfigSettings::value(const QString &key, const QVariant &defaultValue)
 {
-    return m_settings->value(key);
+    return m_settings->value(key, defaultValue);
 }
 
+//设置对应key的值
 void CConfigSettings::setOption(const QString &key, const QVariant &value)
 {
     m_settings->setValue(key, value);
+}
+
+//移除对应的配置信息
+void CConfigSettings::remove(const QString &key)
+{
+    m_settings->remove(key);
+}
+
+//判断是否包含对应的key
+bool CConfigSettings::contains(const QString &key) const
+{
+    return m_settings->contains(key);
+}
+
+CConfigSettings *CConfigSettings::operator->() const
+{
+    return getInstance();
 }

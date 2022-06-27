@@ -21,6 +21,9 @@
 #include "test_scheduledlg.h"
 
 #include "../cscheduledbusstub.h"
+#include "../dialog_stub.h"
+
+#include <QTest>
 
 test_scheduledlg::test_scheduledlg()
 {
@@ -90,12 +93,62 @@ TEST_F(test_scheduledlg, clickOkBtn)
     Stub stub;
     cscheduleDbusStub(stub);
     mScheduleDlg->clickOkBtn();
+
+    //begindatetime < enddatetime
+    ScheduleDataInfo schedule;
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    schedule.setID(1);
+    schedule.setBeginDateTime(currentDateTime);
+    schedule.setEndDateTime(currentDateTime.addDays(-1));
+    schedule.setTitleName("scheduleOne");
+    schedule.setAllDay(true);
+    schedule.setType(1);
+    schedule.setRecurID(0);
+    mScheduleDlg->setData(schedule);
+    mScheduleDlg->clickOkBtn();
+
+    //
+    mScheduleDlg->m_type = 1;
+    schedule.setEndDateTime(currentDateTime.addDays(1));
+    mScheduleDlg->setData(schedule);
+    mScheduleDlg->clickOkBtn();
+
+    mScheduleDlg->m_rmindCombox->setCurrentIndex(3);
+    mScheduleDlg->clickOkBtn();
+
+    mScheduleDlg->m_rmindCombox->setCurrentIndex(4);
+    mScheduleDlg->clickOkBtn();
+
+    mScheduleDlg->m_rmindCombox->setCurrentIndex(5);
+    mScheduleDlg->clickOkBtn();
+
+    schedule.setAllDay(false);
+    mScheduleDlg->setData(schedule);
+    mScheduleDlg->clickOkBtn();
+
+    mScheduleDlg->m_rmindCombox->setCurrentIndex(3);
+    mScheduleDlg->clickOkBtn();
+
+    mScheduleDlg->m_rmindCombox->setCurrentIndex(4);
+    mScheduleDlg->clickOkBtn();
+
+    mScheduleDlg->m_rmindCombox->setCurrentIndex(5);
+    mScheduleDlg->clickOkBtn();
+
+    mScheduleDlg->m_endrepeatCombox->setCurrentIndex(2);
+    mScheduleDlg->clickOkBtn();
+
+    mScheduleDlg->m_endrepeatCombox->setCurrentIndex(3);
+    mScheduleDlg->clickOkBtn();
 }
 
 //void CScheduleDlg::slotBtClick(int buttonIndex, QString buttonName)
 TEST_F(test_scheduledlg, slotBtClick)
 {
-    mScheduleDlg->slotBtClick(2, "ok");
+    Stub stub;
+    cscheduleDbusStub(stub);
+    mScheduleDlg->slotBtClick(0, "ok");
+    mScheduleDlg->slotBtClick(1, "ok");
 }
 
 //void CScheduleDlg::slotTextChange()
@@ -143,4 +196,46 @@ TEST_F(test_scheduledlg, setTheMe)
 {
     mScheduleDlg->setTheMe(1);
     mScheduleDlg->setTheMe(2);
+}
+
+//
+TEST_F(test_scheduledlg, exec)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    mScheduleDlg->exec();
+}
+
+//setDateFormat
+TEST_F(test_scheduledlg, setDateFormat)
+{
+    for (int i = 0; i < 10; ++i) {
+        mScheduleDlg->setDateFormat(i);
+    }
+}
+
+//setTimeFormat
+TEST_F(test_scheduledlg, setTimeFormat)
+{
+    mScheduleDlg->setTimeFormat(0);
+    mScheduleDlg->setTimeFormat(1);
+}
+
+//mouseMoveEvent
+TEST_F(test_scheduledlg, mouseMoveEvent)
+{
+    QTest::mouseMove(mScheduleDlg);
+}
+
+//updateDateTimeFormat
+TEST_F(test_scheduledlg, updateDateTimeFormat)
+{
+    mScheduleDlg->updateDateTimeFormat();
+}
+
+//changeEvent
+TEST_F(test_scheduledlg, changeEvent)
+{
+    QEvent event(QEvent::FontChange);
+    QApplication::sendEvent(mScheduleDlg, &event);
 }

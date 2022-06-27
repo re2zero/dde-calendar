@@ -60,6 +60,8 @@ public:
 
     int getDragStatus() const;
     void setShowRadius(bool leftShow = false, bool rightShow = false);
+    //判断是否满足拖拽条件
+    bool isCanDragge(const ScheduleDataInfo &info);
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -162,7 +164,6 @@ signals:
     void signalAngleDelta(int delta);
     //更新获取日程信息
     void signalsUpdateSchedule();
-    void signalViewtransparentFrame(const int id = 0);
     /**
      * @brief signalScheduleShow        发送日程提示框信号
      * @param isShow                    是否显示
@@ -223,7 +224,7 @@ protected:
     /**
      * @brief m_touchState          触摸状态
      */
-    TouchState m_touchState;
+    TouchState m_touchState = TS_NONE;
     /**
      * @brief m_touchDragMoveState      触摸拖拽移动状态
      * 0 原始状态

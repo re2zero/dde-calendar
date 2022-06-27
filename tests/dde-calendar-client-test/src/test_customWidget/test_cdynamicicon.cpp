@@ -40,7 +40,9 @@ TEST_F(test_cdynamicicon, setDate)
 //void CDynamicIcon::setTitlebar(DTitlebar *titlebar)
 TEST_F(test_cdynamicicon, setTitlebar)
 {
-    DTitlebar *titlebar;
+    DTitlebar *titlebar = new DTitlebar();
     mDynamicicon->setTitlebar(titlebar);
+    EXPECT_EQ(mDynamicicon->m_Titlebar, titlebar);
+    delete titlebar;
 }
 

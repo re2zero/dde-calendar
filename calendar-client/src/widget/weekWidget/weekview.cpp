@@ -61,7 +61,6 @@ CWeekView::CWeekView(const GetWeekNumOfYear &getWeekNumOfYear, QWidget *parent)
     hBoxLayout->addWidget(m_nextButton);
     //设置布局
     setLayout(hBoxLayout);
-    setMinimumWidth(150);
 
     connect(m_weekNumWidget, &CWeekNumWidget::signalsSelectDate, this, &CWeekView::signalsSelectDate);
     connect(m_weekNumWidget, &CWeekNumWidget::signalBtnPrev, this, &CWeekView::signalBtnPrev);

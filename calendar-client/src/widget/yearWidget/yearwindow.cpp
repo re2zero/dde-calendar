@@ -24,6 +24,7 @@
 #include "constants.h"
 #include "schedulesearchview.h"
 #include "yearscheduleview.h"
+#include "calendarglobalenv.h"
 
 #include <DPalette>
 #include <DHiDPIHelper>
@@ -69,17 +70,16 @@ bool CYearWindow::eventFilter(QObject *watched, QEvent *event)
         }
         if (event->type() == QEvent::KeyPress) {
             //点击 回车键 返回今天
-            QKeyEvent *key = static_cast<QKeyEvent *>(event);
+            QKeyEvent *key = dynamic_cast<QKeyEvent *>(event);
             if (key->key() == Qt::Key_Return) {
                 //返回今天
                 slottoday();
             }
         }
-    }
-    if (watched == m_yearWidget) {
+    } else if (watched == m_yearWidget) {
         //上下键切换年份
         if (event->type() == QEvent::KeyPress) {
-            QKeyEvent *key = static_cast<QKeyEvent *>(event);
+            QKeyEvent *key = dynamic_cast<QKeyEvent *>(event);
             if (key->key() == Qt::Key_Up) {
                 //上一年
                 slotprev();
@@ -160,7 +160,7 @@ void CYearWindow::mouseReleaseEvent(QMouseEvent *event)
 bool CYearWindow::event(QEvent *e)
 {
     if (e->type() == QEvent::Gesture)
-        return gestureEvent(static_cast<QGestureEvent *>(e));
+        return gestureEvent(dynamic_cast<QGestureEvent *>(e));
     return QWidget::event(e);
 }
 
@@ -172,9 +172,9 @@ bool CYearWindow::event(QEvent *e)
 bool CYearWindow::gestureEvent(QGestureEvent *event)
 {
     if (QGesture *tap = event->gesture(Qt::TapGesture))
-        tapGestureTriggered(static_cast<QTapGesture *>(tap));
+        tapGestureTriggered(dynamic_cast<QTapGesture *>(tap));
     if (QGesture *pan = event->gesture(Qt::PanGesture))
-        panTriggered(static_cast<QPanGesture *>(pan));
+        panTriggered(dynamic_cast<QPanGesture *>(pan));
     return true;
 }
 
@@ -212,15 +212,6 @@ void CYearWindow::tapGestureTriggered(QTapGesture *tap)
 void CYearWindow::panTriggered(QPanGesture *pan)
 {
     switch (pan->state()) {
-    case Qt::NoGesture: {
-        break;
-    }
-    case Qt::GestureStarted: {
-        break;
-    }
-    case Qt::GestureUpdated: {
-        break;
-    }
     case Qt::GestureFinished: {
         QPointF zeroPoint(0, 0);
         QPointF offset = pan->offset();
@@ -417,7 +408,6 @@ void CYearWindow::initConnection()
     connect(m_firstYearWidget, &YearFrame::signalMousePress, this, &CYearWindow::slotMousePress);
     connect(m_secondYearWidget, &YearFrame::signalMousePress, this, &CYearWindow::slotMousePress);
     connect(m_scheduleView, &CYearScheduleOutView::signalsViewSelectDate, this, &CYearWindow::slotMousePress);
-    connect(m_scheduleView, &CYearScheduleOutView::signalViewtransparentFrame, this, &CYearWindow::signalViewtransparentFrame);
 }
 
 /**
@@ -675,7 +665,10 @@ void CYearWindow::slotMousePress(const QDate &selectDate, const int pressType)
         }
         m_scheduleView->setCurrentDate(selectDate);
         m_scheduleView->setData(_scheduleInfo);
-        QPoint pos22 = QCursor::pos();
+        //使用设置的显示坐标
+        QVariant variant;
+        CalendarGlobalEnv::getGlobalEnv()->getValueByKey(DDECalendar::CursorPointKey, variant);
+        QPoint pos22 = variant.value<QPoint>();
         QDesktopWidget *w = QApplication::desktop();
         if (pos22.x() + 10 + m_scheduleView->width() < w->width()) {
             m_scheduleView->setDirection(DArrowRectangle::ArrowLeft);
@@ -723,7 +716,7 @@ void CYearWindow::wheelEvent(QWheelEvent *event)
 }
 
 YearFrame::YearFrame(DWidget *parent)
-    : DFrame(parent)
+    : QWidget(parent)
 {
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setMargin(0);
@@ -790,7 +783,6 @@ YearFrame::YearFrame(DWidget *parent)
     hhLayout->addLayout(gridLayout);
     this->setLayout(hhLayout);
     setContentsMargins(0, 0, 0, 10);
-    setFrameRounded(true);
 }
 
 YearFrame::~YearFrame()
@@ -935,7 +927,7 @@ void YearFrame::setSearchSchedule(const QMap<QDate, QVector<ScheduleDataInfo> > 
  */
 void YearFrame::setViewFocus(int index)
 {
-    if (index >= 0) {
+    if (index >= 0 && index < m_monthViewList.size()) {
         //设置选中view的焦点类型
         m_monthViewList.at(index)->setFocus(Qt::FocusReason::TabFocusReason);
     }

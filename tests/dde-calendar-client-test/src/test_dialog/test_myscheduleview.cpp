@@ -20,6 +20,11 @@
    */
 #include "test_myscheduleview.h"
 
+#include "../dialog_stub.h"
+
+#include <QEvent>
+#include <QApplication>
+
 QVector<ScheduleDataInfo> getScheduleViewData()
 {
     ScheduleDataInfo schedule1, schedule2;
@@ -66,3 +71,38 @@ TEST_F(test_myscheduleview, setLabelTextColor)
     mScheduleView->setLabelTextColor(2);
 }
 
+//
+TEST_F(test_myscheduleview, CMyScheduleView)
+{
+    ScheduleDataInfo scheduleinfo;
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    scheduleinfo.setID(1);
+    scheduleinfo.setBeginDateTime(currentDateTime);
+    scheduleinfo.setEndDateTime(currentDateTime.addDays(1));
+    scheduleinfo.setTitleName("测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+                              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+                              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+                              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+                              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+                              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+                              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试");
+    scheduleinfo.setAllDay(true);
+    scheduleinfo.setType(4);
+    scheduleinfo.setRecurID(0);
+    CMyScheduleView scheduleView(scheduleinfo);
+}
+
+//FontChange
+TEST_F(test_myscheduleview, FontChange)
+{
+    QEvent event(QEvent::FontChange);
+    QApplication::sendEvent(mScheduleView, &event);
+}
+
+//slotBtClick
+TEST_F(test_myscheduleview, slotBtClick)
+{
+    Stub stub;
+    calendarDDialogExecStub(stub);
+    mScheduleView->slotBtClick(1, "tt");
+}

@@ -21,6 +21,7 @@
 #define CALENDARMAINWINDOW_H
 
 #include "src/scheduledatainfo.h"
+#include "jobtypelistview.h"
 
 #include <DLabel>
 #include <DButtonBox>
@@ -28,6 +29,8 @@
 #include <DMainWindow>
 #include <DSearchEdit>
 #include <DToolButton>
+#include <DMenu>
+#include <DSettingsDialog>
 
 #include <QStackedLayout>
 #include <QPropertyAnimation>
@@ -43,6 +46,8 @@ class CDayWindow;
 class CScheduleSearchView;
 class AnimationStackedWidget;
 class CScheduleDataManage;
+class CTitleWidget;
+
 class Calendarmainwindow : public DMainWindow
 {
     Q_OBJECT
@@ -50,14 +55,12 @@ public:
     explicit Calendarmainwindow(int index, QWidget *w = nullptr);
     ~Calendarmainwindow() override;
     void viewWindow(int type, const bool showAnimation = false);
-    void updateHigh();
+    void updateHeight();
     void setSearchWidth(int w);
 public slots:
     void slotTheme(int type);
-    void OpenSchedule(QString job);
-    void ActiveWindow();
-    void RaiseWindow();
-    void onViewShortcut();
+    void slotOpenSchedule(QString job);
+    void slotViewShortcut();
     //更新当前时间
     void slotCurrentDateUpdate();
     void slotSetSearchFocus();
@@ -71,7 +74,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void changeEvent(QEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    bool event(QEvent *event) override;
 private slots:
+    //获取程序状态
+    void slotapplicationStateChanged(Qt::ApplicationState state);
     //隐藏提示框
     void setScheduleHide();
     //点击按钮切换视图
@@ -92,6 +98,7 @@ private slots:
     void slotSwitchView(const int viewIndex);
     //新建日程
     void slotNewSchedule();
+    void slotOpenSettingDialog();
     //快捷键删除选中日程
     void slotDeleteitem();
     //设置最大大小
@@ -107,6 +114,7 @@ private:
     CMonthWindow *m_monthWindow = nullptr;
     CWeekWindow *m_weekWindow = nullptr;
     CDayWindow *m_DayWindow = nullptr;
+    CTitleWidget *m_titleWidget = nullptr;
     bool m_searchflag = false;
     CScheduleSearchView *m_scheduleSearchView = nullptr;
     DFrame *m_contentBackground = nullptr;
@@ -117,9 +125,12 @@ private:
     QPropertyAnimation *m_animation = nullptr;
     QTimer *m_currentDateUpdateTimer = nullptr;
     DIconButton *m_newScheduleBtn {nullptr}; //全局的新建日程按钮
+    DSettingsDialog *m_dsdSetting {nullptr};
+    JobTypeListView *m_jobTypeListView {nullptr};
     //日历打开默认显示视图
     int m_defaultIndex;
     bool m_setButtonFocus {false};
+    bool m_isNormalStateShow {true}; //是否为正常状态显示
 };
 
 #endif // CALENDARMAINWINDOW_H
