@@ -95,6 +95,7 @@ private:
     DIconButton *m_searchPush {nullptr};
     QString     m_strPlaceHolder;
     Title_State m_showState {Title_State_Normal};
+    bool m_clickShowLeft = false;
 };
 
 #endif // CTITLEWIDGET_H
