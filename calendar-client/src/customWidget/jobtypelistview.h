@@ -31,6 +31,8 @@ public:
      */
     bool canAdd();
 
+    void setItemEnabled(bool b);
+
 protected:
     bool viewportEvent(QEvent *event) override;
 
