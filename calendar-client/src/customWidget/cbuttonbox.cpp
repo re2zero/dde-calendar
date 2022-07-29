@@ -9,6 +9,8 @@
 CButtonBox::CButtonBox(QWidget *parent)
     : DButtonBox(parent)
 {
+    //设置接受tab焦点切换
+    this->setFocusPolicy(Qt::TabFocus);
 }
 
 void CButtonBox::focusInEvent(QFocusEvent *event)

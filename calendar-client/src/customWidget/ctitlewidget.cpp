@@ -131,8 +131,8 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     layout->addWidget(leftWidget);
     layout->addWidget(m_newScheduleBtn, Qt::AlignRight);
     this->setLayout(layout);
-    //设置焦点代理为buttonBox
-    setFocusProxy(m_buttonBox);
+    //设置焦点代理为 m_sidebarIcon
+    setFocusProxy(m_sidebarIcon);
 }
 
 void CTitleWidget::setShowState(CTitleWidget::Title_State state)
@@ -196,7 +196,6 @@ void CTitleWidget::stateUpdate()
         m_buttonBox->show();
         m_searchPush->hide();
         normalStateUpdateSearchEditWidth();
-        setFocusProxy(m_buttonBox);
     } break;
     }
 }
@@ -207,8 +206,6 @@ void CTitleWidget::miniStateShowSearchEdit()
     m_searchPush->hide();
     m_searchEdit->setMaximumWidth(width());
     m_searchEdit->show();
-    //取消焦点代理
-    setFocusProxy(nullptr);
 }
 
 void CTitleWidget::normalStateUpdateSearchEditWidth()
@@ -309,7 +306,6 @@ void CTitleWidget::slotSearchEditFocusChanged(bool onFocus)
         m_buttonBox->show();
         m_searchEdit->hide();
         m_searchPush->show();
-        setFocusProxy(m_buttonBox);
     }
 }
 
