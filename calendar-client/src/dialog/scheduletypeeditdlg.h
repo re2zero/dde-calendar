@@ -63,6 +63,8 @@ public slots:
      */
     void slotEditingFinished();
 
+    void setLabelText();
+
 private:
     void init();
     void initView();
