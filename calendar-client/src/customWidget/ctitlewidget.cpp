@@ -131,7 +131,7 @@ CTitleWidget::CTitleWidget(QWidget *parent)
     layout->addWidget(leftWidget);
     layout->addWidget(m_newScheduleBtn, Qt::AlignRight);
     this->setLayout(layout);
-    //设置焦点代理为 m_sidebarIcon
+    //设置焦点代理为m_sidebarIcon
     setFocusProxy(m_sidebarIcon);
 }
 
@@ -206,6 +206,9 @@ void CTitleWidget::miniStateShowSearchEdit()
     m_searchPush->hide();
     m_searchEdit->setMaximumWidth(width());
     m_searchEdit->show();
+  
+    m_searchEdit->setPlaceHolder(m_strPlaceHolder);
+    m_searchEdit->setPlaceholderText(m_strPlaceHolder);
 }
 
 void CTitleWidget::normalStateUpdateSearchEditWidth()
@@ -235,7 +238,7 @@ void CTitleWidget::resizeEvent(QResizeEvent *event)
     }
     QString str  = m_strPlaceHolder;
     QFontMetrics fontMetrice(m_searchEdit->font());
-    if(fontMetrice.width(str) > (m_searchEdit->width()-30) && m_clickShowLeft == false) {
+    if(fontMetrice.width(str) > (m_searchEdit->width()-30) && m_clickShowLeft == false && !m_buttonBox->isHidden()) {
         str = fontMetrice.elidedText(str,Qt::ElideRight,m_searchEdit->width()-30);
         m_searchEdit->setPlaceHolder(str);
         m_searchEdit->setPlaceholderText(str);
@@ -249,16 +252,20 @@ void CTitleWidget::resizeEvent(QResizeEvent *event)
 void CTitleWidget::changeEvent(QEvent *e) {
     QWidget::changeEvent(e);
     if(e->type() == QEvent::FontChange) {
-        QString str  = m_strPlaceHolder;
-        QFontMetrics fontMetrice(m_searchEdit->font());
-        if(fontMetrice.width(str) > (m_searchEdit->width()-30)) {
-            str = fontMetrice.elidedText(str,Qt::ElideRight,m_searchEdit->width()-30);
-            m_searchEdit->setPlaceHolder(str);
-            m_searchEdit->setPlaceholderText(str);
-        } else {
-            m_searchEdit->setPlaceHolder(m_strPlaceHolder);
-            m_searchEdit->setPlaceholderText(m_strPlaceHolder);
-        }
+        updateSearchEditPlaceHolder();
+    }
+}
+
+void  CTitleWidget::updateSearchEditPlaceHolder() {
+    QString str  = m_strPlaceHolder;
+    QFontMetrics fontMetrice(m_searchEdit->font());
+    if(fontMetrice.width(str) > (m_searchEdit->width()-30)) {
+        str = fontMetrice.elidedText(str,Qt::ElideRight,m_searchEdit->width()-30);
+        m_searchEdit->setPlaceHolder(str);
+        m_searchEdit->setPlaceholderText(str);
+    } else {
+        m_searchEdit->setPlaceHolder(m_strPlaceHolder);
+        m_searchEdit->setPlaceholderText(m_strPlaceHolder);
     }
 }
 
@@ -293,6 +300,7 @@ void CTitleWidget::slotShowSearchEdit()
 {
     miniStateShowSearchEdit();
     m_searchEdit->setFocus();
+
 }
 
 void CTitleWidget::slotSearchEditFocusChanged(bool onFocus)
