@@ -27,7 +27,7 @@ void CDateEdit::setDate(QDate date)
 {
     QDateEdit::setDate(date);
     //只有在农历日程时，才需要获取农历信息
-    QString dtFormat = m_showLunarCalendar ? m_format+getLunarName(date) : m_format;
+    QString dtFormat = m_showLunarCalendar ? m_format + getLunarName(date) : m_format;
     m_strCurrrentDate = date.toString(dtFormat);
 }
 
@@ -77,7 +77,7 @@ void CDateEdit::slotDateEidtInfo(const QDate &date)
 
 
     if (m_showLunarCalendar) {
-        if(!showGongli()) {
+        if (!showGongli()) {
             format = "yyyy/";
         }
         m_lunarName = getLunarName(date);
@@ -212,18 +212,20 @@ void CDateEdit::setLineEditTextFormat(QLineEdit *lineEdit, const QList<QTextLayo
     QCoreApplication::sendEvent(lineEdit, &event);
 }
 
-void CDateEdit::changeEvent(QEvent *e) {
+void CDateEdit::changeEvent(QEvent *e)
+{
     QDateEdit::changeEvent(e);
-    if(e->type() == QEvent::FontChange && m_showLunarCalendar) {
-       slotDateEidtInfo(date());
+    if (e->type() == QEvent::FontChange && m_showLunarCalendar) {
+        slotDateEidtInfo(date());
     }
 }
 
-bool CDateEdit::showGongli() {
+bool CDateEdit::showGongli()
+{
     QString str = m_strCurrrentDate;
     QFontMetrics fontMetrice(lineEdit()->font());
-    if(fontMetrice.width(str) > lineEdit()->width()-20) {
-       return false;
+    if (fontMetrice.width(str) > lineEdit()->width() - 20) {
+        return false;
     }
     return true;
 }
@@ -241,4 +243,11 @@ void CDateEdit::updateCalendarWidget()
     }
 }
 
+void CDateEdit::setEditCursorPos(int pos)
+{
+    QLineEdit *edit = lineEdit();
+    if (nullptr != edit) {
+        edit->setCursorPosition(pos);
+    }
+}
 

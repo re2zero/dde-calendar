@@ -57,8 +57,8 @@ CScheduleDlg::CScheduleDlg(int type, QWidget *parent, const bool isAllDay)
         m_titleLabel->setText(tr("Edit Event"));
     }
     setFixedSize(dialog_width, 561);
-    if(!gAccountManager->getIsSupportUid()) {
-        setFixedSize(dialog_width, 561-36);
+    if (!gAccountManager->getIsSupportUid()) {
+        setFixedSize(dialog_width, 561 - 36);
     }
 
     //焦点设置到输入框
@@ -182,7 +182,7 @@ bool CScheduleDlg::selectScheduleType()
         type->setTypeID("0");
         type->setDisplayName(m_typeComBox->lineEdit()->text());
         type->setTypeColor(*m_colorSeletorWideget->getSelectedColorInfo().data());
-        if(m_bCanCreateType) {
+        if (m_bCanCreateType) {
             m_bCanCreateType = false;
             //创建日程类型，等待回调
             m_accountItem->createJobType(type, [&](CallMessge call) {
@@ -289,7 +289,7 @@ bool CScheduleDlg::createSchedule(const QString &scheduleTypeId)
         if (m_endrepeattimes->text().isEmpty()) {
             return false;
         }
-        schedule->recurrence()->setDuration(m_endrepeattimes->text().toInt() + 1 );
+        schedule->recurrence()->setDuration(m_endrepeattimes->text().toInt() + 1);
 
     } else if (m_endrepeatCombox->currentIndex() == 2) {
         //结束与日期
@@ -494,9 +494,9 @@ void CScheduleDlg::slotallDayStateChanged(int state)
             m_beginTimeEdit->setTime(m_scheduleDataInfo->dtStart().time());
             m_endDateEdit->setDate(m_scheduleDataInfo->dtEnd().date());
             m_endTimeEdit->setTime(m_scheduleDataInfo->dtEnd().time());
-            if(m_scheduleDataInfo->dtStart().time() == m_scheduleDataInfo->dtEnd().time()
-                    && m_scheduleDataInfo->dtEnd().time().toString() == "00:00:00" ) {
-                 m_endTimeEdit->setTime(QTime(23,59,59));
+            if (m_scheduleDataInfo->dtStart().time() == m_scheduleDataInfo->dtEnd().time()
+                    && m_scheduleDataInfo->dtEnd().time().toString() == "00:00:00") {
+                m_endTimeEdit->setTime(QTime(23, 59, 59));
             }
 
         } else {
@@ -524,7 +524,7 @@ void CScheduleDlg::slotallDayStateChanged(int state)
             m_beginDateEdit->setDate(m_currentDate.date());
             m_endDateEdit->setDate(m_EndDate.date());
             m_beginTimeEdit->setTime(QTime(0, 0));
-            m_endTimeEdit->setTime(QTime(23, 59));            
+            m_endTimeEdit->setTime(QTime(23, 59));
         }
     }
 }
@@ -560,6 +560,7 @@ void CScheduleDlg::sloteRpeatactivated(int index)
     } else {
         m_endrepeattimesWidget->setVisible(false);
         m_endRepeatDate->setVisible(true);
+        m_endRepeatDate->setEditCursorPos(0);
     }
     setOkBtnEnabled();
 }
@@ -826,7 +827,7 @@ void CScheduleDlg::initUI()
         widget->setLayout(hlayout);
         widget->setFixedHeight(item_Fixed_Height);
         maintlayout->addWidget(widget);
-        if(!gAccountManager->getIsSupportUid()) {
+        if (!gAccountManager->getIsSupportUid()) {
             widget->hide();
         }
     }
@@ -1191,7 +1192,7 @@ void CScheduleDlg::initUI()
         endrepeatLabellayout->addStretch();
         m_endRepeatDate->setVisible(false);
         //设置最大日期
-        m_endRepeatDate->setMaximumDate(QDate(2100,12,31));
+        m_endRepeatDate->setMaximumDate(QDate(2100, 12, 31));
         m_endrepeatWidget = new DWidget;
         //设置对象名称和辅助显示名称
         m_endrepeatWidget->setObjectName("EndRepeatDateWidget");
@@ -1300,7 +1301,7 @@ void CScheduleDlg::initRmindRpeatUI()
     }
 
     //重复规则
-    if(m_scheduleDataInfo->lunnar()){
+    if (m_scheduleDataInfo->lunnar()) {
         //如果为农历
         switch (m_scheduleDataInfo->getRRuleType()) {
         case DSchedule::RRule_Month:
@@ -1314,7 +1315,7 @@ void CScheduleDlg::initRmindRpeatUI()
             break;
         }
 
-    }else {
+    } else {
         //如果为公历
         m_beginrepeatCombox->setCurrentIndex(m_scheduleDataInfo->getRRuleType());
     }
@@ -1329,7 +1330,7 @@ void CScheduleDlg::initRmindRpeatUI()
     } else {
         //结束与次数
         m_endrepeatCombox->setCurrentIndex(1);
-        m_endrepeattimes->setText(QString::number(m_scheduleDataInfo->recurrence()->duration()-1));
+        m_endrepeattimes->setText(QString::number(m_scheduleDataInfo->recurrence()->duration() - 1));
     }
     sloteRpeatactivated(m_endrepeatCombox->currentIndex());
 }
@@ -1502,7 +1503,7 @@ void CScheduleDlg::resetColor(const AccountItem::Ptr &account)
     } else {
         QString &&colorIdStr = colorId.toString();
         //如果都为空表示为初始状态，则选中第一个
-        if(colorName.isEmpty() && colorIdStr.isEmpty()){
+        if (colorName.isEmpty() && colorIdStr.isEmpty()) {
             colorNum = -1;
         } else if (!colorIdStr.isEmpty()) {
             //如果颜色id不为空则表示颜色为内置颜色
@@ -1524,8 +1525,8 @@ void CScheduleDlg::resize()
     if (m_colorSeletorWideget->isVisible()) {
         h += 18 + 10;
     }
-    if(!gAccountManager->getIsSupportUid()) {
-        h -=36;
+    if (!gAccountManager->getIsSupportUid()) {
+        h -= 36;
     }
 
     //573: 默认界面高度, h: 新增控件高度
@@ -1555,10 +1556,9 @@ void CScheduleDlg::setOkBtnEnabled()
         m_OkBt->setEnabled(true);
     }
 
-    if(!m_textEdit->toPlainText().isEmpty() && m_textEdit->toPlainText().trimmed().isEmpty()) {
+    if (!m_textEdit->toPlainText().isEmpty() && m_textEdit->toPlainText().trimmed().isEmpty()) {
         m_OkBt->setEnabled(false);
-    }
-    else {
+    } else {
         m_OkBt->setEnabled(true);
     }
 }
