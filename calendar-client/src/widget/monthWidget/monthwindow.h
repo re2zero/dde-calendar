@@ -97,6 +97,7 @@ private:
     QSpacerItem             *m_spaceitem = nullptr;
     DWidget                 *m_gridWidget = nullptr;
     bool m_searchFlag = false;
+    bool m_isSwitchStatus = false;
     QHBoxLayout *m_tMainLayout = nullptr;
 };
 

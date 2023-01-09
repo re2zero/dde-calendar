@@ -111,6 +111,7 @@ private:
     QString m_searchText;
     QHBoxLayout *m_tMainLayout = nullptr;
     bool m_searchFlag = false;
+    bool m_isSwitchStatus = false;
     QDate       m_startDate;
     QDate       m_stopDate;
 };
