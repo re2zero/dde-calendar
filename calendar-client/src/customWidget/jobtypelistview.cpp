@@ -49,13 +49,13 @@ void JobTypeListView::initUI()
     updateJobType();
 
     connect(gAccountManager, &AccountManager::signalScheduleTypeUpdate, this, &JobTypeListView::updateJobType);
-    connect(this,&QTableView::entered,this,[&](const QModelIndex& index){
-      if(!index.isValid()) return;
-      DScheduleType info = index.data(RoleJobTypeInfo).value<DScheduleType>();
-      QString displayName = info.displayName();
-      if(!displayName.isEmpty()) {
-          QToolTip::showText(QCursor::pos(),info.displayName());
-      }
+    connect(this, &QTableView::entered, this, [&](const QModelIndex & index) {
+        if (!index.isValid()) return;
+        DScheduleType info = index.data(RoleJobTypeInfo).value<DScheduleType>();
+        QString displayName = info.displayName();
+        if (!displayName.isEmpty()) {
+            QToolTip::showText(QCursor::pos(), info.displayName());
+        }
     });
 }
 
@@ -141,7 +141,7 @@ bool JobTypeListView::viewportEvent(QEvent *event)
 bool JobTypeListView::updateJobType()
 {
     AccountItem::Ptr account = gAccountManager->getAccountItemByAccountId(m_account_id);
-    if(!account)
+    if (!account)
         return false;
     m_modelJobType->removeRows(0, m_modelJobType->rowCount());//先清理
     m_iIndexCurrentHover = -1;
@@ -166,13 +166,13 @@ void JobTypeListView::updateCalendarAccount(QString account_id)
 void JobTypeListView::slotAddScheduleType()
 {
     AccountItem::Ptr account = gAccountManager->getAccountItemByAccountId(m_account_id);
-    if(!account)
+    if (!account)
         return;
 
     ScheduleTypeEditDlg dialog(this);
     dialog.setAccount(account);
     //按保存键退出则触发保存数据
-    if(QDialog::Accepted == dialog.exec()) {
+    if (QDialog::Accepted == dialog.exec()) {
         DScheduleType::Ptr type(new DScheduleType(dialog.newJsonType()));
         account->createJobType(type);
     }
@@ -181,7 +181,7 @@ void JobTypeListView::slotAddScheduleType()
 bool JobTypeListView::canAdd()
 {
     AccountItem::Ptr account = gAccountManager->getAccountItemByAccountId(m_account_id);
-    if(!account)
+    if (!account)
         return false;
 
     //最多20个类型
@@ -209,8 +209,8 @@ int JobTypeListView::addJobTypeItem(const DScheduleType &info)
 
     //首个 非默认日程类型，前面 添加分割线
     if (m_modelJobType->rowCount() > 1
-        && !m_modelJobType->item(m_modelJobType->rowCount() - 1)->data(RoleJobTypeEditable).toBool()
-        && item->data(RoleJobTypeEditable).toBool()) {
+            && !m_modelJobType->item(m_modelJobType->rowCount() - 1)->data(RoleJobTypeEditable).toBool()
+            && item->data(RoleJobTypeEditable).toBool()) {
         DStandardItem *itemLine = new DStandardItem;
         itemLine->setData(QVariant(), RoleJobTypeInfo);
         itemLine->setData(false, RoleJobTypeEditable);
@@ -235,15 +235,14 @@ void JobTypeListView::slotUpdateJobType()
     if (!item)
         return;
     AccountItem::Ptr account = gAccountManager->getAccountItemByAccountId(m_account_id);
-    if(!account)
+    if (!account)
         return;
 
     DScheduleType info = item->data(RoleJobTypeInfo).value<DScheduleType>();
     ScheduleTypeEditDlg dialog(info, this);
     dialog.setAccount(account);
-    if(QDialog::Accepted == dialog.exec()) {
+    if (QDialog::Accepted == dialog.exec()) {
         DScheduleType::Ptr type(new DScheduleType(dialog.newJsonType()));
-        qInfo() << type->typeID();
         if (type->typeID() == "0") {
             account->createJobType(type);
         } else {
@@ -258,7 +257,7 @@ void JobTypeListView::slotDeleteJobType()
     if (!item)
         return;
     AccountItem::Ptr account = gAccountManager->getAccountItemByAccountId(m_account_id);
-    if(!account)
+    if (!account)
         return;
 
     DScheduleType info = item->data(RoleJobTypeInfo).value<DScheduleType>();
@@ -323,8 +322,8 @@ void JobTypeListViewStyle::paint(QPainter *painter, const QStyleOptionViewItem &
     // 获取当前字体的信息
     QFontMetrics fontMetrics(opt.font);
     // 当前文字长度是否大于显示框长度
-    if(fontMetrics.width(displayName) > (opt.rect.width() - 90)) {
-        displayName = fontMetrics.elidedText(displayName,Qt::ElideRight,opt.rect.width() - 90); // 截取字符串长度用...代替
+    if (fontMetrics.width(displayName) > (opt.rect.width() - 90)) {
+        displayName = fontMetrics.elidedText(displayName, Qt::ElideRight, opt.rect.width() - 90); // 截取字符串长度用...代替
     }
     if (view && view->m_iIndexCurrentHover == index.row()) {
         painter->drawText(opt.rect.adjusted(38, 0, -10, 0), Qt::AlignVCenter | Qt::AlignLeft, displayName);
