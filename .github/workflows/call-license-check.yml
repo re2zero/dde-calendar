@@ -1,11 +1,5 @@
 name: Call License and README Check
-on:
-  pull_request_target:
-    types: [opened, synchronize]
-
-permissions:
-  pull-requests: write
-  contents: read
+on: [push, pull_request]
 
 concurrency:
   group: ${{ github.workflow }}-pull/${{ github.event.number }}
