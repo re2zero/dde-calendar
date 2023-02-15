@@ -3,7 +3,10 @@ on:
   pull_request_target:
     paths-ignore:
       - ".github/workflows/**"
-    types: [ opened, closed, synchronize ]
+
+  pull_request:
+    types:
+      - closed
 
 concurrency:
   group: ${{ github.workflow }}-pull/${{ github.event.number }}
@@ -11,7 +14,7 @@ concurrency:
 
 jobs:
   check_job:
-    if: github.event.action != 'closed' || github.event.pull_request.merged
+    if: ${{ github.event_name == 'pull_request_target' || github.event.pull_request.merged }}
     uses: linuxdeepin/.github/.github/workflows/build-deb.yml@master
     secrets:
       BridgeToken: ${{ secrets.BridgeToken }}
