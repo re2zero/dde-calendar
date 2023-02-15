@@ -38,7 +38,7 @@ public:
     /**
       * @brief ~CYearScheduleView 析构函数
       */
-    ~CYearScheduleView() override;
+    ~CYearScheduleView();
     /**
      * @brief setData 设置日程信息，并全天日程置于非全天日程之前
      * @param vListData 日程信息
@@ -70,17 +70,14 @@ public:
      * @brief setCurrentDate 设置日程所在当天的日期
      * @param cDate 日期
      */
-    void setCurrentDate(const QDate &cdate);
+    void setCurrentDate(QDate cDate);
     /**
      * @brief getCurrentDate 获取日程所在当天的日期
      * @return 日期
      */
     QDate getCurrentDate();
 
-    void setTimeFormat(const QString &format = "h:mm");
-    //判断点击位置是否包含对应的日程信息
-    int getPressScheduleIndex();
-
+    void setTimeFormat(QString format = "h:mm");
 private:
     /**
      * @brief updateDateShow 调整最多展示日程为五个，并设置浮框大小
@@ -110,7 +107,6 @@ private:
     QColor m_btTextColor = "#414D68";
     QFont m_textfont;
     QString m_timeFormat = "h:mm";
-    QVector<QRect> m_drawRect;
 };
 
 class CYearScheduleOutView : public DArrowRectangle
@@ -140,10 +136,10 @@ public:
      * @brief setCurrentDate 设置日程所在当天的日期
      * @param cDate 日期
      */
-    void setCurrentDate(const QDate &cDate);
+    void setCurrentDate(QDate cDate);
     //设置箭头方向
     void setDirection(ArrowDirection value);
-    void setTimeFormat(const QString &format);
+    void setTimeFormat(QString format);
 signals:
     /**
      * @brief signalsViewSelectDate 跳转视图信号
@@ -154,6 +150,8 @@ signals:
      * @brief signalupdateschedule 更新日程信息的信号
      */
     void signalupdateschedule();
+    //弹出对话框设置背景底色
+    void signalViewtransparentFrame(int type);
 private:
     CYearScheduleView *yearscheduleview = nullptr;
     QVector<ScheduleDataInfo> scheduleinfoList;

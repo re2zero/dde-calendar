@@ -73,10 +73,7 @@ QString HuangLiDataBase::QueryFestivalList(quint32 year, quint8 month)
         doc.setArray(arr);
         strjson = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
     } else {
-        qDebug() <<Q_FUNC_INFO<< query.lastError();
-    }
-    if (query.isActive()) {
-        query.finish();
+        qDebug() << query.lastError();
     }
     return strjson;
 }
@@ -102,9 +99,6 @@ QList<stHuangLi> HuangLiDataBase::QueryHuangLiByDays(const QList<stDay> &days)
         }
         //将黄历数据放到list中
         infos.append(sthuangli);
-    }
-    if (query.isActive()) {
-        query.finish();
     }
     return infos;
 }

@@ -94,11 +94,11 @@ void CDayWindow::setTime(const QTime time)
 }
 
 /**
- * @brief CDayWindow::updateHeight            更新全天和非全天高度
+ * @brief CDayWindow::updateHigh            更新全天和非全天高度
  */
-void CDayWindow::updateHeight()
+void CDayWindow::updateHigh()
 {
-    m_scheduleView->updateHeight();
+    m_scheduleView->updateHigh();
 }
 
 /**
@@ -301,6 +301,7 @@ void CDayWindow::initConnection()
 {
     connect(m_daymonthView, &CDayMonthView::signalIsDragging, this, &CDayWindow::slotIsDragging);
     connect(m_daymonthView, &CDayMonthView::signalChangeSelectDate, this, &CDayWindow::slotChangeSelectDate);
+    connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CDayWindow::signalViewtransparentFrame);
     connect(m_scheduleView, &CScheduleView::signalSwitchPrePage, this, &CDayWindow::slotSwitchPrePage);
     connect(m_scheduleView, &CScheduleView::signalSwitchNextPage, this, &CDayWindow::slotSwitchNextPage);
 }
@@ -357,8 +358,6 @@ void CDayWindow::slotScheduleHide()
 void CDayWindow::slotChangeSelectDate(const QDate &date)
 {
     if (setSelectDate(date, true)) {
-        //隐藏日程悬浮框
-        slotScheduleHide();
         updateShowDate();
         setTime();
     }
@@ -367,7 +366,7 @@ void CDayWindow::slotChangeSelectDate(const QDate &date)
 void CDayWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
-    qreal dw = 0.4 * width();
+    qreal dw = 0.4046 * width();
     int dh = height() - 20;
 
     if (m_searchFlag) {
@@ -375,6 +374,8 @@ void CDayWindow::resizeEvent(QResizeEvent *event)
     } else {
         m_mainLayout->setContentsMargins(10, 10, 10, 10);
     }
+    if (dw < 350)
+        dw = 350;
     m_daymonthView->setFixedSize(qRound(dw), dh);
 }
 

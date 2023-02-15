@@ -195,7 +195,7 @@ void CenterWidget::paintEvent(QPaintEvent *e)
     painter.drawText(QRect(x + 13, 7, timewidth, timeheight), Qt::AlignLeft | Qt::AlignTop, timestr);
     painter.setRenderHints(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QBrush(gdcolor.orginalColor));
+    painter.setBrush(QBrush(gdcolor.dotColor));
     painter.drawEllipse(x, 7 + (timeheight - diam) / 2, diam, diam);
     pen.setColor(textColor);
     painter.setPen(pen);

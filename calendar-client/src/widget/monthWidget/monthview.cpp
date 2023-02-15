@@ -20,7 +20,6 @@
 #include "monthview.h"
 #include "scheduledlg.h"
 #include "scheduledatamanage.h"
-#include "calendarglobalenv.h"
 
 #include <DHiDPIHelper>
 #include <DPalette>
@@ -49,6 +48,7 @@ CMonthView::CMonthView(QWidget *parent) : DWidget(parent)
     m_monthGraphicsView = new CMonthGraphicsview(this);
 
     connect(m_monthGraphicsView, &CMonthGraphicsview::signalsViewSelectDate, this, &CMonthView::signalsViewSelectDate);
+    connect(m_monthGraphicsView, &CMonthGraphicsview::signalViewtransparentFrame, this, &CMonthView::signalViewtransparentFrame);
     connect(m_monthGraphicsView, &CMonthGraphicsview::signalScheduleShow, this, &CMonthView::slotScheduleRemindWidget);
     connect(m_monthGraphicsView, &CMonthGraphicsview::signalAngleDelta, this, &CMonthView::signalAngleDelta);
     connect(m_monthGraphicsView, &CMonthGraphicsview::signalSwitchPrePage, this, &CMonthView::signalSwitchPrePage);
@@ -82,11 +82,9 @@ void CMonthView::slotScheduleRemindWidget(const bool isShow, const ScheduleDataI
 {
     if (isShow) {
         //获取当前鼠标位置
-        QVariant variant;
-        CalendarGlobalEnv::getGlobalEnv()->getValueByKey(DDECalendar::CursorPointKey, variant);
-        QPoint remindPos = variant.value<QPoint>();
+        QPoint remindPos = QCursor::pos();
         CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(
-                                      out.getType());
+            out.getType());
         m_remindWidget->setData(out, gdColor);
         //获取屏幕大小
         QRect desktopRect = QApplication::desktop()->rect();

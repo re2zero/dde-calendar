@@ -40,6 +40,13 @@ DCalendarDDialog::DCalendarDDialog(QWidget *parent)
     }
 }
 
+int DCalendarDDialog::exec()
+{
+    //移动窗口至顶层窗口中心位置
+    moveCentorShow();
+    return DDialog::exec();
+}
+
 void DCalendarDDialog::mouseMoveEvent(QMouseEvent *event)
 {
     //如果为平板模式使其不可移动
@@ -73,6 +80,29 @@ bool DCalendarDDialog::eventFilter(QObject *o, QEvent *e)
 void DCalendarDDialog::updateDateTimeFormat()
 {
 
+}
+
+/**
+ * @brief CMySchceduleView::moveCentorShow      在顶层窗口居中显示
+ */
+void DCalendarDDialog::moveCentorShow()
+{
+    //需要获取的顶层窗口
+    QWidget *_parentWidget = this;
+    QWidget *tmpWidget = nullptr;
+    do {
+        //获取父类对象，如果为qwiget则赋值否则退出
+        tmpWidget = qobject_cast<QWidget *>(_parentWidget->parent());
+        if (tmpWidget == nullptr) {
+            break;
+        } else {
+            _parentWidget = tmpWidget;
+        }
+    } while (_parentWidget != nullptr);
+    //获取最顶层窗口的中心坐标
+    const QPoint global = _parentWidget->mapToGlobal(_parentWidget->rect().center());
+    //居中显示
+    move(global.x() - width() / 2, global.y() - height() / 2);
 }
 
 /**

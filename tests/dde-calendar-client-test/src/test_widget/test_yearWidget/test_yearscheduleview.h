@@ -30,9 +30,6 @@ class test_yearscheduleview : public QObject, public::testing::Test
 public:
     test_yearscheduleview();
     ~test_yearscheduleview();
-    void SetUp() override;
-    void TearDown() override;
-
 protected:
     CYearScheduleView *cYearScheduleView = nullptr;
     CYearScheduleOutView *zYearScheduleOutView = nullptr;

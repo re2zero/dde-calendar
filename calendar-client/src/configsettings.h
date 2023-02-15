@@ -19,49 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CCONFIGSETTINGS_H
-#define CCONFIGSETTINGS_H
+#pragma once
+
+#include "singleton.h"
 
 #include <QSettings>
-#include <QPointer>
 
-class CConfigSettings
+class CConfigSettings : public QObject, public DCalendar::DSingleton<CConfigSettings>
 {
+    Q_OBJECT
 public:
-    static CConfigSettings *getInstance();
-    void sync();
-    /**
-     * @brief value         根据key获取对应值
-     * @param key           对应的key
-     * @return
-     */
-    QVariant value(const QString &key, const QVariant &defaultValue = QVariant());
-    /**
-     * @brief setOption     设置对应key的值
-     * @param key
-     * @param value
-     */
-    void setOption(const QString &key, const QVariant &value);
-    /**
-     * @brief remove        移除对应的配置信息
-     * @param key
-     */
-    void remove(const QString &key);
-    /**
-     * @brief contains      判断是否包含对应的key
-     * @param key
-     * @return
-     */
-    bool contains(const QString &key) const;
-    CConfigSettings *operator->() const ;
-protected:
-    CConfigSettings();
+    explicit CConfigSettings(QObject *parent = nullptr);
     ~CConfigSettings();
-    void init();
+    static void init();
     //释放配置指针
-    void releaseInstance();
-private:
-    QPointer<QSettings> m_settings;
-};
+    static void releaseInstance();
+    static void sync();
+    static QVariant value(const QString &key);
+    static void setOption(const QString &key, const QVariant &value);
 
-#endif // CCONFIGSETTINGS_H
+private:
+    static QPointer<QSettings> m_settings;
+    friend class DCalendar::DSingleton<CConfigSettings>;
+};

@@ -67,25 +67,6 @@ QJsonObject Utils::JobToObject(const Job &job)
     //将QString类型转换为QJsonArray类型，方便前端解析
     obj.insert("Ignore", QJsonDocument::fromJson(job.Ignore.toUtf8()).array());
     obj.insert("RecurID", job.RecurID);
-    obj.insert("IsLunar", job.IsLunar);
 
     return obj;
 }
-/**
- * @brief  StringToObject 将JSON格式字符串转换成QJsonObject
- * @param  str JSON格式字符
- * @param  ssubObj 出参，QJsonObject
- * @return 是否正确
- */
-bool Utils::StringToObject(const QString &jsonStr, QJsonArray &ja)
-{
-    QJsonParseError json_error;
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(jsonStr.toLocal8Bit(), &json_error));
-
-    if (json_error.error != QJsonParseError::NoError) {
-        return false;
-    }
-    ja = jsonDoc.array();
-    return true;
-}
-

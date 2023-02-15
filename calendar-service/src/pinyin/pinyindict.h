@@ -24,6 +24,28 @@
 #include <QMap>
 #include <QVector>
 
+//带有音调的拼音字典
+extern QMap<int, QString> PinyinDict_1;
+extern QMap<int, QString> PinyinDict_2;
+extern QMap<int, QString> PinyinDict_3;
+extern QMap<int, QString> PinyinDict_4;
+extern QMap<int, QString> PinyinDict_5;
+extern QMap<int, QString> PinyinDict_6;
+extern QMap<int, QString> PinyinDict_7;
+extern QMap<int, QString> PinyinDict_8;
+extern QMap<int, QString> PinyinDict_9;
+extern QMap<int, QString> PinyinDict_10;
+extern QMap<int, QString> PinyinDict_11;
+extern QMap<int, QString> PinyinDict_12;
+extern QMap<int, QString> PinyinDict_13;
+extern QMap<int, QString> PinyinDict_14;
+extern QMap<int, QString> PinyinDict_15;
+extern QMap<int, QString> PinyinDict_16;
+extern QMap<int, QString> PinyinDict_17;
+extern QMap<int, QString> PinyinDict_18;
+extern QMap<int, QString> PinyinDict_19;
+extern QMap<int, QString> PinyinDict_20;
+extern QMap<int, QString> PinyinDict_21;
 //获取拼音字典
 const QVector<QMap<int,QString> > getPinYinDictVector();
 // 带音标字符。

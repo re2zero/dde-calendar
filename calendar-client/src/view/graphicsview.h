@@ -53,7 +53,7 @@ public:
     {
         return m_margins;
     }
-    void updateHeight();
+    void updateHigh();
     void setCurrentDate(const QDateTime &currentDate);
     void setInfo(const QVector<ScheduleDataInfo> &info);
     void addScheduleItem(const ScheduleDataInfo &info, QDate date, int index, int totalNum, int type, int viewtype, int maxnum);

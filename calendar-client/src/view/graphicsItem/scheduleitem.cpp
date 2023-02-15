@@ -176,7 +176,6 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
     Q_UNUSED(isPixMap);
     CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
 
-    QColor textPenColor = CScheduleDataManage::getScheduleDataManage()->getTextColor();
     //判断是否为选中日程
     if (m_vScheduleInfo == m_pressInfo) {
         //判断当前日程是否为拖拽移动日程
@@ -184,24 +183,24 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
             m_vHighflag = true;
         } else {
             painter->setOpacity(0.4);
-            textPenColor.setAlphaF(0.4);
-            gdColor.orginalColor.setAlphaF(0.4);
+            gdColor.textColor.setAlphaF(0.4);
+            gdColor.timeColor.setAlphaF(0.4);
             m_vHighflag = false;
         }
         m_vSelectflag = m_press;
     }
 
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
-    QColor bColor = gdColor.normalColor;
+    QColor bColor = gdColor.Purecolor;
     QFontMetrics fm = painter->fontMetrics();
     int h = fm.height();
 
     if (m_vHoverflag) {
-        bColor = gdColor.hoverColor;
+        bColor = gdColor.hoverPurecolor;
     } else if (m_vHighflag) {
-        bColor = gdColor.hightColor;
+        bColor = gdColor.hightlightPurecolor;
     } else if (m_vSelectflag) {
-        bColor = gdColor.pressColor;
+        bColor = gdColor.pressPurecolor;
     }
     painter->setBrush(bColor);
     painter->setPen(Qt::NoPen);
@@ -228,22 +227,19 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
     }
     if (m_vSelectflag) {
         if (themetype == 0 || themetype == 1) {
-            textPenColor.setAlphaF(0.4);
-            gdColor.orginalColor.setAlphaF(0.4);
+            gdColor.textColor.setAlphaF(0.4);
+            gdColor.timeColor.setAlphaF(0.4);
         } else if (themetype == 2) {
-            textPenColor.setAlphaF(0.6);
-            gdColor.orginalColor.setAlphaF(0.6);
+            gdColor.textColor.setAlphaF(0.6);
+            gdColor.timeColor.setAlphaF(0.6);
         }
     }
 
     painter->save();
-    QPen pen(gdColor.orginalColor);
+    QPen pen(gdColor.shadowcolor);
     pen.setWidth(2);
     painter->setPen(pen);
-    //左侧绘制竖线
-    QPointF top(rect.topLeft().x(), rect.topLeft().y() + 1);
-    QPointF bottom(rect.bottomLeft().x(), rect.bottomLeft().y() - 1);
-    painter->drawLine(top, bottom);
+    painter->drawLine(rect.topLeft(), rect.bottomLeft());
     painter->restore();
     int tMargin = 10;
 
@@ -261,7 +257,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         if (m_vScheduleInfo.getBeginDateTime().date() == getDate()) {
             painter->save();
             painter->setFont(font);
-            painter->setPen(gdColor.orginalColor);
+            painter->setPen(gdColor.timeColor);
 
             QTime stime = m_vScheduleInfo.getBeginDateTime().time();
             QString str = stime.toString("AP " + m_timeFormat);
@@ -304,7 +300,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         font = DFontSizeManager::instance()->get(DFontSizeManager::T6, font);
         font.setLetterSpacing(QFont::PercentageSpacing, 105);
         painter->setFont(font);
-        painter->setPen(textPenColor);
+        painter->setPen(gdColor.textColor);
         QStringList liststr;
         QRect textRect = rect.toRect();
         textRect.setWidth(textRect.width() - m_offset * 2);
@@ -331,7 +327,7 @@ void CScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, const
         font.setWeight(QFont::Normal);
         font = DFontSizeManager::instance()->get(DFontSizeManager::T8, font);
         painter->setFont(font);
-        painter->setPen(textPenColor);
+        painter->setPen(gdColor.textColor);
         painter->drawText(rect, Qt::AlignCenter | Qt::AlignVCenter, "...");
         painter->restore();
     }

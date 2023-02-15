@@ -22,6 +22,7 @@
 #define LABELWIDGET_H
 
 #include <QLabel>
+#include <QPainter>
 
 class LabelWidget : public QLabel
 {

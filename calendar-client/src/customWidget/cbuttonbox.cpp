@@ -32,17 +32,7 @@ void CButtonBox::focusInEvent(QFocusEvent *event)
     DButtonBox::focusInEvent(event);
     //窗口激活时，不设置Button焦点显示
     if (event->reason() != Qt::ActiveWindowFocusReason) {
-        //设置当前选中项为焦点
-        this->button(checkedId())->setFocus();
-    }
-}
-
-void CButtonBox::focusOutEvent(QFocusEvent *event)
-{
-    DButtonBox::focusOutEvent(event);
-    //当tab离开当前buttonbox窗口时，设置选中项为焦点
-    if (event->reason() == Qt::TabFocusReason) {
-        //设置当前选中项为焦点
+        //设置当前选中想为焦点
         this->button(checkedId())->setFocus();
     }
 }

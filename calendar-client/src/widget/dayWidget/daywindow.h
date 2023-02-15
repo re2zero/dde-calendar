@@ -48,7 +48,7 @@ public:
     //设置显示的时间位置
     void setTime(const QTime time = QTime());
     //更新全天和非全天高度
-    void updateHeight();
+    void updateHigh();
     //设置当前时间
     void setCurrentDateTime(const QDateTime &currentDate) override;
     //设置选择时间年信息显示

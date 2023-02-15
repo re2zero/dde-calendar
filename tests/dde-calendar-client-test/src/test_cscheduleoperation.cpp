@@ -34,6 +34,8 @@ test_cscheduleoperation::~test_cscheduleoperation()
 {
 }
 
+
+
 namespace ScheduleTestBtnNum {
 static int button_num = 0;
 }
@@ -105,18 +107,6 @@ TEST_F(test_cscheduleoperation, changeSchedule)
     operation.changeSchedule(newinfo, info);
 }
 
-TEST_F(test_cscheduleoperation, changeSchedule_01)
-{
-    calendarDDialogExecStub(stub);
-    ScheduleDataInfo oldInfo;
-    ScheduleDataInfo newInfo;
-    oldInfo.setAllDay(true);
-    oldInfo.m_ScheduleRRule.setRuleId(RepetitionRule::RRule_NONE);
-    newInfo.setAllDay(false);
-    newInfo.m_ScheduleRRule.setRuleId(RepetitionRule::RRule_EVEDAY);
-    operation.changeSchedule(oldInfo, newInfo);
-}
-
 TEST_F(test_cscheduleoperation, deleteSchedule)
 {
     calendarDDialogExecStub(stub);
@@ -159,71 +149,8 @@ TEST_F(test_cscheduleoperation, queryScheduleStr)
     operation.queryScheduleStr("", currenttime, currenttime);
 }
 
-TEST_F(test_cscheduleoperation, deleteOnlyInfo_01)
+TEST_F(test_cscheduleoperation, deleteOnlyInfo)
 {
     ScheduleDataInfo info;
     operation.deleteOnlyInfo(info);
-}
-
-TEST_F(test_cscheduleoperation, deleteOnlyInfo_02)
-{
-    ScheduleDataInfo info;
-    info.m_ScheduleRRule.setRuleId(RepetitionRule::RRule_EVEDAY);
-    operation.deleteOnlyInfo(info);
-}
-
-TEST_F(test_cscheduleoperation, deleteOnlyInfo_03)
-{
-    ScheduleDataInfo info;
-    info.setType(4);
-    operation.deleteOnlyInfo(info);
-}
-
-TEST_F(test_cscheduleoperation, queryScheduleInfo_01)
-{
-    ScheduleDataInfo info;
-    QDateTime date;
-    QMap<QDate, QVector<ScheduleDataInfo>> map;
-    operation.queryScheduleInfo("", date, date, map);
-}
-
-TEST_F(test_cscheduleoperation, updateJobType_01)
-{
-    calendarDDialogExecStub(stub);
-    JobTypeInfo oldInfo(0);
-    JobTypeInfo newInfo;
-    operation.updateJobType(oldInfo, newInfo);
-}
-
-TEST_F(test_cscheduleoperation, updateJobType_02)
-{
-    calendarDDialogExecStub(stub);
-    JobTypeInfo oldInfo(1);
-    JobTypeInfo newInfo(1);
-    EXPECT_TRUE(operation.updateJobType(oldInfo, newInfo));
-}
-
-TEST_F(test_cscheduleoperation, updateJobType_03)
-{
-    calendarDDialogExecStub(stub);
-    JobTypeInfo oldInfo(1, "", 10);
-    JobTypeInfo newInfo(0, "", 0);
-    operation.updateJobType(oldInfo, newInfo);
-    EXPECT_EQ(oldInfo.getColorTypeNo(), newInfo.getColorTypeNo());
-}
-
-TEST_F(test_cscheduleoperation, updateJobType_04)
-{
-    calendarDDialogExecStub(stub);
-    JobTypeInfo oldInfo(1, "", 5);
-    JobTypeInfo newInfo(0, "", 0);
-    operation.updateJobType(oldInfo, newInfo);
-    EXPECT_TRUE(newInfo.getColorTypeNo() != 5);
-}
-
-TEST_F(test_cscheduleoperation, updateJobType_05)
-{
-    calendarDDialogExecStub(stub);
-    JobTypeInfo oldInfo(1, "", 5);
-    operation.updateJobType(oldInfo);
 }

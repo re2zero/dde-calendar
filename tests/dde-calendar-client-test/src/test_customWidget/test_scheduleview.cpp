@@ -19,24 +19,6 @@
    * along with this program.  If not, see <http://www.gnu.org/licenses/>.
    */
 #include "test_scheduleview.h"
-#include "../third-party_stub/stub.h"
-
-static QLocale::Language scheduleview_stub_language()
-{
-    return QLocale::English;
-}
-
-static bool scheduleview_stub_event()
-{
-    return true;
-}
-
-static touchGestureOperation::TouchState scheduleview_getTouchState = touchGestureOperation::T_STATE_NONE;
-
-static touchGestureOperation::TouchState scheduleview_stub_getTouchState()
-{
-    return scheduleview_getTouchState;
-}
 
 test_scheduleview::test_scheduleview()
 {
@@ -122,10 +104,10 @@ TEST_F(test_scheduleview, setSelectSchedule)
     mScheduleView->setSelectSchedule(scheduleinfo);
 }
 
-//void CScheduleView::updateHeight()
-TEST_F(test_scheduleview, updateHeight)
+//void CScheduleView::updateHigh()
+TEST_F(test_scheduleview, updateHigh)
 {
-    mScheduleView->updateHeight();
+    mScheduleView->updateHigh();
 }
 
 //bool CScheduleView::IsDragging()
@@ -222,108 +204,3 @@ TEST_F(test_scheduleview, scheduleViewHeight)
     mScheduleView->scheduleViewHeight();
 }
 
-//getPixmap
-TEST_F(test_scheduleview, getPixmap)
-{
-    QVector<int> pos;
-    pos.append(1);
-    pos.append(2);
-    pos.append(3);
-    pos.append(4);
-
-    QVector<int> hours;
-    hours.append(4);
-    hours.append(8);
-    hours.append(16);
-    hours.append(20);
-
-    mScheduleView->slotPosHours(pos, hours, 1);
-
-    mScheduleView->setFixedSize(800, 500);
-    QPixmap pixmap(mScheduleView->size());
-    mScheduleView->render(&pixmap);
-}
-
-TEST_F(test_scheduleview, paintEvent_01)
-{
-    QPaintEvent e(QRect(0, 0, 100, 100));
-    mScheduleView->paintEvent(&e);
-}
-
-TEST_F(test_scheduleview, paintEvent_02)
-{
-    mScheduleView->m_currentTimeType = 1;
-    QPaintEvent e(QRect(0, 0, 100, 100));
-    mScheduleView->paintEvent(&e);
-}
-
-TEST_F(test_scheduleview, paintEvent_03)
-{
-    Stub stub;
-    stub.set(ADDR(QLocale, language), scheduleview_stub_language);
-
-    QPaintEvent e(QRect(0, 0, 100, 100));
-    CScheduleView view;
-    view.paintEvent(&e);
-}
-
-TEST_F(test_scheduleview, paintEvent_04)
-{
-    Stub stub;
-    stub.set(ADDR(QLocale, language), scheduleview_stub_language);
-
-    QPaintEvent e(QRect(0, 0, 100, 100));
-    CScheduleView view;
-    view.m_currentTimeType = 1;
-    view.paintEvent(&e);
-}
-
-TEST_F(test_scheduleview, event_01)
-{
-    Stub stub;
-    stub.set(ADDR(touchGestureOperation, event), scheduleview_stub_event);
-    stub.set(ADDR(touchGestureOperation, getTouchState), scheduleview_stub_getTouchState);
-    QPaintEvent e(QRect(0, 0, 100, 100));
-    scheduleview_getTouchState = touchGestureOperation::T_STATE_NONE;
-    CScheduleView view;
-    view.event(&e);
-}
-
-TEST_F(test_scheduleview, event_02)
-{
-    Stub stub;
-    stub.set(ADDR(touchGestureOperation, event), scheduleview_stub_event);
-    stub.set(ADDR(touchGestureOperation, getTouchState), scheduleview_stub_getTouchState);
-    QPaintEvent e(QRect(0, 0, 100, 100));
-    scheduleview_getTouchState = touchGestureOperation::T_SINGLE_CLICK;
-    CScheduleView view;
-    view.event(&e);
-}
-
-TEST_F(test_scheduleview, event_03)
-{
-    Stub stub;
-    stub.set(ADDR(touchGestureOperation, event), scheduleview_stub_event);
-    stub.set(ADDR(touchGestureOperation, getTouchState), scheduleview_stub_getTouchState);
-    QPaintEvent e(QRect(0, 0, 100, 100));
-    scheduleview_getTouchState = touchGestureOperation::T_SLIDE;
-    CScheduleView view;
-    view.m_touchGesture.setUpdate(true);
-    view.m_touchGesture.m_movingDir = touchGestureOperation::T_LEFT;
-
-    view.event(&e);
-}
-
-TEST_F(test_scheduleview, event_04)
-{
-    Stub stub;
-    stub.set(ADDR(touchGestureOperation, event), scheduleview_stub_event);
-    stub.set(ADDR(touchGestureOperation, getTouchState), scheduleview_stub_getTouchState);
-    QPaintEvent e(QRect(0, 0, 100, 100));
-    scheduleview_getTouchState = touchGestureOperation::T_SLIDE;
-    CScheduleView view;
-    view.m_touchGesture.setUpdate(true);
-    view.m_touchGesture.m_movingDir = touchGestureOperation::T_RIGHT;
-
-    view.event(&e);
-}

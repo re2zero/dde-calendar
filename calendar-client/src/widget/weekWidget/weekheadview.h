@@ -37,7 +37,7 @@ class CustomFrame;
 
 /**
  * @brief The CWeekHeadView class
- *  周视图日期模块显示
+ *  周试图日期模块显示
  */
 class CWeekHeadView : public DWidget
 {

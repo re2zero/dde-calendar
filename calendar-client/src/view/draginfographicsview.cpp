@@ -25,8 +25,6 @@
 #include "constants.h"
 #include "cscheduleoperation.h"
 #include "graphicsItem/cscenebackgrounditem.h"
-#include "calendarglobalenv.h"
-#include "scheduledatamanage.h"
 
 #include <DMenu>
 
@@ -65,6 +63,7 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     connect(m_createAction, &QAction::triggered, this,
             static_cast<void (DragInfoGraphicsView::*)()>(&DragInfoGraphicsView::slotCreate));
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     this->setViewportMargins(0, 0, 0, 0);
     setMouseTracking(true);
     viewport()->setMouseTracking(true);
@@ -91,13 +90,10 @@ DragInfoGraphicsView::DragInfoGraphicsView(DWidget *parent)
     connect(m_Scene, &CGraphicsScene::signalContextMenu, this, &DragInfoGraphicsView::slotContextMenu);
     connect(m_Scene, &CGraphicsScene::signalsetNextFocus, this, &DragInfoGraphicsView::slotsetNextFocus);
     setFocusPolicy(Qt::StrongFocus);
-    //日程类型发生改变，刷新界面
-    JobTypeInfoManager::instance()->addToNoticeBill(this->viewport(), "update");
 }
 
 DragInfoGraphicsView::~DragInfoGraphicsView()
 {
-    JobTypeInfoManager::instance()->removeFromNoticeBill(this->viewport());
 }
 
 void DragInfoGraphicsView::mousePressEvent(QMouseEvent *event)
@@ -230,7 +226,7 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
     DragInfoItem *item = dynamic_cast<DragInfoItem *>(itemAt(event->pos()));
 
     if (item != nullptr) {
-        if (isCanDragge(item->getData())) {
+        if (item->getData().getType() != DDECalendar::FestivalTypeID) {
             if (m_DragStatus == NONE) {
                 switch (getPosInItem(event->pos(), item->rect())) {
                 case LEFT:
@@ -291,7 +287,11 @@ void DragInfoGraphicsView::mouseMoveEvent(QMouseEvent *event)
         if (!m_PressRect.contains(event->pos())) {
             //拖拽前设置是否已经更新日程界面标志为否
             m_hasUpdateMark = false;
+            //TODO 拖拽结束后还会返回到鼠标移动事件???
             m_Drag->exec(Qt::MoveAction);
+            //TODO 调试发现exec后代码有时候会执行2遍，先标记下，以后研究,现判断m_Drag是否为nullptr，若为空指针则表示执行过一遍直接退出
+            if (m_Drag == nullptr)
+                return;
             m_Drag = nullptr;
             m_DragStatus = NONE;
             setCursor(Qt::ArrowCursor);
@@ -317,15 +317,13 @@ void DragInfoGraphicsView::wheelEvent(QWheelEvent *event)
 void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 {
     DGraphicsView::contextMenuEvent(event);
-    //如果不为默认状态则不执行右击事件
-    if (m_DragStatus != NONE) {
+
+    if (m_DragStatus == IsCreate) {
         return;
     }
     emit signalScheduleShow(false);
     m_press = false;
     m_DragStatus = NONE;
-    //触摸状态恢复为默认状态
-    m_touchState = TS_NONE;
     QGraphicsItem *listItem = itemAt(event->pos());
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
@@ -337,17 +335,21 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
             QAction *action_t = m_rightMenu->exec(QCursor::pos());
 
             if (action_t == m_editAction) {
+                emit signalViewtransparentFrame(1);
                 CScheduleDlg dlg(0, this);
                 dlg.setData(infoitem->getData());
                 if (dlg.exec() == DDialog::Accepted) {
                     emit signalsUpdateSchedule();
                 }
+                emit signalViewtransparentFrame(0);
             } else if (action_t == m_deleteAction) {
                 DeleteItem(infoitem->getData());
             }
         } else {
+            emit signalViewtransparentFrame(1);
             CMyScheduleView dlg(infoitem->getData(), this);
             dlg.exec();
+            emit signalViewtransparentFrame(0);
         }
     } else {
         RightClickToCreate(listItem, event->pos());
@@ -367,13 +369,10 @@ void DragInfoGraphicsView::dragEnterEvent(QDragEnterEvent *event)
         QJsonObject rootobj = jsonDoc.object();
         ScheduleDataInfo info = ScheduleDataInfo::JsonToSchedule(rootobj);
 
-        //如果该日程是不能被拖拽的则忽略不接受
-        if ((event->source() != this && info.getRepetitionRule().getRuleId() > 0) || !isCanDragge(info)) {
+        if ((event->source() != this && info.getRepetitionRule().getRuleId() > 0) || info.getType() == DDECalendar::FestivalTypeID) {
             event->ignore();
         } else {
             event->accept();
-            //设置被修改的日程原始信息
-            m_PressScheduleInfo = info;
         }
     } else {
         event->ignore();
@@ -493,12 +492,8 @@ void DragInfoGraphicsView::setPressSelectInfo(const ScheduleDataInfo &info)
  */
 void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
 {
-    QVariant variant;
-    //获取主窗口指针
-    CalendarGlobalEnv::getGlobalEnv()->getValueByKey("MainWindow", variant);
-    QObject *parent = static_cast<QObject *>(variant.value<void *>());
-    //设置父类为主窗口
-    CScheduleOperation _scheduleOperation(qobject_cast<QWidget *>(parent));
+    emit signalViewtransparentFrame(1);
+    CScheduleOperation _scheduleOperation(this);
     if (_scheduleOperation.changeSchedule(info, m_PressScheduleInfo)) {
         //如果日程修改成功则更新更新标志
         m_hasUpdateMark = true;
@@ -506,6 +501,7 @@ void DragInfoGraphicsView::updateScheduleInfo(const ScheduleDataInfo &info)
         //如果取消更新则主动更新显示
         updateInfo();
     }
+    emit signalViewtransparentFrame(0);
 }
 
 void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
@@ -514,11 +510,9 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
     m_PressDate = getPosDate(pos);
     m_MoveDate = m_PressDate.addMonths(-2);
 
-    CalendarGlobalEnv::getGlobalEnv()->reviseValue(DDECalendar::CursorPointKey, mapToGlobal(pos));
-
     if (item != nullptr) {
         PosInItem mpressstatus = getPosInItem(pos, item->boundingRect());
-        if (mpressstatus != MIDDLE && !isCanDragge(item->getData())) {
+        if (mpressstatus != MIDDLE && item->getData().getType() == 4) {
             return;
         }
         m_DragScheduleInfo = item->getData();
@@ -579,6 +573,7 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
         if (MeetCreationConditions(m_MoveDate)) {
             //如果不添加会进入leaveEvent事件内的条件
             m_DragStatus = NONE;
+            emit signalViewtransparentFrame(1);
             CScheduleDlg dlg(1, this);
             dlg.setData(m_DragScheduleInfo);
             //如果取消新建则主动刷新日程信息
@@ -589,6 +584,7 @@ void DragInfoGraphicsView::mouseReleaseScheduleUpdate()
             }
             //设置选中日程为无效日程
             setPressSelectInfo(ScheduleDataInfo());
+            emit signalViewtransparentFrame(0);
         }
         break;
     case ChangeBegin:
@@ -621,10 +617,6 @@ void DragInfoGraphicsView::mousePress(const QPoint &point)
     QGraphicsItem *listItem = itemAt(point);
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(listItem);
 
-    //不满足拖拽条件的日程不进行拖拽事件
-    if (infoitem && !isCanDragge(infoitem->getData())) {
-        return;
-    }
     if (infoitem != nullptr) {
         setPressSelectInfo(infoitem->getData());
         m_press = true;
@@ -659,9 +651,11 @@ void DragInfoGraphicsView::stopTouchAnimation()
  */
 void DragInfoGraphicsView::DeleteItem(const ScheduleDataInfo &info)
 {
+    emit signalViewtransparentFrame(1);
     //删除日程
     CScheduleOperation _scheduleOperation(this);
     _scheduleOperation.deleteSchedule(info);
+    emit signalViewtransparentFrame(0);
 }
 
 /**
@@ -686,6 +680,7 @@ void DragInfoGraphicsView::setDragPixmap(QDrag *drag, DragInfoItem *item)
 
 void DragInfoGraphicsView::slotCreate(const QDateTime &date)
 {
+    emit signalViewtransparentFrame(1);
     CScheduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(date.date());
@@ -701,6 +696,7 @@ void DragInfoGraphicsView::slotCreate(const QDateTime &date)
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsUpdateSchedule();
     }
+    emit signalViewtransparentFrame(0);
 }
 
 ScheduleDataInfo DragInfoGraphicsView::getScheduleInfo(const QDateTime &beginDate, const QDateTime &endDate)
@@ -803,15 +799,6 @@ void DragInfoGraphicsView::setShowRadius(bool leftShow, bool rightShow)
     m_rightShowRadius = rightShow;
 }
 
-bool DragInfoGraphicsView::isCanDragge(const ScheduleDataInfo &info)
-{
-    if (info.getType() == DDECalendar::FestivalTypeID)
-        return false;
-    if (info.getIsLunar() && !QLocale::system().name().startsWith("zh_"))
-        return false;
-    return true;
-}
-
 /**
  * @brief DragInfoGraphicsView::slotDeleteItem      删除日程
  */
@@ -867,7 +854,7 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
     DragInfoItem *infoitem = dynamic_cast<DragInfoItem *>(item);
     if (infoitem != nullptr) {
         //如果为节假日则退出不展示右击菜单
-        if (infoitem->getData().getType() == DDECalendar::FestivalTypeID)
+        if (infoitem->getData().getType() == 4)
             return;
         //快捷键调出右击菜单
         m_Scene->setIsContextMenu(true);
@@ -881,11 +868,13 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
         QAction *action_t = m_rightMenu->exec(screen_pos);
 
         if (action_t == m_editAction) {
+            emit signalViewtransparentFrame(1);
             CScheduleDlg dlg(0, this);
             dlg.setData(infoitem->getData());
             if (dlg.exec() == DDialog::Accepted) {
                 emit signalsUpdateSchedule();
             }
+            emit signalViewtransparentFrame(0);
         } else if (action_t == m_deleteAction) {
             DeleteItem(infoitem->getData());
         }

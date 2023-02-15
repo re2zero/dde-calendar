@@ -27,11 +27,9 @@
 
 class test_todaybutton : public::QObject, public::testing::Test
 {
-    Q_OBJECT
 public:
     test_todaybutton();
-    void SetUp() override;
-    void TearDown() override;
+    ~test_todaybutton();
 protected:
     CTodayButton *mTodayButton = nullptr;
 };

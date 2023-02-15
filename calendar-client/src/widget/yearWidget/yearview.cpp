@@ -44,7 +44,6 @@ CYearView::CYearView(QWidget *parent)
     setMouseTracking(true);
     //add separator line
     m_currentMouth = new CustomFrame();
-    m_currentMouth->setObjectName("currentMouth");
     m_currentMouth->setFixedHeight(24);
     m_currentMouth->setContentsMargins(0, 0, 0, 0);
     m_currentMouth->setTextAlign(Qt::AlignLeft);

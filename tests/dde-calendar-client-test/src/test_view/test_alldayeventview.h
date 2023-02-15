@@ -29,10 +29,7 @@ class test_alldayeventview : public QObject, public::testing::Test
 {
 public:
     test_alldayeventview();
-
-    void SetUp() override;
-    void TearDown() override;
-
+    ~test_alldayeventview();
 protected:
     CAllDayEventWeekView *cAllDayEventWeekView = nullptr;
 };

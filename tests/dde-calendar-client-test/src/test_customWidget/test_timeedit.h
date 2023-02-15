@@ -25,8 +25,7 @@
 #include <gtest/gtest.h>
 #include "customWidget/timeedit.h"
 
-class test_timeedit : public QObject
-    , public testing::Test
+class test_timeedit : public::QObject, public::testing::Test
 {
 public:
     test_timeedit();

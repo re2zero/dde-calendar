@@ -29,9 +29,7 @@ class test_calendardatedatamanage : public QObject, public::testing::Test
 {
 public:
     test_calendardatedatamanage();
-    void SetUp() override;
-    void TearDown() override;
-
+    ~test_calendardatedatamanage();
 protected:
     CalendarDateDataManager *calendarDateDataManager = nullptr;
 };

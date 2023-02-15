@@ -42,9 +42,10 @@ bool touchGestureOperation::event(QEvent *e)
     bool _result {false};
     if (e->type() == QEvent::Gesture) {
         //手势触发
-        _result = gestureEvent(dynamic_cast<QGestureEvent *>(e));
+        _result = gestureEvent(static_cast<QGestureEvent *>(e));
     }
-    QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(e);
+
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(e);
     if (e->type() == QEvent::MouseButtonPress && mouseEvent->source() == Qt::MouseEventSynthesizedByQt) {
         //触摸点击转换鼠标点击事件
         m_mouseState = M_PRESS;
@@ -134,9 +135,9 @@ touchGestureOperation::TouchMovingDirection touchGestureOperation::getTouchMovin
 bool touchGestureOperation::gestureEvent(QGestureEvent *event)
 {
     if (QGesture *tap = event->gesture(Qt::TapGesture))
-        tapGestureTriggered(dynamic_cast<QTapGesture *>(tap));
+        tapGestureTriggered(static_cast<QTapGesture *>(tap));
     if (QGesture *pan = event->gesture(Qt::PanGesture))
-        panTriggered(dynamic_cast<QPanGesture *>(pan));
+        panTriggered(static_cast<QPanGesture *>(pan));
     return true;
 }
 

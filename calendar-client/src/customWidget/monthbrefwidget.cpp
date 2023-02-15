@@ -21,7 +21,6 @@
 #include "monthbrefwidget.h"
 #include "constants.h"
 #include "scheduledatamanage.h"
-#include "calendarglobalenv.h"
 
 #include <QMouseEvent>
 #include <QPainter>
@@ -272,7 +271,6 @@ void MonthBrefWidget::mousePress(const QPoint &point)
 {
     //获取当前item编号
     int itemindex = getMousePosItem(point);
-    CalendarGlobalEnv::getGlobalEnv()->reviseValue(DDECalendar::CursorPointKey, mapToGlobal(point));
     if (!(itemindex < 0)) {
         //设置选中item为press状态
         m_DayItem.at(itemindex)->setCellEvent(CMonthDayRect::CellPress);
@@ -493,7 +491,10 @@ void CMonthDayRect::paintItem(QPainter *painter, const QRectF &rect)
             } else if (r > 7) {
                 ellipse_r = 7;
             }
-            painter->drawEllipse(QRectF(rect.width() - ellipse_r + rect.x(), rect.y(), ellipse_r, ellipse_r));
+            painter->drawEllipse(QRectF(rect.width() - ellipse_r + rect.x(),
+                                        rect.y(),
+                                        ellipse_r,
+                                        ellipse_r));
             painter->restore();
         }
     }

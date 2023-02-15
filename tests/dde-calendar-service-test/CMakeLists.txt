@@ -6,11 +6,9 @@ ADD_COMPILE_OPTIONS(-fno-access-control)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 set(APP_BIN_NAME "dde-calendar-service-test")
 set(APP_SERVICE_DIR "${CMAKE_SOURCE_DIR}/calendar-service")
 set(APP_SERVICE_RES_DIR "${APP_SERVICE_DIR}/assets")
-set(APP_QRC "${APP_SERVICE_RES_DIR}/resources.qrc")
 
 # Find the library
 find_package(PkgConfig REQUIRED)
@@ -58,7 +56,7 @@ file(GLOB_RECURSE Calendar_Service_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cp
 list(APPEND CMAKE_MODULE_PATH "${ASAN_CMAKE_DIR}")
 include(asan)
 
-add_executable(${APP_BIN_NAME} ${Calendar_Service_TEST_SRC} ${CALENDARSERVICE_SRCS} ${APP_QRC})
+add_executable(${APP_BIN_NAME} ${Calendar_Service_TEST_SRC} ${CALENDARSERVICE_SRCS})
 
 target_link_libraries(${APP_BIN_NAME} 
     ${LINK_LIBS}

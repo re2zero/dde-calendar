@@ -39,8 +39,11 @@ void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect,
     painter->setRenderHints(QPainter::Antialiasing);
     CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
     QRectF drawrect = rect;
+    QLinearGradient linearGradient(drawrect.topLeft().x(), 0, drawrect.topRight().x(), 0);
 
-    QColor textcolor = CScheduleDataManage::getScheduleDataManage()->getTextColor();
+    QColor color1 = gdColor.gradientFromC;
+    QColor color2 = gdColor.gradientToC;
+    QColor textcolor = gdColor.textColor;
 
     //判断是否为选中日程
     if (m_vScheduleInfo == m_pressInfo) {
@@ -55,21 +58,25 @@ void CAllDayScheduleItem::paintBackground(QPainter *painter, const QRectF &rect,
     }
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
 
-    QColor brushColor = gdColor.normalColor;
     if (m_vHoverflag) {
-        brushColor = gdColor.hoverColor;
+        color1 = gdColor.hovergradientFromC;
+        color2 = gdColor.hovergradientToC;
     } else if (m_vHighflag) {
-        brushColor = gdColor.pressColor;
+        color1 = gdColor.hightlightgradientFromC;
+        color2 = gdColor.hightlightgradientToC;
     } else if (m_vSelectflag) {
-        brushColor = gdColor.pressColor;
+        color1 = gdColor.pressgradientFromC;
+        color2 = gdColor.pressgradientToC;
         textcolor.setAlphaF(0.4);
     }
+    linearGradient.setColorAt(0, color1);
+    linearGradient.setColorAt(1, color2);
     QRectF fillRect = QRectF(drawrect.x(),
                              drawrect.y(),
                              drawrect.width(),
                              drawrect.height() - 2);
     //将直线开始点设为0，终点设为1，然后分段设置颜色
-    painter->setBrush(brushColor);
+    painter->setBrush(linearGradient);
     if (getItemFocus() && isPixMap == false) {
         QPen framePen;
         framePen.setWidth(2);

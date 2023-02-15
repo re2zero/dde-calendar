@@ -21,21 +21,15 @@
 #include "test_configsettings.h"
 
 test_configsettings::test_configsettings()
+    : conf(new CConfigSettings)
 {
+
 }
 
 test_configsettings::~test_configsettings()
 {
-}
-
-void test_configsettings::SetUp()
-{
-    conf = CConfigSettings::getInstance();
-}
-
-void test_configsettings::TearDown()
-{
-
+    delete conf;
+    conf = nullptr;
 }
 
 void stub_Handle()
@@ -43,8 +37,7 @@ void stub_Handle()
 
 }
 
-void setValue_stub(void *obj, const QString &key, const QVariant &value)
-{
+void setValue_stub(void *obj, const QString &key, const QVariant &value) {
     Q_UNUSED(obj)
         Q_UNUSED(key)
             Q_UNUSED(value)}

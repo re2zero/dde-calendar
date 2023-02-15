@@ -54,8 +54,7 @@ void CalendarAdaptor::RaiseWindow()
 
 void CalendarAdaptor::OpenSchedule(QString job)
 {
-    //更新对应的槽函数
-    QMetaObject::invokeMethod(parent(), "slotOpenSchedule", Q_ARG(QString, job));
+    QMetaObject::invokeMethod(parent(), "OpenSchedule", Q_ARG(QString, job));
 }
 
 

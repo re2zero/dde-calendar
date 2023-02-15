@@ -31,8 +31,6 @@ class test_schedulesearchview : public QObject
 public:
     test_schedulesearchview();
     ~test_schedulesearchview();
-    void SetUp() override;
-    void TearDown() override;
 
 protected:
     CScheduleSearchView *mScheduleSearchView = nullptr;

@@ -49,8 +49,10 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
     m_font = DFontSizeManager::instance()->get(m_sizeType, m_font);
     int themetype = CScheduleDataManage::getScheduleDataManage()->getTheme();
     CSchedulesColor gdColor = CScheduleDataManage::getScheduleDataManage()->getScheduleColorByType(m_vScheduleInfo.getType());
-    QColor brushColor = gdColor.normalColor;
-    QColor textcolor = CScheduleDataManage::getScheduleDataManage()->getTextColor();
+    QLinearGradient linearGradient(rect.topLeft().x(), 0, rect.topRight().x(), 0);
+    QColor color1 = gdColor.gradientFromC;
+    QColor color2 = gdColor.gradientToC;
+    QColor textcolor = gdColor.textColor;
 
     //判断是否为选中日程
     if (m_vScheduleInfo == m_pressInfo) {
@@ -70,13 +72,19 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
     }
 
     if (m_vSelectflag) {
-        brushColor = gdColor.pressColor;
+        color1 = gdColor.pressgradientFromC;
+        color2 = gdColor.pressgradientToC;
         textcolor.setAlphaF(0.4);
     } else if (m_vHoverflag) {
-        brushColor = gdColor.hoverColor;
+        color1 = gdColor.hovergradientFromC;
+        color2 = gdColor.hovergradientToC;
     } else if (m_vHighflag) {
-        brushColor = gdColor.pressColor;
+        color1 = gdColor.hightlightgradientFromC;
+        color2 = gdColor.hightlightgradientToC;
     }
+
+    linearGradient.setColorAt(0, color1);
+    linearGradient.setColorAt(1, color2);
 
     QRectF fillRect = QRectF(rect.x() + 2,
                              rect.y() + 2,
@@ -84,7 +92,7 @@ void CMonthScheduleItem::paintBackground(QPainter *painter, const QRectF &rect, 
                              labelheight - 2);
     painter->save();
     //将直线开始点设为0，终点设为1，然后分段设置颜色
-    painter->setBrush(brushColor);
+    painter->setBrush(linearGradient);
     if (getItemFocus() && isPixMap == false) {
         QPen framePen;
         framePen.setWidth(2);

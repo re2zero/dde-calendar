@@ -69,8 +69,6 @@ private:
     void setWeekBegins(const int value);
     //更新日程信息
     void updateJobs();
-    //更新日程类型颜色
-    void updateJobTypeColor();
 public slots:
     //关联dbus信号，每周首日改变事触发
     void WeekBeginsChanged(int  value);
@@ -82,8 +80,6 @@ public slots:
     void slotJobsUpdated();
     //
     void slotUpdateSearchSchedule();
-    //更新日程类型颜色
-    void slotUpdateJobTypeColor();
 
     void slotTimeFormatChanged(int value);
     void slotDateFormatChanged(int value);

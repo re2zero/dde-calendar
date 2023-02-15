@@ -198,6 +198,7 @@ void CWeekWindow::initConnection()
     //周数信息区域后按钮点击事件关联触发后一周
     connect(m_weekview, &CWeekView::signalBtnNext, this, &CWeekWindow::slotnext);
     connect(m_weekview, &CWeekView::signalsSelectDate, this, &CWeekWindow::slotSelectDate);
+    connect(m_scheduleView, &CScheduleView::signalViewtransparentFrame, this, &CWeekWindow::signalViewtransparentFrame);
     connect(m_weekHeadView, &CWeekHeadView::signalsViewSelectDate, this, &CWeekWindow::slotViewSelectDate);
     connect(m_weekview, &CWeekView::signalIsDragging, this, &CWeekWindow::slotIsDragging);
     //日程信息区域滚动信号关联
@@ -305,11 +306,11 @@ void CWeekWindow::setSearchWFlag(bool flag)
 }
 
 /**
- * @brief CWeekWindow::updateHeight       更新全天区域高度
+ * @brief CWeekWindow::updateHigh       更新全天区域高度
  */
-void CWeekWindow::updateHeight()
+void CWeekWindow::updateHigh()
 {
-    m_scheduleView->updateHeight();
+    m_scheduleView->updateHigh();
 }
 
 /**
@@ -520,11 +521,11 @@ void CWeekWindow::resizeEvent(QResizeEvent *event)
         m_tMainLayout->setContentsMargins(0, 0, 10, 0);
     }
 
-    //添加1个按钮的宽度 36。原来m_weekview 不包含前后按钮(若加2个按钮的宽度，会导致窗口缩小的时候按钮显示不全)
+    //添加2个按钮的宽度 36+36。原来m_weekview 不包含前后按钮
     if (!m_searchFlag) {
-        m_weekview->setFixedSize(qRound(dw + 36), dh);
+        m_weekview->setFixedSize(qRound(dw + 72), dh);
     } else {
-        m_weekview->setFixedSize(qRound(dw - 100 + 36), dh);
+        m_weekview->setFixedSize(qRound(dw - 100 + 72), dh);
     }
     m_weekHeadView->setFixedSize(width() - winframe, qRound(headH));
     QWidget::resizeEvent(event);

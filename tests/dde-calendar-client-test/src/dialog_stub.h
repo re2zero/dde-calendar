@@ -26,7 +26,6 @@
 //DCalendarDDialog
 //对话框 exec 打桩
 int calendar_DDialog_Exec_stub(void *obj);
-
 void calendarDDialogExecStub(Stub &stub);
 
 extern int calendarDDialogExecReturn;

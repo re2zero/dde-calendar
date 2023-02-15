@@ -23,17 +23,12 @@
 
 test_calendardatedatamanage::test_calendardatedatamanage()
 {
-}
-
-void test_calendardatedatamanage::SetUp()
-{
     calendarDateDataManager = new CalendarDateDataManager();
 }
 
-void test_calendardatedatamanage::TearDown()
+test_calendardatedatamanage::~test_calendardatedatamanage()
 {
     delete calendarDateDataManager;
-    calendarDateDataManager = nullptr;
 }
 
 /**
@@ -98,7 +93,12 @@ TEST_F(test_calendardatedatamanage, setWeekFirstDay)
 // Qt::DayOfWeek CalendarDateDataManager::getWeekFirstDay()
 TEST_F(test_calendardatedatamanage, getWeekFirstDay)
 {
-    assert(Qt::Sunday == calendarDateDataManager->getWeekFirstDay());
+    Qt::DayOfWeek firstDay(Qt::Sunday);
+
+    Qt::DayOfWeek getfirstDay;
+    getfirstDay = calendarDateDataManager->getWeekFirstDay();
+    //qInfo() << getfirstDay;
+    assert(firstDay == getfirstDay);
 }
 
 //void CalendarDateDataManager::setWeekDayFormatByID(const int &weekDayFormatID)
@@ -129,20 +129,9 @@ TEST_F(test_calendardatedatamanage, getShowDateRange)
 TEST_F(test_calendardatedatamanage, getWeekNumOfYear)
 {
     //2020-12-25 为第52周
+    const int weeknum = 52;
     QDate date(2020, 12, 25);
-    assert(52 == calendarDateDataManager->getWeekNumOfYear(date));
-}
-
-TEST_F(test_calendardatedatamanage, setDateFormatChanged)
-{
-    for (int i = 0; i < 10; ++i) {
-        calendarDateDataManager->setDateFormatChanged(i);
-    }
-}
-
-//setTimeFormatChanged
-TEST_F(test_calendardatedatamanage, setTimeFormatChanged)
-{
-    calendarDateDataManager->setTimeFormatChanged(0);
-    calendarDateDataManager->setTimeFormatChanged(1);
+    int weekNum = 0;
+    weekNum = calendarDateDataManager->getWeekNumOfYear(date);
+    assert(weeknum == weekNum);
 }

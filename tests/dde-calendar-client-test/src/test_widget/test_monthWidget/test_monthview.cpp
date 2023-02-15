@@ -203,8 +203,3 @@ TEST_F(test_monthview, getScheduleInfo)
     mMonthView->getScheduleInfo(currentDate, currentDate1);
     mMonthView->getScheduleInfo(currentDate1, currentDate);
 }
-
-TEST_F(test_monthview, isDragging)
-{
-    mMonthView->isDragging();
-}

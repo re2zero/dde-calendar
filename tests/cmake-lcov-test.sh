@@ -7,8 +7,8 @@ cd ../$utdir
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 make -j16
 
-./tests/dde-calendar-client-test/dde-calendar-test --gtest_output=xml:./report/report_calendar_client.xml
-./tests/dde-calendar-service-test/dde-calendar-service-test --gtest_output=xml:./report/report_calendar_service.xml
+./tests/dde-calendar-client-test/dde-calendar-test --gtest_output=xml:./report/report.xml
+./tests/dde-calendar-service-test/dde-calendar-service-test --gtest_output=xml:./report/report.xml
 
 workdir=$(cd ../$(dirname $0)/$utdir; pwd)
 

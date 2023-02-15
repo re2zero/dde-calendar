@@ -20,9 +20,6 @@
    */
 #include "test_schedulectrldlg.h"
 
-#include <QEvent>
-#include <QApplication>
-
 test_schedulectrldlg::test_schedulectrldlg()
 {
     mScheduleCtrlDlg = new CScheduleCtrlDlg();
@@ -84,15 +81,4 @@ TEST_F(test_schedulectrldlg, setInfomativeText)
 TEST_F(test_schedulectrldlg, clickButton)
 {
     mScheduleCtrlDlg->clickButton();
-}
-
-//changeEvent
-TEST_F(test_schedulectrldlg, changeEvent)
-{
-    QEvent event(QEvent::FontChange);
-    mScheduleCtrlDlg->setText(tr("You are changing the repeating rule of this event."));
-    mScheduleCtrlDlg->setInformativeText(tr("Do you want to change all occurrences?"));
-    mScheduleCtrlDlg->addPushButton(tr("Cancel", "button"), true);
-    mScheduleCtrlDlg->addWaringButton(tr("Change All"), true);
-    QApplication::sendEvent(mScheduleCtrlDlg, &event);
 }

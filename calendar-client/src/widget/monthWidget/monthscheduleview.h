@@ -40,7 +40,7 @@ public:
     void setallsize(int w, int h, int left, int top, int buttom, int itemHeight = 22);
     void setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, int currentMonth);
     void updateData();
-    void updateHeight();
+    void updateHigh();
     QVector<QGraphicsRectItem *> getScheduleShowItem() const;
     int getScheduleHeight() const
     {
@@ -52,6 +52,7 @@ public:
 signals:
     void signalsUpdateSchedule(int id = 0);
     void signalsCurrentScheduleDate(QDate date);
+    void signalViewtransparentFrame(int type);
     void signalUpdateUI(int type);
     void signalPressScheduleShow(const bool isShow, const ScheduleDataInfo &out = ScheduleDataInfo());
 public slots:

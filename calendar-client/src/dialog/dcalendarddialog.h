@@ -30,12 +30,17 @@ class DCalendarDDialog : public DDialog
     Q_OBJECT
 public:
     explicit DCalendarDDialog(QWidget *parent = nullptr);
+    //显示对话框
+    int exec() Q_DECL_OVERRIDE;
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     bool eventFilter(QObject *o, QEvent *e) override;
     virtual void updateDateTimeFormat();
+private:
+    //移动到上一层窗口中间显示
+    void moveCentorShow();
 signals:
 
 public slots:

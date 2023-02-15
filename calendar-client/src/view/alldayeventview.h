@@ -44,7 +44,7 @@ public:
     {
         return m_vlistData;
     }
-    void updateHeight();
+    void updateHigh();
     //获取搜索选中日程
     void setSelectSearchSchedule(const ScheduleDataInfo &info) override;
     void setMargins(int left, int top, int right, int bottom);

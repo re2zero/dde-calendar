@@ -64,12 +64,14 @@ bool CAllDayEventWeekView::MeetCreationConditions(const QDateTime &date)
 
 void CAllDayEventWeekView::slotCreate(const QDateTime &date)
 {
+    emit signalViewtransparentFrame(1);
     CScheduleDlg dlg(1, this);
     dlg.setDate(date);
     dlg.setAllDay(true);
     if (dlg.exec() == DDialog::Accepted) {
         emit signalsUpdateSchedule();
     }
+    emit signalViewtransparentFrame(0);
 }
 
 bool CAllDayEventWeekView::IsEqualtime(const QDateTime &timeFirst, const QDateTime &timeSecond)
@@ -122,7 +124,7 @@ QDateTime CAllDayEventWeekView::getDragScheduleInfoEndTime(const QDateTime &move
     return m_InfoBeginTime.daysTo(m_MoveDate) < 0 ? QDateTime(m_InfoBeginTime.date(), QTime(23, 59, 0)) : QDateTime(moveDateTime.date(), QTime(23, 59, 0));
 }
 
-void CAllDayEventWeekView::updateHeight()
+void CAllDayEventWeekView::updateHigh()
 {
     for (int i = 0; i < m_baseShowItem.count(); i++) {
         m_baseShowItem.at(i)->update();
@@ -324,10 +326,12 @@ void CAllDayEventWeekView::mouseDoubleClickEvent(QMouseEvent *event)
         m_createDate.setTime(QTime::currentTime());
         slotCreate(m_createDate);
     } else {
+        emit signalViewtransparentFrame(1);
         m_updateDflag = false;
         CMyScheduleView dlg(item->getData(), this);
         connect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
         dlg.exec();
+        emit signalViewtransparentFrame(0);
         disconnect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CAllDayEventWeekView::slotDoubleEvent);
     }
 }
@@ -412,7 +416,8 @@ CAllDayEventWeekView::PosInItem CAllDayEventWeekView::getPosInItem(const QPoint 
 
 QDateTime CAllDayEventWeekView::getPosDate(const QPoint &p)
 {
-    return QDateTime(m_coorManage->getsDate(mapFrom(this, p)), QTime(0, 0, 0));
+    return QDateTime(m_coorManage->getsDate(mapFrom(this, p)),
+                     QTime(0, 0, 0));
 }
 
 void CAllDayEventWeekView::slotUpdateScene()

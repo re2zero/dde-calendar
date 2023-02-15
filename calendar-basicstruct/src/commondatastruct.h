@@ -67,7 +67,6 @@ typedef struct _tagJob {
         , Type {0}
         , RecurID {0}
         , RemindLaterCount {0}
-        , IsLunar {false}
     {
     }
     qint64 ID;
@@ -78,13 +77,12 @@ typedef struct _tagJob {
     bool AllDay {false};
     QDateTime Start;
     QDateTime End;
-    QString RRule {};//重复规则，如：工作日起床闹钟
-    QString Remind {};//提前提醒，如：提前几天或几分钟
-    QString Ignore {};//如：工作日起床闹钟，除了周五
+    QString RRule {};
+    QString Remind {};
+    QString Ignore {};
     QString Title_pinyin {};
     QDateTime RemidTime; //提醒时间
     qint32 RemindLaterCount; //执行稍后提醒次数
-    bool IsLunar;
 } Job;
 
 typedef struct JobArr {

@@ -31,11 +31,8 @@ class test_configsettings : public QObject, public::testing::Test
 public:
     test_configsettings();
     ~test_configsettings();
-    void SetUp() override;
-    void TearDown() override;
-
 protected:
-    CConfigSettings *conf = nullptr;
+    CConfigSettings *conf;
 };
 
 #endif // TEST_CONFIGSETTINGS_H

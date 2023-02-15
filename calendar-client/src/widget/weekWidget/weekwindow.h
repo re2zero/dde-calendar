@@ -57,7 +57,7 @@ public:
     //设置搜索标志
     void setSearchWFlag(bool flag);
     //更新全天区域高度
-    void updateHeight();
+    void updateHigh();
     //设置年显示和今天按钮显示
     void setYearData() override;
     //更新显示时间

@@ -20,10 +20,6 @@
 */
 #include "test_scheduleitem.h"
 
-#include "../third-party_stub/stub.h"
-
-#include <QPainter>
-
 test_scheduleitem::test_scheduleitem()
 {
     QRectF rectf;
@@ -127,27 +123,4 @@ TEST_F(test_scheduleitem, splitText)
     QFontMetrics fontmetrics(font);
     mScheduleItem->splitText(font, 10, 12, str, strlist, fontmetrics);
     mScheduleItem->splitText(font, 40, 40, str, strlist, fontmetrics);
-}
-
-bool getItemFocus_Stub()
-{
-    return true;
-}
-
-//paintBackground
-TEST_F(test_scheduleitem, paintBackground)
-{
-    QRectF rectf(0, 0, 100, 100);
-    mScheduleItem->setRect(rectf);
-    mScheduleItem->setData(getScheduleItemDInfo().first(), QDate::currentDate(), 4);
-    QPixmap pixmap(rectf.toRect().size());
-    pixmap.fill(Qt::transparent);
-    QPainter painter(&pixmap);
-    mScheduleItem->m_vHighflag = true;
-    mScheduleItem->m_vSelectflag = false;
-    mScheduleItem->paintBackground(&painter, pixmap.rect(), true);
-    Stub stub;
-    stub.set(ADDR(CFocusItem, getItemFocus), getItemFocus_Stub);
-    mScheduleItem->m_vSelectflag = true;
-    mScheduleItem->paintBackground(&painter, pixmap.rect(), true);
 }

@@ -211,12 +211,7 @@ void CMonthGraphicsview::updateLunar()
             info = m_lunarCache.value(date);
 
             if (info.mLunarDayName == "初一") {
-                //如果为闰月只显示月份不显示天
-                if (info.mLunarMonthName.contains("闰")) {
-                    info.mLunarDayName = info.mLunarMonthName;
-                } else {
-                    info.mLunarDayName = info.mLunarMonthName + info.mLunarDayName;
-                }
+                info.mLunarDayName = info.mLunarMonthName + info.mLunarDayName;
             }
 
             if (info.mTerm.isEmpty()) {
@@ -388,6 +383,8 @@ void CMonthGraphicsview::mouseDoubleClickEvent(QMouseEvent *event)
     if (infoitem != nullptr) {
         CMyScheduleView dlg(infoitem->getData(), this);
         connect(&dlg, &CMyScheduleView::signalsEditorDelete, this, &CMonthGraphicsview::signalsUpdateSchedule);
+        connect(&dlg, &CMyScheduleView::signalViewtransparentFrame,
+                this, &CMonthGraphicsview::signalViewtransparentFrame);
         dlg.exec();
         return;
     }
@@ -538,6 +535,7 @@ QDateTime CMonthGraphicsview::getDragScheduleInfoEndTime(const QDateTime &moveDa
 
 void CMonthGraphicsview::slotCreate(const QDateTime &date)
 {
+    emit signalViewtransparentFrame(1);
     CScheduleDlg dlg(1, this);
     QDateTime tDatatime;
     tDatatime.setDate(date.date());
@@ -555,4 +553,5 @@ void CMonthGraphicsview::slotCreate(const QDateTime &date)
         emit signalsUpdateSchedule();
         emit signalsScheduleUpdate(0);
     }
+    emit signalViewtransparentFrame(0);
 }

@@ -115,7 +115,6 @@ private:
      * @brief m_moveOri 移动方向
      */
     MoveOrientation m_moveOri = MoveOrientation::LeftToRight;
-    int m_nextGotoIndex = -1; //在动画过程中，下次需要跳转的页面
 };
 
 #endif // AnimationStackedWidget_H

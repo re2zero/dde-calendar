@@ -34,8 +34,6 @@
 
 DGUI_USE_NAMESPACE
 
-const int schedule_Item_Y = 31; //日程item的相对于该天的高度差
-
 CMonthScheduleView::CMonthScheduleView(QWidget *parent, QGraphicsScene *scene)
     : QObject(parent)
     , m_Scene(scene)
@@ -58,7 +56,7 @@ void CMonthScheduleView::setallsize(int w, int h, int left, int top, int buttom,
     m_bottomMargin = buttom;
     m_leftMargin = left;
     m_topMargin = top;
-    m_cNum = static_cast<int>(((m_height - m_topMargin - m_bottomMargin) / 6.0 + 0.5 - schedule_Item_Y) / (itemHeight + 1));
+    m_cNum = static_cast<int>(((m_height - m_topMargin - m_bottomMargin) / 6.0 + 0.5 - 27) / (itemHeight + 1));
 }
 
 void CMonthScheduleView::setData(QMap<QDate, QVector<ScheduleDataInfo> > &data, int currentMonth)
@@ -103,14 +101,14 @@ void CMonthScheduleView::updateData()
     m_beginDate = begindate;
     m_endDate = enddate;
     for (int i = 0; i < m_weekSchedule.size(); ++i) {
-        m_weekSchedule[i]->setHeight(m_ItemHeight, qRound((m_height - m_topMargin - m_bottomMargin) / 6.0 - schedule_Item_Y));
+        m_weekSchedule[i]->setHeight(m_ItemHeight, qRound((m_height - m_topMargin - m_bottomMargin) / 6.0 - 27));
         m_weekSchedule[i]->setData(m_data, begindate.addDays(i * 7), begindate.addDays(i * 7 + 6));
         QVector<QVector<MScheduleDateRangeInfo>> mSchedule = m_weekSchedule[i]->getMScheduleInfo();
         updateDateShow(mSchedule, m_weekSchedule[i]->getScheduleShowItem());
     }
 }
 
-void CMonthScheduleView::updateHeight()
+void CMonthScheduleView::updateHigh()
 {
     for (int j = 0; j < m_weekSchedule.size(); ++j) {
         for (int i = 0; i < m_weekSchedule[j]->getScheduleShowItem().count(); i++) {
@@ -236,8 +234,7 @@ void CMonthScheduleView::computePos(int cNum, QDate bgeindate, QDate enddate, QP
     fw = static_cast<int>((ecol - bcol + 1) * ((m_width - m_leftMargin) / 7.0) - 11);
     fh = m_ItemHeight;
     int x = static_cast<int>(m_leftMargin + bcol * ((m_width - m_leftMargin) / 7.0) + 5);
-    //根据UI图调整item坐标
-    int y = static_cast<int>(m_topMargin + ((m_height - m_topMargin - m_bottomMargin) / 6.0) * brow + schedule_Item_Y + (cNum - 1) * fh);
+    int y = static_cast<int>(m_topMargin + ((m_height - m_topMargin - m_bottomMargin) * brow / 6.0 + 0.5) + 27 + (cNum - 1) * fh + 2.9);
     pos = QPoint(x, y);
 }
 

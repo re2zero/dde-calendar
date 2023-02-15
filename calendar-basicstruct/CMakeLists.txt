@@ -12,9 +12,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-#安全编译参数
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 file(GLOB_RECURSE BASESTRUCT_SRCS ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 link_libraries(${Qt5CORE_LIBRARIES} ${Qt5DBus_LIBRARIES})

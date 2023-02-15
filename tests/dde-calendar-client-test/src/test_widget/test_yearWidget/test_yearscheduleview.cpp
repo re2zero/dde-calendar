@@ -25,19 +25,11 @@
 
 test_yearscheduleview::test_yearscheduleview()
 {
-}
-
-test_yearscheduleview::~test_yearscheduleview()
-{
-}
-
-void test_yearscheduleview::SetUp()
-{
     cYearScheduleView = new CYearScheduleView();
     zYearScheduleOutView = new CYearScheduleOutView();
 }
 
-void test_yearscheduleview::TearDown()
+test_yearscheduleview::~test_yearscheduleview()
 {
     delete cYearScheduleView;
     cYearScheduleView = nullptr;
@@ -288,16 +280,4 @@ TEST_F(test_yearscheduleview, setTheOutMe)
 TEST_F(test_yearscheduleview, setCurrentOutDate)
 {
     zYearScheduleOutView->setCurrentDate(QDate(2021, 1, 6));
-}
-
-TEST_F(test_yearscheduleview, paintEvent)
-{
-    QPixmap pixmap(cYearScheduleView->size());
-    QVector<ScheduleDataInfo> scheduleInfo = getScheduleDataInfo();
-    cYearScheduleView->setData(scheduleInfo);
-    cYearScheduleView->render(&pixmap);
-}
-
-TEST_F(test_yearscheduleview, mousePressEvent)
-{
 }
