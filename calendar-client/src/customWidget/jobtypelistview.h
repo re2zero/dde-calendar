@@ -1,8 +1,4 @@
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: LGPL-3.0-or-later
-
-#ifndef JOBTYPELISTVIEW_H
+﻿#ifndef JOBTYPELISTVIEW_H
 #define JOBTYPELISTVIEW_H
 
 #include "scheduledatamanage.h"
