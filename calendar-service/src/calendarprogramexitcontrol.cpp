@@ -45,7 +45,9 @@ void CalendarProgramExitControl::reduce()
 
 void CalendarProgramExitControl::exit()
 {
+#ifdef NDEBUG
     qApp->exit();
+#endif
 }
 
 bool CalendarProgramExitControl::getClientIsOpen()

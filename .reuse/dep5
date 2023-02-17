@@ -4,7 +4,7 @@ Upstream-Contact: haifeng.chen <chenhaifeng@uniontech.com>
 Source: 
 
 # README 
-Files: README.md CHANGELOG.md README.zh_CN.md
+Files: README.md CHANGELOG.md README.zh_CN.md calendar-client/README.md
 Copyright: None
 License: CC-BY-4.0
 
@@ -39,7 +39,7 @@ Copyright: None
 License: CC0-1.0
 
 # sh
-Files: tests/cmake-lcov-test.sh tests/test-prj-running.sh calendar-client/assets/translate_generation.sh changelicense.sh
+Files: *.sh
 Copyright: None
 License: CC0-1.0
 
