@@ -6,6 +6,7 @@
 
 #include "units.h"
 #include "calendarprogramexitcontrol.h"
+#include <DSysInfo>
 
 const QString firstDayOfWeek_key = "firstDayOfWeek";
 const QString shortTimeFormat_key = "shortTimeFormat";
@@ -23,6 +24,9 @@ DAccountManageModule::DAccountManageModule(QObject *parent)
                 &DAccountManageModule::slotSettingChange);
     }
     m_isSupportUid = m_syncFileManage->getSyncoperation()->hasAvailable();
+    if(Dtk::Core::DSysInfo::isCommunityEdition()){
+        m_isSupportUid = false;
+    }
     //新文件路径
     QString newDbPath = getDBPath();
     QString newDB(newDbPath + "/" + "accountmanager.db");
