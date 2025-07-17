@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include "yearscheduleview.h"
+#include "commondef.h"
 
 #include "scheduledlg.h"
 #include "scheduledatamanage.h"
@@ -19,16 +20,19 @@ DGUI_USE_NAMESPACE
 CYearScheduleView::CYearScheduleView(QWidget *parent)
     : DWidget(parent)
 {
+    qCDebug(ClientLogger) << "CYearScheduleView constructed";
     m_textfont.setWeight(QFont::Medium);
     m_textfont.setPixelSize(DDECalendar::FontSizeTwelve);
 }
 
 CYearScheduleView::~CYearScheduleView()
 {
+    qCDebug(ClientLogger) << "CYearScheduleView destroyed";
 }
 
 bool YScheduleDateThan(const DSchedule::Ptr &s1, const DSchedule::Ptr &s2)
 {
+    // qCDebug(ClientLogger) << "Comparing schedule dates";
     QDate bDate1 = s1->dtStart().date();
     QDate eDate1 = s1->dtEnd().date();
     QDate bDate2 = s2->dtStart().date();
@@ -50,11 +54,13 @@ bool YScheduleDateThan(const DSchedule::Ptr &s1, const DSchedule::Ptr &s2)
 }
 bool YScheduleDaysThan(const DSchedule::Ptr &s1, const DSchedule::Ptr &s2)
 {
+    // qCDebug(ClientLogger) << "Comparing schedule days";
     return s1->dtStart().date().daysTo(s1->dtEnd().date()) > s2->dtStart().date().daysTo(s2->dtEnd().date());
 }
 
 void CYearScheduleView::setData(DSchedule::List &vListData)
 {
+    qCDebug(ClientLogger) << "Setting data with" << vListData.size() << "schedules";
     DSchedule::List valldayListData, vDaylistdata;
 
     for (int i = 0; i < vListData.count(); i++) {
@@ -90,6 +96,7 @@ void CYearScheduleView::setData(DSchedule::List &vListData)
     m_vlistData.append(vDaylistdata);
 
     if (m_vlistData.size() > DDEYearCalendar::YearScheduleListMaxcount) {
+        qCDebug(ClientLogger) << "Schedule list exceeds max count, truncating to" << DDEYearCalendar::YearScheduleListMaxcount;
         DSchedule::List vTListData;
         for (int i = 0; i < 4; i++) {
             if (m_vlistData.at(i)->dtStart().date() != m_vlistData.at(i)->dtEnd().date() && !m_vlistData.at(i)->allDay()) {
@@ -110,25 +117,32 @@ void CYearScheduleView::setData(DSchedule::List &vListData)
 
 void CYearScheduleView::clearData()
 {
+    qCDebug(ClientLogger) << "Clearing schedule data";
     m_vlistData.clear();
 }
 
 void CYearScheduleView::showWindow()
 {
+    qCDebug(ClientLogger) << "Showing window with" << m_vlistData.size() << "schedules";
     if (m_vlistData.isEmpty()) {
+        // qCDebug(ClientLogger) << "Setting fixed size to: 130x45";
         setFixedSize(130, 45);
     } else {
+        // qCDebug(ClientLogger) << "Updating date show";
         updateDateShow();
     }
 }
 
 void CYearScheduleView::setTheMe(int type)
 {
+    qCDebug(ClientLogger) << "Setting theme to type:" << type;
     if (type == 0 || type == 1) {
+        qCDebug(ClientLogger) << "Setting theme to light";
         m_btimecolor = "#414D68";
         m_btimecolor.setAlphaF(0.7);
         m_btTextColor = "#414D68";
     } else if (type == 2) {
+        qCDebug(ClientLogger) << "Setting theme to dark";
         m_btimecolor = "#C0C6D4";
         m_btimecolor.setAlphaF(0.7);
         m_btTextColor = "#C0C6D4";
@@ -137,22 +151,26 @@ void CYearScheduleView::setTheMe(int type)
 
 void CYearScheduleView::setCurrentDate(const QDate &cdate)
 {
+    // qCDebug(ClientLogger) << "Setting current date to:" << cdate.toString();
     m_currentDate = cdate;
 }
 
 QDate CYearScheduleView::getCurrentDate()
 {
+    // qCDebug(ClientLogger) << "Getting current date";
     return m_currentDate;
 }
 
 void CYearScheduleView::setTimeFormat(const QString &format)
 {
+    // qCDebug(ClientLogger) << "Setting time format to:" << format;
     m_timeFormat = format;
     update();
 }
 
 int CYearScheduleView::getPressScheduleIndex()
 {
+    // qCDebug(ClientLogger) << "Getting press schedule index";
     int resutle = -1;
     //获取全局坐标
     QPoint currentPos = QCursor::pos();
@@ -165,11 +183,13 @@ int CYearScheduleView::getPressScheduleIndex()
             break;
         }
     }
+    qCDebug(ClientLogger) << "Press schedule index:" << resutle;
     return resutle;
 }
 
 void CYearScheduleView::updateDateShow()
 {
+    qCDebug(ClientLogger) << "Updating date show";
     int sViewNum = 0;
     if (!m_vlistData.isEmpty()) {
         if (m_vlistData.size() > DDEYearCalendar::YearScheduleListMaxcount) {
@@ -191,12 +211,15 @@ void CYearScheduleView::updateDateShow()
 
 void CYearScheduleView::paintEvent(QPaintEvent *event)
 {
+    // qCDebug(ClientLogger) << "Paint event received";
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing); // 反锯齿;
     if (m_vlistData.isEmpty()) {
+        // qCDebug(ClientLogger) << "Painting empty schedule";
         paintItem(painter);
     } else {
+        // qCDebug(ClientLogger) << "Painting schedule";
         for (int i = 0; i < m_vlistData.size(); ++i) {
             paintItem(painter, m_vlistData.at(i), i);
         }
@@ -205,12 +228,14 @@ void CYearScheduleView::paintEvent(QPaintEvent *event)
 
 void CYearScheduleView::paintItem(QPainter &painter, DSchedule::Ptr info, int index)
 {
+    // qCDebug(ClientLogger) << "Painting schedule item";
     int labelwidth = width() - 30;
     int bHeight = index * 29 + 10;
     int labelheight = 28;
     DSchedule::Ptr &gd = info;
 
     if (info->uid() == "-1") {
+        // qCDebug(ClientLogger) << "Painting '...' item";
         QString str = "...";
         painter.save();
         painter.setPen(m_btimecolor);
@@ -218,6 +243,7 @@ void CYearScheduleView::paintItem(QPainter &painter, DSchedule::Ptr info, int in
         painter.drawText(QRect(25, bHeight, labelwidth - 80, labelheight - 2), Qt::AlignLeft | Qt::AlignVCenter, str);
         painter.restore();
     } else {
+        // qCDebug(ClientLogger) << "Painting schedule item";
         if (info->uid() != "-1") {
             //圆点m_solocolor
             QColor gdColor;
@@ -281,6 +307,7 @@ void CYearScheduleView::paintItem(QPainter &painter, DSchedule::Ptr info, int in
 
 void CYearScheduleView::paintItem(QPainter &painter)
 {
+    // qCDebug(ClientLogger) << "Painting empty schedule";
     //左边文字
     painter.save();
     painter.setPen(m_btTextColor);
@@ -293,6 +320,7 @@ void CYearScheduleView::paintItem(QPainter &painter)
 CYearScheduleOutView::CYearScheduleOutView(QWidget *parent)
     : DArrowRectangle(DArrowRectangle::ArrowLeft, DArrowRectangle::FloatWidget, parent)
 {
+    qCDebug(ClientLogger) << "CYearScheduleOutView constructed";
     //如果dtk版本为5.3以上则使用新接口
 #if (DTK_VERSION > DTK_VERSION_CHECK(5, 3, 0, 0))
     //设置显示圆角
@@ -306,6 +334,7 @@ CYearScheduleOutView::CYearScheduleOutView(QWidget *parent)
 
 void CYearScheduleOutView::setData(DSchedule::List &vListData)
 {
+    qCDebug(ClientLogger) << "Setting data with" << vListData.size() << "schedules in CYearScheduleOutView";
     list_count = vListData.size();
     yearscheduleview->setData(vListData);
     yearscheduleview->showWindow();
@@ -319,11 +348,13 @@ void CYearScheduleOutView::setData(DSchedule::List &vListData)
 
 void CYearScheduleOutView::clearData()
 {
+    qCDebug(ClientLogger) << "Clearing schedule data in CYearScheduleOutView";
     yearscheduleview->clearData();
 }
 
 void CYearScheduleOutView::setTheMe(int type)
 {
+    qCDebug(ClientLogger) << "Setting theme to type:" << type << "in CYearScheduleOutView";
     yearscheduleview->setTheMe(type);
     //根据主题设备不一样的背景色
     if (type == 2) {
@@ -335,6 +366,7 @@ void CYearScheduleOutView::setTheMe(int type)
 
 void CYearScheduleOutView::setCurrentDate(const QDate &cDate)
 {
+    qCDebug(ClientLogger) << "Setting current date to:" << cDate.toString() << "in CYearScheduleOutView";
     currentdate = cDate;
     yearscheduleview->setCurrentDate(cDate);
 }
@@ -345,6 +377,7 @@ void CYearScheduleOutView::setCurrentDate(const QDate &cDate)
  */
 void CYearScheduleOutView::setDirection(DArrowRectangle::ArrowDirection value)
 {
+    qCDebug(ClientLogger) << "Setting arrow direction to:" << value;
     //设置箭头方向
     this->setArrowDirection(value);
     //设置内容窗口
@@ -353,6 +386,7 @@ void CYearScheduleOutView::setDirection(DArrowRectangle::ArrowDirection value)
 
 void CYearScheduleOutView::setTimeFormat(const QString &format)
 {
+    qCDebug(ClientLogger) << "Setting time format to:" << format << "in CYearScheduleOutView";
     yearscheduleview->setTimeFormat(format);
 }
 
@@ -361,15 +395,18 @@ void CYearScheduleOutView::mousePressEvent(QMouseEvent *event)
     Q_UNUSED(event)
     //获取当前点击的标签编号
     int currentIndex = yearscheduleview->getPressScheduleIndex();
+    // qCDebug(ClientLogger) << "Mouse press event in CYearScheduleOutView, index:" << currentIndex;
 
     if (currentIndex > -1 && currentIndex < scheduleinfoList.size()) {
         if (currentIndex > 3 && list_count > DDEYearCalendar::YearScheduleListMaxcount) {
+            qCDebug(ClientLogger) << "Clicked on '...' item, switching to week view for date:" << currentdate.toString();
             emit signalsViewSelectDate(currentdate);
             this->hide();
             //跳转到周视图
         } else {
             //如果日程类型不为节假日或纪念日则显示编辑框
             if (!CScheduleOperation::isFestival(scheduleinfoList.at(currentIndex))) {
+                qCDebug(ClientLogger) << "Opening schedule dialog for schedule:" << scheduleinfoList.at(currentIndex)->summary();
                 //因为提示框会消失，所以设置CScheduleDlg的父类为主窗口
                 CScheduleDlg dlg(0, qobject_cast<QWidget *>(this->parent()));
                 dlg.setData(scheduleinfoList.at(currentIndex));
